@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "Fixed a bug where .gitignore rules were not being respected when committing changes, causing ignored files to be re-added to the repository."
-  app_version = "1.4"
+  release_notes_text = "• Fixed a bug where .gitignore rules were not being respected when committing changes\n• Added Send Feedback and Report a Bug actions in Settings"
+  app_version = "1.5"
 
   submission_information = {
     add_id_info_uses_idfa: false,
