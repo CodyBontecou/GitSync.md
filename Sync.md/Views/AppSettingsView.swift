@@ -7,6 +7,7 @@ struct AppSettingsView: View {
 
     @State private var showFolderPicker = false
     @State private var showClearConfirm = false
+    @State private var showMailCompose = false
 
     var body: some View {
         NavigationStack {
@@ -133,6 +134,40 @@ struct AppSettingsView: View {
                         }
                         .staggeredAppear(index: 1)
 
+                        // Feedback Section
+                        settingsSection(title: "Feedback", icon: "bubble.left.and.bubble.right.fill", iconColor: SyncTheme.accent) {
+                            VStack(spacing: 14) {
+                                Button {
+                                    if FeedbackHelper.canSendMail {
+                                        showMailCompose = true
+                                    } else {
+                                        FeedbackHelper.openMailClient()
+                                    }
+                                } label: {
+                                    settingsActionRow(
+                                        icon: "envelope.fill",
+                                        title: "Send Feedback",
+                                        subtitle: "Questions, ideas, or issues"
+                                    )
+                                }
+                                .buttonStyle(.plain)
+
+                                Divider().opacity(0.3)
+
+                                Button {
+                                    FeedbackHelper.openGitHubIssue()
+                                } label: {
+                                    settingsActionRow(
+                                        icon: "ladybug.fill",
+                                        title: "Report a Bug",
+                                        subtitle: "Open an issue on GitHub"
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .staggeredAppear(index: 2)
+
                         // Info Section
                         settingsSection(title: "About", icon: "info.circle.fill", iconColor: .secondary) {
                             VStack(spacing: 14) {
@@ -151,7 +186,7 @@ struct AppSettingsView: View {
                                 }
                             }
                         }
-                        .staggeredAppear(index: 2)
+                        .staggeredAppear(index: 3)
                     }
                     .padding(.top, 12)
                     .padding(.bottom, 40)
@@ -169,6 +204,9 @@ struct AppSettingsView: View {
                             .font(.system(size: 16, weight: .bold, design: .rounded))
                     }
                 }
+            }
+            .sheet(isPresented: $showMailCompose) {
+                MailComposeView()
             }
             .fileImporter(
                 isPresented: $showFolderPicker,
@@ -227,5 +265,34 @@ struct AppSettingsView: View {
             Spacer()
             value()
         }
+    }
+
+    private func settingsActionRow(icon: String, title: String, subtitle: String) -> some View {
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(SyncTheme.blue.opacity(0.12))
+                    .frame(width: 34, height: 34)
+                Image(systemName: icon)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(SyncTheme.accent)
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                    .foregroundStyle(.primary)
+                Text(subtitle)
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(.tertiary)
+        }
+        .contentShape(Rectangle())
     }
 }

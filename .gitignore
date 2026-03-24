@@ -1,5 +1,7 @@
 # Secrets
 .env
+*.p8
+fastlane/AuthKey_*.p8
 
 # macOS
 .DS_Store
@@ -27,3 +29,4 @@ node_modules/
 *.ipa
 *.dSYM.zip
 *.app.dSYM/
+fastlane/.env
