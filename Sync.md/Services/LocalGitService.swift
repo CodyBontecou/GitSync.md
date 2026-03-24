@@ -338,7 +338,7 @@ final class LocalGitService: @unchecked Sendable {
             var pathspec = git_strarray(strings: stringsPtr, count: 1)
 
             try git2Check(
-                git_index_add_all(index, &pathspec, GIT_INDEX_ADD_FORCE.rawValue, nil, nil),
+                git_index_add_all(index, &pathspec, GIT_INDEX_ADD_DEFAULT.rawValue, nil, nil),
                 context: "Stage all changes"
             )
             try git2Check(git_index_write(index), context: "Write index")
