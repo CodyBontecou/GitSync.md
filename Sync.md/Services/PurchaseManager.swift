@@ -17,15 +17,21 @@ final class PurchaseManager: ObservableObject {
     /// Number of repositories included for free before a purchase is required.
     static let freeRepoLimit = 1
 
-    /// First marketing version shipped as freemium (CFBundleShortVersionString).
+    /// First marketing version shipped as freemium/free (CFBundleShortVersionString).
     /// On macOS, `AppTransaction.originalAppVersion` returns this format.
-    static let freemiumIntroVersion = "1.6.0"
+    /// v1.6 was accidentally shipped as a paid app, so v1.7 is the first truly free version.
+    static let freemiumIntroVersion = "1.7"
 
-    /// First build number shipped as freemium (CFBundleVersion).
+    /// First build number shipped as freemium/free (CFBundleVersion).
     /// On iOS, `AppTransaction.originalAppVersion` returns `CFBundleVersion`
     /// (the build number), NOT `CFBundleShortVersionString`.
     /// Any build number strictly less than this value is a legacy paid install.
-    static let freemiumIntroBuildNumber = "202603251914" // TODO: keep this in sync with the first shipped freemium v1.6 build
+    ///
+    /// History:
+    ///   v1.5  build "1"            — paid app
+    ///   v1.6  build "202603260933" — accidentally still paid; all v1.6 users get legacy access
+    ///   v1.7  build ≥ "202603270000" — first free (freemium) release
+    static let freemiumIntroBuildNumber = "202603270000"
 
     /// Base URL for the Cloudflare Worker that verifies legacy purchases.
     static let workerBaseURL = "https://syncmd-receipt-verifier.costream.workers.dev"
@@ -265,7 +271,7 @@ final class PurchaseManager: ObservableObject {
         if isUnlocked { return }
 
         purchaseError = String(
-            localized: "No purchase found on this Apple ID.\n\nIf you bought Sync.md before v1.6.0 and still can't restore access, contact us at cody@isolated.tech and we'll sort it out.",
+            localized: "No purchase found on this Apple ID.\n\nIf you bought Sync.md before v1.7.0 and still can't restore access, contact us at cody@isolated.tech and we'll sort it out.",
             comment: "Restore purchase not found message"
         )
     }

@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• Added a one-time unlock for unlimited repositories\n• Added Send Feedback and Report a Bug actions in Settings\n• Improved clone setup by prefilling your GitHub email when available\n• Better validation when required clone fields are missing"
-  app_version = "1.6"
+  release_notes_text = "• App is now free to download — 1 repository included at no charge\n• Existing paid users automatically receive unlimited repository access\n• Unlock unlimited repositories with a one-time $9.99 purchase\n• Fixed legacy purchase restoration for users who paid for previous versions"
+  app_version = "1.7"
 
   submission_information = {
     add_id_info_uses_idfa: false,

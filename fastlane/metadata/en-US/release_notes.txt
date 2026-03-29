@@ -1,4 +1,4 @@
-• Added a one-time unlock for unlimited repositories
-• Added Send Feedback and Report a Bug actions in Settings
-• Improved clone setup by prefilling your GitHub email when available
-• Better validation when required clone fields are missing
+• App is now free to download — 1 repository included at no charge
+• Existing paid users automatically receive unlimited repository access
+• Unlock unlimited repositories with a one-time $9.99 purchase
+• Fixed legacy purchase restoration for users who paid for previous versions

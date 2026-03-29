@@ -40,12 +40,18 @@ interface AppleVerifyReceiptResponse {
 }
 
 const BUNDLE_ID = "bontecou.Sync-md";
-/** Marketing version threshold (CFBundleShortVersionString, used by macOS). */
-const FREEMIUM_INTRO_VERSION = "1.6.0";
+/** Marketing version threshold (CFBundleShortVersionString, used by macOS).
+ *  v1.6 was accidentally shipped as a paid app; v1.7 is the first truly free release. */
+const FREEMIUM_INTRO_VERSION = "1.7";
 /** Build number threshold (CFBundleVersion, used by iOS).
  *  On iOS, originalApplicationVersion is CFBundleVersion, NOT CFBundleShortVersionString.
- *  TODO: fill this in before shipping v1.6. */
-const FREEMIUM_INTRO_BUILD_NUMBER = "202603251914"; // TODO: keep this in sync with the first shipped freemium v1.6 build
+ *
+ *  History:
+ *    v1.5  build "1"            — paid app
+ *    v1.6  build "202603260933" — accidentally still paid; all v1.6 users get legacy access
+ *    v1.7  build ≥ "202603270000" — first free (freemium) release
+ */
+const FREEMIUM_INTRO_BUILD_NUMBER = "202603270000";
 
 const APPLE_PRODUCTION_URL = "https://buy.itunes.apple.com/verifyReceipt";
 const APPLE_SANDBOX_URL    = "https://sandbox.itunes.apple.com/verifyReceipt";
