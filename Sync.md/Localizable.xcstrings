@@ -1,0 +1,1044 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Cancel" : {
+      "comment" : "Generic cancel button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } }
+      }
+    },
+    "OK" : {
+      "comment" : "Generic OK / dismiss button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "OK" } }
+      }
+    },
+    "Done" : {
+      "comment" : "Generic done / close button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Done" } }
+      }
+    },
+    "Save" : {
+      "comment" : "Generic save button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Save" } }
+      }
+    },
+    "Back" : {
+      "comment" : "Generic back navigation button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Back" } }
+      }
+    },
+    "Error" : {
+      "comment" : "Generic error alert title",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Error" } }
+      }
+    },
+    "Unknown error" : {
+      "comment" : "Fallback when no specific error message is available",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unknown error" } }
+      }
+    },
+    "or" : {
+      "comment" : "Divider label between two alternative actions",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "or" } }
+      }
+    },
+    "Never" : {
+      "comment" : "Displayed when a sync or date has never occurred",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Never" } }
+      }
+    },
+    "Name" : {
+      "comment" : "Form field label for a person's name",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Name" } }
+      }
+    },
+    "Email" : {
+      "comment" : "Form field label for an email address",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Email" } }
+      }
+    },
+    "Branch" : {
+      "comment" : "Git branch field or row label",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Branch" } }
+      }
+    },
+    "Repository" : {
+      "comment" : "Section header label for a git repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository" } }
+      }
+    },
+    "Settings" : {
+      "comment" : "Navigation title and context menu item for the repo settings screen",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } }
+      }
+    },
+    "Path" : {
+      "comment" : "Row label showing a file system path",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Path" } }
+      }
+    },
+    "Location" : {
+      "comment" : "Row label showing a file location",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Location" } }
+      }
+    },
+    "Folder" : {
+      "comment" : "Row label for a folder name",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Folder" } }
+      }
+    },
+    "Version" : {
+      "comment" : "Row label for the app version number",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Version" } }
+      }
+    },
+    "Repositories" : {
+      "comment" : "Row label showing the count of repositories",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repositories" } }
+      }
+    },
+    "Tap to change" : {
+      "comment" : "Subtitle shown below a selected item to indicate it is tappable",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap to change" } }
+      }
+    },
+    "Your Name" : {
+      "comment" : "Placeholder text for author name field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your Name" } }
+      }
+    },
+    "you@example.com" : {
+      "comment" : "Placeholder text for email address field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "you@example.com" } }
+      }
+    },
+    "Pull" : {
+      "comment" : "Git pull action title",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pull" } }
+      }
+    },
+    "Fetch remote changes" : {
+      "comment" : "Subtitle for the pull action button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fetch remote changes" } }
+      }
+    },
+    "Commit & Push" : {
+      "comment" : "Git commit and push action title",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Commit & Push" } }
+      }
+    },
+    "Push local changes to remote" : {
+      "comment" : "Subtitle for the commit and push action button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Push local changes to remote" } }
+      }
+    },
+    "Add Repository" : {
+      "comment" : "Navigation title and button label for adding a new repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Repository" } }
+      }
+    },
+    "Sign In" : {
+      "comment" : "Toolbar button to sign in",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign In" } }
+      }
+    },
+    "Sign Out" : {
+      "comment" : "Menu item to sign out of GitHub",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign Out" } }
+      }
+    },
+    "Restore Purchase" : {
+      "comment" : "Button to restore a previous in-app purchase",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore Purchase" } }
+      }
+    },
+    "Unlock Unlimited" : {
+      "comment" : "Fallback unlock button title when product price is unavailable",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock Unlimited" } }
+      }
+    },
+    "Default Save Location" : {
+      "comment" : "Section title and onboarding step title for setting the default save folder",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Default Save Location" } }
+      }
+    },
+    "Choose Location" : {
+      "comment" : "Button to open a folder picker and choose a save location",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose Location" } }
+      }
+    },
+    "Change Location" : {
+      "comment" : "Button to change the currently selected save location",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Change Location" } }
+      }
+    },
+    "Personal Access Token" : {
+      "comment" : "Label for the GitHub Personal Access Token input field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Personal Access Token" } }
+      }
+    },
+    "Feedback" : {
+      "comment" : "Section title for user feedback options",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Feedback" } }
+      }
+    },
+    "Remove" : {
+      "comment" : "Generic remove or delete button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove" } }
+      }
+    },
+    "Change" : {
+      "comment" : "Generic change or edit button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Change" } }
+      }
+    },
+    "Last Sync" : {
+      "comment" : "Row label showing the date and time of the last successful sync",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Last Sync" } }
+      }
+    },
+    "Commit" : {
+      "comment" : "Git commit SHA row label",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Commit" } }
+      }
+    },
+    "Pick from GitHub" : {
+      "comment" : "Button title to pick a repository from the user's GitHub account",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pick from GitHub" } }
+      }
+    },
+    "Select from your repositories" : {
+      "comment" : "Subtitle for the Pick from GitHub button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select from your repositories" } }
+      }
+    },
+    "Open Existing Repository" : {
+      "comment" : "Button title to open a local git repository from the device",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open Existing Repository" } }
+      }
+    },
+    "Select a git repo on this device" : {
+      "comment" : "Subtitle for the Open Existing Repository button",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select a git repo on this device" } }
+      }
+    },
+    "Invalid GitHub URL" : {
+      "comment" : "Validation error shown when the entered repository URL is not a valid GitHub URL",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invalid GitHub URL" } }
+      }
+    },
+    "Enter URL manually" : {
+      "comment" : "Button to reveal a text field for typing a repository URL",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Enter URL manually" } }
+      }
+    },
+    "Repository URL" : {
+      "comment" : "Label for the repository URL input field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository URL" } }
+      }
+    },
+    "https://github.com/user/repo" : {
+      "comment" : "Placeholder text for the repository URL field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "https://github.com/user/repo" } }
+      }
+    },
+    "Author Name" : {
+      "comment" : "Label for the git commit author name field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Author Name" } }
+      }
+    },
+    "Author Email" : {
+      "comment" : "Label for the git commit author email field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Author Email" } }
+      }
+    },
+    "Clone To" : {
+      "comment" : "Section header for the destination folder when cloning a repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clone To" } }
+      }
+    },
+    "Folder name" : {
+      "comment" : "Placeholder for the folder name text field in the clone destination section",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Folder name" } }
+      }
+    },
+    "Files \u203a On My iPhone \u203a Sync.md \u203a %@" : {
+      "comment" : "Info text showing the default clone destination path. %@ is the folder name.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Files \u203a On My iPhone \u203a Sync.md \u203a %@" } }
+      }
+    },
+    "Change Location\u2026" : {
+      "comment" : "Button to change the currently selected clone location",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Change Location\u2026" } }
+      }
+    },
+    "Choose Different Location\u2026" : {
+      "comment" : "Button to choose a custom clone destination folder",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose Different Location\u2026" } }
+      }
+    },
+    "Add & Clone Repository" : {
+      "comment" : "Button to add a remote repository and immediately start cloning it",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add & Clone Repository" } }
+      }
+    },
+    "Missing Required Fields" : {
+      "comment" : "Alert title shown when the user tries to submit without filling required fields",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Missing Required Fields" } }
+      }
+    },
+    "Please fill in the required fields." : {
+      "comment" : "Generic validation error message when required fields are empty",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Please fill in the required fields." } }
+      }
+    },
+    "Please fill in %@." : {
+      "comment" : "Validation message for a single missing field. %@ is the field name.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Please fill in %@." } }
+      }
+    },
+    "Please fill in these fields: %@." : {
+      "comment" : "Validation message for multiple missing fields. %@ is a comma-separated list of field names.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Please fill in these fields: %@." } }
+      }
+    },
+    "Could not access the selected folder." : {
+      "comment" : "Error when the app cannot obtain security-scoped access to a chosen folder",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not access the selected folder." } }
+      }
+    },
+    "No .git directory found in the selected folder." : {
+      "comment" : "Error when the chosen folder does not contain a git repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No .git directory found in the selected folder." } }
+      }
+    },
+    "Could not create a bookmark for the selected folder." : {
+      "comment" : "Error when creating a security-scoped bookmark for the chosen folder fails",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not create a bookmark for the selected folder." } }
+      }
+    },
+    "App Settings" : {
+      "comment" : "Navigation title for the application-wide settings screen and menu item label",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "App Settings" } }
+      }
+    },
+    "Account" : {
+      "comment" : "Section header for GitHub account information",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Account" } }
+      }
+    },
+    "Username" : {
+      "comment" : "Row label for the GitHub username",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Username" } }
+      }
+    },
+    "Unlock" : {
+      "comment" : "Section header for the in-app purchase unlock section",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock" } }
+      }
+    },
+    "Full Access Unlocked" : {
+      "comment" : "Status row title shown when the user has purchased full access",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Full Access Unlocked" } }
+      }
+    },
+    "Legacy paid user \u2014 restored from previous purchase" : {
+      "comment" : "Subtitle for legacy users who paid before the IAP system was introduced",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Legacy paid user \u2014 restored from previous purchase" } }
+      }
+    },
+    "Unlimited repositories enabled" : {
+      "comment" : "Subtitle for users who have purchased full access",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlimited repositories enabled" } }
+      }
+    },
+    "Access Type" : {
+      "comment" : "Row label showing how the user obtained access (legacy vs. purchase)",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Access Type" } }
+      }
+    },
+    "Legacy paid user" : {
+      "comment" : "Access type value for users who paid before the IAP system",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Legacy paid user" } }
+      }
+    },
+    "One-time purchase" : {
+      "comment" : "Access type value for users who made an in-app purchase",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "One-time purchase" } }
+      }
+    },
+    "1 free repository included" : {
+      "comment" : "Status row title for users who have not yet purchased",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "1 free repository included" } }
+      }
+    },
+    "Unlock unlimited repositories with a one-time purchase." : {
+      "comment" : "Subtitle encouraging the user to unlock unlimited repositories",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock unlimited repositories with a one-time purchase." } }
+      }
+    },
+    "New repositories will be saved to the app\u2019s default location." : {
+      "comment" : "Info text shown when no custom default save location has been set",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "New repositories will be saved to the app\u2019s default location." } }
+      }
+    },
+    "Choose Default Location" : {
+      "comment" : "Button to select a default save folder for new repositories",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose Default Location" } }
+      }
+    },
+    "Send Feedback" : {
+      "comment" : "Action row title to send feedback via email",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Send Feedback" } }
+      }
+    },
+    "Questions, ideas, or issues" : {
+      "comment" : "Subtitle for the Send Feedback action row",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Questions, ideas, or issues" } }
+      }
+    },
+    "Report a Bug" : {
+      "comment" : "Action row title to open a GitHub issue",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Report a Bug" } }
+      }
+    },
+    "Open an issue on GitHub" : {
+      "comment" : "Subtitle for the Report a Bug action row",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open an issue on GitHub" } }
+      }
+    },
+    "About" : {
+      "comment" : "Section header for app version and general information",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "About" } }
+      }
+    },
+    "Remove Default Location?" : {
+      "comment" : "Alert title when confirming removal of the default save location",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove Default Location?" } }
+      }
+    },
+    "New repositories will be saved to the app\u2019s default location instead." : {
+      "comment" : "Alert message explaining what happens after removing the custom default location",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "New repositories will be saved to the app\u2019s default location instead." } }
+      }
+    },
+    "Receipt Verification" : {
+      "comment" : "Alert title for the debug receipt verification result (DEBUG only)",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Receipt Verification" } }
+      }
+    },
+    "Unlock Unlimited \u2014 %@" : {
+      "comment" : "Unlock button title with the product price. %@ is the formatted price string.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock Unlimited \u2014 %@" } }
+      }
+    },
+    "Debug: Verify Receipt" : {
+      "comment" : "DEBUG-only action row title for testing receipt verification",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Debug: Verify Receipt" } }
+      }
+    },
+    "Test worker \u2194 Apple end-to-end" : {
+      "comment" : "DEBUG-only subtitle describing the receipt verification test",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Test worker \u2194 Apple end-to-end" } }
+      }
+    },
+    "Running\u2026" : {
+      "comment" : "Loading state text shown while a debug action is running",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Running\u2026" } }
+      }
+    },
+    "Git" : {
+      "comment" : "Navigation title for the Git control sheet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Git" } }
+      }
+    },
+    "Repository Status" : {
+      "comment" : "Card title showing the current state of the git repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository Status" } }
+      }
+    },
+    "Local Changes" : {
+      "comment" : "Row label showing the number of uncommitted local changes",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Local Changes" } }
+      }
+    },
+    "None" : {
+      "comment" : "Displayed when there are zero local changes",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "None" } }
+      }
+    },
+    "Fetch and apply remote changes" : {
+      "comment" : "Subtitle for the pull action in the Git control sheet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fetch and apply remote changes" } }
+      }
+    },
+    "Commit local changes and push to remote" : {
+      "comment" : "Subtitle for the commit and push action in the Git control sheet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Commit local changes and push to remote" } }
+      }
+    },
+    "Commit message\u2026" : {
+      "comment" : "Placeholder for the commit message text field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Commit message\u2026" } }
+      }
+    },
+    "Push 1 change" : {
+      "comment" : "Push button label when there is exactly one local change",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Push 1 change" } }
+      }
+    },
+    "Push %lld changes" : {
+      "comment" : "Push button label showing the number of local changes. %lld is the count (2 or more).",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Push %lld changes" } }
+      }
+    },
+    "Dismiss" : {
+      "comment" : "Accessibility label for the close button on the paywall sheet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dismiss" } }
+      }
+    },
+    "Unlock Sync.md" : {
+      "comment" : "Hero title on the paywall screen",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock Sync.md" } }
+      }
+    },
+    "You\u2019ve reached the 1 free repository limit" : {
+      "comment" : "Hero subtitle on the paywall, explaining why it is shown",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You\u2019ve reached the 1 free repository limit" } }
+      }
+    },
+    "Unlimited repositories" : {
+      "comment" : "Paywall feature row: unlimited repository count",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlimited repositories" } }
+      }
+    },
+    "Sync any number of vaults" : {
+      "comment" : "Paywall feature row: sync unlimited vaults",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sync any number of vaults" } }
+      }
+    },
+    "All future features included" : {
+      "comment" : "Paywall feature row: all future updates included",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "All future features included" } }
+      }
+    },
+    "One-time payment \u2014 no subscription" : {
+      "comment" : "Paywall feature row: no recurring charge",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "One-time payment \u2014 no subscription" } }
+      }
+    },
+    "Restore previous purchase" : {
+      "comment" : "Accessibility label for the restore purchase button on the paywall",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore previous purchase" } }
+      }
+    },
+    "Unlock for %@" : {
+      "comment" : "Purchase button title showing the product price. %@ is the formatted price.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock for %@" } }
+      }
+    },
+    "No Repositories" : {
+      "comment" : "Empty state title shown when the user has no repositories",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No Repositories" } }
+      }
+    },
+    "Add a GitHub repository to start\nsyncing your markdown files." : {
+      "comment" : "Empty state subtitle encouraging the user to add a repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add a GitHub repository to start\nsyncing your markdown files." } }
+      }
+    },
+    "Not yet cloned" : {
+      "comment" : "Status text on a repo card that has been added but not yet cloned",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not yet cloned" } }
+      }
+    },
+    "Sign Out?" : {
+      "comment" : "Confirmation dialog title for signing out",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign Out?" } }
+      }
+    },
+    "This will sign you out of GitHub. Your local repositories will be kept." : {
+      "comment" : "Sign-out confirmation dialog message",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This will sign you out of GitHub. Your local repositories will be kept." } }
+      }
+    },
+    "Demo Mode" : {
+      "comment" : "Banner label shown when the app is running in demo mode",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Demo Mode" } }
+      }
+    },
+    "Exit" : {
+      "comment" : "Button to exit demo mode",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Exit" } }
+      }
+    },
+    "Filter repositories" : {
+      "comment" : "Search bar prompt when filtering the list of GitHub repositories",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Filter repositories" } }
+      }
+    },
+    "Select Repository" : {
+      "comment" : "Navigation title for the repository picker sheet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select Repository" } }
+      }
+    },
+    "URL" : {
+      "comment" : "Row label for the repository remote URL",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "URL" } }
+      }
+    },
+    "Copied!" : {
+      "comment" : "Transient confirmation text shown after copying the repository URL",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Copied!" } }
+      }
+    },
+    "main" : {
+      "comment" : "Placeholder for the branch name text field, showing the default branch name",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "main" } }
+      }
+    },
+    "Git Author" : {
+      "comment" : "Section header for git author name and email fields",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Git Author" } }
+      }
+    },
+    "Storage" : {
+      "comment" : "Section header for the vault storage location information",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Storage" } }
+      }
+    },
+    "On My iPhone \u203a Sync.md \u203a %@" : {
+      "comment" : "Display path for a vault stored in the app's default location. %@ is the folder name.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "On My iPhone \u203a Sync.md \u203a %@" } }
+      }
+    },
+    "Sync Info" : {
+      "comment" : "Section header for sync metadata such as last sync date, commit SHA, and file count",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sync Info" } }
+      }
+    },
+    "Commit SHA" : {
+      "comment" : "Row label for the current HEAD commit SHA",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Commit SHA" } }
+      }
+    },
+    "Files" : {
+      "comment" : "Row label for the number of tracked files in the vault",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Files" } }
+      }
+    },
+    "Remove Repository" : {
+      "comment" : "Destructive button to remove a repository and delete its local files",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove Repository" } }
+      }
+    },
+    "Remove Repository?" : {
+      "comment" : "Alert title when confirming removal of a repository",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove Repository?" } }
+      }
+    },
+    "This will delete all local files for this repository. This cannot be undone." : {
+      "comment" : "Alert message warning that removing a repository is permanent",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This will delete all local files for this repository. This cannot be undone." } }
+      }
+    },
+    "Sync.md" : {
+      "comment" : "App name shown in the onboarding hero section",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sync.md" } }
+      }
+    },
+    "Markdown notes synced with Git" : {
+      "comment" : "App tagline shown on the onboarding screen",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Markdown notes synced with Git" } }
+      }
+    },
+    "Sign in with GitHub" : {
+      "comment" : "Primary sign-in button using GitHub OAuth",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in with GitHub" } }
+      }
+    },
+    "Use a Personal Access Token" : {
+      "comment" : "Secondary sign-in option using a GitHub Personal Access Token",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Use a Personal Access Token" } }
+      }
+    },
+    "Try Demo" : {
+      "comment" : "Button to launch the app in demo mode without signing in",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Try Demo" } }
+      }
+    },
+    "ghp_..." : {
+      "comment" : "Placeholder text for the Personal Access Token input field",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "ghp_..." } }
+      }
+    },
+    "Create a PAT on GitHub" : {
+      "comment" : "Link text that opens the GitHub token creation page",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create a PAT on GitHub" } }
+      }
+    },
+    "Signing in\u2026" : {
+      "comment" : "Loading state text shown while PAT sign-in is in progress",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Signing in\u2026" } }
+      }
+    },
+    "Choose where new repositories\nare saved on your device" : {
+      "comment" : "Subtitle for the default save location onboarding step",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose where new repositories\nare saved on your device" } }
+      }
+    },
+    "Without a default, repos save to\nFiles \u203a On My iPhone \u203a Sync.md" : {
+      "comment" : "Info hint shown when no default save location is chosen during onboarding",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Without a default, repos save to\nFiles \u203a On My iPhone \u203a Sync.md" } }
+      }
+    },
+    "Continue" : {
+      "comment" : "Button to proceed after selecting a save location during onboarding",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue" } }
+      }
+    },
+    "Skip for Now" : {
+      "comment" : "Button to skip setting a default save location during onboarding",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Skip for Now" } }
+      }
+    },
+    "Files Location" : {
+      "comment" : "Card title linking to the vault folder in the Files app",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Files Location" } }
+      }
+    },
+    "Cloning Repository" : {
+      "comment" : "Title shown while a repository is being cloned",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cloning Repository" } }
+      }
+    },
+    "Not Cloned" : {
+      "comment" : "State title shown when a repository has been added but not yet cloned",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not Cloned" } }
+      }
+    },
+    "This repository hasn\u2019t been cloned yet.\nTap below to download it." : {
+      "comment" : "Subtitle shown when a repository has not been cloned yet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This repository hasn\u2019t been cloned yet.\nTap below to download it." } }
+      }
+    },
+    "Clone Repository" : {
+      "comment" : "Button to start cloning a repository that has not been downloaded yet",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clone Repository" } }
+      }
+    },
+    "Repository Not Found" : {
+      "comment" : "Error state title when the repository cannot be found in the app state",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository Not Found" } }
+      }
+    },
+    "%@ Complete" : {
+      "comment" : "Callback result banner title on success. %@ is the capitalized action name, e.g. Pull.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ Complete" } }
+      }
+    },
+    "%@ Failed" : {
+      "comment" : "Callback result banner title on failure. %@ is the capitalized action name, e.g. Pull.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ Failed" } }
+      }
+    },
+    "Repository not found" : {
+      "comment" : "Error message when a repository ID does not match any stored repo",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository not found" } }
+      }
+    },
+    "Preparing to clone..." : {
+      "comment" : "Sync progress message at the start of a clone operation",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preparing to clone..." } }
+      }
+    },
+    "Cloning repository..." : {
+      "comment" : "Sync progress message while a repository is being cloned",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cloning repository..." } }
+      }
+    },
+    "Clone complete! (%lld files)" : {
+      "comment" : "Sync progress message after a successful clone. %lld is the number of files.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clone complete! (%lld files)" } }
+      }
+    },
+    "Checking for updates..." : {
+      "comment" : "Sync progress message at the start of a pull operation",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Checking for updates..." } }
+      }
+    },
+    "Already up to date!" : {
+      "comment" : "Sync progress message when a pull finds no new changes",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Already up to date!" } }
+      }
+    },
+    "Pull complete!" : {
+      "comment" : "Sync progress message after a successful pull",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pull complete!" } }
+      }
+    },
+    "Preparing changes..." : {
+      "comment" : "Sync progress message at the start of a push operation",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preparing changes..." } }
+      }
+    },
+    "Committing and pushing..." : {
+      "comment" : "Sync progress message while committing and pushing changes",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Committing and pushing..." } }
+      }
+    },
+    "Push complete!" : {
+      "comment" : "Sync progress message after a successful push",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Push complete!" } }
+      }
+    },
+    "Fetching profile..." : {
+      "comment" : "Sync progress message while fetching the user's GitHub profile after sign-in",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fetching profile..." } }
+      }
+    },
+    "Invalid token: %@" : {
+      "comment" : "Error message when PAT sign-in fails. %@ is the underlying error description.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invalid token: %@" } }
+      }
+    },
+    "Could not resolve folder bookmark." : {
+      "comment" : "Error when a stored security-scoped bookmark can no longer be resolved",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not resolve folder bookmark." } }
+      }
+    },
+    "No .git directory found. Please select a folder that contains a git repository." : {
+      "comment" : "Error when adding a local repo whose folder has no .git directory",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No .git directory found. Please select a folder that contains a git repository." } }
+      }
+    },
+    "Failed to read repository info: %@" : {
+      "comment" : "Error when reading git metadata from a local repository fails. %@ is the error detail.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Failed to read repository info: %@" } }
+      }
+    },
+    "Update from Sync.md" : {
+      "comment" : "Default commit message used when the user does not provide one",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Update from Sync.md" } }
+      }
+    },
+    "Repository not cloned yet. Clone it first." : {
+      "comment" : "Error when a git operation is attempted on a repository that has not been cloned",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository not cloned yet. Clone it first." } }
+      }
+    },
+    "Invalid remote URL." : {
+      "comment" : "Error when the repository's remote URL is malformed or missing",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Invalid remote URL." } }
+      }
+    },
+    "Clone failed: %@" : {
+      "comment" : "Error when cloning a repository fails. %@ is the libgit2 error detail.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clone failed: %@" } }
+      }
+    },
+    "Fetch failed: %@" : {
+      "comment" : "Error when fetching remote changes fails. %@ is the libgit2 error detail.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fetch failed: %@" } }
+      }
+    },
+    "Push failed: %@" : {
+      "comment" : "Error when pushing commits fails. %@ is the libgit2 error detail.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Push failed: %@" } }
+      }
+    },
+    "Commit failed: %@" : {
+      "comment" : "Error when creating a commit fails. %@ is the libgit2 error detail.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Commit failed: %@" } }
+      }
+    },
+    "No changes to commit." : {
+      "comment" : "Error when attempting to commit but the working tree is clean",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No changes to commit." } }
+      }
+    },
+    "Repository corrupted: %@. Try removing and re-cloning." : {
+      "comment" : "Error when the local git repository is in a corrupted state. %@ is the detail.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Repository corrupted: %@. Try removing and re-cloning." } }
+      }
+    },
+    "Git error: %@" : {
+      "comment" : "Generic libgit2 error wrapper. %@ is the libgit2 error message.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Git error: %@" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

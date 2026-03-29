@@ -63,7 +63,7 @@ struct SetupView: View {
             )) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text(state.lastError ?? "Unknown error")
+                Text(state.lastError ?? String(localized: "Unknown error"))
             }
             .fileImporter(
                 isPresented: $showFolderPicker,

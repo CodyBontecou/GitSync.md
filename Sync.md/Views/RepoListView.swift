@@ -109,7 +109,7 @@ struct RepoListView: View {
             .alert("Error", isPresented: $state.showError) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text(state.lastError ?? "Unknown error")
+                Text(state.lastError ?? String(localized: "Unknown error"))
             }
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
                 if let repoID = newValue {
@@ -361,7 +361,7 @@ struct RepoListView: View {
     }
 
     private func relativeDate(_ date: Date) -> String {
-        if date == .distantPast { return "Never" }
+        if date == .distantPast { return String(localized: "Never") }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: date, relativeTo: Date())

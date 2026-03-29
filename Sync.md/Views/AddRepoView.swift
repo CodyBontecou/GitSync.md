@@ -575,8 +575,8 @@ struct AddRepoView: View {
     private func showMissingFieldsError(_ fields: [String]) {
         guard !fields.isEmpty else { return }
         validationMessage = fields.count == 1
-            ? "Please fill in \(fields[0])."
-            : "Please fill in these fields: \(fields.joined(separator: ", "))."
+            ? String(localized: "Please fill in \(fields[0]).")
+            : String(localized: "Please fill in these fields: \(fields.joined(separator: ", ")).")
         showValidationAlert = true
     }
 
@@ -629,7 +629,7 @@ struct AddRepoView: View {
 
     private func handleLocalRepoSelection(_ url: URL) {
         guard url.startAccessingSecurityScopedResource() else {
-            localRepoError = "Could not access the selected folder."
+            localRepoError = String(localized: "Could not access the selected folder.")
             return
         }
 
@@ -639,7 +639,7 @@ struct AddRepoView: View {
 
         if !exists {
             url.stopAccessingSecurityScopedResource()
-            localRepoError = "No .git directory found in the selected folder."
+            localRepoError = String(localized: "No .git directory found in the selected folder.")
             localRepoURL = nil
             localRepoBookmarkData = nil
             return
@@ -651,7 +651,7 @@ struct AddRepoView: View {
             relativeTo: nil
         ) else {
             url.stopAccessingSecurityScopedResource()
-            localRepoError = "Could not create a bookmark for the selected folder."
+            localRepoError = String(localized: "Could not create a bookmark for the selected folder.")
             return
         }
 

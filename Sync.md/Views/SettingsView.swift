@@ -266,6 +266,7 @@ struct SettingsView: View {
     // MARK: - Helpers
 
     private func relativeDate(_ date: Date) -> String {
+        if date == .distantPast { return String(localized: "Never") }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
         return formatter.localizedString(for: date, relativeTo: Date())

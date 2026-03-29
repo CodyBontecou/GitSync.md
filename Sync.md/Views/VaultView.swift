@@ -62,7 +62,7 @@ struct VaultView: View {
         .alert("Error", isPresented: $state.showError) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(state.lastError ?? "Unknown error")
+            Text(state.lastError ?? String(localized: "Unknown error"))
         }
         .interactiveDismissDisabled(state.callbackNavigateToRepoID != nil)
         .navigationBarBackButtonHidden(state.callbackNavigateToRepoID != nil)
@@ -182,9 +182,9 @@ struct VaultView: View {
     }
 
     private var lastSyncText: String {
-        guard let repo = repo else { return "Never" }
+        guard let repo = repo else { return String(localized: "Never") }
         if repo.gitState.lastSyncDate == .distantPast {
-            return "Never"
+            return String(localized: "Never")
         }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
@@ -338,7 +338,9 @@ struct VaultView: View {
             }
 
             VStack(alignment: .leading, spacing: 3) {
-                Text(result.isSuccess ? "\(result.action.capitalized) Complete" : "\(result.action.capitalized) Failed")
+                Text(result.isSuccess
+                    ? String(localized: "\(result.action.capitalized) Complete")
+                    : String(localized: "\(result.action.capitalized) Failed"))
                     .font(.system(size: 15, weight: .semibold, design: .rounded))
 
                 Text(result.message)

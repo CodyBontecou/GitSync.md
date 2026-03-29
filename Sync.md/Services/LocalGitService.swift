@@ -18,23 +18,23 @@ enum LocalGitError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .notCloned:
-            return "Repository not cloned yet. Clone it first."
+            return String(localized: "Repository not cloned yet. Clone it first.")
         case .invalidRemoteURL:
-            return "Invalid remote URL."
+            return String(localized: "Invalid remote URL.")
         case .cloneFailed(let msg):
-            return "Clone failed: \(msg)"
+            return String(localized: "Clone failed: \(msg)")
         case .fetchFailed(let msg):
-            return "Fetch failed: \(msg)"
+            return String(localized: "Fetch failed: \(msg)")
         case .pushFailed(let msg):
-            return "Push failed: \(msg)"
+            return String(localized: "Push failed: \(msg)")
         case .commitFailed(let msg):
-            return "Commit failed: \(msg)"
+            return String(localized: "Commit failed: \(msg)")
         case .noChanges:
-            return "No changes to commit."
+            return String(localized: "No changes to commit.")
         case .repositoryCorrupted(let msg):
-            return "Repository corrupted: \(msg). Try removing and re-cloning."
+            return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
         case .libgit2(let msg):
-            return "Git error: \(msg)"
+            return String(localized: "Git error: \(msg)")
         }
     }
 }

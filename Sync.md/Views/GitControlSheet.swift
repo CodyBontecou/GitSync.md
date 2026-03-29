@@ -110,9 +110,9 @@ struct GitControlSheet: View {
     }
 
     private var lastSyncText: String {
-        guard let repo = repo else { return "Never" }
+        guard let repo = repo else { return String(localized: "Never") }
         if repo.gitState.lastSyncDate == .distantPast {
-            return "Never"
+            return String(localized: "Never")
         }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
@@ -237,7 +237,11 @@ struct GitControlSheet: View {
                 HStack(spacing: 8) {
                     Image(systemName: "arrow.up")
                         .font(.system(size: 14, weight: .bold))
-                    Text("Push \(changeCount) change\(changeCount == 1 ? "" : "s")")
+                    if changeCount == 1 {
+                        Text("Push 1 change")
+                    } else {
+                        Text("Push \(changeCount) changes")
+                    }
                 }
             }
             .buttonStyle(LiquidButtonStyle(gradient: SyncTheme.pushGradient))

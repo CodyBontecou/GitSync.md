@@ -278,7 +278,7 @@ final class AppState {
             return customURL.path
         }
         guard let repo = repo(id: repoID) else { return "" }
-        return "On My iPhone › Sync.md › \(repo.vaultFolderName)"
+        return String(localized: "On My iPhone › Sync.md › \(repo.vaultFolderName)")
     }
 
     func isUsingCustomLocation(for repoID: UUID) -> Bool {
@@ -406,18 +406,18 @@ final class AppState {
 
     func clone(repoID: UUID) async {
         guard let idx = repoIndex(id: repoID) else {
-            showError(message: "Repository not found")
+            showError(message: String(localized: "Repository not found"))
             return
         }
 
         isSyncing = true
         syncingRepoID = repoID
-        syncProgress = "Preparing to clone..."
+        syncProgress = String(localized: "Preparing to clone...")
 
         if isDemoMode {
-            syncProgress = "Cloning repository..."
+            syncProgress = String(localized: "Cloning repository...")
             try? await Task.sleep(for: .seconds(1.5))
-            syncProgress = "Clone complete! (4 files)"
+            syncProgress = String(localized: "Clone complete! (%lld files)", defaultValue: "Clone complete! (4 files)")
             try? await Task.sleep(for: .seconds(1))
             isSyncing = false
             syncingRepoID = nil
@@ -446,7 +446,7 @@ final class AppState {
 
             let gitService = LocalGitService(localURL: vaultDir)
 
-            syncProgress = "Cloning repository..."
+            syncProgress = String(localized: "Cloning repository...")
             let result = try await gitService.clone(remoteURL: cloneURL, pat: pat)
 
             // Update branch from what was actually checked out
@@ -465,7 +465,7 @@ final class AppState {
             repos[idx] = repo
             saveRepos()
             detectChanges(repoID: repoID)
-            syncProgress = "Clone complete! (\(result.fileCount) files)"
+            syncProgress = String(localized: "Clone complete! (\(result.fileCount) files)")
 
         } catch {
             showError(message: error.localizedDescription)
@@ -478,17 +478,17 @@ final class AppState {
 
     func pull(repoID: UUID) async {
         guard let idx = repoIndex(id: repoID) else {
-            showError(message: "Repository not found")
+            showError(message: String(localized: "Repository not found"))
             return
         }
 
         isSyncing = true
         syncingRepoID = repoID
-        syncProgress = "Checking for updates..."
+        syncProgress = String(localized: "Checking for updates...")
 
         if isDemoMode {
             try? await Task.sleep(for: .seconds(1))
-            syncProgress = "Already up to date!"
+            syncProgress = String(localized: "Already up to date!")
             repos[idx].gitState.lastSyncDate = Date()
             saveRepos()
             try? await Task.sleep(for: .seconds(1))
@@ -509,7 +509,7 @@ final class AppState {
             let result = try await gitService.pull(pat: pat)
 
             if !result.updated {
-                syncProgress = "Already up to date!"
+                syncProgress = String(localized: "Already up to date!")
             } else {
                 repo.gitState.commitSHA = result.newCommitSHA
                 repo.gitState.lastSyncDate = Date()
@@ -517,7 +517,7 @@ final class AppState {
                 repos[idx] = repo
                 saveRepos()
                 detectChanges(repoID: repoID)
-                syncProgress = "Pull complete!"
+                syncProgress = String(localized: "Pull complete!")
             }
 
         } catch {
@@ -531,22 +531,22 @@ final class AppState {
 
     func push(repoID: UUID, message: String) async {
         guard let idx = repoIndex(id: repoID) else {
-            showError(message: "Repository not found")
+            showError(message: String(localized: "Repository not found"))
             return
         }
 
         isSyncing = true
         syncingRepoID = repoID
-        syncProgress = "Preparing changes..."
+        syncProgress = String(localized: "Preparing changes...")
 
         if isDemoMode {
-            syncProgress = "Committing and pushing..."
+            syncProgress = String(localized: "Committing and pushing...")
             try? await Task.sleep(for: .seconds(1.5))
             repos[idx].gitState.commitSHA = UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(40).lowercased()
             repos[idx].gitState.lastSyncDate = Date()
             saveRepos()
             changeCounts[repoID] = 0
-            syncProgress = "Push complete!"
+            syncProgress = String(localized: "Push complete!")
             try? await Task.sleep(for: .seconds(1))
             isSyncing = false
             syncingRepoID = nil
@@ -562,9 +562,9 @@ final class AppState {
                 throw LocalGitError.notCloned
             }
 
-            let commitMsg = message.isEmpty ? "Update from Sync.md" : message
+            let commitMsg = message.isEmpty ? String(localized: "Update from Sync.md") : message
 
-            syncProgress = "Committing and pushing..."
+            syncProgress = String(localized: "Committing and pushing...")
             let result = try await gitService.commitAndPush(
                 message: commitMsg,
                 authorName: repo.authorName,
@@ -578,7 +578,7 @@ final class AppState {
             repos[idx] = repo
             saveRepos()
             detectChanges(repoID: repoID)
-            syncProgress = "Push complete!"
+            syncProgress = String(localized: "Push complete!")
 
         } catch {
             showError(message: error.localizedDescription)
@@ -614,12 +614,12 @@ final class AppState {
             relativeTo: nil,
             bookmarkDataIsStale: &isStale
         ) else {
-            showError(message: "Could not resolve folder bookmark.")
+            showError(message: String(localized: "Could not resolve folder bookmark."))
             return
         }
 
         guard resolvedURL.startAccessingSecurityScopedResource() else {
-            showError(message: "Could not access the selected folder.")
+            showError(message: String(localized: "Could not access the selected folder."))
             return
         }
 
@@ -627,7 +627,7 @@ final class AppState {
 
         guard gitService.hasGitDirectory else {
             resolvedURL.stopAccessingSecurityScopedResource()
-            showError(message: "No .git directory found. Please select a folder that contains a git repository.")
+            showError(message: String(localized: "No .git directory found. Please select a folder that contains a git repository."))
             return
         }
 
@@ -662,7 +662,7 @@ final class AppState {
             detectChanges(repoID: config.id)
         } catch {
             resolvedURL.stopAccessingSecurityScopedResource()
-            showError(message: "Failed to read repository info: \(error.localizedDescription)")
+            showError(message: String(localized: "Failed to read repository info: \(error.localizedDescription)"))
         }
     }
 
@@ -717,7 +717,7 @@ final class AppState {
             pat = token
             isSignedIn = true
 
-            syncProgress = "Fetching profile..."
+            syncProgress = String(localized: "Fetching profile...")
             let user = try await GitHubService.fetchUser(token: token)
             gitHubUsername = user.login
             gitHubDisplayName = user.name ?? user.login
@@ -764,7 +764,7 @@ final class AppState {
 
             saveGlobalSettings()
         } catch {
-            showError(message: "Invalid token: \(error.localizedDescription)")
+            showError(message: String(localized: "Invalid token: \(error.localizedDescription)"))
         }
     }
 
