@@ -97,7 +97,7 @@ struct SetupView: View {
                 Rectangle()
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
-                Text("MARKDOWN NOTES SYNCED WITH GIT")
+                Text("ANY REPO, SYNCED TO YOUR IPHONE")
                     .font(.system(size: 10, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalTextMid)
                     .tracking(1.5)

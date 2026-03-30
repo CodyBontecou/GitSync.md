@@ -26,7 +26,7 @@ struct PaywallView: View {
                     VStack(spacing: 0) {
                         featureRow(icon: "📦", text: "Unlimited repositories")
                         BDivider().padding(.horizontal, 16)
-                        featureRow(icon: "🌿", text: "Sync any number of vaults")
+                        featureRow(icon: "🌿", text: "Sync any number of repositories")
                         BDivider().padding(.horizontal, 16)
                         featureRow(icon: "✨", text: "All future features included")
                         BDivider().padding(.horizontal, 16)

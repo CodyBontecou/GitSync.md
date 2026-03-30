@@ -124,7 +124,7 @@ struct RepoListView: View {
             Spacer()
             BEmptyState(
                 title: "No Repositories",
-                subtitle: "Add a GitHub repository to\nstart syncing your markdown.",
+                subtitle: "Add a GitHub repository to\nstart syncing your files.",
                 actionTitle: "Add Repository",
                 action: { handleAddRepoTapped() }
             )
