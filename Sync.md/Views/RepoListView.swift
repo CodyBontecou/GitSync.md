@@ -12,7 +12,7 @@ struct RepoListView: View {
     @State private var showSignOutConfirm = false
     @State private var showAppSettings = false
     @State private var settingsRepoID: UUID? = nil
-    @State private var navigationPath: [UUID] = []
+    @State private var navigationPath = NavigationPath()
 
     var body: some View {
         @Bindable var state = state
@@ -109,9 +109,9 @@ struct RepoListView: View {
             }
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
                 if let repoID = newValue {
-                    if !navigationPath.contains(repoID) { navigationPath = [repoID] }
+                    navigationPath = NavigationPath([repoID])
                 } else if !navigationPath.isEmpty {
-                    navigationPath = []
+                    navigationPath = NavigationPath()
                 }
             }
         }

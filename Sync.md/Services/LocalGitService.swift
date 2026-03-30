@@ -1330,6 +1330,70 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }.value
     }
 
+    func discardChanges(path: String) async throws {
+        let repoPath = self.localURL.path
+        let fullPath = self.localURL.appendingPathComponent(path).path
+
+        try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+
+            // Determine if the file is untracked (no index entry) → just delete it
+            let existsInIndex = path.withCString { cPath in
+                git_index_get_bypath(index, cPath, 0) != nil
+            }
+
+            if !existsInIndex {
+                // Untracked file — remove from disk
+                try? FileManager.default.removeItem(atPath: fullPath)
+                return
+            }
+
+            // Tracked file — restore working tree to HEAD via checkout
+            let cString = strdup(path)!
+            let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
+            defer {
+                free(cString)
+                storage.deallocate()
+            }
+
+            var pathspec = git_strarray()
+            makeStrarray(cString, into: &pathspec, storage: storage)
+
+            var opts = git_checkout_options()
+            git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
+            opts.checkout_strategy = UInt32(GIT_CHECKOUT_FORCE.rawValue)
+            opts.paths = pathspec
+
+            try git2Check(
+                git_checkout_head(repo, &opts),
+                context: "Discard changes in \(path)"
+            )
+        }.value
+    }
+
+    func discardAllChanges() async throws {
+        let repoPath = self.localURL.path
+
+        try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var opts = git_checkout_options()
+            git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
+            opts.checkout_strategy = UInt32(GIT_CHECKOUT_FORCE.rawValue) |
+                                     UInt32(GIT_CHECKOUT_REMOVE_UNTRACKED.rawValue)
+
+            try git2Check(git_checkout_head(repo, &opts), context: "Discard all changes")
+        }.value
+    }
+
     // MARK: - Stash
 
     func listStashes() async throws -> [GitStashEntry] {

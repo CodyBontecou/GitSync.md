@@ -7,6 +7,10 @@ struct VaultView: View {
 
     @State private var showSettings = false
     @State private var showCommitSheet = false
+    @State private var showChangedFiles = true
+    @State private var showRevertAllConfirm = false
+    @State private var revertFilePath: String? = nil
+    @State private var showRevertFileModal = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
@@ -64,6 +68,46 @@ struct VaultView: View {
         }
         .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
         .sheet(isPresented: $showSettings) { SettingsView(repoID: repoID) }
+        .navigationDestination(for: DiffDestination.self) { dest in
+            FileDiffView(repoID: dest.repoID, path: dest.path)
+        }
+        .overlay {
+            if showRevertAllConfirm {
+                RevertConfirmModal(
+                    title: "Revert All Changes",
+                    filename: nil,
+                    files: sortedStatusEntries.map(\.path),
+                    confirmLabel: "Revert All",
+                    onConfirm: {
+                        showRevertAllConfirm = false
+                        Task { await state.discardAllFileChanges(repoID: repoID) }
+                    },
+                    onCancel: { showRevertAllConfirm = false }
+                )
+                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
+            if showRevertFileModal, let path = revertFilePath {
+                RevertConfirmModal(
+                    title: "Revert Changes",
+                    filename: URL(fileURLWithPath: path).lastPathComponent,
+                    files: [],
+                    confirmLabel: "Revert",
+                    onConfirm: {
+                        showRevertFileModal = false
+                        let p = path
+                        revertFilePath = nil
+                        Task { await state.discardFileChanges(repoID: repoID, path: p) }
+                    },
+                    onCancel: {
+                        showRevertFileModal = false
+                        revertFilePath = nil
+                    }
+                )
+                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
+        }
+        .animation(.easeOut(duration: 0.18), value: showRevertAllConfirm)
+        .animation(.easeOut(duration: 0.18), value: showRevertFileModal)
         .alert("Error", isPresented: $state.showError) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -85,6 +129,9 @@ struct VaultView: View {
             VStack(spacing: 12) {
                 statusHeroCard(repo)
                 repoHealthCard
+                if !statusEntries.isEmpty {
+                    changedFilesCard
+                }
                 syncActionsSection
 
                 if isThisRepoSyncing {
@@ -280,6 +327,143 @@ struct VaultView: View {
         case .diverged:              return .brutalError
         case .remoteBranchMissing:   return .brutalWarning
         case .failed:                return .brutalError
+        }
+    }
+
+    // MARK: - Changed Files
+
+    private var sortedStatusEntries: [GitStatusEntry] {
+        statusEntries.sorted { $0.path.localizedCaseInsensitiveCompare($1.path) == .orderedAscending }
+    }
+
+    private var changedFilesCard: some View {
+        BCard(padding: 0) {
+            VStack(spacing: 0) {
+                HStack {
+                    // Collapse toggle
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showChangedFiles.toggle()
+                        }
+                    } label: {
+                        HStack(spacing: 8) {
+                            BSectionHeader(title: "Changed Files")
+                            BBadge(text: "\(statusEntries.count)", style: .accent)
+                            Image(systemName: showChangedFiles ? "chevron.up" : "chevron.down")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(Color.brutalText)
+                        }
+                    }
+                    .buttonStyle(.plain)
+
+                    Spacer()
+
+                    // Revert all
+                    Button {
+                        showRevertAllConfirm = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.uturn.backward")
+                                .font(.system(size: 11, weight: .bold))
+                            Text("ALL")
+                                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                .tracking(1)
+                        }
+                        .foregroundStyle(Color.brutalError)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 5)
+                        .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+
+                if showChangedFiles {
+                    VStack(spacing: 0) {
+                        ForEach(Array(sortedStatusEntries.enumerated()), id: \.element.id) { index, entry in
+                            changedFileRow(entry)
+                            if index < sortedStatusEntries.count - 1 {
+                                BDivider().padding(.horizontal, 16)
+                            }
+                        }
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
+        }
+    }
+
+    private func changedFileRow(_ entry: GitStatusEntry) -> some View {
+        HStack(spacing: 0) {
+            // Tapping the row navigates to diff
+            NavigationLink(value: DiffDestination(repoID: repoID, path: entry.path)) {
+                HStack(spacing: 10) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(entry.path)
+                            .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Text(fileStatusSummary(for: entry))
+                            .font(.system(size: 12, design: .monospaced))
+                            .foregroundStyle(Color.brutalText.opacity(0.6))
+                    }
+                    Spacer(minLength: 8)
+                    fileStatusBadge(for: entry)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Color.brutalText.opacity(0.3))
+                }
+                .padding(.leading, 16)
+                .padding(.trailing, 8)
+                .padding(.vertical, 11)
+            }
+            .buttonStyle(.plain)
+
+            // Per-file revert
+            Button {
+                revertFilePath = entry.path
+                showRevertFileModal = true
+            } label: {
+                Image(systemName: "arrow.uturn.backward")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(Color.brutalError)
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private func fileStatusSummary(for entry: GitStatusEntry) -> String {
+        switch (entry.indexStatus, entry.workTreeStatus) {
+        case let (index?, workTree?): return "Staged \(fileStatusLabel(index)) · Unstaged \(fileStatusLabel(workTree))"
+        case let (index?, nil):       return "Staged \(fileStatusLabel(index))"
+        case let (nil, workTree?):    return fileStatusLabel(workTree).capitalized
+        case (nil, nil):              return "No status"
+        }
+    }
+
+    private func fileStatusLabel(_ kind: GitFileStatusKind) -> String {
+        switch kind {
+        case .added:       return "added"
+        case .modified:    return "modified"
+        case .deleted:     return "deleted"
+        case .renamed:     return "renamed"
+        case .typeChanged: return "type changed"
+        case .untracked:   return "untracked"
+        case .conflicted:  return "conflicted"
+        }
+    }
+
+    @ViewBuilder
+    private func fileStatusBadge(for entry: GitStatusEntry) -> some View {
+        if entry.isConflicted {
+            BBadge(text: "CONFLICT", style: .error)
+        } else if let index = entry.indexStatus {
+            BBadge(text: fileStatusLabel(index), style: .success)
+        } else if let work = entry.workTreeStatus {
+            BBadge(text: fileStatusLabel(work), style: work == .untracked ? .accent : .default)
         }
     }
 

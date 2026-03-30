@@ -1099,6 +1099,46 @@ final class AppState {
         }
     }
 
+    func discardAllFileChanges(repoID: UUID) async {
+        guard let repo = repo(id: repoID), repo.isCloned else { return }
+        if isDemoMode { return }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return
+        }
+
+        do {
+            try await gitService.discardAllChanges()
+            detectChanges(repoID: repoID)
+        } catch {
+            showError(message: error.localizedDescription)
+        }
+    }
+
+    func discardFileChanges(repoID: UUID, path: String) async {
+        guard let repo = repo(id: repoID), repo.isCloned else { return }
+        if isDemoMode { return }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return
+        }
+
+        do {
+            try await gitService.discardChanges(path: path)
+            detectChanges(repoID: repoID)
+        } catch {
+            showError(message: error.localizedDescription)
+        }
+    }
+
     // MARK: - Git Operations (libgit2)
 
     func clone(repoID: UUID) async {

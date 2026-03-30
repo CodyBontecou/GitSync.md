@@ -19,6 +19,8 @@ protocol GitRepositoryProtocol: Sendable {
     func resolveConflict(path: String, strategy: ConflictResolutionStrategy) async throws
     func stage(path: String) async throws
     func unstage(path: String) async throws
+    func discardChanges(path: String) async throws
+    func discardAllChanges() async throws
     func commitAndPush(
         message: String,
         authorName: String,
