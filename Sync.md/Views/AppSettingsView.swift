@@ -18,113 +18,96 @@ struct AppSettingsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
+                Color.brutalBg.ignoresSafeArea()
 
                 ScrollView {
-                    VStack(spacing: 20) {
-                        settingsSection(title: "Account", icon: "person.fill", iconColor: SyncTheme.accent) {
-                            VStack(spacing: 14) {
+                    VStack(spacing: 12) {
+                        // Account
+                        settingsSection(title: "Account") {
+                            VStack(spacing: 0) {
                                 if !state.gitHubDisplayName.isEmpty {
-                                    settingsRow(label: "Name") {
-                                        Text(state.gitHubDisplayName)
-                                            .font(.system(size: 15, design: .rounded))
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    Divider().opacity(0.3)
+                                    dataRow(label: "Name", value: state.gitHubDisplayName)
+                                    BDivider().padding(.horizontal, 16)
                                 }
-
-                                settingsRow(label: "Username") {
-                                    Text("@\(state.gitHubUsername)")
-                                        .font(.system(size: 15, design: .rounded))
-                                        .foregroundStyle(.secondary)
-                                }
-
+                                dataRow(label: "Username", value: "@\(state.gitHubUsername)")
                                 if !state.defaultAuthorEmail.isEmpty {
-                                    Divider().opacity(0.3)
-                                    settingsRow(label: "Email") {
-                                        Text(state.defaultAuthorEmail)
-                                            .font(.system(size: 15, design: .rounded))
-                                            .foregroundStyle(.secondary)
-                                    }
+                                    BDivider().padding(.horizontal, 16)
+                                    dataRow(label: "Email", value: state.defaultAuthorEmail)
                                 }
                             }
                         }
-                        .staggeredAppear(index: 0)
 
-                        settingsSection(title: "Unlock", icon: "sparkles", iconColor: SyncTheme.accent) {
-                            VStack(spacing: 14) {
+                        // Unlock
+                        settingsSection(title: "Unlock") {
+                            VStack(spacing: 0) {
                                 if purchaseManager.isUnlocked {
-                                    statusInfoRow(
-                                        icon: "checkmark.seal.fill",
-                                        title: "Full Access Unlocked",
-                                        subtitle: purchaseManager.isLegacyUser
-                                            ? "Legacy paid user — restored from previous purchase"
-                                            : "Unlimited repositories enabled"
-                                    )
-                                    .foregroundStyle(.green)
-
-                                    Divider().opacity(0.3)
-
-                                    settingsRow(label: "Access Type") {
-                                        Text(purchaseManager.isLegacyUser ? "Legacy paid user" : "One-time purchase")
-                                            .font(.system(size: 15, weight: .medium, design: .rounded))
-                                            .foregroundStyle(.secondary)
-                                    }
-                                } else {
-                                    statusInfoRow(
-                                        icon: "info.circle.fill",
-                                        title: "1 free repository included",
-                                        subtitle: "Unlock unlimited repositories with a one-time purchase."
-                                    )
-
-                                    Button {
-                                        showPaywall = true
-                                    } label: {
-                                        Text(unlockButtonTitle)
-                                    }
-                                    .buttonStyle(LiquidButtonStyle(gradient: SyncTheme.primaryGradient))
-                                    .disabled(purchaseManager.isPurchasing || purchaseManager.isRestoring)
-
-                                    Button {
-                                        Task { await purchaseManager.restore() }
-                                    } label: {
-                                        HStack(spacing: 8) {
-                                            if purchaseManager.isRestoring {
-                                                ProgressView()
-                                                    .controlSize(.small)
-                                                    .tint(SyncTheme.accent)
-                                            }
-
-                                            Text("Restore Purchase")
-                                                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    HStack(spacing: 12) {
+                                        BBadge(text: "UNLOCKED", style: .success)
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text("Full Access")
+                                                .font(.system(size: 14, weight: .semibold))
+                                                .foregroundStyle(Color.brutalText)
+                                            Text(purchaseManager.isLegacyUser
+                                                 ? "Legacy paid user — restored from previous purchase"
+                                                 : "Unlimited repositories enabled")
+                                                .font(.system(size: 11, design: .monospaced))
+                                                .foregroundStyle(Color.brutalTextMid)
                                         }
-                                        .foregroundStyle(SyncTheme.accent)
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.vertical, 14)
-                                        .background(SyncTheme.accent.opacity(0.08), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                        Spacer()
                                     }
-                                    .buttonStyle(.plain)
-                                    .disabled(purchaseManager.isPurchasing || purchaseManager.isRestoring)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 14)
+
+                                    BDivider().padding(.horizontal, 16)
+
+                                    dataRow(label: "Access Type",
+                                            value: purchaseManager.isLegacyUser ? "Legacy paid user" : "One-time purchase")
+                                } else {
+                                    HStack(spacing: 12) {
+                                        BBadge(text: "FREE", style: .default)
+                                        Text("1 free repository included")
+                                            .font(.system(size: 13, design: .monospaced))
+                                            .foregroundStyle(Color.brutalTextMid)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 14)
+
+                                    BDivider().padding(.horizontal, 16)
+
+                                    VStack(spacing: 10) {
+                                        BPrimaryButton(title: unlockButtonTitle, icon: "lock.open") {
+                                            showPaywall = true
+                                        }
+                                        .disabled(purchaseManager.isPurchasing || purchaseManager.isRestoring)
+
+                                        BSecondaryButton(
+                                            title: "Restore Purchase",
+                                            isLoading: purchaseManager.isRestoring,
+                                            isDisabled: purchaseManager.isPurchasing || purchaseManager.isRestoring
+                                        ) {
+                                            Task { await purchaseManager.restore() }
+                                        }
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 14)
                                 }
 
                                 if let error = purchaseManager.purchaseError {
-                                    Divider().opacity(0.3)
-
-                                    Text(error)
-                                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                                        .foregroundStyle(
-                                            error.contains("cody@isolated.tech")
-                                                ? .secondary
-                                                : Color.red
-                                        )
-                                        .multilineTextAlignment(.leading)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    BDivider().padding(.horizontal, 16)
+                                    HStack(spacing: 8) {
+                                        BBadge(text: "ERROR", style: error.contains("cody@isolated.tech") ? .default : .error)
+                                        Text(error)
+                                            .font(.system(size: 11, design: .monospaced))
+                                            .foregroundStyle(error.contains("cody@isolated.tech") ? Color.brutalTextMid : Color.brutalError)
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
                                 }
 
                                 #if DEBUG
-                                Divider().opacity(0.3)
-
+                                BDivider().padding(.horizontal, 16)
                                 Button {
                                     guard !isRunningDebug else { return }
                                     isRunningDebug = true
@@ -134,179 +117,167 @@ struct AppSettingsView: View {
                                         showDebugAlert = true
                                     }
                                 } label: {
-                                    settingsActionRow(
-                                        icon: "checkmark.shield.fill",
-                                        title: isRunningDebug ? "Running…" : "Debug: Verify Receipt",
-                                        subtitle: "Test worker ↔ Apple end-to-end"
-                                    )
+                                    HStack(spacing: 10) {
+                                        BBadge(text: "DEBUG", style: .warning)
+                                        Text(isRunningDebug ? "Running…" : "Verify Receipt")
+                                            .font(.system(size: 13, weight: .medium))
+                                            .foregroundStyle(Color.brutalText)
+                                        Spacer()
+                                        Text("→")
+                                            .font(.system(size: 13, design: .monospaced))
+                                            .foregroundStyle(Color.brutalTextFaint)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 13)
                                 }
                                 .buttonStyle(.plain)
                                 #endif
                             }
                         }
-                        .staggeredAppear(index: 1)
 
-                        settingsSection(title: "Default Save Location", icon: "folder.fill", iconColor: SyncTheme.accent) {
-                            VStack(spacing: 14) {
+                        // Default Save Location
+                        settingsSection(title: "Default Save Location") {
+                            VStack(spacing: 0) {
                                 if let url = state.resolvedDefaultSaveURL {
                                     HStack(spacing: 12) {
-                                        ZStack {
-                                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                                .fill(SyncTheme.blue.opacity(0.12))
-                                                .frame(width: 40, height: 40)
-                                            Image(systemName: "folder.fill")
-                                                .font(.system(size: 18))
-                                                .foregroundStyle(SyncTheme.accent)
-                                        }
-
+                                        Text("📁").font(.system(size: 18))
                                         VStack(alignment: .leading, spacing: 2) {
                                             Text(url.lastPathComponent)
-                                                .font(.system(size: 15, weight: .medium, design: .rounded))
+                                                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                                                .foregroundStyle(Color.brutalText)
                                             Text(url.path)
-                                                .font(.system(size: 12, design: .rounded))
-                                                .foregroundStyle(.secondary)
+                                                .font(.system(size: 10, design: .monospaced))
+                                                .foregroundStyle(Color.brutalTextFaint)
                                                 .lineLimit(1)
                                                 .truncationMode(.middle)
                                         }
-
                                         Spacer()
                                     }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 14)
 
-                                    Divider().opacity(0.3)
+                                    BDivider().padding(.horizontal, 16)
 
-                                    HStack(spacing: 16) {
+                                    HStack(spacing: 20) {
                                         Button {
                                             showFolderPicker = true
                                         } label: {
-                                            HStack(spacing: 6) {
-                                                Image(systemName: "folder.badge.plus")
-                                                    .font(.system(size: 13))
-                                                Text("Change")
-                                                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                                            }
-                                            .foregroundStyle(SyncTheme.accent)
+                                            Text("CHANGE")
+                                                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                                .foregroundStyle(Color.brutalAccent)
+                                                .tracking(1)
                                         }
+                                        .buttonStyle(.plain)
 
                                         Spacer()
 
                                         Button {
                                             showClearConfirm = true
                                         } label: {
-                                            HStack(spacing: 6) {
-                                                Image(systemName: "xmark.circle.fill")
-                                                    .font(.system(size: 13))
-                                                Text("Remove")
-                                                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                                            }
-                                            .foregroundStyle(.red.opacity(0.8))
+                                            Text("REMOVE")
+                                                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                                .foregroundStyle(Color.brutalError)
+                                                .tracking(1)
                                         }
+                                        .buttonStyle(.plain)
                                     }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
                                 } else {
-                                    VStack(spacing: 12) {
-                                        HStack(spacing: 8) {
-                                            Image(systemName: "info.circle.fill")
-                                                .font(.system(size: 13))
-                                                .foregroundStyle(.tertiary)
+                                    VStack(spacing: 10) {
+                                        HStack(spacing: 6) {
+                                            Image(systemName: "info.circle")
+                                                .font(.system(size: 11))
+                                                .foregroundStyle(Color.brutalTextFaint)
                                             Text("New repositories will be saved to the app's default location.")
-                                                .font(.system(size: 13, design: .rounded))
-                                                .foregroundStyle(.secondary)
+                                                .font(.system(size: 12, design: .monospaced))
+                                                .foregroundStyle(Color.brutalTextMid)
                                         }
+                                        .padding(.horizontal, 16)
+                                        .padding(.top, 14)
+
+                                        BDivider().padding(.horizontal, 16)
 
                                         Button {
                                             showFolderPicker = true
                                         } label: {
-                                            HStack(spacing: 8) {
-                                                Image(systemName: "folder.badge.plus")
-                                                    .font(.system(size: 15))
-                                                Text("Choose Default Location")
-                                                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                                            HStack(spacing: 6) {
+                                                Text("📂")
+                                                Text("CHOOSE DEFAULT LOCATION")
+                                                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                                    .foregroundStyle(Color.brutalAccent)
+                                                    .tracking(1)
                                             }
-                                            .foregroundStyle(SyncTheme.accent)
-                                            .frame(maxWidth: .infinity)
+                                            .padding(.horizontal, 16)
                                             .padding(.vertical, 12)
-                                            .background(SyncTheme.accent.opacity(0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                                         }
+                                        .buttonStyle(.plain)
                                     }
                                 }
                             }
                         }
-                        .staggeredAppear(index: 2)
 
-                        settingsSection(title: "Feedback", icon: "bubble.left.and.bubble.right.fill", iconColor: SyncTheme.accent) {
-                            VStack(spacing: 14) {
-                                Button {
+                        // Feedback
+                        settingsSection(title: "Feedback") {
+                            VStack(spacing: 0) {
+                                actionRow(icon: "✉️", title: "Send Feedback", subtitle: "Questions, ideas, or issues") {
                                     if FeedbackHelper.canSendMail {
                                         showMailCompose = true
                                     } else {
                                         FeedbackHelper.openMailClient()
                                     }
-                                } label: {
-                                    settingsActionRow(
-                                        icon: "envelope.fill",
-                                        title: "Send Feedback",
-                                        subtitle: "Questions, ideas, or issues"
-                                    )
                                 }
-                                .buttonStyle(.plain)
 
-                                Divider().opacity(0.3)
+                                BDivider().padding(.horizontal, 16)
 
-                                Button {
+                                actionRow(icon: "🐞", title: "Report a Bug", subtitle: "Open an issue on GitHub") {
                                     FeedbackHelper.openGitHubIssue()
-                                } label: {
-                                    settingsActionRow(
-                                        icon: "ladybug.fill",
-                                        title: "Report a Bug",
-                                        subtitle: "Open an issue on GitHub"
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                        .staggeredAppear(index: 3)
-
-                        settingsSection(title: "About", icon: "info.circle.fill", iconColor: .secondary) {
-                            VStack(spacing: 14) {
-                                settingsRow(label: "Version") {
-                                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-                                        .font(.system(size: 15, weight: .medium, design: .rounded))
-                                        .foregroundStyle(.secondary)
-                                }
-
-                                Divider().opacity(0.3)
-
-                                settingsRow(label: "Repositories") {
-                                    Text("\(state.repos.count)")
-                                        .font(.system(size: 15, weight: .medium, design: .rounded))
-                                        .foregroundStyle(.secondary)
                                 }
                             }
                         }
-                        .staggeredAppear(index: 4)
+
+                        // About
+                        settingsSection(title: "About") {
+                            VStack(spacing: 0) {
+                                dataRow(
+                                    label: "Version",
+                                    value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+                                )
+                                BDivider().padding(.horizontal, 16)
+                                dataRow(label: "Repositories", value: "\(state.repos.count)")
+                            }
+                        }
                     }
                     .padding(.top, 12)
                     .padding(.bottom, 40)
                 }
                 .scrollIndicators(.hidden)
             }
-            .navigationTitle("App Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("APP SETTINGS")
+                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(2)
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Done")
-                            .font(.system(size: 16, weight: .bold, design: .rounded))
+                        Text("DONE")
+                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Color(.systemBackground))
+                            .tracking(1)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.brutalText)
                     }
+                    .buttonStyle(.plain)
                 }
             }
-            .sheet(isPresented: $showMailCompose) {
-                MailComposeView()
-            }
-            .sheet(isPresented: $showPaywall) {
-                PaywallView()
-            }
+            .sheet(isPresented: $showMailCompose) { MailComposeView() }
+            .sheet(isPresented: $showPaywall) { PaywallView() }
             .fileImporter(
                 isPresented: $showFolderPicker,
                 allowedContentTypes: [.folder],
@@ -318,9 +289,7 @@ struct AppSettingsView: View {
             }
             .alert("Remove Default Location?", isPresented: $showClearConfirm) {
                 Button("Cancel", role: .cancel) {}
-                Button("Remove", role: .destructive) {
-                    state.clearDefaultSaveLocation()
-                }
+                Button("Remove", role: .destructive) { state.clearDefaultSaveLocation() }
             } message: {
                 Text("New repositories will be saved to the app's default location instead.")
             }
@@ -331,9 +300,7 @@ struct AppSettingsView: View {
             }
             .task {
                 await purchaseManager.refreshStatus()
-                if purchaseManager.product == nil {
-                    await purchaseManager.loadProduct()
-                }
+                if purchaseManager.product == nil { await purchaseManager.loadProduct() }
             }
         }
     }
@@ -345,93 +312,61 @@ struct AppSettingsView: View {
         return "Unlock Unlimited"
     }
 
-    // MARK: - Settings Section
+    // MARK: - Layout Helpers
 
-    private func settingsSection<Content: View>(
-        title: String,
-        icon: String,
-        iconColor: Color,
-        @ViewBuilder content: () -> Content
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(iconColor)
-                Text(title)
-                    .font(.system(size: 13, weight: .bold, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .textCase(.uppercase)
-                    .tracking(0.5)
+    private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            BSectionHeader(title: title)
+                .padding(.horizontal, 20)
+
+            BCard(padding: 0) {
+                content()
             }
-            .padding(.horizontal, 4)
-
-            content()
-                .padding(16)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 2)
+            .padding(.horizontal, 20)
         }
-        .padding(.horizontal, 20)
     }
 
-    private func settingsRow<Content: View>(label: String, @ViewBuilder value: () -> Content) -> some View {
+    private func dataRow(label: String, value: String) -> some View {
         HStack {
-            Text(label)
-                .font(.system(size: 15, weight: .medium, design: .rounded))
-                .foregroundStyle(.secondary)
+            Text(label.uppercased())
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundStyle(Color.brutalTextFaint)
+                .tracking(1)
             Spacer()
-            value()
+            Text(value)
+                .font(.system(size: 13, design: .monospaced))
+                .foregroundStyle(Color.brutalTextMid)
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 13)
     }
 
-    private func statusInfoRow(icon: String, title: String, subtitle: String) -> some View {
-        HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(SyncTheme.blue.opacity(0.12))
-                    .frame(width: 36, height: 36)
-                Image(systemName: icon)
-                    .font(.system(size: 16, weight: .semibold))
-            }
+    private func actionRow(icon: String, title: String, subtitle: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Text(icon)
+                    .font(.system(size: 18))
+                    .frame(width: 28)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
-                Text(subtitle)
-                    .font(.system(size: 12, design: .rounded))
-                    .foregroundStyle(.secondary)
-            }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(Color.brutalText)
+                    Text(subtitle)
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundStyle(Color.brutalTextMid)
+                }
 
-            Spacer()
+                Spacer()
+
+                Text("→")
+                    .font(.system(size: 13, design: .monospaced))
+                    .foregroundStyle(Color.brutalTextFaint)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .contentShape(Rectangle())
         }
-    }
-
-    private func settingsActionRow(icon: String, title: String, subtitle: String) -> some View {
-        HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(SyncTheme.blue.opacity(0.12))
-                    .frame(width: 34, height: 34)
-                Image(systemName: icon)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(SyncTheme.accent)
-            }
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
-                    .foregroundStyle(.primary)
-                Text(subtitle)
-                    .font(.system(size: 12, design: .rounded))
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            Image(systemName: "chevron.right")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(.tertiary)
-        }
-        .contentShape(Rectangle())
+        .buttonStyle(.plain)
     }
 }

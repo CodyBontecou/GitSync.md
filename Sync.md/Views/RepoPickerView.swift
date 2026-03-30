@@ -5,7 +5,6 @@ struct RepoPickerView: View {
     let onSelect: (GitHubRepo) -> Void
 
     @State private var searchText = ""
-    @State private var appeared = false
     @Environment(\.dismiss) private var dismiss
 
     var filtered: [GitHubRepo] {
@@ -21,25 +20,40 @@ struct RepoPickerView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
+                Color.brutalBg.ignoresSafeArea()
 
                 ScrollView {
-                    LazyVStack(spacing: 10) {
-                        ForEach(Array(filtered.enumerated()), id: \.element.id) { index, repo in
+                    LazyVStack(spacing: 0) {
+                        ForEach(filtered) { repo in
                             Button {
                                 onSelect(repo)
                                 dismiss()
                             } label: {
                                 repoRow(repo)
                             }
-                            .tint(.primary)
-                            .staggeredAppear(index: index)
+                            .buttonStyle(.plain)
+
+                            if repo.id != filtered.last?.id {
+                                BDivider().padding(.horizontal, 20)
+                            }
                         }
                     }
-                    .padding(.horizontal, 16)
                     .padding(.top, 8)
                     .padding(.bottom, 40)
+                    .background(Color.brutalBg)
+                    .overlay(alignment: .top) {
+                        Rectangle()
+                            .fill(Color.brutalBorder)
+                            .frame(height: 1)
+                    }
+                    .overlay(alignment: .bottom) {
+                        Rectangle()
+                            .fill(Color.brutalBorder)
+                            .frame(height: 1)
+                    }
+                    .padding(.horizontal, 20)
+                    .shadow(color: .primary.opacity(0.10), radius: 0, x: 3, y: 3)
+                    .overlay(Rectangle().stroke(Color.brutalBorder, lineWidth: 1).padding(.horizontal, 20))
                 }
                 .scrollIndicators(.hidden)
                 .overlay {
@@ -49,16 +63,24 @@ struct RepoPickerView: View {
                 }
             }
             .searchable(text: $searchText, prompt: "Filter repositories")
-            .navigationTitle("Select Repository")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("SELECT REPOSITORY")
+                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(2)
+                }
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Cancel")
-                            .font(.system(size: 16, weight: .medium, design: .rounded))
+                        Text("CANCEL")
+                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Color.brutalTextMid)
+                            .tracking(1)
                     }
+                    .buttonStyle(.plain)
                 }
             }
         }
@@ -68,63 +90,55 @@ struct RepoPickerView: View {
 
     private func repoRow(_ repo: GitHubRepo) -> some View {
         HStack(alignment: .top, spacing: 14) {
-            // Visibility icon
-            ZStack {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(repo.isPrivate
-                        ? SyncTheme.accent.opacity(0.12)
-                        : Color(.systemGray).opacity(0.1)
-                    )
-                    .frame(width: 38, height: 38)
-
-                Image(systemName: repo.isPrivate ? "lock.fill" : "globe")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(repo.isPrivate ? SyncTheme.accent : .secondary)
+            VStack(spacing: 2) {
+                BBadge(text: repo.isPrivate ? "private" : "public", style: repo.isPrivate ? .accent : .default)
             }
-            .padding(.top, 2)
+            .padding(.top, 3)
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(repo.fullName)
-                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .font(.system(size: 15, weight: .bold, design: .monospaced))
+                    .foregroundStyle(Color.brutalText)
                     .lineLimit(1)
 
                 if let desc = repo.description, !desc.isEmpty {
                     Text(desc)
-                        .font(.system(size: 14, weight: .regular, design: .rounded))
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color.brutalTextMid)
                         .lineLimit(2)
                 }
 
-                HStack(spacing: 14) {
+                HStack(spacing: 12) {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.triangle.branch")
-                            .font(.system(size: 10, weight: .semibold))
+                            .font(.system(size: 9, weight: .semibold))
                         Text(repo.defaultBranch)
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .font(.system(size: 10, design: .monospaced))
                     }
+                    .foregroundStyle(Color.brutalTextFaint)
 
                     if let updated = repo.relativeDate {
                         HStack(spacing: 4) {
                             Image(systemName: "clock")
-                                .font(.system(size: 10, weight: .semibold))
+                                .font(.system(size: 9, weight: .semibold))
                             Text(updated)
-                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                .font(.system(size: 10, design: .monospaced))
                         }
+                        .foregroundStyle(Color.brutalTextFaint)
                     }
                 }
-                .foregroundStyle(.tertiary)
             }
 
             Spacer()
 
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(.tertiary)
-                .padding(.top, 12)
+            Text("→")
+                .font(.system(size: 13, design: .monospaced))
+                .foregroundStyle(Color.brutalTextFaint)
+                .padding(.top, 3)
         }
-        .padding(14)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .shadow(color: .black.opacity(0.03), radius: 6, x: 0, y: 2)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+        .contentShape(Rectangle())
     }
 }
 

@@ -19,7 +19,7 @@ struct RepoListView: View {
 
         NavigationStack(path: $navigationPath) {
             ZStack {
-                FloatingOrbs()
+                Color.brutalBg.ignoresSafeArea()
 
                 if state.repos.isEmpty {
                     emptyState
@@ -29,17 +29,24 @@ struct RepoListView: View {
                             demoBanner
                                 .padding(.horizontal, 20)
                                 .padding(.top, 8)
+                                .padding(.bottom, 4)
                         }
                         repoList
-                        addRepoCard
+                        addRepoButton
                             .padding(.horizontal, 20)
-                            .padding(.top, 10)
-                            .padding(.bottom, 16)
+                            .padding(.vertical, 12)
                     }
                 }
-
             }
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("SYNC.MD")
+                        .font(.system(size: 14, weight: .black, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(3)
+                }
+
                 ToolbarItem(placement: .primaryAction) {
                     if state.isSignedIn {
                         Menu {
@@ -52,7 +59,6 @@ struct RepoListView: View {
                                     Label(state.defaultAuthorEmail, systemImage: "envelope.fill")
                                 }
                             }
-
                             Section {
                                 Button {
                                     showAppSettings = true
@@ -60,49 +66,39 @@ struct RepoListView: View {
                                     Label("App Settings", systemImage: "gearshape")
                                 }
                             }
-
                             Button(role: .destructive) {
                                 showSignOutConfirm = true
                             } label: {
                                 Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
                             }
                         } label: {
-                            GitHubAvatarView(
-                                avatarURL: state.gitHubAvatarURL,
-                                size: 32
-                            )
+                            GitHubAvatarView(avatarURL: state.gitHubAvatarURL, size: 28)
+                                .overlay(Rectangle().stroke(Color.brutalBorder, lineWidth: 1))
                         }
                         .menuStyle(.borderlessButton)
                     } else {
                         Button {
                             Task { await state.signInWithGitHub() }
                         } label: {
-                            Label("Sign In", systemImage: "person.crop.circle.badge.plus")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundStyle(SyncTheme.primaryGradient)
+                            Text("SIGN IN")
+                                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                .foregroundStyle(Color.brutalAccent)
+                                .tracking(1)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 6)
+                                .overlay(Rectangle().stroke(Color.brutalAccent.opacity(0.5), lineWidth: 1))
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }
-            .sheet(isPresented: $showAddRepo) {
-                AddRepoView()
-            }
-            .sheet(isPresented: $showPaywall) {
-                PaywallView()
-            }
-            .sheet(isPresented: $showAppSettings) {
-                AppSettingsView()
-            }
-            .sheet(item: $settingsRepoID) { repoID in
-                SettingsView(repoID: repoID)
-            }
-            .navigationDestination(for: UUID.self) { repoID in
-                VaultView(repoID: repoID)
-            }
+            .sheet(isPresented: $showAddRepo) { AddRepoView() }
+            .sheet(isPresented: $showPaywall) { PaywallView() }
+            .sheet(isPresented: $showAppSettings) { AppSettingsView() }
+            .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
+            .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
             .confirmationDialog("Sign Out?", isPresented: $showSignOutConfirm, titleVisibility: .visible) {
-                Button("Sign Out", role: .destructive) {
-                    state.signOut()
-                }
+                Button("Sign Out", role: .destructive) { state.signOut() }
             } message: {
                 Text("This will sign you out of GitHub. Your local repositories will be kept.")
             }
@@ -113,12 +109,8 @@ struct RepoListView: View {
             }
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
                 if let repoID = newValue {
-                    // Navigate to the repo's VaultView for the callback operation
-                    if !navigationPath.contains(repoID) {
-                        navigationPath = [repoID]
-                    }
+                    if !navigationPath.contains(repoID) { navigationPath = [repoID] }
                 } else if !navigationPath.isEmpty {
-                    // Callback cleared — pop back to the list
                     navigationPath = []
                 }
             }
@@ -128,70 +120,25 @@ struct RepoListView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 20) {
+        VStack {
             Spacer()
-
-            ZStack {
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [SyncTheme.blue.opacity(0.2), .clear],
-                            center: .center,
-                            startRadius: 0,
-                            endRadius: 80
-                        )
-                    )
-                    .frame(width: 160, height: 160)
-
-                ZStack {
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .fill(.ultraThinMaterial)
-                        .frame(width: 72, height: 72)
-                        .shadow(color: SyncTheme.blue.opacity(0.15), radius: 16, x: 0, y: 6)
-
-                    Image(systemName: "plus.rectangle.on.folder.fill")
-                        .font(.system(size: 32, weight: .medium))
-                        .foregroundStyle(SyncTheme.primaryGradient)
-                }
-            }
-            .staggeredAppear(index: 0)
-
-            VStack(spacing: 8) {
-                Text("No Repositories")
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
-
-                Text("Add a GitHub repository to start\nsyncing your markdown files.")
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            .staggeredAppear(index: 1)
-
-            Button {
-                handleAddRepoTapped()
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 18))
-                    Text("Add Repository")
-                }
-            }
-            .buttonStyle(LiquidButtonStyle(gradient: SyncTheme.primaryGradient))
-            .padding(.horizontal, 50)
-            .staggeredAppear(index: 2)
-
+            BEmptyState(
+                title: "No Repositories",
+                subtitle: "Add a GitHub repository to\nstart syncing your markdown.",
+                actionTitle: "Add Repository",
+                action: { handleAddRepoTapped() }
+            )
             Spacer()
             Spacer()
         }
-        .padding(.horizontal, 20)
     }
 
     // MARK: - Repo List
 
     private var repoList: some View {
         ScrollView {
-            LazyVStack(spacing: 14) {
-                ForEach(Array(state.repos.enumerated()), id: \.element.id) { index, repo in
+            LazyVStack(spacing: 12) {
+                ForEach(state.repos) { repo in
                     NavigationLink(value: repo.id) {
                         repoCard(repo)
                     }
@@ -203,12 +150,11 @@ struct RepoListView: View {
                             Label("Settings", systemImage: "gearshape")
                         }
                     }
-                    .staggeredAppear(index: index)
                 }
             }
             .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 12)
+            .padding(.top, 12)
+            .padding(.bottom, 4)
         }
         .scrollIndicators(.hidden)
     }
@@ -218,145 +164,142 @@ struct RepoListView: View {
     private func repoCard(_ repo: RepoConfig) -> some View {
         let isThisRepoSyncing = state.isSyncing && state.syncingRepoID == repo.id
 
-        return VStack(spacing: 14) {
-            // Header row
-            HStack(spacing: 14) {
-                // Icon
-                ZStack {
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [SyncTheme.blue.opacity(0.15), SyncTheme.blue.opacity(0.1)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(width: 48, height: 48)
+        return BCard(padding: 0, shadowX: 3, shadowY: 3) {
+            VStack(spacing: 0) {
+                // Header
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(repo.displayName)
+                            .font(.system(size: 17, weight: .black))
+                            .foregroundStyle(Color.brutalText)
+                            .lineLimit(1)
 
-                    Image(systemName: "book.closed.fill")
-                        .font(.system(size: 22))
-                        .foregroundStyle(SyncTheme.primaryGradient)
-                }
-
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(repo.displayName)
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .lineLimit(1)
-
-                    if let owner = repo.ownerName {
-                        Text(owner)
-                            .font(.system(size: 14, weight: .medium, design: .rounded))
-                            .foregroundStyle(.secondary)
+                        if let owner = repo.ownerName {
+                            Text(owner.uppercased())
+                                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                                .foregroundStyle(Color.brutalTextMid)
+                                .tracking(1)
+                        }
                     }
-                }
 
-                Spacer()
+                    Spacer()
+
+                    if isThisRepoSyncing {
+                        ProgressView()
+                            .controlSize(.small)
+                            .tint(Color.brutalAccent)
+                    }
+
+                    Text("→")
+                        .font(.system(size: 14, design: .monospaced))
+                        .foregroundStyle(Color.brutalTextFaint)
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 12)
+
+                // Status strip
+                Rectangle()
+                    .fill(Color.brutalBorderSoft)
+                    .frame(height: 1)
 
                 if isThisRepoSyncing {
-                    ProgressView()
-                        .controlSize(.small)
-                        .tint(SyncTheme.accent)
-                }
-
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.tertiary)
-            }
-
-            // Status row
-            if isThisRepoSyncing {
-                HStack(spacing: 8) {
-                    Text(state.syncProgress)
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(SyncTheme.accent)
-                    Spacer()
-                }
-            } else if repo.isCloned {
-                Divider().opacity(0.4)
-
-                HStack(spacing: 0) {
-                    metadataItem(
-                        icon: "arrow.triangle.branch",
-                        value: repo.gitState.branch,
-                        color: SyncTheme.accent
-                    )
-
-                    Spacer()
-
-                    metadataItem(
-                        icon: "number",
-                        value: String(repo.gitState.commitSHA.prefix(7)),
-                        color: .secondary,
-                        monospaced: true
-                    )
-
-                    Spacer()
-
-                    metadataItem(
-                        icon: "clock.fill",
-                        value: relativeDate(repo.gitState.lastSyncDate),
-                        color: .secondary
-                    )
-                }
-            } else {
-                HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 12))
-                        .foregroundStyle(SyncTheme.accent)
-                    Text("Not yet cloned")
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
-                    Spacer()
+                    HStack(spacing: 8) {
+                        BBadge(text: "syncing", style: .accent)
+                        Text(state.syncProgress)
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(Color.brutalTextMid)
+                            .lineLimit(1)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                } else if repo.isCloned {
+                    HStack(spacing: 0) {
+                        metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
+                        Spacer()
+                        metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
+                        Spacer()
+                        metaChip(icon: "clock", text: relativeDate(repo.gitState.lastSyncDate))
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                } else {
+                    HStack(spacing: 8) {
+                        BBadge(text: "Not cloned", style: .warning)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
                 }
             }
         }
-        .glassCard(cornerRadius: 22, padding: 18)
     }
 
-    // MARK: - Add Repo Card
+    // MARK: - Add Repo Button
 
-    private var addRepoCard: some View {
+    private var addRepoButton: some View {
         Button {
             handleAddRepoTapped()
         } label: {
-            HStack(spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(SyncTheme.blue.opacity(0.08))
-                        .frame(width: 48, height: 48)
-
-                    Image(systemName: "plus")
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundStyle(SyncTheme.accent)
-                }
-
-                Text("Add Repository")
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    .foregroundStyle(SyncTheme.accent)
-
+            HStack(spacing: 10) {
+                Text("+")
+                    .font(.system(size: 20, weight: .black, design: .monospaced))
+                    .foregroundStyle(Color.brutalTextMid)
+                Text("ADD REPOSITORY")
+                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .foregroundStyle(Color.brutalTextMid)
+                    .tracking(2)
                 Spacer()
             }
-            .padding(18)
-            .background(
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .strokeBorder(SyncTheme.accent.opacity(0.3), style: StrokeStyle(lineWidth: 1.5, dash: [8, 6]))
+            .padding(.vertical, 16)
+            .padding(.horizontal, 16)
+            .overlay(
+                Rectangle()
+                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [8, 5]))
+                    .foregroundStyle(Color.brutalBorderSoft)
             )
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Demo Banner
+
+    private var demoBanner: some View {
+        BCard(padding: 12, shadowX: 2, shadowY: 2, bg: .brutalSurface) {
+            HStack(spacing: 10) {
+                BBadge(text: "DEMO MODE", style: .warning)
+
+                Spacer()
+
+                Button {
+                    state.deactivateDemoMode()
+                } label: {
+                    Text("EXIT")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(1)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .overlay(Rectangle().stroke(Color.brutalBorder, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 
     // MARK: - Helpers
 
-    private func metadataItem(icon: String, value: String, color: Color, monospaced: Bool = false) -> some View {
-        HStack(spacing: 5) {
+    private func metaChip(icon: String, text: String, mono: Bool = false) -> some View {
+        HStack(spacing: 4) {
             Image(systemName: icon)
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(color.opacity(0.7))
-            Text(value)
-                .font(monospaced
-                    ? .system(size: 13, weight: .medium, design: .monospaced)
-                    : .system(size: 13, weight: .medium, design: .rounded)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(Color.brutalTextFaint)
+            Text(text)
+                .font(mono
+                    ? .system(size: 11, weight: .medium, design: .monospaced)
+                    : .system(size: 11, weight: .medium)
                 )
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.brutalTextMid)
         }
     }
 
@@ -372,44 +315,9 @@ struct RepoListView: View {
             showAddRepo = true
             return
         }
-
         Task { @MainActor in
             await purchaseManager.refreshStatus()
-            if purchaseManager.isUnlocked {
-                showAddRepo = true
-            } else {
-                showPaywall = true
-            }
+            if purchaseManager.isUnlocked { showAddRepo = true } else { showPaywall = true }
         }
-    }
-
-    // MARK: - Demo Banner
-
-    private var demoBanner: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "play.circle.fill")
-                .font(.system(size: 16))
-                .foregroundStyle(SyncTheme.accent)
-
-            Text("Demo Mode")
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
-
-            Spacer()
-
-            Button {
-                state.deactivateDemoMode()
-            } label: {
-                Text("Exit")
-                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .foregroundStyle(SyncTheme.accent)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(SyncTheme.accent.opacity(0.12), in: Capsule())
-            }
-        }
-        .padding(12)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 }
-
-
