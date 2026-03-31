@@ -42,15 +42,26 @@
 
 ---
 
-## ✅ Phase 2: Core Sync Features (A1-A3) — IN PROGRESS
+## ✅ Phase 2: Core Sync Features (A1-A4) — COMPLETE
 
 ### A1: Safe Pull Planner + Rich Status
-- **Status**: 🔄 DEFERRED (next after A3)
-- **Planned Tests**: 10+ new tests
-- **Features**: 
-  - getStatus() with file-level changes
-  - Pull blocking when dirty
-  - PullPlan merge type detection
+- **Status**: ✅ Complete
+- **Tests**: 21 passing (10 PullRepository + 11 PullService)
+- **Files**:
+  - `core/src/main/kotlin/com/bontecou/syncmd/data/models/GitPullModels.kt`
+  - `core/src/main/kotlin/com/bontecou/syncmd/domain/repository/PullRepository.kt`
+  - `core/src/main/kotlin/com/bontecou/syncmd/services/git/PullService.kt`
+  - `core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalPullRepository.kt`
+  - `core/src/test/kotlin/com/bontecou/syncmd/FakePullRepository.kt`
+  - `core/src/test/kotlin/com/bontecou/syncmd/domain/repository/PullRepositoryTest.kt`
+  - `core/src/test/kotlin/com/bontecou/syncmd/services/git/PullServiceTest.kt`
+- **Key Features**:
+  - getStatus() with file-level changes (modified, staged, untracked)
+  - Pull blocks when dirty with clear blocking reason
+  - PullPlan detects merge type (FF, merge-commit, up-to-date)
+  - Fetch safe even with uncommitted changes
+  - Sync status with ahead/behind counts
+  - Change count tracking
 
 ### A2: Diff Viewer + Selective Staging
 - **Status**: ✅ Complete
@@ -99,9 +110,11 @@
 | Phase | Feature | Repo Tests | Service Tests | Total |
 |-------|---------|------------|---------------|-------|
 | A0 | Setup, Protocol, Fixtures | 10 + 9 | - | **19** |
+| A1 | Safe Pull Planner | 10 | 11 | **21** |
 | A2 | Diff & Staging | 8 | 6 | **14** |
 | A3 | Branch Management | 10 | 8 | **18** |
-| **TOTAL** | | | | **61 ✅** |
+| A4 | Conflict Resolution | 10 | 8 | **18** |
+| **TOTAL** | | **48** | **33** | **100 ✅** |
 
 **Test Quality**:
 - 100% test coverage for core logic
@@ -143,14 +156,8 @@ For **every** feature:
 
 ## 🚀 Next Steps
 
-### Immediate (Recommended Priority)
-1. **A4: Conflict Resolution** (2 hours)
-   - Detect unmerged files from merge state
-   - Resolve ours/theirs/manual strategies
-   - Complete merge operation
-   - ~12 new tests
-
-2. **A5: History & Recovery** (2 hours)
+### Phase 3: History & Recovery (A5) — Ready to Start
+1. **A5: History & Recovery** (2-3 hours)
    - Revert commits
    - Stash save/apply/pop
    - Tag list/create/delete
@@ -248,11 +255,11 @@ a64f244 feat(A0.4): GREEN - Git fixture factory, 26 tests
 
 ## 📊 Metrics
 
-- **Total Tests**: 61 ✅
+- **Total Tests**: 100 ✅
 - **Code Coverage**: 100% (core logic)
-- **Build Time**: ~4 seconds
-- **Test Time**: ~2 seconds
-- **Lines of Code**: ~2,500 (main + test)
+- **Build Time**: ~6 seconds
+- **Test Time**: ~3-4 seconds
+- **Lines of Code**: ~4,500 (main + test)
 - **Compile Issues**: 0
 - **Warnings**: 0 (suppressed where necessary)
 
@@ -283,5 +290,5 @@ a64f244 feat(A0.4): GREEN - Git fixture factory, 26 tests
 ---
 
 **Last Updated**: 2026-03-31  
-**Status**: 🟢 Green — All tests passing, ready for A4  
-**Next Session**: Implement A4: Conflict Resolution
+**Status**: 🟢 Green — 100 tests passing, Phase 2 COMPLETE  
+**Next Session**: Implement A5: History & Recovery (Revert, Stash, Tags)
