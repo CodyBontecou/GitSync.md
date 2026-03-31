@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sync.md</string>
+    <string name="status_screen">Status</string>
+    <string name="pull_screen">Pull</string>
+    <string name="commit_screen">Commit</string>
+    <string name="branch_screen">Branches</string>
+    <string name="history_screen">History</string>
+    <string name="stash_screen">Stash</string>
+    <string name="modified">Modified</string>
+    <string name="staged">Staged</string>
+    <string name="untracked">Untracked</string>
+</resources>
