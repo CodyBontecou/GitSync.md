@@ -37,11 +37,14 @@ import com.bontecou.syncmd.ui.viewmodels.PullViewModel
  */
 @Composable
 fun StatusScreen(
+    repositoryPath: String = "/tmp/sync-md-repo",
     viewModel: PullViewModel = hiltViewModel()
 ) {
-    // Initialize with a default repository path (this would come from config/settings)
-    LaunchedEffect(Unit) {
-        viewModel.setRepositoryPath("/tmp/sync-md-repo")
+    // Initialize with provided repository path
+    LaunchedEffect(repositoryPath) {
+        if (repositoryPath.isNotBlank()) {
+            viewModel.setRepositoryPath(repositoryPath)
+        }
     }
 
     val status by viewModel.status.collectAsState()
