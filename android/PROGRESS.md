@@ -114,7 +114,8 @@
 | A2 | Diff & Staging | 8 | 6 | **14** |
 | A3 | Branch Management | 10 | 8 | **18** |
 | A4 | Conflict Resolution | 10 | 8 | **18** |
-| **TOTAL** | | **48** | **33** | **100 ✅** |
+| A5 | History & Recovery | 18 | 13 | **31** |
+| **TOTAL** | | **66** | **46** | **132 ✅** |
 
 **Test Quality**:
 - 100% test coverage for core logic
@@ -154,10 +155,31 @@ For **every** feature:
 
 ---
 
+## ✅ Phase 3: History & Recovery (A5) — COMPLETE
+
+### A5: History, Stash, and Tags
+- **Status**: ✅ Complete
+- **Tests**: 31 passing (18 HistoryRepository + 13 HistoryService)
+- **Files**:
+  - `core/src/main/kotlin/com/bontecou/syncmd/data/models/GitHistoryModels.kt`
+  - `core/src/main/kotlin/com/bontecou/syncmd/domain/repository/HistoryRepository.kt`
+  - `core/src/main/kotlin/com/bontecou/syncmd/services/git/HistoryService.kt`
+  - `core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalHistoryRepository.kt`
+  - `core/src/test/kotlin/com/bontecou/syncmd/FakeHistoryRepository.kt`
+  - `core/src/test/kotlin/com/bontecou/syncmd/domain/repository/HistoryRepositoryTest.kt`
+  - `core/src/test/kotlin/com/bontecou/syncmd/services/git/HistoryServiceTest.kt`
+- **Key Features**:
+  - Get commit history with limit control
+  - Get specific commits by hash
+  - Revert commits (new commit or hard/soft/mixed reset strategies)
+  - Stash save/apply/pop/drop operations
+  - Tag create/delete/list operations
+  - Latest commit and total commit count helpers
+
 ## 🚀 Next Steps
 
-### Phase 3: History & Recovery (A5) — Ready to Start
-1. **A5: History & Recovery** (2-3 hours)
+### Phase 4: JNI Integration — Ready to Start
+1. **Real Git Integration** (ongoing)
    - Revert commits
    - Stash save/apply/pop
    - Tag list/create/delete
@@ -193,10 +215,16 @@ sync-md-android/
 │   │   │   ├── DiffRepository.kt (A2)
 │   │   │   └── BranchRepository.kt (A3)
 │   │   └── services/git/
+│   │       ├── PullService.kt (A1)
+│   │       ├── LocalPullRepository.kt (A1)
 │   │       ├── DiffService.kt (A2)
 │   │       ├── LocalDiffRepository.kt (A2)
 │   │       ├── BranchService.kt (A3)
-│   │       └── LocalBranchRepository.kt (A3)
+│   │       ├── LocalBranchRepository.kt (A3)
+│   │       ├── ConflictService.kt (A4)
+│   │       ├── LocalConflictRepository.kt (A4)
+│   │       ├── HistoryService.kt (A5)
+│   │       └── LocalHistoryRepository.kt (A5)
 │   └── src/test/kotlin/com/bontecou/syncmd/
 │       ├── ProjectSetupTest.kt (A0)
 │       ├── FakeGitRepository.kt (A0)
@@ -255,11 +283,11 @@ a64f244 feat(A0.4): GREEN - Git fixture factory, 26 tests
 
 ## 📊 Metrics
 
-- **Total Tests**: 100 ✅
+- **Total Tests**: 132 ✅
 - **Code Coverage**: 100% (core logic)
-- **Build Time**: ~6 seconds
-- **Test Time**: ~3-4 seconds
-- **Lines of Code**: ~4,500 (main + test)
+- **Build Time**: ~8 seconds
+- **Test Time**: ~4-5 seconds
+- **Lines of Code**: ~6,000 (main + test)
 - **Compile Issues**: 0
 - **Warnings**: 0 (suppressed where necessary)
 
@@ -290,5 +318,5 @@ a64f244 feat(A0.4): GREEN - Git fixture factory, 26 tests
 ---
 
 **Last Updated**: 2026-03-31  
-**Status**: 🟢 Green — 100 tests passing, Phase 2 COMPLETE  
-**Next Session**: Implement A5: History & Recovery (Revert, Stash, Tags)
+**Status**: 🟢 Green — 132 tests passing, Phase 3 COMPLETE  
+**Next Session**: Phase 4 (JNI Integration) or Phase 5 (Android UI)
