@@ -87,6 +87,9 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     
+    // Browser (Custom Tabs for GitHub OAuth)
+    implementation(libs.androidx.browser)
+
     // Coroutines
     implementation(libs.coroutines.android)
     

@@ -29,6 +29,9 @@ material = "1.11.0"
 # JSON
 gson = "2.10.1"
 
+# Browser (Custom Tabs for OAuth)
+androidx-browser = "1.8.0"
+
 # Testing
 junit = "4.13.2"
 truth = "1.4.2"
@@ -75,6 +78,9 @@ com-google-android-material = { group = "com.google.android.material", name = "m
 
 # JSON
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+# Browser
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -3,15 +3,20 @@ package com.bontecou.syncmd.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -28,26 +33,41 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.ui.components.AddRepositoryDialog
 import com.bontecou.syncmd.ui.components.RepositoryListDialog
+import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 
 /**
  * Settings screen for app configuration and repository management.
+ *
+ * @param onNavigateToLogin      Navigate to the GitHub OAuth login screen.
+ * @param onNavigateToRepoPicker Navigate to the GitHub repo picker screen.
  */
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = hiltViewModel()
+    onNavigateToLogin: () -> Unit = {},
+    onNavigateToRepoPicker: () -> Unit = {},
+    viewModel: SettingsViewModel = hiltViewModel(),
+    githubViewModel: GitHubViewModel = hiltViewModel()
 ) {
     val selectedRepository by viewModel.selectedRepository.collectAsState()
     val allRepositories by viewModel.allRepositories.collectAsState()
     val appSettings by viewModel.appSettings.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
+
+    val isLoggedIn by githubViewModel.isLoggedIn.collectAsState()
+    val githubUser by githubViewModel.user.collectAsState()
+    val cachedLogin by githubViewModel.authManager.cachedLogin.collectAsState()
+    val cachedName by githubViewModel.authManager.cachedName.collectAsState()
 
     var showAddDialog by remember { mutableStateOf(false) }
     var showSelectDialog by remember { mutableStateOf(false) }
@@ -192,6 +212,106 @@ fun SettingsScreen(
 
             Divider()
 
+            // ── GitHub Section ────────────────────────────────────────────
+            Text(
+                text = "GitHub",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    if (isLoggedIn) {
+                        // ── Logged-in state ───────────────────────────────
+                        val displayName = githubUser?.name
+                            ?: githubUser?.login
+                            ?: cachedName
+                            ?: cachedLogin
+                            ?: "GitHub User"
+                        val loginHandle = githubUser?.login ?: cachedLogin
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_github),
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                            Column {
+                                Text(
+                                    text = displayName,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                if (loginHandle != null) {
+                                    Text(
+                                        text = "@$loginHandle",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(
+                                onClick = onNavigateToRepoPicker,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Browse Repos")
+                            }
+                            OutlinedButton(
+                                onClick = githubViewModel::signOut,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Sign Out")
+                            }
+                        }
+                    } else {
+                        // ── Logged-out state ──────────────────────────────
+                        Text(
+                            text = "Connect your GitHub account to browse and select repositories.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Button(
+                            onClick = onNavigateToLogin,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF24292E),
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_github),
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Sign in with GitHub")
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
+            // ── App Settings Section ──────────────────────────────────────
             // App Settings Section
             Text(
                 text = "App Settings",
