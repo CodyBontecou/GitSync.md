@@ -1,6 +1,9 @@
 package com.bontecou.syncmd.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,228 +17,179 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.github.GitHubRepo
+import com.bontecou.syncmd.ui.theme.BBadge
+import com.bontecou.syncmd.ui.theme.BBadgeStyle
+import com.bontecou.syncmd.ui.theme.BCard
+import com.bontecou.syncmd.ui.theme.BDivider
+import com.bontecou.syncmd.ui.theme.BEmptyState
+import com.bontecou.syncmd.ui.theme.BLoading
+import com.bontecou.syncmd.ui.theme.BSmallActionButton
+import com.bontecou.syncmd.ui.theme.BSectionHeader
+import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-/**
- * Browse and select a GitHub repository.
- *
- * @param onRepoSelected  Called with the chosen [GitHubRepo] — the caller decides
- *                        how to persist / act on the selection.
- * @param onNavigateBack  Called when the user taps the back / close button.
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepoPickerScreen(
     onRepoSelected: (GitHubRepo) -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: GitHubViewModel = hiltViewModel()
 ) {
-    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
-    val user by viewModel.user.collectAsState()
+    val isLoggedIn    by viewModel.isLoggedIn.collectAsState()
+    val user          by viewModel.user.collectAsState()
     val filteredRepos by viewModel.filteredRepos.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
+    val searchQuery   by viewModel.searchQuery.collectAsState()
+    val isLoading     by viewModel.isLoading.collectAsState()
+    val error         by viewModel.error.collectAsState()
+    val bc            = LocalBrutalColors.current
 
-    // Redirect to LoginScreen content if not logged in
     if (!isLoggedIn) {
         LoginScreen(viewModel = viewModel)
         return
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text("Select Repository", style = MaterialTheme.typography.titleMedium)
-                        user?.login?.let { login ->
-                            Text(
-                                text = "@$login",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.loadUserAndRepos() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
-                    }
-                }
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            // Search bar
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = viewModel::onSearchQueryChanged,
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(bc.bg)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+
+            // ── Header ────────────────────────────────────────────────────
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text("Search repositories…") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                trailingIcon = {
-                    if (searchQuery.isNotEmpty()) {
-                        IconButton(onClick = { viewModel.onSearchQueryChanged("") }) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear")
-                        }
-                    }
-                },
-                singleLine = true
-            )
-
-            // Error banner
-            if (error != null) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    )
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
+                    BSmallActionButton(title = "← Back", onClick = onNavigateBack)
+                    BSmallActionButton(title = "Refresh", onClick = { viewModel.loadUserAndRepos() })
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                user?.login?.let { login ->
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
                         Text(
-                            text = error!!,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.weight(1f)
+                            text = "@$login",
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                letterSpacing = 1.sp,
+                                color = bc.accent,
+                            )
                         )
-                        TextButton(onClick = viewModel::clearError) {
-                            Text("Dismiss")
-                        }
+                        Text(
+                            text = "· ${filteredRepos.size} repos",
+                            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.textMid)
+                        )
                     }
                 }
             }
 
-            // Sign-out button + count
+            BDivider()
+
+            // ── Search ────────────────────────────────────────────────────
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    .background(bc.surface)
+                    .border(1.dp, bc.borderSoft)
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(
-                    text = if (searchQuery.isBlank())
-                        "${filteredRepos.size} repositories"
-                    else
-                        "${filteredRepos.size} result(s)",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Button(
-                    onClick = viewModel::signOut,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF24292E),
-                        contentColor = Color.White
-                    ),
-                    modifier = Modifier.height(32.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        horizontal = 12.dp, vertical = 0.dp
+                Text(text = "⌕", style = TextStyle(fontSize = 16.sp, color = bc.textFaint))
+                Box(modifier = Modifier.weight(1f)) {
+                    if (searchQuery.isEmpty()) {
+                        Text(
+                            text = "Search repositories…",
+                            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textFaint)
+                        )
+                    }
+                    BasicTextField(
+                        value = searchQuery,
+                        onValueChange = viewModel::onSearchQueryChanged,
+                        textStyle = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.text),
+                        singleLine = true,
+                        cursorBrush = SolidColor(bc.text),
+                        modifier = Modifier.fillMaxWidth(),
                     )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_github),
-                        contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                        tint = Color.White
+                }
+                if (searchQuery.isNotEmpty()) {
+                    Text(
+                        text = "✕",
+                        style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textMid),
+                        modifier = Modifier.clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                        ) { viewModel.onSearchQueryChanged("") }
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Sign out", style = MaterialTheme.typography.labelSmall)
                 }
             }
 
-            Divider()
+            BDivider()
 
-            // Content
+            // ── Error ─────────────────────────────────────────────────────
+            if (error != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(bc.error.copy(alpha = 0.08f))
+                        .border(1.dp, bc.error.copy(alpha = 0.4f))
+                        .padding(12.dp)
+                ) {
+                    Text(text = error!!, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.error))
+                }
+            }
+
+            // ── Content ───────────────────────────────────────────────────
             when {
                 isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            CircularProgressIndicator()
-                            Text(
-                                text = "Loading repositories…",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        BLoading(text = "Loading repos")
                     }
                 }
 
-                filteredRepos.isEmpty() && !isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = if (searchQuery.isNotBlank())
+                filteredRepos.isEmpty() -> {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        BEmptyState(
+                            title    = "No Repositories",
+                            subtitle = if (searchQuery.isNotBlank())
                                 "No repositories match \"$searchQuery\""
                             else
-                                "No repositories found",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                "No repositories found for this account.",
                         )
                     }
                 }
@@ -243,11 +197,8 @@ fun RepoPickerScreen(
                 else -> {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         items(filteredRepos, key = { it.id }) { repo ->
-                            RepoRow(
-                                repo = repo,
-                                onClick = { onRepoSelected(repo) }
-                            )
-                            Divider(modifier = Modifier.padding(start = 16.dp))
+                            RepoPickerRow(repo = repo, onClick = { onRepoSelected(repo) })
+                            BDivider()
                         }
                     }
                 }
@@ -257,90 +208,77 @@ fun RepoPickerScreen(
 }
 
 @Composable
-private fun RepoRow(
-    repo: GitHubRepo,
-    onClick: () -> Unit
-) {
+private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
+    val bc = LocalBrutalColors.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onClick,
+            )
+            .padding(horizontal = 20.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        // Lock icon for private repos
-        if (repo.isPrivate) {
-            Icon(
-                imageVector = Icons.Default.Lock,
-                contentDescription = "Private",
-                modifier = Modifier
-                    .size(16.dp)
-                    .padding(end = 0.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-        }
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = repo.fullName,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            if (!repo.description.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = repo.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                repo.language?.let { lang ->
-                    Text(
-                        text = lang,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                if (repo.isPrivate) {
+                    Text(text = "🔒", style = TextStyle(fontSize = 12.sp))
                 }
                 Text(
-                    text = repo.defaultBranch,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = repo.fullName,
+                    style = TextStyle(
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp,
+                        color = bc.text,
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            if (!repo.description.isNullOrBlank()) {
+                Text(
+                    text = repo.description!!,
+                    style = TextStyle(fontFamily = FontFamily.Default, fontSize = 13.sp, color = bc.textMid),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                repo.language?.let { lang ->
+                    Text(text = lang, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.accent))
+                }
+                Text(
+                    text = "⎇ ${repo.defaultBranch}",
+                    style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.textFaint)
                 )
                 if (repo.stargazersCount > 0) {
-                    Text(
-                        text = "★ ${repo.stargazersCount}",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Text(text = "★ ${repo.stargazersCount}", style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.textFaint))
                 }
                 repo.updatedAt?.let { iso ->
                     formatRelativeDate(iso)?.let { rel ->
-                        Text(
-                            text = rel,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Text(text = rel, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.textFaint))
                     }
                 }
             }
         }
+
+        Text(
+            text = "→",
+            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textFaint),
+            modifier = Modifier.padding(top = 2.dp),
+        )
     }
 }
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 private val isoFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
 

@@ -1,6 +1,11 @@
 package com.bontecou.syncmd.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,20 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,218 +25,236 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bontecou.syncmd.data.models.Branch
 import com.bontecou.syncmd.data.models.MergeStrategy
-import com.bontecou.syncmd.ui.components.BranchList
+import com.bontecou.syncmd.ui.theme.BBadge
+import com.bontecou.syncmd.ui.theme.BBadgeStyle
+import com.bontecou.syncmd.ui.theme.BCard
+import com.bontecou.syncmd.ui.theme.BDivider
+import com.bontecou.syncmd.ui.theme.BEmptyState
+import com.bontecou.syncmd.ui.theme.BLoading
+import com.bontecou.syncmd.ui.theme.BSmallActionButton
+import com.bontecou.syncmd.ui.theme.BSectionHeader
+import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.components.CreateBranchDialog
 import com.bontecou.syncmd.ui.components.DeleteBranchDialog
 import com.bontecou.syncmd.ui.components.MergeBranchDialog
 import com.bontecou.syncmd.ui.viewmodels.BranchViewModel
 
-/**
- * Branch management screen for switching, creating, deleting, and merging branches.
- */
 @Composable
 fun BranchScreen(
-    repositoryPath: String = "/tmp/sync-md-repo",
+    repositoryPath: String = "",
     viewModel: BranchViewModel = hiltViewModel()
 ) {
-    // Initialize with provided repository path
     LaunchedEffect(repositoryPath) {
-        if (repositoryPath.isNotBlank()) {
-            viewModel.setRepositoryPath(repositoryPath)
-        }
+        if (repositoryPath.isNotBlank()) viewModel.setRepositoryPath(repositoryPath)
     }
 
-    val localBranches by viewModel.localBranches.collectAsState()
+    val localBranches  by viewModel.localBranches.collectAsState()
     val remoteBranches by viewModel.remoteBranches.collectAsState()
-    val currentBranch by viewModel.currentBranch.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
-    val mergeInProgress by viewModel.mergeInProgress.collectAsState()
+    val currentBranch  by viewModel.currentBranch.collectAsState()
+    val isLoading      by viewModel.isLoading.collectAsState()
+    val errorMessage   by viewModel.errorMessage.collectAsState()
+    val bc             = LocalBrutalColors.current
 
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    var showCreateDialog by remember { mutableStateOf(false) }
-    var showMergeDialog by remember { mutableStateOf(false) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
-    var selectedBranchForDelete by remember { mutableStateOf("") }
+    var newBranchName              by remember { mutableStateOf("") }
+    var showCreateDialog           by remember { mutableStateOf(false) }
+    var showMergeDialog            by remember { mutableStateOf(false) }
+    var showDeleteDialog           by remember { mutableStateOf(false) }
+    var selectedBranchForDelete    by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Header
-        Text(
-            text = "Branch Management",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
-
-        // Current branch info
-        if (currentBranch != null) {
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1f)
+    Box(modifier = Modifier.fillMaxSize().background(bc.bg)) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                horizontal = 20.dp, vertical = 12.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            // Error
+            if (errorMessage != null) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(bc.error.copy(alpha = 0.08f))
+                            .border(1.dp, bc.error.copy(alpha = 0.4f))
+                            .padding(12.dp)
                     ) {
-                        Text(
-                            text = "Current Branch",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            text = currentBranch!!.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    OutlinedButton(
-                        onClick = { viewModel.loadBranches() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh"
-                        )
-                    }
-                }
-            }
-        }
-
-        // Error message
-        if (errorMessage != null) {
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = errorMessage!!,
-                    modifier = Modifier.padding(12.dp),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
-
-        // Loading state
-        if (isLoading) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
-                Text(text = "Loading branches...")
-            }
-        } else {
-            // Branch tabs
-            TabRow(
-                selectedTabIndex = selectedTabIndex,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Tab(
-                    selected = selectedTabIndex == 0,
-                    onClick = { selectedTabIndex = 0 },
-                    text = { Text("Local (${localBranches.size})") }
-                )
-                Tab(
-                    selected = selectedTabIndex == 1,
-                    onClick = { selectedTabIndex = 1 },
-                    text = { Text("Remote (${remoteBranches.size})") }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Branch list content
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                when (selectedTabIndex) {
-                    0 -> {
-                        // Local branches
-                        BranchList(
-                            branches = localBranches,
-                            currentBranch = currentBranch,
-                            onSwitchBranch = { viewModel.switchBranch(it) },
-                            onDeleteBranch = {
-                                selectedBranchForDelete = it
-                                showDeleteDialog = true
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .verticalScroll(rememberScrollState())
-                        )
-                    }
-
-                    1 -> {
-                        // Remote branches
-                        BranchList(
-                            branches = remoteBranches,
-                            currentBranch = currentBranch,
-                            onSwitchBranch = { viewModel.switchBranch(it) },
-                            onDeleteBranch = {
-                                selectedBranchForDelete = it
-                                showDeleteDialog = true
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .verticalScroll(rememberScrollState())
-                        )
+                        Text(text = errorMessage!!, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.error))
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            if (isLoading) {
+                item {
+                    Box(Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) {
+                        BLoading(text = "Loading branches")
+                    }
+                }
+            } else {
+                // ── Branches Card ─────────────────────────────────────────
+                item {
+                    BCard {
+                        Column {
+                            // Header with current branch badge
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                BSectionHeader(title = "Branches")
+                                if (currentBranch != null) {
+                                    BBadge(text = currentBranch!!.name, style = BBadgeStyle.ACCENT)
+                                }
+                            }
 
-            // Action buttons
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Button(
-                    onClick = { showCreateDialog = true },
-                    modifier = Modifier.weight(1f),
-                    enabled = !isLoading
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Create",
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                    Text("Create Branch")
+                            BDivider()
+
+                            // Create branch input row
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .background(bc.surface)
+                                        .border(1.dp, bc.borderSoft)
+                                        .padding(horizontal = 10.dp, vertical = 9.dp)
+                                ) {
+                                    if (newBranchName.isEmpty()) {
+                                        Text(
+                                            text = "new-branch-name",
+                                            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.textFaint)
+                                        )
+                                    }
+                                    BasicTextField(
+                                        value = newBranchName,
+                                        onValueChange = { newBranchName = it },
+                                        textStyle = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.text),
+                                        singleLine = true,
+                                        cursorBrush = SolidColor(bc.text),
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                }
+
+                                val canCreate = newBranchName.trim().isNotEmpty()
+                                Box(
+                                    modifier = Modifier
+                                        .background(bc.text.copy(alpha = if (canCreate) 1f else 0.3f))
+                                        .clickable(
+                                            enabled = canCreate,
+                                            indication = null,
+                                            interactionSource = remember { MutableInteractionSource() },
+                                        ) {
+                                            viewModel.createBranch(newBranchName.trim(), "HEAD")
+                                            newBranchName = ""
+                                        }
+                                        .padding(horizontal = 14.dp, vertical = 9.dp),
+                                ) {
+                                    Text(
+                                        text = "CREATE",
+                                        style = TextStyle(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 13.sp,
+                                            letterSpacing = 1.sp,
+                                            color = bc.bg,
+                                        )
+                                    )
+                                }
+                            }
+
+                            // Branch list
+                            if (localBranches.isNotEmpty()) {
+                                BDivider()
+                                localBranches.forEachIndexed { idx, branch ->
+                                    BranchRow(
+                                        branch     = branch,
+                                        isCurrent  = branch.isHead || branch.name == currentBranch?.name,
+                                        onSwitch   = { viewModel.switchBranch(branch.name) },
+                                        onMerge    = { showMergeDialog = true },
+                                        onDelete   = {
+                                            selectedBranchForDelete = branch.name
+                                            showDeleteDialog = true
+                                        },
+                                    )
+                                    if (idx < localBranches.size - 1) {
+                                        BDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                                    }
+                                }
+                            } else {
+                                Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+                                    Text(
+                                        text = "No local branches",
+                                        style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textMid)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
 
-                Button(
-                    onClick = { showMergeDialog = true },
-                    modifier = Modifier.weight(1f),
-                    enabled = !isLoading && !mergeInProgress
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Merge",
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                    Text("Merge")
+                // ── Remote Branches Card ──────────────────────────────────
+                if (remoteBranches.isNotEmpty()) {
+                    item {
+                        BCard {
+                            Column {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                ) {
+                                    BSectionHeader(title = "Remote Branches")
+                                    BBadge(text = "${remoteBranches.size}", style = BBadgeStyle.DEFAULT)
+                                }
+                                BDivider()
+                                remoteBranches.forEachIndexed { idx, branch ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    ) {
+                                        Text(
+                                            text = branch.name,
+                                            style = TextStyle(
+                                                fontFamily = FontFamily.Monospace,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 13.sp,
+                                                color = bc.text,
+                                            ),
+                                            modifier = Modifier.weight(1f),
+                                        )
+                                        BBadge(text = "remote", style = BBadgeStyle.DEFAULT)
+                                    }
+                                    if (idx < remoteBranches.size - 1) {
+                                        BDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
+            item { Spacer(Modifier.height(20.dp)) }
         }
     }
 
@@ -251,31 +262,77 @@ fun BranchScreen(
     if (showCreateDialog) {
         CreateBranchDialog(
             onDismiss = { showCreateDialog = false },
-            onCreate = { name, startPoint ->
-                viewModel.createBranch(name, startPoint)
-            },
-            availableBranches = localBranches + remoteBranches
+            onCreate  = { name, startPoint -> viewModel.createBranch(name, startPoint) },
+            availableBranches = localBranches + remoteBranches,
         )
     }
-
     if (showMergeDialog && currentBranch != null) {
         MergeBranchDialog(
-            onDismiss = { showMergeDialog = false },
-            onMerge = { source, strategy ->
-                viewModel.mergeBranch(source, strategy)
-            },
-            currentBranch = currentBranch!!.name,
-            availableBranches = localBranches + remoteBranches
+            onDismiss        = { showMergeDialog = false },
+            onMerge          = { source, strategy -> viewModel.mergeBranch(source, strategy) },
+            currentBranch    = currentBranch!!.name,
+            availableBranches = localBranches + remoteBranches,
         )
     }
-
     if (showDeleteDialog) {
         DeleteBranchDialog(
             branchName = selectedBranchForDelete,
-            onDismiss = { showDeleteDialog = false },
-            onConfirm = { force ->
-                viewModel.deleteBranch(selectedBranchForDelete, force)
-            }
+            onDismiss  = { showDeleteDialog = false },
+            onConfirm  = { force -> viewModel.deleteBranch(selectedBranchForDelete, force) }
         )
     }
+}
+
+@Composable
+private fun BranchRow(
+    branch: Branch,
+    isCurrent: Boolean,
+    onSwitch: () -> Unit,
+    onMerge: () -> Unit,
+    onDelete: () -> Unit,
+) {
+    val bc = LocalBrutalColors.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = branch.name,
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 13.sp,
+                    color = bc.text,
+                )
+            )
+            if (!branch.trackingBranch.isNullOrBlank()) {
+                Text(
+                    text = branch.trackingBranch!!,
+                    style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 12.sp, color = bc.textMid)
+                )
+            }
+        }
+
+        if (isCurrent) {
+            BBadge(text = "CURRENT", style = BBadgeStyle.SUCCESS)
+        } else {
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                BSmallActionButton(title = "Switch", onClick = onSwitch)
+                BSmallActionButton(title = "Merge",  onClick = onMerge)
+                BSmallActionButton(title = "✕", isDestructive = true, onClick = onDelete)
+            }
+        }
+    }
+}
+
+@Composable
+private fun BDivider(modifier: Modifier) {
+    Box(modifier = modifier) { com.bontecou.syncmd.ui.theme.BDivider() }
 }

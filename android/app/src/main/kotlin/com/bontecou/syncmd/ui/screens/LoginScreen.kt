@@ -5,8 +5,12 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,26 +18,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,243 +33,334 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.theme.BDivider
+import com.bontecou.syncmd.ui.theme.BGhostButton
+import com.bontecou.syncmd.ui.theme.BPrimaryButton
+import com.bontecou.syncmd.ui.theme.BSecondaryButton
+import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 
 /**
- * Full-screen GitHub sign-in page.
- *
- * Offers two paths — matching the iOS SetupView:
- *   1. OAuth via Chrome Custom Tab  (recommended)
- *   2. Personal Access Token entry  (fallback)
- *
- * After success [GitHubViewModel.isLoggedIn] flips to true and the caller
- * (AppShell) navigates to the repo picker via a [LaunchedEffect].
+ * Full-screen GitHub sign-in screen.
+ * Matches the iOS SetupView brutal aesthetic:
+ *   • Big black "SYNC / .MD" display title
+ *   • Primary: Sign in with GitHub (OAuth)
+ *   • Secondary: Personal Access Token
  */
 @Composable
-fun LoginScreen(
-    viewModel: GitHubViewModel = hiltViewModel()
-) {
-    val context = LocalContext.current
+fun LoginScreen(viewModel: GitHubViewModel = hiltViewModel()) {
+    val bc          = LocalBrutalColors.current
+    val context     = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
 
-    var showPatFlow by remember { mutableStateOf(false) }
-    var patToken by remember { mutableStateOf("") }
-    var patVisible by remember { mutableStateOf(false) }
+    val isLoading   by viewModel.isLoading.collectAsState()
+    val error       by viewModel.error.collectAsState()
 
-    Column(
+    var showPatFlow  by remember { mutableStateOf(false) }
+    var patToken     by remember { mutableStateOf("") }
+    var patVisible   by remember { mutableStateOf(false) }
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .background(bc.bg)
     ) {
-        // ── Hero ───────────────────────────────────────────────────────────
-        Image(
-            painter = painterResource(id = R.drawable.ic_github),
-            contentDescription = "GitHub",
-            modifier = Modifier.size(72.dp),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 60.dp),
+        ) {
 
-        Spacer(modifier = Modifier.height(28.dp))
-
-        Text(
-            text = "Connect to GitHub",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Text(
-            text = "Sign in to browse your repositories and start syncing Markdown notes.",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(36.dp))
-
-        // ── Error banner ────────────────────────────────────────────────────
-        if (error != null) {
-            Text(
-                text = error!!,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(bottom = 12.dp),
-                textAlign = TextAlign.Center
-            )
-        }
-
-        // ── PAT back-button ─────────────────────────────────────────────────
-        AnimatedVisibility(visible = showPatFlow) {
-            Row(
+            // ── Hero ──────────────────────────────────────────────────────
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 60.dp, bottom = 40.dp),
             ) {
-                TextButton(onClick = {
-                    showPatFlow = false
-                    patToken = ""
-                    viewModel.clearError()
-                }) {
-                    Icon(
-                        Icons.Default.ArrowBack,
-                        contentDescription = "Back",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Back")
-                }
-            }
-        }
-
-        // ── PAT input ───────────────────────────────────────────────────────
-        AnimatedVisibility(
-            visible = showPatFlow,
-            enter = expandVertically(),
-            exit = shrinkVertically()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                OutlinedTextField(
-                    value = patToken,
-                    onValueChange = { patToken = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Personal Access Token") },
-                    placeholder = { Text("ghp_…") },
-                    singleLine = true,
-                    visualTransformation = if (patVisible)
-                        VisualTransformation.None
-                    else
-                        PasswordVisualTransformation(),
-                    trailingIcon = {
-                        TextButton(
-                            onClick = { patVisible = !patVisible },
-                            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp)
-                        ) {
-                            Text(
-                                text = if (patVisible) "Hide" else "Show",
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(onDone = {
-                        focusManager.clearFocus()
-                        viewModel.signInWithPAT(patToken.trim())
-                    })
-                )
-
                 Text(
-                    text = "Create a PAT at github.com/settings/tokens with repo and user:email scopes.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "SYNC",
+                    style = TextStyle(
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Black,
+                        fontSize = 72.sp,
+                        letterSpacing = (-2).sp,
+                        color = bc.text,
+                    )
+                )
+                Text(
+                    text = ".MD",
+                    style = TextStyle(
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Black,
+                        fontSize = 72.sp,
+                        letterSpacing = (-2).sp,
+                        color = bc.accent,
+                    ),
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
 
-                Button(
-                    onClick = {
-                        focusManager.clearFocus()
-                        viewModel.signInWithPAT(patToken.trim())
-                    },
-                    enabled = patToken.isNotBlank() && !isLoading,
+                // Rule
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(52.dp)
+                        .height(2.dp)
+                        .background(bc.border)
+                        .padding(bottom = 10.dp)
+                )
+                Spacer(Modifier.height(10.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    if (isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            strokeWidth = 2.dp,
-                            color = MaterialTheme.colorScheme.onPrimary
+                    Box(Modifier.width(20.dp).height(1.dp).background(bc.border))
+                    Text(
+                        text = "ANY REPO. SYNCED TO YOUR ANDROID.",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 11.sp,
+                            letterSpacing = 1.5.sp,
+                            color = bc.textMid,
                         )
-                    } else {
-                        Text("Sign In with Token")
+                    )
+                }
+            }
+
+            // ── Error banner ──────────────────────────────────────────────
+            if (error != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .background(bc.error.copy(alpha = 0.08f))
+                        .border(1.dp, bc.error.copy(alpha = 0.4f))
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = error!!,
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 13.sp,
+                            color = bc.error,
+                        )
+                    )
+                }
+                Spacer(Modifier.height(16.dp))
+            }
+
+            // ── PAT back button ───────────────────────────────────────────
+            AnimatedVisibility(visible = showPatFlow) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .padding(bottom = 12.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ) {
+                                showPatFlow = false
+                                patToken = ""
+                                viewModel.clearError()
+                            },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        Text(
+                            text = "←",
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 14.sp,
+                                color = bc.text,
+                            )
+                        )
+                        Text(
+                            text = "BACK",
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 13.sp,
+                                letterSpacing = 1.sp,
+                                color = bc.text,
+                            )
+                        )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
             }
-        }
 
-        // ── OAuth button (shown when not in PAT flow) ────────────────────────
-        AnimatedVisibility(visible = !showPatFlow) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            // ── PAT input ─────────────────────────────────────────────────
+            AnimatedVisibility(
+                visible = showPatFlow,
+                enter   = expandVertically(),
+                exit    = shrinkVertically(),
             ) {
-                Button(
-                    onClick = {
-                        val url = viewModel.generateOAuthUrl()
-                        CustomTabsIntent.Builder()
-                            .setShowTitle(true)
-                            .build()
-                            .launchUrl(context, Uri.parse(url))
-                    },
-                    enabled = !isLoading,
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(52.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF24292E),
-                        contentColor = Color.White
-                    )
+                        .padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_github),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(
-                        text = "Sign in with GitHub",
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
+                    // Token input
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(bc.surface)
+                                .border(1.dp, bc.border)
+                                .padding(horizontal = 12.dp, vertical = 13.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            // Manual input row (using BTextField)
+                            Box(modifier = Modifier.weight(1f)) {
+                                if (patToken.isEmpty()) {
+                                    Text(
+                                        text = "ghp_...",
+                                        style = TextStyle(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontSize = 15.sp,
+                                            color = bc.textFaint,
+                                        )
+                                    )
+                                }
+                                androidx.compose.foundation.text.BasicTextField(
+                                    value = patToken,
+                                    onValueChange = { patToken = it },
+                                    visualTransformation = if (patVisible)
+                                        VisualTransformation.None
+                                    else
+                                        PasswordVisualTransformation(),
+                                    textStyle = TextStyle(
+                                        fontFamily = FontFamily.Monospace,
+                                        fontSize = 15.sp,
+                                        color = bc.text,
+                                    ),
+                                    singleLine = true,
+                                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                                    cursorBrush = androidx.compose.ui.graphics.SolidColor(bc.text),
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            }
+                            // Show/Hide toggle
+                            Text(
+                                text = if (patVisible) "HIDE" else "SHOW",
+                                style = TextStyle(
+                                    fontFamily = FontFamily.Monospace,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 11.sp,
+                                    letterSpacing = 1.sp,
+                                    color = bc.accent,
+                                ),
+                                modifier = Modifier
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember { MutableInteractionSource() },
+                                    ) { patVisible = !patVisible }
+                                    .padding(start = 12.dp),
+                            )
+                        }
+                        Text(
+                            text = "PERSONAL ACCESS TOKEN",
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp,
+                                letterSpacing = 2.sp,
+                                color = bc.textMid,
+                            )
+                        )
+                        Text(
+                            text = "CREATE A PAT ON GITHUB →",
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp,
+                                letterSpacing = 1.sp,
+                                color = bc.accent,
+                            ),
+                            modifier = Modifier.clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ) {
+                                CustomTabsIntent.Builder().build().launchUrl(
+                                    context,
+                                    Uri.parse("https://github.com/settings/tokens/new?scopes=repo,user:email&description=Sync.md")
+                                )
+                            }
+                        )
+                    }
 
-                // ── "or" divider ─────────────────────────────────────────────
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    BPrimaryButton(
+                        title     = if (isLoading) "Signing in…" else "Sign In",
+                        isLoading = isLoading,
+                        isDisabled = patToken.isBlank(),
+                        onClick   = {
+                            focusManager.clearFocus()
+                            viewModel.signInWithPAT(patToken.trim())
+                        }
+                    )
+                    Spacer(Modifier.height(8.dp))
+                }
+            }
+
+            // ── OAuth + PAT button (shown when not in PAT flow) ───────────
+            AnimatedVisibility(visible = !showPatFlow) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(0.dp),
                 ) {
-                    Divider(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "or",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    BPrimaryButton(
+                        title  = "Sign in with GitHub",
+                        onClick = {
+                            val url = viewModel.generateOAuthUrl()
+                            CustomTabsIntent.Builder()
+                                .setShowTitle(true)
+                                .build()
+                                .launchUrl(context, Uri.parse(url))
+                        }
                     )
-                    Divider(modifier = Modifier.weight(1f))
-                }
 
-                TextButton(onClick = {
-                    viewModel.clearError()
-                    showPatFlow = true
-                }) {
-                    Text("Use a Personal Access Token")
+                    Box(modifier = Modifier.padding(vertical = 20.dp).fillMaxWidth()) {
+                        BDivider(label = "or")
+                    }
+
+                    BSecondaryButton(
+                        title  = "Personal Access Token",
+                        onClick = {
+                            viewModel.clearError()
+                            showPatFlow = true
+                        }
+                    )
+
+                    BGhostButton(
+                        title   = "Skip for now",
+                        modifier = Modifier.fillMaxWidth(),
+                        color   = bc.textFaint,
+                        onClick = { /* no-op */ },
+                    )
                 }
             }
         }
     }
 }
+
+
