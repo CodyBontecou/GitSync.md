@@ -23,6 +23,47 @@ class FakeDiffRepository : DiffRepository {
     private val committedState: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
     
     /**
+     * Generate diff hunks comparing old and new content
+     * Uses a simple algorithm to identify changed regions
+     */
+    private fun generateHunks(oldContent: String, newContent: String): List<DiffHunk> {
+        val oldLines = oldContent.split("\n")
+        val newLines = newContent.split("\n")
+        
+        // Simple diff: for now, create one hunk with all changes
+        val diffLines = mutableListOf<DiffLine>()
+        val oldSet = oldLines.toSet()
+        val newSet = newLines.toSet()
+        
+        // Mark deletions
+        oldLines.forEach { line ->
+            if (!newSet.contains(line)) {
+                diffLines.add(DiffLine(DiffLineType.DELETION, "- $line"))
+            }
+        }
+        
+        // Mark additions
+        newLines.forEach { line ->
+            if (!oldSet.contains(line)) {
+                diffLines.add(DiffLine(DiffLineType.ADDITION, "+ $line"))
+            }
+        }
+        
+        // If no changes found, return empty
+        if (diffLines.isEmpty()) return emptyList()
+        
+        return listOf(
+            DiffHunk(
+                oldStart = 1,
+                oldCount = oldLines.size,
+                newStart = 1,
+                newCount = newLines.size,
+                lines = diffLines
+            )
+        )
+    }
+    
+    /**
      * Initialize the committed state of a repository
      * Call this before testing to set what was "committed"
      */
@@ -69,30 +110,18 @@ class FakeDiffRepository : DiffRepository {
                         val committedContent = committed[relativePath] ?: ""
                         val currentContent = file.readText()
                         if (committedContent != currentContent) {
-                            val currentLines = currentContent.split("\n")
-                            val committedLines = committedContent.split("\n")
-                            
-                            val diffLines = listOf(
-                                DiffLine(DiffLineType.DELETION, "- ${committedLines.firstOrNull() ?: ""}"),
-                                DiffLine(DiffLineType.ADDITION, "+ ${currentLines.firstOrNull() ?: ""}")
-                            )
-                            
-                            val hunk = DiffHunk(
-                                oldStart = 1,
-                                oldCount = committedLines.size,
-                                newStart = 1,
-                                newCount = currentLines.size,
-                                lines = diffLines
-                            )
+                            val hunks = generateHunks(committedContent, currentContent)
+                            val addedLines = hunks.sumOf { it.lines.count { l -> l.type == DiffLineType.ADDITION } }
+                            val removedLines = hunks.sumOf { it.lines.count { l -> l.type == DiffLineType.DELETION } }
                             
                             files.add(FileDiff(
                                 filePath = relativePath,
                                 status = DiffStatus.MODIFIED,
-                                hunks = listOf(hunk)
+                                hunks = hunks
                             ))
                             
-                            insertions += currentLines.size
-                            deletions += committedLines.size
+                            insertions += addedLines
+                            deletions += removedLines
                         }
                     }
                 }
@@ -135,34 +164,26 @@ class FakeDiffRepository : DiffRepository {
                 return Result.success(UnifiedDiffResult(emptyList(), DiffSummary(0, 0, 0)))
             }
             
-            val currentLines = currentContent.split("\n")
-            val committedLines = committedContent.split("\n")
+            val hunks = generateHunks(committedContent, currentContent)
+            if (hunks.isEmpty()) {
+                return Result.success(UnifiedDiffResult(emptyList(), DiffSummary(0, 0, 0)))
+            }
             
-            val diffLines = listOf(
-                DiffLine(DiffLineType.DELETION, "- ${committedLines.firstOrNull() ?: ""}"),
-                DiffLine(DiffLineType.ADDITION, "+ ${currentLines.firstOrNull() ?: ""}")
-            )
-            
-            val hunk = DiffHunk(
-                oldStart = 1,
-                oldCount = committedLines.size,
-                newStart = 1,
-                newCount = currentLines.size,
-                lines = diffLines
-            )
+            val addedLines = hunks.sumOf { it.lines.count { l -> l.type == DiffLineType.ADDITION } }
+            val removedLines = hunks.sumOf { it.lines.count { l -> l.type == DiffLineType.DELETION } }
             
             val fileDiff = FileDiff(
                 filePath = filePath,
                 status = DiffStatus.MODIFIED,
-                hunks = listOf(hunk)
+                hunks = hunks
             )
             
             val result = UnifiedDiffResult(
                 files = listOf(fileDiff),
                 summary = DiffSummary(
                     filesChanged = 1,
-                    insertions = currentLines.size,
-                    deletions = committedLines.size
+                    insertions = addedLines,
+                    deletions = removedLines
                 )
             )
             
