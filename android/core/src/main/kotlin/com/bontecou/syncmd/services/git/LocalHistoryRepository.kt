@@ -2,360 +2,300 @@ package com.bontecou.syncmd.services.git
 
 import com.bontecou.syncmd.data.models.Commit
 import com.bontecou.syncmd.data.models.HistoryException
-import com.bontecou.syncmd.data.models.RevertConflictException
 import com.bontecou.syncmd.data.models.RevertResult
 import com.bontecou.syncmd.data.models.RevertStrategy
 import com.bontecou.syncmd.data.models.Stash
 import com.bontecou.syncmd.data.models.StashResult
 import com.bontecou.syncmd.data.models.Tag
 import com.bontecou.syncmd.domain.repository.HistoryRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.ResetCommand
+import org.eclipse.jgit.revwalk.RevWalk
+import java.io.File
 
 /**
- * Real implementation of HistoryRepository that integrates with actual git commands.
- * Uses ProcessBuilder to execute git history, stash, and tag commands.
+ * JGit-backed implementation of [HistoryRepository].
+ *
+ * Uses the pure-Java JGit library — no system `git` binary required.
+ * ProcessBuilder("git") fails on Android with "No such file or directory";
+ * JGit works everywhere.
  */
 class LocalHistoryRepository : HistoryRepository {
 
-    override suspend fun getHistory(repoPath: String, maxCommits: Int): Result<List<Commit>> {
-        return try {
-            val format = "%H|%an|%ae|%at|%B%n---END_COMMIT---"
-            val output = executeGit(repoPath, "log", "-$maxCommits", "--format=$format")
-            
-            val commits = parseCommitLog(output)
-            Result.success(commits)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun getCommit(repoPath: String, commitHash: String): Result<Commit> {
-        return try {
-            val format = "%H|%an|%ae|%at|%B%n---END_COMMIT---"
-            val output = executeGit(repoPath, "show", "-s", "--format=$format", commitHash)
-            
-            val commits = parseCommitLog(output)
-            if (commits.isNotEmpty()) {
-                Result.success(commits[0])
-            } else {
-                Result.failure(HistoryException("Commit not found: $commitHash"))
+    override suspend fun getHistory(repoPath: String, maxCommits: Int): Result<List<Commit>> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val commits = git.log().setMaxCount(maxCommits).call()
+                        .map { it.toCommit() }
+                    Result.success(commits)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
+
+    override suspend fun getCommit(repoPath: String, commitHash: String): Result<Commit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val objectId = git.repository.resolve(commitHash)
+                        ?: return@withContext Result.failure(HistoryException("Commit not found: $commitHash"))
+                    RevWalk(git.repository).use { walk ->
+                        val revCommit = walk.parseCommit(objectId)
+                        Result.success(revCommit.toCommit())
+                    }
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
 
     override suspend fun revertCommit(
         repoPath: String,
         commitHash: String,
-        strategy: RevertStrategy
-    ): Result<RevertResult> {
-        return try {
-            val result = when (strategy) {
-                RevertStrategy.CREATE_NEW_COMMIT -> {
-                    val output = executeGit(repoPath, "revert", "--no-edit", commitHash)
-                    if (checkGitSuccess(repoPath, "revert", "--no-edit", commitHash)) {
-                        val newCommitOutput = executeGit(repoPath, "rev-parse", "HEAD")
-                        val newCommitHash = newCommitOutput.trim()
-                        RevertResult(true, newCommitHash, output, 0)
-                    } else {
-                        val conflictCount = executeGit(repoPath, "diff", "--name-only", "--diff-filter=U").lines().size
-                        if (conflictCount > 0) {
-                            RevertResult(false, null, "Revert created conflicts", conflictCount)
-                        } else {
-                            RevertResult(false, null, "Revert failed", 0)
+        strategy: RevertStrategy,
+    ): Result<RevertResult> = withContext(Dispatchers.IO) {
+        try {
+            Git.open(File(repoPath)).use { git ->
+                val objectId = git.repository.resolve(commitHash)
+                    ?: return@withContext Result.failure(HistoryException("Commit not found: $commitHash"))
+
+                when (strategy) {
+                    RevertStrategy.CREATE_NEW_COMMIT -> {
+                        RevWalk(git.repository).use { walk ->
+                            val revCommit = walk.parseCommit(objectId)
+                            val revertResult = git.revert().include(revCommit).call()
+                            val newHead = git.repository.resolve("HEAD")?.name
+                            Result.success(
+                                RevertResult(
+                                    success         = revertResult != null,
+                                    newCommitHash   = newHead,
+                                    message         = if (revertResult != null) "Reverted successfully" else "Revert failed",
+                                    conflictsDetected = git.status().call().conflicting.size,
+                                )
+                            )
                         }
                     }
-                }
-                RevertStrategy.HARD_RESET -> {
-                    val output = executeGit(repoPath, "reset", "--hard", commitHash)
-                    if (checkGitSuccess(repoPath, "reset", "--hard", commitHash)) {
-                        RevertResult(true, commitHash, output, 0)
-                    } else {
-                        RevertResult(false, null, "Hard reset failed", 0)
+                    RevertStrategy.HARD_RESET -> {
+                        git.reset().setMode(ResetCommand.ResetType.HARD).setRef(commitHash).call()
+                        Result.success(RevertResult(true, commitHash, "Hard reset to $commitHash"))
                     }
-                }
-                RevertStrategy.SOFT_RESET -> {
-                    val output = executeGit(repoPath, "reset", "--soft", commitHash)
-                    if (checkGitSuccess(repoPath, "reset", "--soft", commitHash)) {
-                        RevertResult(true, commitHash, output, 0)
-                    } else {
-                        RevertResult(false, null, "Soft reset failed", 0)
+                    RevertStrategy.SOFT_RESET -> {
+                        git.reset().setMode(ResetCommand.ResetType.SOFT).setRef(commitHash).call()
+                        Result.success(RevertResult(true, commitHash, "Soft reset to $commitHash"))
                     }
-                }
-                RevertStrategy.MIXED_RESET -> {
-                    val output = executeGit(repoPath, "reset", "--mixed", commitHash)
-                    if (checkGitSuccess(repoPath, "reset", "--mixed", commitHash)) {
-                        RevertResult(true, commitHash, output, 0)
-                    } else {
-                        RevertResult(false, null, "Mixed reset failed", 0)
+                    RevertStrategy.MIXED_RESET -> {
+                        git.reset().setMode(ResetCommand.ResetType.MIXED).setRef(commitHash).call()
+                        Result.success(RevertResult(true, commitHash, "Mixed reset to $commitHash"))
                     }
                 }
             }
-            
-            Result.success(result)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    override suspend fun listStashes(repoPath: String): Result<List<Stash>> {
-        return try {
-            val output = executeGit(repoPath, "stash", "list", "--format=%gd|%gs|%H")
-            
-            val stashes = output.lines()
-                .filter { it.isNotBlank() }
-                .mapNotNull { line ->
-                    val parts = line.split("|")
-                    if (parts.size >= 3) {
-                        Stash(
-                            id = parts[0],
-                            name = parts[1],
-                            commitHash = parts[2],
-                            message = parts.getOrNull(1)
+    override suspend fun listStashes(repoPath: String): Result<List<Stash>> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val stashes = git.stashList().call()
+                        .mapIndexed { index, revCommit ->
+                            Stash(
+                                id        = "stash@{$index}",
+                                name      = revCommit.shortMessage,
+                                commitHash = revCommit.name,
+                                timestamp  = revCommit.authorIdent.`when`.time,
+                                message    = revCommit.fullMessage.trim(),
+                            )
+                        }
+                    Result.success(stashes)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun stashSave(repoPath: String, message: String?): Result<StashResult> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val cmd = git.stashCreate()
+                    if (message != null) cmd.setWorkingDirectoryMessage(message)
+                    val stashedCommit = cmd.call()
+
+                    if (stashedCommit != null) {
+                        // stash@{0} is always the newest entry
+                        Result.success(
+                            StashResult(
+                                success  = true,
+                                stashId  = "stash@{0}",
+                                message  = message ?: stashedCommit.shortMessage,
+                            )
                         )
                     } else {
-                        null
+                        Result.failure(Exception("Nothing to stash"))
                     }
                 }
-            
-            Result.success(stashes)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun stashSave(repoPath: String, message: String?): Result<StashResult> {
-        return try {
-            val args = if (message != null) {
-                listOf("stash", "push", "-m", message)
-            } else {
-                listOf("stash", "push")
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-            
-            val output = executeGit(repoPath, *args.toTypedArray())
-            
-            if (checkGitSuccess(repoPath, *args.toTypedArray())) {
-                // Get the new stash ID
-                val listOutput = executeGit(repoPath, "stash", "list", "--format=%gd")
-                val stashId = listOutput.lines().firstOrNull()
-                
-                Result.success(StashResult(
-                    success = true,
-                    stashId = stashId,
-                    message = output.trim(),
-                    changeCount = 0
-                ))
-            } else {
-                Result.failure(Exception("Failed to stash changes"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
 
-    override suspend fun stashApply(repoPath: String, stashId: String): Result<Unit> {
-        return try {
-            executeGit(repoPath, "stash", "apply", stashId)
-            
-            if (checkGitSuccess(repoPath, "stash", "apply", stashId)) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to apply stash: $stashId"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun stashPop(repoPath: String, stashId: String): Result<Unit> {
-        return try {
-            executeGit(repoPath, "stash", "pop", stashId)
-            
-            if (checkGitSuccess(repoPath, "stash", "pop", stashId)) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to pop stash: $stashId"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun stashDrop(repoPath: String, stashId: String): Result<Unit> {
-        return try {
-            executeGit(repoPath, "stash", "drop", stashId)
-            
-            if (checkGitSuccess(repoPath, "stash", "drop", stashId)) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to drop stash: $stashId"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun listTags(repoPath: String): Result<List<Tag>> {
-        return try {
-            val output = executeGit(repoPath, "tag", "-l", "-n1")
-            
-            val tags = output.lines()
-                .filter { it.isNotBlank() }
-                .map { line ->
-                    val parts = line.split(Regex("\\s+"), 2)
-                    val name = parts[0]
-                    val message = parts.getOrNull(1)
-                    
-                    Tag(
-                        name = name,
-                        commitHash = "", // Would need additional command to get commit hash
-                        isAnnotated = message != null && message.isNotEmpty(),
-                        message = message
-                    )
+    override suspend fun stashApply(repoPath: String, stashId: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    git.stashApply().setStashRef(stashId).call()
+                    Result.success(Unit)
                 }
-            
-            Result.success(tags)
-        } catch (e: Exception) {
-            Result.failure(e)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
         }
-    }
+
+    override suspend fun stashPop(repoPath: String, stashId: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    git.stashApply().setStashRef(stashId).call()
+                    val index = stashId.removePrefix("stash@{").removeSuffix("}").toIntOrNull() ?: 0
+                    git.stashDrop().setStashRef(index).call()
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun stashDrop(repoPath: String, stashId: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val index = stashId.removePrefix("stash@{").removeSuffix("}").toIntOrNull() ?: 0
+                    git.stashDrop().setStashRef(index).call()
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun listTags(repoPath: String): Result<List<Tag>> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val tags = git.tagList().call().mapNotNull { ref ->
+                        val name = ref.name.removePrefix("refs/tags/")
+                        RevWalk(git.repository).use { walk ->
+                            try {
+                                // Peel to get the tagged commit
+                                val peeled = walk.peel(walk.parseAny(ref.objectId))
+                                val isAnnotated = ref.objectId != peeled.id
+                                val message = if (isAnnotated) {
+                                    // Annotated tag: parse the tag object for its message
+                                    runCatching {
+                                        walk.parseTag(ref.objectId).fullMessage.trim()
+                                    }.getOrNull()
+                                } else null
+
+                                Tag(
+                                    name        = name,
+                                    commitHash  = peeled.name,
+                                    isAnnotated = isAnnotated,
+                                    message     = message,
+                                )
+                            } catch (_: Exception) { null }
+                        }
+                    }
+                    Result.success(tags)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
 
     override suspend fun createTag(
         repoPath: String,
         name: String,
         commitHash: String,
         annotated: Boolean,
-        message: String?
-    ): Result<Unit> {
-        return try {
-            val args = if (annotated) {
-                if (message != null) {
-                    listOf("tag", "-a", name, "-m", message, commitHash)
-                } else {
-                    listOf("tag", "-a", name, commitHash)
+        message: String?,
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            Git.open(File(repoPath)).use { git ->
+                val objectId = git.repository.resolve(commitHash.ifBlank { "HEAD" })
+                    ?: return@withContext Result.failure(Exception("Cannot resolve: $commitHash"))
+
+                RevWalk(git.repository).use { walk ->
+                    val revObject = walk.parseAny(objectId)
+                    val cmd = git.tag()
+                        .setName(name)
+                        .setObjectId(revObject)
+                        .setAnnotated(annotated)
+                    if (annotated && message != null) cmd.setMessage(message)
+                    cmd.call()
                 }
-            } else {
-                listOf("tag", name, commitHash)
-            }
-            
-            executeGit(repoPath, *args.toTypedArray())
-            
-            if (checkGitSuccess(repoPath, *args.toTypedArray())) {
                 Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to create tag: $name"))
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    override suspend fun deleteTag(repoPath: String, name: String): Result<Unit> {
-        return try {
-            executeGit(repoPath, "tag", "-d", name)
-            
-            if (checkGitSuccess(repoPath, "tag", "-d", name)) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to delete tag: $name"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun getTag(repoPath: String, name: String): Result<Tag> {
-        return try {
-            val output = executeGit(repoPath, "show", name)
-            
-            if (output.isNotEmpty()) {
-                val lines = output.lines()
-                val message = lines.drop(1).joinToString("\n").trim()
-                
-                Result.success(Tag(
-                    name = name,
-                    commitHash = "",
-                    isAnnotated = true,
-                    message = message
-                ))
-            } else {
-                Result.failure(HistoryException("Tag not found: $name"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    /**
-     * Parse git log output into Commit objects
-     */
-    private fun parseCommitLog(output: String): List<Commit> {
-        if (output.isEmpty()) return emptyList()
-        
-        val commits = mutableListOf<Commit>()
-        val commitBlocks = output.split("---END_COMMIT---").filter { it.isNotBlank() }
-        
-        for (block in commitBlocks) {
-            val lines = block.trim().split("\n")
-            if (lines.isEmpty()) continue
-            
-            val firstLine = lines[0]
-            val parts = firstLine.split("|")
-            
-            if (parts.size >= 5) {
-                val hash = parts[0]
-                val author = parts[1]
-                val email = parts[2]
-                val timestamp = parts[3].toLongOrNull() ?: 0L
-                val message = lines.drop(1).joinToString("\n").trim()
-                
-                commits.add(Commit(
-                    hash = hash,
-                    shortHash = hash.take(7),
-                    author = author,
-                    email = email,
-                    message = message,
-                    timestamp = timestamp * 1000, // Convert to milliseconds
-                    parentHashes = emptyList()
-                ))
+    override suspend fun deleteTag(repoPath: String, name: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    git.tagDelete().setTags(name).call()
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
         }
-        
-        return commits
-    }
 
-    /**
-     * Execute a git command and return output
-     */
-    private fun executeGit(repoPath: String, vararg args: String): String {
-        return try {
-            val command = listOf("git", "-C", repoPath) + args
-            val process = ProcessBuilder(command)
-                .redirectErrorStream(true)
-                .start()
-            
-            val output = process.inputStream.bufferedReader().readText()
-            val exitCode = process.waitFor()
-            
-            if (exitCode == 0) output else ""
-        } catch (e: Exception) {
-            ""
-        }
-    }
+    override suspend fun getTag(repoPath: String, name: String): Result<Tag> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val ref = git.repository.findRef("refs/tags/$name")
+                        ?: return@withContext Result.failure(HistoryException("Tag not found: $name"))
 
-    /**
-     * Check if the last git command succeeded
-     */
-    private fun checkGitSuccess(repoPath: String, vararg args: String): Boolean {
-        return try {
-            val command = listOf("git", "-C", repoPath) + args
-            val process = ProcessBuilder(command)
-                .redirectErrorStream(true)
-                .start()
-            val exitCode = process.waitFor()
-            exitCode == 0
-        } catch (e: Exception) {
-            false
+                    RevWalk(git.repository).use { walk ->
+                        val peeled    = walk.peel(walk.parseAny(ref.objectId))
+                        val isAnnotated = ref.objectId != peeled.id
+                        val message = if (isAnnotated) {
+                            runCatching { walk.parseTag(ref.objectId).fullMessage.trim() }.getOrNull()
+                        } else null
+
+                        Result.success(
+                            Tag(
+                                name        = name,
+                                commitHash  = peeled.name,
+                                isAnnotated = isAnnotated,
+                                message     = message,
+                            )
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
         }
-    }
+
+    // ─── Helper ───────────────────────────────────────────────────────────────
+
+    private fun org.eclipse.jgit.revwalk.RevCommit.toCommit() = Commit(
+        hash         = name,
+        shortHash    = name.take(7),
+        author       = authorIdent.name,
+        email        = authorIdent.emailAddress,
+        message      = fullMessage.trim(),
+        timestamp    = authorIdent.`when`.time,
+        parentHashes = parents.map { it.name },
+    )
 }

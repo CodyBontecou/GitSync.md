@@ -5,143 +5,129 @@ import com.bontecou.syncmd.data.models.ConflictResolution
 import com.bontecou.syncmd.data.models.ConflictResolutionStrategy
 import com.bontecou.syncmd.data.models.MergeState
 import com.bontecou.syncmd.domain.repository.ConflictRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.eclipse.jgit.api.CheckoutCommand
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.ResetCommand
 import java.io.File
 
 /**
- * Real implementation of ConflictRepository that integrates with actual git commands.
- * Uses ProcessBuilder to execute git merge/conflict commands.
+ * JGit-backed implementation of [ConflictRepository].
+ *
+ * Uses the pure-Java JGit library — no system `git` binary required.
+ * ProcessBuilder("git") fails on Android with "No such file or directory";
+ * JGit works everywhere.
  */
 class LocalConflictRepository : ConflictRepository {
 
-    override suspend fun getMergeState(repoPath: String): Result<MergeState> {
-        return try {
-            val mergeHeadFile = File(repoPath, ".git/MERGE_HEAD")
-            val isMergeInProgress = mergeHeadFile.exists()
-            
-            val sourceBranch = if (isMergeInProgress) {
-                // Try to get the branch name from MERGE_MSG
-                val mergeMsgFile = File(repoPath, ".git/MERGE_MSG")
-                if (mergeMsgFile.exists()) {
-                    val msg = mergeMsgFile.readText()
-                    val branchMatch = msg.split("\n").firstOrNull()?.substringAfterLast("'")?.removeSuffix("'")
-                    branchMatch
-                } else {
-                    "unknown"
-                }
-            } else {
-                null
-            }
-            
-            val conflictsResult = getConflicts(repoPath)
-            val conflicts = if (conflictsResult.isSuccess) conflictsResult.getOrNull() ?: emptyList() else emptyList()
-            
-            val unmergedFiles = executeGit(repoPath, "diff", "--name-only", "--diff-filter=U")
-                .lines()
-                .filter { it.isNotBlank() }
-            
-            val state = MergeState(
-                isMergeInProgress = isMergeInProgress,
-                sourceBranch = sourceBranch,
-                conflicts = conflicts,
-                autoMergedFiles = emptyList(),
-                unmergedFiles = unmergedFiles
-            )
-            
-            Result.success(state)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
+    override suspend fun getMergeState(repoPath: String): Result<MergeState> =
+        withContext(Dispatchers.IO) {
+            try {
+                val mergeHeadFile     = File(repoPath, ".git/MERGE_HEAD")
+                val isMergeInProgress = mergeHeadFile.exists()
 
-    override suspend fun getConflicts(repoPath: String): Result<List<Conflict>> {
-        return try {
-            val unmergedFiles = executeGit(repoPath, "diff", "--name-only", "--diff-filter=U")
-                .lines()
-                .filter { it.isNotBlank() }
-            
-            val conflicts = mutableListOf<Conflict>()
-            
-            for (filePath in unmergedFiles) {
-                val fileConflictResult = getFileConflict(repoPath, filePath)
-                if (fileConflictResult.isSuccess) {
-                    val conflict = fileConflictResult.getOrNull()
-                    if (conflict != null) {
-                        conflicts.add(conflict)
-                    }
-                }
-            }
-            
-            Result.success(conflicts)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
+                val sourceBranch = if (isMergeInProgress) {
+                    val mergeMsgFile = File(repoPath, ".git/MERGE_MSG")
+                    if (mergeMsgFile.exists()) {
+                        mergeMsgFile.readText()
+                            .lineSequence()
+                            .firstOrNull()
+                            ?.substringAfterLast("'")
+                            ?.removeSuffix("'")
+                    } else "unknown"
+                } else null
 
-    override suspend fun getFileConflict(repoPath: String, filePath: String): Result<Conflict?> {
-        return try {
-            val file = File(repoPath, filePath)
-            if (!file.exists()) {
-                return Result.success(null)
+                val conflictsResult = getConflicts(repoPath)
+                val conflicts = conflictsResult.getOrElse { emptyList() }
+
+                // Unmerged files via JGit status
+                val unmergedFiles = Git.open(File(repoPath)).use { git ->
+                    git.status().call().conflicting.toList()
+                }
+
+                Result.success(
+                    MergeState(
+                        isMergeInProgress = isMergeInProgress,
+                        sourceBranch      = sourceBranch,
+                        conflicts         = conflicts,
+                        autoMergedFiles   = emptyList(),
+                        unmergedFiles     = unmergedFiles,
+                    )
+                )
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-            
-            val content = file.readText()
-            val conflict = parseConflictMarkers(content).getOrNull()
-            
-            Result.success(conflict)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
+
+    override suspend fun getConflicts(repoPath: String): Result<List<Conflict>> =
+        withContext(Dispatchers.IO) {
+            try {
+                val conflictingPaths = Git.open(File(repoPath)).use { git ->
+                    git.status().call().conflicting.toList()
+                }
+
+                val conflicts = conflictingPaths.mapNotNull { path ->
+                    getFileConflict(repoPath, path).getOrNull()
+                        ?.takeIf { it.filePath.isNotEmpty() }
+                        ?: run {
+                            // Conflicting file but no parseable markers yet — include as empty conflict
+                            Conflict(filePath = path, currentContent = "", incomingContent = "")
+                        }
+                }
+
+                Result.success(conflicts)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun getFileConflict(repoPath: String, filePath: String): Result<Conflict?> =
+        withContext(Dispatchers.IO) {
+            try {
+                val file = File(repoPath, filePath)
+                if (!file.exists()) return@withContext Result.success(null)
+                val content  = file.readText()
+                val conflict = parseConflictMarkersInternal(content)
+                    ?.copy(filePath = filePath)
+                Result.success(conflict)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
 
     override suspend fun resolveConflict(
         repoPath: String,
         filePath: String,
         strategy: ConflictResolutionStrategy,
-        customContent: String?
-    ): Result<ConflictResolution> {
-        return try {
+        customContent: String?,
+    ): Result<ConflictResolution> = withContext(Dispatchers.IO) {
+        try {
             when (strategy) {
-                ConflictResolutionStrategy.OURS -> {
-                    executeGit(repoPath, "checkout", "--ours", filePath)
-                    if (checkGitSuccess(repoPath, "checkout", "--ours", filePath)) {
-                        executeGit(repoPath, "add", filePath)
-                        if (checkGitSuccess(repoPath, "add", filePath)) {
-                            Result.success(ConflictResolution(filePath, strategy, true))
-                        } else {
-                            Result.failure(Exception("Failed to stage resolved file"))
-                        }
-                    } else {
-                        Result.failure(Exception("Failed to resolve conflict with OURS"))
+                ConflictResolutionStrategy.OURS, ConflictResolutionStrategy.THEIRS -> {
+                    val stage = if (strategy == ConflictResolutionStrategy.OURS)
+                        CheckoutCommand.Stage.OURS
+                    else
+                        CheckoutCommand.Stage.THEIRS
+
+                    Git.open(File(repoPath)).use { git ->
+                        git.checkout().setStage(stage).addPath(filePath).call()
+                        git.add().addFilepattern(filePath).call()
                     }
+                    Result.success(ConflictResolution(filePath, strategy, true))
                 }
-                ConflictResolutionStrategy.THEIRS -> {
-                    executeGit(repoPath, "checkout", "--theirs", filePath)
-                    if (checkGitSuccess(repoPath, "checkout", "--theirs", filePath)) {
-                        executeGit(repoPath, "add", filePath)
-                        if (checkGitSuccess(repoPath, "add", filePath)) {
-                            Result.success(ConflictResolution(filePath, strategy, true))
-                        } else {
-                            Result.failure(Exception("Failed to stage resolved file"))
-                        }
-                    } else {
-                        Result.failure(Exception("Failed to resolve conflict with THEIRS"))
-                    }
-                }
+
                 ConflictResolutionStrategy.MANUAL -> {
-                    if (customContent != null) {
-                        val file = File(repoPath, filePath)
-                        file.writeText(customContent)
-                        
-                        executeGit(repoPath, "add", filePath)
-                        if (checkGitSuccess(repoPath, "add", filePath)) {
-                            Result.success(ConflictResolution(filePath, strategy, true))
-                        } else {
-                            Result.failure(Exception("Failed to stage manually resolved file"))
-                        }
-                    } else {
-                        Result.failure(Exception("MANUAL strategy requires customContent"))
+                    if (customContent == null) {
+                        return@withContext Result.failure(Exception("MANUAL strategy requires customContent"))
                     }
+                    File(repoPath, filePath).writeText(customContent)
+                    Git.open(File(repoPath)).use { git ->
+                        git.add().addFilepattern(filePath).call()
+                    }
+                    Result.success(ConflictResolution(filePath, strategy, true))
                 }
+
                 ConflictResolutionStrategy.ABORT -> {
                     abortMerge(repoPath).map {
                         ConflictResolution(filePath, strategy, true, "Merge aborted")
@@ -153,101 +139,73 @@ class LocalConflictRepository : ConflictRepository {
         }
     }
 
-    override suspend fun markAllResolved(repoPath: String): Result<Unit> {
-        return try {
-            val unmergedFiles = executeGit(repoPath, "diff", "--name-only", "--diff-filter=U")
-                .lines()
-                .filter { it.isNotBlank() }
-            
-            for (filePath in unmergedFiles) {
-                executeGit(repoPath, "add", filePath)
+    override suspend fun markAllResolved(repoPath: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    val unmerged = git.status().call().conflicting
+                    for (path in unmerged) {
+                        git.add().addFilepattern(path).call()
+                    }
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-            
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
 
-    override suspend fun completeMerge(repoPath: String, message: String): Result<Unit> {
-        return try {
-            // Use the existing MERGE_MSG or provide our own
-            executeGit(repoPath, "commit", "--no-edit", "-m", message)
-            
-            if (checkGitSuccess(repoPath, "commit", "--no-edit", "-m", message)) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to complete merge"))
+    override suspend fun completeMerge(repoPath: String, message: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    // JGit automatically reads MERGE_HEAD and creates a merge commit
+                    git.commit().setMessage(message).call()
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
 
-    override suspend fun abortMerge(repoPath: String): Result<Unit> {
-        return try {
-            executeGit(repoPath, "merge", "--abort")
-            
-            if (checkGitSuccess(repoPath, "merge", "--abort")) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to abort merge"))
+    override suspend fun abortMerge(repoPath: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    // Hard-reset to HEAD clears the merge state (equivalent to git merge --abort)
+                    git.reset().setMode(ResetCommand.ResetType.HARD).call()
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
 
-    override suspend fun parseConflictMarkers(content: String): Result<Conflict?> {
-        return try {
-            val result = parseConflictMarkersInternal(content)
-            Result.success(result)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
+    override suspend fun parseConflictMarkers(content: String): Result<Conflict?> =
+        Result.success(parseConflictMarkersInternal(content))
 
-    /**
-     * Parse standard git conflict markers from file content
-     * Format:
-     * <<<<<<< HEAD
-     * ... current/ours content ...
-     * =======
-     * ... incoming/theirs content ...
-     * >>>>>>> branch-name
-     */
+    // ─── Parser (unchanged from original) ────────────────────────────────────
+
     private fun parseConflictMarkersInternal(content: String): Conflict? {
         val lines = content.split("\n")
         var i = 0
-        
         while (i < lines.size) {
             if (lines[i].startsWith("<<<<<<<")) {
-                // Found conflict marker start
-                val currentLines = mutableListOf<String>()
+                val currentLines  = mutableListOf<String>()
                 val incomingLines = mutableListOf<String>()
                 var inCurrent = true
                 i++
-                
                 while (i < lines.size) {
                     when {
-                        lines[i].startsWith("=======") -> {
-                            inCurrent = false
-                            i++
-                        }
+                        lines[i].startsWith("=======") -> { inCurrent = false; i++ }
                         lines[i].startsWith(">>>>>>>") -> {
-                            // End of conflict
                             return Conflict(
-                                filePath = "",  // Not set by parser
-                                currentContent = currentLines.joinToString("\n"),
-                                incomingContent = incomingLines.joinToString("\n")
+                                filePath        = "",
+                                currentContent  = currentLines.joinToString("\n"),
+                                incomingContent = incomingLines.joinToString("\n"),
                             )
                         }
                         else -> {
-                            if (inCurrent) {
-                                currentLines.add(lines[i])
-                            } else {
-                                incomingLines.add(lines[i])
-                            }
+                            if (inCurrent) currentLines += lines[i] else incomingLines += lines[i]
                             i++
                         }
                     }
@@ -255,42 +213,6 @@ class LocalConflictRepository : ConflictRepository {
             }
             i++
         }
-        
         return null
-    }
-
-    /**
-     * Execute a git command and return output
-     */
-    private fun executeGit(repoPath: String, vararg args: String): String {
-        return try {
-            val command = listOf("git", "-C", repoPath) + args
-            val process = ProcessBuilder(command)
-                .redirectErrorStream(true)
-                .start()
-            
-            val output = process.inputStream.bufferedReader().readText()
-            val exitCode = process.waitFor()
-            
-            if (exitCode == 0) output else ""
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    /**
-     * Check if the last git command succeeded
-     */
-    private fun checkGitSuccess(repoPath: String, vararg args: String): Boolean {
-        return try {
-            val command = listOf("git", "-C", repoPath) + args
-            val process = ProcessBuilder(command)
-                .redirectErrorStream(true)
-                .start()
-            val exitCode = process.waitFor()
-            exitCode == 0
-        } catch (e: Exception) {
-            false
-        }
     }
 }
