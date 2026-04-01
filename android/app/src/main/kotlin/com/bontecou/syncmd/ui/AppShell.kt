@@ -80,6 +80,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 ReposScreen(
                     settingsViewModel  = settingsViewModel,
                     githubViewModel    = githubViewModel,
+                    onRepoRemoved      = { settingsViewModel.removeRepository(it) },
                     onRepoSelected     = { repoPath ->
                         val resolvedPath = if (repoPath.startsWith("github://")) {
                             val relPath = repoPath.removePrefix("github://")
