@@ -60,7 +60,10 @@ import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
  *   • Secondary: Personal Access Token
  */
 @Composable
-fun LoginScreen(viewModel: GitHubViewModel = hiltViewModel()) {
+fun LoginScreen(
+    viewModel: GitHubViewModel = hiltViewModel(),
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val bc          = LocalBrutalColors.current
     val context     = LocalContext.current
     val focusManager = LocalFocusManager.current

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -51,6 +52,7 @@ import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
+    onNavigateBack: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {},
     onNavigateToRepoPicker: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
@@ -73,6 +75,41 @@ fun SettingsScreen(
     var showSelectDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize().background(bc.bg)) {
+        Column(modifier = Modifier.fillMaxSize()) {
+        // Top Bar
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(bc.bg)
+                .statusBarsPadding()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = onNavigateBack,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text("←", style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 16.sp, color = bc.accent))
+                    Text("BACK", style = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Medium, fontSize = 13.sp, letterSpacing = 1.sp, color = bc.accent))
+                }
+                Text("SETTINGS", style = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Black, fontSize = 14.sp, letterSpacing = 3.sp, color = bc.text))
+                Box(Modifier.size(48.dp))
+            }
+            Box(Modifier.fillMaxWidth().height(1.dp).background(bc.border))
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
@@ -365,6 +402,7 @@ fun SettingsScreen(
 
             item { Spacer(Modifier.height(20.dp)) }
         }
+        } // end Column
     }
 
     if (showAddDialog) {
