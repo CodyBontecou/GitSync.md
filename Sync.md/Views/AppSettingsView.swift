@@ -131,6 +131,45 @@ struct AppSettingsView: View {
                                     .padding(.vertical, 13)
                                 }
                                 .buttonStyle(.plain)
+
+                                BDivider().padding(.horizontal, 16)
+                                if purchaseManager.debugForceFreeMode {
+                                    Button {
+                                        Task { await purchaseManager.debugRestoreProState() }
+                                    } label: {
+                                        HStack(spacing: 10) {
+                                            BBadge(text: "DEBUG", style: .warning)
+                                            Text("Restore Pro State")
+                                                .font(.system(size: 13, weight: .medium))
+                                                .foregroundStyle(Color.brutalText)
+                                            Spacer()
+                                            Text("→")
+                                                .font(.system(size: 13, design: .monospaced))
+                                                .foregroundStyle(Color.brutalText)
+                                        }
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 13)
+                                    }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    Button {
+                                        purchaseManager.debugResetPurchaseState()
+                                    } label: {
+                                        HStack(spacing: 10) {
+                                            BBadge(text: "DEBUG", style: .error)
+                                            Text("Reset to Free Tier")
+                                                .font(.system(size: 13, weight: .medium))
+                                                .foregroundStyle(Color.brutalError)
+                                            Spacer()
+                                            Text("→")
+                                                .font(.system(size: 13, design: .monospaced))
+                                                .foregroundStyle(Color.brutalText)
+                                        }
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 13)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
                                 #endif
                             }
                         }

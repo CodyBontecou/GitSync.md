@@ -51,6 +51,11 @@ final class PurchaseManager: ObservableObject {
     private let serverVerifiedLegacyKey = "serverVerifiedLegacy"
     private let cachedIAPUnlockKey = "cachedIAPUnlock"
 
+    /// Keychain key that stores a JSON-encoded array of repo identifiers (URLs / paths)
+    /// ever added on this device. Written once per new identifier and never cleared,
+    /// so it survives app deletion and reinstall.
+    private let seenRepoIDsKey = "seenRepoIDs"
+
     // MARK: - Init
 
     private init() {
@@ -63,6 +68,11 @@ final class PurchaseManager: ObservableObject {
     /// Restores any previously cached unlock state without touching StoreKit.
     /// This keeps onboarding free of App Store account prompts.
     private func hydrateCachedUnlockState() {
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: Self.debugForceFreeKey) {
+            isUnlocked = false; isLegacyUser = false; return
+        }
+        #endif
         if keychainRead(key: serverVerifiedLegacyKey) > 0 {
             isLegacyUser = true
             isUnlocked = true
@@ -82,6 +92,9 @@ final class PurchaseManager: ObservableObject {
     ///   restore flows.
     func refreshStatus(includeLegacyChecks: Bool = false) async {
         #if DEBUG
+        if debugForceFreeMode {
+            isUnlocked = false; isLegacyUser = false; return
+        }
         // Debug override: set "debugOriginalAppVersion" in UserDefaults to simulate
         // any install version without needing a real App Store receipt.
         // This runs first so it works on dev builds deployed via Xcode (which have
@@ -353,6 +366,35 @@ final class PurchaseManager: ObservableObject {
 
     // MARK: - Debug
 
+    #if DEBUG
+    /// UserDefaults key that, when `true`, makes every call to `refreshStatus()`
+    /// and `hydrateCachedUnlockState()` return immediately as a free/locked user.
+    /// Survives app restarts so the paywall stays visible across re-opens.
+    static let debugForceFreeKey = "debugForceFreeMode"
+
+    var debugForceFreeMode: Bool {
+        get { UserDefaults.standard.bool(forKey: Self.debugForceFreeKey) }
+        set { UserDefaults.standard.set(newValue, forKey: Self.debugForceFreeKey) }
+    }
+
+    /// Clears every Keychain purchase/unlock key and the seen-repo set, enables
+    /// the force-free override, then forces the in-memory state to "free, locked".
+    func debugResetPurchaseState() {
+        keychainDelete(key: cachedIAPUnlockKey)
+        keychainDelete(key: serverVerifiedLegacyKey)
+        keychainDelete(key: seenRepoIDsKey)
+        debugForceFreeMode = true
+        isUnlocked   = false
+        isLegacyUser = false
+    }
+
+    /// Removes the force-free override and re-evaluates real purchase status.
+    func debugRestoreProState() async {
+        debugForceFreeMode = false
+        await refreshStatus()
+    }
+    #endif
+
     /// Runs the full receipt → worker → Apple chain and returns a human-readable
     /// summary of every step. Only surfaced in the UI on DEBUG builds.
     func debugVerifyReceipt() async -> String {
@@ -436,6 +478,61 @@ final class PurchaseManager: ObservableObject {
         return lines.joined(separator: "\n")
     }
 
+    // MARK: - Repo-Tracking Helpers
+
+    /// Returns the set of repo identifiers (normalised lowercase) that have previously
+    /// been added on this device. Reads from the Keychain, which survives reinstall.
+    func seenRepoIdentifiers() -> Set<String> {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: Self.keychainService,
+            kSecAttrAccount as String: seenRepoIDsKey,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne,
+        ]
+        var result: AnyObject?
+        guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data,
+              let array = try? JSONDecoder().decode([String].self, from: data)
+        else { return [] }
+        return Set(array)
+    }
+
+    /// Persists `identifier` in the seen-repo set.
+    /// - Returns: `true` if this is a brand-new identifier (first time seen).
+    @discardableResult
+    func recordRepoAdded(identifier: String) -> Bool {
+        let normalised = identifier
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        guard !normalised.isEmpty else { return false }
+        var seen = seenRepoIdentifiers()
+        guard !seen.contains(normalised) else { return false }   // already tracked
+        seen.insert(normalised)
+        if let data = try? JSONEncoder().encode(Array(seen)) {
+            keychainWriteData(key: seenRepoIDsKey, data: data)
+        }
+        return true
+    }
+
+    /// Number of unique repository identifiers ever added on this device.
+    var uniqueReposEverAdded: Int { seenRepoIdentifiers().count }
+
+    /// Returns `true` when `identifier` has NOT been seen before AND adding it
+    /// would consume a free slot that is already exhausted — i.e. a purchase is
+    /// required before this identifier can be added.
+    func isNewRepoIdentifier(_ identifier: String) -> Bool {
+        let normalised = identifier
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        guard !normalised.isEmpty else { return false }
+        let seen = seenRepoIdentifiers()
+        // Already in the set → re-adding a known repo, always free.
+        if seen.contains(normalised) { return false }
+        // New identifier → only gated when the free-slot budget is exhausted.
+        return seen.count >= Self.freeRepoLimit
+    }
+
     // MARK: - Keychain Helpers
 
     private func keychainRead(key: String) -> Int {
@@ -456,6 +553,19 @@ final class PurchaseManager: ObservableObject {
     private func keychainWrite(key: String, value: Int) {
         var v = Int32(value)
         let data = Data(bytes: &v, count: MemoryLayout<Int32>.size)
+        keychainWriteData(key: key, data: data)
+    }
+
+    private func keychainDelete(key: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: Self.keychainService,
+            kSecAttrAccount as String: key,
+        ]
+        SecItemDelete(query as CFDictionary)
+    }
+
+    private func keychainWriteData(key: String, data: Data) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: Self.keychainService,

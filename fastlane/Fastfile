@@ -1,7 +1,7 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• Added internationalization support across the app\n• Improved localization for UI text and system formatting\n• Polished translated strings throughout onboarding and settings\n• General bug fixes and stability improvements"
+  release_notes_text = "• View changed files inline — see exactly what's modified before committing\n• Tap any file to open a full diff view with color-coded additions and deletions\n• Revert individual files or all changes at once with a single tap\n• Improved navigation and overall polish"
   app_version = "1.8"
 
   submission_information = {
@@ -19,20 +19,23 @@ platform :ios do
     )
   end
 
-  private_lane :deliver_options do |options|
-    {
-      skip_screenshots: true,
+  lane :upload_all do
+    asc_api_key
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_screenshots: false,
       skip_metadata: false,
       force: true,
-      submit_for_review: true,
+      submit_for_review: false,
       automatic_release: false,
       app_version: app_version,
       release_notes: {
         "en-US" => release_notes_text
       },
       precheck_include_in_app_purchases: false,
-      submission_information: submission_information
-    }.merge(options || {})
+      submission_information: submission_information,
+      overwrite_screenshots: true
+    )
   end
 
   lane :release do
@@ -46,18 +49,20 @@ platform :ios do
         uploadSymbols: true
       }
     )
-
     asc_api_key
-    upload_to_app_store(deliver_options)
-  end
-
-  lane :upload_only do
-    asc_api_key
-    upload_to_app_store(deliver_options(ipa: "Sync.md.ipa"))
-  end
-
-  lane :submit_only do
-    asc_api_key
-    upload_to_app_store(deliver_options(skip_binary_upload: true))
+    upload_to_app_store(
+      skip_screenshots: false,
+      skip_metadata: false,
+      force: true,
+      submit_for_review: false,
+      automatic_release: false,
+      app_version: app_version,
+      release_notes: {
+        "en-US" => release_notes_text
+      },
+      precheck_include_in_app_purchases: false,
+      submission_information: submission_information,
+      overwrite_screenshots: true
+    )
   end
 end

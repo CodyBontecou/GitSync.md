@@ -8,6 +8,7 @@ struct RepoListView: View {
     @Environment(AppState.self) private var state
     @ObservedObject private var purchaseManager = PurchaseManager.shared
     @State private var showAddRepo = false
+    @State private var addRepoInitialURL: String = ""
     @State private var showPaywall = false
     @State private var showSignOutConfirm = false
     @State private var showAppSettings = false
@@ -92,7 +93,7 @@ struct RepoListView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showAddRepo) { AddRepoView() }
+            .sheet(isPresented: $showAddRepo) { AddRepoView(initialURL: addRepoInitialURL) }
             .sheet(isPresented: $showPaywall) { PaywallView() }
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
@@ -120,23 +121,52 @@ struct RepoListView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack {
-            Spacer()
-            BEmptyState(
-                title: "No Repositories",
-                subtitle: "Add a GitHub repository to\nstart syncing your files.",
-                actionTitle: "Add Repository",
-                action: { handleAddRepoTapped() }
-            )
-            Spacer()
-            Spacer()
+        let ghosts = ghostRepoIdentifiers
+        return VStack {
+            if ghosts.isEmpty {
+                Spacer()
+                BEmptyState(
+                    title: "No Repositories",
+                    subtitle: "Add a GitHub repository to\nstart syncing your files.",
+                    actionTitle: "Add Repository",
+                    action: { handleAddRepoTapped() }
+                )
+                Spacer()
+                Spacer()
+            } else {
+                Spacer()
+                VStack(alignment: .leading, spacing: 12) {
+                    BSectionHeader(title: "Previously Cloned")
+                        .padding(.horizontal, 20)
+
+                    ForEach(ghosts, id: \.self) { id in
+                        ghostRepoCard(id)
+                            .padding(.horizontal, 20)
+                    }
+
+                    Button { handleAddRepoTapped() } label: {
+                        Text("+ ADD DIFFERENT REPOSITORY")
+                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Color.brutalText.opacity(0.45))
+                            .tracking(2)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 4)
+                }
+                Spacer()
+                Spacer()
+            }
         }
     }
 
     // MARK: - Repo List
 
     private var repoList: some View {
-        ScrollView {
+        let ghosts = ghostRepoIdentifiers
+        return ScrollView {
             LazyVStack(spacing: 12) {
                 ForEach(state.repos) { repo in
                     NavigationLink(value: repo.id) {
@@ -151,12 +181,92 @@ struct RepoListView: View {
                         }
                     }
                 }
+
+                if !ghosts.isEmpty {
+                    BSectionHeader(title: "Previously Cloned")
+                        .padding(.top, 8)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    ForEach(ghosts, id: \.self) { id in
+                        ghostRepoCard(id)
+                    }
+                }
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
             .padding(.bottom, 4)
         }
         .scrollIndicators(.hidden)
+    }
+
+    // MARK: - Ghost Repo Card
+
+    /// Repos that were previously added (tracked in Keychain) but are no longer
+    /// in the active `state.repos` list. Only HTTP(S) URLs are shown — local file
+    /// paths are device-specific and aren't useful to surface here.
+    private var ghostRepoIdentifiers: [String] {
+        guard !state.isDemoMode else { return [] }
+        let activeURLs = Set(
+            state.repos.map { $0.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+        )
+        return purchaseManager.seenRepoIdentifiers()
+            .filter { !activeURLs.contains($0) && $0.hasPrefix("http") }
+            .sorted()
+    }
+
+    private func ghostRepoCard(_ identifier: String) -> some View {
+        let repoName: String
+        let ownerName: String?
+        if let parsed = GitHubService.parseRepoURL(identifier) {
+            repoName  = parsed.repo
+            ownerName = parsed.owner
+        } else {
+            repoName  = URL(string: identifier)?.lastPathComponent ?? identifier
+            ownerName = nil
+        }
+
+        return Button {
+            cloneGhostRepo(identifier)
+        } label: {
+            BCard(padding: 0, bg: .brutalSurface) {
+                VStack(spacing: 0) {
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(repoName)
+                                .font(.system(size: 17, weight: .black))
+                                .foregroundStyle(Color.brutalText)
+                                .lineLimit(1)
+                            if let owner = ownerName {
+                                Text(owner.uppercased())
+                                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                    .foregroundStyle(Color.brutalText)
+                                    .tracking(1)
+                            }
+                        }
+                        Spacer()
+                        Text("→")
+                            .font(.system(size: 14, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 12)
+
+                    BDivider().padding(.horizontal, 16)
+
+                    HStack(spacing: 8) {
+                        BBadge(text: "previously cloned", style: .default)
+                        Text("tap to re-clone")
+                            .font(.system(size: 13, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                }
+            }
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Repo Card
@@ -304,8 +414,54 @@ struct RepoListView: View {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 
+    // MARK: - Ghost Repo Clone
+
+    /// Tapping a ghost card triggers an immediate clone using stored defaults.
+    /// Re-cloning a known URL is always free (not a new identifier), but adding
+    /// it when already at the concurrent repo limit still requires purchase.
+    private func cloneGhostRepo(_ identifier: String) {
+        if state.repos.count >= PurchaseManager.freeRepoLimit {
+            Task { @MainActor in
+                await purchaseManager.refreshStatus()
+                if purchaseManager.isUnlocked {
+                    performGhostClone(identifier)
+                } else {
+                    showPaywall = true
+                }
+            }
+            return
+        }
+        performGhostClone(identifier)
+    }
+
+    private func performGhostClone(_ identifier: String) {
+        let parsed      = GitHubService.parseRepoURL(identifier)
+        let folderName  = parsed?.repo ?? URL(string: identifier)?.lastPathComponent ?? "vault"
+
+        let config = RepoConfig(
+            repoURL: identifier,
+            branch: "main",
+            authorName: state.defaultAuthorName,
+            authorEmail: state.defaultAuthorEmail,
+            vaultFolderName: folderName
+        )
+
+        // recordRepoAdded is a no-op here — identifier is already in the seen set.
+        purchaseManager.recordRepoAdded(identifier: identifier)
+        state.addRepo(config)
+        Task { await state.clone(repoID: config.id) }
+    }
+
     private func handleAddRepoTapped() {
-        if state.repos.count < PurchaseManager.freeRepoLimit {
+        addRepoInitialURL = ""
+        // Allow free access only when BOTH conditions hold:
+        //   1. The user is currently under the live repo-count limit.
+        //   2. The Keychain-persisted "repos ever added" count is also under the limit,
+        //      meaning the free slot has not been consumed on this device — even across
+        //      reinstalls or in-app repo deletions.
+        let underCurrentLimit   = state.repos.count < PurchaseManager.freeRepoLimit
+        let freeSlotAvailable   = purchaseManager.uniqueReposEverAdded < PurchaseManager.freeRepoLimit
+        if underCurrentLimit && freeSlotAvailable {
             showAddRepo = true
             return
         }

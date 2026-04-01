@@ -15,26 +15,18 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios upload_all
+
+```sh
+[bundle exec] fastlane ios upload_all
+```
+
+
+
 ### ios release
 
 ```sh
 [bundle exec] fastlane ios release
-```
-
-
-
-### ios upload_only
-
-```sh
-[bundle exec] fastlane ios upload_only
-```
-
-
-
-### ios submit_only
-
-```sh
-[bundle exec] fastlane ios submit_only
 ```
 
 
