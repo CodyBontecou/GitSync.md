@@ -41,6 +41,7 @@ import com.bontecou.syncmd.ui.theme.BCard
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BEmptyState
 import com.bontecou.syncmd.ui.theme.BLoading
+import com.bontecou.syncmd.ui.theme.BMonoRow
 import com.bontecou.syncmd.ui.theme.BSectionHeader
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.theme.badgeFg
@@ -59,6 +60,7 @@ import com.bontecou.syncmd.ui.viewmodels.PullViewModel
 @Composable
 fun VaultScreen(
     repositoryPath: String,
+    showDebugInfo: Boolean = false,
     onOpenGit: () -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: PullViewModel = hiltViewModel(),
@@ -289,6 +291,30 @@ fun VaultScreen(
 
                     // ── Repo Health Card ──────────────────────────────────
                     if (repoStatus != null) {
+                        if (showDebugInfo) {
+                            item {
+                                BCard {
+                                    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                                            BSectionHeader(title = "Debug Info")
+                                            BBadge(text = "DEBUG", style = BBadgeStyle.WARNING)
+                                        }
+                                        BDivider()
+                                        BMonoRow(key = "Path", value = repositoryPath)
+                                        if (status != null) {
+                                            BDivider()
+                                            BMonoRow(key = "Branch", value = status!!.currentBranch)
+                                            BDivider()
+                                            BMonoRow(key = "Modified", value = "${status!!.modifiedFiles.size}")
+                                            BDivider()
+                                            BMonoRow(key = "Staged", value = "${status!!.stagedFiles.size}")
+                                            BDivider()
+                                            BMonoRow(key = "Untracked", value = "${status!!.untrackedFiles.size}")
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         item {
                             BCard {
                                 Column {

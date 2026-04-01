@@ -4,15 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.services.github.GitHubAuthManager
 import com.bontecou.syncmd.ui.AppShell
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -24,6 +23,8 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var authManager: GitHubAuthManager
 
+    private val settingsViewModel: SettingsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,12 +32,11 @@ class MainActivity : ComponentActivity() {
         handleOAuthIntent(intent)
 
         setContent {
-            val settingsViewModel: SettingsViewModel = hiltViewModel()
             val appSettings by settingsViewModel.appSettings.collectAsState()
 
             SyncMdTheme(darkTheme = appSettings.isDarkTheme) {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    AppShell()
+                    AppShell(settingsViewModel = settingsViewModel)
                 }
             }
         }

@@ -44,6 +44,7 @@ import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BLoading
+import com.bontecou.syncmd.ui.theme.BMonoRow
 import com.bontecou.syncmd.ui.theme.BSmallActionButton
 import com.bontecou.syncmd.ui.theme.BSectionHeader
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
@@ -68,6 +69,7 @@ import com.bontecou.syncmd.ui.viewmodels.PullViewModel
 @Composable
 fun GitScreen(
     repositoryPath: String,
+    showDebugInfo: Boolean = false,
     onNavigateBack: () -> Unit,
     pullVM    : PullViewModel    = hiltViewModel(),
     diffVM    : DiffViewModel    = hiltViewModel(),
@@ -176,6 +178,26 @@ fun GitScreen(
                 ),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+
+                // ── Debug Info Card ───────────────────────────────────
+                if (showDebugInfo) {
+                    item {
+                        BCard {
+                            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                                    BSectionHeader(title = "Debug Info")
+                                    BBadge(text = "DEBUG", style = BBadgeStyle.WARNING)
+                                }
+                                BDivider()
+                                BMonoRow(key = "Repo Path", value = repositoryPath)
+                                BDivider()
+                                BMonoRow(key = "Changes", value = "$changeCount files")
+                                BDivider()
+                                BMonoRow(key = "Staged", value = "$stagedCount files")
+                            }
+                        }
+                    }
+                }
 
                 // ── Repository Status Card ────────────────────────────────
                 item {

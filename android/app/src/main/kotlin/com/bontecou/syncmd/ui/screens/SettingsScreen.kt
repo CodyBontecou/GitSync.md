@@ -52,10 +52,10 @@ import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
+    viewModel: SettingsViewModel,
     onNavigateBack: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {},
     onNavigateToRepoPicker: () -> Unit = {},
-    viewModel: SettingsViewModel = hiltViewModel(),
     githubViewModel: GitHubViewModel = hiltViewModel(),
 ) {
     val bc = LocalBrutalColors.current
