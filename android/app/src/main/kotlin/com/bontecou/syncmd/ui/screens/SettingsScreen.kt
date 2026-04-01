@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
 import com.bontecou.syncmd.ui.components.rememberDirectoryPicker
@@ -218,8 +219,9 @@ fun SettingsScreen(
                                         style = TextStyle(fontFamily = FontFamily.Default, fontSize = 15.sp, color = bc.textMid)
                                     )
                                     BPrimaryButton(
-                                        title   = "Sign in with GitHub",
-                                        onClick = onNavigateToLogin,
+                                        title          = "Sign in with GitHub",
+                                        leadingIconRes = R.drawable.ic_github,
+                                        onClick        = onNavigateToLogin,
                                     )
                                 }
                             }

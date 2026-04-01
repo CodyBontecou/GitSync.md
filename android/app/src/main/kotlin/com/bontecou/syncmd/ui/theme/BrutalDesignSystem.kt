@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,9 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.annotation.DrawableRes
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -233,6 +236,7 @@ fun BPrimaryButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isDisabled: Boolean = false,
+    @DrawableRes leadingIconRes: Int? = null,
     onClick: () -> Unit,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
@@ -257,16 +261,29 @@ fun BPrimaryButton(
                 strokeWidth = 2.dp,
             )
         } else {
-            Text(
-                text = title.uppercase(),
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    letterSpacing = 2.sp,
-                    color = bc.bg,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                leadingIconRes?.let { iconRes ->
+                    Icon(
+                        painter = painterResource(id = iconRes),
+                        contentDescription = null,
+                        tint = bc.bg,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+                Text(
+                    text = title.uppercase(),
+                    style = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        letterSpacing = 2.sp,
+                        color = bc.bg,
+                    )
                 )
-            )
+            }
         }
     }
 }

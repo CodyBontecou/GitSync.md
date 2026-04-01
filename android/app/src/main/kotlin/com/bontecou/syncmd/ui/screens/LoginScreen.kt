@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.ui.components.rememberDirectoryPicker
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BGhostButton
@@ -344,8 +345,9 @@ fun LoginScreen(
                     verticalArrangement = Arrangement.spacedBy(0.dp),
                 ) {
                     BPrimaryButton(
-                        title  = "Sign in with GitHub",
-                        onClick = {
+                        title          = "Sign in with GitHub",
+                        leadingIconRes = R.drawable.ic_github,
+                        onClick        = {
                             val url = viewModel.generateOAuthUrl()
                             CustomTabsIntent.Builder()
                                 .setShowTitle(true)
