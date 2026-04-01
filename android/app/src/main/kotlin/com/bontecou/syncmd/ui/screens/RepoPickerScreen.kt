@@ -242,7 +242,7 @@ private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            if (!repo.description.isNullOrBlank()) {
+            if (!repo.description.isNullOrBlank() && repo.description != "null") {
                 Text(
                     text = repo.description!!,
                     style = TextStyle(fontFamily = FontFamily.Default, fontSize = 13.sp, color = bc.textMid),
