@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,10 +42,10 @@ object Routes {
  *   repos  →  login  →  repo_picker
  */
 @Composable
-fun AppShell() {
-    val navController     = rememberNavController()
-    val settingsViewModel : SettingsViewModel = hiltViewModel()
-    val githubViewModel   : GitHubViewModel   = hiltViewModel()
+fun AppShell(settingsViewModel: SettingsViewModel) {
+    val navController   = rememberNavController()
+    val githubViewModel : GitHubViewModel = hiltViewModel()
+    val context           = LocalContext.current
 
     val selectedRepository by settingsViewModel.selectedRepository.collectAsState()
     val appSettings        by settingsViewModel.appSettings.collectAsState()
@@ -81,7 +81,13 @@ fun AppShell() {
                     settingsViewModel  = settingsViewModel,
                     githubViewModel    = githubViewModel,
                     onRepoSelected     = { repoPath ->
-                        settingsViewModel.setRepositoryPath(repoPath)
+                        val resolvedPath = if (repoPath.startsWith("github://")) {
+                            val relPath = repoPath.removePrefix("github://")
+                            context.filesDir.absolutePath + "/repos/" + relPath
+                        } else {
+                            repoPath
+                        }
+                        settingsViewModel.setRepositoryPath(resolvedPath)
                         navController.navigate(Routes.VAULT)
                     },
                     onAddRepo          = {

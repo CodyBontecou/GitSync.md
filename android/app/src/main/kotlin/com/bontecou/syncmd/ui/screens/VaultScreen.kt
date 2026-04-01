@@ -76,14 +76,11 @@ fun VaultScreen(
 
     var showChangedFiles by remember { mutableStateOf(true) }
 
-    // Derive the repo display name from the path
-    val repoDisplayName = repositoryPath
-        .removePrefix("github://")
-        .substringAfterLast("/")
-        .ifBlank { repositoryPath.substringAfterLast("/").ifBlank { "Repository" } }
-
+    // Derive the repo display name from the resolved filesystem path.
+    // e.g. /data/.../files/repos/owner/repo  →  repoDisplayName = "repo", repoOwner = "OWNER"
+    val repoDisplayName = repositoryPath.substringAfterLast("/").ifBlank { "Repository" }
     val repoOwner = repositoryPath
-        .removePrefix("github://")
+        .substringAfterLast("/repos/")
         .substringBefore("/")
         .uppercase()
 
