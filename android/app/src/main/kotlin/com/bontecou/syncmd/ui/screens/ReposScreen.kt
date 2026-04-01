@@ -80,10 +80,6 @@ fun ReposScreen(
     val allRepos        by settingsViewModel.allRepositories.collectAsState()
     val selectedRepo    by settingsViewModel.selectedRepository.collectAsState()
     val isLoggedIn      by githubViewModel.isLoggedIn.collectAsState()
-    val user            by githubViewModel.user.collectAsState()
-    val cachedLogin     by githubViewModel.authManager.cachedLogin.collectAsState()
-
-    val displayLogin = user?.login ?: cachedLogin
 
     Box(
         modifier = Modifier
@@ -124,24 +120,7 @@ fun ReposScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        if (isLoggedIn && displayLogin != null) {
-                            // Username badge
-                            Box(
-                                modifier = Modifier
-                                    .border(1.dp, bc.border)
-                                    .padding(horizontal = 10.dp, vertical = 5.dp)
-                            ) {
-                                Text(
-                                    text = "@$displayLogin",
-                                    style = TextStyle(
-                                        fontFamily = FontFamily.Monospace,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 12.sp,
-                                        color = bc.textMid,
-                                    )
-                                )
-                            }
-                        } else {
+                        if (!isLoggedIn) {
                             // SIGN IN button
                             Box(
                                 modifier = Modifier
