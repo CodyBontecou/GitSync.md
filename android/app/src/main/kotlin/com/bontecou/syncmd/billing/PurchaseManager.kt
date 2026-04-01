@@ -14,6 +14,7 @@ import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
+import com.bontecou.syncmd.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,6 +53,7 @@ class PurchaseManager @Inject constructor(
         private const val PREFS_NAME       = "syncmd_purchase_prefs"
         private const val KEY_IAP_UNLOCK   = "cachedIAPUnlock"
         private const val KEY_SEEN_REPO_IDS = "seenRepoIds"
+        private const val KEY_DEBUG_SIMULATED_UNLOCK = "debugSimulatedUnlock"
     }
 
     // ── Published state ────────────────────────────────────────────────────
@@ -70,6 +72,12 @@ class PurchaseManager @Inject constructor(
 
     private val _productDetails = MutableStateFlow<ProductDetails?>(null)
     val productDetails: StateFlow<ProductDetails?> = _productDetails.asStateFlow()
+
+    private val _debugSimulatedUnlocked = MutableStateFlow(false)
+    val debugSimulatedUnlocked: StateFlow<Boolean> = _debugSimulatedUnlocked.asStateFlow()
+
+    val isDebugBuild: Boolean
+        get() = BuildConfig.DEBUG
 
     // ── Storage ────────────────────────────────────────────────────────────
 
@@ -103,12 +111,34 @@ class PurchaseManager @Inject constructor(
         // Fast path: restore cached unlock state without a Play Store round-trip.
         // Keeps the UI snappy on cold start (mirrors iOS hydrateCachedUnlockState).
         hydrateCachedUnlockState()
+        hydrateDebugSimulationState()
     }
 
     private fun hydrateCachedUnlockState() {
         if (prefs.getBoolean(KEY_IAP_UNLOCK, false)) {
             _isUnlocked.value = true
         }
+    }
+
+    private fun hydrateDebugSimulationState() {
+        if (!BuildConfig.DEBUG) return
+
+        // First debug run mirrors the currently cached real state.
+        val simulated = if (prefs.contains(KEY_DEBUG_SIMULATED_UNLOCK)) {
+            prefs.getBoolean(KEY_DEBUG_SIMULATED_UNLOCK, false)
+        } else {
+            _isUnlocked.value
+        }
+
+        _debugSimulatedUnlocked.value = simulated
+        prefs.edit().putBoolean(KEY_DEBUG_SIMULATED_UNLOCK, simulated).apply()
+        _isUnlocked.value = simulated
+    }
+
+    private fun applyDebugSimulationOverrideIfNeeded(): Boolean {
+        if (!BuildConfig.DEBUG) return false
+        _isUnlocked.value = _debugSimulatedUnlocked.value
+        return true
     }
 
     // ── Billing connection ─────────────────────────────────────────────────
@@ -163,6 +193,7 @@ class PurchaseManager @Inject constructor(
      * Called passively on screen appear and explicitly on restore.
      */
     suspend fun refreshStatus() {
+        if (applyDebugSimulationOverrideIfNeeded()) return
         if (!ensureConnected()) return
         val params = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.INAPP)
@@ -268,6 +299,9 @@ class PurchaseManager @Inject constructor(
                 _purchaseError.value = "Purchase failed: ${result.debugMessage}"
             }
         }
+
+        // Keep debug builds pinned to the simulated setting even after billing callbacks.
+        applyDebugSimulationOverrideIfNeeded()
     }
 
     private fun acknowledgePurchase(purchase: Purchase) {
@@ -286,12 +320,22 @@ class PurchaseManager @Inject constructor(
 
     // ── Debug ──────────────────────────────────────────────────────────────
 
+    /** Force the effective purchase state in debug builds (Settings → Developer). */
+    fun setDebugSimulatedUnlocked(unlocked: Boolean) {
+        if (!BuildConfig.DEBUG) return
+        _debugSimulatedUnlocked.value = unlocked
+        prefs.edit().putBoolean(KEY_DEBUG_SIMULATED_UNLOCK, unlocked).apply()
+        _isUnlocked.value = unlocked
+    }
+
     /** Clears all purchase and seen-repo state. DEBUG ONLY. */
     fun debugResetPurchaseState() {
         prefs.edit()
             .remove(KEY_IAP_UNLOCK)
             .remove(KEY_SEEN_REPO_IDS)
+            .remove(KEY_DEBUG_SIMULATED_UNLOCK)
             .apply()
+        _debugSimulatedUnlocked.value = false
         _isUnlocked.value = false
     }
 }

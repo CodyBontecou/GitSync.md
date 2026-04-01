@@ -88,15 +88,13 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
     // Set in Gate 2 when the user taps a repo but isn't yet unlocked.
     var pendingRepoToClone by remember { mutableStateOf<String?>(null) }
 
-    // After OAuth callback — auto-navigate from Login → RepoPicker
+    // After OAuth callback, keep the user on Login so they can choose
+    // download location before continuing.
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
             val current = navController.currentBackStackEntry?.destination?.route
             if (current == Routes.LOGIN) {
                 githubViewModel.onOAuthSuccess()
-                navController.navigate(Routes.REPOS) {
-                    popUpTo(Routes.REPOS) { inclusive = false }
-                }
             }
         }
     }
@@ -152,7 +150,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
 
                         if (allRepos.size >= PurchaseManager.FREE_REPO_LIMIT) {
                             scope.launch {
-                                purchaseViewModel.refreshStatus()
+                                purchaseViewModel.refreshStatusNow()
                                 if (purchaseViewModel.isUnlocked.value) {
                                     navigateToClone()
                                 } else {
@@ -187,7 +185,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         } else {
                             // May have exceeded the free tier — refresh then decide.
                             scope.launch {
-                                purchaseViewModel.refreshStatus()
+                                purchaseViewModel.refreshStatusNow()
                                 if (purchaseViewModel.isUnlocked.value) {
                                     if (isLoggedIn) {
                                         githubViewModel.loadUserAndRepos()
@@ -245,6 +243,13 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     viewModel         = githubViewModel,
                     settingsViewModel = settingsViewModel,
                     onNavigateBack    = { navController.popBackStack() },
+                    onContinueAfterLogin = {
+                        if (!navController.popBackStack()) {
+                            navController.navigate(Routes.REPOS) {
+                                popUpTo(Routes.REPOS) { inclusive = false }
+                            }
+                        }
+                    },
                 )
             }
 
@@ -258,12 +263,12 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         // identifier is brand-new AND the free-slot budget is exhausted.
                         // Re-adding a previously cloned repo is always free.
                         val identifier = repo.fullName.trim().lowercase()
-                        if (purchaseViewModel.isNewRepoIdentifier(identifier)) {
+                        if (!isUnlocked && purchaseViewModel.isNewRepoIdentifier(identifier)) {
                             // Free slot exhausted and this is a new repo — require purchase.
                             pendingRepoToClone = repo.fullName
                             navController.navigate(Routes.PAYWALL)
                         } else {
-                            // Known repo or free slot still available — clone directly.
+                            // Unlocked, known repo, or free slot still available — clone directly.
                             val encoded = Uri.encode(repo.fullName)
                             navController.navigate("${Routes.CLONE}/$encoded")
                         }

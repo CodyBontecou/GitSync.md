@@ -4,12 +4,6 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,12 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.ui.graphics.SolidColor
+import com.bontecou.syncmd.ui.components.rememberDirectoryPicker
 import com.bontecou.syncmd.ui.theme.BBadge
 import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
-import com.bontecou.syncmd.ui.theme.BCardRow
 import com.bontecou.syncmd.ui.theme.BDestructiveButton
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BLoading
@@ -79,11 +71,13 @@ fun SettingsScreen(
     val isLoading          by viewModel.isLoading.collectAsState()
     val errorMessage       by viewModel.errorMessage.collectAsState()
 
-    val isUnlocked    by purchaseViewModel.isUnlocked.collectAsState()
-    val isPurchasing  by purchaseViewModel.isPurchasing.collectAsState()
-    val isRestoring   by purchaseViewModel.isRestoring.collectAsState()
-    val purchaseError by purchaseViewModel.purchaseError.collectAsState()
-    val productDetails by purchaseViewModel.productDetails.collectAsState()
+    val isUnlocked             by purchaseViewModel.isUnlocked.collectAsState()
+    val isPurchasing           by purchaseViewModel.isPurchasing.collectAsState()
+    val isRestoring            by purchaseViewModel.isRestoring.collectAsState()
+    val purchaseError          by purchaseViewModel.purchaseError.collectAsState()
+    val productDetails         by purchaseViewModel.productDetails.collectAsState()
+    val debugSimulatedUnlocked by purchaseViewModel.debugSimulatedUnlocked.collectAsState()
+    val isDebugBuild = purchaseViewModel.isDebugBuild
 
     LaunchedEffect(Unit) {
         purchaseViewModel.refreshStatus()
@@ -254,6 +248,16 @@ fun SettingsScreen(
                             purchaseViewModel.restore()
                         },
                     )
+                }
+
+                if (isDebugBuild) {
+                    item { BSectionHeader(title = "Developer") }
+                    item {
+                        DeveloperPurchasePreviewCard(
+                            simulatedUnlocked = debugSimulatedUnlocked,
+                            onSimulatedUnlockedChanged = purchaseViewModel::setDebugSimulatedUnlocked,
+                        )
+                    }
                 }
 
                 // ── App Settings Section ──────────────────────────────────
@@ -595,6 +599,74 @@ private fun PremiumCard(
     }
 }
 
+@Composable
+private fun DeveloperPurchasePreviewCard(
+    simulatedUnlocked: Boolean,
+    onSimulatedUnlockedChanged: (Boolean) -> Unit,
+) {
+    val bc = LocalBrutalColors.current
+
+    BCard {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 13.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Simulate Paid View",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Default,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp,
+                            color = bc.text,
+                        )
+                    )
+                    Text(
+                        text = if (simulatedUnlocked) {
+                            "ON · app behaves as paid"
+                        } else {
+                            "OFF · app behaves as unpaid"
+                        },
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 12.sp,
+                            color = bc.textMid,
+                        )
+                    )
+                }
+                Switch(
+                    checked = simulatedUnlocked,
+                    onCheckedChange = onSimulatedUnlockedChanged,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor  = bc.bg,
+                        checkedTrackColor  = bc.text,
+                        uncheckedThumbColor = bc.textFaint,
+                        uncheckedTrackColor = bc.surface,
+                        uncheckedBorderColor = bc.border,
+                    )
+                )
+            }
+
+            BDivider()
+
+            Text(
+                text = "DEBUG BUILDS ONLY · HIDDEN IN RELEASE",
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 10.sp,
+                    letterSpacing = 0.5.sp,
+                    color = bc.textFaint,
+                ),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+            )
+        }
+    }
+}
+
 private fun unlockButtonLabel(
     productDetails: com.android.billingclient.api.ProductDetails?
 ): String {
@@ -615,12 +687,21 @@ private fun CloneDirRow(
     defaultPath:  String,
     onSave:       (String) -> Unit,
 ) {
-    val bc          = LocalBrutalColors.current
-    val focusManager = LocalFocusManager.current
+    val bc = LocalBrutalColors.current
 
-    // Local draft — committed only when user presses Done or taps away
-    var draft    by remember(currentValue) { mutableStateOf(currentValue) }
     var expanded by remember { mutableStateOf(false) }
+    var pickerError by remember { mutableStateOf<String?>(null) }
+
+    val openDirectoryPicker = rememberDirectoryPicker(
+        onDirectorySelected = { selectedPath ->
+            pickerError = null
+            onSave(selectedPath)
+            expanded = false
+        },
+        onError = { message ->
+            pickerError = message
+        },
+    )
 
     Column(
         modifier = Modifier
@@ -628,7 +709,6 @@ private fun CloneDirRow(
             .padding(horizontal = 16.dp, vertical = 13.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        // Header row — tap to expand / collapse
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -669,51 +749,27 @@ private fun CloneDirRow(
             )
         }
 
-        // Expanded editor
         if (expanded) {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                // Input field
-                BasicTextField(
-                    value          = draft,
-                    onValueChange  = { draft = it },
-                    textStyle      = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontSize   = 13.sp,
-                        color      = bc.text,
-                    ),
-                    singleLine     = true,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                            onSave(draft.trim())
-                            expanded = false
-                        }
-                    ),
-                    cursorBrush    = SolidColor(bc.text),
-                    modifier       = Modifier
+                Box(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .background(bc.surface)
                         .border(1.dp, bc.border)
                         .padding(horizontal = 12.dp, vertical = 10.dp),
-                ) { inner ->
-                    Box {
-                        if (draft.isEmpty()) {
-                            Text(
-                                text  = defaultPath,
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize   = 13.sp,
-                                    color      = bc.textFaint,
-                                )
-                            )
-                        }
-                        inner()
-                    }
+                ) {
+                    Text(
+                        text = currentValue.ifBlank { defaultPath },
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 13.sp,
+                            color = if (currentValue.isBlank()) bc.textFaint else bc.text,
+                        )
+                    )
                 }
 
                 Text(
-                    text  = "ABSOLUTE PATH ON DEVICE · LEAVE BLANK FOR DEFAULT",
+                    text  = "BROWSE TO PICK A FOLDER · OR RESET TO DEFAULT",
                     style = TextStyle(
                         fontFamily    = FontFamily.Monospace,
                         fontSize      = 10.sp,
@@ -722,39 +778,19 @@ private fun CloneDirRow(
                     )
                 )
 
-                // Save / Reset row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    // Save
                     Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .border(1.dp, bc.text)
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                            ) {
-                                focusManager.clearFocus()
-                                onSave(draft.trim())
-                                expanded = false
-                            }
-                            .padding(vertical = 10.dp),
-                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.weight(1f),
                     ) {
-                        Text(
-                            text  = "SAVE",
-                            style = TextStyle(
-                                fontFamily    = FontFamily.Monospace,
-                                fontWeight    = FontWeight.Bold,
-                                fontSize      = 12.sp,
-                                letterSpacing = 1.sp,
-                                color         = bc.text,
-                            )
+                        BSecondaryButton(
+                            title = "Choose Folder",
+                            onClick = { openDirectoryPicker() },
                         )
                     }
-                    // Reset to default
+
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -763,8 +799,7 @@ private fun CloneDirRow(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                             ) {
-                                draft = ""
-                                focusManager.clearFocus()
+                                pickerError = null
                                 onSave("")
                                 expanded = false
                             }
@@ -772,7 +807,7 @@ private fun CloneDirRow(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text  = "RESET",
+                            text  = "USE DEFAULT",
                             style = TextStyle(
                                 fontFamily    = FontFamily.Monospace,
                                 fontWeight    = FontWeight.Bold,
@@ -782,6 +817,17 @@ private fun CloneDirRow(
                             )
                         )
                     }
+                }
+
+                if (pickerError != null) {
+                    Text(
+                        text = pickerError!!,
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 11.sp,
+                            color = bc.error,
+                        )
+                    )
                 }
             }
         }

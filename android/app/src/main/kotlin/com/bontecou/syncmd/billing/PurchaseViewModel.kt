@@ -27,6 +27,10 @@ class PurchaseViewModel @Inject constructor(
     val isRestoring:    StateFlow<Boolean>         = purchaseManager.isRestoring
     val purchaseError:  StateFlow<String?>         = purchaseManager.purchaseError
     val productDetails: StateFlow<ProductDetails?> = purchaseManager.productDetails
+    val debugSimulatedUnlocked: StateFlow<Boolean> = purchaseManager.debugSimulatedUnlocked
+
+    val isDebugBuild: Boolean
+        get() = purchaseManager.isDebugBuild
 
     // ── Repo-tracking pass-throughs ────────────────────────────────────────
 
@@ -48,6 +52,10 @@ class PurchaseViewModel @Inject constructor(
         viewModelScope.launch { purchaseManager.refreshStatus() }
     }
 
+    suspend fun refreshStatusNow() {
+        purchaseManager.refreshStatus()
+    }
+
     fun loadProduct() {
         viewModelScope.launch { purchaseManager.loadProduct() }
     }
@@ -62,5 +70,9 @@ class PurchaseViewModel @Inject constructor(
 
     fun clearPurchaseError() {
         purchaseManager.clearPurchaseError()
+    }
+
+    fun setDebugSimulatedUnlocked(unlocked: Boolean) {
+        purchaseManager.setDebugSimulatedUnlocked(unlocked)
     }
 }

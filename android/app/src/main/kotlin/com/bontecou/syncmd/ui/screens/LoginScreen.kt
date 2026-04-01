@@ -21,8 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -45,6 +44,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bontecou.syncmd.ui.components.rememberDirectoryPicker
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BGhostButton
 import com.bontecou.syncmd.ui.theme.BPrimaryButton
@@ -66,22 +66,25 @@ fun LoginScreen(
     viewModel: GitHubViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel? = null,
     @Suppress("UNUSED_PARAMETER") onNavigateBack: (() -> Unit)? = null,
+    onContinueAfterLogin: () -> Unit = {},
 ) {
     val bc           = LocalBrutalColors.current
     val context      = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     val isLoading   by viewModel.isLoading.collectAsState()
+    val isLoggedIn  by viewModel.isLoggedIn.collectAsState()
     val error       by viewModel.error.collectAsState()
 
     val appSettings = settingsViewModel?.appSettings?.collectAsState()?.value
 
-    var showPatFlow  by remember { mutableStateOf(false) }
-    var patToken     by remember { mutableStateOf("") }
-    var patVisible   by remember { mutableStateOf(false) }
+    var showPatFlow   by remember { mutableStateOf(false) }
+    var patToken      by remember { mutableStateOf("") }
+    var patVisible    by remember { mutableStateOf(false) }
     var cloneDirDraft by remember(appSettings?.defaultCloneDir) {
         mutableStateOf(appSettings?.defaultCloneDir ?: "")
     }
+    var cloneDirError by remember { mutableStateOf<String?>(null) }
 
     Box(
         modifier = Modifier
@@ -174,8 +177,9 @@ fun LoginScreen(
                 Spacer(Modifier.height(16.dp))
             }
 
-            // ── PAT back button ───────────────────────────────────────────
-            AnimatedVisibility(visible = showPatFlow) {
+            if (!isLoggedIn) {
+                // ── PAT back button ───────────────────────────────────────────
+                AnimatedVisibility(visible = showPatFlow) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -265,7 +269,7 @@ fun LoginScreen(
                                     ),
                                     singleLine = true,
                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                                    cursorBrush = androidx.compose.ui.graphics.SolidColor(bc.text),
+                                    cursorBrush = SolidColor(bc.text),
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                             }
@@ -371,8 +375,10 @@ fun LoginScreen(
                 }
             }
 
-            // ── Clone directory (advanced / onboarding) ───────────────────
-            if (settingsViewModel != null && appSettings != null) {
+            }
+
+            // ── Download location selector (post-login onboarding) ─────────
+            if (isLoggedIn && settingsViewModel != null && appSettings != null) {
                 Spacer(Modifier.height(8.dp))
 
                 // Divider with label
@@ -381,7 +387,7 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp, vertical = 4.dp)
                 ) {
-                    BDivider(label = "advanced")
+                    BDivider(label = "onboarding")
                 }
 
                 Column(
@@ -392,7 +398,7 @@ fun LoginScreen(
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
                     Text(
-                        text  = "CLONE DIRECTORY",
+                        text  = "DOWNLOAD LOCATION",
                         style = TextStyle(
                             fontFamily    = FontFamily.Monospace,
                             fontWeight    = FontWeight.SemiBold,
@@ -403,81 +409,89 @@ fun LoginScreen(
                     )
 
                     val defaultPath = "${context.filesDir.absolutePath}/repos"
+                    val openDirectoryPicker = rememberDirectoryPicker(
+                        onDirectorySelected = { selectedPath ->
+                            cloneDirDraft = selectedPath
+                            cloneDirError = null
+                            settingsViewModel.updateSettings(
+                                appSettings.copy(defaultCloneDir = selectedPath)
+                            )
+                        },
+                        onError = { message ->
+                            cloneDirError = message
+                        },
+                    )
 
-                    Row(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(bc.surface)
                             .border(1.dp, bc.border)
                             .padding(horizontal = 12.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = cloneDirDraft.ifBlank { defaultPath },
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 12.sp,
+                                color = if (cloneDirDraft.isBlank()) bc.textFaint else bc.text,
+                            )
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Box(modifier = Modifier.weight(1f)) {
-                            if (cloneDirDraft.isEmpty()) {
-                                Text(
-                                    text  = defaultPath,
-                                    style = TextStyle(
-                                        fontFamily = FontFamily.Monospace,
-                                        fontSize   = 12.sp,
-                                        color      = bc.textFaint,
-                                    )
-                                )
-                            }
-                            androidx.compose.foundation.text.BasicTextField(
-                                value          = cloneDirDraft,
-                                onValueChange  = { cloneDirDraft = it },
-                                textStyle      = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize   = 12.sp,
-                                    color      = bc.text,
-                                ),
-                                singleLine     = true,
-                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                                keyboardActions = KeyboardActions(
-                                    onDone = {
-                                        focusManager.clearFocus()
-                                        settingsViewModel.updateSettings(
-                                            appSettings.copy(defaultCloneDir = cloneDirDraft.trim())
-                                        )
-                                    }
-                                ),
-                                cursorBrush    = androidx.compose.ui.graphics.SolidColor(bc.text),
-                                modifier       = Modifier.fillMaxWidth(),
+                            BSecondaryButton(
+                                title = "Choose Folder",
+                                onClick = {
+                                    focusManager.clearFocus()
+                                    openDirectoryPicker()
+                                }
                             )
                         }
-                        if (cloneDirDraft.isNotBlank()) {
-                            Text(
-                                text  = "SAVE",
-                                style = TextStyle(
-                                    fontFamily    = FontFamily.Monospace,
-                                    fontWeight    = FontWeight.Bold,
-                                    fontSize      = 11.sp,
-                                    letterSpacing = 1.sp,
-                                    color         = bc.accent,
-                                ),
-                                modifier = Modifier
-                                    .clickable(
-                                        indication = null,
-                                        interactionSource = remember { MutableInteractionSource() },
-                                    ) {
-                                        focusManager.clearFocus()
-                                        settingsViewModel.updateSettings(
-                                            appSettings.copy(defaultCloneDir = cloneDirDraft.trim())
-                                        )
-                                    }
-                                    .padding(start = 12.dp),
+                        Box(modifier = Modifier.weight(1f)) {
+                            BGhostButton(
+                                title = "Use Default",
+                                onClick = {
+                                    cloneDirDraft = ""
+                                    cloneDirError = null
+                                    settingsViewModel.updateSettings(
+                                        appSettings.copy(defaultCloneDir = "")
+                                    )
+                                }
                             )
                         }
                     }
 
                     Text(
-                        text  = "WHERE REPOS ARE CLONED ON THIS DEVICE · LEAVE BLANK FOR DEFAULT",
+                        text  = "WHERE REPOS ARE CLONED ON THIS DEVICE · SKIP TO USE DEFAULT",
                         style = TextStyle(
                             fontFamily    = FontFamily.Monospace,
                             fontSize      = 10.sp,
                             letterSpacing = 0.5.sp,
                             color         = bc.textFaint,
                         )
+                    )
+
+                    if (cloneDirError != null) {
+                        Text(
+                            text = cloneDirError!!,
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 11.sp,
+                                color = bc.error,
+                            )
+                        )
+                    }
+
+                    Spacer(Modifier.height(8.dp))
+
+                    BPrimaryButton(
+                        title = "Continue",
+                        onClick = onContinueAfterLogin,
                     )
                 }
             }
