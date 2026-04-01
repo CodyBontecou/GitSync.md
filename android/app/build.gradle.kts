@@ -8,6 +8,19 @@ plugins {
     alias(libs.plugins.play.publisher)
 }
 
+val keystoreProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) {
+        f.inputStream().use(::load)
+    }
+}
+
+val secretValue: (String) -> String? = { key ->
+    System.getenv(key)
+        ?: providers.gradleProperty(key).orNull
+        ?: keystoreProps.getProperty(key)
+}
+
 android {
     namespace = "com.bontecou.syncmd"
     compileSdk = 35
@@ -25,21 +38,10 @@ android {
         }
     }
     
-    val localProps = Properties().apply {
-        val f = rootProject.file("local.properties")
-        if (f.exists()) {
-            f.inputStream().use(::load)
-        }
-    }
-
-    val releaseStoreFilePath =
-        System.getenv("RELEASE_STORE_FILE") ?: localProps.getProperty("RELEASE_STORE_FILE")
-    val releaseStorePassword =
-        System.getenv("RELEASE_STORE_PASSWORD") ?: localProps.getProperty("RELEASE_STORE_PASSWORD")
-    val releaseKeyAlias =
-        System.getenv("RELEASE_KEY_ALIAS") ?: localProps.getProperty("RELEASE_KEY_ALIAS")
-    val releaseKeyPassword =
-        System.getenv("RELEASE_KEY_PASSWORD") ?: localProps.getProperty("RELEASE_KEY_PASSWORD")
+    val releaseStoreFilePath = secretValue("RELEASE_STORE_FILE")
+    val releaseStorePassword = secretValue("RELEASE_STORE_PASSWORD")
+    val releaseKeyAlias = secretValue("RELEASE_KEY_ALIAS")
+    val releaseKeyPassword = secretValue("RELEASE_KEY_PASSWORD")
 
     signingConfigs {
         create("release") {
@@ -63,7 +65,7 @@ android {
                 signingConfig = signingConfigs.getByName("release")
             } else {
                 logger.warn(
-                    "Release signing not configured. Set RELEASE_STORE_FILE, RELEASE_STORE_PASSWORD, RELEASE_KEY_ALIAS, RELEASE_KEY_PASSWORD (local.properties or env)."
+                    "Release signing not configured. Set RELEASE_STORE_FILE, RELEASE_STORE_PASSWORD, RELEASE_KEY_ALIAS, RELEASE_KEY_PASSWORD (env, gradle.properties, or keystore.properties)."
                 )
             }
 
@@ -110,8 +112,7 @@ android {
 
 play {
     val configuredPath =
-        System.getenv("PLAY_CONSOLE_KEY_PATH")
-            ?: providers.gradleProperty("PLAY_CONSOLE_KEY_PATH").orNull
+        secretValue("PLAY_CONSOLE_KEY_PATH")
             ?: "${System.getProperty("user.home")}/.config/play-console/play-publisher-crested-drive-492000-u7.json"
 
     val serviceKeyFile = file(configuredPath)

@@ -16,6 +16,7 @@ core/build/
 # Keystore / Play credentials
 *.jks
 *.keystore
+/keystore.properties
 play-console-key.json
 app/play-console-key.json
 
