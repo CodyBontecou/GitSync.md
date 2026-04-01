@@ -42,6 +42,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -184,8 +185,6 @@ fun ReposScreen(
                     BEmptyState(
                         title       = "No Repositories",
                         subtitle    = "Add a GitHub repository to start syncing your files.",
-                        note        = "1 FREE REPO · UNLOCK MORE WITH PRO",
-                        onNoteClick = onNavigateToPaywall,
                         actionTitle = "Add Repository",
                         onAction    = onAddRepo,
                     )
@@ -215,11 +214,33 @@ fun ReposScreen(
             }
 
             // ── ADD REPOSITORY dashed button (matches iOS exactly) ────────
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(bc.bg)
             ) {
+                if (allRepos.isEmpty()) {
+                    Text(
+                        text = "1 FREE REPO · UNLOCK MORE WITH PRO",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 11.sp,
+                            letterSpacing = 1.5.sp,
+                            color = bc.accent,
+                        ),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                                onClick = onNavigateToPaywall,
+                            )
+                            .padding(start = 20.dp, top = 6.dp, bottom = 10.dp),
+                    )
+                }
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
