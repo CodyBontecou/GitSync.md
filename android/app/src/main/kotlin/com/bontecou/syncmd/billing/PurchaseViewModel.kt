@@ -39,6 +39,9 @@ class PurchaseViewModel @Inject constructor(
     fun recordRepoAdded(identifier: String): Boolean =
         purchaseManager.recordRepoAdded(identifier)
 
+    fun seenRepoIdentifiers(): Set<String> =
+        purchaseManager.seenRepoIdentifiers()
+
     // ── Async operations ───────────────────────────────────────────────────
 
     fun refreshStatus() {

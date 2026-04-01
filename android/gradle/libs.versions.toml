@@ -6,8 +6,9 @@ coroutines = "1.8.1"
 # Android
 androidGradlePlugin = "8.2.0"
 androidMinSdk = "28"
-androidTargetSdk = "34"
-androidCompileSdk = "34"
+androidTargetSdk = "35"
+androidCompileSdk = "35"
+playPublisher = "3.12.1"
 
 # Jetpack
 androidx-core = "1.12.0"
@@ -30,7 +31,7 @@ material = "1.11.0"
 gson = "2.10.1"
 
 # JGit (pure-Java git — no system git binary required on device)
-jgit = "6.7.0.202309050840-r"
+jgit = "6.10.0.202406032230-r"
 
 # Browser (Custom Tabs for OAuth)
 androidx-browser = "1.8.0"
@@ -109,3 +110,4 @@ kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+play-publisher = { id = "com.github.triplet.play", version.ref = "playPublisher" }

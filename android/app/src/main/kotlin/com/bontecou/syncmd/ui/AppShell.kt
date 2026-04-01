@@ -105,8 +105,6 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
     LaunchedEffect(isUnlocked) {
         val pending = pendingRepoToClone
         if (isUnlocked && pending != null) {
-            // Record the repo identifier now that purchase is confirmed.
-            purchaseViewModel.recordRepoAdded(pending.trim().lowercase())
             pendingRepoToClone = null
             val encoded = Uri.encode(pending)
             navController.navigate("${Routes.CLONE}/$encoded") {
@@ -129,12 +127,14 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             // ── Repo list (home) ──────────────────────────────────────────
             composable(Routes.REPOS) {
                 val allRepos by settingsViewModel.allRepositories.collectAsState()
+                val seenRepoIdentifiers = purchaseViewModel.seenRepoIdentifiers()
 
                 ReposScreen(
-                    settingsViewModel  = settingsViewModel,
-                    githubViewModel    = githubViewModel,
-                    onRepoRemoved      = { settingsViewModel.removeRepository(it) },
-                    onRepoSelected     = { repoPath ->
+                    settingsViewModel   = settingsViewModel,
+                    githubViewModel     = githubViewModel,
+                    seenRepoIdentifiers = seenRepoIdentifiers,
+                    onRepoRemoved       = { settingsViewModel.removeRepository(it) },
+                    onRepoSelected      = { repoPath ->
                         val resolvedPath = if (repoPath.startsWith("github://")) {
                             val relPath = repoPath.removePrefix("github://")
                             context.filesDir.absolutePath + "/repos/" + relPath
@@ -143,6 +143,25 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         }
                         settingsViewModel.setRepositoryPath(resolvedPath)
                         navController.navigate(Routes.VAULT)
+                    },
+                    onGhostRepoSelected = { repoFullName ->
+                        fun navigateToClone() {
+                            val encoded = Uri.encode(repoFullName)
+                            navController.navigate("${Routes.CLONE}/$encoded")
+                        }
+
+                        if (allRepos.size >= PurchaseManager.FREE_REPO_LIMIT) {
+                            scope.launch {
+                                purchaseViewModel.refreshStatus()
+                                if (purchaseViewModel.isUnlocked.value) {
+                                    navigateToClone()
+                                } else {
+                                    navController.navigate(Routes.PAYWALL)
+                                }
+                            }
+                        } else {
+                            navigateToClone()
+                        }
                     },
                     onNavigateToPaywall = {
                         navController.navigate(Routes.PAYWALL)
@@ -244,8 +263,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                             pendingRepoToClone = repo.fullName
                             navController.navigate(Routes.PAYWALL)
                         } else {
-                            // Known repo or free slot still available — record and clone.
-                            purchaseViewModel.recordRepoAdded(identifier)
+                            // Known repo or free slot still available — clone directly.
                             val encoded = Uri.encode(repo.fullName)
                             navController.navigate("${Routes.CLONE}/$encoded")
                         }
@@ -263,6 +281,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 CloneScreen(
                     repoFullName      = repoFullName,
                     settingsViewModel = settingsViewModel,
+                    onCloneSuccess    = { fullName ->
+                        purchaseViewModel.recordRepoAdded(fullName.trim().lowercase())
+                    },
                     onSuccess         = {
                         navController.navigate(Routes.REPOS) {
                             popUpTo(Routes.REPOS) { inclusive = false }

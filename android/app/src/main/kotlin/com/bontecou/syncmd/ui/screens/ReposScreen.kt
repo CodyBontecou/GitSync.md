@@ -52,6 +52,7 @@ import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BEmptyState
+import com.bontecou.syncmd.ui.theme.BSectionHeader
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.SavedRepository
@@ -71,16 +72,24 @@ import kotlin.math.roundToInt
 fun ReposScreen(
     settingsViewModel: SettingsViewModel,
     githubViewModel: GitHubViewModel,
+    seenRepoIdentifiers: Set<String>,
     onRepoSelected: (String) -> Unit,
     onRepoRemoved: (String) -> Unit,
+    onGhostRepoSelected: (String) -> Unit,
     onAddRepo: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPaywall: () -> Unit,
 ) {
-    val bc              = LocalBrutalColors.current
-    val allRepos        by settingsViewModel.allRepositories.collectAsState()
-    val selectedRepo    by settingsViewModel.selectedRepository.collectAsState()
-    val isLoggedIn      by githubViewModel.isLoggedIn.collectAsState()
+    val bc           = LocalBrutalColors.current
+    val allRepos     by settingsViewModel.allRepositories.collectAsState()
+    val selectedRepo by settingsViewModel.selectedRepository.collectAsState()
+    val isLoggedIn   by githubViewModel.isLoggedIn.collectAsState()
+
+    val activeRepoIdentifiers = allRepos.mapNotNull(::savedRepoIdentifier).toSet()
+    val ghostRepoIdentifiers = seenRepoIdentifiers
+        .mapNotNull(::normaliseSeenRepoIdentifier)
+        .filterNot { activeRepoIdentifiers.contains(it) }
+        .sorted()
 
     Box(
         modifier = Modifier
@@ -174,7 +183,7 @@ fun ReposScreen(
             }
 
             // ── Content ───────────────────────────────────────────────────
-            if (allRepos.isEmpty()) {
+            if (allRepos.isEmpty() && ghostRepoIdentifiers.isEmpty()) {
                 // Empty state
                 Box(
                     modifier = Modifier
@@ -209,6 +218,18 @@ fun ReposScreen(
                             onClick    = { onRepoSelected(repo.path) },
                             onRemove   = { onRepoRemoved(repo.path) },
                         )
+                    }
+
+                    if (ghostRepoIdentifiers.isNotEmpty()) {
+                        item {
+                            BSectionHeader(title = "Previously Cloned")
+                        }
+                        items(ghostRepoIdentifiers, key = { it }) { identifier ->
+                            GhostRepoCard(
+                                identifier = identifier,
+                                onClick = { onGhostRepoSelected(identifier) },
+                            )
+                        }
                     }
                 }
             }
@@ -280,6 +301,93 @@ fun ReposScreen(
                     )
                     Spacer(Modifier.weight(1f))
                 }
+            }
+        }
+    }
+}
+
+// ─── Ghost Repo Card (previously cloned) ─────────────────────────────────────
+@Composable
+private fun GhostRepoCard(
+    identifier: String,
+    onClick: () -> Unit,
+) {
+    val bc = LocalBrutalColors.current
+    val identity = parseRepoIdentity(identifier)
+    val repoName = identity?.repo ?: identifier.substringAfterLast("/")
+
+    BCard(
+        modifier = Modifier.clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() },
+            onClick = onClick,
+        )
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(3.dp),
+                ) {
+                    Text(
+                        text = repoName,
+                        style = TextStyle(
+                            fontFamily = FontFamily.Default,
+                            fontWeight = FontWeight.Black,
+                            fontSize = 17.sp,
+                            color = bc.text,
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    identity?.owner?.let { owner ->
+                        Text(
+                            text = owner.uppercase(),
+                            style = TextStyle(
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 12.sp,
+                                letterSpacing = 1.sp,
+                                color = bc.textMid,
+                            )
+                        )
+                    }
+                }
+
+                Text(
+                    text = "→",
+                    style = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 14.sp,
+                        color = bc.textFaint,
+                    )
+                )
+            }
+
+            BDivider()
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                BBadge(text = "PREVIOUSLY CLONED", style = BBadgeStyle.DEFAULT)
+                Text(
+                    text = "Tap to re-clone",
+                    style = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 12.sp,
+                        color = bc.textFaint,
+                    )
+                )
             }
         }
     }
@@ -571,31 +679,74 @@ private fun RepoCard(
 
 // ─── Display helpers ─────────────────────────────────────────────────────────
 
-/**
- * Returns the "owner" portion for the card subtitle.
- *
- * Handles both storage formats:
- *  - legacy  : path = "github://owner/repo"  → "OWNER"
- *  - current : alias = "owner/repo"          → "OWNER"
- */
-private fun repoOwnerHint(repo: SavedRepository): String {
-    if (repo.alias.contains("/")) {
-        return repo.alias.substringBefore("/").uppercase()
-    }
-    return repo.path
-        .removePrefix("github://")
-        .substringBefore("/")
-        .uppercase()
+private data class RepoIdentity(val owner: String, val repo: String)
+
+/** Returns a normalised "owner/repo" identifier for a saved repo when available. */
+private fun savedRepoIdentifier(repo: SavedRepository): String? {
+    return normaliseSeenRepoIdentifier(repo.alias)
+        ?: normaliseSeenRepoIdentifier(repo.path)
 }
 
 /**
- * Returns the short "owner/repo" string for the path row.
+ * Normalises repo identifiers from all known formats into "owner/repo".
  *
- * Handles both storage formats:
- *  - legacy  : path = "github://owner/repo"  → "owner/repo"
- *  - current : alias = "owner/repo"          → "owner/repo"
+ * Accepted inputs:
+ *  - "owner/repo"
+ *  - "https://github.com/owner/repo" (or .git)
+ *  - "github://owner/repo"
+ *  - "git@github.com:owner/repo(.git)"
+ *  - Android local clone paths containing "/repos/owner/repo"
  */
+private fun normaliseSeenRepoIdentifier(raw: String): String? {
+    val trimmed = raw.trim().removeSuffix("/")
+    if (trimmed.isBlank()) return null
+
+    fun toOwnerRepo(pathLike: String): String? {
+        val clean = pathLike.trim().trim('/').removeSuffix(".git")
+        val parts = clean.split('/').filter { it.isNotBlank() }
+        if (parts.size < 2) return null
+        return "${parts[0].lowercase()}/${parts[1].lowercase()}"
+    }
+
+    val githubScheme = Regex("^github://(.+)$", RegexOption.IGNORE_CASE)
+    githubScheme.matchEntire(trimmed)?.groupValues?.getOrNull(1)?.let { return toOwnerRepo(it) }
+
+    val ssh = Regex("^git@github\\.com:(.+)$", RegexOption.IGNORE_CASE)
+    ssh.matchEntire(trimmed)?.groupValues?.getOrNull(1)?.let { return toOwnerRepo(it) }
+
+    val https = Regex("^https?://github\\.com/(.+)$", RegexOption.IGNORE_CASE)
+    https.matchEntire(trimmed)?.groupValues?.getOrNull(1)?.let { return toOwnerRepo(it) }
+
+    if (trimmed.contains("/repos/")) {
+        val afterRepos = trimmed.substringAfter("/repos/", "")
+        toOwnerRepo(afterRepos)?.let { return it }
+    }
+
+    if (trimmed.matches(Regex("^[^/]+/[^/]+$"))) {
+        return toOwnerRepo(trimmed)
+    }
+
+    return null
+}
+
+private fun parseRepoIdentity(identifier: String): RepoIdentity? {
+    val normalised = normaliseSeenRepoIdentifier(identifier) ?: return null
+    val owner = normalised.substringBefore("/")
+    val repo = normalised.substringAfter("/")
+    if (owner.isBlank() || repo.isBlank()) return null
+    return RepoIdentity(owner = owner, repo = repo)
+}
+
+/** Returns the "owner" portion for the active repo card subtitle. */
+private fun repoOwnerHint(repo: SavedRepository): String {
+    return parseRepoIdentity(repo.alias)?.owner?.uppercase()
+        ?: parseRepoIdentity(repo.path)?.owner?.uppercase()
+        ?: repo.path.removePrefix("github://").substringBefore("/").uppercase()
+}
+
+/** Returns the short "owner/repo" string for the active repo card path row. */
 private fun repoDisplayPath(repo: SavedRepository): String {
     if (repo.alias.contains("/")) return repo.alias
-    return repo.path.removePrefix("github://")
+    return normaliseSeenRepoIdentifier(repo.path)
+        ?: repo.path.removePrefix("github://")
 }

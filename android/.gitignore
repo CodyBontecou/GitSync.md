@@ -13,9 +13,11 @@
 app/build/
 core/build/
 
-# Keystore
+# Keystore / Play credentials
 *.jks
 *.keystore
+play-console-key.json
+app/play-console-key.json
 
 # APKs
 *.apk

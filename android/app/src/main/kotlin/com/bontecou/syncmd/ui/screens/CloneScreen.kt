@@ -45,6 +45,7 @@ import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 fun CloneScreen(
     repoFullName: String,
     settingsViewModel: SettingsViewModel,
+    onCloneSuccess: (String) -> Unit,
     onSuccess: () -> Unit,
     onCancel: () -> Unit,
     viewModel: CloneViewModel = hiltViewModel(),
@@ -62,6 +63,7 @@ fun CloneScreen(
         if (state is CloneViewModel.CloneState.Success) {
             val localPath = (state as CloneViewModel.CloneState.Success).localPath
             val repoName  = repoFullName.substringAfterLast("/")
+            onCloneSuccess(repoFullName)
             settingsViewModel.addRepository(
                 name  = repoName,
                 path  = localPath,

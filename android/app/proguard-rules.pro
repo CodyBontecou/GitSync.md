@@ -67,6 +67,13 @@
 -allowaccessmodification
 -dontpreverify
 
+# JGit references optional JVM-only APIs not present on Android
+-dontwarn java.lang.ProcessHandle
+-dontwarn java.lang.management.**
+-dontwarn javax.management.**
+-dontwarn org.ietf.jgss.**
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
 # Logging
 -assumenosideeffects class android.util.Log {
     public static *** d(...);

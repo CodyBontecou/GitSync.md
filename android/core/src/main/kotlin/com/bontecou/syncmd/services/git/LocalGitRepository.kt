@@ -48,9 +48,9 @@ class LocalGitRepository : GitRepository {
 
             Result.success(Unit)
         } catch (e: GitAPIException) {
-            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed"))
+            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
         } catch (e: Exception) {
-            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed"))
+            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
         }
     }
 
@@ -114,7 +114,7 @@ class LocalGitRepository : GitRepository {
                 Result.success(PushResult(success = true, message = "Pushed successfully"))
             }
         } catch (e: GitAPIException) {
-            Result.failure(Exception(e.message?.sanitize() ?: "Push failed"))
+            Result.failure(Exception(e.message?.sanitize() ?: "Push failed", e))
         } catch (e: Exception) {
             Result.failure(e)
         }
