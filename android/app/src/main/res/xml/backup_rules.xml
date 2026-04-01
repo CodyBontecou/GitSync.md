@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android Auto Backup rules (API 23–30).
+
+  We MUST back up syncmd_purchase_prefs.xml so that:
+    1. The "seenRepoIds" set (repo identifiers ever added) survives uninstall/reinstall,
+       preventing free-tier bypass by deleting and re-adding the same repo.
+    2. The "cachedIAPUnlock" flag is restored on reinstall, so paid users don't hit
+       the paywall on a fresh install.
+
+  We explicitly EXCLUDE the main app prefs (sync_md_prefs.xml) to avoid restoring
+  stale auth tokens, selected-repo paths, or repository lists that may no longer
+  be valid on the reinstalled device.
+-->
 <full-backup-content>
-    <include domain="database" path="." />
-    <include domain="sharedpref" path="." />
+    <!-- Purchase state and seen-repo IDs — MUST survive reinstall -->
+    <include domain="sharedpref" path="syncmd_purchase_prefs.xml" />
+
+    <!-- Exclude auth tokens and volatile app state -->
+    <exclude domain="sharedpref" path="sync_md_prefs.xml" />
 </full-backup-content>

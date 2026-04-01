@@ -97,6 +97,9 @@ dependencies {
     // Browser (Custom Tabs for GitHub OAuth)
     implementation(libs.androidx.browser)
 
+    // Google Play Billing
+    implementation(libs.billing)
+
     // Coroutines
     implementation(libs.coroutines.android)
     
@@ -107,6 +110,10 @@ dependencies {
     
     // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(composeBom))
