@@ -91,11 +91,11 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
     // After OAuth callback — auto-navigate from Login → RepoPicker
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
-            val back = navController.previousBackStackEntry?.destination?.route
-            if (back == Routes.LOGIN) {
+            val current = navController.currentBackStackEntry?.destination?.route
+            if (current == Routes.LOGIN) {
                 githubViewModel.onOAuthSuccess()
-                navController.navigate(Routes.REPO_PICKER) {
-                    popUpTo(Routes.LOGIN) { inclusive = true }
+                navController.navigate(Routes.REPOS) {
+                    popUpTo(Routes.REPOS) { inclusive = false }
                 }
             }
         }
@@ -143,6 +143,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         }
                         settingsViewModel.setRepositoryPath(resolvedPath)
                         navController.navigate(Routes.VAULT)
+                    },
+                    onNavigateToPaywall = {
+                        navController.navigate(Routes.PAYWALL)
                     },
                     onAddRepo = {
                         // ── Gate 1 ──────────────────────────────────────────────────────
@@ -220,8 +223,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             // ── GitHub OAuth login ────────────────────────────────────────
             composable(Routes.LOGIN) {
                 LoginScreen(
-                    viewModel      = githubViewModel,
-                    onNavigateBack = { navController.popBackStack() },
+                    viewModel         = githubViewModel,
+                    settingsViewModel = settingsViewModel,
+                    onNavigateBack    = { navController.popBackStack() },
                 )
             }
 

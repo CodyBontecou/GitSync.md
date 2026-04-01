@@ -74,6 +74,7 @@ fun ReposScreen(
     onRepoRemoved: (String) -> Unit,
     onAddRepo: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToPaywall: () -> Unit,
 ) {
     val bc              = LocalBrutalColors.current
     val allRepos        by settingsViewModel.allRepositories.collectAsState()
@@ -203,7 +204,9 @@ fun ReposScreen(
                 ) {
                     BEmptyState(
                         title       = "No Repositories",
-                        subtitle    = "Add a GitHub repository to\nstart syncing your files.",
+                        subtitle    = "Add a GitHub repository to start syncing your files.",
+                        note        = "1 FREE REPO · UNLOCK MORE WITH PRO",
+                        onNoteClick = onNavigateToPaywall,
                         actionTitle = "Add Repository",
                         onAction    = onAddRepo,
                     )

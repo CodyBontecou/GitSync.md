@@ -80,11 +80,24 @@ fun RepositoryEmptyState(
 
             // Subtitle
             Text(
-                text = "Connect a GitHub repository or add a local Git repo to start syncing.",
+                text = "Connect a GitHub repository to start syncing.",
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
                     fontSize = 15.sp,
                     color = bc.textMid,
+                ),
+                modifier = Modifier.padding(bottom = 12.dp),
+            )
+
+            // Free tier note
+            Text(
+                text = "1 FREE REPO · UNLOCK MORE WITH PRO",
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 11.sp,
+                    letterSpacing = 1.5.sp,
+                    color = bc.accent,
                 ),
                 modifier = Modifier.padding(bottom = 32.dp),
             )

@@ -51,6 +51,8 @@ import com.bontecou.syncmd.ui.theme.BPrimaryButton
 import com.bontecou.syncmd.ui.theme.BSecondaryButton
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
+import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
+import androidx.compose.foundation.text.KeyboardActions
 
 /**
  * Full-screen GitHub sign-in screen.
@@ -62,18 +64,24 @@ import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 @Composable
 fun LoginScreen(
     viewModel: GitHubViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel? = null,
     @Suppress("UNUSED_PARAMETER") onNavigateBack: (() -> Unit)? = null,
 ) {
-    val bc          = LocalBrutalColors.current
-    val context     = LocalContext.current
+    val bc           = LocalBrutalColors.current
+    val context      = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     val isLoading   by viewModel.isLoading.collectAsState()
     val error       by viewModel.error.collectAsState()
 
+    val appSettings = settingsViewModel?.appSettings?.collectAsState()?.value
+
     var showPatFlow  by remember { mutableStateOf(false) }
     var patToken     by remember { mutableStateOf("") }
     var patVisible   by remember { mutableStateOf(false) }
+    var cloneDirDraft by remember(appSettings?.defaultCloneDir) {
+        mutableStateOf(appSettings?.defaultCloneDir ?: "")
+    }
 
     Box(
         modifier = Modifier
@@ -359,6 +367,117 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         color   = bc.textFaint,
                         onClick = { /* no-op */ },
+                    )
+                }
+            }
+
+            // ── Clone directory (advanced / onboarding) ───────────────────
+            if (settingsViewModel != null && appSettings != null) {
+                Spacer(Modifier.height(8.dp))
+
+                // Divider with label
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 4.dp)
+                ) {
+                    BDivider(label = "advanced")
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text(
+                        text  = "CLONE DIRECTORY",
+                        style = TextStyle(
+                            fontFamily    = FontFamily.Monospace,
+                            fontWeight    = FontWeight.SemiBold,
+                            fontSize      = 12.sp,
+                            letterSpacing = 2.sp,
+                            color         = bc.textMid,
+                        )
+                    )
+
+                    val defaultPath = "${context.filesDir.absolutePath}/repos"
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(bc.surface)
+                            .border(1.dp, bc.border)
+                            .padding(horizontal = 12.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            if (cloneDirDraft.isEmpty()) {
+                                Text(
+                                    text  = defaultPath,
+                                    style = TextStyle(
+                                        fontFamily = FontFamily.Monospace,
+                                        fontSize   = 12.sp,
+                                        color      = bc.textFaint,
+                                    )
+                                )
+                            }
+                            androidx.compose.foundation.text.BasicTextField(
+                                value          = cloneDirDraft,
+                                onValueChange  = { cloneDirDraft = it },
+                                textStyle      = TextStyle(
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize   = 12.sp,
+                                    color      = bc.text,
+                                ),
+                                singleLine     = true,
+                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                                keyboardActions = KeyboardActions(
+                                    onDone = {
+                                        focusManager.clearFocus()
+                                        settingsViewModel.updateSettings(
+                                            appSettings.copy(defaultCloneDir = cloneDirDraft.trim())
+                                        )
+                                    }
+                                ),
+                                cursorBrush    = androidx.compose.ui.graphics.SolidColor(bc.text),
+                                modifier       = Modifier.fillMaxWidth(),
+                            )
+                        }
+                        if (cloneDirDraft.isNotBlank()) {
+                            Text(
+                                text  = "SAVE",
+                                style = TextStyle(
+                                    fontFamily    = FontFamily.Monospace,
+                                    fontWeight    = FontWeight.Bold,
+                                    fontSize      = 11.sp,
+                                    letterSpacing = 1.sp,
+                                    color         = bc.accent,
+                                ),
+                                modifier = Modifier
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember { MutableInteractionSource() },
+                                    ) {
+                                        focusManager.clearFocus()
+                                        settingsViewModel.updateSettings(
+                                            appSettings.copy(defaultCloneDir = cloneDirDraft.trim())
+                                        )
+                                    }
+                                    .padding(start = 12.dp),
+                            )
+                        }
+                    }
+
+                    Text(
+                        text  = "WHERE REPOS ARE CLONED ON THIS DEVICE · LEAVE BLANK FOR DEFAULT",
+                        style = TextStyle(
+                            fontFamily    = FontFamily.Monospace,
+                            fontSize      = 10.sp,
+                            letterSpacing = 0.5.sp,
+                            color         = bc.textFaint,
+                        )
                     )
                 }
             }

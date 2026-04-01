@@ -745,6 +745,8 @@ fun BProgressBar(
 fun BEmptyState(
     title: String,
     subtitle: String,
+    note: String? = null,
+    onNoteClick: (() -> Unit)? = null,
     actionTitle: String? = null,
     onAction: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
@@ -783,8 +785,29 @@ fun BEmptyState(
                 fontSize = 15.sp,
                 color = bc.textMid,
             ),
-            modifier = Modifier.padding(bottom = 28.dp),
+            modifier = Modifier.padding(bottom = if (note != null) 10.dp else 28.dp),
         )
+        if (note != null) {
+            Text(
+                text = note,
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 11.sp,
+                    letterSpacing = 1.5.sp,
+                    color = bc.accent,
+                ),
+                modifier = Modifier
+                    .padding(bottom = 28.dp)
+                    .then(
+                        if (onNoteClick != null) Modifier.clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = onNoteClick,
+                        ) else Modifier
+                    ),
+            )
+        }
         if (actionTitle != null && onAction != null) {
             BPrimaryButton(
                 title = actionTitle,

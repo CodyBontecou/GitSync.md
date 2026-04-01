@@ -4,6 +4,12 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.ui.graphics.SolidColor
 import com.bontecou.syncmd.ui.theme.BBadge
 import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
@@ -66,6 +74,7 @@ fun SettingsScreen(
     val activity = LocalContext.current as Activity
 
     val appSettings        by viewModel.appSettings.collectAsState()
+    val context            = LocalContext.current
     val allRepos           by viewModel.allRepositories.collectAsState()
     val isLoading          by viewModel.isLoading.collectAsState()
     val errorMessage       by viewModel.errorMessage.collectAsState()
@@ -253,6 +262,17 @@ fun SettingsScreen(
                 item {
                     BCard {
                         Column {
+                            // Clone directory
+                            CloneDirRow(
+                                currentValue = appSettings.defaultCloneDir,
+                                defaultPath  = "${context.filesDir.absolutePath}/repos",
+                                onSave       = { dir ->
+                                    viewModel.updateSettings(appSettings.copy(defaultCloneDir = dir))
+                                },
+                            )
+
+                            BDivider()
+
                             // Dark theme toggle
                             Row(
                                 modifier = Modifier
@@ -585,4 +605,185 @@ private fun unlockButtonLabel(
 @Composable
 private fun BDivider() {
     com.bontecou.syncmd.ui.theme.BDivider()
+}
+
+// ─── Clone Directory Row ──────────────────────────────────────────────────────
+
+@Composable
+private fun CloneDirRow(
+    currentValue: String,
+    defaultPath:  String,
+    onSave:       (String) -> Unit,
+) {
+    val bc          = LocalBrutalColors.current
+    val focusManager = LocalFocusManager.current
+
+    // Local draft — committed only when user presses Done or taps away
+    var draft    by remember(currentValue) { mutableStateOf(currentValue) }
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 13.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        // Header row — tap to expand / collapse
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                ) { expanded = !expanded },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text  = "Clone Directory",
+                    style = TextStyle(
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Medium,
+                        fontSize   = 16.sp,
+                        color      = bc.text,
+                    )
+                )
+                Text(
+                    text  = if (currentValue.isBlank()) "App internal storage (default)" else currentValue,
+                    style = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize   = 11.sp,
+                        color      = if (currentValue.isBlank()) bc.textFaint else bc.textMid,
+                    ),
+                    maxLines = 1,
+                )
+            }
+            Text(
+                text  = if (expanded) "▲" else "▼",
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontSize   = 12.sp,
+                    color      = bc.textMid,
+                )
+            )
+        }
+
+        // Expanded editor
+        if (expanded) {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                // Input field
+                BasicTextField(
+                    value          = draft,
+                    onValueChange  = { draft = it },
+                    textStyle      = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize   = 13.sp,
+                        color      = bc.text,
+                    ),
+                    singleLine     = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                            onSave(draft.trim())
+                            expanded = false
+                        }
+                    ),
+                    cursorBrush    = SolidColor(bc.text),
+                    modifier       = Modifier
+                        .fillMaxWidth()
+                        .background(bc.surface)
+                        .border(1.dp, bc.border)
+                        .padding(horizontal = 12.dp, vertical = 10.dp),
+                ) { inner ->
+                    Box {
+                        if (draft.isEmpty()) {
+                            Text(
+                                text  = defaultPath,
+                                style = TextStyle(
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize   = 13.sp,
+                                    color      = bc.textFaint,
+                                )
+                            )
+                        }
+                        inner()
+                    }
+                }
+
+                Text(
+                    text  = "ABSOLUTE PATH ON DEVICE · LEAVE BLANK FOR DEFAULT",
+                    style = TextStyle(
+                        fontFamily    = FontFamily.Monospace,
+                        fontSize      = 10.sp,
+                        letterSpacing = 0.5.sp,
+                        color         = bc.textFaint,
+                    )
+                )
+
+                // Save / Reset row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    // Save
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .border(1.dp, bc.text)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ) {
+                                focusManager.clearFocus()
+                                onSave(draft.trim())
+                                expanded = false
+                            }
+                            .padding(vertical = 10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text  = "SAVE",
+                            style = TextStyle(
+                                fontFamily    = FontFamily.Monospace,
+                                fontWeight    = FontWeight.Bold,
+                                fontSize      = 12.sp,
+                                letterSpacing = 1.sp,
+                                color         = bc.text,
+                            )
+                        )
+                    }
+                    // Reset to default
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .border(1.dp, bc.border)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ) {
+                                draft = ""
+                                focusManager.clearFocus()
+                                onSave("")
+                                expanded = false
+                            }
+                            .padding(vertical = 10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text  = "RESET",
+                            style = TextStyle(
+                                fontFamily    = FontFamily.Monospace,
+                                fontWeight    = FontWeight.Bold,
+                                fontSize      = 12.sp,
+                                letterSpacing = 1.sp,
+                                color         = bc.textMid,
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

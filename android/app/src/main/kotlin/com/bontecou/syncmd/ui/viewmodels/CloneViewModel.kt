@@ -1,6 +1,7 @@
 package com.bontecou.syncmd.ui.viewmodels
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bontecou.syncmd.data.models.Credentials
@@ -31,6 +32,9 @@ class CloneViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
+    private val sharedPrefs: SharedPreferences =
+        context.getSharedPreferences("sync_md_prefs", Context.MODE_PRIVATE)
+
     sealed class CloneState {
         /** No clone has been initiated yet. */
         object Idle : CloneState()
@@ -59,8 +63,10 @@ class CloneViewModel @Inject constructor(
             return
         }
 
-        // Mirrors iOS: context.filesDir/repos/owner/repo
-        val localPath = "${context.filesDir.absolutePath}/repos/$repoFullName"
+        // Use the user-configured clone base directory, falling back to app-private storage.
+        val customDir = sharedPrefs.getString("default_clone_dir", "")?.trim()?.takeIf { it.isNotBlank() }
+        val baseDir = customDir ?: "${context.filesDir.absolutePath}/repos"
+        val localPath = "$baseDir/$repoFullName"
         val cloneUrl  = "https://github.com/$repoFullName.git"
 
         viewModelScope.launch(Dispatchers.IO) {

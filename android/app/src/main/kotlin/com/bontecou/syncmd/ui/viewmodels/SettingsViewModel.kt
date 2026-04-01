@@ -19,7 +19,10 @@ data class AppSettings(
     val selectedRepository: String = "",
     val autoFetchInterval: Long = 3600000L, // 1 hour in ms
     val isDarkTheme: Boolean = false,
-    val showDebugInfo: Boolean = false
+    val showDebugInfo: Boolean = false,
+    /** Absolute path used as the base directory when cloning repos.
+     *  Empty means "use app-private internal storage" (the default). */
+    val defaultCloneDir: String = ""
 )
 
 /**
@@ -98,12 +101,14 @@ class SettingsViewModel @Inject constructor(
                 val autoFetchInterval = sharedPrefs.getLong("auto_fetch_interval", 3600000L)
                 val isDarkTheme = sharedPrefs.getBoolean("is_dark_theme", false)
                 val showDebugInfo = sharedPrefs.getBoolean("show_debug_info", false)
+                val defaultCloneDir = sharedPrefs.getString("default_clone_dir", "") ?: ""
                 
                 _appSettings.value = AppSettings(
                     selectedRepository = selected,
                     autoFetchInterval = autoFetchInterval,
                     isDarkTheme = isDarkTheme,
-                    showDebugInfo = showDebugInfo
+                    showDebugInfo = showDebugInfo,
+                    defaultCloneDir = defaultCloneDir,
                 )
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load settings: ${e.message}"
@@ -243,6 +248,7 @@ class SettingsViewModel @Inject constructor(
                     putLong("auto_fetch_interval", settings.autoFetchInterval)
                     putBoolean("is_dark_theme", settings.isDarkTheme)
                     putBoolean("show_debug_info", settings.showDebugInfo)
+                    putString("default_clone_dir", settings.defaultCloneDir)
                 }.apply()
 
                 _errorMessage.value = null
