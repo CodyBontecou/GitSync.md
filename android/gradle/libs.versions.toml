@@ -29,6 +29,9 @@ material = "1.11.0"
 # JSON
 gson = "2.10.1"
 
+# JGit (pure-Java git — no system git binary required on device)
+jgit = "6.7.0.202309050840-r"
+
 # Browser (Custom Tabs for OAuth)
 androidx-browser = "1.8.0"
 
@@ -78,6 +81,9 @@ com-google-android-material = { group = "com.google.android.material", name = "m
 
 # JSON
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+# JGit
+jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "jgit" }
 
 # Browser
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }

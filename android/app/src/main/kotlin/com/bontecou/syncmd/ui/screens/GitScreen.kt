@@ -98,7 +98,7 @@ fun GitScreen(
     val mergeState     by conflictVM.mergeState.collectAsState()
     val stashes        by historyVM.stashes.collectAsState()
     val tags           by historyVM.tags.collectAsState()
-    val isLoading      by diffVM.isLoading.collectAsState()
+    // isLoading intentionally omitted — diffVM loading state not surfaced in this screen yet
     val bc             = LocalBrutalColors.current
 
     var newBranchName  by remember { mutableStateOf("") }

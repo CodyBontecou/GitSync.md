@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.bontecou.syncmd.ui.screens.CloneScreen
 import com.bontecou.syncmd.ui.screens.GitScreen
 import com.bontecou.syncmd.ui.screens.LoginScreen
 import com.bontecou.syncmd.ui.screens.RepoPickerScreen
@@ -31,6 +35,8 @@ object Routes {
     const val SETTINGS     = "settings"
     const val LOGIN        = "login"
     const val REPO_PICKER  = "repo_picker"
+    /** clone/{repoFullName} — repoFullName is URI-encoded (e.g. "owner%2Frepo") */
+    const val CLONE        = "clone"
 }
 
 /**
@@ -150,16 +156,30 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 RepoPickerScreen(
                     viewModel      = githubViewModel,
                     onRepoSelected = { repo ->
-                        settingsViewModel.addRepository(
-                            name  = repo.name,
-                            path  = "github://${repo.fullName}",
-                            alias = repo.fullName,
-                        )
+                        // Navigate to CloneScreen to perform the actual git clone,
+                        // mirroring the iOS "Add & Clone Repository" flow.
+                        val encoded = Uri.encode(repo.fullName)
+                        navController.navigate("${Routes.CLONE}/$encoded")
+                    },
+                    onNavigateBack = { navController.popBackStack() },
+                )
+            }
+
+            // ── Clone (performed at add-time, matches iOS) ────────────────
+            composable(
+                route     = "${Routes.CLONE}/{repoFullName}",
+                arguments = listOf(navArgument("repoFullName") { type = NavType.StringType }),
+            ) { backStackEntry ->
+                val repoFullName = backStackEntry.arguments?.getString("repoFullName") ?: ""
+                CloneScreen(
+                    repoFullName      = repoFullName,
+                    settingsViewModel = settingsViewModel,
+                    onSuccess         = {
                         navController.navigate(Routes.REPOS) {
                             popUpTo(Routes.REPOS) { inclusive = false }
                         }
                     },
-                    onNavigateBack = { navController.popBackStack() },
+                    onCancel          = { navController.popBackStack() },
                 )
             }
         }

@@ -113,10 +113,10 @@ class RemoteService(
      * Note: Implementation deferred to Phase 7.2 (requires BranchRepository update)
      */
     suspend fun setUpstreamTracking(
-        repository: String,
-        localBranch: String,
-        remoteName: String,
-        remoteBranch: String
+        @Suppress("UNUSED_PARAMETER") repository: String,
+        @Suppress("UNUSED_PARAMETER") localBranch: String,
+        @Suppress("UNUSED_PARAMETER") remoteName: String,
+        @Suppress("UNUSED_PARAMETER") remoteBranch: String
     ): Result<Unit> = Result.success(Unit)
 
     /**
@@ -124,8 +124,8 @@ class RemoteService(
      * Note: Implementation deferred to Phase 7.2 (requires BranchRepository update)
      */
     suspend fun unsetUpstreamTracking(
-        repository: String,
-        branch: String
+        @Suppress("UNUSED_PARAMETER") repository: String,
+        @Suppress("UNUSED_PARAMETER") branch: String
     ): Result<Unit> = Result.success(Unit)
 
     /**

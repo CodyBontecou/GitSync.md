@@ -3,11 +3,13 @@ package com.bontecou.syncmd.di
 import com.bontecou.syncmd.domain.repository.BranchRepository
 import com.bontecou.syncmd.domain.repository.ConflictRepository
 import com.bontecou.syncmd.domain.repository.DiffRepository
+import com.bontecou.syncmd.domain.repository.GitRepository
 import com.bontecou.syncmd.domain.repository.HistoryRepository
 import com.bontecou.syncmd.domain.repository.PullRepository
 import com.bontecou.syncmd.services.git.LocalBranchRepository
 import com.bontecou.syncmd.services.git.LocalConflictRepository
 import com.bontecou.syncmd.services.git.LocalDiffRepository
+import com.bontecou.syncmd.services.git.LocalGitRepository
 import com.bontecou.syncmd.services.git.LocalHistoryRepository
 import com.bontecou.syncmd.services.git.LocalPullRepository
 import dagger.Module
@@ -23,6 +25,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Provides
+    @Singleton
+    fun provideGitRepository(): GitRepository {
+        return LocalGitRepository()
+    }
 
     @Provides
     @Singleton

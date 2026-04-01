@@ -16,6 +16,9 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.gson)
 
+    // JGit — pure-Java git implementation (no system git binary needed on Android)
+    implementation(libs.jgit)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.truth)

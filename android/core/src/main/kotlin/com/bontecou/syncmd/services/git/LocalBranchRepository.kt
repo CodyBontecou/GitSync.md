@@ -55,7 +55,7 @@ class LocalBranchRepository : BranchRepository {
     ): Result<Unit> {
         return try {
             val args = listOf("branch", name, startPoint)
-            val output = executeGit(repoPath, *args.toTypedArray())
+            executeGit(repoPath, *args.toTypedArray())
             
             if (checkGitSuccess(repoPath, *args.toTypedArray())) {
                 Result.success(Unit)
@@ -75,7 +75,7 @@ class LocalBranchRepository : BranchRepository {
                 return Result.failure(DirtyRepoException("Cannot switch branch with uncommitted changes"))
             }
             
-            val output = executeGit(repoPath, "checkout", name)
+            executeGit(repoPath, "checkout", name)
             if (checkGitSuccess(repoPath, "checkout", name)) {
                 Result.success(Unit)
             } else {
@@ -89,7 +89,7 @@ class LocalBranchRepository : BranchRepository {
     override suspend fun deleteBranch(repoPath: String, name: String, force: Boolean): Result<Unit> {
         return try {
             val flag = if (force) "-D" else "-d"
-            val output = executeGit(repoPath, "branch", flag, name)
+            executeGit(repoPath, "branch", flag, name)
             
             if (checkGitSuccess(repoPath, "branch", flag, name)) {
                 Result.success(Unit)

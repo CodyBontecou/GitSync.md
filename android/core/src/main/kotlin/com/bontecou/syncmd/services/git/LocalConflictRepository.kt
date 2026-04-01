@@ -19,7 +19,6 @@ class LocalConflictRepository : ConflictRepository {
             val isMergeInProgress = mergeHeadFile.exists()
             
             val sourceBranch = if (isMergeInProgress) {
-                val mergeHeadContent = mergeHeadFile.readText().trim()
                 // Try to get the branch name from MERGE_MSG
                 val mergeMsgFile = File(repoPath, ".git/MERGE_MSG")
                 if (mergeMsgFile.exists()) {
@@ -103,9 +102,9 @@ class LocalConflictRepository : ConflictRepository {
         return try {
             when (strategy) {
                 ConflictResolutionStrategy.OURS -> {
-                    val output = executeGit(repoPath, "checkout", "--ours", filePath)
+                    executeGit(repoPath, "checkout", "--ours", filePath)
                     if (checkGitSuccess(repoPath, "checkout", "--ours", filePath)) {
-                        val addOutput = executeGit(repoPath, "add", filePath)
+                        executeGit(repoPath, "add", filePath)
                         if (checkGitSuccess(repoPath, "add", filePath)) {
                             Result.success(ConflictResolution(filePath, strategy, true))
                         } else {
@@ -116,9 +115,9 @@ class LocalConflictRepository : ConflictRepository {
                     }
                 }
                 ConflictResolutionStrategy.THEIRS -> {
-                    val output = executeGit(repoPath, "checkout", "--theirs", filePath)
+                    executeGit(repoPath, "checkout", "--theirs", filePath)
                     if (checkGitSuccess(repoPath, "checkout", "--theirs", filePath)) {
-                        val addOutput = executeGit(repoPath, "add", filePath)
+                        executeGit(repoPath, "add", filePath)
                         if (checkGitSuccess(repoPath, "add", filePath)) {
                             Result.success(ConflictResolution(filePath, strategy, true))
                         } else {
@@ -133,7 +132,7 @@ class LocalConflictRepository : ConflictRepository {
                         val file = File(repoPath, filePath)
                         file.writeText(customContent)
                         
-                        val addOutput = executeGit(repoPath, "add", filePath)
+                        executeGit(repoPath, "add", filePath)
                         if (checkGitSuccess(repoPath, "add", filePath)) {
                             Result.success(ConflictResolution(filePath, strategy, true))
                         } else {
@@ -173,7 +172,7 @@ class LocalConflictRepository : ConflictRepository {
     override suspend fun completeMerge(repoPath: String, message: String): Result<Unit> {
         return try {
             // Use the existing MERGE_MSG or provide our own
-            val output = executeGit(repoPath, "commit", "--no-edit", "-m", message)
+            executeGit(repoPath, "commit", "--no-edit", "-m", message)
             
             if (checkGitSuccess(repoPath, "commit", "--no-edit", "-m", message)) {
                 Result.success(Unit)
@@ -187,7 +186,7 @@ class LocalConflictRepository : ConflictRepository {
 
     override suspend fun abortMerge(repoPath: String): Result<Unit> {
         return try {
-            val output = executeGit(repoPath, "merge", "--abort")
+            executeGit(repoPath, "merge", "--abort")
             
             if (checkGitSuccess(repoPath, "merge", "--abort")) {
                 Result.success(Unit)

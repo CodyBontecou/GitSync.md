@@ -62,7 +62,7 @@ import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 @Composable
 fun LoginScreen(
     viewModel: GitHubViewModel = hiltViewModel(),
-    onNavigateBack: (() -> Unit)? = null,
+    @Suppress("UNUSED_PARAMETER") onNavigateBack: (() -> Unit)? = null,
 ) {
     val bc          = LocalBrutalColors.current
     val context     = LocalContext.current

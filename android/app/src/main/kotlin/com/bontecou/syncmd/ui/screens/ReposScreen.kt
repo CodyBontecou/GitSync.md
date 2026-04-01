@@ -391,10 +391,9 @@ private fun RepoCard(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
-                            val ownerHint = repo.path
-                                .removePrefix("github://")
-                                .substringBefore("/")
-                                .uppercase()
+                            // Derive owner from alias ("owner/repo") when available,
+                            // or fall back to the legacy "github://owner/repo" path format.
+                            val ownerHint = repoOwnerHint(repo)
                             if (ownerHint.isNotBlank()) {
                                 Text(
                                     text = ownerHint,
@@ -473,7 +472,7 @@ private fun RepoCard(
                     ) {
                         Text(text = "⑂", style = TextStyle(fontSize = 12.sp, color = bc.textFaint))
                         Text(
-                            text = repo.path.removePrefix("github://"),
+                            text = repoDisplayPath(repo),
                             style = TextStyle(
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 12.sp,
@@ -565,4 +564,35 @@ private fun RepoCard(
             },
         )
     }
+}
+
+// ─── Display helpers ─────────────────────────────────────────────────────────
+
+/**
+ * Returns the "owner" portion for the card subtitle.
+ *
+ * Handles both storage formats:
+ *  - legacy  : path = "github://owner/repo"  → "OWNER"
+ *  - current : alias = "owner/repo"          → "OWNER"
+ */
+private fun repoOwnerHint(repo: SavedRepository): String {
+    if (repo.alias.contains("/")) {
+        return repo.alias.substringBefore("/").uppercase()
+    }
+    return repo.path
+        .removePrefix("github://")
+        .substringBefore("/")
+        .uppercase()
+}
+
+/**
+ * Returns the short "owner/repo" string for the path row.
+ *
+ * Handles both storage formats:
+ *  - legacy  : path = "github://owner/repo"  → "owner/repo"
+ *  - current : alias = "owner/repo"          → "owner/repo"
+ */
+private fun repoDisplayPath(repo: SavedRepository): String {
+    if (repo.alias.contains("/")) return repo.alias
+    return repo.path.removePrefix("github://")
 }

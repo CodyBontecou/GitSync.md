@@ -155,7 +155,7 @@ class LocalHistoryRepository : HistoryRepository {
 
     override suspend fun stashApply(repoPath: String, stashId: String): Result<Unit> {
         return try {
-            val output = executeGit(repoPath, "stash", "apply", stashId)
+            executeGit(repoPath, "stash", "apply", stashId)
             
             if (checkGitSuccess(repoPath, "stash", "apply", stashId)) {
                 Result.success(Unit)
@@ -169,7 +169,7 @@ class LocalHistoryRepository : HistoryRepository {
 
     override suspend fun stashPop(repoPath: String, stashId: String): Result<Unit> {
         return try {
-            val output = executeGit(repoPath, "stash", "pop", stashId)
+            executeGit(repoPath, "stash", "pop", stashId)
             
             if (checkGitSuccess(repoPath, "stash", "pop", stashId)) {
                 Result.success(Unit)
@@ -183,7 +183,7 @@ class LocalHistoryRepository : HistoryRepository {
 
     override suspend fun stashDrop(repoPath: String, stashId: String): Result<Unit> {
         return try {
-            val output = executeGit(repoPath, "stash", "drop", stashId)
+            executeGit(repoPath, "stash", "drop", stashId)
             
             if (checkGitSuccess(repoPath, "stash", "drop", stashId)) {
                 Result.success(Unit)
@@ -238,7 +238,7 @@ class LocalHistoryRepository : HistoryRepository {
                 listOf("tag", name, commitHash)
             }
             
-            val output = executeGit(repoPath, *args.toTypedArray())
+            executeGit(repoPath, *args.toTypedArray())
             
             if (checkGitSuccess(repoPath, *args.toTypedArray())) {
                 Result.success(Unit)
@@ -252,7 +252,7 @@ class LocalHistoryRepository : HistoryRepository {
 
     override suspend fun deleteTag(repoPath: String, name: String): Result<Unit> {
         return try {
-            val output = executeGit(repoPath, "tag", "-d", name)
+            executeGit(repoPath, "tag", "-d", name)
             
             if (checkGitSuccess(repoPath, "tag", "-d", name)) {
                 Result.success(Unit)

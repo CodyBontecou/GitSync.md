@@ -168,7 +168,7 @@ class LocalPullRepository : PullRepository {
 
     override suspend fun fetch(repoPath: String): Result<Unit> {
         return try {
-            val output = executeGit(repoPath, "fetch")
+            executeGit(repoPath, "fetch")
             // Fetch doesn't require clean working tree
             Result.success(Unit)
         } catch (e: Exception) {
