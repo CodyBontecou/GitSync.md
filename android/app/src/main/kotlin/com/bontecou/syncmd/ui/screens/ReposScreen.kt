@@ -520,10 +520,6 @@ private fun RepoCard(
                             }
                         }
 
-                        if (isSelected) {
-                            BBadge(text = "ACTIVE", style = BBadgeStyle.ACCENT)
-                        }
-
                         // ── ⋮ settings menu ───────────────────────────────
                         Box {
                             Box(

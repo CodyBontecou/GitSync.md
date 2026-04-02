@@ -119,7 +119,7 @@ fun SettingsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    Text("←", modifier = Modifier.offset(y = 3.dp), style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, platformStyle = PlatformTextStyle(includeFontPadding = false), color = bc.accent))
+                    Text("←", modifier = Modifier.offset(y = 2.dp), style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, platformStyle = PlatformTextStyle(includeFontPadding = false), color = bc.accent))
                     Text("BACK", style = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Medium, fontSize = 13.sp, platformStyle = PlatformTextStyle(includeFontPadding = false), letterSpacing = 1.sp, color = bc.accent))
                 }
                 Text("SETTINGS", style = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Black, fontSize = 14.sp, letterSpacing = 3.sp, color = bc.text))
