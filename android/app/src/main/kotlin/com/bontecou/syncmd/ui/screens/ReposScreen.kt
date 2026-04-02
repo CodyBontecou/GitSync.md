@@ -617,7 +617,7 @@ private fun RepoCard(
             },
             text = {
                 Text(
-                    text = "Remove \"$displayName\" from your saved repositories?\n\nThis only removes the local bookmark — your GitHub repo is not affected.",
+                    text = "Remove \"$displayName\"?\n\nThis removes it from your saved repositories and deletes its local files from this device. Your GitHub repo is not affected.",
                     style = TextStyle(
                         fontFamily = FontFamily.Monospace,
                         fontSize = 13.sp,

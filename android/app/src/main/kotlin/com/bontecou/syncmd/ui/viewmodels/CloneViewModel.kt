@@ -70,8 +70,15 @@ class CloneViewModel @Inject constructor(
             return
         }
 
-        // Clone location is always app-managed storage.
-        val baseDir = CloneStorage.defaultCloneBaseDir(context)
+        val baseDir = CloneStorage.obsidianCompatibleCloneBaseDir(context)
+        if (baseDir.isNullOrBlank()) {
+            _cloneState.value = CloneState.Error(
+                "Obsidian-compatible storage is unavailable.\n\nPlease reconnect storage and retry."
+            )
+            return
+        }
+
+        // Clone location is fixed to Android/media for Obsidian compatibility.
         val localPath = "$baseDir/$repoFullName"
         val cloneUrl = "https://github.com/$repoFullName.git"
         val debugLoggingEnabled = sharedPrefs.getBoolean("show_debug_info", false)
@@ -215,7 +222,7 @@ class CloneViewModel @Inject constructor(
     private fun friendlyCloneErrorMessage(error: Throwable?): String {
         val raw = error?.message ?: "Clone failed — please try again."
         if (!isStorageCompatibilityFailure(error)) return raw
-        return "$raw\n\nClone location is fixed to app storage for compatibility."
+        return "$raw\n\nClone location is fixed to Android/media app storage for Obsidian compatibility."
     }
 
     private fun buildMessageChain(error: Throwable): String =

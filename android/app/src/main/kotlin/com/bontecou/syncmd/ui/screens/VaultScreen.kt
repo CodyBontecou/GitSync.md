@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +46,9 @@ import com.bontecou.syncmd.ui.theme.BMonoRow
 import com.bontecou.syncmd.ui.theme.BSectionHeader
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.theme.badgeFg
+import com.bontecou.syncmd.ui.util.FilesAppLauncher
 import com.bontecou.syncmd.ui.viewmodels.PullViewModel
+import android.widget.Toast
 
 /**
  * Vault screen — matches iOS VaultView.
@@ -73,6 +76,7 @@ fun VaultScreen(
     val isLoading    by viewModel.isLoading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val bc           = LocalBrutalColors.current
+    val context      = LocalContext.current
 
     var showChangedFiles by remember { mutableStateOf(true) }
 
@@ -380,6 +384,31 @@ fun VaultScreen(
                     }
 
                     // ── Sync Actions ──────────────────────────────────────
+                    // Open in Files
+                    item {
+                        BCard(
+                            modifier = Modifier.clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ) {
+                                val opened = FilesAppLauncher.openFolder(context, repositoryPath)
+                                if (!opened) {
+                                    Toast.makeText(
+                                        context,
+                                        "Could not open this folder in Files.",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                }
+                            }
+                        ) {
+                            BActionRow(
+                                icon     = "📂",
+                                title    = "Open in Files",
+                                subtitle = "Open this repo folder in Android Files",
+                            )
+                        }
+                    }
+
                     // Pull
                     item {
                         BCard(

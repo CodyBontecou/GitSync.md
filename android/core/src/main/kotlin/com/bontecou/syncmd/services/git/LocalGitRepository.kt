@@ -13,6 +13,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import java.io.File
+import java.util.Locale
 
 /**
  * JGit-backed implementation of [GitRepository].
@@ -36,23 +37,32 @@ class LocalGitRepository(
         path: String,
         creds: Credentials,
     ): Result<Unit> = withContext(Dispatchers.IO) {
+        val target = File(path)
+        target.parentFile?.mkdirs()
+        val cp = creds.toJGit()
+
         try {
-            File(path).parentFile?.mkdirs()
-
-            val cp = creds.toJGit()
-
             Git.cloneRepository()
                 .setURI(url)
-                .setDirectory(File(path))
+                .setDirectory(target)
                 .setCredentialsProvider(cp)
                 .call()
                 .use { /* close the Git handle */ }
 
             Result.success(Unit)
-        } catch (e: GitAPIException) {
-            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
         } catch (e: Exception) {
-            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
+            // External/shared Android storage can reject symlink/executable metadata writes.
+            // Retry with no-checkout + core.symlinks=false and perform checkout separately.
+            if (isSymlinkPermissionFailure(e)) {
+                runCatching { target.deleteRecursively() }
+                return@withContext cloneWithoutSymlinks(url, target, cp)
+            }
+
+            if (e is GitAPIException) {
+                Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
+            } else {
+                Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
+            }
         }
     }
 
@@ -137,6 +147,194 @@ class LocalGitRepository(
             is Credentials.Pat   -> UsernamePasswordCredentialsProvider("x-access-token", token)
             is Credentials.Basic -> UsernamePasswordCredentialsProvider(username, password)
         }
+
+    private fun cloneWithoutSymlinks(
+        url: String,
+        target: File,
+        cp: UsernamePasswordCredentialsProvider,
+    ): Result<Unit> {
+        return try {
+            Git.cloneRepository()
+                .setURI(url)
+                .setDirectory(target)
+                .setCredentialsProvider(cp)
+                .setNoCheckout(true)
+                .call()
+                .use { /* close */ }
+
+            // Re-open repository after writing config so checkout uses fresh options.
+            Git.open(target).use { git ->
+                val config = git.repository.config
+                config.setBoolean("core", null, "symlinks", false)
+                config.setBoolean("core", null, "filemode", false)
+                config.save()
+                config.load()
+            }
+
+            Git.open(target).use { git ->
+                checkoutAfterNoCheckoutClone(git)
+            }
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
+        }
+    }
+
+    /**
+     * Complete checkout after a no-checkout clone with storage-safe settings.
+     *
+     * Some Android filesystems fail on `reset --hard` with EPERM, so we avoid reset
+     * and checkout HEAD/remote branch directly.
+     */
+    private fun checkoutAfterNoCheckoutClone(git: Git) {
+        val repo = git.repository
+
+        checkoutWithConflictRecovery(git, checkoutName = "HEAD").getOrElse { headCheckoutError ->
+            val fallbackBranches = buildCheckoutBranchCandidates(repo)
+            var lastError: Throwable = headCheckoutError
+
+            for (branch in fallbackBranches) {
+                val branchCheckout = runCatching {
+                    checkoutBranchOrTrackRemote(git = git, branch = branch)
+                }
+
+                val didCheckout = branchCheckout.getOrNull() == true
+                if (didCheckout) return
+                lastError = branchCheckout.exceptionOrNull() ?: lastError
+            }
+
+            throw lastError
+        }
+    }
+
+    private fun checkoutBranchOrTrackRemote(git: Git, branch: String): Boolean {
+        val repo = git.repository
+        val localRef = repo.findRef("refs/heads/$branch")
+
+        if (localRef != null) {
+            checkoutWithConflictRecovery(git, checkoutName = branch).getOrThrow()
+            return true
+        }
+
+        val remoteRef = "refs/remotes/origin/$branch"
+        if (repo.findRef(remoteRef) == null) return false
+
+        checkoutCreateTrackingBranchWithRecovery(git, branch = branch, remoteRef = remoteRef).getOrThrow()
+        return true
+    }
+
+    private fun checkoutWithConflictRecovery(git: Git, checkoutName: String): Result<Unit> {
+        return runCatching {
+            git.checkout()
+                .setName(checkoutName)
+                .setForced(true)
+                .call()
+            Unit
+        }.recoverCatching { firstError ->
+            val recovered = removeConflictingWorkingTreePath(git.repository, firstError)
+            if (!recovered) throw firstError
+
+            git.checkout()
+                .setName(checkoutName)
+                .setForced(true)
+                .call()
+            Unit
+        }
+    }
+
+    private fun checkoutCreateTrackingBranchWithRecovery(
+        git: Git,
+        branch: String,
+        remoteRef: String,
+    ): Result<Unit> {
+        return runCatching {
+            git.checkout()
+                .setCreateBranch(true)
+                .setName(branch)
+                .setStartPoint(remoteRef)
+                .setForced(true)
+                .call()
+            Unit
+        }.recoverCatching { firstError ->
+            val recovered = removeConflictingWorkingTreePath(git.repository, firstError)
+            if (!recovered) throw firstError
+
+            git.checkout()
+                .setCreateBranch(true)
+                .setName(branch)
+                .setStartPoint(remoteRef)
+                .setForced(true)
+                .call()
+            Unit
+        }
+    }
+
+    private fun removeConflictingWorkingTreePath(
+        gitRepository: org.eclipse.jgit.lib.Repository,
+        error: Throwable,
+    ): Boolean {
+        val relativePath = extractCannotDeletePath(error) ?: return false
+        val conflicted = File(gitRepository.workTree, relativePath)
+
+        return runCatching {
+            if (!conflicted.exists()) return@runCatching false
+            if (conflicted.isDirectory) conflicted.deleteRecursively() else conflicted.delete()
+        }.getOrDefault(false)
+    }
+
+    private fun extractCannotDeletePath(error: Throwable): String? {
+        val message = generateSequence(error) { it.cause }
+            .mapNotNull { it.message }
+            .joinToString(" | ")
+
+        val marker = "cannot delete file:"
+        val index = message.lowercase(Locale.US).indexOf(marker)
+        if (index == -1) return null
+
+        return message.substring(index + marker.length)
+            .substringBefore("|")
+            .trim()
+            .ifBlank { null }
+    }
+
+    private fun buildCheckoutBranchCandidates(gitRepository: org.eclipse.jgit.lib.Repository): List<String> {
+        val fromRemoteHead = gitRepository.findRef("refs/remotes/origin/HEAD")
+            ?.target
+            ?.name
+            ?.takeIf { it.startsWith("refs/remotes/origin/") }
+            ?.removePrefix("refs/remotes/origin/")
+
+        val fromCurrentHead = runCatching { gitRepository.fullBranch }.getOrNull()
+            ?.takeIf { it.startsWith("refs/heads/") }
+            ?.removePrefix("refs/heads/")
+
+        val localBranches = runCatching {
+            gitRepository.refDatabase.getRefsByPrefix("refs/heads/")
+                .map { it.name.removePrefix("refs/heads/") }
+                .filter { it.isNotBlank() }
+        }.getOrDefault(emptyList())
+
+        val remoteBranches = runCatching {
+            gitRepository.refDatabase.getRefsByPrefix("refs/remotes/origin/")
+                .map { it.name.removePrefix("refs/remotes/origin/") }
+                .filter { it.isNotBlank() && !it.equals("HEAD", ignoreCase = true) }
+        }.getOrDefault(emptyList())
+
+        return (listOfNotNull(fromRemoteHead, fromCurrentHead, "main", "master") + localBranches + remoteBranches)
+            .distinct()
+    }
+
+    private fun isSymlinkPermissionFailure(error: Throwable): Boolean {
+        val msg = generateSequence(error) { it.cause }
+            .mapNotNull { it.message }
+            .joinToString(" | ")
+            .lowercase()
+        return msg.contains("operation not permitted") ||
+            msg.contains("permission denied") ||
+            msg.contains("lnk_file") ||
+            msg.contains("symlink")
+    }
 
     private fun credentialsFromTokenProvider(): UsernamePasswordCredentialsProvider? {
         val token = tokenProvider?.invoke()?.takeIf { it.isNotBlank() } ?: return null

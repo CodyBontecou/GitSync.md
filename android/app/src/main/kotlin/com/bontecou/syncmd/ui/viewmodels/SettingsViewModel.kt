@@ -4,12 +4,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.storage.CloneStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -71,28 +74,51 @@ class SettingsViewModel @Inject constructor(
      * Load all settings and repositories from SharedPreferences.
      */
     fun loadSettings() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
             _errorMessage.value = null
 
             try {
                 // Load selected repository
                 val selected = sharedPrefs.getString("selected_repository", "") ?: ""
-                _selectedRepository.value = selected
 
                 // Load all repositories
                 val repos = mutableListOf<SavedRepository>()
                 val repoCount = sharedPrefs.getInt("repository_count", 0)
-                
+
                 for (i in 0 until repoCount) {
                     val name = sharedPrefs.getString("repo_${i}_name", null) ?: continue
                     val path = sharedPrefs.getString("repo_${i}_path", null) ?: continue
                     val alias = sharedPrefs.getString("repo_${i}_alias", "") ?: ""
                     val dateAdded = sharedPrefs.getLong("repo_${i}_date", System.currentTimeMillis())
-                    
+
                     repos.add(SavedRepository(name, path, alias, dateAdded))
                 }
-                _allRepositories.value = repos
+
+                // Migrate legacy internal-storage repos to user-visible app storage when possible.
+                val migratedRepos = repos.map { migrateRepoToPreferredStorage(it) }
+                val oldToNewPath = repos.zip(migratedRepos)
+                    .mapNotNull { (oldRepo, newRepo) ->
+                        if (oldRepo.path != newRepo.path) oldRepo.path to newRepo.path else null
+                    }
+                    .toMap()
+                val migratedSelected = oldToNewPath[selected] ?: selected
+
+                if (oldToNewPath.isNotEmpty()) {
+                    sharedPrefs.edit().apply {
+                        putString("selected_repository", migratedSelected)
+                        putInt("repository_count", migratedRepos.size)
+                        for ((i, repo) in migratedRepos.withIndex()) {
+                            putString("repo_${i}_name", repo.name)
+                            putString("repo_${i}_path", repo.path)
+                            putString("repo_${i}_alias", repo.alias)
+                            putLong("repo_${i}_date", repo.dateAdded)
+                        }
+                    }.apply()
+                }
+
+                _selectedRepository.value = migratedSelected
+                _allRepositories.value = migratedRepos
 
                 // Load app settings
                 val autoFetchInterval = sharedPrefs.getLong("auto_fetch_interval", 3600000L)
@@ -100,7 +126,7 @@ class SettingsViewModel @Inject constructor(
                 val showDebugInfo = sharedPrefs.getBoolean("show_debug_info", false)
 
                 _appSettings.value = AppSettings(
-                    selectedRepository = selected,
+                    selectedRepository = migratedSelected,
                     autoFetchInterval = autoFetchInterval,
                     isDarkTheme = isDarkTheme,
                     showDebugInfo = showDebugInfo,
@@ -185,10 +211,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * Remove a repository.
+     * Remove a repository and delete its local files when safe.
      */
     fun removeRepository(path: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val repos = _allRepositories.value.filter { it.path != path }
                 _allRepositories.value = repos
@@ -196,7 +222,7 @@ class SettingsViewModel @Inject constructor(
                 // Save to SharedPreferences
                 sharedPrefs.edit().apply {
                     putInt("repository_count", repos.size)
-                    
+
                     // Clear all entries first
                     for (i in 0..100) {
                         remove("repo_${i}_name")
@@ -204,7 +230,7 @@ class SettingsViewModel @Inject constructor(
                         remove("repo_${i}_alias")
                         remove("repo_${i}_date")
                     }
-                    
+
                     // Write new entries
                     for ((i, repo) in repos.withIndex()) {
                         putString("repo_${i}_name", repo.name)
@@ -223,6 +249,9 @@ class SettingsViewModel @Inject constructor(
                         sharedPrefs.edit().putString("selected_repository", "").apply()
                     }
                 }
+
+                // Best-effort cleanup of local clone directory.
+                removeLocalRepositoryFiles(path)
 
                 _errorMessage.value = null
             } catch (e: Exception) {
@@ -252,6 +281,59 @@ class SettingsViewModel @Inject constructor(
                 _errorMessage.value = "Failed to update settings: ${e.message}"
             }
         }
+    }
+
+    private fun migrateRepoToPreferredStorage(repo: SavedRepository): SavedRepository {
+        val legacyInternalBase = File(context.filesDir, "repos").absolutePath.trimEnd('/') + "/"
+        val path = repo.path
+        if (!path.startsWith(legacyInternalBase)) return repo
+
+        val relative = path.removePrefix(legacyInternalBase).trimStart('/')
+        if (relative.isBlank()) return repo
+
+        val obsidianBase = CloneStorage.obsidianCompatibleCloneBaseDir(context) ?: return repo
+        val target = File(obsidianBase, relative)
+        val source = File(path)
+
+        val migrated = runCatching {
+            if (!source.exists() || !source.isDirectory) return@runCatching false
+            if (!target.exists()) {
+                target.parentFile?.mkdirs()
+                source.copyRecursively(target, overwrite = false)
+            }
+            target.exists() && target.isDirectory
+        }.getOrDefault(false)
+
+        return if (migrated) repo.copy(path = target.absolutePath) else repo
+    }
+
+    private fun removeLocalRepositoryFiles(path: String) {
+        if (path.isBlank() || path.startsWith("github://", ignoreCase = true)) return
+
+        val repoDir = File(path)
+        if (!repoDir.exists() || !repoDir.isDirectory) return
+
+        val canonicalPath = runCatching { repoDir.canonicalPath }.getOrElse { repoDir.absolutePath }
+        if (!CloneStorage.isWithinAppWritableRoots(context, canonicalPath)) return
+
+        val managedRepoRoots = managedRepoRoots()
+        val isManagedRepoDir = managedRepoRoots.any { root ->
+            canonicalPath.startsWith("$root/")
+        }
+        if (!isManagedRepoDir) return
+
+        repoDir.deleteRecursively()
+    }
+
+    private fun managedRepoRoots(): List<String> {
+        return buildList {
+            add(File(CloneStorage.defaultCloneBaseDir(context)))
+            context.externalMediaDirs.firstOrNull()?.let { add(File(it, "repos")) }
+            context.getExternalFilesDir(null)?.let { add(File(it, "repos")) }
+            add(File(context.filesDir, "repos"))
+        }
+            .mapNotNull { runCatching { it.canonicalPath.trimEnd('/') }.getOrNull() }
+            .distinct()
     }
 
     /**

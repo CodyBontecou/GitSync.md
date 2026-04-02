@@ -216,7 +216,7 @@ fun RepositoryListDialog(
         AlertDialog(
             onDismissRequest = { showRemoveConfirm = false },
             title = { Text("Remove Repository") },
-            text = { Text("Are you sure you want to remove this repository?") },
+            text = { Text("Remove this repository and delete its local files from this device? Your GitHub repo is not affected.") },
             confirmButton = {
                 Button(
                     onClick = {
