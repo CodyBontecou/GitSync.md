@@ -1,7 +1,9 @@
 import SwiftUI
+import StoreKit
 
 struct ContentView: View {
     @Environment(AppState.self) private var state
+    @Environment(\.requestReview) private var requestReview
     @State private var showContent = false
 
     var body: some View {
@@ -17,6 +19,15 @@ struct ContentView: View {
         .onAppear {
             withAnimation(.easeOut(duration: 0.5)) {
                 showContent = true
+            }
+        }
+        .onChange(of: state.shouldRequestReview) { _, shouldRequest in
+            if shouldRequest {
+                state.shouldRequestReview = false
+                // Small delay so the clone-complete UI settles before the review prompt appears
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    requestReview()
+                }
             }
         }
     }

@@ -60,6 +60,11 @@ final class AppState {
 
     var isDemoMode: Bool = false
 
+    // MARK: - Review Prompt
+
+    /// Set to `true` after the user's first successful clone, so the UI can trigger a review request.
+    var shouldRequestReview: Bool = false
+
     // MARK: - Errors
 
     var lastError: String? = nil
@@ -1204,6 +1209,13 @@ final class AppState {
             clearCommitHistoryCache(for: repoID)
             detectChanges(repoID: repoID)
             syncProgress = String(localized: "Clone complete! (\(result.fileCount) files)")
+
+            // Request an App Store review after the first successful clone
+            let reviewKey = "hasRequestedReview"
+            if !UserDefaults.standard.bool(forKey: reviewKey) {
+                UserDefaults.standard.set(true, forKey: reviewKey)
+                shouldRequestReview = true
+            }
 
         } catch {
             showError(message: error.localizedDescription)
