@@ -7,47 +7,75 @@ import java.io.File
 
 /**
  * Opens Android's Files UI focused on a specific absolute folder path when possible.
+ *
+ * Strategy (tried in order until one succeeds):
+ *   1. ACTION_VIEW targeting known DocumentsUI packages — reliable on Pixel/AOSP
+ *   2. ACTION_VIEW without package targeting — lets the system resolve
+ *   3. ACTION_OPEN_DOCUMENT_TREE with EXTRA_INITIAL_URI (document URI) — opens picker
+ *      pre-navigated to the target folder
+ *   4. Bare ACTION_OPEN_DOCUMENT_TREE — last-resort, opens picker at root
  */
 object FilesAppLauncher {
     private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
 
+    /** Known DocumentsUI package names across AOSP/Google/OEM variants. */
+    private val DOCUMENTS_UI_PACKAGES = listOf(
+        "com.google.android.documentsui",
+        "com.android.documentsui",
+    )
+
     fun openFolder(context: Context, absolutePath: String): Boolean {
         val resolvedPath = resolveExistingPath(absolutePath)
         val docId = absolutePathToDocId(resolvedPath) ?: return false
-        val treeUri = DocumentsContract.buildTreeDocumentUri(EXTERNAL_STORAGE_AUTHORITY, docId)
         val docUri = DocumentsContract.buildDocumentUri(EXTERNAL_STORAGE_AUTHORITY, docId)
 
-        val intents = listOf(
-            Intent(Intent.ACTION_VIEW)
-                .setDataAndType(docUri, DocumentsContract.Document.MIME_TYPE_DIR),
-            Intent(Intent.ACTION_VIEW)
-                .setDataAndType(treeUri, DocumentsContract.Document.MIME_TYPE_DIR),
-            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                .putExtra(DocumentsContract.EXTRA_INITIAL_URI, treeUri),
-            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                .putExtra(DocumentsContract.EXTRA_INITIAL_URI, docUri),
-        )
-
-        intents.forEach { base ->
-            val intent = base
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                .addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-
-            runCatching { context.startActivity(intent) }
-                .onSuccess { return true }
+        // ── 1. ACTION_VIEW targeting known DocumentsUI packages ──────────
+        for (pkg in DOCUMENTS_UI_PACKAGES) {
+            val launched = tryLaunch(context) {
+                Intent(Intent.ACTION_VIEW)
+                    .setDataAndType(docUri, DocumentsContract.Document.MIME_TYPE_DIR)
+                    .setPackage(pkg)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            if (launched) return true
         }
 
-        // Last-resort fallback: open picker root (still better than failing silently).
-        return runCatching {
-            context.startActivity(
-                Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-            )
-            true
-        }.getOrDefault(false)
+        // ── 2. ACTION_VIEW without package — let the system decide ───────
+        val viewLaunched = tryLaunch(context) {
+            Intent(Intent.ACTION_VIEW)
+                .setDataAndType(docUri, DocumentsContract.Document.MIME_TYPE_DIR)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        if (viewLaunched) return true
+
+        // ── 3. ACTION_OPEN_DOCUMENT_TREE pre-navigated to the folder ─────
+        // Using a document URI (not tree URI) as EXTRA_INITIAL_URI gives the
+        // picker the best chance of navigating to the target directory.
+        val pickerLaunched = tryLaunch(context) {
+            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                .putExtra(DocumentsContract.EXTRA_INITIAL_URI, docUri)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        if (pickerLaunched) return true
+
+        // ── 4. Bare picker (better than failing silently) ────────────────
+        return tryLaunch(context) {
+            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
     }
+
+    /**
+     * Build an intent and attempt to start it. Returns true on success.
+     */
+    private inline fun tryLaunch(context: Context, buildIntent: () -> Intent): Boolean {
+        return runCatching { context.startActivity(buildIntent()) }
+            .isSuccess
+    }
+
+    // ── Path helpers ─────────────────────────────────────────────────────
 
     private fun resolveExistingPath(path: String): String {
         val clean = runCatching { File(path).canonicalPath }.getOrElse { path }
