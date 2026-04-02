@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
+import com.bontecou.syncmd.storage.CloneStorage
 import com.bontecou.syncmd.ui.screens.CloneScreen
 import com.bontecou.syncmd.ui.screens.GitScreen
 import com.bontecou.syncmd.ui.screens.LoginScreen
@@ -131,11 +132,12 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     settingsViewModel   = settingsViewModel,
                     githubViewModel     = githubViewModel,
                     seenRepoIdentifiers = seenRepoIdentifiers,
+                    isUnlocked          = isUnlocked,
                     onRepoRemoved       = { settingsViewModel.removeRepository(it) },
                     onRepoSelected      = { repoPath ->
                         val resolvedPath = if (repoPath.startsWith("github://")) {
                             val relPath = repoPath.removePrefix("github://")
-                            context.filesDir.absolutePath + "/repos/" + relPath
+                            CloneStorage.defaultCloneBaseDir(context) + "/" + relPath
                         } else {
                             repoPath
                         }

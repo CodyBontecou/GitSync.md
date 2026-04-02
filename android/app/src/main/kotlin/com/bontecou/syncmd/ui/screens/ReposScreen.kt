@@ -73,6 +73,7 @@ fun ReposScreen(
     settingsViewModel: SettingsViewModel,
     githubViewModel: GitHubViewModel,
     seenRepoIdentifiers: Set<String>,
+    isUnlocked: Boolean,
     onRepoSelected: (String) -> Unit,
     onRepoRemoved: (String) -> Unit,
     onGhostRepoSelected: (String) -> Unit,
@@ -240,7 +241,7 @@ fun ReposScreen(
                     .fillMaxWidth()
                     .background(bc.bg)
             ) {
-                if (allRepos.isEmpty()) {
+                if (allRepos.isEmpty() && !isUnlocked) {
                     Text(
                         text = "1 FREE REPO · UNLOCK MORE WITH PRO",
                         style = TextStyle(
