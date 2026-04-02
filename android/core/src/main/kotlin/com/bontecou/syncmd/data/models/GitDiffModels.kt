@@ -37,7 +37,8 @@ data class FileDiff(
     val status: DiffStatus,
     val hunks: List<DiffHunk>,
     val oldFileMode: String? = null,
-    val newFileMode: String? = null
+    val newFileMode: String? = null,
+    val isStaged: Boolean = false,  // true = file is in the git index (staged for commit)
 )
 
 /**

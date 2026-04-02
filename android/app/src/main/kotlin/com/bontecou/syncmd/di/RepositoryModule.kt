@@ -6,12 +6,14 @@ import com.bontecou.syncmd.domain.repository.DiffRepository
 import com.bontecou.syncmd.domain.repository.GitRepository
 import com.bontecou.syncmd.domain.repository.HistoryRepository
 import com.bontecou.syncmd.domain.repository.PullRepository
+import com.bontecou.syncmd.domain.repository.RemoteRepository
 import com.bontecou.syncmd.services.git.LocalBranchRepository
 import com.bontecou.syncmd.services.git.LocalConflictRepository
 import com.bontecou.syncmd.services.git.LocalDiffRepository
 import com.bontecou.syncmd.services.git.LocalGitRepository
 import com.bontecou.syncmd.services.git.LocalHistoryRepository
 import com.bontecou.syncmd.services.git.LocalPullRepository
+import com.bontecou.syncmd.services.git.LocalRemoteRepository
 import com.bontecou.syncmd.services.github.GitHubAuthManager
 import dagger.Module
 import dagger.Provides
@@ -61,5 +63,11 @@ object RepositoryModule {
     @Singleton
     fun provideHistoryRepository(): HistoryRepository {
         return LocalHistoryRepository()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteRepository(authManager: GitHubAuthManager): RemoteRepository {
+        return LocalRemoteRepository(tokenProvider = { authManager.getToken() })
     }
 }

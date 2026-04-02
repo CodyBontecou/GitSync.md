@@ -11,10 +11,13 @@ import com.bontecou.syncmd.domain.repository.DiffRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.ResetCommand
 import org.eclipse.jgit.diff.DiffFormatter
+import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.treewalk.EmptyTreeIterator
 import org.eclipse.jgit.treewalk.FileTreeIterator
+import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.treewalk.filter.PathFilter
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -31,8 +34,37 @@ class LocalDiffRepository : DiffRepository {
     override suspend fun getDiff(repoPath: String): Result<UnifiedDiffResult> =
         withContext(Dispatchers.IO) {
             try {
-                val diffText = captureDiff(repoPath, pathFilter = null)
-                buildResult(diffText)
+                Git.open(File(repoPath)).use { git ->
+                    // Use git.status() to know what is actually staged in the index
+                    val status = git.status().call()
+                    val stagedPaths: Set<String> =
+                        status.changed + status.added + status.removed
+
+                    // HEAD-vs-working-tree diff gives us hunk content for all changes
+                    val diffText = captureDiff(repoPath, pathFilter = null)
+                    val parsed  = parseDiffOutput(diffText)
+
+                    // Enrich parsed files with real isStaged flag
+                    val enriched = parsed.map { fd ->
+                        fd.copy(isStaged = fd.filePath in stagedPaths)
+                    }
+
+                    // Files staged for deletion may not appear in the working-tree diff
+                    // (they're gone from disk) — add them explicitly
+                    val parsedPaths = parsed.map { it.filePath }.toSet()
+                    val stagedDeletions = status.removed
+                        .filter { it !in parsedPaths }
+                        .map { path ->
+                            FileDiff(
+                                filePath = path,
+                                status   = DiffStatus.DELETED,
+                                hunks    = emptyList(),
+                                isStaged = true,
+                            )
+                        }
+
+                    buildResult(enriched + stagedDeletions)
+                }
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -41,8 +73,15 @@ class LocalDiffRepository : DiffRepository {
     override suspend fun getDiff(repoPath: String, filePath: String): Result<UnifiedDiffResult> =
         withContext(Dispatchers.IO) {
             try {
-                val diffText = captureDiff(repoPath, pathFilter = filePath)
-                buildResult(diffText)
+                Git.open(File(repoPath)).use { git ->
+                    val status     = git.status().addPath(filePath).call()
+                    val isStaged   = filePath in status.changed ||
+                                     filePath in status.added   ||
+                                     filePath in status.removed
+                    val diffText   = captureDiff(repoPath, pathFilter = filePath)
+                    val parsed     = parseDiffOutput(diffText)
+                    buildResult(parsed.map { it.copy(isStaged = isStaged) })
+                }
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -52,7 +91,13 @@ class LocalDiffRepository : DiffRepository {
         withContext(Dispatchers.IO) {
             try {
                 Git.open(File(repoPath)).use { git ->
-                    git.add().addFilepattern(filePath).call()
+                    if (File(repoPath, filePath).exists()) {
+                        // Modified or new file — add to index
+                        git.add().addFilepattern(filePath).call()
+                    } else {
+                        // File deleted from disk — stage the deletion
+                        git.rm().addFilepattern(filePath).call()
+                    }
                     Result.success(Unit)
                 }
             } catch (e: Exception) {
@@ -72,11 +117,68 @@ class LocalDiffRepository : DiffRepository {
             }
         }
 
-    override suspend fun commit(repoPath: String, message: String): Result<Unit> =
+    override suspend fun commit(
+        repoPath: String,
+        message: String,
+        authorName: String,
+        authorEmail: String,
+    ): Result<Unit> =
         withContext(Dispatchers.IO) {
             try {
                 Git.open(File(repoPath)).use { git ->
-                    git.commit().setMessage(message).call()
+                    val status = git.status().call()
+                    println("[LocalDiffRepo] commit: index state → changed=${status.changed}, added=${status.added}, removed=${status.removed}, missing=${status.missing}, modified=${status.modified}, untracked=${status.untracked}")
+                    git.commit()
+                        .setMessage(message)
+                        .setAuthor(authorName, authorEmail)
+                        .setCommitter(authorName, authorEmail)
+                        // commits what is explicitly staged in the index
+                        .call()
+                    println("[LocalDiffRepo] commit: success")
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                println("[LocalDiffRepo] commit failed: ${e.message}")
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun discardFileChanges(repoPath: String, filePath: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    // Reset index (no-op if not staged)
+                    git.reset().addPath(filePath).call()
+                    // Check if the file exists in HEAD
+                    val headId = git.repository.resolve("HEAD^{tree}")
+                    val existsInHead = if (headId != null) {
+                        RevWalk(git.repository).use { rw ->
+                            TreeWalk.forPath(git.repository, filePath, rw.parseTree(headId)) != null
+                        }
+                    } else false
+
+                    if (existsInHead) {
+                        // Restore working-tree file to HEAD version
+                        git.checkout().addPath(filePath).call()
+                    } else {
+                        // New file not in HEAD — delete it from disk
+                        File(repoPath, filePath).delete()
+                    }
+                    Result.success(Unit)
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun discardAllChanges(repoPath: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                Git.open(File(repoPath)).use { git ->
+                    git.reset()
+                        .setMode(ResetCommand.ResetType.HARD)
+                        .setRef("HEAD")
+                        .call()
                     Result.success(Unit)
                 }
             } catch (e: Exception) {
@@ -120,8 +222,7 @@ class LocalDiffRepository : DiffRepository {
         }
     }
 
-    private fun buildResult(diffText: String): Result<UnifiedDiffResult> {
-        val fileDiffs = parseDiffOutput(diffText)
+    private fun buildResult(fileDiffs: List<FileDiff>): Result<UnifiedDiffResult> {
         var insertions = 0
         var deletions  = 0
         fileDiffs.forEach { fd ->

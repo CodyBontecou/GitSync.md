@@ -13,9 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,8 +30,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,6 +51,7 @@ import com.bontecou.syncmd.data.models.Conflict
 import com.bontecou.syncmd.data.models.FileDiff
 import com.bontecou.syncmd.data.models.Stash
 import com.bontecou.syncmd.data.models.Tag
+import com.bontecou.syncmd.ui.components.RevertConfirmDialog
 import com.bontecou.syncmd.ui.theme.BBadge
 import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
@@ -66,11 +79,13 @@ import com.bontecou.syncmd.ui.viewmodels.PullViewModel
  *   • Tags               (create, push, delete)
  *   • Pull
  */
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GitScreen(
     repositoryPath: String,
     showDebugInfo: Boolean = false,
     onNavigateBack: () -> Unit,
+    onOpenDiff: (String) -> Unit = {},
     pullVM    : PullViewModel    = hiltViewModel(),
     diffVM    : DiffViewModel    = hiltViewModel(),
     branchVM  : BranchViewModel  = hiltViewModel(),
@@ -98,16 +113,30 @@ fun GitScreen(
     val mergeState     by conflictVM.mergeState.collectAsState()
     val stashes        by historyVM.stashes.collectAsState()
     val tags           by historyVM.tags.collectAsState()
-    // isLoading intentionally omitted — diffVM loading state not surfaced in this screen yet
+    val isPushing      by diffVM.isPushing.collectAsState()
+    val pushError      by diffVM.errorMessage.collectAsState()
     val bc             = LocalBrutalColors.current
 
-    var newBranchName  by remember { mutableStateOf("") }
-    var newTagName     by remember { mutableStateOf("") }
-    var stashMsg       by remember { mutableStateOf("") }
-    var mergeMsg       by remember { mutableStateOf("") }
+    var newBranchName    by remember { mutableStateOf("") }
+    var newTagName       by remember { mutableStateOf("") }
+    var stashMsg         by remember { mutableStateOf("") }
+    var mergeMsg         by remember { mutableStateOf("") }
+    var showRevertAll    by remember { mutableStateOf(false) }
+    var isRevertingAll   by remember { mutableStateOf(false) }
+
+    val focusManager       = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val dismissKeyboardOnScroll = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                focusManager.clearFocus()
+                return Offset.Zero
+            }
+        }
+    }
 
     val changeCount    = diff?.files?.size ?: 0
-    val stagedCount    = diff?.files?.count { it.status.name == "ADDED" || it.status.name == "MODIFIED" } ?: 0
+    val stagedCount    = diff?.files?.count { it.isStaged } ?: 0
 
     Box(
         modifier = Modifier
@@ -172,7 +201,8 @@ fun GitScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f),
+                    .weight(1f)
+                    .nestedScroll(dismissKeyboardOnScroll),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(
                     horizontal = 20.dp, vertical = 12.dp
                 ),
@@ -428,9 +458,50 @@ fun GitScreen(
                                         file      = file,
                                         onStage   = { diffVM.stageFile(file.filePath) },
                                         onUnstage = { diffVM.unstageFile(file.filePath) },
+                                        onDiff    = { onOpenDiff(file.filePath) },
                                     )
                                     if (idx < files.size - 1) {
                                         Box(Modifier.padding(horizontal = 16.dp)) { BDivider() }
+                                    }
+                                }
+                                // Revert all button
+                                BDivider()
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .border(0.dp, bc.error.copy(alpha = 0f))
+                                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .border(1.dp, bc.error.copy(alpha = 0.4f))
+                                            .clickable(
+                                                enabled = !isRevertingAll,
+                                                indication = null,
+                                                interactionSource = remember { MutableInteractionSource() },
+                                            ) { showRevertAll = true }
+                                            .padding(vertical = 10.dp),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        if (isRevertingAll) {
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.size(16.dp),
+                                                strokeWidth = 2.dp,
+                                                color = bc.error,
+                                            )
+                                        } else {
+                                            Text(
+                                                text = "↩  REVERT ALL CHANGES",
+                                                style = TextStyle(
+                                                    fontFamily = FontFamily.Monospace,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 13.sp,
+                                                    letterSpacing = 1.sp,
+                                                    color = bc.error,
+                                                )
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -456,6 +527,11 @@ fun GitScreen(
                                     cursorBrush = SolidColor(bc.text),
                                     minLines = 2,
                                     maxLines = 4,
+                                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                                    keyboardActions = KeyboardActions(onDone = {
+                                        focusManager.clearFocus()
+                                        keyboardController?.hide()
+                                    }),
                                     modifier = Modifier.fillMaxWidth(),
                                 )
                             }
@@ -469,7 +545,28 @@ fun GitScreen(
                                 )
                             }
                             BDivider()
-                            val canPush = stagedCount > 0 && commitMessage.isNotBlank()
+                            val canPush = stagedCount > 0 && commitMessage.isNotBlank() && !isPushing
+                            // Hint row: explain why button is disabled
+                            if (!canPush && !isPushing) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                                ) {
+                                    Text(
+                                        text = when {
+                                            stagedCount == 0 -> "Stage at least one file to push"
+                                            commitMessage.isBlank() -> "Enter a commit message to push"
+                                            else -> ""
+                                        },
+                                        style = TextStyle(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontSize = 11.sp,
+                                            color = bc.textFaint,
+                                        )
+                                    )
+                                }
+                            }
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -479,19 +576,62 @@ fun GitScreen(
                                         enabled = canPush,
                                         indication = null,
                                         interactionSource = remember { MutableInteractionSource() },
-                                    ) { diffVM.commit() },
+                                    ) {
+                                        diffVM.commitAndPush(
+                                            branch = currentBranch?.name ?: "main"
+                                        )
+                                    },
                                 contentAlignment = Alignment.Center,
                             ) {
-                                Text(
-                                    text = if (stagedCount == 1) "↑  PUSH 1 FILE" else "↑  PUSH $stagedCount FILES",
-                                    style = TextStyle(
-                                        fontFamily = FontFamily.Monospace,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 14.sp,
-                                        letterSpacing = 1.sp,
+                                if (isPushing) {
+                                    androidx.compose.material3.CircularProgressIndicator(
+                                        modifier = Modifier.size(20.dp),
                                         color = bc.bg,
+                                        strokeWidth = 2.dp,
                                     )
-                                )
+                                } else {
+                                    Text(
+                                        text = if (stagedCount == 1) "↑  PUSH 1 FILE" else "↑  PUSH $stagedCount FILES",
+                                        style = TextStyle(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 14.sp,
+                                            letterSpacing = 1.sp,
+                                            color = bc.bg,
+                                        )
+                                    )
+                                }
+                            }
+                            // Push error banner
+                            if (pushError != null) {
+                                BDivider()
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(bc.error.copy(alpha = 0.12f))
+                                        .clickable { diffVM.clearError() }
+                                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                ) {
+                                    Text(
+                                        text = pushError ?: "",
+                                        style = TextStyle(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontSize = 12.sp,
+                                            color = bc.error,
+                                        ),
+                                        modifier = Modifier.weight(1f),
+                                    )
+                                    Text(
+                                        text = "✕",
+                                        style = TextStyle(
+                                            fontFamily = FontFamily.Monospace,
+                                            fontSize = 12.sp,
+                                            color = bc.error,
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }
@@ -644,6 +784,25 @@ fun GitScreen(
             }
         }
     }
+
+    // ── Revert-all confirmation dialog ────────────────────────────────────
+    if (showRevertAll) {
+        val allFiles = diff?.files?.map { it.filePath } ?: emptyList()
+        RevertConfirmDialog(
+            title        = "Revert All Changes",
+            filename     = null,
+            files        = allFiles,
+            confirmLabel = "Revert All",
+            onConfirm    = {
+                showRevertAll = false
+                isRevertingAll = true
+                diffVM.discardAllChanges {
+                    isRevertingAll = false
+                }
+            },
+            onDismiss    = { showRevertAll = false },
+        )
+    }
 }
 
 // ─── Sub-composables ──────────────────────────────────────────────────────────
@@ -752,9 +911,9 @@ private fun ConflictRow(
 }
 
 @Composable
-private fun GitChangeRow(file: FileDiff, onStage: () -> Unit, onUnstage: () -> Unit) {
+private fun GitChangeRow(file: FileDiff, onStage: () -> Unit, onUnstage: () -> Unit, onDiff: () -> Unit = {}) {
     val bc      = LocalBrutalColors.current
-    val isStaged = file.status.name == "ADDED" || file.status.name == "MODIFIED"
+    val isStaged = file.isStaged
     val additions = file.hunks.sumOf { h -> h.lines.count { it.type.name == "ADDITION" } }
     val deletions = file.hunks.sumOf { h -> h.lines.count { it.type.name == "DELETION" } }
 
@@ -777,10 +936,16 @@ private fun GitChangeRow(file: FileDiff, onStage: () -> Unit, onUnstage: () -> U
                 if (deletions > 0) Text(text = "-$deletions", style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 12.sp, color = bc.error))
             }
         }
-        BSmallActionButton(
-            title   = if (isStaged) "UNSTAGE" else "STAGE",
-            onClick = { if (isStaged) onUnstage() else onStage() },
-        )
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            BSmallActionButton(
+                title   = if (isStaged) "UNSTAGE" else "STAGE",
+                onClick = { if (isStaged) onUnstage() else onStage() },
+            )
+            BSmallActionButton(
+                title   = "DIFF",
+                onClick = onDiff,
+            )
+        }
     }
 }
 

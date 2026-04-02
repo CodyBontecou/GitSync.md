@@ -2,9 +2,13 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.util.Log
 import com.bontecou.syncmd.data.models.FileDiff
+import com.bontecou.syncmd.data.models.PushConfig
 import com.bontecou.syncmd.data.models.UnifiedDiffResult
 import com.bontecou.syncmd.services.git.DiffService
+import com.bontecou.syncmd.services.git.PushService
+import com.bontecou.syncmd.services.github.GitHubAuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +21,9 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DiffViewModel @Inject constructor(
-    private val diffService: DiffService
+    private val diffService: DiffService,
+    private val pushService: PushService,
+    private val authManager: GitHubAuthManager,
 ) : ViewModel() {
 
     // All files in the repository with their status
@@ -36,9 +42,13 @@ class DiffViewModel @Inject constructor(
     private val _commitMessage = MutableStateFlow("")
     val commitMessage: StateFlow<String> = _commitMessage.asStateFlow()
 
-    // Loading state
+    // Loading state (staging / diff operations)
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    // Dedicated push-in-progress state (commit + push network call)
+    private val _isPushing = MutableStateFlow(false)
+    val isPushing: StateFlow<Boolean> = _isPushing.asStateFlow()
 
     // Error message
     private val _errorMessage = MutableStateFlow<String?>(null)
@@ -231,11 +241,16 @@ class DiffViewModel @Inject constructor(
     }
 
     /**
-     * Commit all staged files.
+     * Commit all staged files and push to remote.
+     *
+     * @param branch  The current local branch name (e.g. "main"). Used to build the push refspec.
+     * @param remote  The remote name to push to (defaults to "origin").
      */
-    fun commit() {
+    fun commitAndPush(branch: String, remote: String = "origin") {
         val repoPath = _currentRepoPath.value ?: return
         val message = _commitMessage.value
+
+        Log.d("DiffViewModel", "commitAndPush called: branch=$branch remote=$remote repoPath=$repoPath message='$message'")
 
         if (message.isBlank()) {
             _errorMessage.value = "Commit message cannot be empty"
@@ -243,19 +258,98 @@ class DiffViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            _isLoading.value = true
+            _isPushing.value = true
             _errorMessage.value = null
 
             try {
-                val result = diffService.commit(repoPath, message)
+                // Step 1: local commit (attributed to the signed-in GitHub user)
+                val authorName  = authManager.getAuthorName()
+                val authorEmail = authManager.getAuthorEmail()
+                Log.d("DiffViewModel", "Starting local commit as $authorName <$authorEmail>...")
+                val commitResult = diffService.commit(repoPath, message, authorName, authorEmail)
+                if (commitResult.isFailure) {
+                    val err = commitResult.exceptionOrNull()?.message ?: "Commit failed"
+                    Log.e("DiffViewModel", "Commit failed: $err")
+                    _errorMessage.value = err
+                    return@launch
+                }
+                Log.d("DiffViewModel", "Local commit succeeded, pushing to $remote/$branch...")
+
+                // Step 2: push to remote
+                val pushResult = pushService.push(
+                    repository = repoPath,
+                    config = PushConfig(branch = branch, remote = remote)
+                )
+                if (pushResult.isFailure) {
+                    val err = pushResult.exceptionOrNull()?.message ?: "Push failed"
+                    Log.e("DiffViewModel", "Push failed: $err")
+                    // Commit succeeded but push failed — surface the error so the user can retry
+                    _errorMessage.value = err
+                    return@launch
+                }
+
+                Log.d("DiffViewModel", "Push succeeded!")
+                // Both succeeded — reset form state
+                _commitMessage.value = ""
+                _selectedFilePath.value = null
+                _selectedFileDiff.value = null
+                loadDiff()
+            } catch (e: Exception) {
+                Log.e("DiffViewModel", "commitAndPush exception: ${e.message}", e)
+                _errorMessage.value = e.message ?: "Unknown error"
+            } finally {
+                _isPushing.value = false
+            }
+        }
+    }
+
+    /**
+     * Discard all local changes in the current repository (equivalent to `git reset --hard HEAD`).
+     * Reloads the diff status when complete.
+     */
+    fun discardAllChanges(onComplete: () -> Unit = {}) {
+        val repoPath = _currentRepoPath.value ?: return
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+            try {
+                val result = diffService.discardAllChanges(repoPath)
                 if (result.isSuccess) {
-                    // Reset state after successful commit
-                    _commitMessage.value = ""
                     _selectedFilePath.value = null
                     _selectedFileDiff.value = null
                     loadDiff()
+                    onComplete()
                 } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Commit failed"
+                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to discard changes"
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = e.message ?: "Unknown error"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Discard local changes for a single file.
+     * New (untracked) files are deleted from disk; modified files are restored to HEAD.
+     */
+    fun discardFileChanges(filePath: String, onComplete: () -> Unit = {}) {
+        val repoPath = _currentRepoPath.value ?: return
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+            try {
+                val result = diffService.discardFileChanges(repoPath, filePath)
+                if (result.isSuccess) {
+                    if (_selectedFilePath.value == filePath) {
+                        _selectedFilePath.value = null
+                        _selectedFileDiff.value = null
+                    }
+                    loadDiff()
+                    onComplete()
+                } else {
+                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to discard file changes"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "Unknown error"

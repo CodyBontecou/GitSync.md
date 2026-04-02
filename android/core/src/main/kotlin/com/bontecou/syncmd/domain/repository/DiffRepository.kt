@@ -32,5 +32,22 @@ interface DiffRepository {
      * Commit staged changes with a message
      * (Does NOT commit unstaged changes)
      */
-    suspend fun commit(repoPath: String, message: String): Result<Unit>
+    suspend fun commit(
+        repoPath: String,
+        message: String,
+        authorName: String,
+        authorEmail: String,
+    ): Result<Unit>
+
+    /**
+     * Restore a single file to HEAD, discarding all local modifications.
+     * Untracked (new) files are deleted from disk.
+     */
+    suspend fun discardFileChanges(repoPath: String, filePath: String): Result<Unit>
+
+    /**
+     * Restore every changed tracked file to HEAD (equivalent to `git reset --hard HEAD`).
+     * Untracked files are left untouched.
+     */
+    suspend fun discardAllChanges(repoPath: String): Result<Unit>
 }

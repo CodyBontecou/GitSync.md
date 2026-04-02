@@ -211,7 +211,7 @@ class FakeDiffRepository : DiffRepository {
         }
     }
     
-    override suspend fun commit(repoPath: String, message: String): Result<Unit> {
+    override suspend fun commit(repoPath: String, message: String, authorName: String, authorEmail: String): Result<Unit> {
         return try {
             val stagedSet = stagedFiles[repoPath] ?: emptySet()
             val repoDir = File(repoPath)
@@ -227,6 +227,41 @@ class FakeDiffRepository : DiffRepository {
             // Clear the staged marker after commit
             stagedFiles[repoPath]?.clear()
             
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun discardFileChanges(repoPath: String, filePath: String): Result<Unit> {
+        return try {
+            val repoDir = File(repoPath)
+            val committed = committedState[repoPath]
+            // Unstage the file
+            stagedFiles[repoPath]?.remove(filePath)
+            if (committed != null && committed.containsKey(filePath)) {
+                // Restore from committed state
+                File(repoDir, filePath).writeText(committed[filePath]!!)
+            } else {
+                // New file — delete it
+                File(repoDir, filePath).delete()
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun discardAllChanges(repoPath: String): Result<Unit> {
+        return try {
+            val repoDir = File(repoPath)
+            val committed = committedState[repoPath] ?: emptyMap()
+            // Clear all staged markers
+            stagedFiles[repoPath]?.clear()
+            // Restore all tracked files to committed state
+            committed.forEach { (filePath, content) ->
+                File(repoDir, filePath).apply { parentFile?.mkdirs(); writeText(content) }
+            }
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

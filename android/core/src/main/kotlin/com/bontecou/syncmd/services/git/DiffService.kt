@@ -39,10 +39,15 @@ class DiffService(private val diffRepository: DiffRepository) {
     }
 
     /**
-     * Commit all staged files
+     * Commit all staged files with the given author identity.
      */
-    suspend fun commit(repoPath: String, message: String): Result<Unit> {
-        return diffRepository.commit(repoPath, message)
+    suspend fun commit(
+        repoPath: String,
+        message: String,
+        authorName: String,
+        authorEmail: String,
+    ): Result<Unit> {
+        return diffRepository.commit(repoPath, message, authorName, authorEmail)
     }
 
     /**
@@ -61,6 +66,20 @@ class DiffService(private val diffRepository: DiffRepository) {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    /**
+     * Discard all local changes (reset --hard HEAD).
+     */
+    suspend fun discardAllChanges(repoPath: String): Result<Unit> {
+        return diffRepository.discardAllChanges(repoPath)
+    }
+
+    /**
+     * Discard local changes for a single file.
+     */
+    suspend fun discardFileChanges(repoPath: String, filePath: String): Result<Unit> {
+        return diffRepository.discardFileChanges(repoPath, filePath)
     }
 
     /**

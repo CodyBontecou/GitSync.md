@@ -5,11 +5,13 @@ import com.bontecou.syncmd.domain.repository.ConflictRepository
 import com.bontecou.syncmd.domain.repository.DiffRepository
 import com.bontecou.syncmd.domain.repository.HistoryRepository
 import com.bontecou.syncmd.domain.repository.PullRepository
+import com.bontecou.syncmd.domain.repository.RemoteRepository
 import com.bontecou.syncmd.services.git.BranchService
 import com.bontecou.syncmd.services.git.ConflictService
 import com.bontecou.syncmd.services.git.DiffService
 import com.bontecou.syncmd.services.git.HistoryService
 import com.bontecou.syncmd.services.git.PullService
+import com.bontecou.syncmd.services.git.PushService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,5 +53,15 @@ object ServiceModule {
     @Singleton
     fun provideHistoryService(historyRepository: HistoryRepository): HistoryService {
         return HistoryService(historyRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePushService(
+        remoteRepository: RemoteRepository,
+        branchRepository: BranchRepository,
+        historyRepository: HistoryRepository
+    ): PushService {
+        return PushService(remoteRepository, branchRepository, historyRepository)
     }
 }
