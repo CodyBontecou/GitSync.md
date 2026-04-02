@@ -159,9 +159,16 @@ class LocalGitRepository(
                 .call()
                 .use { /* close */ }
 
-            // Place .nomedia before checkout to suppress MediaProvider scanning
-            // that can race with JGit file renames/deletes during checkout.
-            runCatching { File(target, ".nomedia").apply { if (!exists()) createNewFile() } }
+            // Place .nomedia in the repo's *parent* directory (not inside the repo
+            // itself) to suppress MediaProvider scanning during checkout. Putting it
+            // inside the repo would cause it to appear as an untracked file.
+            // The repos/ base directory already has .nomedia from CloneStorage, but
+            // the owner sub-directory (repos/owner/) may not.
+            runCatching {
+                target.parentFile?.let { parentDir ->
+                    File(parentDir, ".nomedia").apply { if (!exists()) createNewFile() }
+                }
+            }
 
             // Re-open repository after writing config so checkout uses fresh options.
             Git.open(target).use { git ->
@@ -300,6 +307,20 @@ class LocalGitRepository(
                         skippedFiles.add(path)
                         // Clean up partial file if it was created
                         runCatching { if (targetFile.exists()) targetFile.delete() }
+
+                        // Still add an index entry matching HEAD so the file doesn't
+                        // appear as a "staged deletion" (HEAD has it, index doesn't).
+                        // It will be reported as "missing" (in index, not on disk)
+                        // which we intentionally don't surface in the UI.
+                        try {
+                            val entry = DirCacheEntry(path)
+                            entry.fileMode = mode
+                            entry.setObjectId(objectId)
+                            entry.setLength(0)
+                            builder.add(entry)
+                        } catch (indexErr: Exception) {
+                            log.warning("manualCheckout: could not add index entry for skipped file: $path — ${indexErr.message}")
+                        }
                     }
                 }
 

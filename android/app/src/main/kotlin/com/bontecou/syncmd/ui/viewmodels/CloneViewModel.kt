@@ -91,6 +91,30 @@ class CloneViewModel @Inject constructor(
                 message = "Starting clone repo=$repoFullName url=$cloneUrl path=$localPath"
             )
 
+            // Proactively remove any stale clone directory before attempting a fresh
+            // clone. This handles the case where a previous swipe-to-delete removed
+            // the repo from the saved list but deleteRecursively() failed silently
+            // (common on Android/media FUSE storage). Without this, JGit refuses to
+            // clone into the non-empty directory and cleanupPartialCloneDirectory()
+            // won't remove it because it looks like a healthy repo.
+            val existingDir = File(localPath)
+            if (existingDir.exists()) {
+                debugLog(
+                    enabled = debugLoggingEnabled,
+                    message = "Removing stale clone directory before re-clone path=$localPath"
+                )
+                var deleted = false
+                repeat(5) { attempt ->
+                    if (deleted) return@repeat
+                    deleted = runCatching { existingDir.deleteRecursively() }.getOrDefault(false)
+                    if (!deleted && attempt < 4) Thread.sleep(200L * (attempt + 1))
+                }
+                debugLog(
+                    enabled = debugLoggingEnabled,
+                    message = "Pre-clone cleanup ${if (deleted) "succeeded" else "failed"} path=$localPath"
+                )
+            }
+
             val result = cloneWithRetry(
                 cloneUrl = cloneUrl,
                 localPath = localPath,
