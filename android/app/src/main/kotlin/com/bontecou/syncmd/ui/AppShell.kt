@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,6 +37,27 @@ import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 import kotlinx.coroutines.launch
+
+/**
+ * Navigate only when the current back-stack entry is fully RESUMED.
+ * Prevents double-navigation when the user taps faster than the
+ * navigation animation completes (classic white-screen bug).
+ */
+fun NavController.navigateSafe(route: String, builder: (androidx.navigation.NavOptionsBuilder.() -> Unit)? = null) {
+    val current = currentBackStackEntry
+    if (current == null || current.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+        if (builder != null) navigate(route, builder) else navigate(route)
+    }
+}
+
+fun NavController.popBackStackSafe(): Boolean {
+    val current = currentBackStackEntry
+    return if (current == null || current.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+        popBackStack()
+    } else {
+        false
+    }
+}
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
 object Routes {
@@ -106,7 +129,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         if (isUnlocked && pending != null) {
             pendingRepoToClone = null
             val encoded = Uri.encode(pending)
-            navController.navigate("${Routes.CLONE}/$encoded") {
+            navController.navigateSafe("${Routes.CLONE}/$encoded") {
                 // Pop the paywall off the back stack
                 popUpTo(Routes.PAYWALL) { inclusive = true }
             }
@@ -142,12 +165,12 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                             repoPath
                         }
                         settingsViewModel.setRepositoryPath(resolvedPath)
-                        navController.navigate(Routes.VAULT)
+                        navController.navigateSafe(Routes.VAULT)
                     },
                     onGhostRepoSelected = { repoFullName ->
                         fun navigateToClone() {
                             val encoded = Uri.encode(repoFullName)
-                            navController.navigate("${Routes.CLONE}/$encoded")
+                            navController.navigateSafe("${Routes.CLONE}/$encoded")
                         }
 
                         if (allRepos.size >= PurchaseManager.FREE_REPO_LIMIT) {
@@ -156,7 +179,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                                 if (purchaseViewModel.isUnlocked.value) {
                                     navigateToClone()
                                 } else {
-                                    navController.navigate(Routes.PAYWALL)
+                                    navController.navigateSafe(Routes.PAYWALL)
                                 }
                             }
                         } else {
@@ -164,7 +187,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         }
                     },
                     onNavigateToPaywall = {
-                        navController.navigate(Routes.PAYWALL)
+                        navController.navigateSafe(Routes.PAYWALL)
                     },
                     onAddRepo = {
                         // ── Gate 1 ──────────────────────────────────────────────────────
@@ -180,9 +203,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                             // Still within the free tier — navigate directly.
                             if (isLoggedIn) {
                                 githubViewModel.loadUserAndRepos()
-                                navController.navigate(Routes.REPO_PICKER)
+                                navController.navigateSafe(Routes.REPO_PICKER)
                             } else {
-                                navController.navigate(Routes.LOGIN)
+                                navController.navigateSafe(Routes.LOGIN)
                             }
                         } else {
                             // May have exceeded the free tier — refresh then decide.
@@ -191,18 +214,18 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                                 if (purchaseViewModel.isUnlocked.value) {
                                     if (isLoggedIn) {
                                         githubViewModel.loadUserAndRepos()
-                                        navController.navigate(Routes.REPO_PICKER)
+                                        navController.navigateSafe(Routes.REPO_PICKER)
                                     } else {
-                                        navController.navigate(Routes.LOGIN)
+                                        navController.navigateSafe(Routes.LOGIN)
                                     }
                                 } else {
-                                    navController.navigate(Routes.PAYWALL)
+                                    navController.navigateSafe(Routes.PAYWALL)
                                 }
                             }
                         }
                     },
                     onNavigateToSettings = {
-                        navController.navigate(Routes.SETTINGS)
+                        navController.navigateSafe(Routes.SETTINGS)
                     },
                 )
             }
@@ -212,8 +235,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 VaultScreen(
                     repositoryPath  = selectedRepository,
                     showDebugInfo   = appSettings.showDebugInfo,
-                    onOpenGit       = { navController.navigate(Routes.GIT) },
-                    onNavigateBack  = { navController.popBackStack() },
+                    onOpenGit       = { navController.navigateSafe(Routes.GIT) },
+                    onNavigateBack  = { navController.popBackStackSafe() },
                 )
             }
 
@@ -222,7 +245,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 GitScreen(
                     repositoryPath = selectedRepository,
                     showDebugInfo  = appSettings.showDebugInfo,
-                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateBack = { navController.popBackStackSafe() },
                 )
             }
 
@@ -230,11 +253,11 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             composable(Routes.SETTINGS) {
                 SettingsScreen(
                     viewModel          = settingsViewModel,
-                    onNavigateBack     = { navController.popBackStack() },
-                    onNavigateToLogin  = { navController.navigate(Routes.LOGIN) },
+                    onNavigateBack     = { navController.popBackStackSafe() },
+                    onNavigateToLogin  = { navController.navigateSafe(Routes.LOGIN) },
                     onNavigateToRepoPicker = {
                         if (isLoggedIn) githubViewModel.loadUserAndRepos()
-                        navController.navigate(Routes.REPO_PICKER)
+                        navController.navigateSafe(Routes.REPO_PICKER)
                     },
                 )
             }
@@ -244,10 +267,10 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 LoginScreen(
                     viewModel         = githubViewModel,
                     settingsViewModel = settingsViewModel,
-                    onNavigateBack    = { navController.popBackStack() },
+                    onNavigateBack    = { navController.popBackStackSafe() },
                     onContinueAfterLogin = {
-                        if (!navController.popBackStack()) {
-                            navController.navigate(Routes.REPOS) {
+                        if (!navController.popBackStackSafe()) {
+                            navController.navigateSafe(Routes.REPOS) {
                                 popUpTo(Routes.REPOS) { inclusive = false }
                             }
                         }
@@ -268,14 +291,14 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         if (!isUnlocked && purchaseViewModel.isNewRepoIdentifier(identifier)) {
                             // Free slot exhausted and this is a new repo — require purchase.
                             pendingRepoToClone = repo.fullName
-                            navController.navigate(Routes.PAYWALL)
+                            navController.navigateSafe(Routes.PAYWALL)
                         } else {
                             // Unlocked, known repo, or free slot still available — clone directly.
                             val encoded = Uri.encode(repo.fullName)
-                            navController.navigate("${Routes.CLONE}/$encoded")
+                            navController.navigateSafe("${Routes.CLONE}/$encoded")
                         }
                     },
-                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateBack = { navController.popBackStackSafe() },
                 )
             }
 
@@ -292,11 +315,11 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         purchaseViewModel.recordRepoAdded(fullName.trim().lowercase())
                     },
                     onSuccess         = {
-                        navController.navigate(Routes.REPOS) {
+                        navController.navigateSafe(Routes.REPOS) {
                             popUpTo(Routes.REPOS) { inclusive = false }
                         }
                     },
-                    onCancel          = { navController.popBackStack() },
+                    onCancel          = { navController.popBackStackSafe() },
                 )
             }
 
@@ -304,7 +327,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             composable(Routes.PAYWALL) {
                 PaywallScreen(
                     purchaseViewModel = purchaseViewModel,
-                    onDismiss         = { navController.popBackStack() },
+                    onDismiss         = { navController.popBackStackSafe() },
                 )
             }
         }
