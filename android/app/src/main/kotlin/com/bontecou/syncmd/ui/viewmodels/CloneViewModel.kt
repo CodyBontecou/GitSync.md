@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.bontecou.syncmd.data.models.Credentials
 import com.bontecou.syncmd.domain.repository.GitRepository
 import com.bontecou.syncmd.services.github.GitHubAuthManager
+import com.bontecou.syncmd.storage.CloneStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,7 @@ import javax.inject.Inject
  * Mirrors the iOS pattern from AppState.clone():
  *   1. Validate token is present.
  *   2. Build the HTTPS clone URL from the repo's full name.
- *   3. Determine the local target path inside the app's private files dir.
+ *   3. Determine the local target path inside app-managed writable storage.
  *   4. Delegate to [GitRepository.clone] and expose progress via [CloneState].
  */
 @HiltViewModel
@@ -59,7 +60,7 @@ class CloneViewModel @Inject constructor(
     val cloneState: StateFlow<CloneState> = _cloneState.asStateFlow()
 
     /**
-     * Start cloning [repoFullName] (e.g. "owner/repo") to the app's private storage.
+     * Start cloning [repoFullName] (e.g. "owner/repo") to app-managed writable storage.
      * Safe to call again after an [CloneState.Error] to retry.
      */
     fun startClone(repoFullName: String) {
@@ -69,9 +70,8 @@ class CloneViewModel @Inject constructor(
             return
         }
 
-        // Use the user-configured clone base directory, falling back to app-private storage.
-        val customDir = sharedPrefs.getString("default_clone_dir", "")?.trim()?.takeIf { it.isNotBlank() }
-        val baseDir = customDir ?: "${context.filesDir.absolutePath}/repos"
+        // Clone location is always app-managed storage.
+        val baseDir = CloneStorage.defaultCloneBaseDir(context)
         val localPath = "$baseDir/$repoFullName"
         val cloneUrl = "https://github.com/$repoFullName.git"
         val debugLoggingEnabled = sharedPrefs.getBoolean("show_debug_info", false)
@@ -104,9 +104,7 @@ class CloneViewModel @Inject constructor(
                     message = "Clone failed repo=$repoFullName path=$localPath message=${error?.message}",
                     throwable = error,
                 )
-                CloneState.Error(
-                    error?.message ?: "Clone failed — please try again."
-                )
+                CloneState.Error(friendlyCloneErrorMessage(error))
             }
         }
     }
@@ -208,6 +206,18 @@ class CloneViewModel @Inject constructor(
         return RETRYABLE_FAILURE_HINTS.any { hint -> message.contains(hint) }
     }
 
+    private fun isStorageCompatibilityFailure(error: Throwable?): Boolean {
+        if (error == null) return false
+        val message = buildMessageChain(error).lowercase()
+        return STORAGE_COMPATIBILITY_HINTS.any { hint -> message.contains(hint) }
+    }
+
+    private fun friendlyCloneErrorMessage(error: Throwable?): String {
+        val raw = error?.message ?: "Clone failed — please try again."
+        if (!isStorageCompatibilityFailure(error)) return raw
+        return "$raw\n\nClone location is fixed to app storage for compatibility."
+    }
+
     private fun buildMessageChain(error: Throwable): String =
         generateSequence(error) { it.cause }
             .mapNotNull { it.message }
@@ -236,5 +246,11 @@ class CloneViewModel @Inject constructor(
         "stream closed",
         "connection closed",
         "packfile",
+    )
+
+    private val STORAGE_COMPATIBILITY_HINTS = listOf(
+        "operation not permitted",
+        "permission denied",
+        "read-only file system",
     )
 }

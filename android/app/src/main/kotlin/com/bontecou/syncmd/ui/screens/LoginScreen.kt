@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.R
-import com.bontecou.syncmd.ui.components.rememberDirectoryPicker
+import com.bontecou.syncmd.storage.CloneStorage
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BGhostButton
 import com.bontecou.syncmd.ui.theme.BPrimaryButton
@@ -53,7 +53,6 @@ import com.bontecou.syncmd.ui.theme.BSecondaryButton
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
-import androidx.compose.foundation.text.KeyboardActions
 
 /**
  * Full-screen GitHub sign-in screen.
@@ -65,7 +64,7 @@ import androidx.compose.foundation.text.KeyboardActions
 @Composable
 fun LoginScreen(
     viewModel: GitHubViewModel = hiltViewModel(),
-    settingsViewModel: SettingsViewModel? = null,
+    @Suppress("UNUSED_PARAMETER") settingsViewModel: SettingsViewModel? = null,
     @Suppress("UNUSED_PARAMETER") onNavigateBack: (() -> Unit)? = null,
     onContinueAfterLogin: () -> Unit = {},
 ) {
@@ -77,15 +76,9 @@ fun LoginScreen(
     val isLoggedIn  by viewModel.isLoggedIn.collectAsState()
     val error       by viewModel.error.collectAsState()
 
-    val appSettings = settingsViewModel?.appSettings?.collectAsState()?.value
-
-    var showPatFlow   by remember { mutableStateOf(false) }
-    var patToken      by remember { mutableStateOf("") }
-    var patVisible    by remember { mutableStateOf(false) }
-    var cloneDirDraft by remember(appSettings?.defaultCloneDir) {
-        mutableStateOf(appSettings?.defaultCloneDir ?: "")
-    }
-    var cloneDirError by remember { mutableStateOf<String?>(null) }
+    var showPatFlow by remember { mutableStateOf(false) }
+    var patToken by remember { mutableStateOf("") }
+    var patVisible by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -379,11 +372,10 @@ fun LoginScreen(
 
             }
 
-            // ── Download location selector (post-login onboarding) ─────────
-            if (isLoggedIn && settingsViewModel != null && appSettings != null) {
+            // ── Post-login onboarding ──────────────────────────────────────
+            if (isLoggedIn) {
                 Spacer(Modifier.height(8.dp))
 
-                // Divider with label
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -397,31 +389,17 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
                         .padding(top = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     Text(
-                        text  = "DOWNLOAD LOCATION",
+                        text = "DOWNLOAD LOCATION",
                         style = TextStyle(
-                            fontFamily    = FontFamily.Monospace,
-                            fontWeight    = FontWeight.SemiBold,
-                            fontSize      = 12.sp,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
                             letterSpacing = 2.sp,
-                            color         = bc.textMid,
+                            color = bc.textMid,
                         )
-                    )
-
-                    val defaultPath = "${context.filesDir.absolutePath}/repos"
-                    val openDirectoryPicker = rememberDirectoryPicker(
-                        onDirectorySelected = { selectedPath ->
-                            cloneDirDraft = selectedPath
-                            cloneDirError = null
-                            settingsViewModel.updateSettings(
-                                appSettings.copy(defaultCloneDir = selectedPath)
-                            )
-                        },
-                        onError = { message ->
-                            cloneDirError = message
-                        },
                     )
 
                     Box(
@@ -432,64 +410,24 @@ fun LoginScreen(
                             .padding(horizontal = 12.dp, vertical = 12.dp),
                     ) {
                         Text(
-                            text = cloneDirDraft.ifBlank { defaultPath },
+                            text = CloneStorage.defaultCloneBaseDir(context),
                             style = TextStyle(
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 12.sp,
-                                color = if (cloneDirDraft.isBlank()) bc.textFaint else bc.text,
+                                color = bc.text,
                             )
                         )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Box(modifier = Modifier.weight(1f)) {
-                            BSecondaryButton(
-                                title = "Choose Folder",
-                                onClick = {
-                                    focusManager.clearFocus()
-                                    openDirectoryPicker()
-                                }
-                            )
-                        }
-                        Box(modifier = Modifier.weight(1f)) {
-                            BGhostButton(
-                                title = "Use Default",
-                                onClick = {
-                                    cloneDirDraft = ""
-                                    cloneDirError = null
-                                    settingsViewModel.updateSettings(
-                                        appSettings.copy(defaultCloneDir = "")
-                                    )
-                                }
-                            )
-                        }
                     }
 
                     Text(
-                        text  = "WHERE REPOS ARE CLONED ON THIS DEVICE · SKIP TO USE DEFAULT",
+                        text = "REPOS ARE ALWAYS CLONED TO APP STORAGE FOR MAX COMPATIBILITY.",
                         style = TextStyle(
-                            fontFamily    = FontFamily.Monospace,
-                            fontSize      = 10.sp,
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 10.sp,
                             letterSpacing = 0.5.sp,
-                            color         = bc.textFaint,
+                            color = bc.textFaint,
                         )
                     )
-
-                    if (cloneDirError != null) {
-                        Text(
-                            text = cloneDirError!!,
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontSize = 11.sp,
-                                color = bc.error,
-                            )
-                        )
-                    }
-
-                    Spacer(Modifier.height(8.dp))
 
                     BPrimaryButton(
                         title = "Continue",

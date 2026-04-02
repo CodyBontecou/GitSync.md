@@ -12,6 +12,7 @@ import com.bontecou.syncmd.services.git.LocalDiffRepository
 import com.bontecou.syncmd.services.git.LocalGitRepository
 import com.bontecou.syncmd.services.git.LocalHistoryRepository
 import com.bontecou.syncmd.services.git.LocalPullRepository
+import com.bontecou.syncmd.services.github.GitHubAuthManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,14 +29,14 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideGitRepository(): GitRepository {
-        return LocalGitRepository()
+    fun provideGitRepository(authManager: GitHubAuthManager): GitRepository {
+        return LocalGitRepository(tokenProvider = { authManager.getToken() })
     }
 
     @Provides
     @Singleton
-    fun providePullRepository(): PullRepository {
-        return LocalPullRepository()
+    fun providePullRepository(authManager: GitHubAuthManager): PullRepository {
+        return LocalPullRepository(tokenProvider = { authManager.getToken() })
     }
 
     @Provides

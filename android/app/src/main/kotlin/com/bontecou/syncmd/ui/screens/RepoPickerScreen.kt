@@ -92,7 +92,7 @@ fun RepoPickerScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     BSmallActionButton(title = "← Back", onClick = onNavigateBack)
-                    BSmallActionButton(title = "Refresh", onClick = { viewModel.loadUserAndRepos() })
+                    BSmallActionButton(title = "Refresh", onClick = { viewModel.loadUserAndRepos(forceRefresh = true) })
                 }
 
                 Spacer(Modifier.height(8.dp))

@@ -6,6 +6,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.json.JSONArray
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,6 +42,8 @@ class GitHubAuthManager @Inject constructor(
         private const val KEY_NAME  = "github_name"
         private const val KEY_AVATAR = "github_avatar_url"
         private const val KEY_EMAIL  = "github_email"
+        private const val KEY_REPOS_JSON = "github_repos_json"
+        private const val KEY_REPOS_CACHED_AT = "github_repos_cached_at"
     }
 
     private val prefs: SharedPreferences =
@@ -92,6 +96,23 @@ class GitHubAuthManager @Inject constructor(
      * Persists the token and notifies all observers.
      */
     fun handleCallback(token: String) {
+        val oldToken = _token.value
+        if (!oldToken.isNullOrBlank() && oldToken != token) {
+            // Account/token switched — drop cached profile + repo list to avoid stale UI.
+            prefs.edit()
+                .remove(KEY_LOGIN)
+                .remove(KEY_NAME)
+                .remove(KEY_AVATAR)
+                .remove(KEY_EMAIL)
+                .remove(KEY_REPOS_JSON)
+                .remove(KEY_REPOS_CACHED_AT)
+                .apply()
+            _cachedLogin.value = null
+            _cachedName.value = null
+            _cachedAvatarUrl.value = null
+            _cachedEmail.value = null
+        }
+
         prefs.edit().putString(KEY_TOKEN, token).apply()
         _token.value = token
     }
@@ -115,7 +136,62 @@ class GitHubAuthManager @Inject constructor(
         if (email != null) _cachedEmail.value = email
     }
 
-    /** Remove all stored credentials and cached profile. */
+    /** Persist repository list so RepoPicker can render instantly on next open. */
+    fun cacheRepos(repos: List<GitHubRepo>) {
+        val arr = JSONArray()
+        repos.forEach { repo ->
+            arr.put(
+                JSONObject()
+                    .put("id", repo.id)
+                    .put("name", repo.name)
+                    .put("fullName", repo.fullName)
+                    .put("description", repo.description)
+                    .put("isPrivate", repo.isPrivate)
+                    .put("htmlUrl", repo.htmlUrl)
+                    .put("defaultBranch", repo.defaultBranch)
+                    .put("updatedAt", repo.updatedAt)
+                    .put("ownerLogin", repo.ownerLogin)
+                    .put("language", repo.language)
+                    .put("stargazersCount", repo.stargazersCount)
+            )
+        }
+        prefs.edit()
+            .putString(KEY_REPOS_JSON, arr.toString())
+            .putLong(KEY_REPOS_CACHED_AT, System.currentTimeMillis())
+            .apply()
+    }
+
+    /** Return cached repos, or null when none are persisted / parse fails. */
+    fun getCachedRepos(): List<GitHubRepo>? {
+        val raw = prefs.getString(KEY_REPOS_JSON, null) ?: return null
+        return try {
+            val arr = JSONArray(raw)
+            buildList {
+                for (i in 0 until arr.length()) {
+                    val j = arr.getJSONObject(i)
+                    add(
+                        GitHubRepo(
+                            id = j.getLong("id"),
+                            name = j.getString("name"),
+                            fullName = j.getString("fullName"),
+                            description = j.optString("description").ifEmpty { null },
+                            isPrivate = j.getBoolean("isPrivate"),
+                            htmlUrl = j.getString("htmlUrl"),
+                            defaultBranch = j.getString("defaultBranch"),
+                            updatedAt = j.optString("updatedAt").ifEmpty { null },
+                            ownerLogin = j.getString("ownerLogin"),
+                            language = j.optString("language").ifEmpty { null },
+                            stargazersCount = j.optInt("stargazersCount", 0)
+                        )
+                    )
+                }
+            }
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    /** Remove all stored credentials, cached profile, and cached repo list. */
     fun signOut() {
         prefs.edit()
             .remove(KEY_TOKEN)
@@ -123,6 +199,8 @@ class GitHubAuthManager @Inject constructor(
             .remove(KEY_NAME)
             .remove(KEY_AVATAR)
             .remove(KEY_EMAIL)
+            .remove(KEY_REPOS_JSON)
+            .remove(KEY_REPOS_CACHED_AT)
             .apply()
         _token.value          = null
         _cachedLogin.value    = null

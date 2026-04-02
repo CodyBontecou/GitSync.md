@@ -25,7 +25,9 @@ import java.io.File
  * The remaining methods (getStatus, pull, push) are also JGit-based so
  * the full interface is functional on-device without any shell dependency.
  */
-class LocalGitRepository : GitRepository {
+class LocalGitRepository(
+    private val tokenProvider: (() -> String?)? = null,
+) : GitRepository {
 
     // ─── Clone ────────────────────────────────────────────────────────────────
 
@@ -110,7 +112,9 @@ class LocalGitRepository : GitRepository {
     ): Result<PushResult> = withContext(Dispatchers.IO) {
         try {
             Git.open(File(repoPath)).use { git ->
-                git.push().call()
+                val pushCommand = git.push()
+                credentialsFromTokenProvider()?.let { pushCommand.setCredentialsProvider(it) }
+                pushCommand.call()
                 Result.success(PushResult(success = true, message = "Pushed successfully"))
             }
         } catch (e: GitAPIException) {
@@ -133,6 +137,11 @@ class LocalGitRepository : GitRepository {
             is Credentials.Pat   -> UsernamePasswordCredentialsProvider("x-access-token", token)
             is Credentials.Basic -> UsernamePasswordCredentialsProvider(username, password)
         }
+
+    private fun credentialsFromTokenProvider(): UsernamePasswordCredentialsProvider? {
+        val token = tokenProvider?.invoke()?.takeIf { it.isNotBlank() } ?: return null
+        return UsernamePasswordCredentialsProvider("x-access-token", token)
+    }
 
     /**
      * Strip any embedded credentials from error messages before surfacing to the UI.

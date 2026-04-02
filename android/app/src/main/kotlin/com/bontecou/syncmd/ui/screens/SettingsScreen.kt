@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
-import com.bontecou.syncmd.ui.components.rememberDirectoryPicker
+import com.bontecou.syncmd.storage.CloneStorage
 import com.bontecou.syncmd.ui.theme.BBadge
 import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
@@ -268,13 +268,9 @@ fun SettingsScreen(
                 item {
                     BCard {
                         Column {
-                            // Clone directory
+                            // Clone directory (fixed)
                             CloneDirRow(
-                                currentValue = appSettings.defaultCloneDir,
-                                defaultPath  = "${context.filesDir.absolutePath}/repos",
-                                onSave       = { dir ->
-                                    viewModel.updateSettings(appSettings.copy(defaultCloneDir = dir))
-                                },
+                                defaultPath = CloneStorage.defaultCloneBaseDir(context),
                             )
 
                             BDivider()
@@ -685,25 +681,9 @@ private fun BDivider() {
 
 @Composable
 private fun CloneDirRow(
-    currentValue: String,
-    defaultPath:  String,
-    onSave:       (String) -> Unit,
+    defaultPath: String,
 ) {
     val bc = LocalBrutalColors.current
-
-    var expanded by remember { mutableStateOf(false) }
-    var pickerError by remember { mutableStateOf<String?>(null) }
-
-    val openDirectoryPicker = rememberDirectoryPicker(
-        onDirectorySelected = { selectedPath ->
-            pickerError = null
-            onSave(selectedPath)
-            expanded = false
-        },
-        onError = { message ->
-            pickerError = message
-        },
-    )
 
     Column(
         modifier = Modifier
@@ -711,127 +691,41 @@ private fun CloneDirRow(
             .padding(horizontal = 16.dp, vertical = 13.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Row(
+        Text(
+            text = "Clone Directory",
+            style = TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = bc.text,
+            )
+        )
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                ) { expanded = !expanded },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .background(bc.surface)
+                .border(1.dp, bc.border)
+                .padding(horizontal = 12.dp, vertical = 10.dp),
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text  = "Clone Directory",
-                    style = TextStyle(
-                        fontFamily = FontFamily.Default,
-                        fontWeight = FontWeight.Medium,
-                        fontSize   = 16.sp,
-                        color      = bc.text,
-                    )
-                )
-                Text(
-                    text  = if (currentValue.isBlank()) "App internal storage (default)" else currentValue,
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontSize   = 11.sp,
-                        color      = if (currentValue.isBlank()) bc.textFaint else bc.textMid,
-                    ),
-                    maxLines = 1,
-                )
-            }
             Text(
-                text  = if (expanded) "▲" else "▼",
+                text = defaultPath,
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
-                    fontSize   = 12.sp,
-                    color      = bc.textMid,
+                    fontSize = 13.sp,
+                    color = bc.text,
                 )
             )
         }
 
-        if (expanded) {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(bc.surface)
-                        .border(1.dp, bc.border)
-                        .padding(horizontal = 12.dp, vertical = 10.dp),
-                ) {
-                    Text(
-                        text = currentValue.ifBlank { defaultPath },
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 13.sp,
-                            color = if (currentValue.isBlank()) bc.textFaint else bc.text,
-                        )
-                    )
-                }
-
-                Text(
-                    text  = "BROWSE TO PICK A FOLDER · OR RESET TO DEFAULT",
-                    style = TextStyle(
-                        fontFamily    = FontFamily.Monospace,
-                        fontSize      = 10.sp,
-                        letterSpacing = 0.5.sp,
-                        color         = bc.textFaint,
-                    )
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        BSecondaryButton(
-                            title = "Choose Folder",
-                            onClick = { openDirectoryPicker() },
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .border(1.dp, bc.border)
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                            ) {
-                                pickerError = null
-                                onSave("")
-                                expanded = false
-                            }
-                            .padding(vertical = 10.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text  = "USE DEFAULT",
-                            style = TextStyle(
-                                fontFamily    = FontFamily.Monospace,
-                                fontWeight    = FontWeight.Bold,
-                                fontSize      = 12.sp,
-                                letterSpacing = 1.sp,
-                                color         = bc.textMid,
-                            )
-                        )
-                    }
-                }
-
-                if (pickerError != null) {
-                    Text(
-                        text = pickerError!!,
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 11.sp,
-                            color = bc.error,
-                        )
-                    )
-                }
-            }
-        }
+        Text(
+            text = "FIXED TO APP STORAGE FOR GIT COMPATIBILITY.",
+            style = TextStyle(
+                fontFamily = FontFamily.Monospace,
+                fontSize = 10.sp,
+                letterSpacing = 0.5.sp,
+                color = bc.textFaint,
+            )
+        )
     }
 }

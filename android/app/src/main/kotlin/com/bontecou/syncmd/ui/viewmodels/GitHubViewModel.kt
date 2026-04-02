@@ -79,13 +79,32 @@ class GitHubViewModel @Inject constructor(
 
     /** Called after a successful OAuth deep link callback. */
     fun onOAuthSuccess() {
-        loadUserAndRepos()
+        loadUserAndRepos(forceRefresh = true)
     }
 
     // ─── Data loading ─────────────────────────────────────────────────────────
 
-    fun loadUserAndRepos() {
+    fun loadUserAndRepos(forceRefresh: Boolean = false) {
         val token = authManager.getToken() ?: return
+
+        if (!forceRefresh) {
+            if (_repos.value.isNotEmpty()) {
+                if (_user.value == null) hydrateUserFromCachedProfile()
+                applyFilter(_searchQuery.value)
+                return
+            }
+
+            val cachedRepos = authManager.getCachedRepos()
+            if (!cachedRepos.isNullOrEmpty()) {
+                _repos.value = cachedRepos
+                if (_user.value == null) hydrateUserFromCachedProfile()
+                _error.value = null
+                _isLoading.value = false
+                applyFilter(_searchQuery.value)
+                return
+            }
+        }
+
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
@@ -100,6 +119,7 @@ class GitHubViewModel @Inject constructor(
 
                 val repos = GitHubApiService.fetchRepos(token)
                 _repos.value = repos
+                authManager.cacheRepos(repos)
                 applyFilter(_searchQuery.value)
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to load GitHub data"
@@ -133,6 +153,7 @@ class GitHubViewModel @Inject constructor(
 
                 val repos = GitHubApiService.fetchRepos(token)
                 _repos.value = repos
+                authManager.cacheRepos(repos)
                 applyFilter(_searchQuery.value)
             } catch (e: IllegalStateException) {
                 _error.value = "Invalid token — please check it and try again"
@@ -142,6 +163,16 @@ class GitHubViewModel @Inject constructor(
                 _isLoading.value = false
             }
         }
+    }
+
+    private fun hydrateUserFromCachedProfile() {
+        val login = authManager.cachedLogin.value ?: return
+        _user.value = GitHubUser(
+            login = login,
+            name = authManager.cachedName.value,
+            email = authManager.cachedEmail.value,
+            avatarUrl = authManager.cachedAvatarUrl.value
+        )
     }
 
     // ─── Search / filter ─────────────────────────────────────────────────────

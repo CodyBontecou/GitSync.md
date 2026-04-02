@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.BranchTrackingStatus
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import java.io.File
 
 /**
@@ -22,7 +23,9 @@ import java.io.File
  * ProcessBuilder("git") fails on Android with "No such file or directory";
  * JGit works everywhere.
  */
-class LocalPullRepository : PullRepository {
+class LocalPullRepository(
+    private val tokenProvider: (() -> String?)? = null,
+) : PullRepository {
 
     override suspend fun getStatus(repoPath: String): Result<RepositoryStatus> =
         withContext(Dispatchers.IO) {
@@ -115,7 +118,9 @@ class LocalPullRepository : PullRepository {
                         )
                     }
 
-                    val pullResult = git.pull().call()
+                    val pullCommand = git.pull()
+                    credentialsProvider()?.let { pullCommand.setCredentialsProvider(it) }
+                    val pullResult = pullCommand.call()
                     Result.success(
                         SafePullResult(
                             success        = pullResult.isSuccessful,
@@ -133,7 +138,9 @@ class LocalPullRepository : PullRepository {
         withContext(Dispatchers.IO) {
             try {
                 Git.open(File(repoPath)).use { git ->
-                    git.fetch().call()
+                    val fetchCommand = git.fetch()
+                    credentialsProvider()?.let { fetchCommand.setCredentialsProvider(it) }
+                    fetchCommand.call()
                     Result.success(Unit)
                 }
             } catch (e: Exception) {
@@ -168,4 +175,9 @@ class LocalPullRepository : PullRepository {
                 Result.failure(e)
             }
         }
+
+    private fun credentialsProvider(): UsernamePasswordCredentialsProvider? {
+        val token = tokenProvider?.invoke()?.takeIf { it.isNotBlank() } ?: return null
+        return UsernamePasswordCredentialsProvider("x-access-token", token)
+    }
 }
