@@ -200,7 +200,14 @@ class CloneViewModel @Inject constructor(
             return
         }
 
-        val deleted = runCatching { targetDir.deleteRecursively() }.getOrDefault(false)
+        // Use retries with backoff — MediaProvider can hold file locks briefly on
+        // Android/media storage, causing a single deleteRecursively() to fail.
+        var deleted = false
+        repeat(5) { attempt ->
+            if (deleted) return@repeat
+            deleted = runCatching { targetDir.deleteRecursively() }.getOrDefault(false)
+            if (!deleted && attempt < 4) Thread.sleep(200L * (attempt + 1))
+        }
         debugLog(
             enabled = debugLoggingEnabled,
             message = "Cleanup ${if (deleted) "removed" else "failed to remove"} path=${targetDir.absolutePath}"
@@ -253,6 +260,8 @@ class CloneViewModel @Inject constructor(
         "stream closed",
         "connection closed",
         "packfile",
+        "cannot delete file",
+        "checkout conflict",
     )
 
     private val STORAGE_COMPATIBILITY_HINTS = listOf(

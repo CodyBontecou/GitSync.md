@@ -11,8 +11,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.dircache.DirCacheEntry
+import org.eclipse.jgit.lib.Constants
+import org.eclipse.jgit.lib.FileMode
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
+import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
+import java.io.FileOutputStream
+import java.util.logging.Level
+import java.util.logging.Logger
 import java.util.Locale
 
 /**
@@ -30,6 +39,10 @@ class LocalGitRepository(
     private val tokenProvider: (() -> String?)? = null,
 ) : GitRepository {
 
+    companion object {
+        private val log = Logger.getLogger("SyncMdClone")
+    }
+
     // ─── Clone ────────────────────────────────────────────────────────────────
 
     override suspend fun clone(
@@ -41,29 +54,13 @@ class LocalGitRepository(
         target.parentFile?.mkdirs()
         val cp = creds.toJGit()
 
-        try {
-            Git.cloneRepository()
-                .setURI(url)
-                .setDirectory(target)
-                .setCredentialsProvider(cp)
-                .call()
-                .use { /* close the Git handle */ }
-
-            Result.success(Unit)
-        } catch (e: Exception) {
-            // External/shared Android storage can reject symlink/executable metadata writes.
-            // Retry with no-checkout + core.symlinks=false and perform checkout separately.
-            if (isSymlinkPermissionFailure(e)) {
-                runCatching { target.deleteRecursively() }
-                return@withContext cloneWithoutSymlinks(url, target, cp)
-            }
-
-            if (e is GitAPIException) {
-                Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
-            } else {
-                Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
-            }
-        }
+        // Always use no-checkout clone on Android. The normal Git.cloneRepository()
+        // performs checkout in a single pass with no recovery — Android's MediaProvider
+        // can scan and lock files mid-checkout (especially .obsidian/app.json), causing
+        // unrecoverable "Cannot delete file" errors. The no-checkout path separates
+        // fetch from checkout and has per-file conflict recovery with retries.
+        log.warning("clone() starting no-checkout clone to $path")
+        cloneWithoutSymlinks(url, target, cp)
     }
 
     // ─── Status ───────────────────────────────────────────────────────────────
@@ -162,6 +159,10 @@ class LocalGitRepository(
                 .call()
                 .use { /* close */ }
 
+            // Place .nomedia before checkout to suppress MediaProvider scanning
+            // that can race with JGit file renames/deletes during checkout.
+            runCatching { File(target, ".nomedia").apply { if (!exists()) createNewFile() } }
+
             // Re-open repository after writing config so checkout uses fresh options.
             Git.open(target).use { git ->
                 val config = git.repository.config
@@ -182,158 +183,168 @@ class LocalGitRepository(
     }
 
     /**
-     * Complete checkout after a no-checkout clone with storage-safe settings.
+     * Complete checkout after a no-checkout clone.
      *
-     * Some Android filesystems fail on `reset --hard` with EPERM, so we avoid reset
-     * and checkout HEAD/remote branch directly.
+     * Bypasses JGit's Checkout / DirCacheCheckout entirely because those classes
+     * use File.createTempFile() internally — Android's FUSE layer on Android/media
+     * storage doesn't support the O_EXCL flag that createFileExclusively0() needs,
+     * causing "Operation not permitted" IOException on every checkout attempt.
+     *
+     * Instead we walk the commit tree with TreeWalk, read each blob with
+     * ObjectReader, and write directly via FileOutputStream (which works fine).
+     * Then we build the DirCache (index) manually and set up the local branch.
      */
     private fun checkoutAfterNoCheckoutClone(git: Git) {
         val repo = git.repository
 
-        checkoutWithConflictRecovery(git, checkoutName = "HEAD").getOrElse { headCheckoutError ->
-            val fallbackBranches = buildCheckoutBranchCandidates(repo)
-            var lastError: Throwable = headCheckoutError
+        // Determine default branch
+        val branch = findDefaultBranch(repo)
+            ?: throw Exception("No branch found to checkout")
+        val remoteRef = repo.findRef("refs/remotes/origin/$branch")
+            ?: throw Exception("Remote ref not found: refs/remotes/origin/$branch")
+        val commitId = remoteRef.objectId
 
-            for (branch in fallbackBranches) {
-                val branchCheckout = runCatching {
-                    checkoutBranchOrTrackRemote(git = git, branch = branch)
+        log.warning("manualCheckout: branch=$branch commit=${commitId.name}")
+
+        // 1. Write every file from the tree directly (no temp files)
+        manualCheckoutTree(git, commitId)
+
+        // 2. Create local branch pointing at the commit
+        val refUpdate = repo.updateRef("refs/heads/$branch")
+        refUpdate.setNewObjectId(commitId)
+        refUpdate.update()
+
+        // 3. Point HEAD at the local branch
+        val headUpdate = repo.updateRef(Constants.HEAD)
+        headUpdate.link("refs/heads/$branch")
+
+        // 4. Set up tracking config
+        val config = repo.config
+        config.setString("branch", branch, "remote", "origin")
+        config.setString("branch", branch, "merge", "refs/heads/$branch")
+        config.save()
+
+        log.warning("manualCheckout: HEAD -> refs/heads/$branch (${commitId.abbreviate(7).name()})")
+    }
+
+    /**
+     * Walk the tree of [commitId] and write every blob to the working tree.
+     * Also builds a matching DirCache (index) so JGit sees a clean state.
+     */
+    private fun manualCheckoutTree(git: Git, commitId: ObjectId) {
+        val repo = git.repository
+        val reader = repo.newObjectReader()
+
+        try {
+            val revWalk = RevWalk(reader)
+            val commit = revWalk.parseCommit(commitId)
+            val tree = commit.tree
+
+            val treeWalk = TreeWalk(reader)
+            treeWalk.addTree(tree)
+            treeWalk.isRecursive = true
+
+            // Build a fresh index
+            val dc = repo.lockDirCache()
+            try {
+                val builder = dc.builder()
+                var fileCount = 0
+                val skippedFiles = mutableListOf<String>()
+
+                while (treeWalk.next()) {
+                    val path = treeWalk.pathString
+                    val mode = treeWalk.getFileMode(0)
+                    val objectId = treeWalk.getObjectId(0)
+
+                    // Skip symlinks and submodules
+                    if (mode == FileMode.SYMLINK || mode == FileMode.GITLINK) {
+                        log.warning("manualCheckout: skipping $path (mode=$mode)")
+                        continue
+                    }
+
+                    // Skip tree entries (shouldn't appear with recursive=true, but guard)
+                    if (mode == FileMode.TREE) continue
+
+                    // Write blob to working tree.
+                    // Android's FUSE layer on Android/media rejects filenames with
+                    // characters like ? * " < > | etc. Catch and skip those files
+                    // rather than aborting the entire checkout.
+                    val targetFile = File(repo.workTree, path)
+                    try {
+                        targetFile.parentFile?.mkdirs()
+
+                        val loader = reader.open(objectId, Constants.OBJ_BLOB)
+                        FileOutputStream(targetFile).use { fos ->
+                            loader.copyTo(fos)
+                        }
+
+                        if (mode == FileMode.EXECUTABLE_FILE) {
+                            targetFile.setExecutable(true)
+                        }
+
+                        // Add matching index entry
+                        val entry = DirCacheEntry(path)
+                        entry.fileMode = mode
+                        entry.setObjectId(objectId)
+                        entry.setLength(targetFile.length())
+                        entry.setLastModified(
+                            java.nio.file.Files.getLastModifiedTime(targetFile.toPath()).toInstant()
+                        )
+                        builder.add(entry)
+
+                        fileCount++
+                    } catch (e: Exception) {
+                        // File could not be written (likely illegal filename chars on FUSE).
+                        // Log it and continue — better to have a partial checkout than none.
+                        log.warning("manualCheckout: skipping file (write failed): $path — ${e.message}")
+                        skippedFiles.add(path)
+                        // Clean up partial file if it was created
+                        runCatching { if (targetFile.exists()) targetFile.delete() }
+                    }
                 }
 
-                val didCheckout = branchCheckout.getOrNull() == true
-                if (didCheckout) return
-                lastError = branchCheckout.exceptionOrNull() ?: lastError
+                builder.finish()
+                dc.write()
+                dc.commit()
+
+                log.warning("manualCheckout: wrote $fileCount files, skipped ${skippedFiles.size}")
+                if (skippedFiles.isNotEmpty()) {
+                    log.warning("manualCheckout: skipped files: ${skippedFiles.joinToString(", ")}")
+                }
+            } catch (e: Exception) {
+                dc.unlock()
+                throw e
             }
 
-            throw lastError
+            treeWalk.close()
+            revWalk.close()
+        } finally {
+            reader.close()
         }
     }
 
-    private fun checkoutBranchOrTrackRemote(git: Git, branch: String): Boolean {
-        val repo = git.repository
-        val localRef = repo.findRef("refs/heads/$branch")
-
-        if (localRef != null) {
-            checkoutWithConflictRecovery(git, checkoutName = branch).getOrThrow()
-            return true
+    /**
+     * Find the default branch name from remote refs.
+     */
+    private fun findDefaultBranch(repo: org.eclipse.jgit.lib.Repository): String? {
+        // Check origin/HEAD symbolic ref
+        val originHead = repo.findRef("refs/remotes/origin/HEAD")
+        if (originHead?.target != null) {
+            val target = originHead.target.name
+            if (target.startsWith("refs/remotes/origin/")) {
+                return target.removePrefix("refs/remotes/origin/")
+            }
         }
 
-        val remoteRef = "refs/remotes/origin/$branch"
-        if (repo.findRef(remoteRef) == null) return false
-
-        checkoutCreateTrackingBranchWithRecovery(git, branch = branch, remoteRef = remoteRef).getOrThrow()
-        return true
-    }
-
-    private fun checkoutWithConflictRecovery(git: Git, checkoutName: String): Result<Unit> {
-        return runCatching {
-            git.checkout()
-                .setName(checkoutName)
-                .setForced(true)
-                .call()
-            Unit
-        }.recoverCatching { firstError ->
-            val recovered = removeConflictingWorkingTreePath(git.repository, firstError)
-            if (!recovered) throw firstError
-
-            git.checkout()
-                .setName(checkoutName)
-                .setForced(true)
-                .call()
-            Unit
+        // Fallback: try common names
+        for (name in listOf("main", "master")) {
+            if (repo.findRef("refs/remotes/origin/$name") != null) return name
         }
-    }
 
-    private fun checkoutCreateTrackingBranchWithRecovery(
-        git: Git,
-        branch: String,
-        remoteRef: String,
-    ): Result<Unit> {
-        return runCatching {
-            git.checkout()
-                .setCreateBranch(true)
-                .setName(branch)
-                .setStartPoint(remoteRef)
-                .setForced(true)
-                .call()
-            Unit
-        }.recoverCatching { firstError ->
-            val recovered = removeConflictingWorkingTreePath(git.repository, firstError)
-            if (!recovered) throw firstError
-
-            git.checkout()
-                .setCreateBranch(true)
-                .setName(branch)
-                .setStartPoint(remoteRef)
-                .setForced(true)
-                .call()
-            Unit
-        }
-    }
-
-    private fun removeConflictingWorkingTreePath(
-        gitRepository: org.eclipse.jgit.lib.Repository,
-        error: Throwable,
-    ): Boolean {
-        val relativePath = extractCannotDeletePath(error) ?: return false
-        val conflicted = File(gitRepository.workTree, relativePath)
-
-        return runCatching {
-            if (!conflicted.exists()) return@runCatching false
-            if (conflicted.isDirectory) conflicted.deleteRecursively() else conflicted.delete()
-        }.getOrDefault(false)
-    }
-
-    private fun extractCannotDeletePath(error: Throwable): String? {
-        val message = generateSequence(error) { it.cause }
-            .mapNotNull { it.message }
-            .joinToString(" | ")
-
-        val marker = "cannot delete file:"
-        val index = message.lowercase(Locale.US).indexOf(marker)
-        if (index == -1) return null
-
-        return message.substring(index + marker.length)
-            .substringBefore("|")
-            .trim()
-            .ifBlank { null }
-    }
-
-    private fun buildCheckoutBranchCandidates(gitRepository: org.eclipse.jgit.lib.Repository): List<String> {
-        val fromRemoteHead = gitRepository.findRef("refs/remotes/origin/HEAD")
-            ?.target
-            ?.name
-            ?.takeIf { it.startsWith("refs/remotes/origin/") }
-            ?.removePrefix("refs/remotes/origin/")
-
-        val fromCurrentHead = runCatching { gitRepository.fullBranch }.getOrNull()
-            ?.takeIf { it.startsWith("refs/heads/") }
-            ?.removePrefix("refs/heads/")
-
-        val localBranches = runCatching {
-            gitRepository.refDatabase.getRefsByPrefix("refs/heads/")
-                .map { it.name.removePrefix("refs/heads/") }
-                .filter { it.isNotBlank() }
-        }.getOrDefault(emptyList())
-
-        val remoteBranches = runCatching {
-            gitRepository.refDatabase.getRefsByPrefix("refs/remotes/origin/")
-                .map { it.name.removePrefix("refs/remotes/origin/") }
-                .filter { it.isNotBlank() && !it.equals("HEAD", ignoreCase = true) }
-        }.getOrDefault(emptyList())
-
-        return (listOfNotNull(fromRemoteHead, fromCurrentHead, "main", "master") + localBranches + remoteBranches)
-            .distinct()
-    }
-
-    private fun isSymlinkPermissionFailure(error: Throwable): Boolean {
-        val msg = generateSequence(error) { it.cause }
-            .mapNotNull { it.message }
-            .joinToString(" | ")
-            .lowercase()
-        return msg.contains("operation not permitted") ||
-            msg.contains("permission denied") ||
-            msg.contains("lnk_file") ||
-            msg.contains("symlink")
+        // Last resort: first remote branch that isn't HEAD
+        return repo.refDatabase.getRefsByPrefix("refs/remotes/origin/")
+            .map { it.name.removePrefix("refs/remotes/origin/") }
+            .firstOrNull { it != "HEAD" && it.isNotBlank() }
     }
 
     private fun credentialsFromTokenProvider(): UsernamePasswordCredentialsProvider? {

@@ -70,6 +70,14 @@ object CloneStorage {
         return runCatching {
             probe.writeText("ok")
             probe.delete()
+
+            // Prevent MediaProvider/MediaScanner interference during large git checkouts.
+            // Android/media is user-visible storage and scanner activity can race with JGit
+            // temp-file renames/deletes, causing intermittent checkout conflicts.
+            File(dir, ".nomedia").apply {
+                if (!exists()) createNewFile()
+            }
+
             true
         }.getOrDefault(false)
     }
