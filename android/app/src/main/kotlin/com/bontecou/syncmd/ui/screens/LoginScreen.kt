@@ -197,7 +197,7 @@ fun LoginScreen(
                     ) {
                         Text(
                             text = "←",
-                            modifier = Modifier.offset(y = 1.dp),
+                            modifier = Modifier.offset(y = 3.dp),
                             style = TextStyle(
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 13.sp,
