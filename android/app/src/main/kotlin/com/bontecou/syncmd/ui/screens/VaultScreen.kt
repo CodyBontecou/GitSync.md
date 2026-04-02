@@ -26,7 +26,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -126,6 +128,9 @@ fun VaultScreen(
                             style = TextStyle(
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 16.sp,
+                                lineHeight = 16.sp,
+                                platformStyle = PlatformTextStyle(includeFontPadding = false),
+                                lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.Both),
                                 color = bc.accent,
                             )
                         )
@@ -135,6 +140,9 @@ fun VaultScreen(
                                 fontFamily = FontFamily.Monospace,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 13.sp,
+                                lineHeight = 13.sp,
+                                platformStyle = PlatformTextStyle(includeFontPadding = false),
+                                lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.Both),
                                 letterSpacing = 1.sp,
                                 color = bc.accent,
                             )
