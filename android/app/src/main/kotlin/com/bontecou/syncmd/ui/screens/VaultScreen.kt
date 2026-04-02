@@ -67,6 +67,7 @@ fun VaultScreen(
     repositoryPath: String,
     showDebugInfo: Boolean = false,
     onOpenGit: () -> Unit,
+    onOpenDiff: (String) -> Unit = {},
     onNavigateBack: () -> Unit,
     viewModel: PullViewModel = hiltViewModel(),
 ) {
@@ -376,7 +377,10 @@ fun VaultScreen(
                                         if (showChangedFiles) {
                                             BDivider()
                                             allChanged.sortedBy { it.filePath }.forEachIndexed { idx, entry ->
-                                                ChangedFileRow(entry)
+                                                ChangedFileRow(
+                                                    entry   = entry,
+                                                    onClick = { onOpenDiff(entry.filePath) },
+                                                )
                                                 if (idx < allChanged.size - 1) {
                                                     Box(Modifier.padding(horizontal = 16.dp)) { BDivider() }
                                                 }
@@ -508,7 +512,7 @@ private fun VaultMetaChip(icon: String, text: String) {
 }
 
 @Composable
-private fun ChangedFileRow(entry: GitStatusEntry) {
+private fun ChangedFileRow(entry: GitStatusEntry, onClick: () -> Unit = {}) {
     val bc    = LocalBrutalColors.current
     val label = when (entry.kind) {
         GitFileStatusKind.STAGED    -> "staged"
@@ -524,6 +528,11 @@ private fun ChangedFileRow(entry: GitStatusEntry) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onClick,
+            )
             .padding(horizontal = 16.dp, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -553,6 +562,14 @@ private fun ChangedFileRow(entry: GitStatusEntry) {
             )
         }
         BBadge(text = label, style = badgeStyle)
+        Text(
+            text = "→",
+            style = TextStyle(
+                fontFamily = FontFamily.Monospace,
+                fontSize = 14.sp,
+                color = bc.textFaint,
+            )
+        )
     }
 }
 

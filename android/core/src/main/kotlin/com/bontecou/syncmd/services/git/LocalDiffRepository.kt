@@ -40,20 +40,27 @@ class LocalDiffRepository : DiffRepository {
                     val stagedPaths: Set<String> =
                         status.changed + status.added + status.removed
 
+                    // Files that exist in the index but NOT on disk — these are files whose
+                    // names contain characters illegal on this filesystem (e.g. '?' on FUSE
+                    // storage). The checkout code intentionally keeps them in the index to
+                    // avoid staged-deletion noise, so we must exclude them from the diff UI
+                    // ourselves; they are not real local changes the user made.
+                    val missingPaths: Set<String> = status.missing
+
                     // HEAD-vs-working-tree diff gives us hunk content for all changes
                     val diffText = captureDiff(repoPath, pathFilter = null)
                     val parsed  = parseDiffOutput(diffText)
 
-                    // Enrich parsed files with real isStaged flag
-                    val enriched = parsed.map { fd ->
-                        fd.copy(isStaged = fd.filePath in stagedPaths)
-                    }
+                    // Enrich parsed files with real isStaged flag; drop missing-only files
+                    val enriched = parsed
+                        .filter { fd -> fd.filePath !in missingPaths }
+                        .map    { fd -> fd.copy(isStaged = fd.filePath in stagedPaths) }
 
                     // Files staged for deletion may not appear in the working-tree diff
                     // (they're gone from disk) — add them explicitly
                     val parsedPaths = parsed.map { it.filePath }.toSet()
                     val stagedDeletions = status.removed
-                        .filter { it !in parsedPaths }
+                        .filter { it !in parsedPaths && it !in missingPaths }
                         .map { path ->
                             FileDiff(
                                 filePath = path,
@@ -73,15 +80,17 @@ class LocalDiffRepository : DiffRepository {
     override suspend fun getDiff(repoPath: String, filePath: String): Result<UnifiedDiffResult> =
         withContext(Dispatchers.IO) {
             try {
-                Git.open(File(repoPath)).use { git ->
-                    val status     = git.status().addPath(filePath).call()
-                    val isStaged   = filePath in status.changed ||
-                                     filePath in status.added   ||
-                                     filePath in status.removed
-                    val diffText   = captureDiff(repoPath, pathFilter = filePath)
-                    val parsed     = parseDiffOutput(diffText)
-                    buildResult(parsed.map { it.copy(isStaged = isStaged) })
-                }
+                // Reuse the full repo diff (which correctly handles deleted files, staged
+                // deletions, and path filters with spaces) and pick out the matching file.
+                // Calling captureDiff with PathFilter directly fails for staged deletions
+                // because the file no longer exists in the working tree, so the formatter
+                // finds nothing to compare against.
+                val fullResult = getDiff(repoPath).getOrElse { return@withContext Result.failure(it) }
+                val fileDiff   = fullResult.files.firstOrNull { it.filePath == filePath }
+                    ?: return@withContext Result.success(
+                        UnifiedDiffResult(emptyList(), com.bontecou.syncmd.data.models.DiffSummary(0, 0, 0))
+                    )
+                buildResult(listOf(fileDiff))
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -263,15 +272,23 @@ class LocalDiffRepository : DiffRepository {
             if (line.startsWith("diff --git")) {
                 val parts = line.split(" ")
                 if (parts.size >= 4) {
-                    val aPath = parts[2].removePrefix("a/")
-                    val bPath = parts[3].removePrefix("b/")
+                    // Initial path guesses from the "diff --git" header — wrong for filenames
+                    // with spaces (e.g. "diff --git a/My Notes.md b/My Notes.md" splits
+                    // into parts[2]="a/My", parts[3]="Notes.md"). We override these below
+                    // using the unambiguous "--- a/<path>" / "+++ b/<path>" lines.
+                    var aPath = parts[2].removePrefix("a/")
+                    var bPath = parts[3].removePrefix("b/")
 
                     i++
                     var oldFileMode: String? = null
                     var newFileMode: String? = null
                     var status = DiffStatus.MODIFIED
 
-                    while (i < lines.size && !lines[i].startsWith("---")) {
+                    // Advance past index/mode/rename lines; stop at --- or next diff block
+                    while (i < lines.size &&
+                        !lines[i].startsWith("---") &&
+                        !lines[i].startsWith("diff --git")
+                    ) {
                         when {
                             lines[i].startsWith("new file mode")    -> { newFileMode = lines[i].substringAfter("mode "); status = DiffStatus.ADDED }
                             lines[i].startsWith("deleted file mode") -> { oldFileMode = lines[i].substringAfter("mode "); status = DiffStatus.DELETED }
@@ -280,8 +297,19 @@ class LocalDiffRepository : DiffRepository {
                         i++
                     }
 
-                    if (i < lines.size && lines[i].startsWith("---")) i++
-                    if (i < lines.size && lines[i].startsWith("+++")) i++
+                    // Extract correct full paths from --- / +++ lines (handles spaces and
+                    // git-quoted paths, e.g. "a/Ralph Wiggum\342\200\246.md" → path)
+                    if (i < lines.size && lines[i].startsWith("---")) {
+                        val raw = lines[i].removePrefix("--- ")
+                        if (raw != "/dev/null") aPath = stripGitPathPrefix(raw, "a/")
+                        i++
+                    }
+                    if (i < lines.size && lines[i].startsWith("+++")) {
+                        val raw = lines[i].removePrefix("+++ ")
+                        // Deleted files have "+++ /dev/null" — fall back to aPath in that case
+                        bPath = if (raw != "/dev/null") stripGitPathPrefix(raw, "b/") else aPath
+                        i++
+                    }
 
                     val hunks = mutableListOf<DiffHunk>()
                     while (i < lines.size && lines[i].startsWith("@@")) {
@@ -341,4 +369,62 @@ class LocalDiffRepository : DiffRepository {
     }
 
     private data class Quad<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
+
+    /**
+     * Strip the git path prefix (e.g. "a/" or "b/") from a path token on a ---/+++ line.
+     * Git quotes paths that contain special or non-ASCII characters:
+     *   unquoted: a/Clippings/file.md
+     *   quoted:   "a/Clippings/Ralph Wiggum as a \"software engineer\".md"
+     *   quoted:   "a/Clippings/How Did Hendrix\342\200\246.md"  (octal UTF-8 bytes)
+     * We strip the outer quotes, unescape the C-string content, then strip the prefix.
+     */
+    private fun stripGitPathPrefix(raw: String, prefix: String): String {
+        val unquoted = if (raw.startsWith("\"") && raw.endsWith("\"")) {
+            unescapeGitPath(raw.substring(1, raw.length - 1))
+        } else {
+            raw
+        }
+        return unquoted.removePrefix(prefix)
+    }
+
+    /**
+     * Unescape a git C-string path (content between the outer double-quotes).
+     * Git uses C-style escapes: `\"` `\\` `\n` `\t` plus `\ooo` octal for non-ASCII bytes.
+     * Octal bytes are collected and decoded together as UTF-8 so multi-byte sequences
+     * (e.g. `\342\200\246` = U+2026 HORIZONTAL ELLIPSIS) round-trip correctly.
+     */
+    private fun unescapeGitPath(s: String): String {
+        val bytes = mutableListOf<Byte>()
+        var i = 0
+        while (i < s.length) {
+            if (s[i] == '\\' && i + 1 < s.length) {
+                when (s[i + 1]) {
+                    '"'  -> { bytes.add('"'.code.toByte());  i += 2 }
+                    '\\' -> { bytes.add('\\'.code.toByte()); i += 2 }
+                    'n'  -> { bytes.add('\n'.code.toByte()); i += 2 }
+                    't'  -> { bytes.add('\t'.code.toByte()); i += 2 }
+                    'r'  -> { bytes.add('\r'.code.toByte()); i += 2 }
+                    'a'  -> { bytes.add(7.toByte());           i += 2 }
+                    'b'  -> { bytes.add(8.toByte());           i += 2 }
+                    'f'  -> { bytes.add(12.toByte());          i += 2 }
+                    'v'  -> { bytes.add(11.toByte());          i += 2 }
+                    else -> {
+                        // Octal escape \ooo — always exactly 3 digits in git output
+                        if (i + 3 < s.length &&
+                            s[i + 1].isDigit() && s[i + 2].isDigit() && s[i + 3].isDigit()
+                        ) {
+                            bytes.add(s.substring(i + 1, i + 4).toInt(8).toByte())
+                            i += 4
+                        } else {
+                            bytes.add(s[i].code.toByte()); i++
+                        }
+                    }
+                }
+            } else {
+                bytes.add(s[i].code.toByte())
+                i++
+            }
+        }
+        return String(bytes.toByteArray(), Charsets.UTF_8)
+    }
 }

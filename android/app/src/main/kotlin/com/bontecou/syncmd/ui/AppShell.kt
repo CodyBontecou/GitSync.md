@@ -26,6 +26,7 @@ import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
 import com.bontecou.syncmd.storage.CloneStorage
 import com.bontecou.syncmd.ui.screens.CloneScreen
+import com.bontecou.syncmd.ui.screens.DiffScreen
 import com.bontecou.syncmd.ui.screens.GitScreen
 import com.bontecou.syncmd.ui.screens.LoginScreen
 import com.bontecou.syncmd.ui.screens.PaywallScreen
@@ -70,6 +71,8 @@ object Routes {
     /** clone/{repoFullName} — repoFullName is URI-encoded (e.g. "owner%2Frepo") */
     const val CLONE        = "clone"
     const val PAYWALL      = "paywall"
+    /** diff/{filePath} — filePath is URI-encoded */
+    const val DIFF         = "diff"
 }
 
 /**
@@ -236,6 +239,10 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     repositoryPath  = selectedRepository,
                     showDebugInfo   = appSettings.showDebugInfo,
                     onOpenGit       = { navController.navigateSafe(Routes.GIT) },
+                    onOpenDiff      = { filePath ->
+                        val encoded = Uri.encode(filePath)
+                        navController.navigateSafe("${Routes.DIFF}/$encoded")
+                    },
                     onNavigateBack  = { navController.popBackStackSafe() },
                 )
             }
@@ -245,6 +252,23 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 GitScreen(
                     repositoryPath = selectedRepository,
                     showDebugInfo  = appSettings.showDebugInfo,
+                    onNavigateBack = { navController.popBackStackSafe() },
+                    onOpenDiff     = { filePath ->
+                        val encoded = Uri.encode(filePath)
+                        navController.navigateSafe("${Routes.DIFF}/$encoded")
+                    },
+                )
+            }
+
+            // ── File diff viewer ──────────────────────────────────────────
+            composable(
+                route     = "${Routes.DIFF}/{filePath}",
+                arguments = listOf(navArgument("filePath") { type = NavType.StringType }),
+            ) { backStackEntry ->
+                val filePath = backStackEntry.arguments?.getString("filePath") ?: ""
+                DiffScreen(
+                    repositoryPath = selectedRepository,
+                    filePath       = filePath,
                     onNavigateBack = { navController.popBackStackSafe() },
                 )
             }
