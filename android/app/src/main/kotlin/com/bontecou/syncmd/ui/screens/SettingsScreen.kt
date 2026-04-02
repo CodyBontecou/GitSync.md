@@ -42,6 +42,7 @@ import com.bontecou.syncmd.R
 import com.bontecou.syncmd.billing.PurchaseManager
 import com.bontecou.syncmd.billing.PurchaseViewModel
 import com.bontecou.syncmd.storage.CloneStorage
+import com.bontecou.syncmd.ui.util.FilesAppLauncher
 import com.bontecou.syncmd.ui.theme.BBadge
 import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
@@ -686,6 +687,8 @@ private fun CloneDirRow(
     defaultPath: String,
 ) {
     val bc = LocalBrutalColors.current
+    val context = LocalContext.current
+    val displayPath = shortenClonePath(defaultPath)
 
     Column(
         modifier = Modifier
@@ -703,21 +706,49 @@ private fun CloneDirRow(
             )
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(bc.surface)
-                .border(1.dp, bc.border)
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = defaultPath,
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 13.sp,
-                    color = bc.text,
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(bc.surface)
+                    .border(1.dp, bc.border)
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+            ) {
+                Text(
+                    text = displayPath,
+                    style = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 13.sp,
+                        color = bc.text,
+                    )
                 )
-            )
+            }
+            
+            Box(
+                modifier = Modifier
+                    .background(bc.surface)
+                    .border(1.dp, bc.border)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = { FilesAppLauncher.openFolder(context, defaultPath) },
+                    )
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+            ) {
+                Text(
+                    text = "Open",
+                    style = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 13.sp,
+                        color = bc.accent,
+                    )
+                )
+            }
         }
 
         Text(
@@ -730,4 +761,12 @@ private fun CloneDirRow(
             )
         )
     }
+}
+
+private fun shortenClonePath(path: String): String {
+    val prefixes = listOf("/storage/emulated/0/", "/sdcard/")
+    for (prefix in prefixes) {
+        if (path.startsWith(prefix)) return path.removePrefix(prefix)
+    }
+    return path
 }
