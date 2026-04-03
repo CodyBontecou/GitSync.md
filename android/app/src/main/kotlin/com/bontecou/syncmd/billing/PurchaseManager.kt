@@ -41,7 +41,7 @@ class PurchaseManager @Inject constructor(
 
     companion object {
         /** Product ID registered in Google Play Console. */
-        const val PRODUCT_ID = "com.bontecou.syncmd.unlock"
+        const val PRODUCT_ID = "unlock-full-version"
 
         /** Number of repositories included for free before a purchase is required. */
         const val FREE_REPO_LIMIT = 1
@@ -179,7 +179,8 @@ class PurchaseManager @Inject constructor(
         suspendCancellableCoroutine { cont ->
             billingClient.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    _productDetails.value = productDetailsList.firstOrNull()
+                    _productDetails.value =
+                        productDetailsList.firstOrNull { it.productId == PRODUCT_ID }
                 }
                 if (cont.isActive) cont.resume(Unit)
             }
@@ -225,14 +226,17 @@ class PurchaseManager @Inject constructor(
     suspend fun purchase(activity: Activity) {
         _purchaseError.value = null
 
-        // Load product if not yet cached
-        val details = _productDetails.value ?: run {
-            loadProduct()
-            _productDetails.value
-        } ?: run {
-            _purchaseError.value = "Product unavailable. Please try again later."
-            return
-        }
+        // Load product if not yet cached (or stale/mismatched).
+        val details = _productDetails.value
+            ?.takeIf { it.productId == PRODUCT_ID }
+            ?: run {
+                loadProduct()
+                _productDetails.value?.takeIf { it.productId == PRODUCT_ID }
+            }
+            ?: run {
+                _purchaseError.value = "Product unavailable. Please try again later."
+                return
+            }
 
         if (!ensureConnected()) {
             _purchaseError.value = "Unable to connect to Google Play."
