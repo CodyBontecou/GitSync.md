@@ -1643,6 +1643,159 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(info.statusEntries.contains { $0.path == "A.md" }, "Staged file should be committed and clean")
     }
 
+    func testLocalGitServiceUnifiedDiffShowsStagedOnlyJSONChanges() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-JSONDiff-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let service = LocalGitService(localURL: repoURL)
+        let configDir = repoURL.appendingPathComponent("config", isDirectory: true)
+        try fm.createDirectory(at: configDir, withIntermediateDirectories: true)
+        let file = configDir.appendingPathComponent("settings.json")
+
+        try """
+        {
+          "theme": "light"
+        }
+        """.write(to: file, atomically: true, encoding: .utf8)
+
+        try await service.stage(path: "config/settings.json")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Initial config",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected: commit succeeds, push fails due missing origin.
+        }
+
+        try """
+        {
+          "theme": "dark"
+        }
+        """.write(to: file, atomically: true, encoding: .utf8)
+        try await service.stage(path: "config/settings.json")
+
+        let diff = try await service.unifiedDiff(path: "config/settings.json")
+
+        XCTAssertEqual(diff.files.count, 1)
+        XCTAssertEqual(diff.files.first?.path, "config/settings.json")
+        XCTAssertEqual(diff.files.first?.changeType, .modified)
+        XCTAssertFalse(diff.rawPatch.isEmpty)
+        XCTAssertTrue(diff.rawPatch.contains("diff --git a/config/settings.json b/config/settings.json"))
+        XCTAssertTrue(diff.rawPatch.contains("-  \"theme\": \"light\""))
+        XCTAssertTrue(diff.rawPatch.contains("+  \"theme\": \"dark\""))
+    }
+
+    func testLocalGitServiceUnifiedDiffShowsUntrackedJSONChanges() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-UntrackedJSONDiff-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let service = LocalGitService(localURL: repoURL)
+        let readme = repoURL.appendingPathComponent("README.md")
+        try "# SyncMD\n".write(to: readme, atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Initial commit",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected: commit succeeds, push fails due missing origin.
+        }
+
+        let configDir = repoURL.appendingPathComponent("config", isDirectory: true)
+        try fm.createDirectory(at: configDir, withIntermediateDirectories: true)
+        let file = configDir.appendingPathComponent("settings.json")
+        try """
+        {
+          "theme": "dark"
+        }
+        """.write(to: file, atomically: true, encoding: .utf8)
+
+        let diff = try await service.unifiedDiff(path: "config/settings.json")
+
+        XCTAssertEqual(diff.files.count, 1)
+        XCTAssertEqual(diff.files.first?.path, "config/settings.json")
+        XCTAssertEqual(diff.files.first?.changeType, .added)
+        XCTAssertFalse(diff.rawPatch.isEmpty)
+        XCTAssertTrue(diff.rawPatch.contains("diff --git a/config/settings.json b/config/settings.json"))
+        XCTAssertTrue(diff.rawPatch.contains("--- /dev/null"))
+        XCTAssertTrue(diff.rawPatch.contains("+++ b/config/settings.json"))
+        XCTAssertTrue(diff.rawPatch.contains("+  \"theme\": \"dark\""))
+    }
+
+    func testLocalGitServiceUnifiedDiffUsesHeadAsBaseForStagedAndUnstagedChanges() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-JSONMixedDiff-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let service = LocalGitService(localURL: repoURL)
+        let file = repoURL.appendingPathComponent("settings.json")
+
+        try """
+        {
+          "theme": "light"
+        }
+        """.write(to: file, atomically: true, encoding: .utf8)
+
+        try await service.stage(path: "settings.json")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Initial settings",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected: commit succeeds, push fails due missing origin.
+        }
+
+        try """
+        {
+          "theme": "dark"
+        }
+        """.write(to: file, atomically: true, encoding: .utf8)
+        try await service.stage(path: "settings.json")
+
+        try """
+        {
+          "theme": "solarized"
+        }
+        """.write(to: file, atomically: true, encoding: .utf8)
+
+        let diff = try await service.unifiedDiff(path: "settings.json")
+
+        XCTAssertEqual(diff.files.count, 1)
+        XCTAssertFalse(diff.rawPatch.isEmpty)
+        XCTAssertTrue(diff.rawPatch.contains("-  \"theme\": \"light\""))
+        XCTAssertTrue(diff.rawPatch.contains("+  \"theme\": \"solarized\""))
+        XCTAssertFalse(diff.rawPatch.contains("\"dark\""))
+    }
+
 }
 
 private enum GitFixtureState: String, CaseIterable {
@@ -1807,6 +1960,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var appliedStashIndices: [Int] = []
     var poppedStashIndices: [Int] = []
     var droppedStashIndices: [Int] = []
+    var discardedPaths: [String] = []
+    var didDiscardAllChanges = false
     var tagsResult: [GitTag] = []
     var createdTags: [(name: String, message: String?)] = []
     var deletedTagNames: [String] = []
@@ -1909,6 +2064,14 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func unstage(path: String) async throws {
         unstagedPaths.append(path)
+    }
+
+    func discardChanges(path: String) async throws {
+        discardedPaths.append(path)
+    }
+
+    func discardAllChanges() async throws {
+        didDiscardAllChanges = true
     }
 
     func commitAndPush(
