@@ -1192,12 +1192,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
 
-            var index: OpaquePointer?
-            defer { if let index { git_index_free(index) } }
-            try git2Check(git_repository_index(&index, repo), context: "Get index")
-
             var options = git_diff_options()
             git_diff_options_init(&options, UInt32(GIT_DIFF_OPTIONS_VERSION))
+            options.flags = UInt32(GIT_DIFF_INCLUDE_UNTRACKED.rawValue)
+                | UInt32(GIT_DIFF_RECURSE_UNTRACKED_DIRS.rawValue)
+                | UInt32(GIT_DIFF_SHOW_UNTRACKED_CONTENT.rawValue)
 
             var pathspecCString: UnsafeMutablePointer<CChar>?
             var pathspecStorage: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?
@@ -1214,10 +1213,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 pathspecStorage = storage
             }
 
+            let headTree = try Self.headTreeForDiff(repo: repo)
+            defer { if let headTree { git_tree_free(headTree) } }
+
             var diff: OpaquePointer?
             try git2Check(
-                git_diff_index_to_workdir(&diff, repo, index, &options),
-                context: "Create index-to-workdir diff"
+                git_diff_tree_to_workdir_with_index(&diff, repo, headTree, &options),
+                context: "Create HEAD-to-workdir diff"
             )
             guard let diff else { return .empty }
             defer { git_diff_free(diff) }
@@ -2124,9 +2126,43 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }
     }
 
+    private static func headTreeForDiff(repo: OpaquePointer?) throws -> OpaquePointer? {
+        var headRef: OpaquePointer?
+        defer { if let headRef { git_reference_free(headRef) } }
+
+        let headCode = git_repository_head(&headRef, repo)
+        if headCode == GIT_EUNBORNBRANCH.rawValue || headCode == GIT_ENOTFOUND.rawValue {
+            return nil
+        }
+
+        try git2Check(headCode, context: "Read HEAD for diff")
+        guard let headOid = git_reference_target(headRef) else {
+            throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for diff")
+        }
+
+        var headCommit: OpaquePointer?
+        defer { if let headCommit { git_commit_free(headCommit) } }
+
+        var headOidCopy = headOid.pointee
+        try git2Check(
+            git_commit_lookup(&headCommit, repo, &headOidCopy),
+            context: "Lookup HEAD commit for diff"
+        )
+
+        var headTree: OpaquePointer?
+        try git2Check(
+            git_commit_tree(&headTree, headCommit),
+            context: "Get HEAD tree for diff"
+        )
+
+        return headTree
+    }
+
     private static func diffChangeType(from status: git_delta_t) -> GitDiffChangeType {
         switch status {
         case GIT_DELTA_ADDED:
+            return .added
+        case GIT_DELTA_UNTRACKED:
             return .added
         case GIT_DELTA_MODIFIED:
             return .modified
