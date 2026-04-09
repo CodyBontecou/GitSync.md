@@ -52,6 +52,7 @@ struct PaywallView: View {
                     .font(.system(size: 13, weight: .bold))
                     .foregroundStyle(Color.brutalText)
                     .frame(width: 30, height: 30)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .padding(.top, 18)
