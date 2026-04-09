@@ -11,6 +11,7 @@ xcuserdata/
 *.xcuserstate
 DerivedData/
 build/
+buildServer.json
 
 # Swift Package Manager
 .build/
