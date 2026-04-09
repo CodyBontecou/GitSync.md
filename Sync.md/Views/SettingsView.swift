@@ -293,11 +293,13 @@ struct SettingsView: View {
             return
         }
 
-        url.stopAccessingSecurityScopedResource()
-
+        // Keep security scope active across the move — `FileManager.moveItem`
+        // needs write access to `url` for the duration of the call. Ownership
+        // of the scope is handed off to AppState on success.
         do {
             try state.moveVaultLocation(for: repoID, to: url, bookmark: bookmark)
         } catch {
+            url.stopAccessingSecurityScopedResource()
             moveError = error.localizedDescription
             showMoveError = true
         }

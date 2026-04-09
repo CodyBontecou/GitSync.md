@@ -354,6 +354,13 @@ final class AppState {
         }
     }
 
+    /// Moves a repo's vault to a new parent directory.
+    ///
+    /// The caller must already hold a security-scoped resource on `newParentURL`
+    /// (typically from a `fileImporter` selection). On success, ownership of
+    /// that scope is transferred to `AppState` and tracked in
+    /// `accessingSecurityScope`. On failure the caller is responsible for
+    /// releasing it.
     func moveVaultLocation(for repoID: UUID, to newParentURL: URL, bookmark: Data) throws {
         guard let idx = repoIndex(id: repoID) else {
             throw MoveVaultError.repoNotFound
@@ -367,14 +374,19 @@ final class AppState {
             throw MoveVaultError.destinationExists
         }
 
-        try FileManager.default.moveItem(at: currentURL, to: destinationURL)
-
-        // Clear old bookmark and set new one
-        clearCustomLocation(for: repoID)
-
-        guard newParentURL.startAccessingSecurityScopedResource() else {
+        // If the source vault lives in a user-picked custom location, we need
+        // its security scope live during the move. The default in-app vault
+        // (Documents directory) is always accessible without a scope.
+        if resolvedCustomURLs[repoID] != nil, !accessingSecurityScope.contains(repoID) {
             throw MoveVaultError.bookmarkFailed
         }
+
+        try FileManager.default.moveItem(at: currentURL, to: destinationURL)
+
+        // Release the old custom-location scope (if any) now that the source
+        // is gone, then hand the new parent's scope — already held by the
+        // caller — over to AppState.
+        clearCustomLocation(for: repoID)
 
         repos[idx].customVaultBookmarkData = bookmark
         repos[idx].customLocationIsParent = true
@@ -1225,9 +1237,25 @@ final class AppState {
         }
 
         do {
+            let fm = FileManager.default
+
+            // If the user configured a default save location after this repo
+            // was first added, adopt it now so the (re-)clone lands in the
+            // chosen folder instead of the in-app Documents directory.
+            if repos[idx].customVaultBookmarkData == nil,
+               let defaultBookmark = defaultSaveLocationBookmarkData {
+                let staleVaultDir = repos[idx].defaultVaultURL
+                repos[idx].customVaultBookmarkData = defaultBookmark
+                repos[idx].customLocationIsParent = true
+                saveRepos()
+                resolveVaultBookmark(for: repoID)
+                if fm.fileExists(atPath: staleVaultDir.path) {
+                    try? fm.removeItem(at: staleVaultDir)
+                }
+            }
+
             var repo = repos[idx]
             let vaultDir = vaultURL(for: repoID)
-            let fm = FileManager.default
 
             // Remove existing vault directory — git clone needs a clean target
             if fm.fileExists(atPath: vaultDir.path) {

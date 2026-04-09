@@ -266,12 +266,6 @@ struct AppSettingsView: View {
                                         FeedbackHelper.openMailClient()
                                     }
                                 }
-
-                                BDivider().padding(.horizontal, 16)
-
-                                actionRow(icon: "🐞", title: "Report a Bug", subtitle: "Open an issue on GitHub") {
-                                    FeedbackHelper.openGitHubIssue()
-                                }
                             }
                         }
 

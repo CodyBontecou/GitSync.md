@@ -5,7 +5,6 @@ import MessageUI
 /// Lightweight feedback utilities for email + GitHub issues.
 enum FeedbackHelper {
     static let supportEmail = "cody@isolated.tech"
-    static let githubRepo = "CodyBontecou/Sync.md"
 
     /// Non-identifying app and device metadata useful for debugging.
     static var diagnosticsBlock: String {
@@ -51,31 +50,6 @@ enum FeedbackHelper {
         UIApplication.shared.open(url)
     }
 
-    static func openGitHubIssue() {
-        let body = """
-        **Describe the issue**
-        <!-- A clear description of what happened -->
-
-        **Steps to reproduce**
-        1.
-        2.
-        3.
-
-        **Expected behavior**
-        <!-- What you expected to happen -->
-
-        \(diagnosticsBlock)
-        """
-
-        var components = URLComponents(string: "https://github.com/\(githubRepo)/issues/new")!
-        components.queryItems = [
-            URLQueryItem(name: "title", value: ""),
-            URLQueryItem(name: "body", value: body),
-        ]
-
-        guard let url = components.url else { return }
-        UIApplication.shared.open(url)
-    }
 }
 
 struct MailComposeView: UIViewControllerRepresentable {
