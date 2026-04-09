@@ -5,6 +5,18 @@ import libgit2
 @testable import Sync_md
 
 final class SyncMDTests: XCTestCase {
+    /// Many tests in this file call raw libgit2 APIs (e.g. `git_repository_init`)
+    /// *before* constructing a `LocalGitService`. Those APIs require
+    /// `git_libgit2_init` to have run, which currently only happens lazily
+    /// inside `LocalGitService.init`. If the first-run test in alphabetical
+    /// order hits a raw call first, it fails with `-1`. Force-initialize
+    /// libgit2 once for the entire test class so test ordering no longer
+    /// matters.
+    override class func setUp() {
+        super.setUp()
+        git_libgit2_init()
+    }
+
     func testSmoke() {
         XCTAssertTrue(true)
     }
@@ -1649,11 +1661,14 @@ final class SyncMDTests: XCTestCase {
         try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
         defer { try? fm.removeItem(at: repoURL) }
 
+        // Construct the service first so its static initOnce runs git_libgit2_init()
+        // before any raw libgit2 calls in the test.
+        let service = LocalGitService(localURL: repoURL)
+
         var repo: OpaquePointer?
         XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
         if let repo { git_repository_free(repo) }
 
-        let service = LocalGitService(localURL: repoURL)
         let configDir = repoURL.appendingPathComponent("config", isDirectory: true)
         try fm.createDirectory(at: configDir, withIntermediateDirectories: true)
         let file = configDir.appendingPathComponent("settings.json")
@@ -1701,11 +1716,12 @@ final class SyncMDTests: XCTestCase {
         try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
         defer { try? fm.removeItem(at: repoURL) }
 
+        let service = LocalGitService(localURL: repoURL)
+
         var repo: OpaquePointer?
         XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
         if let repo { git_repository_free(repo) }
 
-        let service = LocalGitService(localURL: repoURL)
         let readme = repoURL.appendingPathComponent("README.md")
         try "# SyncMD\n".write(to: readme, atomically: true, encoding: .utf8)
         try await service.stage(path: "README.md")
@@ -1748,11 +1764,12 @@ final class SyncMDTests: XCTestCase {
         try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
         defer { try? fm.removeItem(at: repoURL) }
 
+        let service = LocalGitService(localURL: repoURL)
+
         var repo: OpaquePointer?
         XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
         if let repo { git_repository_free(repo) }
 
-        let service = LocalGitService(localURL: repoURL)
         let file = repoURL.appendingPathComponent("settings.json")
 
         try """
@@ -1794,6 +1811,228 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(diff.rawPatch.contains("-  \"theme\": \"light\""))
         XCTAssertTrue(diff.rawPatch.contains("+  \"theme\": \"solarized\""))
         XCTAssertFalse(diff.rawPatch.contains("\"dark\""))
+    }
+
+    func testLocalGitServiceUnifiedDiffDoesNotMisflagTextContainingBinaryFilesPhrase() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-BinaryFalsePositive-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        let service = LocalGitService(localURL: repoURL)
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let note = repoURL.appendingPathComponent("notes.md")
+
+        // File legitimately contains the phrase libgit2 emits for binary diffs.
+        try """
+        # Notes
+
+        Historical quirk: some tools print "Binary files differ" for unrelated deltas.
+        """.write(to: note, atomically: true, encoding: .utf8)
+
+        try await service.stage(path: "notes.md")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Seed notes",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected: commit succeeds, push fails due to missing origin.
+        }
+
+        try """
+        # Notes (updated)
+
+        Historical quirk: some tools print "Binary files differ" for unrelated deltas.
+        """.write(to: note, atomically: true, encoding: .utf8)
+
+        let diff = try await service.unifiedDiff(path: "notes.md")
+
+        XCTAssertEqual(diff.files.count, 1)
+        XCTAssertEqual(diff.files.first?.changeType, .modified)
+        XCTAssertEqual(diff.files.first?.isBinary, false,
+                       "Text file whose content mentions 'Binary files' must not be flagged as binary")
+    }
+
+    func testLocalGitServiceUnifiedDiffTreatsOversizedTextFileAsBinary() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-MaxSize-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        let service = LocalGitService(localURL: repoURL)
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let log = repoURL.appendingPathComponent("huge.log")
+
+        // ~700KB of text — above the 512KB cap we want libgit2 to enforce.
+        let line = String(repeating: "a", count: 63) + "\n" // 64 bytes
+        let body = String(repeating: line, count: 700 * 1024 / 64)
+        try body.write(to: log, atomically: true, encoding: .utf8)
+
+        try await service.stage(path: "huge.log")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Seed log",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected.
+        }
+
+        // Append a single line — enough to produce a diff.
+        try (body + "changed\n").write(to: log, atomically: true, encoding: .utf8)
+
+        let diff = try await service.unifiedDiff(path: "huge.log")
+
+        XCTAssertEqual(diff.files.count, 1)
+        XCTAssertEqual(diff.files.first?.isBinary, true,
+                       "Text files larger than the cap must be treated as binary so we don't dump megabytes into the diff")
+        // The per-file patch should be short — a binary stub, not the full content.
+        let patch = diff.files.first?.patch ?? ""
+        XCTAssertLessThan(patch.utf8.count, 4096,
+                          "Oversized text file diff should be a short binary stub, not the full content")
+    }
+
+    func testLocalGitServiceUnifiedDiffDetectsRenameWhenQueriedByNewPath() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-RenameNew-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        let service = LocalGitService(localURL: repoURL)
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let foo = repoURL.appendingPathComponent("foo.md")
+        let content = """
+        # Shared Title
+
+        This file has enough lines to look similar under rename detection.
+        Line three.
+        Line four.
+        Line five.
+        """
+        try content.write(to: foo, atomically: true, encoding: .utf8)
+
+        try await service.stage(path: "foo.md")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Seed foo",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected.
+        }
+
+        // Rename foo.md -> bar.md on disk with identical content.
+        try fm.removeItem(at: foo)
+        let bar = repoURL.appendingPathComponent("bar.md")
+        try content.write(to: bar, atomically: true, encoding: .utf8)
+
+        // Stage both sides of the rename: the deletion of foo.md and the addition of bar.md.
+        var openedRepo: OpaquePointer?
+        defer { if let openedRepo { git_repository_free(openedRepo) } }
+        XCTAssertEqual(git_repository_open(&openedRepo, repoURL.path), 0)
+
+        var index: OpaquePointer?
+        defer { if let index { git_index_free(index) } }
+        XCTAssertEqual(git_repository_index(&index, openedRepo), 0)
+        XCTAssertEqual("foo.md".withCString { git_index_remove_bypath(index, $0) }, 0)
+        XCTAssertEqual(git_index_write(index), 0)
+
+        try await service.stage(path: "bar.md")
+
+        let diff = try await service.unifiedDiff(path: "bar.md")
+
+        XCTAssertEqual(diff.files.count, 1, "Rename should surface as a single delta")
+        XCTAssertEqual(diff.files.first?.oldPath, "foo.md",
+                       "Rename detection requires the old path to survive filtering")
+        XCTAssertEqual(diff.files.first?.newPath, "bar.md")
+        XCTAssertNotEqual(diff.files.first?.changeType, .added,
+                          "A rename should not be reported as an add")
+        XCTAssertEqual(diff.files.first?.changeType, .renamed)
+    }
+
+    func testLocalGitServiceUnifiedDiffDetectsRenameWhenQueriedByOldPath() async throws {
+        let fm = FileManager.default
+        let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-RenameOld-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        let service = LocalGitService(localURL: repoURL)
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, repoURL.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+
+        let foo = repoURL.appendingPathComponent("foo.md")
+        let content = """
+        # Shared Title
+
+        This file has enough lines to look similar under rename detection.
+        Line three.
+        Line four.
+        Line five.
+        """
+        try content.write(to: foo, atomically: true, encoding: .utf8)
+
+        try await service.stage(path: "foo.md")
+        do {
+            _ = try await service.commitAndPush(
+                message: "Seed foo",
+                authorName: "SyncMD Tests",
+                authorEmail: "tests@example.com",
+                pat: ""
+            )
+            XCTFail("Expected push to fail without origin remote")
+        } catch {
+            // Expected.
+        }
+
+        try fm.removeItem(at: foo)
+        let bar = repoURL.appendingPathComponent("bar.md")
+        try content.write(to: bar, atomically: true, encoding: .utf8)
+
+        var openedRepo: OpaquePointer?
+        defer { if let openedRepo { git_repository_free(openedRepo) } }
+        XCTAssertEqual(git_repository_open(&openedRepo, repoURL.path), 0)
+
+        var index: OpaquePointer?
+        defer { if let index { git_index_free(index) } }
+        XCTAssertEqual(git_repository_index(&index, openedRepo), 0)
+        XCTAssertEqual("foo.md".withCString { git_index_remove_bypath(index, $0) }, 0)
+        XCTAssertEqual(git_index_write(index), 0)
+
+        try await service.stage(path: "bar.md")
+
+        // Query by the OLD path — the caller may only know the name the file
+        // used to have (e.g., they clicked it in the previous commit's tree).
+        let diff = try await service.unifiedDiff(path: "foo.md")
+
+        XCTAssertEqual(diff.files.count, 1,
+                       "Querying by the pre-rename path should still surface the rename delta")
+        XCTAssertEqual(diff.files.first?.oldPath, "foo.md")
+        XCTAssertEqual(diff.files.first?.newPath, "bar.md")
+        XCTAssertEqual(diff.files.first?.changeType, .renamed)
     }
 
 }

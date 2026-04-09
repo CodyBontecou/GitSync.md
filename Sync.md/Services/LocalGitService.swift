@@ -202,28 +202,6 @@ nonisolated private func credentialCallback(
     return GIT_EUSER.rawValue
 }
 
-private final class DiffPrintCollector {
-    var output: String = ""
-}
-
-nonisolated private func diffPrintCallback(
-    delta: UnsafePointer<git_diff_delta>?,
-    hunk: UnsafePointer<git_diff_hunk>?,
-    line: UnsafePointer<git_diff_line>?,
-    payload: UnsafeMutableRawPointer?
-) -> Int32 {
-    guard let payload, let line else { return 0 }
-    let collector = Unmanaged<DiffPrintCollector>.fromOpaque(payload).takeUnretainedValue()
-
-    let length = Int(line.pointee.content_len)
-    if let content = line.pointee.content, length > 0 {
-        let data = Data(bytes: content, count: length)
-        collector.output += String(decoding: data, as: UTF8.self)
-    }
-
-    return 0
-}
-
 private final class StashListCollector {
     var entries: [GitStashEntry] = []
 }
@@ -1186,6 +1164,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     func unifiedDiff(path: String?) async throws -> UnifiedDiffResult {
         let repoPath = self.localURL.path
+        let requestedPath: String? = (path?.isEmpty == false) ? path : nil
 
         return try await Task.detached {
             var repo: OpaquePointer?
@@ -1197,21 +1176,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             options.flags = UInt32(GIT_DIFF_INCLUDE_UNTRACKED.rawValue)
                 | UInt32(GIT_DIFF_RECURSE_UNTRACKED_DIRS.rawValue)
                 | UInt32(GIT_DIFF_SHOW_UNTRACKED_CONTENT.rawValue)
+            // Treat files above this size as binary so a large accidentally-committed
+            // text file can't dump megabytes into the patch output / UI.
+            options.max_size = 512 * 1024
 
-            var pathspecCString: UnsafeMutablePointer<CChar>?
-            var pathspecStorage: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?
-            defer {
-                if let pathspecCString { free(pathspecCString) }
-                if let pathspecStorage { pathspecStorage.deallocate() }
-            }
-
-            if let path, !path.isEmpty {
-                let cString = strdup(path)!
-                let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
-                makeStrarray(cString, into: &options.pathspec, storage: storage)
-                pathspecCString = cString
-                pathspecStorage = storage
-            }
+            // Intentionally no pathspec: rename detection needs both sides of
+            // the rename visible to git_diff_find_similar. We filter per-file
+            // after find_similar runs.
 
             let headTree = try Self.headTreeForDiff(repo: repo)
             defer { if let headTree { git_tree_free(headTree) } }
@@ -1228,44 +1199,69 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             git_diff_find_options_init(&findOptions, UInt32(GIT_DIFF_FIND_OPTIONS_VERSION))
             _ = git_diff_find_similar(diff, &findOptions)
 
-            let collector = DiffPrintCollector()
-            let collectorPtr = Unmanaged.passRetained(collector).toOpaque()
-            defer { Unmanaged<DiffPrintCollector>.fromOpaque(collectorPtr).release() }
-
-            try git2Check(
-                git_diff_print(diff, GIT_DIFF_FORMAT_PATCH, diffPrintCallback, collectorPtr),
-                context: "Render unified diff"
-            )
-
-            let rawPatch = collector.output
-            let patchChunks = Self.splitPatchByFile(rawPatch)
-
             let deltaCount = Int(git_diff_num_deltas(diff))
             var files: [GitFileDiff] = []
             files.reserveCapacity(deltaCount)
+            var rawPatchBuilder = ""
 
             for i in 0..<deltaCount {
                 guard let delta = git_diff_get_delta(diff, i)?.pointee else { continue }
 
                 let oldPath = delta.old_file.path.map { String(cString: $0) }
                 let newPath = delta.new_file.path.map { String(cString: $0) }
-                let path = newPath ?? oldPath ?? "<unknown>"
-                let patch = i < patchChunks.count ? patchChunks[i] : ""
+
+                // Match by either side so that a rename surfaces when the
+                // caller queries the pre-rename path OR the post-rename path.
+                if let requestedPath, oldPath != requestedPath, newPath != requestedPath {
+                    continue
+                }
+
+                let displayPath = newPath ?? oldPath ?? "<unknown>"
+                let rendered = Self.renderPatch(diff: diff, index: i)
 
                 files.append(
                     GitFileDiff(
-                        path: path,
+                        path: displayPath,
                         oldPath: oldPath,
                         newPath: newPath,
                         changeType: Self.diffChangeType(from: delta.status),
-                        isBinary: patch.contains("Binary files"),
-                        patch: patch
+                        isBinary: rendered.isBinary,
+                        patch: rendered.patch
                     )
                 )
+
+                rawPatchBuilder.append(rendered.patch)
             }
 
-            return UnifiedDiffResult(files: files, rawPatch: rawPatch)
+            return UnifiedDiffResult(files: files, rawPatch: rawPatchBuilder)
         }.value
+    }
+
+    /// Render a single file's patch from a diff using libgit2's native
+    /// per-file patch API instead of stringifying and re-splitting the
+    /// whole diff. Also reports whether the delta was classified binary
+    /// — the `GIT_DIFF_FLAG_BINARY` flag is only set while the patch is
+    /// loaded, so it must be read from `git_patch_get_delta` after the
+    /// `git_patch_from_diff` call rather than from a delta captured
+    /// earlier.
+    private static func renderPatch(diff: OpaquePointer, index: Int) -> (patch: String, isBinary: Bool) {
+        var patchPtr: OpaquePointer?
+        guard git_patch_from_diff(&patchPtr, diff, index) == 0, let patchPtr else {
+            return ("", false)
+        }
+        defer { git_patch_free(patchPtr) }
+
+        let loadedDelta = git_patch_get_delta(patchPtr)?.pointee
+        let isBinary = loadedDelta.map {
+            ($0.flags & UInt32(GIT_DIFF_FLAG_BINARY.rawValue)) != 0
+        } ?? false
+
+        var buf = git_buf()
+        defer { git_buf_dispose(&buf) }
+        guard git_patch_to_buf(&buf, patchPtr) == 0, let ptr = buf.ptr else {
+            return ("", isBinary)
+        }
+        return (String(cString: ptr), isBinary)
     }
 
     func stage(path: String) async throws {
@@ -2157,23 +2153,6 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             return .applyMailbox
         default:
             return .unknown
-        }
-    }
-
-    private static func splitPatchByFile(_ rawPatch: String) -> [String] {
-        guard !rawPatch.isEmpty else { return [] }
-
-        let normalized = rawPatch.hasPrefix("diff --git ")
-            ? rawPatch
-            : "diff --git \(rawPatch)"
-
-        let parts = normalized.components(separatedBy: "\ndiff --git ")
-        return parts.enumerated().compactMap { index, part in
-            guard !part.isEmpty else { return nil }
-            if index == 0 {
-                return part
-            }
-            return "diff --git \(part)"
         }
     }
 
