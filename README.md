@@ -139,6 +139,17 @@ Some areas where help would be appreciated:
 - Background sync / scheduled pulls
 - macOS support
 
+### Editor Setup
+
+If you use a SourceKit-LSP-based editor (Neovim, VS Code + Swift extension, Helix, Zed), generate a `buildServer.json` once so the LSP can resolve cross-file symbols:
+
+```bash
+brew install xcode-build-server
+xcode-build-server config -project Sync.md.xcodeproj -scheme Sync.md
+```
+
+The generated `buildServer.json` is gitignored. Build in Xcode once afterwards so the LSP picks up the compiler index.
+
 ## License
 
 [MIT](LICENSE) — Cody Bontecou
