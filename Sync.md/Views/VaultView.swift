@@ -298,6 +298,22 @@ struct VaultView: View {
                             }
                             .buttonStyle(.plain)
                         }
+
+                        if outcome.kind == .diverged {
+                            Button {
+                                Task { await state.mergeWithRemote(repoID: repoID) }
+                            } label: {
+                                Text(String(localized: "Merge").uppercased())
+                                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                    .foregroundStyle(Color.brutalError)
+                                    .tracking(1)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 5)
+                                    .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(state.isSyncing)
+                        }
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)

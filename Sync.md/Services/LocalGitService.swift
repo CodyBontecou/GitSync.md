@@ -816,7 +816,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }.value
     }
 
-    func mergeBranch(name: String) async throws -> MergeResult {
+    func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult {
         let repoPath = self.localURL.path
         let branchName = name.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -847,7 +847,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var sourceRef: OpaquePointer?
             defer { if let sourceRef { git_reference_free(sourceRef) } }
-            let lookupCode = git_branch_lookup(&sourceRef, repo, branchName, GIT_BRANCH_LOCAL)
+            var lookupCode = git_branch_lookup(&sourceRef, repo, branchName, GIT_BRANCH_LOCAL)
+            if lookupCode == GIT_ENOTFOUND.rawValue {
+                lookupCode = git_branch_lookup(&sourceRef, repo, branchName, GIT_BRANCH_REMOTE)
+            }
             if lookupCode == GIT_ENOTFOUND.rawValue {
                 throw LocalGitError.branchNotFound(branchName)
             }
@@ -941,7 +944,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var signature: UnsafeMutablePointer<git_signature>?
             defer { if let signature { git_signature_free(signature) } }
             try git2Check(
-                git_signature_now(&signature, "Sync.md", "syncmd@local"),
+                git_signature_now(&signature, authorName, authorEmail),
                 context: "Create merge signature"
             )
 
@@ -2120,6 +2123,87 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
 
             return LocalPushResult(commitSHA: commitSHA)
+        }.value
+    }
+
+    // MARK: - Push Current Branch (post-merge push without committing)
+
+    func pushCurrentBranch(pat: String) async throws {
+        let path = self.localURL.path
+
+        try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+
+            var headRef: OpaquePointer?
+            defer { if let headRef { git_reference_free(headRef) } }
+            try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
+
+            guard let headOidPtr = git_reference_target(headRef) else {
+                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for push")
+            }
+            var headOid = headOidPtr.pointee
+
+            let branchName: String
+            if let name = git_reference_shorthand(headRef) {
+                branchName = String(cString: name)
+            } else {
+                branchName = "main"
+            }
+
+            var pushRemote: OpaquePointer?
+            defer { if let pushRemote { git_remote_free(pushRemote) } }
+            try git2Check(git_remote_lookup(&pushRemote, repo, "origin"), context: "Lookup origin for push")
+
+            var pushOpts = git_push_options()
+            git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
+
+            let pushCtx = PushContext(username: "x-access-token", password: pat)
+            let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
+            defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
+
+            pushOpts.callbacks.credentials = pushCredentialCallback
+            pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
+            pushOpts.callbacks.payload = pushCtxPtr
+
+            let refspec = "refs/heads/\(branchName):refs/heads/\(branchName)"
+            let refspecCStr = strdup(refspec)!
+            defer { free(refspecCStr) }
+            let refStringsPtr = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
+            defer { refStringsPtr.deallocate() }
+            refStringsPtr[0] = refspecCStr
+            var refspecs = git_strarray(strings: refStringsPtr, count: 1)
+
+            try git2Check(
+                git_remote_push(pushRemote, &refspecs, &pushOpts),
+                context: "Push to origin"
+            )
+
+            if !pushCtx.rejectedRefs.isEmpty {
+                let detail = pushCtx.rejectedRefs
+                    .map { "\($0.refname): \($0.reason)" }
+                    .joined(separator: "; ")
+                throw LocalGitError.pushFailed(detail)
+            }
+
+            try Self.fetchOrigin(repo: repo, pat: pat)
+            let remoteTrackingRefName = "refs/remotes/origin/\(branchName)"
+            var verifyRef: OpaquePointer?
+            defer { if let verifyRef { git_reference_free(verifyRef) } }
+            let verifyCode = git_reference_lookup(&verifyRef, repo, remoteTrackingRefName)
+            guard verifyCode == 0, let verifyOidPtr = git_reference_target(verifyRef) else {
+                throw LocalGitError.pushFailed(
+                    "Push reported success but origin does not advertise refs/heads/\(branchName). Check that origin URL, branch name, and PAT scope are correct."
+                )
+            }
+            if git_oid_equal(verifyOidPtr, &headOid) == 0 {
+                let remoteHex = oidToHex(verifyOidPtr)
+                let localHex = oidToHex(&headOid)
+                throw LocalGitError.pushFailed(
+                    "Push reported success but origin/\(branchName) is at \(remoteHex.prefix(7)), expected \(localHex.prefix(7)). The remote silently rejected the update — check branch protection rules, PAT scope, and that origin URL points at the right repository."
+                )
+            }
         }.value
     }
 

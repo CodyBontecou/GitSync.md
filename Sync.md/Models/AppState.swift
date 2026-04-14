@@ -986,7 +986,12 @@ final class AppState {
         syncProgress = String(localized: "Merging branch...")
 
         do {
-            let result = try await gitService.mergeBranch(name: branchName)
+            let repo = repos[idx]
+            let result = try await gitService.mergeBranch(
+                name: branchName,
+                authorName: repo.authorName,
+                authorEmail: repo.authorEmail
+            )
             repos[idx].gitState.commitSHA = result.newCommitSHA
             repos[idx].gitState.lastSyncDate = Date()
             saveRepos()
@@ -997,6 +1002,77 @@ final class AppState {
             await loadConflictSession(repoID: repoID)
         } catch {
             await loadConflictSession(repoID: repoID)
+            showError(message: error.localizedDescription)
+        }
+
+        isSyncing = false
+        syncingRepoID = nil
+    }
+
+    func mergeWithRemote(repoID: UUID) async {
+        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
+        if isDemoMode { return }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return
+        }
+
+        let repo = repos[idx]
+        let currentBranch = repo.gitState.branch.isEmpty ? "main" : repo.gitState.branch
+        let upstreamName = "origin/\(currentBranch)"
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Merging with remote...")
+
+        do {
+            let result = try await gitService.mergeBranch(
+                name: upstreamName,
+                authorName: repo.authorName,
+                authorEmail: repo.authorEmail
+            )
+
+            switch result.kind {
+            case .upToDate:
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .upToDate,
+                    message: String(localized: "Already up to date")
+                )
+
+            case .fastForwarded, .mergeCommitted:
+                repos[idx].gitState.commitSHA = result.newCommitSHA
+                repos[idx].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+                detectChanges(repoID: repoID)
+                await loadBranches(repoID: repoID)
+
+                syncProgress = String(localized: "Pushing merged changes...")
+                do {
+                    try await gitService.pushCurrentBranch(pat: pat)
+                    setPullOutcome(
+                        repoID: repoID,
+                        kind: .fastForwarded,
+                        message: String(localized: "Merged and pushed successfully")
+                    )
+                } catch {
+                    showError(message: error.localizedDescription)
+                }
+            }
+
+        } catch LocalGitError.mergeConflictsDetected {
+            await loadConflictSession(repoID: repoID)
+            setPullOutcome(
+                repoID: repoID,
+                kind: .diverged,
+                message: String(localized: "Merge has conflicts — open Git to resolve")
+            )
+        } catch {
             showError(message: error.localizedDescription)
         }
 
@@ -1091,6 +1167,18 @@ final class AppState {
 
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
+
+            syncProgress = String(localized: "Pushing merged changes...")
+            do {
+                try await gitService.pushCurrentBranch(pat: pat)
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .fastForwarded,
+                    message: String(localized: "Merge resolved and pushed successfully")
+                )
+            } catch {
+                showError(message: error.localizedDescription)
+            }
         } catch {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)

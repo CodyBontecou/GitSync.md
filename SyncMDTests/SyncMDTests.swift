@@ -2154,9 +2154,11 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         deletedBranches.append(name)
     }
 
-    func mergeBranch(name: String) async throws -> MergeResult {
+    func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult {
         mergeResult
     }
+
+    func pushCurrentBranch(pat: String) async throws {}
 
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult {
         revertResult

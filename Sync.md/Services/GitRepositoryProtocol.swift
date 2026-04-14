@@ -11,7 +11,8 @@ protocol GitRepositoryProtocol: Sendable {
     func createBranch(name: String) async throws
     func switchBranch(name: String) async throws
     func deleteBranch(name: String) async throws
-    func mergeBranch(name: String) async throws -> MergeResult
+    func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult
+    func pushCurrentBranch(pat: String) async throws
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult
     func abortMerge() async throws
