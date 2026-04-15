@@ -23,6 +23,7 @@ struct FileEditorView: View {
 
     private var fileName: String { fileURL.lastPathComponent }
     private var isDirty: Bool { content != originalContent }
+    private var language: SyntaxLanguage { SyntaxLanguage.detect(fileExtension: fileURL.pathExtension) }
 
     var body: some View {
         ZStack {
@@ -31,12 +32,8 @@ struct FileEditorView: View {
             if isBinary {
                 binaryState
             } else {
-                TextEditor(text: $content)
-                    .font(.system(size: 13, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .scrollContentBackground(.hidden)
-                    .background(Color.brutalBg)
-                    .padding(.horizontal, 12)
+                CodeEditorView(text: $content, language: language)
+                    .padding(.horizontal, 8)
             }
 
             if showDeleteConfirm {
