@@ -501,6 +501,29 @@ struct BLoading: View {
     }
 }
 
+// MARK: - Toast
+
+struct BToast: View {
+    let message: String
+    var systemImage: String? = nil
+
+    var body: some View {
+        HStack(spacing: 10) {
+            if let icon = systemImage {
+                Image(systemName: icon)
+                    .font(.system(size: 13, weight: .black))
+            }
+            Text(message.uppercased())
+                .font(.system(size: 12, weight: .black, design: .monospaced))
+                .tracking(2)
+        }
+        .foregroundStyle(Color.brutalBg)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .background(Color.brutalText)
+    }
+}
+
 // MARK: - Tappable Card Row
 
 struct BCardRow: View {
@@ -607,6 +630,70 @@ struct BConfirmModal: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 2))
             .padding(.horizontal, 28)
         }
+    }
+}
+
+// MARK: - Rename Modal
+
+struct BRenameModal: View {
+    let title: String
+    @Binding var text: String
+    let onConfirm: () -> Void
+    let onCancel: () -> Void
+
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.45)
+                .ignoresSafeArea()
+                .onTapGesture { onCancel() }
+
+            VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title.uppercased())
+                        .font(.system(size: 15, weight: .black, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(2)
+
+                    Text("Include the file extension (e.g. notes.ts)")
+                        .font(.system(size: 12, design: .monospaced))
+                        .foregroundStyle(Color.brutalTextMid)
+                }
+                .padding(20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Rectangle()
+                    .fill(Color.brutalBorder)
+                    .frame(height: 1)
+
+                TextField("filename.ext", text: $text)
+                    .focused($isFocused)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                    .font(.system(size: 15, design: .monospaced))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 13)
+                    .background(Color.brutalSurface)
+                    .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: isFocused ? 2 : 1))
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 8)
+
+                VStack(spacing: 8) {
+                    BPrimaryButton(title: "Rename", action: onConfirm)
+                    BGhostButton(title: "Cancel", action: onCancel)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
+            }
+            .background(Color.brutalBg)
+            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 2))
+            .padding(.horizontal, 28)
+        }
+        .onAppear { isFocused = true }
     }
 }
 
