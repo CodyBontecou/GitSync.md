@@ -411,6 +411,7 @@ struct RepoListView: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 16)
+            .contentShape(Rectangle())
             .overlay(
                 Rectangle()
                     .strokeBorder(Color.brutalBorder, style: StrokeStyle(lineWidth: 1, dash: [8, 5]))

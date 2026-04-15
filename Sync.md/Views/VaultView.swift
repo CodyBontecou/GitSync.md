@@ -607,7 +607,7 @@ struct VaultView: View {
                     BActionRow(
                         icon: "📁",
                         title: String(localized: "Open in Files"),
-                        subtitle: state.vaultDisplayPath(for: repoID)
+                        subtitle: String(localized: "Open repository in Files app")
                     )
                 }
                 .buttonStyle(.plain)

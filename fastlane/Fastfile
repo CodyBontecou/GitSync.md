@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• Previously cloned repositories now appear on the main screen — tap any to re-clone instantly\n• Free repository slot is now reliably preserved across reinstalls\n• Bug fixes and performance improvements"
-  app_version = "1.9.2"
+  release_notes_text = "• Polished toolbar UI — xmark icon replaces CANCEL text on sheet close buttons\n• Repo list rows now have full-width tap targets for easier interaction\n• Subtle subtitle text styling in action rows for better visual hierarchy"
+  app_version = "2.0.0"
 
   submission_information = {
     add_id_info_uses_idfa: false,

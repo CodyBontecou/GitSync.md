@@ -722,7 +722,7 @@ struct BActionRow: View {
                 if let sub = subtitle {
                     Text(sub)
                         .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
+                        .foregroundStyle(Color.brutalTextFaint)
                 }
             }
 

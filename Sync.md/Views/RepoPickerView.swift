@@ -75,10 +75,9 @@ struct RepoPickerView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("CANCEL")
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .bold))
                             .foregroundStyle(Color.brutalText)
-                            .tracking(1)
                     }
                     .buttonStyle(.plain)
                 }
