@@ -14,6 +14,7 @@ struct AppSettingsView: View {
     @State private var showDebugAlert = false
     @State private var debugResult = ""
     @State private var isRunningDebug = false
+    @State private var showOnboarding = false
 
     var body: some View {
         NavigationStack {
@@ -269,6 +270,15 @@ struct AppSettingsView: View {
                             }
                         }
 
+                        // Help
+                        settingsSection(title: "Help") {
+                            VStack(spacing: 0) {
+                                actionRow(icon: "👋", title: "Show App Tour", subtitle: "Re-experience the onboarding flow") {
+                                    showOnboarding = true
+                                }
+                            }
+                        }
+
                         // About
                         settingsSection(title: "About") {
                             VStack(spacing: 0) {
@@ -311,6 +321,7 @@ struct AppSettingsView: View {
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }
             .sheet(isPresented: $showPaywall) { PaywallView() }
+            .fullScreenCover(isPresented: $showOnboarding) { OnboardingView() }
             .fileImporter(
                 isPresented: $showFolderPicker,
                 allowedContentTypes: [.folder],

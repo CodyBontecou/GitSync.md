@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     @Environment(AppState.self) private var state
+    @Environment(\.dismiss) private var dismiss
     @State private var currentPage = 0
     @State private var appeared = false
 
@@ -133,6 +134,7 @@ struct OnboardingView: View {
     private func finishOnboarding() {
         state.hasSeenOnboarding = true
         state.saveGlobalSettings()
+        dismiss()
     }
 }
 
