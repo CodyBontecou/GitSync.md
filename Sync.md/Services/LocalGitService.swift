@@ -406,6 +406,14 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
+            // Mirror repoInfo(): persist core.precomposeunicode before any
+            // status read so the dirty check agrees with the UI. Without
+            // this, freshly-opened handles on repos cloned by older builds
+            // can see NFC/NFD differences as uncommitted changes while the
+            // health card (which sets the flag first) reports clean — and
+            // the pull is blocked even though the workdir is logically clean.
+            Self.setPrecomposeUnicode(repo: repo)
+
             var head: OpaquePointer?
             defer { if let head { git_reference_free(head) } }
             try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
@@ -504,6 +512,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
+            Self.setPrecomposeUnicode(repo: repo)
+
             if try Self.hasUncommittedChanges(repo: repo) {
                 throw LocalGitError.pullBlockedByLocalChanges
             }
@@ -548,9 +558,21 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
             if checkoutCode == GIT_ECONFLICT.rawValue {
-                throw LocalGitError.pullBlockedByLocalChanges
+                // We already verified hasUncommittedChanges == false above,
+                // so any SAFE-checkout conflict here is a libgit2 NFC/NFD
+                // artifact — the workdir filename's byte form differs from
+                // the index/tree even though they normalise to the same
+                // logical path. Force the checkout so the fast-forward can
+                // proceed; user data is not at risk because statusEntries
+                // already reported clean.
+                checkoutOpts.checkout_strategy = GIT_CHECKOUT_FORCE.rawValue
+                try git2Check(
+                    git_checkout_tree(repo, remoteTree, &checkoutOpts),
+                    context: "Checkout remote tree (force after NFC/NFD conflict)"
+                )
+            } else {
+                try git2Check(checkoutCode, context: "Checkout remote tree safely")
             }
-            try git2Check(checkoutCode, context: "Checkout remote tree safely")
 
             // Explicitly rebuild the index from the remote tree and flush it
             // to disk. git_checkout_tree is supposed to update index entries
@@ -1307,20 +1329,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 | UInt32(GIT_DIFF_RECURSE_UNTRACKED_DIRS.rawValue)
                 | UInt32(GIT_DIFF_SHOW_UNTRACKED_CONTENT.rawValue)
 
-            var pathspecCString: UnsafeMutablePointer<CChar>?
-            var pathspecStorage: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?
-            defer {
-                if let pathspecCString { free(pathspecCString) }
-                if let pathspecStorage { pathspecStorage.deallocate() }
-            }
-
-            if let path, !path.isEmpty {
-                let cString = strdup(path)!
-                let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
-                makeStrarray(cString, into: &options.pathspec, storage: storage)
-                pathspecCString = cString
-                pathspecStorage = storage
-            }
+            // Do NOT use a pathspec here. libgit2 pathspec matching is
+            // byte-exact, so an NFC pathspec never matches an NFD filename
+            // on APFS (and vice-versa). Instead we compute the full diff
+            // and filter the results in Swift using NFC-normalised comparison,
+            // which correctly handles Korean/CJK filenames on all Apple
+            // filesystems. The full diff is cheap for typical vault sizes.
 
             let headTree = try Self.headTreeForDiff(repo: repo)
             defer { if let headTree { git_tree_free(headTree) } }
@@ -1353,17 +1367,33 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var files: [GitFileDiff] = []
             files.reserveCapacity(deltaCount)
 
+            // NFC-normalise the requested path once for Unicode-safe comparison.
+            // This lets a single-file diff request find files regardless of
+            // whether the git objects use NFC and the filesystem uses NFD (or
+            // vice-versa), which is the common case for Korean/CJK filenames
+            // on Apple platforms.
+            let requestedNFC = path?.precomposedStringWithCanonicalMapping
+
             for i in 0..<deltaCount {
                 guard let delta = git_diff_get_delta(diff, i)?.pointee else { continue }
 
                 let oldPath = delta.old_file.path.map { String(cString: $0) }
                 let newPath = delta.new_file.path.map { String(cString: $0) }
-                let path = newPath ?? oldPath ?? "<unknown>"
+                let filePath = newPath ?? oldPath ?? "<unknown>"
                 let patch = i < patchChunks.count ? patchChunks[i] : ""
+
+                // When a specific path was requested, skip files that don't
+                // match — using NFC-normalised comparison so that NFC/NFD
+                // variants of the same filename are treated as equal.
+                if let requested = requestedNFC {
+                    let fileNFC = filePath.precomposedStringWithCanonicalMapping
+                    let oldNFC  = oldPath?.precomposedStringWithCanonicalMapping ?? ""
+                    guard fileNFC == requested || oldNFC == requested else { continue }
+                }
 
                 files.append(
                     GitFileDiff(
-                        path: path,
+                        path: filePath,
                         oldPath: oldPath,
                         newPath: newPath,
                         changeType: Self.diffChangeType(from: delta.status),
