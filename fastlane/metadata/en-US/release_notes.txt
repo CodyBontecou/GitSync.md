@@ -1,4 +1,3 @@
-• Added internationalization support across the app
-• Improved localization for UI text and system formatting
-• Polished translated strings throughout onboarding and settings
-• General bug fixes and stability improvements
+• Resolve merge conflicts in-app without leaving the editor
+• Fixed iPhone pull falsely blocked as "local edits" after a desktop push
+• General stability improvements

@@ -86,6 +86,9 @@ struct VaultView: View {
         .navigationDestination(for: DiffDestination.self) { dest in
             FileDiffView(repoID: dest.repoID, path: dest.path)
         }
+        .navigationDestination(for: ConflictEditorDestination.self) { dest in
+            ConflictEditorView(repoID: dest.repoID, path: dest.path)
+        }
         .navigationDestination(for: FileBrowserDestination.self) { dest in
             FileBrowserView(repoID: dest.repoID, relativePath: dest.relativePath)
         }
@@ -445,28 +448,17 @@ struct VaultView: View {
 
     private func changedFileRow(_ entry: GitStatusEntry) -> some View {
         HStack(spacing: 0) {
-            // Tapping the row navigates to diff
-            NavigationLink(value: DiffDestination(repoID: repoID, path: entry.path)) {
-                HStack(spacing: 10) {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(entry.path)
-                            .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                        Text(fileStatusSummary(for: entry))
-                            .font(.system(size: 12, design: .monospaced))
-                            .foregroundStyle(Color.brutalText.opacity(0.6))
+            // Tapping the row navigates: conflicts → resolve conflict view, otherwise → diff
+            Group {
+                if entry.isConflicted {
+                    NavigationLink(value: ConflictEditorDestination(repoID: repoID, path: entry.path)) {
+                        changedFileRowContent(entry)
                     }
-                    Spacer(minLength: 8)
-                    fileStatusBadge(for: entry)
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundStyle(Color.brutalText.opacity(0.3))
+                } else {
+                    NavigationLink(value: DiffDestination(repoID: repoID, path: entry.path)) {
+                        changedFileRowContent(entry)
+                    }
                 }
-                .padding(.leading, 16)
-                .padding(.trailing, 8)
-                .padding(.vertical, 11)
             }
             .buttonStyle(.plain)
 
@@ -482,6 +474,29 @@ struct VaultView: View {
             }
             .buttonStyle(.plain)
         }
+    }
+
+    private func changedFileRowContent(_ entry: GitStatusEntry) -> some View {
+        HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(entry.path)
+                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(Color.brutalText)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                Text(fileStatusSummary(for: entry))
+                    .font(.system(size: 12, design: .monospaced))
+                    .foregroundStyle(Color.brutalText.opacity(0.6))
+            }
+            Spacer(minLength: 8)
+            fileStatusBadge(for: entry)
+            Image(systemName: "chevron.right")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(Color.brutalText.opacity(0.3))
+        }
+        .padding(.leading, 16)
+        .padding(.trailing, 8)
+        .padding(.vertical, 11)
     }
 
     private func fileStatusSummary(for entry: GitStatusEntry) -> String {
