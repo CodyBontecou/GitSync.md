@@ -22,10 +22,12 @@ struct RepoListView: View {
             ZStack {
                 Color.brutalBg.ignoresSafeArea()
 
-                if state.repos.isEmpty {
-                    emptyState
-                } else {
-                    VStack(spacing: 0) {
+                VStack(spacing: 0) {
+                    DiscordPromoBanner()
+
+                    if state.repos.isEmpty {
+                        emptyState
+                    } else {
                         if state.isDemoMode {
                             demoBanner
                                 .padding(.horizontal, 20)

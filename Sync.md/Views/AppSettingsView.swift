@@ -267,6 +267,12 @@ struct AppSettingsView: View {
                                         FeedbackHelper.openMailClient()
                                     }
                                 }
+                                BDivider().padding(.horizontal, 16)
+                                actionRow(icon: "💬", title: "Join our Discord", subtitle: "Chat with us on Discord") {
+                                    if let url = URL(string: "https://discord.gg/RaQYS4t6gn") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
                             }
                         }
 
