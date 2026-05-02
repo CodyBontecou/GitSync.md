@@ -1430,6 +1430,26 @@ final class AppState {
         }
     }
 
+    func stageAllChanges(repoID: UUID) async {
+        guard let repo = repo(id: repoID), repo.isCloned else { return }
+        if isDemoMode { return }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return
+        }
+
+        do {
+            try await gitService.stageAll()
+            detectChanges(repoID: repoID)
+        } catch {
+            showError(message: error.localizedDescription)
+        }
+    }
+
     func unstageFile(repoID: UUID, path: String, oldPath: String? = nil) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }

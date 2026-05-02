@@ -19,6 +19,7 @@ struct GitControlSheet: View {
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
     private var statusEntries: [GitStatusEntry] { state.statusEntriesByRepo[repoID] ?? [] }
     private var stagedCount: Int { statusEntries.filter { $0.indexStatus != nil }.count }
+    private var unstagedEntries: [GitStatusEntry] { statusEntries.filter { $0.workTreeStatus != nil } }
     private var isThisRepoSyncing: Bool { state.isSyncing && state.syncingRepoID == repoID }
     private var sortedEntries: [GitStatusEntry] { statusEntries.sorted { $0.path.localizedCaseInsensitiveCompare($1.path) == .orderedAscending } }
     private var branchInventory: BranchInventory { state.branchesByRepo[repoID] ?? .empty }
@@ -423,6 +424,18 @@ struct GitControlSheet: View {
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
                 } else {
+                    if !unstagedEntries.isEmpty {
+                        HStack {
+                            Spacer()
+                            smallActionButton(String(localized: "Stage All").uppercased()) {
+                                Task { await state.stageAllChanges(repoID: repoID) }
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 8)
+                        .disabled(state.isSyncing)
+                    }
+
                     VStack(spacing: 0) {
                         ForEach(Array(sortedEntries.enumerated()), id: \.element.id) { index, entry in
                             changeRow(entry)
