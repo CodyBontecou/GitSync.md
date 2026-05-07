@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• Polished toolbar UI — xmark icon replaces CANCEL text on sheet close buttons\n• Repo list rows now have full-width tap targets for easier interaction\n• Subtle subtitle text styling in action rows for better visual hierarchy"
-  app_version = "2.0.0"
+  release_notes_text = "• First repo now shows a confirmation reminder so you don't accidentally use your free slot on the wrong repo\n• New name: GitSync.md—same app, clearer purpose\n• Background polish and stability fixes"
+  app_version = "2.1.0"
 
   submission_information = {
     add_id_info_uses_idfa: false,
