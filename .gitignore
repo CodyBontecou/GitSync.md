@@ -34,3 +34,18 @@ fastlane/.env
 
 # Marketing screenshots
 marketing/
+
+# Local config (e.g. xcconfig with API keys)
+Config/
+
+# asc
+.asc/
+
+# Screenshots
+screenshots/
+
+# App Store metadata
+metadata/
+metadata-remote/
+fastlane/metadata/
+fastlane/screenshots/

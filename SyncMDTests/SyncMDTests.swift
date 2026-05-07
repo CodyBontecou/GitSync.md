@@ -1152,7 +1152,7 @@ final class SyncMDTests: XCTestCase {
         let featureSHA = try await service.repoInfo().commitSHA
 
         try await service.switchBranch(name: mainBranch)
-        let mergeResult = try await service.mergeBranch(name: "feature")
+        let mergeResult = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
 
         XCTAssertEqual(mergeResult.kind, .fastForwarded)
         XCTAssertEqual(mergeResult.newCommitSHA, featureSHA)
@@ -1221,7 +1221,7 @@ final class SyncMDTests: XCTestCase {
             // Expected push failure; commit still created.
         }
 
-        let mergeResult = try await service.mergeBranch(name: "feature")
+        let mergeResult = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
 
         XCTAssertEqual(mergeResult.kind, .mergeCommitted)
         let mergedInfo = try await service.repoInfo()
@@ -1286,7 +1286,7 @@ final class SyncMDTests: XCTestCase {
         }
 
         do {
-            _ = try await service.mergeBranch(name: "feature")
+            _ = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
             XCTFail("Expected conflict during merge")
         } catch {
             guard let gitError = error as? LocalGitError else {
@@ -1357,7 +1357,7 @@ final class SyncMDTests: XCTestCase {
         } catch { }
 
         do {
-            _ = try await service.mergeBranch(name: "feature")
+            _ = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
             XCTFail("Expected merge conflict")
         } catch { }
 
@@ -1423,7 +1423,7 @@ final class SyncMDTests: XCTestCase {
         } catch { }
 
         do {
-            _ = try await service.mergeBranch(name: "feature")
+            _ = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
             XCTFail("Expected merge conflict")
         } catch { }
 
@@ -1490,7 +1490,7 @@ final class SyncMDTests: XCTestCase {
         } catch { }
 
         do {
-            _ = try await service.mergeBranch(name: "feature")
+            _ = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
             XCTFail("Expected merge conflict")
         } catch { }
 
@@ -1565,7 +1565,7 @@ final class SyncMDTests: XCTestCase {
         } catch { }
 
         do {
-            _ = try await service.mergeBranch(name: "feature")
+            _ = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
             XCTFail("Expected merge conflict")
         } catch { }
 
@@ -1916,6 +1916,7 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(diff.rawPatch.contains("\"dark\""))
     }
 
+
 }
 
 private enum GitFixtureState: String, CaseIterable {
@@ -2180,6 +2181,26 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func resolveConflict(path: String, strategy: ConflictResolutionStrategy) async throws {
         resolvedConflicts.append((path: path, strategy: strategy))
+    }
+
+    func conflictDetail(path: String) async throws -> ConflictFileDetail {
+        ConflictFileDetail(lookupPath: path, ancestor: nil, ours: nil, theirs: nil)
+    }
+
+    func resolveConflictWithContent(
+        path: String,
+        content: Data,
+        additionalPathsToRemove: [String]
+    ) async throws {
+        resolvedConflicts.append((path: path, strategy: .manual))
+    }
+
+    func commitLocal(message: String, authorName: String, authorEmail: String) async throws -> String {
+        repoInfoResult.commitSHA
+    }
+
+    func stageAll() async throws {
+        stagedPaths.append("*")
     }
 
     func stage(path: String, oldPath: String?) async throws {

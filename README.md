@@ -1,4 +1,4 @@
-# Sync.md
+# GitSync.md
 
 **Markdown notes synced with Git** — a native iOS & iPadOS app that turns any GitHub repository into a synced markdown vault.
 
@@ -10,7 +10,7 @@
 
 ## What It Does
 
-Sync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](https://libgit2.org), giving you a real `.git` directory on the device filesystem. Edit markdown files with any app — [Obsidian](https://obsidian.md), ia Writer, or the built-in Files app — then pull and push changes back to GitHub.
+GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](https://libgit2.org), giving you a real `.git` directory on the device filesystem. Edit markdown files with any app — [Obsidian](https://obsidian.md), ia Writer, or the built-in Files app — then pull and push changes back to GitHub.
 
 **Key features:**
 
@@ -30,12 +30,12 @@ Sync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](http
 4. **Edit** with any markdown editor
 5. **Pull** to fetch remote changes, **Push** to commit and upload yours
 
-Files live under `On My iPhone › Sync.md` by default, or in a custom location you choose.
+Files live under `On My iPhone › GitSync.md` by default, or in a custom location you choose.
 
 ## Architecture
 
 ```
-Sync.md/
+GitSync.md/
 ├── Sync.md/                    # iOS app source
 │   ├── Sync_mdApp.swift        # App entry point
 │   ├── ContentView.swift       # Root view router
@@ -103,8 +103,8 @@ syncmd://x-callback-url/<action>?repo=<folder-name>&x-success=<url>&x-error=<url
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/CodyBontecou/Sync.md.git
-   cd Sync.md
+   git clone https://github.com/CodyBontecou/GitSync.md.git
+   cd GitSync.md
    ```
 
 2. Open in Xcode:

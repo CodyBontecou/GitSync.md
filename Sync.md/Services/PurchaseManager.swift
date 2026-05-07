@@ -15,7 +15,7 @@ final class PurchaseManager: ObservableObject {
     static let productID = "bontecou.syncmd.unlock"
 
     /// Number of repositories included for free before a purchase is required.
-    static let freeRepoLimit = 1
+    nonisolated static let freeRepoLimit = 1
 
     /// Cutoff just past the App Store release of v1.7 (the first free build).
     ///
@@ -546,6 +546,22 @@ final class PurchaseManager: ObservableObject {
         if seen.contains(normalised) { return false }
         // New identifier → only gated when the free-slot budget is exhausted.
         return seen.count >= Self.freeRepoLimit
+    }
+
+    /// Returns `true` when adding `identifier` would burn one of the user's
+    /// free repository slots — i.e. they are not unlocked, the identifier is
+    /// genuinely new, and they still have free slots remaining. Used by the
+    /// UI to surface a one-time confirmation before consuming the free slot,
+    /// since the slot is permanent (Keychain-backed) and survives reinstall.
+    func wouldConsumeFreeSlot(_ identifier: String) -> Bool {
+        if isUnlocked { return false }
+        let normalised = identifier
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        guard !normalised.isEmpty else { return false }
+        let seen = seenRepoIdentifiers()
+        if seen.contains(normalised) { return false }
+        return seen.count < Self.freeRepoLimit
     }
 
     // MARK: - Keychain Helpers

@@ -34,7 +34,7 @@ struct PaywallView: View {
                     }
                     .background(Color.brutalBg)
                     .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
-                    
+
                     .padding(.horizontal, 24)
                     .padding(.bottom, 28)
 

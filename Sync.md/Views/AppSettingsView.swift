@@ -15,6 +15,7 @@ struct AppSettingsView: View {
     @State private var debugResult = ""
     @State private var isRunningDebug = false
     @State private var showOnboarding = false
+    @State private var showWipeAllReposConfirm = false
 
     var body: some View {
         NavigationStack {
@@ -171,6 +172,25 @@ struct AppSettingsView: View {
                                     }
                                     .buttonStyle(.plain)
                                 }
+
+                                BDivider().padding(.horizontal, 16)
+                                Button {
+                                    showWipeAllReposConfirm = true
+                                } label: {
+                                    HStack(spacing: 10) {
+                                        BBadge(text: "DEBUG", style: .error)
+                                        Text("Wipe All Repos")
+                                            .font(.system(size: 13, weight: .medium))
+                                            .foregroundStyle(Color.brutalError)
+                                        Spacer()
+                                        Text("→")
+                                            .font(.system(size: 13, design: .monospaced))
+                                            .foregroundStyle(Color.brutalText)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 13)
+                                }
+                                .buttonStyle(.plain)
                                 #endif
                             }
                         }
@@ -348,6 +368,18 @@ struct AppSettingsView: View {
             } message: {
                 Text(debugResult)
             }
+            #if DEBUG
+            .alert("Wipe All Repos?", isPresented: $showWipeAllReposConfirm) {
+                Button("Cancel", role: .cancel) {}
+                Button("Wipe", role: .destructive) {
+                    for repo in state.repos {
+                        state.removeRepo(id: repo.id)
+                    }
+                }
+            } message: {
+                Text("Removes every configured repository and deletes their local files. Combine with \"Reset to Free Tier\" for a fresh-free-user state.")
+            }
+            #endif
             .task {
                 await purchaseManager.refreshStatus()
                 if purchaseManager.product == nil { await purchaseManager.loadProduct() }
