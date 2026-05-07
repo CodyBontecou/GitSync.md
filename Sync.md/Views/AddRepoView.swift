@@ -429,7 +429,7 @@ struct AddRepoView: View {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 10))
                                     .foregroundStyle(Color.brutalText)
-                                Text("Files › On My iPhone › Sync.md › \(vaultName)")
+                                Text("Files › On My iPhone › GitSync.md › \(vaultName)")
                                     .font(.system(size: 14, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                             }

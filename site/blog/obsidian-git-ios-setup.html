@@ -7,8 +7,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-<title>How to Set Up Sync.md with Obsidian Git on iOS — Sync.md</title>
-<meta name="description" content="A step-by-step guide to syncing your Obsidian vault with Git on iOS using Sync.md and the Obsidian Git plugin. Real version control on your iPhone.">
+<title>How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md</title>
+<meta name="description" content="A step-by-step guide to syncing your Obsidian vault with Git on iOS using GitSync.md and the Obsidian Git plugin. Real version control on your iPhone.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -521,12 +521,12 @@
   <div class="nav-inner">
     <a href="../index.html" class="logo">
       <span class="logo-dot"></span>
-      sync.md
+      GitSync.md
     </a>
     <div class="nav-links">
       <a href="../index.html">Home</a>
-      <a href="https://github.com/CodyBontecou/Sync.md" target="_blank">GitHub</a>
-      <a href="https://apps.apple.com/us/app/sync-md/id6758960270" class="nav-cta">Download</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">GitHub</a>
+      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Download</a>
     </div>
   </div>
 </nav>
@@ -536,8 +536,8 @@
 
   <header class="article-meta">
     <div class="date">February 15, 2026 — Guide</div>
-    <h1>Using Sync<span class="accent">.md</span> with Obsidian Git on iOS</h1>
-    <p class="subtitle">How to set up real Git-backed vault syncing on your iPhone using Sync.md and the Obsidian Git community plugin — no Obsidian Sync subscription, no iCloud conflicts, no compromises.</p>
+    <h1>Using GitSync<span class="accent">.md</span> with Obsidian Git on iOS</h1>
+    <p class="subtitle">How to set up real Git-backed vault syncing on your iPhone using GitSync.md and the Obsidian Git community plugin — no Obsidian Sync subscription, no iCloud conflicts, no compromises.</p>
   </header>
 
   <div class="article-body">
@@ -546,7 +546,7 @@
     <div class="tldr">
       <div class="tldr-title">TL;DR</div>
       <ol>
-        <li>In <strong>Sync.md</strong>, set the default save location to Obsidian's iOS file system</li>
+        <li>In <strong>GitSync.md</strong>, set the default save location to Obsidian's iOS file system</li>
         <li>Clone your vault's Git repo into that directory</li>
         <li>Install the <strong>Obsidian Git</strong> community plugin</li>
         <li>Set your <strong>GitHub username</strong>, <strong>author name</strong>, and <strong>author email</strong></li>
@@ -560,13 +560,13 @@
 
     <p>Then you open Obsidian on your iPhone and realize — <strong>there's no Git on iOS</strong>. The mobile app doesn't ship with git, and the Obsidian Git plugin can't clone or push on its own without a real <code>.git</code> directory already in place.</p>
 
-    <p>That's what Sync.md solves. It uses <strong>libgit2</strong> to perform real Git operations natively on iOS — clone, pull, commit, push — and writes an actual <code>.git</code> directory to the filesystem. Once that directory exists inside Obsidian's file system, the Obsidian Git plugin picks it up and everything just works.</p>
+    <p>That's what GitSync.md solves. It uses <strong>libgit2</strong> to perform real Git operations natively on iOS — clone, pull, commit, push — and writes an actual <code>.git</code> directory to the filesystem. Once that directory exists inside Obsidian's file system, the Obsidian Git plugin picks it up and everything just works.</p>
 
     <!-- Architecture diagram -->
     <div class="flow-diagram">
       <div class="flow-node">GitHub</div>
       <div class="flow-arrow">←→</div>
-      <div class="flow-node highlight">Sync.md</div>
+      <div class="flow-node highlight">GitSync.md</div>
       <div class="flow-arrow">→</div>
       <div class="flow-node">Obsidian filesystem</div>
       <div class="flow-arrow">←→</div>
@@ -576,7 +576,7 @@
     <h2>What you'll need</h2>
 
     <ul>
-      <li><strong>Sync.md</strong> installed on your iPhone (<a href="https://apps.apple.com/us/app/sync-md/id6758960270" target="_blank">App Store</a>)</li>
+      <li><strong>GitSync.md</strong> installed on your iPhone (<a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank">App Store</a>)</li>
       <li><strong>Obsidian</strong> installed on your iPhone (<a href="https://apps.apple.com/app/obsidian-connected-notes/id1557175442" target="_blank">App Store</a>)</li>
       <li>A <strong>GitHub account</strong> with a repository containing your Obsidian vault</li>
     </ul>
@@ -587,28 +587,28 @@
     <h2>Step-by-step setup</h2>
 
     <div class="step-card" data-step="Step 1">
-      <h3>Sign in to Sync.md</h3>
-      <p>Open Sync.md and sign in with your <strong>GitHub account</strong>. You can use OAuth (tap "Sign in with GitHub") or paste a <a href="https://github.com/settings/tokens/new?scopes=repo&description=Sync.md" target="_blank">Personal Access Token</a> — either works.</p>
+      <h3>Sign in to GitSync.md</h3>
+      <p>Open GitSync.md and sign in with your <strong>GitHub account</strong>. You can use OAuth (tap "Sign in with GitHub") or paste a <a href="https://github.com/settings/tokens/new?scopes=repo&description=GitSync.md" target="_blank">Personal Access Token</a> — either works.</p>
     </div>
 
     <!-- STEP 2 -->
     <div class="step-card" data-step="Step 2">
       <h3>Set the save location to Obsidian's filesystem</h3>
-      <p>This is the key step. During onboarding (or later in <strong>App Settings</strong>), Sync.md asks you where to save cloned repos. Tap <strong>"Choose Location"</strong> and navigate to:</p>
+      <p>This is the key step. During onboarding (or later in <strong>App Settings</strong>), GitSync.md asks you where to save cloned repos. Tap <strong>"Choose Location"</strong> and navigate to:</p>
       <pre><code>On My iPhone → Obsidian</code></pre>
       <p>This is the root of Obsidian's iOS file system. By cloning directly into this directory, your repo will appear as an Obsidian vault automatically.</p>
     </div>
 
     <div class="callout">
       <span class="callout-label">Why this works</span>
-      <p>On iOS, each app has its own sandboxed directory in the Files app. When Sync.md clones a repo into Obsidian's directory, it creates a real folder with a real <code>.git</code> directory inside it — exactly what Obsidian Git needs to function. Obsidian sees the folder as a vault, and the plugin sees the <code>.git</code> directory and treats it as a working repository.</p>
+      <p>On iOS, each app has its own sandboxed directory in the Files app. When GitSync.md clones a repo into Obsidian's directory, it creates a real folder with a real <code>.git</code> directory inside it — exactly what Obsidian Git needs to function. Obsidian sees the folder as a vault, and the plugin sees the <code>.git</code> directory and treats it as a working repository.</p>
     </div>
 
     <!-- STEP 3 -->
     <div class="step-card" data-step="Step 3">
       <h3>Clone your vault repo</h3>
-      <p>Back in Sync.md, tap <strong>"Add Repository"</strong> and browse your GitHub repos. Find your Obsidian vault repo and tap to add it, then hit <strong>"Clone Repository"</strong>.</p>
-      <p>Sync.md will clone the full repo — including the <code>.git</code> directory with your complete commit history — straight into Obsidian's file system.</p>
+      <p>Back in GitSync.md, tap <strong>"Add Repository"</strong> and browse your GitHub repos. Find your Obsidian vault repo and tap to add it, then hit <strong>"Clone Repository"</strong>.</p>
+      <p>GitSync.md will clone the full repo — including the <code>.git</code> directory with your complete commit history — straight into Obsidian's file system.</p>
     </div>
 
     <!-- STEP 4 -->
@@ -650,7 +650,7 @@
         </div>
       </div>
 
-      <p>That's it. No tokens to paste, no SSH keys to generate, no authentication configuration. The plugin uses the existing <code>.git</code> directory and remote configuration that Sync.md already set up when it cloned the repo.</p>
+      <p>That's it. No tokens to paste, no SSH keys to generate, no authentication configuration. The plugin uses the existing <code>.git</code> directory and remote configuration that GitSync.md already set up when it cloned the repo.</p>
     </div>
 
     <h2>That's it — it just works</h2>
@@ -667,12 +667,12 @@
 
     <div class="callout tip">
       <span class="callout-label">Tip</span>
-      <p>You can also use Sync.md itself to pull and push at any time — tap the repo in Sync.md and use the Pull or Commit & Push buttons. Both apps work with the same <code>.git</code> directory, so they stay in sync with each other.</p>
+      <p>You can also use GitSync.md itself to pull and push at any time — tap the repo in GitSync.md and use the Pull or Commit & Push buttons. Both apps work with the same <code>.git</code> directory, so they stay in sync with each other.</p>
     </div>
 
     <h2>Why this works so well</h2>
 
-    <p>Most iOS Git solutions use REST APIs or custom sync layers that don't leave a <code>.git</code> directory on disk. Sync.md is different — it's built on <strong>libgit2</strong>, the same C library that powers GitHub Desktop, and it creates real Git repositories on the iOS filesystem. That means:</p>
+    <p>Most iOS Git solutions use REST APIs or custom sync layers that don't leave a <code>.git</code> directory on disk. GitSync.md is different — it's built on <strong>libgit2</strong>, the same C library that powers GitHub Desktop, and it creates real Git repositories on the iOS filesystem. That means:</p>
 
     <ul>
       <li><strong>Full compatibility</strong> — any tool that reads <code>.git</code> directories works out of the box</li>
@@ -684,23 +684,23 @@
     <h2>Troubleshooting</h2>
 
     <h3>Obsidian doesn't see the vault</h3>
-    <p>Make sure you set Sync.md's save location to <code>On My iPhone → Obsidian</code> <em>before</em> cloning. If you cloned to the wrong location, you can remove the repo in Sync.md, update the save location in App Settings, and clone again.</p>
+    <p>Make sure you set GitSync.md's save location to <code>On My iPhone → Obsidian</code> <em>before</em> cloning. If you cloned to the wrong location, you can remove the repo in GitSync.md, update the save location in App Settings, and clone again.</p>
 
     <h3>Obsidian Git says "no git repository found"</h3>
-    <p>This usually means the <code>.git</code> directory wasn't cloned properly. Open Sync.md, check that the repo shows as "Cloned" with a branch and commit SHA visible. If it looks right, try closing and reopening Obsidian.</p>
+    <p>This usually means the <code>.git</code> directory wasn't cloned properly. Open GitSync.md, check that the repo shows as "Cloned" with a branch and commit SHA visible. If it looks right, try closing and reopening Obsidian.</p>
 
     <h3>Push fails from Obsidian Git</h3>
-    <p>Obsidian Git on iOS relies on the credentials already configured in the <code>.git/config</code> remote URL. If the remote was set up via Sync.md with OAuth or a PAT, the credentials are embedded. Make sure your GitHub username in the plugin settings matches the one you signed in with in Sync.md.</p>
+    <p>Obsidian Git on iOS relies on the credentials already configured in the <code>.git/config</code> remote URL. If the remote was set up via GitSync.md with OAuth or a PAT, the credentials are embedded. Make sure your GitHub username in the plugin settings matches the one you signed in with in GitSync.md.</p>
 
-    <h3>Changes made in Obsidian don't appear in Sync.md</h3>
-    <p>That's normal — both apps share the same filesystem. When you edit a file in Obsidian and then open Sync.md, it will detect the changes automatically. They're reading and writing the same files.</p>
+    <h3>Changes made in Obsidian don't appear in GitSync.md</h3>
+    <p>That's normal — both apps share the same filesystem. When you edit a file in Obsidian and then open GitSync.md, it will detect the changes automatically. They're reading and writing the same files.</p>
 
     <h2>Recap</h2>
 
     <p>The whole setup takes about two minutes:</p>
 
     <ol>
-      <li>Point Sync.md's save directory at Obsidian's iOS file system</li>
+      <li>Point GitSync.md's save directory at Obsidian's iOS file system</li>
       <li>Clone your vault repo</li>
       <li>Set up Obsidian Git with your username, name, and email</li>
     </ol>
@@ -708,7 +708,7 @@
     <p>No complex configuration, no SSH keys, no cloud middleman. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>
 
     <p style="margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--grey-2);">
-      <strong>Sync.md</strong> is available on the <a href="https://apps.apple.com/us/app/sync-md/id6758960270">App Store</a> and is <a href="https://github.com/CodyBontecou/Sync.md" target="_blank">open source on GitHub</a>.
+      <strong>GitSync.md</strong> is available on the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store</a> and is <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">open source on GitHub</a>.
     </p>
 
   </div>
@@ -717,9 +717,9 @@
 <!-- ─── FOOTER ─── -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-left">© 2026 Sync.md — Cody Bontecou</div>
+    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
     <div class="footer-links">
-      <a href="https://github.com/CodyBontecou/Sync.md" target="_blank">GitHub</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">GitHub</a>
       <a href="../privacy.html">Privacy</a>
       <a href="../terms.html">Terms</a>
     </div>

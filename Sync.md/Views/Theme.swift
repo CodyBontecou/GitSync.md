@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Sync.md Design System — Monochrome Blue
+// MARK: - GitSync.md Design System — Monochrome Blue
 
 enum SyncTheme {
 

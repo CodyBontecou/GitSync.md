@@ -64,12 +64,12 @@ final class CallbackURLHandler {
         }
 
         guard let repo = appState.repos.first(where: { $0.vaultFolderName == repoName }) else {
-            redirectError(from: components, message: "Repository '\(repoName)' not found in Sync.md")
+            redirectError(from: components, message: "Repository '\(repoName)' not found in GitSync.md")
             return
         }
 
         guard repo.isCloned else {
-            redirectError(from: components, message: "Repository '\(repoName)' is not cloned yet — open Sync.md and clone it first")
+            redirectError(from: components, message: "Repository '\(repoName)' is not cloned yet — open GitSync.md and clone it first")
             return
         }
 
@@ -263,10 +263,10 @@ final class CallbackURLHandler {
         }
 
         // x-callback pushes (Obsidian workflow) should include all local changes
-        // without requiring a manual staging step in the Sync.md UI.
+        // without requiring a manual staging step in the GitSync.md UI.
         try await stageAllLocalChanges(gitService: gitService)
 
-        let commitMsg = message.isEmpty ? "Update from Sync.md" : message
+        let commitMsg = message.isEmpty ? "Update from GitSync.md" : message
 
         let result = try await gitService.commitAndPush(
             message: commitMsg,

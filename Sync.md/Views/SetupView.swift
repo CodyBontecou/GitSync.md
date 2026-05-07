@@ -197,7 +197,7 @@ struct SetupView: View {
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
 
-                Link(destination: URL(string: "https://github.com/settings/tokens/new?scopes=repo,user:email&description=Sync.md")!) {
+                Link(destination: URL(string: "https://github.com/settings/tokens/new?scopes=repo,user:email&description=GitSync.md")!) {
                     Text("CREATE A PAT ON GITHUB →")
                         .font(.system(size: 12, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Color.brutalAccent)
@@ -315,7 +315,7 @@ struct SetupView: View {
                     Image(systemName: "info.circle")
                         .font(.system(size: 12))
                         .foregroundStyle(Color.brutalText)
-                    Text("Without a default, repos save to Files › On My iPhone › Sync.md")
+                    Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                 }

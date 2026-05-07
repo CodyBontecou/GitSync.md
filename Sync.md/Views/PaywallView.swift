@@ -79,10 +79,12 @@ struct PaywallView: View {
                 .foregroundStyle(Color.brutalText)
                 .tracking(-1)
 
-            Text("SYNC.MD")
+            Text("GITSYNC.MD")
                 .font(.system(size: 56, weight: .black))
                 .foregroundStyle(Color.brutalAccent)
                 .tracking(-1)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
                 .padding(.bottom, 16)
 
             Rectangle()

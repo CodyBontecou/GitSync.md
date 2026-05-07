@@ -8373,163 +8373,163 @@
         }
       }
     },
-    "Files › On My iPhone › Sync.md › %@": {
+    "Files › On My iPhone › GitSync.md › %@": {
       "comment": "Info text showing the default clone destination path. %@ is the folder name.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Files › On My iPhone › Sync.md › %@"
+            "value": "Files › On My iPhone › GitSync.md › %@"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "الملفات › على iPhone › Sync.md › %@"
+            "value": "الملفات › على iPhone › GitSync.md › %@"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Filer › Paa min iPhone › Sync.md › %@"
+            "value": "Filer › Paa min iPhone › GitSync.md › %@"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dateien › Auf meinem iPhone › Sync.md › %@"
+            "value": "Dateien › Auf meinem iPhone › GitSync.md › %@"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Archivos › En mi iPhone › Sync.md › %@"
+            "value": "Archivos › En mi iPhone › GitSync.md › %@"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiedostot › iPhonessa › Sync.md › %@"
+            "value": "Tiedostot › iPhonessa › GitSync.md › %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fichiers › Sur mon iPhone › Sync.md › %@"
+            "value": "Fichiers › Sur mon iPhone › GitSync.md › %@"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "קבצים › ב-iPhone שלי › Sync.md › %@"
+            "value": "קבצים › ב-iPhone שלי › GitSync.md › %@"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Files › On My iPhone › Sync.md › %@"
+            "value": "Files › On My iPhone › GitSync.md › %@"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fájlok › Az iPhone-omon › Sync.md › %@"
+            "value": "Fájlok › Az iPhone-omon › GitSync.md › %@"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "File › Di iPhone Saya › Sync.md › %@"
+            "value": "File › Di iPhone Saya › GitSync.md › %@"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "File › Sul mio iPhone › Sync.md › %@"
+            "value": "File › Sul mio iPhone › GitSync.md › %@"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ファイル › このiPhone内 › Sync.md › %@"
+            "value": "ファイル › このiPhone内 › GitSync.md › %@"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "파일 › 나의 iPhone › Sync.md › %@"
+            "value": "파일 › 나의 iPhone › GitSync.md › %@"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Filer › På min iPhone › Sync.md › %@"
+            "value": "Filer › På min iPhone › GitSync.md › %@"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bestanden › Op mijn iPhone › Sync.md › %@"
+            "value": "Bestanden › Op mijn iPhone › GitSync.md › %@"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pliki › Na moim iPhonie › Sync.md › %@"
+            "value": "Pliki › Na moim iPhonie › GitSync.md › %@"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arquivos › No Meu iPhone › Sync.md › %@"
+            "value": "Arquivos › No Meu iPhone › GitSync.md › %@"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Файлы › На iPhone › Sync.md › %@"
+            "value": "Файлы › На iPhone › GitSync.md › %@"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Filer › På min iPhone › Sync.md › %@"
+            "value": "Filer › På min iPhone › GitSync.md › %@"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ไฟล์ › บน iPhone ของฉัน › Sync.md › %@"
+            "value": "ไฟล์ › บน iPhone ของฉัน › GitSync.md › %@"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dosyalar › iPhone'umda › Sync.md › %@"
+            "value": "Dosyalar › iPhone'umda › GitSync.md › %@"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Файли › На моєму iPhone › Sync.md › %@"
+            "value": "Файли › На моєму iPhone › GitSync.md › %@"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "文件 › 我的 iPhone › Sync.md › %@"
+            "value": "文件 › 我的 iPhone › GitSync.md › %@"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "檔案 › 我的 iPhone › Sync.md › %@"
+            "value": "檔案 › 我的 iPhone › GitSync.md › %@"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tệp › Trên iPhone › Sync.md › %@"
+            "value": "Tệp › Trên iPhone › GitSync.md › %@"
           }
         }
       }
@@ -15940,163 +15940,163 @@
         }
       }
     },
-    "Unlock Sync.md": {
+    "Unlock GitSync.md": {
       "comment": "Hero title on the paywall screen",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlock Sync.md"
+            "value": "Unlock GitSync.md"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "فتح Sync.md"
+            "value": "فتح GitSync.md"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laaas Sync.md op"
+            "value": "Laaas GitSync.md op"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md freischalten"
+            "value": "GitSync.md freischalten"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desbloquear Sync.md"
+            "value": "Desbloquear GitSync.md"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Avaa Sync.md"
+            "value": "Avaa GitSync.md"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Débloquer Sync.md"
+            "value": "Débloquer GitSync.md"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "שחרור Sync.md"
+            "value": "שחרור GitSync.md"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md अनलॉक करें"
+            "value": "GitSync.md अनलॉक करें"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md feloldása"
+            "value": "GitSync.md feloldása"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Buka Sync.md"
+            "value": "Buka GitSync.md"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sblocca Sync.md"
+            "value": "Sblocca GitSync.md"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md をアンロック"
+            "value": "GitSync.md をアンロック"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md 잠금 해제"
+            "value": "GitSync.md 잠금 해제"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lås opp Sync.md"
+            "value": "Lås opp GitSync.md"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ontgrendel Sync.md"
+            "value": "Ontgrendel GitSync.md"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Odblokuj Sync.md"
+            "value": "Odblokuj GitSync.md"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desbloquear Sync.md"
+            "value": "Desbloquear GitSync.md"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Разблокировать Sync.md"
+            "value": "Разблокировать GitSync.md"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lås upp Sync.md"
+            "value": "Lås upp GitSync.md"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ปลดล็อก Sync.md"
+            "value": "ปลดล็อก GitSync.md"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md Kilidini Aç"
+            "value": "GitSync.md Kilidini Aç"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Розблокувати Sync.md"
+            "value": "Розблокувати GitSync.md"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mở khóa Sync.md"
+            "value": "Mở khóa GitSync.md"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "解锁 Sync.md"
+            "value": "解锁 GitSync.md"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "解鎖 Sync.md"
+            "value": "解鎖 GitSync.md"
           }
         }
       }
@@ -19482,163 +19482,163 @@
         }
       }
     },
-    "On My iPhone › Sync.md › %@": {
+    "On My iPhone › GitSync.md › %@": {
       "comment": "Display path for a vault stored in the app's default location. %@ is the folder name.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "On My iPhone › Sync.md › %@"
+            "value": "On My iPhone › GitSync.md › %@"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "على iPhone › Sync.md › %@"
+            "value": "على iPhone › GitSync.md › %@"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paa min iPhone › Sync.md › %@"
+            "value": "Paa min iPhone › GitSync.md › %@"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Auf meinem iPhone › Sync.md › %@"
+            "value": "Auf meinem iPhone › GitSync.md › %@"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En mi iPhone › Sync.md › %@"
+            "value": "En mi iPhone › GitSync.md › %@"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "iPhonessa › Sync.md › %@"
+            "value": "iPhonessa › GitSync.md › %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sur mon iPhone › Sync.md › %@"
+            "value": "Sur mon iPhone › GitSync.md › %@"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "ב-iPhone שלי › Sync.md › %@"
+            "value": "ב-iPhone שלי › GitSync.md › %@"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "On My iPhone › Sync.md › %@"
+            "value": "On My iPhone › GitSync.md › %@"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Az iPhone-omon › Sync.md › %@"
+            "value": "Az iPhone-omon › GitSync.md › %@"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Di iPhone Saya › Sync.md › %@"
+            "value": "Di iPhone Saya › GitSync.md › %@"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sul mio iPhone › Sync.md › %@"
+            "value": "Sul mio iPhone › GitSync.md › %@"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "このiPhone内 › Sync.md › %@"
+            "value": "このiPhone内 › GitSync.md › %@"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "나의 iPhone › Sync.md › %@"
+            "value": "나의 iPhone › GitSync.md › %@"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "På min iPhone › Sync.md › %@"
+            "value": "På min iPhone › GitSync.md › %@"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Op mijn iPhone › Sync.md › %@"
+            "value": "Op mijn iPhone › GitSync.md › %@"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Na moim iPhonie › Sync.md › %@"
+            "value": "Na moim iPhonie › GitSync.md › %@"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "No Meu iPhone › Sync.md › %@"
+            "value": "No Meu iPhone › GitSync.md › %@"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "На iPhone › Sync.md › %@"
+            "value": "На iPhone › GitSync.md › %@"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "På min iPhone › Sync.md › %@"
+            "value": "På min iPhone › GitSync.md › %@"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "บน iPhone ของฉัน › Sync.md › %@"
+            "value": "บน iPhone ของฉัน › GitSync.md › %@"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "iPhone'umda › Sync.md › %@"
+            "value": "iPhone'umda › GitSync.md › %@"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "На моєму iPhone › Sync.md › %@"
+            "value": "На моєму iPhone › GitSync.md › %@"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "我的 iPhone › Sync.md › %@"
+            "value": "我的 iPhone › GitSync.md › %@"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "我的 iPhone › Sync.md › %@"
+            "value": "我的 iPhone › GitSync.md › %@"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trên iPhone › Sync.md › %@"
+            "value": "Trên iPhone › GitSync.md › %@"
           }
         }
       }
@@ -20609,163 +20609,163 @@
         }
       }
     },
-    "Sync.md": {
+    "GitSync.md": {
       "comment": "App name shown in the onboarding hero section",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md"
+            "value": "GitSync.md"
           }
         }
       }
@@ -22058,163 +22058,163 @@
         }
       }
     },
-    "Without a default, repos save to\nFiles › On My iPhone › Sync.md": {
+    "Without a default, repos save to\nFiles › On My iPhone › GitSync.md": {
       "comment": "Info hint shown when no default save location is chosen during onboarding",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Without a default, repos save to\nFiles › On My iPhone › Sync.md"
+            "value": "Without a default, repos save to\nFiles › On My iPhone › GitSync.md"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "بدون موقع افتراضي، تُحفظ المستودعات في\nالملفات › على iPhone › Sync.md"
+            "value": "بدون موقع افتراضي، تُحفظ المستودعات في\nالملفات › على iPhone › GitSync.md"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uden en standard gemmes repos i\nFiler › Paa min iPhone › Sync.md"
+            "value": "Uden en standard gemmes repos i\nFiler › Paa min iPhone › GitSync.md"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ohne Vorgabe werden Repos gespeichert unter\nDateien › Auf meinem iPhone › Sync.md"
+            "value": "Ohne Vorgabe werden Repos gespeichert unter\nDateien › Auf meinem iPhone › GitSync.md"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sin una ubicación predeterminada, los repositorios se guardan en\nArchivos › En mi iPhone › Sync.md"
+            "value": "Sin una ubicación predeterminada, los repositorios se guardan en\nArchivos › En mi iPhone › GitSync.md"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ilman oletussijaintia tietovarastot tallennetaan kohteeseen\nTiedostot › iPhonessa › Sync.md"
+            "value": "Ilman oletussijaintia tietovarastot tallennetaan kohteeseen\nTiedostot › iPhonessa › GitSync.md"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sans emplacement par défaut, les dépôts sont enregistrés dans\nFichiers › Sur mon iPhone › Sync.md"
+            "value": "Sans emplacement par défaut, les dépôts sont enregistrés dans\nFichiers › Sur mon iPhone › GitSync.md"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "ללא ברירת מחדל, מאגרים יישמרו ב-\nקבצים › ב-iPhone שלי › Sync.md"
+            "value": "ללא ברירת מחדל, מאגרים יישמרו ב-\nקבצים › ב-iPhone שלי › GitSync.md"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "डिफ़ॉल्ट के बिना, रिपो यहाँ सहेजे जाते हैं\nFiles › On My iPhone › Sync.md"
+            "value": "डिफ़ॉल्ट के बिना, रिपो यहाँ सहेजे जाते हैं\nFiles › On My iPhone › GitSync.md"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alapértelmezés nélkül a tárolók ide mentődnek:\nFájlok › Az iPhone-omon › Sync.md"
+            "value": "Alapértelmezés nélkül a tárolók ide mentődnek:\nFájlok › Az iPhone-omon › GitSync.md"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tanpa lokasi default, repositori disimpan di\nFile › Di iPhone Saya › Sync.md"
+            "value": "Tanpa lokasi default, repositori disimpan di\nFile › Di iPhone Saya › GitSync.md"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Senza un'impostazione predefinita, i repository vengono salvati in\nFile › Sul mio iPhone › Sync.md"
+            "value": "Senza un'impostazione predefinita, i repository vengono salvati in\nFile › Sul mio iPhone › GitSync.md"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "デフォルトが未設定の場合、リポジトリは\nファイル › このiPhone内 › Sync.md に保存されます"
+            "value": "デフォルトが未設定の場合、リポジトリは\nファイル › このiPhone内 › GitSync.md に保存されます"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "기본 위치를 설정하지 않으면\n파일 › 나의 iPhone › Sync.md에 저장됩니다"
+            "value": "기본 위치를 설정하지 않으면\n파일 › 나의 iPhone › GitSync.md에 저장됩니다"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uten en standard lagres repoer i\nFiler › På min iPhone › Sync.md"
+            "value": "Uten en standard lagres repoer i\nFiler › På min iPhone › GitSync.md"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zonder standaardlocatie worden repo's opgeslagen in\nBestanden › Op mijn iPhone › Sync.md"
+            "value": "Zonder standaardlocatie worden repo's opgeslagen in\nBestanden › Op mijn iPhone › GitSync.md"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bez ustawienia domyślnego repozytoria zapisują się w\nPliki › Na moim iPhonie › Sync.md"
+            "value": "Bez ustawienia domyślnego repozytoria zapisują się w\nPliki › Na moim iPhonie › GitSync.md"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sem um local padrão, os repositórios serão salvos em\nArquivos › No Meu iPhone › Sync.md"
+            "value": "Sem um local padrão, os repositórios serão salvos em\nArquivos › No Meu iPhone › GitSync.md"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Без настройки репозитории сохраняются в\nФайлы › На iPhone › Sync.md"
+            "value": "Без настройки репозитории сохраняются в\nФайлы › На iPhone › GitSync.md"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Utan standardval sparas förråd i\nFiler › På min iPhone › Sync.md"
+            "value": "Utan standardval sparas förråd i\nFiler › På min iPhone › GitSync.md"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "หากไม่ได้ตั้งค่า repository จะบันทึกที่\nไฟล์ › บน iPhone ของฉัน › Sync.md"
+            "value": "หากไม่ได้ตั้งค่า repository จะบันทึกที่\nไฟล์ › บน iPhone ของฉัน › GitSync.md"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Varsayılan belirlenmezse depolar şu konuma kaydedilir:\nDosyalar › iPhone'umda › Sync.md"
+            "value": "Varsayılan belirlenmezse depolar şu konuma kaydedilir:\nDosyalar › iPhone'umda › GitSync.md"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Без налаштування репозиторії зберігатимуться в\nФайли › На моєму iPhone › Sync.md"
+            "value": "Без налаштування репозиторії зберігатимуться в\nФайли › На моєму iPhone › GitSync.md"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "如未设置默认位置，仓库将保存到\n文件 › 我的 iPhone › Sync.md"
+            "value": "如未设置默认位置，仓库将保存到\n文件 › 我的 iPhone › GitSync.md"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "若未設定預設位置，儲存庫將儲存至\n檔案 › 我的 iPhone › Sync.md"
+            "value": "若未設定預設位置，儲存庫將儲存至\n檔案 › 我的 iPhone › GitSync.md"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nếu không chọn, kho sẽ lưu vào\nTệp › Trên iPhone › Sync.md"
+            "value": "Nếu không chọn, kho sẽ lưu vào\nTệp › Trên iPhone › GitSync.md"
           }
         }
       }
@@ -26244,163 +26244,163 @@
         }
       }
     },
-    "Update from Sync.md": {
+    "Update from GitSync.md": {
       "comment": "Default commit message used when the user does not provide one",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Update from Sync.md"
+            "value": "Update from GitSync.md"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "تحديث من Sync.md"
+            "value": "تحديث من GitSync.md"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Opdatering fra Sync.md"
+            "value": "Opdatering fra GitSync.md"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktualisierung von Sync.md"
+            "value": "Aktualisierung von GitSync.md"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Actualización desde Sync.md"
+            "value": "Actualización desde GitSync.md"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Päivitys Sync.md-sovelluksesta"
+            "value": "Päivitys GitSync.md-sovelluksesta"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mise à jour depuis Sync.md"
+            "value": "Mise à jour depuis GitSync.md"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "עדכון מ-Sync.md"
+            "value": "עדכון מ-GitSync.md"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md से अपडेट"
+            "value": "GitSync.md से अपडेट"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Frissítés a Sync.md-ből"
+            "value": "Frissítés a GitSync.md-ből"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pembaruan dari Sync.md"
+            "value": "Pembaruan dari GitSync.md"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aggiornamento da Sync.md"
+            "value": "Aggiornamento da GitSync.md"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md からの更新"
+            "value": "GitSync.md からの更新"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md에서 업데이트"
+            "value": "GitSync.md에서 업데이트"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oppdatering fra Sync.md"
+            "value": "Oppdatering fra GitSync.md"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Update vanuit Sync.md"
+            "value": "Update vanuit GitSync.md"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktualizacja z Sync.md"
+            "value": "Aktualizacja z GitSync.md"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Atualização do Sync.md"
+            "value": "Atualização do GitSync.md"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Обновление из Sync.md"
+            "value": "Обновление из GitSync.md"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uppdatering från Sync.md"
+            "value": "Uppdatering från GitSync.md"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "อัปเดตจาก Sync.md"
+            "value": "อัปเดตจาก GitSync.md"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync.md'den güncelleme"
+            "value": "GitSync.md'den güncelleme"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Оновлення з Sync.md"
+            "value": "Оновлення з GitSync.md"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cập nhật từ Sync.md"
+            "value": "Cập nhật từ GitSync.md"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "来自 Sync.md 的更新"
+            "value": "来自 GitSync.md 的更新"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "從 Sync.md 更新"
+            "value": "從 GitSync.md 更新"
           }
         }
       }

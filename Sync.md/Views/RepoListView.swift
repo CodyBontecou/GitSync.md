@@ -44,7 +44,7 @@ struct RepoListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("SYNC.MD")
+                    Text("GITSYNC.MD")
                         .font(.system(size: 14, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(3)

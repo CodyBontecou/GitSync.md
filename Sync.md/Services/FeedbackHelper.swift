@@ -15,13 +15,13 @@ enum FeedbackHelper {
 
         return """
         ---
-        App: Sync.md \(appVersion) (\(buildNumber))
+        App: GitSync.md \(appVersion) (\(buildNumber))
         Platform: iOS \(osVersion)
         Device: \(device)
         """
     }
 
-    static func mailtoURL(subject: String = "Sync.md Feedback") -> URL? {
+    static func mailtoURL(subject: String = "GitSync.md Feedback") -> URL? {
         let body = "\n\n\(diagnosticsBlock)"
         var components = URLComponents()
         components.scheme = "mailto"
@@ -40,7 +40,7 @@ enum FeedbackHelper {
     static func makeMailCompose() -> MFMailComposeViewController {
         let controller = MFMailComposeViewController()
         controller.setToRecipients([supportEmail])
-        controller.setSubject("Sync.md Feedback")
+        controller.setSubject("GitSync.md Feedback")
         controller.setMessageBody("\n\n\(diagnosticsBlock)", isHTML: false)
         return controller
     }

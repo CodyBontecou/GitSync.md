@@ -309,7 +309,7 @@ final class AppState {
             return customURL.path
         }
         guard let repo = repo(id: repoID) else { return "" }
-        return String(localized: "On My iPhone › Sync.md › \(repo.vaultFolderName)")
+        return String(localized: "On My iPhone › GitSync.md › \(repo.vaultFolderName)")
     }
 
     func isUsingCustomLocation(for repoID: UUID) -> Bool {
@@ -705,7 +705,7 @@ final class AppState {
         let upstreamName = "origin/\(currentBranch)"
         let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
         let commitMessage = trimmed.isEmpty
-            ? String(localized: "Local changes from Sync.md")
+            ? String(localized: "Local changes from GitSync.md")
             : trimmed
 
         isSyncing = true
@@ -1799,7 +1799,7 @@ final class AppState {
                 throw LocalGitError.notCloned
             }
 
-            let commitMsg = message.isEmpty ? String(localized: "Update from Sync.md") : message
+            let commitMsg = message.isEmpty ? String(localized: "Update from GitSync.md") : message
 
             syncProgress = String(localized: "Committing and pushing...")
             DebugLogger.shared.info("push", "Starting commit & push", detail: "message: \(commitMsg)")
@@ -2204,9 +2204,9 @@ final class AppState {
 
         let sampleFiles: [(String, String)] = [
             ("README.md", """
-            # Welcome to Sync.md 👋
+            # Welcome to GitSync.md 👋
 
-            This is a **demo repository** showing how Sync.md works.
+            This is a **demo repository** showing how GitSync.md works.
 
             ## Features
             - 📥 **Pull** — fetch the latest changes from GitHub
@@ -2220,7 +2220,7 @@ final class AppState {
             4. Edit files in the **Files** app or any app that reads from it
             5. Push your changes back to GitHub
 
-            > Files live in the **Files** app under `On My iPhone › Sync.md`
+            > Files live in the **Files** app under `On My iPhone › GitSync.md`
             """),
             ("notes/meeting-2026-02-10.md", """
             # Team Standup — Feb 10, 2026

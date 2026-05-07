@@ -62,9 +62,9 @@ struct FreeSlotConfirmModal: View {
                         .fixedSize(horizontal: false, vertical: true)
 
                     VStack(alignment: .leading, spacing: 6) {
-                        bullet("Removing the repo from Sync.md does not free the slot.")
+                        bullet("Removing the repo from GitSync.md does not free the slot.")
                         bullet("Deleting and reinstalling the app does not free the slot.")
-                        bullet("Sync.md+ unlocks unlimited repositories.")
+                        bullet("GitSync.md+ unlocks unlimited repositories.")
                     }
                     .padding(10)
                     .frame(maxWidth: .infinity, alignment: .leading)

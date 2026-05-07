@@ -3,7 +3,7 @@ import Combine
 import StoreKit
 import Security
 
-/// Manages the one-time unlock IAP and legacy paid-user migration for Sync.md.
+/// Manages the one-time unlock IAP and legacy paid-user migration for GitSync.md.
 @MainActor
 final class PurchaseManager: ObservableObject {
 
@@ -295,7 +295,7 @@ final class PurchaseManager: ObservableObject {
         if isUnlocked { return }
 
         purchaseError = String(
-            localized: "No purchase found on this Apple ID.\n\nIf you bought Sync.md before v1.7.0 and still can't restore access, contact us at cody@isolated.tech and we'll sort it out.",
+            localized: "No purchase found on this Apple ID.\n\nIf you bought GitSync.md before v1.7.0 and still can't restore access, contact us at cody@isolated.tech and we'll sort it out.",
             comment: "Restore purchase not found message"
         )
     }

@@ -112,7 +112,7 @@ struct SettingsView: View {
                                     BDivider().padding(.horizontal, 16)
 
                                     settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(String(localized: "On My iPhone › Sync.md › \(vaultName)"))
+                                        Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
                                             .font(.system(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                             .lineLimit(1)

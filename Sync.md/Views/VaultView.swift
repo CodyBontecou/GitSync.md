@@ -725,7 +725,7 @@ private struct ResolveLocalChangesSheet: View {
                     BTextField(
                         label: String(localized: "Commit message"),
                         text: $message,
-                        placeholder: String(localized: "Local changes from Sync.md")
+                        placeholder: String(localized: "Local changes from GitSync.md")
                     )
 
                     Spacer()
