@@ -218,27 +218,15 @@ struct SettingsView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text(String(localized: "Cancel").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .bold))
                             .foregroundStyle(Color.brutalText)
-                            .tracking(1)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Cancel"))
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        saveChanges()
-                        dismiss()
-                    } label: {
-                        Text(String(localized: "Save").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color(.systemBackground))
-                            .tracking(1)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.brutalText)
-                    }
-                    .buttonStyle(.plain)
+                    saveToolbarAction
                 }
             }
             .onAppear {
@@ -363,6 +351,27 @@ struct SettingsView: View {
                 .background(Color.brutalError.opacity(0.12))
                 .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.3), lineWidth: 1))
         }
+    }
+
+    private var saveToolbarAction: some View {
+        Text(String(localized: "Save").uppercased())
+            .font(.system(size: 14, weight: .bold, design: .monospaced))
+            .foregroundStyle(Color(.systemBackground))
+            .tracking(1)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(Color.brutalText)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                saveChanges()
+                dismiss()
+            }
+            .accessibilityLabel(String(localized: "Save"))
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction {
+                saveChanges()
+                dismiss()
+            }
     }
 
     // MARK: - Helpers

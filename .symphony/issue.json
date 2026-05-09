@@ -1,0 +1,17 @@
+{
+  "id": "I_kwDORLtlu88AAAABAqzbyg",
+  "identifier": "CodyBontecou/GitSync.md#10",
+  "title": "Button visual bug",
+  "description": "Button visual bug\n\nTags: Bug\n\n@claude top left should be an X instead of cut off text and top right button should just be the rectangle without the rounded button background\n\n![screenshot](https://gripe.isolated.tech/images/reports/00401325-f877-44c8-b35f-c218be0ce829.png)\n\n---\n\n<sub>\n**Device**: iPhone18,1 — iOS 26.3<br>\n**App**: 2.0.3 (202604270751) — `bontecou.Sync-md`<br>\n**View**: `CommentComposerVC`<br>\n**Locale**: en_US<br>\n**Captured**: 2026-04-28T01:11:52Z\n</sub>",
+  "author": "CodyBontecou",
+  "priority": null,
+  "state": "open",
+  "branch_name": null,
+  "url": "https://github.com/CodyBontecou/GitSync.md/issues/10",
+  "labels": [
+    "gripe"
+  ],
+  "blocked_by": [],
+  "created_at": "2026-04-28T01:11:53Z",
+  "updated_at": "2026-04-28T01:15:04Z"
+}
