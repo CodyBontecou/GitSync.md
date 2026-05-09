@@ -31,7 +31,7 @@ material = "1.11.0"
 gson = "2.10.1"
 
 # JGit (pure-Java git — no system git binary required on device)
-jgit = "6.10.0.202406032230-r"
+jgit = "5.13.5.202508271544-r"
 
 # Browser (Custom Tabs for OAuth)
 androidx-browser = "1.8.0"

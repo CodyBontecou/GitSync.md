@@ -11,6 +11,7 @@ import com.bontecou.syncmd.services.github.GitHubAuthManager
 import com.bontecou.syncmd.storage.CloneStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -162,11 +163,16 @@ class CloneViewModel @Inject constructor(
                 message = "Clone attempt $attempt/$maxAttempts path=$localPath"
             )
 
-            val result = gitRepository.clone(
-                url = cloneUrl,
-                path = localPath,
-                creds = Credentials.Pat(token),
-            )
+            val result = try {
+                gitRepository.clone(
+                    url = cloneUrl,
+                    path = localPath,
+                    creds = Credentials.Pat(token),
+                )
+            } catch (t: Throwable) {
+                if (t is CancellationException) throw t
+                Result.failure(t)
+            }
             if (result.isSuccess) return result
 
             val error = result.exceptionOrNull()
