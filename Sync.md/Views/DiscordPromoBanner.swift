@@ -14,6 +14,7 @@ struct DiscordPromoBanner: View {
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
                             .frame(width: 28)
+                            .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Join the community")
@@ -42,6 +43,8 @@ struct DiscordPromoBanner: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Join Discord")
+                    .accessibilityHint("Opens the GitSync.md community invite in Discord.")
 
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -56,6 +59,7 @@ struct DiscordPromoBanner: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Dismiss Discord banner")
+                    .accessibilityHint("Hides this banner.")
                 }
             }
             .padding(.horizontal, 20)

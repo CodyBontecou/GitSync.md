@@ -24,6 +24,7 @@ struct RevertConfirmModal: View {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(Color.brutalError)
+                        .accessibilityHidden(true)
                     Text(title.uppercased())
                         .font(.system(size: 13, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
@@ -38,6 +39,8 @@ struct RevertConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                    .accessibilityHint("Cancels reverting changes.")
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 18)
@@ -53,6 +56,7 @@ struct RevertConfirmModal: View {
                             Image(systemName: "doc.text")
                                 .font(.system(size: 13))
                                 .foregroundStyle(Color.brutalTextFaint)
+                                .accessibilityHidden(true)
                             Text(filename)
                                 .font(.system(size: 15, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
@@ -69,6 +73,7 @@ struct RevertConfirmModal: View {
                             Image(systemName: "doc.on.doc")
                                 .font(.system(size: 13))
                                 .foregroundStyle(Color.brutalTextFaint)
+                                .accessibilityHidden(true)
                             Text("\(files.count) file\(files.count == 1 ? "" : "s") will be discarded")
                                 .font(.system(size: 15, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
@@ -123,6 +128,8 @@ struct RevertConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Keeps local changes.")
 
                     Button(action: onConfirm) {
                         Text(confirmLabel.uppercased())
@@ -135,6 +142,8 @@ struct RevertConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalError, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(confirmLabel)
+                    .accessibilityHint("Permanently discards the selected local changes.")
                 }
                 .padding(14)
             }

@@ -42,6 +42,7 @@ struct GitHubAvatarView: View {
             .scaledToFit()
             .foregroundStyle(.secondary)
             .frame(width: size, height: size)
+            .accessibilityHidden(true)
     }
 }
 

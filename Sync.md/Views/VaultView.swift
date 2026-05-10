@@ -66,6 +66,8 @@ struct VaultView: View {
                         .frame(width: 32, height: 32)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Repository Settings")
+                .accessibilityHint("Opens settings for this repository.")
             }
         }
         .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
@@ -263,6 +265,7 @@ struct VaultView: View {
             Image(systemName: icon)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
+                .accessibilityHidden(true)
             Text(text)
                 .font(mono
                     ? .system(size: 13, weight: .medium, design: .monospaced)
@@ -300,6 +303,7 @@ struct VaultView: View {
                         Image(systemName: pullOutcomeIcon(outcome.kind))
                             .font(.system(size: 13))
                             .foregroundStyle(pullOutcomeColor(outcome.kind))
+                            .accessibilityHidden(true)
                         Text(outcome.message)
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
@@ -320,6 +324,8 @@ struct VaultView: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
+                            .accessibilityLabel("Resolve Local Changes")
+                            .accessibilityHint("Opens options to commit local changes before pulling.")
                         }
 
                         if outcome.kind == .diverged {
@@ -336,6 +342,8 @@ struct VaultView: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
+                            .accessibilityLabel("Merge Remote Changes")
+                            .accessibilityHint("Starts a merge with the remote branch.")
                         }
                     }
                     .padding(.horizontal, 16)
@@ -404,9 +412,12 @@ struct VaultView: View {
                             Image(systemName: showChangedFiles ? "chevron.up" : "chevron.down")
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(showChangedFiles ? "Collapse Changed Files" : "Expand Changed Files")
+                    .accessibilityValue("\(statusEntries.count) files")
 
                     Spacer()
 
@@ -417,6 +428,7 @@ struct VaultView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "arrow.uturn.backward")
                                 .font(.system(size: 11, weight: .bold))
+                                .accessibilityHidden(true)
                             Text(String(localized: "All").uppercased())
                                 .font(.system(size: 11, weight: .bold, design: .monospaced))
                                 .tracking(1)
@@ -427,6 +439,8 @@ struct VaultView: View {
                         .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Revert All Changes")
+                    .accessibilityHint("Opens a confirmation before discarding all local file changes.")
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
@@ -461,6 +475,9 @@ struct VaultView: View {
                 }
             }
             .buttonStyle(.plain)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(changedFileAccessibilityLabel(entry))
+            .accessibilityHint(entry.isConflicted ? "Opens the conflict editor." : "Opens the diff.")
 
             // Per-file revert
             Button {
@@ -473,6 +490,8 @@ struct VaultView: View {
                     .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Revert \(URL(fileURLWithPath: entry.path).lastPathComponent)")
+            .accessibilityHint("Opens a confirmation before discarding local changes to this file.")
         }
     }
 
@@ -493,6 +512,7 @@ struct VaultView: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(Color.brutalText.opacity(0.3))
+                .accessibilityHidden(true)
         }
         .padding(.leading, 16)
         .padding(.trailing, 8)
@@ -518,6 +538,10 @@ struct VaultView: View {
         case .untracked:   return String(localized: "untracked")
         case .conflicted:  return String(localized: "conflicted")
         }
+    }
+
+    private func changedFileAccessibilityLabel(_ entry: GitStatusEntry) -> String {
+        "\(entry.path), \(fileStatusSummary(for: entry))"
     }
 
     @ViewBuilder
@@ -614,6 +638,7 @@ struct VaultView: View {
                     Image(systemName: "arrow.uturn.backward")
                         .font(.system(size: 14))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                 }
             }
         }

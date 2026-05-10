@@ -128,11 +128,14 @@ struct AppSettingsView: View {
                                         Text("→")
                                             .font(.system(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
+                                            .accessibilityHidden(true)
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 13)
                                 }
                                 .buttonStyle(.plain)
+                                .accessibilityLabel("Verify Receipt")
+                                .accessibilityHint("Runs a debug receipt verification check.")
 
                                 BDivider().padding(.horizontal, 16)
                                 if purchaseManager.debugForceFreeMode {
@@ -148,11 +151,14 @@ struct AppSettingsView: View {
                                             Text("→")
                                                 .font(.system(size: 13, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
+                                                .accessibilityHidden(true)
                                         }
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 13)
                                     }
                                     .buttonStyle(.plain)
+                                    .accessibilityLabel("Restore Pro State")
+                                    .accessibilityHint("Restores the debug purchase state.")
                                 } else {
                                     Button {
                                         purchaseManager.debugResetPurchaseState()
@@ -166,11 +172,14 @@ struct AppSettingsView: View {
                                             Text("→")
                                                 .font(.system(size: 13, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
+                                                .accessibilityHidden(true)
                                         }
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 13)
                                     }
                                     .buttonStyle(.plain)
+                                    .accessibilityLabel("Reset to Free Tier")
+                                    .accessibilityHint("Resets the debug purchase state to the free tier.")
                                 }
 
                                 BDivider().padding(.horizontal, 16)
@@ -186,11 +195,14 @@ struct AppSettingsView: View {
                                         Text("→")
                                             .font(.system(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
+                                            .accessibilityHidden(true)
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 13)
                                 }
                                 .buttonStyle(.plain)
+                                .accessibilityLabel("Wipe All Repositories")
+                                .accessibilityHint("Opens a confirmation before removing every configured repository.")
                                 #endif
                             }
                         }
@@ -228,6 +240,8 @@ struct AppSettingsView: View {
                                                 .tracking(1)
                                         }
                                         .buttonStyle(.plain)
+                                        .accessibilityLabel("Change Default Save Location")
+                                        .accessibilityHint("Opens the folder picker.")
 
                                         Spacer()
 
@@ -240,6 +254,8 @@ struct AppSettingsView: View {
                                                 .tracking(1)
                                         }
                                         .buttonStyle(.plain)
+                                        .accessibilityLabel("Remove Default Save Location")
+                                        .accessibilityHint("Opens a confirmation before clearing the default save location.")
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 12)
@@ -249,6 +265,7 @@ struct AppSettingsView: View {
                                             Image(systemName: "info.circle")
                                                 .font(.system(size: 11))
                                                 .foregroundStyle(Color.brutalText)
+                                                .accessibilityHidden(true)
                                             Text("New repositories will be saved to the app's default location.")
                                                 .font(.system(size: 14, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
@@ -272,6 +289,8 @@ struct AppSettingsView: View {
                                             .padding(.vertical, 12)
                                         }
                                         .buttonStyle(.plain)
+                                        .accessibilityLabel("Choose Default Location")
+                                        .accessibilityHint("Opens the folder picker.")
                                     }
                                 }
                             }
@@ -343,6 +362,8 @@ struct AppSettingsView: View {
                             .background(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Done")
+                    .accessibilityHint("Closes app settings.")
                 }
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }
@@ -444,11 +465,15 @@ struct AppSettingsView: View {
                 Text("→")
                     .font(.system(size: 13, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
+                    .accessibilityHidden(true)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title), \(subtitle)")
+        .accessibilityHint("Opens details.")
     }
 }

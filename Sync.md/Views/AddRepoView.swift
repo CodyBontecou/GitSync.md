@@ -103,6 +103,8 @@ struct AddRepoView: View {
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                    .accessibilityHint("Dismisses add repository.")
                 }
             }
             .sheet(isPresented: $showRepoPicker) {
@@ -217,12 +219,16 @@ struct AddRepoView: View {
                             Text("→")
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)
                 }
                 .buttonStyle(.plain)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(selectedRepoURL.isEmpty || showManualEntry || localRepoURL != nil ? "Pick from GitHub, Select from your repositories" : "Selected GitHub repository \(selectedRepoURL)")
+                .accessibilityHint("Opens repository selection.")
 
                 BDivider(label: "or").padding(.horizontal, 16).padding(.vertical, 10)
 
@@ -262,12 +268,16 @@ struct AddRepoView: View {
                             Text("→")
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)
                 }
                 .buttonStyle(.plain)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(localRepoURL.map { "Selected local repository \($0.lastPathComponent)" } ?? "Open Existing Repository, Select a git repo on this device")
+                .accessibilityHint("Opens the folder picker.")
 
                 if let error = localRepoError {
                     BDivider().padding(.horizontal, 16)
@@ -325,6 +335,8 @@ struct AddRepoView: View {
                         .padding(.vertical, 12)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Enter Repository URL Manually")
+                    .accessibilityHint("Shows a field for pasting a repository URL.")
                 }
             }
             .background(Color.brutalBg)
@@ -405,6 +417,8 @@ struct AddRepoView: View {
                                     .padding(6)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel("Clear Custom Location")
+                            .accessibilityHint("Uses the default GitSync.md folder instead.")
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)
@@ -429,6 +443,7 @@ struct AddRepoView: View {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 10))
                                     .foregroundStyle(Color.brutalText)
+                                    .accessibilityHidden(true)
                                 Text("Files › On My iPhone › GitSync.md › \(vaultName)")
                                     .font(.system(size: 14, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
@@ -455,6 +470,8 @@ struct AddRepoView: View {
                         .padding(.vertical, 12)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(customVaultURL != nil ? "Change Clone Location" : "Choose Clone Location")
+                    .accessibilityHint("Opens the folder picker.")
                 }
             }
             .padding(.horizontal, 20)
@@ -487,6 +504,8 @@ struct AddRepoView: View {
                         }
                     }
                     .padding(.horizontal, 20)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Selected local repository \(localURL.lastPathComponent), \(localURL.path)")
                 }
 
                 BTextField(label: "Author Name", text: $authorName, placeholder: "Your Name")

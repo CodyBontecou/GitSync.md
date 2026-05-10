@@ -79,6 +79,8 @@ struct RepoListView: View {
                                 .contentShape(Circle())
                         }
                         .menuStyle(.borderlessButton)
+                        .accessibilityLabel("Account Menu")
+                        .accessibilityHint("Opens app settings and sign out actions.")
                     } else {
                         Button {
                             Task { await state.signInWithGitHub() }
@@ -298,6 +300,7 @@ struct RepoListView: View {
                         Text("→")
                             .font(.system(size: 14, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
+                            .accessibilityHidden(true)
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
@@ -318,6 +321,9 @@ struct RepoListView: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ghostRepoAccessibilityLabel(repoName: repoName, ownerName: ownerName))
+        .accessibilityHint("Re-clones this repository.")
     }
 
     // MARK: - Repo Card
@@ -354,6 +360,7 @@ struct RepoListView: View {
                     Text("→")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -389,6 +396,9 @@ struct RepoListView: View {
                 }
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(repoAccessibilityLabel(repo, isSyncing: isThisRepoSyncing))
+        .accessibilityHint("Opens repository details.")
     }
 
     // MARK: - Add Repo Button
@@ -416,6 +426,8 @@ struct RepoListView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Add Repository")
+        .accessibilityHint("Opens the add repository screen.")
     }
 
     // MARK: - Demo Banner
@@ -439,6 +451,7 @@ struct RepoListView: View {
                         .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Exit Demo Mode")
             }
         }
     }
@@ -450,6 +463,7 @@ struct RepoListView: View {
             Image(systemName: icon)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
+                .accessibilityHidden(true)
             Text(text)
                 .font(mono
                     ? .system(size: 13, weight: .medium, design: .monospaced)
@@ -464,6 +478,29 @@ struct RepoListView: View {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private func repoAccessibilityLabel(_ repo: RepoConfig, isSyncing: Bool) -> String {
+        var parts = [repo.displayName]
+        if let owner = repo.ownerName { parts.append("Owner \(owner)") }
+        if isSyncing {
+            parts.append("Syncing")
+            if !state.syncProgress.isEmpty { parts.append(state.syncProgress) }
+        } else if repo.isCloned {
+            parts.append("Branch \(repo.gitState.branch)")
+            parts.append("Commit \(String(repo.gitState.commitSHA.prefix(7)))")
+            parts.append("Last synced \(relativeDate(repo.gitState.lastSyncDate))")
+        } else {
+            parts.append("Not cloned")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private func ghostRepoAccessibilityLabel(repoName: String, ownerName: String?) -> String {
+        var parts = [repoName]
+        if let ownerName { parts.append("Owner \(ownerName)") }
+        parts.append("Previously cloned")
+        return parts.joined(separator: ", ")
     }
 
     // MARK: - Ghost Repo Clone

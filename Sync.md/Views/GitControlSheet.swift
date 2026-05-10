@@ -74,6 +74,8 @@ struct GitControlSheet: View {
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                    .accessibilityHint("Dismisses git controls.")
                 }
             }
             .alert("Error", isPresented: Binding(
@@ -277,7 +279,12 @@ struct GitControlSheet: View {
                     smallActionButton(String(localized: "Merge").uppercased()) {
                         Task { await state.mergeBranch(repoID: repoID, from: branch.shortName) }
                     }
-                    smallActionButton("✕", isDestructive: true) {
+                    smallActionButton(
+                        "✕",
+                        isDestructive: true,
+                        accessibilityLabel: "Delete Branch \(branch.shortName)",
+                        accessibilityHint: "Deletes this local branch."
+                    ) {
                         Task { await state.deleteBranch(repoID: repoID, name: branch.shortName) }
                     }
                 }
@@ -353,6 +360,7 @@ struct GitControlSheet: View {
                             HStack(spacing: 6) {
                                 Image(systemName: "xmark")
                                     .font(.system(size: 13, weight: .bold))
+                                    .accessibilityHidden(true)
                                 Text(String(localized: "Abort Merge").uppercased())
                                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                                     .tracking(1)
@@ -364,6 +372,8 @@ struct GitControlSheet: View {
                         }
                         .buttonStyle(.plain)
                         .disabled(state.isSyncing)
+                        .accessibilityLabel("Abort Merge")
+                        .accessibilityHint("Stops the current merge operation.")
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
@@ -606,7 +616,12 @@ struct GitControlSheet: View {
             smallActionButton(String(localized: "Push").uppercased()) {
                 Task { await state.pushTag(repoID: repoID, name: tag.shortName) }
             }
-            smallActionButton("✕", isDestructive: true) {
+            smallActionButton(
+                "✕",
+                isDestructive: true,
+                accessibilityLabel: "Delete Tag \(tag.shortName)",
+                accessibilityHint: "Deletes this tag."
+            ) {
                 Task { await state.deleteTag(repoID: repoID, name: tag.shortName) }
             }
         }
@@ -700,7 +715,12 @@ struct GitControlSheet: View {
                     Task { await state.popStash(repoID: repoID, index: entry.index) }
                 }
                 Spacer()
-                smallActionButton("✕", isDestructive: true) {
+                smallActionButton(
+                    "✕",
+                    isDestructive: true,
+                    accessibilityLabel: "Drop Stash \(entry.index)",
+                    accessibilityHint: "Deletes this stash."
+                ) {
                     Task { await state.dropStash(repoID: repoID, index: entry.index) }
                 }
             }
@@ -823,6 +843,7 @@ struct GitControlSheet: View {
                     HStack(spacing: 8) {
                         Image(systemName: inMerge ? "checkmark" : "arrow.up")
                             .font(.system(size: 14, weight: .bold))
+                            .accessibilityHidden(true)
                         Text(buttonLabel)
                             .font(.system(size: 14, weight: .bold, design: .monospaced))
                             .tracking(1)
@@ -834,6 +855,9 @@ struct GitControlSheet: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(buttonDisabled)
+                .accessibilityLabel(inMerge ? "Complete Merge" : "Commit and Push")
+                .accessibilityValue(inMerge ? "" : "\(stagedCount) staged files")
+                .accessibilityHint(inMerge ? "Commits the resolved merge and pushes it to remote." : "Commits staged changes with this message and pushes to remote.")
             }
         }
     }
@@ -861,7 +885,13 @@ struct GitControlSheet: View {
         diffDestination = DiffDestination(repoID: repoID, path: path)
     }
 
-    private func smallActionButton(_ title: String, isDestructive: Bool = false, action: @escaping () -> Void) -> some View {
+    private func smallActionButton(
+        _ title: String,
+        isDestructive: Bool = false,
+        accessibilityLabel: String? = nil,
+        accessibilityHint: String? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
         Button(action: action) {
             Text(title)
                 .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -875,5 +905,7 @@ struct GitControlSheet: View {
                 )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel ?? title)
+        .accessibilityHint(accessibilityHint ?? "")
     }
 }

@@ -136,6 +136,7 @@ struct BPrimaryButton: View {
                             Image(systemName: icon)
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundStyle(Color(.systemBackground))
+                                .accessibilityHidden(true)
                         }
                         Text(title.uppercased())
                             .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -147,6 +148,8 @@ struct BPrimaryButton: View {
         }
         .buttonStyle(.plain)
         .disabled(isDisabled || isLoading)
+        .accessibilityLabel(title)
+        .accessibilityHint(isLoading ? "Action in progress" : "")
     }
 }
 
@@ -180,6 +183,7 @@ struct BSecondaryButton: View {
                             Image(systemName: icon)
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundStyle(isDisabled ? Color.brutalText : Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                         Text(title.uppercased())
                             .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -191,6 +195,8 @@ struct BSecondaryButton: View {
         }
         .buttonStyle(.plain)
         .disabled(isDisabled || isLoading)
+        .accessibilityLabel(title)
+        .accessibilityHint(isLoading ? "Action in progress" : "")
     }
 }
 
@@ -208,6 +214,7 @@ struct BGhostButton: View {
                 if let icon {
                     Image(systemName: icon)
                         .font(.system(size: 13, weight: .medium))
+                        .accessibilityHidden(true)
                 }
                 Text(title.uppercased())
                     .font(.system(size: 13, weight: .medium, design: .monospaced))
@@ -216,6 +223,7 @@ struct BGhostButton: View {
             .foregroundStyle(color)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(title)
     }
 }
 
@@ -248,6 +256,8 @@ struct BDestructiveButton: View {
         }
         .buttonStyle(.plain)
         .disabled(isLoading)
+        .accessibilityLabel(title)
+        .accessibilityHint(isLoading ? "Action in progress" : "")
     }
 }
 
@@ -512,6 +522,7 @@ struct BToast: View {
             if let icon = systemImage {
                 Image(systemName: icon)
                     .font(.system(size: 13, weight: .black))
+                    .accessibilityHidden(true)
             }
             Text(message.uppercased())
                 .font(.system(size: 12, weight: .black, design: .monospaced))
@@ -535,6 +546,12 @@ struct BCardRow: View {
     var showArrow: Bool = false
     var destructive: Bool = false
     var action: (() -> Void)? = nil
+
+    private var cardRowAccessibilityLabel: String {
+        [title, subtitle, value, badgeText]
+            .compactMap { $0?.isEmpty == false ? $0 : nil }
+            .joined(separator: ", ")
+    }
 
     var body: some View {
         Button(action: { action?() }) {
@@ -567,12 +584,16 @@ struct BCardRow: View {
                     Text("→")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                 }
             }
             .padding(.vertical, 13)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(cardRowAccessibilityLabel)
+        .accessibilityHint(action == nil ? "" : "Opens details")
     }
 }
 
@@ -616,12 +637,15 @@ struct BConfirmModal: View {
                 VStack(spacing: 8) {
                     if isDestructive {
                         BDestructiveButton(title: confirmLabel, action: onConfirm)
+                            .accessibilityHint("Confirms \(confirmLabel.lowercased()).")
                     } else {
                         BPrimaryButton(title: confirmLabel, action: onConfirm)
+                            .accessibilityHint("Confirms \(confirmLabel.lowercased()).")
                     }
                     BGhostButton(title: "Cancel", action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
+                        .accessibilityHint("Closes this confirmation.")
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
@@ -682,9 +706,11 @@ struct BRenameModal: View {
 
                 VStack(spacing: 8) {
                     BPrimaryButton(title: "Rename", action: onConfirm)
+                        .accessibilityHint("Saves the new file name.")
                     BGhostButton(title: "Cancel", action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
+                        .accessibilityHint("Closes the rename dialog.")
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 16)
@@ -709,6 +735,13 @@ struct BActionRow: View {
     // BActionRow is a pure label — callers wrap it in an outer Button.
     // It used to contain its own Button, which swallowed taps when nested
     // inside an outer Button (SwiftUI nested-button hit-testing conflict).
+    private var actionRowAccessibilityLabel: String {
+        var parts = [title]
+        if let subtitle, !subtitle.isEmpty { parts.append(subtitle) }
+        if let badge, badge > 0 { parts.append("\(badge)") }
+        return parts.joined(separator: ", ")
+    }
+
     var body: some View {
         HStack(spacing: 14) {
             Text(icon)
@@ -734,11 +767,14 @@ struct BActionRow: View {
                 Text("→")
                     .font(.system(size: 14, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
+                    .accessibilityHidden(true)
             }
         }
         .padding(.vertical, 14)
         .padding(.horizontal, 16)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(actionRowAccessibilityLabel)
     }
 }
 

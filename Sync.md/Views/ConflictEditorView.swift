@@ -177,6 +177,7 @@ struct ConflictEditorView: View {
                 Image(systemName: keepPath == candidate ? "largecircle.fill.circle" : "circle")
                     .font(.system(size: 16))
                     .foregroundStyle(keepPath == candidate ? Color.brutalAccent : Color.brutalTextMid)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(label.uppercased())
                         .font(.system(size: 11, weight: .bold, design: .monospaced))
@@ -200,6 +201,10 @@ struct ConflictEditorView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label), \(candidate)")
+        .accessibilityValue(keepPath == candidate ? "Selected" : "Not selected")
+        .accessibilityHint("Chooses this filename for the resolved conflict.")
     }
 
     private var binaryNotice: some View {
