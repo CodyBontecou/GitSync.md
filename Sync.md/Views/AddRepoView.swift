@@ -103,6 +103,7 @@ struct AddRepoView: View {
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("addRepo.closeButton")
                 }
             }
             .sheet(isPresented: $showRepoPicker) {
@@ -223,6 +224,7 @@ struct AddRepoView: View {
                     .padding(.vertical, 14)
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("addRepo.pickFromGitHubButton")
 
                 BDivider(label: "or").padding(.horizontal, 16).padding(.vertical, 10)
 
@@ -292,6 +294,7 @@ struct AddRepoView: View {
                             placeholder: "https://github.com/user/repo",
                             autocapitalization: .never
                         )
+                        .accessibilityIdentifier("addRepo.repositoryURLField")
                         .padding(.horizontal, 16)
 
                         if !selectedRepoURL.isEmpty && GitHubService.parseRepoURL(selectedRepoURL) == nil {
@@ -325,6 +328,7 @@ struct AddRepoView: View {
                         .padding(.vertical, 12)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("addRepo.manualURLButton")
                 }
             }
             .background(Color.brutalBg)
@@ -348,12 +352,14 @@ struct AddRepoView: View {
                     placeholder: "main",
                     autocapitalization: .never
                 )
+                .accessibilityIdentifier("addRepo.branchField")
 
                 BTextField(
                     label: "Author Name",
                     text: $authorName,
                     placeholder: "Your Name"
                 )
+                .accessibilityIdentifier("addRepo.authorNameField")
 
                 BTextField(
                     label: "Author Email",
@@ -363,6 +369,7 @@ struct AddRepoView: View {
                     textContentType: .emailAddress,
                     autocapitalization: .never
                 )
+                .accessibilityIdentifier("addRepo.authorEmailField")
             }
             .padding(.horizontal, 20)
         }
@@ -511,6 +518,7 @@ struct AddRepoView: View {
         BPrimaryButton(title: "Add Repository", isDisabled: !canSubmitLocalRepo, icon: "folder.badge.plus") {
             addLocalRepo()
         }
+        .accessibilityIdentifier("addRepo.addLocalRepositoryButton")
         .padding(.horizontal, 20)
         .padding(.top, 8)
     }
@@ -519,6 +527,7 @@ struct AddRepoView: View {
         BPrimaryButton(title: "Add & Clone Repository", isDisabled: !canSubmitRemoteRepo, icon: "square.and.arrow.down") {
             addAndClone()
         }
+        .accessibilityIdentifier("addRepo.addAndCloneButton")
         .padding(.horizontal, 20)
         .padding(.top, 8)
     }

@@ -182,6 +182,7 @@ struct RepoListView: View {
                     actionTitle: String(localized: "Add Repository"),
                     action: { handleAddRepoTapped() }
                 )
+                .accessibilityIdentifier("repoList.addRepositoryButton")
                 Spacer()
                 Spacer()
             } else {
@@ -223,6 +224,8 @@ struct RepoListView: View {
                     NavigationLink(value: repo.id) {
                         repoCard(repo)
                     }
+                    .accessibilityIdentifier("repoList.repo.\(repo.displayName)")
+                    .accessibilityLabel("Repository \(repo.displayName)")
                     .tint(.primary)
                     .contextMenu {
                         Button {

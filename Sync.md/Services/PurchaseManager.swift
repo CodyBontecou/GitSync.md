@@ -228,6 +228,12 @@ final class PurchaseManager: ObservableObject {
 
     /// Initiates the StoreKit purchase flow. Sets `isUnlocked = true` on success.
     func purchase() async {
+        #if DEBUG
+        if AppState.isUITesting {
+            purchaseError = "UI test purchase flow"
+            return
+        }
+        #endif
         guard let product else {
             purchaseError = String(
                 localized: "Product unavailable. Please try again later.",
@@ -276,6 +282,12 @@ final class PurchaseManager: ObservableObject {
 
     /// Restores access for both IAP purchasers and legacy paid-app users.
     func restore() async {
+        #if DEBUG
+        if AppState.isUITesting {
+            purchaseError = "UI test restore flow"
+            return
+        }
+        #endif
         isRestoring = true
         purchaseError = nil
         defer { isRestoring = false }

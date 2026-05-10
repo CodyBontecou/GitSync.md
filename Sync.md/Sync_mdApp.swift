@@ -12,6 +12,9 @@ struct Sync_mdApp: App {
                 .environment(appState)
                 .task {
                     #if DEBUG
+                    if AppState.isUITesting {
+                        await appState.configureForUITesting()
+                    }
                     // Allow injecting a GitHub PAT via environment variable for simulator testing.
                     // Launch with: SIMCTL_CHILD_INJECT_PAT=ghp_xxx xcrun simctl launch booted <bundle-id>
                     if let injectedPAT = ProcessInfo.processInfo.environment["INJECT_PAT"],

@@ -121,6 +121,7 @@ struct SetupView: View {
                     }
                 }
             }
+            .accessibilityIdentifier("setup.signInWithGitHubButton")
             .padding(.horizontal, 24)
 
             // Divider
@@ -134,6 +135,7 @@ struct SetupView: View {
                     showPATFlow = true
                 }
             }
+            .accessibilityIdentifier("setup.personalAccessTokenButton")
             .padding(.horizontal, 24)
             .padding(.bottom, 16)
 
@@ -143,6 +145,7 @@ struct SetupView: View {
                 state.hasCompletedOnboarding = true
                 state.saveGlobalSettings()
             }
+            .accessibilityIdentifier("setup.tryDemoButton")
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
         }

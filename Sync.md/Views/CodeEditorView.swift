@@ -19,6 +19,8 @@ struct CodeEditorView: UIViewRepresentable {
         tv.smartInsertDeleteType = .no
         tv.backgroundColor = .clear
         tv.textContainerInset = UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
+        tv.accessibilityIdentifier = "fileEditor.textEditor"
+        tv.accessibilityLabel = "File contents"
         return tv
     }
 

@@ -407,6 +407,7 @@ struct VaultView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("vault.changedFilesToggle")
 
                     Spacer()
 
@@ -427,6 +428,8 @@ struct VaultView: View {
                         .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("vault.revertAllButton")
+                    .accessibilityLabel("Revert all changed files")
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
@@ -461,6 +464,8 @@ struct VaultView: View {
                 }
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("vault.changedFile.\(entry.path)")
+            .accessibilityLabel(entry.isConflicted ? "Resolve conflict \(entry.path)" : "View diff \(entry.path)")
 
             // Per-file revert
             Button {
@@ -473,6 +478,8 @@ struct VaultView: View {
                     .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("vault.revertFile.\(entry.path)")
+            .accessibilityLabel("Revert changes to \(entry.path)")
         }
     }
 
@@ -632,6 +639,8 @@ struct VaultView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("vault.browseFilesButton")
+                .accessibilityLabel("Browse files")
 
                 BDivider()
 

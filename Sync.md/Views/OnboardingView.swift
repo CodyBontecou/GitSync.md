@@ -54,6 +54,7 @@ struct OnboardingView: View {
                     BPrimaryButton(title: "Get Started", icon: "arrow.right") {
                         finishOnboarding()
                     }
+                    .accessibilityIdentifier("onboarding.getStartedButton")
                     .padding(.horizontal, 24)
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                 } else {
@@ -62,6 +63,7 @@ struct OnboardingView: View {
                             currentPage += 1
                         }
                     }
+                    .accessibilityIdentifier("onboarding.continueButton")
                     .padding(.horizontal, 24)
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
@@ -69,6 +71,7 @@ struct OnboardingView: View {
                 BGhostButton(title: "Skip") {
                     finishOnboarding()
                 }
+                .accessibilityIdentifier("onboarding.skipButton")
                 .padding(.bottom, 8)
             }
             .padding(.bottom, 40)
