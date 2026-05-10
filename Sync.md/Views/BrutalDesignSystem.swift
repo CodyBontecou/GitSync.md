@@ -81,6 +81,16 @@ extension View {
     func bType(_ style: BType, color: Color = .brutalText) -> some View {
         self.font(style.font).foregroundStyle(color)
     }
+
+    func bMinimumTapTarget(alignment: Alignment = .center) -> some View {
+        frame(minWidth: 44, minHeight: 44, alignment: alignment)
+            .contentShape(Rectangle())
+    }
+
+    func bIconTapTarget() -> some View {
+        frame(width: 44, height: 44)
+            .contentShape(Rectangle())
+    }
 }
 
 // MARK: - Card
@@ -216,6 +226,7 @@ struct BGhostButton: View {
             .foregroundStyle(color)
         }
         .buttonStyle(.plain)
+        .bMinimumTapTarget()
     }
 }
 
@@ -573,6 +584,7 @@ struct BCardRow: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .bMinimumTapTarget(alignment: .leading)
     }
 }
 
@@ -621,7 +633,6 @@ struct BConfirmModal: View {
                     }
                     BGhostButton(title: "Cancel", action: onCancel)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
@@ -684,7 +695,6 @@ struct BRenameModal: View {
                     BPrimaryButton(title: "Rename", action: onConfirm)
                     BGhostButton(title: "Cancel", action: onCancel)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6)
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 16)

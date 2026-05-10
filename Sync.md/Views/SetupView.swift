@@ -164,6 +164,7 @@ struct SetupView: View {
                         .tracking(1)
                 }
                 .foregroundStyle(Color.brutalText)
+                .bMinimumTapTarget(alignment: .leading)
             }
             .buttonStyle(.plain)
             .padding(.horizontal, 24)
@@ -185,6 +186,7 @@ struct SetupView: View {
                         Image(systemName: showPAT ? "eye.slash" : "eye")
                             .font(.system(size: 14))
                             .foregroundStyle(Color.brutalText)
+                            .bIconTapTarget()
                     }
                     .buttonStyle(.plain)
                     .padding(.leading, 8)
@@ -302,6 +304,7 @@ struct SetupView: View {
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundStyle(Color.brutalText)
                                 .padding(6)
+                                .bMinimumTapTarget()
                         }
                         .buttonStyle(.plain)
                     }

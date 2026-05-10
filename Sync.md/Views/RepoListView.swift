@@ -77,6 +77,7 @@ struct RepoListView: View {
                         } label: {
                             GitHubAvatarView(avatarURL: state.gitHubAvatarURL, size: 28)
                                 .contentShape(Circle())
+                                .bIconTapTarget()
                         }
                         .menuStyle(.borderlessButton)
                     } else {
@@ -86,6 +87,7 @@ struct RepoListView: View {
                             Text(String(localized: "Sign In").uppercased())
                                 .font(.system(size: 13, weight: .bold, design: .monospaced))
                                 .tracking(1)
+                                .bMinimumTapTarget()
                         }
                         .tint(Color.brutalAccent)
                     }
@@ -202,6 +204,7 @@ struct RepoListView: View {
                             .tracking(2)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
                     .padding(.horizontal, 20)
@@ -437,6 +440,7 @@ struct RepoListView: View {
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                         .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                        .bMinimumTapTarget()
                 }
                 .buttonStyle(.plain)
             }

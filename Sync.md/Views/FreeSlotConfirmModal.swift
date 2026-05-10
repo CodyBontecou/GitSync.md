@@ -34,6 +34,7 @@ struct FreeSlotConfirmModal: View {
                             .frame(width: 28, height: 28)
                             .background(Color.brutalSurface)
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                            .bIconTapTarget()
                     }
                     .buttonStyle(.plain)
                 }
@@ -92,6 +93,7 @@ struct FreeSlotConfirmModal: View {
                             .padding(.vertical, 13)
                             .background(Color.brutalSurface)
                             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
 
@@ -104,6 +106,7 @@ struct FreeSlotConfirmModal: View {
                             .padding(.vertical, 13)
                             .background(Color.brutalText)
                             .overlay(Rectangle().strokeBorder(Color.brutalText, lineWidth: 1))
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
                 }

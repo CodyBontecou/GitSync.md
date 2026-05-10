@@ -78,6 +78,7 @@ struct RepoPickerView: View {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .bold))
                             .foregroundStyle(Color.brutalText)
+                            .bIconTapTarget()
                     }
                     .buttonStyle(.plain)
                 }

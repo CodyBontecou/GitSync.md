@@ -95,6 +95,7 @@ struct DebugLogView: View {
                     Image(systemName: "ellipsis.circle")
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
+                        .bIconTapTarget()
                 }
             }
         }

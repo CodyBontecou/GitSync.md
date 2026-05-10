@@ -36,6 +36,7 @@ struct RevertConfirmModal: View {
                             .frame(width: 28, height: 28)
                             .background(Color.brutalSurface)
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                            .bIconTapTarget()
                     }
                     .buttonStyle(.plain)
                 }
@@ -121,6 +122,7 @@ struct RevertConfirmModal: View {
                             .padding(.vertical, 13)
                             .background(Color.brutalSurface)
                             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
 
@@ -133,6 +135,7 @@ struct RevertConfirmModal: View {
                             .padding(.vertical, 13)
                             .background(Color.brutalError)
                             .overlay(Rectangle().strokeBorder(Color.brutalError, lineWidth: 1))
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
                 }

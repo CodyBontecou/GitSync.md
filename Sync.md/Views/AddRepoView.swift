@@ -101,6 +101,7 @@ struct AddRepoView: View {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .bold))
                             .foregroundStyle(Color.brutalText)
+                            .bIconTapTarget()
                     }
                     .buttonStyle(.plain)
                 }
@@ -221,6 +222,7 @@ struct AddRepoView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)
+                    .bMinimumTapTarget(alignment: .leading)
                 }
                 .buttonStyle(.plain)
 
@@ -266,6 +268,7 @@ struct AddRepoView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)
+                    .bMinimumTapTarget(alignment: .leading)
                 }
                 .buttonStyle(.plain)
 
@@ -323,6 +326,7 @@ struct AddRepoView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
+                        .bMinimumTapTarget(alignment: .leading)
                     }
                     .buttonStyle(.plain)
                 }
@@ -403,6 +407,7 @@ struct AddRepoView: View {
                                     .font(.system(size: 13, weight: .bold))
                                     .foregroundStyle(Color.brutalText)
                                     .padding(6)
+                                    .bMinimumTapTarget()
                             }
                             .buttonStyle(.plain)
                         }
@@ -453,6 +458,7 @@ struct AddRepoView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
+                        .bMinimumTapTarget(alignment: .leading)
                     }
                     .buttonStyle(.plain)
                 }
