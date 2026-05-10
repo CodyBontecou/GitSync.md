@@ -200,10 +200,11 @@ struct BGhostButton: View {
     let title: String
     var color: Color = .brutalText
     var icon: String? = nil
+    var role: ButtonRole? = nil
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button(role: role, action: action) {
             HStack(spacing: 6) {
                 if let icon {
                     Image(systemName: icon)
@@ -224,10 +225,11 @@ struct BGhostButton: View {
 struct BDestructiveButton: View {
     let title: String
     var isLoading: Bool = false
+    var role: ButtonRole? = nil
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button(role: role, action: action) {
             ZStack {
                 Rectangle()
                     .fill(Color.brutalError.opacity(0.08))
@@ -578,6 +580,20 @@ struct BCardRow: View {
 
 // MARK: - Confirmation Modal
 
+struct BModalBackdropButton: View {
+    let onDismiss: () -> Void
+
+    var body: some View {
+        Button(role: .cancel, action: onDismiss) {
+            Color.black.opacity(0.45)
+                .ignoresSafeArea()
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text("Dismiss modal"))
+        .accessibilityHint(Text("Closes the modal without making changes."))
+    }
+}
+
 struct BConfirmModal: View {
     let title: String
     let message: String
@@ -588,9 +604,7 @@ struct BConfirmModal: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-                .onTapGesture { onCancel() }
+            BModalBackdropButton(onDismiss: onCancel)
 
             VStack(spacing: 0) {
                 // Header
@@ -615,11 +629,11 @@ struct BConfirmModal: View {
                 // Buttons
                 VStack(spacing: 8) {
                     if isDestructive {
-                        BDestructiveButton(title: confirmLabel, action: onConfirm)
+                        BDestructiveButton(title: confirmLabel, role: .destructive, action: onConfirm)
                     } else {
                         BPrimaryButton(title: confirmLabel, action: onConfirm)
                     }
-                    BGhostButton(title: "Cancel", action: onCancel)
+                    BGhostButton(title: "Cancel", role: .cancel, action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }
@@ -645,9 +659,7 @@ struct BRenameModal: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-                .onTapGesture { onCancel() }
+            BModalBackdropButton(onDismiss: onCancel)
 
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -682,7 +694,7 @@ struct BRenameModal: View {
 
                 VStack(spacing: 8) {
                     BPrimaryButton(title: "Rename", action: onConfirm)
-                    BGhostButton(title: "Cancel", action: onCancel)
+                    BGhostButton(title: "Cancel", role: .cancel, action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }
