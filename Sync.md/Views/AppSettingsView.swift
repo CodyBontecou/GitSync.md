@@ -47,12 +47,12 @@ struct AppSettingsView: View {
                                         BBadge(text: "UNLOCKED", style: .success)
                                         VStack(alignment: .leading, spacing: 2) {
                                             Text("Full Access")
-                                                .font(.system(size: 14, weight: .semibold))
+                                                .font(.brutalScaled(size: 14, weight: .semibold))
                                                 .foregroundStyle(Color.brutalText)
                                             Text(purchaseManager.isLegacyUser
                                                  ? "Legacy paid user — restored from previous purchase"
                                                  : "Unlimited repositories enabled")
-                                                .font(.system(size: 13, design: .monospaced))
+                                                .font(.brutalScaled(size: 13, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
                                         }
                                         Spacer()
@@ -68,7 +68,7 @@ struct AppSettingsView: View {
                                     HStack(spacing: 12) {
                                         BBadge(text: "FREE", style: .default)
                                         Text("1 free repository included")
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                         Spacer()
                                     }
@@ -100,7 +100,7 @@ struct AppSettingsView: View {
                                     HStack(spacing: 8) {
                                         BBadge(text: "ERROR", style: error.contains("cody@isolated.tech") ? .default : .error)
                                         Text(error)
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(error.contains("cody@isolated.tech") ? Color.brutalText : Color.brutalError)
                                             .multilineTextAlignment(.leading)
                                     }
@@ -122,11 +122,11 @@ struct AppSettingsView: View {
                                     HStack(spacing: 10) {
                                         BBadge(text: "DEBUG", style: .warning)
                                         Text(isRunningDebug ? "Running…" : "Verify Receipt")
-                                            .font(.system(size: 13, weight: .medium))
+                                            .font(.brutalScaled(size: 13, weight: .medium))
                                             .foregroundStyle(Color.brutalText)
                                         Spacer()
                                         Text("→")
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
                                     .padding(.horizontal, 16)
@@ -142,11 +142,11 @@ struct AppSettingsView: View {
                                         HStack(spacing: 10) {
                                             BBadge(text: "DEBUG", style: .warning)
                                             Text("Restore Pro State")
-                                                .font(.system(size: 13, weight: .medium))
+                                                .font(.brutalScaled(size: 13, weight: .medium))
                                                 .foregroundStyle(Color.brutalText)
                                             Spacer()
                                             Text("→")
-                                                .font(.system(size: 13, design: .monospaced))
+                                                .font(.brutalScaled(size: 13, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
                                         }
                                         .padding(.horizontal, 16)
@@ -160,11 +160,11 @@ struct AppSettingsView: View {
                                         HStack(spacing: 10) {
                                             BBadge(text: "DEBUG", style: .error)
                                             Text("Reset to Free Tier")
-                                                .font(.system(size: 13, weight: .medium))
+                                                .font(.brutalScaled(size: 13, weight: .medium))
                                                 .foregroundStyle(Color.brutalError)
                                             Spacer()
                                             Text("→")
-                                                .font(.system(size: 13, design: .monospaced))
+                                                .font(.brutalScaled(size: 13, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
                                         }
                                         .padding(.horizontal, 16)
@@ -180,11 +180,11 @@ struct AppSettingsView: View {
                                     HStack(spacing: 10) {
                                         BBadge(text: "DEBUG", style: .error)
                                         Text("Wipe All Repos")
-                                            .font(.system(size: 13, weight: .medium))
+                                            .font(.brutalScaled(size: 13, weight: .medium))
                                             .foregroundStyle(Color.brutalError)
                                         Spacer()
                                         Text("→")
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
                                     .padding(.horizontal, 16)
@@ -200,13 +200,13 @@ struct AppSettingsView: View {
                             VStack(spacing: 0) {
                                 if let url = state.resolvedDefaultSaveURL {
                                     HStack(spacing: 12) {
-                                        Text("📁").font(.system(size: 18))
+                                        Text("📁").font(.brutalScaled(size: 18))
                                         VStack(alignment: .leading, spacing: 2) {
                                             Text(url.lastPathComponent)
-                                                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                                                .font(.brutalScaled(size: 13, weight: .semibold, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
                                             Text(url.path)
-                                                .font(.system(size: 14, design: .monospaced))
+                                                .font(.brutalScaled(size: 14, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
                                                 .lineLimit(1)
                                                 .truncationMode(.middle)
@@ -223,7 +223,7 @@ struct AppSettingsView: View {
                                             showFolderPicker = true
                                         } label: {
                                             Text("CHANGE")
-                                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                                .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                                                 .foregroundStyle(Color.brutalAccent)
                                                 .tracking(1)
                                         }
@@ -235,7 +235,7 @@ struct AppSettingsView: View {
                                             showClearConfirm = true
                                         } label: {
                                             Text("REMOVE")
-                                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                                .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                                                 .foregroundStyle(Color.brutalError)
                                                 .tracking(1)
                                         }
@@ -247,10 +247,10 @@ struct AppSettingsView: View {
                                     VStack(spacing: 10) {
                                         HStack(spacing: 6) {
                                             Image(systemName: "info.circle")
-                                                .font(.system(size: 11))
+                                                .font(.brutalScaled(size: 11))
                                                 .foregroundStyle(Color.brutalText)
                                             Text("New repositories will be saved to the app's default location.")
-                                                .font(.system(size: 14, design: .monospaced))
+                                                .font(.brutalScaled(size: 14, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)
                                         }
                                         .padding(.horizontal, 16)
@@ -264,7 +264,7 @@ struct AppSettingsView: View {
                                             HStack(spacing: 6) {
                                                 Text("📂")
                                                 Text("CHOOSE DEFAULT LOCATION")
-                                                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                                    .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                                                     .foregroundStyle(Color.brutalAccent)
                                                     .tracking(1)
                                             }
@@ -326,7 +326,7 @@ struct AppSettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("APP SETTINGS")
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 12, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
                 }
@@ -335,7 +335,7 @@ struct AppSettingsView: View {
                         dismiss()
                     } label: {
                         Text("DONE")
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color(.systemBackground))
                             .tracking(1)
                             .padding(.horizontal, 10)
@@ -411,12 +411,12 @@ struct AppSettingsView: View {
     private func dataRow(label: String, value: String) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Spacer()
             Text(value)
-                .font(.system(size: 13, design: .monospaced))
+                .font(.brutalScaled(size: 13, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
         }
         .padding(.horizontal, 16)
@@ -427,22 +427,22 @@ struct AppSettingsView: View {
         Button(action: action) {
             HStack(spacing: 14) {
                 Text(icon)
-                    .font(.system(size: 18))
+                    .font(.brutalScaled(size: 18))
                     .frame(width: 28)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.brutalScaled(size: 14, weight: .medium))
                         .foregroundStyle(Color.brutalText)
                     Text(subtitle)
-                        .font(.system(size: 13, design: .monospaced))
+                        .font(.brutalScaled(size: 13, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                 }
 
                 Spacer()
 
                 Text("→")
-                    .font(.system(size: 13, design: .monospaced))
+                    .font(.brutalScaled(size: 13, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
             }
             .padding(.horizontal, 16)

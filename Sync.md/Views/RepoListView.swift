@@ -6,6 +6,7 @@ extension UUID: @retroactive Identifiable {
 
 struct RepoListView: View {
     @Environment(AppState.self) private var state
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ObservedObject private var purchaseManager = PurchaseManager.shared
     @State private var showAddRepo = false
     @State private var addRepoInitialURL: String = ""
@@ -45,7 +46,7 @@ struct RepoListView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("GITSYNC.MD")
-                        .font(.system(size: 14, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 14, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(3)
                 }
@@ -84,7 +85,7 @@ struct RepoListView: View {
                             Task { await state.signInWithGitHub() }
                         } label: {
                             Text(String(localized: "Sign In").uppercased())
-                                .font(.system(size: 13, weight: .bold, design: .monospaced))
+                                .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                                 .tracking(1)
                         }
                         .tint(Color.brutalAccent)
@@ -197,7 +198,7 @@ struct RepoListView: View {
 
                     Button { handleAddRepoTapped() } label: {
                         Text("+ " + String(localized: "Add Different Repository").uppercased())
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 11, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText.opacity(0.45))
                             .tracking(2)
                             .frame(maxWidth: .infinity)
@@ -284,19 +285,19 @@ struct RepoListView: View {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 3) {
                             Text(repoName)
-                                .font(.system(size: 17, weight: .black))
+                                .font(.brutalScaled(size: 17, weight: .black))
                                 .foregroundStyle(Color.brutalText)
                                 .lineLimit(1)
                             if let owner = ownerName {
                                 Text(owner.uppercased())
-                                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                    .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                     .tracking(1)
                             }
                         }
                         Spacer()
                         Text("→")
-                            .font(.system(size: 14, design: .monospaced))
+                            .font(.brutalScaled(size: 14, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                     }
                     .padding(.horizontal, 16)
@@ -308,7 +309,7 @@ struct RepoListView: View {
                     HStack(spacing: 8) {
                         BBadge(text: String(localized: "previously cloned"), style: .default)
                         Text(String(localized: "tap to re-clone"))
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                         Spacer()
                     }
@@ -331,13 +332,13 @@ struct RepoListView: View {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 3) {
                         Text(repo.displayName)
-                            .font(.system(size: 17, weight: .black))
+                            .font(.brutalScaled(size: 17, weight: .black))
                             .foregroundStyle(Color.brutalText)
-                            .lineLimit(1)
+                            .lineLimit(dynamicTypeSize.isAccessibilitySize ? 2 : 1)
 
                         if let owner = repo.ownerName {
                             Text(owner.uppercased())
-                                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                                 .tracking(1)
                         }
@@ -352,7 +353,7 @@ struct RepoListView: View {
                     }
 
                     Text("→")
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                 }
                 .padding(.horizontal, 16)
@@ -363,7 +364,7 @@ struct RepoListView: View {
                     HStack(spacing: 8) {
                         BBadge(text: String(localized: "syncing"), style: .accent)
                         Text(state.syncProgress)
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .lineLimit(1)
                         Spacer()
@@ -371,12 +372,22 @@ struct RepoListView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
                 } else if repo.isCloned {
-                    HStack(spacing: 0) {
-                        metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
-                        Spacer()
-                        metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
-                        Spacer()
-                        metaChip(icon: "clock", text: relativeDate(repo.gitState.lastSyncDate))
+                    Group {
+                        if dynamicTypeSize.isAccessibilitySize {
+                            VStack(alignment: .leading, spacing: 8) {
+                                metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
+                                metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
+                                metaChip(icon: "clock", text: relativeDate(repo.gitState.lastSyncDate))
+                            }
+                        } else {
+                            HStack(spacing: 0) {
+                                metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
+                                Spacer()
+                                metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
+                                Spacer()
+                                metaChip(icon: "clock", text: relativeDate(repo.gitState.lastSyncDate))
+                            }
+                        }
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
@@ -399,10 +410,10 @@ struct RepoListView: View {
         } label: {
             HStack(spacing: 10) {
                 Text("+")
-                    .font(.system(size: 20, weight: .black, design: .monospaced))
+                    .font(.brutalScaled(size: 20, weight: .black, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                 Text(String(localized: "Add Repository").uppercased())
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
                 Spacer()
@@ -431,7 +442,7 @@ struct RepoListView: View {
                     state.deactivateDemoMode()
                 } label: {
                     Text(String(localized: "Exit").uppercased())
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(1)
                         .padding(.horizontal, 10)
@@ -448,14 +459,16 @@ struct RepoListView: View {
     private func metaChip(icon: String, text: String, mono: Bool = false) -> some View {
         HStack(spacing: 4) {
             Image(systemName: icon)
-                .font(.system(size: 12, weight: .semibold))
+                .font(.brutalScaled(size: 12, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
             Text(text)
                 .font(mono
-                    ? .system(size: 13, weight: .medium, design: .monospaced)
-                    : .system(size: 13, weight: .medium)
+                    ? .brutalScaled(size: 13, weight: .medium, design: .monospaced)
+                    : .brutalScaled(size: 13, weight: .medium)
                 )
                 .foregroundStyle(Color.brutalText)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
         }
     }
 

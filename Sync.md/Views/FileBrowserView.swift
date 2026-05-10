@@ -59,7 +59,7 @@ struct FileBrowserView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(navTitle.uppercased())
-                    .font(.system(size: 12, weight: .black, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .black, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
             }
@@ -69,7 +69,7 @@ struct FileBrowserView: View {
                     showCreateFileAlert = true
                 } label: {
                     Image(systemName: "plus")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.brutalScaled(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                 }
             }
@@ -112,10 +112,10 @@ struct FileBrowserView: View {
             if !relativePath.isEmpty {
                 HStack(spacing: 6) {
                     Image(systemName: "folder")
-                        .font(.system(size: 11, weight: .semibold))
+                        .font(.brutalScaled(size: 11, weight: .semibold))
                         .foregroundStyle(Color.brutalTextFaint)
                     Text(relativePath)
-                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                        .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                         .foregroundStyle(Color.brutalTextFaint)
                         .lineLimit(1)
                         .truncationMode(.head)
@@ -176,12 +176,12 @@ struct FileBrowserView: View {
     private func rowContent(item: FileItem, gitStatus: GitStatusEntry?) -> some View {
         HStack(spacing: 12) {
             Text(item.isDirectory ? "📁" : fileEmoji(for: item.name))
-                .font(.system(size: 17))
+                .font(.brutalScaled(size: 17))
                 .frame(width: 26)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.name)
-                    .font(.system(size: 14, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 14, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .lineLimit(1)
                     .truncationMode(.middle)
@@ -198,7 +198,7 @@ struct FileBrowserView: View {
 
             if item.isDirectory {
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.brutalScaled(size: 11, weight: .semibold))
                     .foregroundStyle(Color.brutalTextFaint)
             }
         }
@@ -213,13 +213,13 @@ struct FileBrowserView: View {
         VStack(spacing: 12) {
             Spacer()
             Text("📂")
-                .font(.system(size: 44))
+                .font(.brutalScaled(size: 44))
             Text("Empty Directory")
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Text("No files found")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.brutalScaled(size: 12, design: .monospaced))
                 .foregroundStyle(Color.brutalTextFaint)
             Spacer()
         }

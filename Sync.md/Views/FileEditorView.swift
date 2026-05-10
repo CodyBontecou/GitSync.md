@@ -84,7 +84,7 @@ struct FileEditorView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(fileName.uppercased())
-                    .font(.system(size: 12, weight: .black, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .black, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
                     .lineLimit(1)
@@ -93,7 +93,7 @@ struct FileEditorView: View {
                 HStack(spacing: 16) {
                     if !isBinary {
                         Button("Save") { performSave() }
-                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                             .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
                             .disabled(!isDirty)
                     }
@@ -102,14 +102,14 @@ struct FileEditorView: View {
                         showRenameModal = true
                     } label: {
                         Image(systemName: "pencil")
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.brutalScaled(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
                     }
                     Button {
                         showDeleteConfirm = true
                     } label: {
                         Image(systemName: "trash")
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.brutalScaled(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalError)
                     }
                 }
@@ -124,13 +124,13 @@ struct FileEditorView: View {
         VStack(spacing: 12) {
             Spacer()
             Text("🔒")
-                .font(.system(size: 44))
+                .font(.brutalScaled(size: 44))
             Text("Binary File")
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Text("This file cannot be edited as text")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.brutalScaled(size: 12, design: .monospaced))
                 .foregroundStyle(Color.brutalTextFaint)
             Spacer()
         }

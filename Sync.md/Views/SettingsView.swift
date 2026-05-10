@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct SettingsView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let repoID: UUID
 
@@ -32,9 +33,9 @@ struct SettingsView: View {
                             VStack(spacing: 0) {
                                 settingsFieldRow(label: String(localized: "URL")) {
                                     Text(showCopiedToast ? String(localized: "Copied!") : (repo?.repoURL ?? ""))
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .font(.brutalScaled(size: 14, design: .monospaced))
                                         .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalText)
-                                        .lineLimit(1)
+                                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : 1)
                                         .truncationMode(.middle)
                                         .onTapGesture {
                                             if let url = repo?.repoURL, !url.isEmpty {
@@ -51,7 +52,7 @@ struct SettingsView: View {
 
                                 settingsInputRow(label: String(localized: "Branch")) {
                                     TextField("main", text: $branch)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .font(.brutalScaled(size: 14, design: .monospaced))
                                         .multilineTextAlignment(.trailing)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
@@ -65,7 +66,7 @@ struct SettingsView: View {
                             VStack(spacing: 0) {
                                 settingsInputRow(label: String(localized: "Name")) {
                                     TextField("Your Name", text: $authorName)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .font(.brutalScaled(size: 14, design: .monospaced))
                                         .multilineTextAlignment(.trailing)
                                         .foregroundStyle(Color.brutalText)
                                 }
@@ -74,7 +75,7 @@ struct SettingsView: View {
 
                                 settingsInputRow(label: String(localized: "Email")) {
                                     TextField("you@example.com", text: $authorEmail)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .font(.brutalScaled(size: 14, design: .monospaced))
                                         .multilineTextAlignment(.trailing)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
@@ -89,7 +90,7 @@ struct SettingsView: View {
                                 if state.isUsingCustomLocation(for: repoID) {
                                     settingsFieldRow(label: String(localized: "Location")) {
                                         Text(state.vaultURL(for: repoID).lastPathComponent)
-                                            .font(.system(size: 14, design: .monospaced))
+                                            .font(.brutalScaled(size: 14, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -97,15 +98,15 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Path")) {
                                         Text(state.vaultDisplayPath(for: repoID))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
+                                            .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : 1)
                                             .truncationMode(.middle)
                                     }
                                 } else {
                                     settingsFieldRow(label: String(localized: "Folder")) {
                                         Text(vaultName)
-                                            .font(.system(size: 14, design: .monospaced))
+                                            .font(.brutalScaled(size: 14, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -113,9 +114,9 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Path")) {
                                         Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
+                                            .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : 1)
                                     }
                                 }
 
@@ -126,12 +127,12 @@ struct SettingsView: View {
                                 } label: {
                                     HStack {
                                         Text(String(localized: "Move Vault").uppercased())
-                                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                            .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                                             .foregroundStyle(Color.brutalAccent)
                                             .tracking(1)
                                         Spacer()
                                         Image(systemName: "folder.badge.plus")
-                                            .font(.system(size: 13))
+                                            .font(.brutalScaled(size: 13))
                                             .foregroundStyle(Color.brutalAccent)
                                     }
                                     .padding(.horizontal, 16)
@@ -149,7 +150,7 @@ struct SettingsView: View {
                                         Text(repo.gitState.lastSyncDate == .distantPast
                                              ? String(localized: "Never")
                                              : relativeDate(repo.gitState.lastSyncDate))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -157,7 +158,7 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Commit SHA")) {
                                         Text(String(repo.gitState.commitSHA.prefix(7)))
-                                            .font(.system(size: 13, weight: .medium, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, weight: .medium, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -165,7 +166,7 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Files")) {
                                         Text("\(repo.gitState.blobSHAs.count)")
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .font(.brutalScaled(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalText)
                                     }
                                 }
@@ -179,13 +180,13 @@ struct SettingsView: View {
                             } label: {
                                 HStack {
                                     Text(String(localized: "View Debug Log").uppercased())
-                                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                        .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                                         .foregroundStyle(Color.brutalText)
                                         .tracking(1)
                                     Spacer()
                                     logCountBadge
                                     Image(systemName: "chevron.right")
-                                        .font(.system(size: 11, weight: .semibold))
+                                        .font(.brutalScaled(size: 11, weight: .semibold))
                                         .foregroundStyle(Color.brutalTextFaint)
                                 }
                                 .padding(.horizontal, 16)
@@ -210,7 +211,7 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(String(localized: "Settings").uppercased())
-                        .font(.system(size: 13, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 13, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(3)
                 }
@@ -218,11 +219,11 @@ struct SettingsView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text(String(localized: "Cancel").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        Image(systemName: "xmark")
+                            .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
-                            .tracking(1)
                     }
+                    .accessibilityLabel(Text(String(localized: "Cancel")))
                     .buttonStyle(.plain)
                 }
                 ToolbarItem(placement: .confirmationAction) {
@@ -231,7 +232,7 @@ struct SettingsView: View {
                         dismiss()
                     } label: {
                         Text(String(localized: "Save").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color(.systemBackground))
                             .tracking(1)
                             .padding(.horizontal, 10)
@@ -325,30 +326,52 @@ struct SettingsView: View {
     }
 
     private func settingsFieldRow<Content: View>(label: String, @ViewBuilder content: () -> Content) -> some View {
-        HStack {
-            Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
-            Spacer()
-            content()
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 6) {
+                    settingsRowLabel(label)
+                    content()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } else {
+                HStack {
+                    settingsRowLabel(label)
+                    Spacer()
+                    content()
+                        .multilineTextAlignment(.trailing)
+                }
+            }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 13)
     }
 
     private func settingsInputRow<Content: View>(label: String, @ViewBuilder content: () -> Content) -> some View {
-        HStack {
-            Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
-            Spacer()
-            content()
-                .frame(width: 160)
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 6) {
+                    settingsRowLabel(label)
+                    content()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } else {
+                HStack {
+                    settingsRowLabel(label)
+                    Spacer()
+                    content()
+                        .frame(width: 160)
+                }
+            }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 13)
+    }
+
+    private func settingsRowLabel(_ label: String) -> some View {
+        Text(label.uppercased())
+            .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
+            .foregroundStyle(Color.brutalText)
+            .tracking(1)
     }
 
     @ViewBuilder
@@ -356,7 +379,7 @@ struct SettingsView: View {
         let errorCount = DebugLogger.shared.entries.filter { $0.level == .error }.count
         if errorCount > 0 {
             Text("\(errorCount)")
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.brutalScaled(size: 11, weight: .bold, design: .monospaced))
                 .foregroundStyle(Color.brutalError)
                 .padding(.horizontal, 6)
                 .padding(.vertical, 2)
