@@ -12,9 +12,7 @@ struct RevertConfirmModal: View {
     var body: some View {
         ZStack {
             // Dim backdrop
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-                .onTapGesture { onCancel() }
+            BModalBackdropButton(onDismiss: onCancel)
 
             // Card
             VStack(alignment: .leading, spacing: 0) {
@@ -29,7 +27,7 @@ struct RevertConfirmModal: View {
                         .foregroundStyle(Color.brutalText)
                         .tracking(1.5)
                     Spacer()
-                    Button(action: onCancel) {
+                    Button(role: .cancel, action: onCancel) {
                         Image(systemName: "xmark")
                             .font(.system(size: 13, weight: .bold))
                             .foregroundStyle(Color.brutalTextMid)
@@ -38,6 +36,7 @@ struct RevertConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(Text("Cancel"))
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 18)
@@ -112,7 +111,7 @@ struct RevertConfirmModal: View {
 
                 // Actions
                 HStack(spacing: 10) {
-                    Button(action: onCancel) {
+                    Button(role: .cancel, action: onCancel) {
                         Text("CANCEL")
                             .font(.system(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
@@ -124,7 +123,7 @@ struct RevertConfirmModal: View {
                     }
                     .buttonStyle(.plain)
 
-                    Button(action: onConfirm) {
+                    Button(role: .destructive, action: onConfirm) {
                         Text(confirmLabel.uppercased())
                             .font(.system(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(.white)

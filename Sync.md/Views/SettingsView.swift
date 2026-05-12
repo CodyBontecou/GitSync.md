@@ -31,20 +31,17 @@ struct SettingsView: View {
                         settingsSection(title: String(localized: "Repository")) {
                             VStack(spacing: 0) {
                                 settingsFieldRow(label: String(localized: "URL")) {
-                                    Text(showCopiedToast ? String(localized: "Copied!") : (repo?.repoURL ?? ""))
-                                        .font(.system(size: 14, design: .monospaced))
-                                        .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalText)
-                                        .lineLimit(1)
-                                        .truncationMode(.middle)
-                                        .onTapGesture {
-                                            if let url = repo?.repoURL, !url.isEmpty {
-                                                UIPasteboard.general.string = url
-                                                withAnimation { showCopiedToast = true }
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                                    withAnimation { showCopiedToast = false }
-                                                }
-                                            }
-                                        }
+                                    Button(action: copyRepositoryURL) {
+                                        Text(showCopiedToast ? String(localized: "Copied!") : (repo?.repoURL ?? ""))
+                                            .font(.system(size: 14, design: .monospaced))
+                                            .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalText)
+                                            .lineLimit(1)
+                                            .truncationMode(.middle)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .disabled(repo?.repoURL.isEmpty ?? true)
+                                    .accessibilityLabel(Text("Copy repository URL"))
+                                    .accessibilityHint(Text("Copies the repository URL to the clipboard."))
                                 }
 
                                 BDivider().padding(.horizontal, 16)
@@ -379,6 +376,16 @@ struct SettingsView: View {
             repo.branch = branch
             repo.authorName = authorName
             repo.authorEmail = authorEmail
+        }
+    }
+
+    private func copyRepositoryURL() {
+        guard let url = repo?.repoURL, !url.isEmpty else { return }
+
+        UIPasteboard.general.string = url
+        withAnimation { showCopiedToast = true }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation { showCopiedToast = false }
         }
     }
 }
