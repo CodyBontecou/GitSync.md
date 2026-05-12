@@ -167,6 +167,8 @@ struct FileDiffView: View {
                     }
                 }
                 .disabled(isLoading || isReverting)
+                .accessibilityLabel("Revert Changes")
+                .accessibilityHint("Opens a confirmation before discarding local changes to \(filename).")
             }
         }
         .overlay {
@@ -314,6 +316,7 @@ struct FileDiffView: View {
                 Image(systemName: "arrow.right")
                     .font(.system(size: 9, weight: .bold))
                     .foregroundStyle(Color.brutalTextFaint)
+                    .accessibilityHidden(true)
                 Text(new)
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(Color.brutalTextMid)

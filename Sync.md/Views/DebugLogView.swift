@@ -96,6 +96,8 @@ struct DebugLogView: View {
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                 }
+                .accessibilityLabel("Debug Log Menu")
+                .accessibilityHint("Opens filtering, sharing, copying, and clear log actions.")
             }
         }
         .sheet(isPresented: $showShareSheet) {

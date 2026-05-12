@@ -72,6 +72,8 @@ struct FileBrowserView: View {
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                 }
+                .accessibilityLabel("Create File")
+                .accessibilityHint("Opens a dialog to create a new file in \(navTitle).")
             }
         }
         .navigationDestination(for: FileBrowserDestination.self) { dest in
@@ -114,6 +116,7 @@ struct FileBrowserView: View {
                     Image(systemName: "folder")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(Color.brutalTextFaint)
+                        .accessibilityHidden(true)
                     Text(relativePath)
                         .font(.system(size: 12, weight: .medium, design: .monospaced))
                         .foregroundStyle(Color.brutalTextFaint)
@@ -200,11 +203,15 @@ struct FileBrowserView: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(Color.brutalTextFaint)
+                    .accessibilityHidden(true)
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 13)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(fileRowAccessibilityLabel(item: item, gitStatus: gitStatus))
+        .accessibilityHint(item.isDirectory ? "Opens this folder." : "Opens this file.")
     }
 
     // MARK: - Empty State
@@ -280,6 +287,28 @@ struct FileBrowserView: View {
         case .conflicted:  return "!"
         default:           return "~"
         }
+    }
+
+    private func statusDescription(for entry: GitStatusEntry) -> String {
+        if entry.isConflicted { return "Conflicted" }
+        let kind = entry.indexStatus ?? entry.workTreeStatus
+        switch kind {
+        case .added:       return "Added"
+        case .modified:    return "Modified"
+        case .deleted:     return "Deleted"
+        case .renamed:     return "Renamed"
+        case .untracked:   return "Untracked"
+        case .conflicted:  return "Conflicted"
+        default:           return "Changed"
+        }
+    }
+
+    private func fileRowAccessibilityLabel(item: FileItem, gitStatus: GitStatusEntry?) -> String {
+        var parts = [item.name, item.isDirectory ? "Folder" : "File"]
+        if let gitStatus {
+            parts.append(statusDescription(for: gitStatus))
+        }
+        return parts.joined(separator: ", ")
     }
 
     private func statusBadgeStyle(for entry: GitStatusEntry) -> BBadge.BBadgeStyle {

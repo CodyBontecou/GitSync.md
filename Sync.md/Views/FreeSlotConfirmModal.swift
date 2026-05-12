@@ -22,6 +22,7 @@ struct FreeSlotConfirmModal: View {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(Color.brutalWarning)
+                        .accessibilityHidden(true)
                     Text("USE YOUR FREE REPO?")
                         .font(.system(size: 13, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
@@ -36,6 +37,8 @@ struct FreeSlotConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                    .accessibilityHint("Cancels using the free repository slot.")
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 18)
@@ -49,6 +52,7 @@ struct FreeSlotConfirmModal: View {
                         Image(systemName: "checkmark.seal")
                             .font(.system(size: 13))
                             .foregroundStyle(Color.brutalTextFaint)
+                            .accessibilityHidden(true)
                         Text(repoLabel)
                             .font(.system(size: 15, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
@@ -94,6 +98,8 @@ struct FreeSlotConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Returns without using the free repository slot.")
 
                     Button(action: onConfirm) {
                         Text("USE FREE SLOT")
@@ -106,6 +112,8 @@ struct FreeSlotConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalText, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Use Free Slot")
+                    .accessibilityHint("Uses your free repository slot for \(repoLabel).")
                 }
                 .padding(14)
             }

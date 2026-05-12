@@ -167,6 +167,8 @@ struct SetupView: View {
             }
             .buttonStyle(.plain)
             .padding(.horizontal, 24)
+            .accessibilityLabel("Back")
+            .accessibilityHint("Returns to sign-in options.")
 
             // Token field
             VStack(alignment: .leading, spacing: 8) {
@@ -187,6 +189,7 @@ struct SetupView: View {
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(showPAT ? "Hide Personal Access Token" : "Show Personal Access Token")
                     .padding(.leading, 8)
                 }
                 .padding(13)
@@ -304,6 +307,8 @@ struct SetupView: View {
                                 .padding(6)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel("Clear Selected Location")
+                        .accessibilityHint("Removes the selected default save location.")
                     }
                 }
                 .padding(.horizontal, 24)
@@ -315,6 +320,7 @@ struct SetupView: View {
                     Image(systemName: "info.circle")
                         .font(.system(size: 12))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                     Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)

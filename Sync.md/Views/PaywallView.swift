@@ -58,6 +58,7 @@ struct PaywallView: View {
             .padding(.top, 18)
             .padding(.trailing, 24)
             .accessibilityLabel("Dismiss")
+            .accessibilityHint("Closes the upgrade screen.")
         }
         .task {
             await purchaseManager.refreshStatus()

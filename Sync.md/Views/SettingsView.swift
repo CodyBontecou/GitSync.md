@@ -133,11 +133,14 @@ struct SettingsView: View {
                                         Image(systemName: "folder.badge.plus")
                                             .font(.system(size: 13))
                                             .foregroundStyle(Color.brutalAccent)
+                                            .accessibilityHidden(true)
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 13)
                                 }
                                 .buttonStyle(.plain)
+                                .accessibilityLabel("Move Vault")
+                                .accessibilityHint("Opens the folder picker to move this repository's local files.")
                             }
                         }
 
@@ -187,11 +190,14 @@ struct SettingsView: View {
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 11, weight: .semibold))
                                         .foregroundStyle(Color.brutalTextFaint)
+                                        .accessibilityHidden(true)
                                 }
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 13)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel("View Debug Log")
+                            .accessibilityHint("Opens debug log entries for troubleshooting.")
                         }
 
                         // Remove
@@ -224,6 +230,8 @@ struct SettingsView: View {
                             .tracking(1)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Closes repository settings without saving.")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
@@ -239,6 +247,8 @@ struct SettingsView: View {
                             .background(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Save")
+                    .accessibilityHint("Saves repository settings and closes this screen.")
                 }
             }
             .onAppear {
