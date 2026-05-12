@@ -1,0 +1,57 @@
+name: XCTest
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: xctest-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    name: SyncMDTests
+    runs-on: macos-15
+    timeout-minutes: 30
+    env:
+      XCODE_PROJECT: Sync.md.xcodeproj
+      XCODE_SCHEME: Sync.md
+      TEST_TARGET: SyncMDTests
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select iPhone simulator
+        id: simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcrun simctl list devices available
+          SIMULATOR_UDID=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ && /Shutdown|Booted/ { print $2; exit }')
+          if [ -z "${SIMULATOR_UDID:-}" ]; then
+            echo "::error::No available iPhone simulator found"
+            exit 1
+          fi
+          echo "udid=$SIMULATOR_UDID" >> "$GITHUB_OUTPUT"
+          echo "Selected simulator: $SIMULATOR_UDID"
+
+      - name: Boot simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcrun simctl shutdown all || true
+          xcrun simctl boot "${{ steps.simulator.outputs.udid }}" || true
+          xcrun simctl bootstatus "${{ steps.simulator.outputs.udid }}" -b
+
+      - name: Run unit XCTest suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild test \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "id=${{ steps.simulator.outputs.udid }}" \
+            -only-testing:"$TEST_TARGET" \
+            -parallel-testing-enabled NO \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGNING_ALLOWED=NO
