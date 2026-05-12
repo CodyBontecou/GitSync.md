@@ -49,7 +49,7 @@ struct PaywallView: View {
                 dismiss()
             } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.brutalScaled(size: 13, weight: .bold))
                     .foregroundStyle(Color.brutalText)
                     .frame(width: 30, height: 30)
                     .contentShape(Rectangle())
@@ -75,12 +75,12 @@ struct PaywallView: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("UNLOCK")
-                .font(.system(size: 56, weight: .black))
+                .font(.brutalScaled(size: 56, weight: .black))
                 .foregroundStyle(Color.brutalText)
                 .tracking(-1)
 
             Text("GITSYNC.MD")
-                .font(.system(size: 56, weight: .black))
+                .font(.brutalScaled(size: 56, weight: .black))
                 .foregroundStyle(Color.brutalAccent)
                 .tracking(-1)
                 .lineLimit(1)
@@ -97,7 +97,7 @@ struct PaywallView: View {
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
                 Text("YOU'VE REACHED THE 1 FREE REPOSITORY LIMIT")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1)
             }
@@ -109,10 +109,10 @@ struct PaywallView: View {
     private func featureRow(icon: String, text: String) -> some View {
         HStack(spacing: 14) {
             Text(icon)
-                .font(.system(size: 18))
+                .font(.brutalScaled(size: 18))
                 .frame(width: 28)
             Text(text)
-                .font(.system(size: 14, weight: .medium))
+                .font(.brutalScaled(size: 14, weight: .medium))
                 .foregroundStyle(Color.brutalText)
             Spacer()
         }
@@ -131,7 +131,7 @@ struct PaywallView: View {
                     HStack(spacing: 8) {
                         BBadge(text: "ERROR", style: error.contains("cody@isolated.tech") ? .default : .error)
                         Text(error)
-                            .font(.system(size: 14, design: .monospaced))
+                            .font(.brutalScaled(size: 14, design: .monospaced))
                             .foregroundStyle(error.contains("cody@isolated.tech") ? Color.brutalText : Color.brutalError)
                             .multilineTextAlignment(.leading)
                     }

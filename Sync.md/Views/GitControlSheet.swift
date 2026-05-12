@@ -3,6 +3,7 @@ import SwiftUI
 struct GitControlSheet: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let repoID: UUID
 
@@ -61,7 +62,7 @@ struct GitControlSheet: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("GIT")
-                        .font(.system(size: 14, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 14, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(4)
                 }
@@ -70,7 +71,7 @@ struct GitControlSheet: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(.brutalScaled(size: 14, weight: .bold))
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
@@ -133,7 +134,7 @@ struct GitControlSheet: View {
 
                     HStack {
                         Text(String(localized: "Local Changes").uppercased())
-                            .font(.system(size: 14, weight: .medium, design: .monospaced))
+                            .font(.brutalScaled(size: 14, weight: .medium, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .tracking(1)
                         Spacer()
@@ -141,7 +142,7 @@ struct GitControlSheet: View {
                             BBadge(text: "\(changeCount) \(String(localized: "Files").lowercased())", style: .accent)
                         } else {
                             Text(String(localized: "None"))
-                                .font(.system(size: 14, design: .monospaced))
+                                .font(.brutalScaled(size: 14, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                         }
                     }
@@ -163,14 +164,14 @@ struct GitControlSheet: View {
     private func statusDataRow(label: String, value: String, mono: Bool = false) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 14, weight: .medium, design: .monospaced))
+                .font(.brutalScaled(size: 14, weight: .medium, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Spacer()
             Text(value)
                 .font(mono
-                    ? .system(size: 13, weight: .medium, design: .monospaced)
-                    : .system(size: 13, weight: .medium)
+                    ? .brutalScaled(size: 13, weight: .medium, design: .monospaced)
+                    : .brutalScaled(size: 13, weight: .medium)
                 )
                 .foregroundStyle(Color.brutalText)
         }
@@ -194,32 +195,18 @@ struct GitControlSheet: View {
 
 
                 // Create branch
-                HStack(spacing: 8) {
-                    TextField("new-branch-name", text: $newBranchName)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .font(.system(size: 13, design: .monospaced))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 9)
-                        .background(Color.brutalSurface)
-
-                    Button(String(localized: "Create").uppercased()) {
-                        let name = newBranchName.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard !name.isEmpty else { return }
-                        Task {
-                            await state.createBranch(repoID: repoID, name: name)
-                            newBranchName = ""
+                Group {
+                    if dynamicTypeSize.isAccessibilitySize {
+                        VStack(spacing: 8) {
+                            branchNameField
+                            createBranchButton.frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    } else {
+                        HStack(spacing: 8) {
+                            branchNameField
+                            createBranchButton
                         }
                     }
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Color(.systemBackground))
-                    .tracking(1)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 9)
-                    .background(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
-                                ? Color.primary.opacity(0.3)
-                                : Color.primary)
-                    .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
@@ -241,7 +228,7 @@ struct GitControlSheet: View {
                     HStack(spacing: 6) {
                         BBadge(text: String(localized: "Detached Head"), style: .warning)
                         Text(String(detached.prefix(7)))
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                         Spacer()
                     }
@@ -252,40 +239,105 @@ struct GitControlSheet: View {
         }
     }
 
-    private func branchRow(_ branch: GitBranchInfo) -> some View {
-        HStack(spacing: 8) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(branch.shortName)
-                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                if let upstream = branch.upstreamShortName {
-                    Text(upstream)
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                }
+    private var branchNameField: some View {
+        TextField("new-branch-name", text: $newBranchName)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .font(.brutalScaled(size: 13, design: .monospaced))
+            .padding(.horizontal, 10)
+            .padding(.vertical, 9)
+            .background(Color.brutalSurface)
+    }
+
+    private var createBranchButton: some View {
+        Button(String(localized: "Create").uppercased()) {
+            let name = newBranchName.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !name.isEmpty else { return }
+            Task {
+                await state.createBranch(repoID: repoID, name: name)
+                newBranchName = ""
             }
+        }
+        .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
+        .foregroundStyle(Color(.systemBackground))
+        .tracking(1)
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
+        .background(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
+                    ? Color.primary.opacity(0.3)
+                    : Color.primary)
+        .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
+    }
 
-            Spacer()
-
-            if branch.isCurrent {
-                BBadge(text: String(localized: "Current"), style: .success)
+    private func branchRow(_ branch: GitBranchInfo) -> some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 10) {
+                    branchNameBlock(branch)
+                    branchActions(branch)
+                }
             } else {
-                HStack(spacing: 6) {
-                    smallActionButton(String(localized: "Switch").uppercased()) {
-                        Task { await state.switchBranch(repoID: repoID, name: branch.shortName) }
-                    }
-                    smallActionButton(String(localized: "Merge").uppercased()) {
-                        Task { await state.mergeBranch(repoID: repoID, from: branch.shortName) }
-                    }
-                    smallActionButton("✕", isDestructive: true) {
-                        Task { await state.deleteBranch(repoID: repoID, name: branch.shortName) }
-                    }
+                HStack(spacing: 8) {
+                    branchNameBlock(branch)
+                    Spacer()
+                    branchActions(branch)
                 }
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .disabled(state.isSyncing)
+    }
+
+    private func branchNameBlock(_ branch: GitBranchInfo) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(branch.shortName)
+                .font(.brutalScaled(size: 13, weight: .semibold, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+                .lineLimit(2)
+                .truncationMode(.middle)
+            if let upstream = branch.upstreamShortName {
+                Text(upstream)
+                    .font(.brutalScaled(size: 14, design: .monospaced))
+                    .foregroundStyle(Color.brutalText)
+                    .lineLimit(2)
+                    .truncationMode(.middle)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func branchActions(_ branch: GitBranchInfo) -> some View {
+        if branch.isCurrent {
+            BBadge(text: String(localized: "Current"), style: .success)
+        } else {
+            Group {
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 6) {
+                        branchActionButtons(branch)
+                    }
+                } else {
+                    HStack(spacing: 6) {
+                        branchActionButtons(branch)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func branchActionButtons(_ branch: GitBranchInfo) -> some View {
+        smallActionButton(String(localized: "Switch").uppercased()) {
+            Task { await state.switchBranch(repoID: repoID, name: branch.shortName) }
+        }
+        smallActionButton(String(localized: "Merge").uppercased()) {
+            Task { await state.mergeBranch(repoID: repoID, from: branch.shortName) }
+        }
+        smallActionButton("✕", isDestructive: true) {
+            Task { await state.deleteBranch(repoID: repoID, name: branch.shortName) }
+        }
     }
 
     // MARK: - Conflict Center Card
@@ -305,7 +357,7 @@ struct GitControlSheet: View {
 
                 if conflictSession.unmergedPaths.isEmpty {
                     Text(String(localized: "All conflicts resolved. Complete or abort the merge."))
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
@@ -325,7 +377,7 @@ struct GitControlSheet: View {
                     VStack(spacing: 8) {
                         HStack(spacing: 8) {
                             TextField("Merge commit message", text: $mergeCommitMessage)
-                                .font(.system(size: 13, design: .monospaced))
+                                .font(.brutalScaled(size: 13, design: .monospaced))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 9)
                                 .background(Color.brutalSurface)
@@ -337,7 +389,7 @@ struct GitControlSheet: View {
                                     mergeCommitMessage = ""
                                 }
                             }
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color(.systemBackground))
                             .tracking(1)
                             .padding(.horizontal, 12)
@@ -352,9 +404,9 @@ struct GitControlSheet: View {
                         } label: {
                             HStack(spacing: 6) {
                                 Image(systemName: "xmark")
-                                    .font(.system(size: 13, weight: .bold))
+                                    .font(.brutalScaled(size: 13, weight: .bold))
                                 Text(String(localized: "Abort Merge").uppercased())
-                                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                                     .tracking(1)
                             }
                             .foregroundStyle(Color.brutalError)
@@ -375,7 +427,7 @@ struct GitControlSheet: View {
     private func conflictRow(path: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(path)
-                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                .font(.brutalScaled(size: 14, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .lineLimit(1)
                 .truncationMode(.middle)
@@ -419,7 +471,7 @@ struct GitControlSheet: View {
 
                 if sortedEntries.isEmpty {
                     Text(String(localized: "No local changes"))
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
@@ -450,38 +502,56 @@ struct GitControlSheet: View {
     }
 
     private func changeRow(_ entry: GitStatusEntry) -> some View {
-        HStack(spacing: 10) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(entry.path)
-                    .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-
-                Text(changeSummary(for: entry))
-                    .font(.system(size: 14, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-            }
-
-            Spacer(minLength: 8)
-
-            smallActionButton(entry.indexStatus != nil ? String(localized: "Unstage").uppercased() : String(localized: "Stage").uppercased()) {
-                Task {
-                    if entry.indexStatus != nil {
-                        await state.unstageFile(repoID: repoID, path: entry.path, oldPath: entry.oldPath)
-                    } else {
-                        await state.stageFile(repoID: repoID, path: entry.path, oldPath: entry.oldPath)
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 8) {
+                    changeTextBlock(entry)
+                    HStack(spacing: 6) {
+                        changeActionButtons(entry)
                     }
                 }
-            }
-
-            smallActionButton(String(localized: "Diff").uppercased()) {
-                openDiff(for: entry.path)
+            } else {
+                HStack(spacing: 10) {
+                    changeTextBlock(entry)
+                    Spacer(minLength: 8)
+                    changeActionButtons(entry)
+                }
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .disabled(state.isSyncing)
+    }
+
+    private func changeTextBlock(_ entry: GitStatusEntry) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(entry.path)
+                .font(.brutalScaled(size: 14, weight: .semibold, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+                .lineLimit(dynamicTypeSize.isAccessibilitySize ? 2 : 1)
+                .truncationMode(.middle)
+
+            Text(changeSummary(for: entry))
+                .font(.brutalScaled(size: 14, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+        }
+    }
+
+    @ViewBuilder
+    private func changeActionButtons(_ entry: GitStatusEntry) -> some View {
+        smallActionButton(entry.indexStatus != nil ? String(localized: "Unstage").uppercased() : String(localized: "Stage").uppercased()) {
+            Task {
+                if entry.indexStatus != nil {
+                    await state.unstageFile(repoID: repoID, path: entry.path, oldPath: entry.oldPath)
+                } else {
+                    await state.stageFile(repoID: repoID, path: entry.path, oldPath: entry.oldPath)
+                }
+            }
+        }
+
+        smallActionButton(String(localized: "Diff").uppercased()) {
+            openDiff(for: entry.path)
+        }
     }
 
     private func changeSummary(for entry: GitStatusEntry) -> String {
@@ -526,14 +596,14 @@ struct GitControlSheet: View {
                     TextField("tag-name (e.g. v1.0.0)", text: $newTagName)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                        .font(.system(size: 13, design: .monospaced))
+                        .font(.brutalScaled(size: 13, design: .monospaced))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 9)
                         .background(Color.brutalSurface)
 
                     HStack(spacing: 8) {
                         TextField("Annotation message (optional)", text: $newTagMessage)
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .padding(.horizontal, 10)
                             .padding(.vertical, 9)
                             .background(Color.brutalSurface)
@@ -548,7 +618,7 @@ struct GitControlSheet: View {
                                 newTagMessage = ""
                             }
                         }
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                         .foregroundStyle(Color(.systemBackground))
                         .tracking(1)
                         .padding(.horizontal, 12)
@@ -572,7 +642,7 @@ struct GitControlSheet: View {
                     }
                 } else {
                     Text(String(localized: "No tags in this repository"))
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 12)
@@ -586,18 +656,18 @@ struct GitControlSheet: View {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
                     Text(tag.shortName)
-                        .font(.system(size: 13, weight: .bold, design: .monospaced))
+                        .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                     BBadge(text: tag.kind == .annotated ? String(localized: "annotated") : String(localized: "light"), style: tag.kind == .annotated ? .accent : .default)
                 }
                 if let message = tag.message, !message.isEmpty {
                     Text(message)
-                        .font(.system(size: 13, design: .monospaced))
+                        .font(.brutalScaled(size: 13, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .lineLimit(1)
                 }
                 Text(String(tag.targetOID.prefix(7)))
-                    .font(.system(size: 14, design: .monospaced))
+                    .font(.brutalScaled(size: 14, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
             }
 
@@ -636,7 +706,7 @@ struct GitControlSheet: View {
                     TextField("Stash message (optional)…", text: $stashMessage)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                        .font(.system(size: 13, design: .monospaced))
+                        .font(.brutalScaled(size: 13, design: .monospaced))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 9)
                         .background(Color.brutalSurface)
@@ -648,7 +718,7 @@ struct GitControlSheet: View {
                             stashMessage = ""
                         }
                     }
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                    .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                     .foregroundStyle(Color(.systemBackground))
                     .tracking(1)
                     .padding(.horizontal, 12)
@@ -661,7 +731,7 @@ struct GitControlSheet: View {
 
                 if changeCount == 0 && stashes.isEmpty {
                     Text(String(localized: "No local changes to stash"))
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 12)
@@ -684,10 +754,10 @@ struct GitControlSheet: View {
     private func stashRow(entry: GitStashEntry) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("stash@{\(entry.index)}")
-                .font(.system(size: 14, weight: .medium, design: .monospaced))
+                .font(.brutalScaled(size: 14, weight: .medium, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
             Text(entry.message)
-                .font(.system(size: 13, design: .monospaced))
+                .font(.brutalScaled(size: 13, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -768,15 +838,15 @@ struct GitControlSheet: View {
             VStack(spacing: 0) {
                 HStack(spacing: 12) {
                     Text("⬆")
-                        .font(.system(size: 20))
+                        .font(.brutalScaled(size: 20))
                         .frame(width: 32)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(title)
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.brutalScaled(size: 16, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
                         Text(subtitle)
-                            .font(.system(size: 14, design: .monospaced))
+                            .font(.brutalScaled(size: 14, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                     }
                     Spacer()
@@ -787,7 +857,7 @@ struct GitControlSheet: View {
 
                 // Commit message
                 TextField(placeholder, text: $commitMessage, axis: .vertical)
-                    .font(.system(size: 15, design: .monospaced))
+                    .font(.brutalScaled(size: 15, design: .monospaced))
                     .lineLimit(1...4)
                     .padding(13)
                     .background(Color.brutalSurface)
@@ -798,11 +868,11 @@ struct GitControlSheet: View {
                         Text(conflictSession.hasConflicts
                              ? String(localized: "\(conflictSession.unmergedPaths.count) conflicts to resolve")
                              : String(localized: "All conflicts resolved"))
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(conflictSession.hasConflicts ? Color.brutalError : Color.brutalSuccess)
                     } else {
                         Text(stagedCount == 1 ? String(localized: "1 file staged") : String(localized: "\(stagedCount) files staged"))
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                     }
                     Spacer()
@@ -822,10 +892,12 @@ struct GitControlSheet: View {
                 } label: {
                     HStack(spacing: 8) {
                         Image(systemName: inMerge ? "checkmark" : "arrow.up")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(.brutalScaled(size: 14, weight: .bold))
                         Text(buttonLabel)
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                             .tracking(1)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
                     }
                     .foregroundStyle(Color(.systemBackground))
                     .frame(maxWidth: .infinity)
@@ -847,7 +919,7 @@ struct GitControlSheet: View {
                     .controlSize(.small)
                     .tint(Color.brutalAccent)
                 Text(state.syncProgress.uppercased())
-                    .font(.system(size: 13, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 13, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1)
                 Spacer()
@@ -864,9 +936,11 @@ struct GitControlSheet: View {
     private func smallActionButton(_ title: String, isDestructive: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .font(.brutalScaled(size: 14, weight: .bold, design: .monospaced))
                 .foregroundStyle(isDestructive ? Color.brutalError : Color.brutalText)
                 .tracking(1)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
                 .padding(.horizontal, 9)
                 .padding(.vertical, 6)
                 .overlay(

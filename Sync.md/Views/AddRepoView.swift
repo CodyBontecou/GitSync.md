@@ -90,7 +90,7 @@ struct AddRepoView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("ADD REPOSITORY")
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 12, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
                 }
@@ -99,7 +99,7 @@ struct AddRepoView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(.brutalScaled(size: 14, weight: .bold))
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
@@ -186,23 +186,23 @@ struct AddRepoView: View {
                 } label: {
                     HStack(spacing: 12) {
                         Text("📋")
-                            .font(.system(size: 18))
+                            .font(.brutalScaled(size: 18))
                             .frame(width: 32)
 
                         VStack(alignment: .leading, spacing: 2) {
                             if selectedRepoURL.isEmpty || showManualEntry || localRepoURL != nil {
                                 Text("Pick from GitHub")
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .font(.brutalScaled(size: 15, weight: .semibold))
                                     .foregroundStyle(Color.brutalText)
                                 Text("Select from your repositories")
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                             } else if let parsed = GitHubService.parseRepoURL(selectedRepoURL) {
                                 Text("\(parsed.owner)/\(parsed.repo)")
-                                    .font(.system(size: 15, weight: .semibold, design: .monospaced))
+                                    .font(.brutalScaled(size: 15, weight: .semibold, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                 Text("Tap to change")
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                             }
                         }
@@ -215,7 +215,7 @@ struct AddRepoView: View {
                             BBadge(text: "selected", style: .success)
                         } else {
                             Text("→")
-                                .font(.system(size: 13, design: .monospaced))
+                                .font(.brutalScaled(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                         }
                     }
@@ -233,23 +233,23 @@ struct AddRepoView: View {
                 } label: {
                     HStack(spacing: 12) {
                         Text("📁")
-                            .font(.system(size: 18))
+                            .font(.brutalScaled(size: 18))
                             .frame(width: 32)
 
                         VStack(alignment: .leading, spacing: 2) {
                             if let localURL = localRepoURL {
                                 Text(localURL.lastPathComponent)
-                                    .font(.system(size: 15, weight: .semibold, design: .monospaced))
+                                    .font(.brutalScaled(size: 15, weight: .semibold, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                 Text("Tap to change")
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                             } else {
                                 Text("Open Existing Repository")
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .font(.brutalScaled(size: 15, weight: .semibold))
                                     .foregroundStyle(Color.brutalText)
                                 Text("Select a git repo on this device")
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                             }
                         }
@@ -260,7 +260,7 @@ struct AddRepoView: View {
                             BBadge(text: "selected", style: .success)
                         } else {
                             Text("→")
-                                .font(.system(size: 13, design: .monospaced))
+                                .font(.brutalScaled(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                         }
                     }
@@ -274,7 +274,7 @@ struct AddRepoView: View {
                     HStack(spacing: 6) {
                         BBadge(text: "ERROR", style: .error)
                         Text(error)
-                            .font(.system(size: 14, design: .monospaced))
+                            .font(.brutalScaled(size: 14, design: .monospaced))
                             .foregroundStyle(Color.brutalError)
                     }
                     .padding(.horizontal, 16)
@@ -317,7 +317,7 @@ struct AddRepoView: View {
                         HStack(spacing: 6) {
                             Text("🔗")
                             Text("ENTER URL MANUALLY")
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                                 .tracking(1)
                         }
@@ -382,14 +382,14 @@ struct AddRepoView: View {
 
                         HStack(spacing: 12) {
                             Text("📁")
-                                .font(.system(size: 18))
+                                .font(.brutalScaled(size: 18))
                                 .frame(width: 32)
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(repoDir.lastPathComponent)
-                                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, weight: .semibold, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                 Text(repoDir.path)
-                                    .font(.system(size: 14, design: .monospaced))
+                                    .font(.brutalScaled(size: 14, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                     .lineLimit(1)
                                     .truncationMode(.middle)
@@ -400,7 +400,7 @@ struct AddRepoView: View {
                                 customVaultBookmarkData = nil
                             } label: {
                                 Image(systemName: "xmark")
-                                    .font(.system(size: 13, weight: .bold))
+                                    .font(.brutalScaled(size: 13, weight: .bold))
                                     .foregroundStyle(Color.brutalText)
                                     .padding(6)
                             }
@@ -412,9 +412,9 @@ struct AddRepoView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack(spacing: 8) {
                                 Text("📁")
-                                    .font(.system(size: 16))
+                                    .font(.brutalScaled(size: 16))
                                 TextField("folder-name", text: $vaultName)
-                                    .font(.system(size: 14, design: .monospaced))
+                                    .font(.brutalScaled(size: 14, design: .monospaced))
                                     .autocorrectionDisabled()
                                     .textInputAutocapitalization(.never)
                                     .foregroundStyle(Color.brutalText)
@@ -427,10 +427,10 @@ struct AddRepoView: View {
 
                             HStack(spacing: 4) {
                                 Image(systemName: "info.circle")
-                                    .font(.system(size: 10))
+                                    .font(.brutalScaled(size: 10))
                                     .foregroundStyle(Color.brutalText)
                                 Text("Files › On My iPhone › GitSync.md › \(vaultName)")
-                                    .font(.system(size: 14, design: .monospaced))
+                                    .font(.brutalScaled(size: 14, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                             }
                             .padding(.horizontal, 16)
@@ -447,7 +447,7 @@ struct AddRepoView: View {
                         HStack(spacing: 6) {
                             Text("📂")
                             Text(customVaultURL != nil ? "CHANGE LOCATION" : "CHOOSE DIFFERENT LOCATION")
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalAccent)
                                 .tracking(1)
                         }
@@ -472,13 +472,13 @@ struct AddRepoView: View {
                 if let localURL = localRepoURL {
                     BCard(padding: 14, bg: .brutalSurface) {
                         HStack(spacing: 12) {
-                            Text("📁").font(.system(size: 18))
+                            Text("📁").font(.brutalScaled(size: 18))
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(localURL.lastPathComponent)
-                                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                                    .font(.brutalScaled(size: 13, weight: .semibold, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                 Text(localURL.path)
-                                    .font(.system(size: 14, design: .monospaced))
+                                    .font(.brutalScaled(size: 14, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
                                     .lineLimit(1)
                                     .truncationMode(.middle)

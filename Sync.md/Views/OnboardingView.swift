@@ -92,7 +92,7 @@ struct OnboardingView: View {
             // Title lines
             ForEach(Array(slide.title.enumerated()), id: \.offset) { index, line in
                 Text(line)
-                    .font(.system(size: 56, weight: .black))
+                    .font(.brutalScaled(size: 56, weight: .black))
                     .foregroundStyle(index == slide.accentIndex ? Color.brutalAccent : Color.brutalText)
                     .tracking(-2)
             }
@@ -109,7 +109,7 @@ struct OnboardingView: View {
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
                 Text(slide.subtitle)
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1.5)
             }
@@ -117,7 +117,7 @@ struct OnboardingView: View {
 
             // Description
             Text(slide.description)
-                .font(.system(size: 16, weight: .regular))
+                .font(.brutalScaled(size: 16, weight: .regular))
                 .foregroundStyle(Color.brutalTextMid)
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)

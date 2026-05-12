@@ -22,16 +22,16 @@ struct RevertConfirmModal: View {
                 // Header
                 HStack(spacing: 10) {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.brutalScaled(size: 16, weight: .bold))
                         .foregroundStyle(Color.brutalError)
                     Text(title.uppercased())
-                        .font(.system(size: 13, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 13, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(1.5)
                     Spacer()
                     Button(action: onCancel) {
                         Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .bold))
+                            .font(.brutalScaled(size: 13, weight: .bold))
                             .foregroundStyle(Color.brutalTextMid)
                             .frame(width: 28, height: 28)
                             .background(Color.brutalSurface)
@@ -51,26 +51,26 @@ struct RevertConfirmModal: View {
                         // Single-file mode
                         HStack(spacing: 8) {
                             Image(systemName: "doc.text")
-                                .font(.system(size: 13))
+                                .font(.brutalScaled(size: 13))
                                 .foregroundStyle(Color.brutalTextFaint)
                             Text(filename)
-                                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                                .font(.brutalScaled(size: 15, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                                 .lineLimit(1)
                                 .truncationMode(.middle)
                         }
                         Text("All local changes to this file will be permanently discarded.")
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                             .fixedSize(horizontal: false, vertical: true)
                     } else {
                         // Revert-all mode
                         HStack(spacing: 8) {
                             Image(systemName: "doc.on.doc")
-                                .font(.system(size: 13))
+                                .font(.brutalScaled(size: 13))
                                 .foregroundStyle(Color.brutalTextFaint)
                             Text("\(files.count) file\(files.count == 1 ? "" : "s") will be discarded")
-                                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                                .font(.brutalScaled(size: 15, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                         }
 
@@ -79,10 +79,10 @@ struct RevertConfirmModal: View {
                             ForEach(files.prefix(6), id: \.self) { path in
                                 HStack(spacing: 6) {
                                     Text("−")
-                                        .font(.system(size: 12, design: .monospaced))
+                                        .font(.brutalScaled(size: 12, design: .monospaced))
                                         .foregroundStyle(Color.brutalError.opacity(0.7))
                                     Text(URL(fileURLWithPath: path).lastPathComponent)
-                                        .font(.system(size: 12, design: .monospaced))
+                                        .font(.brutalScaled(size: 12, design: .monospaced))
                                         .foregroundStyle(Color.brutalTextMid)
                                         .lineLimit(1)
                                         .truncationMode(.middle)
@@ -90,7 +90,7 @@ struct RevertConfirmModal: View {
                             }
                             if files.count > 6 {
                                 Text("and \(files.count - 6) more…")
-                                    .font(.system(size: 12, design: .monospaced))
+                                    .font(.brutalScaled(size: 12, design: .monospaced))
                                     .foregroundStyle(Color.brutalTextFaint)
                                     .padding(.leading, 16)
                             }
@@ -101,7 +101,7 @@ struct RevertConfirmModal: View {
                         .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
 
                         Text("This cannot be undone.")
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                     }
                 }
@@ -114,7 +114,7 @@ struct RevertConfirmModal: View {
                 HStack(spacing: 10) {
                     Button(action: onCancel) {
                         Text("CANCEL")
-                            .font(.system(size: 13, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .tracking(1)
                             .frame(maxWidth: .infinity)
@@ -126,7 +126,7 @@ struct RevertConfirmModal: View {
 
                     Button(action: onConfirm) {
                         Text(confirmLabel.uppercased())
-                            .font(.system(size: 13, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(.white)
                             .tracking(1)
                             .frame(maxWidth: .infinity)

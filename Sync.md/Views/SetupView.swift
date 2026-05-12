@@ -77,13 +77,13 @@ struct SetupView: View {
         VStack(alignment: .leading, spacing: 0) {
             // Big monospaced title
             Text("SYNC")
-                .font(.system(size: 72, weight: .black))
+                .font(.brutalScaled(size: 72, weight: .black))
                 .foregroundStyle(Color.brutalText)
                 .tracking(-2)
                 .padding(.bottom, 0)
 
             Text(".MD")
-                .font(.system(size: 72, weight: .black))
+                .font(.brutalScaled(size: 72, weight: .black))
                 .foregroundStyle(Color.brutalAccent)
                 .tracking(-2)
                 .padding(.bottom, 16)
@@ -98,7 +98,7 @@ struct SetupView: View {
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
                 Text("ANY REPO, SYNCED TO YOUR IPHONE")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1.5)
             }
@@ -158,9 +158,9 @@ struct SetupView: View {
             } label: {
                 HStack(spacing: 6) {
                     Text("←")
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                     Text("BACK")
-                        .font(.system(size: 13, weight: .medium, design: .monospaced))
+                        .font(.brutalScaled(size: 13, weight: .medium, design: .monospaced))
                         .tracking(1)
                 }
                 .foregroundStyle(Color.brutalText)
@@ -175,15 +175,15 @@ struct SetupView: View {
                         TextField("ghp_...", text: $patToken)
                             .autocorrectionDisabled()
                             .textInputAutocapitalization(.never)
-                            .font(.system(size: 15, design: .monospaced))
+                            .font(.brutalScaled(size: 15, design: .monospaced))
                     } else {
                         SecureField("ghp_...", text: $patToken)
-                            .font(.system(size: 15, design: .monospaced))
+                            .font(.brutalScaled(size: 15, design: .monospaced))
                     }
                     Spacer()
                     Button { showPAT.toggle() } label: {
                         Image(systemName: showPAT ? "eye.slash" : "eye")
-                            .font(.system(size: 14))
+                            .font(.brutalScaled(size: 14))
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
@@ -193,13 +193,13 @@ struct SetupView: View {
                 .background(Color.brutalSurface)
 
                 Text("PERSONAL ACCESS TOKEN")
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .semibold, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
 
                 Link(destination: URL(string: "https://github.com/settings/tokens/new?scopes=repo,user:email&description=GitSync.md")!) {
                     Text("CREATE A PAT ON GITHUB →")
-                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .font(.brutalScaled(size: 12, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Color.brutalAccent)
                         .tracking(1)
                 }
@@ -245,17 +245,17 @@ struct SetupView: View {
             // Hero
             VStack(alignment: .leading, spacing: 0) {
                 Text("DEFAULT")
-                    .font(.system(size: 48, weight: .black))
+                    .font(.brutalScaled(size: 48, weight: .black))
                     .foregroundStyle(Color.brutalText)
                     .tracking(-1)
 
                 Text("SAVE")
-                    .font(.system(size: 48, weight: .black))
+                    .font(.brutalScaled(size: 48, weight: .black))
                     .foregroundStyle(Color.brutalText)
                     .tracking(-1)
 
                 Text("LOCATION")
-                    .font(.system(size: 48, weight: .black))
+                    .font(.brutalScaled(size: 48, weight: .black))
                     .foregroundStyle(Color.brutalAccent)
                     .tracking(-1)
                     .padding(.bottom, 12)
@@ -266,7 +266,7 @@ struct SetupView: View {
                     .padding(.bottom, 8)
 
                 Text("CHOOSE WHERE NEW REPOSITORIES ARE SAVED")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1)
             }
@@ -280,14 +280,14 @@ struct SetupView: View {
                 BCard(padding: 14, bg: .brutalSurface) {
                     HStack(spacing: 12) {
                         Text("📁")
-                            .font(.system(size: 22))
+                            .font(.brutalScaled(size: 22))
 
                         VStack(alignment: .leading, spacing: 3) {
                             Text(url.lastPathComponent)
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.brutalScaled(size: 14, weight: .semibold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                             Text(url.path)
-                                .font(.system(size: 13, design: .monospaced))
+                                .font(.brutalScaled(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                                 .lineLimit(1)
                                 .truncationMode(.middle)
@@ -299,7 +299,7 @@ struct SetupView: View {
                             withAnimation(.easeInOut(duration: 0.2)) { selectedFolderURL = nil }
                         } label: {
                             Image(systemName: "xmark")
-                                .font(.system(size: 14, weight: .bold))
+                                .font(.brutalScaled(size: 14, weight: .bold))
                                 .foregroundStyle(Color.brutalText)
                                 .padding(6)
                         }
@@ -313,10 +313,10 @@ struct SetupView: View {
                 // Info
                 HStack(spacing: 8) {
                     Image(systemName: "info.circle")
-                        .font(.system(size: 12))
+                        .font(.brutalScaled(size: 12))
                         .foregroundStyle(Color.brutalText)
                     Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.brutalScaled(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                 }
                 .padding(.horizontal, 24)

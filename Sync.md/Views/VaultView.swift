@@ -3,6 +3,7 @@ import SwiftUI
 struct VaultView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let repoID: UUID
 
     @State private var showSettings = false
@@ -51,7 +52,7 @@ struct VaultView: View {
             ToolbarItem(placement: .principal) {
                 if let repo = repo {
                     Text(repo.displayName.uppercased())
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 12, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
                 }
@@ -61,7 +62,7 @@ struct VaultView: View {
                     showSettings = true
                 } label: {
                     Image(systemName: "gearshape")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.brutalScaled(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                         .frame(width: 32, height: 32)
                 }
@@ -197,12 +198,13 @@ struct VaultView: View {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 3) {
                         Text(repo.displayName)
-                            .font(.system(size: 20, weight: .black))
+                            .font(.brutalScaled(size: 20, weight: .black))
                             .foregroundStyle(Color.brutalText)
+                            .lineLimit(dynamicTypeSize.isAccessibilitySize ? 2 : 1)
 
                         if let owner = repo.ownerName {
                             Text(owner.uppercased())
-                                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                                 .tracking(1)
                         }
@@ -217,12 +219,22 @@ struct VaultView: View {
                 .padding(.bottom, 12)
 
 
-                HStack(spacing: 0) {
-                    metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
-                    Spacer()
-                    metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
-                    Spacer()
-                    metaChip(icon: "clock", text: lastSyncText)
+                Group {
+                    if dynamicTypeSize.isAccessibilitySize {
+                        VStack(alignment: .leading, spacing: 8) {
+                            metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
+                            metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
+                            metaChip(icon: "clock", text: lastSyncText)
+                        }
+                    } else {
+                        HStack(spacing: 0) {
+                            metaChip(icon: "arrow.triangle.branch", text: repo.gitState.branch, mono: true)
+                            Spacer()
+                            metaChip(icon: "number", text: String(repo.gitState.commitSHA.prefix(7)), mono: true)
+                            Spacer()
+                            metaChip(icon: "clock", text: lastSyncText)
+                        }
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -261,14 +273,16 @@ struct VaultView: View {
     private func metaChip(icon: String, text: String, mono: Bool = false) -> some View {
         HStack(spacing: 4) {
             Image(systemName: icon)
-                .font(.system(size: 12, weight: .semibold))
+                .font(.brutalScaled(size: 12, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
             Text(text)
                 .font(mono
-                    ? .system(size: 13, weight: .medium, design: .monospaced)
-                    : .system(size: 13, weight: .medium)
+                    ? .brutalScaled(size: 13, weight: .medium, design: .monospaced)
+                    : .brutalScaled(size: 13, weight: .medium)
                 )
                 .foregroundStyle(Color.brutalText)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
         }
     }
 
@@ -298,10 +312,10 @@ struct VaultView: View {
 
                     HStack(spacing: 10) {
                         Image(systemName: pullOutcomeIcon(outcome.kind))
-                            .font(.system(size: 13))
+                            .font(.brutalScaled(size: 13))
                             .foregroundStyle(pullOutcomeColor(outcome.kind))
                         Text(outcome.message)
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                         Spacer()
 
@@ -311,7 +325,7 @@ struct VaultView: View {
                                 showResolveLocalSheet = true
                             } label: {
                                 Text(String(localized: "Resolve").uppercased())
-                                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                    .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                                     .foregroundStyle(Color.brutalAccent)
                                     .tracking(1)
                                     .padding(.horizontal, 8)
@@ -327,7 +341,7 @@ struct VaultView: View {
                                 Task { await state.mergeWithRemote(repoID: repoID) }
                             } label: {
                                 Text(String(localized: "Merge").uppercased())
-                                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                    .font(.brutalScaled(size: 12, weight: .bold, design: .monospaced))
                                     .foregroundStyle(Color.brutalError)
                                     .tracking(1)
                                     .padding(.horizontal, 8)
@@ -351,10 +365,10 @@ struct VaultView: View {
     private func healthPill(label: String, count: Int, style: BBadge.BBadgeStyle = .`default`) -> some View {
         VStack(spacing: 3) {
             Text("\(count)")
-                .font(.system(size: 18, weight: .black, design: .monospaced))
+                .font(.brutalScaled(size: 18, weight: .black, design: .monospaced))
                 .foregroundStyle(style.fg)
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .font(.brutalScaled(size: 12, weight: .medium, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
         }
@@ -402,7 +416,7 @@ struct VaultView: View {
                             BSectionHeader(title: String(localized: "Changed Files"))
                             BBadge(text: "\(statusEntries.count)", style: .accent)
                             Image(systemName: showChangedFiles ? "chevron.up" : "chevron.down")
-                                .font(.system(size: 12, weight: .semibold))
+                                .font(.brutalScaled(size: 12, weight: .semibold))
                                 .foregroundStyle(Color.brutalText)
                         }
                     }
@@ -416,9 +430,9 @@ struct VaultView: View {
                     } label: {
                         HStack(spacing: 4) {
                             Image(systemName: "arrow.uturn.backward")
-                                .font(.system(size: 11, weight: .bold))
+                                .font(.brutalScaled(size: 11, weight: .bold))
                             Text(String(localized: "All").uppercased())
-                                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                .font(.brutalScaled(size: 11, weight: .bold, design: .monospaced))
                                 .tracking(1)
                         }
                         .foregroundStyle(Color.brutalError)
@@ -468,7 +482,7 @@ struct VaultView: View {
                 showRevertFileModal = true
             } label: {
                 Image(systemName: "arrow.uturn.backward")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.brutalScaled(size: 13, weight: .semibold))
                     .foregroundStyle(Color.brutalError)
                     .frame(width: 44, height: 44)
             }
@@ -480,18 +494,18 @@ struct VaultView: View {
         HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(entry.path)
-                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                    .font(.brutalScaled(size: 13, weight: .semibold, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .lineLimit(1)
                     .truncationMode(.middle)
                 Text(fileStatusSummary(for: entry))
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(.brutalScaled(size: 12, design: .monospaced))
                     .foregroundStyle(Color.brutalText.opacity(0.6))
             }
             Spacer(minLength: 8)
             fileStatusBadge(for: entry)
             Image(systemName: "chevron.right")
-                .font(.system(size: 11, weight: .semibold))
+                .font(.brutalScaled(size: 11, weight: .semibold))
                 .foregroundStyle(Color.brutalText.opacity(0.3))
         }
         .padding(.leading, 16)
@@ -580,7 +594,7 @@ struct VaultView: View {
                     .controlSize(.small)
                     .tint(Color.brutalAccent)
                 Text(state.syncProgress.uppercased())
-                    .font(.system(size: 13, weight: .medium, design: .monospaced))
+                    .font(.brutalScaled(size: 13, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1)
                 Spacer()
@@ -599,11 +613,11 @@ struct VaultView: View {
                     Text(result.isSuccess
                          ? String(localized: "\(result.action.capitalized) Complete")
                          : String(localized: "\(result.action.capitalized) Failed"))
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.brutalScaled(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
 
                     Text(result.message)
-                        .font(.system(size: 12, design: .monospaced))
+                        .font(.brutalScaled(size: 12, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .lineLimit(2)
                 }
@@ -612,7 +626,7 @@ struct VaultView: View {
 
                 if result.isSuccess {
                     Image(systemName: "arrow.uturn.backward")
-                        .font(.system(size: 14))
+                        .font(.brutalScaled(size: 14))
                         .foregroundStyle(Color.brutalText)
                 }
             }
@@ -664,7 +678,7 @@ struct VaultView: View {
             BLoading(text: String(localized: "Cloning Repository"))
 
             Text(state.syncProgress)
-                .font(.system(size: 13, design: .monospaced))
+                .font(.brutalScaled(size: 13, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
@@ -713,11 +727,11 @@ private struct ResolveLocalChangesSheet: View {
                 VStack(alignment: .leading, spacing: 16) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(String(localized: "Local edits block this pull"))
-                            .font(.system(size: 18, weight: .black, design: .monospaced))
+                            .font(.brutalScaled(size: 18, weight: .black, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .tracking(1)
                         Text(String(localized: "We'll commit your local changes, then merge with the remote. If there are conflicts, you can resolve them in the next screen."))
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.brutalScaled(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                             .fixedSize(horizontal: false, vertical: true)
                     }

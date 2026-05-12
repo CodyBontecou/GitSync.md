@@ -6,6 +6,7 @@ struct CodeEditorView: UIViewRepresentable {
     @Binding var text: String
     let language: SyntaxLanguage
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     func makeUIView(context: Context) -> UITextView {
         let tv = UITextView()
@@ -17,6 +18,7 @@ struct CodeEditorView: UIViewRepresentable {
         tv.smartDashesType = .no
         tv.smartQuotesType = .no
         tv.smartInsertDeleteType = .no
+        tv.adjustsFontForContentSizeCategory = true
         tv.backgroundColor = .clear
         tv.textContainerInset = UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
         return tv
@@ -28,7 +30,8 @@ struct CodeEditorView: UIViewRepresentable {
 
         let textChanged = uiView.text != text
         let schemeChanged = coord.lastColorScheme != colorScheme
-        guard textChanged || schemeChanged else { return }
+        let typeSizeChanged = coord.lastDynamicTypeSize != dynamicTypeSize
+        guard textChanged || schemeChanged || typeSizeChanged else { return }
 
         coord.applyHighlighting(to: uiView, overrideText: textChanged ? text : nil)
     }
@@ -40,6 +43,7 @@ struct CodeEditorView: UIViewRepresentable {
     final class Coordinator: NSObject, UITextViewDelegate {
         var parent: CodeEditorView
         var lastColorScheme: ColorScheme = .light
+        var lastDynamicTypeSize: DynamicTypeSize = .medium
         private var debounce: DispatchWorkItem?
 
         init(_ parent: CodeEditorView) { self.parent = parent }
@@ -48,12 +52,13 @@ struct CodeEditorView: UIViewRepresentable {
         func applyHighlighting(to textView: UITextView, overrideText: String? = nil) {
             let content = overrideText ?? textView.text ?? ""
             let theme = parent.colorScheme == .dark ? SyntaxTheme.dark : SyntaxTheme.light
+            let font = UIFont.brutalScaledMonospaced(compatibleWith: textView.traitCollection)
             let selection = textView.selectedRange
             let offset = textView.contentOffset
 
-            textView.attributedText = SyntaxHighlighter.highlight(content, language: parent.language, theme: theme)
+            textView.attributedText = SyntaxHighlighter.highlight(content, language: parent.language, theme: theme, font: font)
             textView.typingAttributes = [
-                .font: UIFont.monospacedSystemFont(ofSize: 13, weight: .regular),
+                .font: font,
                 .foregroundColor: theme.plain
             ]
 
@@ -70,6 +75,7 @@ struct CodeEditorView: UIViewRepresentable {
             }
 
             lastColorScheme = parent.colorScheme
+            lastDynamicTypeSize = parent.dynamicTypeSize
         }
 
         // MARK: UITextViewDelegate

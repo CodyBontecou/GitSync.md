@@ -48,6 +48,18 @@ private extension UIColor {
     }
 }
 
+extension UIFont {
+    static func brutalScaledMonospaced(
+        size: CGFloat = 13,
+        weight: UIFont.Weight = .regular,
+        textStyle: UIFont.TextStyle = .body,
+        compatibleWith traitCollection: UITraitCollection? = nil
+    ) -> UIFont {
+        let baseFont = UIFont.monospacedSystemFont(ofSize: size, weight: weight)
+        return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: baseFont, compatibleWith: traitCollection)
+    }
+}
+
 // MARK: - Language
 
 enum SyntaxLanguage {
@@ -77,9 +89,14 @@ enum SyntaxHighlighter {
     private static let maxBytes = 150_000
 
     /// Returns a syntax-highlighted attributed string for `text`.
-    static func highlight(_ text: String, language: SyntaxLanguage, theme: SyntaxTheme) -> NSAttributedString {
+    static func highlight(
+        _ text: String,
+        language: SyntaxLanguage,
+        theme: SyntaxTheme,
+        font: UIFont = .brutalScaledMonospaced()
+    ) -> NSAttributedString {
         let base: [NSAttributedString.Key: Any] = [
-            .font: UIFont.monospacedSystemFont(ofSize: 13, weight: .regular),
+            .font: font,
             .foregroundColor: theme.plain
         ]
         let result = NSMutableAttributedString(string: text, attributes: base)

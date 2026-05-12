@@ -20,16 +20,16 @@ struct FreeSlotConfirmModal: View {
                 // Header
                 HStack(spacing: 10) {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.brutalScaled(size: 16, weight: .bold))
                         .foregroundStyle(Color.brutalWarning)
                     Text("USE YOUR FREE REPO?")
-                        .font(.system(size: 13, weight: .black, design: .monospaced))
+                        .font(.brutalScaled(size: 13, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(1.5)
                     Spacer()
                     Button(action: onCancel) {
                         Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .bold))
+                            .font(.brutalScaled(size: 13, weight: .bold))
                             .foregroundStyle(Color.brutalTextMid)
                             .frame(width: 28, height: 28)
                             .background(Color.brutalSurface)
@@ -47,17 +47,17 @@ struct FreeSlotConfirmModal: View {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 8) {
                         Image(systemName: "checkmark.seal")
-                            .font(.system(size: 13))
+                            .font(.brutalScaled(size: 13))
                             .foregroundStyle(Color.brutalTextFaint)
                         Text(repoLabel)
-                            .font(.system(size: 15, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 15, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .lineLimit(1)
                             .truncationMode(.middle)
                     }
 
                     Text("Free accounts can sync **one** repository. Once you continue, this is the repo locked to your free slot.")
-                        .font(.system(size: 13, design: .monospaced))
+                        .font(.brutalScaled(size: 13, design: .monospaced))
                         .foregroundStyle(Color.brutalTextMid)
                         .fixedSize(horizontal: false, vertical: true)
 
@@ -72,7 +72,7 @@ struct FreeSlotConfirmModal: View {
                     .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
 
                     Text("Make sure this is the right repository before continuing.")
-                        .font(.system(size: 13, weight: .bold, design: .monospaced))
+                        .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -85,7 +85,7 @@ struct FreeSlotConfirmModal: View {
                 HStack(spacing: 10) {
                     Button(action: onCancel) {
                         Text("GO BACK")
-                            .font(.system(size: 13, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .tracking(1)
                             .frame(maxWidth: .infinity)
@@ -97,7 +97,7 @@ struct FreeSlotConfirmModal: View {
 
                     Button(action: onConfirm) {
                         Text("USE FREE SLOT")
-                            .font(.system(size: 13, weight: .bold, design: .monospaced))
+                            .font(.brutalScaled(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(.white)
                             .tracking(1)
                             .frame(maxWidth: .infinity)
@@ -118,10 +118,10 @@ struct FreeSlotConfirmModal: View {
     private func bullet(_ text: String) -> some View {
         HStack(alignment: .top, spacing: 6) {
             Text("•")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.brutalScaled(size: 12, design: .monospaced))
                 .foregroundStyle(Color.brutalTextFaint)
             Text(text)
-                .font(.system(size: 12, design: .monospaced))
+                .font(.brutalScaled(size: 12, design: .monospaced))
                 .foregroundStyle(Color.brutalTextMid)
                 .fixedSize(horizontal: false, vertical: true)
         }
