@@ -156,15 +156,18 @@ struct FileDiffView: View {
                 Button {
                     showRevertModal = true
                 } label: {
-                    if isReverting {
-                        ProgressView()
-                            .controlSize(.small)
-                            .tint(Color.brutalError)
-                    } else {
-                        Image(systemName: "arrow.uturn.backward")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(Color.brutalError)
+                    Group {
+                        if isReverting {
+                            ProgressView()
+                                .controlSize(.small)
+                                .tint(Color.brutalError)
+                        } else {
+                            Image(systemName: "arrow.uturn.backward")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(Color.brutalError)
+                        }
                     }
+                    .bIconTapTarget()
                 }
                 .disabled(isLoading || isReverting)
             }

@@ -131,6 +131,7 @@ struct AppSettingsView: View {
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 13)
+                                    .bMinimumTapTarget(alignment: .leading)
                                 }
                                 .buttonStyle(.plain)
 
@@ -151,6 +152,7 @@ struct AppSettingsView: View {
                                         }
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 13)
+                                        .bMinimumTapTarget(alignment: .leading)
                                     }
                                     .buttonStyle(.plain)
                                 } else {
@@ -169,6 +171,7 @@ struct AppSettingsView: View {
                                         }
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 13)
+                                        .bMinimumTapTarget(alignment: .leading)
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -189,6 +192,7 @@ struct AppSettingsView: View {
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 13)
+                                    .bMinimumTapTarget(alignment: .leading)
                                 }
                                 .buttonStyle(.plain)
                                 #endif
@@ -226,6 +230,7 @@ struct AppSettingsView: View {
                                                 .font(.system(size: 14, weight: .bold, design: .monospaced))
                                                 .foregroundStyle(Color.brutalAccent)
                                                 .tracking(1)
+                                                .bMinimumTapTarget()
                                         }
                                         .buttonStyle(.plain)
 
@@ -238,6 +243,7 @@ struct AppSettingsView: View {
                                                 .font(.system(size: 14, weight: .bold, design: .monospaced))
                                                 .foregroundStyle(Color.brutalError)
                                                 .tracking(1)
+                                                .bMinimumTapTarget()
                                         }
                                         .buttonStyle(.plain)
                                     }
@@ -270,6 +276,7 @@ struct AppSettingsView: View {
                                             }
                                             .padding(.horizontal, 16)
                                             .padding(.vertical, 12)
+                                            .bMinimumTapTarget(alignment: .leading)
                                         }
                                         .buttonStyle(.plain)
                                     }
@@ -341,6 +348,7 @@ struct AppSettingsView: View {
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
                             .background(Color.brutalText)
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
                 }
@@ -450,5 +458,6 @@ struct AppSettingsView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .bMinimumTapTarget(alignment: .leading)
     }
 }

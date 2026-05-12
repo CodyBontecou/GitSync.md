@@ -90,11 +90,12 @@ struct FileEditorView: View {
                     .lineLimit(1)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 16) {
+                HStack(spacing: 8) {
                     if !isBinary {
                         Button("Save") { performSave() }
                             .font(.system(size: 12, weight: .bold, design: .monospaced))
                             .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
+                            .bMinimumTapTarget()
                             .disabled(!isDirty)
                     }
                     Button {
@@ -104,6 +105,7 @@ struct FileEditorView: View {
                         Image(systemName: "pencil")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
+                            .bIconTapTarget()
                     }
                     Button {
                         showDeleteConfirm = true
@@ -111,6 +113,7 @@ struct FileEditorView: View {
                         Image(systemName: "trash")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalError)
+                            .bIconTapTarget()
                     }
                 }
             }

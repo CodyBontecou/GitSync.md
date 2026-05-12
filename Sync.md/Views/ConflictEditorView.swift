@@ -81,6 +81,7 @@ struct ConflictEditorView: View {
                         .font(.system(size: 12, weight: .bold, design: .monospaced))
                         .foregroundStyle(canResolve ? Color.brutalAccent : Color.brutalTextFaint)
                         .tracking(1)
+                        .bMinimumTapTarget()
                 }
                 .disabled(!canResolve || state.isSyncing)
             }
@@ -198,6 +199,7 @@ struct ConflictEditorView: View {
                     lineWidth: 1
                 )
             )
+            .bMinimumTapTarget(alignment: .leading)
         }
         .buttonStyle(.plain)
     }
@@ -254,6 +256,7 @@ struct ConflictEditorView: View {
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .overlay(Rectangle().strokeBorder(accent.opacity(0.4), lineWidth: 1))
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
                 }
@@ -316,6 +319,7 @@ struct ConflictEditorView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                    .bMinimumTapTarget()
             }
             .buttonStyle(.plain)
 
@@ -329,6 +333,7 @@ struct ConflictEditorView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .overlay(Rectangle().strokeBorder(Color.brutalWarning.opacity(0.4), lineWidth: 1))
+                    .bMinimumTapTarget()
             }
             .buttonStyle(.plain)
         }

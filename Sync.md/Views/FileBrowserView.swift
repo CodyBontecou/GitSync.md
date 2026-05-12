@@ -71,6 +71,7 @@ struct FileBrowserView: View {
                     Image(systemName: "plus")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
+                        .bIconTapTarget()
                 }
             }
         }

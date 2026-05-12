@@ -63,7 +63,7 @@ struct VaultView: View {
                     Image(systemName: "gearshape")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
-                        .frame(width: 32, height: 32)
+                        .bIconTapTarget()
                 }
                 .buttonStyle(.plain)
             }
@@ -317,6 +317,7 @@ struct VaultView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 5)
                                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                                    .bMinimumTapTarget()
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
@@ -333,6 +334,7 @@ struct VaultView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 5)
                                     .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                                    .bMinimumTapTarget()
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
@@ -405,6 +407,7 @@ struct VaultView: View {
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundStyle(Color.brutalText)
                         }
+                        .bMinimumTapTarget(alignment: .leading)
                     }
                     .buttonStyle(.plain)
 
@@ -425,6 +428,7 @@ struct VaultView: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 5)
                         .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                        .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
                 }
@@ -470,7 +474,7 @@ struct VaultView: View {
                 Image(systemName: "arrow.uturn.backward")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(Color.brutalError)
-                    .frame(width: 44, height: 44)
+                    .bIconTapTarget()
             }
             .buttonStyle(.plain)
         }

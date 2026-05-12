@@ -51,8 +51,7 @@ struct PaywallView: View {
                 Image(systemName: "xmark")
                     .font(.system(size: 13, weight: .bold))
                     .foregroundStyle(Color.brutalText)
-                    .frame(width: 30, height: 30)
-                    .contentShape(Rectangle())
+                    .bIconTapTarget()
             }
             .buttonStyle(.plain)
             .padding(.top, 18)

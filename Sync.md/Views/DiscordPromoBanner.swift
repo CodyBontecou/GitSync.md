@@ -40,6 +40,7 @@ struct DiscordPromoBanner: View {
                             .padding(.vertical, 6)
                             .background(Color.brutalAccent.opacity(0.10))
                             .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
+                            .bMinimumTapTarget()
                     }
                     .buttonStyle(.plain)
 
@@ -51,8 +52,7 @@ struct DiscordPromoBanner: View {
                         Image(systemName: "xmark")
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundStyle(Color.brutalTextMid)
-                            .frame(width: 28, height: 28)
-                            .contentShape(Rectangle())
+                            .bIconTapTarget()
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Dismiss Discord banner")
