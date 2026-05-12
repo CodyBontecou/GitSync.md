@@ -5,8 +5,30 @@ import libgit2
 @testable import Sync_md
 
 final class SyncMDTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        _ = git_libgit2_init()
+    }
+
     func testSmoke() {
         XCTAssertTrue(true)
+    }
+
+    @discardableResult
+    private func commitLocalFixtureChanges(
+        using service: LocalGitService,
+        message: String,
+        authorName: String = "SyncMD Tests",
+        authorEmail: String = "tests@example.com"
+    ) async throws -> String {
+        // Fixture setup should never depend on an expected push failure from a
+        // repository without an origin remote. Keep local-git tests deterministic
+        // by committing only the staged index when the test is not exercising push.
+        try await service.commitLocal(
+            message: message,
+            authorName: authorName,
+            authorEmail: authorEmail
+        )
     }
 
     func testFixtureFactoryBuildsDeterministicCleanDirtyDivergedAndConflictedStates() throws {
@@ -1528,14 +1550,7 @@ final class SyncMDTests: XCTestCase {
         let file = repoURL.appendingPathComponent("README.md")
         try "line\n".write(to: file, atomically: true, encoding: .utf8)
         try await service.stage(path: "README.md")
-        do {
-            _ = try await service.commitAndPush(
-                message: "Initial",
-                authorName: "SyncMD Tests",
-                authorEmail: "tests@example.com",
-                pat: ""
-            )
-        } catch { }
+        try await commitLocalFixtureChanges(using: service, message: "Initial")
 
         let mainBranch = try await service.repoInfo().branch
 
@@ -1543,31 +1558,24 @@ final class SyncMDTests: XCTestCase {
         try await service.switchBranch(name: "feature")
         try "feature\n".write(to: file, atomically: true, encoding: .utf8)
         try await service.stage(path: "README.md")
-        do {
-            _ = try await service.commitAndPush(
-                message: "Feature edit",
-                authorName: "SyncMD Tests",
-                authorEmail: "tests@example.com",
-                pat: ""
-            )
-        } catch { }
+        try await commitLocalFixtureChanges(using: service, message: "Feature edit")
 
         try await service.switchBranch(name: mainBranch)
         try "main\n".write(to: file, atomically: true, encoding: .utf8)
         try await service.stage(path: "README.md")
-        do {
-            _ = try await service.commitAndPush(
-                message: "Main edit",
-                authorName: "SyncMD Tests",
-                authorEmail: "tests@example.com",
-                pat: ""
-            )
-        } catch { }
+        try await commitLocalFixtureChanges(using: service, message: "Main edit")
 
         do {
             _ = try await service.mergeBranch(name: "feature", authorName: "Tester", authorEmail: "tests@example.com")
             XCTFail("Expected merge conflict")
-        } catch { }
+        } catch LocalGitError.mergeConflictsDetected {
+            let conflictSession = try await service.conflictSession()
+            XCTAssertEqual(conflictSession.kind, .merge)
+            XCTAssertTrue(conflictSession.unmergedPaths.contains("README.md"))
+        } catch {
+            XCTFail("Expected mergeConflictsDetected, got: \(error)")
+            throw error
+        }
 
         try await service.abortMerge()
 
@@ -1672,19 +1680,7 @@ final class SyncMDTests: XCTestCase {
         try await service.stage(path: "old-name.md")
         try await service.stage(path: "subdir/mover.md")
 
-        do {
-            _ = try await service.commitAndPush(
-                message: "Initial",
-                authorName: "SyncMD Tests",
-                authorEmail: "tests@example.com",
-                pat: ""
-            )
-            XCTFail("Expected push to fail without origin remote")
-        } catch LocalGitError.pushFailed {
-            // Expected: commit succeeded, push failed because there is no remote.
-        } catch {
-            XCTFail("Unexpected error during initial commit: \(error)")
-        }
+        try await commitLocalFixtureChanges(using: service, message: "Initial")
 
         let cleanInfo = try await service.repoInfo()
         XCTAssertEqual(cleanInfo.changeCount, 0)
@@ -1716,19 +1712,7 @@ final class SyncMDTests: XCTestCase {
         try await service.stage(path: "new-name.md")
         try await service.stage(path: "other/mover.md")
 
-        do {
-            _ = try await service.commitAndPush(
-                message: "Delete, rename, move",
-                authorName: "SyncMD Tests",
-                authorEmail: "tests@example.com",
-                pat: ""
-            )
-            XCTFail("Expected push to fail without origin remote")
-        } catch LocalGitError.pushFailed {
-            // Expected: commit succeeded, push failed because there is no remote.
-        } catch {
-            XCTFail("Unexpected error during delete/rename/move commit: \(error)")
-        }
+        try await commitLocalFixtureChanges(using: service, message: "Delete, rename, move")
 
         let afterInfo = try await service.repoInfo()
         XCTAssertEqual(afterInfo.changeCount, 0, "All deletions/renames/moves should be committed and the working tree clean")

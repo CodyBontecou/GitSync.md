@@ -116,6 +116,25 @@ syncmd://x-callback-url/<action>?repo=<folder-name>&x-success=<url>&x-error=<url
 
 The pre-built `libgit2.xcframework` is included in the repo so no additional dependency setup is needed.
 
+## Testing
+
+Run the unit XCTest gate locally with:
+
+```bash
+xcodebuild test \
+  -project Sync.md.xcodeproj \
+  -scheme Sync.md \
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
+  -only-testing:SyncMDTests \
+  -parallel-testing-enabled NO
+```
+
+If your machine does not have an `iPhone 17` simulator, replace the destination with any available iPhone simulator from `xcrun simctl list devices available`.
+
+The local git tests create isolated temporary repositories via `FileManager.default.temporaryDirectory` and clean them up with `defer`. Fixture setup should use local-only commits (`commitLocalFixtureChanges` in `SyncMDTests`) unless the test is explicitly exercising push behavior; this avoids depending on expected push failures from repositories without an `origin` remote.
+
+The same unit gate runs in GitHub Actions via `.github/workflows/xctest.yml` on pull requests and pushes to `main`.
+
 ### OAuth Server (Optional)
 
 The `oauth-server/` directory contains Vercel serverless functions that handle the GitHub OAuth flow. If you want to use OAuth sign-in (instead of a PAT), you'll need to:
