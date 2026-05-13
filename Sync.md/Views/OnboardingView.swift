@@ -11,7 +11,7 @@ struct OnboardingView: View {
             title: ["SYNC", ".MD"],
             accentIndex: 1,
             subtitle: "YOUR REPOS, ON YOUR IPHONE",
-            description: "Clone any GitHub repository to your device and keep it in sync. Pull changes, commit edits, and push — all from your pocket."
+            description: "Clone any Git repository to your device — GitHub, self-hosted, SSH, or public remotes — and keep it in sync from your pocket."
         ),
         OnboardingSlide(
             title: ["EDIT", "ANYWHERE"],

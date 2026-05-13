@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• First repo now shows a confirmation reminder so you don't accidentally use your free slot on the wrong repo\n• New name: GitSync.md—same app, clearer purpose\n• Background polish and stability fixes"
-  app_version = "2.1.0"
+  release_notes_text = "• Add support for non-GitHub Git remotes, including self-hosted HTTPS and SSH repositories\n• Add a no-GitHub setup path for local and alternative Git workflows\n• Improve repository authentication handling for public, token, and SSH-key remotes"
+  app_version = "2.1.1"
 
   submission_information = {
     add_id_info_uses_idfa: false,

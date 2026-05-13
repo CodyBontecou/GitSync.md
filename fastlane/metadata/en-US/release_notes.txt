@@ -1,3 +1,3 @@
-• Resolve merge conflicts in-app without leaving the editor
-• Fixed iPhone pull falsely blocked as "local edits" after a desktop push
-• General stability improvements
+• Add support for non-GitHub Git remotes, including self-hosted HTTPS and SSH repositories
+• Add a no-GitHub setup path for local and alternative Git workflows
+• Improve repository authentication handling for public, token, and SSH-key remotes

@@ -13,6 +13,8 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     /// and `vaultFolderName` should be appended to form the actual repo path.
     /// This mirrors `git clone` behaviour: clone into `<parent>/<repoName>/`.
     var customLocationIsParent: Bool
+    var authMethod: GitAuthMethod
+    var authUsername: String
     var gitState: GitState
 
     init(
@@ -24,6 +26,8 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         vaultFolderName: String,
         customVaultBookmarkData: Data? = nil,
         customLocationIsParent: Bool = false,
+        authMethod: GitAuthMethod? = nil,
+        authUsername: String = "",
         gitState: GitState = .empty
     ) {
         self.id = id
@@ -34,6 +38,14 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         self.vaultFolderName = vaultFolderName
         self.customVaultBookmarkData = customVaultBookmarkData
         self.customLocationIsParent = customLocationIsParent
+        if let authMethod {
+            self.authMethod = authMethod
+        } else if let remote = GitRemoteURL.parse(repoURL), remote.isGitHub && !remote.isSSH {
+            self.authMethod = .gitHubPAT
+        } else {
+            self.authMethod = .none
+        }
+        self.authUsername = authUsername
         self.gitState = gitState
     }
 
@@ -42,7 +54,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, repoURL, branch, authorName, authorEmail
         case vaultFolderName, customVaultBookmarkData
-        case customLocationIsParent, gitState
+        case customLocationIsParent, authMethod, authUsername, gitState
     }
 
     init(from decoder: Decoder) throws {
@@ -55,17 +67,25 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         vaultFolderName         = try c.decode(String.self, forKey: .vaultFolderName)
         customVaultBookmarkData = try c.decodeIfPresent(Data.self, forKey: .customVaultBookmarkData)
         customLocationIsParent  = try c.decodeIfPresent(Bool.self, forKey: .customLocationIsParent) ?? false
+        if let decodedAuthMethod = try c.decodeIfPresent(GitAuthMethod.self, forKey: .authMethod) {
+            authMethod = decodedAuthMethod
+        } else if let remote = GitRemoteURL.parse(repoURL), remote.isGitHub && !remote.isSSH {
+            authMethod = .gitHubPAT
+        } else {
+            authMethod = .none
+        }
+        authUsername            = try c.decodeIfPresent(String.self, forKey: .authUsername) ?? ""
         gitState                = try c.decode(GitState.self, forKey: .gitState)
     }
 
     // MARK: - Computed
 
     var displayName: String {
-        GitHubService.parseRepoURL(repoURL)?.repo ?? vaultFolderName
+        GitRemoteURL.parse(repoURL)?.repoName ?? vaultFolderName
     }
 
     var ownerName: String? {
-        GitHubService.parseRepoURL(repoURL)?.owner
+        GitRemoteURL.parse(repoURL)?.ownerName
     }
 
     var isCloned: Bool {

@@ -87,6 +87,43 @@ final class SyncMDTests: XCTestCase {
         )
     }
 
+    func testGitRemoteURLParsesGitHubSelfHostedAndSSHRemotes() {
+        let gitHubShortcut = GitRemoteURL.parse("owner/repo")
+        XCTAssertEqual(gitHubShortcut?.cloneURLString, "https://github.com/owner/repo.git")
+        XCTAssertEqual(gitHubShortcut?.repoName, "repo")
+        XCTAssertEqual(gitHubShortcut?.ownerName, "owner")
+        XCTAssertEqual(gitHubShortcut?.isGitHub, true)
+
+        let selfHosted = GitRemoteURL.parse("https://git.example.com/team/notes.git")
+        XCTAssertEqual(selfHosted?.repoName, "notes")
+        XCTAssertEqual(selfHosted?.ownerName, "team")
+        XCTAssertEqual(selfHosted?.isGitHub, false)
+        XCTAssertEqual(selfHosted?.cloneURLString, "https://git.example.com/team/notes.git")
+
+        let ssh = GitRemoteURL.parse("git@git.example.com:team/notes.git")
+        XCTAssertEqual(ssh?.repoName, "notes")
+        XCTAssertEqual(ssh?.ownerName, "team")
+        XCTAssertEqual(ssh?.username, "git")
+        XCTAssertEqual(ssh?.isSSH, true)
+    }
+
+    func testGitRemoteCredentialsTransportPayloadRoundTripsAndSupportsLegacyPAT() {
+        let credentials = GitRemoteCredentials.sshKey(
+            username: "git",
+            privateKey: "-----BEGIN OPENSSH PRIVATE KEY-----\nkey\n-----END OPENSSH PRIVATE KEY-----",
+            publicKey: "ssh-ed25519 AAAA test",
+            passphrase: "secret"
+        )
+
+        let decoded = GitRemoteCredentials.fromTransportPayload(credentials.transportPayload)
+        XCTAssertEqual(decoded, credentials)
+
+        let legacy = GitRemoteCredentials.fromTransportPayload("ghp_legacy")
+        XCTAssertEqual(legacy.method, .gitHubPAT)
+        XCTAssertEqual(legacy.username, "x-access-token")
+        XCTAssertEqual(legacy.password, "ghp_legacy")
+    }
+
     @MainActor
     func testAppStatePullBlockedByLocalChangesDoesNotMutateRepoState() async throws {
         let fixture = try GitFixtureFactory.make(state: .dirty)

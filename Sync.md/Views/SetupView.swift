@@ -97,7 +97,7 @@ struct SetupView: View {
                 Rectangle()
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
-                Text("ANY REPO, SYNCED TO YOUR IPHONE")
+                Text("ANY GIT REPO, SYNCED TO YOUR IPHONE")
                     .font(.system(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1.5)
@@ -133,6 +133,13 @@ struct SetupView: View {
                 withAnimation(.easeInOut(duration: 0.25)) {
                     showPATFlow = true
                 }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 16)
+
+            // Continue without GitHub for self-hosted, SSH, public, or local repos.
+            BSecondaryButton(title: "Continue without GitHub", icon: "network") {
+                presentSaveLocationStep()
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 16)
