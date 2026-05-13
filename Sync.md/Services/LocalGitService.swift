@@ -170,18 +170,109 @@ private func makeStrarray(_ cStr: UnsafeMutablePointer<CChar>, into arr: inout g
 // MARK: - Credential Callback
 
 /// Context passed through libgit2's credential callback payload.
-private final class CredentialContext {
-    let username: String
-    let password: String
-    var didAttempt = false
+private class CredentialContext {
+    let credentials: GitRemoteCredentials
+    var didAttemptUsername = false
+    var didAttemptUserPass = false
+    var didAttemptSSHKey = false
+    var didAttemptDefault = false
 
-    init(username: String, password: String) {
-        self.username = username
-        self.password = password
+    init(credentials: GitRemoteCredentials) {
+        self.credentials = credentials
+    }
+
+    func resetAttempts() {
+        didAttemptUsername = false
+        didAttemptUserPass = false
+        didAttemptSSHKey = false
+        didAttemptDefault = false
     }
 }
 
-/// libgit2 credential callback for HTTPS + PAT authentication.
+private func withOptionalCString<R>(_ string: String?, _ body: (UnsafePointer<CChar>?) -> R) -> R {
+    guard let string, !string.isEmpty else { return body(nil) }
+    return string.withCString { body($0) }
+}
+
+private func preferredUsername(from ctx: CredentialContext, usernameFromURL: UnsafePointer<CChar>?) -> String {
+    let configured = ctx.credentials.username.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !configured.isEmpty { return configured }
+    if let usernameFromURL { return String(cString: usernameFromURL) }
+    if ctx.credentials.method == .sshKey { return "git" }
+    if ctx.credentials.method == .gitHubPAT { return "x-access-token" }
+    return ""
+}
+
+private func acquireCredential(
+    cred: UnsafeMutablePointer<UnsafeMutablePointer<git_credential>?>?,
+    usernameFromURL: UnsafePointer<CChar>?,
+    allowedTypes: UInt32,
+    context ctx: CredentialContext
+) -> Int32 {
+    let credentials = ctx.credentials
+    let username = preferredUsername(from: ctx, usernameFromURL: usernameFromURL)
+
+    if allowedTypes & GIT_CREDENTIAL_USERNAME.rawValue != 0, usernameFromURL == nil, !username.isEmpty {
+        if ctx.didAttemptUsername { return GIT_EUSER.rawValue }
+        ctx.didAttemptUsername = true
+        return git_credential_username_new(cred, username)
+    }
+
+    if allowedTypes & GIT_CREDENTIAL_SSH_MEMORY.rawValue != 0 || allowedTypes & GIT_CREDENTIAL_SSH_KEY.rawValue != 0 {
+        guard credentials.method == .sshKey,
+              !credentials.privateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !username.isEmpty else {
+            return GIT_EUSER.rawValue
+        }
+        if ctx.didAttemptSSHKey { return GIT_EUSER.rawValue }
+        ctx.didAttemptSSHKey = true
+
+        let publicKey = credentials.publicKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            ? nil
+            : credentials.publicKey
+        let passphrase = credentials.passphrase.isEmpty ? nil : credentials.passphrase
+
+        return username.withCString { usernameC in
+            credentials.privateKey.withCString { privateKeyC in
+                withOptionalCString(publicKey) { publicKeyC in
+                    withOptionalCString(passphrase) { passphraseC in
+                        git_credential_ssh_key_memory_new(
+                            cred,
+                            usernameC,
+                            publicKeyC,
+                            privateKeyC,
+                            passphraseC
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    if allowedTypes & GIT_CREDENTIAL_USERPASS_PLAINTEXT.rawValue != 0 {
+        guard credentials.method == .gitHubPAT || credentials.method == .httpsToken else {
+            return GIT_EUSER.rawValue
+        }
+        guard !credentials.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return GIT_EUSER.rawValue
+        }
+        if ctx.didAttemptUserPass { return GIT_EUSER.rawValue }
+        ctx.didAttemptUserPass = true
+
+        let effectiveUsername = username.isEmpty ? "x-access-token" : username
+        return git_credential_userpass_plaintext_new(cred, effectiveUsername, credentials.password)
+    }
+
+    if allowedTypes & GIT_CREDENTIAL_DEFAULT.rawValue != 0 {
+        if ctx.didAttemptDefault { return GIT_EUSER.rawValue }
+        ctx.didAttemptDefault = true
+        return git_credential_default_new(cred)
+    }
+
+    return GIT_EUSER.rawValue
+}
+
+/// libgit2 credential callback for HTTPS/PAT and SSH-key authentication.
 nonisolated private func credentialCallback(
     cred: UnsafeMutablePointer<UnsafeMutablePointer<git_credential>?>?,
     url: UnsafePointer<CChar>?,
@@ -191,15 +282,32 @@ nonisolated private func credentialCallback(
 ) -> Int32 {
     guard let payload else { return GIT_EUSER.rawValue }
     let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    return acquireCredential(
+        cred: cred,
+        usernameFromURL: usernameFromURL,
+        allowedTypes: allowedTypes,
+        context: ctx
+    )
+}
 
-    // Prevent infinite retry loop — only attempt once
-    if ctx.didAttempt { return GIT_EUSER.rawValue }
-    ctx.didAttempt = true
-
-    if allowedTypes & GIT_CREDENTIAL_USERPASS_PLAINTEXT.rawValue != 0 {
-        return git_credential_userpass_plaintext_new(cred, ctx.username, ctx.password)
+/// Host-key/certificate callback. We honor valid certificates. For SSH host
+/// keys, iOS does not provide an OpenSSH known_hosts database for libgit2, so
+/// we allow the connection when the user explicitly supplied an SSH key for
+/// this repo. HTTPS certificate failures still fail.
+nonisolated private func certificateCheckCallback(
+    cert: UnsafeMutablePointer<git_cert>?,
+    valid: Int32,
+    host: UnsafePointer<CChar>?,
+    payload: UnsafeMutableRawPointer?
+) -> Int32 {
+    if valid != 0 { return 0 }
+    guard let payload,
+          let cert,
+          cert.pointee.cert_type == GIT_CERT_HOSTKEY_LIBSSH2 else {
+        return GIT_ECERTIFICATE.rawValue
     }
-    return GIT_EUSER.rawValue
+    let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    return ctx.credentials.method == .sshKey ? 0 : GIT_ECERTIFICATE.rawValue
 }
 
 // MARK: - Push Callbacks
@@ -211,16 +319,8 @@ nonisolated private func credentialCallback(
 /// only way to detect those rejections is via the `push_update_reference`
 /// callback, which is called once per ref with a non-nil `status` string when
 /// that ref was rejected.
-private final class PushContext {
-    let username: String
-    let password: String
-    var didAttempt = false
+private final class PushContext: CredentialContext {
     var rejectedRefs: [(refname: String, reason: String)] = []
-
-    init(username: String, password: String) {
-        self.username = username
-        self.password = password
-    }
 }
 
 nonisolated private func pushCredentialCallback(
@@ -232,14 +332,12 @@ nonisolated private func pushCredentialCallback(
 ) -> Int32 {
     guard let payload else { return GIT_EUSER.rawValue }
     let ctx = Unmanaged<PushContext>.fromOpaque(payload).takeUnretainedValue()
-
-    if ctx.didAttempt { return GIT_EUSER.rawValue }
-    ctx.didAttempt = true
-
-    if allowedTypes & GIT_CREDENTIAL_USERPASS_PLAINTEXT.rawValue != 0 {
-        return git_credential_userpass_plaintext_new(cred, ctx.username, ctx.password)
-    }
-    return GIT_EUSER.rawValue
+    return acquireCredential(
+        cred: cred,
+        usernameFromURL: usernameFromURL,
+        allowedTypes: allowedTypes,
+        context: ctx
+    )
 }
 
 nonisolated private func pushUpdateReferenceCallback(
@@ -357,15 +455,16 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var repo: OpaquePointer?
             defer { if let repo { git_repository_free(repo) } }
 
-            // Configure clone options with HTTPS credential callback
+            // Configure clone options with HTTPS/PAT and SSH-key callbacks.
             var opts = git_clone_options()
             git_clone_options_init(&opts, UInt32(GIT_CLONE_OPTIONS_VERSION))
 
-            let ctx = CredentialContext(username: "x-access-token", password: pat)
+            let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
             let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
             defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
             opts.fetch_opts.callbacks.credentials = credentialCallback
+            opts.fetch_opts.callbacks.certificate_check = certificateCheckCallback
             opts.fetch_opts.callbacks.payload = ctxPtr
 
             let code = git_clone(&repo, remoteURL, dest, &opts)
@@ -2299,11 +2398,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
-            let ctx = PushContext(username: "x-access-token", password: pat)
+            let ctx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
             let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(ctxPtr).release() }
 
             pushOpts.callbacks.credentials = pushCredentialCallback
+            pushOpts.callbacks.certificate_check = certificateCheckCallback
             pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
             pushOpts.callbacks.payload = ctxPtr
 
@@ -2335,7 +2435,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // from origin to confirm the tag is actually there. The credential
             // one-shot guard from the push has to be reset before reconnecting,
             // otherwise pushCredentialCallback will refuse to authenticate.
-            ctx.didAttempt = false
+            ctx.resetAttempts()
             git_remote_disconnect(pushRemote)
             try git2Check(
                 git_remote_connect(pushRemote, GIT_DIRECTION_FETCH, &pushOpts.callbacks, nil, nil),
@@ -2478,16 +2578,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // Push to origin
             var pushRemote: OpaquePointer?
             defer { if let pushRemote { git_remote_free(pushRemote) } }
-            try git2Check(git_remote_lookup(&pushRemote, repo, "origin"), context: "Lookup origin for push")
+            let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
+            if remoteCode != 0 {
+                throw LocalGitError.pushFailed("No remote 'origin' configured.")
+            }
 
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
-            let pushCtx = PushContext(username: "x-access-token", password: pat)
+            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
             let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
 
             pushOpts.callbacks.credentials = pushCredentialCallback
+            pushOpts.callbacks.certificate_check = certificateCheckCallback
             pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
             pushOpts.callbacks.payload = pushCtxPtr
 
@@ -2577,16 +2681,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var pushRemote: OpaquePointer?
             defer { if let pushRemote { git_remote_free(pushRemote) } }
-            try git2Check(git_remote_lookup(&pushRemote, repo, "origin"), context: "Lookup origin for push")
+            let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
+            if remoteCode != 0 {
+                throw LocalGitError.pushFailed("No remote 'origin' configured.")
+            }
 
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
-            let pushCtx = PushContext(username: "x-access-token", password: pat)
+            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
             let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
 
             pushOpts.callbacks.credentials = pushCredentialCallback
+            pushOpts.callbacks.certificate_check = certificateCheckCallback
             pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
             pushOpts.callbacks.payload = pushCtxPtr
 
@@ -3044,11 +3152,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         var fetchOpts = git_fetch_options()
         git_fetch_options_init(&fetchOpts, UInt32(GIT_FETCH_OPTIONS_VERSION))
 
-        let ctx = CredentialContext(username: "x-access-token", password: pat)
+        let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
         let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
         defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
         fetchOpts.callbacks.credentials = credentialCallback
+        fetchOpts.callbacks.certificate_check = certificateCheckCallback
         fetchOpts.callbacks.payload = ctxPtr
 
         try git2Check(git_remote_fetch(remote, nil, &fetchOpts, nil), context: "Fetch")

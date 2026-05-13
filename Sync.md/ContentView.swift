@@ -10,7 +10,7 @@ struct ContentView: View {
         Group {
             if !state.hasSeenOnboarding && state.repos.isEmpty {
                 OnboardingView()
-            } else if (state.isSignedIn && state.hasCompletedOnboarding) || !state.repos.isEmpty {
+            } else if state.hasCompletedOnboarding || !state.repos.isEmpty {
                 RepoListView()
             } else {
                 SetupView()

@@ -1,0 +1,13 @@
+name = "gitsyncmd-site-router"
+main = "src/index.ts"
+compatibility_date = "2026-05-07"
+account_id = "e4265f322e6380ee832b83ad45e3e8c0"
+workers_dev = false
+
+[[routes]]
+pattern = "gitsyncmd.isolated.tech"
+custom_domain = true
+
+[[routes]]
+pattern = "syncmd.isolated.tech"
+custom_domain = true

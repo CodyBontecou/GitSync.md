@@ -17,6 +17,14 @@ struct AddRepoView: View {
     @State private var showRepoPicker = false
     @State private var showManualEntry = false
 
+    // Remote authentication
+    @State private var authMethod: GitAuthMethod = .none
+    @State private var authUsername: String = ""
+    @State private var authPassword: String = ""
+    @State private var sshPrivateKey: String = ""
+    @State private var sshPublicKey: String = ""
+    @State private var sshPassphrase: String = ""
+
     // Local repo selection
     @State private var localRepoURL: URL? = nil
     @State private var localRepoBookmarkData: Data? = nil
@@ -59,6 +67,7 @@ struct AddRepoView: View {
                             addLocalRepoButton
                         } else if !selectedRepoURL.isEmpty {
                             configSection
+                            authSection
                             cloneLocationSection
                             addButton
                         }
@@ -113,6 +122,7 @@ struct AddRepoView: View {
                     localRepoURL = nil
                     localRepoBookmarkData = nil
                     localRepoError = nil
+                    configureAuthDefaults(for: repo.htmlURL)
                 }
             }
             .fileImporter(
@@ -144,9 +154,10 @@ struct AddRepoView: View {
                     showManualEntry = false
                     localRepoURL = nil
                     localRepoBookmarkData = nil
-                    if let parsed = GitHubService.parseRepoURL(initialURL) {
-                        vaultName = parsed.repo
+                    if let parsed = GitRemoteURL.parse(initialURL) {
+                        vaultName = parsed.repoName
                     }
+                    configureAuthDefaults(for: initialURL)
                 }
                 if state.isSignedIn,
                    (state.defaultAuthorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -289,29 +300,34 @@ struct AddRepoView: View {
                         BTextField(
                             label: "Repository URL",
                             text: $selectedRepoURL,
-                            placeholder: "https://github.com/user/repo",
+                            placeholder: "https://host/user/repo or git@host:user/repo.git",
                             autocapitalization: .never
                         )
                         .padding(.horizontal, 16)
 
-                        if !selectedRepoURL.isEmpty && GitHubService.parseRepoURL(selectedRepoURL) == nil {
+                        if !selectedRepoURL.isEmpty && GitRemoteURL.parse(selectedRepoURL) == nil {
                             HStack(spacing: 6) {
                                 BBadge(text: "INVALID URL", style: .error)
+                                Text("Use HTTPS, SSH, git://, file://, or owner/repo.")
+                                    .font(.system(size: 13, design: .monospaced))
+                                    .foregroundStyle(Color.brutalError)
                             }
                             .padding(.horizontal, 16)
                         }
                     }
                     .padding(.vertical, 4)
                     .onChange(of: selectedRepoURL) { _, newValue in
-                        if let parsed = GitHubService.parseRepoURL(newValue) {
-                            vaultName = parsed.repo
+                        if let parsed = GitRemoteURL.parse(newValue) {
+                            vaultName = parsed.repoName
                         }
+                        configureAuthDefaults(for: newValue)
                     }
                 } else {
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             showManualEntry = true
                             selectedRepoURL = ""
+                            configureAuthDefaults(for: "")
                         }
                     } label: {
                         HStack(spacing: 6) {
@@ -366,6 +382,198 @@ struct AddRepoView: View {
             }
             .padding(.horizontal, 20)
         }
+    }
+
+    // MARK: - Authentication
+
+    private var authSection: some View {
+        let remote = GitRemoteURL.parse(selectedRepoURL)
+        let isGitHub = remote?.isGitHub == true
+        let isSSH = remote?.isSSH == true
+        let canUseGitHubPAT = isGitHub && !isSSH
+
+        return VStack(alignment: .leading, spacing: 8) {
+            BSectionHeader(
+                title: "Authentication",
+                subtitle: canUseGitHubPAT
+                    ? "Use GitHub sign-in, a token, an SSH key, or public access."
+                    : "Use public access, an HTTPS token, or an SSH private key."
+            )
+            .padding(.horizontal, 20)
+
+            BCard(padding: 0) {
+                VStack(spacing: 0) {
+                    if canUseGitHubPAT && state.isSignedIn {
+                        authOption(
+                            method: .gitHubPAT,
+                            icon: "🐙",
+                            title: "GitHub Account",
+                            subtitle: "Use your signed-in GitHub token"
+                        )
+                        BDivider().padding(.horizontal, 16)
+                    }
+
+                    authOption(
+                        method: .none,
+                        icon: "🌐",
+                        title: "No Authentication",
+                        subtitle: isSSH ? "Only works for public SSH remotes" : "Public repositories and file remotes"
+                    )
+
+                    BDivider().padding(.horizontal, 16)
+
+                    authOption(
+                        method: .httpsToken,
+                        icon: "🔑",
+                        title: "HTTPS Token / Password",
+                        subtitle: "GitLab, Gitea, Bitbucket, or self-hosted HTTPS"
+                    )
+
+                    BDivider().padding(.horizontal, 16)
+
+                    authOption(
+                        method: .sshKey,
+                        icon: "🗝️",
+                        title: "SSH Private Key",
+                        subtitle: "For git@host:owner/repo.git or ssh:// remotes"
+                    )
+
+                    authFields
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+
+    private func authOption(method: GitAuthMethod, icon: String, title: String, subtitle: String) -> some View {
+        Button {
+            authMethod = method
+            if method == .sshKey && authUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                authUsername = GitRemoteURL.parse(selectedRepoURL)?.username ?? "git"
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Text(icon)
+                    .font(.system(size: 18))
+                    .frame(width: 32)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(Color.brutalText)
+                    Text(subtitle)
+                        .font(.system(size: 13, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                }
+
+                Spacer()
+
+                if authMethod == method {
+                    BBadge(text: "selected", style: .success)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var authFields: some View {
+        switch authMethod {
+        case .gitHubPAT:
+            BDivider().padding(.horizontal, 16)
+            authHelpRow("Using the GitHub token from your account. Sign out or choose another method to use a different provider.")
+
+        case .none:
+            BDivider().padding(.horizontal, 16)
+            authHelpRow("GitSync.md will not provide credentials. Choose this for public remotes or local file remotes.")
+
+        case .httpsToken:
+            BDivider().padding(.horizontal, 16)
+            VStack(spacing: 12) {
+                BTextField(
+                    label: "Username",
+                    text: $authUsername,
+                    placeholder: GitRemoteURL.parse(selectedRepoURL)?.username ?? "username",
+                    autocapitalization: .never
+                )
+                BTextField(
+                    label: "Token / Password",
+                    text: $authPassword,
+                    placeholder: "token or password",
+                    isSecure: true,
+                    autocapitalization: .never
+                )
+            }
+            .padding(16)
+
+        case .sshKey:
+            BDivider().padding(.horizontal, 16)
+            VStack(alignment: .leading, spacing: 12) {
+                BTextField(
+                    label: "SSH Username",
+                    text: $authUsername,
+                    placeholder: GitRemoteURL.parse(selectedRepoURL)?.username ?? "git",
+                    autocapitalization: .never
+                )
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("PRIVATE KEY")
+                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(2)
+                    TextEditor(text: $sshPrivateKey)
+                        .font(.system(size: 13, design: .monospaced))
+                        .frame(minHeight: 130)
+                        .scrollContentBackground(.hidden)
+                        .padding(8)
+                        .background(Color.brutalSurface)
+                        .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                    Text("Stored in Keychain. Paste an OpenSSH private key; passphrase is optional.")
+                        .font(.system(size: 12, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                }
+
+                BTextField(
+                    label: "Passphrase (Optional)",
+                    text: $sshPassphrase,
+                    placeholder: "leave blank if none",
+                    isSecure: true,
+                    autocapitalization: .never
+                )
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("PUBLIC KEY (OPTIONAL)")
+                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                        .tracking(2)
+                    TextEditor(text: $sshPublicKey)
+                        .font(.system(size: 13, design: .monospaced))
+                        .frame(minHeight: 72)
+                        .scrollContentBackground(.hidden)
+                        .padding(8)
+                        .background(Color.brutalSurface)
+                        .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                }
+            }
+            .padding(16)
+        }
+    }
+
+    private func authHelpRow(_ message: String) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "info.circle")
+                .font(.system(size: 12))
+                .foregroundStyle(Color.brutalText)
+            Text(message)
+                .font(.system(size: 13, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 
     // MARK: - Clone Location
@@ -533,7 +741,20 @@ struct AddRepoView: View {
     }
 
     private var canSubmitRemoteRepo: Bool {
-        GitHubService.parseRepoURL(selectedRepoURL) != nil && !state.isSyncing
+        GitRemoteURL.parse(selectedRepoURL) != nil && isAuthConfigValid && !state.isSyncing
+    }
+
+    private var isAuthConfigValid: Bool {
+        switch authMethod {
+        case .gitHubPAT:
+            return !state.pat.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .none:
+            return true
+        case .httpsToken:
+            return !authPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .sshKey:
+            return !sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
     }
 
     private var missingAuthorFields: [String] {
@@ -543,12 +764,69 @@ struct AddRepoView: View {
         return fields
     }
 
+    private var missingAuthFields: [String] {
+        switch authMethod {
+        case .gitHubPAT:
+            return state.pat.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? ["GitHub sign-in"] : []
+        case .none:
+            return []
+        case .httpsToken:
+            return authPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? ["Token / Password"] : []
+        case .sshKey:
+            return sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? ["SSH Private Key"] : []
+        }
+    }
+
     private func showMissingFieldsError(_ fields: [String]) {
         guard !fields.isEmpty else { return }
         validationMessage = fields.count == 1
             ? "Please fill in \(fields[0])."
             : "Please fill in these fields: \(fields.joined(separator: ", "))."
         showValidationAlert = true
+    }
+
+    private func configureAuthDefaults(for url: String) {
+        guard let remote = GitRemoteURL.parse(url) else {
+            authMethod = .none
+            authUsername = ""
+            return
+        }
+
+        if remote.isSSH {
+            if authMethod == .gitHubPAT || authMethod == .httpsToken {
+                authMethod = .sshKey
+            } else if authMethod == .none && sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                authMethod = .sshKey
+            }
+        } else if remote.isGitHub && state.isSignedIn {
+            authMethod = .gitHubPAT
+        } else if authMethod == .gitHubPAT || authMethod == .sshKey {
+            authMethod = .none
+        }
+
+        let preferredUsername = remote.username ?? (remote.isSSH ? "git" : "")
+        if authUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            authUsername = preferredUsername
+        }
+    }
+
+    private func remoteCredentials() -> GitRemoteCredentials {
+        let username = authUsername.trimmingCharacters(in: .whitespacesAndNewlines)
+        switch authMethod {
+        case .gitHubPAT:
+            return .gitHubPAT(state.pat)
+        case .none:
+            return .none
+        case .httpsToken:
+            return .httpsToken(username: username, password: authPassword)
+        case .sshKey:
+            return .sshKey(
+                username: username.isEmpty ? (GitRemoteURL.parse(selectedRepoURL)?.username ?? "git") : username,
+                privateKey: sshPrivateKey,
+                publicKey: sshPublicKey,
+                passphrase: sshPassphrase
+            )
+        }
     }
 
     // MARK: - Actions
@@ -588,8 +866,13 @@ struct AddRepoView: View {
     }
 
     private func addAndClone() {
-        let missing = missingAuthorFields
+        let missing = missingAuthorFields + missingAuthFields
         guard missing.isEmpty else { showMissingFieldsError(missing); return }
+        guard GitRemoteURL.parse(selectedRepoURL) != nil else {
+            validationMessage = "Please enter a valid Git remote URL."
+            showValidationAlert = true
+            return
+        }
 
         // Gate 2: check whether this specific URL has been seen before.
         // Re-adding the same repo (after delete or reinstall) is always free;
@@ -614,24 +897,30 @@ struct AddRepoView: View {
         purchaseManager.recordRepoAdded(identifier: identifier)
         let trimmedBranch = selectedBranch.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedVaultName = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let credentials = remoteCredentials()
         let config = RepoConfig(
-            repoURL: selectedRepoURL,
+            repoURL: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines),
             branch: trimmedBranch.isEmpty ? "main" : trimmedBranch,
             authorName: trimmedAuthorName,
             authorEmail: trimmedAuthorEmail,
             vaultFolderName: trimmedVaultName.isEmpty ? "vault" : trimmedVaultName,
             customVaultBookmarkData: customVaultBookmarkData,
-            customLocationIsParent: customVaultBookmarkData != nil
+            customLocationIsParent: customVaultBookmarkData != nil,
+            authMethod: authMethod,
+            authUsername: credentials.username
         )
         state.addRepo(config)
+        if authMethod == .httpsToken || authMethod == .sshKey {
+            state.saveRemoteCredentials(credentials, for: config.id)
+        }
         Task { await state.clone(repoID: config.id) }
         dismiss()
     }
 
     private func repoLabel(for url: String) -> String {
         let trimmed = url.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let parsed = GitHubService.parseRepoURL(trimmed) {
-            return "\(parsed.owner)/\(parsed.repo)"
+        if let parsed = GitRemoteURL.parse(trimmed) {
+            return parsed.displayPath
         }
         return trimmed
     }

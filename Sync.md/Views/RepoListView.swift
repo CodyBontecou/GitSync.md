@@ -178,7 +178,7 @@ struct RepoListView: View {
                 Spacer()
                 BEmptyState(
                     title: String(localized: "No Repositories"),
-                    subtitle: String(localized: "Add a GitHub repository to start\nsyncing your markdown files."),
+                    subtitle: String(localized: "Add a Git remote or open an existing\nlocal repository to start syncing."),
                     actionTitle: String(localized: "Add Repository"),
                     action: { handleAddRepoTapped() }
                 )
@@ -253,24 +253,24 @@ struct RepoListView: View {
     // MARK: - Ghost Repo Card
 
     /// Repos that were previously added (tracked in Keychain) but are no longer
-    /// in the active `state.repos` list. Only HTTP(S) URLs are shown — local file
-    /// paths are device-specific and aren't useful to surface here.
+    /// in the active `state.repos` list. Local file paths are device-specific,
+    /// so only parseable remote URLs are surfaced here.
     private var ghostRepoIdentifiers: [String] {
         guard !state.isDemoMode else { return [] }
         let activeURLs = Set(
             state.repos.map { $0.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
         )
         return purchaseManager.seenRepoIdentifiers()
-            .filter { !activeURLs.contains($0) && $0.hasPrefix("http") }
+            .filter { !activeURLs.contains($0) && GitRemoteURL.parse($0) != nil }
             .sorted()
     }
 
     private func ghostRepoCard(_ identifier: String) -> some View {
         let repoName: String
         let ownerName: String?
-        if let parsed = GitHubService.parseRepoURL(identifier) {
-            repoName  = parsed.repo
-            ownerName = parsed.owner
+        if let parsed = GitRemoteURL.parse(identifier) {
+            repoName  = parsed.repoName
+            ownerName = parsed.ownerName
         } else {
             repoName  = URL(string: identifier)?.lastPathComponent ?? identifier
             ownerName = nil
@@ -487,15 +487,17 @@ struct RepoListView: View {
     }
 
     private func performGhostClone(_ identifier: String) {
-        let parsed      = GitHubService.parseRepoURL(identifier)
-        let folderName  = parsed?.repo ?? URL(string: identifier)?.lastPathComponent ?? "vault"
+        let parsed      = GitRemoteURL.parse(identifier)
+        let folderName  = parsed?.repoName ?? URL(string: identifier)?.lastPathComponent ?? "vault"
 
         let config = RepoConfig(
             repoURL: identifier,
             branch: "main",
             authorName: state.defaultAuthorName,
             authorEmail: state.defaultAuthorEmail,
-            vaultFolderName: folderName
+            vaultFolderName: folderName,
+            authMethod: parsed?.isGitHub == true && parsed?.isSSH == false ? .gitHubPAT : .none,
+            authUsername: parsed?.username ?? ""
         )
 
         // recordRepoAdded is a no-op here — identifier is already in the seen set.

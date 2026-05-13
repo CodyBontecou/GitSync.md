@@ -230,6 +230,7 @@ final class CallbackURLHandler {
             throw LocalGitError.notCloned
         }
 
+        let repo       = appState.repos[idx]
         let vaultDir   = appState.vaultURL(for: repoID)
         let gitService = LocalGitService(localURL: vaultDir)
 
@@ -237,7 +238,7 @@ final class CallbackURLHandler {
             throw LocalGitError.notCloned
         }
 
-        let result = try await gitService.pull(pat: appState.pat)
+        let result = try await gitService.pull(pat: appState.authPayload(for: repo))
 
         if result.updated {
             appState.repos[idx].gitState.commitSHA    = result.newCommitSHA
@@ -272,7 +273,7 @@ final class CallbackURLHandler {
             message: commitMsg,
             authorName: repo.authorName,
             authorEmail: repo.authorEmail,
-            pat: appState.pat
+            pat: appState.authPayload(for: repo)
         )
 
         appState.repos[idx].gitState.commitSHA    = result.commitSHA

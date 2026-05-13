@@ -85,6 +85,81 @@ final class AppState {
         set { KeychainService.save(key: "github_pat", value: newValue) }
     }
 
+    // MARK: - Per-Repo Remote Credentials
+
+    private static func repoCredentialKey(_ repoID: UUID, _ suffix: String) -> String {
+        "repo_\(repoID.uuidString)_\(suffix)"
+    }
+
+    private static func firstNonEmpty(_ values: String?...) -> String? {
+        values
+            .compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .first { !$0.isEmpty }
+    }
+
+    func saveRemoteCredentials(_ credentials: GitRemoteCredentials, for repoID: UUID) {
+        clearRemoteCredentials(for: repoID)
+
+        let username = credentials.username.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !username.isEmpty {
+            KeychainService.save(key: Self.repoCredentialKey(repoID, "username"), value: username)
+        }
+        if !credentials.password.isEmpty {
+            KeychainService.save(key: Self.repoCredentialKey(repoID, "password"), value: credentials.password)
+        }
+        if !credentials.privateKey.isEmpty {
+            KeychainService.save(key: Self.repoCredentialKey(repoID, "ssh_private_key"), value: credentials.privateKey)
+        }
+        if !credentials.publicKey.isEmpty {
+            KeychainService.save(key: Self.repoCredentialKey(repoID, "ssh_public_key"), value: credentials.publicKey)
+        }
+        if !credentials.passphrase.isEmpty {
+            KeychainService.save(key: Self.repoCredentialKey(repoID, "ssh_passphrase"), value: credentials.passphrase)
+        }
+    }
+
+    func clearRemoteCredentials(for repoID: UUID) {
+        KeychainService.delete(key: Self.repoCredentialKey(repoID, "username"))
+        KeychainService.delete(key: Self.repoCredentialKey(repoID, "password"))
+        KeychainService.delete(key: Self.repoCredentialKey(repoID, "ssh_private_key"))
+        KeychainService.delete(key: Self.repoCredentialKey(repoID, "ssh_public_key"))
+        KeychainService.delete(key: Self.repoCredentialKey(repoID, "ssh_passphrase"))
+    }
+
+    func remoteCredentials(for repo: RepoConfig) -> GitRemoteCredentials {
+        switch repo.authMethod {
+        case .gitHubPAT:
+            let token = pat
+            return token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? .none : .gitHubPAT(token)
+        case .none:
+            return .none
+        case .httpsToken:
+            let username = Self.firstNonEmpty(
+                KeychainService.load(key: Self.repoCredentialKey(repo.id, "username")),
+                repo.authUsername,
+                GitRemoteURL.parse(repo.repoURL)?.username
+            ) ?? ""
+            let password = KeychainService.load(key: Self.repoCredentialKey(repo.id, "password")) ?? ""
+            return .httpsToken(username: username, password: password)
+        case .sshKey:
+            let username = Self.firstNonEmpty(
+                KeychainService.load(key: Self.repoCredentialKey(repo.id, "username")),
+                repo.authUsername,
+                GitRemoteURL.parse(repo.repoURL)?.username
+            ) ?? "git"
+            return .sshKey(
+                username: username,
+                privateKey: KeychainService.load(key: Self.repoCredentialKey(repo.id, "ssh_private_key")) ?? "",
+                publicKey: KeychainService.load(key: Self.repoCredentialKey(repo.id, "ssh_public_key")) ?? "",
+                passphrase: KeychainService.load(key: Self.repoCredentialKey(repo.id, "ssh_passphrase")) ?? ""
+            )
+        }
+    }
+
+    func authPayload(for repo: RepoConfig) -> String {
+        remoteCredentials(for: repo).transportPayload
+    }
+
     // MARK: - Dependencies
 
     private let gitRepositoryFactory: (URL) -> any GitRepositoryProtocol
@@ -528,7 +603,7 @@ final class AppState {
         let gitService = gitRepositoryFactory(vaultDir)
         guard gitService.hasGitDirectory else { return }
         do {
-            try await gitService.fetchRemote(pat: pat)
+            try await gitService.fetchRemote(pat: authPayload(for: repo))
             detectChanges(repoID: repoID)
         } catch {
             showError(message: error.localizedDescription)
@@ -758,7 +833,7 @@ final class AppState {
                 if didCommit {
                     syncProgress = String(localized: "Pushing local commit...")
                     do {
-                        try await gitService.pushCurrentBranch(pat: pat)
+                        try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
                         setPullOutcome(
                             repoID: repoID,
                             kind: .fastForwarded,
@@ -785,7 +860,7 @@ final class AppState {
 
                 syncProgress = String(localized: "Pushing merged changes...")
                 do {
-                    try await gitService.pushCurrentBranch(pat: pat)
+                    try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
                     setPullOutcome(
                         repoID: repoID,
                         kind: .fastForwarded,
@@ -1015,7 +1090,7 @@ final class AppState {
         }
 
         do {
-            try await gitService.pushTag(name: name, pat: pat)
+            try await gitService.pushTag(name: name, pat: authPayload(for: repo))
         } catch {
             showError(message: error.localizedDescription)
         }
@@ -1245,7 +1320,7 @@ final class AppState {
 
                 syncProgress = String(localized: "Pushing merged changes...")
                 do {
-                    try await gitService.pushCurrentBranch(pat: pat)
+                    try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
                     setPullOutcome(
                         repoID: repoID,
                         kind: .fastForwarded,
@@ -1362,7 +1437,7 @@ final class AppState {
 
             syncProgress = String(localized: "Pushing merged changes...")
             do {
-                try await gitService.pushCurrentBranch(pat: pat)
+                try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
                 setPullOutcome(
                     repoID: repoID,
                     kind: .fastForwarded,
@@ -1566,17 +1641,15 @@ final class AppState {
             let parentDir = vaultDir.deletingLastPathComponent()
             try fm.createDirectory(at: parentDir, withIntermediateDirectories: true)
 
-            // Build a clone-friendly URL (append .git if missing)
-            var cloneURL = repo.repoURL
-            if !cloneURL.hasSuffix(".git") {
-                cloneURL += ".git"
-            }
+            // Build a clone-friendly URL. Preserve custom remotes exactly;
+            // only expand the historical GitHub owner/repo shorthand.
+            let cloneURL = GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL
 
             let gitService = gitRepositoryFactory(vaultDir)
 
             syncProgress = String(localized: "Cloning repository...")
             DebugLogger.shared.info("clone", "Starting clone", detail: cloneURL)
-            let result = try await gitService.clone(remoteURL: cloneURL, pat: pat)
+            let result = try await gitService.clone(remoteURL: cloneURL, pat: authPayload(for: repo))
 
             // Update branch from what was actually checked out
             if repo.branch.isEmpty {
@@ -1642,7 +1715,7 @@ final class AppState {
             }
 
             DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)")
-            let plan = try await gitService.pullPlan(pat: pat)
+            let plan = try await gitService.pullPlan(pat: authPayload(for: repo))
 
             switch plan.action {
             case .upToDate:
@@ -1681,7 +1754,7 @@ final class AppState {
 
             case .fastForward:
                 syncProgress = String(localized: "Applying remote updates...")
-                let result = try await gitService.pull(pat: pat)
+                let result = try await gitService.pull(pat: authPayload(for: repo))
 
                 if !result.updated {
                     syncProgress = String(localized: "Already up to date!")
@@ -1807,7 +1880,7 @@ final class AppState {
                 message: commitMsg,
                 authorName: repo.authorName,
                 authorEmail: repo.authorEmail,
-                pat: pat
+                pat: authPayload(for: repo)
             )
 
             repo.gitState.commitSHA = result.commitSHA
@@ -1894,6 +1967,7 @@ final class AppState {
             // Try to read the remote URL from the git config
             let remoteURL = Self.readGitRemoteURL(at: resolvedURL) ?? ""
 
+            let remoteInfo = GitRemoteURL.parse(remoteURL)
             let config = RepoConfig(
                 repoURL: remoteURL,
                 branch: info.branch,
@@ -1901,6 +1975,8 @@ final class AppState {
                 authorEmail: authorEmail,
                 vaultFolderName: resolvedURL.lastPathComponent,
                 customVaultBookmarkData: bookmarkData,
+                authMethod: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false ? .gitHubPAT : .none,
+                authUsername: remoteInfo?.username ?? "",
                 gitState: GitState(
                     commitSHA: info.commitSHA,
                     treeSHA: "",
@@ -1955,6 +2031,7 @@ final class AppState {
         let vaultDir = vaultURL(for: id)
         try? FileManager.default.removeItem(at: vaultDir)
         clearCustomLocation(for: id)
+        clearRemoteCredentials(for: id)
         changeCounts.removeValue(forKey: id)
         statusEntriesByRepo.removeValue(forKey: id)
         syncStateByRepo.removeValue(forKey: id)
