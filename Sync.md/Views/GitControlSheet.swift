@@ -84,6 +84,21 @@ struct GitControlSheet: View {
             } message: {
                 Text(state.lastError ?? String(localized: "Unknown error"))
             }
+            .alert("Use Git LFS?", isPresented: Binding(
+                get: { state.pendingLFSAutoTrackingConfirmation != nil },
+                set: { isPresented in
+                    if !isPresented { state.cancelPendingLFSAutoTracking() }
+                }
+            )) {
+                Button("Use Git LFS") {
+                    Task { await state.confirmPendingLFSAutoTracking(useLFS: true) }
+                }
+                Button("Not Now", role: .cancel) {
+                    state.cancelPendingLFSAutoTracking()
+                }
+            } message: {
+                Text(state.pendingLFSAutoTrackingConfirmation?.message ?? "")
+            }
             .navigationDestination(item: $diffDestination) { dest in
                 FileDiffView(repoID: dest.repoID, path: dest.path)
             }

@@ -30,6 +30,7 @@ enum LocalGitError: LocalizedError {
     case tagAlreadyExists(String)
     case tagNotFound(String)
     case repositoryCorrupted(String)
+    case lfsFailed(String)
     case libgit2(String)
 
     var errorDescription: String? {
@@ -84,6 +85,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Tag '\(name)' was not found.")
         case .repositoryCorrupted(let msg):
             return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
+        case .lfsFailed(let msg):
+            return String(localized: "Git LFS failed: \(msg)")
         case .libgit2(let msg):
             return String(localized: "Git error: \(msg)")
         }
@@ -96,6 +99,14 @@ struct LocalCloneResult: Sendable {
     let commitSHA: String
     let branch: String
     let fileCount: Int
+    let lfsWarning: String?
+
+    init(commitSHA: String, branch: String, fileCount: Int, lfsWarning: String? = nil) {
+        self.commitSHA = commitSHA
+        self.branch = branch
+        self.fileCount = fileCount
+        self.lfsWarning = lfsWarning
+    }
 }
 
 struct LocalPullResult: Sendable {
@@ -451,7 +462,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         let dest = self.localURL.path
         let localURL = self.localURL
 
-        return try await Task.detached {
+        let result = try await Task.detached {
             var repo: OpaquePointer?
             defer { if let repo { git_repository_free(repo) } }
 
@@ -493,6 +504,24 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             return LocalCloneResult(commitSHA: commitSHA, branch: branch, fileCount: fileCount)
         }.value
+
+        var lfsWarning: String?
+        do {
+            let lfsResult = try await Self.hydrateLFSIfNeeded(localURL: localURL, pat: pat)
+            if lfsResult.checkedOutCount > 0 {
+                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after clone", detail: "\(lfsResult.checkedOutCount) files")
+            }
+        } catch LocalGitError.lfsFailed(let message) {
+            lfsWarning = "Clone completed, but some Git LFS files could not be downloaded: \(message)"
+            DebugLogger.shared.error("lfs", "Git LFS hydration after clone failed", detail: message)
+        }
+
+        return LocalCloneResult(
+            commitSHA: result.commitSHA,
+            branch: result.branch,
+            fileCount: Self.countFiles(in: localURL),
+            lfsWarning: lfsWarning
+        )
     }
 
     // MARK: - Pull (Fetch + Planning + Safe Fast-Forward)
@@ -605,8 +634,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     private func performSafeFastForward(branch: String, pat: String) async throws -> LocalPullResult {
         let path = self.localURL.path
+        let localURL = self.localURL
 
-        return try await Task.detached {
+        let result = try await Task.detached {
             var repo: OpaquePointer?
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
@@ -713,6 +743,15 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             return LocalPullResult(updated: true, newCommitSHA: oidToHex(&remoteOidCopy))
         }.value
+
+        if result.updated {
+            let lfsResult = try await Self.hydrateLFSIfNeeded(localURL: localURL, pat: pat)
+            if lfsResult.checkedOutCount > 0 {
+                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after pull", detail: "\(lfsResult.checkedOutCount) files")
+            }
+        }
+
+        return result
     }
 
     // MARK: - Branches
@@ -1825,7 +1864,18 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     /// and `git_index_update_all` (captures tracked-file deletions) so callback
     /// pushes can atomically include rename/create/delete operations without
     /// relying on rename detection timing.
+    func lfsAutoTrackingCandidates(paths: [String]? = nil) async throws -> [GitLFSAutoTrackingCandidate] {
+        let repositoryURL = self.localURL
+        return try await Task.detached {
+            try GitLFSService.autoTrackingCandidates(repositoryURL: repositoryURL, candidatePaths: paths)
+        }.value
+    }
+
     func stageAll() async throws {
+        try await stageAll(lfsAutoTrack: false)
+    }
+
+    func stageAll(lfsAutoTrack: Bool) async throws {
         let repoPath = self.localURL.path
 
         try await Task.detached {
@@ -1847,12 +1897,18 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 context: "Stage tracked deletions/modifications"
             )
 
+            try GitLFSService.cleanAndStageLFSFiles(
+                repo: repo,
+                index: index,
+                autoTrackingPolicy: lfsAutoTrack ? .default : .disabled
+            )
+
             try git2Check(git_index_write(index), context: "Write index")
         }.value
     }
 
     func stage(path: String) async throws {
-        try await stage(path: path, oldPath: nil)
+        try await stage(path: path, oldPath: nil, lfsAutoTrack: false)
     }
 
     func unstage(path: String) async throws {
@@ -1860,6 +1916,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func stage(path: String, oldPath: String?) async throws {
+        try await stage(path: path, oldPath: oldPath, lfsAutoTrack: false)
+    }
+
+    func stage(path: String, oldPath: String?, lfsAutoTrack: Bool) async throws {
         let repoPath = self.localURL.path
 
         try await Task.detached {
@@ -1901,6 +1961,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     }
                 }
             }
+
+            try GitLFSService.cleanAndStageLFSFiles(
+                repo: repo,
+                index: index,
+                candidatePaths: [path],
+                autoTrackingPolicy: lfsAutoTrack ? .default : .disabled
+            )
 
             try git2Check(git_index_write(index), context: "Write index")
         }.value
@@ -2497,9 +2564,17 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
 
-            guard try Self.hasStagedChanges(repo: repo, index: index) else {
+            let stagedPaths = try Self.stagedChangePaths(repo: repo, index: index)
+            guard !stagedPaths.isEmpty else {
                 throw LocalGitError.noChanges
             }
+
+            try GitLFSService.validateNoLargeNonLFSBlobs(repo: repo, index: index, candidatePaths: stagedPaths)
+
+            try await GitLFSService(
+                localURL: URL(fileURLWithPath: path, isDirectory: true),
+                credentials: GitRemoteCredentials.fromTransportPayload(pat)
+            ).verifyPushAllowed(changedPaths: stagedPaths)
 
             try git2Check(git_index_write(index), context: "Write index")
 
@@ -2574,6 +2649,15 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
 
             let commitSHA = oidToHex(&commitOid)
+
+            let lfsPointers = try GitLFSService.pointersInIndex(repo: repo, index: index)
+            if !lfsPointers.isEmpty {
+                let uploaded = try await GitLFSService(
+                    localURL: URL(fileURLWithPath: path, isDirectory: true),
+                    credentials: GitRemoteCredentials.fromTransportPayload(pat)
+                ).uploadObjects(lfsPointers)
+                DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+            }
 
             // Push to origin
             var pushRemote: OpaquePointer?
@@ -2677,6 +2761,31 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 branchName = String(cString: name)
             } else {
                 branchName = "main"
+            }
+
+            let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)
+
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Open index before push")
+            try GitLFSService.validateNoLargeNonLFSBlobs(
+                repo: repo,
+                index: index,
+                candidatePaths: pushedPaths.isEmpty ? nil : pushedPaths
+            )
+
+            try await GitLFSService(
+                localURL: URL(fileURLWithPath: path, isDirectory: true),
+                credentials: GitRemoteCredentials.fromTransportPayload(pat)
+            ).verifyPushAllowed(changedPaths: pushedPaths, refName: "refs/heads/\(branchName)")
+
+            let lfsPointers = try GitLFSService.pointersInIndex(repo: repo, index: index)
+            if !lfsPointers.isEmpty {
+                let uploaded = try await GitLFSService(
+                    localURL: URL(fileURLWithPath: path, isDirectory: true),
+                    credentials: GitRemoteCredentials.fromTransportPayload(pat)
+                ).uploadObjects(lfsPointers)
+                DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
             }
 
             var pushRemote: OpaquePointer?
@@ -2969,6 +3078,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     // MARK: - Helpers
 
+    private static func hydrateLFSIfNeeded(localURL: URL, pat: String) async throws -> GitLFSHydrateResult {
+        try await GitLFSService(
+            localURL: localURL,
+            credentials: GitRemoteCredentials.fromTransportPayload(pat)
+        ).hydrateWorktree()
+    }
+
     static func classifyPullAction(ahead: Int, behind: Int, hasLocalChanges: Bool) -> PullPlanAction {
         if ahead > 0 && behind > 0 {
             return .diverged
@@ -3109,17 +3225,21 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     private static func hasStagedChanges(repo: OpaquePointer?, index: OpaquePointer?) throws -> Bool {
+        try !stagedChangePaths(repo: repo, index: index).isEmpty
+    }
+
+    private static func stagedChangePaths(repo: OpaquePointer?, index: OpaquePointer?) throws -> [String] {
         var headRef: OpaquePointer?
         defer { if let headRef { git_reference_free(headRef) } }
 
         let headCode = git_repository_head(&headRef, repo)
         if headCode == GIT_EUNBORNBRANCH.rawValue || headCode == GIT_ENOTFOUND.rawValue {
-            return git_index_entrycount(index) > 0
+            return indexPaths(index: index)
         }
 
         try git2Check(headCode, context: "Read HEAD for staged diff")
         guard let headOid = git_reference_target(headRef) else {
-            return git_index_entrycount(index) > 0
+            return indexPaths(index: index)
         }
 
         var headCommit: OpaquePointer?
@@ -3141,7 +3261,70 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             context: "Diff HEAD tree to index"
         )
 
-        return git_diff_num_deltas(diff) > 0
+        return diffPaths(diff)
+    }
+
+    private static func pushedChangePaths(repo: OpaquePointer?, headRef: OpaquePointer?) throws -> [String] {
+        guard let repo, let headRef, let headOid = git_reference_target(headRef) else { return [] }
+
+        var upstreamRef: OpaquePointer?
+        let upstreamCode = git_branch_upstream(&upstreamRef, headRef)
+        defer { if let upstreamRef { git_reference_free(upstreamRef) } }
+        guard upstreamCode == 0, let upstreamOid = git_reference_target(upstreamRef) else { return [] }
+
+        var upstreamCommit: OpaquePointer?
+        defer { if let upstreamCommit { git_commit_free(upstreamCommit) } }
+        var upstreamOidCopy = upstreamOid.pointee
+        try git2Check(git_commit_lookup(&upstreamCommit, repo, &upstreamOidCopy), context: "Lookup upstream commit")
+
+        var headCommit: OpaquePointer?
+        defer { if let headCommit { git_commit_free(headCommit) } }
+        var headOidCopy = headOid.pointee
+        try git2Check(git_commit_lookup(&headCommit, repo, &headOidCopy), context: "Lookup HEAD commit")
+
+        var upstreamTree: OpaquePointer?
+        defer { if let upstreamTree { git_tree_free(upstreamTree) } }
+        try git2Check(git_commit_tree(&upstreamTree, upstreamCommit), context: "Get upstream tree")
+
+        var headTree: OpaquePointer?
+        defer { if let headTree { git_tree_free(headTree) } }
+        try git2Check(git_commit_tree(&headTree, headCommit), context: "Get HEAD tree")
+
+        var diff: OpaquePointer?
+        defer { if let diff { git_diff_free(diff) } }
+        try git2Check(
+            git_diff_tree_to_tree(&diff, repo, upstreamTree, headTree, nil),
+            context: "Diff upstream tree to HEAD"
+        )
+
+        return diffPaths(diff)
+    }
+
+    private static func indexPaths(index: OpaquePointer?) -> [String] {
+        let count = git_index_entrycount(index)
+        var paths: Set<String> = []
+        for i in 0..<count {
+            guard let entry = git_index_get_byindex(index, i),
+                  let path = entry.pointee.path else { continue }
+            paths.insert(String(cString: path).precomposedStringWithCanonicalMapping)
+        }
+        return paths.sorted()
+    }
+
+    private static func diffPaths(_ diff: OpaquePointer?) -> [String] {
+        guard let diff else { return [] }
+        let deltaCount = Int(git_diff_num_deltas(diff))
+        var paths: Set<String> = []
+        for i in 0..<deltaCount {
+            guard let delta = git_diff_get_delta(diff, i)?.pointee else { continue }
+            if let oldPath = delta.old_file.path {
+                paths.insert(String(cString: oldPath).precomposedStringWithCanonicalMapping)
+            }
+            if let newPath = delta.new_file.path {
+                paths.insert(String(cString: newPath).precomposedStringWithCanonicalMapping)
+            }
+        }
+        return paths.sorted()
     }
 
     private static func fetchOrigin(repo: OpaquePointer?, pat: String) throws {
@@ -3268,6 +3451,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                    Self.mapWorkTreeStatus(effectiveFlags) == nil {
                     continue   // file is logically clean — omit from results
                 }
+            }
+
+            if GitLFSService.isCleanHydratedLFSFile(repo: repo, path: path, statusFlags: effectiveFlags) {
+                continue
             }
 
             entries.append(

@@ -1,6 +1,26 @@
 import Foundation
 import SwiftUI
 
+struct LFSAutoTrackingConfirmationRequest: Identifiable, Equatable {
+    enum Action: Equatable {
+        case stageFile(path: String, oldPath: String?)
+        case stageAll
+    }
+
+    let id = UUID()
+    let repoID: UUID
+    let action: Action
+    let candidates: [GitLFSAutoTrackingCandidate]
+
+    var message: String {
+        let listed = candidates.prefix(4).map { candidate in
+            "• \(candidate.path) (\(ByteCountFormatter.string(fromByteCount: candidate.sizeBytes, countStyle: .file)))"
+        }.joined(separator: "\n")
+        let remaining = candidates.count > 4 ? "\n• +\(candidates.count - 4) more" : ""
+        return "These files look binary or large and are safer in Git LFS:\n\n\(listed)\(remaining)\n\nUse Git LFS? This will update and stage .gitattributes."
+    }
+}
+
 // MARK: - App State
 
 @Observable
@@ -68,10 +88,11 @@ final class AppState {
     /// Set to `true` after the user's first successful clone, so the UI can trigger a review request.
     var shouldRequestReview: Bool = false
 
-    // MARK: - Errors
+    // MARK: - Errors & Confirmations
 
     var lastError: String? = nil
     var showError: Bool = false
+    var pendingLFSAutoTrackingConfirmation: LFSAutoTrackingConfirmationRequest? = nil
 
     // MARK: - Security-Scoped URLs (runtime only)
 
@@ -1486,6 +1507,16 @@ final class AppState {
     }
 
     func stageFile(repoID: UUID, path: String, oldPath: String? = nil) async {
+        await stageFile(repoID: repoID, path: path, oldPath: oldPath, lfsAutoTrack: false, promptForLFS: true)
+    }
+
+    private func stageFile(
+        repoID: UUID,
+        path: String,
+        oldPath: String?,
+        lfsAutoTrack: Bool,
+        promptForLFS: Bool
+    ) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
@@ -1498,7 +1529,19 @@ final class AppState {
         }
 
         do {
-            try await gitService.stage(path: path, oldPath: oldPath)
+            if promptForLFS {
+                let candidates = try await gitService.lfsAutoTrackingCandidates(paths: [path])
+                if !candidates.isEmpty {
+                    pendingLFSAutoTrackingConfirmation = LFSAutoTrackingConfirmationRequest(
+                        repoID: repoID,
+                        action: .stageFile(path: path, oldPath: oldPath),
+                        candidates: candidates
+                    )
+                    return
+                }
+            }
+
+            try await gitService.stage(path: path, oldPath: oldPath, lfsAutoTrack: lfsAutoTrack)
             detectChanges(repoID: repoID)
         } catch {
             showError(message: error.localizedDescription)
@@ -1506,6 +1549,10 @@ final class AppState {
     }
 
     func stageAllChanges(repoID: UUID) async {
+        await stageAllChanges(repoID: repoID, lfsAutoTrack: false, promptForLFS: true)
+    }
+
+    private func stageAllChanges(repoID: UUID, lfsAutoTrack: Bool, promptForLFS: Bool) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
@@ -1518,11 +1565,40 @@ final class AppState {
         }
 
         do {
-            try await gitService.stageAll()
+            if promptForLFS {
+                let candidates = try await gitService.lfsAutoTrackingCandidates(paths: nil)
+                if !candidates.isEmpty {
+                    pendingLFSAutoTrackingConfirmation = LFSAutoTrackingConfirmationRequest(
+                        repoID: repoID,
+                        action: .stageAll,
+                        candidates: candidates
+                    )
+                    return
+                }
+            }
+
+            try await gitService.stageAll(lfsAutoTrack: lfsAutoTrack)
             detectChanges(repoID: repoID)
         } catch {
             showError(message: error.localizedDescription)
         }
+    }
+
+    func confirmPendingLFSAutoTracking(useLFS: Bool) async {
+        guard let request = pendingLFSAutoTrackingConfirmation else { return }
+        pendingLFSAutoTrackingConfirmation = nil
+        guard useLFS else { return }
+
+        switch request.action {
+        case .stageFile(let path, let oldPath):
+            await stageFile(repoID: request.repoID, path: path, oldPath: oldPath, lfsAutoTrack: true, promptForLFS: false)
+        case .stageAll:
+            await stageAllChanges(repoID: request.repoID, lfsAutoTrack: true, promptForLFS: false)
+        }
+    }
+
+    func cancelPendingLFSAutoTracking() {
+        pendingLFSAutoTrackingConfirmation = nil
     }
 
     func unstageFile(repoID: UUID, path: String, oldPath: String? = nil) async {
@@ -1670,6 +1746,9 @@ final class AppState {
             detectChanges(repoID: repoID)
             syncProgress = String(localized: "Clone complete! (\(result.fileCount) files)")
             DebugLogger.shared.info("clone", "Clone complete", detail: "\(result.fileCount) files, branch: \(result.branch)")
+            if let lfsWarning = result.lfsWarning {
+                showError(message: lfsWarning, category: "lfs")
+            }
 
 
         } catch {

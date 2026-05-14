@@ -128,6 +128,15 @@ struct GitRemoteURL: Equatable, Sendable {
         kind == .ssh || kind == .scpLikeSSH
     }
 
+    var sshPort: Int? {
+        guard isSSH,
+              let url = URL(string: rawValue),
+              url.scheme?.lowercased() == "ssh" || url.scheme?.lowercased() == "git+ssh" else {
+            return nil
+        }
+        return url.port
+    }
+
     var repoName: String {
         let candidate = pathComponents.last ?? rawValue
         return Self.strippingGitSuffix(candidate)

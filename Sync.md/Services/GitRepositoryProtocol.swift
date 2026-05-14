@@ -25,8 +25,11 @@ protocol GitRepositoryProtocol: Sendable {
         additionalPathsToRemove: [String]
     ) async throws
     func commitLocal(message: String, authorName: String, authorEmail: String) async throws -> String
+    func lfsAutoTrackingCandidates(paths: [String]?) async throws -> [GitLFSAutoTrackingCandidate]
     func stage(path: String, oldPath: String?) async throws
+    func stage(path: String, oldPath: String?, lfsAutoTrack: Bool) async throws
     func stageAll() async throws
+    func stageAll(lfsAutoTrack: Bool) async throws
     func unstage(path: String, oldPath: String?) async throws
     func discardChanges(path: String) async throws
     func discardAllChanges() async throws

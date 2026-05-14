@@ -13,6 +13,7 @@
 		7A1C53CFCAF12009E81A0EE4 /* SyncMDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */; };
 		9B1CC33021E2FBF384971478 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
 		AA1001002FAA000100AA0002 /* SyncMd.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA1001002FAA000100AA0001 /* SyncMd.storekit */; };
+		AA2001002FAA000100AA0001 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = AA2001002FAA000100AA0002 /* Citadel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA2001002FAA000100AA0001 /* Citadel in Frameworks */,
 				62C953FE2F397E44001F79DF /* Clibgit2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,6 +206,7 @@
 			name = Sync.md;
 			packageProductDependencies = (
 				62C951C12F3A0001001F79DF /* Clibgit2 */,
+				AA2001002FAA000100AA0002 /* Citadel */,
 			);
 			productName = Sync.md;
 			productReference = 62C951962F393029001F79DF /* Sync.md.app */;
@@ -268,6 +271,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				62C951C02F3A0001001F79DF /* XCLocalSwiftPackageReference "Clibgit2" */,
+				AA2001002FAA000100AA0003 /* XCRemoteSwiftPackageReference "Citadel" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 62C951972F393029001F79DF /* Products */;
@@ -656,12 +660,25 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AA2001002FAA000100AA0003 /* XCRemoteSwiftPackageReference "Citadel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orlandos-nl/Citadel.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.12.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		62C951C12F3A0001001F79DF /* Clibgit2 */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Clibgit2;
+		};
+		AA2001002FAA000100AA0002 /* Citadel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA2001002FAA000100AA0003 /* XCRemoteSwiftPackageReference "Citadel" */;
+			productName = Citadel;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
