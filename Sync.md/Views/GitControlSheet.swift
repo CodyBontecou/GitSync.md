@@ -86,8 +86,11 @@ struct GitControlSheet: View {
             }
             .alert("Use Git LFS?", isPresented: Binding(
                 get: { state.pendingLFSAutoTrackingConfirmation != nil },
-                set: { isPresented in
-                    if !isPresented { state.cancelPendingLFSAutoTracking() }
+                set: { _ in
+                    // Button actions below own clearing this state. SwiftUI may set
+                    // the binding to false as it dismisses the alert before the
+                    // async "Use Git LFS" task runs; clearing here would drop the
+                    // pending staging request and make the confirmation a no-op.
                 }
             )) {
                 Button("Use Git LFS") {
