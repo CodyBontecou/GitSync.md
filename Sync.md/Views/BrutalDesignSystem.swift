@@ -147,6 +147,8 @@ struct BPrimaryButton: View {
         }
         .buttonStyle(.plain)
         .disabled(isDisabled || isLoading)
+        .accessibilityIdentifier(title)
+        .accessibilityLabel(title)
     }
 }
 
@@ -191,6 +193,8 @@ struct BSecondaryButton: View {
         }
         .buttonStyle(.plain)
         .disabled(isDisabled || isLoading)
+        .accessibilityIdentifier(title)
+        .accessibilityLabel(title)
     }
 }
 
@@ -216,6 +220,8 @@ struct BGhostButton: View {
             .foregroundStyle(color)
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier(title)
+        .accessibilityLabel(title)
     }
 }
 
@@ -478,6 +484,7 @@ struct BEmptyState: View {
 
             if let action, let title = actionTitle {
                 BPrimaryButton(title: title, action: action)
+                    .accessibilityIdentifier("emptyState.actionButton")
                     .frame(width: 220)
             }
         }
@@ -616,10 +623,13 @@ struct BConfirmModal: View {
                 VStack(spacing: 8) {
                     if isDestructive {
                         BDestructiveButton(title: confirmLabel, action: onConfirm)
+                            .accessibilityIdentifier("confirm.confirmButton")
                     } else {
                         BPrimaryButton(title: confirmLabel, action: onConfirm)
+                            .accessibilityIdentifier("confirm.confirmButton")
                     }
                     BGhostButton(title: "Cancel", action: onCancel)
+                        .accessibilityIdentifier("confirm.cancelButton")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }

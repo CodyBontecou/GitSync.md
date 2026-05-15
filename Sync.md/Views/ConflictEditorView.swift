@@ -83,6 +83,8 @@ struct ConflictEditorView: View {
                         .tracking(1)
                 }
                 .disabled(!canResolve || state.isSyncing)
+                .accessibilityIdentifier("conflict.resolveButton")
+                .accessibilityLabel("Resolve conflict")
             }
         }
         .task { await loadDetail() }
@@ -223,12 +225,14 @@ struct ConflictEditorView: View {
                 text: oursText,
                 accent: .brutalAccent
             )
+            .accessibilityIdentifier("conflict.oursPane")
             sidePane(
                 title: String(localized: "Theirs"),
                 subtitle: String(localized: "remote version"),
                 text: theirsText,
                 accent: .brutalWarning
             )
+            .accessibilityIdentifier("conflict.theirsPane")
         }
     }
 
@@ -256,6 +260,8 @@ struct ConflictEditorView: View {
                             .overlay(Rectangle().strokeBorder(accent.opacity(0.4), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("conflict.use\(title)InlineButton")
+                    .accessibilityLabel("Use \(title)")
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
@@ -300,6 +306,8 @@ struct ConflictEditorView: View {
                     .background(Color.brutalSurface)
                     .frame(minHeight: 220)
                     .padding(8)
+                    .accessibilityIdentifier("conflict.resultEditor")
+                    .accessibilityLabel("Conflict result")
             }
         }
     }
@@ -318,6 +326,8 @@ struct ConflictEditorView: View {
                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("conflict.useOursButton")
+            .accessibilityLabel("Use ours")
 
             Button {
                 resultText = theirsText
@@ -331,6 +341,8 @@ struct ConflictEditorView: View {
                     .overlay(Rectangle().strokeBorder(Color.brutalWarning.opacity(0.4), lineWidth: 1))
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("conflict.useTheirsButton")
+            .accessibilityLabel("Use theirs")
         }
     }
 

@@ -36,6 +36,7 @@ struct FreeSlotConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("freeSlot.closeButton")
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 18)
@@ -94,6 +95,7 @@ struct FreeSlotConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("freeSlot.goBackButton")
 
                     Button(action: onConfirm) {
                         Text("USE FREE SLOT")
@@ -106,6 +108,7 @@ struct FreeSlotConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalText, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("freeSlot.useFreeSlotButton")
                 }
                 .padding(14)
             }

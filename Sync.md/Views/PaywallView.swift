@@ -58,6 +58,7 @@ struct PaywallView: View {
             .padding(.top, 18)
             .padding(.trailing, 24)
             .accessibilityLabel("Dismiss")
+            .accessibilityIdentifier("paywall.closeButton")
         }
         .task {
             await purchaseManager.refreshStatus()
@@ -146,6 +147,7 @@ struct PaywallView: View {
             ) {
                 Task { await purchaseManager.purchase() }
             }
+            .accessibilityIdentifier("paywall.upgradeButton")
 
             BSecondaryButton(
                 title: "Restore Purchase",
@@ -154,6 +156,7 @@ struct PaywallView: View {
             ) {
                 Task { await purchaseManager.restore() }
             }
+            .accessibilityIdentifier("paywall.restoreButton")
         }
     }
 

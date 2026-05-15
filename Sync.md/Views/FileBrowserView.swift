@@ -72,6 +72,8 @@ struct FileBrowserView: View {
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                 }
+                .accessibilityIdentifier("fileBrowser.createFileButton")
+                .accessibilityLabel("Create file")
             }
         }
         .navigationDestination(for: FileBrowserDestination.self) { dest in
@@ -171,6 +173,8 @@ struct FileBrowserView: View {
             }
             .tint(Color.brutalAccent)
         }
+        .accessibilityIdentifier("fileBrowser.item.\(item.name)")
+        .accessibilityLabel(item.isDirectory ? "Folder \(item.name)" : "File \(item.name)")
     }
 
     private func rowContent(item: FileItem, gitStatus: GitStatusEntry?) -> some View {

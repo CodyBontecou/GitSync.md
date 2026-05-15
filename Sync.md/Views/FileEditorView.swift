@@ -43,6 +43,8 @@ struct FileEditorView: View {
                 binaryState
             } else {
                 CodeEditorView(text: $content, language: language)
+                    .accessibilityIdentifier("fileEditor.textEditor")
+                    .accessibilityLabel("File contents")
                     .padding(.horizontal, 8)
             }
 
@@ -96,6 +98,8 @@ struct FileEditorView: View {
                             .font(.system(size: 12, weight: .bold, design: .monospaced))
                             .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
                             .disabled(!isDirty)
+                            .accessibilityIdentifier("fileEditor.saveButton")
+                            .accessibilityLabel("Save file")
                     }
                     Button {
                         renameText = fileName
@@ -105,6 +109,8 @@ struct FileEditorView: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
                     }
+                    .accessibilityIdentifier("fileEditor.renameButton")
+                    .accessibilityLabel("Rename file")
                     Button {
                         showDeleteConfirm = true
                     } label: {
@@ -112,6 +118,8 @@ struct FileEditorView: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalError)
                     }
+                    .accessibilityIdentifier("fileEditor.deleteButton")
+                    .accessibilityLabel("Delete file")
                 }
             }
         }

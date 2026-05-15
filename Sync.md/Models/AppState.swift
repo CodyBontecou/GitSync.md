@@ -42,6 +42,10 @@ final class AppState {
     var stashesByRepo: [UUID: [GitStashEntry]] = [:]
     var tagsByRepo: [UUID: [GitTag]] = [:]
 
+    #if DEBUG
+    var uiTestConflictDetailsByPath: [String: ConflictFileDetail] = [:]
+    #endif
+
     // MARK: - Sync State
 
     var isSyncing: Bool = false
@@ -733,6 +737,9 @@ final class AppState {
 
     func loadConflictDetail(repoID: UUID, path: String) async -> ConflictFileDetail? {
         guard let repo = repo(id: repoID), repo.isCloned else { return nil }
+        #if DEBUG
+        if let detail = uiTestConflictDetailsByPath[path] { return detail }
+        #endif
         if isDemoMode { return nil }
 
         let vaultDir = vaultURL(for: repoID)
@@ -755,6 +762,14 @@ final class AppState {
         additionalPathsToRemove: [String] = []
     ) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
+        #if DEBUG
+        if uiTestConflictDetailsByPath[path] != nil {
+            uiTestConflictDetailsByPath.removeValue(forKey: path)
+            statusEntriesByRepo[repoID] = (statusEntriesByRepo[repoID] ?? []).filter { $0.path != path }
+            changeCounts[repoID] = statusEntriesByRepo[repoID]?.count ?? 0
+            return
+        }
+        #endif
         if isDemoMode { return }
 
         let vaultDir = vaultURL(for: repoID)
@@ -1677,6 +1692,27 @@ final class AppState {
         syncingRepoID = repoID
         syncProgress = String(localized: "Preparing to clone...")
 
+        #if DEBUG
+        if Self.isUITesting {
+            syncProgress = String(localized: "Cloning repository...")
+            createUITestFixtureFiles(repoID: repoID)
+            repos[idx].gitState = GitState(
+                commitSHA: Self.uiTestCommitSHA,
+                treeSHA: "",
+                branch: repos[idx].branch.isEmpty ? "main" : repos[idx].branch,
+                blobSHAs: [:],
+                lastSyncDate: Date()
+            )
+            saveRepos()
+            seedUITestDerivedState(repoID: repoID)
+            syncProgress = String(localized: "Clone complete! (3 files)")
+            try? await Task.sleep(for: .milliseconds(250))
+            isSyncing = false
+            syncingRepoID = nil
+            return
+        }
+        #endif
+
         if isDemoMode {
             syncProgress = String(localized: "Cloning repository...")
             try? await Task.sleep(for: .seconds(1.5))
@@ -2432,6 +2468,167 @@ final class AppState {
         }
     }
 }
+
+#if DEBUG
+extension AppState {
+    static let uiTestRepoID = UUID(uuidString: "00000000-0000-0000-0000-000000000019")!
+    static let uiTestCommitSHA = "1234567890abcdef1234567890abcdef12345678"
+
+    static var isUITesting: Bool {
+        ProcessInfo.processInfo.arguments.contains("-ui-testing")
+    }
+
+    static func hasUITestArgument(_ argument: String) -> Bool {
+        ProcessInfo.processInfo.arguments.contains(argument)
+    }
+
+    func configureForUITesting() async {
+        if Self.hasUITestArgument("-ui-testing-reset") {
+            resetUITestState()
+        }
+
+        PurchaseManager.shared.debugResetPurchaseState()
+
+        if Self.hasUITestArgument("-ui-testing-seed-repo") {
+            seedUITestRepository()
+        } else if Self.hasUITestArgument("-ui-testing-add-repo")
+                    || Self.hasUITestArgument("-ui-testing-paywall") {
+            isDemoMode = false
+            isSignedIn = true
+            gitHubUsername = "ui-tester"
+            gitHubDisplayName = "UI Tester"
+            defaultAuthorName = "UI Tester"
+            defaultAuthorEmail = "ui@example.com"
+            gitHubRepos = [Self.uiTestGitHubRepo]
+            hasSeenOnboarding = true
+            hasCompletedOnboarding = true
+            repos = []
+            saveRepos()
+            saveGlobalSettings()
+        }
+    }
+
+    private func resetUITestState() {
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier ?? "")
+        repos = []
+        changeCounts = [:]
+        statusEntriesByRepo = [:]
+        syncStateByRepo = [:]
+        pullOutcomeByRepo = [:]
+        diffByRepo = [:]
+        branchesByRepo = [:]
+        conflictSessionByRepo = [:]
+        commitHistoryByRepo = [:]
+        commitHistoryHasMoreByRepo = [:]
+        commitDetailByRepo = [:]
+        stashesByRepo = [:]
+        tagsByRepo = [:]
+        uiTestConflictDetailsByPath = [:]
+        pat = ""
+        isSignedIn = false
+        gitHubUsername = ""
+        gitHubDisplayName = ""
+        gitHubAvatarURL = ""
+        defaultAuthorName = ""
+        defaultAuthorEmail = ""
+        gitHubRepos = []
+        hasSeenOnboarding = false
+        hasCompletedOnboarding = false
+        isDemoMode = false
+        try? FileManager.default.removeItem(at: Self.reposFileURL)
+    }
+
+    func seedUITestRepository() {
+        isDemoMode = true
+        isSignedIn = true
+        gitHubUsername = "ui-tester"
+        gitHubDisplayName = "UI Tester"
+        defaultAuthorName = "UI Tester"
+        defaultAuthorEmail = "ui@example.com"
+        gitHubRepos = [Self.uiTestGitHubRepo]
+        hasSeenOnboarding = true
+        hasCompletedOnboarding = true
+
+        let repo = RepoConfig(
+            id: Self.uiTestRepoID,
+            repoURL: "https://github.com/example/UITestRepo.git",
+            branch: "main",
+            authorName: "UI Tester",
+            authorEmail: "ui@example.com",
+            vaultFolderName: "UITestRepo",
+            gitState: GitState(
+                commitSHA: Self.uiTestCommitSHA,
+                treeSHA: "",
+                branch: "main",
+                blobSHAs: [:],
+                lastSyncDate: Date()
+            )
+        )
+
+        repos = [repo]
+        saveRepos()
+        saveGlobalSettings()
+        createUITestFixtureFiles(repoID: repo.id)
+        seedUITestDerivedState(repoID: repo.id)
+    }
+
+    func createUITestFixtureFiles(repoID: UUID) {
+        let vaultDir = vaultURL(for: repoID)
+        let fm = FileManager.default
+        try? fm.removeItem(at: vaultDir)
+        try? fm.createDirectory(at: vaultDir, withIntermediateDirectories: true)
+        try? fm.createDirectory(at: vaultDir.appendingPathComponent(".git", isDirectory: true), withIntermediateDirectories: true)
+        try? "ref: refs/heads/main\n".write(
+            to: vaultDir.appendingPathComponent(".git/HEAD"),
+            atomically: true,
+            encoding: .utf8
+        )
+
+        let files = [
+            ("README.md", "# UITestRepo\n\nSeeded markdown for accessibility UI tests.\n"),
+            ("notes/plan.md", "# Plan\n\n- Keep tests offline\n"),
+            ("conflict.md", "ours line\n")
+        ]
+
+        for (path, content) in files {
+            let fileURL = vaultDir.appendingPathComponent(path)
+            try? fm.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try? content.write(to: fileURL, atomically: true, encoding: .utf8)
+        }
+    }
+
+    func seedUITestDerivedState(repoID: UUID) {
+        let conflictPath = "conflict.md"
+        changeCounts[repoID] = 2
+        statusEntriesByRepo[repoID] = [
+            GitStatusEntry(path: "README.md", indexStatus: nil, workTreeStatus: .modified),
+            GitStatusEntry(path: conflictPath, indexStatus: .conflicted, workTreeStatus: .conflicted)
+        ]
+        syncStateByRepo[repoID] = .ahead
+        conflictSessionByRepo[repoID] = ConflictSession(kind: .merge, unmergedPaths: [conflictPath])
+        uiTestConflictDetailsByPath[conflictPath] = ConflictFileDetail(
+            lookupPath: conflictPath,
+            ancestor: ConflictFileSide(path: conflictPath, oid: "ancestor", isBinary: false, content: "base line\n".data(using: .utf8)),
+            ours: ConflictFileSide(path: conflictPath, oid: "ours", isBinary: false, content: "ours line\n".data(using: .utf8)),
+            theirs: ConflictFileSide(path: conflictPath, oid: "theirs", isBinary: false, content: "theirs line\n".data(using: .utf8))
+        )
+    }
+
+    private static var uiTestGitHubRepo: GitHubRepo {
+        GitHubRepo(
+            id: 19,
+            name: "UITestCloneRepo",
+            fullName: "example/UITestCloneRepo",
+            description: "Offline UI test fixture",
+            isPrivate: false,
+            htmlURL: "https://github.com/example/UITestCloneRepo",
+            defaultBranch: "main",
+            updatedAt: nil,
+            owner: GitHubRepo.Owner(login: "example")
+        )
+    }
+}
+#endif
 
 // MARK: - Callback Result State
 
