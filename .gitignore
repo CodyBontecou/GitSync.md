@@ -25,6 +25,7 @@ node_modules/
 
 # Pi agent
 .pi/
+.playwright-cli/
 
 # Build artifacts
 *.ipa
