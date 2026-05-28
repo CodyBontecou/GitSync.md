@@ -1,4 +1,5 @@
 import SwiftUI
+import Notelet
 
 extension UUID: @retroactive Identifiable {
     public var id: UUID { self }
@@ -13,6 +14,9 @@ struct RepoListView: View {
     @State private var showSignOutConfirm = false
     @State private var showAppSettings = false
     @State private var settingsRepoID: UUID? = nil
+    @State private var pendingGhostRemovalIdentifier: String? = nil
+    @State private var showGhostRemovalConfirm = false
+    @State private var showGhostRemovedToast = false
     @State private var navigationPath = NavigationPath()
 
     var body: some View {
@@ -39,6 +43,47 @@ struct RepoListView: View {
                             .padding(.horizontal, 20)
                             .padding(.vertical, 12)
                     }
+                }
+
+                if showGhostRemovedToast {
+                    VStack {
+                        Spacer()
+                        BToast(message: String(localized: "Removed from list"), systemImage: "checkmark")
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 20)
+                    }
+                    .zIndex(10)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+
+                if showSignOutConfirm {
+                    BConfirmModal(
+                        title: String(localized: "Sign Out?"),
+                        message: String(localized: "This will sign you out of GitHub. Your local repositories will be kept."),
+                        confirmLabel: String(localized: "Sign Out"),
+                        onConfirm: {
+                            showSignOutConfirm = false
+                            state.signOut()
+                        },
+                        onCancel: { showSignOutConfirm = false }
+                    )
+                    .zIndex(20)
+                    .transition(.opacity)
+                }
+
+                if showGhostRemovalConfirm {
+                    BConfirmModal(
+                        title: String(localized: "Remove from Previously Cloned?"),
+                        message: String(localized: "This hides the repository from the previously cloned list. It won't delete local files or revoke GitHub access."),
+                        confirmLabel: String(localized: "Remove"),
+                        onConfirm: removePendingGhostRepo,
+                        onCancel: {
+                            showGhostRemovalConfirm = false
+                            pendingGhostRemovalIdentifier = nil
+                        }
+                    )
+                    .zIndex(20)
+                    .transition(.opacity)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -96,16 +141,22 @@ struct RepoListView: View {
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
-            .confirmationDialog("Sign Out?", isPresented: $showSignOutConfirm, titleVisibility: .visible) {
-                Button("Sign Out", role: .destructive) { state.signOut() }
-            } message: {
-                Text("This will sign you out of GitHub. Your local repositories will be kept.")
-            }
+            .animation(.spring(duration: 0.35, bounce: 0.12), value: showGhostRemovedToast)
+            .animation(.easeInOut(duration: 0.16), value: showSignOutConfirm)
+            .animation(.easeInOut(duration: 0.16), value: showGhostRemovalConfirm)
             .alert("Error", isPresented: $state.showError) {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(state.lastError ?? String(localized: "Unknown error"))
             }
+            .noteletSheet(
+                notes: AppReleaseNotes.all,
+                version: AppReleaseNotes.presentedVersionForHomePage(
+                    hasExistingAppData: hasExistingAppDataForReleaseNotes
+                ),
+                onDismiss: AppReleaseNotes.markCurrentVersionAsSeen,
+                configuration: AppReleaseNotes.configuration
+            )
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
                 if let repoID = newValue {
                     navigationPath = NavigationPath([repoID])
@@ -167,6 +218,10 @@ struct RepoListView: View {
             }
             #endif
         }
+    }
+
+    private var hasExistingAppDataForReleaseNotes: Bool {
+        state.hasSeenOnboarding || state.hasCompletedOnboarding || !state.repos.isEmpty
     }
 
     // MARK: - Empty State
@@ -276,11 +331,11 @@ struct RepoListView: View {
             ownerName = nil
         }
 
-        return Button {
-            cloneGhostRepo(identifier)
-        } label: {
-            BCard(padding: 0, bg: .brutalSurface) {
-                VStack(spacing: 0) {
+        return BCard(padding: 0, bg: .brutalSurface) {
+            VStack(spacing: 0) {
+                Button {
+                    cloneGhostRepo(identifier)
+                } label: {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 3) {
                             Text(repoName)
@@ -302,22 +357,67 @@ struct RepoListView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
                     .padding(.bottom, 12)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
 
-                    BDivider().padding(.horizontal, 16)
+                BDivider().padding(.horizontal, 16)
 
-                    HStack(spacing: 8) {
-                        BBadge(text: String(localized: "previously cloned"), style: .default)
-                        Text(String(localized: "tap to re-clone"))
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                        Spacer()
+                HStack(spacing: 8) {
+                    Button {
+                        cloneGhostRepo(identifier)
+                    } label: {
+                        HStack(spacing: 8) {
+                            BBadge(text: String(localized: "previously cloned"), style: .default)
+                            Spacer(minLength: 8)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .buttonStyle(.plain)
+
+                    ghostRemoveButton(identifier)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+            }
+        }
+        .contextMenu {
+            if purchaseManager.isUnlocked {
+                Button(role: .destructive) {
+                    requestGhostRepoRemoval(identifier)
+                } label: {
+                    Label(String(localized: "Remove from List"), systemImage: "trash")
+                }
+            } else {
+                Button {
+                    requestGhostRepoRemoval(identifier)
+                } label: {
+                    Label(String(localized: "Unlock to Remove"), systemImage: "lock.open")
                 }
             }
         }
+    }
+
+    private func ghostRemoveButton(_ identifier: String) -> some View {
+        Button {
+            requestGhostRepoRemoval(identifier)
+        } label: {
+            HStack(spacing: 4) {
+                if !purchaseManager.isUnlocked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 10, weight: .bold))
+                }
+                Text(String(localized: "Remove").uppercased())
+                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .tracking(1)
+            }
+            .foregroundStyle(purchaseManager.isUnlocked ? Color.brutalError : Color.brutalAccent)
+        }
         .buttonStyle(.plain)
+        .accessibilityLabel(purchaseManager.isUnlocked
+            ? String(localized: "Remove from previously cloned repositories")
+            : String(localized: "Unlock to remove from previously cloned repositories"))
     }
 
     // MARK: - Repo Card
@@ -466,6 +566,53 @@ struct RepoListView: View {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 
+    // MARK: - Ghost Repo Removal
+
+    private func requestGhostRepoRemoval(_ identifier: String) {
+        if purchaseManager.isUnlocked {
+            pendingGhostRemovalIdentifier = identifier
+            showGhostRemovalConfirm = true
+            return
+        }
+
+        Task { @MainActor in
+            await purchaseManager.refreshStatus()
+            if purchaseManager.isUnlocked {
+                pendingGhostRemovalIdentifier = identifier
+                showGhostRemovalConfirm = true
+            } else {
+                showPaywall = true
+            }
+        }
+    }
+
+    private func removePendingGhostRepo() {
+        guard let identifier = pendingGhostRemovalIdentifier else {
+            showGhostRemovalConfirm = false
+            return
+        }
+        showGhostRemovalConfirm = false
+        pendingGhostRemovalIdentifier = nil
+
+        if purchaseManager.forgetSeenRepoIdentifier(identifier) {
+            showGhostRemovedToastMessage()
+        } else {
+            showPaywall = true
+        }
+    }
+
+    private func showGhostRemovedToastMessage() {
+        withAnimation {
+            showGhostRemovedToast = true
+        }
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(1800))
+            withAnimation {
+                showGhostRemovedToast = false
+            }
+        }
+    }
+
     // MARK: - Ghost Repo Clone
 
     /// Tapping a ghost card triggers an immediate clone using stored defaults.
@@ -496,7 +643,7 @@ struct RepoListView: View {
             authorName: state.defaultAuthorName,
             authorEmail: state.defaultAuthorEmail,
             vaultFolderName: folderName,
-            authMethod: parsed?.isGitHub == true && parsed?.isSSH == false ? .gitHubPAT : .none,
+            authMethod: parsed?.isGitHub == true && parsed?.isSSH == false ? .gitHubPAT : GitAuthMethod.none,
             authUsername: parsed?.username ?? ""
         )
 

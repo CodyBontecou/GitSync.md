@@ -1,5 +1,5 @@
 {
-  "originHash" : "16c0cf60162365de810e7eb06e5d529fca474a7a24ec97f1e3fe177091e322d1",
+  "originHash" : "25b32fe7c41b4c9232085d32033260c57b214f6fff0ff91088c50fe9086b2480",
   "pins" : [
     {
       "identity" : "bigint",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "ae8562f895de06ccb86fdb1cbb65fd99c8976e12",
         "version" : "0.12.1"
+      }
+    },
+    {
+      "identity" : "notelet",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mykolaharmash/notelet.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "02986909abddf547b0b3cd0e2170544acd0aaa01"
       }
     },
     {

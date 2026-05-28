@@ -1,3 +1,3 @@
-• Add Git LFS support for large files in your repositories
-• Download Git LFS objects after clone and pull so pointer files are replaced with real content
-• Add safer large-file staging prompts, LFS auto-tracking, and push validation to prevent oversized Git blobs
+• Delete previously cloned repositories from the Previously Cloned list
+• Free up old local repo slots without deleting anything from GitHub
+• New in-app release notes highlight updates only after existing users reach the home page

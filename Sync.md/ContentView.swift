@@ -27,6 +27,9 @@ struct ContentView: View {
                 showContent = true
             }
             state.scheduleInitialChangeDetectionIfNeeded()
+            AppReleaseNotes.bootstrapFreshInstallIfNeeded(
+                hasExistingAppData: hasExistingAppDataForReleaseNotes
+            )
         }
         .onChange(of: state.shouldRequestReview) { _, shouldRequest in
             if shouldRequest {
@@ -37,6 +40,10 @@ struct ContentView: View {
                 }
             }
         }
+    }
+
+    private var hasExistingAppDataForReleaseNotes: Bool {
+        state.hasSeenOnboarding || state.hasCompletedOnboarding || !state.repos.isEmpty
     }
 }
 

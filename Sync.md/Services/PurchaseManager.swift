@@ -530,6 +530,30 @@ final class PurchaseManager: ObservableObject {
         return true
     }
 
+    /// Removes `identifier` from the seen-repo set so it no longer appears in
+    /// the "previously cloned" list. This is intentionally reserved for unlocked
+    /// users so free users cannot clear the permanent free-slot assignment.
+    /// - Returns: `true` when the identifier was present and removed.
+    @discardableResult
+    func forgetSeenRepoIdentifier(_ identifier: String) -> Bool {
+        guard isUnlocked else { return false }
+        let normalised = identifier
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        guard !normalised.isEmpty else { return false }
+
+        var seen = seenRepoIdentifiers()
+        guard seen.remove(normalised) != nil else { return false }
+
+        objectWillChange.send()
+        if seen.isEmpty {
+            keychainDelete(key: seenRepoIDsKey)
+        } else if let data = try? JSONEncoder().encode(Array(seen)) {
+            keychainWriteData(key: seenRepoIDsKey, data: data)
+        }
+        return true
+    }
+
     /// Number of unique repository identifiers ever added on this device.
     var uniqueReposEverAdded: Int { seenRepoIdentifiers().count }
 

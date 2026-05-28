@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• Add Git LFS support for large files in your repositories\n• Download Git LFS objects after clone and pull so pointer files are replaced with real content\n• Add safer large-file staging prompts, LFS auto-tracking, and push validation to prevent oversized Git blobs"
-  app_version = "2.3.0"
+  release_notes_text = "• Delete previously cloned repositories from the Previously Cloned list\n• Free up old local repo slots without deleting anything from GitHub\n• New in-app release notes highlight updates only after existing users reach the home page"
+  app_version = "2.4.1"
 
   submission_information = {
     add_id_info_uses_idfa: false,
