@@ -3,10 +3,20 @@
 # Triggered by repository_dispatch from the asc-webhook-worker.
 # Dispatch payload normally includes:
 #   { state: "READY_FOR_DISTRIBUTION", appStoreVersionId: "<uuid>" }
-# Manual mode accepts version directly.
+# Manual mode accepts version directly so the pipeline can be smoke-tested
+# without a real ASC approval.
+#
+# Effects:
+#   - Promote the draft GitHub release for v<version> to published
+#   - Post the release announcement to #sync-md-updates on Discord
+#   - Trigger the llm-wiki launch checklist scaffold
+#
+# Idempotent: if invoked twice for the same version, the second run is mostly
+# a no-op (release already published; Discord post is the only duplicated side effect).
 #
 # Required secrets:
 #   ASC_KEY_ID, ASC_ISSUER_ID, ASC_API_KEY_P8 (to look up version from appStoreVersionId)
+#   DISCORD_BOT_TOKEN
 #   LLM_WIKI_DISPATCH_TOKEN (fine-grained PAT with contents:write on CodyBontecou/llm-wiki)
 
 name: Announce release
@@ -17,25 +27,33 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version (e.g. 2.3.0)'
+        description: 'Version (e.g. 2.4.1)'
         required: true
         type: string
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   APP_NAME: GitSync.md
   APP_SLUG: sync-md
   ASC_APP_ID: '6758960270'
+  APP_STORE_URL: https://apps.apple.com/us/app/gitsync-md/id6758960270
+  REPO_URL: https://github.com/CodyBontecou/GitSync.md
+  DISCORD_CHANNEL_ID: '1498086728475480226'
+  DISCORD_GUILD_ID: '1443424100759634003'
 
 jobs:
   announce:
     runs-on: self-hosted
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Configure asc CLI
-        if: github.event_name == 'repository_dispatch' && github.event.client_payload.version == ''
         env:
           ASC_KEY_ID_SECRET: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID_SECRET: ${{ secrets.ASC_ISSUER_ID }}
@@ -47,50 +65,157 @@ jobs:
           ASC_KEY_PATH="$ASC_KEY_DIR/AuthKey_${ASC_KEY_ID_SECRET}.p8"
           echo "$ASC_API_KEY_P8" | base64 --decode > "$ASC_KEY_PATH"
           chmod 600 "$ASC_KEY_PATH"
-          echo "ASC_KEY_ID=$ASC_KEY_ID_SECRET" >> "$GITHUB_ENV"
-          echo "ASC_ISSUER_ID=$ASC_ISSUER_ID_SECRET" >> "$GITHUB_ENV"
-          echo "ASC_PRIVATE_KEY_PATH=$ASC_KEY_PATH" >> "$GITHUB_ENV"
-          echo "ASC_BYPASS_KEYCHAIN=1" >> "$GITHUB_ENV"
+          {
+            echo "ASC_KEY_ID=$ASC_KEY_ID_SECRET"
+            echo "ASC_ISSUER_ID=$ASC_ISSUER_ID_SECRET"
+            echo "ASC_PRIVATE_KEY_PATH=$ASC_KEY_PATH"
+            echo "ASC_BYPASS_KEYCHAIN=1"
+          } >> "$GITHUB_ENV"
 
-      - name: Resolve version
+      - name: Resolve dispatch payload
         id: meta
         run: |
-          VERSION='${{ github.event.client_payload.version }}'
           ASCV_ID='${{ github.event.client_payload.appStoreVersionId }}'
+          PAYLOAD_VERSION='${{ github.event.client_payload.version }}'
+          STATE='${{ github.event.client_payload.state }}'
 
-          if [[ -z "$VERSION" && -n "$ASCV_ID" ]]; then
-            echo "Webhook mode: appStoreVersionId=$ASCV_ID"
+          if [[ -n "$ASCV_ID" ]]; then
+            # Webhook mode — look up version + platform from the ASC version ID.
+            echo "Webhook mode: appStoreVersionId=$ASCV_ID state=$STATE"
             V_JSON=$(asc versions view --version-id "$ASCV_ID" --output json)
             VERSION=$(printf '%s' "$V_JSON" | jq -r '.attributes.versionString // .data.attributes.versionString')
-          elif [[ -z "$VERSION" ]]; then
-            VERSION='${{ inputs.version }}'
-            echo "Manual mode: version=$VERSION"
-          else
+            PLATFORM=$(printf '%s' "$V_JSON" | jq -r '.attributes.platform // .data.attributes.platform // "IOS"')
+            if [[ -z "$VERSION" || "$VERSION" == "null" || -z "$PLATFORM" || "$PLATFORM" == "null" ]]; then
+              echo "::error::asc versions view returned unexpected shape:"
+              printf '%s\n' "$V_JSON"
+              exit 1
+            fi
+          elif [[ -n "$PAYLOAD_VERSION" ]]; then
+            # Webhook payload already included the version.
+            VERSION="$PAYLOAD_VERSION"
+            PLATFORM=IOS
             echo "Webhook payload included version=$VERSION"
+          else
+            # Manual mode — version from inputs.
+            VERSION='${{ inputs.version }}'
+            PLATFORM=IOS
+            echo "Manual mode: version=$VERSION"
           fi
 
-          if [[ -z "$VERSION" || "$VERSION" == "null" ]]; then
+          if [[ -z "$VERSION" ]]; then
             echo "::error::Could not resolve version"
             exit 1
           fi
+          if [[ "$PLATFORM" != "IOS" ]]; then
+            echo "::error::Unsupported platform for GitSync.md: $PLATFORM"
+            exit 1
+          fi
 
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          {
+            echo "version=$VERSION"
+            echo "platform=$PLATFORM"
+            echo "tag=v$VERSION"
+            echo "platform_label=iOS"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Fetch release (or fall back to ASC notes)
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG='${{ steps.meta.outputs.tag }}'
+          NOTES_FILE="$RUNNER_TEMP/notes.md"
+
+          if gh release view "$TAG" --json id,isDraft,body > "$RUNNER_TEMP/release.json" 2>/dev/null; then
+            jq -r '.body // ""' "$RUNNER_TEMP/release.json" > "$NOTES_FILE"
+            IS_DRAFT=$(jq -r .isDraft "$RUNNER_TEMP/release.json")
+            HAS_RELEASE=true
+          else
+            # No draft release (e.g. submitted to ASC directly without a tag push).
+            # Fall back to the version's "What's New" text from ASC.
+            echo "::notice::No GitHub release for $TAG; falling back to ASC What's New"
+            ASCV_ID='${{ github.event.client_payload.appStoreVersionId }}'
+            VERSION='${{ steps.meta.outputs.version }}'
+            if [[ -z "$ASCV_ID" ]]; then
+              ASCV_ID=$(asc versions list --app "$ASC_APP_ID" --output json \
+                | jq -r --arg v "$VERSION" '.data[] | select(.attributes.versionString==$v and .attributes.platform=="IOS") | .id' \
+                | head -1)
+            fi
+            NOTES=""
+            if [[ -n "$ASCV_ID" && "$ASCV_ID" != "null" ]]; then
+              NOTES=$(asc versions localizations list --version-id "$ASCV_ID" --output json 2>/dev/null \
+                | jq -r '.data[] | select(.attributes.locale=="en-US") | .attributes.whatsNew // empty' \
+                | head -c 1500 || true)
+            fi
+            if [[ -z "$NOTES" ]]; then
+              NOTES="${APP_NAME} v${VERSION} is now live."
+            fi
+            printf '%s\n' "$NOTES" > "$NOTES_FILE"
+            IS_DRAFT=false
+            HAS_RELEASE=false
+          fi
+
+          {
+            echo "is_draft=$IS_DRAFT"
+            echo "has_release=$HAS_RELEASE"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Promote draft GitHub release
+        if: steps.release.outputs.is_draft == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release edit '${{ steps.meta.outputs.tag }}' --draft=false
+
+      - name: Post Discord update
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          BODY_FILE="$RUNNER_TEMP/discord.md"
+          NOTES=$(head -c 1500 "$RUNNER_TEMP/notes.md")
+          cat > "$BODY_FILE" <<DISCORD_EOF
+          ${APP_NAME} v${{ steps.meta.outputs.version }} is live on ${{ steps.meta.outputs.platform_label }}.
+
+          ${NOTES}
+
+          App Store: ${APP_STORE_URL}
+          Repo: ${REPO_URL}
+          DISCORD_EOF
+
+          PAYLOAD=$(jq -n \
+            --rawfile c "$BODY_FILE" \
+            '{ content: $c, allowed_mentions: { parse: [] } }')
+
+          RESP=$(curl -fsS -X POST "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            -H "User-Agent: DiscordBot (https://github.com/${{ github.repository }}, 1.0)" \
+            -d "$PAYLOAD")
+
+          MSG_ID=$(echo "$RESP" | jq -r .id)
+          echo "Posted to Discord: https://discord.com/channels/${DISCORD_GUILD_ID}/${DISCORD_CHANNEL_ID}/${MSG_ID}"
 
       - name: Trigger llm-wiki launch checklist scaffold
         env:
           GH_TOKEN: ${{ secrets.LLM_WIKI_DISPATCH_TOKEN }}
         run: |
           gh api -X POST repos/CodyBontecou/llm-wiki/dispatches \
-            -f event_type=generate-launch-checklist \
-            -F client_payload[app]="$APP_SLUG" \
-            -F client_payload[version]="${{ steps.meta.outputs.version }}" \
-            -F client_payload[asc_id]="$ASC_APP_ID" \
-            -F client_payload[repo]="${{ github.repository }}"
+            -f "event_type=generate-launch-checklist" \
+            -F "client_payload[app]=$APP_SLUG" \
+            -F "client_payload[version]=${{ steps.meta.outputs.version }}" \
+            -F "client_payload[asc_id]=$ASC_APP_ID" \
+            -F "client_payload[repo]=${{ github.repository }}"
 
       - name: Summary
+        if: always()
         run: |
           {
-            echo "## Announce v${{ steps.meta.outputs.version }}"
+            echo "## Announce ${{ steps.meta.outputs.tag }} (${{ steps.meta.outputs.platform_label }})"
             echo ""
+            if [[ "${{ steps.release.outputs.has_release }}" == "true" ]]; then
+              echo "- GitHub release: ${{ steps.release.outputs.is_draft == 'true' && 'promoted from draft' || 'already published' }}"
+            else
+              echo "- GitHub release: skipped (no draft existed; submitted via asc directly)"
+            fi
+            echo "- Discord: posted to #sync-md-updates"
             echo "- llm-wiki: dispatched generate-launch-checklist for $APP_SLUG"
           } >> "$GITHUB_STEP_SUMMARY"
