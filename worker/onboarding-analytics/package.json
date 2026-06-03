@@ -1,0 +1,21 @@
+{
+  "name": "sync-md-onboarding-analytics",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --experimental-strip-types --test test/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "db:create": "wrangler d1 create sync-md-onboarding-analytics",
+    "db:migrate:local": "wrangler d1 migrations apply sync-md-onboarding-analytics --local",
+    "db:migrate:remote": "wrangler d1 migrations apply sync-md-onboarding-analytics --remote",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250224.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^3.0.0"
+  }
+}

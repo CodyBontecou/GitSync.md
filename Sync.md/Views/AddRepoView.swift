@@ -44,14 +44,8 @@ struct AddRepoView: View {
     @State private var showFolderPicker = false
     @State private var validationMessage: String? = nil
     @State private var showValidationAlert = false
-    @State private var showPaywall = false
 
-    // Free-slot confirmation modal
-    @State private var showFreeSlotConfirm = false
-    @State private var pendingFreeSlotLabel: String = ""
-    @State private var pendingFreeSlotAction: (() -> Void)? = nil
-
-    @ObservedObject private var purchaseManager = PurchaseManager.shared
+    @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
 
     var body: some View {
         NavigationStack {
@@ -76,24 +70,6 @@ struct AddRepoView: View {
                     .padding(.bottom, 40)
                 }
                 .scrollIndicators(.hidden)
-
-                if showFreeSlotConfirm {
-                    FreeSlotConfirmModal(
-                        repoLabel: pendingFreeSlotLabel,
-                        onConfirm: {
-                            let action = pendingFreeSlotAction
-                            showFreeSlotConfirm = false
-                            pendingFreeSlotAction = nil
-                            action?()
-                        },
-                        onCancel: {
-                            showFreeSlotConfirm = false
-                            pendingFreeSlotAction = nil
-                        }
-                    )
-                    .zIndex(10)
-                    .transition(.opacity)
-                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -179,7 +155,6 @@ struct AddRepoView: View {
             } message: {
                 Text(validationMessage ?? "Please fill in the required fields.")
             }
-            .sheet(isPresented: $showPaywall) { PaywallView() }
         }
     }
 
@@ -836,29 +811,12 @@ struct AddRepoView: View {
         let missing = missingAuthorFields
         guard missing.isEmpty else { showMissingFieldsError(missing); return }
 
-        // Gate 2: check whether this specific path has been seen before.
-        // Re-adding the same repo (after delete or reinstall) is always free;
-        // a genuinely new path after the free slot is exhausted requires purchase.
         let identifier = url.standardizedFileURL.path.lowercased()
-        if purchaseManager.isNewRepoIdentifier(identifier) {
-            guard purchaseManager.isUnlocked else { showPaywall = true; return }
-        }
-
-        // Free user about to burn their one free slot — confirm first.
-        if purchaseManager.wouldConsumeFreeSlot(identifier) {
-            pendingFreeSlotLabel = url.lastPathComponent
-            pendingFreeSlotAction = {
-                performAddLocalRepo(url: url, bookmarkData: bookmarkData, identifier: identifier)
-            }
-            showFreeSlotConfirm = true
-            return
-        }
-
         performAddLocalRepo(url: url, bookmarkData: bookmarkData, identifier: identifier)
     }
 
     private func performAddLocalRepo(url: URL, bookmarkData: Data, identifier: String) {
-        purchaseManager.recordRepoAdded(identifier: identifier)
+        repositoryHistory.recordRepoAdded(identifier: identifier)
         Task {
             await state.addLocalRepo(url: url, bookmarkData: bookmarkData, authorName: trimmedAuthorName, authorEmail: trimmedAuthorEmail)
         }
@@ -874,27 +832,12 @@ struct AddRepoView: View {
             return
         }
 
-        // Gate 2: check whether this specific URL has been seen before.
-        // Re-adding the same repo (after delete or reinstall) is always free;
-        // a genuinely new URL after the free slot is exhausted requires purchase.
         let identifier = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        if purchaseManager.isNewRepoIdentifier(identifier) {
-            guard purchaseManager.isUnlocked else { showPaywall = true; return }
-        }
-
-        // Free user about to burn their one free slot — confirm first.
-        if purchaseManager.wouldConsumeFreeSlot(identifier) {
-            pendingFreeSlotLabel = repoLabel(for: selectedRepoURL)
-            pendingFreeSlotAction = { performAddAndClone(identifier: identifier) }
-            showFreeSlotConfirm = true
-            return
-        }
-
         performAddAndClone(identifier: identifier)
     }
 
     private func performAddAndClone(identifier: String) {
-        purchaseManager.recordRepoAdded(identifier: identifier)
+        repositoryHistory.recordRepoAdded(identifier: identifier)
         let trimmedBranch = selectedBranch.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedVaultName = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
         let credentials = remoteCredentials()
@@ -915,14 +858,6 @@ struct AddRepoView: View {
         }
         Task { await state.clone(repoID: config.id) }
         dismiss()
-    }
-
-    private func repoLabel(for url: String) -> String {
-        let trimmed = url.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let parsed = GitRemoteURL.parse(trimmed) {
-            return parsed.displayPath
-        }
-        return trimmed
     }
 
     private func handleLocalRepoSelection(_ url: URL) {

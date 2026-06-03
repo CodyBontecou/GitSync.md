@@ -4,7 +4,7 @@ import UniformTypeIdentifiers
 struct SettingsView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject private var purchaseManager = PurchaseManager.shared
+    @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
 
     let repoID: UUID
 
@@ -259,7 +259,7 @@ struct SettingsView: View {
                 Button("Cancel", role: .cancel) {}
                 Button("Remove", role: .destructive) {
                     if let repo {
-                        purchaseManager.recordRepoAdded(identifier: repo.repoURL)
+                        repositoryHistory.recordRepoAdded(identifier: repo.repoURL)
                     }
                     state.removeRepo(id: repoID)
                     dismiss()

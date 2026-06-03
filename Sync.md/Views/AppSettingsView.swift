@@ -1,21 +1,14 @@
 import SwiftUI
-import StoreKit
 import UniformTypeIdentifiers
 
 struct AppSettingsView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject private var purchaseManager = PurchaseManager.shared
 
     @State private var showFolderPicker = false
     @State private var showClearConfirm = false
     @State private var showMailCompose = false
-    @State private var showPaywall = false
-    @State private var showDebugAlert = false
-    @State private var debugResult = ""
-    @State private var isRunningDebug = false
     @State private var showOnboarding = false
-    @State private var showWipeAllReposConfirm = false
 
     var body: some View {
         NavigationStack {
@@ -36,162 +29,6 @@ struct AppSettingsView: View {
                                     BDivider().padding(.horizontal, 16)
                                     dataRow(label: "Email", value: state.defaultAuthorEmail)
                                 }
-                            }
-                        }
-
-                        // Unlock
-                        settingsSection(title: "Unlock") {
-                            VStack(spacing: 0) {
-                                if purchaseManager.isUnlocked {
-                                    HStack(spacing: 12) {
-                                        BBadge(text: "UNLOCKED", style: .success)
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text("Full Access")
-                                                .font(.system(size: 14, weight: .semibold))
-                                                .foregroundStyle(Color.brutalText)
-                                            Text(purchaseManager.isLegacyUser
-                                                 ? "Legacy paid user — restored from previous purchase"
-                                                 : "Unlimited repositories enabled")
-                                                .font(.system(size: 13, design: .monospaced))
-                                                .foregroundStyle(Color.brutalText)
-                                        }
-                                        Spacer()
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 14)
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    dataRow(label: "Access Type",
-                                            value: purchaseManager.isLegacyUser ? "Legacy paid user" : "One-time purchase")
-                                } else {
-                                    HStack(spacing: 12) {
-                                        BBadge(text: "FREE", style: .default)
-                                        Text("1 free repository included")
-                                            .font(.system(size: 13, design: .monospaced))
-                                            .foregroundStyle(Color.brutalText)
-                                        Spacer()
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 14)
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    VStack(spacing: 10) {
-                                        BPrimaryButton(title: unlockButtonTitle, icon: "lock.open") {
-                                            showPaywall = true
-                                        }
-                                        .disabled(purchaseManager.isPurchasing || purchaseManager.isRestoring)
-
-                                        BSecondaryButton(
-                                            title: "Restore Purchase",
-                                            isLoading: purchaseManager.isRestoring,
-                                            isDisabled: purchaseManager.isPurchasing || purchaseManager.isRestoring
-                                        ) {
-                                            Task { await purchaseManager.restore() }
-                                        }
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 14)
-                                }
-
-                                if let error = purchaseManager.purchaseError {
-                                    BDivider().padding(.horizontal, 16)
-                                    HStack(spacing: 8) {
-                                        BBadge(text: "ERROR", style: error.contains("cody@isolated.tech") ? .default : .error)
-                                        Text(error)
-                                            .font(.system(size: 13, design: .monospaced))
-                                            .foregroundStyle(error.contains("cody@isolated.tech") ? Color.brutalText : Color.brutalError)
-                                            .multilineTextAlignment(.leading)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 12)
-                                }
-
-                                #if DEBUG
-                                BDivider().padding(.horizontal, 16)
-                                Button {
-                                    guard !isRunningDebug else { return }
-                                    isRunningDebug = true
-                                    Task {
-                                        debugResult = await purchaseManager.debugVerifyReceipt()
-                                        isRunningDebug = false
-                                        showDebugAlert = true
-                                    }
-                                } label: {
-                                    HStack(spacing: 10) {
-                                        BBadge(text: "DEBUG", style: .warning)
-                                        Text(isRunningDebug ? "Running…" : "Verify Receipt")
-                                            .font(.system(size: 13, weight: .medium))
-                                            .foregroundStyle(Color.brutalText)
-                                        Spacer()
-                                        Text("→")
-                                            .font(.system(size: 13, design: .monospaced))
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 13)
-                                }
-                                .buttonStyle(.plain)
-
-                                BDivider().padding(.horizontal, 16)
-                                if purchaseManager.debugForceFreeMode {
-                                    Button {
-                                        Task { await purchaseManager.debugRestoreProState() }
-                                    } label: {
-                                        HStack(spacing: 10) {
-                                            BBadge(text: "DEBUG", style: .warning)
-                                            Text("Restore Pro State")
-                                                .font(.system(size: 13, weight: .medium))
-                                                .foregroundStyle(Color.brutalText)
-                                            Spacer()
-                                            Text("→")
-                                                .font(.system(size: 13, design: .monospaced))
-                                                .foregroundStyle(Color.brutalText)
-                                        }
-                                        .padding(.horizontal, 16)
-                                        .padding(.vertical, 13)
-                                    }
-                                    .buttonStyle(.plain)
-                                } else {
-                                    Button {
-                                        purchaseManager.debugResetPurchaseState()
-                                    } label: {
-                                        HStack(spacing: 10) {
-                                            BBadge(text: "DEBUG", style: .error)
-                                            Text("Reset to Free Tier")
-                                                .font(.system(size: 13, weight: .medium))
-                                                .foregroundStyle(Color.brutalError)
-                                            Spacer()
-                                            Text("→")
-                                                .font(.system(size: 13, design: .monospaced))
-                                                .foregroundStyle(Color.brutalText)
-                                        }
-                                        .padding(.horizontal, 16)
-                                        .padding(.vertical, 13)
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-
-                                BDivider().padding(.horizontal, 16)
-                                Button {
-                                    showWipeAllReposConfirm = true
-                                } label: {
-                                    HStack(spacing: 10) {
-                                        BBadge(text: "DEBUG", style: .error)
-                                        Text("Wipe All Repos")
-                                            .font(.system(size: 13, weight: .medium))
-                                            .foregroundStyle(Color.brutalError)
-                                        Spacer()
-                                        Text("→")
-                                            .font(.system(size: 13, design: .monospaced))
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 13)
-                                }
-                                .buttonStyle(.plain)
-                                #endif
                             }
                         }
 
@@ -346,7 +183,6 @@ struct AppSettingsView: View {
                 }
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }
-            .sheet(isPresented: $showPaywall) { PaywallView() }
             .fullScreenCover(isPresented: $showOnboarding) { OnboardingView() }
             .fileImporter(
                 isPresented: $showFolderPicker,
@@ -363,35 +199,7 @@ struct AppSettingsView: View {
             } message: {
                 Text("New repositories will be saved to the app's default location instead.")
             }
-            .alert("Receipt Verification", isPresented: $showDebugAlert) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(debugResult)
-            }
-            #if DEBUG
-            .alert("Wipe All Repos?", isPresented: $showWipeAllReposConfirm) {
-                Button("Cancel", role: .cancel) {}
-                Button("Wipe", role: .destructive) {
-                    for repo in state.repos {
-                        state.removeRepo(id: repo.id)
-                    }
-                }
-            } message: {
-                Text("Removes every configured repository and deletes their local files. Combine with \"Reset to Free Tier\" for a fresh-free-user state.")
-            }
-            #endif
-            .task {
-                await purchaseManager.refreshStatus()
-                if purchaseManager.product == nil { await purchaseManager.loadProduct() }
-            }
         }
-    }
-
-    private var unlockButtonTitle: String {
-        if let product = purchaseManager.product {
-            return "Unlock Unlimited — \(product.displayPrice)"
-        }
-        return "Unlock Unlimited"
     }
 
     // MARK: - Layout Helpers

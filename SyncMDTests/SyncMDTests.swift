@@ -3506,3 +3506,137 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         repoInfoResult
     }
 }
+
+final class OnboardingAnalyticsEventModelTests: XCTestCase {
+    func testPayloadEncodesOnlyCoarseOnboardingProperties() {
+        let event = OnboardingAnalyticsEvent(
+            name: .onboardingCompleted,
+            properties: OnboardingAnalyticsProperties(
+                appVersion: "1.7.0",
+                buildNumber: "2026053001",
+                platform: .iOS,
+                onboardingStep: .ready,
+                authMethod: .githubOAuth,
+                saveLocationPreference: .customFolder
+            )
+        )
+
+        let payload = event.encodedPayload()
+
+        XCTAssertEqual(payload.eventName, "sync_onboarding_completed")
+        XCTAssertEqual(payload.properties[.appVersion], .string("1.7.0"))
+        XCTAssertEqual(payload.properties[.buildNumber], .string("2026053001"))
+        XCTAssertEqual(payload.properties[.platform], .string("ios"))
+        XCTAssertEqual(payload.properties[.onboardingStep], .string("ready"))
+        XCTAssertEqual(payload.properties[.authMethod], .string("github_oauth"))
+        XCTAssertEqual(payload.properties[.saveLocationPreference], .string("custom_folder"))
+        XCTAssertNil(payload.properties[.errorCategory])
+    }
+
+    func testInvalidFreeFormMetadataIsDropped() {
+        let properties = OnboardingAnalyticsProperties(
+            appVersion: "1.7.0-beta",
+            buildNumber: "build-123"
+        )
+
+        XCTAssertTrue(properties.encodedProperties().isEmpty)
+    }
+}
+
+final class OnboardingAnalyticsClientTests: XCTestCase {
+    func testOfflineTransportPersistsQueuedPayloadWithStableMetadata() async {
+        let defaults = TestOnboardingAnalyticsDefaults()
+        let queueKey = "onboarding.analytics.test.offline.\(UUID().uuidString)"
+        let client = OnboardingAnalyticsClient(
+            transport: OfflineOnboardingAnalyticsTransport(),
+            defaults: defaults,
+            queueKey: queueKey,
+            isEnabled: true,
+            retryDelayNanoseconds: 0,
+            metadataProvider: {
+                OnboardingAnalyticsAppMetadata(appVersion: "1.7.0", buildNumber: "123", platform: .iOS)
+            }
+        )
+
+        client.trackOnboardingStepViewed(.saveLocation)
+        await client.flushAndWait()
+
+        let queued = await client.queuedPayloads()
+        XCTAssertEqual(queued.count, 1)
+        XCTAssertNotNil(queued.first?.eventId)
+        XCTAssertEqual(queued.first?.eventName, "sync_onboarding_step_viewed")
+        XCTAssertEqual(queued.first?.properties[.appVersion], .string("1.7.0"))
+        XCTAssertEqual(queued.first?.properties[.buildNumber], .string("123"))
+        XCTAssertEqual(queued.first?.properties[.platform], .string("ios"))
+        XCTAssertEqual(queued.first?.properties[.onboardingStep], .string("save_location"))
+        XCTAssertNotNil(defaults.data(forKey: queueKey))
+    }
+
+    func testSuccessfulTransportDrainsQueue() async {
+        let defaults = TestOnboardingAnalyticsDefaults()
+        let transport = RecordingOnboardingAnalyticsTransport()
+        let client = OnboardingAnalyticsClient(
+            transport: transport,
+            defaults: defaults,
+            queueKey: "onboarding.analytics.test.success.\(UUID().uuidString)",
+            isEnabled: true,
+            retryDelayNanoseconds: 0,
+            metadataProvider: {
+                OnboardingAnalyticsAppMetadata(appVersion: "1.7.0", buildNumber: "123", platform: .iOS)
+            }
+        )
+
+        client.trackOnboardingCompleted(
+            authMethod: .githubOAuth,
+            saveLocationPreference: .customFolder
+        )
+        await client.flushAndWait()
+
+        let queuedPayloads = await client.queuedPayloads()
+        XCTAssertTrue(queuedPayloads.isEmpty)
+        let payloads = await transport.payloadsValue()
+        XCTAssertEqual(payloads.count, 1)
+        XCTAssertEqual(payloads.first?.eventName, "sync_onboarding_completed")
+        XCTAssertEqual(payloads.first?.properties[.authMethod], .string("github_oauth"))
+        XCTAssertEqual(payloads.first?.properties[.saveLocationPreference], .string("custom_folder"))
+    }
+}
+
+private final class TestOnboardingAnalyticsDefaults: OnboardingAnalyticsDefaultsStoring, @unchecked Sendable {
+    private let queue = DispatchQueue(label: "test.onboarding.analytics.defaults")
+    private var storage: [String: Any] = [:]
+
+    func data(forKey defaultName: String) -> Data? {
+        queue.sync { storage[defaultName] as? Data }
+    }
+
+    func string(forKey defaultName: String) -> String? {
+        queue.sync { storage[defaultName] as? String }
+    }
+
+    func set(_ value: Any?, forKey defaultName: String) {
+        queue.sync {
+            if let value {
+                storage[defaultName] = value
+            } else {
+                storage.removeValue(forKey: defaultName)
+            }
+        }
+    }
+
+    func removeObject(forKey defaultName: String) {
+        queue.sync { _ = storage.removeValue(forKey: defaultName) }
+    }
+}
+
+private actor RecordingOnboardingAnalyticsTransport: OnboardingAnalyticsTransport {
+    private var payloads: [OnboardingAnalyticsPayload] = []
+
+    func send(_ payload: OnboardingAnalyticsPayload) async throws {
+        payloads.append(payload)
+    }
+
+    func payloadsValue() -> [OnboardingAnalyticsPayload] {
+        payloads
+    }
+}

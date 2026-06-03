@@ -7,10 +7,9 @@ extension UUID: @retroactive Identifiable {
 
 struct RepoListView: View {
     @Environment(AppState.self) private var state
-    @ObservedObject private var purchaseManager = PurchaseManager.shared
+    @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
     @State private var showAddRepo = false
     @State private var addRepoInitialURL: String = ""
-    @State private var showPaywall = false
     @State private var showSignOutConfirm = false
     @State private var showAppSettings = false
     @State private var settingsRepoID: UUID? = nil
@@ -137,7 +136,6 @@ struct RepoListView: View {
                 }
             }
             .sheet(isPresented: $showAddRepo) { AddRepoView(initialURL: addRepoInitialURL) }
-            .sheet(isPresented: $showPaywall) { PaywallView() }
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
@@ -315,7 +313,7 @@ struct RepoListView: View {
         let activeURLs = Set(
             state.repos.map { $0.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
         )
-        return purchaseManager.seenRepoIdentifiers()
+        return repositoryHistory.seenRepoIdentifiers()
             .filter { !activeURLs.contains($0) && GitRemoteURL.parse($0) != nil }
             .sorted()
     }
@@ -383,18 +381,10 @@ struct RepoListView: View {
             }
         }
         .contextMenu {
-            if purchaseManager.isUnlocked {
-                Button(role: .destructive) {
-                    requestGhostRepoRemoval(identifier)
-                } label: {
-                    Label(String(localized: "Remove from List"), systemImage: "trash")
-                }
-            } else {
-                Button {
-                    requestGhostRepoRemoval(identifier)
-                } label: {
-                    Label(String(localized: "Unlock to Remove"), systemImage: "lock.open")
-                }
+            Button(role: .destructive) {
+                requestGhostRepoRemoval(identifier)
+            } label: {
+                Label(String(localized: "Remove from List"), systemImage: "trash")
             }
         }
     }
@@ -403,21 +393,13 @@ struct RepoListView: View {
         Button {
             requestGhostRepoRemoval(identifier)
         } label: {
-            HStack(spacing: 4) {
-                if !purchaseManager.isUnlocked {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 10, weight: .bold))
-                }
-                Text(String(localized: "Remove").uppercased())
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
-                    .tracking(1)
-            }
-            .foregroundStyle(purchaseManager.isUnlocked ? Color.brutalError : Color.brutalAccent)
+            Text(String(localized: "Remove").uppercased())
+                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .foregroundStyle(Color.brutalError)
+                .tracking(1)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(purchaseManager.isUnlocked
-            ? String(localized: "Remove from previously cloned repositories")
-            : String(localized: "Unlock to remove from previously cloned repositories"))
+        .accessibilityLabel(String(localized: "Remove from previously cloned repositories"))
     }
 
     // MARK: - Repo Card
@@ -569,21 +551,8 @@ struct RepoListView: View {
     // MARK: - Ghost Repo Removal
 
     private func requestGhostRepoRemoval(_ identifier: String) {
-        if purchaseManager.isUnlocked {
-            pendingGhostRemovalIdentifier = identifier
-            showGhostRemovalConfirm = true
-            return
-        }
-
-        Task { @MainActor in
-            await purchaseManager.refreshStatus()
-            if purchaseManager.isUnlocked {
-                pendingGhostRemovalIdentifier = identifier
-                showGhostRemovalConfirm = true
-            } else {
-                showPaywall = true
-            }
-        }
+        pendingGhostRemovalIdentifier = identifier
+        showGhostRemovalConfirm = true
     }
 
     private func removePendingGhostRepo() {
@@ -594,10 +563,8 @@ struct RepoListView: View {
         showGhostRemovalConfirm = false
         pendingGhostRemovalIdentifier = nil
 
-        if purchaseManager.forgetSeenRepoIdentifier(identifier) {
+        if repositoryHistory.forgetSeenRepoIdentifier(identifier) {
             showGhostRemovedToastMessage()
-        } else {
-            showPaywall = true
         }
     }
 
@@ -616,20 +583,7 @@ struct RepoListView: View {
     // MARK: - Ghost Repo Clone
 
     /// Tapping a ghost card triggers an immediate clone using stored defaults.
-    /// Re-cloning a known URL is always free (not a new identifier), but adding
-    /// it when already at the concurrent repo limit still requires purchase.
     private func cloneGhostRepo(_ identifier: String) {
-        if state.repos.count >= PurchaseManager.freeRepoLimit {
-            Task { @MainActor in
-                await purchaseManager.refreshStatus()
-                if purchaseManager.isUnlocked {
-                    performGhostClone(identifier)
-                } else {
-                    showPaywall = true
-                }
-            }
-            return
-        }
         performGhostClone(identifier)
     }
 
@@ -648,27 +602,13 @@ struct RepoListView: View {
         )
 
         // recordRepoAdded is a no-op here — identifier is already in the seen set.
-        purchaseManager.recordRepoAdded(identifier: identifier)
+        repositoryHistory.recordRepoAdded(identifier: identifier)
         state.addRepo(config)
         Task { await state.clone(repoID: config.id) }
     }
 
     private func handleAddRepoTapped() {
         addRepoInitialURL = ""
-        // Allow free access only when BOTH conditions hold:
-        //   1. The user is currently under the live repo-count limit.
-        //   2. The Keychain-persisted "repos ever added" count is also under the limit,
-        //      meaning the free slot has not been consumed on this device — even across
-        //      reinstalls or in-app repo deletions.
-        let underCurrentLimit   = state.repos.count < PurchaseManager.freeRepoLimit
-        let freeSlotAvailable   = purchaseManager.uniqueReposEverAdded < PurchaseManager.freeRepoLimit
-        if underCurrentLimit && freeSlotAvailable {
-            showAddRepo = true
-            return
-        }
-        Task { @MainActor in
-            await purchaseManager.refreshStatus()
-            if purchaseManager.isUnlocked { showAddRepo = true } else { showPaywall = true }
-        }
+        showAddRepo = true
     }
 }

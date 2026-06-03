@@ -12,7 +12,6 @@
 		62C953FE2F397E44001F79DF /* Clibgit2 in Frameworks */ = {isa = PBXBuildFile; productRef = 62C951C12F3A0001001F79DF /* Clibgit2 */; };
 		7A1C53CFCAF12009E81A0EE4 /* SyncMDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */; };
 		9B1CC33021E2FBF384971478 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
-		AA1001002FAA000100AA0002 /* SyncMd.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA1001002FAA000100AA0001 /* SyncMd.storekit */; };
 		AA2001002FAA000100AA0001 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = AA2001002FAA000100AA0002 /* Citadel */; };
 		AA3001002FAA000100AA0001 /* Notelet in Frameworks */ = {isa = PBXBuildFile; productRef = AA3001002FAA000100AA0002 /* Notelet */; };
 /* End PBXBuildFile section */
@@ -39,7 +38,6 @@
 		14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDUITests.swift; sourceTree = "<group>"; };
 		4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		62C951962F393029001F79DF /* Sync.md.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sync.md.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA1001002FAA000100AA0001 /* SyncMd.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = SyncMd.storekit; sourceTree = "<group>"; };
 		DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDTests.swift; sourceTree = "<group>"; };
 		E70D88DABEB05A34746D5412 /* SyncMDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -126,7 +124,6 @@
 			children = (
 				62C951982F393029001F79DF /* Sync.md */,
 				62C951972F393029001F79DF /* Products */,
-				AA1001002FAA000100AA0001 /* SyncMd.storekit */,
 				62CC2E749F5430344090D51D /* Frameworks */,
 				0ECE099157F397A2ECB950E7 /* SyncMDTests */,
 				3736E446A6ABF1E8CD36D223 /* SyncMDUITests */,
@@ -308,7 +305,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA1001002FAA000100AA0002 /* SyncMd.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,7 +517,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202605280948;
+				CURRENT_PROJECT_VERSION = 202605301959;
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -535,7 +531,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4.1;
+				MARKETING_VERSION = 2.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "bontecou.Sync-md";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -554,7 +550,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202605280948;
+				CURRENT_PROJECT_VERSION = 202605301959;
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -568,7 +564,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4.1;
+				MARKETING_VERSION = 2.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "bontecou.Sync-md";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
