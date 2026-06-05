@@ -1,6 +1,6 @@
 const config = {
   app: {
-    name: "Sync.md",
+    name: "Gitsync.md",
     icon: "screenshots/app-icon.png",
   },
 

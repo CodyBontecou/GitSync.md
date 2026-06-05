@@ -75,7 +75,7 @@ class GitHubAuthManager @Inject constructor(
     fun getAuthorName(): String =
         _cachedName.value?.takeIf { it.isNotBlank() }
             ?: _cachedLogin.value
-            ?: "Sync.md User"
+            ?: "Gitsync.md User"
 
     /**
      * Best author email — primary email if known, otherwise the GitHub noreply address.

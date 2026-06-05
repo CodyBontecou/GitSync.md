@@ -1,10 +1,10 @@
-# Sync.md Android — Release Notes
+# Gitsync.md Android — Release Notes
 
 ## Version 1.0.0 (2026-03-31)
 
 ### Release Overview
 
-**Sync.md** is a pure Kotlin git client for managing GitHub repositories on Android. With a focus on safety and performance, it provides a modern Jetpack Compose interface for core git workflows.
+**Gitsync.md** is a pure Kotlin git client for managing GitHub repositories on Android. With a focus on safety and performance, it provides a modern Jetpack Compose interface for core git workflows.
 
 ### What's New in 1.0.0
 
@@ -153,7 +153,7 @@ Bug reports, feature requests, and feedback can be submitted via the GitHub Issu
 ### Play Store Listing
 
 **App Title** (50 char max)
-- Sync.md - Git Client for Android
+- Gitsync.md - Git Client for Android
 
 **Short Description** (80 char max)
 - Manage GitHub repos safely on Android

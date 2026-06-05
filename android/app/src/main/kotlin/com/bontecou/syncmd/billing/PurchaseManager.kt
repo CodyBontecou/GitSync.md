@@ -25,7 +25,7 @@ import javax.inject.Singleton
 import kotlin.coroutines.resume
 
 /**
- * Manages the one-time unlock IAP and repo-tracking for Sync.md on Android.
+ * Manages the one-time unlock IAP and repo-tracking for Gitsync.md on Android.
  *
  * Mirrors iOS PurchaseManager:
  *  - FREE_REPO_LIMIT = 1 free repository before a purchase is required.

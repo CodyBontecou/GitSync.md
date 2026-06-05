@@ -354,11 +354,11 @@ fun SettingsScreen(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            BMonoRow(key = "App",     value = "Sync.md")
+                            BMonoRow(key = "App",     value = "Gitsync.md")
                             BDivider()
                             BMonoRow(key = "Platform", value = "Android")
                             BDivider()
-                            BMonoRow(key = "Version", value = "1.0.0")
+                            BMonoRow(key = "Version", value = "1.0.2")
                         }
                     }
                 }
@@ -399,7 +399,7 @@ private fun PremiumCard(
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text  = if (isUnlocked) "Sync.md Pro" else "Sync.md Free",
+                        text  = if (isUnlocked) "Gitsync.md Pro" else "Gitsync.md Free",
                         style = TextStyle(
                             fontFamily = FontFamily.Default,
                             fontWeight = FontWeight.Black,
@@ -543,7 +543,7 @@ private fun PremiumCard(
                                 )
                             )
                             Text(
-                                text  = "Thank you for supporting Sync.md!",
+                                text  = "Thank you for supporting Gitsync.md!",
                                 style = TextStyle(
                                     fontFamily = FontFamily.Monospace,
                                     fontSize   = 12.sp,

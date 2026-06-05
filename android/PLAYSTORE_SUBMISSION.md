@@ -1,6 +1,6 @@
-# Play Store Submission Guide — Sync.md v1.0.0
+# Play Store Submission Guide — Gitsync.md v1.0.0
 
-Complete step-by-step guide to submit Sync.md Android to Google Play Store.
+Complete step-by-step guide to submit Gitsync.md Android to Google Play Store.
 
 ## Pre-Submission Checklist
 
@@ -30,7 +30,7 @@ keytool -genkey -v -keystore ~/syncmd-release.keystore \
 ```
 
 **What to enter:**
-- First name: Sync.md
+- First name: Gitsync.md
 - Last name: Git Client
 - Organizational Unit: Android
 - Organization: Cody Bontecou
@@ -145,7 +145,7 @@ Upload **at least 6 screenshots per device type**. Maximum 8 screenshots per dev
 - **Format**: PNG or JPEG
 - **Count**: 6-8 screenshots minimum
 
-**Suggested Screenshots for Sync.md**
+**Suggested Screenshots for Gitsync.md**
 1. Status screen (showing repository health)
 2. Commit screen (showing staging workflow)
 3. Branch screen (showing branch list and switching)
@@ -188,7 +188,7 @@ Manage GitHub repos safely on Android
 
 **Full Description** (4000 characters max)
 ```
-Sync.md is a pure Kotlin git client for Android that puts safety first.
+Gitsync.md is a pure Kotlin git client for Android that puts safety first.
 
 FEATURES
 ✓ Safe Pull Operations - Automatic merge analysis with conflict detection
@@ -205,7 +205,7 @@ REQUIREMENTS
 • 50MB free storage
 
 ABOUT
-Sync.md focuses on providing a safe, intuitive interface for git operations on mobile. Unlike other solutions, every operation is carefully validated to prevent data loss. All git operations are performed using your device's native git binary.
+Gitsync.md focuses on providing a safe, intuitive interface for git operations on mobile. Unlike other solutions, every operation is carefully validated to prevent data loss. All git operations are performed using your device's native git binary.
 
 No push support yet? Push and GitHub OAuth will be added in v1.1.0.
 
@@ -235,14 +235,14 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
 ### 5.2 Create New App
 
 1. Click "Create app"
-2. Enter app name: "Sync.md - Git Client for Android"
+2. Enter app name: "Gitsync.md - Git Client for Android"
 3. Select "Apps" as app type
 4. Confirm you'll follow Google Play policies
 
 ### 5.3 Complete App Listing
 
 1. **App details** → Fill in:
-   - App name: "Sync.md"
+   - App name: "Gitsync.md"
    - Short description
    - Full description
    - Developer contact email
@@ -266,7 +266,7 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
 
 6. **Release notes** → Add:
    ```
-   Sync.md v1.0.0 Initial Release
+   Gitsync.md v1.0.0 Initial Release
    
    - Safe pull operations with automatic merge analysis
    - Full staging workflow for creating clean commits

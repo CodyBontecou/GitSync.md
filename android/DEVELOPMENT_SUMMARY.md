@@ -1,4 +1,4 @@
-# Sync.md Android — Development Summary
+# Gitsync.md Android — Development Summary
 
 **Project**: Pure Kotlin JVM Git Client for Android  
 **Phases Completed**: 0.0 - 6.0  
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-**Sync.md Android** is a production-grade git client for Android built entirely in Kotlin with Jetpack Compose. In a single development sprint, we've delivered **13,872 lines of carefully-crafted code** across 7 major phases, achieving:
+**Gitsync.md Android** is a production-grade git client for Android built entirely in Kotlin with Jetpack Compose. In a single development sprint, we've delivered **13,872 lines of carefully-crafted code** across 7 major phases, achieving:
 
 - ✅ **127/127 tests passing** (100% stability)
 - ✅ **6,872 lines of production UI** (Material3 Compose)
@@ -452,7 +452,7 @@ For questions, bug reports, or feature requests:
 
 ## License
 
-Sync.md Android is released under the MIT License. See LICENSE file for details.
+Gitsync.md Android is released under the MIT License. See LICENSE file for details.
 
 ---
 

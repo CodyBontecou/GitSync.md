@@ -116,7 +116,7 @@ fun ReposScreen(
                 ) {
                     // App name
                     Text(
-                        text = "SYNC.MD",
+                        text = "GITSYNC.MD",
                         style = TextStyle(
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Black,

@@ -98,7 +98,7 @@ fun PaywallScreen(
                 )
             )
             Text(
-                text = "SYNC.MD",
+                text = "GITSYNC.MD",
                 style = TextStyle(
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.Black,

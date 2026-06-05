@@ -315,7 +315,7 @@ fun LoginScreen(
                             ) {
                                 CustomTabsIntent.Builder().build().launchUrl(
                                     context,
-                                    Uri.parse("https://github.com/settings/tokens/new?scopes=repo,user:email&description=Sync.md")
+                                    Uri.parse("https://github.com/settings/tokens/new?scopes=repo,user:email&description=Gitsync.md")
                                 )
                             }
                         )
