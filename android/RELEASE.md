@@ -129,7 +129,7 @@ Bug reports, feature requests, and feedback can be submitted via the GitHub Issu
 - [ ] Upload 6-8 screenshots per device type
 - [ ] Create feature graphic (1024×500)
 - [ ] Set content rating
-- [ ] Configure pricing (free)
+- [ ] Configure paid app pricing (USD $9.99 one-time upfront)
 - [ ] Write release notes
 - [ ] Submit to internal test track
 - [ ] Get internal test approval
@@ -171,7 +171,12 @@ Bug reports, feature requests, and feedback can be submitted via the GitHub Issu
 **Permissions**
 - File access (reading git repos)
 - No network access (local only)
-- No biometric/payment integration
+- No biometric/in-app payment integration
+
+**Pricing**
+- Paid app on Google Play
+- USD $9.99 default price
+- No subscriptions, ads, or in-app purchases
 
 ### Release Strategy
 

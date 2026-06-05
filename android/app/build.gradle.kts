@@ -158,9 +158,6 @@ dependencies {
     // Browser (Custom Tabs for GitHub OAuth)
     implementation(libs.androidx.browser)
 
-    // Google Play Billing
-    implementation(libs.billing)
-
     // Coroutines
     implementation(libs.coroutines.android)
     

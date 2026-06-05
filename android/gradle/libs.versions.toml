@@ -36,9 +36,6 @@ jgit = "5.13.5.202508271544-r"
 # Browser (Custom Tabs for OAuth)
 androidx-browser = "1.8.0"
 
-# Google Play Billing
-billing = "7.1.1"
-
 # Testing
 junit = "4.13.2"
 truth = "1.4.2"
@@ -91,9 +88,6 @@ jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "j
 
 # Browser
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
-
-# Google Play Billing
-billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

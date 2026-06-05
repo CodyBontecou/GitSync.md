@@ -89,9 +89,9 @@ fun RepositoryEmptyState(
                 modifier = Modifier.padding(bottom = 12.dp),
             )
 
-            // Free tier note
+            // Paid-app note
             Text(
-                text = "1 FREE REPO · UNLOCK MORE WITH PRO",
+                text = "FULL VERSION · NO SUBSCRIPTION",
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.SemiBold,

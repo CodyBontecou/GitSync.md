@@ -1,2 +1,2 @@
-Renamed the app to Gitsync.md.
-Includes the latest Android git workflow fixes and polish.
+Gitsync.md is now a paid-up-front app with all features included.
+Removed repository limits and in-app unlock flows.

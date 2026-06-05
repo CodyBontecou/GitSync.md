@@ -2,23 +2,17 @@
 <!--
   Android data extraction rules (API 31+).
 
-  Same intent as backup_rules.xml: back up purchase state and seen-repo IDs so
-  the free-tier limit and unlock status survive app deletion + reinstall on the
-  same Google account, while excluding volatile auth/app state.
+  Gitsync.md is a paid-up-front app, so there is no in-app purchase or
+  repository-limit state to preserve. Exclude volatile auth/app state from cloud backup
+  and device-to-device transfer.
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- Purchase state and seen-repo IDs — MUST survive reinstall -->
-        <include domain="sharedpref" path="syncmd_purchase_prefs.xml" />
-
         <!-- Exclude auth tokens and volatile app state -->
         <exclude domain="sharedpref" path="sync_md_prefs.xml" />
     </cloud-backup>
 
     <device-transfer>
-        <!-- Transfer purchase state when moving to a new device -->
-        <include domain="sharedpref" path="syncmd_purchase_prefs.xml" />
-
         <!-- Exclude auth tokens and volatile app state -->
         <exclude domain="sharedpref" path="sync_md_prefs.xml" />
     </device-transfer>

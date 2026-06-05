@@ -221,7 +221,11 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
 - No restricted content, no ads, no in-app purchases
 
 **Pricing**
-- Free (no in-app purchases)
+- Paid app: one-time upfront purchase
+- Default price: USD $9.99
+- No subscriptions, ads, or in-app purchases
+
+> Note: Google Play lets paid apps become free, but apps that have already been offered free cannot later become paid under the same package name. If this package has already been offered free, create a new paid app/package instead.
 
 ## Step 5: Set Up Play Store Console
 
@@ -237,7 +241,8 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
 1. Click "Create app"
 2. Enter app name: "Gitsync.md - Git Client for Android"
 3. Select "Apps" as app type
-4. Confirm you'll follow Google Play policies
+4. Choose **Paid** when asked whether the app is free or paid
+5. Confirm you'll follow Google Play policies
 
 ### 5.3 Complete App Listing
 
@@ -264,7 +269,13 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
    - Phone screenshots (6-8, 1080×1920 or 1242×2688)
    - Tablet screenshots (optional, 1200×1920)
 
-6. **Release notes** → Add:
+6. **App pricing** → Configure:
+   - Go to **Products → App pricing**
+   - Set the default price to **USD $9.99**
+   - Apply generated local prices for target countries/regions
+   - Confirm there are no in-app products or subscriptions configured
+
+7. **Release notes** → Add:
    ```
    Gitsync.md v1.0.0 Initial Release
    

@@ -1,6 +1,5 @@
 package com.bontecou.syncmd.ui.screens
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +22,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,12 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
-import com.bontecou.syncmd.billing.PurchaseManager
-import com.bontecou.syncmd.billing.PurchaseViewModel
 import com.bontecou.syncmd.storage.CloneStorage
 import com.bontecou.syncmd.ui.util.FilesAppLauncher
-import com.bontecou.syncmd.ui.theme.BBadge
-import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
 import com.bontecou.syncmd.ui.theme.BDestructiveButton
 import com.bontecou.syncmd.ui.theme.BDivider
@@ -64,29 +58,13 @@ fun SettingsScreen(
     onNavigateToLogin: () -> Unit = {},
     onNavigateToRepoPicker: () -> Unit = {},
     githubViewModel: GitHubViewModel = hiltViewModel(),
-    purchaseViewModel: PurchaseViewModel = hiltViewModel(),
 ) {
     val bc       = LocalBrutalColors.current
-    val activity = LocalContext.current as Activity
 
     val appSettings        by viewModel.appSettings.collectAsState()
     val context            = LocalContext.current
-    val allRepos           by viewModel.allRepositories.collectAsState()
     val isLoading          by viewModel.isLoading.collectAsState()
     val errorMessage       by viewModel.errorMessage.collectAsState()
-
-    val isUnlocked             by purchaseViewModel.isUnlocked.collectAsState()
-    val isPurchasing           by purchaseViewModel.isPurchasing.collectAsState()
-    val isRestoring            by purchaseViewModel.isRestoring.collectAsState()
-    val purchaseError          by purchaseViewModel.purchaseError.collectAsState()
-    val productDetails         by purchaseViewModel.productDetails.collectAsState()
-    val debugSimulatedUnlocked by purchaseViewModel.debugSimulatedUnlocked.collectAsState()
-    val isDebugBuild = purchaseViewModel.isDebugBuild
-
-    LaunchedEffect(Unit) {
-        purchaseViewModel.refreshStatus()
-        if (productDetails == null) purchaseViewModel.loadProduct()
-    }
 
     val isLoggedIn  by githubViewModel.isLoggedIn.collectAsState()
     val githubUser  by githubViewModel.user.collectAsState()
@@ -232,37 +210,11 @@ fun SettingsScreen(
                     }
                 }
 
-                // ── Premium Section ───────────────────────────────────────
-                item { BSectionHeader(title = "Premium") }
+                // ── License Section ───────────────────────────────────────
+                item { BSectionHeader(title = "License") }
 
                 item {
-                    PremiumCard(
-                        isUnlocked     = isUnlocked,
-                        isPurchasing   = isPurchasing,
-                        isRestoring    = isRestoring,
-                        purchaseError  = purchaseError,
-                        productDetails = productDetails,
-                        reposUsed      = allRepos.size,
-                        reposEverAdded = purchaseViewModel.uniqueReposEverAdded,
-                        onUnlock       = {
-                            purchaseViewModel.clearPurchaseError()
-                            purchaseViewModel.purchase(activity)
-                        },
-                        onRestore      = {
-                            purchaseViewModel.clearPurchaseError()
-                            purchaseViewModel.restore()
-                        },
-                    )
-                }
-
-                if (isDebugBuild) {
-                    item { BSectionHeader(title = "Developer") }
-                    item {
-                        DeveloperPurchasePreviewCard(
-                            simulatedUnlocked = debugSimulatedUnlocked,
-                            onSimulatedUnlockedChanged = purchaseViewModel::setDebugSimulatedUnlocked,
-                        )
-                    }
+                    LicenseCard()
                 }
 
                 // ── App Settings Section ──────────────────────────────────
@@ -371,25 +323,14 @@ fun SettingsScreen(
 
 }
 
-// ─── Premium card ─────────────────────────────────────────────────────────────
+// ─── License card ─────────────────────────────────────────────────────────────
 
 @Composable
-private fun PremiumCard(
-    isUnlocked:     Boolean,
-    isPurchasing:   Boolean,
-    isRestoring:    Boolean,
-    purchaseError:  String?,
-    productDetails: com.android.billingclient.api.ProductDetails?,
-    reposUsed:      Int,
-    reposEverAdded: Int,
-    onUnlock:       () -> Unit,
-    onRestore:      () -> Unit,
-) {
+private fun LicenseCard() {
     val bc = LocalBrutalColors.current
 
     BCard {
         Column {
-            // ── Status header row ───────────────────────────────────────
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -399,7 +340,7 @@ private fun PremiumCard(
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text  = if (isUnlocked) "Gitsync.md Pro" else "Gitsync.md Free",
+                        text  = "Gitsync.md Full Version",
                         style = TextStyle(
                             fontFamily = FontFamily.Default,
                             fontWeight = FontWeight.Black,
@@ -408,10 +349,7 @@ private fun PremiumCard(
                         )
                     )
                     Text(
-                        text  = if (isUnlocked)
-                            "Unlimited repositories"
-                        else
-                            "${reposEverAdded} of ${PurchaseManager.FREE_REPO_LIMIT} free repo used",
+                        text  = "\$9.99 one-time purchase via Google Play",
                         style = TextStyle(
                             fontFamily = FontFamily.Monospace,
                             fontSize   = 12.sp,
@@ -419,260 +357,21 @@ private fun PremiumCard(
                         )
                     )
                 }
-
-                if (isUnlocked) {
-                    BBadge(text = "PRO", style = BBadgeStyle.ACCENT)
-                } else {
-                    BBadge(text = "FREE", style = BBadgeStyle.DEFAULT)
-                }
-            }
-
-            // ── Repo usage bar (free tier only) ─────────────────────────
-            if (!isUnlocked) {
-                BDivider()
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text  = "REPOSITORIES",
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Bold,
-                                fontSize   = 11.sp,
-                                letterSpacing = 1.sp,
-                                color = bc.textMid,
-                            )
-                        )
-                        Text(
-                            text  = "$reposEverAdded / ${PurchaseManager.FREE_REPO_LIMIT}",
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Bold,
-                                fontSize   = 11.sp,
-                                letterSpacing = 1.sp,
-                                color = if (reposEverAdded >= PurchaseManager.FREE_REPO_LIMIT)
-                                    bc.error else bc.textMid,
-                            )
-                        )
-                    }
-                    // Progress bar
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(4.dp)
-                            .background(bc.surface)
-                            .border(1.dp, bc.border)
-                    ) {
-                        val fill = (reposEverAdded.toFloat() / PurchaseManager.FREE_REPO_LIMIT)
-                            .coerceIn(0f, 1f)
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth(fill)
-                                .height(4.dp)
-                                .background(
-                                    if (fill >= 1f) bc.error else bc.text
-                                )
-                        )
-                    }
-                }
-            }
-
-            BDivider()
-
-            // ── Error ─────────────────────────────────────────────────
-            if (purchaseError != null) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(bc.error.copy(alpha = 0.06f))
-                        .padding(horizontal = 16.dp, vertical = 10.dp)
-                ) {
-                    val isContactError = purchaseError.contains("cody@isolated.tech")
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.Top,
-                    ) {
-                        BBadge(
-                            text  = "ERROR",
-                            style = if (isContactError) BBadgeStyle.DEFAULT else BBadgeStyle.ERROR,
-                        )
-                        Text(
-                            text  = purchaseError,
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontSize   = 12.sp,
-                                color      = if (isContactError) bc.textMid else bc.error,
-                            )
-                        )
-                    }
-                }
-                BDivider()
-            }
-
-            // ── Actions ───────────────────────────────────────────────
-            if (isUnlocked) {
-                // Already unlocked — just show restore option
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        Text(
-                            text  = "🔓",
-                            style = TextStyle(fontSize = 18.sp)
-                        )
-                        Column {
-                            Text(
-                                text  = "Full access unlocked",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Default,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize   = 15.sp,
-                                    color      = bc.text,
-                                )
-                            )
-                            Text(
-                                text  = "Thank you for supporting Gitsync.md!",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize   = 12.sp,
-                                    color      = bc.textMid,
-                                )
-                            )
-                        }
-                    }
-                }
-                BDivider()
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = onRestore,
-                        )
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                ) {
-                    Text(
-                        text  = if (isRestoring) "Checking…" else "Restore Purchase",
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.Medium,
-                            fontSize   = 13.sp,
-                            color      = bc.textMid,
-                        )
-                    )
-                }
-            } else {
-                // Not unlocked — show buy + restore
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    BPrimaryButton(
-                        title      = unlockButtonLabel(productDetails),
-                        isLoading  = isPurchasing,
-                        isDisabled = isPurchasing || isRestoring,
-                        onClick    = onUnlock,
-                    )
-                    BSecondaryButton(
-                        title      = "Restore Purchase",
-                        isLoading  = isRestoring,
-                        isDisabled = isPurchasing || isRestoring,
-                        onClick    = onRestore,
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun DeveloperPurchasePreviewCard(
-    simulatedUnlocked: Boolean,
-    onSimulatedUnlockedChanged: (Boolean) -> Unit,
-) {
-    val bc = LocalBrutalColors.current
-
-    BCard {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 13.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Simulate Paid View",
-                        style = TextStyle(
-                            fontFamily = FontFamily.Default,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 16.sp,
-                            color = bc.text,
-                        )
-                    )
-                    Text(
-                        text = if (simulatedUnlocked) {
-                            "ON · app behaves as paid"
-                        } else {
-                            "OFF · app behaves as unpaid"
-                        },
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 12.sp,
-                            color = bc.textMid,
-                        )
-                    )
-                }
-                Switch(
-                    checked = simulatedUnlocked,
-                    onCheckedChange = onSimulatedUnlockedChanged,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor  = bc.bg,
-                        checkedTrackColor  = bc.text,
-                        uncheckedThumbColor = bc.textFaint,
-                        uncheckedTrackColor = bc.surface,
-                        uncheckedBorderColor = bc.border,
-                    )
-                )
             }
 
             BDivider()
 
             Text(
-                text = "DEBUG BUILDS ONLY · HIDDEN IN RELEASE",
+                text = "All features are included after installing the paid app. No subscriptions or in-app purchases.",
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
-                    fontSize = 10.sp,
-                    letterSpacing = 0.5.sp,
-                    color = bc.textFaint,
+                    fontSize   = 12.sp,
+                    color      = bc.textMid,
                 ),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             )
         }
     }
-}
-
-private fun unlockButtonLabel(
-    productDetails: com.android.billingclient.api.ProductDetails?
-): String {
-    val price = productDetails?.oneTimePurchaseOfferDetails?.formattedPrice
-    return if (price != null) "Unlock for $price" else "Unlock Unlimited"
 }
 
 @Composable

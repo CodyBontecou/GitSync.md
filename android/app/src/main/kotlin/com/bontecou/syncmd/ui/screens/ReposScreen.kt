@@ -42,17 +42,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bontecou.syncmd.ui.theme.BBadge
-import com.bontecou.syncmd.ui.theme.BBadgeStyle
 import com.bontecou.syncmd.ui.theme.BCard
 import com.bontecou.syncmd.ui.theme.BDivider
 import com.bontecou.syncmd.ui.theme.BEmptyState
-import com.bontecou.syncmd.ui.theme.BSectionHeader
 import com.bontecou.syncmd.ui.theme.LocalBrutalColors
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.SavedRepository
@@ -72,25 +68,15 @@ import kotlin.math.roundToInt
 fun ReposScreen(
     settingsViewModel: SettingsViewModel,
     githubViewModel: GitHubViewModel,
-    seenRepoIdentifiers: Set<String>,
-    isUnlocked: Boolean,
     onRepoSelected: (String) -> Unit,
     onRepoRemoved: (String) -> Unit,
-    onGhostRepoSelected: (String) -> Unit,
     onAddRepo: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    onNavigateToPaywall: () -> Unit,
 ) {
     val bc           = LocalBrutalColors.current
     val allRepos     by settingsViewModel.allRepositories.collectAsState()
-    val selectedRepo by settingsViewModel.selectedRepository.collectAsState()
     val isLoggedIn   by githubViewModel.isLoggedIn.collectAsState()
 
-    val activeRepoIdentifiers = allRepos.mapNotNull(::savedRepoIdentifier).toSet()
-    val ghostRepoIdentifiers = seenRepoIdentifiers
-        .mapNotNull(::normaliseSeenRepoIdentifier)
-        .filterNot { activeRepoIdentifiers.contains(it) }
-        .sorted()
 
     Box(
         modifier = Modifier
@@ -184,7 +170,7 @@ fun ReposScreen(
             }
 
             // ── Content ───────────────────────────────────────────────────
-            if (allRepos.isEmpty() && ghostRepoIdentifiers.isEmpty()) {
+            if (allRepos.isEmpty()) {
                 // Empty state
                 Box(
                     modifier = Modifier
@@ -215,22 +201,9 @@ fun ReposScreen(
                     items(allRepos, key = { it.path }) { repo ->
                         RepoCard(
                             repo       = repo,
-                            isSelected = repo.path == selectedRepo,
                             onClick    = { onRepoSelected(repo.path) },
                             onRemove   = { onRepoRemoved(repo.path) },
                         )
-                    }
-
-                    if (ghostRepoIdentifiers.isNotEmpty()) {
-                        item {
-                            BSectionHeader(title = "Previously Cloned")
-                        }
-                        items(ghostRepoIdentifiers, key = { it }) { identifier ->
-                            GhostRepoCard(
-                                identifier = identifier,
-                                onClick = { onGhostRepoSelected(identifier) },
-                            )
-                        }
                     }
                 }
             }
@@ -241,28 +214,6 @@ fun ReposScreen(
                     .fillMaxWidth()
                     .background(bc.bg)
             ) {
-                if (allRepos.isEmpty() && !isUnlocked) {
-                    Text(
-                        text = "1 FREE REPO · UNLOCK MORE WITH PRO",
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 11.sp,
-                            letterSpacing = 1.5.sp,
-                            color = bc.accent,
-                        ),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = onNavigateToPaywall,
-                            )
-                            .padding(start = 20.dp, top = 6.dp, bottom = 10.dp),
-                    )
-                }
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -307,99 +258,11 @@ fun ReposScreen(
     }
 }
 
-// ─── Ghost Repo Card (previously cloned) ─────────────────────────────────────
-@Composable
-private fun GhostRepoCard(
-    identifier: String,
-    onClick: () -> Unit,
-) {
-    val bc = LocalBrutalColors.current
-    val identity = parseRepoIdentity(identifier)
-    val repoName = identity?.repo ?: identifier.substringAfterLast("/")
-
-    BCard(
-        modifier = Modifier.clickable(
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() },
-            onClick = onClick,
-        )
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(3.dp),
-                ) {
-                    Text(
-                        text = repoName,
-                        style = TextStyle(
-                            fontFamily = FontFamily.Default,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 17.sp,
-                            color = bc.text,
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    identity?.owner?.let { owner ->
-                        Text(
-                            text = owner.uppercase(),
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 12.sp,
-                                letterSpacing = 1.sp,
-                                color = bc.textMid,
-                            )
-                        )
-                    }
-                }
-
-                Text(
-                    text = "→",
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 14.sp,
-                        color = bc.textFaint,
-                    )
-                )
-            }
-
-            BDivider()
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                BBadge(text = "PREVIOUSLY CLONED", style = BBadgeStyle.DEFAULT)
-                Text(
-                    text = "Tap to re-clone",
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 12.sp,
-                        color = bc.textFaint,
-                    )
-                )
-            }
-        }
-    }
-}
-
 // ─── Repo Card ────────────────────────────────────────────────────────────────
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RepoCard(
     repo: SavedRepository,
-    isSelected: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
 ) {
@@ -677,12 +540,6 @@ private fun RepoCard(
 // ─── Display helpers ─────────────────────────────────────────────────────────
 
 private data class RepoIdentity(val owner: String, val repo: String)
-
-/** Returns a normalised "owner/repo" identifier for a saved repo when available. */
-private fun savedRepoIdentifier(repo: SavedRepository): String? {
-    return normaliseSeenRepoIdentifier(repo.alias)
-        ?: normaliseSeenRepoIdentifier(repo.path)
-}
 
 /**
  * Normalises repo identifiers from all known formats into "owner/repo".
