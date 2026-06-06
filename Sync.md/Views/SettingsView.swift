@@ -18,6 +18,8 @@ struct SettingsView: View {
     @State private var showMoveLocationPicker = false
     @State private var moveError: String? = nil
     @State private var showMoveError = false
+    @State private var validationMessage: String? = nil
+    @State private var showValidationAlert = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
 
@@ -228,8 +230,9 @@ struct SettingsView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        saveChanges()
-                        dismiss()
+                        if saveChanges() {
+                            dismiss()
+                        }
                     } label: {
                         Text(String(localized: "Save").uppercased())
                             .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -280,6 +283,11 @@ struct SettingsView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(moveError ?? String(localized: "Unknown error"))
+            }
+            .alert("Invalid Git Author", isPresented: $showValidationAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(validationMessage ?? String(localized: "Please set Author Name and Author Email."))
             }
         }
     }
@@ -378,11 +386,41 @@ struct SettingsView: View {
         return fmt.localizedString(for: date, relativeTo: Date())
     }
 
-    private func saveChanges() {
-        state.updateRepo(id: repoID) { repo in
-            repo.branch = branch
-            repo.authorName = authorName
-            repo.authorEmail = authorEmail
+    private func saveChanges() -> Bool {
+        let trimmedBranch = branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedName = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedName.isEmpty else {
+            validationMessage = String(localized: "Author Name is required before Git can create commits.")
+            showValidationAlert = true
+            return false
         }
+        guard !trimmedEmail.isEmpty else {
+            validationMessage = String(localized: "Author Email is required before Git can create commits.")
+            showValidationAlert = true
+            return false
+        }
+
+        let forbiddenNameCharacters = CharacterSet(charactersIn: "<>\n\r")
+        guard trimmedName.rangeOfCharacter(from: forbiddenNameCharacters) == nil else {
+            validationMessage = String(localized: "Author Name cannot contain line breaks or angle brackets.")
+            showValidationAlert = true
+            return false
+        }
+
+        let forbiddenEmailCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "<>"))
+        guard trimmedEmail.contains("@"), trimmedEmail.rangeOfCharacter(from: forbiddenEmailCharacters) == nil else {
+            validationMessage = String(localized: "Author Email must look like you@example.com.")
+            showValidationAlert = true
+            return false
+        }
+
+        state.updateRepo(id: repoID) { repo in
+            repo.branch = trimmedBranch.isEmpty ? "main" : trimmedBranch
+            repo.authorName = trimmedName
+            repo.authorEmail = trimmedEmail
+        }
+        return true
     }
 }

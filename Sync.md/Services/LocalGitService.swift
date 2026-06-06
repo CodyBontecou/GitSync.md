@@ -31,6 +31,7 @@ enum LocalGitError: LocalizedError {
     case tagNotFound(String)
     case repositoryCorrupted(String)
     case lfsFailed(String)
+    case invalidAuthorIdentity(String)
     case libgit2(String)
 
     var errorDescription: String? {
@@ -87,6 +88,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
         case .lfsFailed(let msg):
             return String(localized: "Git LFS failed: \(msg)")
+        case .invalidAuthorIdentity(let msg):
+            return String(localized: "Git author identity is missing or invalid. \(msg) Open repository settings and set Author Name and Author Email.")
         case .libgit2(let msg):
             return String(localized: "Git error: \(msg)")
         }
@@ -168,6 +171,47 @@ private func git2Check(_ code: Int32, context: String = "", fallback: String? = 
         throw LocalGitError.libgit2(full)
     }
     return code
+}
+
+private struct GitSignatureIdentity {
+    let name: String
+    let email: String
+}
+
+private func validatedGitSignatureIdentity(authorName: String, authorEmail: String) throws -> GitSignatureIdentity {
+    let name = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
+    let email = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+
+    guard !name.isEmpty else {
+        throw LocalGitError.invalidAuthorIdentity("Author Name is required.")
+    }
+    guard !email.isEmpty else {
+        throw LocalGitError.invalidAuthorIdentity("Author Email is required.")
+    }
+    let forbiddenNameCharacters = CharacterSet(charactersIn: "<>\n\r")
+    guard name.rangeOfCharacter(from: forbiddenNameCharacters) == nil else {
+        throw LocalGitError.invalidAuthorIdentity("Author Name cannot contain line breaks or angle brackets.")
+    }
+
+    let forbiddenEmailCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "<>"))
+    guard email.contains("@"), email.rangeOfCharacter(from: forbiddenEmailCharacters) == nil else {
+        throw LocalGitError.invalidAuthorIdentity("Author Email must look like you@example.com.")
+    }
+
+    return GitSignatureIdentity(name: name, email: email)
+}
+
+private func createGitSignature(
+    _ signature: inout UnsafeMutablePointer<git_signature>?,
+    authorName: String,
+    authorEmail: String
+) throws {
+    let identity = try validatedGitSignatureIdentity(authorName: authorName, authorEmail: authorEmail)
+    guard git_signature_now(&signature, identity.name, identity.email) >= 0 else {
+        throw LocalGitError.invalidAuthorIdentity(
+            git2ErrorMessage(fallback: "Author Name or Author Email was rejected by Git.")
+        )
+    }
 }
 
 /// Convert a `git_oid` pointer to a 40-char hex string.
@@ -1258,10 +1302,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var signature: UnsafeMutablePointer<git_signature>?
             defer { if let signature { git_signature_free(signature) } }
-            try git2Check(
-                git_signature_now(&signature, authorName, authorEmail),
-                context: "Create merge signature"
-            )
+            try createGitSignature(&signature, authorName: authorName, authorEmail: authorEmail)
 
             let commitMessage = "Merge branch '\(branchName)'"
             var mergeCommitOid = git_oid()
@@ -1357,7 +1398,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var signature: UnsafeMutablePointer<git_signature>?
             defer { if let signature { git_signature_free(signature) } }
-            try git2Check(git_signature_now(&signature, authorName, authorEmail), context: "Create revert signature")
+            try createGitSignature(&signature, authorName: authorName, authorEmail: authorEmail)
 
             let fallbackSummary = git_commit_message(revertCommit)
                 .map { String(cString: $0).components(separatedBy: .newlines).first ?? "" }
@@ -1442,10 +1483,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var signature: UnsafeMutablePointer<git_signature>?
             defer { if let signature { git_signature_free(signature) } }
-            try git2Check(
-                git_signature_now(&signature, authorName, authorEmail),
-                context: "Create merge signature"
-            )
+            try createGitSignature(&signature, authorName: authorName, authorEmail: authorEmail)
 
             let commitMessage = message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 ? "Merge commit"
@@ -1778,10 +1816,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var sig: UnsafeMutablePointer<git_signature>?
             defer { if let sig { git_signature_free(sig) } }
-            try git2Check(
-                git_signature_now(&sig, authorName, authorEmail),
-                context: "Create signature"
-            )
+            try createGitSignature(&sig, authorName: authorName, authorEmail: authorEmail)
 
             var commitOid = git_oid()
             if let parentCommit {
@@ -2309,7 +2344,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var signature: UnsafeMutablePointer<git_signature>?
             defer { if let signature { git_signature_free(signature) } }
-            try git2Check(git_signature_now(&signature, authorName, authorEmail), context: "Create stash signature")
+            try createGitSignature(&signature, authorName: authorName, authorEmail: authorEmail)
 
             var stashOID = git_oid()
             let flags: UInt32 = includeUntracked
@@ -2490,7 +2525,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 // Annotated tag
                 var sig: UnsafeMutablePointer<git_signature>?
                 defer { if let sig { git_signature_free(sig) } }
-                try git2Check(git_signature_now(&sig, authorName, authorEmail), context: "Create tag signature")
+                try createGitSignature(&sig, authorName: authorName, authorEmail: authorEmail)
 
                 let createCode = git_tag_create(&tagOid, repo, name, targetObj, sig, msg, 0)
                 if createCode == GIT_EEXISTS.rawValue {
@@ -2708,10 +2743,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // Create author/committer signature
             var sig: UnsafeMutablePointer<git_signature>?
             defer { if let sig { git_signature_free(sig) } }
-            try git2Check(
-                git_signature_now(&sig, authorName, authorEmail),
-                context: "Create signature"
-            )
+            try createGitSignature(&sig, authorName: authorName, authorEmail: authorEmail)
 
             // Create the commit
             var commitOid = git_oid()

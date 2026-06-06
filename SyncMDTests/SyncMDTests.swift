@@ -661,6 +661,31 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(inventory.local.contains(where: { $0.shortName == repoInfo.branch && $0.isCurrent }))
     }
 
+    func testLocalGitServiceCommitAndPushReportsMissingAuthorEmail() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-MissingAuthorEmail")
+        defer { try? fm.removeItem(at: repoURL) }
+
+        let service = LocalGitService(localURL: repoURL)
+        let readme = repoURL.appendingPathComponent("README.md")
+        try "# Identity Test\n".write(to: readme, atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+
+        do {
+            _ = try await service.commitAndPush(
+                message: "Initial commit",
+                authorName: "SyncMD Tests",
+                authorEmail: " ",
+                pat: ""
+            )
+            XCTFail("Expected missing author email to be reported before libgit2 signature creation")
+        } catch LocalGitError.invalidAuthorIdentity(let message) {
+            XCTAssertTrue(message.contains("Author Email"), message)
+        } catch {
+            XCTFail("Expected invalidAuthorIdentity, got \(error)")
+        }
+    }
+
     func testLocalGitServiceCommitHistoryReturnsDeterministicPages() async throws {
         let fm = FileManager.default
         let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-HistoryPages-\(UUID().uuidString)", isDirectory: true)
