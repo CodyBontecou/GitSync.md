@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 platform :ios do
-  release_notes_text = "• GitSync.md is now a paid-up-front app\n• Unlimited repositories are included for everyone — no paywall, no in-app unlock\n• Existing users are grandfathered in automatically"
-  app_version = "2.4.3"
+  release_notes_text = "• Fixed a Git author setup issue that could block Commit & Push with a cryptic signature error\n• GitSync.md now explains when Author Name or Author Email needs to be set"
+  app_version = "2.4.4"
 
   submission_information = {
     add_id_info_uses_idfa: false,
