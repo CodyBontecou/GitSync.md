@@ -5,6 +5,10 @@ enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
         [
             .init(
+                version: "2.4.5",
+                items: version245Items
+            ),
+            .init(
                 version: "2.4.1",
                 items: version241Items
             )
@@ -56,7 +60,7 @@ enum AppReleaseNotes {
         NoteletStorage.markCurrentVersionAsSeen()
     }
 
-    private static let availableVersions: Set<String> = ["2.4.1"]
+    private static let availableVersions: Set<String> = ["2.4.5", "2.4.1"]
 
     private static var currentVersion: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
@@ -64,6 +68,41 @@ enum AppReleaseNotes {
 
     private static func hasNotes(for version: String) -> Bool {
         availableVersions.contains(version)
+    }
+
+    private static var version245Items: [NoteletVersionNoteItem] {
+        [
+            .list(
+                title: "Shortcuts support",
+                rows: [
+                    .init(
+                        symbolSystemName: "arrow.down.circle.fill",
+                        title: "Pull from Apple Shortcuts",
+                        description: "Run Pull All Repositories or Pull Repository from the Shortcuts app to fetch and fast-forward your vaults without opening the Git controls."
+                    ),
+                    .init(
+                        symbolSystemName: "bolt.fill",
+                        title: "Auto-pull on app open",
+                        description: "Create a Personal Automation for when GitSync.md opens, then run Pull All Repositories to keep your notes fresh automatically."
+                    )
+                ]
+            ),
+            .list(
+                title: "Commit setup is clearer",
+                rows: [
+                    .init(
+                        symbolSystemName: "person.crop.circle.badge.checkmark",
+                        title: "Author details are checked first",
+                        description: "GitSync.md now catches missing Author Name or Author Email before Commit & Push tries to create a commit."
+                    ),
+                    .init(
+                        symbolSystemName: "exclamationmark.bubble.fill",
+                        title: "No more cryptic signature errors",
+                        description: "If your repository needs Git author identity, you'll see exactly what to set in repository settings."
+                    )
+                ]
+            )
+        ]
     }
 
     private static var version241Items: [NoteletVersionNoteItem] {

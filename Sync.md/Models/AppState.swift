@@ -206,11 +206,22 @@ final class AppState {
 
     // MARK: - Persistence
 
-    private static var reposFileURL: URL {
+    static var persistedReposFileURL: URL {
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let dir = support.appendingPathComponent("SyncMD", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir.appendingPathComponent("repos.json")
+    }
+
+    private static var reposFileURL: URL {
+        persistedReposFileURL
+    }
+
+    static func loadPersistedRepos() -> [RepoConfig] {
+        guard let data = try? Data(contentsOf: persistedReposFileURL) else { return [] }
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return (try? decoder.decode([RepoConfig].self, from: data)) ?? []
     }
 
     private func loadState() {
@@ -1819,7 +1830,7 @@ final class AppState {
     }
 
     @discardableResult
-    func pull(repoID: UUID) async -> Bool {
+    func pull(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
         guard let idx = repoIndex(id: repoID) else {
             showError(message: String(localized: "Repository not found"))
             return false
@@ -1830,11 +1841,15 @@ final class AppState {
         syncProgress = String(localized: "Checking for updates...")
 
         if isDemoMode {
-            try? await Task.sleep(for: .seconds(1))
+            if showsProgressDelay {
+                try? await Task.sleep(for: .seconds(1))
+            }
             syncProgress = String(localized: "Already up to date!")
             repos[idx].gitState.lastSyncDate = Date()
             saveRepos()
-            try? await Task.sleep(for: .seconds(1))
+            if showsProgressDelay {
+                try? await Task.sleep(for: .seconds(1))
+            }
             isSyncing = false
             syncingRepoID = nil
             return true
@@ -1919,7 +1934,9 @@ final class AppState {
                 }
             }
 
-            try? await Task.sleep(for: .seconds(1))
+            if showsProgressDelay {
+                try? await Task.sleep(for: .seconds(1))
+            }
             isSyncing = false
             syncingRepoID = nil
             return true
@@ -1959,7 +1976,9 @@ final class AppState {
             showError(message: error.localizedDescription, category: "pull")
         }
 
-        try? await Task.sleep(for: .seconds(1))
+        if showsProgressDelay {
+            try? await Task.sleep(for: .seconds(1))
+        }
         isSyncing = false
         syncingRepoID = nil
         return false

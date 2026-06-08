@@ -114,6 +114,27 @@ struct AppSettingsView: View {
                             }
                         }
 
+                        // Shortcuts
+                        settingsSection(title: "Shortcuts") {
+                            HStack(alignment: .top, spacing: 14) {
+                                Text("⚡️")
+                                    .font(.system(size: 18))
+                                    .frame(width: 28)
+
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("Pull from Shortcuts")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundStyle(Color.brutalText)
+                                    Text("Use Pull All Repositories in Apple Shortcuts. Add a Personal Automation → App → GitSync.md is opened to auto-pull on launch.")
+                                        .font(.system(size: 13, design: .monospaced))
+                                        .foregroundStyle(Color.brutalText)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 14)
+                        }
+
                         // Feedback
                         settingsSection(title: "Feedback") {
                             VStack(spacing: 0) {

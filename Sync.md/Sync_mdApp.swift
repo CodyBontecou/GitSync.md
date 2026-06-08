@@ -1,3 +1,4 @@
+import AppIntents
 import SwiftUI
 
 @MainActor
@@ -5,6 +6,12 @@ import SwiftUI
 struct Sync_mdApp: App {
     @State private var appState = AppState()
     @Environment(\.scenePhase) private var scenePhase
+
+    init() {
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            SyncMDAppShortcutsProvider.updateAppShortcutParameters()
+        }
+    }
 
     var body: some Scene {
         WindowGroup {
