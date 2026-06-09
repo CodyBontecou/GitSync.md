@@ -45,7 +45,7 @@ env:
 
 jobs:
   announce:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -53,12 +53,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install CLI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq
+          export INSTALL_DIR="$HOME/.local/bin"
+          curl -fsSL https://asccli.sh/install | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/asc" version
+          gh --version
+
       - name: Configure asc CLI
         env:
           ASC_KEY_ID_SECRET: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID_SECRET: ${{ secrets.ASC_ISSUER_ID }}
           ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
         run: |
+          if [[ -z "$ASC_KEY_ID_SECRET" || -z "$ASC_ISSUER_ID_SECRET" || -z "$ASC_API_KEY_P8" ]]; then
+            echo "::error::Missing ASC_KEY_ID, ASC_ISSUER_ID, or ASC_API_KEY_P8 repository secret"
+            exit 1
+          fi
+
           ASC_KEY_DIR="$RUNNER_TEMP/.asc-keys"
           mkdir -p "$ASC_KEY_DIR"
           chmod 700 "$ASC_KEY_DIR"
