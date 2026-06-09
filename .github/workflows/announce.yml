@@ -83,7 +83,9 @@ jobs:
           mkdir -p "$ASC_KEY_DIR"
           chmod 700 "$ASC_KEY_DIR"
           ASC_KEY_PATH="$ASC_KEY_DIR/AuthKey_${ASC_KEY_ID_SECRET}.p8"
-          echo "$ASC_API_KEY_P8" | base64 --decode > "$ASC_KEY_PATH"
+          if ! printf '%s' "$ASC_API_KEY_P8" | base64 --decode > "$ASC_KEY_PATH" 2>/dev/null; then
+            printf '%s' "$ASC_API_KEY_P8" > "$ASC_KEY_PATH"
+          fi
           chmod 600 "$ASC_KEY_PATH"
           {
             echo "ASC_KEY_ID=$ASC_KEY_ID_SECRET"
