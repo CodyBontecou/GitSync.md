@@ -105,8 +105,8 @@ jobs:
             # Webhook mode — look up version + platform from the ASC version ID.
             echo "Webhook mode: appStoreVersionId=$ASCV_ID state=$STATE"
             V_JSON=$(asc versions view --version-id "$ASCV_ID" --output json)
-            VERSION=$(printf '%s' "$V_JSON" | jq -r '.attributes.versionString // .data.attributes.versionString')
-            PLATFORM=$(printf '%s' "$V_JSON" | jq -r '.attributes.platform // .data.attributes.platform // "IOS"')
+            VERSION=$(printf '%s' "$V_JSON" | jq -r '.versionString // .attributes.versionString // .data.attributes.versionString // empty')
+            PLATFORM=$(printf '%s' "$V_JSON" | jq -r '.platform // .attributes.platform // .data.attributes.platform // "IOS"')
             if [[ -z "$VERSION" || "$VERSION" == "null" || -z "$PLATFORM" || "$PLATFORM" == "null" ]]; then
               echo "::error::asc versions view returned unexpected shape:"
               printf '%s\n' "$V_JSON"
