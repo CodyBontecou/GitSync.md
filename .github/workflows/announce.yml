@@ -30,6 +30,11 @@ on:
         description: 'Version (e.g. 2.4.1)'
         required: true
         type: string
+      dry_run:
+        description: 'Resolve notes and render the Discord post without publishing side effects'
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -131,6 +136,7 @@ jobs:
             echo "platform=$PLATFORM"
             echo "tag=v$VERSION"
             echo "platform_label=iOS"
+            echo "dry_run=${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}"
           } >> "$GITHUB_OUTPUT"
 
       - name: Fetch release (or fall back to ASC notes)
@@ -158,8 +164,8 @@ jobs:
             fi
             NOTES=""
             if [[ -n "$ASCV_ID" && "$ASCV_ID" != "null" ]]; then
-              NOTES=$(asc versions localizations list --version-id "$ASCV_ID" --output json 2>/dev/null \
-                | jq -r '.data[] | select(.attributes.locale=="en-US") | .attributes.whatsNew // empty' \
+              NOTES=$(asc localizations list --version "$ASCV_ID" --locale en-US --output json 2>/dev/null \
+                | jq -r '.data[]? | .attributes.whatsNew // .whatsNew // empty' \
                 | head -c 1500 || true)
             fi
             if [[ -z "$NOTES" ]]; then
@@ -176,7 +182,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Promote draft GitHub release
-        if: steps.release.outputs.is_draft == 'true'
+        if: steps.meta.outputs.dry_run != 'true' && steps.release.outputs.is_draft == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release edit '${{ steps.meta.outputs.tag }}' --draft=false
@@ -196,6 +202,25 @@ jobs:
           Repo: ${REPO_URL}
           DISCORD_EOF
 
+          if [[ "${{ steps.meta.outputs.dry_run }}" == "true" ]]; then
+            echo "::notice::Dry run: would post to Discord channel ${DISCORD_CHANNEL_ID}"
+            {
+              echo "### Dry-run Discord post"
+              echo ""
+              echo "Channel: #sync-md-updates (${DISCORD_CHANNEL_ID})"
+              echo ""
+              echo '```'
+              cat "$BODY_FILE"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if [[ -z "$DISCORD_BOT_TOKEN" ]]; then
+            echo "::error::Missing DISCORD_BOT_TOKEN repository secret"
+            exit 1
+          fi
+
           PAYLOAD=$(jq -n \
             --rawfile c "$BODY_FILE" \
             '{ content: $c, allowed_mentions: { parse: [] } }')
@@ -210,9 +235,15 @@ jobs:
           echo "Posted to Discord: https://discord.com/channels/${DISCORD_GUILD_ID}/${DISCORD_CHANNEL_ID}/${MSG_ID}"
 
       - name: Trigger llm-wiki launch checklist scaffold
+        if: steps.meta.outputs.dry_run != 'true'
         env:
           GH_TOKEN: ${{ secrets.LLM_WIKI_DISPATCH_TOKEN }}
         run: |
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo "::notice::Skipping llm-wiki dispatch; LLM_WIKI_DISPATCH_TOKEN is not configured"
+            exit 0
+          fi
+
           gh api -X POST repos/CodyBontecou/llm-wiki/dispatches \
             -f "event_type=generate-launch-checklist" \
             -F "client_payload[app]=$APP_SLUG" \
@@ -226,11 +257,19 @@ jobs:
           {
             echo "## Announce ${{ steps.meta.outputs.tag }} (${{ steps.meta.outputs.platform_label }})"
             echo ""
+            if [[ "${{ steps.meta.outputs.dry_run }}" == "true" ]]; then
+              echo "- Mode: dry run (no GitHub release promotion, Discord post, or llm-wiki dispatch)"
+            fi
             if [[ "${{ steps.release.outputs.has_release }}" == "true" ]]; then
               echo "- GitHub release: ${{ steps.release.outputs.is_draft == 'true' && 'promoted from draft' || 'already published' }}"
             else
               echo "- GitHub release: skipped (no draft existed; submitted via asc directly)"
             fi
-            echo "- Discord: posted to #sync-md-updates"
-            echo "- llm-wiki: dispatched generate-launch-checklist for $APP_SLUG"
+            if [[ "${{ steps.meta.outputs.dry_run }}" == "true" ]]; then
+              echo "- Discord: rendered only for #sync-md-updates"
+              echo "- llm-wiki: skipped"
+            else
+              echo "- Discord: posted to #sync-md-updates"
+              echo "- llm-wiki: dispatched if token was configured"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
