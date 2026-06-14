@@ -442,7 +442,10 @@ struct GitControlSheet: View {
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
                 } else {
-                    if !unstagedEntries.isEmpty {
+                    let entries = sortedEntries
+                    let hasUnstagedEntries = entries.contains { $0.workTreeStatus != nil }
+
+                    if hasUnstagedEntries {
                         HStack {
                             Spacer()
                             smallActionButton(String(localized: "Stage All").uppercased()) {
@@ -454,10 +457,10 @@ struct GitControlSheet: View {
                         .disabled(state.isSyncing)
                     }
 
-                    VStack(spacing: 0) {
-                        ForEach(Array(sortedEntries.enumerated()), id: \.element.id) { index, entry in
+                    LazyVStack(spacing: 0) {
+                        ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
                             changeRow(entry)
-                            if index < sortedEntries.count - 1 {
+                            if index < entries.count - 1 {
                                 BDivider().padding(.horizontal, 16)
                             }
                         }

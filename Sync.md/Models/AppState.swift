@@ -104,6 +104,7 @@ final class AppState {
     private var changeDetectionInFlight: Set<UUID> = []
     private var pendingChangeDetection: Set<UUID> = []
     private var lastChangeDetectionStartedAt: [UUID: Date] = [:]
+    private var repoMutationGeneration: [UUID: Int] = [:]
     private var didScheduleInitialChangeDetection = false
 
     // MARK: - PAT
@@ -648,34 +649,42 @@ final class AppState {
         lastChangeDetectionStartedAt[repoID] = now
 
         let startedAt = now
+        let startedGeneration = repoMutationGeneration[repoID] ?? 0
         let repoName = repo.displayName
         Task(priority: .utility) {
             do {
                 let info = try await gitService.repoInfo()
-                changeCounts[repoID] = info.changeCount
-                statusEntriesByRepo[repoID] = info.statusEntries
-                syncStateByRepo[repoID] = info.syncState
-                diffByRepo[repoID] = .empty
+                let isStale = startedGeneration != (repoMutationGeneration[repoID] ?? 0)
+                if !isStale {
+                    changeCounts[repoID] = info.changeCount
+                    statusEntriesByRepo[repoID] = info.statusEntries
+                    syncStateByRepo[repoID] = info.syncState
+                    diffByRepo[repoID] = .empty
+                }
 
                 let elapsed = Date().timeIntervalSince(startedAt)
                 if elapsed > 2 {
+                    let staleSuffix = isStale ? ", discarded stale result" : ""
                     DebugLogger.shared.info(
                         "status",
                         "Status refresh was slow",
-                        detail: "\(repoName): \(String(format: "%.1f", elapsed))s, \(info.statusEntries.count) entries"
+                        detail: "\(repoName): \(String(format: "%.1f", elapsed))s, \(info.statusEntries.count) entries\(staleSuffix)"
                     )
                 }
             } catch {
-                changeCounts[repoID] = 0
-                statusEntriesByRepo[repoID] = []
-                syncStateByRepo[repoID] = .unknown
-                diffByRepo[repoID] = .empty
-                branchesByRepo[repoID] = .empty
-                conflictSessionByRepo[repoID] = .none
-                commitHistoryByRepo[repoID] = []
-                commitHistoryHasMoreByRepo[repoID] = false
-                commitDetailByRepo[repoID] = [:]
-                stashesByRepo[repoID] = []
+                let isStale = startedGeneration != (repoMutationGeneration[repoID] ?? 0)
+                if !isStale {
+                    changeCounts[repoID] = 0
+                    statusEntriesByRepo[repoID] = []
+                    syncStateByRepo[repoID] = .unknown
+                    diffByRepo[repoID] = .empty
+                    branchesByRepo[repoID] = .empty
+                    conflictSessionByRepo[repoID] = .none
+                    commitHistoryByRepo[repoID] = []
+                    commitHistoryHasMoreByRepo[repoID] = false
+                    commitDetailByRepo[repoID] = [:]
+                    stashesByRepo[repoID] = []
+                }
             }
 
             let shouldRunAgain = pendingChangeDetection.remove(repoID) != nil
@@ -1575,6 +1584,76 @@ final class AppState {
         syncingRepoID = nil
     }
 
+    private func markRepositoryMutated(repoID: UUID) {
+        repoMutationGeneration[repoID, default: 0] += 1
+    }
+
+    private func stagedStatusKind(from workTreeStatus: GitFileStatusKind) -> GitFileStatusKind {
+        workTreeStatus == .untracked ? .added : workTreeStatus
+    }
+
+    private func unstagedStatusKind(from indexStatus: GitFileStatusKind) -> GitFileStatusKind {
+        indexStatus == .added ? .untracked : indexStatus
+    }
+
+    private func optimisticallyStageStatusEntry(repoID: UUID, path: String) {
+        guard var entries = statusEntriesByRepo[repoID],
+              let entryIndex = entries.firstIndex(where: { $0.path == path }) else { return }
+
+        let entry = entries[entryIndex]
+        let indexStatus = entry.workTreeStatus.map(stagedStatusKind(from:)) ?? entry.indexStatus
+        entries[entryIndex] = GitStatusEntry(
+            path: entry.path,
+            indexStatus: indexStatus,
+            workTreeStatus: nil,
+            oldPath: entry.oldPath
+        )
+        statusEntriesByRepo[repoID] = entries
+        changeCounts[repoID] = entries.count
+        diffByRepo[repoID] = .empty
+    }
+
+    private func optimisticallyStageAllStatusEntries(repoID: UUID) {
+        guard let currentEntries = statusEntriesByRepo[repoID] else { return }
+        let entries = currentEntries.map { entry in
+            GitStatusEntry(
+                path: entry.path,
+                indexStatus: entry.workTreeStatus.map(stagedStatusKind(from:)) ?? entry.indexStatus,
+                workTreeStatus: nil,
+                oldPath: entry.oldPath
+            )
+        }
+        statusEntriesByRepo[repoID] = entries
+        changeCounts[repoID] = entries.count
+        diffByRepo[repoID] = .empty
+    }
+
+    private func optimisticallyUnstageStatusEntry(repoID: UUID, path: String) {
+        guard var entries = statusEntriesByRepo[repoID],
+              let entryIndex = entries.firstIndex(where: { $0.path == path }) else { return }
+
+        let entry = entries[entryIndex]
+        let workTreeStatus: GitFileStatusKind?
+        if entry.indexStatus == .added {
+            workTreeStatus = .untracked
+        } else {
+            workTreeStatus = entry.workTreeStatus ?? entry.indexStatus.map(unstagedStatusKind(from:))
+        }
+        if let workTreeStatus {
+            entries[entryIndex] = GitStatusEntry(
+                path: entry.path,
+                indexStatus: nil,
+                workTreeStatus: workTreeStatus,
+                oldPath: entry.oldPath
+            )
+        } else {
+            entries.remove(at: entryIndex)
+        }
+        statusEntriesByRepo[repoID] = entries
+        changeCounts[repoID] = entries.count
+        diffByRepo[repoID] = .empty
+    }
+
     func stageFile(repoID: UUID, path: String, oldPath: String? = nil) async {
         await stageFile(repoID: repoID, path: path, oldPath: oldPath, lfsAutoTrack: false, promptForLFS: true)
     }
@@ -1610,7 +1689,18 @@ final class AppState {
                 }
             }
 
+            let startedAt = Date()
             try await gitService.stage(path: path, oldPath: oldPath, lfsAutoTrack: lfsAutoTrack)
+            markRepositoryMutated(repoID: repoID)
+            optimisticallyStageStatusEntry(repoID: repoID, path: path)
+            let elapsed = Date().timeIntervalSince(startedAt)
+            if elapsed > 2 {
+                DebugLogger.shared.info(
+                    "stage",
+                    "Stage file was slow",
+                    detail: "\(path): \(String(format: "%.1f", elapsed))s"
+                )
+            }
             detectChanges(repoID: repoID)
         } catch {
             showError(message: error.localizedDescription)
@@ -1635,7 +1725,11 @@ final class AppState {
 
         do {
             if promptForLFS {
-                let candidates = try await gitService.lfsAutoTrackingCandidates(paths: nil)
+                // Only inspect currently changed files. Scanning the whole vault here
+                // is expensive for media-heavy Obsidian repos and can make Stage All
+                // feel frozen even when most large assets are clean.
+                let candidatePaths = statusEntriesByRepo[repoID]?.map(\.path) ?? []
+                let candidates = try await gitService.lfsAutoTrackingCandidates(paths: candidatePaths)
                 if !candidates.isEmpty {
                     pendingLFSAutoTrackingConfirmation = LFSAutoTrackingConfirmationRequest(
                         repoID: repoID,
@@ -1646,7 +1740,18 @@ final class AppState {
                 }
             }
 
+            let startedAt = Date()
             try await gitService.stageAll(lfsAutoTrack: lfsAutoTrack)
+            markRepositoryMutated(repoID: repoID)
+            optimisticallyStageAllStatusEntries(repoID: repoID)
+            let elapsed = Date().timeIntervalSince(startedAt)
+            if elapsed > 2 {
+                DebugLogger.shared.info(
+                    "stage",
+                    "Stage all was slow",
+                    detail: "\(String(format: "%.1f", elapsed))s"
+                )
+            }
             detectChanges(repoID: repoID)
         } catch {
             showError(message: error.localizedDescription)
@@ -1683,7 +1788,18 @@ final class AppState {
         }
 
         do {
+            let startedAt = Date()
             try await gitService.unstage(path: path, oldPath: oldPath)
+            markRepositoryMutated(repoID: repoID)
+            optimisticallyUnstageStatusEntry(repoID: repoID, path: path)
+            let elapsed = Date().timeIntervalSince(startedAt)
+            if elapsed > 2 {
+                DebugLogger.shared.info(
+                    "stage",
+                    "Unstage file was slow",
+                    detail: "\(path): \(String(format: "%.1f", elapsed))s"
+                )
+            }
             detectChanges(repoID: repoID)
         } catch {
             showError(message: error.localizedDescription)

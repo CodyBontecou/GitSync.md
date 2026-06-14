@@ -1503,6 +1503,14 @@ extension GitLFSService {
 
         let repositoryURL = URL(fileURLWithPath: String(cString: workdirPointer), isDirectory: true)
         let attributesURL = repositoryURL.appendingPathComponent(".gitattributes")
+        let isAutoTrackingDisabled = autoTrackingPolicy.binaryExtensions.isEmpty
+            && autoTrackingPolicy.largeFileThresholdBytes == .max
+        if candidatePaths == nil,
+           isAutoTrackingDisabled,
+           !FileManager.default.fileExists(atPath: attributesURL.path) {
+            return
+        }
+
         var attributesText = (try? String(contentsOf: attributesURL, encoding: .utf8)) ?? ""
         var attributes = GitLFSAttributes(text: attributesText)
         let paths = try candidatePaths ?? enumerateWorktreeFiles(in: repositoryURL)

@@ -432,10 +432,12 @@ struct VaultView: View {
                 .padding(.vertical, 14)
 
                 if showChangedFiles {
-                    VStack(spacing: 0) {
-                        ForEach(Array(sortedStatusEntries.enumerated()), id: \.element.id) { index, entry in
+                    let entries = sortedStatusEntries
+
+                    LazyVStack(spacing: 0) {
+                        ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
                             changedFileRow(entry)
-                            if index < sortedStatusEntries.count - 1 {
+                            if index < entries.count - 1 {
                                 BDivider().padding(.horizontal, 16)
                             }
                         }
