@@ -24,8 +24,10 @@ enum LocalGitError: LocalizedError {
     case branchIsCurrent(String)
     case mergeBlockedByLocalChanges
     case mergeConflictsDetected
+    case rebaseConflictsDetected
     case revertBlockedByLocalChanges
     case noMergeInProgress
+    case noRebaseInProgress
     case conflictPathNotFound(String)
     case tagAlreadyExists(String)
     case tagNotFound(String)
@@ -74,10 +76,14 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Merge is blocked to protect local edits. Commit, stash, or discard changes first.")
         case .mergeConflictsDetected:
             return String(localized: "Merge produced conflicts that require manual resolution.")
+        case .rebaseConflictsDetected:
+            return String(localized: "Rebase produced conflicts that require manual resolution.")
         case .revertBlockedByLocalChanges:
             return String(localized: "Revert is blocked to protect local edits. Commit, stash, or discard changes first.")
         case .noMergeInProgress:
             return String(localized: "No merge is currently in progress.")
+        case .noRebaseInProgress:
+            return String(localized: "No rebase is currently in progress.")
         case .conflictPathNotFound(let path):
             return String(localized: "No active conflict found for '\(path)'.")
         case .tagAlreadyExists(let name):
@@ -764,6 +770,16 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         try await performSafeFastForward(branch: branch, pat: pat, refetch: false)
     }
 
+    func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
+        try await performRebaseOntoOrigin(
+            branch: branch,
+            pat: pat,
+            authorName: authorName,
+            authorEmail: authorEmail,
+            refetch: false
+        )
+    }
+
     private func performSafeFastForward(branch: String, pat: String, refetch: Bool) async throws -> LocalPullResult {
         let path = self.localURL.path
         let localURL = self.localURL
@@ -892,6 +908,123 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }
 
         return fastForward.result
+    }
+
+    private func performRebaseOntoOrigin(
+        branch: String,
+        pat: String,
+        authorName: String,
+        authorEmail: String,
+        refetch: Bool
+    ) async throws -> LocalPullResult {
+        let path = self.localURL.path
+        let localURL = self.localURL
+
+        let rebaseResult = try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+
+            Self.setPrecomposeUnicode(repo: repo)
+
+            if try Self.hasUncommittedChanges(repo: repo) {
+                throw LocalGitError.pullBlockedByLocalChanges
+            }
+
+            if refetch {
+                try Self.fetchOrigin(repo: repo, pat: pat)
+            }
+
+            var headRef: OpaquePointer?
+            defer { if let headRef { git_reference_free(headRef) } }
+            try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
+
+            guard let oldHeadOid = git_reference_target(headRef) else {
+                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for rebase")
+            }
+            var oldHeadOidCopy = oldHeadOid.pointee
+
+            let remoteRefName = "refs/remotes/origin/\(branch)"
+            var remoteRef: OpaquePointer?
+            defer { if let remoteRef { git_reference_free(remoteRef) } }
+            let remoteLookupCode = git_reference_lookup(&remoteRef, repo, remoteRefName)
+            if remoteLookupCode == GIT_ENOTFOUND.rawValue {
+                throw LocalGitError.pullRemoteBranchMissing(branch)
+            }
+            try git2Check(remoteLookupCode, context: "Lookup \(remoteRefName)")
+
+            guard let remoteOid = git_reference_target(remoteRef) else {
+                throw LocalGitError.repositoryCorrupted("Could not resolve remote branch target for rebase")
+            }
+
+            if git_oid_equal(&oldHeadOidCopy, remoteOid) != 0 {
+                return (result: LocalPullResult(updated: false, newCommitSHA: oidToHex(&oldHeadOidCopy)), changedPaths: [String]())
+            }
+
+            var ahead: Int = 0
+            var behind: Int = 0
+            try git2Check(
+                git_graph_ahead_behind(&ahead, &behind, repo, &oldHeadOidCopy, remoteOid),
+                context: "Compute ahead/behind for rebase"
+            )
+
+            if ahead == 0 && behind > 0 {
+                // This explicit rebase action should still use the safer and
+                // simpler fast-forward path when no local commits need replaying.
+                throw LocalGitError.libgit2("Internal error: rebase requested for a fast-forward pull")
+            }
+            if behind == 0 {
+                return (result: LocalPullResult(updated: false, newCommitSHA: oidToHex(&oldHeadOidCopy)), changedPaths: [String]())
+            }
+
+            var annotatedRemote: OpaquePointer?
+            defer { if let annotatedRemote { git_annotated_commit_free(annotatedRemote) } }
+            try git2Check(
+                git_annotated_commit_from_ref(&annotatedRemote, repo, remoteRef),
+                context: "Create annotated remote commit for rebase"
+            )
+
+            var rebaseOpts = git_rebase_options()
+            git_rebase_options_init(&rebaseOpts, UInt32(GIT_REBASE_OPTIONS_VERSION))
+            rebaseOpts.merge_options.flags = UInt32(GIT_MERGE_FIND_RENAMES.rawValue)
+            rebaseOpts.checkout_options.checkout_strategy = GIT_CHECKOUT_SAFE.rawValue
+
+            var rebase: OpaquePointer?
+            defer { if let rebase { git_rebase_free(rebase) } }
+            try git2Check(
+                git_rebase_init(&rebase, repo, nil, annotatedRemote, annotatedRemote, &rebaseOpts),
+                context: "Start rebase"
+            )
+
+            var signature: UnsafeMutablePointer<git_signature>?
+            defer { if let signature { git_signature_free(signature) } }
+            try createGitSignature(&signature, authorName: authorName, authorEmail: authorEmail)
+
+            try Self.advanceRebase(repo: repo, rebase: rebase, signature: signature)
+
+            var newHeadRef: OpaquePointer?
+            defer { if let newHeadRef { git_reference_free(newHeadRef) } }
+            try git2Check(git_repository_head(&newHeadRef, repo), context: "Read rebased HEAD")
+            guard let newHeadOid = git_reference_target(newHeadRef) else {
+                throw LocalGitError.repositoryCorrupted("Could not resolve rebased HEAD")
+            }
+
+            let changedPaths = try Self.changedPathsBetween(repo: repo, oldOID: &oldHeadOidCopy, newOID: newHeadOid)
+            return (result: LocalPullResult(updated: true, newCommitSHA: oidToHex(newHeadOid)), changedPaths: changedPaths)
+        }.value
+
+        if rebaseResult.result.updated {
+            let lfsResult = try await Self.hydrateLFSIfNeeded(
+                localURL: localURL,
+                pat: pat,
+                candidatePaths: rebaseResult.changedPaths
+            )
+            if lfsResult.checkedOutCount > 0 {
+                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after rebase", detail: "\(lfsResult.checkedOutCount) files")
+            }
+        }
+
+        return rebaseResult.result
     }
 
     // MARK: - Branches
@@ -1542,6 +1675,105 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             try git2Check(git_reset(repo, headCommit, GIT_RESET_HARD, nil), context: "Reset working tree on merge abort")
             try git2Check(git_repository_state_cleanup(repo), context: "Cleanup merge state")
+        }.value
+    }
+
+    func continueRebase(pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
+        let repoPath = self.localURL.path
+        let localURL = self.localURL
+
+        let rebaseResult = try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            guard Self.isRebaseState(git_repository_state(repo)) else {
+                throw LocalGitError.noRebaseInProgress
+            }
+
+            var oldHeadRef: OpaquePointer?
+            defer { if let oldHeadRef { git_reference_free(oldHeadRef) } }
+            try git2Check(git_repository_head(&oldHeadRef, repo), context: "Read HEAD before continuing rebase")
+            guard let oldHeadOid = git_reference_target(oldHeadRef) else {
+                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD before continuing rebase")
+            }
+            var oldHeadOidCopy = oldHeadOid.pointee
+
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Read rebase index")
+            if git_index_has_conflicts(index) == 1 {
+                throw LocalGitError.rebaseConflictsDetected
+            }
+
+            var rebaseOpts = git_rebase_options()
+            git_rebase_options_init(&rebaseOpts, UInt32(GIT_REBASE_OPTIONS_VERSION))
+            rebaseOpts.merge_options.flags = UInt32(GIT_MERGE_FIND_RENAMES.rawValue)
+            rebaseOpts.checkout_options.checkout_strategy = GIT_CHECKOUT_SAFE.rawValue
+
+            var rebase: OpaquePointer?
+            defer { if let rebase { git_rebase_free(rebase) } }
+            try git2Check(git_rebase_open(&rebase, repo, &rebaseOpts), context: "Open rebase")
+
+            var signature: UnsafeMutablePointer<git_signature>?
+            defer { if let signature { git_signature_free(signature) } }
+            try createGitSignature(&signature, authorName: authorName, authorEmail: authorEmail)
+
+            var commitOid = git_oid()
+            let commitCode = git_rebase_commit(&commitOid, rebase, nil, signature, nil, nil)
+            if commitCode == GIT_EUNMERGED.rawValue || commitCode == GIT_EMERGECONFLICT.rawValue {
+                throw LocalGitError.rebaseConflictsDetected
+            }
+            if commitCode != GIT_EAPPLIED.rawValue {
+                try git2Check(commitCode, context: "Commit resolved rebase change")
+            }
+
+            try Self.advanceRebase(repo: repo, rebase: rebase, signature: signature)
+
+            var newHeadRef: OpaquePointer?
+            defer { if let newHeadRef { git_reference_free(newHeadRef) } }
+            try git2Check(git_repository_head(&newHeadRef, repo), context: "Read HEAD after continuing rebase")
+            guard let newHeadOid = git_reference_target(newHeadRef) else {
+                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD after continuing rebase")
+            }
+
+            let changedPaths = try Self.changedPathsBetween(repo: repo, oldOID: &oldHeadOidCopy, newOID: newHeadOid)
+            return (result: LocalPullResult(updated: true, newCommitSHA: oidToHex(newHeadOid)), changedPaths: changedPaths)
+        }.value
+
+        if rebaseResult.result.updated {
+            let lfsResult = try await Self.hydrateLFSIfNeeded(
+                localURL: localURL,
+                pat: pat,
+                candidatePaths: rebaseResult.changedPaths
+            )
+            if lfsResult.checkedOutCount > 0 {
+                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after continuing rebase", detail: "\(lfsResult.checkedOutCount) files")
+            }
+        }
+
+        return rebaseResult.result
+    }
+
+    func abortRebase() async throws {
+        let repoPath = self.localURL.path
+
+        try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            guard Self.isRebaseState(git_repository_state(repo)) else {
+                throw LocalGitError.noRebaseInProgress
+            }
+
+            var rebaseOpts = git_rebase_options()
+            git_rebase_options_init(&rebaseOpts, UInt32(GIT_REBASE_OPTIONS_VERSION))
+
+            var rebase: OpaquePointer?
+            defer { if let rebase { git_rebase_free(rebase) } }
+            try git2Check(git_rebase_open(&rebase, repo, &rebaseOpts), context: "Open rebase")
+            try git2Check(git_rebase_abort(rebase), context: "Abort rebase")
         }.value
     }
 
@@ -3253,6 +3485,51 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }
         // Local ahead-only, unrelated graph, or identical refs.
         return .upToDate
+    }
+
+    private static func isRebaseState(_ state: Int32) -> Bool {
+        state == Int32(GIT_REPOSITORY_STATE_REBASE.rawValue)
+            || state == Int32(GIT_REPOSITORY_STATE_REBASE_INTERACTIVE.rawValue)
+            || state == Int32(GIT_REPOSITORY_STATE_REBASE_MERGE.rawValue)
+    }
+
+    private static func advanceRebase(
+        repo: OpaquePointer?,
+        rebase: OpaquePointer?,
+        signature: UnsafeMutablePointer<git_signature>?
+    ) throws {
+        while true {
+            var operation: UnsafeMutablePointer<git_rebase_operation>?
+            let nextCode = git_rebase_next(&operation, rebase)
+
+            if nextCode == GIT_ITEROVER.rawValue {
+                try git2Check(git_rebase_finish(rebase, signature), context: "Finish rebase")
+                return
+            }
+
+            if nextCode == GIT_EMERGECONFLICT.rawValue || nextCode == GIT_EUNMERGED.rawValue {
+                throw LocalGitError.rebaseConflictsDetected
+            }
+
+            try git2Check(nextCode, context: "Apply next rebase commit")
+
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Read rebase index")
+            if git_index_has_conflicts(index) == 1 {
+                throw LocalGitError.rebaseConflictsDetected
+            }
+
+            var commitOid = git_oid()
+            let commitCode = git_rebase_commit(&commitOid, rebase, nil, signature, nil, nil)
+            if commitCode == GIT_EAPPLIED.rawValue {
+                continue
+            }
+            if commitCode == GIT_EUNMERGED.rawValue || commitCode == GIT_EMERGECONFLICT.rawValue {
+                throw LocalGitError.rebaseConflictsDetected
+            }
+            try git2Check(commitCode, context: "Commit rebased change")
+        }
     }
 
     private static func readMergeHeadOID(repo: OpaquePointer?) throws -> git_oid {

@@ -2101,6 +2101,232 @@ final class AppState {
     }
 
     @discardableResult
+    func pullWithRebase(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
+        guard let idx = repoIndex(id: repoID) else {
+            showError(message: String(localized: "Repository not found"))
+            return false
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Checking for updates...")
+
+        if isDemoMode {
+            if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+            syncProgress = String(localized: "Rebase complete!")
+            repos[idx].gitState.lastSyncDate = Date()
+            saveRepos()
+            if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+            isSyncing = false
+            syncingRepoID = nil
+            return true
+        }
+
+        pullOutcomeByRepo.removeValue(forKey: repoID)
+
+        do {
+            var repo = repos[idx]
+            let vaultDir = vaultURL(for: repoID)
+            let gitService = gitRepositoryFactory(vaultDir)
+
+            guard gitService.hasGitDirectory else {
+                throw LocalGitError.notCloned
+            }
+
+            DebugLogger.shared.info("pull", "Starting pull with rebase", detail: "branch: \(repo.branch)")
+            let plan = try await gitService.pullPlan(pat: authPayload(for: repo))
+
+            let result: LocalPullResult
+            switch plan.action {
+            case .upToDate:
+                syncProgress = String(localized: "Already up to date!")
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .upToDate,
+                    message: String(localized: "Already up to date")
+                )
+                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+                isSyncing = false
+                syncingRepoID = nil
+                return true
+
+            case .blockedByLocalChanges:
+                syncProgress = String(localized: "Rebase blocked by local changes")
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .blockedByLocalChanges,
+                    message: String(localized: "Local edits detected. Commit, stash, or discard changes before rebasing.")
+                )
+                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+                isSyncing = false
+                syncingRepoID = nil
+                return false
+
+            case .remoteBranchMissing:
+                syncProgress = String(localized: "Remote branch missing")
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .remoteBranchMissing,
+                    message: String(localized: "Remote branch '\(plan.branch)' was not found.")
+                )
+                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+                isSyncing = false
+                syncingRepoID = nil
+                return false
+
+            case .fastForward:
+                syncProgress = String(localized: "Applying remote updates...")
+                result = try await gitService.pullFastForward(branch: plan.branch, pat: authPayload(for: repo))
+
+            case .diverged:
+                syncProgress = String(localized: "Rebasing local commits...")
+                result = try await gitService.pullRebase(
+                    branch: plan.branch,
+                    pat: authPayload(for: repo),
+                    authorName: repo.authorName,
+                    authorEmail: repo.authorEmail
+                )
+            }
+
+            if result.updated {
+                repo.gitState.commitSHA = result.newCommitSHA
+                repo.gitState.lastSyncDate = Date()
+                repos[idx] = repo
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+                detectChanges(repoID: repoID)
+                await loadBranches(repoID: repoID)
+                syncProgress = plan.action == .diverged
+                    ? String(localized: "Rebase complete!")
+                    : String(localized: "Pull complete!")
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: plan.action == .diverged ? .rebased : .fastForwarded,
+                    message: plan.action == .diverged
+                        ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
+                        : String(localized: "Pulled latest changes (fast-forward)")
+                )
+                requestReviewIfNeeded()
+            } else {
+                syncProgress = String(localized: "Already up to date!")
+                setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
+            }
+
+            if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+            isSyncing = false
+            syncingRepoID = nil
+            return true
+        } catch LocalGitError.rebaseConflictsDetected {
+            await loadConflictSession(repoID: repoID)
+            detectChanges(repoID: repoID)
+            setPullOutcome(
+                repoID: repoID,
+                kind: .rebaseConflicts,
+                message: String(localized: "Rebase has conflicts — resolve them, then continue rebase")
+            )
+        } catch let error as LocalGitError {
+            setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
+            showError(message: error.localizedDescription, category: "rebase")
+        } catch {
+            setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
+            showError(message: error.localizedDescription, category: "rebase")
+        }
+
+        if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+        isSyncing = false
+        syncingRepoID = nil
+        return false
+    }
+
+    func continueRebase(repoID: UUID) async {
+        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
+        if isDemoMode { return }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Continuing rebase...")
+
+        do {
+            let repo = repos[idx]
+            let result = try await gitService.continueRebase(
+                pat: authPayload(for: repo),
+                authorName: repo.authorName,
+                authorEmail: repo.authorEmail
+            )
+            repos[idx].gitState.commitSHA = result.newCommitSHA
+            repos[idx].gitState.lastSyncDate = Date()
+            saveRepos()
+            clearCommitHistoryCache(for: repoID)
+            detectChanges(repoID: repoID)
+            await loadBranches(repoID: repoID)
+            await loadConflictSession(repoID: repoID)
+            syncProgress = String(localized: "Rebase complete!")
+            setPullOutcome(
+                repoID: repoID,
+                kind: .rebased,
+                message: String(localized: "Rebase completed successfully")
+            )
+        } catch LocalGitError.rebaseConflictsDetected {
+            await loadConflictSession(repoID: repoID)
+            detectChanges(repoID: repoID)
+            setPullOutcome(
+                repoID: repoID,
+                kind: .rebaseConflicts,
+                message: String(localized: "Rebase has more conflicts — resolve them, then continue rebase")
+            )
+        } catch {
+            await loadConflictSession(repoID: repoID)
+            showError(message: error.localizedDescription, category: "rebase")
+        }
+
+        isSyncing = false
+        syncingRepoID = nil
+    }
+
+    func abortRebase(repoID: UUID) async {
+        guard let _ = repoIndex(id: repoID), repo(id: repoID)?.isCloned == true else { return }
+        if isDemoMode { return }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Aborting rebase...")
+
+        do {
+            try await gitService.abortRebase()
+            clearCommitHistoryCache(for: repoID)
+            detectChanges(repoID: repoID)
+            await loadConflictSession(repoID: repoID)
+            setPullOutcome(
+                repoID: repoID,
+                kind: .diverged,
+                message: String(localized: "Rebase aborted. Local and remote still diverge.")
+            )
+        } catch {
+            await loadConflictSession(repoID: repoID)
+            showError(message: error.localizedDescription, category: "rebase")
+        }
+
+        isSyncing = false
+        syncingRepoID = nil
+    }
+
+    @discardableResult
     func push(repoID: UUID, message: String) async -> Bool {
         guard let idx = repoIndex(id: repoID) else {
             showError(message: String(localized: "Repository not found"))
@@ -2112,9 +2338,15 @@ final class AppState {
         // would otherwise fail with "nothing to commit" when the conflict
         // resolution left the tree identical to HEAD — and even when it
         // didn't, we'd lose the two-parent merge topology.
-        if let session = conflictSessionByRepo[repoID], session.kind == .merge {
-            await completeMerge(repoID: repoID, message: message)
-            return conflictSessionByRepo[repoID]?.isActive == false
+        if let session = conflictSessionByRepo[repoID] {
+            if session.kind == .merge {
+                await completeMerge(repoID: repoID, message: message)
+                return conflictSessionByRepo[repoID]?.isActive == false
+            }
+            if session.kind == .rebase {
+                await continueRebase(repoID: repoID)
+                return conflictSessionByRepo[repoID]?.isActive == false
+            }
         }
 
         isSyncing = true

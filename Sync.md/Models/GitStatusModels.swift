@@ -64,6 +64,8 @@ struct PullPlan: Codable, Sendable, Equatable {
 enum PullOutcomeKind: String, Codable, Sendable {
     case upToDate
     case fastForwarded
+    case rebased
+    case rebaseConflicts
     case blockedByLocalChanges
     case diverged
     case remoteBranchMissing

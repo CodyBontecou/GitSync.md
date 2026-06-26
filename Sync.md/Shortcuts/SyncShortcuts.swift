@@ -197,11 +197,11 @@ private struct GitShortcutPullResult {
 
         init(kind: PullOutcomeKind?, succeeded: Bool) {
             switch kind {
-            case .fastForwarded:
+            case .fastForwarded, .rebased:
                 self = .updated
             case .upToDate:
                 self = .upToDate
-            case .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+            case .blockedByLocalChanges, .diverged, .rebaseConflicts, .remoteBranchMissing:
                 self = .blocked
             case .failed:
                 self = .failed

@@ -214,6 +214,64 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testAppStatePullWithRebaseUpdatesCommitAndOutcome() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+
+        let rebasedCommit = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .diverged,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            hasLocalChanges: false,
+            aheadBy: 1,
+            behindBy: 1
+        )
+        fixture.repository.rebaseResult = .success(LocalPullResult(updated: true, newCommitSHA: rebasedCommit))
+
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+
+        await appState.pullWithRebase(repoID: fixture.repoConfig.id)
+
+        XCTAssertEqual(appState.repos.first?.gitState.commitSHA, rebasedCommit)
+        XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .rebased)
+    }
+
+    @MainActor
+    func testAppStatePullWithRebaseConflictStoresOutcome() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .diverged,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            hasLocalChanges: false,
+            aheadBy: 1,
+            behindBy: 1
+        )
+        fixture.repository.rebaseResult = .failure(LocalGitError.rebaseConflictsDetected)
+        fixture.repository.conflictSessionResult = ConflictSession(kind: .rebase, unmergedPaths: ["README.md"])
+
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+
+        await appState.pullWithRebase(repoID: fixture.repoConfig.id)
+
+        XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .rebaseConflicts)
+        XCTAssertEqual(appState.conflictSessionByRepo[fixture.repoConfig.id]?.kind, .rebase)
+    }
+
+    @MainActor
     func testAppStateLoadUnifiedDiffStoresDiffByRepo() async throws {
         let fixture = try GitFixtureFactory.make(state: .dirty)
         defer { fixture.cleanup() }
@@ -3285,6 +3343,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var repoInfoResult: LocalRepoInfo
     var pullPlanResult: PullPlan
     var pullResult: Result<LocalPullResult, Error>
+    var rebaseResult: Result<LocalPullResult, Error>?
+    var continueRebaseResult: Result<LocalPullResult, Error>?
+    var didAbortRebase = false
     var diffResult: UnifiedDiffResult = .empty
     var commitHistoryResult: [GitCommitSummary] = []
     var commitDetailResultByOID: [String: GitCommitDetail] = [:]
@@ -3354,6 +3415,15 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         try await pull(pat: pat)
     }
 
+    func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
+        switch rebaseResult ?? pullResult {
+        case .success(let result):
+            return result
+        case .failure(let error):
+            throw error
+        }
+    }
+
     func unifiedDiff(path: String?) async throws -> UnifiedDiffResult {
         diffResult
     }
@@ -3392,6 +3462,19 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func abortMerge() async throws {
         didAbortMerge = true
+    }
+
+    func continueRebase(pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
+        switch continueRebaseResult ?? rebaseResult ?? pullResult {
+        case .success(let result):
+            return result
+        case .failure(let error):
+            throw error
+        }
+    }
+
+    func abortRebase() async throws {
+        didAbortRebase = true
     }
 
     func conflictSession() async throws -> ConflictSession {

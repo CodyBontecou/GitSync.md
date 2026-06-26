@@ -336,6 +336,20 @@ struct VaultView: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
+
+                            Button {
+                                Task { await state.pullWithRebase(repoID: repoID) }
+                            } label: {
+                                Text(String(localized: "Rebase").uppercased())
+                                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                    .foregroundStyle(Color.brutalAccent)
+                                    .tracking(1)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 5)
+                                    .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(state.isSyncing)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -364,6 +378,8 @@ struct VaultView: View {
         switch kind {
         case .upToDate:              return "checkmark.circle.fill"
         case .fastForwarded:         return "arrow.down.circle.fill"
+        case .rebased:               return "arrow.triangle.2.circlepath.circle.fill"
+        case .rebaseConflicts:       return "exclamationmark.triangle.fill"
         case .blockedByLocalChanges: return "exclamationmark.triangle.fill"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark.circle.fill"
@@ -375,6 +391,8 @@ struct VaultView: View {
         switch kind {
         case .upToDate:              return .brutalSuccess
         case .fastForwarded:         return .brutalAccent
+        case .rebased:               return .brutalSuccess
+        case .rebaseConflicts:       return .brutalWarning
         case .blockedByLocalChanges: return .brutalWarning
         case .diverged:              return .brutalError
         case .remoteBranchMissing:   return .brutalWarning
@@ -546,6 +564,21 @@ struct VaultView: View {
                         icon: "⬇",
                         title: String(localized: "Pull"),
                         subtitle: String(localized: "Fetch remote changes")
+                    )
+                }
+            }
+            .buttonStyle(.plain)
+            .disabled(state.isSyncing)
+            .opacity(state.isSyncing ? 0.5 : 1)
+
+            Button {
+                Task { await state.pullWithRebase(repoID: repoID) }
+            } label: {
+                BCard(padding: 0) {
+                    BActionRow(
+                        icon: "↧",
+                        title: String(localized: "Pull with Rebase"),
+                        subtitle: String(localized: "Replay local commits on top of remote")
                     )
                 }
             }

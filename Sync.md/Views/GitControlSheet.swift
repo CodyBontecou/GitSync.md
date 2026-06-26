@@ -45,6 +45,7 @@ struct GitControlSheet: View {
                         tagCard
                         fetchCard
                         pullCard
+                        pullRebaseCard
                         pushCard
 
                         if isThisRepoSyncing {
@@ -322,7 +323,9 @@ struct GitControlSheet: View {
 
 
                 if conflictSession.unmergedPaths.isEmpty {
-                    Text(String(localized: "All conflicts resolved. Complete or abort the merge."))
+                    Text(conflictSession.kind == .rebase
+                         ? String(localized: "All conflicts resolved. Continue or abort the rebase.")
+                         : String(localized: "All conflicts resolved. Complete or abort the merge."))
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .padding(.horizontal, 16)
@@ -372,6 +375,40 @@ struct GitControlSheet: View {
                                 Image(systemName: "xmark")
                                     .font(.system(size: 13, weight: .bold))
                                 Text(String(localized: "Abort Merge").uppercased())
+                                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                                    .tracking(1)
+                            }
+                            .foregroundStyle(Color.brutalError)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                            .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(state.isSyncing)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                } else if conflictSession.kind == .rebase {
+                    VStack(spacing: 8) {
+                        Button(String(localized: "Continue Rebase").uppercased()) {
+                            Task { await state.continueRebase(repoID: repoID) }
+                        }
+                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .foregroundStyle(Color(.systemBackground))
+                        .tracking(1)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
+                                    ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
+                        .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
+
+                        Button {
+                            Task { await state.abortRebase(repoID: repoID) }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 13, weight: .bold))
+                                Text(String(localized: "Abort Rebase").uppercased())
                                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                                     .tracking(1)
                             }
@@ -764,26 +801,58 @@ struct GitControlSheet: View {
         .opacity(state.isSyncing ? 0.45 : 1)
     }
 
+    private var pullRebaseCard: some View {
+        Button {
+            Task {
+                let ok = await state.pullWithRebase(repoID: repoID)
+                if ok { dismiss() }
+            }
+        } label: {
+            BCard(padding: 0) {
+                BActionRow(icon: "↧", title: String(localized: "Pull with Rebase"), subtitle: String(localized: "Replay local commits on top of remote"))
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(state.isSyncing)
+        .opacity(state.isSyncing ? 0.45 : 1)
+    }
+
     // MARK: - Push Card
 
     private var pushCard: some View {
         let inMerge = conflictSession.kind == .merge
-        let title = inMerge ? String(localized: "Complete Merge") : String(localized: "Commit & Push")
-        let subtitle = inMerge
-            ? String(localized: "Finalize the merge with a commit and push")
-            : String(localized: "Commit staged changes and push to remote")
+        let inRebase = conflictSession.kind == .rebase
+        let inConflictOperation = inMerge || inRebase
+        let title: String
+        if inMerge {
+            title = String(localized: "Complete Merge")
+        } else if inRebase {
+            title = String(localized: "Continue Rebase")
+        } else {
+            title = String(localized: "Commit & Push")
+        }
+        let subtitle: String
+        if inMerge {
+            subtitle = String(localized: "Finalize the merge with a commit and push")
+        } else if inRebase {
+            subtitle = String(localized: "Continue replaying local commits")
+        } else {
+            subtitle = String(localized: "Commit staged changes and push to remote")
+        }
         let placeholder = inMerge ? "Merge commit message…" : "Commit message…"
         let buttonLabel: String
         if inMerge {
             buttonLabel = String(localized: "Complete Merge").uppercased()
+        } else if inRebase {
+            buttonLabel = String(localized: "Continue Rebase").uppercased()
         } else if stagedCount == 1 {
             buttonLabel = String(localized: "Push 1 File").uppercased()
         } else {
             buttonLabel = String(localized: "Push \(stagedCount) Files").uppercased()
         }
         let buttonDisabled = state.isSyncing
-            || (!inMerge && stagedCount == 0)
-            || (inMerge && conflictSession.hasConflicts)
+            || (!inConflictOperation && stagedCount == 0)
+            || (inConflictOperation && conflictSession.hasConflicts)
 
         return BCard(padding: 0) {
             VStack(spacing: 0) {
@@ -807,15 +876,17 @@ struct GitControlSheet: View {
 
 
                 // Commit message
-                TextField(placeholder, text: $commitMessage, axis: .vertical)
-                    .font(.system(size: 15, design: .monospaced))
-                    .lineLimit(1...4)
-                    .padding(13)
-                    .background(Color.brutalSurface)
+                if !inRebase {
+                    TextField(placeholder, text: $commitMessage, axis: .vertical)
+                        .font(.system(size: 15, design: .monospaced))
+                        .lineLimit(1...4)
+                        .padding(13)
+                        .background(Color.brutalSurface)
+                }
 
 
                 HStack {
-                    if inMerge {
+                    if inConflictOperation {
                         Text(conflictSession.hasConflicts
                              ? String(localized: "\(conflictSession.unmergedPaths.count) conflicts to resolve")
                              : String(localized: "All conflicts resolved"))
@@ -842,7 +913,7 @@ struct GitControlSheet: View {
                     }
                 } label: {
                     HStack(spacing: 8) {
-                        Image(systemName: inMerge ? "checkmark" : "arrow.up")
+                        Image(systemName: inConflictOperation ? "checkmark" : "arrow.up")
                             .font(.system(size: 14, weight: .bold))
                         Text(buttonLabel)
                             .font(.system(size: 14, weight: .bold, design: .monospaced))

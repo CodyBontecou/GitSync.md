@@ -8,6 +8,8 @@ protocol GitRepositoryProtocol: Sendable {
     func pull(pat: String) async throws -> LocalPullResult
     /// Apply a fast-forward after `pullPlan` has already fetched origin.
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult
+    /// Rebase local commits onto origin/<branch> after `pullPlan` has already fetched origin.
+    func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult
     func unifiedDiff(path: String?) async throws -> UnifiedDiffResult
     func listBranches() async throws -> BranchInventory
     func createBranch(name: String) async throws
@@ -18,6 +20,8 @@ protocol GitRepositoryProtocol: Sendable {
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult
     func abortMerge() async throws
+    func continueRebase(pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult
+    func abortRebase() async throws
     func conflictSession() async throws -> ConflictSession
     func conflictDetail(path: String) async throws -> ConflictFileDetail
     func resolveConflict(path: String, strategy: ConflictResolutionStrategy) async throws
