@@ -5,6 +5,10 @@ enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
         [
             .init(
+                version: "2.4.7",
+                items: version247Items
+            ),
+            .init(
                 version: "2.4.5",
                 items: version245Items
             ),
@@ -60,7 +64,7 @@ enum AppReleaseNotes {
         NoteletStorage.markCurrentVersionAsSeen()
     }
 
-    private static let availableVersions: Set<String> = ["2.4.5", "2.4.1"]
+    private static let availableVersions: Set<String> = ["2.4.7", "2.4.5", "2.4.1"]
 
     private static var currentVersion: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
@@ -68,6 +72,31 @@ enum AppReleaseNotes {
 
     private static func hasNotes(for version: String) -> Bool {
         availableVersions.contains(version)
+    }
+
+    private static var version247Items: [NoteletVersionNoteItem] {
+        [
+            .list(
+                title: "Pull with rebase",
+                rows: [
+                    .init(
+                        symbolSystemName: "arrow.triangle.2.circlepath.circle.fill",
+                        title: "Rebase diverged branches",
+                        description: "When your local commits and remote changes both move forward, GitSync.md can now replay your local commits on top of the latest remote branch."
+                    ),
+                    .init(
+                        symbolSystemName: "exclamationmark.triangle.fill",
+                        title: "Resolve rebase conflicts in-app",
+                        description: "If a rebase hits conflicts, use the Conflict Center to choose a side or edit the result, then continue or abort the rebase."
+                    ),
+                    .init(
+                        symbolSystemName: "arrow.up.circle.fill",
+                        title: "Push rebased commits",
+                        description: "After a successful rebase, Push Current Branch sends your rewritten local commits to the remote without needing a new commit."
+                    )
+                ]
+            )
+        ]
     }
 
     private static var version245Items: [NoteletVersionNoteItem] {
