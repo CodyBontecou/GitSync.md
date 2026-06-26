@@ -17,6 +17,7 @@ struct VaultView: View {
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
     private var statusEntries: [GitStatusEntry] { state.statusEntriesByRepo[repoID] ?? [] }
+    private var syncState: RepoSyncState { state.syncStateByRepo[repoID] ?? .unknown }
     private var pullOutcome: PullOutcomeState? { state.pullOutcomeByRepo[repoID] }
     private var isThisRepoSyncing: Bool { state.isSyncing && state.syncingRepoID == repoID }
 
@@ -586,23 +587,29 @@ struct VaultView: View {
             .disabled(state.isSyncing)
             .opacity(state.isSyncing ? 0.5 : 1)
 
-            // Commit & Push
+            let canPushAhead = changeCount == 0 && syncState == .ahead
+            let canCommitOrPush = changeCount > 0 || canPushAhead
+
             Button {
-                showCommitSheet = true
+                if canPushAhead {
+                    Task { await state.pushCurrentBranch(repoID: repoID) }
+                } else {
+                    showCommitSheet = true
+                }
             } label: {
                 BCard(padding: 0) {
                     BActionRow(
                         icon: "⬆",
-                        title: String(localized: "Commit & Push"),
-                        subtitle: String(localized: "Push local changes to remote"),
+                        title: canPushAhead ? String(localized: "Push Current Branch") : String(localized: "Commit & Push"),
+                        subtitle: canPushAhead ? String(localized: "Push committed local changes") : String(localized: "Push local changes to remote"),
                         badge: changeCount > 0 ? changeCount : nil,
                         badgeStyle: .accent
                     )
                 }
             }
             .buttonStyle(.plain)
-            .disabled(state.isSyncing || changeCount == 0)
-            .opacity(state.isSyncing || changeCount == 0 ? 0.45 : 1)
+            .disabled(state.isSyncing || !canCommitOrPush)
+            .opacity(state.isSyncing || !canCommitOrPush ? 0.45 : 1)
         }
     }
 

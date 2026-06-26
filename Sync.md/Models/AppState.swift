@@ -2327,6 +2327,58 @@ final class AppState {
     }
 
     @discardableResult
+    func pushCurrentBranch(repoID: UUID) async -> Bool {
+        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return false }
+        if isDemoMode {
+            syncProgress = String(localized: "Push complete!")
+            repos[idx].gitState.lastSyncDate = Date()
+            saveRepos()
+            syncStateByRepo[repoID] = .upToDate
+            return true
+        }
+
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return false
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Pushing committed changes...")
+
+        do {
+            let repo = repos[idx]
+            try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
+
+            if let info = try? await gitService.repoInfo() {
+                repos[idx].gitState.branch = info.branch
+                repos[idx].gitState.commitSHA = info.commitSHA
+                changeCounts[repoID] = info.changeCount
+                statusEntriesByRepo[repoID] = info.statusEntries
+                syncStateByRepo[repoID] = info.syncState
+            }
+            repos[idx].gitState.lastSyncDate = Date()
+            saveRepos()
+            clearCommitHistoryCache(for: repoID)
+            detectChanges(repoID: repoID)
+            await loadBranches(repoID: repoID)
+            syncProgress = String(localized: "Push complete!")
+            requestReviewIfNeeded()
+            isSyncing = false
+            syncingRepoID = nil
+            return true
+        } catch {
+            showError(message: error.localizedDescription, category: "push")
+            isSyncing = false
+            syncingRepoID = nil
+            return false
+        }
+    }
+
+    @discardableResult
     func push(repoID: UUID, message: String) async -> Bool {
         guard let idx = repoIndex(id: repoID) else {
             showError(message: String(localized: "Repository not found"))

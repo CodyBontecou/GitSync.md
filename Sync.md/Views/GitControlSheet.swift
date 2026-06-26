@@ -23,6 +23,7 @@ struct GitControlSheet: View {
     private var isThisRepoSyncing: Bool { state.isSyncing && state.syncingRepoID == repoID }
     private var sortedEntries: [GitStatusEntry] { statusEntries.sorted { $0.path.localizedCaseInsensitiveCompare($1.path) == .orderedAscending } }
     private var branchInventory: BranchInventory { state.branchesByRepo[repoID] ?? .empty }
+    private var syncState: RepoSyncState { state.syncStateByRepo[repoID] ?? .unknown }
     private var localBranches: [GitBranchInfo] { branchInventory.local }
     private var currentBranchShortName: String { localBranches.first(where: \.isCurrent)?.shortName ?? (repo?.gitState.branch ?? "-") }
     private var conflictSession: ConflictSession { state.conflictSessionByRepo[repoID] ?? .none }
@@ -823,11 +824,14 @@ struct GitControlSheet: View {
         let inMerge = conflictSession.kind == .merge
         let inRebase = conflictSession.kind == .rebase
         let inConflictOperation = inMerge || inRebase
+        let canPushCurrentBranch = !inConflictOperation && stagedCount == 0 && changeCount == 0 && syncState == .ahead
         let title: String
         if inMerge {
             title = String(localized: "Complete Merge")
         } else if inRebase {
             title = String(localized: "Continue Rebase")
+        } else if canPushCurrentBranch {
+            title = String(localized: "Push Current Branch")
         } else {
             title = String(localized: "Commit & Push")
         }
@@ -836,6 +840,8 @@ struct GitControlSheet: View {
             subtitle = String(localized: "Finalize the merge with a commit and push")
         } else if inRebase {
             subtitle = String(localized: "Continue replaying local commits")
+        } else if canPushCurrentBranch {
+            subtitle = String(localized: "Push committed local changes to remote")
         } else {
             subtitle = String(localized: "Commit staged changes and push to remote")
         }
@@ -845,13 +851,15 @@ struct GitControlSheet: View {
             buttonLabel = String(localized: "Complete Merge").uppercased()
         } else if inRebase {
             buttonLabel = String(localized: "Continue Rebase").uppercased()
+        } else if canPushCurrentBranch {
+            buttonLabel = String(localized: "Push Current Branch").uppercased()
         } else if stagedCount == 1 {
             buttonLabel = String(localized: "Push 1 File").uppercased()
         } else {
             buttonLabel = String(localized: "Push \(stagedCount) Files").uppercased()
         }
         let buttonDisabled = state.isSyncing
-            || (!inConflictOperation && stagedCount == 0)
+            || (!inConflictOperation && !canPushCurrentBranch && stagedCount == 0)
             || (inConflictOperation && conflictSession.hasConflicts)
 
         return BCard(padding: 0) {
@@ -876,7 +884,7 @@ struct GitControlSheet: View {
 
 
                 // Commit message
-                if !inRebase {
+                if !inRebase && !canPushCurrentBranch {
                     TextField(placeholder, text: $commitMessage, axis: .vertical)
                         .font(.system(size: 15, design: .monospaced))
                         .lineLimit(1...4)
@@ -892,6 +900,10 @@ struct GitControlSheet: View {
                              : String(localized: "All conflicts resolved"))
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(conflictSession.hasConflicts ? Color.brutalError : Color.brutalSuccess)
+                    } else if canPushCurrentBranch {
+                        Text(String(localized: "Local branch has commits ready to push"))
+                            .font(.system(size: 13, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
                     } else {
                         Text(stagedCount == 1 ? String(localized: "1 file staged") : String(localized: "\(stagedCount) files staged"))
                             .font(.system(size: 13, design: .monospaced))
@@ -905,7 +917,12 @@ struct GitControlSheet: View {
 
                 Button {
                     Task {
-                        let ok = await state.push(repoID: repoID, message: commitMessage)
+                        let ok: Bool
+                        if canPushCurrentBranch {
+                            ok = await state.pushCurrentBranch(repoID: repoID)
+                        } else {
+                            ok = await state.push(repoID: repoID, message: commitMessage)
+                        }
                         if ok {
                             commitMessage = ""
                             dismiss()

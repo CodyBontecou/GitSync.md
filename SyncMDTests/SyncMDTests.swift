@@ -214,6 +214,33 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testAppStatePushCurrentBranchPushesAheadCommitWithoutNewChanges() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoConfig.gitState.commitSHA,
+            changeCount: 0,
+            syncState: .upToDate,
+            statusEntries: []
+        )
+
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+        appState.syncStateByRepo[fixture.repoConfig.id] = .ahead
+
+        let succeeded = await appState.pushCurrentBranch(repoID: fixture.repoConfig.id)
+
+        XCTAssertTrue(succeeded)
+        XCTAssertTrue(fixture.repository.didPushCurrentBranch)
+        XCTAssertEqual(appState.syncStateByRepo[fixture.repoConfig.id], .upToDate)
+    }
+
+    @MainActor
     func testAppStatePullWithRebaseUpdatesCommitAndOutcome() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -3367,6 +3394,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var mergeResult: MergeResult = MergeResult(kind: .upToDate, sourceBranch: "main", newCommitSHA: "")
     var revertResult: RevertResult = RevertResult(kind: .reverted, targetOID: "", newCommitSHA: nil)
     var mergeFinalizeResult: MergeFinalizeResult = MergeFinalizeResult(newCommitSHA: "")
+    var didPushCurrentBranch = false
     var didAbortMerge = false
     var conflictSessionResult: ConflictSession = .none
     var resolvedConflicts: [(path: String, strategy: ConflictResolutionStrategy)] = []
@@ -3448,7 +3476,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         mergeResult
     }
 
-    func pushCurrentBranch(pat: String) async throws {}
+    func pushCurrentBranch(pat: String) async throws {
+        didPushCurrentBranch = true
+    }
 
     func fetchRemote(pat: String) async throws {}
 
