@@ -3,12 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <title>How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md</title>
 <meta name="description" content="A step-by-step guide to syncing your Obsidian vault with Git on iOS using GitSync.md and the Obsidian Git plugin. Real version control on your iPhone.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://gitsyncmd.isolated.tech/blog/obsidian-git-ios-setup.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md">
+<meta property="og:description" content="A step-by-step guide to syncing your Obsidian vault with Git on iOS using GitSync.md and the Obsidian Git plugin.">
+<meta property="og:url" content="https://gitsyncmd.isolated.tech/blog/obsidian-git-ios-setup.html">
+<meta property="og:image" content="https://gitsyncmd.isolated.tech/screenshots/hero-repo-list.png">
+<meta property="article:published_time" content="2026-02-15">
+<meta property="article:modified_time" content="2026-06-13">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md">
+<meta name="twitter:description" content="Set up real Git-backed Obsidian vault syncing on iPhone with GitSync.md and the Obsidian Git community plugin.">
+<meta name="twitter:image" content="https://gitsyncmd.isolated.tech/screenshots/hero-repo-list.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -525,8 +542,9 @@
     </a>
     <div class="nav-links">
       <a href="../index.html">Home</a>
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">GitHub</a>
-      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Download</a>
+      <a href="./">Blog</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
     </div>
   </div>
 </nav>
@@ -576,7 +594,7 @@
     <h2>What you'll need</h2>
 
     <ul>
-      <li><strong>GitSync.md</strong> installed on your iPhone (<a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank">App Store</a>)</li>
+      <li><strong>GitSync.md</strong> installed on your iPhone (<a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank">App Store — $9.99 one-time</a>)</li>
       <li><strong>Obsidian</strong> installed on your iPhone (<a href="https://apps.apple.com/app/obsidian-connected-notes/id1557175442" target="_blank">App Store</a>)</li>
       <li>A <strong>GitHub account</strong> with a repository containing your Obsidian vault</li>
     </ul>
@@ -708,7 +726,7 @@
     <p>No complex configuration, no SSH keys, no cloud middleman. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>
 
     <p style="margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--grey-2);">
-      <strong>GitSync.md</strong> is available on the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store</a> and is <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">open source on GitHub</a>.
+      <strong>GitSync.md</strong> is available on the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store for $9.99 one-time</a> and is <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">open source on GitHub</a>.
     </p>
 
   </div>
@@ -719,12 +737,60 @@
   <div class="footer-inner">
     <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
     <div class="footer-links">
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">GitHub</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
+      <a href="./">Blog</a>
       <a href="../privacy.html">Privacy</a>
       <a href="../terms.html">Terms</a>
     </div>
   </div>
 </footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.isolated.tech': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
 
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
 </body>
 </html>

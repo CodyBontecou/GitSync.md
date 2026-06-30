@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>How to Use Obsidian Git on iPhone and iPad — GitSync.md</title>
+<meta name="description" content="Use Obsidian Git on iPhone and iPad by cloning your vault with GitSync.md, storing it in iOS Files, and syncing with GitHub or self-hosted Git remotes.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="How to Use Obsidian Git on iPhone and iPad — GitSync.md">
+<meta property="og:description" content="A practical setup guide for using real Git-backed Obsidian vaults on iPhone and iPad with GitSync.md, iOS Files, and Obsidian Git.">
+<meta property="og:url" content="https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad.html">
+<meta property="og:image" content="https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad/repo-list.png">
+<meta property="article:published_time" content="2026-06-13">
+<meta property="article:modified_time" content="2026-06-13">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Use Obsidian Git on iPhone and iPad — GitSync.md">
+<meta name="twitter:description" content="Clone an Obsidian vault into iOS Files, open it on iPhone or iPad, and pull, commit, and push with real Git.">
+<meta name="twitter:image" content="https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad/repo-list.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Use Obsidian Git on iPhone and iPad",
+  "description": "Use Obsidian Git on iPhone and iPad by cloning your vault with GitSync.md, storing it in iOS Files, and syncing with GitHub or self-hosted Git remotes.",
+  "image": [
+    "https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad/repo-list.png",
+    "https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad/vault-workflow.png",
+    "https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad/sync-actions.png"
+  ],
+  "datePublished": "2026-06-13",
+  "dateModified": "2026-06-13",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad.html"
+}
+</script>
+<style>
+  :root {
+    --white: #f5f5f7;
+    --black: #0a0a0a;
+    --grey-1: #1a1a1a;
+    --grey-2: #2a2a2a;
+    --grey-3: #3a3a3a;
+    --grey-4: #6a6a6a;
+    --grey-5: #8a8a8a;
+    --grey-6: #b0b0b0;
+    --blue: #007AFF;
+    --blue-dim: rgba(0, 122, 255, 0.12);
+    --green: #30D158;
+    --green-dim: rgba(48, 209, 88, 0.12);
+    --amber: #FFD60A;
+    --amber-dim: rgba(255, 214, 10, 0.12);
+    --line: rgba(255, 255, 255, 0.08);
+    --mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, 'Fira Code', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: var(--blue); color: var(--black); }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(0, 122, 255, 0.12), transparent 28%),
+      radial-gradient(circle at 82% 8%, rgba(48, 209, 88, 0.06), transparent 24%),
+      linear-gradient(180deg, rgba(255,255,255,0.018), transparent 42%);
+    z-index: -2;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, transparent 72%);
+    z-index: -1;
+  }
+
+  a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(0, 122, 255, 0.3); transition: border-color 0.2s ease, color 0.2s ease; }
+  a:hover { border-color: var(--blue); }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.72);
+    border-bottom: 1px solid var(--grey-2);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-block;
+    animation: pulse-dot 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-5);
+    border-bottom: 0;
+  }
+  .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--white); }
+
+  .nav-cta {
+    color: var(--blue) !important;
+    border: 1px solid rgba(0, 122, 255, 0.3) !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+  .nav-cta:hover { background: var(--blue); color: var(--black) !important; border-color: var(--blue) !important; }
+
+  .article-hero { padding: 144px 0 72px; border-bottom: 1px solid var(--grey-2); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.55fr); gap: 56px; align-items: end; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    background: var(--blue-dim);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    max-width: 860px;
+    margin-bottom: 24px;
+  }
+
+  .accent { color: var(--blue); }
+  .subtitle { font-size: 15px; font-weight: 300; color: var(--grey-5); line-height: 1.85; max-width: 760px; }
+  .meta-line { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; color: var(--grey-4); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .toc-card {
+    border: 1px solid var(--grey-2);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012));
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  }
+
+  .toc-title { font-size: 10px; color: var(--grey-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }
+  .toc-card ol { list-style: none; display: grid; gap: 12px; counter-reset: toc; }
+  .toc-card li { counter-increment: toc; display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; color: var(--grey-6); font-size: 12px; }
+  .toc-card li::before { content: counter(toc, decimal-leading-zero); color: var(--blue); font-size: 10px; padding-top: 2px; }
+
+  .article-shell { display: grid; grid-template-columns: minmax(0, 760px) minmax(220px, 1fr); gap: 64px; padding: 72px 0 96px; align-items: start; }
+  .article-body { min-width: 0; }
+
+  .article-body h2 {
+    font-size: 25px;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin: 58px 0 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--grey-2);
+  }
+
+  .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .article-body h3 { font-size: 16px; color: var(--grey-6); margin: 34px 0 12px; letter-spacing: -0.01em; }
+  .article-body p { font-size: 14px; font-weight: 300; color: var(--grey-5); line-height: 1.9; margin-bottom: 20px; }
+  .article-body strong { color: var(--white); font-weight: 600; }
+  .article-body ul, .article-body ol { padding-left: 20px; margin-bottom: 22px; }
+  .article-body li { font-size: 14px; font-weight: 300; color: var(--grey-5); line-height: 1.85; margin-bottom: 8px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.92em;
+    background: var(--grey-1);
+    border: 1px solid var(--grey-2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--blue);
+  }
+
+  pre {
+    background: var(--grey-1);
+    border: 1px solid var(--grey-2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 18px 0 24px;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: 0; padding: 0; color: var(--grey-6); }
+
+  .tldr, .callout, .step-card, .related-card {
+    border: 1px solid var(--grey-2);
+    background: rgba(26, 26, 26, 0.76);
+    border-radius: 14px;
+  }
+
+  .tldr { padding: 24px 28px; margin-bottom: 32px; }
+  .tldr-title { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+  .tldr ol { margin-bottom: 0; }
+
+  .step-card { padding: 26px; margin: 24px 0; position: relative; }
+  .step-card::before {
+    content: attr(data-step);
+    position: absolute;
+    top: -12px;
+    left: 18px;
+    background: var(--black);
+    border: 1px solid var(--grey-2);
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .step-card h3 { margin-top: 4px; }
+  .step-card p:last-child, .step-card ul:last-child { margin-bottom: 0; }
+
+  .callout { border-left: 3px solid var(--blue); background: var(--blue-dim); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 24px 0; }
+  .callout.warning { border-left-color: var(--amber); background: var(--amber-dim); }
+  .callout.success { border-left-color: var(--green); background: var(--green-dim); }
+  .callout-label { display: block; color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  .callout.warning .callout-label { color: var(--amber); }
+  .callout.success .callout-label { color: var(--green); }
+  .callout p { color: var(--grey-6); font-size: 13px; margin-bottom: 0; }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 28px 20px;
+    border: 1px solid var(--grey-2);
+    border-radius: 14px;
+    margin: 28px 0;
+    background: var(--grey-1);
+  }
+  .flow-node { background: var(--black); border: 1px solid var(--grey-3); border-radius: 8px; padding: 10px 15px; font-size: 12px; text-align: center; white-space: nowrap; }
+  .flow-node.highlight { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
+  .flow-arrow { color: var(--grey-4); font-size: 13px; }
+
+  .screenshot-band { margin: 40px 0; }
+  .screenshot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .shot-card { border: 1px solid var(--grey-2); background: rgba(255,255,255,0.018); border-radius: 18px; padding: 14px; }
+  .phone-frame {
+    position: relative;
+    border-radius: 30px;
+    padding: 7px;
+    background: linear-gradient(180deg, #2a2a2e, #111114 55%, #2a2a2e);
+    box-shadow: 0 18px 52px rgba(0,0,0,0.45);
+  }
+  .phone-frame img { display: block; width: 100%; height: auto; border-radius: 24px; background: #000; }
+  .shot-caption { font-size: 11px; color: var(--grey-5); line-height: 1.65; margin-top: 12px; }
+  .shot-caption strong { display: block; color: var(--white); margin-bottom: 3px; }
+
+  .side-note { position: sticky; top: 112px; border-left: 1px solid var(--grey-2); padding-left: 22px; }
+  .side-note h2 { font-size: 11px; color: var(--grey-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .side-note p, .side-note li { font-size: 12px; color: var(--grey-5); line-height: 1.75; }
+  .side-note ul { padding-left: 17px; margin: 14px 0 0; }
+
+  .related-card { padding: 24px; margin-top: 40px; }
+  .related-card h2 { border-top: 0; padding-top: 0; margin-top: 0; font-size: 18px; }
+
+  .cta-strip { border-top: 1px solid var(--grey-2); padding: 56px 0; }
+  .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .cta-inner p { color: var(--grey-5); font-size: 13px; font-weight: 300; line-height: 1.7; max-width: 660px; margin-bottom: 0; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--black); background: var(--blue); border: 0; padding: 14px 22px; border-radius: 6px; text-decoration: none; white-space: nowrap; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3); border: 0; }
+
+  footer { border-top: 1px solid var(--grey-2); padding: 40px 24px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .footer-left { font-size: 11px; color: var(--grey-4); letter-spacing: 0.02em; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 24px; }
+  .footer-links a { font-size: 11px; color: var(--grey-5); border-bottom: 0; letter-spacing: 0.04em; }
+  .footer-links a:hover { color: var(--white); }
+
+  .fade-up { opacity: 0; animation: fade-up 0.8s var(--ease) forwards; }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 980px) {
+    .hero-grid, .article-shell { grid-template-columns: 1fr; gap: 36px; }
+    .side-note { position: static; border-left: 0; border-top: 1px solid var(--grey-2); padding-left: 0; padding-top: 24px; }
+    .screenshot-grid { grid-template-columns: 1fr; max-width: 360px; }
+    .cta-inner { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .container { padding: 0 20px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .article-hero { padding: 124px 0 56px; }
+    h1 { font-size: 38px; }
+    .article-shell { padding: 56px 0 72px; }
+    .step-card, .tldr, .toc-card { padding: 22px 20px; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .btn-primary { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-dot"></span>
+      GitSync.md
+    </a>
+    <div class="nav-links">
+      <a href="../index.html#features">Features</a>
+      <a href="../index.html#faq">FAQ</a>
+      <a href="./" aria-current="page">Blog</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a>
+      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
+    </div>
+  </div>
+</nav>
+
+<header class="article-hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="fade-up">
+        <div class="eyebrow">Obsidian Git Guide</div>
+        <h1>How to use Obsidian Git on iPhone and iPad<span class="accent">.</span></h1>
+        <p class="subtitle">The practical way to keep an Obsidian vault in Git on iOS is to let GitSync.md create a real local working copy, store it where Obsidian can open it, and then use Obsidian Git or <code>syncmd://</code> automation for daily pull, commit, and push.</p>
+        <div class="meta-line">
+          <span>June 13, 2026</span>
+          <span>Guide</span>
+          <span>iPhone + iPad</span>
+        </div>
+      </div>
+      <aside class="toc-card fade-up" style="animation-delay: 0.12s;" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li>Clone an Obsidian vault into iOS Files</li>
+          <li>Use GitHub or a self-hosted Git remote</li>
+          <li>Open the vault on iPhone or iPad</li>
+          <li>Trigger pull, commit, and push from Obsidian</li>
+        </ol>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="article-shell">
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Put your Obsidian vault in a Git repository.</li>
+            <li>Install GitSync.md on your iPhone or iPad.</li>
+            <li>Set GitSync.md's save location to a folder Obsidian can open, usually <strong>On My iPhone/iPad &rarr; Obsidian</strong>.</li>
+            <li>Clone the vault repository with GitSync.md.</li>
+            <li>Open that cloned folder as an Obsidian vault and configure Obsidian Git or the <code>syncmd://x-callback-url/sync</code> URL.</li>
+          </ol>
+        </div>
+
+        <h2 id="why-ios-needs-help">Why Obsidian Git needs help on iOS</h2>
+        <p>On desktop, Obsidian Git can use the Git tooling already available on your machine. On iPhone and iPad, there is no system <code>git</code> binary that Obsidian can shell out to, and every app lives inside Apple's sandboxed file system.</p>
+        <p><strong>GitSync.md fills that missing layer.</strong> It uses libgit2 to clone, pull, commit, and push real Git repositories locally on iOS. The result is a normal folder with a real <code>.git</code> directory, not a proprietary notes database or an API-only mirror. Obsidian can edit the Markdown files, and GitSync.md can sync the same working copy.</p>
+
+        <div class="flow-diagram" aria-label="Obsidian Git on iOS workflow">
+          <div class="flow-node">GitHub or self-hosted Git</div>
+          <div class="flow-arrow">&larr;&rarr;</div>
+          <div class="flow-node highlight">GitSync.md</div>
+          <div class="flow-arrow">&larr;&rarr;</div>
+          <div class="flow-node">iOS Files</div>
+          <div class="flow-arrow">&larr;&rarr;</div>
+          <div class="flow-node">Obsidian</div>
+        </div>
+
+        <div class="screenshot-band" aria-label="Fresh GitSync.md screenshots">
+          <div class="screenshot-grid">
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-iphone-ipad/repo-list.png" alt="GitSync.md repository list showing cloned vault and documentation repositories" width="1206" height="2622" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Cloned repos on device.</strong> Keep your Obsidian vault and other Markdown repositories as local Git working copies.</figcaption>
+            </figure>
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-iphone-ipad/vault-workflow.png" alt="GitSync.md vault view with branch, commit, changed files, pull and commit actions" width="1206" height="2622" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Real Git status.</strong> Review branch, commit SHA, changed files, and available pull or push actions before syncing.</figcaption>
+            </figure>
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-iphone-ipad/sync-actions.png" alt="GitSync.md sync action sheet with commit message and pull, commit, and push controls" width="1206" height="2622" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Commit and push.</strong> Stage local Markdown edits, write a message, and push directly from iPhone or iPad.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h2 id="before-you-start">Before you start</h2>
+        <p>You need three things:</p>
+        <ul>
+          <li><strong>GitSync.md</strong> from the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store</a>.</li>
+          <li><strong>Obsidian</strong> on the same iPhone or iPad.</li>
+          <li><strong>A Git remote</strong> containing your vault. GitHub is the easiest path, but GitSync.md also supports manually entered remotes such as GitLab, Gitea, Bitbucket, or a self-hosted server over HTTPS token/password or SSH private key.</li>
+        </ul>
+        <p>If your vault is not in Git yet, do that on a desktop first: initialize the vault folder as a Git repo, commit your notes, and push to your remote. Your repository root should be the vault root, so folders like <code>.obsidian/</code>, <code>Daily/</code>, <code>Projects/</code>, and your Markdown files are directly inside the repo.</p>
+
+        <div class="callout warning">
+          <span class="callout-label">Avoid nested vault confusion</span>
+          <p>If the Git repository contains another folder named after the vault, Obsidian may open the wrong level. Clone a repo whose root is the vault, or be deliberate about which folder you open as the vault.</p>
+        </div>
+
+        <h2 id="clone-into-files">1. Clone the vault into an iOS Files location Obsidian can open</h2>
+        <div class="step-card" data-step="Step 1">
+          <h3>Choose the save location</h3>
+          <p>Open GitSync.md and set the default save location to a Files location that Obsidian can access. For an Obsidian-first setup, the most direct destination is:</p>
+          <pre><code>On My iPhone → Obsidian
+On My iPad   → Obsidian</code></pre>
+          <p>That puts the cloned Git repository directly in Obsidian's local file area. When the clone finishes, the folder is ready to open as a vault.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 2">
+          <h3>Add the remote repository</h3>
+          <p>For GitHub, sign in with GitHub or paste a Personal Access Token, then pick the vault repo from your account. For a self-hosted remote, use manual repository entry and paste the clone URL:</p>
+          <pre><code>https://git.example.com/team/notes.git
+git@git.example.com:team/notes.git
+ssh://git@git.example.com:2222/team/notes.git</code></pre>
+          <p>Choose the matching authentication method: GitHub account, HTTPS token/password, SSH private key, or no authentication for a public repo. Credentials are stored in the iOS Keychain.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 3">
+          <h3>Clone it locally</h3>
+          <p>Tap the repo in GitSync.md and clone it. GitSync.md writes the files and the full <code>.git</code> directory to your selected Files location. That local working copy is what Obsidian and GitSync.md will share.</p>
+        </div>
+
+        <h2 id="open-in-obsidian">2. Open the cloned folder in Obsidian</h2>
+        <p>Open Obsidian on your iPhone or iPad. If you are at the vault picker, choose <strong>Open folder as vault</strong>. Navigate to the folder GitSync.md cloned, usually inside <strong>On My iPhone/iPad &rarr; Obsidian</strong>, and open it.</p>
+        <p>Your notes should appear like they do on desktop. If your <code>.obsidian</code> configuration is committed to the repo, themes, snippets, and plugin settings may already be present. If not, configure the mobile vault normally.</p>
+
+        <h2 id="configure-obsidian-git">3. Configure Obsidian Git for mobile sync</h2>
+        <p>Install and enable the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Obsidian Git community plugin</a> if it is not already in the vault. Then set your Git author details in the plugin settings:</p>
+        <ul>
+          <li><strong>Username on your Git server</strong>: your GitHub, GitLab, Gitea, or server username.</li>
+          <li><strong>Author name</strong>: the name you want on commits.</li>
+          <li><strong>Author email</strong>: the email you want on commits.</li>
+        </ul>
+        <p>For the most reliable iOS flow, use GitSync.md's URL scheme as the mobile sync command. The repo value should match the vault folder name shown in GitSync.md:</p>
+        <pre><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
+        <p>The <code>sync</code> action pulls first, then stages local changes, commits them with the message you pass, and pushes back to the remote. You can also call individual actions if you want separate buttons:</p>
+        <pre><code>syncmd://x-callback-url/pull?repo=MyVault
+syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian
+syncmd://x-callback-url/status?repo=MyVault</code></pre>
+
+        <div class="callout success">
+          <span class="callout-label">Why use the URL scheme?</span>
+          <p>It lets Obsidian hand the Git operation to GitSync.md, where the local repository, credentials, and libgit2 implementation already live. You stay in a normal Obsidian editing flow while GitSync.md performs the mobile-safe Git work.</p>
+        </div>
+
+        <h2 id="daily-workflow">4. Daily workflow on iPhone and iPad</h2>
+        <p>A good mobile rhythm is simple:</p>
+        <ol>
+          <li><strong>Pull before editing.</strong> Use Obsidian Git's mobile sync action or open GitSync.md and pull the vault.</li>
+          <li><strong>Edit notes in Obsidian.</strong> Create daily notes, update project notes, capture inbox items, or work in split view on iPad.</li>
+          <li><strong>Sync after editing.</strong> Trigger the <code>syncmd://x-callback-url/sync</code> URL or use GitSync.md to commit and push.</li>
+          <li><strong>Review changes when needed.</strong> Open the repo in GitSync.md to inspect changed files, branch state, diffs, conflicts, tags, or stashes before pushing.</li>
+        </ol>
+        <p>On iPad, the same setup works with more room: keep Obsidian and GitSync.md side by side, write in Obsidian, then glance at GitSync.md's repo view before pushing.</p>
+
+        <h2 id="github-self-hosted">GitHub and self-hosted remotes both work</h2>
+        <p>GitHub is the fastest setup because GitSync.md can browse your account repositories after sign-in. Self-hosted Git is still supported: paste the remote URL manually, choose HTTPS token/password or SSH private key, and clone into the same Obsidian Files location.</p>
+        <p>After the repository exists locally, Obsidian does not need to know whether the remote is GitHub, GitLab, Gitea, Bitbucket, or a private server. It edits files in the local vault folder; GitSync.md handles the remote protocol when you sync.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h3>Obsidian does not show the vault</h3>
+        <p>Check where the repo was cloned. For the easiest Obsidian workflow, clone into <code>On My iPhone/iPad → Obsidian</code>, then use <strong>Open folder as vault</strong> from Obsidian's vault picker.</p>
+
+        <h3>Obsidian Git says there is no Git repository</h3>
+        <p>Make sure you opened the cloned repository folder, not its parent folder. The folder you open should contain the hidden <code>.git</code> directory that GitSync.md created.</p>
+
+        <h3>Push fails from mobile</h3>
+        <p>Open GitSync.md and verify the repo can pull or push there. If GitSync.md cannot authenticate, update the repository's auth method or token. For self-hosted SSH remotes, confirm the private key, passphrase, host, and port.</p>
+
+        <h3>The sync URL does not find the repo</h3>
+        <p>The <code>repo</code> query parameter must match the vault folder name in GitSync.md. If your folder is named <code>second-brain</code>, use <code>repo=second-brain</code>, not the remote repository title from your Git host.</p>
+
+        <h2 id="recap">Recap</h2>
+        <p>Obsidian Git on iPhone and iPad works best when you separate responsibilities: Obsidian edits Markdown, GitSync.md owns the real local Git working copy, and iOS Files is the bridge between them. Clone once, open the folder as a vault, then use <code>syncmd://</code> automation or GitSync.md's own controls to pull, commit, and push.</p>
+
+        <div class="related-card">
+          <h2>Related setup guide</h2>
+          <p>If you want the earlier, more compact walkthrough focused specifically on the Obsidian Git plugin setup, read <a href="./obsidian-git-ios-setup.html">Using GitSync.md with Obsidian Git on iOS</a>.</p>
+        </div>
+      </article>
+
+      <aside class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>This guide matches the current GitSync.md positioning:</p>
+        <ul>
+          <li>iPhone and iPad support</li>
+          <li>real local Git operations via libgit2</li>
+          <li>iOS Files integration</li>
+          <li>GitHub plus manual self-hosted remotes</li>
+          <li><code>syncmd://</code> x-callback-url automation</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <section class="cta-strip">
+    <div class="container">
+      <div class="cta-inner">
+        <p>GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. It talks directly to your Git remote and keeps your working copies on device.</p>
+        <a class="btn-primary" href="https://apps.apple.com/us/app/gitsync-md/id6758960270">Buy on the App Store</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
+    <div class="footer-links">
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
+      <a href="./">Blog</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="../terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.isolated.tech': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

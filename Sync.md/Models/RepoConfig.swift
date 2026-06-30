@@ -88,6 +88,18 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         GitRemoteURL.parse(repoURL)?.ownerName
     }
 
+    /// `true` when GitSync.md was pointed at an existing folder instead of a
+    /// repository folder it created or cloned. Removing these repos must not
+    /// delete the underlying Files folder, because it may be owned by another
+    /// app such as PolyGit.
+    var isExternalLocalRepository: Bool {
+        customVaultBookmarkData != nil && !customLocationIsParent
+    }
+
+    var isGitSyncManagedStorage: Bool {
+        !isExternalLocalRepository
+    }
+
     var isCloned: Bool {
         !gitState.commitSHA.isEmpty
     }

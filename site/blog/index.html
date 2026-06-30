@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Blog — GitSync.md</title>
+<meta name="description" content="Guides and field notes for using GitSync.md with Obsidian vaults, Markdown notes, and Git repositories on iPhone and iPad.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://gitsyncmd.isolated.tech/blog/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Blog — GitSync.md">
+<meta property="og:description" content="Practical guides for using real Git workflows with Obsidian, Markdown, and code projects on iPhone and iPad.">
+<meta property="og:url" content="https://gitsyncmd.isolated.tech/blog/">
+<meta property="og:image" content="https://gitsyncmd.isolated.tech/screenshots/hero-repo-list.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blog — GitSync.md">
+<meta name="twitter:description" content="Guides and field notes for GitSync.md, Obsidian vaults, Markdown notes, and iOS Git workflows.">
+<meta name="twitter:image" content="https://gitsyncmd.isolated.tech/screenshots/hero-repo-list.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "GitSync.md Blog",
+  "description": "Guides and field notes for using GitSync.md with Obsidian vaults, Markdown notes, and Git repositories on iPhone and iPad.",
+  "url": "https://gitsyncmd.isolated.tech/blog/",
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "How to Use Obsidian Git on iPhone and iPad",
+      "url": "https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad.html",
+      "datePublished": "2026-06-13",
+      "dateModified": "2026-06-13",
+      "author": {
+        "@type": "Person",
+        "name": "Cody Bontecou"
+      }
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Using GitSync.md with Obsidian Git on iOS",
+      "url": "https://gitsyncmd.isolated.tech/blog/obsidian-git-ios-setup.html",
+      "datePublished": "2026-02-15",
+      "dateModified": "2026-06-13",
+      "author": {
+        "@type": "Person",
+        "name": "Cody Bontecou"
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --white: #f5f5f7;
+    --black: #0a0a0a;
+    --grey-1: #1a1a1a;
+    --grey-2: #2a2a2a;
+    --grey-3: #3a3a3a;
+    --grey-4: #6a6a6a;
+    --grey-5: #8a8a8a;
+    --grey-6: #b0b0b0;
+    --blue: #007AFF;
+    --blue-dim: rgba(0, 122, 255, 0.12);
+    --green: #30D158;
+    --green-dim: rgba(48, 209, 88, 0.12);
+    --line: rgba(255, 255, 255, 0.08);
+    --mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, 'Fira Code', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  ::selection { background: var(--blue); color: var(--black); }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(0, 122, 255, 0.12), transparent 28%),
+      radial-gradient(circle at 82% 8%, rgba(48, 209, 88, 0.06), transparent 24%),
+      linear-gradient(180deg, rgba(255,255,255,0.018), transparent 42%);
+    z-index: -2;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.38;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, transparent 70%);
+    z-index: -1;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.7);
+    border-bottom: 1px solid var(--grey-2);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-block;
+    animation: pulse-dot 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-5);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover,
+  .nav-links a[aria-current="page"] { color: var(--white); }
+
+  .nav-cta {
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: var(--blue) !important;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--blue) !important;
+    color: var(--black) !important;
+    border-color: var(--blue) !important;
+  }
+
+  .hero {
+    padding: 160px 0 96px;
+    border-bottom: 1px solid var(--grey-2);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 56px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    background: var(--blue-dim);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(44px, 7vw, 84px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    max-width: 780px;
+    margin-bottom: 24px;
+  }
+
+  .accent { color: var(--blue); }
+
+  .hero-copy {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--grey-5);
+    line-height: 1.85;
+    max-width: 650px;
+  }
+
+  .hero-panel {
+    border: 1px solid var(--grey-2);
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.32);
+  }
+
+  .panel-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-4);
+    margin-bottom: 18px;
+  }
+
+  .topic-list {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+
+  .topic-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--grey-2);
+    padding-bottom: 12px;
+    font-size: 12px;
+    color: var(--grey-6);
+  }
+
+  .topic-list li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .topic-list span {
+    color: var(--grey-4);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .section {
+    padding: 96px 0;
+  }
+
+  .section-header {
+    max-width: 720px;
+    margin-bottom: 40px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-4);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 24px;
+  }
+
+  .post-card,
+  .future-card {
+    border: 1px solid var(--grey-2);
+    background: rgba(26, 26, 26, 0.72);
+    border-radius: 14px;
+    padding: 32px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 360px;
+    transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), background 0.35s var(--ease);
+  }
+
+  .post-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(0, 122, 255, 0.14), transparent 38%);
+    pointer-events: none;
+  }
+
+  .post-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s var(--ease);
+  }
+
+  .post-card:hover {
+    border-color: var(--grey-3);
+    background: var(--grey-1);
+    transform: translateY(-2px);
+  }
+
+  .post-card:hover::after { transform: scaleX(1); }
+
+  .post-meta {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+
+  .tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--blue-dim);
+    border: 1px solid rgba(0, 122, 255, 0.24);
+    border-radius: 999px;
+    padding: 5px 10px;
+  }
+
+  .date {
+    font-size: 11px;
+    color: var(--grey-4);
+    letter-spacing: 0.04em;
+  }
+
+  .post-title {
+    position: relative;
+    font-size: clamp(26px, 4vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+
+  .post-excerpt {
+    position: relative;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--grey-5);
+    line-height: 1.8;
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+
+  .post-link {
+    position: relative;
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .post-card:hover .post-link { gap: 12px; }
+
+  .post-link svg { width: 14px; height: 14px; }
+
+  .future-card {
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+      linear-gradient(135deg, rgba(48, 209, 88, 0.06), transparent 45%),
+      rgba(255,255,255,0.018);
+  }
+
+  .future-card h2 {
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .future-card p {
+    font-size: 12px;
+    color: var(--grey-5);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .future-status {
+    align-self: flex-start;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid rgba(48, 209, 88, 0.24);
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .cta-strip {
+    border-top: 1px solid var(--grey-2);
+    padding: 56px 0;
+  }
+
+  .cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .cta-inner p {
+    color: var(--grey-5);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 620px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    background: var(--blue);
+    border: none;
+    padding: 14px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3);
+  }
+
+  footer {
+    border-top: 1px solid var(--grey-2);
+    padding: 40px 24px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-left {
+    font-size: 11px;
+    color: var(--grey-4);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-size: 11px;
+    color: var(--grey-5);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .fade-up {
+    opacity: 0;
+    animation: fade-up 0.8s var(--ease) forwards;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .post-grid,
+    .cta-inner {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .container { padding: 0 20px; }
+    .hero { padding: 128px 0 72px; }
+    .section { padding: 72px 0; }
+    .post-card,
+    .future-card,
+    .hero-panel { padding: 24px 20px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .btn-primary { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-dot"></span>
+      GitSync.md
+    </a>
+    <div class="nav-links">
+      <a href="../index.html#features">Features</a>
+      <a href="../index.html#faq">FAQ</a>
+      <a href="./" aria-current="page">Blog</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a>
+      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="fade-up">
+          <div class="eyebrow">GitSync.md Blog</div>
+          <h1>Field notes for real Git on iPhone and iPad<span class="accent">.</span></h1>
+          <p class="hero-copy">Practical guides for pairing GitSync.md with Obsidian vaults, Markdown notes, and code repositories. Each post is written around documented setup flows and day-to-day Git workflows on iOS.</p>
+        </div>
+        <aside class="hero-panel fade-up" style="animation-delay: 0.12s;" aria-label="Blog topics">
+          <div class="panel-label">Coverage</div>
+          <ul class="topic-list">
+            <li>Obsidian vault setup <span>Guides</span></li>
+            <li>iOS Files workflows <span>How-to</span></li>
+            <li>Git fundamentals on mobile <span>Notes</span></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="latest-posts">
+    <div class="container">
+      <header class="section-header fade-up" style="animation-delay: 0.18s;">
+        <div class="section-label">Latest</div>
+        <h2 class="section-title" id="latest-posts">Guides and implementation notes.</h2>
+      </header>
+
+      <div class="post-grid">
+        <a href="./obsidian-git-iphone-ipad.html" class="post-card fade-up" style="animation-delay: 0.24s;">
+          <div class="post-meta">
+            <span class="tag">Guide</span>
+            <span class="date">June 13, 2026</span>
+          </div>
+          <h2 class="post-title">How to Use Obsidian Git on iPhone and iPad</h2>
+          <p class="post-excerpt">Clone your Obsidian vault into iOS Files with GitSync.md, open it on iPhone or iPad, and sync with GitHub or self-hosted Git remotes using Obsidian Git automation.</p>
+          <span class="post-link">
+            Read the guide
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a href="./obsidian-git-ios-setup.html" class="post-card fade-up" style="animation-delay: 0.28s;">
+          <div class="post-meta">
+            <span class="tag">Guide</span>
+            <span class="date">February 15, 2026</span>
+          </div>
+          <h2 class="post-title">Using GitSync.md with Obsidian Git on iOS</h2>
+          <p class="post-excerpt">Set the save location to Obsidian's iOS file system, clone your vault repo, and configure the Obsidian Git community plugin to pull, commit, and push from your phone.</p>
+          <span class="post-link">
+            Read the guide
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <div class="future-card fade-up" style="animation-delay: 0.3s;">
+          <div>
+            <div class="future-status">More soon</div>
+            <h2>More GitSync.md field notes are being collected.</h2>
+            <p>Future posts can be added here as setup notes, release writeups, or integration guides become documented. The page is structured for a growing post list without changing the site shell.</p>
+          </div>
+          <p>Want a specific guide? Open an issue on GitHub and include the workflow you want documented.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-strip">
+    <div class="container">
+      <div class="cta-inner">
+        <p>GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. It works directly with Git remotes and keeps your repositories on your device.</p>
+        <a class="btn-primary" href="https://apps.apple.com/us/app/gitsync-md/id6758960270">Buy on the App Store</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
+    <div class="footer-links">
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
+      <a href="./">Blog</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="../terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.isolated.tech': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

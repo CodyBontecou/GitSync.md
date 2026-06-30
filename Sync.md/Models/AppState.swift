@@ -2583,9 +2583,17 @@ final class AppState {
         return nil
     }
 
-    func removeRepo(id: UUID) {
+    func removeRepo(id: UUID, deleteLocalFiles: Bool = false) {
+        guard let repo = repo(id: id) else { return }
         let vaultDir = vaultURL(for: id)
-        try? FileManager.default.removeItem(at: vaultDir)
+
+        // Existing local repositories are user-owned folders that may also be
+        // managed by another app. Removing GitSync.md's bookmark must never
+        // delete those files.
+        if deleteLocalFiles && repo.isGitSyncManagedStorage {
+            try? FileManager.default.removeItem(at: vaultDir)
+        }
+
         clearCustomLocation(for: id)
         clearRemoteCredentials(for: id)
         changeCounts.removeValue(forKey: id)

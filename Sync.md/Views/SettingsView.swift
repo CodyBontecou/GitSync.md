@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State private var authorEmail: String = ""
     @State private var vaultName: String = ""
     @State private var showRemoveConfirm = false
+    @State private var showDeleteFilesConfirm = false
     @State private var showFolderPicker = false
     @State private var showCopiedToast = false
     @State private var showMoveLocationPicker = false
@@ -22,6 +23,11 @@ struct SettingsView: View {
     @State private var showValidationAlert = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
+    private var canDeleteLocalFiles: Bool { repo?.isGitSyncManagedStorage == true }
+    private var repoPathForConfirmation: String {
+        let displayPath = state.vaultDisplayPath(for: repoID)
+        return displayPath.isEmpty ? state.vaultURL(for: repoID).path : displayPath
+    }
 
     var body: some View {
         NavigationStack {
@@ -197,9 +203,21 @@ struct SettingsView: View {
                             .buttonStyle(.plain)
                         }
 
-                        // Remove
-                        BDestructiveButton(title: String(localized: "Remove Repository")) {
-                            showRemoveConfirm = true
+                        // Remove / Delete
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(String(localized: "Removing from GitSync.md keeps the files on this device."))
+                                .font(.system(size: 12, design: .monospaced))
+                                .foregroundStyle(Color.brutalText)
+
+                            BDestructiveButton(title: String(localized: "Remove from GitSync.md")) {
+                                showRemoveConfirm = true
+                            }
+
+                            if canDeleteLocalFiles {
+                                BDestructiveButton(title: String(localized: "Delete Local Files")) {
+                                    showDeleteFilesConfirm = true
+                                }
+                            }
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 8)
@@ -258,17 +276,21 @@ struct SettingsView: View {
                 dismiss()
             }
             #endif
-            .alert("Remove Repository?", isPresented: $showRemoveConfirm) {
+            .alert("Remove from GitSync.md?", isPresented: $showRemoveConfirm) {
                 Button("Cancel", role: .cancel) {}
                 Button("Remove", role: .destructive) {
-                    if let repo {
-                        repositoryHistory.recordRepoAdded(identifier: repo.repoURL)
-                    }
-                    state.removeRepo(id: repoID)
-                    dismiss()
+                    removeRepository(deleteLocalFiles: false)
                 }
             } message: {
-                Text("This will delete all local files for this repository. This cannot be undone.")
+                Text("This removes the repository from GitSync.md only. Files will remain at:\n\(repoPathForConfirmation)")
+            }
+            .alert("Delete Local Files?", isPresented: $showDeleteFilesConfirm) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete Files", role: .destructive) {
+                    removeRepository(deleteLocalFiles: true)
+                }
+            } message: {
+                Text("This will permanently delete:\n\(repoPathForConfirmation)\n\nThis cannot be undone.")
             }
             .fileImporter(
                 isPresented: $showMoveLocationPicker,
@@ -378,6 +400,17 @@ struct SettingsView: View {
     }
 
     // MARK: - Helpers
+
+    private func removeRepository(deleteLocalFiles: Bool) {
+        if let repo {
+            let identifier = repo.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? repoPathForConfirmation
+                : repo.repoURL
+            repositoryHistory.recordRepoAdded(identifier: identifier)
+        }
+        state.removeRepo(id: repoID, deleteLocalFiles: deleteLocalFiles)
+        dismiss()
+    }
 
     private func relativeDate(_ date: Date) -> String {
         if date == .distantPast { return String(localized: "Never") }
