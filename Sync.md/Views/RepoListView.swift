@@ -28,7 +28,7 @@ struct RepoListView: View {
                 VStack(spacing: 0) {
                     DiscordPromoBanner()
 
-                    if state.repos.isEmpty {
+                    if state.visibleRepos.isEmpty {
                         emptyState
                     } else {
                         if state.isDemoMode {
@@ -58,11 +58,14 @@ struct RepoListView: View {
                 if showSignOutConfirm {
                     BConfirmModal(
                         title: String(localized: "Sign Out?"),
-                        message: String(localized: "This will sign you out of GitHub. Your local repositories will be kept."),
+                        message: String(localized: "This will sign out @\(state.gitHubUsername). Repositories for this account will be hidden until you sign back in, and local files will stay on your device."),
                         confirmLabel: String(localized: "Sign Out"),
                         onConfirm: {
                             showSignOutConfirm = false
                             state.signOut()
+                            if state.isSignedIn {
+                                Task { await state.refreshRepos() }
+                            }
                         },
                         onCancel: { showSignOutConfirm = false }
                     )
@@ -106,7 +109,26 @@ struct RepoListView: View {
                                     Label(state.defaultAuthorEmail, systemImage: "envelope.fill")
                                 }
                             }
+                            if state.gitHubAccounts.count > 1 {
+                                Section("Accounts") {
+                                    ForEach(state.gitHubAccounts) { account in
+                                        Button {
+                                            Task { await state.switchGitHubAccount(login: account.login) }
+                                        } label: {
+                                            Label(
+                                                "@\(account.login)",
+                                                systemImage: account.login.caseInsensitiveCompare(state.activeGitHubAccountLogin) == .orderedSame ? "checkmark.circle.fill" : "person.crop.circle"
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                             Section {
+                                Button {
+                                    Task { await state.signInWithGitHub() }
+                                } label: {
+                                    Label(String(localized: "Add GitHub Account"), systemImage: "person.badge.plus")
+                                }
                                 Button {
                                     showAppSettings = true
                                 } label: {
@@ -116,7 +138,7 @@ struct RepoListView: View {
                             Button(role: .destructive) {
                                 showSignOutConfirm = true
                             } label: {
-                                Label(String(localized: "Sign Out"), systemImage: "rectangle.portrait.and.arrow.right")
+                                Label(String(localized: "Sign Out @\(state.gitHubUsername)"), systemImage: "rectangle.portrait.and.arrow.right")
                             }
                         } label: {
                             GitHubAvatarView(avatarURL: state.gitHubAvatarURL, size: 28)
@@ -272,7 +294,7 @@ struct RepoListView: View {
         let ghosts = ghostRepoIdentifiers
         return ScrollView {
             LazyVStack(spacing: 12) {
-                ForEach(state.repos) { repo in
+                ForEach(state.visibleRepos) { repo in
                     NavigationLink(value: repo.id) {
                         repoCard(repo)
                     }
@@ -309,9 +331,9 @@ struct RepoListView: View {
     /// in the active `state.repos` list. Local file paths are device-specific,
     /// so only parseable remote URLs are surfaced here.
     private var ghostRepoIdentifiers: [String] {
-        guard !state.isDemoMode else { return [] }
+        guard !state.isDemoMode, !state.isSignedIn else { return [] }
         let activeURLs = Set(
-            state.repos.map { $0.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+            state.visibleRepos.map { $0.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
         )
         return repositoryHistory.seenRepoIdentifiers()
             .filter { !activeURLs.contains($0) && GitRemoteURL.parse($0) != nil }
@@ -598,7 +620,8 @@ struct RepoListView: View {
             authorEmail: state.defaultAuthorEmail,
             vaultFolderName: folderName,
             authMethod: parsed?.isGitHub == true && parsed?.isSSH == false ? .gitHubPAT : GitAuthMethod.none,
-            authUsername: parsed?.username ?? ""
+            authUsername: parsed?.username ?? "",
+            gitHubAccountLogin: parsed?.isGitHub == true && parsed?.isSSH == false ? state.activeGitHubAccountLogin : nil
         )
 
         // recordRepoAdded is a no-op here — identifier is already in the seen set.

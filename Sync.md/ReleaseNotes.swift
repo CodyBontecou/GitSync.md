@@ -5,6 +5,10 @@ enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
         [
             .init(
+                version: "2.5",
+                items: version25Items
+            ),
+            .init(
                 version: "2.4.7",
                 items: version247Items
             ),
@@ -64,7 +68,7 @@ enum AppReleaseNotes {
         NoteletStorage.markCurrentVersionAsSeen()
     }
 
-    private static let availableVersions: Set<String> = ["2.4.7", "2.4.5", "2.4.1"]
+    private static let availableVersions: Set<String> = ["2.5", "2.4.7", "2.4.5", "2.4.1"]
 
     private static var currentVersion: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
@@ -72,6 +76,51 @@ enum AppReleaseNotes {
 
     private static func hasNotes(for version: String) -> Bool {
         availableVersions.contains(version)
+    }
+
+    private static var version25Items: [NoteletVersionNoteItem] {
+        [
+            .list(
+                title: "GitHub accounts are safer",
+                rows: [
+                    .init(
+                        symbolSystemName: "person.2.badge.key.fill",
+                        title: "Use personal and work accounts",
+                        description: "GitSync.md can now remember multiple GitHub sign-ins and keep each account’s token separate."
+                    ),
+                    .init(
+                        symbolSystemName: "folder.badge.person.crop",
+                        title: "Repos follow the right account",
+                        description: "Repositories are linked to the GitHub account that added them, so switching accounts shows the matching repo list and uses the right credentials."
+                    ),
+                    .init(
+                        symbolSystemName: "safari.fill",
+                        title: "Choose the account you want",
+                        description: "GitHub sign-in now uses a private browser session so logging out and back in does not silently reuse the wrong browser account."
+                    )
+                ]
+            ),
+            .list(
+                title: "Safer repository removal",
+                rows: [
+                    .init(
+                        symbolSystemName: "folder.badge.minus",
+                        title: "Remove without deleting files",
+                        description: "Removing a repository from GitSync.md now keeps the files on your device, so folders shared with other apps stay safe."
+                    ),
+                    .init(
+                        symbolSystemName: "trash.fill",
+                        title: "Delete only when you choose",
+                        description: "For repositories managed by GitSync.md, Settings now offers a separate Delete Local Files action with a clear confirmation path."
+                    ),
+                    .init(
+                        symbolSystemName: "link.badge.plus",
+                        title: "External folders are protected",
+                        description: "Repositories opened from existing Files folders are unlinked from GitSync.md without removing the original folder."
+                    )
+                ]
+            )
+        ]
     }
 
     private static var version247Items: [NoteletVersionNoteItem] {

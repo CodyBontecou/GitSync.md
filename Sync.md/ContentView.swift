@@ -31,6 +31,24 @@ struct ContentView: View {
                 hasExistingAppData: hasExistingAppDataForReleaseNotes
             )
         }
+        .alert(
+            state.pendingSSHHostKeyTrustRequest?.title ?? String(localized: "Trust SSH Host?"),
+            isPresented: Binding(
+                get: { state.pendingSSHHostKeyTrustRequest != nil },
+                set: { isPresented in
+                    if !isPresented { state.cancelPendingSSHHostKeyTrust() }
+                }
+            )
+        ) {
+            Button(String(localized: "Cancel"), role: .cancel) {
+                state.cancelPendingSSHHostKeyTrust()
+            }
+            Button(state.pendingSSHHostKeyTrustRequest?.confirmButtonTitle ?? String(localized: "Trust Host")) {
+                Task { await state.trustPendingSSHHostKeyAndRetry() }
+            }
+        } message: {
+            Text(state.pendingSSHHostKeyTrustRequest?.message ?? "")
+        }
         .onChange(of: state.shouldRequestReview) { _, shouldRequest in
             if shouldRequest {
                 state.shouldRequestReview = false

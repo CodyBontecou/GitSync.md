@@ -66,11 +66,11 @@ struct AddRepoView: View {
                             addButton
                         }
                     }
-                    .padding(.top, 12)
-                    .padding(.bottom, 40)
+                        .padding(.top, 12)
+                        .padding(.bottom, 40)
+                    }
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
-            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -80,14 +80,9 @@ struct AddRepoView: View {
                         .tracking(2)
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
+                    Button("Cancel") {
                         dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(Color.brutalText)
                     }
-                    .buttonStyle(.plain)
                 }
             }
             .sheet(isPresented: $showRepoPicker) {
@@ -850,7 +845,8 @@ struct AddRepoView: View {
             customVaultBookmarkData: customVaultBookmarkData,
             customLocationIsParent: customVaultBookmarkData != nil,
             authMethod: authMethod,
-            authUsername: credentials.username
+            authUsername: credentials.username,
+            gitHubAccountLogin: authMethod == .gitHubPAT ? state.activeGitHubAccountLogin : nil
         )
         state.addRepo(config)
         if authMethod == .httpsToken || authMethod == .sshKey {

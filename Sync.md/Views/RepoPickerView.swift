@@ -72,14 +72,9 @@ struct RepoPickerView: View {
                         .tracking(2)
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
+                    Button("Cancel") {
                         dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(Color.brutalText)
                     }
-                    .buttonStyle(.plain)
                 }
             }
         }

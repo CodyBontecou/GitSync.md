@@ -236,31 +236,17 @@ struct SettingsView: View {
                         .tracking(3)
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
+                    Button(String(localized: "Cancel")) {
                         dismiss()
-                    } label: {
-                        Text(String(localized: "Cancel").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                            .tracking(1)
                     }
-                    .buttonStyle(.plain)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
+                    Button(String(localized: "Save")) {
                         if saveChanges() {
                             dismiss()
                         }
-                    } label: {
-                        Text(String(localized: "Save").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color(.systemBackground))
-                            .tracking(1)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.brutalText)
                     }
-                    .buttonStyle(.plain)
+                    .fontWeight(.semibold)
                 }
             }
             .onAppear {

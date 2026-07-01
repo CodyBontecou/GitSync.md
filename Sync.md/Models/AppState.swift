@@ -1,6 +1,15 @@
 import Foundation
 import SwiftUI
 
+struct GitHubAccount: Codable, Identifiable, Equatable {
+    var id: String { login.lowercased() }
+
+    let login: String
+    var displayName: String
+    var avatarURL: String
+    var email: String
+}
+
 struct LFSAutoTrackingConfirmationRequest: Identifiable, Equatable {
     enum Action: Equatable {
         case stageFile(path: String, oldPath: String?)
@@ -18,6 +27,70 @@ struct LFSAutoTrackingConfirmationRequest: Identifiable, Equatable {
         }.joined(separator: "\n")
         let remaining = candidates.count > 4 ? "\n• +\(candidates.count - 4) more" : ""
         return "These files look binary or large and are safer in Git LFS:\n\n\(listed)\(remaining)\n\nUse Git LFS? This will update and stage .gitattributes."
+    }
+}
+
+struct SSHHostKeyTrustRequest: Identifiable, Equatable {
+    enum Operation: Equatable {
+        case clone
+        case pull
+        case pushCurrentBranch
+        case pushCommit(message: String)
+    }
+
+    let id = UUID()
+    let repoID: UUID
+    let operation: Operation
+    let trustError: GitLFSSSHHostKeyTrustError
+
+    var title: String {
+        switch trustError {
+        case .unknownHostKey:
+            return String(localized: "Trust SSH Host?")
+        case .changedHostKey:
+            return String(localized: "SSH Host Key Changed")
+        }
+    }
+
+    var confirmButtonTitle: String {
+        switch trustError {
+        case .unknownHostKey:
+            return String(localized: "Trust Host")
+        case .changedHostKey:
+            return String(localized: "Trust New Key")
+        }
+    }
+
+    var message: String {
+        switch trustError {
+        case .unknownHostKey(let host, let port, let fingerprint):
+            return "\(host):\(port) presented this SSH host key:\n\n\(fingerprint)\n\nOnly trust it if this fingerprint matches your Forgejo/Git server."
+        case .changedHostKey(let host, let port, let expectedFingerprint, let actualFingerprint):
+            return "\(host):\(port) presented a different SSH host key.\n\nPreviously trusted:\n\(expectedFingerprint)\n\nNew key:\n\(actualFingerprint)\n\nDo not trust the new key unless you intentionally rotated the server's SSH host key."
+        }
+    }
+
+    var host: String {
+        switch trustError {
+        case .unknownHostKey(let host, _, _), .changedHostKey(let host, _, _, _):
+            return host
+        }
+    }
+
+    var port: Int {
+        switch trustError {
+        case .unknownHostKey(_, let port, _), .changedHostKey(_, let port, _, _):
+            return port
+        }
+    }
+
+    var fingerprintToTrust: String {
+        switch trustError {
+        case .unknownHostKey(_, _, let fingerprint):
+            return fingerprint
+        case .changedHostKey(_, _, _, let actualFingerprint):
+            return actualFingerprint
+        }
     }
 }
 
@@ -58,6 +131,8 @@ final class AppState {
     var defaultAuthorEmail: String = ""
     var gitHubRepos: [GitHubRepo] = []
     var isLoadingRepos: Bool = false
+    var gitHubAccounts: [GitHubAccount] = []
+    var activeGitHubAccountLogin: String = ""
 
     // MARK: - Callback State (x-callback-url from Obsidian plugin)
 
@@ -93,6 +168,7 @@ final class AppState {
     var lastError: String? = nil
     var showError: Bool = false
     var pendingLFSAutoTrackingConfirmation: LFSAutoTrackingConfirmationRequest? = nil
+    var pendingSSHHostKeyTrustRequest: SSHHostKeyTrustRequest? = nil
 
     // MARK: - Security-Scoped URLs (runtime only)
 
@@ -107,11 +183,55 @@ final class AppState {
     private var repoMutationGeneration: [UUID: Int] = [:]
     private var didScheduleInitialChangeDetection = false
 
-    // MARK: - PAT
+    // MARK: - PAT / GitHub Accounts
 
     var pat: String {
-        get { KeychainService.load(key: "github_pat") ?? "" }
-        set { KeychainService.save(key: "github_pat", value: newValue) }
+        get {
+            if let token = gitHubToken(for: activeGitHubAccountLogin), !token.isEmpty {
+                return token
+            }
+            return KeychainService.load(key: "github_pat") ?? ""
+        }
+        set {
+            if newValue.isEmpty {
+                if !activeGitHubAccountLogin.isEmpty {
+                    KeychainService.delete(key: Self.gitHubTokenKey(for: activeGitHubAccountLogin))
+                }
+                KeychainService.delete(key: "github_pat")
+            } else if !activeGitHubAccountLogin.isEmpty {
+                KeychainService.save(key: Self.gitHubTokenKey(for: activeGitHubAccountLogin), value: newValue)
+            } else {
+                KeychainService.save(key: "github_pat", value: newValue)
+            }
+        }
+    }
+
+    var activeGitHubAccount: GitHubAccount? {
+        gitHubAccounts.first { $0.login.caseInsensitiveCompare(activeGitHubAccountLogin) == .orderedSame }
+    }
+
+    var visibleRepos: [RepoConfig] {
+        repos.filter { shouldShowRepoForActiveAccount($0) }
+    }
+
+    private static func gitHubTokenKey(for login: String) -> String {
+        "github_pat_\(login.lowercased())"
+    }
+
+    func gitHubToken(for login: String?) -> String? {
+        guard let login = login?.trimmingCharacters(in: .whitespacesAndNewlines), !login.isEmpty else { return nil }
+        return KeychainService.load(key: Self.gitHubTokenKey(for: login))
+    }
+
+    private func shouldShowRepoForActiveAccount(_ repo: RepoConfig) -> Bool {
+        if isDemoMode { return true }
+        if let ownerLogin = repo.gitHubAccountLogin?.trimmingCharacters(in: .whitespacesAndNewlines), !ownerLogin.isEmpty {
+            return isSignedIn && ownerLogin.caseInsensitiveCompare(activeGitHubAccountLogin) == .orderedSame
+        }
+        if repo.authMethod == .gitHubPAT, GitRemoteURL.parse(repo.repoURL)?.isGitHub == true {
+            return isSignedIn
+        }
+        return true
     }
 
     // MARK: - Per-Repo Remote Credentials
@@ -158,7 +278,7 @@ final class AppState {
     func remoteCredentials(for repo: RepoConfig) -> GitRemoteCredentials {
         switch repo.authMethod {
         case .gitHubPAT:
-            let token = pat
+            let token = gitHubToken(for: repo.gitHubAccountLogin) ?? pat
             return token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? .none : .gitHubPAT(token)
         case .none:
             return .none
@@ -192,14 +312,17 @@ final class AppState {
     // MARK: - Dependencies
 
     private let gitRepositoryFactory: (URL) -> any GitRepositoryProtocol
+    private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
 
     // MARK: - Init
 
     init(
         gitRepositoryFactory: @escaping (URL) -> any GitRepositoryProtocol = { LocalGitService(localURL: $0) },
+        sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default,
         loadPersistedState: Bool = true
     ) {
         self.gitRepositoryFactory = gitRepositoryFactory
+        self.sshHostKeyTrustStore = sshHostKeyTrustStore
         if loadPersistedState {
             loadState()
         }
@@ -234,7 +357,14 @@ final class AppState {
         defaultAuthorEmail = defaults.string(forKey: "authorEmail") ?? ""
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         hasSeenOnboarding = defaults.bool(forKey: "hasSeenOnboarding")
-        isSignedIn = !pat.isEmpty
+
+        if let accountData = defaults.data(forKey: "gitHubAccounts"),
+           let decodedAccounts = try? JSONDecoder().decode([GitHubAccount].self, from: accountData) {
+            gitHubAccounts = decodedAccounts
+        }
+        activeGitHubAccountLogin = defaults.string(forKey: "activeGitHubAccountLogin") ?? ""
+        migrateLegacyGitHubAccountIfNeeded()
+        restoreActiveGitHubAccount()
 
         // Load default save location bookmark
         defaultSaveLocationBookmarkData = defaults.data(forKey: "defaultSaveLocationBookmark")
@@ -251,6 +381,8 @@ final class AppState {
             // Migration from single-repo state
             migrateFromLegacy()
         }
+
+        migrateRepoAccountOwnershipIfNeeded()
 
         // Resolve custom vault bookmarks
         for repo in repos {
@@ -282,6 +414,7 @@ final class AppState {
             authorEmail: defaults.string(forKey: "authorEmail") ?? "",
             vaultFolderName: defaults.string(forKey: "vaultFolderName") ?? "vault",
             customVaultBookmarkData: defaults.data(forKey: "vaultBookmark"),
+            gitHubAccountLogin: activeGitHubAccountLogin.isEmpty ? nil : activeGitHubAccountLogin,
             gitState: legacyGitState
         )
 
@@ -295,6 +428,64 @@ final class AppState {
         defaults.removeObject(forKey: "branch")
         defaults.removeObject(forKey: "vaultFolderName")
         defaults.removeObject(forKey: "vaultBookmark")
+    }
+
+    private func migrateLegacyGitHubAccountIfNeeded() {
+        guard gitHubAccounts.isEmpty,
+              let legacyToken = KeychainService.load(key: "github_pat"),
+              !legacyToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !gitHubUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else { return }
+
+        let account = GitHubAccount(
+            login: gitHubUsername,
+            displayName: gitHubDisplayName.isEmpty ? gitHubUsername : gitHubDisplayName,
+            avatarURL: gitHubAvatarURL,
+            email: defaultAuthorEmail
+        )
+        gitHubAccounts = [account]
+        activeGitHubAccountLogin = account.login
+        KeychainService.save(key: Self.gitHubTokenKey(for: account.login), value: legacyToken)
+    }
+
+    private func restoreActiveGitHubAccount() {
+        if activeGitHubAccountLogin.isEmpty || gitHubToken(for: activeGitHubAccountLogin)?.isEmpty != false {
+            activeGitHubAccountLogin = gitHubAccounts.first(where: { gitHubToken(for: $0.login)?.isEmpty == false })?.login ?? ""
+        }
+
+        guard let account = activeGitHubAccount,
+              gitHubToken(for: account.login)?.isEmpty == false
+        else {
+            isSignedIn = false
+            activeGitHubAccountLogin = ""
+            gitHubRepos = []
+            return
+        }
+
+        isSignedIn = true
+        applyGitHubAccount(account)
+    }
+
+    private func migrateRepoAccountOwnershipIfNeeded() {
+        guard !activeGitHubAccountLogin.isEmpty else { return }
+        var didChange = false
+        for idx in repos.indices {
+            guard repos[idx].gitHubAccountLogin?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false,
+                  repos[idx].authMethod == .gitHubPAT,
+                  GitRemoteURL.parse(repos[idx].repoURL)?.isGitHub == true
+            else { continue }
+            repos[idx].gitHubAccountLogin = activeGitHubAccountLogin
+            didChange = true
+        }
+        if didChange { saveRepos() }
+    }
+
+    private func applyGitHubAccount(_ account: GitHubAccount) {
+        gitHubUsername = account.login
+        gitHubDisplayName = account.displayName
+        gitHubAvatarURL = account.avatarURL
+        defaultAuthorName = account.displayName.isEmpty ? account.login : account.displayName
+        defaultAuthorEmail = account.email
     }
 
     func saveRepos() {
@@ -315,6 +506,10 @@ final class AppState {
         defaults.set(defaultAuthorEmail, forKey: "authorEmail")
         defaults.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
         defaults.set(hasSeenOnboarding, forKey: "hasSeenOnboarding")
+        defaults.set(activeGitHubAccountLogin, forKey: "activeGitHubAccountLogin")
+        if let accountData = try? JSONEncoder().encode(gitHubAccounts) {
+            defaults.set(accountData, forKey: "gitHubAccounts")
+        }
 
         if let bookmarkData = defaultSaveLocationBookmarkData {
             defaults.set(bookmarkData, forKey: "defaultSaveLocationBookmark")
@@ -1775,6 +1970,63 @@ final class AppState {
         pendingLFSAutoTrackingConfirmation = nil
     }
 
+    @discardableResult
+    private func handleSSHHostKeyTrustIfNeeded(
+        _ error: Error,
+        repoID: UUID,
+        operation: SSHHostKeyTrustRequest.Operation
+    ) -> Bool {
+        guard case LocalGitError.sshHostKeyTrustRequired(let trustError) = error else {
+            return false
+        }
+        pendingSSHHostKeyTrustRequest = SSHHostKeyTrustRequest(
+            repoID: repoID,
+            operation: operation,
+            trustError: trustError
+        )
+        syncProgress = String(localized: "SSH host key needs trust")
+        return true
+    }
+
+    func trustPendingSSHHostKeyAndRetry() async {
+        guard let request = pendingSSHHostKeyTrustRequest else { return }
+        do {
+            try sshHostKeyTrustStore.trust(
+                fingerprint: request.fingerprintToTrust,
+                host: request.host,
+                port: request.port
+            )
+            DebugLogger.shared.info(
+                "security",
+                "Trusted SSH host key",
+                detail: "\(request.host):\(request.port) \(request.fingerprintToTrust)"
+            )
+        } catch {
+            pendingSSHHostKeyTrustRequest = nil
+            showError(message: error.localizedDescription, category: "security")
+            return
+        }
+
+        let operation = request.operation
+        let repoID = request.repoID
+        pendingSSHHostKeyTrustRequest = nil
+
+        switch operation {
+        case .clone:
+            await clone(repoID: repoID)
+        case .pull:
+            _ = await pull(repoID: repoID)
+        case .pushCurrentBranch:
+            _ = await pushCurrentBranch(repoID: repoID)
+        case .pushCommit(let message):
+            _ = await push(repoID: repoID, message: message)
+        }
+    }
+
+    func cancelPendingSSHHostKeyTrust() {
+        pendingSSHHostKeyTrustRequest = nil
+    }
+
     func unstageFile(repoID: UUID, path: String, oldPath: String? = nil) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
@@ -1937,7 +2189,9 @@ final class AppState {
 
 
         } catch {
-            showError(message: error.localizedDescription, category: "clone")
+            if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .clone) {
+                showError(message: error.localizedDescription, category: "clone")
+            }
         }
 
         try? await Task.sleep(for: .seconds(1))
@@ -2084,12 +2338,20 @@ final class AppState {
                     message: String(localized: "Remote branch '\(branch)' was not found.")
                 )
             default:
+                if handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pull) {
+                    setPullOutcome(repoID: repoID, kind: .failed, message: String(localized: "SSH host key needs trust"))
+                } else {
+                    setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
+                    showError(message: error.localizedDescription, category: "pull")
+                }
+            }
+        } catch {
+            if handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pull) {
+                setPullOutcome(repoID: repoID, kind: .failed, message: String(localized: "SSH host key needs trust"))
+            } else {
                 setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
                 showError(message: error.localizedDescription, category: "pull")
             }
-        } catch {
-            setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
-            showError(message: error.localizedDescription, category: "pull")
         }
 
         if showsProgressDelay {
@@ -2371,7 +2633,9 @@ final class AppState {
             syncingRepoID = nil
             return true
         } catch {
-            showError(message: error.localizedDescription, category: "push")
+            if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCurrentBranch) {
+                showError(message: error.localizedDescription, category: "push")
+            }
             isSyncing = false
             syncingRepoID = nil
             return false
@@ -2456,7 +2720,9 @@ final class AppState {
             return true
 
         } catch {
-            showError(message: error.localizedDescription, category: "push")
+            if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCommit(message: message)) {
+                showError(message: error.localizedDescription, category: "push")
+            }
         }
 
         try? await Task.sleep(for: .seconds(1))
@@ -2478,6 +2744,13 @@ final class AppState {
     // MARK: - Repo Management
 
     func addRepo(_ config: RepoConfig) {
+        var config = config
+        if config.gitHubAccountLogin?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false,
+           config.authMethod == .gitHubPAT,
+           GitRemoteURL.parse(config.repoURL)?.isGitHub == true,
+           !activeGitHubAccountLogin.isEmpty {
+            config.gitHubAccountLogin = activeGitHubAccountLogin
+        }
         repos.append(config)
         saveRepos()
         resolveVaultBookmark(for: config.id)
@@ -2531,8 +2804,9 @@ final class AppState {
                 authorEmail: authorEmail,
                 vaultFolderName: resolvedURL.lastPathComponent,
                 customVaultBookmarkData: bookmarkData,
-                authMethod: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false ? .gitHubPAT : .none,
+                authMethod: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false && isSignedIn ? .gitHubPAT : GitAuthMethod.none,
                 authUsername: remoteInfo?.username ?? "",
+                gitHubAccountLogin: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false && isSignedIn ? activeGitHubAccountLogin : nil,
                 gitState: GitState(
                     commitSHA: info.commitSHA,
                     treeSHA: "",
@@ -2596,20 +2870,24 @@ final class AppState {
 
         clearCustomLocation(for: id)
         clearRemoteCredentials(for: id)
-        changeCounts.removeValue(forKey: id)
-        statusEntriesByRepo.removeValue(forKey: id)
-        syncStateByRepo.removeValue(forKey: id)
-        pullOutcomeByRepo.removeValue(forKey: id)
-        diffByRepo.removeValue(forKey: id)
-        branchesByRepo.removeValue(forKey: id)
-        conflictSessionByRepo.removeValue(forKey: id)
-        commitHistoryByRepo.removeValue(forKey: id)
-        commitHistoryHasMoreByRepo.removeValue(forKey: id)
-        commitDetailByRepo.removeValue(forKey: id)
-        stashesByRepo.removeValue(forKey: id)
-        tagsByRepo.removeValue(forKey: id)
+        clearCachedRepoState(for: id)
         repos.removeAll { $0.id == id }
         saveRepos()
+    }
+
+    private func clearCachedRepoState(for repoID: UUID) {
+        changeCounts.removeValue(forKey: repoID)
+        statusEntriesByRepo.removeValue(forKey: repoID)
+        syncStateByRepo.removeValue(forKey: repoID)
+        pullOutcomeByRepo.removeValue(forKey: repoID)
+        diffByRepo.removeValue(forKey: repoID)
+        branchesByRepo.removeValue(forKey: repoID)
+        conflictSessionByRepo.removeValue(forKey: repoID)
+        commitHistoryByRepo.removeValue(forKey: repoID)
+        commitHistoryHasMoreByRepo.removeValue(forKey: repoID)
+        commitDetailByRepo.removeValue(forKey: repoID)
+        stashesByRepo.removeValue(forKey: repoID)
+        tagsByRepo.removeValue(forKey: repoID)
     }
 
     func updateRepo(id: UUID, mutate: (inout RepoConfig) -> Void) {
@@ -2623,27 +2901,7 @@ final class AppState {
     func signInWithGitHub() async {
         do {
             let token = try await OAuthService.shared.signIn()
-            pat = token
-            isSignedIn = true
-
-            syncProgress = String(localized: "Fetching profile...")
-            let user = try await GitHubService.fetchUser(token: token)
-            gitHubUsername = user.login
-            gitHubDisplayName = user.name ?? user.login
-            gitHubAvatarURL = user.avatar_url ?? ""
-            defaultAuthorName = user.name ?? user.login
-
-            if let email = user.email, !email.isEmpty {
-                defaultAuthorEmail = email
-            } else {
-                defaultAuthorEmail = try await GitHubService.fetchPrimaryEmail(token: token) ?? ""
-            }
-
-            isLoadingRepos = true
-            gitHubRepos = try await GitHubService.fetchRepos(token: token)
-            isLoadingRepos = false
-
-            saveGlobalSettings()
+            try await activateGitHubAccount(token: token)
         } catch let oauthError as OAuthError where oauthError.isCancelled {
             // User cancelled — do nothing
         } catch {
@@ -2653,40 +2911,72 @@ final class AppState {
 
     func signInWithPAT(token: String) async {
         do {
-            let user = try await GitHubService.fetchUser(token: token)
-            pat = token
-            isSignedIn = true
-            gitHubUsername = user.login
-            gitHubDisplayName = user.name ?? user.login
-            gitHubAvatarURL = user.avatar_url ?? ""
-            defaultAuthorName = user.name ?? user.login
-
-            if let email = user.email, !email.isEmpty {
-                defaultAuthorEmail = email
-            } else {
-                defaultAuthorEmail = try await GitHubService.fetchPrimaryEmail(token: token) ?? ""
-            }
-
-            isLoadingRepos = true
-            gitHubRepos = try await GitHubService.fetchRepos(token: token)
-            isLoadingRepos = false
-
-            saveGlobalSettings()
+            try await activateGitHubAccount(token: token)
         } catch {
             showError(message: String(localized: "Invalid token: \(error.localizedDescription)"))
         }
+    }
+
+    func switchGitHubAccount(login: String) async {
+        guard let account = gitHubAccounts.first(where: { $0.login.caseInsensitiveCompare(login) == .orderedSame }),
+              gitHubToken(for: account.login)?.isEmpty == false
+        else { return }
+
+        activeGitHubAccountLogin = account.login
+        isSignedIn = true
+        applyGitHubAccount(account)
+        gitHubRepos = []
+        saveGlobalSettings()
+        await refreshRepos()
+    }
+
+    private func activateGitHubAccount(token: String) async throws {
+        syncProgress = String(localized: "Fetching profile...")
+        let user = try await GitHubService.fetchUser(token: token)
+        let email: String
+        if let userEmail = user.email, !userEmail.isEmpty {
+            email = userEmail
+        } else {
+            email = try await GitHubService.fetchPrimaryEmail(token: token) ?? ""
+        }
+
+        let account = GitHubAccount(
+            login: user.login,
+            displayName: user.name ?? user.login,
+            avatarURL: user.avatar_url ?? "",
+            email: email
+        )
+
+        if let existingIndex = gitHubAccounts.firstIndex(where: { $0.login.caseInsensitiveCompare(account.login) == .orderedSame }) {
+            gitHubAccounts[existingIndex] = account
+        } else {
+            gitHubAccounts.append(account)
+        }
+
+        activeGitHubAccountLogin = account.login
+        KeychainService.save(key: Self.gitHubTokenKey(for: account.login), value: token)
+        KeychainService.delete(key: "github_pat")
+        isSignedIn = true
+        applyGitHubAccount(account)
+
+        isLoadingRepos = true
+        defer { isLoadingRepos = false }
+        gitHubRepos = try await GitHubService.fetchRepos(token: token)
+
+        migrateRepoAccountOwnershipIfNeeded()
+        saveGlobalSettings()
     }
 
     func refreshRepos() async {
         let token = pat
         guard !token.isEmpty else { return }
         isLoadingRepos = true
+        defer { isLoadingRepos = false }
         do {
             gitHubRepos = try await GitHubService.fetchRepos(token: token)
         } catch {
             showError(message: error.localizedDescription)
         }
-        isLoadingRepos = false
     }
 
     func hydrateGitHubProfileIfNeeded() async {
@@ -2734,16 +3024,42 @@ final class AppState {
             deactivateDemoMode()
             return
         }
-        pat = ""
+
+        let login = activeGitHubAccountLogin
+        if login.isEmpty {
+            KeychainService.delete(key: "github_pat")
+            clearGitHubSession()
+        } else {
+            removeGitHubAccount(login: login)
+        }
+        saveGlobalSettings()
+    }
+
+    func removeGitHubAccount(login: String) {
+        KeychainService.delete(key: Self.gitHubTokenKey(for: login))
+        gitHubAccounts.removeAll { $0.login.caseInsensitiveCompare(login) == .orderedSame }
+
+        activeGitHubAccountLogin = gitHubAccounts.first(where: { gitHubToken(for: $0.login)?.isEmpty == false })?.login ?? ""
+        if let account = activeGitHubAccount {
+            isSignedIn = true
+            applyGitHubAccount(account)
+            gitHubRepos = []
+        } else {
+            clearGitHubSession()
+        }
+    }
+
+    private func clearGitHubSession() {
         isSignedIn = false
+        activeGitHubAccountLogin = ""
         gitHubUsername = ""
         gitHubDisplayName = ""
         gitHubAvatarURL = ""
         defaultAuthorName = ""
         defaultAuthorEmail = ""
         gitHubRepos = []
+        isLoadingRepos = false
         hasCompletedOnboarding = false
-        saveGlobalSettings()
     }
 
     // MARK: - Pull Outcome State
@@ -2805,28 +3121,25 @@ final class AppState {
     }
 
     func deactivateDemoMode() {
+        let demoRepos = repos
         isDemoMode = false
-        signOut()
+        clearGitHubSession()
 
         // Remove demo repo files
-        for repo in repos {
+        for repo in demoRepos {
             let vaultDir = vaultURL(for: repo.id)
             try? FileManager.default.removeItem(at: vaultDir)
+            clearCachedRepoState(for: repo.id)
         }
         repos = []
-        changeCounts = [:]
-        statusEntriesByRepo = [:]
-        syncStateByRepo = [:]
-        pullOutcomeByRepo = [:]
-        diffByRepo = [:]
-        branchesByRepo = [:]
-        conflictSessionByRepo = [:]
-        commitHistoryByRepo = [:]
-        commitHistoryHasMoreByRepo = [:]
-        commitDetailByRepo = [:]
-        stashesByRepo = [:]
-        tagsByRepo = [:]
+        isSyncing = false
+        syncingRepoID = nil
+        syncProgress = ""
+        callbackNavigateToRepoID = nil
+        callbackResult = nil
+        pendingLFSAutoTrackingConfirmation = nil
         saveRepos()
+        saveGlobalSettings()
     }
 
     private func createDemoFiles(for repo: RepoConfig) {

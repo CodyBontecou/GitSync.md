@@ -171,7 +171,7 @@ struct AppSettingsView: View {
                                     value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
                                 )
                                 BDivider().padding(.horizontal, 16)
-                                dataRow(label: "Repositories", value: "\(state.repos.count)")
+                                dataRow(label: "Repositories", value: "\(state.visibleRepos.count)")
                             }
                         }
                     }
@@ -189,18 +189,10 @@ struct AppSettingsView: View {
                         .tracking(2)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
+                    Button("Done") {
                         dismiss()
-                    } label: {
-                        Text("DONE")
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color(.systemBackground))
-                            .tracking(1)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.brutalText)
                     }
-                    .buttonStyle(.plain)
+                    .fontWeight(.semibold)
                 }
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }

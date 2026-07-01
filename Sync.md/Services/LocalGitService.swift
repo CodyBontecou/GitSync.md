@@ -34,6 +34,7 @@ enum LocalGitError: LocalizedError {
     case repositoryCorrupted(String)
     case lfsFailed(String)
     case invalidAuthorIdentity(String)
+    case sshHostKeyTrustRequired(GitLFSSSHHostKeyTrustError)
     case libgit2(String)
 
     var errorDescription: String? {
@@ -96,6 +97,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Git LFS failed: \(msg)")
         case .invalidAuthorIdentity(let msg):
             return String(localized: "Git author identity is missing or invalid. \(msg) Open repository settings and set Author Name and Author Email.")
+        case .sshHostKeyTrustRequired(let error):
+            return error.localizedDescription
         case .libgit2(let msg):
             return String(localized: "Git error: \(msg)")
         }
@@ -179,6 +182,27 @@ private func git2Check(_ code: Int32, context: String = "", fallback: String? = 
     return code
 }
 
+/// Like `git2Check`, but preserves SSH host-key trust failures captured by the
+/// transport callback instead of flattening them into a generic libgit2 error.
+@discardableResult
+private func git2TransportCheck(
+    _ code: Int32,
+    context: String = "",
+    fallback: String? = nil,
+    credentialContext: CredentialContext,
+    wrapping: (String) -> LocalGitError
+) throws -> Int32 {
+    guard code >= 0 else {
+        if let sshHostKeyTrustError = credentialContext.sshHostKeyTrustError {
+            throw LocalGitError.sshHostKeyTrustRequired(sshHostKeyTrustError)
+        }
+        let msg = credentialContext.callbackErrorMessage ?? git2ErrorMessage(fallback: fallback)
+        let full = context.isEmpty ? msg : "\(context): \(msg)"
+        throw wrapping(full)
+    }
+    return code
+}
+
 private struct GitSignatureIdentity {
     let name: String
     let email: String
@@ -242,14 +266,23 @@ private func makeStrarray(_ cStr: UnsafeMutablePointer<CChar>, into arr: inout g
 /// Context passed through libgit2's credential callback payload.
 private class CredentialContext {
     let credentials: GitRemoteCredentials
+    let remoteURL: String?
+    let hostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
     var didAttemptUsername = false
     var didAttemptUserPass = false
     var didAttemptSSHKey = false
     var didAttemptDefault = false
     private(set) var callbackErrorMessage: String?
+    private(set) var sshHostKeyTrustError: GitLFSSSHHostKeyTrustError?
 
-    init(credentials: GitRemoteCredentials) {
+    init(
+        credentials: GitRemoteCredentials,
+        remoteURL: String? = nil,
+        hostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default
+    ) {
         self.credentials = credentials
+        self.remoteURL = remoteURL
+        self.hostKeyTrustStore = hostKeyTrustStore
     }
 
     func resetAttempts() {
@@ -258,10 +291,16 @@ private class CredentialContext {
         didAttemptSSHKey = false
         didAttemptDefault = false
         callbackErrorMessage = nil
+        sshHostKeyTrustError = nil
     }
 
     func recordCallbackError(_ message: String) {
         callbackErrorMessage = message
+    }
+
+    func recordSSHHostKeyTrustError(_ error: GitLFSSSHHostKeyTrustError) {
+        sshHostKeyTrustError = error
+        callbackErrorMessage = error.localizedDescription
     }
 
     func failCredential(_ message: String) -> Int32 {
@@ -428,28 +467,67 @@ nonisolated private func credentialCallback(
     )
 }
 
-/// Host-key/certificate callback. We honor valid certificates. For SSH host
-/// keys, iOS does not provide an OpenSSH known_hosts database for libgit2, so
-/// we allow the connection when the user explicitly supplied an SSH key for
-/// this repo. HTTPS certificate failures still fail.
+nonisolated private func sshSHA256Fingerprint(from cert: UnsafeMutablePointer<git_cert>) -> String? {
+    let hostKey = UnsafeMutableRawPointer(cert).assumingMemoryBound(to: git_cert_hostkey.self).pointee
+    guard hostKey.type.rawValue & GIT_CERT_SSH_SHA256.rawValue != 0 else { return nil }
+
+    let digest = withUnsafeBytes(of: hostKey.hash_sha256) { bytes in
+        Data(bytes.prefix(32))
+    }
+    let base64 = digest.base64EncodedString().trimmingCharacters(in: CharacterSet(charactersIn: "="))
+    return "SHA256:\(base64)"
+}
+
+nonisolated private func sshHostAndPort(for callbackHost: String, remoteURL: String?) -> (host: String, port: Int) {
+    if let remoteURL,
+       let remote = GitRemoteURL.parse(remoteURL),
+       remote.isSSH,
+       let host = remote.host,
+       !host.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        return (GitLFSSSHHostKeyFileTrustStore.normalizeHost(host), remote.sshPort ?? 22)
+    }
+    return (GitLFSSSHHostKeyFileTrustStore.normalizeHost(callbackHost), 22)
+}
+
+/// Host-key/certificate callback. HTTPS keeps libgit2's platform certificate
+/// validation. SSH remotes are pinned through GitSync.md's known-hosts store:
+/// first use is blocked until the user explicitly trusts the displayed
+/// SHA-256 host-key fingerprint, and later key changes are rejected.
 nonisolated private func certificateCheckCallback(
     cert: UnsafeMutablePointer<git_cert>?,
     valid: Int32,
     host: UnsafePointer<CChar>?,
     payload: UnsafeMutableRawPointer?
 ) -> Int32 {
-    if valid != 0 { return 0 }
-
     let hostName = host.map { String(cString: $0) } ?? "the remote host"
     guard let payload, let cert else { return GIT_ECERTIFICATE.rawValue }
 
     let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
     if cert.pointee.cert_type == GIT_CERT_HOSTKEY_LIBSSH2 {
-        if ctx.credentials.method == .sshKey { return 0 }
-        ctx.recordCallbackError("SSH host key verification failed for \(hostName). Configure this repository with SSH key credentials or use HTTPS.")
-    } else {
-        ctx.recordCallbackError("TLS certificate verification failed for \(hostName). Check your network or the remote's certificate.")
+        guard ctx.credentials.method == .sshKey else {
+            ctx.recordCallbackError("SSH host key verification failed for \(hostName). Configure this repository with SSH key credentials or use HTTPS.")
+            return GIT_ECERTIFICATE.rawValue
+        }
+        guard let fingerprint = sshSHA256Fingerprint(from: cert) else {
+            ctx.recordCallbackError("SSH host key verification failed for \(hostName). The server did not provide a SHA-256 host-key fingerprint.")
+            return GIT_ECERTIFICATE.rawValue
+        }
+
+        let (trustedHost, trustedPort) = sshHostAndPort(for: hostName, remoteURL: ctx.remoteURL)
+        do {
+            try ctx.hostKeyTrustStore.validate(fingerprint: fingerprint, host: trustedHost, port: trustedPort)
+            return 0
+        } catch let error as GitLFSSSHHostKeyTrustError {
+            ctx.recordSSHHostKeyTrustError(error)
+            return GIT_ECERTIFICATE.rawValue
+        } catch {
+            ctx.recordCallbackError(error.localizedDescription)
+            return GIT_ECERTIFICATE.rawValue
+        }
     }
+
+    if valid != 0 { return 0 }
+    ctx.recordCallbackError("TLS certificate verification failed for \(hostName). Check your network or the remote's certificate.")
     return GIT_ECERTIFICATE.rawValue
 }
 
@@ -602,7 +680,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var opts = git_clone_options()
             git_clone_options_init(&opts, UInt32(GIT_CLONE_OPTIONS_VERSION))
 
-            let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
+            let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
             let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
             defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
@@ -612,8 +690,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             let code = git_clone(&repo, remoteURL, dest, &opts)
             guard code == 0, let repo else {
+                if let sshHostKeyTrustError = ctx.sshHostKeyTrustError {
+                    throw LocalGitError.sshHostKeyTrustRequired(sshHostKeyTrustError)
+                }
                 throw LocalGitError.cloneFailed(
-                    git2ErrorMessage(fallback: ctx.callbackErrorMessage ?? "git clone failed with error code \(code).")
+                    ctx.callbackErrorMessage ?? git2ErrorMessage(fallback: "git clone failed with error code \(code).")
                 )
             }
 
@@ -2828,7 +2909,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
-            let ctx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
+            let remoteURL = git_remote_url(pushRemote).map { String(cString: $0) }
+            let ctx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
             let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(ctxPtr).release() }
 
@@ -2846,10 +2928,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             stringsPtr[0] = refspecCStr
             var refspecs = git_strarray(strings: stringsPtr, count: 1)
 
-            try git2Check(
+            try git2TransportCheck(
                 git_remote_push(pushRemote, &refspecs, &pushOpts),
                 context: "Push tag \(name)",
-                fallback: ctx.callbackErrorMessage
+                fallback: ctx.callbackErrorMessage,
+                credentialContext: ctx,
+                wrapping: LocalGitError.pushFailed
             )
 
             if !ctx.rejectedRefs.isEmpty {
@@ -2868,10 +2952,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // otherwise pushCredentialCallback will refuse to authenticate.
             ctx.resetAttempts()
             git_remote_disconnect(pushRemote)
-            try git2Check(
+            try git2TransportCheck(
                 git_remote_connect(pushRemote, GIT_DIRECTION_FETCH, &pushOpts.callbacks, nil, nil),
                 context: "Reconnect to verify tag \(name)",
-                fallback: ctx.callbackErrorMessage
+                fallback: ctx.callbackErrorMessage,
+                credentialContext: ctx,
+                wrapping: LocalGitError.pushFailed
             )
             defer { git_remote_disconnect(pushRemote) }
 
@@ -3046,7 +3132,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
-            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
+            let remoteURL = git_remote_url(pushRemote).map { String(cString: $0) }
+            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
             let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
 
@@ -3070,10 +3157,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             refStringsPtr[0] = refspecCStr
             var refspecs = git_strarray(strings: refStringsPtr, count: 1)
 
-            try git2Check(
+            try git2TransportCheck(
                 git_remote_push(pushRemote, &refspecs, &pushOpts),
                 context: "Push to origin",
-                fallback: pushCtx.callbackErrorMessage
+                fallback: pushCtx.callbackErrorMessage,
+                credentialContext: pushCtx,
+                wrapping: LocalGitError.pushFailed
             )
 
             // git_remote_push returns 0 when the network upload completes, even
@@ -3184,7 +3273,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
-            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
+            let remoteURL = git_remote_url(pushRemote).map { String(cString: $0) }
+            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
             let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
 
@@ -3201,10 +3291,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             refStringsPtr[0] = refspecCStr
             var refspecs = git_strarray(strings: refStringsPtr, count: 1)
 
-            try git2Check(
+            try git2TransportCheck(
                 git_remote_push(pushRemote, &refspecs, &pushOpts),
                 context: "Push to origin",
-                fallback: pushCtx.callbackErrorMessage
+                fallback: pushCtx.callbackErrorMessage,
+                credentialContext: pushCtx,
+                wrapping: LocalGitError.pushFailed
             )
 
             if !pushCtx.rejectedRefs.isEmpty {
@@ -3807,7 +3899,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         var fetchOpts = git_fetch_options()
         git_fetch_options_init(&fetchOpts, UInt32(GIT_FETCH_OPTIONS_VERSION))
 
-        let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat))
+        let remoteURL = git_remote_url(remote).map { String(cString: $0) }
+        let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
         let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
         defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
@@ -3815,10 +3908,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         fetchOpts.callbacks.certificate_check = certificateCheckCallback
         fetchOpts.callbacks.payload = ctxPtr
 
-        try git2Check(
+        try git2TransportCheck(
             git_remote_fetch(remote, nil, &fetchOpts, nil),
             context: "Fetch",
-            fallback: ctx.callbackErrorMessage
+            fallback: ctx.callbackErrorMessage,
+            credentialContext: ctx,
+            wrapping: LocalGitError.fetchFailed
         )
     }
 

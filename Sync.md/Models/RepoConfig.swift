@@ -15,6 +15,9 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     var customLocationIsParent: Bool
     var authMethod: GitAuthMethod
     var authUsername: String
+    /// GitHub login whose OAuth/PAT token should be used for `.gitHubPAT` remotes.
+    /// `nil` means the repo is not tied to a specific GitHub account (or is legacy data).
+    var gitHubAccountLogin: String?
     var gitState: GitState
 
     init(
@@ -28,6 +31,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         customLocationIsParent: Bool = false,
         authMethod: GitAuthMethod? = nil,
         authUsername: String = "",
+        gitHubAccountLogin: String? = nil,
         gitState: GitState = .empty
     ) {
         self.id = id
@@ -46,6 +50,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
             self.authMethod = .none
         }
         self.authUsername = authUsername
+        self.gitHubAccountLogin = gitHubAccountLogin
         self.gitState = gitState
     }
 
@@ -54,7 +59,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, repoURL, branch, authorName, authorEmail
         case vaultFolderName, customVaultBookmarkData
-        case customLocationIsParent, authMethod, authUsername, gitState
+        case customLocationIsParent, authMethod, authUsername, gitHubAccountLogin, gitState
     }
 
     init(from decoder: Decoder) throws {
@@ -75,6 +80,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
             authMethod = .none
         }
         authUsername            = try c.decodeIfPresent(String.self, forKey: .authUsername) ?? ""
+        gitHubAccountLogin      = try c.decodeIfPresent(String.self, forKey: .gitHubAccountLogin)
         gitState                = try c.decode(GitState.self, forKey: .gitState)
     }
 

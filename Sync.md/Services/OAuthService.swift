@@ -81,7 +81,11 @@ final class OAuthService: NSObject, ASWebAuthenticationPresentationContextProvid
             }
 
             session.presentationContextProvider = self
-            session.prefersEphemeralWebBrowserSession = false
+            // Use an ephemeral browser session so GitHub sign-in does not silently reuse
+            // Safari/previous ASWebAuthenticationSession cookies from a different account.
+            // This lets users choose the GitHub account they want for GitSync.md after
+            // signing out, instead of being auto-signed back in as the browser's default.
+            session.prefersEphemeralWebBrowserSession = true
             session.start()
         }
     }

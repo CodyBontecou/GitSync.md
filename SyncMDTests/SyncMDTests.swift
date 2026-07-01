@@ -240,6 +240,304 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(appState.syncStateByRepo[fixture.repoConfig.id], .upToDate)
     }
 
+    func testSSHHostKeyTrustRequestFormatsUnknownAndChangedHostMessages() {
+        let unknown = SSHHostKeyTrustRequest(
+            repoID: UUID(),
+            operation: .clone,
+            trustError: .unknownHostKey(host: "forgejo.lan", port: 2222, fingerprint: "SHA256:unknown")
+        )
+        XCTAssertEqual(unknown.title, "Trust SSH Host?")
+        XCTAssertEqual(unknown.confirmButtonTitle, "Trust Host")
+        XCTAssertEqual(unknown.host, "forgejo.lan")
+        XCTAssertEqual(unknown.port, 2222)
+        XCTAssertEqual(unknown.fingerprintToTrust, "SHA256:unknown")
+        XCTAssertTrue(unknown.message.contains("forgejo.lan:2222"))
+        XCTAssertTrue(unknown.message.contains("SHA256:unknown"))
+        XCTAssertTrue(unknown.message.contains("Only trust it"))
+
+        let changed = SSHHostKeyTrustRequest(
+            repoID: UUID(),
+            operation: .pull,
+            trustError: .changedHostKey(
+                host: "forgejo.lan",
+                port: 22,
+                expectedFingerprint: "SHA256:old",
+                actualFingerprint: "SHA256:new"
+            )
+        )
+        XCTAssertEqual(changed.title, "SSH Host Key Changed")
+        XCTAssertEqual(changed.confirmButtonTitle, "Trust New Key")
+        XCTAssertEqual(changed.host, "forgejo.lan")
+        XCTAssertEqual(changed.port, 22)
+        XCTAssertEqual(changed.fingerprintToTrust, "SHA256:new")
+        XCTAssertTrue(changed.message.contains("Previously trusted"))
+        XCTAssertTrue(changed.message.contains("SHA256:old"))
+        XCTAssertTrue(changed.message.contains("SHA256:new"))
+        XCTAssertTrue(changed.message.contains("Do not trust"))
+    }
+
+    @MainActor
+    func testAppStateCloneUnknownSSHHostKeyPromptsInsteadOfShowingGenericError() async throws {
+        let repoInfo = LocalRepoInfo(branch: "main", commitSHA: "1111111111111111111111111111111111111111", changeCount: 0)
+        let repository = FakeGitRepository(repoInfoResult: repoInfo)
+        let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
+            host: "forgejo.example.com",
+            port: 22,
+            fingerprint: "SHA256:clone-unknown"
+        )
+        repository.cloneResults = [.failure(LocalGitError.sshHostKeyTrustRequired(trustError))]
+        let repo = RepoConfig(
+            repoURL: "git@forgejo.example.com:team/notes.git",
+            branch: "main",
+            authorName: "Test User",
+            authorEmail: "test@example.com",
+            vaultFolderName: "SyncMD-SSHHostKey-\(UUID().uuidString)",
+            authMethod: .sshKey,
+            authUsername: "git"
+        )
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let appState = AppState(
+            gitRepositoryFactory: { _ in repository },
+            sshHostKeyTrustStore: GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL),
+            loadPersistedState: false
+        )
+        appState.repos = [repo]
+
+        await appState.clone(repoID: repo.id)
+
+        XCTAssertEqual(repository.cloneRemoteURLs, ["git@forgejo.example.com:team/notes.git"])
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.repoID, repo.id)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.operation, .clone)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.trustError, trustError)
+        XCTAssertFalse(appState.showError)
+        XCTAssertNil(appState.lastError)
+    }
+
+    @MainActor
+    func testTrustingPendingSSHHostKeyPersistsFingerprintAndRetriesClone() async throws {
+        let repoInfo = LocalRepoInfo(branch: "main", commitSHA: "2222222222222222222222222222222222222222", changeCount: 0)
+        let repository = FakeGitRepository(repoInfoResult: repoInfo)
+        let trustedFingerprint = "SHA256:clone-trusted-\(UUID().uuidString)"
+        let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
+            host: "forgejo-retry.example.com",
+            port: 2222,
+            fingerprint: trustedFingerprint
+        )
+        let clonedCommit = "3333333333333333333333333333333333333333"
+        repository.cloneResults = [
+            .failure(LocalGitError.sshHostKeyTrustRequired(trustError)),
+            .success(LocalCloneResult(commitSHA: clonedCommit, branch: "main", fileCount: 7))
+        ]
+        let repo = RepoConfig(
+            repoURL: "ssh://git@forgejo-retry.example.com:2222/team/notes.git",
+            branch: "main",
+            authorName: "Test User",
+            authorEmail: "test@example.com",
+            vaultFolderName: "SyncMD-SSHHostKey-Retry-\(UUID().uuidString)",
+            authMethod: .sshKey,
+            authUsername: "git"
+        )
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let trustStore = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let appState = AppState(
+            gitRepositoryFactory: { _ in repository },
+            sshHostKeyTrustStore: trustStore,
+            loadPersistedState: false
+        )
+        appState.repos = [repo]
+
+        await appState.clone(repoID: repo.id)
+        XCTAssertNotNil(appState.pendingSSHHostKeyTrustRequest)
+
+        await appState.trustPendingSSHHostKeyAndRetry()
+
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertEqual(repository.cloneRemoteURLs.count, 2)
+        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-retry.example.com", port: 2222), trustedFingerprint)
+        XCTAssertEqual(appState.repos.first?.gitState.commitSHA, clonedCommit)
+        XCTAssertFalse(appState.showError)
+    }
+
+    @MainActor
+    func testCancelPendingSSHHostKeyTrustDoesNotPersistOrRetry() async throws {
+        let repoInfo = LocalRepoInfo(branch: "main", commitSHA: "4444444444444444444444444444444444444444", changeCount: 0)
+        let repository = FakeGitRepository(repoInfoResult: repoInfo)
+        let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
+            host: "forgejo-cancel.example.com",
+            port: 22,
+            fingerprint: "SHA256:cancelled"
+        )
+        repository.cloneResults = [.failure(LocalGitError.sshHostKeyTrustRequired(trustError))]
+        let repo = RepoConfig(
+            repoURL: "git@forgejo-cancel.example.com:team/notes.git",
+            branch: "main",
+            authorName: "Test User",
+            authorEmail: "test@example.com",
+            vaultFolderName: "SyncMD-SSHHostKey-Cancel-\(UUID().uuidString)",
+            authMethod: .sshKey,
+            authUsername: "git"
+        )
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let trustStore = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let appState = AppState(
+            gitRepositoryFactory: { _ in repository },
+            sshHostKeyTrustStore: trustStore,
+            loadPersistedState: false
+        )
+        appState.repos = [repo]
+
+        await appState.clone(repoID: repo.id)
+        appState.cancelPendingSSHHostKeyTrust()
+
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertEqual(repository.cloneRemoteURLs.count, 1)
+        XCTAssertNil(trustStore.trustedFingerprint(forHost: "forgejo-cancel.example.com", port: 22))
+    }
+
+    @MainActor
+    func testAppStatePullSSHHostKeyFailurePromptsAndRetryUsesTrustedFingerprint() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
+            host: "forgejo-pull.example.com",
+            port: 22,
+            fingerprint: "SHA256:pull"
+        )
+        fixture.repository.pullPlanError = LocalGitError.sshHostKeyTrustRequired(trustError)
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let trustStore = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            sshHostKeyTrustStore: trustStore,
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+
+        let firstResult = await appState.pull(repoID: fixture.repoConfig.id)
+        XCTAssertFalse(firstResult)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.operation, .pull)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.trustError, trustError)
+        XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .failed)
+
+        fixture.repository.pullPlanError = nil
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            hasLocalChanges: false,
+            aheadBy: 0,
+            behindBy: 0
+        )
+        await appState.trustPendingSSHHostKeyAndRetry()
+
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertEqual(fixture.repository.pullPlanCallCount, 2)
+        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-pull.example.com", port: 22), "SHA256:pull")
+        XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .upToDate)
+    }
+
+    @MainActor
+    func testAppStatePushCurrentBranchSSHHostKeyFailurePromptsAndRetry() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let trustError = GitLFSSSHHostKeyTrustError.changedHostKey(
+            host: "forgejo-push.example.com",
+            port: 2200,
+            expectedFingerprint: "SHA256:old-push",
+            actualFingerprint: "SHA256:new-push"
+        )
+        fixture.repository.pushCurrentBranchResult = .failure(LocalGitError.sshHostKeyTrustRequired(trustError))
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoConfig.gitState.commitSHA,
+            changeCount: 0,
+            syncState: .upToDate,
+            statusEntries: []
+        )
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let trustStore = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            sshHostKeyTrustStore: trustStore,
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+        appState.syncStateByRepo[fixture.repoConfig.id] = .ahead
+
+        let firstResult = await appState.pushCurrentBranch(repoID: fixture.repoConfig.id)
+        XCTAssertFalse(firstResult)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.operation, .pushCurrentBranch)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.trustError, trustError)
+
+        fixture.repository.pushCurrentBranchResult = .success(())
+        await appState.trustPendingSSHHostKeyAndRetry()
+
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 2)
+        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-push.example.com", port: 2200), "SHA256:new-push")
+        XCTAssertEqual(appState.syncStateByRepo[fixture.repoConfig.id], .upToDate)
+    }
+
+    @MainActor
+    func testAppStateCommitAndPushSSHHostKeyFailurePreservesCommitMessageOnRetry() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
+            host: "forgejo-commit-push.example.com",
+            port: 22,
+            fingerprint: "SHA256:commit-push"
+        )
+        fixture.repository.commitAndPushResult = .failure(LocalGitError.sshHostKeyTrustRequired(trustError))
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let trustStore = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            sshHostKeyTrustStore: trustStore,
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+
+        let firstResult = await appState.push(repoID: fixture.repoConfig.id, message: "sync notes")
+        XCTAssertFalse(firstResult)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.operation, .pushCommit(message: "sync notes"))
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.trustError, trustError)
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["sync notes"])
+
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: "5555555555555555555555555555555555555555"))
+        await appState.trustPendingSSHHostKeyAndRetry()
+
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["sync notes", "sync notes"])
+        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-commit-push.example.com", port: 22), "SHA256:commit-push")
+        XCTAssertEqual(appState.repos.first?.gitState.commitSHA, "5555555555555555555555555555555555555555")
+    }
+
+    @MainActor
+    func testAppStateNonSSHHostKeyErrorsStillShowRegularErrorAlert() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanError = LocalGitError.fetchFailed("network down")
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+
+        let result = await appState.pull(repoID: fixture.repoConfig.id)
+
+        XCTAssertFalse(result)
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertTrue(appState.showError)
+        XCTAssertEqual(appState.lastError, LocalGitError.fetchFailed("network down").localizedDescription)
+    }
+
     @MainActor
     func testAppStatePullWithRebaseUpdatesCommitAndOutcome() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
@@ -3403,6 +3701,14 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var unstagedPaths: [String] = []
     var lfsAutoTrackingCandidatesResult: [GitLFSAutoTrackingCandidate] = []
     var lfsAutoTrackingCandidatePathRequests: [[String]?] = []
+    var cloneResults: [Result<LocalCloneResult, Error>] = []
+    var cloneRemoteURLs: [String] = []
+    var pullPlanError: Error?
+    var pullPlanCallCount = 0
+    var pushCurrentBranchResult: Result<Void, Error>?
+    var pushCurrentBranchCallCount = 0
+    var commitAndPushResult: Result<LocalPushResult, Error>?
+    var commitAndPushMessages: [String] = []
 
     init(repoInfoResult: LocalRepoInfo) {
         self.repoInfoResult = repoInfoResult
@@ -3423,11 +3729,22 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
-        LocalCloneResult(commitSHA: repoInfoResult.commitSHA, branch: repoInfoResult.branch, fileCount: 1)
+        cloneRemoteURLs.append(remoteURL)
+        if !cloneResults.isEmpty {
+            switch cloneResults.removeFirst() {
+            case .success(let result):
+                return result
+            case .failure(let error):
+                throw error
+            }
+        }
+        return LocalCloneResult(commitSHA: repoInfoResult.commitSHA, branch: repoInfoResult.branch, fileCount: 1)
     }
 
     func pullPlan(pat: String) async throws -> PullPlan {
-        pullPlanResult
+        pullPlanCallCount += 1
+        if let pullPlanError { throw pullPlanError }
+        return pullPlanResult
     }
 
     func pull(pat: String) async throws -> LocalPullResult {
@@ -3478,6 +3795,15 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func pushCurrentBranch(pat: String) async throws {
         didPushCurrentBranch = true
+        pushCurrentBranchCallCount += 1
+        if let pushCurrentBranchResult {
+            switch pushCurrentBranchResult {
+            case .success:
+                return
+            case .failure(let error):
+                throw error
+            }
+        }
     }
 
     func fetchRemote(pat: String) async throws {}
@@ -3574,7 +3900,16 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         authorEmail: String,
         pat: String
     ) async throws -> LocalPushResult {
-        LocalPushResult(commitSHA: repoInfoResult.commitSHA)
+        commitAndPushMessages.append(message)
+        if let commitAndPushResult {
+            switch commitAndPushResult {
+            case .success(let result):
+                return result
+            case .failure(let error):
+                throw error
+            }
+        }
+        return LocalPushResult(commitSHA: repoInfoResult.commitSHA)
     }
 
     func listStashes() async throws -> [GitStashEntry] {

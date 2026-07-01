@@ -53,12 +53,12 @@ struct GitControlSheet: View {
                             progressCard.transition(.scale(scale: 0.97).combined(with: .opacity))
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
-                    .padding(.bottom, 40)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        .padding(.bottom, 40)
+                    }
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
-            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -68,14 +68,9 @@ struct GitControlSheet: View {
                         .tracking(4)
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
+                    Button("Close") {
                         dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(Color.brutalText)
                     }
-                    .buttonStyle(.plain)
                 }
             }
             .alert("Error", isPresented: Binding(
