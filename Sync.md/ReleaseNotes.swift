@@ -5,7 +5,7 @@ enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
         [
             .init(
-                version: "2.5",
+                version: "2.5.1",
                 items: version25Items
             ),
             .init(
@@ -68,7 +68,7 @@ enum AppReleaseNotes {
         NoteletStorage.markCurrentVersionAsSeen()
     }
 
-    private static let availableVersions: Set<String> = ["2.5", "2.4.7", "2.4.5", "2.4.1"]
+    private static let availableVersions: Set<String> = ["2.5.1", "2.4.7", "2.4.5", "2.4.1"]
 
     private static var currentVersion: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
