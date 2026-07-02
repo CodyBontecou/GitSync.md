@@ -14,7 +14,7 @@ OUT_DIR="$ROOT_DIR/libgit2.xcframework"
 
 LIBGIT2_VERSION="${LIBGIT2_VERSION:-1.9.2}"
 LIBSSH2_VERSION="${LIBSSH2_VERSION:-1.11.1}"
-MBEDTLS_VERSION="${MBEDTLS_VERSION:-3.6.2}"
+OPENSSL_VERSION="${OPENSSL_VERSION:-3.3.2}"
 IOS_DEPLOYMENT_TARGET="${IOS_DEPLOYMENT_TARGET:-16.0}"
 JOBS="${JOBS:-$(sysctl -n hw.ncpu)}"
 
@@ -58,30 +58,48 @@ common_cmake_flags() {
     "-DCMAKE_POLICY_DEFAULT_CMP0075=NEW"
 }
 
+build_openssl_slice() {
+  local name="$1"
+  local target="$2"
+  local min_version_flag="$3"
+  local openssl_build="$WORK_DIR/build/openssl-$name"
+  local openssl_install="$WORK_DIR/install/openssl-$name"
+
+  log "Building OpenSSL for $name"
+  rm -rf "$openssl_build" "$openssl_install"
+  mkdir -p "$openssl_build"
+  (
+    cd "$openssl_build"
+    CFLAGS="$min_version_flag" perl "$WORK_DIR/src/openssl/Configure" \
+      "$target" \
+      no-shared \
+      no-tests \
+      no-apps \
+      no-ui-console \
+      no-module \
+      no-dso \
+      --prefix="$openssl_install" \
+      --openssldir="$openssl_install/ssl"
+    make -j"$JOBS"
+    make install_sw
+  )
+}
+
 build_slice() {
   local name="$1"
   local sysroot="$2"
   local platform_variant="$3"
+  local openssl_target="$4"
+  local min_version_flag="$5"
 
-  local mbed_build="$WORK_DIR/build/mbedtls-$name"
-  local mbed_install="$WORK_DIR/install/mbedtls-$name"
+  local openssl_install="$WORK_DIR/install/openssl-$name"
   local ssh2_build="$WORK_DIR/build/libssh2-$name"
   local ssh2_install="$WORK_DIR/install/libssh2-$name"
   local git2_build="$WORK_DIR/build/libgit2-$name"
   local git2_install="$WORK_DIR/install/libgit2-$name"
   local slice_out="$WORK_DIR/out/$name"
 
-  log "Building mbedTLS for $name"
-  rm -rf "$mbed_build" "$mbed_install"
-  cmake -S "$WORK_DIR/src/mbedtls" -B "$mbed_build" \
-    $(common_cmake_flags "$sysroot") \
-    -DCMAKE_INSTALL_PREFIX="$mbed_install" \
-    -DENABLE_TESTING=OFF \
-    -DENABLE_PROGRAMS=OFF \
-    -DMBEDTLS_FATAL_WARNINGS=OFF \
-    -DUSE_SHARED_MBEDTLS_LIBRARY=OFF \
-    -DUSE_STATIC_MBEDTLS_LIBRARY=ON
-  cmake --build "$mbed_build" --target install -j"$JOBS"
+  build_openssl_slice "$name" "$openssl_target" "$min_version_flag"
 
   log "Building libssh2 for $name"
   rm -rf "$ssh2_build" "$ssh2_install"
@@ -91,16 +109,18 @@ build_slice() {
     -DBUILD_SHARED_LIBS=OFF \
     -DBUILD_TESTING=OFF \
     -DBUILD_EXAMPLES=OFF \
-    -DCRYPTO_BACKEND=mbedTLS \
-    -DMBEDTLS_INCLUDE_DIR="$mbed_install/include" \
-    -DMBEDCRYPTO_LIBRARY="$mbed_install/lib/libmbedcrypto.a"
+    -DCRYPTO_BACKEND=OpenSSL \
+    -DOPENSSL_USE_STATIC_LIBS=TRUE \
+    -DOPENSSL_ROOT_DIR="$openssl_install" \
+    -DOPENSSL_INCLUDE_DIR="$openssl_install/include" \
+    -DOPENSSL_CRYPTO_LIBRARY="$openssl_install/lib/libcrypto.a"
   cmake --build "$ssh2_build" --target install -j"$JOBS"
 
   log "Building libgit2 for $name"
   rm -rf "$git2_build" "$git2_install"
   cmake -S "$WORK_DIR/src/libgit2" -B "$git2_build" \
     $(common_cmake_flags "$sysroot") \
-    -DCMAKE_REQUIRED_LIBRARIES="$ssh2_install/lib/libssh2.a;$mbed_install/lib/libmbedcrypto.a;$mbed_install/lib/libeverest.a;$mbed_install/lib/libp256m.a" \
+    -DCMAKE_REQUIRED_LIBRARIES="$ssh2_install/lib/libssh2.a;$openssl_install/lib/libcrypto.a" \
     -DCMAKE_INSTALL_PREFIX="$git2_install" \
     -DBUILD_SHARED_LIBS=OFF \
     -DBUILD_TESTS=OFF \
@@ -124,9 +144,7 @@ build_slice() {
   /usr/bin/libtool -static -o "$slice_out/libgit2.a" \
     "$git2_install/lib/libgit2.a" \
     "$ssh2_install/lib/libssh2.a" \
-    "$mbed_install/lib/libmbedcrypto.a" \
-    "$mbed_install/lib/libeverest.a" \
-    "$mbed_install/lib/libp256m.a"
+    "$openssl_install/lib/libcrypto.a"
   ranlib "$slice_out/libgit2.a"
 
   cp -R "$git2_install/include/"* "$slice_out/Headers/"
@@ -153,6 +171,14 @@ MODULEMAP
     echo "Built $name archive does not include libssh2 memory-key auth" >&2
     exit 1
   fi
+  if ! grep -q '_libssh2_ecdsa_new_private_frommemory' "$slice_out/nm.txt"; then
+    echo "Built $name archive does not include libssh2 ECDSA memory-key auth" >&2
+    exit 1
+  fi
+  if ! grep -q '_libssh2_ed25519_new_private_frommemory' "$slice_out/nm.txt"; then
+    echo "Built $name archive does not include libssh2 Ed25519 memory-key auth" >&2
+    exit 1
+  fi
   rm -f "$slice_out/nm.txt"
 
   printf '%s\n' "$platform_variant" > "$slice_out/platform-variant.txt"
@@ -160,10 +186,10 @@ MODULEMAP
 
 fetch_and_extract "libgit2" "https://github.com/libgit2/libgit2/archive/refs/tags/v$LIBGIT2_VERSION.tar.gz"
 fetch_and_extract "libssh2" "https://github.com/libssh2/libssh2/releases/download/libssh2-$LIBSSH2_VERSION/libssh2-$LIBSSH2_VERSION.tar.gz"
-fetch_and_extract "mbedtls" "https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-$MBEDTLS_VERSION/mbedtls-$MBEDTLS_VERSION.tar.bz2"
+fetch_and_extract "openssl" "https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz"
 
-build_slice "ios-arm64" "iphoneos" ""
-build_slice "ios-arm64-simulator" "iphonesimulator" "simulator"
+build_slice "ios-arm64" "iphoneos" "" "ios64-xcrun" "-mios-version-min=$IOS_DEPLOYMENT_TARGET"
+build_slice "ios-arm64-simulator" "iphonesimulator" "simulator" "iossimulator-arm64-xcrun" "-mios-simulator-version-min=$IOS_DEPLOYMENT_TARGET"
 
 log "Creating libgit2.xcframework"
 rm -rf "$WORK_DIR/libgit2.xcframework" "$OUT_DIR"
@@ -181,4 +207,6 @@ strings "$OUT_DIR/ios-arm64/libgit2.a" | grep -qi 'without SSH support' && {
 nm -gU "$OUT_DIR/ios-arm64/libgit2.a" > "$WORK_DIR/final-nm.txt"
 grep '_git_smart_subtransport_ssh_libssh2' "$WORK_DIR/final-nm.txt" >/dev/null
 grep '_libssh2_userauth_publickey_frommemory' "$WORK_DIR/final-nm.txt" >/dev/null
+grep '_libssh2_ecdsa_new_private_frommemory' "$WORK_DIR/final-nm.txt" >/dev/null
+grep '_libssh2_ed25519_new_private_frommemory' "$WORK_DIR/final-nm.txt" >/dev/null
 rm -f "$WORK_DIR/final-nm.txt"

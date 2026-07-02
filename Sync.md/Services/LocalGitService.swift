@@ -382,23 +382,24 @@ private func acquireCredential(
         }
         ctx.didAttemptSSHKey = true
 
-        let publicKey = credentials.publicKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            ? nil
-            : credentials.publicKey
+        // `libssh2_userauth_publickey_frommemory` accepts a nil public key and
+        // derives it from the private key. Prefer that path because Forgejo and
+        // OpenSSH commonly expose public keys in authorized_keys format
+        // (`ecdsa-sha2-nistp256 AAAA... comment`), while libssh2's memory API
+        // can treat that text as malformed key material and the server rejects
+        // authentication before it ever checks the private-key signature.
         let passphrase = credentials.passphrase.isEmpty ? nil : credentials.passphrase
 
         let code = username.withCString { usernameC in
             credentials.privateKey.withCString { privateKeyC in
-                withOptionalCString(publicKey) { publicKeyC in
-                    withOptionalCString(passphrase) { passphraseC in
-                        git_credential_ssh_key_memory_new(
-                            cred,
-                            usernameC,
-                            publicKeyC,
-                            privateKeyC,
-                            passphraseC
-                        )
-                    }
+                withOptionalCString(passphrase) { passphraseC in
+                    git_credential_ssh_key_memory_new(
+                        cred,
+                        usernameC,
+                        nil,
+                        privateKeyC,
+                        passphraseC
+                    )
                 }
             }
         }
@@ -666,7 +667,42 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         )
     }
 
-    // MARK: - Clone
+    // MARK: - Clone / Remote Configuration
+
+    func setRemoteURL(name: String = "origin", url: String) async throws {
+        let repoPath = self.localURL.path
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedURL = url.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        try await Task.detached {
+            guard !trimmedName.isEmpty, !trimmedURL.isEmpty else {
+                throw LocalGitError.invalidRemoteURL
+            }
+
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var existingRemote: OpaquePointer?
+            let lookupCode = git_remote_lookup(&existingRemote, repo, trimmedName)
+            if let existingRemote { git_remote_free(existingRemote) }
+
+            if lookupCode == GIT_ENOTFOUND.rawValue {
+                var createdRemote: OpaquePointer?
+                defer { if let createdRemote { git_remote_free(createdRemote) } }
+                try git2Check(
+                    git_remote_create(&createdRemote, repo, trimmedName, trimmedURL),
+                    context: "Create remote \(trimmedName)"
+                )
+            } else {
+                try git2Check(lookupCode, context: "Lookup remote \(trimmedName)")
+                try git2Check(
+                    git_remote_set_url(repo, trimmedName, trimmedURL),
+                    context: "Set remote \(trimmedName) URL"
+                )
+            }
+        }.value
+    }
 
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
         let dest = self.localURL.path

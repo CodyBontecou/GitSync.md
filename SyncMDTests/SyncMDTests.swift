@@ -3703,6 +3703,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var lfsAutoTrackingCandidatePathRequests: [[String]?] = []
     var cloneResults: [Result<LocalCloneResult, Error>] = []
     var cloneRemoteURLs: [String] = []
+    var setRemoteURLCalls: [(name: String, url: String)] = []
     var pullPlanError: Error?
     var pullPlanCallCount = 0
     var pushCurrentBranchResult: Result<Void, Error>?
@@ -3739,6 +3740,10 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
             }
         }
         return LocalCloneResult(commitSHA: repoInfoResult.commitSHA, branch: repoInfoResult.branch, fileCount: 1)
+    }
+
+    func setRemoteURL(name: String, url: String) async throws {
+        setRemoteURLCalls.append((name: name, url: url))
     }
 
     func pullPlan(pat: String) async throws -> PullPlan {

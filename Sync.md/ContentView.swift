@@ -35,8 +35,12 @@ struct ContentView: View {
             state.pendingSSHHostKeyTrustRequest?.title ?? String(localized: "Trust SSH Host?"),
             isPresented: Binding(
                 get: { state.pendingSSHHostKeyTrustRequest != nil },
-                set: { isPresented in
-                    if !isPresented { state.cancelPendingSSHHostKeyTrust() }
+                set: { _ in
+                    // Do not clear the pending trust request from the alert's
+                    // dismissal write-back. SwiftUI dismisses the alert before
+                    // running the button action, so clearing here can make the
+                    // “Trust Host” action a no-op. The explicit Cancel button
+                    // handles rejection.
                 }
             )
         ) {

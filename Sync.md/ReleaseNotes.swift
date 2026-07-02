@@ -81,6 +81,26 @@ enum AppReleaseNotes {
     private static var version25Items: [NoteletVersionNoteItem] {
         [
             .list(
+                title: "Self-hosted SSH is ready",
+                rows: [
+                    .init(
+                        symbolSystemName: "server.rack",
+                        title: "Clone SSH-only repositories",
+                        description: "GitSync.md now supports self-hosted Forgejo and Git servers that only expose SSH remotes."
+                    ),
+                    .init(
+                        symbolSystemName: "key.horizontal.fill",
+                        title: "Modern SSH keys work",
+                        description: "Ed25519, ECDSA, and RSA private keys are supported for clone, pull, and push."
+                    ),
+                    .init(
+                        symbolSystemName: "shield.lefthalf.filled.badge.checkmark",
+                        title: "Trust hosts safely",
+                        description: "Unknown SSH hosts show a fingerprint prompt, and changed host keys are blocked until you review them."
+                    )
+                ]
+            ),
+            .list(
                 title: "GitHub accounts are safer",
                 rows: [
                     .init(

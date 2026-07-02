@@ -2896,6 +2896,61 @@ final class AppState {
         saveRepos()
     }
 
+    @discardableResult
+    func saveRepoConfiguration(
+        id: UUID,
+        repoURL: String,
+        branch: String,
+        authorName: String,
+        authorEmail: String,
+        authMethod: GitAuthMethod,
+        credentials: GitRemoteCredentials
+    ) async -> Bool {
+        guard let idx = repoIndex(id: id) else {
+            showError(message: String(localized: "Repository not found"))
+            return false
+        }
+
+        let trimmedRepoURL = repoURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        let oldRepo = repos[idx]
+
+        if oldRepo.isCloned,
+           !trimmedRepoURL.isEmpty,
+           trimmedRepoURL != oldRepo.repoURL.trimmingCharacters(in: .whitespacesAndNewlines) {
+            let vaultDir = vaultURL(for: id)
+            let gitService = gitRepositoryFactory(vaultDir)
+            if gitService.hasGitDirectory {
+                let cloneURL = GitRemoteURL.cloneURLString(from: trimmedRepoURL) ?? trimmedRepoURL
+                do {
+                    try await gitService.setRemoteURL(name: "origin", url: cloneURL)
+                } catch {
+                    showError(message: String(localized: "Failed to update origin remote: \(error.localizedDescription)"))
+                    return false
+                }
+            }
+        }
+
+        repos[idx].repoURL = trimmedRepoURL
+        repos[idx].branch = branch.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "main" : branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[idx].authorName = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[idx].authorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[idx].authMethod = authMethod
+        repos[idx].authUsername = credentials.username.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[idx].gitHubAccountLogin = authMethod == .gitHubPAT ? activeGitHubAccountLogin : nil
+
+        switch authMethod {
+        case .httpsToken, .sshKey:
+            saveRemoteCredentials(credentials, for: id)
+        case .gitHubPAT, .none:
+            clearRemoteCredentials(for: id)
+        }
+
+        repoMutationGeneration[id, default: 0] += 1
+        saveRepos()
+        detectChanges(repoID: id)
+        return true
+    }
+
     // MARK: - OAuth
 
     func signInWithGitHub() async {

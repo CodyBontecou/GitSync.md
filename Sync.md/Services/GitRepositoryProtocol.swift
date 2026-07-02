@@ -4,6 +4,7 @@ protocol GitRepositoryProtocol: Sendable {
     var hasGitDirectory: Bool { get }
 
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult
+    func setRemoteURL(name: String, url: String) async throws
     func pullPlan(pat: String) async throws -> PullPlan
     func pull(pat: String) async throws -> LocalPullResult
     /// Apply a fast-forward after `pullPlan` has already fetched origin.

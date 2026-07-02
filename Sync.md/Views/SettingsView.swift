@@ -8,10 +8,17 @@ struct SettingsView: View {
 
     let repoID: UUID
 
+    @State private var repoURL: String = ""
     @State private var branch: String = ""
     @State private var authorName: String = ""
     @State private var authorEmail: String = ""
     @State private var vaultName: String = ""
+    @State private var authMethod: GitAuthMethod = .none
+    @State private var authUsername: String = ""
+    @State private var authPassword: String = ""
+    @State private var sshPrivateKey: String = ""
+    @State private var sshPublicKey: String = ""
+    @State private var sshPassphrase: String = ""
     @State private var showRemoveConfirm = false
     @State private var showDeleteFilesConfirm = false
     @State private var showFolderPicker = false
@@ -21,9 +28,12 @@ struct SettingsView: View {
     @State private var showMoveError = false
     @State private var validationMessage: String? = nil
     @State private var showValidationAlert = false
+    @State private var isSaving = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var canDeleteLocalFiles: Bool { repo?.isGitSyncManagedStorage == true }
+    private var parsedRemote: GitRemoteURL? { GitRemoteURL.parse(repoURL) }
+    private var canUseGitHubPAT: Bool { parsedRemote?.isGitHub == true && parsedRemote?.isSSH == false }
     private var repoPathForConfirmation: String {
         let displayPath = state.vaultDisplayPath(for: repoID)
         return displayPath.isEmpty ? state.vaultURL(for: repoID).path : displayPath
@@ -39,21 +49,49 @@ struct SettingsView: View {
                         // Repository Section
                         settingsSection(title: String(localized: "Repository")) {
                             VStack(spacing: 0) {
-                                settingsFieldRow(label: String(localized: "URL")) {
-                                    Text(showCopiedToast ? String(localized: "Copied!") : (repo?.repoURL ?? ""))
-                                        .font(.system(size: 14, design: .monospaced))
-                                        .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalText)
-                                        .lineLimit(1)
-                                        .truncationMode(.middle)
-                                        .onTapGesture {
-                                            if let url = repo?.repoURL, !url.isEmpty {
-                                                UIPasteboard.general.string = url
+                                VStack(alignment: .leading, spacing: 8) {
+                                    HStack {
+                                        Text(String(localized: "URL").uppercased())
+                                            .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                            .foregroundStyle(Color.brutalText)
+                                            .tracking(1)
+                                        Spacer()
+                                        Button(showCopiedToast ? String(localized: "Copied!") : String(localized: "Copy")) {
+                                            if !repoURL.isEmpty {
+                                                UIPasteboard.general.string = repoURL
                                                 withAnimation { showCopiedToast = true }
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                                     withAnimation { showCopiedToast = false }
                                                 }
                                             }
                                         }
+                                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                        .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalAccent)
+                                        .disabled(repoURL.isEmpty)
+                                    }
+
+                                    TextField("https://host/user/repo or git@host:user/repo.git", text: $repoURL)
+                                        .font(.system(size: 14, design: .monospaced))
+                                        .autocorrectionDisabled()
+                                        .textInputAutocapitalization(.never)
+                                        .foregroundStyle(Color.brutalText)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 13)
+                                .onChange(of: repoURL) { _, newValue in
+                                    configureAuthDefaults(for: newValue)
+                                }
+
+                                if !repoURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && GitRemoteURL.parse(repoURL) == nil {
+                                    BDivider().padding(.horizontal, 16)
+                                    HStack(spacing: 6) {
+                                        BBadge(text: "INVALID URL", style: .error)
+                                        Text(String(localized: "Use HTTPS, SSH, git://, file://, or owner/repo."))
+                                            .font(.system(size: 13, design: .monospaced))
+                                            .foregroundStyle(Color.brutalError)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 10)
                                 }
 
                                 BDivider().padding(.horizontal, 16)
@@ -68,6 +106,8 @@ struct SettingsView: View {
                                 }
                             }
                         }
+
+                        authenticationSection
 
                         // Git Author Section
                         settingsSection(title: String(localized: "Git Author")) {
@@ -241,20 +281,45 @@ struct SettingsView: View {
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized: "Save")) {
-                        if saveChanges() {
-                            dismiss()
+                    Button(isSaving ? String(localized: "Saving…") : String(localized: "Save")) {
+                        Task {
+                            isSaving = true
+                            defer { isSaving = false }
+                            if await saveChanges() {
+                                dismiss()
+                            }
                         }
                     }
                     .fontWeight(.semibold)
+                    .disabled(isSaving)
                 }
             }
             .onAppear {
                 if let repo = repo {
+                    repoURL = repo.repoURL
                     branch = repo.branch
                     authorName = repo.authorName
                     authorEmail = repo.authorEmail
                     vaultName = repo.vaultFolderName
+                    authMethod = repo.authMethod
+                    let credentials = state.remoteCredentials(for: repo)
+                    switch repo.authMethod {
+                    case .httpsToken:
+                        authUsername = credentials.username
+                        authPassword = credentials.password
+                    case .sshKey:
+                        authUsername = credentials.username
+                        sshPrivateKey = credentials.privateKey
+                        sshPublicKey = credentials.publicKey
+                        sshPassphrase = credentials.passphrase
+                    case .gitHubPAT, .none:
+                        authUsername = repo.authUsername
+                        authPassword = ""
+                        sshPrivateKey = ""
+                        sshPublicKey = ""
+                        sshPassphrase = ""
+                    }
+                    configureAuthDefaults(for: repo.repoURL)
                 }
             }
             #if DEBUG
@@ -292,12 +357,206 @@ struct SettingsView: View {
             } message: {
                 Text(moveError ?? String(localized: "Unknown error"))
             }
-            .alert("Invalid Git Author", isPresented: $showValidationAlert) {
+            .alert("Invalid Settings", isPresented: $showValidationAlert) {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(validationMessage ?? String(localized: "Please set Author Name and Author Email."))
             }
         }
+    }
+
+    // MARK: - Authentication
+
+    private var authenticationSection: some View {
+        let isSSH = parsedRemote?.isSSH == true
+
+        return settingsSection(title: String(localized: "Authentication")) {
+            VStack(spacing: 0) {
+                if canUseGitHubPAT && state.isSignedIn {
+                    authOption(
+                        method: .gitHubPAT,
+                        icon: "🐙",
+                        title: String(localized: "GitHub Account"),
+                        subtitle: String(localized: "Use your signed-in GitHub token")
+                    )
+                    BDivider().padding(.horizontal, 16)
+                }
+
+                authOption(
+                    method: .none,
+                    icon: "🌐",
+                    title: String(localized: "No Authentication"),
+                    subtitle: isSSH ? String(localized: "Only works for public SSH remotes") : String(localized: "Public repositories and file remotes")
+                )
+
+                BDivider().padding(.horizontal, 16)
+
+                authOption(
+                    method: .httpsToken,
+                    icon: "🔑",
+                    title: String(localized: "HTTPS Token / Password"),
+                    subtitle: String(localized: "GitLab, Gitea, Bitbucket, or self-hosted HTTPS")
+                )
+
+                BDivider().padding(.horizontal, 16)
+
+                authOption(
+                    method: .sshKey,
+                    icon: "🗝️",
+                    title: String(localized: "SSH Private Key"),
+                    subtitle: String(localized: "For git@host:owner/repo.git or ssh:// remotes")
+                )
+
+                authFields
+            }
+        }
+    }
+
+    private func authOption(method: GitAuthMethod, icon: String, title: String, subtitle: String) -> some View {
+        Button {
+            authMethod = method
+            if method == .sshKey && authUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                authUsername = parsedRemote?.username ?? "git"
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Text(icon)
+                    .font(.system(size: 18))
+                    .frame(width: 32)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(Color.brutalText)
+                    Text(subtitle)
+                        .font(.system(size: 13, design: .monospaced))
+                        .foregroundStyle(Color.brutalText)
+                }
+
+                Spacer()
+
+                if authMethod == method {
+                    BBadge(text: "selected", style: .success)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var authFields: some View {
+        switch authMethod {
+        case .gitHubPAT:
+            BDivider().padding(.horizontal, 16)
+            authHelpRow(String(localized: "Using the GitHub token from your account. Sign out or choose another method to use a different provider."))
+
+        case .none:
+            BDivider().padding(.horizontal, 16)
+            authHelpRow(String(localized: "GitSync.md will not provide credentials. Choose this for public remotes or local file remotes."))
+
+        case .httpsToken:
+            BDivider().padding(.horizontal, 16)
+            VStack(spacing: 0) {
+                settingsInputRow(label: String(localized: "Username")) {
+                    TextField(parsedRemote?.username ?? "username", text: $authUsername)
+                        .font(.system(size: 14, design: .monospaced))
+                        .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .foregroundStyle(Color.brutalText)
+                }
+
+                BDivider().padding(.horizontal, 16)
+
+                settingsInputRow(label: String(localized: "Token")) {
+                    SecureField("token or password", text: $authPassword)
+                        .font(.system(size: 14, design: .monospaced))
+                        .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .foregroundStyle(Color.brutalText)
+                }
+            }
+
+        case .sshKey:
+            BDivider().padding(.horizontal, 16)
+            VStack(spacing: 0) {
+                settingsInputRow(label: String(localized: "SSH User")) {
+                    TextField(parsedRemote?.username ?? "git", text: $authUsername)
+                        .font(.system(size: 14, design: .monospaced))
+                        .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .foregroundStyle(Color.brutalText)
+                }
+
+                BDivider().padding(.horizontal, 16)
+
+                multilineSecretField(
+                    label: String(localized: "Private Key"),
+                    text: $sshPrivateKey,
+                    minHeight: 130,
+                    footer: String(localized: "Stored in Keychain. Paste an OpenSSH private key; passphrase is optional.")
+                )
+
+                BDivider().padding(.horizontal, 16)
+
+                settingsInputRow(label: String(localized: "Passphrase")) {
+                    SecureField("optional", text: $sshPassphrase)
+                        .font(.system(size: 14, design: .monospaced))
+                        .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .foregroundStyle(Color.brutalText)
+                }
+
+                BDivider().padding(.horizontal, 16)
+
+                multilineSecretField(
+                    label: String(localized: "Public Key"),
+                    text: $sshPublicKey,
+                    minHeight: 72,
+                    footer: String(localized: "Optional")
+                )
+            }
+        }
+    }
+
+    private func authHelpRow(_ message: String) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "info.circle")
+                .font(.system(size: 12))
+                .foregroundStyle(Color.brutalText)
+            Text(message)
+                .font(.system(size: 13, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+
+    private func multilineSecretField(label: String, text: Binding<String>, minHeight: CGFloat, footer: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(label.uppercased())
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+                .tracking(1)
+            TextEditor(text: text)
+                .font(.system(size: 13, design: .monospaced))
+                .frame(minHeight: minHeight)
+                .scrollContentBackground(.hidden)
+                .padding(8)
+                .background(Color.brutalSurface)
+                .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+            Text(footer)
+                .font(.system(size: 12, design: .monospaced))
+                .foregroundStyle(Color.brutalText)
+        }
+        .padding(16)
     }
 
     private func moveVault(to url: URL) {
@@ -405,41 +664,126 @@ struct SettingsView: View {
         return fmt.localizedString(for: date, relativeTo: Date())
     }
 
-    private func saveChanges() -> Bool {
+    private func configureAuthDefaults(for url: String) {
+        let previousMethod = authMethod
+        guard let remote = GitRemoteURL.parse(url) else {
+            if authMethod == .gitHubPAT { authMethod = .none }
+            return
+        }
+
+        if remote.isSSH {
+            if authMethod == .gitHubPAT || authMethod == .httpsToken {
+                authMethod = .sshKey
+            }
+        } else if remote.isGitHub && state.isSignedIn {
+            if authMethod == .sshKey {
+                authMethod = .gitHubPAT
+            }
+        } else if authMethod == .gitHubPAT || authMethod == .sshKey {
+            authMethod = .none
+        }
+
+        let preferredUsername = remote.username ?? (remote.isSSH ? "git" : "")
+        let currentUsername = authUsername.trimmingCharacters(in: .whitespacesAndNewlines)
+        if currentUsername.isEmpty || currentUsername == "x-access-token" || authMethod != previousMethod {
+            authUsername = preferredUsername
+        }
+    }
+
+    private func remoteCredentials() -> GitRemoteCredentials {
+        let username = authUsername.trimmingCharacters(in: .whitespacesAndNewlines)
+        switch authMethod {
+        case .gitHubPAT:
+            return .gitHubPAT(state.pat)
+        case .none:
+            return .none
+        case .httpsToken:
+            return .httpsToken(username: username, password: authPassword)
+        case .sshKey:
+            return .sshKey(
+                username: username.isEmpty ? (parsedRemote?.username ?? "git") : username,
+                privateKey: sshPrivateKey,
+                publicKey: sshPublicKey,
+                passphrase: sshPassphrase
+            )
+        }
+    }
+
+    private var missingAuthFields: [String] {
+        switch authMethod {
+        case .gitHubPAT:
+            return state.pat.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? [String(localized: "GitHub sign-in")] : []
+        case .none:
+            return []
+        case .httpsToken:
+            return authPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? [String(localized: "Token / Password")] : []
+        case .sshKey:
+            return sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? [String(localized: "SSH Private Key")] : []
+        }
+    }
+
+    private func showValidation(_ message: String) -> Bool {
+        validationMessage = message
+        showValidationAlert = true
+        return false
+    }
+
+    private func saveChanges() async -> Bool {
+        let trimmedRepoURL = repoURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedBranch = branch.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedName = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
 
+        if trimmedRepoURL.isEmpty {
+            if repo?.repoURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                return showValidation(String(localized: "Repository URL is required."))
+            }
+        } else if GitRemoteURL.parse(trimmedRepoURL) == nil {
+            return showValidation(String(localized: "Please enter a valid Git remote URL."))
+        }
+
+        if authMethod == .gitHubPAT && (!canUseGitHubPAT || !state.isSignedIn) {
+            return showValidation(String(localized: "GitHub Account authentication is only available for GitHub HTTPS repositories while signed in."))
+        }
+
+        let missingAuth = missingAuthFields
+        if !missingAuth.isEmpty {
+            let message = missingAuth.count == 1
+                ? String(localized: "Please fill in \(missingAuth[0]).")
+                : String(localized: "Please fill in these fields: \(missingAuth.joined(separator: ", ")).")
+            return showValidation(message)
+        }
+
         guard !trimmedName.isEmpty else {
-            validationMessage = String(localized: "Author Name is required before Git can create commits.")
-            showValidationAlert = true
-            return false
+            return showValidation(String(localized: "Author Name is required before Git can create commits."))
         }
         guard !trimmedEmail.isEmpty else {
-            validationMessage = String(localized: "Author Email is required before Git can create commits.")
-            showValidationAlert = true
-            return false
+            return showValidation(String(localized: "Author Email is required before Git can create commits."))
         }
 
         let forbiddenNameCharacters = CharacterSet(charactersIn: "<>\n\r")
         guard trimmedName.rangeOfCharacter(from: forbiddenNameCharacters) == nil else {
-            validationMessage = String(localized: "Author Name cannot contain line breaks or angle brackets.")
-            showValidationAlert = true
-            return false
+            return showValidation(String(localized: "Author Name cannot contain line breaks or angle brackets."))
         }
 
         let forbiddenEmailCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "<>"))
         guard trimmedEmail.contains("@"), trimmedEmail.rangeOfCharacter(from: forbiddenEmailCharacters) == nil else {
-            validationMessage = String(localized: "Author Email must look like you@example.com.")
-            showValidationAlert = true
-            return false
+            return showValidation(String(localized: "Author Email must look like you@example.com."))
         }
 
-        state.updateRepo(id: repoID) { repo in
-            repo.branch = trimmedBranch.isEmpty ? "main" : trimmedBranch
-            repo.authorName = trimmedName
-            repo.authorEmail = trimmedEmail
+        let saved = await state.saveRepoConfiguration(
+            id: repoID,
+            repoURL: trimmedRepoURL,
+            branch: trimmedBranch.isEmpty ? "main" : trimmedBranch,
+            authorName: trimmedName,
+            authorEmail: trimmedEmail,
+            authMethod: authMethod,
+            credentials: remoteCredentials()
+        )
+        if !saved {
+            validationMessage = state.lastError ?? String(localized: "Could not save repository settings.")
+            showValidationAlert = true
         }
-        return true
+        return saved
     }
 }
