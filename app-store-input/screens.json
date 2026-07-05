@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "01-sync-obsidian-with-git",
+    "title": "Custom product page hero / Obsidian sync",
+    "feature": "Obsidian vault sync",
+    "headline": "Sync Obsidian with Git",
+    "subheadline": "Clone your vault, edit in Obsidian, then pull, commit, and push from iPhone.",
+    "screenshot": "app-store-input/screenshots/01-obsidian-vault-git-status.png",
+    "prompt": "Abstract premium iOS App Store marketing background for GitSync.md, focused on Obsidian vault sync. Use a paper-and-ink palette with deep black, warm off-white, and electric blue accents. Include subtle abstract notebook pages, markdown blocks, and connected git graph lines as decorative shapes only. Leave clear empty space for a phone mockup and headline. No text, no letters, no numbers, no logos, no app UI, no phone UI, no screens. High quality portrait mobile marketing background."
+  },
+  {
+    "slug": "02-real-git-for-your-vault",
+    "title": "Custom product page feature / Real Git",
+    "feature": "Real Git for Obsidian vaults",
+    "headline": "Real Git for your vault",
+    "subheadline": "A real .git directory on-device — no proprietary sync layer or lock-in.",
+    "screenshot": "app-store-input/screenshots/02-commit-and-push.png",
+    "prompt": "Abstract premium iOS App Store marketing background for GitSync.md, focused on real Git on iPhone for markdown notes. Use black, warm paper, and electric blue. Show tasteful abstract branching commit graph lines, small geometric nodes, and soft depth, with a precise developer-tool feel. Leave clear empty space for a phone mockup and headline. No text, no letters, no numbers, no logos, no app UI, no phone UI, no screens. High quality portrait mobile marketing background."
+  },
+  {
+    "slug": "03-review-before-push",
+    "title": "Custom product page feature / Review before push",
+    "feature": "Review changes before push",
+    "headline": "Review before you push",
+    "subheadline": "See file changes, write a commit message, and keep markdown history under control.",
+    "screenshot": "app-store-input/screenshots/03-review-diff.png",
+    "prompt": "Abstract premium iOS App Store marketing background for GitSync.md, focused on reviewing markdown diffs before pushing. Use a clean developer-tool mood with black, warm off-white, and electric blue accents. Include abstract layered cards, diff-like bands, and subtle branch lines as decorative shapes only. Leave clear empty space for a phone mockup and headline. No text, no letters, no numbers, no logos, no app UI, no phone UI, no screens. High quality portrait mobile marketing background."
+  }
+]

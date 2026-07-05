@@ -1,0 +1,22 @@
+{
+  "name": "repo-app-store-images",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Repo-aware draft App Store image generator for any iOS app repo.",
+  "scripts": {
+    "plan": "tsx generate.ts --dry-run",
+    "generate": "tsx generate.ts --generate --max-images 3",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "openai": "^6.9.1",
+    "sharp": "^0.34.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  }
+}

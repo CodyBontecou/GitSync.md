@@ -26,7 +26,13 @@ struct ContentView: View {
             withAnimation(.easeOut(duration: 0.5)) {
                 showContent = true
             }
+            #if DEBUG
+            if !MarketingCapture.isActive {
+                state.scheduleInitialChangeDetectionIfNeeded()
+            }
+            #else
             state.scheduleInitialChangeDetectionIfNeeded()
+            #endif
             AppReleaseNotes.bootstrapFreshInstallIfNeeded(
                 hasExistingAppData: hasExistingAppDataForReleaseNotes
             )

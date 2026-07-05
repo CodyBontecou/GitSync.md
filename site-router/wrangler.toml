@@ -5,9 +5,33 @@ account_id = "e4265f322e6380ee832b83ad45e3e8c0"
 workers_dev = false
 
 [[routes]]
+pattern = "gitsyncmd.app"
+custom_domain = true
+
+[[routes]]
+pattern = "www.gitsyncmd.app"
+custom_domain = true
+
+[[routes]]
 pattern = "gitsyncmd.isolated.tech"
 custom_domain = true
 
 [[routes]]
 pattern = "syncmd.isolated.tech"
 custom_domain = true
+
+[vars]
+APP_STORE_BASE_URL = "https://apps.apple.com/us/app/gitsync-md/id6758960270"
+CPP_OBSIDIAN_PPID = "6d42eefc-9fd5-4f7a-8a0d-b7332e0eea7f"
+CPP_GITCLIENT_PPID = "76f9ef64-2400-44f5-8e81-74b1728fc606"
+CPP_SELFHOSTED_PPID = "874af699-91c3-4c2f-a76c-776229fe77e8"
+# Optional fallback for /v/web-home. Set to the best approved page once selected.
+# CPP_HOMEPAGE_PPID = ""
+# Set as secret after copying the Apple App Store provider token:
+#   npx wrangler secret put APPLE_PROVIDER_TOKEN
+
+[[d1_databases]]
+binding = "DB"
+database_name = "gitsyncmd-campaigns"
+database_id = "0b2b8ac9-fba3-49a6-9c21-cb4a588d1a7b"
+migrations_dir = "migrations"

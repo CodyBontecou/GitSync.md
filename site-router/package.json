@@ -1,0 +1,14 @@
+{
+  "name": "gitsyncmd-site-router",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "campaigns:list": "node scripts/list-campaign-links.mjs",
+    "deploy": "wrangler deploy",
+    "migrations:apply": "wrangler d1 migrations apply gitsyncmd-campaigns --remote"
+  },
+  "devDependencies": {
+    "wrangler": "^4.107.0"
+  }
+}
