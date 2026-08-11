@@ -193,6 +193,7 @@ jobs:
         run: gh release edit '${{ steps.meta.outputs.tag }}' --draft=false
 
       - name: Post Discord update
+        if: github.event_name != 'repository_dispatch' || github.event.client_payload.discordOwner != 'central'
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
         run: |
