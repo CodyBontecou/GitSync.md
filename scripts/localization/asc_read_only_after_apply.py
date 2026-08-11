@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
@@ -18,6 +19,33 @@ EXPECTED_SCREENSHOTS = {
     "APP_IPAD_PRO_3GEN_129": 4,
 }
 METADATA_FIELDS = ("description", "keywords", "marketingUrl", "supportUrl", "whatsNew")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--expected-build-id",
+        help="Require this build to be attached instead of requiring no build.",
+    )
+    parser.add_argument(
+        "--expected-version-state",
+        default="PREPARE_FOR_SUBMISSION",
+        help="Require the App Store version to have this state.",
+    )
+    parser.add_argument(
+        "--app-info-id",
+        help="Use this App Info record when more than one record exists.",
+    )
+    parser.add_argument(
+        "--expected-submission-id",
+        help="Require this review submission to be the latest submission.",
+    )
+    parser.add_argument(
+        "--output",
+        default="localization/reports/asc-read-only-after-approved-apply.json",
+        help="Path for the JSON verification report.",
+    )
+    return parser.parse_args()
 
 
 def asc(*arguments: str) -> dict[str, object]:
@@ -48,6 +76,7 @@ def screenshot_summary(localization: dict[str, object]) -> tuple[str, dict[str, 
 
 
 def main() -> None:
+    args = parse_args()
     auth = asc("auth", "status", "--validate")
     version = asc(
         "versions",
@@ -57,10 +86,12 @@ def main() -> None:
         "--include-build",
         "--include-submission",
     )
+    age_rating = asc("age-rating", "view", "--version-id", VERSION_ID)
+    review_status = asc("review", "status", "--app", APP_ID)
     localizations = asc(
         "localizations", "list", "--version", VERSION_ID, "--paginate"
     ).get("data", [])
-    app_info = asc(
+    app_info_arguments = [
         "localizations",
         "list",
         "--app",
@@ -68,7 +99,10 @@ def main() -> None:
         "--type",
         "app-info",
         "--paginate",
-    ).get("data", [])
+    ]
+    if args.app_info_id:
+        app_info_arguments.extend(("--app-info", args.app_info_id))
+    app_info = asc(*app_info_arguments).get("data", [])
     price = asc("pricing", "current", "--app", APP_ID)
     subscriptions = asc(
         "subscriptions", "groups", "list", "--app", APP_ID, "--paginate"
@@ -118,9 +152,25 @@ def main() -> None:
         failures.append("ASC credential validation failed")
     if version.get("versionString") != VERSION_STRING:
         failures.append("version string mismatch")
-    if version.get("state") != "PREPARE_FOR_SUBMISSION":
-        failures.append("version is not PREPARE_FOR_SUBMISSION")
-    if version.get("buildId") is not None:
+    if version.get("state") != args.expected_version_state:
+        failures.append(
+            f"version is not {args.expected_version_state}"
+        )
+    age_rating_attributes = age_rating.get("data", {}).get("attributes", {})
+    if age_rating_attributes.get("socialMedia") is not False:
+        failures.append("social media age-rating field is not false")
+    if age_rating_attributes.get("socialMediaAgeRestricted") is not False:
+        failures.append("age-restricted social media field is not false")
+    if review_status.get("reviewState") != args.expected_version_state:
+        failures.append("review status does not match expected version state")
+    if args.expected_submission_id:
+        latest_submission = review_status.get("latestSubmission") or {}
+        if latest_submission.get("id") != args.expected_submission_id:
+            failures.append("latest review submission mismatch")
+    if args.expected_build_id:
+        if version.get("buildId") != args.expected_build_id:
+            failures.append("attached build mismatch")
+    elif version.get("buildId") is not None:
         failures.append("a build was unexpectedly attached")
     if len(localizations) != 26 or metadata_mismatches:
         failures.append("version localization metadata mismatch")
@@ -143,6 +193,12 @@ def main() -> None:
             "validationResults": credential_validations,
         },
         "version": version,
+        "ageRating": age_rating,
+        "reviewStatus": review_status,
+        "expectedBuildId": args.expected_build_id,
+        "expectedVersionState": args.expected_version_state,
+        "appInfoId": args.app_info_id,
+        "expectedSubmissionId": args.expected_submission_id,
         "versionLocalizationCount": len(localizations),
         "metadataFieldComparisonCount": len(localizations) * len(METADATA_FIELDS),
         "metadataMismatches": metadata_mismatches,
@@ -165,7 +221,7 @@ def main() -> None:
         "failures": failures,
         "passed": not failures,
     }
-    output = Path("localization/reports/asc-read-only-after-approved-apply.json")
+    output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(

@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-08-11T13:12:39.971418+00:00",
+  "capturedAt": "2026-08-11T13:18:12.001447+00:00",
   "mode": "authenticated read-only verification after approved mutations",
   "authentication": {
     "credentialCount": 1,
@@ -11,11 +11,76 @@
     "id": "53686e4e-0162-481c-99d1-17eb5df77c87",
     "versionString": "2.5.2",
     "platform": "IOS",
-    "state": "PREPARE_FOR_SUBMISSION",
+    "state": "WAITING_FOR_REVIEW",
     "buildId": "d291e089-b477-4448-8018-beb7b095b2dd",
-    "buildVersion": "202608110833"
+    "buildVersion": "202608110833",
+    "submissionId": "53686e4e-0162-481c-99d1-17eb5df77c87"
+  },
+  "ageRating": {
+    "data": {
+      "type": "ageRatingDeclarations",
+      "id": "36f4e7a4-abdf-4d32-aa12-6121e328d3e1",
+      "attributes": {
+        "advertising": false,
+        "gambling": false,
+        "healthOrWellnessTopics": false,
+        "lootBox": false,
+        "messagingAndChat": false,
+        "parentalControls": false,
+        "ageAssurance": false,
+        "socialMedia": false,
+        "socialMediaAgeRestricted": false,
+        "unrestrictedWebAccess": false,
+        "userGeneratedContent": false,
+        "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+        "contests": "NONE",
+        "gamblingSimulated": "NONE",
+        "gunsOrOtherWeapons": "NONE",
+        "medicalOrTreatmentInformation": "NONE",
+        "profanityOrCrudeHumor": "NONE",
+        "sexualContentGraphicAndNudity": "NONE",
+        "sexualContentOrNudity": "NONE",
+        "horrorOrFearThemes": "NONE",
+        "matureOrSuggestiveThemes": "NONE",
+        "violenceCartoonOrFantasy": "NONE",
+        "violenceRealistic": "NONE",
+        "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+        "ageRatingOverride": "NONE",
+        "ageRatingOverrideV2": "NONE",
+        "koreaAgeRatingOverride": "NONE"
+      },
+      "links": {
+        "self": "https://api.appstoreconnect.apple.com/v1/ageRatingDeclarations/36f4e7a4-abdf-4d32-aa12-6121e328d3e1"
+      }
+    },
+    "links": {
+      "self": "https://api.appstoreconnect.apple.com/v1/appInfos/36f4e7a4-abdf-4d32-aa12-6121e328d3e1/ageRatingDeclaration"
+    }
+  },
+  "reviewStatus": {
+    "appId": "6758960270",
+    "version": {
+      "id": "53686e4e-0162-481c-99d1-17eb5df77c87",
+      "version": "2.5.2",
+      "platform": "IOS",
+      "state": "WAITING_FOR_REVIEW",
+      "createdDate": "2026-08-10T18:08:32-07:00"
+    },
+    "reviewDetailConfigured": true,
+    "reviewDetailId": "57417030-6af2-4879-a690-a6028ce125cb",
+    "latestSubmission": {
+      "id": "7f18ec89-cf28-43cb-968b-1df322c9730e",
+      "state": "WAITING_FOR_REVIEW",
+      "platform": "IOS",
+      "submittedDate": "2026-08-11T13:16:04.532Z"
+    },
+    "reviewState": "WAITING_FOR_REVIEW",
+    "nextAction": "Wait for App Store review outcome."
   },
   "expectedBuildId": "d291e089-b477-4448-8018-beb7b095b2dd",
+  "expectedVersionState": "WAITING_FOR_REVIEW",
+  "appInfoId": "36f4e7a4-abdf-4d32-aa12-6121e328d3e1",
+  "expectedSubmissionId": "7f18ec89-cf28-43cb-968b-1df322c9730e",
   "versionLocalizationCount": 26,
   "metadataFieldComparisonCount": 130,
   "metadataMismatches": [],

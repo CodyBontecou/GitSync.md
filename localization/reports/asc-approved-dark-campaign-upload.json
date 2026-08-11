@@ -1,0 +1,770 @@
+{
+  "capturedAt": "2026-08-11T13:11:07.667077+00:00",
+  "approvedVersionId": "53686e4e-0162-481c-99d1-17eb5df77c87",
+  "approvedVersionString": "2.5.2",
+  "phase": "upload",
+  "assetRoot": "marketing/app-store-dark-campaign-v1",
+  "assetLayout": "locale-form",
+  "excludedLocales": [],
+  "replacementLocales": [
+    "ar-SA",
+    "da",
+    "de-DE",
+    "en-US",
+    "es-ES",
+    "fi",
+    "fr-FR",
+    "he",
+    "hi",
+    "hu",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "nl-NL",
+    "no",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "targetSetCount": 52,
+  "records": [
+    {
+      "locale": "ar-SA",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ar-SA/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "4c72c752-908a-4362-8fc0-2ed92a6bcf92",
+      "passed": true
+    },
+    {
+      "locale": "ar-SA",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ar-SA/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "f171f7ca-d206-43d9-95a5-0aa40ba1d178",
+      "passed": true
+    },
+    {
+      "locale": "da",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/da/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "09c87ff7-f518-4327-8809-a174c9325435",
+      "passed": true
+    },
+    {
+      "locale": "da",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/da/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "43dd2ecf-48ef-4a59-a5ac-61c6edcea084",
+      "passed": true
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/de-DE/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "cd2439da-ee10-4511-85cf-624c5c6198e4",
+      "passed": true
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/de-DE/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "f671d196-054e-4302-adbb-8a0354f07a91",
+      "passed": true
+    },
+    {
+      "locale": "en-US",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/en-US/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "566f183e-1f1b-46ba-8d5d-96a846943327",
+      "passed": true
+    },
+    {
+      "locale": "en-US",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/en-US/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "ffbfa7b9-8de9-4d89-baf5-415a250d4ae2",
+      "passed": true
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/es-ES/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "1606facf-6830-4e5b-9de3-088b3963aad5",
+      "passed": true
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/es-ES/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "727fc676-2c45-4399-aa46-e7b0f3a988e2",
+      "passed": true
+    },
+    {
+      "locale": "fi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/fi/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "08e639be-6e31-4a03-af7f-c855ee0b45d6",
+      "passed": true
+    },
+    {
+      "locale": "fi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/fi/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "209ffccd-a1ee-44f3-9aad-cd6de3ae242d",
+      "passed": true
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/fr-FR/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "1ed0dee2-3a5c-4538-929c-32e834522575",
+      "passed": true
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/fr-FR/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "b8c4aeaa-7a6d-4a31-a2c2-fc04f8b55a4e",
+      "passed": true
+    },
+    {
+      "locale": "he",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/he/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "3fea686c-a3ff-463c-a93b-ec1e53f82696",
+      "passed": true
+    },
+    {
+      "locale": "he",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/he/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "ee328611-48bb-498a-8f50-0cb0a997e5ab",
+      "passed": true
+    },
+    {
+      "locale": "hi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/hi/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "5ce14f7b-66c0-4af6-9242-f175e8801fc3",
+      "passed": true
+    },
+    {
+      "locale": "hi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/hi/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "35b75ac6-0ebf-4eee-a320-4a777fa8d216",
+      "passed": true
+    },
+    {
+      "locale": "hu",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/hu/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "ec25663d-66fe-444f-9e64-aec44ba6e353",
+      "passed": true
+    },
+    {
+      "locale": "hu",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/hu/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "0344e349-badc-46f9-85a2-39e8d43f54a3",
+      "passed": true
+    },
+    {
+      "locale": "id",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/id/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "02645744-f9fa-49f2-adeb-2d1ba8eeccd3",
+      "passed": true
+    },
+    {
+      "locale": "id",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/id/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "3595f3b0-d302-45a9-acfc-0d15244e1129",
+      "passed": true
+    },
+    {
+      "locale": "it",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/it/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "47704ebb-11e2-4568-b1c4-15fa0c21c699",
+      "passed": true
+    },
+    {
+      "locale": "it",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/it/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "0ddc858d-5e39-4be6-adf6-935e0da0d859",
+      "passed": true
+    },
+    {
+      "locale": "ja",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ja/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "5672bb44-c72f-4b4f-ad70-8ded74356ccf",
+      "passed": true
+    },
+    {
+      "locale": "ja",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ja/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "b7bfbd7a-22cb-44c7-8153-659f2a24f54a",
+      "passed": true
+    },
+    {
+      "locale": "ko",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ko/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "38f98573-c666-440e-8900-87bee156efe2",
+      "passed": true
+    },
+    {
+      "locale": "ko",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ko/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "0291a917-87bb-46e1-b948-47e282aa97f6",
+      "passed": true
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/nl-NL/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "6eef90fe-c513-4547-bc61-a152e49e7f38",
+      "passed": true
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/nl-NL/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "a3cd93be-b8b6-44f4-87a3-a870859dbec9",
+      "passed": true
+    },
+    {
+      "locale": "no",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/no/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "113c3b4e-94a7-4ed9-a4e0-c648b456da1c",
+      "passed": true
+    },
+    {
+      "locale": "no",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/no/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "7a64a7da-a907-4e5b-9dbd-15a1c13e654b",
+      "passed": true
+    },
+    {
+      "locale": "pl",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/pl/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "6b23347f-f17c-4983-ab08-85d0e9ee7434",
+      "passed": true
+    },
+    {
+      "locale": "pl",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/pl/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "f1bbc5e2-98db-4835-bc81-72b9781aa64e",
+      "passed": true
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/pt-BR/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "6737d7b2-2513-4bdd-9376-e5d49072599f",
+      "passed": true
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/pt-BR/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "58c3a69f-8639-4657-92d5-38623e661794",
+      "passed": true
+    },
+    {
+      "locale": "ru",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ru/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "0e39448f-9a91-49cb-a086-1a553e49cfa2",
+      "passed": true
+    },
+    {
+      "locale": "ru",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/ru/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "797d71eb-70af-4496-9a76-a960f64c5f41",
+      "passed": true
+    },
+    {
+      "locale": "sv",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/sv/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "b2b73494-85a0-44af-8391-6798decc42ac",
+      "passed": true
+    },
+    {
+      "locale": "sv",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/sv/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "1530528d-5f22-4d26-b795-16e0ef2c7298",
+      "passed": true
+    },
+    {
+      "locale": "th",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/th/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "fd31b823-7853-4950-9d00-652845fb65cb",
+      "passed": true
+    },
+    {
+      "locale": "th",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/th/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "67ed357b-62b6-46d4-955d-75d59a6828a6",
+      "passed": true
+    },
+    {
+      "locale": "tr",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/tr/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "65f170d3-f0b8-4576-99b1-c29e9fa752e2",
+      "passed": true
+    },
+    {
+      "locale": "tr",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/tr/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "153c79cd-1672-4c2d-ae5a-d179e1200952",
+      "passed": true
+    },
+    {
+      "locale": "uk",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/uk/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "c3ca9ac0-de3e-48ad-9485-42b803c5d58c",
+      "passed": true
+    },
+    {
+      "locale": "uk",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/uk/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "77d67120-c6d4-44e1-9113-f919bb1f1fe8",
+      "passed": true
+    },
+    {
+      "locale": "vi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/vi/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "8b40b690-cebb-480e-bde9-6d72eff93dee",
+      "passed": true
+    },
+    {
+      "locale": "vi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/vi/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "4d4a8c43-243f-4664-b989-3f1e55f0f42d",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/zh-Hans/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "bfde0d5a-6405-4307-8373-6e5dd36a1e7e",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/zh-Hans/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "04a6ef72-57e8-4549-96e8-5af8bc141345",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/zh-Hant/ipad",
+      "total": 4,
+      "states": {
+        "COMPLETE": 4
+      },
+      "setId": "13eab307-49d7-4cca-8131-d259dc189c95",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": true,
+      "path": "marketing/app-store-dark-campaign-v1/zh-Hant/iphone",
+      "total": 10,
+      "states": {
+        "COMPLETE": 10
+      },
+      "setId": "44b397a5-b096-486d-91d7-8e8f80424552",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "completed": true
+}

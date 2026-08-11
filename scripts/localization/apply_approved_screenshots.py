@@ -43,6 +43,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--exclude-locale", action="append", default=[])
     parser.add_argument("--replace-locale", action="append", default=[])
+    parser.add_argument(
+        "--replace-all",
+        action="store_true",
+        help="Replace existing screenshot sets for every targeted locale.",
+    )
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--confirm-approved-plan", action="store_true")
     return parser.parse_args()
@@ -85,18 +90,28 @@ def upload_set(
         "--max-screenshots",
         str(count),
     ]
-    if phase == "dry-run":
-        command.append("--dry-run")
-    elif replace:
+    if replace:
         command.append("--replace")
     else:
         command.append("--skip-existing")
+    if phase == "dry-run":
+        command.append("--dry-run")
 
     result = asc_json(command)
     states: dict[str, int] = {}
     for item in result.get("results", []):
         state = str(item.get("state"))
         states[state] = states.get(state, 0) + 1
+    if phase == "dry-run":
+        passed = states.get("would-upload", 0) == count
+        if replace:
+            passed = passed and states.get("would-delete", 0) == count
+    else:
+        passed = (
+            result.get("total") == count
+            and states.get("COMPLETE", 0) == count
+        )
+    passed = passed and not any("fail" in state.lower() for state in states)
     return {
         "locale": locale,
         "formFactor": form_factor,
@@ -107,9 +122,7 @@ def upload_set(
         "total": result.get("total"),
         "states": states,
         "setId": result.get("setId"),
-        "passed": result.get("total") == count
-        and sum(states.values()) == count
-        and not any("fail" in state.lower() for state in states),
+        "passed": passed,
     }
 
 
@@ -130,7 +143,9 @@ def main() -> None:
         raise SystemExit("Version localization set does not match the approved 26 locales")
 
     excluded = set(args.exclude_locale)
-    replacements = set(args.replace_locale)
+    replacements = (
+        set(EXPECTED_LOCALES) if args.replace_all else set(args.replace_locale)
+    )
     unknown = (excluded | replacements) - set(EXPECTED_LOCALES)
     if unknown:
         raise SystemExit(f"Unknown locales: {sorted(unknown)}")
@@ -207,7 +222,7 @@ def main() -> None:
                 "completed": not failures,
                 "phase": args.phase,
                 "setCount": len(records),
-                "assetCount": sum(int(item.get("total", 0)) for item in records),
+                "assetCount": sum(int(item.get("expectedCount", 0)) for item in records),
                 "failureCount": len(failures),
                 "report": str(report_path),
             },
