@@ -1,0 +1,9 @@
+Git hostowany samodzielnie przez SSH jest już dostępny. Ta aktualizacja naprawia obsługę serwerów Forgejo i Git korzystających wyłącznie z SSH podczas klonowania, pobierania i wysyłania repozytoriów.
+
+• Transport SSH jest teraz prawidłowo dołączony na iPhonie i iPadzie
+• Obsługiwane są klucze prywatne Ed25519, ECDSA i RSA
+• Nieznane hosty SSH wyświetlają teraz prośbę o zaufanie z odciskiem klucza
+• Zmienione klucze hosta SSH są blokowane do czasu ich sprawdzenia
+• Ustawienia repozytorium ułatwiają teraz aktualizowanie zdalnych adresów URL i danych logowania SSH
+
+Dziękujemy za pomoc w testach z prawdziwymi serwerami Forgejo.

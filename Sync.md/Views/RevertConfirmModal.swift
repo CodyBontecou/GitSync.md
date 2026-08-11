@@ -69,7 +69,11 @@ struct RevertConfirmModal: View {
                             Image(systemName: "doc.on.doc")
                                 .font(.system(size: 13))
                                 .foregroundStyle(Color.brutalTextFaint)
-                            Text("\(files.count) file\(files.count == 1 ? "" : "s") will be discarded")
+                            Text(
+                                files.count == 1
+                                    ? String(localized: "1 file will be discarded")
+                                    : String(localized: "\(files.count) files will be discarded")
+                            )
                                 .font(.system(size: 15, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                         }

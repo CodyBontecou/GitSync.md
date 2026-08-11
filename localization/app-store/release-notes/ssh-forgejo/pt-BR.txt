@@ -1,0 +1,9 @@
+O Git auto-hospedado via SSH chegou. Esta atualização corrige o suporte a servidores Forgejo e Git que usam somente SSH ao clonar, baixar e enviar repositórios.
+
+• O transporte SSH agora está incluído corretamente no iPhone e no iPad
+• Chaves privadas Ed25519, ECDSA e RSA são compatíveis
+• Hosts SSH desconhecidos agora exibem uma solicitação de confiança com a impressão digital
+• Chaves de host SSH alteradas são bloqueadas até que você as revise
+• As configurações do repositório facilitam a atualização de URLs remotas e credenciais SSH
+
+Agradecemos por ajudar a testar esse recurso com servidores Forgejo reais.

@@ -85,7 +85,7 @@ struct SettingsView: View {
                                 if !repoURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && GitRemoteURL.parse(repoURL) == nil {
                                     BDivider().padding(.horizontal, 16)
                                     HStack(spacing: 6) {
-                                        BBadge(text: "INVALID URL", style: .error)
+                                        BBadge(text: String(localized: "INVALID URL"), style: .error)
                                         Text(String(localized: "Use HTTPS, SSH, git://, file://, or owner/repo."))
                                             .font(.system(size: 13, design: .monospaced))
                                             .foregroundStyle(Color.brutalError)
@@ -436,7 +436,7 @@ struct SettingsView: View {
                 Spacer()
 
                 if authMethod == method {
-                    BBadge(text: "selected", style: .success)
+                    BBadge(text: String(localized: "selected"), style: .success)
                 }
             }
             .padding(.horizontal, 16)

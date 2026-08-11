@@ -10,22 +10,22 @@ struct OnboardingView: View {
 
     private let slides: [OnboardingSlide] = [
         OnboardingSlide(
-            title: ["SYNC", ".MD"],
+            title: [String(localized: "SYNC"), ".MD"],
             accentIndex: 1,
-            subtitle: "YOUR REPOS, ON YOUR IPHONE",
-            description: "Clone any Git repository to your device — GitHub, self-hosted, SSH, or public remotes — and keep it in sync from your pocket."
+            subtitle: String(localized: "YOUR REPOS, ON YOUR IPHONE"),
+            description: String(localized: "Clone any Git repository to your device — GitHub, self-hosted, SSH, or public remotes — and keep it in sync from your pocket.")
         ),
         OnboardingSlide(
-            title: ["EDIT", "ANYWHERE"],
+            title: [String(localized: "EDIT"), String(localized: "ANYWHERE")],
             accentIndex: 1,
-            subtitle: "MARKDOWN-FIRST WORKFLOW",
-            description: "Your files live in the Files app. Edit with any text editor, then come back to commit and push your changes upstream."
+            subtitle: String(localized: "MARKDOWN-FIRST WORKFLOW"),
+            description: String(localized: "Your files live in the Files app. Edit with any text editor, then come back to commit and push your changes upstream.")
         ),
         OnboardingSlide(
-            title: ["FULL", "GIT"],
+            title: [String(localized: "FULL"), "GIT"],
             accentIndex: 1,
-            subtitle: "BRANCHES, DIFFS, HISTORY",
-            description: "Switch branches, view diffs, browse commit history, manage tags, and resolve conflicts — real Git, not a watered-down sync."
+            subtitle: String(localized: "BRANCHES, DIFFS, HISTORY"),
+            description: String(localized: "Switch branches, view diffs, browse commit history, manage tags, and resolve conflicts — real Git, not a watered-down sync.")
         ),
     ]
 
@@ -53,13 +53,13 @@ struct OnboardingView: View {
                 }
 
                 if currentPage == slides.count - 1 {
-                    BPrimaryButton(title: "Get Started", icon: "arrow.right") {
+                    BPrimaryButton(title: String(localized: "Get Started"), icon: "arrow.right") {
                         finishOnboarding()
                     }
                     .padding(.horizontal, 24)
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                 } else {
-                    BPrimaryButton(title: "Continue", icon: "arrow.right") {
+                    BPrimaryButton(title: String(localized: "Continue"), icon: "arrow.right") {
                         withAnimation {
                             currentPage += 1
                         }
@@ -68,7 +68,7 @@ struct OnboardingView: View {
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
 
-                BGhostButton(title: "Skip") {
+                BGhostButton(title: String(localized: "Skip")) {
                     finishOnboarding()
                 }
                 .padding(.bottom, 8)

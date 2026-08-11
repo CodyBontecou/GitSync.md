@@ -1,0 +1,9 @@
+Git tự lưu trữ qua SSH đã sẵn sàng. Bản cập nhật này sửa lỗi hỗ trợ máy chủ Forgejo và Git chỉ dùng SSH khi sao chép, kéo và đẩy kho lưu trữ.
+
+• Thành phần truyền tải SSH hiện được đóng gói đúng cách cho iPhone và iPad
+• Hỗ trợ khóa riêng Ed25519, ECDSA và RSA
+• Máy chủ SSH chưa biết hiện hiển thị lời nhắc tin cậy kèm dấu vân tay
+• Khóa máy chủ SSH đã thay đổi sẽ bị chặn cho đến khi bạn xem xét
+• Phần cài đặt kho lưu trữ giúp cập nhật URL từ xa và thông tin xác thực SSH dễ dàng hơn
+
+Cảm ơn bạn đã giúp thử nghiệm với các máy chủ Forgejo thực tế.

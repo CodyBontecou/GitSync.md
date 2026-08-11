@@ -1,0 +1,131 @@
+{
+  "capturedAt": "2026-08-11T00:55:59.317103+00:00",
+  "mode": "authenticated read-only; no App Store Connect mutation commands invoked",
+  "authentication": {
+    "credentialCount": 1,
+    "validationResults": [
+      "works"
+    ],
+    "allValidated": true
+  },
+  "app": {
+    "id": "6758960270",
+    "liveVersion": {
+      "id": "269c0a1d-52c2-4096-b894-5d6840afaab8",
+      "versionString": "2.5.1",
+      "platform": "IOS",
+      "state": "READY_FOR_DISTRIBUTION",
+      "buildId": "04ca580c-e6ed-449d-8a07-4b04e0e81a70",
+      "buildVersion": "202606292041"
+    },
+    "proposedVersion": "2.5.2",
+    "proposedVersionExists": false,
+    "pricing": {
+      "appId": "6758960270",
+      "baseTerritory": "USA",
+      "customerPrice": "9.99",
+      "proceeds": "8.49",
+      "currency": "USD",
+      "isFree": false
+    }
+  },
+  "localizations": {
+    "appInfoCount": 26,
+    "liveVersionCount": 26,
+    "liveLocales": [
+      "ar-SA",
+      "da",
+      "de-DE",
+      "en-US",
+      "es-ES",
+      "fi",
+      "fr-FR",
+      "he",
+      "hi",
+      "hu",
+      "id",
+      "it",
+      "ja",
+      "ko",
+      "nl-NL",
+      "no",
+      "pl",
+      "pt-BR",
+      "ru",
+      "sv",
+      "th",
+      "tr",
+      "uk",
+      "vi",
+      "zh-Hans",
+      "zh-Hant"
+    ],
+    "liveReleaseNotesMatchingPreparedArtifactCount": 1,
+    "liveReleaseNotesMatchingPreparedArtifactLocales": [
+      "en-US"
+    ]
+  },
+  "liveScreenshots": {
+    "byLocaleAndDisplayType": {
+      "ar-SA": {},
+      "de-DE": {},
+      "pl": {},
+      "fi": {},
+      "no": {},
+      "vi": {},
+      "en-US": {
+        "APP_IPAD_PRO_3GEN_129": 4,
+        "APP_IPHONE_67": 10
+      },
+      "nl-NL": {},
+      "zh-Hant": {},
+      "ja": {},
+      "ko": {},
+      "th": {},
+      "sv": {},
+      "tr": {},
+      "zh-Hans": {},
+      "he": {},
+      "id": {},
+      "es-ES": {},
+      "ru": {},
+      "fr-FR": {},
+      "da": {},
+      "hi": {},
+      "pt-BR": {},
+      "it": {},
+      "uk": {},
+      "hu": {}
+    },
+    "total": 14
+  },
+  "commercialConfiguration": {
+    "subscriptionGroupCount": 0,
+    "inAppPurchases": [
+      {
+        "id": "6761148615",
+        "name": "Unlimited Repositories",
+        "productId": "bontecou.syncmd.unlock",
+        "inAppPurchaseType": "NON_CONSUMABLE",
+        "state": "DEVELOPER_REMOVED_FROM_SALE"
+      }
+    ],
+    "inAppPurchaseVersions": [
+      {
+        "id": "da7ce013-5546-4ee1-8abc-7a3d93f39942",
+        "version": 1,
+        "state": "APPROVED"
+      }
+    ],
+    "inAppPurchaseLocalizations": [
+      {
+        "id": "a83ad556-652e-4b49-bc22-0e0421c929be",
+        "name": "Unlimited Repositories",
+        "locale": "en-US",
+        "description": "Unlock unlimited repositories in Sync.md."
+      }
+    ]
+  },
+  "failures": [],
+  "passed": true
+}

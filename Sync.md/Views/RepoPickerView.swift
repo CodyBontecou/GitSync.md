@@ -85,7 +85,10 @@ struct RepoPickerView: View {
     private func repoRow(_ repo: GitHubRepo) -> some View {
         HStack(alignment: .top, spacing: 14) {
             VStack(spacing: 2) {
-                BBadge(text: repo.isPrivate ? "private" : "public", style: repo.isPrivate ? .accent : .default)
+                BBadge(
+                    text: repo.isPrivate ? String(localized: "private") : String(localized: "public"),
+                    style: repo.isPrivate ? .accent : .default
+                )
             }
             .padding(.top, 3)
 

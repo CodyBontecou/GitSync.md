@@ -1,0 +1,265 @@
+{
+  "count": 52,
+  "contactSheets": [
+    {
+      "locale": "en-US",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/en-US-iphone.jpg"
+    },
+    {
+      "locale": "en-US",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/en-US-ipad.jpg"
+    },
+    {
+      "locale": "ar-SA",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/ar-SA-iphone.jpg"
+    },
+    {
+      "locale": "ar-SA",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/ar-SA-ipad.jpg"
+    },
+    {
+      "locale": "da",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/da-iphone.jpg"
+    },
+    {
+      "locale": "da",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/da-ipad.jpg"
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/de-DE-iphone.jpg"
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/de-DE-ipad.jpg"
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/es-ES-iphone.jpg"
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/es-ES-ipad.jpg"
+    },
+    {
+      "locale": "fi",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/fi-iphone.jpg"
+    },
+    {
+      "locale": "fi",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/fi-ipad.jpg"
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/fr-FR-iphone.jpg"
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/fr-FR-ipad.jpg"
+    },
+    {
+      "locale": "he",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/he-iphone.jpg"
+    },
+    {
+      "locale": "he",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/he-ipad.jpg"
+    },
+    {
+      "locale": "hi",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/hi-iphone.jpg"
+    },
+    {
+      "locale": "hi",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/hi-ipad.jpg"
+    },
+    {
+      "locale": "hu",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/hu-iphone.jpg"
+    },
+    {
+      "locale": "hu",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/hu-ipad.jpg"
+    },
+    {
+      "locale": "id",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/id-iphone.jpg"
+    },
+    {
+      "locale": "id",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/id-ipad.jpg"
+    },
+    {
+      "locale": "it",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/it-iphone.jpg"
+    },
+    {
+      "locale": "it",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/it-ipad.jpg"
+    },
+    {
+      "locale": "ja",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/ja-iphone.jpg"
+    },
+    {
+      "locale": "ja",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/ja-ipad.jpg"
+    },
+    {
+      "locale": "ko",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/ko-iphone.jpg"
+    },
+    {
+      "locale": "ko",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/ko-ipad.jpg"
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/nl-NL-iphone.jpg"
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/nl-NL-ipad.jpg"
+    },
+    {
+      "locale": "no",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/no-iphone.jpg"
+    },
+    {
+      "locale": "no",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/no-ipad.jpg"
+    },
+    {
+      "locale": "pl",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/pl-iphone.jpg"
+    },
+    {
+      "locale": "pl",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/pl-ipad.jpg"
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/pt-BR-iphone.jpg"
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/pt-BR-ipad.jpg"
+    },
+    {
+      "locale": "ru",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/ru-iphone.jpg"
+    },
+    {
+      "locale": "ru",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/ru-ipad.jpg"
+    },
+    {
+      "locale": "sv",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/sv-iphone.jpg"
+    },
+    {
+      "locale": "sv",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/sv-ipad.jpg"
+    },
+    {
+      "locale": "th",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/th-iphone.jpg"
+    },
+    {
+      "locale": "th",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/th-ipad.jpg"
+    },
+    {
+      "locale": "tr",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/tr-iphone.jpg"
+    },
+    {
+      "locale": "tr",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/tr-ipad.jpg"
+    },
+    {
+      "locale": "uk",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/uk-iphone.jpg"
+    },
+    {
+      "locale": "uk",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/uk-ipad.jpg"
+    },
+    {
+      "locale": "vi",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/vi-iphone.jpg"
+    },
+    {
+      "locale": "vi",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/vi-ipad.jpg"
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/zh-Hans-iphone.jpg"
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/zh-Hans-ipad.jpg"
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "iphone",
+      "path": "marketing/contact-sheets/zh-Hant-iphone.jpg"
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "ipad",
+      "path": "marketing/contact-sheets/zh-Hant-ipad.jpg"
+    }
+  ]
+}

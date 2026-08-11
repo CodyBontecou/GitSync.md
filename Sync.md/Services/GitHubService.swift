@@ -126,14 +126,14 @@ enum GitHubError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidURL: return "Invalid repository URL"
-        case .unauthorized: return "Invalid or expired token. Sign out and sign in again."
-        case .notFound(let detail): return "Not found: \(detail)"
-        case .rateLimited: return "GitHub API rate limit exceeded. Try again later."
-        case .conflict(let msg): return "Conflict: \(msg)"
-        case .apiError(let code, let msg): return "GitHub API error (\(code)): \(msg)"
-        case .decodingError(let msg): return "Failed to parse response: \(msg)"
-        case .noChanges: return "No changes to push"
+        case .invalidURL: return String(localized: "Invalid repository URL")
+        case .unauthorized: return String(localized: "Invalid or expired token. Sign out and sign in again.")
+        case .notFound(let detail): return String(localized: "Not found: \(detail)")
+        case .rateLimited: return String(localized: "GitHub API rate limit exceeded. Try again later.")
+        case .conflict(let msg): return String(localized: "Conflict: \(msg)")
+        case .apiError(let code, let msg): return String(localized: "GitHub API error (\(code)): \(msg)")
+        case .decodingError(let msg): return String(localized: "Failed to parse response: \(msg)")
+        case .noChanges: return String(localized: "No changes to push")
         }
     }
 }
@@ -243,7 +243,7 @@ final class GitHubService: Sendable {
 
         let (data, response) = try await session.data(for: req)
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw GitHubError.apiError(0, "Invalid response")
+            throw GitHubError.apiError(0, String(localized: "Invalid response"))
         }
 
         switch httpResponse.statusCode {
@@ -289,11 +289,11 @@ final class GitHubService: Sendable {
         let data = try await request("/repos/\(owner)/\(repo)/git/blobs/\(sha)")
         let blob = try decoder.decode(GitBlob.self, from: data)
         guard blob.encoding == "base64" else {
-            throw GitHubError.decodingError("Unexpected blob encoding: \(blob.encoding)")
+            throw GitHubError.decodingError(String(localized: "Unexpected blob encoding: \(blob.encoding)"))
         }
         let cleaned = blob.content.replacingOccurrences(of: "\n", with: "")
         guard let decoded = Data(base64Encoded: cleaned) else {
-            throw GitHubError.decodingError("Failed to decode base64 blob")
+            throw GitHubError.decodingError(String(localized: "Failed to decode base64 blob"))
         }
         return decoded
     }
@@ -481,7 +481,7 @@ final class GitHubService: Sendable {
 
         // Validate stored state before making API calls
         guard !currentCommitSHA.isEmpty, !currentTreeSHA.isEmpty else {
-            throw GitHubError.apiError(0, "Repository not synced. Please pull or re-clone first.")
+            throw GitHubError.apiError(0, String(localized: "Repository not synced. Please pull or re-clone first."))
         }
 
         // Check that the remote hasn't diverged (fast-forward check)
@@ -489,7 +489,7 @@ final class GitHubService: Sendable {
         do {
             latestRemoteSHA = try await getRef(branch: branch)
         } catch {
-            throw GitHubError.apiError(0, "Failed to read remote branch '\(branch)': \(error.localizedDescription)")
+            throw GitHubError.apiError(0, String(localized: "Failed to read remote branch '\(branch)': \(error.localizedDescription)"))
         }
 
         if latestRemoteSHA != currentCommitSHA {
@@ -543,7 +543,7 @@ final class GitHubService: Sendable {
         do {
             newTreeSHA = try await createTree(baseTree: currentTreeSHA, entries: treeEntries)
         } catch {
-            throw GitHubError.apiError(0, "Failed to create tree: \(error.localizedDescription)")
+            throw GitHubError.apiError(0, String(localized: "Failed to create tree: \(error.localizedDescription)"))
         }
 
         // 3. Create commit
@@ -557,14 +557,14 @@ final class GitHubService: Sendable {
                 authorEmail: authorEmail
             )
         } catch {
-            throw GitHubError.apiError(0, "Failed to create commit: \(error.localizedDescription)")
+            throw GitHubError.apiError(0, String(localized: "Failed to create commit: \(error.localizedDescription)"))
         }
 
         // 4. Update ref
         do {
             try await updateRef(branch: branch, sha: newCommitSHA)
         } catch {
-            throw GitHubError.apiError(0, "Failed to update ref — remote may have advanced. Pull and retry. (\(error.localizedDescription))")
+            throw GitHubError.apiError(0, String(localized: "Failed to update ref — remote may have advanced. Pull and retry. (\(error.localizedDescription))"))
         }
 
         return (newCommitSHA, newTreeSHA, newBlobSHAs)

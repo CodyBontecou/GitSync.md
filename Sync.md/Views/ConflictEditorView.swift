@@ -263,7 +263,7 @@ struct ConflictEditorView: View {
                 BDivider()
 
                 ScrollView {
-                    Text(text.isEmpty ? "(empty)" : text)
+                    Text(text.isEmpty ? String(localized: "(empty)") : text)
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .frame(maxWidth: .infinity, alignment: .leading)

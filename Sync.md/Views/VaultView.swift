@@ -92,6 +92,10 @@ struct VaultView: View {
         }
         .navigationDestination(for: FileBrowserDestination.self) { dest in
             FileBrowserView(repoID: dest.repoID, relativePath: dest.relativePath)
+                .id(dest)
+        }
+        .navigationDestination(for: FileEditorDestination.self) { dest in
+            FileEditorView(repoID: dest.repoID, fileURL: dest.fileURL)
         }
         .overlay {
             if showRevertAllConfirm {

@@ -1,0 +1,3805 @@
+{
+  "validator": "asc screenshots validate (local-only)",
+  "localeCount": 26,
+  "validationCount": 52,
+  "validations": [
+    {
+      "locale": "en-US",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/en-US",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/en-US",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/en-US/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/en-US/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/en-US/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/en-US/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/en-US/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/en-US/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/en-US/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/en-US/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/en-US/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/en-US/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en-US",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/en-US",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/en-US",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/en-US/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/en-US/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/en-US/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/en-US/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ar-SA",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/ar-SA",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/ar-SA",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/ar-SA/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/ar-SA/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/ar-SA/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/ar-SA/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/ar-SA/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/ar-SA/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/ar-SA/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/ar-SA/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/ar-SA/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/ar-SA/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ar-SA",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/ar-SA",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/ar-SA",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/ar-SA/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/ar-SA/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/ar-SA/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/ar-SA/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "da",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/da",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/da",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/da/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/da/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/da/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/da/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/da/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/da/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/da/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/da/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/da/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/da/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "da",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/da",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/da",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/da/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/da/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/da/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/da/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/de-DE",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/de-DE",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/de-DE/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/de-DE/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/de-DE/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/de-DE/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/de-DE/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/de-DE/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/de-DE/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/de-DE/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/de-DE/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/de-DE/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/de-DE",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/de-DE",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/de-DE/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/de-DE/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/de-DE/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/de-DE/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/es-ES",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/es-ES",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/es-ES/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/es-ES/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/es-ES/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/es-ES/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/es-ES/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/es-ES/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/es-ES/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/es-ES/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/es-ES/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/es-ES/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/es-ES",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/es-ES",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/es-ES/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/es-ES/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/es-ES/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/es-ES/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "fi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/fi",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/fi",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/fi/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/fi/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/fi/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/fi/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/fi/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/fi/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/fi/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/fi/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/fi/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/fi/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "fi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/fi",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/fi",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/fi/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/fi/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/fi/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/fi/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/fr-FR",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/fr-FR",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/fr-FR/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/fr-FR/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/fr-FR/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/fr-FR/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/fr-FR/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/fr-FR/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/fr-FR/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/fr-FR/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/fr-FR/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/fr-FR/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/fr-FR",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/fr-FR",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/fr-FR/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/fr-FR/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/fr-FR/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/fr-FR/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "he",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/he",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/he",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/he/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/he/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/he/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/he/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/he/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/he/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/he/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/he/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/he/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/he/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "he",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/he",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/he",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/he/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/he/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/he/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/he/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "hi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/hi",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/hi",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/hi/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/hi/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/hi/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/hi/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/hi/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/hi/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/hi/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/hi/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/hi/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/hi/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "hi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/hi",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/hi",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/hi/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/hi/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/hi/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/hi/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "hu",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/hu",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/hu",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/hu/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/hu/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/hu/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/hu/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/hu/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/hu/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/hu/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/hu/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/hu/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/hu/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "hu",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/hu",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/hu",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/hu/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/hu/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/hu/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/hu/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "id",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/id",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/id",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/id/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/id/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/id/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/id/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/id/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/id/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/id/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/id/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/id/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/id/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "id",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/id",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/id",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/id/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/id/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/id/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/id/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "it",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/it",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/it",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/it/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/it/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/it/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/it/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/it/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/it/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/it/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/it/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/it/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/it/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "it",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/it",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/it",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/it/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/it/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/it/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/it/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/ja",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/ja",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/ja/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/ja/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/ja/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/ja/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/ja/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/ja/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/ja/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/ja/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/ja/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/ja/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/ja",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/ja",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/ja/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/ja/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/ja/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/ja/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ko",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/ko",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/ko",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/ko/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/ko/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/ko/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/ko/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/ko/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/ko/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/ko/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/ko/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/ko/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/ko/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ko",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/ko",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/ko",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/ko/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/ko/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/ko/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/ko/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/nl-NL",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/nl-NL",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/nl-NL/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/nl-NL/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/nl-NL/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/nl-NL/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/nl-NL/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/nl-NL/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/nl-NL/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/nl-NL/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/nl-NL/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/nl-NL/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/nl-NL",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/nl-NL",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/nl-NL/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/nl-NL/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/nl-NL/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/nl-NL/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "no",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/no",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/no",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/no/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/no/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/no/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/no/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/no/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/no/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/no/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/no/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/no/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/no/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "no",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/no",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/no",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/no/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/no/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/no/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/no/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "pl",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/pl",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/pl",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/pl/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/pl/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/pl/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/pl/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/pl/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/pl/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/pl/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/pl/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/pl/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/pl/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "pl",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/pl",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/pl",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/pl/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/pl/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/pl/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/pl/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/pt-BR",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/pt-BR",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/pt-BR/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/pt-BR/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/pt-BR/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/pt-BR/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/pt-BR/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/pt-BR/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/pt-BR/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/pt-BR/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/pt-BR/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/pt-BR/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/pt-BR",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/pt-BR",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/pt-BR/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/pt-BR/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/pt-BR/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/pt-BR/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ru",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/ru",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/ru",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/ru/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/ru/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/ru/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/ru/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/ru/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/ru/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/ru/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/ru/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/ru/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/ru/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ru",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/ru",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/ru",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/ru/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/ru/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/ru/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/ru/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "sv",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/sv",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/sv",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/sv/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/sv/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/sv/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/sv/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/sv/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/sv/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/sv/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/sv/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/sv/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/sv/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "sv",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/sv",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/sv",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/sv/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/sv/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/sv/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/sv/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "th",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/th",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/th",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/th/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/th/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/th/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/th/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/th/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/th/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/th/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/th/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/th/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/th/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "th",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/th",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/th",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/th/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/th/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/th/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/th/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "tr",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/tr",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/tr",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/tr/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/tr/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/tr/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/tr/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/tr/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/tr/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/tr/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/tr/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/tr/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/tr/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "tr",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/tr",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/tr",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/tr/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/tr/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/tr/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/tr/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "uk",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/uk",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/uk",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/uk/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/uk/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/uk/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/uk/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/uk/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/uk/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/uk/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/uk/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/uk/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/uk/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "uk",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/uk",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/uk",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/uk/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/uk/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/uk/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/uk/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "vi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/vi",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/vi",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/vi/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/vi/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/vi/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/vi/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/vi/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/vi/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/vi/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/vi/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/vi/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/vi/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "vi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/vi",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/vi",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/vi/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/vi/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/vi/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/vi/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/zh-Hans",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/zh-Hans",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/zh-Hans/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/zh-Hans/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/zh-Hans/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/zh-Hans/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/zh-Hans/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/zh-Hans/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/zh-Hans/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/zh-Hans/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/zh-Hans/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/zh-Hans/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/zh-Hans",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/zh-Hans",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/zh-Hans/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/zh-Hans/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/zh-Hans/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/zh-Hans/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "path": "marketing/iphone/zh-Hant",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/iphone/zh-Hant",
+        "displayType": "APP_IPHONE_67",
+        "totalFiles": 10,
+        "readyFiles": 10,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/iphone/zh-Hant/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/iphone/zh-Hant/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/iphone/zh-Hant/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/iphone/zh-Hant/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 5,
+            "filePath": "marketing/iphone/zh-Hant/05-settings.png",
+            "fileName": "05-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 6,
+            "filePath": "marketing/iphone/zh-Hant/06-files.png",
+            "fileName": "06-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 7,
+            "filePath": "marketing/iphone/zh-Hant/07-project-files.png",
+            "fileName": "07-project-files.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 8,
+            "filePath": "marketing/iphone/zh-Hant/08-file-editor.png",
+            "fileName": "08-file-editor.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 9,
+            "filePath": "marketing/iphone/zh-Hant/09-app-settings.png",
+            "fileName": "09-app-settings.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          },
+          {
+            "order": 10,
+            "filePath": "marketing/iphone/zh-Hant/10-add-repository.png",
+            "fileName": "10-add-repository.png",
+            "width": 1320,
+            "height": 2868,
+            "status": "ok"
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "path": "marketing/ipad/zh-Hant",
+      "exitCode": 0,
+      "result": {
+        "path": "marketing/ipad/zh-Hant",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "totalFiles": 4,
+        "readyFiles": 4,
+        "errorCount": 0,
+        "warningCount": 0,
+        "files": [
+          {
+            "order": 1,
+            "filePath": "marketing/ipad/zh-Hant/01-repo-list.png",
+            "fileName": "01-repo-list.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 2,
+            "filePath": "marketing/ipad/zh-Hant/02-vault.png",
+            "fileName": "02-vault.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 3,
+            "filePath": "marketing/ipad/zh-Hant/03-git-control.png",
+            "fileName": "03-git-control.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          },
+          {
+            "order": 4,
+            "filePath": "marketing/ipad/zh-Hant/04-diff.png",
+            "fileName": "04-diff.png",
+            "width": 2048,
+            "height": 2732,
+            "status": "ok"
+          }
+        ]
+      }
+    }
+  ],
+  "failures": [],
+  "passed": true
+}

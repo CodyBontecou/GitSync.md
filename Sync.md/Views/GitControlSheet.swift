@@ -840,7 +840,9 @@ struct GitControlSheet: View {
         } else {
             subtitle = String(localized: "Commit staged changes and push to remote")
         }
-        let placeholder = inMerge ? "Merge commit message…" : "Commit message…"
+        let placeholder = inMerge
+            ? String(localized: "Merge commit message…")
+            : String(localized: "Commit message…")
         let buttonLabel: String
         if inMerge {
             buttonLabel = String(localized: "Complete Merge").uppercased()

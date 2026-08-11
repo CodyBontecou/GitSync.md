@@ -59,7 +59,7 @@ struct DebugLogView: View {
                             Button {
                                 filterLevel = level
                             } label: {
-                                Label(level.rawValue.capitalized, systemImage: filterLevel == level ? "checkmark" : "")
+                                Label(localizedLabel(for: level), systemImage: filterLevel == level ? "checkmark" : "")
                             }
                         }
                     }
@@ -163,7 +163,7 @@ struct DebugLogView: View {
             }
         }()
 
-        return Text(level.rawValue.uppercased())
+        return Text(localizedLabel(for: level).uppercased())
             .font(.system(size: 10, weight: .bold, design: .monospaced))
             .tracking(0.5)
             .foregroundStyle(fg)
@@ -175,12 +175,20 @@ struct DebugLogView: View {
 
     private func relativeTimestamp(_ date: Date) -> String {
         let interval = Date().timeIntervalSince(date)
-        if interval < 60 { return "just now" }
-        if interval < 3600 { return "\(Int(interval / 60))m ago" }
-        if interval < 86400 { return "\(Int(interval / 3600))h ago" }
+        if interval < 60 { return String(localized: "just now") }
+        if interval < 3600 { return String(localized: "\(Int(interval / 60))m ago") }
+        if interval < 86400 { return String(localized: "\(Int(interval / 3600))h ago") }
         let fmt = DateFormatter()
         fmt.dateFormat = "MMM d, HH:mm"
         return fmt.string(from: date)
+    }
+
+    private func localizedLabel(for level: LogLevel) -> String {
+        switch level {
+        case .info: return String(localized: "Info")
+        case .warning: return String(localized: "Warning")
+        case .error: return String(localized: "Error")
+        }
     }
 }
 

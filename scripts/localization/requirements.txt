@@ -1,0 +1,2 @@
+Pillow==11.3.0
+translators==6.0.4

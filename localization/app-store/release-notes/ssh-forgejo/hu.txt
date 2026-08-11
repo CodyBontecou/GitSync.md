@@ -1,0 +1,9 @@
+Megérkezett a saját üzemeltetésű Git SSH-n keresztül. Ez a frissítés javítja a kizárólag SSH-t használó Forgejo- és Git-szerverek támogatását a tárolók klónozásakor, lehúzásakor és feltöltésekor.
+
+• Az SSH-átvitel mostantól megfelelően része az iPhone- és iPad-alkalmazásnak
+• Az Ed25519-, ECDSA- és RSA-privát kulcsok támogatottak
+• Az ismeretlen SSH-gazdagépeknél mostantól ujjlenyomatos megbízhatósági kérdés jelenik meg
+• A megváltozott SSH-gazdagépkulcsokat az alkalmazás az ellenőrzésükig letiltja
+• A tároló beállításaiban egyszerűbb lett a távoli URL-ek és az SSH-hitelesítő adatok frissítése
+
+Köszönjük, hogy valódi Forgejo-szerverekkel segítettél tesztelni.

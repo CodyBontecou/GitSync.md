@@ -1,0 +1,9 @@
+SSH üzerinden kendi barındırdığınız Git artık kullanılabilir. Bu güncelleme, yalnızca SSH kullanan Forgejo ve Git sunucularında depoları klonlama, çekme ve gönderme desteğini düzeltiyor.
+
+• SSH aktarımı artık iPhone ve iPad için doğru şekilde paketleniyor
+• Ed25519, ECDSA ve RSA özel anahtarları destekleniyor
+• Bilinmeyen SSH ana makineleri artık parmak izini içeren bir güven istemi gösteriyor
+• Değiştirilen SSH ana makine anahtarları siz inceleyene kadar engelleniyor
+• Depo ayarlarında uzak URL'leri ve SSH kimlik bilgilerini güncellemek artık daha kolay
+
+Gerçek Forgejo sunucularıyla test etmemize yardımcı olduğunuz için teşekkürler.

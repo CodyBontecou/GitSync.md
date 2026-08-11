@@ -26,7 +26,7 @@ struct LFSAutoTrackingConfirmationRequest: Identifiable, Equatable {
             "• \(candidate.path) (\(ByteCountFormatter.string(fromByteCount: candidate.sizeBytes, countStyle: .file)))"
         }.joined(separator: "\n")
         let remaining = candidates.count > 4 ? "\n• +\(candidates.count - 4) more" : ""
-        return "These files look binary or large and are safer in Git LFS:\n\n\(listed)\(remaining)\n\nUse Git LFS? This will update and stage .gitattributes."
+        return String(localized: "These files look binary or large and are safer in Git LFS:\n\n\(listed)\(remaining)\n\nUse Git LFS? This will update and stage .gitattributes.")
     }
 }
 
@@ -64,9 +64,11 @@ struct SSHHostKeyTrustRequest: Identifiable, Equatable {
     var message: String {
         switch trustError {
         case .unknownHostKey(let host, let port, let fingerprint):
-            return "\(host):\(port) presented this SSH host key:\n\n\(fingerprint)\n\nOnly trust it if this fingerprint matches your Forgejo/Git server."
+            let portString = String(port)
+            return String(localized: "\(host):\(portString) presented this SSH host key:\n\n\(fingerprint)\n\nOnly trust it if this fingerprint matches your Forgejo/Git server.")
         case .changedHostKey(let host, let port, let expectedFingerprint, let actualFingerprint):
-            return "\(host):\(port) presented a different SSH host key.\n\nPreviously trusted:\n\(expectedFingerprint)\n\nNew key:\n\(actualFingerprint)\n\nDo not trust the new key unless you intentionally rotated the server's SSH host key."
+            let portString = String(port)
+            return String(localized: "\(host):\(portString) presented a different SSH host key.\n\nPreviously trusted:\n\(expectedFingerprint)\n\nNew key:\n\(actualFingerprint)\n\nDo not trust the new key unless you intentionally rotated the server's SSH host key.")
         }
     }
 

@@ -168,7 +168,7 @@ private func git2ErrorMessage(fallback: String? = nil) -> String {
         if !trimmed.isEmpty { return trimmed }
     }
 
-    return "Unknown git error"
+    return String(localized: "Unknown git error")
 }
 
 /// Call a libgit2 function and throw if it returns an error code.
@@ -213,19 +213,19 @@ private func validatedGitSignatureIdentity(authorName: String, authorEmail: Stri
     let email = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
 
     guard !name.isEmpty else {
-        throw LocalGitError.invalidAuthorIdentity("Author Name is required.")
+        throw LocalGitError.invalidAuthorIdentity(String(localized: "Author Name is required."))
     }
     guard !email.isEmpty else {
-        throw LocalGitError.invalidAuthorIdentity("Author Email is required.")
+        throw LocalGitError.invalidAuthorIdentity(String(localized: "Author Email is required."))
     }
     let forbiddenNameCharacters = CharacterSet(charactersIn: "<>\n\r")
     guard name.rangeOfCharacter(from: forbiddenNameCharacters) == nil else {
-        throw LocalGitError.invalidAuthorIdentity("Author Name cannot contain line breaks or angle brackets.")
+        throw LocalGitError.invalidAuthorIdentity(String(localized: "Author Name cannot contain line breaks or angle brackets."))
     }
 
     let forbiddenEmailCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "<>"))
     guard email.contains("@"), email.rangeOfCharacter(from: forbiddenEmailCharacters) == nil else {
-        throw LocalGitError.invalidAuthorIdentity("Author Email must look like you@example.com.")
+        throw LocalGitError.invalidAuthorIdentity(String(localized: "Author Email must look like you@example.com."))
     }
 
     return GitSignatureIdentity(name: name, email: email)
@@ -312,23 +312,23 @@ private class CredentialContext {
 private func credentialMethodDescription(_ method: GitAuthMethod) -> String {
     switch method {
     case .gitHubPAT:
-        return "GitHub token"
+        return String(localized: "GitHub token")
     case .none:
-        return "no credentials"
+        return String(localized: "no credentials")
     case .httpsToken:
-        return "HTTPS username/token"
+        return String(localized: "HTTPS username/token")
     case .sshKey:
-        return "SSH key"
+        return String(localized: "SSH key")
     }
 }
 
 private func credentialTypesDescription(_ allowedTypes: UInt32) -> String {
     var names: [String] = []
-    if allowedTypes & GIT_CREDENTIAL_USERNAME.rawValue != 0 { names.append("username") }
-    if allowedTypes & GIT_CREDENTIAL_USERPASS_PLAINTEXT.rawValue != 0 { names.append("username/password") }
-    if allowedTypes & GIT_CREDENTIAL_SSH_KEY.rawValue != 0 || allowedTypes & GIT_CREDENTIAL_SSH_MEMORY.rawValue != 0 { names.append("SSH key") }
-    if allowedTypes & GIT_CREDENTIAL_DEFAULT.rawValue != 0 { names.append("default system credentials") }
-    return names.isEmpty ? "credentials" : names.joined(separator: ", ")
+    if allowedTypes & GIT_CREDENTIAL_USERNAME.rawValue != 0 { names.append(String(localized: "username")) }
+    if allowedTypes & GIT_CREDENTIAL_USERPASS_PLAINTEXT.rawValue != 0 { names.append(String(localized: "username/password")) }
+    if allowedTypes & GIT_CREDENTIAL_SSH_KEY.rawValue != 0 || allowedTypes & GIT_CREDENTIAL_SSH_MEMORY.rawValue != 0 { names.append(String(localized: "SSH key")) }
+    if allowedTypes & GIT_CREDENTIAL_DEFAULT.rawValue != 0 { names.append(String(localized: "default system credentials")) }
+    return names.isEmpty ? String(localized: "credentials") : names.joined(separator: ", ")
 }
 
 private func withOptionalCString<R>(_ string: String?, _ body: (UnsafePointer<CChar>?) -> R) -> R {
@@ -357,28 +357,28 @@ private func acquireCredential(
 
     if allowedTypes & GIT_CREDENTIAL_USERNAME.rawValue != 0, usernameFromURL == nil, !username.isEmpty {
         if ctx.didAttemptUsername {
-            return ctx.failCredential("The remote rejected the username '\(username)'. Check the repository credentials.")
+            return ctx.failCredential(String(localized: "The remote rejected the username '\(username)'. Check the repository credentials."))
         }
         ctx.didAttemptUsername = true
         let code = git_credential_username_new(cred, username)
         if code < 0 {
-            ctx.recordCallbackError(git2ErrorMessage(fallback: "Could not create username credentials for '\(username)'."))
+            ctx.recordCallbackError(git2ErrorMessage(fallback: String(localized: "Could not create username credentials for '\(username)'.")))
         }
         return code
     }
 
     if allowedTypes & GIT_CREDENTIAL_SSH_MEMORY.rawValue != 0 || allowedTypes & GIT_CREDENTIAL_SSH_KEY.rawValue != 0 {
         guard credentials.method == .sshKey else {
-            return ctx.failCredential("The remote requested SSH credentials, but this repository is configured for \(credentialMethodDescription(credentials.method)).")
+            return ctx.failCredential(String(localized: "The remote requested SSH credentials, but this repository is configured for \(credentialMethodDescription(credentials.method))."))
         }
         guard !credentials.privateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return ctx.failCredential("The remote requested an SSH key, but no private key is saved for this repository.")
+            return ctx.failCredential(String(localized: "The remote requested an SSH key, but no private key is saved for this repository."))
         }
         guard !username.isEmpty else {
-            return ctx.failCredential("The remote requested an SSH key, but no SSH username is configured.")
+            return ctx.failCredential(String(localized: "The remote requested an SSH key, but no SSH username is configured."))
         }
         if ctx.didAttemptSSHKey {
-            return ctx.failCredential("The remote rejected the saved SSH key. Check that the key has access to this repository and that the passphrase is correct.")
+            return ctx.failCredential(String(localized: "The remote rejected the saved SSH key. Check that the key has access to this repository and that the passphrase is correct."))
         }
         ctx.didAttemptSSHKey = true
 
@@ -404,50 +404,50 @@ private func acquireCredential(
             }
         }
         if code < 0 {
-            ctx.recordCallbackError(git2ErrorMessage(fallback: "Could not load the saved SSH key. Check the key format and passphrase."))
+            ctx.recordCallbackError(git2ErrorMessage(fallback: String(localized: "Could not load the saved SSH key. Check the key format and passphrase.")))
         }
         return code
     }
 
     if allowedTypes & GIT_CREDENTIAL_USERPASS_PLAINTEXT.rawValue != 0 {
         guard credentials.method == .gitHubPAT || credentials.method == .httpsToken else {
-            return ctx.failCredential("The remote requested HTTPS username/password credentials, but this repository is configured for \(credentialMethodDescription(credentials.method)).")
+            return ctx.failCredential(String(localized: "The remote requested HTTPS username/password credentials, but this repository is configured for \(credentialMethodDescription(credentials.method))."))
         }
         guard !credentials.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             if credentials.method == .gitHubPAT {
-                return ctx.failCredential("GitHub authentication is selected, but no GitHub token is saved. Sign in again or reconnect GitHub.")
+                return ctx.failCredential(String(localized: "GitHub authentication is selected, but no GitHub token is saved. Sign in again or reconnect GitHub."))
             }
-            return ctx.failCredential("The remote requested HTTPS credentials, but no token or password is saved for this repository.")
+            return ctx.failCredential(String(localized: "The remote requested HTTPS credentials, but no token or password is saved for this repository."))
         }
         if ctx.didAttemptUserPass {
-            return ctx.failCredential("The remote rejected the saved token/password. Check that it has access to this repository.")
+            return ctx.failCredential(String(localized: "The remote rejected the saved token/password. Check that it has access to this repository."))
         }
         ctx.didAttemptUserPass = true
 
         let effectiveUsername = username.isEmpty ? "x-access-token" : username
         let code = git_credential_userpass_plaintext_new(cred, effectiveUsername, credentials.password)
         if code < 0 {
-            ctx.recordCallbackError(git2ErrorMessage(fallback: "Could not create HTTPS credentials."))
+            ctx.recordCallbackError(git2ErrorMessage(fallback: String(localized: "Could not create HTTPS credentials.")))
         }
         return code
     }
 
     if allowedTypes & GIT_CREDENTIAL_DEFAULT.rawValue != 0 {
         if ctx.didAttemptDefault {
-            return ctx.failCredential("The remote rejected the default system credentials.")
+            return ctx.failCredential(String(localized: "The remote rejected the default system credentials."))
         }
         ctx.didAttemptDefault = true
         let code = git_credential_default_new(cred)
         if code < 0 {
-            ctx.recordCallbackError(git2ErrorMessage(fallback: "Could not load default system credentials."))
+            ctx.recordCallbackError(git2ErrorMessage(fallback: String(localized: "Could not load default system credentials.")))
         }
         return code
     }
 
     if credentials.method == .none {
-        return ctx.failCredential("The remote requested authentication (\(requestedCredentials)), but no credentials are configured for this repository.")
+        return ctx.failCredential(String(localized: "The remote requested authentication (\(requestedCredentials)), but no credentials are configured for this repository."))
     }
-    return ctx.failCredential("The remote requested \(requestedCredentials), but the saved \(credentialMethodDescription(credentials.method)) credentials are not compatible.")
+    return ctx.failCredential(String(localized: "The remote requested \(requestedCredentials), but the saved \(credentialMethodDescription(credentials.method)) credentials are not compatible."))
 }
 
 /// libgit2 credential callback for HTTPS/PAT and SSH-key authentication.
@@ -500,17 +500,17 @@ nonisolated private func certificateCheckCallback(
     host: UnsafePointer<CChar>?,
     payload: UnsafeMutableRawPointer?
 ) -> Int32 {
-    let hostName = host.map { String(cString: $0) } ?? "the remote host"
+    let hostName = host.map { String(cString: $0) } ?? String(localized: "the remote host")
     guard let payload, let cert else { return GIT_ECERTIFICATE.rawValue }
 
     let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
     if cert.pointee.cert_type == GIT_CERT_HOSTKEY_LIBSSH2 {
         guard ctx.credentials.method == .sshKey else {
-            ctx.recordCallbackError("SSH host key verification failed for \(hostName). Configure this repository with SSH key credentials or use HTTPS.")
+            ctx.recordCallbackError(String(localized: "SSH host key verification failed for \(hostName). Configure this repository with SSH key credentials or use HTTPS."))
             return GIT_ECERTIFICATE.rawValue
         }
         guard let fingerprint = sshSHA256Fingerprint(from: cert) else {
-            ctx.recordCallbackError("SSH host key verification failed for \(hostName). The server did not provide a SHA-256 host-key fingerprint.")
+            ctx.recordCallbackError(String(localized: "SSH host key verification failed for \(hostName). The server did not provide a SHA-256 host-key fingerprint."))
             return GIT_ECERTIFICATE.rawValue
         }
 
@@ -528,7 +528,7 @@ nonisolated private func certificateCheckCallback(
     }
 
     if valid != 0 { return 0 }
-    ctx.recordCallbackError("TLS certificate verification failed for \(hostName). Check your network or the remote's certificate.")
+    ctx.recordCallbackError(String(localized: "TLS certificate verification failed for \(hostName). Check your network or the remote's certificate."))
     return GIT_ECERTIFICATE.rawValue
 }
 
@@ -1057,7 +1057,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
 
             guard let oldHeadOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for rebase")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for rebase"))
             }
             var oldHeadOidCopy = oldHeadOid.pointee
 
@@ -1071,7 +1071,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(remoteLookupCode, context: "Lookup \(remoteRefName)")
 
             guard let remoteOid = git_reference_target(remoteRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve remote branch target for rebase")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve remote branch target for rebase"))
             }
 
             if git_oid_equal(&oldHeadOidCopy, remoteOid) != 0 {
@@ -1088,7 +1088,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             if ahead == 0 && behind > 0 {
                 // This explicit rebase action should still use the safer and
                 // simpler fast-forward path when no local commits need replaying.
-                throw LocalGitError.libgit2("Internal error: rebase requested for a fast-forward pull")
+                throw LocalGitError.libgit2(String(localized: "Internal error: rebase requested for a fast-forward pull"))
             }
             if behind == 0 {
                 return (result: LocalPullResult(updated: false, newCommitSHA: oidToHex(&oldHeadOidCopy)), changedPaths: [String]())
@@ -1123,7 +1123,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let newHeadRef { git_reference_free(newHeadRef) } }
             try git2Check(git_repository_head(&newHeadRef, repo), context: "Read rebased HEAD")
             guard let newHeadOid = git_reference_target(newHeadRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve rebased HEAD")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve rebased HEAD"))
             }
 
             let changedPaths = try Self.changedPathsBetween(repo: repo, oldOID: &oldHeadOidCopy, newOID: newHeadOid)
@@ -1291,7 +1291,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let headRef { git_reference_free(headRef) } }
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
             guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD target while creating branch")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD target while creating branch"))
             }
 
             var headCommit: OpaquePointer?
@@ -1351,7 +1351,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             )
 
             guard let fullRefName = git_reference_name(branchRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not read branch ref name for \(branchName)")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not read branch ref name for \(branchName)"))
             }
             try git2Check(git_repository_set_head(repo, fullRefName), context: "Set HEAD to \(branchName)")
         }.value
@@ -1400,7 +1400,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
 
             guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for merge")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for merge"))
             }
 
             var headCommit: OpaquePointer?
@@ -1423,7 +1423,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(lookupCode, context: "Lookup merge branch \(branchName)")
 
             guard let sourceOid = git_reference_target(sourceRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve source branch target for merge")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve source branch target for merge"))
             }
 
             var sourceCommit: OpaquePointer?
@@ -1474,7 +1474,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
 
             if analysis.rawValue & GIT_MERGE_ANALYSIS_NORMAL.rawValue == 0 {
-                throw LocalGitError.libgit2("Merge analysis did not produce a supported strategy")
+                throw LocalGitError.libgit2(String(localized: "Merge analysis did not produce a supported strategy"))
             }
 
             // Compute the merge in-memory rather than calling git_merge.
@@ -1638,7 +1638,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD for revert commit")
 
             guard let headOID = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD during revert commit")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD during revert commit"))
             }
 
             var headCommit: OpaquePointer?
@@ -1710,7 +1710,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
 
             guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD during merge finalize")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD during merge finalize"))
             }
 
             var headCommit: OpaquePointer?
@@ -1782,7 +1782,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
 
             guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD during merge abort")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD during merge abort"))
             }
 
             var headCommit: OpaquePointer?
@@ -1812,7 +1812,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let oldHeadRef { git_reference_free(oldHeadRef) } }
             try git2Check(git_repository_head(&oldHeadRef, repo), context: "Read HEAD before continuing rebase")
             guard let oldHeadOid = git_reference_target(oldHeadRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD before continuing rebase")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD before continuing rebase"))
             }
             var oldHeadOidCopy = oldHeadOid.pointee
 
@@ -1851,7 +1851,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let newHeadRef { git_reference_free(newHeadRef) } }
             try git2Check(git_repository_head(&newHeadRef, repo), context: "Read HEAD after continuing rebase")
             guard let newHeadOid = git_reference_target(newHeadRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD after continuing rebase")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD after continuing rebase"))
             }
 
             let changedPaths = try Self.changedPathsBetween(repo: repo, oldOID: &oldHeadOidCopy, newOID: newHeadOid)
@@ -2152,7 +2152,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             let headCode = git_repository_head(&headRef, repo)
             if headCode == 0 {
                 guard let headOid = git_reference_target(headRef) else {
-                    throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for commit")
+                    throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for commit"))
                 }
                 var headOidCopy = headOid.pointee
                 try git2Check(
@@ -2470,7 +2470,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             let headCode = git_repository_head(&headRef, repo)
             if headCode == 0 {
                 guard let oid = git_reference_target(headRef) else {
-                    throw LocalGitError.repositoryCorrupted("Could not resolve HEAD while unstaging")
+                    throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD while unstaging"))
                 }
                 try git2Check(
                     git_object_lookup(&targetObject, repo, oid, GIT_OBJECT_ANY),
@@ -2632,7 +2632,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(headCode, context: "Read HEAD for discard all")
 
             guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for discard all")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for discard all"))
             }
 
             var headCommit: OpaquePointer?
@@ -2931,7 +2931,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 context: "Lookup local tag \(name)"
             )
             guard let localTagOidPtr = git_reference_target(localTagRef) else {
-                throw LocalGitError.pushFailed("Could not resolve local tag \(name) for verification.")
+                throw LocalGitError.pushFailed(String(localized: "Could not resolve local tag \(name) for verification."))
             }
             var localTagOid = localTagOidPtr.pointee
 
@@ -2939,7 +2939,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let pushRemote { git_remote_free(pushRemote) } }
             let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
             if remoteCode != 0 {
-                throw LocalGitError.pushFailed("No remote 'origin' configured.")
+                throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
             }
 
             var pushOpts = git_push_options()
@@ -3083,7 +3083,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             let headCode = git_repository_head(&headRef, repo)
             if headCode == 0 {
                 guard let headOid = git_reference_target(headRef) else {
-                    throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for commit")
+                    throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for commit"))
                 }
                 var headOidCopy = headOid.pointee
                 try git2Check(
@@ -3162,7 +3162,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let pushRemote { git_remote_free(pushRemote) } }
             let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
             if remoteCode != 0 {
-                throw LocalGitError.pushFailed("No remote 'origin' configured.")
+                throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
             }
 
             var pushOpts = git_push_options()
@@ -3254,7 +3254,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
 
             guard let headOidPtr = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for push")
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for push"))
             }
             var headOid = headOidPtr.pointee
 
@@ -3303,7 +3303,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let pushRemote { git_remote_free(pushRemote) } }
             let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
             if remoteCode != 0 {
-                throw LocalGitError.pushFailed("No remote 'origin' configured.")
+                throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
             }
 
             var pushOpts = git_push_options()
@@ -3662,19 +3662,19 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     private static func readMergeHeadOID(repo: OpaquePointer?) throws -> git_oid {
         guard let repoPath = git_repository_path(repo) else {
-            throw LocalGitError.repositoryCorrupted("Could not read repository path")
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not read repository path"))
         }
 
         let mergeHeadURL = URL(fileURLWithPath: String(cString: repoPath)).appendingPathComponent("MERGE_HEAD")
         guard let mergeHeadText = try? String(contentsOf: mergeHeadURL, encoding: .utf8) else {
-            throw LocalGitError.repositoryCorrupted("MERGE_HEAD is missing")
+            throw LocalGitError.repositoryCorrupted(String(localized: "MERGE_HEAD is missing"))
         }
 
         guard let firstLine = mergeHeadText
             .components(separatedBy: .newlines)
             .first(where: { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
             else {
-            throw LocalGitError.repositoryCorrupted("MERGE_HEAD is empty")
+            throw LocalGitError.repositoryCorrupted(String(localized: "MERGE_HEAD is empty"))
         }
 
         let oidString = firstLine.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -3742,7 +3742,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
         try git2Check(headCode, context: "Read HEAD for diff")
         guard let headOid = git_reference_target(headRef) else {
-            throw LocalGitError.repositoryCorrupted("Could not resolve HEAD for diff")
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for diff"))
         }
 
         var headCommit: OpaquePointer?

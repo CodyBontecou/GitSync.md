@@ -1,0 +1,15 @@
+{
+  "sourceVersion": "2.5.1",
+  "proposedVersion": "2.5.2",
+  "requiresExplicitASCMutationApproval": true,
+  "mutatesASCWhenRun": false,
+  "changes": [
+    "Use GitSync.md consistently in version descriptions",
+    "Replace stale repository-removal whatsNew with SSH/Forgejo release notes"
+  ],
+  "preserved": [
+    "keywords",
+    "marketingUrl",
+    "supportUrl"
+  ]
+}

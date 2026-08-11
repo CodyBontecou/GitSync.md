@@ -29,6 +29,14 @@ enum MarketingCapture {
             ?? Locale.current.identifier
     }
 
+    static var formFactor: String {
+        value(for: "-MarketingFormFactor") ?? "iphone"
+    }
+
+    static var captureLimit: Int {
+        formFactor == "ipad" ? 4 : 10
+    }
+
     // MARK: Notifications
 
     static let dismissSheetNotification = Notification.Name("MarketingCapture.dismissSheet")
@@ -41,6 +49,7 @@ enum MarketingCapture {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let root = docs
             .appendingPathComponent("marketing", isDirectory: true)
+            .appendingPathComponent(formFactor, isDirectory: true)
             .appendingPathComponent(localeFolder, isDirectory: true)
         try? FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         return root
@@ -145,20 +154,20 @@ enum MarketingDemoSeeder {
         state.isSignedIn = true
         state.hasCompletedOnboarding = true
         state.hasSeenOnboarding = true
-        state.gitHubUsername = "codybontecou"
-        state.gitHubDisplayName = "Cody Bontecou"
+        state.gitHubUsername = "sample-developer"
+        state.gitHubDisplayName = "Sample Developer"
         state.gitHubAvatarURL = ""
-        state.defaultAuthorName = "Cody Bontecou"
-        state.defaultAuthorEmail = "cody@example.com"
+        state.defaultAuthorName = "Sample Developer"
+        state.defaultAuthorEmail = "developer@example.com"
         state.isDemoMode = false
 
         // --- Repos ---
 
         let repo1 = RepoConfig(
-            repoURL: "https://github.com/codybontecou/second-brain.git",
+            repoURL: "https://github.com/example/second-brain.git",
             branch: "main",
-            authorName: "Cody Bontecou",
-            authorEmail: "cody@example.com",
+            authorName: "Sample Developer",
+            authorEmail: "developer@example.com",
             vaultFolderName: "second-brain",
             gitState: GitState(
                 commitSHA: "a3f8c1d4e7b2a5f8c1d4e7b2a5f8c1d4e7b2a5f8",
@@ -178,10 +187,10 @@ enum MarketingDemoSeeder {
         )
 
         let repo2 = RepoConfig(
-            repoURL: "https://github.com/codybontecou/engineering-docs.git",
+            repoURL: "https://github.com/example/engineering-docs.git",
             branch: "main",
-            authorName: "Cody Bontecou",
-            authorEmail: "cody@example.com",
+            authorName: "Sample Developer",
+            authorEmail: "developer@example.com",
             vaultFolderName: "engineering-docs",
             gitState: GitState(
                 commitSHA: "c7d9e2f4a6b8c0d2e4f6a8b0c2d4e6f8a0b2c4d6",
@@ -196,10 +205,10 @@ enum MarketingDemoSeeder {
         )
 
         let repo3 = RepoConfig(
-            repoURL: "https://github.com/acme-corp/team-wiki.git",
+            repoURL: "https://github.com/example-team/team-wiki.git",
             branch: "main",
-            authorName: "Cody Bontecou",
-            authorEmail: "cody@acme.dev",
+            authorName: "Sample Developer",
+            authorEmail: "developer@example.com",
             vaultFolderName: "team-wiki",
             gitState: GitState(
                 commitSHA: "e4f6a8b0c2d4e6f8a0b2c4d6e8f0a2b4c6d8e0f2",
@@ -334,6 +343,24 @@ enum MarketingDemoSeeder {
             ],
             rawPatch: patchText
         )
+
+        // Public, fictional files for deterministic file-browser/editor shots.
+        let projectDirectory = repo1.defaultVaultURL.appendingPathComponent("projects", isDirectory: true)
+        let notesDirectory = repo1.defaultVaultURL.appendingPathComponent("notes", isDirectory: true)
+        try? FileManager.default.createDirectory(at: projectDirectory, withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(at: notesDirectory, withIntermediateDirectories: true)
+        try? "# App Launch\n\n## Status: In Progress\n\n- [x] Configure CI/CD\n- [ ] Submit to App Store\n"
+            .write(
+                to: projectDirectory.appendingPathComponent("app-launch.md"),
+                atomically: true,
+                encoding: .utf8
+            )
+        try? "# Meeting Notes\n\nSample notes for the GitSync.md screenshot demo.\n"
+            .write(
+                to: notesDirectory.appendingPathComponent("meeting-notes.md"),
+                atomically: true,
+                encoding: .utf8
+            )
     }
 }
 #endif
