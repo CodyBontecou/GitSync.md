@@ -10,7 +10,7 @@ private func lfsGitCheck(_ code: Int32, context: String) throws -> Int32 {
         if let err = git_error_last(), let cMessage = err.pointee.message {
             message = String(cString: cMessage)
         } else {
-            message = "Unknown git error"
+            message = String(localized: "Unknown git error")
         }
         throw LocalGitError.lfsFailed("\(context): \(message)")
     }
@@ -496,7 +496,7 @@ extension URLSession: GitLFSHTTPTransport {
         }
 
         guard let response = tuple.1 as? HTTPURLResponse else {
-            throw LocalGitError.lfsFailed("Git LFS server returned a non-HTTP response.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS server returned a non-HTTP response."))
         }
         return (tuple.0, response)
     }
@@ -624,7 +624,7 @@ struct GitLFSSSHAuthRequest: Equatable, Sendable {
 
     init(remote: GitRemoteURL, credentials: GitRemoteCredentials, operation: GitLFSOperation) throws {
         guard remote.isSSH, let host = remote.host else {
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication requires an SSH remote URL.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication requires an SSH remote URL."))
         }
 
         let configuredUsername = credentials.username.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -635,7 +635,7 @@ struct GitLFSSSHAuthRequest: Equatable, Sendable {
         self.operation = operation
 
         guard !repositoryPath.isEmpty else {
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication could not determine the repository path.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication could not determine the repository path."))
         }
     }
 
@@ -819,7 +819,7 @@ final class GitLFSService: @unchecked Sendable {
         for item in discovered {
             let objectURL = cachedObjectURL(for: item.pointer)
             guard fileManager.fileExists(atPath: objectURL.path) else {
-                throw LocalGitError.lfsFailed("Missing downloaded LFS object \(item.pointer.oid) for \(item.path).")
+                throw LocalGitError.lfsFailed(String(localized: "Missing downloaded LFS object \(item.pointer.oid) for \(item.path)."))
             }
             try fileManager.copyReplacingItem(at: objectURL, to: item.fileURL)
             cleanCacheRecords.append(
@@ -848,10 +848,10 @@ final class GitLFSService: @unchecked Sendable {
 
             for pointer in pointerBatch {
                 guard let object = response.objects.first(where: { $0.oid == pointer.oid }) else {
-                    throw LocalGitError.lfsFailed("Git LFS upload response omitted object \(pointer.oid).")
+                    throw LocalGitError.lfsFailed(String(localized: "Git LFS upload response omitted object \(pointer.oid)."))
                 }
                 if let error = object.error {
-                    throw LocalGitError.lfsFailed(error.message ?? "Git LFS upload rejected object \(pointer.oid).")
+                    throw LocalGitError.lfsFailed(error.message ?? String(localized: "Git LFS upload rejected object \(pointer.oid)."))
                 }
 
                 guard let upload = object.actions?["upload"] else {
@@ -861,7 +861,7 @@ final class GitLFSService: @unchecked Sendable {
 
                 let objectURL = cachedObjectURL(for: pointer)
                 guard fileManager.fileExists(atPath: objectURL.path) else {
-                    throw LocalGitError.lfsFailed("Missing local LFS object \(pointer.oid).")
+                    throw LocalGitError.lfsFailed(String(localized: "Missing local LFS object \(pointer.oid)."))
                 }
 
                 let data = try Data(contentsOf: objectURL)
@@ -985,7 +985,7 @@ final class GitLFSService: @unchecked Sendable {
                         return lock.path
                     }
                     .joined(separator: ", ")
-                throw LocalGitError.lfsFailed("Cannot push because these files are locked by another user: \(detail).")
+                throw LocalGitError.lfsFailed(String(localized: "Cannot push because these files are locked by another user: \(detail)."))
             }
             cursor = verification.nextCursor
         } while cursor != nil
@@ -1048,13 +1048,13 @@ final class GitLFSService: @unchecked Sendable {
 
             for pointer in pointerBatch {
                 guard let object = response.objects.first(where: { $0.oid == pointer.oid }) else {
-                    throw LocalGitError.lfsFailed("Git LFS download response omitted object \(pointer.oid).")
+                    throw LocalGitError.lfsFailed(String(localized: "Git LFS download response omitted object \(pointer.oid)."))
                 }
                 if let error = object.error {
-                    throw LocalGitError.lfsFailed(error.message ?? "Git LFS download rejected object \(pointer.oid).")
+                    throw LocalGitError.lfsFailed(error.message ?? String(localized: "Git LFS download rejected object \(pointer.oid)."))
                 }
                 guard let download = object.actions?["download"] else {
-                    throw LocalGitError.lfsFailed("Git LFS server did not provide a download action for \(pointer.oid).")
+                    throw LocalGitError.lfsFailed(String(localized: "Git LFS server did not provide a download action for \(pointer.oid)."))
                 }
 
                 var request = try request(urlString: download.href, method: "GET")
@@ -1066,7 +1066,7 @@ final class GitLFSService: @unchecked Sendable {
                 try validateHTTP(httpResponse, context: "Download LFS object \(pointer.oid)")
                 guard Int64(data.count) == pointer.size,
                       GitLFSPointer.sha256Hex(for: data) == pointer.oid else {
-                    throw LocalGitError.lfsFailed("Downloaded LFS object \(pointer.oid) failed SHA-256/size verification.")
+                    throw LocalGitError.lfsFailed(String(localized: "Downloaded LFS object \(pointer.oid) failed SHA-256/size verification."))
                 }
 
                 try storeObject(data: data, pointer: pointer)
@@ -1212,10 +1212,10 @@ final class GitLFSService: @unchecked Sendable {
         if let remote = originRemoteURL(), let parsed = GitRemoteURL.parse(remote) {
             if parsed.isSSH {
                 guard credentials.method == .sshKey else {
-                    throw LocalGitError.lfsFailed("Git LFS SSH authentication requires SSH key credentials.")
+                    throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication requires SSH key credentials."))
                 }
                 guard let sshAuthenticator else {
-                    throw LocalGitError.lfsFailed("Git LFS SSH authentication is unavailable in this build.")
+                    throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication is unavailable in this build."))
                 }
                 let request = try GitLFSSSHAuthRequest(remote: parsed, credentials: credentials, operation: operation)
                 return try await sshAuthenticator.authenticate(request: request, credentials: credentials)
@@ -1226,7 +1226,7 @@ final class GitLFSService: @unchecked Sendable {
             }
         }
 
-        throw LocalGitError.lfsFailed("Could not determine the Git LFS endpoint for this repository.")
+        throw LocalGitError.lfsFailed(String(localized: "Could not determine the Git LFS endpoint for this repository."))
     }
 
     private func configuredLFSURL() -> URL? {
@@ -1244,7 +1244,7 @@ final class GitLFSService: @unchecked Sendable {
 
     private func accessForConfiguredLFSURL(_ url: URL) throws -> GitLFSAccess {
         guard let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else {
-            throw LocalGitError.lfsFailed("Configured Git LFS URL must be HTTP(S) for this build: \(url.absoluteString)")
+            throw LocalGitError.lfsFailed(String(localized: "Configured Git LFS URL must be HTTP(S) for this build: \(url.absoluteString)"))
         }
         return GitLFSAccess(href: lfsBaseURL(from: url), headers: basicAuthHeaders())
     }
@@ -1352,10 +1352,10 @@ final class GitLFSService: @unchecked Sendable {
         guard !trimmed.isEmpty else { return nil }
 
         if let htmlTitle = htmlTitle(from: trimmed) {
-            return "Server returned an HTML error page: \(htmlTitle)."
+            return String(localized: "Server returned an HTML error page: \(htmlTitle).")
         }
         if looksLikeHTML(trimmed) {
-            return "Server returned an HTML error page."
+            return String(localized: "Server returned an HTML error page.")
         }
 
         return trimmed.count > 500 ? String(trimmed.prefix(500)) + "…" : trimmed
@@ -1403,7 +1403,7 @@ final class GitLFSService: @unchecked Sendable {
 
     private func request(urlString: String, method: String) throws -> URLRequest {
         guard let url = URL(string: urlString) else {
-            throw LocalGitError.lfsFailed("Invalid Git LFS URL: \(urlString)")
+            throw LocalGitError.lfsFailed(String(localized: "Invalid Git LFS URL: \(urlString)"))
         }
         var request = URLRequest(url: url)
         request.httpMethod = method
@@ -1422,7 +1422,7 @@ final class GitLFSService: @unchecked Sendable {
 
     private func validateHTTP(_ response: HTTPURLResponse, context: String) throws {
         guard (200..<300).contains(response.statusCode) else {
-            throw LocalGitError.lfsFailed("\(context) failed with HTTP \(response.statusCode).")
+            throw LocalGitError.lfsFailed(String(localized: "\(context) failed with HTTP \(response.statusCode)."))
         }
     }
 

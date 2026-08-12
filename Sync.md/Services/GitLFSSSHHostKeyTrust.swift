@@ -39,9 +39,11 @@ enum GitLFSSSHHostKeyTrustError: LocalizedError, Equatable, Sendable {
     var errorDescription: String? {
         switch self {
         case .unknownHostKey(let host, let port, let fingerprint):
-            return "Git LFS SSH host key for \(host):\(port) is not trusted. Fingerprint: \(fingerprint). Confirm this fingerprint before trusting the host."
+            let portString = String(port)
+            return String(localized: "Git LFS SSH host key for \(host):\(portString) is not trusted. Fingerprint: \(fingerprint). Confirm this fingerprint before trusting the host.")
         case .changedHostKey(let host, let port, let expectedFingerprint, let actualFingerprint):
-            return "Git LFS SSH host key for \(host):\(port) changed. Expected \(expectedFingerprint), got \(actualFingerprint). This may indicate a man-in-the-middle attack."
+            let portString = String(port)
+            return String(localized: "Git LFS SSH host key for \(host):\(portString) changed. Expected \(expectedFingerprint), got \(actualFingerprint). This may indicate a man-in-the-middle attack.")
         }
     }
 }

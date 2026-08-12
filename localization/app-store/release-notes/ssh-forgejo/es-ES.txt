@@ -1,0 +1,9 @@
+Ya está disponible Git autoalojado mediante SSH. Esta actualización corrige la compatibilidad con servidores Forgejo y Git que solo admiten SSH al clonar, obtener y enviar repositorios.
+
+• El transporte SSH ahora se incluye correctamente para iPhone y iPad
+• Se admiten claves privadas Ed25519, ECDSA y RSA
+• Los hosts SSH desconocidos ahora muestran una solicitud de confianza con su huella digital
+• Las claves de host SSH que hayan cambiado se bloquean hasta que las revises
+• Los ajustes del repositorio facilitan la actualización de las URL remotas y las credenciales SSH
+
+Gracias por ayudarnos a probar esta función con servidores Forgejo reales.

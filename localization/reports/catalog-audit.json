@@ -1,0 +1,5284 @@
+{
+  "catalog": "Sync.md/Localizable.xcstrings",
+  "sourceLanguage": "en",
+  "expectedRuntimeLocales": [
+    "ar",
+    "da",
+    "de",
+    "es",
+    "fi",
+    "fr",
+    "he",
+    "hi",
+    "hu",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "nb",
+    "nl",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "counts": {
+    "catalogEntries": 755,
+    "activeEntries": 689,
+    "translatableEntries": 659,
+    "expectedTranslatedCells": 17225,
+    "translatedCells": 17225,
+    "allowedIdenticalCells": 750,
+    "localizedTechnicalEquivalentCells": 295,
+    "failureCount": 0
+  },
+  "failures": {
+    "missing": [],
+    "empty": [],
+    "state": [],
+    "placeholderParity": [],
+    "protectedTerms": [],
+    "leakedMachineTokens": [],
+    "unexpectedLocales": [],
+    "identicalWithoutAllowlist": [],
+    "allowlistMismatch": []
+  },
+  "review": {
+    "allowedIdentical": [
+      {
+        "key": "",
+        "locale": "ar",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "da",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "de",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "es",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "fi",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "fr",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "he",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "hi",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "hu",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "id",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "it",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "ja",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "ko",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "nb",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "nl",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "pl",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "pt-BR",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "ru",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "sv",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "th",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "tr",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "uk",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "vi",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "zh-Hans",
+        "value": ""
+      },
+      {
+        "key": "",
+        "locale": "zh-Hant",
+        "value": ""
+      },
+      {
+        "key": "%@",
+        "locale": "ar",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "da",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "de",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "es",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "fi",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "fr",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "he",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "hi",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "hu",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "id",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "it",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "ja",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "ko",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "nb",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "nl",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "pl",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "pt-BR",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "ru",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "sv",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "th",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "tr",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "uk",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "vi",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "zh-Hans",
+        "value": "%@"
+      },
+      {
+        "key": "%@",
+        "locale": "zh-Hant",
+        "value": "%@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "ar",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "da",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "de",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "es",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "fi",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "fr",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "he",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "hi",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "hu",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "id",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "it",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "ja",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "ko",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "nb",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "nl",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "pl",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "pt-BR",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "ru",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "sv",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "th",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "tr",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "uk",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "vi",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "zh-Hans",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%@/%@",
+        "locale": "zh-Hant",
+        "value": "%1$@/%2$@"
+      },
+      {
+        "key": "%lld",
+        "locale": "ar",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "da",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "de",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "es",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "fi",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "fr",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "he",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "hi",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "hu",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "id",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "it",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "ja",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "ko",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "nb",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "nl",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "pl",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "pt-BR",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "ru",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "sv",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "th",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "tr",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "uk",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "vi",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "zh-Hans",
+        "value": "%lld"
+      },
+      {
+        "key": "%lld",
+        "locale": "zh-Hant",
+        "value": "%lld"
+      },
+      {
+        "key": "+",
+        "locale": "ar",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "da",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "de",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "es",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "fi",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "fr",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "he",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "hi",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "hu",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "id",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "it",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "ja",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "ko",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "nb",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "nl",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "pl",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "pt-BR",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "ru",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "sv",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "th",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "tr",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "uk",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "vi",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "zh-Hans",
+        "value": "+"
+      },
+      {
+        "key": "+",
+        "locale": "zh-Hant",
+        "value": "+"
+      },
+      {
+        "key": ".MD",
+        "locale": "ar",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "da",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "de",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "es",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "fi",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "fr",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "he",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "hi",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "hu",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "id",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "it",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "ja",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "ko",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "nb",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "nl",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "pl",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "pt-BR",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "ru",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "sv",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "th",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "tr",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "uk",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "vi",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "zh-Hans",
+        "value": ".MD"
+      },
+      {
+        "key": ".MD",
+        "locale": "zh-Hant",
+        "value": ".MD"
+      },
+      {
+        "key": "@%@",
+        "locale": "ar",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "da",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "de",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "es",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "fi",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "fr",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "he",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "hi",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "hu",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "id",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "it",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "ja",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "ko",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "nb",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "nl",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "pl",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "pt-BR",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "ru",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "sv",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "th",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "tr",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "uk",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "vi",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "zh-Hans",
+        "value": "@%@"
+      },
+      {
+        "key": "@%@",
+        "locale": "zh-Hant",
+        "value": "@%@"
+      },
+      {
+        "key": "GIT",
+        "locale": "ar",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "da",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "de",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "es",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "fi",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "fr",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "he",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "hi",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "hu",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "id",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "it",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "ja",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "ko",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "nb",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "nl",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "pl",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "pt-BR",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "ru",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "sv",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "th",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "tr",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "uk",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "vi",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "zh-Hans",
+        "value": "GIT"
+      },
+      {
+        "key": "GIT",
+        "locale": "zh-Hant",
+        "value": "GIT"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "ar",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "da",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "de",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "es",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "fi",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "fr",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "he",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "hi",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "hu",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "id",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "it",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "ja",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "ko",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "nb",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "nl",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "pl",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "pt-BR",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "ru",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "sv",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "th",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "tr",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "uk",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "vi",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "zh-Hans",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GITSYNC.MD",
+        "locale": "zh-Hant",
+        "value": "GITSYNC.MD"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "ar",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "da",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "de",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "es",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "fi",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "fr",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "he",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "hi",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "hu",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "id",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "it",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "ja",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "ko",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "nb",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "nl",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "pl",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "pt-BR",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "ru",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "sv",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "th",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "tr",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "uk",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "vi",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "zh-Hans",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.ext",
+        "locale": "zh-Hant",
+        "value": "filename.ext"
+      },
+      {
+        "key": "filename.md",
+        "locale": "ar",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "da",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "de",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "es",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "fi",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "fr",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "he",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "hi",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "hu",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "id",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "it",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "ja",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "ko",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "nb",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "nl",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "pl",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "pt-BR",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "ru",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "sv",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "th",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "tr",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "uk",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "vi",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "zh-Hans",
+        "value": "filename.md"
+      },
+      {
+        "key": "filename.md",
+        "locale": "zh-Hant",
+        "value": "filename.md"
+      },
+      {
+        "key": "folder-name",
+        "locale": "ar",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "da",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "de",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "es",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "fi",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "fr",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "he",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "hi",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "hu",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "id",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "it",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "ja",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "ko",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "nb",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "nl",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "pl",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "pt-BR",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "ru",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "sv",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "th",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "tr",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "uk",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "vi",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "zh-Hans",
+        "value": "folder-name"
+      },
+      {
+        "key": "folder-name",
+        "locale": "zh-Hant",
+        "value": "folder-name"
+      },
+      {
+        "key": "ghp_...",
+        "locale": "ar",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "da",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "de",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "es",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "fi",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "fr",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "he",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "hi",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "hu",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "id",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "it",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "ja",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "ko",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "nb",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "nl",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "pl",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "pt-BR",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "ru",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "sv",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "th",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "tr",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "uk",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "vi",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "zh-Hans",
+        "value": "ghp_..."
+      },
+      {
+        "key": "ghp_...",
+        "locale": "zh-Hant",
+        "value": "ghp_..."
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "ar",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "da",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "de",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "es",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "fi",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "fr",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "he",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "hi",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "hu",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "id",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "it",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "ja",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "ko",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "nb",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "nl",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "pl",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "pt-BR",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "ru",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "sv",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "th",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "tr",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "uk",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "vi",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "zh-Hans",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "https://host/user/repo or git@host:user/repo.git",
+        "locale": "zh-Hant",
+        "value": "https://host/user/repo or git@host:user/repo.git"
+      },
+      {
+        "key": "main",
+        "locale": "ar",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "da",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "de",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "es",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "fi",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "fr",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "he",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "hi",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "hu",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "id",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "it",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "ja",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "ko",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "nb",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "nl",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "pl",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "pt-BR",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "ru",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "sv",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "th",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "tr",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "uk",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "vi",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "zh-Hans",
+        "value": "main"
+      },
+      {
+        "key": "main",
+        "locale": "zh-Hant",
+        "value": "main"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "ar",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "da",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "de",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "es",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "fi",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "fr",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "he",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "hi",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "hu",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "id",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "it",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "ja",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "ko",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "nb",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "nl",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "pl",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "pt-BR",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "ru",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "sv",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "th",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "tr",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "uk",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "vi",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "zh-Hans",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "new-branch-name",
+        "locale": "zh-Hant",
+        "value": "new-branch-name"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "ar",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "da",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "de",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "es",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "fi",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "fr",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "he",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "hi",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "hu",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "id",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "it",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "ja",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "ko",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "nb",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "nl",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "pl",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "pt-BR",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "ru",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "sv",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "th",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "tr",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "uk",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "vi",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "zh-Hans",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "stash@{%lld}",
+        "locale": "zh-Hant",
+        "value": "stash@{%lld}"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "ar",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "da",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "de",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "es",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "fi",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "fr",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "he",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "hi",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "hu",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "id",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "it",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "ja",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "ko",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "nb",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "nl",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "pl",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "pt-BR",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "ru",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "sv",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "th",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "tr",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "uk",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "vi",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "zh-Hans",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "tag-name (e.g. v1.0.0)",
+        "locale": "zh-Hant",
+        "value": "tag-name (e.g. v1.0.0)"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "ar",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "da",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "de",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "es",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "fi",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "fr",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "he",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "hi",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "hu",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "id",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "it",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "ja",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "ko",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "nb",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "nl",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "pl",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "pt-BR",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "ru",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "sv",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "th",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "tr",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "uk",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "vi",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "zh-Hans",
+        "value": "you@example.com"
+      },
+      {
+        "key": "you@example.com",
+        "locale": "zh-Hant",
+        "value": "you@example.com"
+      },
+      {
+        "key": "—",
+        "locale": "ar",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "da",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "de",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "es",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "fi",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "fr",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "he",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "hi",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "hu",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "id",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "it",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "ja",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "ko",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "nb",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "nl",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "pl",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "pt-BR",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "ru",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "sv",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "th",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "tr",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "uk",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "vi",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "zh-Hans",
+        "value": "—"
+      },
+      {
+        "key": "—",
+        "locale": "zh-Hant",
+        "value": "—"
+      },
+      {
+        "key": "←",
+        "locale": "ar",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "da",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "de",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "es",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "fi",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "fr",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "he",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "hi",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "hu",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "id",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "it",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "ja",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "ko",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "nb",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "nl",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "pl",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "pt-BR",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "ru",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "sv",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "th",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "tr",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "uk",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "vi",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "zh-Hans",
+        "value": "←"
+      },
+      {
+        "key": "←",
+        "locale": "zh-Hant",
+        "value": "←"
+      },
+      {
+        "key": "→",
+        "locale": "ar",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "da",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "de",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "es",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "fi",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "fr",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "he",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "hi",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "hu",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "id",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "it",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "ja",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "ko",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "nb",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "nl",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "pl",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "pt-BR",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "ru",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "sv",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "th",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "tr",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "uk",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "vi",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "zh-Hans",
+        "value": "→"
+      },
+      {
+        "key": "→",
+        "locale": "zh-Hant",
+        "value": "→"
+      },
+      {
+        "key": "−",
+        "locale": "ar",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "da",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "de",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "es",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "fi",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "fr",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "he",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "hi",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "hu",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "id",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "it",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "ja",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "ko",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "nb",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "nl",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "pl",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "pt-BR",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "ru",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "sv",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "th",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "tr",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "uk",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "vi",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "zh-Hans",
+        "value": "−"
+      },
+      {
+        "key": "−",
+        "locale": "zh-Hant",
+        "value": "−"
+      },
+      {
+        "key": "⚡️",
+        "locale": "ar",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "da",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "de",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "es",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "fi",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "fr",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "he",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "hi",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "hu",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "id",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "it",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "ja",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "ko",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "nb",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "nl",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "pl",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "pt-BR",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "ru",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "sv",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "th",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "tr",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "uk",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "vi",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "zh-Hans",
+        "value": "⚡️"
+      },
+      {
+        "key": "⚡️",
+        "locale": "zh-Hant",
+        "value": "⚡️"
+      },
+      {
+        "key": "⬆",
+        "locale": "ar",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "da",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "de",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "es",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "fi",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "fr",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "he",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "hi",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "hu",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "id",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "it",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "ja",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "ko",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "nb",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "nl",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "pl",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "pt-BR",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "ru",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "sv",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "th",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "tr",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "uk",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "vi",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "zh-Hans",
+        "value": "⬆"
+      },
+      {
+        "key": "⬆",
+        "locale": "zh-Hant",
+        "value": "⬆"
+      },
+      {
+        "key": "📁",
+        "locale": "ar",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "da",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "de",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "es",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "fi",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "fr",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "he",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "hi",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "hu",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "id",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "it",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "ja",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "ko",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "nb",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "nl",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "pl",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "pt-BR",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "ru",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "sv",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "th",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "tr",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "uk",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "vi",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "zh-Hans",
+        "value": "📁"
+      },
+      {
+        "key": "📁",
+        "locale": "zh-Hant",
+        "value": "📁"
+      },
+      {
+        "key": "📂",
+        "locale": "ar",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "da",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "de",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "es",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "fi",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "fr",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "he",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "hi",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "hu",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "id",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "it",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "ja",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "ko",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "nb",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "nl",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "pl",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "pt-BR",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "ru",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "sv",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "th",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "tr",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "uk",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "vi",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "zh-Hans",
+        "value": "📂"
+      },
+      {
+        "key": "📂",
+        "locale": "zh-Hant",
+        "value": "📂"
+      },
+      {
+        "key": "📋",
+        "locale": "ar",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "da",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "de",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "es",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "fi",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "fr",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "he",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "hi",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "hu",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "id",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "it",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "ja",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "ko",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "nb",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "nl",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "pl",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "pt-BR",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "ru",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "sv",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "th",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "tr",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "uk",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "vi",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "zh-Hans",
+        "value": "📋"
+      },
+      {
+        "key": "📋",
+        "locale": "zh-Hant",
+        "value": "📋"
+      },
+      {
+        "key": "🔒",
+        "locale": "ar",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "da",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "de",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "es",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "fi",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "fr",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "he",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "hi",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "hu",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "id",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "it",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "ja",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "ko",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "nb",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "nl",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "pl",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "pt-BR",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "ru",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "sv",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "th",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "tr",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "uk",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "vi",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "zh-Hans",
+        "value": "🔒"
+      },
+      {
+        "key": "🔒",
+        "locale": "zh-Hant",
+        "value": "🔒"
+      },
+      {
+        "key": "🔗",
+        "locale": "ar",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "da",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "de",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "es",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "fi",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "fr",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "he",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "hi",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "hu",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "id",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "it",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "ja",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "ko",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "nb",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "nl",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "pl",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "pt-BR",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "ru",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "sv",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "th",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "tr",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "uk",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "vi",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "zh-Hans",
+        "value": "🔗"
+      },
+      {
+        "key": "🔗",
+        "locale": "zh-Hant",
+        "value": "🔗"
+      }
+    ],
+    "localizedTechnicalEquivalents": [
+      {
+        "key": "ADD/ADD",
+        "locale": "da",
+        "value": "ADD/ADD"
+      },
+      {
+        "key": "ADD/ADD",
+        "locale": "fi",
+        "value": "ADD/ADD"
+      },
+      {
+        "key": "ADD/ADD",
+        "locale": "ja",
+        "value": "ADD/ADD"
+      },
+      {
+        "key": "ADD/ADD",
+        "locale": "nb",
+        "value": "ADD/ADD"
+      },
+      {
+        "key": "ADD/ADD",
+        "locale": "sv",
+        "value": "ADD/ADD"
+      },
+      {
+        "key": "ADD/ADD",
+        "locale": "vi",
+        "value": "ADD/ADD"
+      },
+      {
+        "key": "Commit",
+        "locale": "da",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "de",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "es",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "fi",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "fr",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "he",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "hi",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "hu",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "id",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "it",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "nb",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "nl",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "pl",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "pt-BR",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "sv",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "th",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "tr",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "uk",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit",
+        "locale": "vi",
+        "value": "Commit"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "da",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "de",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "fr",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "hi",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "id",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "it",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "ko",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "nl",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "pt-BR",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "ru",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "sv",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "th",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "tr",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "uk",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & Push",
+        "locale": "vi",
+        "value": "Commit & Push"
+      },
+      {
+        "key": "Commit & merge",
+        "locale": "id",
+        "value": "Commit & merge"
+      },
+      {
+        "key": "Commit & merge",
+        "locale": "nl",
+        "value": "Commit & merge"
+      },
+      {
+        "key": "Commit & merge",
+        "locale": "sv",
+        "value": "Commit & merge"
+      },
+      {
+        "key": "Commit & merge",
+        "locale": "th",
+        "value": "Commit & merge"
+      },
+      {
+        "key": "Commit & merge",
+        "locale": "vi",
+        "value": "Commit & merge"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "da",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "de",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "es",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "fi",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "hi",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "hu",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "id",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "it",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "nb",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "nl",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "pl",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "sv",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "th",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "tr",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "uk",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Commit SHA",
+        "locale": "vi",
+        "value": "Commit SHA"
+      },
+      {
+        "key": "Configuration",
+        "locale": "fr",
+        "value": "Configuration"
+      },
+      {
+        "key": "Conflict",
+        "locale": "nl",
+        "value": "Conflict"
+      },
+      {
+        "key": "Conflict: %@",
+        "locale": "nl",
+        "value": "Conflict: %@"
+      },
+      {
+        "key": "Debug",
+        "locale": "id",
+        "value": "Debug"
+      },
+      {
+        "key": "Debug",
+        "locale": "it",
+        "value": "Debug"
+      },
+      {
+        "key": "Email",
+        "locale": "id",
+        "value": "Email"
+      },
+      {
+        "key": "Email",
+        "locale": "it",
+        "value": "Email"
+      },
+      {
+        "key": "Email",
+        "locale": "vi",
+        "value": "Email"
+      },
+      {
+        "key": "Error",
+        "locale": "es",
+        "value": "Error"
+      },
+      {
+        "key": "Feedback",
+        "locale": "de",
+        "value": "Feedback"
+      },
+      {
+        "key": "Feedback",
+        "locale": "it",
+        "value": "Feedback"
+      },
+      {
+        "key": "Feedback",
+        "locale": "nl",
+        "value": "Feedback"
+      },
+      {
+        "key": "Feedback",
+        "locale": "pt-BR",
+        "value": "Feedback"
+      },
+      {
+        "key": "Fetch",
+        "locale": "id",
+        "value": "Fetch"
+      },
+      {
+        "key": "Fetch",
+        "locale": "nl",
+        "value": "Fetch"
+      },
+      {
+        "key": "Fetch",
+        "locale": "pl",
+        "value": "Fetch"
+      },
+      {
+        "key": "Fetch",
+        "locale": "th",
+        "value": "Fetch"
+      },
+      {
+        "key": "Fetch",
+        "locale": "vi",
+        "value": "Fetch"
+      },
+      {
+        "key": "Files › On My iPhone › GitSync.md › %@",
+        "locale": "hi",
+        "value": "Files › On My iPhone › GitSync.md › %@"
+      },
+      {
+        "key": "Filter",
+        "locale": "de",
+        "value": "Filter"
+      },
+      {
+        "key": "Folder",
+        "locale": "id",
+        "value": "Folder"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "es",
+        "value": "GitHub token"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "hu",
+        "value": "GitHub token"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "it",
+        "value": "GitHub token"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "pl",
+        "value": "GitHub token"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "pt-BR",
+        "value": "GitHub token"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "tr",
+        "value": "GitHub token"
+      },
+      {
+        "key": "GitHub token",
+        "locale": "vi",
+        "value": "GitHub token"
+      },
+      {
+        "key": "Info",
+        "locale": "de",
+        "value": "Info"
+      },
+      {
+        "key": "Info",
+        "locale": "uk",
+        "value": "Info"
+      },
+      {
+        "key": "Merge branch",
+        "locale": "it",
+        "value": "Merge branch"
+      },
+      {
+        "key": "Merge branch",
+        "locale": "th",
+        "value": "Merge branch"
+      },
+      {
+        "key": "Name",
+        "locale": "de",
+        "value": "Name"
+      },
+      {
+        "key": "OK",
+        "locale": "da",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "de",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "es",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "fi",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "fr",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "hu",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "id",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "it",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "ja",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "nb",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "nl",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "pl",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "pt-BR",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "sv",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "uk",
+        "value": "OK"
+      },
+      {
+        "key": "OK",
+        "locale": "vi",
+        "value": "OK"
+      },
+      {
+        "key": "On My iPhone › GitSync.md › %@",
+        "locale": "hi",
+        "value": "On My iPhone › GitSync.md › %@"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "de",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "fr",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "he",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "hi",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "hu",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "id",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "it",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "ja",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "ko",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "nb",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "nl",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "pl",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "pt-BR",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "ru",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "sv",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "th",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "tr",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "uk",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "vi",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "zh-Hans",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Passphrase",
+        "locale": "zh-Hant",
+        "value": "Passphrase"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "da",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "de",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "es",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "fi",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "fr",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "he",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "hi",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "hu",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "id",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "it",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "ja",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "ko",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "nb",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "nl",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "pl",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "ru",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "sv",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "th",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "tr",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "uk",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Personal Access Token",
+        "locale": "vi",
+        "value": "Personal Access Token"
+      },
+      {
+        "key": "Pop",
+        "locale": "da",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "de",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "fi",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "fr",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "it",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "nb",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "nl",
+        "value": "Pop"
+      },
+      {
+        "key": "Pop",
+        "locale": "sv",
+        "value": "Pop"
+      },
+      {
+        "key": "Pull",
+        "locale": "da",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "de",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "es",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "fr",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "hi",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "id",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "it",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "ko",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "nb",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "pt-BR",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "ru",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "th",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "tr",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "uk",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull",
+        "locale": "vi",
+        "value": "Pull"
+      },
+      {
+        "key": "Pull ${repository}",
+        "locale": "de",
+        "value": "Pull ${repository}"
+      },
+      {
+        "key": "Pull ${repository}",
+        "locale": "fi",
+        "value": "Pull ${repository}"
+      },
+      {
+        "key": "Pull ${repository}",
+        "locale": "id",
+        "value": "Pull ${repository}"
+      },
+      {
+        "key": "Pull ${repository}",
+        "locale": "pl",
+        "value": "Pull ${repository}"
+      },
+      {
+        "key": "Pull All",
+        "locale": "id",
+        "value": "Pull All"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "fi",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "he",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "hu",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "id",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "it",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "ko",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "nl",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "pl",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "pt-BR",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "ru",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "sv",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "th",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "uk",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repo",
+        "locale": "vi",
+        "value": "Pull Repo"
+      },
+      {
+        "key": "Pull Repository",
+        "locale": "da",
+        "value": "Pull Repository"
+      },
+      {
+        "key": "Pull Repository",
+        "locale": "id",
+        "value": "Pull Repository"
+      },
+      {
+        "key": "Pull Repository",
+        "locale": "pl",
+        "value": "Pull Repository"
+      },
+      {
+        "key": "Pull Repository",
+        "locale": "th",
+        "value": "Pull Repository"
+      },
+      {
+        "key": "Push",
+        "locale": "da",
+        "value": "Push"
+      },
+      {
+        "key": "Push",
+        "locale": "hu",
+        "value": "Push"
+      },
+      {
+        "key": "Push",
+        "locale": "it",
+        "value": "Push"
+      },
+      {
+        "key": "Push",
+        "locale": "nb",
+        "value": "Push"
+      },
+      {
+        "key": "Push Current Branch",
+        "locale": "da",
+        "value": "Push Current Branch"
+      },
+      {
+        "key": "Push Current Branch",
+        "locale": "de",
+        "value": "Push Current Branch"
+      },
+      {
+        "key": "Push Current Branch",
+        "locale": "sv",
+        "value": "Push Current Branch"
+      },
+      {
+        "key": "Rebase",
+        "locale": "da",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "de",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "es",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "fi",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "fr",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "hu",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "id",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "it",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "nb",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "nl",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "pl",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "pt-BR",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "sv",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "th",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "tr",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "uk",
+        "value": "Rebase"
+      },
+      {
+        "key": "Rebase",
+        "locale": "vi",
+        "value": "Rebase"
+      },
+      {
+        "key": "Repositories",
+        "locale": "de",
+        "value": "Repositories"
+      },
+      {
+        "key": "Repository",
+        "locale": "de",
+        "value": "Repository"
+      },
+      {
+        "key": "Repository",
+        "locale": "it",
+        "value": "Repository"
+      },
+      {
+        "key": "Repository",
+        "locale": "nl",
+        "value": "Repository"
+      },
+      {
+        "key": "SYNC",
+        "locale": "da",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "de",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "he",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "hi",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "hu",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "id",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "it",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "ja",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "nb",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "nl",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "pl",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "pt-BR",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "ru",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "sv",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "th",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "tr",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "uk",
+        "value": "SYNC"
+      },
+      {
+        "key": "SYNC",
+        "locale": "vi",
+        "value": "SYNC"
+      },
+      {
+        "key": "Stage All",
+        "locale": "id",
+        "value": "Stage All"
+      },
+      {
+        "key": "Stage All",
+        "locale": "nb",
+        "value": "Stage All"
+      },
+      {
+        "key": "Stash",
+        "locale": "de",
+        "value": "Stash"
+      },
+      {
+        "key": "Stash",
+        "locale": "it",
+        "value": "Stash"
+      },
+      {
+        "key": "Stash",
+        "locale": "nl",
+        "value": "Stash"
+      },
+      {
+        "key": "Tags",
+        "locale": "da",
+        "value": "Tags"
+      },
+      {
+        "key": "Tags",
+        "locale": "de",
+        "value": "Tags"
+      },
+      {
+        "key": "Tags",
+        "locale": "fr",
+        "value": "Tags"
+      },
+      {
+        "key": "Tags",
+        "locale": "nl",
+        "value": "Tags"
+      },
+      {
+        "key": "Tags",
+        "locale": "pt-BR",
+        "value": "Tags"
+      },
+      {
+        "key": "Token",
+        "locale": "da",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "fr",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "hu",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "id",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "it",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "nb",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "nl",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "pl",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "pt-BR",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "sv",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "tr",
+        "value": "Token"
+      },
+      {
+        "key": "Token",
+        "locale": "vi",
+        "value": "Token"
+      },
+      {
+        "key": "Token / Password",
+        "locale": "it",
+        "value": "Token / Password"
+      },
+      {
+        "key": "URL",
+        "locale": "da",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "de",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "es",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "fi",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "fr",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "he",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "hi",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "hu",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "id",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "it",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "ja",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "ko",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "nb",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "nl",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "pl",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "pt-BR",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "ru",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "sv",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "th",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "tr",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "uk",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "vi",
+        "value": "URL"
+      },
+      {
+        "key": "URL",
+        "locale": "zh-Hant",
+        "value": "URL"
+      },
+      {
+        "key": "Version",
+        "locale": "de",
+        "value": "Version"
+      },
+      {
+        "key": "Version",
+        "locale": "fr",
+        "value": "Version"
+      },
+      {
+        "key": "optional",
+        "locale": "de",
+        "value": "optional"
+      },
+      {
+        "key": "repository",
+        "locale": "it",
+        "value": "repository"
+      }
+    ]
+  },
+  "passed": true
+}

@@ -122,7 +122,7 @@ struct SetupView: View {
     private var signInOptions: some View {
         VStack(spacing: 0) {
             // Primary: OAuth
-            BPrimaryButton(title: "Sign in with GitHub", icon: "person.fill") {
+            BPrimaryButton(title: String(localized: "Sign in with GitHub"), icon: "person.fill") {
                 analytics.trackOnboardingAuthStarted(method: .githubOAuth)
                 trackSetupStep(.githubSignIn)
                 Task {
@@ -143,12 +143,12 @@ struct SetupView: View {
             .padding(.horizontal, 24)
 
             // Divider
-            BDivider(label: "or")
+            BDivider(label: String(localized: "or"))
                 .padding(.horizontal, 24)
                 .padding(.vertical, 20)
 
             // Secondary: PAT
-            BSecondaryButton(title: "Personal Access Token", icon: "key.fill") {
+            BSecondaryButton(title: String(localized: "Personal Access Token"), icon: "key.fill") {
                 trackSetupStep(.personalAccessToken)
                 withAnimation(.easeInOut(duration: 0.25)) {
                     showPATFlow = true
@@ -158,7 +158,7 @@ struct SetupView: View {
             .padding(.bottom, 16)
 
             // Continue without GitHub for self-hosted, SSH, public, or local repos.
-            BSecondaryButton(title: "Continue without GitHub", icon: "network") {
+            BSecondaryButton(title: String(localized: "Continue without GitHub"), icon: "network") {
                 completedAuthMethod = .none
                 analytics.trackOnboardingAuthCompleted(method: .none, outcome: .skipped)
                 presentSaveLocationStep()
@@ -167,7 +167,7 @@ struct SetupView: View {
             .padding(.bottom, 16)
 
             // Demo Mode
-            BGhostButton(title: "Try Demo", icon: "play.fill") {
+            BGhostButton(title: String(localized: "Try Demo"), icon: "play.fill") {
                 completedAuthMethod = .demo
                 analytics.trackOnboardingAuthCompleted(method: .demo, outcome: .succeeded)
                 analytics.trackOnboardingCompleted(
@@ -243,7 +243,7 @@ struct SetupView: View {
 
             // Sign in button
             BPrimaryButton(
-                title: isSigningIn ? "Signing in…" : "Sign In",
+                title: isSigningIn ? String(localized: "Signing in…") : String(localized: "Sign In"),
                 isLoading: isSigningIn,
                 isDisabled: patToken.trimmingCharacters(in: .whitespaces).isEmpty,
                 icon: isSigningIn ? nil : "arrow.right"
@@ -386,13 +386,13 @@ struct SetupView: View {
 
             VStack(spacing: 12) {
                 BPrimaryButton(
-                    title: selectedFolderURL != nil ? "Change Location" : "Choose Location",
+                    title: selectedFolderURL != nil ? String(localized: "Change Location") : String(localized: "Choose Location"),
                     icon: "folder.badge.plus"
                 ) { showFolderPicker = true }
                 .padding(.horizontal, 24)
 
                 BGhostButton(
-                    title: selectedFolderURL != nil ? "Continue →" : "Skip for Now"
+                    title: selectedFolderURL != nil ? String(localized: "Continue →") : String(localized: "Skip for Now")
                 ) { finishOnboarding() }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)

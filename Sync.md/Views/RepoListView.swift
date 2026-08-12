@@ -161,6 +161,9 @@ struct RepoListView: View {
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
+            .navigationDestination(for: FileEditorDestination.self) { destination in
+                FileEditorView(repoID: destination.repoID, fileURL: destination.fileURL)
+            }
             .animation(.spring(duration: 0.35, bounce: 0.12), value: showGhostRemovedToast)
             .animation(.easeInOut(duration: 0.16), value: showSignOutConfirm)
             .animation(.easeInOut(duration: 0.16), value: showGhostRemovalConfirm)
@@ -195,44 +198,7 @@ struct RepoListView: View {
                     guard let primaryRepo = state.repos.first else { return }
                     let repoID = primaryRepo.id
 
-                    let steps: [CaptureStep] = [
-                        CaptureStep(name: "01-repo-list") {
-                            // Already showing
-                        },
-
-                        CaptureStep(name: "02-vault") {
-                            navigationPath.append(repoID)
-                        },
-
-                        CaptureStep(name: "03-git-control", settle: .milliseconds(2000)) {
-                            NotificationCenter.default.post(
-                                name: MarketingCapture.showGitSheetNotification, object: nil
-                            )
-                        } cleanup: {
-                            NotificationCenter.default.post(
-                                name: MarketingCapture.dismissSheetNotification, object: nil
-                            )
-                        },
-
-                        CaptureStep(name: "04-diff", settle: .milliseconds(2000)) {
-                            navigationPath.append(
-                                DiffDestination(repoID: repoID, path: "projects/app-launch.md")
-                            )
-                        } cleanup: {
-                            navigationPath.removeLast()
-                        },
-
-                        CaptureStep(name: "05-settings") {
-                            NotificationCenter.default.post(
-                                name: MarketingCapture.showSettingsNotification, object: nil
-                            )
-                        } cleanup: {
-                            NotificationCenter.default.post(
-                                name: MarketingCapture.dismissSheetNotification, object: nil
-                            )
-                        },
-                    ]
-
+                    let steps = Array(marketingCaptureStory(repoID: repoID).prefix(MarketingCapture.captureLimit))
                     await MarketingCaptureCoordinator.shared.run(steps: steps)
                 }
             }
@@ -569,6 +535,73 @@ struct RepoListView: View {
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: date, relativeTo: Date())
     }
+
+    #if DEBUG
+    private func marketingCaptureStory(repoID: UUID) -> [CaptureStep] {
+        let dismissSheet = {
+            NotificationCenter.default.post(
+                name: MarketingCapture.dismissSheetNotification, object: nil
+            )
+        }
+        return [
+            CaptureStep(name: "01-repo-list") {},
+            CaptureStep(name: "02-vault") { navigationPath.append(repoID) },
+            CaptureStep(
+                name: "03-git-control",
+                settle: .milliseconds(2000),
+                navigate: {
+                    NotificationCenter.default.post(
+                        name: MarketingCapture.showGitSheetNotification, object: nil
+                    )
+                },
+                cleanup: dismissSheet
+            ),
+            CaptureStep(name: "04-diff", settle: .milliseconds(2000)) {
+                navigationPath.append(
+                    DiffDestination(repoID: repoID, path: "projects/app-launch.md")
+                )
+            } cleanup: {
+                navigationPath.removeLast()
+            },
+            CaptureStep(
+                name: "05-settings",
+                navigate: {
+                    NotificationCenter.default.post(
+                        name: MarketingCapture.showSettingsNotification, object: nil
+                    )
+                },
+                cleanup: dismissSheet
+            ),
+            CaptureStep(name: "06-files") {
+                navigationPath.append(FileBrowserDestination(repoID: repoID, relativePath: ""))
+            },
+            CaptureStep(name: "07-project-files") {
+                navigationPath.append(
+                    FileBrowserDestination(repoID: repoID, relativePath: "projects")
+                )
+            },
+            CaptureStep(name: "08-file-editor") {
+                let fileURL = state.repo(id: repoID)!.defaultVaultURL
+                    .appendingPathComponent("projects/app-launch.md")
+                navigationPath.append(
+                    FileEditorDestination(repoID: repoID, fileURL: fileURL)
+                )
+            } cleanup: {
+                navigationPath = NavigationPath()
+            },
+            CaptureStep(name: "09-app-settings") {
+                showAppSettings = true
+            } cleanup: {
+                showAppSettings = false
+            },
+            CaptureStep(name: "10-add-repository") {
+                showAddRepo = true
+            } cleanup: {
+                showAddRepo = false
+            },
+        ]
+    }
+    #endif
 
     // MARK: - Ghost Repo Removal
 

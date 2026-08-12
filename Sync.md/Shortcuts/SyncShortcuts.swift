@@ -146,7 +146,7 @@ private enum GitShortcutRunner {
         let clonedRepos = state.repos.filter(\.isCloned)
 
         guard !clonedRepos.isEmpty else {
-            return "No cloned repositories to pull yet. Open GitSync.md and clone a repository first."
+            return String(localized: "No cloned repositories to pull yet. Open GitSync.md and clone a repository first.")
         }
 
         var results: [GitShortcutPullResult] = []
@@ -159,16 +159,16 @@ private enum GitShortcutRunner {
 
     static func pullRepository(id: String) async -> String {
         guard let repoID = UUID(uuidString: id) else {
-            return "Repository not found. Pick a repository again in Shortcuts."
+            return String(localized: "Repository not found. Pick a repository again in Shortcuts.")
         }
 
         let state = AppState()
         guard let repo = state.repo(id: repoID) else {
-            return "Repository not found. Pick a repository again in Shortcuts."
+            return String(localized: "Repository not found. Pick a repository again in Shortcuts.")
         }
 
         guard repo.isCloned else {
-            return "\(repo.displayName) has not been cloned yet. Open GitSync.md and clone it first."
+            return String(localized: "\(repo.displayName) has not been cloned yet. Open GitSync.md and clone it first.")
         }
 
         return (await pull(repo: repo, in: state)).dialog
@@ -177,7 +177,8 @@ private enum GitShortcutRunner {
     private static func pull(repo: RepoConfig, in state: AppState) async -> GitShortcutPullResult {
         let succeeded = await state.pull(repoID: repo.id, showsProgressDelay: false)
         let outcome = state.pullOutcomeByRepo[repo.id]
-        let message = outcome?.message ?? (succeeded ? "Already up to date" : state.lastError ?? "Pull failed")
+        let message = outcome?.message
+            ?? (succeeded ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))
         let status = GitShortcutPullResult.Status(kind: outcome?.kind, succeeded: succeeded)
 
         return GitShortcutPullResult(
@@ -231,13 +232,33 @@ private struct GitShortcutPullSummary {
         guard results.count != 1 else { return results[0].dialog }
 
         var parts: [String] = []
-        appendCount(for: .updated, singular: "updated", plural: "updated", into: &parts)
-        appendCount(for: .upToDate, singular: "already up to date", plural: "already up to date", into: &parts)
-        appendCount(for: .blocked, singular: "needs attention", plural: "need attention", into: &parts)
-        appendCount(for: .failed, singular: "failed", plural: "failed", into: &parts)
+        appendCount(
+            for: .updated,
+            singular: String(localized: "updated"),
+            plural: String(localized: "updated"),
+            into: &parts
+        )
+        appendCount(
+            for: .upToDate,
+            singular: String(localized: "already up to date"),
+            plural: String(localized: "already up to date"),
+            into: &parts
+        )
+        appendCount(
+            for: .blocked,
+            singular: String(localized: "needs attention"),
+            plural: String(localized: "need attention"),
+            into: &parts
+        )
+        appendCount(
+            for: .failed,
+            singular: String(localized: "failed"),
+            plural: String(localized: "failed"),
+            into: &parts
+        )
 
-        let repoWord = results.count == 1 ? "repository" : "repositories"
-        var message = "Pulled \(results.count) \(repoWord)"
+        let repoWord = results.count == 1 ? String(localized: "repository") : String(localized: "repositories")
+        var message = String(localized: "Pulled \(results.count) \(repoWord)")
         if !parts.isEmpty {
             message += ": " + parts.joined(separator: ", ")
         }

@@ -1,0 +1,41 @@
+{
+  "expectedLocales": [
+    "en-US",
+    "ar-SA",
+    "da",
+    "de-DE",
+    "es-ES",
+    "fi",
+    "fr-FR",
+    "he",
+    "hi",
+    "hu",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "nl-NL",
+    "no",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "liveReadOnlySnapshot": {
+    "appInfoLocaleCount": 26,
+    "versionLocaleCount": 26,
+    "failures": [],
+    "note": "All fields are present; non-English 2.5.1 whatsNew values are stale."
+  },
+  "proposed2_5_2": {
+    "versionLocaleCount": 26,
+    "failures": []
+  },
+  "passed": true
+}

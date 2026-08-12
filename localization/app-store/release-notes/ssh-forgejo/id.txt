@@ -1,0 +1,9 @@
+Git yang dihosting sendiri melalui SSH kini tersedia. Pembaruan ini memperbaiki dukungan untuk server Forgejo dan Git khusus SSH saat mengkloning, menarik, dan mendorong repositori.
+
+• Transport SSH kini disertakan dengan benar untuk iPhone dan iPad
+• Kunci privat Ed25519, ECDSA, dan RSA didukung
+• Host SSH yang tidak dikenal kini menampilkan permintaan kepercayaan beserta sidik jarinya
+• Kunci host SSH yang berubah diblokir sampai Anda meninjaunya
+• Pengaturan repositori kini memudahkan pembaruan URL remote dan kredensial SSH
+
+Terima kasih telah membantu mengujinya dengan server Forgejo yang sebenarnya.

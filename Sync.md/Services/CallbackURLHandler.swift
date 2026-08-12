@@ -52,24 +52,24 @@ final class CallbackURLHandler {
         // Action is the path component, e.g. "/pull" → "pull"
         let path = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         guard let action = CallbackAction(rawValue: path) else {
-            redirectError(from: components, message: "Unknown action: \(path)")
+            redirectError(from: components, message: String(localized: "Unknown action: \(path)"))
             return
         }
 
         let params = Self.queryDict(from: components)
 
         guard let repoName = params["repo"] else {
-            redirectError(from: components, message: "Missing required 'repo' parameter")
+            redirectError(from: components, message: String(localized: "Missing required 'repo' parameter"))
             return
         }
 
         guard let repo = appState.repos.first(where: { $0.vaultFolderName == repoName }) else {
-            redirectError(from: components, message: "Repository '\(repoName)' not found in GitSync.md")
+            redirectError(from: components, message: String(localized: "Repository '\(repoName)' not found in GitSync.md"))
             return
         }
 
         guard repo.isCloned else {
-            redirectError(from: components, message: "Repository '\(repoName)' is not cloned yet — open GitSync.md and clone it first")
+            redirectError(from: components, message: String(localized: "Repository '\(repoName)' is not cloned yet — open GitSync.md and clone it first"))
             return
         }
 
@@ -199,10 +199,10 @@ final class CallbackURLHandler {
 
     private func progressLabel(for action: CallbackAction) -> String {
         switch action {
-        case .pull:   return "Pulling from remote…"
-        case .push:   return "Committing & pushing…"
-        case .sync:   return "Syncing…"
-        case .status: return "Reading status…"
+        case .pull:   return String(localized: "Pulling from remote…")
+        case .push:   return String(localized: "Committing & pushing…")
+        case .sync:   return String(localized: "Syncing…")
+        case .status: return String(localized: "Reading status…")
         }
     }
 
@@ -210,16 +210,16 @@ final class CallbackURLHandler {
         switch action {
         case .pull:
             let updated = params["updated"] == "true"
-            return updated ? "Pulled \(sha)" : "Already up to date"
+            return updated ? String(localized: "Pulled \(sha)") : String(localized: "Already up to date")
         case .push:
-            return "Pushed \(sha)"
+            return String(localized: "Pushed \(sha)")
         case .sync:
             let skipped = params["push_skipped"] == "true"
-            return skipped ? "Synced — no local changes" : "Synced \(sha)"
+            return skipped ? String(localized: "Synced — no local changes") : String(localized: "Synced \(sha)")
         case .status:
             let branch = params["branch"] ?? "?"
             let changes = params["changes"] ?? "0"
-            return "\(branch) · \(changes) changes"
+            return String(localized: "\(branch) · \(changes) changes")
         }
     }
 
@@ -328,7 +328,7 @@ final class CallbackURLHandler {
 
         if sawAnyChanges {
             // We saw changes but couldn't stage them into the index.
-            throw LocalGitError.commitFailed("Could not stage local file changes before push.")
+            throw LocalGitError.commitFailed(String(localized: "Could not stage local file changes before push."))
         }
 
         throw LocalGitError.noChanges

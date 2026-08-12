@@ -1,0 +1,665 @@
+{
+  "capturedAt": "2026-08-11T01:12:37.038030+00:00",
+  "approvedVersionId": "53686e4e-0162-481c-99d1-17eb5df77c87",
+  "approvedVersionString": "2.5.2",
+  "phase": "dry-run",
+  "excludedLocales": [
+    "en-US"
+  ],
+  "replacementLocales": [],
+  "targetSetCount": 50,
+  "records": [
+    {
+      "locale": "ar-SA",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ar-SA",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "da",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "da",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "de-DE",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "es-ES",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "fi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "fi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "fr-FR",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "he",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "he",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "hi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "hi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "hu",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "hu",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "id",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "id",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "it",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "it",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ja",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ja",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ko",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ko",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "nl-NL",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "no",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "no",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "pl",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "pl",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "pt-BR",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ru",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "ru",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "sv",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "sv",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "th",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "th",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "tr",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "tr",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "uk",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "uk",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "vi",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "vi",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hans",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "ipad",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "expectedCount": 4,
+      "replace": false,
+      "total": 4,
+      "states": {
+        "would-upload": 4
+      },
+      "setId": "",
+      "passed": true
+    },
+    {
+      "locale": "zh-Hant",
+      "formFactor": "iphone",
+      "displayType": "APP_IPHONE_67",
+      "expectedCount": 10,
+      "replace": false,
+      "total": 10,
+      "states": {
+        "would-upload": 10
+      },
+      "setId": "",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "completed": true
+}

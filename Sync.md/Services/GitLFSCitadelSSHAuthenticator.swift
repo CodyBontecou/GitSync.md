@@ -37,7 +37,7 @@ final class GitLFSCitadelSSHAuthenticator: GitLFSSSHAuthenticator {
 
     func authenticate(request: GitLFSSSHAuthRequest, credentials: GitRemoteCredentials) async throws -> GitLFSAccess {
         guard credentials.method == .sshKey else {
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication requires SSH key credentials.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication requires SSH key credentials."))
         }
 
         let authMethod = try Self.authenticationMethod(username: request.username, credentials: credentials)
@@ -67,27 +67,27 @@ final class GitLFSCitadelSSHAuthenticator: GitLFSSSHAuthenticator {
             if let trustError = error as? GitLFSSSHHostKeyTrustError {
                 throw trustError
             }
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication failed: \(error.localizedDescription)")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication failed: \(error.localizedDescription)"))
         }
 
         do {
             var output = try await client.executeCommand(request.command, maxResponseSize: maxResponseSize)
             try? await client.close()
             guard let text = output.readString(length: output.readableBytes) else {
-                throw LocalGitError.lfsFailed("Git LFS SSH authentication returned non-UTF8 output.")
+                throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication returned non-UTF8 output."))
             }
             return try Self.parseAccess(from: text, now: now())
         } catch {
             try? await client.close()
             if error is LocalGitError { throw error }
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication failed: \(error.localizedDescription)")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication failed: \(error.localizedDescription)"))
         }
     }
 
     private static func authenticationMethod(username: String, credentials: GitRemoteCredentials) throws -> SSHAuthenticationMethod {
         let privateKey = credentials.privateKey.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !privateKey.isEmpty else {
-            throw LocalGitError.lfsFailed("Missing SSH private key for Git LFS authentication.")
+            throw LocalGitError.lfsFailed(String(localized: "Missing SSH private key for Git LFS authentication."))
         }
 
         let passphrase = credentials.passphrase.isEmpty ? nil : Data(credentials.passphrase.utf8)
@@ -100,23 +100,23 @@ final class GitLFSCitadelSSHAuthenticator: GitLFSSSHAuthenticator {
             return .rsa(username: username, privateKey: rsa)
         }
 
-        throw LocalGitError.lfsFailed("Unsupported SSH private key format for Git LFS. Use an OpenSSH Ed25519 or RSA private key.")
+        throw LocalGitError.lfsFailed(String(localized: "Unsupported SSH private key format for Git LFS. Use an OpenSSH Ed25519 or RSA private key."))
     }
 
     private static func parseAccess(from text: String, now: Date) throws -> GitLFSAccess {
         guard let data = text.data(using: .utf8) else {
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication returned non-UTF8 output.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication returned non-UTF8 output."))
         }
 
         let decoded: AuthenticateResponse
         do {
             decoded = try JSONDecoder().decode(AuthenticateResponse.self, from: data)
         } catch {
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication returned invalid JSON.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication returned invalid JSON."))
         }
 
         guard let href = URL(string: decoded.href) else {
-            throw LocalGitError.lfsFailed("Git LFS SSH authentication returned an invalid href.")
+            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication returned an invalid href."))
         }
 
         let expiresAt: Date?

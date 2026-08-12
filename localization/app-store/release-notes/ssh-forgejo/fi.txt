@@ -1,0 +1,9 @@
+Itse ylläpidetty Git SSH:n kautta on nyt täällä. Tämä päivitys korjaa vain SSH:ta käyttävien Forgejo- ja Git-palvelimien tuen repositoryjen kloonausta, pull-toimintoa ja push-toimintoa varten.
+
+• SSH-siirto on nyt paketoitu oikein iPhonelle ja iPadille
+• Ed25519-, ECDSA- ja RSA-yksityisavaimia tuetaan
+• Tuntemattomat SSH-isännät näyttävät nyt sormenjäljen sisältävän luottamuspyynnön
+• Muuttuneet SSH-isäntäavaimet estetään, kunnes olet tarkistanut ne
+• Etärepositoryn URL-osoitteen ja SSH-tunnistetietojen päivittäminen on nyt helpompaa repositoryn asetuksissa
+
+Kiitos, että autoit testaamaan tätä oikeilla Forgejo-palvelimilla.

@@ -13,8 +13,8 @@ enum OAuthError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .noToken: return "No access token received from GitHub."
-        case .cancelled: return "Sign-in was cancelled."
+        case .noToken: return String(localized: "No access token received from GitHub.")
+        case .cancelled: return String(localized: "Sign-in was cancelled.")
         case .failed(let msg): return msg
         }
     }
@@ -44,7 +44,7 @@ final class OAuthService: NSObject, ASWebAuthenticationPresentationContextProvid
         let state = UUID().uuidString.replacingOccurrences(of: "-", with: "")
 
         guard let loginURL = URL(string: "\(serverURL)/api/auth/login?state=\(state)") else {
-            throw OAuthError.failed("Invalid login URL")
+            throw OAuthError.failed(String(localized: "Invalid login URL"))
         }
 
         return try await withCheckedThrowingContinuation { continuation in

@@ -1,0 +1,191 @@
+{
+  "expectedLocales": [
+    "en-US",
+    "ar-SA",
+    "da",
+    "de-DE",
+    "es-ES",
+    "fi",
+    "fr-FR",
+    "he",
+    "hi",
+    "hu",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "nl-NL",
+    "no",
+    "pl",
+    "pt-BR",
+    "ru",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "preparedLocaleCount": 26,
+  "failures": [],
+  "details": {
+    "en-US": {
+      "characters": 508,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "ar-SA": {
+      "characters": 517,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "da": {
+      "characters": 587,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "de-DE": {
+      "characters": 660,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "es-ES": {
+      "characters": 652,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "fi": {
+      "characters": 631,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "fr-FR": {
+      "characters": 688,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "he": {
+      "characters": 476,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "hi": {
+      "characters": 589,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "hu": {
+      "characters": 667,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "id": {
+      "characters": 611,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "it": {
+      "characters": 666,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "ja": {
+      "characters": 353,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "ko": {
+      "characters": 349,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "nl-NL": {
+      "characters": 645,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "no": {
+      "characters": 579,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "pl": {
+      "characters": 631,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "pt-BR": {
+      "characters": 617,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "ru": {
+      "characters": 635,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "sv": {
+      "characters": 600,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "th": {
+      "characters": 504,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "tr": {
+      "characters": 641,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "uk": {
+      "characters": 649,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "vi": {
+      "characters": 550,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "zh-Hans": {
+      "characters": 260,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    },
+    "zh-Hant": {
+      "characters": 268,
+      "mentionsSSH": true,
+      "mentionsForgejo": true,
+      "bulletCount": 5
+    }
+  },
+  "passed": true
+}

@@ -1,0 +1,146 @@
+{
+  "capturedAt": "2026-08-11T01:09:53.691905+00:00",
+  "approvedVersionId": "53686e4e-0162-481c-99d1-17eb5df77c87",
+  "approvedVersionString": "2.5.2",
+  "fields": [
+    "description",
+    "keywords",
+    "marketingUrl",
+    "supportUrl",
+    "whatsNew"
+  ],
+  "records": [
+    {
+      "locale": "en-US",
+      "exitCode": 0,
+      "localizationId": "00c92742-c8bd-4d69-81b9-01812f62e516"
+    },
+    {
+      "locale": "ar-SA",
+      "exitCode": 0,
+      "localizationId": "d4154c7e-a8cb-4368-b98c-dd15b6a2bfbe"
+    },
+    {
+      "locale": "da",
+      "exitCode": 0,
+      "localizationId": "8f9173fd-9c87-4508-9339-f832041f8202"
+    },
+    {
+      "locale": "de-DE",
+      "exitCode": 0,
+      "localizationId": "f4fa850d-411a-4ac2-82f9-a08eef6194dd"
+    },
+    {
+      "locale": "es-ES",
+      "exitCode": 0,
+      "localizationId": "eabf5db5-b093-4dcc-8a62-c9aa6afb4e71"
+    },
+    {
+      "locale": "fi",
+      "exitCode": 0,
+      "localizationId": "85a4e700-1b0a-45e1-8082-62b696b9bc93"
+    },
+    {
+      "locale": "fr-FR",
+      "exitCode": 0,
+      "localizationId": "9cd6ee2c-7a7b-479c-968f-b51e8a81d8fb"
+    },
+    {
+      "locale": "he",
+      "exitCode": 0,
+      "localizationId": "dc4dcf16-ad4c-4d93-bc74-73859bc19481"
+    },
+    {
+      "locale": "hi",
+      "exitCode": 0,
+      "localizationId": "f6b35351-002a-4f3b-8479-1b89d2eeff59"
+    },
+    {
+      "locale": "hu",
+      "exitCode": 0,
+      "localizationId": "8e3b68f6-4197-48be-8e27-6b29d37b4774"
+    },
+    {
+      "locale": "id",
+      "exitCode": 0,
+      "localizationId": "aaee432c-655d-4947-9299-2fc142ddb2f5"
+    },
+    {
+      "locale": "it",
+      "exitCode": 0,
+      "localizationId": "4a024d46-390e-41bc-995b-0b0aa065eb34"
+    },
+    {
+      "locale": "ja",
+      "exitCode": 0,
+      "localizationId": "3d835e8e-d82f-4bd0-bf82-c7bcccbfd703"
+    },
+    {
+      "locale": "ko",
+      "exitCode": 0,
+      "localizationId": "a32d7c29-3423-4c97-ae7c-45072b033158"
+    },
+    {
+      "locale": "nl-NL",
+      "exitCode": 0,
+      "localizationId": "4b9e6338-7bcd-4bf0-bf04-6bdabc88bd2e"
+    },
+    {
+      "locale": "no",
+      "exitCode": 0,
+      "localizationId": "bfa9c9c9-b8a7-4db7-af99-1b80af9f496c"
+    },
+    {
+      "locale": "pl",
+      "exitCode": 0,
+      "localizationId": "dcc01b5c-4879-48c9-a3c1-7ba5b31817bc"
+    },
+    {
+      "locale": "pt-BR",
+      "exitCode": 0,
+      "localizationId": "271d4140-c4aa-489b-898f-91305159bccf"
+    },
+    {
+      "locale": "ru",
+      "exitCode": 0,
+      "localizationId": "a0f678a3-fe4d-4f20-bd79-68a2c9938b0d"
+    },
+    {
+      "locale": "sv",
+      "exitCode": 0,
+      "localizationId": "453ab322-2515-4083-a790-2af2c1f84026"
+    },
+    {
+      "locale": "th",
+      "exitCode": 0,
+      "localizationId": "e7132881-095c-453e-91e6-c4cbf1883890"
+    },
+    {
+      "locale": "tr",
+      "exitCode": 0,
+      "localizationId": "7837e2fb-1c0e-448c-a94c-fd2433a2d7a5"
+    },
+    {
+      "locale": "uk",
+      "exitCode": 0,
+      "localizationId": "c6782dc3-18ff-4220-8d64-cbc660beb2b2"
+    },
+    {
+      "locale": "vi",
+      "exitCode": 0,
+      "localizationId": "05b7947a-cc02-4bec-9632-de5fe78a2afd"
+    },
+    {
+      "locale": "zh-Hans",
+      "exitCode": 0,
+      "localizationId": "b56277a3-a2fc-4103-854b-41f19e104770"
+    },
+    {
+      "locale": "zh-Hant",
+      "exitCode": 0,
+      "localizationId": "199c1aed-0d54-4c6b-a9d1-7b97796eb32a"
+    }
+  ],
+  "failures": [],
+  "completed": true
+}

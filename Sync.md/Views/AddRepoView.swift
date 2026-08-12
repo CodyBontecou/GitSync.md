@@ -148,7 +148,7 @@ struct AddRepoView: View {
             .alert("Missing Required Fields", isPresented: $showValidationAlert) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text(validationMessage ?? "Please fill in the required fields.")
+                Text(validationMessage ?? String(localized: "Please fill in the required fields."))
             }
         }
     }
@@ -157,7 +157,7 @@ struct AddRepoView: View {
 
     private var repoSelectionSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(title: "Repository")
+            BSectionHeader(title: String(localized: "Repository"))
                 .padding(.horizontal, 20)
 
             VStack(spacing: 0) {
@@ -193,7 +193,7 @@ struct AddRepoView: View {
                         if state.isLoadingRepos {
                             ProgressView().controlSize(.small)
                         } else if !selectedRepoURL.isEmpty && !showManualEntry && localRepoURL == nil {
-                            BBadge(text: "selected", style: .success)
+                            BBadge(text: String(localized: "selected"), style: .success)
                         } else {
                             Text("→")
                                 .font(.system(size: 13, design: .monospaced))
@@ -205,7 +205,7 @@ struct AddRepoView: View {
                 }
                 .buttonStyle(.plain)
 
-                BDivider(label: "or").padding(.horizontal, 16).padding(.vertical, 10)
+                BDivider(label: String(localized: "or")).padding(.horizontal, 16).padding(.vertical, 10)
 
                 // Select local repository
                 Button {
@@ -238,7 +238,7 @@ struct AddRepoView: View {
                         Spacer()
 
                         if localRepoURL != nil {
-                            BBadge(text: "selected", style: .success)
+                            BBadge(text: String(localized: "selected"), style: .success)
                         } else {
                             Text("→")
                                 .font(.system(size: 13, design: .monospaced))
@@ -253,7 +253,7 @@ struct AddRepoView: View {
                 if let error = localRepoError {
                     BDivider().padding(.horizontal, 16)
                     HStack(spacing: 6) {
-                        BBadge(text: "ERROR", style: .error)
+                        BBadge(text: String(localized: "ERROR"), style: .error)
                         Text(error)
                             .font(.system(size: 14, design: .monospaced))
                             .foregroundStyle(Color.brutalError)
@@ -262,13 +262,13 @@ struct AddRepoView: View {
                     .padding(.vertical, 10)
                 }
 
-                BDivider(label: "or").padding(.horizontal, 16).padding(.vertical, 10)
+                BDivider(label: String(localized: "or")).padding(.horizontal, 16).padding(.vertical, 10)
 
                 // Manual URL entry
                 if showManualEntry {
                     VStack(alignment: .leading, spacing: 8) {
                         BTextField(
-                            label: "Repository URL",
+                            label: String(localized: "Repository URL"),
                             text: $selectedRepoURL,
                             placeholder: "https://host/user/repo or git@host:user/repo.git",
                             autocapitalization: .never
@@ -277,7 +277,7 @@ struct AddRepoView: View {
 
                         if !selectedRepoURL.isEmpty && GitRemoteURL.parse(selectedRepoURL) == nil {
                             HStack(spacing: 6) {
-                                BBadge(text: "INVALID URL", style: .error)
+                                BBadge(text: String(localized: "INVALID URL"), style: .error)
                                 Text("Use HTTPS, SSH, git://, file://, or owner/repo.")
                                     .font(.system(size: 13, design: .monospaced))
                                     .foregroundStyle(Color.brutalError)
@@ -324,25 +324,25 @@ struct AddRepoView: View {
 
     private var configSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(title: "Configuration")
+            BSectionHeader(title: String(localized: "Configuration"))
                 .padding(.horizontal, 20)
 
             VStack(spacing: 12) {
                 BTextField(
-                    label: "Branch",
+                    label: String(localized: "Branch"),
                     text: $selectedBranch,
                     placeholder: "main",
                     autocapitalization: .never
                 )
 
                 BTextField(
-                    label: "Author Name",
+                    label: String(localized: "Author Name"),
                     text: $authorName,
-                    placeholder: "Your Name"
+                    placeholder: String(localized: "Your Name")
                 )
 
                 BTextField(
-                    label: "Author Email",
+                    label: String(localized: "Author Email"),
                     text: $authorEmail,
                     placeholder: "you@example.com",
                     keyboardType: .emailAddress,
@@ -364,10 +364,10 @@ struct AddRepoView: View {
 
         return VStack(alignment: .leading, spacing: 8) {
             BSectionHeader(
-                title: "Authentication",
+                title: String(localized: "Authentication"),
                 subtitle: canUseGitHubPAT
-                    ? "Use GitHub sign-in, a token, an SSH key, or public access."
-                    : "Use public access, an HTTPS token, or an SSH private key."
+                    ? String(localized: "Use GitHub sign-in, a token, an SSH key, or public access.")
+                    : String(localized: "Use public access, an HTTPS token, or an SSH private key.")
             )
             .padding(.horizontal, 20)
 
@@ -377,8 +377,8 @@ struct AddRepoView: View {
                         authOption(
                             method: .gitHubPAT,
                             icon: "🐙",
-                            title: "GitHub Account",
-                            subtitle: "Use your signed-in GitHub token"
+                            title: String(localized: "GitHub Account"),
+                            subtitle: String(localized: "Use your signed-in GitHub token")
                         )
                         BDivider().padding(.horizontal, 16)
                     }
@@ -386,8 +386,10 @@ struct AddRepoView: View {
                     authOption(
                         method: .none,
                         icon: "🌐",
-                        title: "No Authentication",
-                        subtitle: isSSH ? "Only works for public SSH remotes" : "Public repositories and file remotes"
+                        title: String(localized: "No Authentication"),
+                        subtitle: isSSH
+                            ? String(localized: "Only works for public SSH remotes")
+                            : String(localized: "Public repositories and file remotes")
                     )
 
                     BDivider().padding(.horizontal, 16)
@@ -395,8 +397,8 @@ struct AddRepoView: View {
                     authOption(
                         method: .httpsToken,
                         icon: "🔑",
-                        title: "HTTPS Token / Password",
-                        subtitle: "GitLab, Gitea, Bitbucket, or self-hosted HTTPS"
+                        title: String(localized: "HTTPS Token / Password"),
+                        subtitle: String(localized: "GitLab, Gitea, Bitbucket, or self-hosted HTTPS")
                     )
 
                     BDivider().padding(.horizontal, 16)
@@ -404,8 +406,8 @@ struct AddRepoView: View {
                     authOption(
                         method: .sshKey,
                         icon: "🗝️",
-                        title: "SSH Private Key",
-                        subtitle: "For git@host:owner/repo.git or ssh:// remotes"
+                        title: String(localized: "SSH Private Key"),
+                        subtitle: String(localized: "For git@host:owner/repo.git or ssh:// remotes")
                     )
 
                     authFields
@@ -439,7 +441,7 @@ struct AddRepoView: View {
                 Spacer()
 
                 if authMethod == method {
-                    BBadge(text: "selected", style: .success)
+                    BBadge(text: String(localized: "selected"), style: .success)
                 }
             }
             .padding(.horizontal, 16)
@@ -454,25 +456,25 @@ struct AddRepoView: View {
         switch authMethod {
         case .gitHubPAT:
             BDivider().padding(.horizontal, 16)
-            authHelpRow("Using the GitHub token from your account. Sign out or choose another method to use a different provider.")
+            authHelpRow(String(localized: "Using the GitHub token from your account. Sign out or choose another method to use a different provider."))
 
         case .none:
             BDivider().padding(.horizontal, 16)
-            authHelpRow("GitSync.md will not provide credentials. Choose this for public remotes or local file remotes.")
+            authHelpRow(String(localized: "GitSync.md will not provide credentials. Choose this for public remotes or local file remotes."))
 
         case .httpsToken:
             BDivider().padding(.horizontal, 16)
             VStack(spacing: 12) {
                 BTextField(
-                    label: "Username",
+                    label: String(localized: "Username"),
                     text: $authUsername,
                     placeholder: GitRemoteURL.parse(selectedRepoURL)?.username ?? "username",
                     autocapitalization: .never
                 )
                 BTextField(
-                    label: "Token / Password",
+                    label: String(localized: "Token / Password"),
                     text: $authPassword,
-                    placeholder: "token or password",
+                    placeholder: String(localized: "token or password"),
                     isSecure: true,
                     autocapitalization: .never
                 )
@@ -483,7 +485,7 @@ struct AddRepoView: View {
             BDivider().padding(.horizontal, 16)
             VStack(alignment: .leading, spacing: 12) {
                 BTextField(
-                    label: "SSH Username",
+                    label: String(localized: "SSH Username"),
                     text: $authUsername,
                     placeholder: GitRemoteURL.parse(selectedRepoURL)?.username ?? "git",
                     autocapitalization: .never
@@ -507,9 +509,9 @@ struct AddRepoView: View {
                 }
 
                 BTextField(
-                    label: "Passphrase (Optional)",
+                    label: String(localized: "Passphrase (Optional)"),
                     text: $sshPassphrase,
-                    placeholder: "leave blank if none",
+                    placeholder: String(localized: "leave blank if none"),
                     isSecure: true,
                     autocapitalization: .never
                 )
@@ -550,7 +552,7 @@ struct AddRepoView: View {
 
     private var cloneLocationSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(title: "Clone To")
+            BSectionHeader(title: String(localized: "Clone To"))
                 .padding(.horizontal, 20)
 
             BCard(padding: 0) {
@@ -624,7 +626,11 @@ struct AddRepoView: View {
                     } label: {
                         HStack(spacing: 6) {
                             Text("📂")
-                            Text(customVaultURL != nil ? "CHANGE LOCATION" : "CHOOSE DIFFERENT LOCATION")
+                            Text(
+                                customVaultURL != nil
+                                    ? String(localized: "CHANGE LOCATION")
+                                    : String(localized: "CHOOSE DIFFERENT LOCATION")
+                            )
                                 .font(.system(size: 12, weight: .bold, design: .monospaced))
                                 .foregroundStyle(Color.brutalAccent)
                                 .tracking(1)
@@ -643,7 +649,7 @@ struct AddRepoView: View {
 
     private var localRepoConfigSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(title: "Author")
+            BSectionHeader(title: String(localized: "Author"))
                 .padding(.horizontal, 20)
 
             VStack(spacing: 12) {
@@ -667,11 +673,15 @@ struct AddRepoView: View {
                     .padding(.horizontal, 20)
                 }
 
-                BTextField(label: "Author Name", text: $authorName, placeholder: "Your Name")
+                BTextField(
+                    label: String(localized: "Author Name"),
+                    text: $authorName,
+                    placeholder: String(localized: "Your Name")
+                )
                     .padding(.horizontal, 20)
 
                 BTextField(
-                    label: "Author Email",
+                    label: String(localized: "Author Email"),
                     text: $authorEmail,
                     placeholder: "you@example.com",
                     keyboardType: .emailAddress,
@@ -686,7 +696,7 @@ struct AddRepoView: View {
     // MARK: - Buttons
 
     private var addLocalRepoButton: some View {
-        BPrimaryButton(title: "Add Repository", isDisabled: !canSubmitLocalRepo, icon: "folder.badge.plus") {
+        BPrimaryButton(title: String(localized: "Add Repository"), isDisabled: !canSubmitLocalRepo, icon: "folder.badge.plus") {
             addLocalRepo()
         }
         .padding(.horizontal, 20)
@@ -694,7 +704,7 @@ struct AddRepoView: View {
     }
 
     private var addButton: some View {
-        BPrimaryButton(title: "Add & Clone Repository", isDisabled: !canSubmitRemoteRepo, icon: "square.and.arrow.down") {
+        BPrimaryButton(title: String(localized: "Add & Clone Repository"), isDisabled: !canSubmitRemoteRepo, icon: "square.and.arrow.down") {
             addAndClone()
         }
         .padding(.horizontal, 20)
@@ -729,29 +739,35 @@ struct AddRepoView: View {
 
     private var missingAuthorFields: [String] {
         var fields: [String] = []
-        if trimmedAuthorName.isEmpty { fields.append("Author Name") }
-        if trimmedAuthorEmail.isEmpty { fields.append("Author Email") }
+        if trimmedAuthorName.isEmpty { fields.append(String(localized: "Author Name")) }
+        if trimmedAuthorEmail.isEmpty { fields.append(String(localized: "Author Email")) }
         return fields
     }
 
     private var missingAuthFields: [String] {
         switch authMethod {
         case .gitHubPAT:
-            return state.pat.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? ["GitHub sign-in"] : []
+            return state.pat.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? [String(localized: "GitHub sign-in")]
+                : []
         case .none:
             return []
         case .httpsToken:
-            return authPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? ["Token / Password"] : []
+            return authPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? [String(localized: "Token / Password")]
+                : []
         case .sshKey:
-            return sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? ["SSH Private Key"] : []
+            return sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? [String(localized: "SSH Private Key")]
+                : []
         }
     }
 
     private func showMissingFieldsError(_ fields: [String]) {
         guard !fields.isEmpty else { return }
         validationMessage = fields.count == 1
-            ? "Please fill in \(fields[0])."
-            : "Please fill in these fields: \(fields.joined(separator: ", "))."
+            ? String(localized: "Please fill in \(fields[0]).")
+            : String(localized: "Please fill in these fields: \(fields.joined(separator: ", ")).")
         showValidationAlert = true
     }
 
@@ -822,7 +838,7 @@ struct AddRepoView: View {
         let missing = missingAuthorFields + missingAuthFields
         guard missing.isEmpty else { showMissingFieldsError(missing); return }
         guard GitRemoteURL.parse(selectedRepoURL) != nil else {
-            validationMessage = "Please enter a valid Git remote URL."
+            validationMessage = String(localized: "Please enter a valid Git remote URL.")
             showValidationAlert = true
             return
         }
@@ -858,20 +874,20 @@ struct AddRepoView: View {
 
     private func handleLocalRepoSelection(_ url: URL) {
         guard url.startAccessingSecurityScopedResource() else {
-            localRepoError = "Could not access the selected folder."
+            localRepoError = String(localized: "Could not access the selected folder.")
             return
         }
         let gitDir = url.appendingPathComponent(".git")
         guard FileManager.default.fileExists(atPath: gitDir.path) else {
             url.stopAccessingSecurityScopedResource()
-            localRepoError = "No .git directory found in the selected folder."
+            localRepoError = String(localized: "No .git directory found in the selected folder.")
             localRepoURL = nil
             localRepoBookmarkData = nil
             return
         }
         guard let bookmark = try? url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil) else {
             url.stopAccessingSecurityScopedResource()
-            localRepoError = "Could not create a bookmark for the selected folder."
+            localRepoError = String(localized: "Could not create a bookmark for the selected folder.")
             return
         }
         url.stopAccessingSecurityScopedResource()

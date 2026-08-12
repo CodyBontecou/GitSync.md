@@ -1,0 +1,9 @@
+Nu finns stöd för egenhostad Git via SSH. Uppdateringen åtgärdar stödet för Forgejo- och Git-servrar som enbart använder SSH vid kloning, hämtning och push av repositories.
+
+• SSH-transport är nu korrekt inkluderad för iPhone och iPad
+• Privata nycklar av typerna Ed25519, ECDSA och RSA stöds
+• Okända SSH-värdar visar nu en förtroendefråga med fingeravtryck
+• Ändrade SSH-värdnycklar blockeras tills du har granskat dem
+• I repository-inställningarna är det nu enklare att uppdatera fjärr-URL:er och SSH-inloggningsuppgifter
+
+Tack för att du hjälpte till att testa detta med riktiga Forgejo-servrar.

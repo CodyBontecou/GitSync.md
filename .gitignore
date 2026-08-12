@@ -47,6 +47,8 @@ screenshots/
 
 # App Store metadata
 metadata/
+!localization/app-store/metadata/
+!localization/app-store/metadata/**
 metadata-remote/
 fastlane/metadata/
 fastlane/screenshots/

@@ -1,0 +1,15 @@
+{
+  "reason": "These strings are developer diagnostics or deterministic fictional demo data, not localized user-interface copy.",
+  "allowedPatterns": [
+    {
+      "pattern": "context: \"",
+      "scope": "Sync.md/Services",
+      "category": "libgit2 and Git LFS low-level operation context"
+    },
+    {
+      "pattern": "Debug/MarketingCapture.swift",
+      "scope": "Sync.md/Debug/MarketingCapture.swift",
+      "category": "fictional screenshot fixtures and source-code examples"
+    }
+  ]
+}

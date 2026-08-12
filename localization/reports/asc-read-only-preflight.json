@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-08-10T22:51:05Z",
+  "accessMode": "read-only",
+  "authenticationValidated": true,
+  "privateKeyFilesAccessed": false,
+  "app": {
+    "id": "6758960270",
+    "bundleId": "bontecou.Sync-md",
+    "name": "GitSync.md"
+  },
+  "liveVersion": {
+    "id": "269c0a1d-52c2-4096-b894-5d6840afaab8",
+    "versionString": "2.5.1",
+    "platform": "IOS",
+    "state": "READY_FOR_DISTRIBUTION",
+    "appInfoLocaleCount": 26,
+    "versionLocaleCount": 26,
+    "editableForVersionMetadataOrScreenshots": false
+  },
+  "screenshots": {
+    "en-US": {
+      "APP_IPHONE_67": 10,
+      "APP_IPAD_PRO_3GEN_129": 4
+    },
+    "eachNonEnglishLocale": {
+      "APP_IPHONE_67": 0,
+      "APP_IPAD_PRO_3GEN_129": 0
+    }
+  },
+  "pricing": {
+    "baseTerritory": "USA",
+    "customerPrice": "9.99",
+    "currency": "USD",
+    "isFree": false
+  },
+  "subscriptions": {
+    "groupCount": 0
+  },
+  "historicalInAppPurchase": {
+    "id": "6761148615",
+    "productId": "bontecou.syncmd.unlock",
+    "name": "Unlimited Repositories",
+    "type": "NON_CONSUMABLE",
+    "state": "DEVELOPER_REMOVED_FROM_SALE",
+    "approvedVersionCount": 1,
+    "locales": ["en-US"],
+    "proposedAction": "none"
+  },
+  "conclusion": "Prepare local artifacts against proposed version 2.5.2; do not create it or mutate App Store Connect without explicit approval."
+}

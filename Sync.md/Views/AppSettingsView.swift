@@ -18,22 +18,22 @@ struct AppSettingsView: View {
                 ScrollView {
                     VStack(spacing: 12) {
                         // Account
-                        settingsSection(title: "Account") {
+                        settingsSection(title: String(localized: "Account")) {
                             VStack(spacing: 0) {
                                 if !state.gitHubDisplayName.isEmpty {
-                                    dataRow(label: "Name", value: state.gitHubDisplayName)
+                                    dataRow(label: String(localized: "Name"), value: state.gitHubDisplayName)
                                     BDivider().padding(.horizontal, 16)
                                 }
-                                dataRow(label: "Username", value: "@\(state.gitHubUsername)")
+                                dataRow(label: String(localized: "Username"), value: "@\(state.gitHubUsername)")
                                 if !state.defaultAuthorEmail.isEmpty {
                                     BDivider().padding(.horizontal, 16)
-                                    dataRow(label: "Email", value: state.defaultAuthorEmail)
+                                    dataRow(label: String(localized: "Email"), value: state.defaultAuthorEmail)
                                 }
                             }
                         }
 
                         // Default Save Location
-                        settingsSection(title: "Default Save Location") {
+                        settingsSection(title: String(localized: "Default Save Location")) {
                             VStack(spacing: 0) {
                                 if let url = state.resolvedDefaultSaveURL {
                                     HStack(spacing: 12) {
@@ -115,7 +115,7 @@ struct AppSettingsView: View {
                         }
 
                         // Shortcuts
-                        settingsSection(title: "Shortcuts") {
+                        settingsSection(title: String(localized: "Shortcuts")) {
                             HStack(alignment: .top, spacing: 14) {
                                 Text("⚡️")
                                     .font(.system(size: 18))
@@ -136,9 +136,13 @@ struct AppSettingsView: View {
                         }
 
                         // Feedback
-                        settingsSection(title: "Feedback") {
+                        settingsSection(title: String(localized: "Feedback")) {
                             VStack(spacing: 0) {
-                                actionRow(icon: "✉️", title: "Send Feedback", subtitle: "Questions, ideas, or issues") {
+                                actionRow(
+                                    icon: "✉️",
+                                    title: String(localized: "Send Feedback"),
+                                    subtitle: String(localized: "Questions, ideas, or issues")
+                                ) {
                                     if FeedbackHelper.canSendMail {
                                         showMailCompose = true
                                     } else {
@@ -146,7 +150,11 @@ struct AppSettingsView: View {
                                     }
                                 }
                                 BDivider().padding(.horizontal, 16)
-                                actionRow(icon: "💬", title: "Join our Discord", subtitle: "Chat with us on Discord") {
+                                actionRow(
+                                    icon: "💬",
+                                    title: String(localized: "Join our Discord"),
+                                    subtitle: String(localized: "Chat with us on Discord")
+                                ) {
                                     if let url = URL(string: "https://discord.gg/RaQYS4t6gn") {
                                         UIApplication.shared.open(url)
                                     }
@@ -155,23 +163,27 @@ struct AppSettingsView: View {
                         }
 
                         // Help
-                        settingsSection(title: "Help") {
+                        settingsSection(title: String(localized: "Help")) {
                             VStack(spacing: 0) {
-                                actionRow(icon: "👋", title: "Show App Tour", subtitle: "Re-experience the onboarding flow") {
+                                actionRow(
+                                    icon: "👋",
+                                    title: String(localized: "Show App Tour"),
+                                    subtitle: String(localized: "Re-experience the onboarding flow")
+                                ) {
                                     showOnboarding = true
                                 }
                             }
                         }
 
                         // About
-                        settingsSection(title: "About") {
+                        settingsSection(title: String(localized: "About")) {
                             VStack(spacing: 0) {
                                 dataRow(
-                                    label: "Version",
+                                    label: String(localized: "Version"),
                                     value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
                                 )
                                 BDivider().padding(.horizontal, 16)
-                                dataRow(label: "Repositories", value: "\(state.visibleRepos.count)")
+                                dataRow(label: String(localized: "Repositories"), value: "\(state.visibleRepos.count)")
                             }
                         }
                     }

@@ -1,0 +1,219 @@
+{
+  "Shortcuts support": {
+    "he": "תמיכה בקיצורים"
+  },
+  "Shortcuts": {
+    "he": "קיצורים"
+  },
+  "Loading": {
+    "ar": "جارٍ التحميل",
+    "da": "Indlæser",
+    "de": "Wird geladen",
+    "es": "Cargando",
+    "fi": "Ladataan",
+    "fr": "Chargement",
+    "he": "טוען",
+    "hi": "लोड हो रहा है",
+    "hu": "Betöltés",
+    "id": "Memuat",
+    "it": "Caricamento",
+    "ja": "読み込み中",
+    "ko": "불러오는 중",
+    "nb": "Laster inn",
+    "nl": "Laden",
+    "pl": "Wczytywanie",
+    "pt-BR": "Carregando",
+    "ru": "Загрузка",
+    "sv": "Läser in",
+    "th": "กำลังโหลด",
+    "tr": "Yükleniyor",
+    "uk": "Завантаження",
+    "vi": "Đang tải",
+    "zh-Hans": "正在加载",
+    "zh-Hant": "正在載入"
+  },
+  "(empty)": {
+    "ar": "(فارغ)",
+    "da": "(tom)",
+    "de": "(leer)",
+    "es": "(vacío)",
+    "fi": "(tyhjä)",
+    "fr": "(vide)",
+    "he": "(ריק)",
+    "hi": "(खाली)",
+    "hu": "(üres)",
+    "id": "(kosong)",
+    "it": "(vuoto)",
+    "ja": "（空）",
+    "ko": "(비어 있음)",
+    "nb": "(tom)",
+    "nl": "(leeg)",
+    "pl": "(puste)",
+    "pt-BR": "(vazio)",
+    "ru": "(пусто)",
+    "sv": "(tom)",
+    "th": "(ว่าง)",
+    "tr": "(boş)",
+    "uk": "(порожньо)",
+    "vi": "(trống)",
+    "zh-Hans": "（空）",
+    "zh-Hant": "（空）"
+  },
+  "Merge commit message…": {
+    "ar": "رسالة دمج الالتزام…",
+    "da": "Flet-commitbesked…",
+    "de": "Merge-Commit-Nachricht…",
+    "es": "Mensaje del commit de fusión…",
+    "fi": "Yhdistämiscommitin viesti…",
+    "fr": "Message du commit de fusion…",
+    "he": "הודעת קומיט למיזוג…",
+    "hi": "मर्ज कमिट संदेश…",
+    "hu": "Egyesítési commit üzenete…",
+    "id": "Pesan commit penggabungan…",
+    "it": "Messaggio del commit di merge…",
+    "ja": "マージコミットメッセージ…",
+    "ko": "병합 커밋 메시지…",
+    "nb": "Meldingen for flettings-commit…",
+    "nl": "Bericht voor mergecommit…",
+    "pl": "Wiadomość commita scalającego…",
+    "pt-BR": "Mensagem do commit de mesclagem…",
+    "ru": "Сообщение коммита слияния…",
+    "sv": "Meddelande för sammanslagnings-commit…",
+    "th": "ข้อความคอมมิตสำหรับการผสาน…",
+    "tr": "Birleştirme commit mesajı…",
+    "uk": "Повідомлення коміту злиття…",
+    "vi": "Thông điệp commit hợp nhất…",
+    "zh-Hans": "合并提交信息…",
+    "zh-Hant": "合併提交訊息…"
+  },
+  "1 file will be discarded": {
+    "ar": "سيتم تجاهل ملف واحد",
+    "da": "1 fil vil blive kasseret",
+    "de": "1 Datei wird verworfen",
+    "es": "Se descartará 1 archivo",
+    "fi": "1 tiedosto hylätään",
+    "fr": "Les modifications d’un fichier seront annulées",
+    "he": "שינויים בקובץ אחד יבוטלו",
+    "hi": "1 फ़ाइल के बदलाव रद्द कर दिए जाएंगे",
+    "hu": "1 fájl módosításai el lesznek vetve",
+    "id": "Perubahan pada 1 file akan dibuang",
+    "it": "Le modifiche a 1 file verranno annullate",
+    "ja": "1個のファイルの変更が破棄されます",
+    "ko": "파일 1개의 변경 사항이 폐기됩니다",
+    "nb": "Endringene i 1 fil forkastes",
+    "nl": "Wijzigingen in 1 bestand worden verworpen",
+    "pl": "Zmiany w 1 pliku zostaną odrzucone",
+    "pt-BR": "As alterações em 1 arquivo serão descartadas",
+    "ru": "Изменения в 1 файле будут отменены",
+    "sv": "Ändringarna i 1 fil kommer att kasseras",
+    "th": "การเปลี่ยนแปลงใน 1 ไฟล์จะถูกละทิ้ง",
+    "tr": "1 dosyadaki değişiklikler atılacak",
+    "uk": "Зміни в 1 файлі буде відкинуто",
+    "vi": "Các thay đổi trong 1 tệp sẽ bị loại bỏ",
+    "zh-Hans": "将丢弃 1 个文件中的更改",
+    "zh-Hant": "將捨棄 1 個檔案中的變更"
+  },
+  "%lld files will be discarded": {
+    "ar": "سيتم تجاهل %lld ملفات",
+    "da": "%lld filer vil blive kasseret",
+    "de": "%lld Dateien werden verworfen",
+    "es": "Se descartarán %lld archivos",
+    "fi": "%lld tiedostoa hylätään",
+    "fr": "Les modifications de %lld fichiers seront annulées",
+    "he": "שינויים ב־%lld קבצים יבוטלו",
+    "hi": "%lld फ़ाइलों के बदलाव रद्द कर दिए जाएंगे",
+    "hu": "%lld fájl módosításai el lesznek vetve",
+    "id": "Perubahan pada %lld file akan dibuang",
+    "it": "Le modifiche a %lld file verranno annullate",
+    "ja": "%lld個のファイルの変更が破棄されます",
+    "ko": "파일 %lld개의 변경 사항이 폐기됩니다",
+    "nb": "Endringene i %lld filer forkastes",
+    "nl": "Wijzigingen in %lld bestanden worden verworpen",
+    "pl": "Zmiany w %lld plikach zostaną odrzucone",
+    "pt-BR": "As alterações em %lld arquivos serão descartadas",
+    "ru": "Изменения в %lld файлах будут отменены",
+    "sv": "Ändringarna i %lld filer kommer att kasseras",
+    "th": "การเปลี่ยนแปลงใน %lld ไฟล์จะถูกละทิ้ง",
+    "tr": "%lld dosyadaki değişiklikler atılacak",
+    "uk": "Зміни у %lld файлах буде відкинуто",
+    "vi": "Các thay đổi trong %lld tệp sẽ bị loại bỏ",
+    "zh-Hans": "将丢弃 %lld 个文件中的更改",
+    "zh-Hant": "將捨棄 %lld 個檔案中的變更"
+  },
+  "Abort Rebase": {
+    "fr": "Annuler le rebase",
+    "id": "Batalkan rebase",
+    "it": "Interrompi rebase",
+    "pt-BR": "Abortar rebase"
+  },
+  "BACK": {
+    "uk": "НАЗАД"
+  },
+  "CONFLICT": {
+    "fi": "RISTIRIITA"
+  },
+  "DEBUG LOG": {
+    "da": "FEJLFINDINGSLOG",
+    "he": "יומן ניפוי באגים",
+    "hi": "डीबग लॉग",
+    "pl": "DZIENNIK DEBUGOWANIA",
+    "uk": "ЖУРНАЛ НАЛАГОДЖЕННЯ"
+  },
+  "DEFAULT": {
+    "nl": "STANDAARD",
+    "pl": "DOMYŚLNE",
+    "uk": "ЗА ЗАМОВЧУВАННЯМ"
+  },
+  "DELETE/MODIFY": {
+    "fi": "POISTA/MUOKKAA"
+  },
+  "EDIT": {
+    "da": "REDIGER",
+    "fi": "MUOKKAA"
+  },
+  "FULL": {
+    "fi": "TÄYSI",
+    "nb": "FULLSTENDIG",
+    "sv": "FULLSTÄNDIG"
+  },
+  "JOIN": {
+    "fr": "REJOINDRE",
+    "uk": "ПРИЄДНАТИСЯ"
+  },
+  "Merge commit message": {
+    "fr": "Message du commit de fusion"
+  },
+  "RENAME/RENAME": {
+    "fi": "NIMEÄ UUDELLEEN/NIMEÄ UUDELLEEN"
+  },
+  "Resolve": {
+    "fi": "Ratkaise"
+  },
+  "SELECT REPOSITORY": {
+    "fr": "SÉLECTIONNER LE DÉPÔT"
+  },
+  "Skip": {
+    "fi": "Ohita",
+    "uk": "Пропустити"
+  },
+  "Trust Host": {
+    "id": "Percayai Host",
+    "nl": "Host vertrouwen",
+    "pl": "Zaufaj hostowi",
+    "uk": "Довіряти хосту",
+    "vi": "Tin cậy máy chủ"
+  },
+  "repository": {
+    "he": "מאגר",
+    "id": "repositori",
+    "it": "repository",
+    "pl": "repozytorium",
+    "pt-BR": "repositório",
+    "ru": "репозиторий",
+    "uk": "репозиторій",
+    "vi": "kho lưu trữ"
+  },
+  "updated": {
+    "ar": "مُحدَّث"
+  }
+}

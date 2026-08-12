@@ -488,7 +488,7 @@ struct BEmptyState: View {
 // MARK: - Loading Indicator
 
 struct BLoading: View {
-    var text: String = "Loading"
+    var text: String = String(localized: "Loading")
     @State private var dotCount = 0
     let timer = Timer.publish(every: 0.4, on: .main, in: .common).autoconnect()
 
@@ -619,7 +619,7 @@ struct BConfirmModal: View {
                     } else {
                         BPrimaryButton(title: confirmLabel, action: onConfirm)
                     }
-                    BGhostButton(title: "Cancel", action: onCancel)
+                    BGhostButton(title: String(localized: "Cancel"), action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }
@@ -681,8 +681,8 @@ struct BRenameModal: View {
                     .padding(.bottom, 8)
 
                 VStack(spacing: 8) {
-                    BPrimaryButton(title: "Rename", action: onConfirm)
-                    BGhostButton(title: "Cancel", action: onCancel)
+                    BPrimaryButton(title: String(localized: "Rename"), action: onConfirm)
+                    BGhostButton(title: String(localized: "Cancel"), action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }
