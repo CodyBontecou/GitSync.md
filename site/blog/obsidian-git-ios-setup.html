@@ -568,8 +568,13 @@
         <li>Clone your vault's Git repo into that directory</li>
         <li>Install the <strong>Obsidian Git</strong> community plugin</li>
         <li>Set your <strong>GitHub username</strong>, <strong>author name</strong>, and <strong>author email</strong></li>
-        <li>Done — pull, commit, and push from Obsidian</li>
+        <li>Done — pull, commit, and push from Obsidian, or hand sync off to GitSync.md with the <code>syncmd://</code> sync URL</li>
       </ol>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-label">Update — June 2026</span>
+      <p>This post now recommends keeping the plugin's automatic timers off on iPhone and letting GitSync.md own automated sync via the <code>syncmd://x-callback-url/sync</code> URL. For the fuller walkthrough, see <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad</a>.</p>
     </div>
 
     <h2>The problem</h2>
@@ -671,6 +676,17 @@
       <p>That's it. No tokens to paste, no SSH keys to generate, no authentication configuration. The plugin uses the existing <code>.git</code> directory and remote configuration that GitSync.md already set up when it cloned the repo.</p>
     </div>
 
+    <!-- STEP 7 -->
+    <div class="step-card" data-step="Step 7">
+      <h3>Automate it with the sync URL (recommended)</h3>
+      <p>For a workflow you don't have to think about, hand the Git work to GitSync.md instead of driving the plugin's timers. Trigger this URL whenever you want a full round-trip sync:</p>
+      <pre><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
+      <p>The <code>sync</code> action pulls first, then stages your local changes, commits them with the message you pass, and pushes to GitHub — then hands you right back to Obsidian. The <code>repo</code> value must match the <strong>vault folder name</strong> shown in GitSync.md, not the GitHub repository title.</p>
+      <p>You can fire it from a tapped link in a note, an iOS Shortcut, or any automation you build — one tap and your vault is synced with real Git. Separate actions are also available if you want distinct pull and push buttons:</p>
+      <pre><code>syncmd://x-callback-url/pull?repo=MyVault
+syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
+    </div>
+
     <h2>That's it — it just works</h2>
 
     <p>Once those three fields are set, Obsidian Git can pull, commit, and push your vault. You can use the command palette (<strong>Ctrl+P</strong> or swipe down) and run commands like:</p>
@@ -681,7 +697,11 @@
       <li><strong>Obsidian Git: Push</strong> — push commits to GitHub</li>
     </ul>
 
-    <p>Or, if you've enabled auto-sync in the plugin settings, it will pull and push on a timer automatically. Edit a note on your phone, and it shows up on your desktop. Edit on your desktop, pull on your phone. <strong>Real Git, real version history, no sync conflicts.</strong></p>
+    <h3>What about auto-sync?</h3>
+
+    <p>The plugin does have automatic settings — auto commit-and-sync interval, auto push interval, auto pull interval — and they work, but <strong>we recommend leaving them off on iPhone</strong>. The plugin's mobile Git engine is experimental and memory-limited on iOS, its timers only fire while Obsidian is open in the foreground, and two apps driving the same <code>.git</code> on independent schedules is far less predictable than one owner.</p>
+
+    <p>Instead, let <strong>GitSync.md be the single engine</strong> for automated sync — trigger the <code>syncmd://x-callback-url/sync</code> URL from Step 7 for one-tap round-trips. Edit a note on your phone, sync once, and it shows up on your desktop. Edit on your desktop, sync on your phone. <strong>Real Git, real version history, no sync conflicts.</strong></p>
 
     <div class="callout tip">
       <span class="callout-label">Tip</span>
@@ -721,6 +741,7 @@
       <li>Point GitSync.md's save directory at Obsidian's iOS file system</li>
       <li>Clone your vault repo</li>
       <li>Set up Obsidian Git with your username, name, and email</li>
+      <li>Keep the plugin's auto-sync timers off and use <code>syncmd://x-callback-url/sync</code> for one-tap syncing</li>
     </ol>
 
     <p>No complex configuration, no SSH keys, no cloud middleman. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>
