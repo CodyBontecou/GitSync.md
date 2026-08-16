@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gitsync-premium-relay",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": true }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "premium-relay",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "queues": {
+    "producers": [{ "binding": "OUTBOX_QUEUE", "queue": "premium-relay-outbox" }],
+    "consumers": [
+      {
+        "queue": "premium-relay-outbox",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 8,
+        "dead_letter_queue": "premium-relay-outbox-dlq"
+      }
+    ]
+  },
+  "services": [{ "binding": "STOREKIT_VERIFIER", "service": "storekit-verifier" }],
+  "triggers": { "crons": ["17 3 * * *"] },
+  "vars": {
+    "BUNDLE_ID": "bontecou.Sync-md",
+    "PRODUCT_IDS": "com.bontecou.gitsync.assist.monthly,com.bontecou.gitsync.assist.annual",
+    "APP_STORE_ENVIRONMENTS": "Sandbox,Production",
+    "GITHUB_APP_ID": "000000",
+    "GITHUB_APP_SLUG": "replace-with-github-app-slug",
+    "GITHUB_CALLBACK_URL": "https://relay.example.com/v1/github/callback",
+    "APNS_TEAM_ID": "TEAMID0000",
+    "APNS_KEY_ID": "KEYID0000",
+    "APNS_TOPIC": "bontecou.Sync-md",
+    "SESSION_TTL_SECONDS": "2592000",
+    "LINK_STATE_TTL_SECONDS": "600",
+    "WEBHOOK_RETENTION_DAYS": "30",
+    "NOTIFICATION_RETENTION_DAYS": "90",
+    "KILL_SWITCH": "false"
+  }
+}

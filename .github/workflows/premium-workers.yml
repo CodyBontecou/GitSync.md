@@ -1,0 +1,106 @@
+name: Premium Workers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "worker/premium-relay/**"
+      - "worker/storekit-verifier/**"
+      - "worker/onboarding-analytics/**"
+      - ".github/workflows/premium-workers.yml"
+  pull_request:
+    paths:
+      - "worker/premium-relay/**"
+      - "worker/storekit-verifier/**"
+      - "worker/onboarding-analytics/**"
+      - ".github/workflows/premium-workers.yml"
+
+concurrency:
+  group: premium-workers-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: ${{ matrix.worker }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - worker: premium-relay
+            startup_check: false
+          - worker: storekit-verifier
+            startup_check: true
+          - worker: onboarding-analytics
+            startup_check: false
+    defaults:
+      run:
+        working-directory: worker/${{ matrix.worker }}
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: worker/${{ matrix.worker }}/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run Workers-runtime tests
+        run: npm test
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Check generated Wrangler types
+        run: npm run types:check
+
+      - name: Validate deploy bundle without publishing
+        run: npm run dry-run
+
+      - name: Check Worker startup budget
+        if: matrix.startup_check
+        run: npm run startup-check
+
+  migrations:
+    name: ${{ matrix.worker }} migration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - worker: premium-relay
+            command: migrate:local
+          - worker: onboarding-analytics
+            command: db:migrate:local
+    defaults:
+      run:
+        working-directory: worker/${{ matrix.worker }}
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: worker/${{ matrix.worker }}/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Apply D1 schema to fresh local state
+        env:
+          CI: "1"
+        run: |
+          set -euo pipefail
+          rm -rf .wrangler/state
+          npm run ${{ matrix.command }}
