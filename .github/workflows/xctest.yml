@@ -21,19 +21,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select iPhone simulator
+      - name: Select iPhone simulator (newest runtime)
         id: simulator
         shell: bash
         run: |
           set -euo pipefail
           xcrun simctl list devices available
-          SIMULATOR_UDID=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ && /Shutdown|Booted/ { print $2; exit }')
+          # Pick the iPhone on the newest (highest) installed runtime. The iOS
+          # 26.2 simruntime's libswift_Concurrency.dylib aborts with "pointer
+          # being freed was not allocated" during TaskLocal scope teardown on
+          # task deinit; 26.5+ runtimes are unaffected.
+          SELECTED=$(xcrun simctl list devices available | awk '
+            /^--/ { match($0, /iOS ([0-9]+\.[0-9]+)/, m); if (m[1] != "") os = m[1] }
+            /iPhone/ && /Shutdown|Booted/ && os != "" && udid == "" { udid = $0; sub(/^.*\(/, "", udid); sub(/\).*$/, "", udid); runtime = os }
+            END { print udid "|" runtime }
+          ' FS='[[:space:]]+')
+          # Fallback: first iPhone if parsing fails
+          if [[ "$SELECTED" == "|"* || -z "${SELECTED%%|*}" ]]; then
+            SELECTED="$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ && /Shutdown|Booted/ { print $2; exit }')|unknown"
+          fi
+          SIMULATOR_UDID="${SELECTED%%|*}"
+          RUNTIME="${SELECTED##*|}"
           if [ -z "${SIMULATOR_UDID:-}" ]; then
             echo "::error::No available iPhone simulator found"
             exit 1
           fi
           echo "udid=$SIMULATOR_UDID" >> "$GITHUB_OUTPUT"
-          echo "Selected simulator: $SIMULATOR_UDID"
+          echo "Selected simulator: $SIMULATOR_UDID (runtime iOS $RUNTIME)"
 
       - name: Boot simulator
         shell: bash
@@ -51,9 +65,8 @@ jobs:
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -destination "id=${{ steps.simulator.outputs.udid }}" \
-            -only-testing:"SyncMDTests/SyncMDTests/testRepoPersistenceStoreMergesSeparateFieldsOnSameRepository" \
+            -only-testing:"$TEST_TARGET" \
             -parallel-testing-enabled NO \
-            -enableAddressSanitizer YES \
             -derivedDataPath "$RUNNER_TEMP/DerivedData"
 
       - name: Audit Release app resources
