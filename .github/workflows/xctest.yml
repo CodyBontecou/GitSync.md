@@ -26,23 +26,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          xcrun simctl list devices available
-          # Pick the iPhone on the newest (highest) installed runtime. The iOS
-          # 26.2 simruntime's libswift_Concurrency.dylib aborts with "pointer
-          # being freed was not allocated" during TaskLocal scope teardown on
-          # task deinit; 26.5+ runtimes are unaffected.
-          SELECTED=$(xcrun simctl list devices available | awk '
-            /^--/ { match($0, /iOS ([0-9]+\.[0-9]+)/, m); if (m[1] != "") os = m[1] }
-            /iPhone/ && /Shutdown|Booted/ && os != "" && udid == "" { udid = $0; sub(/^.*\(/, "", udid); sub(/\).*$/, "", udid); runtime = os }
-            END { print udid "|" runtime }
-          ' FS='[[:space:]]+')
-          # Fallback: first iPhone if parsing fails
-          if [[ "$SELECTED" == "|"* || -z "${SELECTED%%|*}" ]]; then
-            SELECTED="$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ && /Shutdown|Booted/ { print $2; exit }')|unknown"
-          fi
-          SIMULATOR_UDID="${SELECTED%%|*}"
-          RUNTIME="${SELECTED##*|}"
-          if [ -z "${SIMULATOR_UDID:-}" ]; then
+          # Pick an iPhone from the newest installed runtime. The iOS 26.2
+          # simruntime's libswift_Concurrency.dylib aborts with "pointer being
+          # freed was not allocated" during TaskLocal scope teardown on task
+          # deinit; 26.5+ runtimes are unaffected.
+          SELECT="$(xcrun simctl list devices available | python3 -c '
+          import re, sys
+          best = None  # (version_tuple, udid, runtime)
+          runtime = None
+          for line in sys.stdin:
+              m = re.match(r"--\s*(iOS|visionOS|tvOS|watchOS)\s+([0-9.]+)\s*--", line.strip())
+              if m:
+                  runtime = (m.group(1), tuple(int(x) for x in m.group(2).split(".")))
+                  continue
+              if runtime and runtime[0] == "iOS" and "iPhone" in line:
+                  u = re.search(r"\(([0-9A-F-]{36})\)", line)
+                  if u and (best is None or runtime[1] > best[0]):
+                      best = (runtime[1], u.group(1), runtime[1])
+          if best:
+              print(f"{best[1]}|{'.'.join(map(str, best[2]))}")
+          ')"
+          SIMULATOR_UDID="${SELECT%%|*}"
+          RUNTIME="${SELECT##*|}"
+          if [ -z "${SIMULATOR_UDID:-}" ] || [ "$SIMULATOR_UDID" = "$SELECT" ]; then
             echo "::error::No available iPhone simulator found"
             exit 1
           fi
