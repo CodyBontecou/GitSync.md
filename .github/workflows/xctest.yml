@@ -53,6 +53,7 @@ jobs:
             -destination "id=${{ steps.simulator.outputs.udid }}" \
             -only-testing:"$TEST_TARGET" \
             -parallel-testing-enabled NO \
+            CODE_SIGNING_ALLOWED=NO \
             -derivedDataPath "$RUNNER_TEMP/DerivedData"
 
       - name: Audit Release app resources
