@@ -53,5 +53,26 @@ jobs:
             -destination "id=${{ steps.simulator.outputs.udid }}" \
             -only-testing:"$TEST_TARGET" \
             -parallel-testing-enabled NO \
-            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
-            CODE_SIGNING_ALLOWED=NO
+            -derivedDataPath "$RUNNER_TEMP/DerivedData"
+
+      - name: Audit Release app resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          RELEASE_DERIVED_DATA="$RUNNER_TEMP/ReleaseDerivedData"
+          xcodebuild build \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath "$RELEASE_DERIVED_DATA"
+
+          APP_PATH="$RELEASE_DERIVED_DATA/Build/Products/Release-iphonesimulator/Sync.md.app"
+          test -d "$APP_PATH"
+          test -f "$APP_PATH/PrivacyInfo.xcprivacy"
+          plutil -lint "$APP_PATH/PrivacyInfo.xcprivacy"
+
+          if find "$APP_PATH" -type f -name '*.storekit' -print -quit | grep -q .; then
+            echo "::error::Local StoreKit configuration must not ship in the Release app"
+            exit 1
+          fi
