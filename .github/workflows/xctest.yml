@@ -31,18 +31,18 @@ jobs:
           # freed was not allocated" during TaskLocal scope teardown on task
           # deinit; newer runtimes are unaffected.
           SELECT="$(xcrun simctl list devices available | python3 -c '
-          import re, sys
           best = None
           runtime = None
           for line in sys.stdin:
-              m = re.match(r"--\\s*iOS\\s+([0-9.]+)\\s*--", line.strip())
-              if m:
-                  runtime = tuple(int(x) for x in m.group(1).split("."))
+              stripped = line.strip()
+              if stripped.startswith("--") and "iOS" in stripped and stripped.endswith("--"):
+                  parts = stripped.strip("- ").split()
+                  runtime = tuple(int(x) for x in parts[-1].split("."))
                   continue
-              if runtime and "iPhone" in line:
-                  u = re.search(r"\\(([0-9A-Fa-f-]{36})\\)", line)
-                  if u and (best is None or runtime > best[0]):
-                      best = (runtime, u.group(1))
+              if runtime and "iPhone" in line and "(" in line and ")" in line:
+                  udid = line[line.find("(") + 1 : line.find(")")]
+                  if len(udid) == 36 and (best is None or runtime > best[0]):
+                      best = (runtime, udid)
           if best:
               ver = ".".join(str(x) for x in best[0])
               print(best[1] + "|" + ver)
