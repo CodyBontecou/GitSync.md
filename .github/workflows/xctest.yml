@@ -27,24 +27,25 @@ jobs:
         run: |
           set -euo pipefail
           # Pick an iPhone from the newest installed runtime. The iOS 26.2
-          # simruntime's libswift_Concurrency.dylib aborts with "pointer being
+          # simruntime libswift_Concurrency.dylib aborts with "pointer being
           # freed was not allocated" during TaskLocal scope teardown on task
-          # deinit; 26.5+ runtimes are unaffected.
+          # deinit; newer runtimes are unaffected.
           SELECT="$(xcrun simctl list devices available | python3 -c '
           import re, sys
-          best = None  # (version_tuple, udid, runtime)
+          best = None
           runtime = None
           for line in sys.stdin:
-              m = re.match(r"--\s*(iOS|visionOS|tvOS|watchOS)\s+([0-9.]+)\s*--", line.strip())
+              m = re.match(r"--\\s*iOS\\s+([0-9.]+)\\s*--", line.strip())
               if m:
-                  runtime = (m.group(1), tuple(int(x) for x in m.group(2).split(".")))
+                  runtime = tuple(int(x) for x in m.group(1).split("."))
                   continue
-              if runtime and runtime[0] == "iOS" and "iPhone" in line:
-                  u = re.search(r"\(([0-9A-F-]{36})\)", line)
-                  if u and (best is None or runtime[1] > best[0]):
-                      best = (runtime[1], u.group(1), runtime[1])
+              if runtime and "iPhone" in line:
+                  u = re.search(r"\\(([0-9A-Fa-f-]{36})\\)", line)
+                  if u and (best is None or runtime > best[0]):
+                      best = (runtime, u.group(1))
           if best:
-              print(f"{best[1]}|{'.'.join(map(str, best[2]))}")
+              ver = ".".join(str(x) for x in best[0])
+              print(best[1] + "|" + ver)
           ')"
           SIMULATOR_UDID="${SELECT%%|*}"
           RUNTIME="${SELECT##*|}"
