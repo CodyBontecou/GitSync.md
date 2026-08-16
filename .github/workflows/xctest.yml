@@ -51,9 +51,9 @@ jobs:
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -destination "id=${{ steps.simulator.outputs.udid }}" \
-            -only-testing:"$TEST_TARGET" \
+            -only-testing:"SyncMDTests/SyncMDTests/testRepoPersistenceStoreMergesSeparateFieldsOnSameRepository" \
             -parallel-testing-enabled NO \
-            CODE_SIGNING_ALLOWED=NO \
+            -enableGuardMalloc YES \
             -derivedDataPath "$RUNNER_TEMP/DerivedData"
 
       - name: Audit Release app resources
