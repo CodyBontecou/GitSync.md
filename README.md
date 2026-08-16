@@ -21,6 +21,9 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **GitHub OAuth & PAT** — Sign in with GitHub OAuth or paste a Personal Access Token.
 - **Private repo support** — Works with both public and private repositories.
 - **iPad support** — Optimized layouts for iPad.
+- **GitSync Assist (optional subscription)** — Best-effort GitHub event and foreground wake hints for enrolled repositories, followed only by a clean pull fast-forward. Local changes, divergence, auth/trust prompts, and branch mismatches stop and surface attention. Assist never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes.
+
+All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require GitSync Assist. APNs background delivery is controlled by iOS and is not guaranteed or truly real time.
 
 ## How It Works
 
@@ -62,6 +65,7 @@ GitSync.md/
 │   └── Clibgit2/               # Swift package wrapping the libgit2 C library
 ├── oauth-server/               # Vercel serverless functions for GitHub OAuth
 │   └── api/auth/               # Login & callback endpoints
+├── worker/premium-relay/       # Optional Assist Cloudflare Worker (D1 + Queues + APNs)
 └── libgit2.xcframework/        # Pre-built libgit2 binary for iOS
 ```
 
@@ -146,6 +150,12 @@ The `oauth-server/` directory contains Vercel serverless functions that handle t
 
 Using a **Personal Access Token** works without any server setup — just paste a token with `repo` scope.
 
+### GitSync Assist relay (optional)
+
+The relay source, threat boundary, D1 schema, local commands, provisioning checklist, retention/deletion procedures, monitoring, kill switch, and rollback steps are documented in [`worker/premium-relay/README.md`](worker/premium-relay/README.md). It uses Wrangler 4+, `wrangler.jsonc`, generated `Env` types, D1, Queues, and the fail-closed verifier in [`worker/storekit-verifier`](worker/storekit-verifier) through `STOREKIT_VERIFIER`. No relay URL or secrets are committed, and this repository does not deploy or provision the service automatically.
+
+The relay stores minimal routing/operations metadata only. Repository contents, local paths, Git credentials, and APNs signing keys are not stored in D1. Git data and credentials continue to travel directly from the device to the Git provider.
+
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
@@ -155,7 +165,7 @@ Some areas where help would be appreciated:
 - Conflict resolution UI (currently only fast-forward merges)
 - Branch switching
 - Selective file staging
-- Background sync / scheduled pulls
+- Additional safe, user-controlled GitSync Assist diagnostics
 - macOS support
 
 ### Editor Setup

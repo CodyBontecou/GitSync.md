@@ -306,13 +306,14 @@
 <main class="legal">
   <div class="legal-label">Legal</div>
   <h1>Terms of Service</h1>
-  <p class="effective">Effective date: February 9, 2026</p>
+  <p class="effective">Effective date: August 13, 2026</p>
 
   <h2>Acceptance of Terms</h2>
   <p>By downloading, installing, or using GitSync.md ("the App"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.</p>
 
   <h2>Description of the App</h2>
-  <p>GitSync.md is a paid, open-source iOS application that provides Git version control functionality on iPhone and iPad. The App is available as a $9.99 one-time purchase on the App Store. The App uses libgit2 to perform Git operations and connects directly to GitHub for remote repository access. The App is developed and maintained by Cody Bontecou.</p>
+  <p>GitSync.md is a paid, open-source iOS application that provides Git version control functionality on iPhone and iPad. The base App is available as a one-time App Store purchase. It uses libgit2 for local Git operations and connects directly to the Git provider you configure. Existing manual Git operations, Shortcuts, callbacks, and local features remain available without an additional subscription.</p>
+  <p><strong>GitSync Assist</strong> is an optional auto-renewable subscription. It uses GitHub push events and silent APNs notifications as best-effort wake hints, plus foreground reconciliation, for user-enrolled repositories. Apple and iOS do not guarantee background delivery, timing, frequency, or execution; Assist is not guaranteed or truly real-time syncing.</p>
 
   <h2>License</h2>
   <p>GitSync.md is open-source software. The source code is available on <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">GitHub</a> and is subject to the license terms specified in the repository. Your use of the compiled App from the App Store is also subject to Apple's Standard Licensed Application End User License Agreement (EULA).</p>
@@ -336,7 +337,12 @@
   </ul>
 
   <h2>Your Content</h2>
-  <p>GitSync.md does not claim any ownership of your repositories, files, commits, or any other content. Your content remains yours. The App acts solely as a local Git client — all data flows directly between your device and GitHub.</p>
+  <p>GitSync.md does not claim any ownership of your repositories, files, commits, or other content. Git content and credentials flow directly between your device and your Git provider and are not stored by the Assist relay. Assist handles only limited entitlement, routing, delivery, and operational metadata described in the Privacy Policy.</p>
+
+  <h2>GitSync Assist Safety and Subscription Terms</h2>
+  <p>Assist's automated path is limited to fetching and applying a clean fast-forward on the selected checked-out branch. It does not automatically stage, commit, rebase, merge, resolve conflicts, force-push, or push. Local changes, divergence, a missing or wrong branch, authentication/trust requirements, unavailable files, and failures require manual attention.</p>
+  <p>Subscriptions are billed and managed by Apple. Available price, trial, renewal period, tax, and localized terms are shown by the App Store before purchase and may vary by storefront. Unless canceled at least 24 hours before the end of the current period (subject to Apple's then-current rules), an auto-renewable subscription renews through Apple. Manage or cancel it in your Apple Account subscription settings. Removing the App does not itself cancel a subscription.</p>
+  <p>We may suspend Assist with a kill switch for security, reliability, legal, or operational reasons. The base App and your local repository files remain usable. Service outages, rate limits, third-party changes, force-quit behavior, Low Power Mode, network/power policy, and operating-system scheduling can delay or prevent wake hints.</p>
 
   <h2>Third-Party Services</h2>
   <p>The App integrates with GitHub for authentication and Git operations. Your use of GitHub is governed by GitHub's own <a href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service" target="_blank">Terms of Service</a>. GitSync.md is not affiliated with, endorsed by, or sponsored by GitHub, Inc.</p>
