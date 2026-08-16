@@ -3,6 +3,8 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Environment(AppState.self) private var state
+    @Environment(PremiumEntitlementStore.self) private var entitlement
+    @Environment(PremiumRuntime.self) private var premiumRuntime
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
 
@@ -29,6 +31,12 @@ struct SettingsView: View {
     @State private var validationMessage: String? = nil
     @State private var showValidationAlert = false
     @State private var isSaving = false
+    @State private var assistEnabled = false
+    @State private var assistBranch = ""
+    @State private var assistNetworkPolicy: RepoAssistNetworkPolicy = .any
+    @State private var assistPowerPolicy: RepoAssistPowerPolicy = .any
+    @State private var selectedGitHubInstallationID: Int64?
+    @State private var isManagingAssist = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var canDeleteLocalFiles: Bool { repo?.isGitSyncManagedStorage == true }
@@ -221,6 +229,108 @@ struct SettingsView: View {
                             }
                         }
 
+                        // GitSync Assist remains optional and never changes
+                        // manual Git controls outside this repository policy.
+                        settingsSection(title: "GitSync Assist") {
+                            VStack(spacing: 0) {
+                                Toggle("Enable pull-only automation", isOn: $assistEnabled)
+                                    .disabled(!entitlement.state.isActive || repo?.assist.channel == nil)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 13)
+
+                                if repo?.assist.channel == nil {
+                                    BDivider().padding(.horizontal, 16)
+                                    if entitlement.state.isActive {
+                                        Button("Link GitHub App") {
+                                            Task {
+                                                if let url = await premiumRuntime.startGitHubLink() {
+                                                    await UIApplication.shared.open(url)
+                                                }
+                                            }
+                                        }
+                                        .padding(16)
+
+                                        if !premiumRuntime.githubInstallations.isEmpty {
+                                            Picker("GitHub installation", selection: $selectedGitHubInstallationID) {
+                                                Text("Choose…").tag(Int64?.none)
+                                                ForEach(premiumRuntime.githubInstallations) { installation in
+                                                    Text("Installation \(installation.githubInstallationID)")
+                                                        .tag(Optional(installation.githubInstallationID))
+                                                }
+                                            }
+                                            .padding(.horizontal, 16)
+
+                                            Button("Enroll this repository") {
+                                                Task { await enrollCurrentRepository() }
+                                            }
+                                            .disabled(selectedGitHubInstallationID == nil || isManagingAssist)
+                                            .padding(16)
+                                        }
+                                    } else {
+                                        Text("Open App Settings → GitSync Assist to subscribe or restore before linking a repository.")
+                                            .font(.caption.monospaced())
+                                            .padding(16)
+                                    }
+                                } else {
+                                    BDivider().padding(.horizontal, 16)
+                                    Button("Remove Assist enrollment", role: .destructive) {
+                                        Task {
+                                            isManagingAssist = true
+                                            _ = await premiumRuntime.unenroll(repoID: repoID)
+                                            isManagingAssist = false
+                                        }
+                                    }
+                                    .disabled(isManagingAssist)
+                                    .padding(16)
+                                }
+
+                                BDivider().padding(.horizontal, 16)
+
+                                settingsInputRow(label: "Branch") {
+                                    TextField(branch.isEmpty ? "main" : branch, text: $assistBranch)
+                                        .font(.system(size: 14, design: .monospaced))
+                                        .multilineTextAlignment(.trailing)
+                                        .autocorrectionDisabled()
+                                        .textInputAutocapitalization(.never)
+                                }
+
+                                BDivider().padding(.horizontal, 16)
+
+                                Picker("Network", selection: $assistNetworkPolicy) {
+                                    Text("Any connection").tag(RepoAssistNetworkPolicy.any)
+                                    Text("Wi-Fi only").tag(RepoAssistNetworkPolicy.wifiOnly)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 10)
+
+                                BDivider().padding(.horizontal, 16)
+
+                                Picker("Power", selection: $assistPowerPolicy) {
+                                    Text("Any power state").tag(RepoAssistPowerPolicy.any)
+                                    Text("External power only").tag(RepoAssistPowerPolicy.externalPowerOnly)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 10)
+
+                                if let health = repo?.assist.health, health.kind != .never {
+                                    BDivider().padding(.horizontal, 16)
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(assistHealthTitle(health).uppercased())
+                                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                        if let message = health.message { Text(message).font(.caption.monospaced()) }
+                                        if let date = health.lastAttemptDate { Text("Last attempt \(relativeDate(date))").font(.caption) }
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(16)
+                                }
+
+                                Text("Requires an active GitSync Assist subscription and a valid opaque relay enrollment. Background delivery is best effort. Local changes, divergence, auth/trust prompts, or the wrong branch stop automation and require attention.")
+                                    .font(.system(size: 12, design: .monospaced))
+                                    .foregroundStyle(Color.brutalText)
+                                    .padding(16)
+                            }
+                        }
+
                         // Debug Log
                         settingsSection(title: String(localized: "Debug")) {
                             NavigationLink {
@@ -320,6 +430,17 @@ struct SettingsView: View {
                         sshPassphrase = ""
                     }
                     configureAuthDefaults(for: repo.repoURL)
+                    assistEnabled = repo.assist.enabled
+                    assistBranch = repo.assist.selectedBranch ?? repo.branch
+                    assistNetworkPolicy = repo.assist.networkPolicy
+                    assistPowerPolicy = repo.assist.powerPolicy
+                    selectedGitHubInstallationID = premiumRuntime.githubInstallations.first?.githubInstallationID
+                }
+                Task {
+                    await premiumRuntime.prepareForSettings()
+                    if selectedGitHubInstallationID == nil {
+                        selectedGitHubInstallationID = premiumRuntime.githubInstallations.first?.githubInstallationID
+                    }
                 }
             }
             #if DEBUG
@@ -664,6 +785,45 @@ struct SettingsView: View {
         return fmt.localizedString(for: date, relativeTo: Date())
     }
 
+    private func assistHealthTitle(_ health: RepoAssistHealth) -> String {
+        switch health.kind {
+        case .never: return "Never attempted"
+        case .updated: return "Updated"
+        case .upToDate: return "Up to date"
+        case .deferred: return "Deferred"
+        case .attention: return "Attention required"
+        case .failed: return "Failed"
+        }
+    }
+
+    private func enrollCurrentRepository() async {
+        guard let repo,
+              let installationID = selectedGitHubInstallationID,
+              let githubRepo = state.gitHubRepos.first(where: {
+                  $0.fullName.caseInsensitiveCompare(repo.repoURL
+                      .replacingOccurrences(of: "https://github.com/", with: "")
+                      .replacingOccurrences(of: ".git", with: "")) == .orderedSame
+                  || $0.name.caseInsensitiveCompare(repo.displayName) == .orderedSame
+              }) else {
+            validationMessage = "Could not match this remote to a GitHub repository. Refresh your GitHub repositories and try again."
+            showValidationAlert = true
+            return
+        }
+        isManagingAssist = true
+        defer { isManagingAssist = false }
+        let selected = assistBranch.trimmingCharacters(in: .whitespacesAndNewlines)
+        let succeeded = await premiumRuntime.enroll(
+            repoID: repoID,
+            githubInstallationID: installationID,
+            repositoryID: Int64(githubRepo.id),
+            branch: selected.isEmpty ? repo.branch : selected
+        )
+        if !succeeded {
+            validationMessage = premiumRuntime.registrationError ?? "Could not enroll this repository."
+            showValidationAlert = true
+        }
+    }
+
     private func configureAuthDefaults(for url: String) {
         let previousMethod = authMethod
         guard let remote = GitRemoteURL.parse(url) else {
@@ -783,7 +943,23 @@ struct SettingsView: View {
         if !saved {
             validationMessage = state.lastError ?? String(localized: "Could not save repository settings.")
             showValidationAlert = true
+            return false
         }
-        return saved
+        state.updateRepo(id: repoID) { repo in
+            repo.assist.enabled = assistEnabled && repo.assist.channel.map(OpaqueAssistIdentifier.isValid) == true
+            repo.assist.selectedBranch = assistBranch.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? (trimmedBranch.isEmpty ? "main" : trimmedBranch)
+                : assistBranch.trimmingCharacters(in: .whitespacesAndNewlines)
+            repo.assist.networkPolicy = assistNetworkPolicy
+            repo.assist.powerPolicy = assistPowerPolicy
+            if assistEnabled && !repo.assist.enabled {
+                repo.assist.health = RepoAssistHealth(
+                    kind: .attention,
+                    attention: .unavailable,
+                    message: "Link and enroll this repository with GitSync Assist before enabling automation."
+                )
+            }
+        }
+        return true
     }
 }

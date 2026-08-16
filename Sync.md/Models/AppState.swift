@@ -96,8 +96,32 @@ struct SSHHostKeyTrustRequest: Identifiable, Equatable {
     }
 }
 
+private struct CommitMergeExecution: Sendable {
+    let committedSHA: String?
+    let mergeResult: MergeResult?
+    let mergeConflicted: Bool
+    let mergeErrorMessage: String?
+    let pushErrorMessage: String?
+}
+
+private struct MergePushExecution: Sendable {
+    let result: MergeResult
+    let pushErrorMessage: String?
+}
+
+private struct FinalizeMergePushExecution: Sendable {
+    let result: MergeFinalizeResult
+    let pushErrorMessage: String?
+}
+
+private struct RebasePullExecution: Sendable {
+    let plan: PullPlan
+    let result: LocalPullResult?
+}
+
 // MARK: - App State
 
+@MainActor
 @Observable
 final class AppState {
 
@@ -315,39 +339,48 @@ final class AppState {
 
     private let gitRepositoryFactory: (URL) -> any GitRepositoryProtocol
     private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
+    private let repoPersistenceStore: RepoPersistenceStore
+    private let persistedReposURL: URL
+    private var persistedRepoSnapshot: [UUID: RepoConfig] = [:]
+    var assistConfigurationChangeHandler: (@MainActor @Sendable () -> Void)?
+    var assistRepositoryRemovalHandler: (@MainActor @Sendable (RepoConfig) -> Void)?
 
     // MARK: - Init
 
     init(
         gitRepositoryFactory: @escaping (URL) -> any GitRepositoryProtocol = { LocalGitService(localURL: $0) },
         sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default,
+        repoPersistenceStore: RepoPersistenceStore = .shared,
+        reposFileURL: URL? = nil,
         loadPersistedState: Bool = true
     ) {
-        self.gitRepositoryFactory = gitRepositoryFactory
+        self.gitRepositoryFactory = { url in
+            SerializedGitRepository(base: gitRepositoryFactory(url), localURL: url)
+        }
         self.sshHostKeyTrustStore = sshHostKeyTrustStore
+        self.repoPersistenceStore = repoPersistenceStore
+        self.persistedReposURL = reposFileURL ?? Self.reposFileURL
         if loadPersistedState {
             loadState()
+            migrateKnownGitCredentialAccessibilityIfNeeded()
         }
     }
 
     // MARK: - Persistence
 
-    static var persistedReposFileURL: URL {
+    nonisolated static var persistedReposFileURL: URL {
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let dir = support.appendingPathComponent("SyncMD", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir.appendingPathComponent("repos.json")
     }
 
-    private static var reposFileURL: URL {
+    nonisolated private static var reposFileURL: URL {
         persistedReposFileURL
     }
 
-    static func loadPersistedRepos() -> [RepoConfig] {
-        guard let data = try? Data(contentsOf: persistedReposFileURL) else { return [] }
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return (try? decoder.decode([RepoConfig].self, from: data)) ?? []
+    nonisolated static func loadPersistedRepos() -> [RepoConfig] {
+        RepoPersistenceStore.shared.load(from: persistedReposFileURL)
     }
 
     private func loadState() {
@@ -373,12 +406,18 @@ final class AppState {
         resolveDefaultSaveBookmark()
 
         // Try to load multi-repo state
-        if let data = try? Data(contentsOf: Self.reposFileURL) {
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            if let decoded = try? decoder.decode([RepoConfig].self, from: data) {
-                repos = decoded
-            }
+        let persistedRepos: [RepoConfig]
+        do {
+            persistedRepos = try repoPersistenceStore.loadStrict(from: persistedReposURL)
+        } catch {
+            persistedRepos = []
+            DebugLogger.shared.error("persistence", "Could not load repository settings", detail: error.localizedDescription)
+            lastError = error.localizedDescription
+            showError = true
+        }
+        if !persistedRepos.isEmpty || FileManager.default.fileExists(atPath: persistedReposURL.path) {
+            repos = persistedRepos
+            persistedRepoSnapshot = Dictionary(uniqueKeysWithValues: persistedRepos.map { ($0.id, $0) })
         } else {
             // Migration from single-repo state
             migrateFromLegacy()
@@ -490,13 +529,71 @@ final class AppState {
         defaultAuthorEmail = account.email
     }
 
-    func saveRepos() {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        encoder.outputFormatting = .prettyPrinted
-        if let data = try? encoder.encode(repos) {
-            try? data.write(to: Self.reposFileURL, options: .atomic)
+    @discardableResult
+    func saveRepos(replaceAll: Bool = false) -> Bool {
+        let current = Dictionary(uniqueKeysWithValues: repos.map { ($0.id, $0) })
+        do {
+            let persisted: [RepoConfig]
+            if replaceAll {
+                try repoPersistenceStore.replaceAll(repos, at: persistedReposURL)
+                persisted = repos
+            } else {
+                var changes: [RepoPersistenceStore.Change] = []
+                for repo in repos {
+                    if let original = persistedRepoSnapshot[repo.id] {
+                        if original != repo { changes.append(.update(original: original, modified: repo)) }
+                    } else {
+                        changes.append(.add(repo))
+                    }
+                }
+                for original in persistedRepoSnapshot.values where current[original.id] == nil {
+                    changes.append(.remove(original: original))
+                }
+                guard !changes.isEmpty else { return true }
+                persisted = try repoPersistenceStore.apply(changes, to: persistedReposURL)
+            }
+
+            // `apply` may have merged fields or records written by another
+            // AppState. Reconcile those values without changing the ordering of
+            // repositories already visible in this instance; then append records
+            // discovered concurrently. Keeping every persisted record locally is
+            // important because a later save interprets a missing snapshot ID as
+            // an intentional deletion.
+            let persistedByID = Dictionary(uniqueKeysWithValues: persisted.map { ($0.id, $0) })
+            let localIDs = Set(repos.map(\.id))
+            repos = repos.compactMap { persistedByID[$0.id] }
+                + persisted.filter { !localIDs.contains($0.id) }
+            persistedRepoSnapshot = persistedByID
+            return true
+        } catch {
+            DebugLogger.shared.error("persistence", "Could not save repository settings", detail: error.localizedDescription)
+            lastError = error.localizedDescription
+            showError = true
+            return false
         }
+    }
+
+    func serializedRepository(repoID: UUID) throws -> SerializedGitRepository {
+        guard repoIndex(id: repoID) != nil,
+              let repository = gitRepositoryFactory(vaultURL(for: repoID)) as? SerializedGitRepository else {
+            throw LocalGitError.notCloned
+        }
+        return repository
+    }
+
+    private func migrateKnownGitCredentialAccessibilityIfNeeded() {
+        var keys = ["github_pat"]
+        keys.append(contentsOf: gitHubAccounts.map { Self.gitHubTokenKey(for: $0.login) })
+        for repo in repos {
+            keys.append(contentsOf: [
+                Self.repoCredentialKey(repo.id, "username"),
+                Self.repoCredentialKey(repo.id, "password"),
+                Self.repoCredentialKey(repo.id, "ssh_private_key"),
+                Self.repoCredentialKey(repo.id, "ssh_public_key"),
+                Self.repoCredentialKey(repo.id, "ssh_passphrase")
+            ])
+        }
+        KeychainService.migrateKnownGitCredentialsIfNeeded(keys: keys)
     }
 
     func saveGlobalSettings() {
@@ -1060,127 +1157,192 @@ final class AppState {
     /// rather create a real commit + merge (so any conflicts surface in the
     /// conflict editor) than block them with no in-app way forward.
     func commitLocalAndAttemptMerge(repoID: UUID, message: String) async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
-        guard gitService.hasGitDirectory else {
-            showError(message: LocalGitError.notCloned.localizedDescription)
-            return
-        }
-
-        let repo = repos[idx]
-        let currentBranch = repo.gitState.branch.isEmpty ? "main" : repo.gitState.branch
-        let upstreamName = "origin/\(currentBranch)"
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
         let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
         let commitMessage = trimmed.isEmpty
             ? String(localized: "Local changes from GitSync.md")
             : trimmed
+        let currentBranch = repo.gitState.branch.isEmpty ? "main" : repo.gitState.branch
+        let upstreamName = "origin/\(currentBranch)"
+        let credentials = authPayload(for: repo)
 
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Committing local changes...")
         pullOutcomeByRepo.removeValue(forKey: repoID)
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            try await gitService.stageAll()
-        } catch {
-            isSyncing = false
-            syncingRepoID = nil
-            showError(message: error.localizedDescription)
-            return
-        }
+            let serialized = try serializedRepository(repoID: repoID)
+            let execution = try await serialized.withLease { repository in
+                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                try await repository.stageAll()
 
-        var didCommit = false
-        do {
-            let newSHA = try await gitService.commitLocal(
-                message: commitMessage,
-                authorName: repo.authorName,
-                authorEmail: repo.authorEmail
-            )
-            repos[idx].gitState.commitSHA = newSHA
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
-            didCommit = true
-            DebugLogger.shared.info("merge", "Auto-committed local changes", detail: "SHA: \(newSHA)")
-        } catch LocalGitError.noChanges {
-            // Nothing to commit — proceed straight to the merge.
-        } catch {
-            isSyncing = false
-            syncingRepoID = nil
-            showError(message: error.localizedDescription)
-            return
-        }
+                let committedSHA: String?
+                do {
+                    committedSHA = try await repository.commitLocal(
+                        message: commitMessage,
+                        authorName: repo.authorName,
+                        authorEmail: repo.authorEmail
+                    )
+                } catch LocalGitError.noChanges {
+                    committedSHA = nil
+                }
 
-        syncProgress = String(localized: "Merging with remote...")
-        do {
-            let result = try await gitService.mergeBranch(
-                name: upstreamName,
-                authorName: repo.authorName,
-                authorEmail: repo.authorEmail
-            )
-
-            switch result.kind {
-            case .upToDate:
-                detectChanges(repoID: repoID)
-                if didCommit {
-                    syncProgress = String(localized: "Pushing local commit...")
-                    do {
-                        try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
-                        setPullOutcome(
-                            repoID: repoID,
-                            kind: .fastForwarded,
-                            message: String(localized: "Committed and pushed successfully")
-                        )
-                    } catch {
-                        showError(message: error.localizedDescription)
-                    }
-                } else {
-                    setPullOutcome(
-                        repoID: repoID,
-                        kind: .upToDate,
-                        message: String(localized: "Already up to date")
+                let mergeResult: MergeResult
+                do {
+                    mergeResult = try await repository.mergeBranch(
+                        name: upstreamName,
+                        authorName: repo.authorName,
+                        authorEmail: repo.authorEmail
+                    )
+                } catch LocalGitError.mergeConflictsDetected {
+                    return CommitMergeExecution(
+                        committedSHA: committedSHA,
+                        mergeResult: nil,
+                        mergeConflicted: true,
+                        mergeErrorMessage: nil,
+                        pushErrorMessage: nil
+                    )
+                } catch {
+                    return CommitMergeExecution(
+                        committedSHA: committedSHA,
+                        mergeResult: nil,
+                        mergeConflicted: false,
+                        mergeErrorMessage: error.localizedDescription,
+                        pushErrorMessage: nil
                     )
                 }
 
-            case .fastForwarded, .mergeCommitted:
-                repos[idx].gitState.commitSHA = result.newCommitSHA
-                repos[idx].gitState.lastSyncDate = Date()
-                saveRepos()
-                clearCommitHistoryCache(for: repoID)
-                detectChanges(repoID: repoID)
-                await loadBranches(repoID: repoID)
+                var pushErrorMessage: String?
+                if committedSHA != nil || mergeResult.kind != .upToDate {
+                    do {
+                        try await repository.pushCurrentBranch(pat: credentials)
+                    } catch {
+                        pushErrorMessage = error.localizedDescription
+                    }
+                }
+                return CommitMergeExecution(
+                    committedSHA: committedSHA,
+                    mergeResult: mergeResult,
+                    mergeConflicted: false,
+                    mergeErrorMessage: nil,
+                    pushErrorMessage: pushErrorMessage
+                )
+            }
 
-                syncProgress = String(localized: "Pushing merged changes...")
-                do {
-                    try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
+            markRepositoryMutated(repoID: repoID)
+            if let currentIndex = repoIndex(id: repoID) {
+                if let mergeResult = execution.mergeResult,
+                   mergeResult.kind == .fastForwarded || mergeResult.kind == .mergeCommitted {
+                    repos[currentIndex].gitState.commitSHA = mergeResult.newCommitSHA
+                } else if let committedSHA = execution.committedSHA {
+                    repos[currentIndex].gitState.commitSHA = committedSHA
+                }
+                if execution.committedSHA != nil
+                    || execution.mergeConflicted
+                    || execution.mergeResult.map({ $0.kind != .upToDate }) == true {
+                    repos[currentIndex].gitState.lastSyncDate = Date()
+                    saveRepos()
+                    clearCommitHistoryCache(for: repoID)
+                }
+            }
+
+            if execution.mergeConflicted {
+                await loadConflictSession(repoID: repoID)
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .diverged,
+                    message: String(localized: "Merge has conflicts — tap a conflicted file to resolve")
+                )
+            } else if let message = execution.mergeErrorMessage ?? execution.pushErrorMessage {
+                setPullOutcome(repoID: repoID, kind: .failed, message: message)
+                showError(message: message)
+            } else if let mergeResult = execution.mergeResult {
+                switch mergeResult.kind {
+                case .upToDate:
+                    setPullOutcome(
+                        repoID: repoID,
+                        kind: execution.committedSHA == nil ? .upToDate : .fastForwarded,
+                        message: execution.committedSHA == nil
+                            ? String(localized: "Already up to date")
+                            : String(localized: "Committed and pushed successfully")
+                    )
+                case .fastForwarded, .mergeCommitted:
                     setPullOutcome(
                         repoID: repoID,
                         kind: .fastForwarded,
                         message: String(localized: "Merged and pushed successfully")
                     )
-                } catch {
-                    showError(message: error.localizedDescription)
                 }
             }
-        } catch LocalGitError.mergeConflictsDetected {
-            await loadConflictSession(repoID: repoID)
+
             detectChanges(repoID: repoID)
-            setPullOutcome(
-                repoID: repoID,
-                kind: .diverged,
-                message: String(localized: "Merge has conflicts — tap a conflicted file to resolve")
-            )
+            await loadBranches(repoID: repoID)
         } catch {
-            await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
         }
+    }
 
-        isSyncing = false
-        syncingRepoID = nil
+    func cancelPendingLFSAutoTracking() {
+        pendingLFSAutoTrackingConfirmation = nil
+    }
+
+    @discardableResult
+    private func handleSSHHostKeyTrustIfNeeded(
+        _ error: Error,
+        repoID: UUID,
+        operation: SSHHostKeyTrustRequest.Operation
+    ) -> Bool {
+        guard case LocalGitError.sshHostKeyTrustRequired(let trustError) = error else {
+            return false
+        }
+        pendingSSHHostKeyTrustRequest = SSHHostKeyTrustRequest(
+            repoID: repoID,
+            operation: operation,
+            trustError: trustError
+        )
+        syncProgress = String(localized: "SSH host key needs trust")
+        return true
+    }
+
+    func trustPendingSSHHostKeyAndRetry() async {
+        guard let request = pendingSSHHostKeyTrustRequest else { return }
+        do {
+            try sshHostKeyTrustStore.trust(
+                fingerprint: request.fingerprintToTrust,
+                host: request.host,
+                port: request.port
+            )
+            DebugLogger.shared.info(
+                "security",
+                "Trusted SSH host key",
+                detail: "\(request.host):\(request.port) \(request.fingerprintToTrust)"
+            )
+        } catch {
+            pendingSSHHostKeyTrustRequest = nil
+            showError(message: error.localizedDescription, category: "security")
+            return
+        }
+
+        let operation = request.operation
+        let repoID = request.repoID
+        pendingSSHHostKeyTrustRequest = nil
+
+        switch operation {
+        case .clone:
+            await clone(repoID: repoID)
+        case .pull:
+            _ = await pull(repoID: repoID)
+        case .pushCurrentBranch:
+            _ = await pushCurrentBranch(repoID: repoID)
+        case .pushCommit(let message):
+            _ = await push(repoID: repoID, message: message)
+        }
+    }
+
+    func cancelPendingSSHHostKeyTrust() {
+        pendingSSHHostKeyTrustRequest = nil
     }
 
     func loadStashes(repoID: UUID) async {
@@ -1477,38 +1639,24 @@ final class AppState {
     }
 
     func switchBranch(repoID: UUID, name: String) async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
-        guard gitService.hasGitDirectory else {
-            showError(message: LocalGitError.notCloned.localizedDescription)
-            return
-        }
-
-        isSyncing = true
-        syncingRepoID = repoID
-        syncProgress = String(localized: "Switching branch...")
-
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
+        isSyncing = true; syncingRepoID = repoID; syncProgress = String(localized: "Switching branch...")
+        defer { isSyncing = false; syncingRepoID = nil }
         do {
-            try await gitService.switchBranch(name: name)
-            let info = try await gitService.repoInfo()
-
-            repos[idx].gitState.branch = info.branch
-            repos[idx].gitState.commitSHA = info.commitSHA
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
-
-            detectChanges(repoID: repoID)
-            await loadBranches(repoID: repoID)
-        } catch {
-            showError(message: error.localizedDescription)
-        }
-
-        isSyncing = false
-        syncingRepoID = nil
+            let serialized = try serializedRepository(repoID: repoID)
+            let info = try await serialized.withLease { repository in
+                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                try await repository.switchBranch(name: name)
+                return try await repository.repoInfo()
+            }
+            markRepositoryMutated(repoID: repoID)
+            if let index = repoIndex(id: repoID) {
+                repos[index].gitState.branch = info.branch
+                repos[index].gitState.commitSHA = info.commitSHA
+                saveRepos(); clearCommitHistoryCache(for: repoID)
+            }
+            detectChanges(repoID: repoID); await loadBranches(repoID: repoID)
+        } catch { showError(message: error.localizedDescription) }
     }
 
     func deleteBranch(repoID: UUID, name: String) async {
@@ -1532,12 +1680,8 @@ final class AppState {
     }
 
     func mergeBranch(repoID: UUID, from branchName: String) async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
+        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
             return
@@ -1546,18 +1690,21 @@ final class AppState {
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Merging branch...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            let repo = repos[idx]
             let result = try await gitService.mergeBranch(
                 name: branchName,
                 authorName: repo.authorName,
                 authorEmail: repo.authorEmail
             )
-            repos[idx].gitState.commitSHA = result.newCommitSHA
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
+            markRepositoryMutated(repoID: repoID)
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = result.newCommitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+            }
 
             detectChanges(repoID: repoID)
             await loadBranches(repoID: repoID)
@@ -1566,68 +1713,61 @@ final class AppState {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
         }
-
-        isSyncing = false
-        syncingRepoID = nil
     }
 
     func mergeWithRemote(repoID: UUID) async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
-        guard gitService.hasGitDirectory else {
-            showError(message: LocalGitError.notCloned.localizedDescription)
-            return
-        }
-
-        let repo = repos[idx]
-        let currentBranch = repo.gitState.branch.isEmpty ? "main" : repo.gitState.branch
-        let upstreamName = "origin/\(currentBranch)"
-
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
+        let branch = repo.gitState.branch.isEmpty ? "main" : repo.gitState.branch
+        let credentials = authPayload(for: repo)
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Merging with remote...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            let result = try await gitService.mergeBranch(
-                name: upstreamName,
-                authorName: repo.authorName,
-                authorEmail: repo.authorEmail
-            )
-
-            switch result.kind {
-            case .upToDate:
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .upToDate,
-                    message: String(localized: "Already up to date")
+            let serialized = try serializedRepository(repoID: repoID)
+            let execution = try await serialized.withLease { repository in
+                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                let result = try await repository.mergeBranch(
+                    name: "origin/\(branch)",
+                    authorName: repo.authorName,
+                    authorEmail: repo.authorEmail
                 )
-
-            case .fastForwarded, .mergeCommitted:
-                repos[idx].gitState.commitSHA = result.newCommitSHA
-                repos[idx].gitState.lastSyncDate = Date()
-                saveRepos()
-                clearCommitHistoryCache(for: repoID)
-                detectChanges(repoID: repoID)
-                await loadBranches(repoID: repoID)
-
-                syncProgress = String(localized: "Pushing merged changes...")
-                do {
-                    try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
-                    setPullOutcome(
-                        repoID: repoID,
-                        kind: .fastForwarded,
-                        message: String(localized: "Merged and pushed successfully")
-                    )
-                } catch {
-                    showError(message: error.localizedDescription)
+                var pushErrorMessage: String?
+                if result.kind != .upToDate {
+                    do {
+                        try await repository.pushCurrentBranch(pat: credentials)
+                    } catch {
+                        pushErrorMessage = error.localizedDescription
+                    }
                 }
+                return MergePushExecution(result: result, pushErrorMessage: pushErrorMessage)
             }
 
+            markRepositoryMutated(repoID: repoID)
+            if execution.result.kind != .upToDate, let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = execution.result.newCommitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+            }
+            if let message = execution.pushErrorMessage {
+                setPullOutcome(repoID: repoID, kind: .failed, message: message)
+                showError(message: message)
+            } else {
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: execution.result.kind == .upToDate ? .upToDate : .fastForwarded,
+                    message: execution.result.kind == .upToDate
+                        ? String(localized: "Already up to date")
+                        : String(localized: "Merged and pushed successfully")
+                )
+            }
+            detectChanges(repoID: repoID)
+            await loadBranches(repoID: repoID)
+            await loadConflictSession(repoID: repoID)
         } catch LocalGitError.mergeConflictsDetected {
+            markRepositoryMutated(repoID: repoID)
             await loadConflictSession(repoID: repoID)
             detectChanges(repoID: repoID)
             setPullOutcome(
@@ -1638,18 +1778,11 @@ final class AppState {
         } catch {
             showError(message: error.localizedDescription)
         }
-
-        isSyncing = false
-        syncingRepoID = nil
     }
 
     func revertCommit(repoID: UUID, oid: String, message: String = "") async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
+        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
             return
@@ -1658,9 +1791,9 @@ final class AppState {
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Reverting commit...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            let repo = repos[idx]
             DebugLogger.shared.info("revert", "Reverting commit", detail: "OID: \(oid)")
             let result = try await gitService.revertCommit(
                 oid: oid,
@@ -1668,12 +1801,14 @@ final class AppState {
                 authorName: repo.authorName,
                 authorEmail: repo.authorEmail
             )
+            markRepositoryMutated(repoID: repoID)
 
             switch result.kind {
             case .reverted:
-                if let newCommitSHA = result.newCommitSHA {
-                    repos[idx].gitState.commitSHA = newCommitSHA
-                    repos[idx].gitState.lastSyncDate = Date()
+                if let newCommitSHA = result.newCommitSHA,
+                   let currentIndex = repoIndex(id: repoID) {
+                    repos[currentIndex].gitState.commitSHA = newCommitSHA
+                    repos[currentIndex].gitState.lastSyncDate = Date()
                     saveRepos()
                     clearCommitHistoryCache(for: repoID)
                 }
@@ -1690,65 +1825,60 @@ final class AppState {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription, category: "revert")
         }
-
-        isSyncing = false
-        syncingRepoID = nil
     }
 
     func completeMerge(repoID: UUID, message: String = "") async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
-        guard gitService.hasGitDirectory else {
-            showError(message: LocalGitError.notCloned.localizedDescription)
-            return
-        }
-
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
+        let commitMessage = message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            ? String(localized: "Merge branch")
+            : message
+        let credentials = authPayload(for: repo)
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Finalizing merge...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            let repo = repos[idx]
-            let commitMessage = message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? String(localized: "Merge branch")
-                : message
+            let serialized = try serializedRepository(repoID: repoID)
+            let execution = try await serialized.withLease { repository in
+                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                let result = try await repository.completeMerge(
+                    message: commitMessage,
+                    authorName: repo.authorName,
+                    authorEmail: repo.authorEmail
+                )
+                var pushErrorMessage: String?
+                do {
+                    try await repository.pushCurrentBranch(pat: credentials)
+                } catch {
+                    pushErrorMessage = error.localizedDescription
+                }
+                return FinalizeMergePushExecution(result: result, pushErrorMessage: pushErrorMessage)
+            }
 
-            let result = try await gitService.completeMerge(
-                message: commitMessage,
-                authorName: repo.authorName,
-                authorEmail: repo.authorEmail
-            )
-
-            repos[idx].gitState.commitSHA = result.newCommitSHA
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
-
-            detectChanges(repoID: repoID)
-            await loadConflictSession(repoID: repoID)
-
-            syncProgress = String(localized: "Pushing merged changes...")
-            do {
-                try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
+            markRepositoryMutated(repoID: repoID)
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = execution.result.newCommitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+            }
+            if let message = execution.pushErrorMessage {
+                setPullOutcome(repoID: repoID, kind: .failed, message: message)
+                showError(message: message)
+            } else {
                 setPullOutcome(
                     repoID: repoID,
                     kind: .fastForwarded,
                     message: String(localized: "Merge resolved and pushed successfully")
                 )
-            } catch {
-                showError(message: error.localizedDescription)
             }
+            detectChanges(repoID: repoID)
+            await loadConflictSession(repoID: repoID)
         } catch {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
         }
-
-        isSyncing = false
-        syncingRepoID = nil
     }
 
     func abortMerge(repoID: UUID) async {
@@ -1783,6 +1913,12 @@ final class AppState {
 
     private func markRepositoryMutated(repoID: UUID) {
         repoMutationGeneration[repoID, default: 0] += 1
+    }
+
+    private func withCheckoutMutation<T>(repoID: UUID, operation: () async throws -> T) async rethrows -> T {
+        markRepositoryMutated(repoID: repoID)
+        defer { markRepositoryMutated(repoID: repoID) }
+        return try await operation()
     }
 
     private func stagedStatusKind(from workTreeStatus: GitFileStatusKind) -> GitFileStatusKind {
@@ -1968,67 +2104,6 @@ final class AppState {
         }
     }
 
-    func cancelPendingLFSAutoTracking() {
-        pendingLFSAutoTrackingConfirmation = nil
-    }
-
-    @discardableResult
-    private func handleSSHHostKeyTrustIfNeeded(
-        _ error: Error,
-        repoID: UUID,
-        operation: SSHHostKeyTrustRequest.Operation
-    ) -> Bool {
-        guard case LocalGitError.sshHostKeyTrustRequired(let trustError) = error else {
-            return false
-        }
-        pendingSSHHostKeyTrustRequest = SSHHostKeyTrustRequest(
-            repoID: repoID,
-            operation: operation,
-            trustError: trustError
-        )
-        syncProgress = String(localized: "SSH host key needs trust")
-        return true
-    }
-
-    func trustPendingSSHHostKeyAndRetry() async {
-        guard let request = pendingSSHHostKeyTrustRequest else { return }
-        do {
-            try sshHostKeyTrustStore.trust(
-                fingerprint: request.fingerprintToTrust,
-                host: request.host,
-                port: request.port
-            )
-            DebugLogger.shared.info(
-                "security",
-                "Trusted SSH host key",
-                detail: "\(request.host):\(request.port) \(request.fingerprintToTrust)"
-            )
-        } catch {
-            pendingSSHHostKeyTrustRequest = nil
-            showError(message: error.localizedDescription, category: "security")
-            return
-        }
-
-        let operation = request.operation
-        let repoID = request.repoID
-        pendingSSHHostKeyTrustRequest = nil
-
-        switch operation {
-        case .clone:
-            await clone(repoID: repoID)
-        case .pull:
-            _ = await pull(repoID: repoID)
-        case .pushCurrentBranch:
-            _ = await pushCurrentBranch(repoID: repoID)
-        case .pushCommit(let message):
-            _ = await push(repoID: repoID, message: message)
-        }
-    }
-
-    func cancelPendingSSHHostKeyTrust() {
-        pendingSSHHostKeyTrustRequest = nil
-    }
-
     func unstageFile(repoID: UUID, path: String, oldPath: String? = nil) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
@@ -2074,7 +2149,9 @@ final class AppState {
 
         do {
             DebugLogger.shared.info("revert", "Reverting all file changes")
-            try await gitService.discardAllChanges()
+            try await withCheckoutMutation(repoID: repoID) {
+                try await gitService.discardAllChanges()
+            }
             detectChanges(repoID: repoID)
             DebugLogger.shared.info("revert", "Revert all complete")
         } catch {
@@ -2096,7 +2173,9 @@ final class AppState {
 
         do {
             DebugLogger.shared.info("revert", "Reverting file changes", detail: path)
-            try await gitService.discardChanges(path: path)
+            try await withCheckoutMutation(repoID: repoID) {
+                try await gitService.discardChanges(path: path)
+            }
             detectChanges(repoID: repoID)
             DebugLogger.shared.info("revert", "File revert complete", detail: path)
         } catch {
@@ -2144,7 +2223,7 @@ final class AppState {
                 }
             }
 
-            var repo = repos[idx]
+            let repo = repos[idx]
             let vaultDir = vaultURL(for: repoID)
 
             // Remove existing vault directory — git clone needs a clean target
@@ -2166,21 +2245,21 @@ final class AppState {
             DebugLogger.shared.info("clone", "Starting clone", detail: cloneURL)
             let result = try await gitService.clone(remoteURL: cloneURL, pat: authPayload(for: repo))
 
-            // Update branch from what was actually checked out
-            if repo.branch.isEmpty {
-                repo.branch = result.branch
+            // Update only the still-present repository. The main actor may
+            // process a deletion or settings edit while clone is suspended.
+            if let currentIndex = repoIndex(id: repoID) {
+                if repos[currentIndex].branch.isEmpty {
+                    repos[currentIndex].branch = result.branch
+                }
+                repos[currentIndex].gitState = GitState(
+                    commitSHA: result.commitSHA,
+                    treeSHA: "",
+                    branch: result.branch,
+                    blobSHAs: [:],
+                    lastSyncDate: Date()
+                )
+                saveRepos()
             }
-
-            repo.gitState = GitState(
-                commitSHA: result.commitSHA,
-                treeSHA: "",
-                branch: result.branch,
-                blobSHAs: [:],
-                lastSyncDate: Date()
-            )
-
-            repos[idx] = repo
-            saveRepos()
             clearCommitHistoryCache(for: repoID)
             detectChanges(repoID: repoID)
             syncProgress = String(localized: "Clone complete! (\(result.fileCount) files)")
@@ -2203,312 +2282,209 @@ final class AppState {
 
     @discardableResult
     func pull(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
-        guard let idx = repoIndex(id: repoID) else {
-            showError(message: String(localized: "Repository not found"))
+        // Preserve the legacy foreground contract: a completed classification
+        // (including a safe attention state) returns true so existing sheets can
+        // dismiss. Headless callers consume the precise `pullOnly` result.
+        switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay) {
+        case .updated, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+            return true
+        case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
             return false
+        }
+    }
+
+    /// UI-independent, typed, pull-only execution seam for foreground, App
+    /// Intents, and future Premium triggers.
+    @discardableResult
+    func pullOnly(repoID: UUID, showsProgressDelay: Bool = true) async -> RepositoryPullResult {
+        guard let idx = repoIndex(id: repoID) else {
+            let message = String(localized: "Repository not found")
+            showError(message: message)
+            return .unavailable(message: message)
         }
 
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Checking for updates...")
+        pullOutcomeByRepo.removeValue(forKey: repoID)
+        defer {
+            isSyncing = false
+            syncingRepoID = nil
+        }
 
         if isDemoMode {
-            if showsProgressDelay {
-                try? await Task.sleep(for: .seconds(1))
-            }
+            if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
             syncProgress = String(localized: "Already up to date!")
-            repos[idx].gitState.lastSyncDate = Date()
+            guard let currentIndex = repoIndex(id: repoID) else {
+                return .unavailable(message: String(localized: "Repository not found"))
+            }
+            repos[currentIndex].gitState.lastSyncDate = Date()
             saveRepos()
-            if showsProgressDelay {
-                try? await Task.sleep(for: .seconds(1))
-            }
-            isSyncing = false
-            syncingRepoID = nil
-            return true
+            return .upToDate(
+                branch: repos[currentIndex].gitState.branch,
+                commitSHA: repos[currentIndex].gitState.commitSHA
+            )
         }
 
-        pullOutcomeByRepo.removeValue(forKey: repoID)
+        let repo = repos[idx]
+        let vaultDir = vaultURL(for: repoID)
+        let gitService = gitRepositoryFactory(vaultDir)
+        DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)")
+        // The runner may fast-forward the checkout. Invalidate any status scan
+        // that began before fetch/checkout starts; successful updates advance it
+        // again below after the working copy is coherent.
+        markRepositoryMutated(repoID: repoID)
+        let result = await RepositoryPullRunner().run(
+            repository: gitService,
+            credentials: authPayload(for: repo)
+        )
 
-        do {
-            var repo = repos[idx]
-            let vaultDir = vaultURL(for: repoID)
-            let gitService = gitRepositoryFactory(vaultDir)
-
-            guard gitService.hasGitDirectory else {
-                throw LocalGitError.notCloned
+        switch result {
+        case .updated(_, let commitSHA):
+            markRepositoryMutated(repoID: repoID)
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = commitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
             }
+            clearCommitHistoryCache(for: repoID)
+            syncProgress = String(localized: "Pull complete!")
+            setPullOutcome(repoID: repoID, kind: .fastForwarded, message: String(localized: "Pulled latest changes (fast-forward)"))
+            requestReviewIfNeeded()
 
-            DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)")
-            let plan = try await gitService.pullPlan(pat: authPayload(for: repo))
+        case .upToDate:
+            syncProgress = String(localized: "Already up to date!")
+            setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
 
-            switch plan.action {
-            case .upToDate:
-                syncProgress = String(localized: "Already up to date!")
-                DebugLogger.shared.info("pull", "Already up to date")
-                setPullOutcome(
+        case .blockedByLocalChanges:
+            syncProgress = String(localized: "Pull blocked by local changes")
+            setPullOutcome(repoID: repoID, kind: .blockedByLocalChanges, message: String(localized: "Local edits detected. Commit, stash, or discard changes before pulling."))
+
+        case .diverged:
+            syncProgress = String(localized: "Pull requires merge")
+            setPullOutcome(repoID: repoID, kind: .diverged, message: String(localized: "Local and remote have diverged. Merge support is required to continue."))
+
+        case .remoteBranchMissing(let branch):
+            syncProgress = String(localized: "Remote branch missing")
+            setPullOutcome(repoID: repoID, kind: .remoteBranchMissing, message: String(localized: "Remote branch '\(branch)' was not found."))
+
+        case .wrongBranch(let expected, let actual):
+            let message = String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
+            setPullOutcome(repoID: repoID, kind: .failed, message: message)
+            showError(message: message, category: "pull")
+
+        case .authenticationOrTrustRequired(let message, let trustError):
+            if let trustError {
+                _ = handleSSHHostKeyTrustIfNeeded(
+                    LocalGitError.sshHostKeyTrustRequired(trustError),
                     repoID: repoID,
-                    kind: .upToDate,
-                    message: String(localized: "Already up to date")
+                    operation: .pull
                 )
-
-            case .blockedByLocalChanges:
-                syncProgress = String(localized: "Pull blocked by local changes")
-                DebugLogger.shared.warning("pull", "Blocked by local changes")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .blockedByLocalChanges,
-                    message: String(localized: "Local edits detected. Commit, stash, or discard changes before pulling.")
-                )
-
-            case .diverged:
-                syncProgress = String(localized: "Pull requires merge")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .diverged,
-                    message: String(localized: "Local and remote have diverged. Merge support is required to continue.")
-                )
-
-            case .remoteBranchMissing:
-                syncProgress = String(localized: "Remote branch missing")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .remoteBranchMissing,
-                    message: String(localized: "Remote branch '\(plan.branch)' was not found.")
-                )
-
-            case .fastForward:
-                syncProgress = String(localized: "Applying remote updates...")
-                let result = try await gitService.pullFastForward(branch: plan.branch, pat: authPayload(for: repo))
-
-                if !result.updated {
-                    syncProgress = String(localized: "Already up to date!")
-                    setPullOutcome(
-                        repoID: repoID,
-                        kind: .upToDate,
-                        message: String(localized: "Already up to date")
-                    )
-                } else {
-                    repo.gitState.commitSHA = result.newCommitSHA
-                    repo.gitState.lastSyncDate = Date()
-
-                    repos[idx] = repo
-                    saveRepos()
-                    clearCommitHistoryCache(for: repoID)
-                    detectChanges(repoID: repoID)
-                    syncProgress = String(localized: "Pull complete!")
-                    DebugLogger.shared.info("pull", "Pull complete (fast-forward)", detail: "new SHA: \(result.newCommitSHA)")
-                    setPullOutcome(
-                        repoID: repoID,
-                        kind: .fastForwarded,
-                        message: String(localized: "Pulled latest changes (fast-forward)")
-                    )
-                    requestReviewIfNeeded()
-                }
             }
+            setPullOutcome(repoID: repoID, kind: .failed, message: message)
+            if trustError == nil { showError(message: message, category: "pull") }
 
-            if showsProgressDelay {
-                try? await Task.sleep(for: .seconds(1))
-            }
-            isSyncing = false
-            syncingRepoID = nil
-            return true
-
-        } catch let error as LocalGitError {
-            switch error {
-            case .pullBlockedByLocalChanges:
-                syncProgress = String(localized: "Pull blocked by local changes")
-                DebugLogger.shared.warning("pull", "Blocked by local changes")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .blockedByLocalChanges,
-                    message: String(localized: "Local edits detected. Commit, stash, or discard changes before pulling.")
-                )
-            case .pullDiverged:
-                syncProgress = String(localized: "Pull requires merge")
-                DebugLogger.shared.warning("pull", "Diverged — merge required")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .diverged,
-                    message: String(localized: "Local and remote have diverged. Merge support is required to continue.")
-                )
-            case .pullRemoteBranchMissing(let branch):
-                syncProgress = String(localized: "Remote branch missing")
-                DebugLogger.shared.warning("pull", "Remote branch missing", detail: branch)
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .remoteBranchMissing,
-                    message: String(localized: "Remote branch '\(branch)' was not found.")
-                )
-            default:
-                if handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pull) {
-                    setPullOutcome(repoID: repoID, kind: .failed, message: String(localized: "SSH host key needs trust"))
-                } else {
-                    setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
-                    showError(message: error.localizedDescription, category: "pull")
-                }
-            }
-        } catch {
-            if handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pull) {
-                setPullOutcome(repoID: repoID, kind: .failed, message: String(localized: "SSH host key needs trust"))
-            } else {
-                setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
-                showError(message: error.localizedDescription, category: "pull")
-            }
+        case .unavailable(let message), .failed(let message):
+            setPullOutcome(repoID: repoID, kind: .failed, message: message)
+            showError(message: message, category: "pull")
         }
 
-        if showsProgressDelay {
-            try? await Task.sleep(for: .seconds(1))
-        }
-        isSyncing = false
-        syncingRepoID = nil
-        return false
+        // The mutation generation was advanced before the runner began. Always
+        // schedule a fresh scan so blocked, failed, and no-op results cannot
+        // leave an older in-flight scan as the last published status.
+        detectChanges(repoID: repoID)
+        if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+        return result
     }
 
     @discardableResult
     func pullWithRebase(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
-        guard let idx = repoIndex(id: repoID) else {
+        guard let repo = repo(id: repoID) else {
             showError(message: String(localized: "Repository not found"))
             return false
         }
-
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Checking for updates...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         if isDemoMode {
             if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-            syncProgress = String(localized: "Rebase complete!")
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
-            if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-            isSyncing = false
-            syncingRepoID = nil
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+            }
             return true
         }
-
         pullOutcomeByRepo.removeValue(forKey: repoID)
-
+        let credentials = authPayload(for: repo)
         do {
-            var repo = repos[idx]
-            let vaultDir = vaultURL(for: repoID)
-            let gitService = gitRepositoryFactory(vaultDir)
-
-            guard gitService.hasGitDirectory else {
-                throw LocalGitError.notCloned
+            let serialized = try serializedRepository(repoID: repoID)
+            let execution = try await serialized.withLease { repository in
+                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                let plan = try await repository.pullPlan(pat: credentials)
+                switch plan.action {
+                case .fastForward:
+                    return RebasePullExecution(plan: plan, result: try await repository.pullFastForward(branch: plan.branch, pat: credentials))
+                case .diverged:
+                    return RebasePullExecution(plan: plan, result: try await repository.pullRebase(
+                        branch: plan.branch, pat: credentials,
+                        authorName: repo.authorName, authorEmail: repo.authorEmail))
+                case .upToDate, .blockedByLocalChanges, .remoteBranchMissing:
+                    return RebasePullExecution(plan: plan, result: nil)
+                }
             }
-
-            DebugLogger.shared.info("pull", "Starting pull with rebase", detail: "branch: \(repo.branch)")
-            let plan = try await gitService.pullPlan(pat: authPayload(for: repo))
-
-            let result: LocalPullResult
+            let plan = execution.plan
             switch plan.action {
             case .upToDate:
-                syncProgress = String(localized: "Already up to date!")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .upToDate,
-                    message: String(localized: "Already up to date")
-                )
-                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-                isSyncing = false
-                syncingRepoID = nil
+                setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
                 return true
-
             case .blockedByLocalChanges:
-                syncProgress = String(localized: "Rebase blocked by local changes")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: .blockedByLocalChanges,
-                    message: String(localized: "Local edits detected. Commit, stash, or discard changes before rebasing.")
-                )
-                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-                isSyncing = false
-                syncingRepoID = nil
+                setPullOutcome(repoID: repoID, kind: .blockedByLocalChanges, message: String(localized: "Local edits detected. Commit, stash, or discard changes before rebasing."))
                 return false
-
             case .remoteBranchMissing:
-                syncProgress = String(localized: "Remote branch missing")
+                setPullOutcome(repoID: repoID, kind: .remoteBranchMissing, message: String(localized: "Remote branch '\(plan.branch)' was not found."))
+                return false
+            case .fastForward, .diverged:
+                guard let result = execution.result else { return false }
+                markRepositoryMutated(repoID: repoID)
+                if result.updated, let currentIndex = repoIndex(id: repoID) {
+                    repos[currentIndex].gitState.commitSHA = result.newCommitSHA
+                    repos[currentIndex].gitState.lastSyncDate = Date()
+                    saveRepos()
+                    clearCommitHistoryCache(for: repoID)
+                }
                 setPullOutcome(
                     repoID: repoID,
-                    kind: .remoteBranchMissing,
-                    message: String(localized: "Remote branch '\(plan.branch)' was not found.")
+                    kind: result.updated ? (plan.action == .diverged ? .rebased : .fastForwarded) : .upToDate,
+                    message: result.updated
+                        ? (plan.action == .diverged
+                            ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
+                            : String(localized: "Pulled latest changes (fast-forward)"))
+                        : String(localized: "Already up to date")
                 )
-                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-                isSyncing = false
-                syncingRepoID = nil
-                return false
-
-            case .fastForward:
-                syncProgress = String(localized: "Applying remote updates...")
-                result = try await gitService.pullFastForward(branch: plan.branch, pat: authPayload(for: repo))
-
-            case .diverged:
-                syncProgress = String(localized: "Rebasing local commits...")
-                result = try await gitService.pullRebase(
-                    branch: plan.branch,
-                    pat: authPayload(for: repo),
-                    authorName: repo.authorName,
-                    authorEmail: repo.authorEmail
-                )
-            }
-
-            if result.updated {
-                repo.gitState.commitSHA = result.newCommitSHA
-                repo.gitState.lastSyncDate = Date()
-                repos[idx] = repo
-                saveRepos()
-                clearCommitHistoryCache(for: repoID)
                 detectChanges(repoID: repoID)
                 await loadBranches(repoID: repoID)
-                syncProgress = plan.action == .diverged
-                    ? String(localized: "Rebase complete!")
-                    : String(localized: "Pull complete!")
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: plan.action == .diverged ? .rebased : .fastForwarded,
-                    message: plan.action == .diverged
-                        ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
-                        : String(localized: "Pulled latest changes (fast-forward)")
-                )
                 requestReviewIfNeeded()
-            } else {
-                syncProgress = String(localized: "Already up to date!")
-                setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
+                if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+                return true
             }
-
-            if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-            isSyncing = false
-            syncingRepoID = nil
-            return true
         } catch LocalGitError.rebaseConflictsDetected {
+            markRepositoryMutated(repoID: repoID)
             await loadConflictSession(repoID: repoID)
             detectChanges(repoID: repoID)
-            setPullOutcome(
-                repoID: repoID,
-                kind: .rebaseConflicts,
-                message: String(localized: "Rebase has conflicts — resolve them, then continue rebase")
-            )
-        } catch let error as LocalGitError {
-            setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
-            showError(message: error.localizedDescription, category: "rebase")
+            setPullOutcome(repoID: repoID, kind: .rebaseConflicts, message: String(localized: "Rebase has conflicts — resolve them, then continue rebase"))
         } catch {
             setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
             showError(message: error.localizedDescription, category: "rebase")
         }
-
         if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
-        isSyncing = false
-        syncingRepoID = nil
         return false
     }
 
     func continueRebase(repoID: UUID) async {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return }
-        if isDemoMode { return }
-
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
+        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
             return
@@ -2517,18 +2493,22 @@ final class AppState {
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Continuing rebase...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            let repo = repos[idx]
-            let result = try await gitService.continueRebase(
-                pat: authPayload(for: repo),
-                authorName: repo.authorName,
-                authorEmail: repo.authorEmail
-            )
-            repos[idx].gitState.commitSHA = result.newCommitSHA
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
+            let result = try await withCheckoutMutation(repoID: repoID) {
+                try await gitService.continueRebase(
+                    pat: authPayload(for: repo),
+                    authorName: repo.authorName,
+                    authorEmail: repo.authorEmail
+                )
+            }
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = result.newCommitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+            }
             detectChanges(repoID: repoID)
             await loadBranches(repoID: repoID)
             await loadConflictSession(repoID: repoID)
@@ -2550,9 +2530,6 @@ final class AppState {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription, category: "rebase")
         }
-
-        isSyncing = false
-        syncingRepoID = nil
     }
 
     func abortRebase(repoID: UUID) async {
@@ -2572,7 +2549,9 @@ final class AppState {
         syncProgress = String(localized: "Aborting rebase...")
 
         do {
-            try await gitService.abortRebase()
+            try await withCheckoutMutation(repoID: repoID) {
+                try await gitService.abortRebase()
+            }
             clearCommitHistoryCache(for: repoID)
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
@@ -2592,61 +2571,59 @@ final class AppState {
 
     @discardableResult
     func pushCurrentBranch(repoID: UUID) async -> Bool {
-        guard let idx = repoIndex(id: repoID), repos[idx].isCloned else { return false }
+        guard let repo = repo(id: repoID), repo.isCloned else { return false }
         if isDemoMode {
             syncProgress = String(localized: "Push complete!")
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+            }
             syncStateByRepo[repoID] = .upToDate
             return true
         }
 
-        let vaultDir = vaultURL(for: repoID)
-        let gitService = gitRepositoryFactory(vaultDir)
-
-        guard gitService.hasGitDirectory else {
-            showError(message: LocalGitError.notCloned.localizedDescription)
-            return false
-        }
-
+        let credentials = authPayload(for: repo)
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Pushing committed changes...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         do {
-            let repo = repos[idx]
-            try await gitService.pushCurrentBranch(pat: authPayload(for: repo))
-
-            if let info = try? await gitService.repoInfo() {
-                repos[idx].gitState.branch = info.branch
-                repos[idx].gitState.commitSHA = info.commitSHA
-                changeCounts[repoID] = info.changeCount
-                statusEntriesByRepo[repoID] = info.statusEntries
-                syncStateByRepo[repoID] = info.syncState
+            let serialized = try serializedRepository(repoID: repoID)
+            let info = try await serialized.withLease { repository in
+                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                try await repository.pushCurrentBranch(pat: credentials)
+                return try? await repository.repoInfo()
             }
-            repos[idx].gitState.lastSyncDate = Date()
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
+
+            if let currentIndex = repoIndex(id: repoID) {
+                if let info {
+                    repos[currentIndex].gitState.branch = info.branch
+                    repos[currentIndex].gitState.commitSHA = info.commitSHA
+                    changeCounts[repoID] = info.changeCount
+                    statusEntriesByRepo[repoID] = info.statusEntries
+                    syncStateByRepo[repoID] = info.syncState
+                }
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+            }
             detectChanges(repoID: repoID)
             await loadBranches(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
             requestReviewIfNeeded()
-            isSyncing = false
-            syncingRepoID = nil
             return true
         } catch {
             if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCurrentBranch) {
                 showError(message: error.localizedDescription, category: "push")
             }
-            isSyncing = false
-            syncingRepoID = nil
             return false
         }
     }
 
     @discardableResult
     func push(repoID: UUID, message: String) async -> Bool {
-        guard let idx = repoIndex(id: repoID) else {
+        guard let repo = repo(id: repoID) else {
             showError(message: String(localized: "Repository not found"))
             return false
         }
@@ -2660,6 +2637,7 @@ final class AppState {
             if session.kind == .merge {
                 await completeMerge(repoID: repoID, message: message)
                 return conflictSessionByRepo[repoID]?.isActive == false
+                    && pullOutcomeByRepo[repoID]?.kind != .failed
             }
             if session.kind == .rebase {
                 await continueRebase(repoID: repoID)
@@ -2670,30 +2648,27 @@ final class AppState {
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Preparing changes...")
+        defer { isSyncing = false; syncingRepoID = nil }
 
         if isDemoMode {
             syncProgress = String(localized: "Committing and pushing...")
             try? await Task.sleep(for: .seconds(1.5))
-            repos[idx].gitState.commitSHA = UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(40).lowercased()
-            repos[idx].gitState.lastSyncDate = Date()
+            guard let currentIndex = repoIndex(id: repoID) else { return false }
+            repos[currentIndex].gitState.commitSHA = UUID().uuidString
+                .replacingOccurrences(of: "-", with: "")
+                .prefix(40)
+                .lowercased()
+            repos[currentIndex].gitState.lastSyncDate = Date()
             saveRepos()
             changeCounts[repoID] = 0
             syncProgress = String(localized: "Push complete!")
             try? await Task.sleep(for: .seconds(1))
-            isSyncing = false
-            syncingRepoID = nil
             return true
         }
 
         do {
-            var repo = repos[idx]
-            let vaultDir = vaultURL(for: repoID)
-            let gitService = gitRepositoryFactory(vaultDir)
-
-            guard gitService.hasGitDirectory else {
-                throw LocalGitError.notCloned
-            }
-
+            let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+            guard gitService.hasGitDirectory else { throw LocalGitError.notCloned }
             let commitMsg = message.isEmpty ? String(localized: "Update from GitSync.md") : message
 
             syncProgress = String(localized: "Committing and pushing...")
@@ -2705,22 +2680,19 @@ final class AppState {
                 pat: authPayload(for: repo)
             )
 
-            repo.gitState.commitSHA = result.commitSHA
-            repo.gitState.lastSyncDate = Date()
-
-            repos[idx] = repo
-            saveRepos()
-            clearCommitHistoryCache(for: repoID)
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = result.commitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+                clearCommitHistoryCache(for: repoID)
+            }
             detectChanges(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
             DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)")
             requestReviewIfNeeded()
 
             try? await Task.sleep(for: .seconds(1))
-            isSyncing = false
-            syncingRepoID = nil
             return true
-
         } catch {
             if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCommit(message: message)) {
                 showError(message: error.localizedDescription, category: "push")
@@ -2728,8 +2700,6 @@ final class AppState {
         }
 
         try? await Task.sleep(for: .seconds(1))
-        isSyncing = false
-        syncingRepoID = nil
         return false
     }
 
@@ -2861,6 +2831,7 @@ final class AppState {
 
     func removeRepo(id: UUID, deleteLocalFiles: Bool = false) {
         guard let repo = repo(id: id) else { return }
+        if repo.assist.channel != nil { assistRepositoryRemovalHandler?(repo) }
         let vaultDir = vaultURL(for: id)
 
         // Existing local repositories are user-owned folders that may also be
@@ -2894,8 +2865,11 @@ final class AppState {
 
     func updateRepo(id: UUID, mutate: (inout RepoConfig) -> Void) {
         guard let idx = repoIndex(id: id) else { return }
+        let oldRegistration = (repos[idx].assist.enabled, repos[idx].assist.channel)
         mutate(&repos[idx])
+        let newRegistration = (repos[idx].assist.enabled, repos[idx].assist.channel)
         saveRepos()
+        if oldRegistration != newRegistration { assistConfigurationChangeHandler?() }
     }
 
     @discardableResult
@@ -2932,13 +2906,19 @@ final class AppState {
             }
         }
 
-        repos[idx].repoURL = trimmedRepoURL
-        repos[idx].branch = branch.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "main" : branch.trimmingCharacters(in: .whitespacesAndNewlines)
-        repos[idx].authorName = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
-        repos[idx].authorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-        repos[idx].authMethod = authMethod
-        repos[idx].authUsername = credentials.username.trimmingCharacters(in: .whitespacesAndNewlines)
-        repos[idx].gitHubAccountLogin = authMethod == .gitHubPAT ? activeGitHubAccountLogin : nil
+        // The remote update suspends; the repository may have been removed or
+        // the array reordered while it was in flight.
+        guard let currentIndex = repoIndex(id: id) else {
+            showError(message: String(localized: "Repository not found"))
+            return false
+        }
+        repos[currentIndex].repoURL = trimmedRepoURL
+        repos[currentIndex].branch = branch.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "main" : branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[currentIndex].authorName = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[currentIndex].authorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[currentIndex].authMethod = authMethod
+        repos[currentIndex].authUsername = credentials.username.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[currentIndex].gitHubAccountLogin = authMethod == .gitHubPAT ? activeGitHubAccountLogin : nil
 
         switch authMethod {
         case .httpsToken, .sshKey:
@@ -3189,13 +3169,13 @@ final class AppState {
             clearCachedRepoState(for: repo.id)
         }
         repos = []
+        saveRepos(replaceAll: true)
         isSyncing = false
         syncingRepoID = nil
         syncProgress = ""
         callbackNavigateToRepoID = nil
         callbackResult = nil
         pendingLFSAutoTrackingConfirmation = nil
-        saveRepos()
         saveGlobalSettings()
     }
 

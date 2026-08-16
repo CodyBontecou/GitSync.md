@@ -1,5 +1,10 @@
 import Foundation
 
+struct PullExecutionResult: Sendable {
+    let plan: PullPlan
+    let pullResult: LocalPullResult?
+}
+
 protocol GitRepositoryProtocol: Sendable {
     var hasGitDirectory: Bool { get }
 
@@ -7,6 +12,8 @@ protocol GitRepositoryProtocol: Sendable {
     func setRemoteURL(name: String, url: String) async throws
     func pullPlan(pat: String) async throws -> PullPlan
     func pull(pat: String) async throws -> LocalPullResult
+    /// Fetch, classify, and conditionally fast-forward under one repository operation.
+    func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult
     /// Apply a fast-forward after `pullPlan` has already fetched origin.
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult
     /// Rebase local commits onto origin/<branch> after `pullPlan` has already fetched origin.

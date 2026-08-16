@@ -46,6 +46,7 @@
 		62C951B02F393100001F79DF /* Exceptions for "Sync.md" folder in "Sync.md" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				GitSyncAssist.storekit,
 				Info.plist,
 			);
 			target = 62C951952F393029001F79DF /* Sync.md */;
@@ -516,6 +517,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				APS_ENVIRONMENT = development;
+				CODE_SIGN_ENTITLEMENTS = Sync.md/Sync_md.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202608110833;
 				DEVELOPMENT_TEAM = 67KC823C9A;
@@ -549,6 +552,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				APS_ENVIRONMENT = production;
+				CODE_SIGN_ENTITLEMENTS = Sync.md/Sync_md.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202608110833;
 				DEVELOPMENT_TEAM = 67KC823C9A;

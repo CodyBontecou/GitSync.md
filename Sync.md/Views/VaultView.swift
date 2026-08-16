@@ -167,6 +167,9 @@ struct VaultView: View {
         ScrollView {
             VStack(spacing: 12) {
                 statusHeroCard(repo)
+                if repo.assist.enabled || repo.assist.health.kind != .never {
+                    assistHealthCard(repo.assist.health)
+                }
                 repoHealthCard
                 if !statusEntries.isEmpty {
                     changedFilesCard
@@ -275,6 +278,53 @@ struct VaultView: View {
                 )
                 .foregroundStyle(Color.brutalText)
         }
+    }
+
+    // MARK: - Assist Health
+
+    private func assistHealthCard(_ health: RepoAssistHealth) -> some View {
+        BCard(padding: 0) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: health.kind == .attention || health.kind == .failed
+                      ? "exclamationmark.triangle.fill" : "bolt.horizontal.circle.fill")
+                    .foregroundStyle(health.kind == .attention || health.kind == .failed
+                                     ? Color.brutalWarning : Color.brutalSuccess)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("GITSYNC ASSIST")
+                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .tracking(1)
+                    Text(assistHealthLabel(health))
+                        .font(.system(size: 14, weight: .semibold))
+                    if let message = health.message {
+                        Text(message).font(.system(size: 12, design: .monospaced))
+                    }
+                    if let attempt = health.lastAttemptDate {
+                        Text("Last attempt \(assistRelativeDate(attempt))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+            }
+            .padding(16)
+        }
+    }
+
+    private func assistHealthLabel(_ health: RepoAssistHealth) -> String {
+        switch health.kind {
+        case .never: "Waiting for first wake"
+        case .updated: "Fast-forwarded"
+        case .upToDate: "Up to date"
+        case .deferred: "Deferred by policy"
+        case .attention: "Attention required"
+        case .failed: "Last attempt failed"
+        }
+    }
+
+    private func assistRelativeDate(_ date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        return formatter.localizedString(for: date, relativeTo: Date())
     }
 
     // MARK: - Repo Health

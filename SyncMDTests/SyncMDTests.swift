@@ -101,6 +101,1331 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(fixture.repository.lfsAutoTrackStageFlags, [true])
     }
 
+    func testOAuthCallbackParserValidatesURLStateBeforeToken() throws {
+        XCTAssertEqual(
+            try OAuthService.parseCallbackURL(URL(string: "syncmd://auth?state=expected&token=secret"), expectedState: "expected"),
+            "secret"
+        )
+
+        for url in [
+            "syncmd://auth?token=secret",
+            "syncmd://auth?state=&token=secret",
+            "syncmd://auth?state=wrong&token=secret"
+        ] {
+            XCTAssertThrowsError(try OAuthService.parseCallbackURL(URL(string: url), expectedState: "expected")) { error in
+                guard case OAuthError.stateMismatch = error else { return XCTFail("Expected stateMismatch, got \(error)") }
+            }
+        }
+        XCTAssertThrowsError(try OAuthService.parseCallbackURL(URL(string: "syncmd://auth?state=expected"), expectedState: "expected")) { error in
+            guard case OAuthError.noToken = error else { return XCTFail("Expected noToken, got \(error)") }
+        }
+        XCTAssertThrowsError(try OAuthService.parseCallbackURL(URL(string: "syncmd://auth?state=expected&token="), expectedState: "expected")) { error in
+            guard case OAuthError.noToken = error else { return XCTFail("Expected noToken, got \(error)") }
+        }
+        for url in [
+            "syncmd://other?state=expected&token=secret",
+            "https://auth?state=expected&token=secret",
+            "syncmd://auth/path?state=expected&token=secret",
+            "syncmd://auth?state=expected&state=expected&token=secret",
+            "syncmd://auth?state=expected&token=secret&token=other"
+        ] {
+            XCTAssertThrowsError(try OAuthService.parseCallbackURL(URL(string: url), expectedState: "expected"))
+        }
+    }
+
+    func testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .blockedByLocalChanges,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: "9999999999999999999999999999999999999999",
+            hasLocalChanges: true,
+            aheadBy: 0,
+            behindBy: 1
+        )
+
+        let result = await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
+        XCTAssertEqual(result, .blockedByLocalChanges(branch: "main"))
+        XCTAssertEqual(fixture.repository.pullPlanCallCount, 1)
+        XCTAssertEqual(fixture.repository.pullFastForwardCallCount, 0)
+    }
+
+    func testRepositoryPullRunnerReturnsUpdatedAndUpToDate() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let newCommit = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .fastForward,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: newCommit,
+            hasLocalChanges: false,
+            aheadBy: 0,
+            behindBy: 1
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(updated: true, newCommitSHA: newCommit))
+
+        let updated = await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
+        XCTAssertEqual(updated, .updated(branch: "main", commitSHA: newCommit))
+
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate,
+            branch: "main",
+            localCommitSHA: newCommit,
+            remoteCommitSHA: newCommit,
+            hasLocalChanges: false,
+            aheadBy: 0,
+            behindBy: 0
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(updated: false, newCommitSHA: newCommit))
+        let current = await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
+        XCTAssertEqual(current, .upToDate(branch: "main", commitSHA: newCommit))
+    }
+
+    @MainActor
+    func testAppStateSkipsPullStateWriteWhenRepositoryRemovedDuringAwait() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let gate = AsyncGate()
+        let newCommit = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        fixture.repository.pullPlanResult = PullPlan(action: .fastForward, branch: "main", localCommitSHA: fixture.repoConfig.gitState.commitSHA, remoteCommitSHA: newCommit, hasLocalChanges: false, aheadBy: 0, behindBy: 1)
+        fixture.repository.pullResult = .success(LocalPullResult(updated: true, newCommitSHA: newCommit))
+        fixture.repository.executePullOnlyGate = gate
+        let other = RepoConfig(repoURL: "other/repo", branch: "main", authorName: "Other", authorEmail: "other@example.com", vaultFolderName: "other")
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig, other]
+
+        let pull = Task { await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false) }
+        try await Task.sleep(for: .milliseconds(20))
+        state.repos.removeAll { $0.id == fixture.repoConfig.id }
+        await gate.open()
+        _ = await pull.value
+
+        XCTAssertEqual(state.repos.map(\.id), [other.id])
+        XCTAssertEqual(state.repos.first?.gitState.commitSHA, other.gitState.commitSHA)
+    }
+
+    @MainActor
+    func testAppStateSkipsConfigurationWriteWhenRepositoryRemovedDuringRemoteUpdate() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let gate = AsyncGate()
+        fixture.repository.setRemoteURLGate = gate
+        let other = RepoConfig(
+            repoURL: "other/repo",
+            branch: "main",
+            authorName: "Other",
+            authorEmail: "other@example.com",
+            vaultFolderName: "other"
+        )
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig, other]
+
+        let save = Task {
+            await state.saveRepoConfiguration(
+                id: fixture.repoConfig.id,
+                repoURL: "changed/repo",
+                branch: "notes",
+                authorName: "Changed",
+                authorEmail: "changed@example.com",
+                authMethod: .none,
+                credentials: .none
+            )
+        }
+        try await Task.sleep(for: .milliseconds(20))
+        state.repos.removeAll { $0.id == fixture.repoConfig.id }
+        await gate.open()
+
+        let saved = await save.value
+        XCTAssertFalse(saved)
+        XCTAssertEqual(state.repos, [other])
+    }
+
+    func testSerializedGitRepositorySerializesIndependentWrappersForSamePath() async throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("serialization-\(UUID())")
+        let probe = SerializationProbeRepository()
+        let first = SerializedGitRepository(base: probe, localURL: root)
+        let second = SerializedGitRepository(base: probe, localURL: root)
+
+        async let a: Void = first.stageAll()
+        async let b: Void = second.stageAll()
+        _ = try await (a, b)
+
+        XCTAssertEqual(probe.maximumConcurrentOperations, 1)
+        XCTAssertEqual(probe.completedOperations, 2)
+    }
+
+    func testRepositoryCoordinatorEscapingChildCannotInheritReleasedLease() async throws {
+        let coordinator = RepositoryOperationCoordinator()
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("lease-\(UUID())")
+        let childGate = AsyncGate()
+        let secondGate = AsyncGate()
+        let events = EventRecorder()
+        var child: Task<Void, Error>?
+
+        try await coordinator.withRepository(at: root) {
+            child = Task {
+                await childGate.wait()
+                try await coordinator.withRepository(at: root) {
+                    await events.append("child")
+                }
+            }
+        }
+        let second = Task {
+            try await coordinator.withRepository(at: root) {
+                await events.append("second-start")
+                await secondGate.wait()
+                await events.append("second-end")
+            }
+        }
+        try await Task.sleep(for: .milliseconds(20))
+        await childGate.open()
+        try await Task.sleep(for: .milliseconds(20))
+        let whileSecondHeld = await events.values()
+        XCTAssertEqual(whileSecondHeld, ["second-start"])
+        await secondGate.open()
+        try await second.value
+        try await child?.value
+        let completed = await events.values()
+        XCTAssertEqual(completed, ["second-start", "second-end", "child"])
+    }
+
+    func testRepositoryCoordinatorCanceledQueuedWaiterNeverExecutes() async throws {
+        let coordinator = RepositoryOperationCoordinator()
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("cancel-lease-\(UUID())")
+        let gate = AsyncGate()
+        let events = EventRecorder()
+        let holder = Task {
+            try await coordinator.withRepository(at: root) {
+                await events.append("holder")
+                await gate.wait()
+            }
+        }
+        try await Task.sleep(for: .milliseconds(20))
+        let canceled = Task {
+            try await coordinator.withRepository(at: root) {
+                await events.append("canceled-ran")
+            }
+        }
+        try await Task.sleep(for: .milliseconds(20))
+        canceled.cancel()
+        do {
+            try await canceled.value
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {}
+        await gate.open()
+        try await holder.value
+        let recordedEvents = await events.values()
+        XCTAssertFalse(recordedEvents.contains("canceled-ran"))
+    }
+
+    func testRepoPersistenceStoreMergesIndependentRepositoryChanges() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("repos-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let store = RepoPersistenceStore()
+        let first = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        let second = RepoConfig(repoURL: "two/repo", branch: "main", authorName: "Two", authorEmail: "two@example.com", vaultFolderName: "two")
+        try store.replaceAll([first, second], at: fileURL)
+
+        var updatedFirst = first
+        updatedFirst.authorName = "Updated One"
+        var updatedSecond = second
+        updatedSecond.branch = "notes"
+        _ = try store.apply([.update(original: first, modified: updatedFirst)], to: fileURL)
+        _ = try store.apply([.update(original: second, modified: updatedSecond)], to: fileURL)
+
+        let persisted = store.load(from: fileURL)
+        XCTAssertEqual(persisted.first(where: { $0.id == first.id })?.authorName, "Updated One")
+        XCTAssertEqual(persisted.first(where: { $0.id == second.id })?.branch, "notes")
+    }
+
+    func testRepoPersistenceStoreMergesSeparateFieldsOnSameRepository() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("same-repo-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let store = RepoPersistenceStore()
+        let original = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        try store.replaceAll([original], at: fileURL)
+
+        var authorChange = original
+        authorChange.authorName = "Updated"
+        var branchChange = original
+        branchChange.branch = "notes"
+        _ = try store.apply([.update(original: original, modified: authorChange)], to: fileURL)
+        _ = try store.apply([.update(original: original, modified: branchChange)], to: fileURL)
+
+        let persisted = try store.loadStrict(from: fileURL)
+        XCTAssertEqual(persisted.first?.authorName, "Updated")
+        XCTAssertEqual(persisted.first?.branch, "notes")
+    }
+
+    func testRepoPersistenceStoreMergesSeparateGitStateFields() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("git-state-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let store = RepoPersistenceStore()
+        let original = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        try store.replaceAll([original], at: fileURL)
+        var commitChange = original
+        commitChange.gitState.commitSHA = "abc"
+        var branchChange = original
+        branchChange.gitState.branch = "notes"
+        _ = try store.apply([.update(original: original, modified: commitChange)], to: fileURL)
+        _ = try store.apply([.update(original: original, modified: branchChange)], to: fileURL)
+        let persisted = try XCTUnwrap(store.loadStrict(from: fileURL).first)
+        XCTAssertEqual(persisted.gitState.commitSHA, "abc")
+        XCTAssertEqual(persisted.gitState.branch, "notes")
+    }
+
+    func testRepoPersistenceStoreRejectsStaleUpdateAfterDelete() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("deleted-repo-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let store = RepoPersistenceStore()
+        let original = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        try store.replaceAll([original], at: fileURL)
+        _ = try store.apply([.remove(original: original)], to: fileURL)
+        var stale = original
+        stale.authorName = "Restored"
+        XCTAssertThrowsError(try store.apply([.update(original: original, modified: stale)], to: fileURL)) { error in
+            guard case RepoPersistenceStore.StoreError.staleUpdateAfterDeletion(original.id) = error else {
+                return XCTFail("Expected stale update error, got \(error)")
+            }
+        }
+    }
+
+    func testRepoPersistenceStorePreservesMalformedExistingFile() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("malformed-repos-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let malformed = Data("{not-json".utf8)
+        try malformed.write(to: fileURL)
+        let store = RepoPersistenceStore()
+        let repo = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+
+        XCTAssertThrowsError(try store.apply([.add(repo)], to: fileURL))
+        XCTAssertEqual(try Data(contentsOf: fileURL), malformed)
+    }
+
+    @MainActor
+    func testIndependentAppStatesMergeRepositoryChangesWithoutDeletingConcurrentRecords() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("app-state-repos-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let firstRepo = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        let secondRepo = RepoConfig(repoURL: "two/repo", branch: "main", authorName: "Two", authorEmail: "two@example.com", vaultFolderName: "two")
+        let store = RepoPersistenceStore()
+        try store.replaceAll([firstRepo], at: fileURL)
+
+        let firstState = AppState(repoPersistenceStore: store, reposFileURL: fileURL, loadPersistedState: true)
+        let secondState = AppState(repoPersistenceStore: store, reposFileURL: fileURL, loadPersistedState: true)
+        firstState.addRepo(secondRepo)
+        secondState.updateRepo(id: firstRepo.id) { $0.authorName = "Updated One" }
+
+        let persisted = store.load(from: fileURL)
+        XCTAssertEqual(persisted.count, 2)
+        XCTAssertEqual(persisted.first(where: { $0.id == firstRepo.id })?.authorName, "Updated One")
+        XCTAssertEqual(persisted.first(where: { $0.id == secondRepo.id })?.vaultFolderName, "two")
+    }
+
+    func testKeychainCredentialsUseAfterFirstUnlockDeviceOnlyAccessibility() throws {
+        XCTAssertEqual(KeychainService.credentialAccessibility as String, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String)
+        let first = "test-keychain-\(UUID().uuidString)"
+        let second = "test-keychain-\(UUID().uuidString)"
+        defer { KeychainService.delete(key: first); KeychainService.delete(key: second) }
+
+        func addLockedKey(_ key: String) {
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrService as String: KeychainService.service,
+                kSecAttrAccount as String: key,
+                kSecValueData as String: Data("secret".utf8),
+                kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+            ]
+            XCTAssertEqual(SecItemAdd(query as CFDictionary, nil), errSecSuccess)
+        }
+        addLockedKey(first)
+        let defaults = UserDefaults(suiteName: "keychain-test-\(UUID().uuidString)")!
+        defaults.set(true, forKey: KeychainService.accessibilityMigrationDefaultsKey)
+        KeychainService.migrateKnownGitCredentialsIfNeeded(keys: [first], defaults: defaults)
+        KeychainService.migrateKnownGitCredentialsIfNeeded(keys: [first], defaults: defaults)
+        XCTAssertEqual(KeychainService.attributes(key: first)?[kSecAttrAccessible as String] as? String,
+                       kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String)
+
+        addLockedKey(second)
+        KeychainService.migrateKnownGitCredentialsIfNeeded(keys: [second], defaults: defaults)
+        XCTAssertEqual(KeychainService.attributes(key: second)?[kSecAttrAccessible as String] as? String,
+                       kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String)
+    }
+
+    func testPremiumStoreKitConfigurationMatchesRuntimeProducts() throws {
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Sync.md/GitSyncAssist.storekit")
+        let root = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: sourceURL)) as? [String: Any])
+        let groups = try XCTUnwrap(root["subscriptionGroups"] as? [[String: Any]])
+        XCTAssertEqual(groups.count, 1)
+        let group = try XCTUnwrap(groups.first)
+        XCTAssertEqual(group["id"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
+        let subscriptions = try XCTUnwrap(group["subscriptions"] as? [[String: Any]])
+        let products = Dictionary(uniqueKeysWithValues: try subscriptions.map { subscription -> (String, String) in
+            let id = try XCTUnwrap(subscription["productID"] as? String)
+            let period = try XCTUnwrap(subscription["recurringSubscriptionPeriod"] as? String)
+            XCTAssertEqual(subscription["subscriptionGroupID"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
+            XCTAssertEqual(subscription["type"] as? String, "RecurringSubscription")
+            return (id, period)
+        })
+        XCTAssertEqual(Set(products.keys), Set(PremiumProductIdentifiers.default.all))
+        XCTAssertEqual(products[PremiumProductIdentifiers.default.monthly], "P1M")
+        XCTAssertEqual(products[PremiumProductIdentifiers.default.annual], "P1Y")
+    }
+
+    func testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking() throws {
+        let manifestURL = try XCTUnwrap(Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy"))
+        let manifest = try XCTUnwrap(PropertyListSerialization.propertyList(
+            from: Data(contentsOf: manifestURL),
+            options: [],
+            format: nil
+        ) as? [String: Any])
+        XCTAssertEqual(manifest["NSPrivacyTracking"] as? Bool, false)
+        XCTAssertEqual(manifest["NSPrivacyTrackingDomains"] as? [String], [])
+
+        let collected = try XCTUnwrap(manifest["NSPrivacyCollectedDataTypes"] as? [[String: Any]])
+        let purposes = Dictionary(uniqueKeysWithValues: try collected.map { entry -> (String, Set<String>) in
+            let type = try XCTUnwrap(entry["NSPrivacyCollectedDataType"] as? String)
+            XCTAssertEqual(entry["NSPrivacyCollectedDataTypeLinked"] as? Bool, true)
+            XCTAssertEqual(entry["NSPrivacyCollectedDataTypeTracking"] as? Bool, false)
+            return (type, Set(try XCTUnwrap(entry["NSPrivacyCollectedDataTypePurposes"] as? [String])))
+        })
+        XCTAssertEqual(Set(purposes.keys), [
+            "NSPrivacyCollectedDataTypeDeviceID",
+            "NSPrivacyCollectedDataTypeProductInteraction",
+            "NSPrivacyCollectedDataTypePurchaseHistory",
+            "NSPrivacyCollectedDataTypeUserID",
+            "NSPrivacyCollectedDataTypeOtherUserContent",
+            "NSPrivacyCollectedDataTypeOtherDiagnosticData"
+        ])
+        XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeDeviceID"], [
+            "NSPrivacyCollectedDataTypePurposeAnalytics",
+            "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+        ])
+        XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeProductInteraction"], [
+            "NSPrivacyCollectedDataTypePurposeAnalytics"
+        ])
+        XCTAssertEqual(purposes["NSPrivacyCollectedDataTypePurchaseHistory"], [
+            "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+        ])
+        XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeUserID"], [
+            "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+        ])
+        XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeOtherUserContent"], [
+            "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+        ])
+        XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeOtherDiagnosticData"], [
+            "NSPrivacyCollectedDataTypePurposeAnalytics",
+            "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+        ])
+
+        let accessed = try XCTUnwrap(manifest["NSPrivacyAccessedAPITypes"] as? [[String: Any]])
+        let reasons = Dictionary(uniqueKeysWithValues: try accessed.map { entry -> (String, Set<String>) in
+            let type = try XCTUnwrap(entry["NSPrivacyAccessedAPIType"] as? String)
+            return (type, Set(try XCTUnwrap(entry["NSPrivacyAccessedAPITypeReasons"] as? [String])))
+        })
+        XCTAssertEqual(reasons, [
+            "NSPrivacyAccessedAPICategoryUserDefaults": ["CA92.1"],
+            "NSPrivacyAccessedAPICategoryFileTimestamp": ["C617.1", "3B52.1"]
+        ])
+    }
+
+    func testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs() throws {
+        let suiteName = "privacy-request-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let onboardingID = "11111111-1111-4111-8111-111111111111"
+        let assistID = "22222222-2222-4222-8222-222222222222"
+        defaults.set(onboardingID, forKey: "onboarding.analytics.install_id.v1")
+        defaults.set(assistID, forKey: PremiumInstallationIdentity.defaultsKey)
+
+        var identityKeychain: [String: String] = [:]
+        let url = try XCTUnwrap(FeedbackHelper.privacyRequestMailtoURL(
+            defaults: defaults,
+            bundle: .main,
+            identityKeychainLoad: { identityKeychain[$0] },
+            identityKeychainSave: { identityKeychain[$0] = $1 }
+        ))
+        let components = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false))
+        XCTAssertEqual(components.scheme, "mailto")
+        XCTAssertEqual(components.path, FeedbackHelper.supportEmail)
+        XCTAssertEqual(components.queryItems?.first(where: { $0.name == "subject" })?.value,
+                       "GitSync.md Privacy & Data Request")
+        let body = try XCTUnwrap(components.queryItems?.first(where: { $0.name == "body" })?.value)
+        XCTAssertTrue(body.contains(onboardingID))
+        XCTAssertTrue(body.contains(assistID))
+        XCTAssertTrue(body.localizedCaseInsensitiveContains("keep these opaque installation identifiers private"))
+        XCTAssertFalse(body.contains("test-bearer"))
+        XCTAssertFalse(body.contains("test-delete"))
+    }
+
+    func testPremiumInstallationIdentitySurvivesUserDefaultsLossAndUsesKeychainAuthority() throws {
+        let firstSuite = "premium-identity-first-\(UUID().uuidString)"
+        let secondSuite = "premium-identity-second-\(UUID().uuidString)"
+        let firstDefaults = try XCTUnwrap(UserDefaults(suiteName: firstSuite))
+        let secondDefaults = try XCTUnwrap(UserDefaults(suiteName: secondSuite))
+        defer {
+            firstDefaults.removePersistentDomain(forName: firstSuite)
+            secondDefaults.removePersistentDomain(forName: secondSuite)
+        }
+        var keychain: [String: String] = [:]
+        let load: (String) -> String? = { keychain[$0] }
+        let save: (String, String) -> Void = { keychain[$0] = $1 }
+        let expected = UUID()
+        firstDefaults.set(expected.uuidString, forKey: PremiumInstallationIdentity.defaultsKey)
+
+        let first = PremiumInstallationIdentity.current(
+            defaults: firstDefaults, bundle: .main, keychainLoad: load, keychainSave: save
+        )
+        XCTAssertEqual(first.installationID, expected)
+        XCTAssertEqual(keychain[PremiumInstallationIdentity.keychainKey], expected.uuidString)
+
+        // Simulate reinstall: UserDefaults is absent while the Keychain item
+        // remains. The same installation ID must be restored and re-persisted.
+        let reinstalled = PremiumInstallationIdentity.current(
+            defaults: secondDefaults, bundle: .main, keychainLoad: load, keychainSave: save
+        )
+        XCTAssertEqual(reinstalled.installationID, expected)
+        XCTAssertEqual(secondDefaults.string(forKey: PremiumInstallationIdentity.defaultsKey), expected.uuidString)
+
+        // A stale/defaults-only UUID cannot strand credentials namespaced by
+        // the reinstall-durable Keychain identity.
+        secondDefaults.set(UUID().uuidString, forKey: PremiumInstallationIdentity.defaultsKey)
+        XCTAssertEqual(PremiumInstallationIdentity.current(
+            defaults: secondDefaults, bundle: .main, keychainLoad: load, keychainSave: save
+        ).installationID, expected)
+    }
+
+    func testPremiumReleaseConfigurationAndBackgroundCapabilities() throws {
+        let info = Bundle.main.infoDictionary ?? [:]
+        XCTAssertEqual(info["UIBackgroundModes"] as? [String], ["remote-notification"])
+
+        let unresolvedRelay = try XCTUnwrap(info["PREMIUM_RELAY_BASE_URL"] as? String)
+        XCTAssertNil(PremiumAPIConfiguration(bundle: .main).baseURL)
+        XCTAssertTrue(unresolvedRelay.isEmpty || unresolvedRelay.contains("$("),
+                      "Local/CI builds must fail closed until an authorized HTTPS relay URL is configured")
+
+        let projectURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Sync.md.xcodeproj/project.pbxproj")
+        let project = try String(contentsOf: projectURL, encoding: .utf8)
+        XCTAssertTrue(project.contains("APS_ENVIRONMENT = development;"))
+        XCTAssertTrue(project.contains("APS_ENVIRONMENT = production;"))
+        XCTAssertEqual(project.components(separatedBy: "CODE_SIGN_ENTITLEMENTS = Sync.md/Sync_md.entitlements;").count - 1, 2)
+
+        let entitlementsURL = projectURL
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Sync.md/Sync_md.entitlements")
+        let entitlements = try XCTUnwrap(PropertyListSerialization.propertyList(
+            from: Data(contentsOf: entitlementsURL),
+            options: [],
+            format: nil
+        ) as? [String: String])
+        XCTAssertEqual(entitlements, ["aps-environment": "$(APS_ENVIRONMENT)"])
+    }
+
+    func testPremiumSilentPushParserAcceptsOnlyOpaqueBackgroundPayload() throws {
+        let payload: [AnyHashable: Any] = [
+            "aps": ["content-available": 1],
+            "channel": "channel_12345678",
+            "hint": "event-12345678"
+        ]
+        let parsed = try PremiumSilentPush.parse(payload)
+        XCTAssertEqual(parsed.channel, "channel_12345678")
+        XCTAssertEqual(parsed.hintID, "event-12345678")
+        for invalid: [AnyHashable: Any] in [
+            ["aps": ["content-available": 1, "alert": "secret"], "channel": "channel_12345678", "hint": "event-12345678"],
+            ["aps": ["content-available": 1], "channel": "../private/path", "hint": "event-12345678"],
+            ["aps": ["content-available": 1], "channel": "channel_12345678", "hint": String(repeating: "a", count: 129)],
+            ["aps": ["content-available": 0], "channel": "channel_12345678", "hint": "event-12345678"],
+            ["aps": ["content-available": 1], "channel": "channel_12345678", "hint": "event-12345678", "repo": "private"]
+        ] {
+            XCTAssertThrowsError(try PremiumSilentPush.parse(invalid))
+        }
+    }
+
+    func testPremiumAPIRequestContainsOnlyAllowedMetadataAndFailsClosed() async throws {
+        let transport = RecordingPremiumTransport()
+        let installation = PremiumInstallation(installationID: UUID(), bundleID: "bontecou.Sync-md", appVersion: "3.0")
+        let request = PremiumDeviceRegistrationRequest(
+            installation: installation,
+            token: "0011aaff",
+            environment: .sandbox,
+            channels: ["opaque_channel"],
+            registrationGeneration: 7
+        )
+        let credential = PremiumInstallationCredential(
+            installationID: installation.installationID,
+            token: "installation-bearer",
+            deletionToken: "installation-delete",
+            expiresAt: .distantFuture
+        )
+        let disabled = PremiumAPIClient(configuration: PremiumAPIConfiguration(baseURL: nil), transport: transport)
+        await XCTAssertThrowsErrorAsync(try await disabled.registerDevice(request, credential: credential))
+        let emptyRequests = await transport.requests()
+        XCTAssertEqual(emptyRequests.count, 0)
+
+        let enabled = PremiumAPIClient(configuration: PremiumAPIConfiguration(baseURL: URL(string: "https://relay.example")!), transport: transport)
+        try await enabled.registerDevice(request, credential: credential)
+        let requests = await transport.requests()
+        let recorded = try XCTUnwrap(requests.first)
+        XCTAssertEqual(recorded.value(forHTTPHeaderField: "Authorization"), "Bearer installation-bearer")
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: try XCTUnwrap(recorded.httpBody)) as? [String: Any])
+        XCTAssertEqual(Set(json.keys), ["installation", "token", "environment", "channels", "registrationGeneration"])
+        XCTAssertEqual(json["registrationGeneration"] as? Int, 7)
+        let string = String(data: recorded.httpBody!, encoding: .utf8)!
+        XCTAssertFalse(string.contains("repoURL"))
+        XCTAssertFalse(string.contains("credentials"))
+        XCTAssertFalse(string.contains("path"))
+
+        try await enabled.deleteInstallation(credential: credential)
+        let deletionRequests = await transport.requests()
+        let deletionRequest = try XCTUnwrap(deletionRequests.last)
+        XCTAssertNil(deletionRequest.value(forHTTPHeaderField: "Authorization"))
+        XCTAssertEqual(deletionRequest.value(forHTTPHeaderField: "X-Installation-Deletion-Token"), "installation-delete")
+    }
+
+    func testAPNsTokenHexAndEnvironment() {
+        XCTAssertEqual(APNsDeviceToken.hex(Data([0, 1, 15, 16, 255])), "00010f10ff")
+        #if DEBUG
+        XCTAssertEqual(APNsDeviceToken.buildEnvironment, .sandbox)
+        #else
+        XCTAssertEqual(APNsDeviceToken.buildEnvironment, .production)
+        #endif
+    }
+
+    func testRepoConfigLegacyDecodeDefaultsAssistDisabled() throws {
+        let repo = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(repo)) as? [String: Any])
+        json.removeValue(forKey: "assist")
+        let decoded = try JSONDecoder().decode(RepoConfig.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertEqual(decoded.assist, .disabled)
+        XCTAssertFalse(decoded.assist.enabled)
+    }
+
+    func testRepoPersistenceStoreMergesAssistPolicyAndHealthFields() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("assist-merge-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let store = RepoPersistenceStore()
+        let original = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        try store.replaceAll([original], at: fileURL)
+        var policy = original
+        policy.assist.enabled = true
+        policy.assist.networkPolicy = .wifiOnly
+        var health = original
+        health.assist.health = RepoAssistHealth(kind: .attention, attention: .localChanges, message: "dirty")
+        _ = try store.apply([.update(original: original, modified: policy)], to: fileURL)
+        _ = try store.apply([.update(original: original, modified: health)], to: fileURL)
+        let result = try XCTUnwrap(store.loadStrict(from: fileURL).first)
+        XCTAssertTrue(result.assist.enabled)
+        XCTAssertEqual(result.assist.networkPolicy, .wifiOnly)
+        XCTAssertEqual(result.assist.health.attention, .localChanges)
+    }
+
+    @MainActor
+    func testPremiumEntitlementStorePurchaseRestoreAndVerifiedUpdate() async throws {
+        let storefront = FakePremiumStorefront()
+        let defaults = UserDefaults(suiteName: "premium-store-\(UUID())")!
+        let store = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
+        await store.start()
+        XCTAssertEqual(store.state, .inactive)
+        let transaction = premiumTransaction(id: 12)
+        let purchase = await storefront.finishable(transaction)
+        await storefront.setEntitlements([transaction])
+        await storefront.setPurchase(.verified(purchase))
+        await store.purchase(productID: PremiumProductIdentifiers.default.monthly)
+        XCTAssertEqual(store.state, .active(PremiumEntitlementProof(transaction: transaction)))
+        let finished = await storefront.finished()
+        XCTAssertEqual(finished, [12])
+        await store.restore()
+        let syncCount = await storefront.syncCount()
+        XCTAssertEqual(syncCount, 1)
+        let annual = premiumTransaction(id: 13, productID: PremiumProductIdentifiers.default.annual)
+        await storefront.setEntitlements([annual])
+        await storefront.emit(annual)
+        for _ in 0..<20 where store.state != .active(PremiumEntitlementProof(transaction: annual)) {
+            await Task.yield()
+        }
+        XCTAssertEqual(store.state, .active(PremiumEntitlementProof(transaction: annual)))
+        let finishedUpdates = await storefront.finished()
+        XCTAssertEqual(finishedUpdates, [12, 13])
+    }
+
+    @MainActor
+    func testPremiumTransactionEventCannotGrantAccessWithoutCurrentEntitlement() async {
+        let storefront = FakePremiumStorefront()
+        let defaults = UserDefaults(suiteName: "premium-event-authority-\(UUID())")!
+        let store = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
+        await store.start()
+        let transaction = premiumTransaction(id: 99)
+        await storefront.emit(transaction)
+        for _ in 0..<20 {
+            if await storefront.finished().contains(99), store.state == .inactive { break }
+            await Task.yield()
+        }
+        XCTAssertEqual(store.state, .inactive)
+        let finished = await storefront.finished()
+        XCTAssertEqual(finished, [99])
+        XCTAssertNil(store.cachedVerifiedProof())
+    }
+
+    func testPremiumPushCompletionGateIsExactlyOnceUnderConcurrentClaims() async {
+        let gate = PremiumPushCompletionGate()
+        let claims = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
+            for _ in 0..<100 { group.addTask { await gate.claim() } }
+            var values: [Bool] = []
+            for await value in group { values.append(value) }
+            return values
+        }
+        XCTAssertEqual(claims.filter { $0 }.count, 1)
+        XCTAssertEqual(claims.filter { !$0 }.count, 99)
+    }
+
+    @MainActor
+    func testPremiumNotificationBridgeTimesOutCancelsAndCompletesExactlyOnce() async throws {
+        let bridge = PremiumNotificationBridge()
+        let operationGate = AsyncGate()
+        let cancelled = expectation(description: "push cancellation requested")
+        let completed = expectation(description: "completion called once")
+        completed.expectedFulfillmentCount = 1
+        completed.assertForOverFulfill = true
+        var results: [UIBackgroundFetchResult] = []
+        bridge.connectForTesting(
+            timeoutNanoseconds: 1_000_000,
+            processPush: { _ in
+                await operationGate.wait()
+                return .completed(.updated(branch: "main", commitSHA: String(repeating: "a", count: 40)))
+            },
+            cancelPush: { _ in cancelled.fulfill() }
+        )
+
+        bridge.didReceive(userInfo: [:]) { result in
+            results.append(result)
+            completed.fulfill()
+        }
+        await fulfillment(of: [cancelled, completed], timeout: 2)
+        await operationGate.open()
+        for _ in 0..<50 { await Task.yield() }
+
+        XCTAssertEqual(results, [.failed])
+    }
+
+    @MainActor
+    func testPremiumNotificationBridgeReturnsSuccessfulResultBeforeTimeoutOnce() async throws {
+        let bridge = PremiumNotificationBridge()
+        let completed = expectation(description: "completion called")
+        completed.assertForOverFulfill = true
+        var cancellations = 0
+        var results: [UIBackgroundFetchResult] = []
+        bridge.connectForTesting(
+            timeoutNanoseconds: 50_000_000,
+            processPush: { _ in .completed(.updated(branch: "main", commitSHA: String(repeating: "a", count: 40))) },
+            cancelPush: { _ in cancellations += 1 }
+        )
+
+        bridge.didReceive(userInfo: [:]) { result in
+            results.append(result)
+            completed.fulfill()
+        }
+        await fulfillment(of: [completed], timeout: 2)
+        try await Task.sleep(for: .milliseconds(100))
+
+        XCTAssertEqual(results, [.newData])
+        XCTAssertEqual(cancellations, 0)
+    }
+
+    @MainActor
+    func testPremiumRuntimeReauthorizesRevokedBearerForGitHubLinkWithoutAPNsToken() async throws {
+        let api = ControllablePremiumRelayAPI(rejectFirstGitHubLinkAsUnauthorized: true)
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+
+        let linkURL = await harness.runtime.startGitHubLink()
+
+        XCTAssertNotNil(linkURL)
+        XCTAssertEqual(api.githubLinkAttempts, 2)
+        XCTAssertEqual(api.authorizationCount, 2)
+        XCTAssertNil(harness.runtime.latestToken)
+        XCTAssertNil(harness.runtime.registrationError)
+    }
+
+    @MainActor
+    func testPremiumRuntimeGitHubLinkRetryCannotBypassConcurrentDeletionBarrier() async throws {
+        let linkStarted = expectation(description: "first GitHub link started")
+        let linkGate = AsyncGate()
+        let deletionStarted = expectation(description: "deletion started")
+        let deletionGate = AsyncGate()
+        let api = ControllablePremiumRelayAPI(
+            deletionStarted: deletionStarted,
+            deletionGate: deletionGate,
+            rejectFirstGitHubLinkAsUnauthorized: true,
+            firstGitHubLinkStarted: linkStarted,
+            firstGitHubLinkGate: linkGate
+        )
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+        let firstLink = Task { @MainActor in await harness.runtime.startGitHubLink() }
+        await fulfillment(of: [linkStarted], timeout: 2)
+        let deletion = Task { @MainActor in await harness.runtime.deleteRelayData() }
+        await fulfillment(of: [deletionStarted], timeout: 2)
+
+        await linkGate.open()
+        let firstLinkURL = await firstLink.value
+        XCTAssertNil(firstLinkURL)
+        XCTAssertEqual(api.githubLinkAttempts, 1)
+        XCTAssertEqual(api.authorizationCount, 1)
+        await deletionGate.open()
+        await deletion.value
+    }
+
+    @MainActor
+    func testPremiumRuntimeDelayedEnrollmentCannotRestoreConsentAfterDeletion() async throws {
+        let enrollmentStarted = expectation(description: "enrollment started")
+        let enrollmentGate = AsyncGate()
+        let deletionStarted = expectation(description: "deletion started")
+        let deletionGate = AsyncGate()
+        let api = ControllablePremiumRelayAPI(
+            deletionStarted: deletionStarted,
+            deletionGate: deletionGate,
+            enrollmentStarted: enrollmentStarted,
+            enrollmentGate: enrollmentGate
+        )
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+        let linkURL = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(linkURL)
+
+        let enrollment = Task { @MainActor in
+            await harness.runtime.enroll(
+                repoID: harness.provider.repo.id,
+                githubInstallationID: 101,
+                repositoryID: 42,
+                branch: "main"
+            )
+        }
+        await fulfillment(of: [enrollmentStarted], timeout: 2)
+        let deletion = Task { @MainActor in await harness.runtime.deleteRelayData() }
+        await fulfillment(of: [deletionStarted], timeout: 2)
+        await deletionGate.open()
+        await deletion.value
+        await enrollmentGate.open()
+
+        let enrollmentResult = await enrollment.value
+        XCTAssertFalse(enrollmentResult)
+        XCTAssertFalse(harness.runtime.hasRelayConsent)
+        XCTAssertEqual(harness.provider.repo.assist, .disabled)
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: "premium.relay-consent.\(harness.installationID.uuidString)"))
+
+        let restarted = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: harness.installationID,
+            repo: harness.provider.repo
+        )
+        defer { restarted.cleanup() }
+        XCTAssertFalse(restarted.runtime.hasRelayConsent)
+    }
+
+    @MainActor
+    func testPremiumRuntimeTokenReplacementCannotRestoreStaleRegistration() async throws {
+        let firstRegistrationStarted = expectation(description: "first registration started")
+        let firstRegistrationGate = AsyncGate()
+        let api = ControllablePremiumRelayAPI(
+            firstRegistrationStarted: firstRegistrationStarted,
+            firstRegistrationGate: firstRegistrationGate
+        )
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+
+        let linkURL = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(linkURL)
+        let consentKey = "premium.relay-consent.\(harness.installationID.uuidString)"
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: consentKey))
+        XCTAssertTrue(harness.runtime.entitlementStore.state.isActive)
+        XCTAssertTrue(harness.runtime.hasRelayConsent)
+        harness.runtime.didRegister(token: Data(repeating: 0x11, count: 32))
+        XCTAssertEqual(harness.runtime.latestToken, String(repeating: "11", count: 32))
+        await fulfillment(of: [firstRegistrationStarted], timeout: 2)
+        harness.runtime.didRegister(token: Data(repeating: 0x22, count: 32))
+        await waitUntil { api.registrationRequests.count == 2 && api.deviceDeletionRequests.count == 1 }
+        XCTAssertEqual(api.relayToken, String(repeating: "22", count: 32))
+        await firstRegistrationGate.open()
+        await waitUntil { harness.runtime.isRegistered }
+        let refreshedLink = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(refreshedLink)
+        await waitUntil { api.registrationRequests.count == 3 }
+
+        XCTAssertEqual(api.registrationRequests.map(\.token), [
+            String(repeating: "11", count: 32),
+            String(repeating: "22", count: 32),
+            String(repeating: "22", count: 32)
+        ])
+        XCTAssertEqual(api.registrationRequests.map(\.registrationGeneration), [1, 2, 3])
+        XCTAssertEqual(api.deviceDeletionRequests.map(\.token), [String(repeating: "11", count: 32)])
+        XCTAssertEqual(api.relayToken, String(repeating: "22", count: 32))
+        XCTAssertEqual(api.relayRegistrationGeneration, 3)
+        XCTAssertEqual(harness.runtime.latestToken, String(repeating: "22", count: 32))
+        XCTAssertNil(harness.runtime.registrationError)
+    }
+
+    @MainActor
+    func testPremiumRuntimeRestoresAPNsGenerationFromKeychainAfterUserDefaultsLoss() async throws {
+        let api = ControllablePremiumRelayAPI()
+        let installationID = UUID()
+        let generationDefaultsKey = "premium.apns-token-generation.sandbox.\(installationID.uuidString)"
+        let generationKeychainKey = "premium.apns-token-generation.keychain.sandbox.\(installationID.uuidString)"
+        KeychainService.save(key: generationKeychainKey, value: "10")
+        UserDefaults.standard.removeObject(forKey: generationDefaultsKey)
+
+        let harness = await PremiumRuntimeTestHarness.make(api: api, installationID: installationID)
+        defer { harness.cleanup() }
+        let linkURL = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(linkURL)
+        harness.runtime.didRegister(token: Data(repeating: 0x33, count: 32))
+        await waitUntil { api.registrationRequests.count == 1 }
+
+        XCTAssertEqual(api.registrationRequests.first?.registrationGeneration, 11)
+        XCTAssertEqual(api.relayRegistrationGeneration, 11)
+        XCTAssertEqual(UserDefaults.standard.object(forKey: generationDefaultsKey) as? NSNumber, 11)
+        XCTAssertEqual(KeychainService.load(key: generationKeychainKey), "11")
+    }
+
+    @MainActor
+    func testPremiumRuntimePersistsDeletionBarrierAcrossRestart() async throws {
+        let deletionStarted = expectation(description: "installation deletion started")
+        let deletionGate = AsyncGate()
+        let api = ControllablePremiumRelayAPI(
+            deletionStarted: deletionStarted,
+            deletionGate: deletionGate,
+            blockOnlyFirstInstallationDeletion: true
+        )
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+        let linkURL = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(linkURL)
+        let deletion = Task { @MainActor in await harness.runtime.deleteRelayData() }
+        await fulfillment(of: [deletionStarted], timeout: 2)
+
+        let restarted = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: harness.installationID,
+            repo: harness.provider.repo
+        )
+        XCTAssertFalse(restarted.runtime.hasRelayConsent)
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: "premium.relay-deletion-barrier.\(harness.installationID.uuidString)"))
+        await restarted.runtime.start()
+        XCTAssertFalse(restarted.runtime.hasRelayConsent)
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: "premium.relay-deletion-barrier.\(harness.installationID.uuidString)"))
+        XCTAssertEqual(api.installationDeletionCount, 2)
+        XCTAssertTrue(restarted.runtime.relayDataWasDeleted)
+        let restartedLinkURL = await restarted.runtime.startGitHubLink()
+        XCTAssertNil(restartedLinkURL)
+        XCTAssertTrue(restarted.runtime.registrationError?.localizedCaseInsensitiveContains("permanently deleted") == true)
+
+        let reinstalled = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: harness.installationID,
+            repo: restarted.provider.repo
+        )
+        defer { reinstalled.cleanup() }
+        XCTAssertTrue(reinstalled.runtime.relayDataWasDeleted)
+        XCTAssertFalse(reinstalled.runtime.hasRelayConsent)
+        let reinstalledLinkURL = await reinstalled.runtime.startGitHubLink()
+        XCTAssertNil(reinstalledLinkURL)
+        XCTAssertEqual(api.authorizationCount, 1, "A completed deletion must fail closed locally before relay reauthorization")
+
+        await deletionGate.open()
+        await deletion.value
+    }
+
+    @MainActor
+    func testPremiumRuntimePendingStateWriteFailureBlocksRelayDeletionUntilDurable() async throws {
+        let api = ControllablePremiumRelayAPI()
+        let keychain = ControllablePremiumKeychain()
+        let installationID = UUID()
+        let stateKey = "premium.relay-deletion-state.\(installationID.uuidString)"
+        let barrierKey = "premium.relay-deletion-barrier.\(installationID.uuidString)"
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: installationID,
+            keychain: keychain
+        )
+        defer { harness.cleanup() }
+        let initialLink = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(initialLink)
+
+        keychain.failSave(for: stateKey)
+        await harness.runtime.deleteRelayData()
+        await harness.runtime.deleteRelayData()
+        XCTAssertNil(keychain.value(for: stateKey))
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: barrierKey))
+        XCTAssertFalse(harness.runtime.hasRelayConsent)
+        XCTAssertEqual(api.installationDeletionCount, 0)
+
+        let restarted = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: installationID,
+            repo: harness.provider.repo,
+            keychain: keychain
+        )
+        await restarted.runtime.start()
+        let blockedLink = await restarted.runtime.startGitHubLink()
+        XCTAssertNil(blockedLink)
+        XCTAssertEqual(api.installationDeletionCount, 0, "No relay deletion may run without a read-verified pending marker")
+        XCTAssertEqual(api.authorizationCount, 1, "A failed pending-state write must not reopen relay authorization")
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: barrierKey))
+
+        keychain.allowSave(for: stateKey)
+        await restarted.runtime.start()
+        XCTAssertEqual(api.installationDeletionCount, 1)
+        XCTAssertEqual(keychain.value(for: stateKey), "completed")
+        XCTAssertTrue(restarted.runtime.relayDataWasDeleted)
+        XCTAssertFalse(restarted.runtime.hasRelayConsent)
+    }
+
+    @MainActor
+    func testPremiumRuntimeCompletedStateWriteFailurePreservesPendingAcrossReinstall() async throws {
+        let api = ControllablePremiumRelayAPI()
+        let keychain = ControllablePremiumKeychain()
+        let installationID = UUID()
+        let stateKey = "premium.relay-deletion-state.\(installationID.uuidString)"
+        let barrierKey = "premium.relay-deletion-barrier.\(installationID.uuidString)"
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: installationID,
+            keychain: keychain
+        )
+        defer { harness.cleanup() }
+        let initialLink = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(initialLink)
+
+        keychain.failSave(for: stateKey, value: "completed")
+        await harness.runtime.deleteRelayData()
+        XCTAssertEqual(api.installationDeletionCount, 1)
+        XCTAssertEqual(keychain.value(for: stateKey), "pending", "A failed completion update must retain the pending marker")
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: barrierKey))
+        XCTAssertFalse(harness.runtime.relayDataWasDeleted)
+        XCTAssertFalse(harness.runtime.hasRelayConsent)
+
+        UserDefaults.standard.removeObject(forKey: barrierKey)
+        let reinstalled = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: installationID,
+            repo: harness.provider.repo,
+            keychain: keychain
+        )
+        XCTAssertFalse(reinstalled.runtime.hasRelayConsent)
+        let blockedLink = await reinstalled.runtime.startGitHubLink()
+        XCTAssertNil(blockedLink)
+        XCTAssertEqual(api.authorizationCount, 1, "A retained pending marker must block reauthorization after defaults loss")
+        XCTAssertEqual(api.installationDeletionCount, 2)
+        XCTAssertEqual(keychain.value(for: stateKey), "pending")
+
+        keychain.allowSave(for: stateKey, value: "completed")
+        await reinstalled.runtime.start()
+        XCTAssertEqual(api.installationDeletionCount, 3)
+        XCTAssertEqual(keychain.value(for: stateKey), "completed")
+        XCTAssertTrue(reinstalled.runtime.relayDataWasDeleted)
+        XCTAssertFalse(reinstalled.runtime.hasRelayConsent)
+    }
+
+    @MainActor
+    func testPremiumRuntimeDeletionPreflightFailurePreservesPendingBarrierAcrossRestart() async throws {
+        let api = ControllablePremiumRelayAPI()
+        let keychain = ControllablePremiumKeychain()
+        let installationID = UUID()
+        let stateKey = "premium.relay-deletion-state.\(installationID.uuidString)"
+        let credentialKey = "premium.relay-deletion-credential.\(installationID.uuidString)"
+        let barrierKey = "premium.relay-deletion-barrier.\(installationID.uuidString)"
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: installationID,
+            keychain: keychain
+        )
+        defer { harness.cleanup() }
+        let initialLink = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(initialLink)
+        let originalCredential = try XCTUnwrap(keychain.value(for: credentialKey))
+
+        keychain.failSave(for: credentialKey)
+        keychain.failLoad(for: credentialKey)
+        await harness.runtime.deleteRelayData()
+
+        XCTAssertEqual(keychain.value(for: stateKey), "pending")
+        XCTAssertEqual(keychain.value(for: credentialKey), originalCredential, "A failed replacement must not erase the existing credential")
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: barrierKey))
+        XCTAssertFalse(harness.runtime.hasRelayConsent)
+        XCTAssertEqual(api.installationDeletionCount, 0)
+
+        let restarted = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: installationID,
+            repo: harness.provider.repo,
+            keychain: keychain
+        )
+        XCTAssertFalse(restarted.runtime.hasRelayConsent)
+        XCTAssertFalse(restarted.runtime.relayDataWasDeleted)
+        let blockedLink = await restarted.runtime.startGitHubLink()
+        XCTAssertNil(blockedLink)
+        XCTAssertEqual(api.authorizationCount, 1, "A pending deletion must not reopen relay authorization")
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: barrierKey))
+        XCTAssertEqual(keychain.value(for: stateKey), "pending")
+
+        keychain.allowSave(for: credentialKey)
+        keychain.allowLoad(for: credentialKey)
+        await restarted.runtime.start()
+        XCTAssertEqual(api.installationDeletionCount, 1)
+        XCTAssertEqual(keychain.value(for: stateKey), "completed")
+        XCTAssertTrue(restarted.runtime.relayDataWasDeleted)
+        XCTAssertFalse(restarted.runtime.hasRelayConsent)
+    }
+
+    @MainActor
+    func testPremiumRuntimeRestoresDeletionCredentialAfterInactiveRestart() async throws {
+        let api = ControllablePremiumRelayAPI()
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+        let linkURL = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(linkURL)
+
+        let restarted = await PremiumRuntimeTestHarness.make(
+            api: api,
+            installationID: harness.installationID,
+            repo: harness.provider.repo,
+            activeEntitlement: false
+        )
+        XCTAssertTrue(restarted.runtime.canDeleteRelayData)
+        await restarted.runtime.deleteRelayData()
+        XCTAssertEqual(api.installationDeletionCount, 1)
+        XCTAssertFalse(restarted.runtime.canDeleteRelayData)
+    }
+
+    @MainActor
+    func testPremiumRuntimeDeletionBarrierRejectsInFlightRegistrationAndNewToken() async throws {
+        let firstRegistrationStarted = expectation(description: "registration started")
+        let firstRegistrationGate = AsyncGate()
+        let deletionStarted = expectation(description: "installation deletion started")
+        let deletionGate = AsyncGate()
+        let api = ControllablePremiumRelayAPI(
+            firstRegistrationStarted: firstRegistrationStarted,
+            firstRegistrationGate: firstRegistrationGate,
+            deletionStarted: deletionStarted,
+            deletionGate: deletionGate
+        )
+        let harness = await PremiumRuntimeTestHarness.make(api: api)
+        defer { harness.cleanup() }
+
+        let linkURL = await harness.runtime.startGitHubLink()
+        XCTAssertNotNil(linkURL)
+        let consentKey = "premium.relay-consent.\(harness.installationID.uuidString)"
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: consentKey))
+        XCTAssertTrue(harness.runtime.entitlementStore.state.isActive)
+        harness.runtime.didRegister(token: Data(repeating: 0x33, count: 32))
+        await fulfillment(of: [firstRegistrationStarted], timeout: 2)
+        let deletion = Task { @MainActor in await harness.runtime.deleteRelayData() }
+        await fulfillment(of: [deletionStarted], timeout: 2)
+        harness.runtime.didRegister(token: Data(repeating: 0x44, count: 32))
+        await firstRegistrationGate.open()
+        await deletionGate.open()
+        await deletion.value
+        for _ in 0..<20 { await Task.yield() }
+
+        XCTAssertFalse(harness.runtime.hasRelayConsent)
+        XCTAssertFalse(harness.runtime.isRegistered)
+        XCTAssertEqual(api.registrationRequests.map(\.token), [String(repeating: "33", count: 32)])
+        XCTAssertTrue(api.deviceDeletionRequests.isEmpty)
+        XCTAssertEqual(api.installationDeletionCount, 1)
+        XCTAssertEqual(harness.registrar.unregisterCount, 1)
+    }
+
+    @MainActor
+    private func waitUntil(
+        timeout: Duration = .seconds(2),
+        condition: @escaping @MainActor () -> Bool
+    ) async {
+        let clock = ContinuousClock()
+        let deadline = clock.now.advanced(by: timeout)
+        while !condition() && clock.now < deadline {
+            await Task.yield()
+        }
+        XCTAssertTrue(condition(), "Timed out waiting for asynchronous condition")
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorGatesAndRecordsTypedResults() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let conditions = FakeAssistConditions(BackgroundSyncConditions(isWiFi: true, isExternalPower: true))
+        let coordinator = BackgroundSyncCoordinator(entitlementIsActive: { true }, repositoryProvider: provider, conditionsProvider: conditions)
+
+        let result = await coordinator.handlePush([
+            "aps": ["content-available": 1], "channel": "channel_12345678", "hint": "event-12345678"
+        ])
+        XCTAssertEqual(result, .completed(.upToDate(branch: "main", commitSHA: repo.gitState.commitSHA)))
+        XCTAssertEqual(provider.repo.assist.health.kind, .upToDate)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 1)
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertEqual(fixture.repository.commitLocalCallCount, 0)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+        XCTAssertEqual(fixture.repository.pullRebaseCallCount, 0)
+        XCTAssertEqual(fixture.repository.continueRebaseCallCount, 0)
+        XCTAssertEqual(fixture.repository.mergeBranchCallCount, 0)
+        XCTAssertEqual(fixture.repository.completeMergeCallCount, 0)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+        XCTAssertTrue(fixture.repository.pushedTagNames.isEmpty)
+        XCTAssertTrue(fixture.repository.resolvedConflicts.isEmpty)
+        let duplicate = await coordinator.handlePush([
+            "aps": ["content-available": 1], "channel": "channel_12345678", "hint": "event-12345678"
+        ])
+        XCTAssertEqual(duplicate, .ignored)
+
+        provider.repo.assist.networkPolicy = .wifiOnly
+        await conditions.set(BackgroundSyncConditions(isWiFi: false, isExternalPower: true))
+        let wifiDeferred = await coordinator.reconcile(repoID: repo.id)
+        XCTAssertEqual(wifiDeferred, .deferred("Waiting for Wi-Fi."))
+        provider.repo.assist.networkPolicy = .any
+        provider.repo.assist.selectedBranch = "notes"
+        let branchResult = await coordinator.reconcile(repoID: repo.id)
+        XCTAssertEqual(branchResult, .completed(.wrongBranch(expected: "notes", actual: "main")))
+        XCTAssertEqual(provider.repo.assist.health.attention, .wrongBranch)
+
+        let inactive = BackgroundSyncCoordinator(entitlementIsActive: { false }, repositoryProvider: provider, conditionsProvider: conditions)
+        let inactiveResult = await inactive.reconcile(repoID: repo.id)
+        XCTAssertEqual(inactiveResult, .ignored)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorMapsAllAttentionOutcomesAndPreservesLastSuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        let successDate = Date(timeIntervalSince1970: 1_700_000_000)
+        repo.assist = RepoAssistSettings(
+            enabled: true,
+            channel: "channel_12345678",
+            selectedBranch: "main",
+            health: RepoAssistHealth(kind: .upToDate, lastAttemptDate: successDate, lastSuccessDate: successDate, commitSHA: repo.gitState.commitSHA)
+        )
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let conditions = FakeAssistConditions(.init(isWiFi: true, isExternalPower: true))
+        let coordinator = BackgroundSyncCoordinator(entitlementIsActive: { true }, repositoryProvider: provider, conditionsProvider: conditions)
+
+        let cases: [(Result<PullExecutionResult, Error>, RepoAssistAttention, RepoAssistHealthKind)] = [
+            (.success(.init(plan: .init(action: .blockedByLocalChanges, branch: "main", localCommitSHA: "a", remoteCommitSHA: "b", hasLocalChanges: true, aheadBy: 0, behindBy: 1), pullResult: nil)), .localChanges, .attention),
+            (.success(.init(plan: .init(action: .diverged, branch: "main", localCommitSHA: "a", remoteCommitSHA: "b", hasLocalChanges: false, aheadBy: 1, behindBy: 1), pullResult: nil)), .diverged, .attention),
+            (.success(.init(plan: .init(action: .remoteBranchMissing, branch: "main", localCommitSHA: "a", remoteCommitSHA: "", hasLocalChanges: false, aheadBy: 0, behindBy: 0), pullResult: nil)), .remoteBranchMissing, .attention),
+            (.failure(LocalGitError.authenticationFailed("Authentication required.")), .authenticationOrTrust, .attention),
+            (.failure(LocalGitError.wrongBranch(expected: "main", actual: "notes")), .wrongBranch, .attention),
+            (.failure(LocalGitError.notCloned), .unavailable, .attention),
+            (.failure(LocalGitError.fetchFailed("network down")), .failed, .failed),
+        ]
+
+        for (result, attention, kind) in cases {
+            fixture.repository.executePullOnlyResult = result
+            _ = await coordinator.reconcile(repoID: repo.id)
+            XCTAssertEqual(provider.repo.assist.health.kind, kind)
+            XCTAssertEqual(provider.repo.assist.health.attention, attention)
+            XCTAssertEqual(provider.repo.assist.health.lastSuccessDate, successDate)
+            XCTAssertEqual(provider.repo.assist.health.commitSHA, repo.gitState.commitSHA)
+        }
+    }
+
+    func testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead() async throws {
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PullOnlyCheckoutRace")
+        defer { try? FileManager.default.removeItem(at: repoURL) }
+        let originURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-PullOnlyCheckoutRace-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("README.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        _ = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseSHA = try await setup.repoInfo().commitSHA
+        try "remote\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        let service = LocalGitService(localURL: repoURL, pullOnlyBeforeCheckout: {
+            try? "external write\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        })
+
+        let execution = try await service.executePullOnly(pat: "", expectedBranch: "main")
+
+        XCTAssertEqual(execution.plan.action, .blockedByLocalChanges)
+        XCTAssertNil(execution.pullResult)
+        XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "external write\n")
+        let finalInfo = try await service.repoInfo()
+        XCTAssertEqual(finalInfo.commitSHA, baseSHA)
+    }
+
+    func testLocalGitPullOnlyDoesNotOverwriteBranchAdvancedAfterAncestryValidation() async throws {
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PullOnlyRefRace")
+        defer { try? FileManager.default.removeItem(at: repoURL) }
+        let originURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-PullOnlyRefRace-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("README.md")
+        let setup = LocalGitService(localURL: repoURL)
+
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        _ = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseSHA = try await setup.repoInfo().commitSHA
+
+        try "remote\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try "concurrent\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let concurrentSHA = try await setup.commitLocal(message: "Concurrent", authorName: "Tests", authorEmail: "tests@example.com")
+
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        let service = LocalGitService(localURL: repoURL, pullOnlyBeforeCheckout: {
+            try? setLocalBranchRef(repoURL: repoURL, branch: "main", sha: concurrentSHA)
+        })
+
+        do {
+            _ = try await service.executePullOnly(pat: "", expectedBranch: "main")
+            XCTFail("Expected a concurrent branch update to abort the fast-forward")
+        } catch LocalGitError.pullDiverged {
+            // The external commit remains authoritative; automation fails closed.
+        }
+
+        let finalInfo = try await service.repoInfo()
+        XCTAssertEqual(finalInfo.commitSHA, concurrentSHA)
+        XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "base\n")
+        XCTAssertNotEqual(finalInfo.commitSHA, remoteSHA)
+
+        // The same transaction path still performs an ordinary clean
+        // fast-forward once the fixture is restored to the expected base.
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let successful = try await LocalGitService(localURL: repoURL).executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(successful.plan.action, .fastForward)
+        XCTAssertEqual(successful.pullResult?.updated, true)
+        XCTAssertEqual(successful.pullResult?.newCommitSHA, remoteSHA)
+        let successfulInfo = try await setup.repoInfo()
+        XCTAssertEqual(successfulInfo.commitSHA, remoteSHA)
+        XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "remote\n")
+    }
+
     func testPullPlanClassifierDistinguishesFastForwardBlockedAndDiverged() {
         XCTAssertEqual(
             LocalGitService.classifyPullAction(ahead: 0, behind: 3, hasLocalChanges: false),
@@ -178,8 +1503,9 @@ final class SyncMDTests: XCTestCase {
         )
         appState.repos = [fixture.repoConfig]
 
-        await appState.pull(repoID: fixture.repoConfig.id)
+        let completed = await appState.pull(repoID: fixture.repoConfig.id)
 
+        XCTAssertTrue(completed, "Foreground pull preserves the legacy completed-classification contract")
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, fixture.repoConfig.gitState.commitSHA)
         XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .blockedByLocalChanges)
     }
@@ -3389,6 +4715,297 @@ final class SyncMDTests: XCTestCase {
 
 }
 
+private func XCTAssertThrowsErrorAsync<T>(
+    _ expression: @autoclosure () async throws -> T,
+    file: StaticString = #filePath,
+    line: UInt = #line
+) async {
+    do {
+        _ = try await expression()
+        XCTFail("Expected error", file: file, line: line)
+    } catch {}
+}
+
+private actor RecordingPremiumTransport: PremiumHTTPTransport {
+    private var values: [URLRequest] = []
+    func data(for request: URLRequest) async throws -> (Data, HTTPURLResponse) {
+        values.append(request)
+        return (Data(), HTTPURLResponse(url: request.url!, statusCode: 204, httpVersion: nil, headerFields: nil)!)
+    }
+    func requests() -> [URLRequest] { values }
+}
+
+private func premiumTransaction(
+    id: UInt64,
+    productID: String = PremiumProductIdentifiers.default.monthly
+) -> PremiumVerifiedTransaction {
+    PremiumVerifiedTransaction(
+        productID: productID,
+        transactionID: id,
+        originalTransactionID: 1,
+        purchaseDate: Date(timeIntervalSince1970: 100),
+        expirationDate: Date.distantFuture,
+        revocationDate: nil,
+        appAccountToken: nil,
+        environment: .sandbox,
+        signedTransaction: "signed-jws"
+    )
+}
+
+private actor FakePremiumStorefront: PremiumStorefront {
+    private var entitlements: [PremiumVerifiedTransaction] = []
+    private var purchaseOutcome: PremiumPurchaseOutcome = .pending
+    private var finishedIDs: [UInt64] = []
+    private var syncs = 0
+    private var continuation: AsyncStream<PremiumFinishableTransaction>.Continuation?
+
+    func setAppAccountToken(_ token: UUID) {}
+    func products(identifiers: [String]) async throws -> [PremiumProduct] {
+        identifiers.map { PremiumProduct(id: $0, displayName: $0, displayPrice: "$1.99", period: .month) }
+    }
+    func currentEntitlements() async -> [PremiumVerifiedTransaction] { entitlements }
+    func purchase(productID: String) async throws -> PremiumPurchaseOutcome { purchaseOutcome }
+    func sync() async throws { syncs += 1 }
+    nonisolated func transactionUpdates() -> AsyncStream<PremiumFinishableTransaction> {
+        AsyncStream { continuation in Task { await self.setContinuation(continuation) } }
+    }
+    func finish(_ id: UInt64) { finishedIDs.append(id) }
+    func setPurchase(_ value: PremiumPurchaseOutcome) { purchaseOutcome = value }
+    func setEntitlements(_ values: [PremiumVerifiedTransaction]) { entitlements = values }
+    func setContinuation(_ value: AsyncStream<PremiumFinishableTransaction>.Continuation) { continuation = value }
+    func finishable(_ transaction: PremiumVerifiedTransaction) -> PremiumFinishableTransaction {
+        PremiumFinishableTransaction(value: transaction) { await self.finish(transaction.transactionID) }
+    }
+    func emit(_ transaction: PremiumVerifiedTransaction) { continuation?.yield(finishable(transaction)) }
+    func finished() -> [UInt64] { finishedIDs }
+    func syncCount() -> Int { syncs }
+}
+
+@MainActor
+private struct PremiumRuntimeTestHarness {
+    let runtime: PremiumRuntime
+    let provider: FakeAssistRepositoryProvider
+    let registrar: RecordingRemoteNotificationRegistrar
+    let defaultsSuite: String
+    let installationID: UUID
+    let keychain: any PremiumKeychainStoring
+
+    static func make(
+        api: ControllablePremiumRelayAPI,
+        installationID: UUID = UUID(),
+        repo existingRepo: RepoConfig? = nil,
+        activeEntitlement: Bool = true,
+        keychain: any PremiumKeychainStoring = SystemPremiumKeychainStore()
+    ) async -> PremiumRuntimeTestHarness {
+        let defaultsSuite = "premium-runtime-\(installationID.uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        let storefront = FakePremiumStorefront()
+        await storefront.setEntitlements(activeEntitlement ? [premiumTransaction(id: 501)] : [])
+        let entitlement = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
+        var repo = existingRepo ?? RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        if existingRepo == nil {
+            repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        }
+        let provider = FakeAssistRepositoryProvider(
+            repo: repo,
+            repository: FakeGitRepository(repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: String(repeating: "1", count: 40), changeCount: 0))
+        )
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { entitlement.state.isActive },
+            repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        let registrar = RecordingRemoteNotificationRegistrar()
+        let runtime = PremiumRuntime(
+            entitlementStore: entitlement,
+            coordinator: coordinator,
+            repositoryProvider: provider,
+            api: api,
+            registrar: registrar,
+            installation: PremiumInstallation(installationID: installationID, bundleID: "bontecou.Sync-md", appVersion: "test"),
+            environment: .sandbox,
+            bridge: PremiumNotificationBridge(),
+            keychain: keychain
+        )
+        return PremiumRuntimeTestHarness(
+            runtime: runtime,
+            provider: provider,
+            registrar: registrar,
+            defaultsSuite: defaultsSuite,
+            installationID: installationID,
+            keychain: keychain
+        )
+    }
+
+    func cleanup() {
+        UserDefaults.standard.removeObject(forKey: "premium.relay-consent.\(installationID.uuidString)")
+        UserDefaults.standard.removeObject(forKey: "premium.apns-token-generation.sandbox.\(installationID.uuidString)")
+        keychain.delete(key: "premium.apns-token-generation.keychain.sandbox.\(installationID.uuidString)")
+        UserDefaults.standard.removeObject(forKey: "premium.relay-deletion-barrier.\(installationID.uuidString)")
+        keychain.delete(key: "premium.relay-deletion-credential.\(installationID.uuidString)")
+        keychain.delete(key: "premium.relay-deletion-state.\(installationID.uuidString)")
+        UserDefaults.standard.removePersistentDomain(forName: defaultsSuite)
+        keychain.delete(key: "premium.apns-token.sandbox.\(installationID.uuidString)")
+    }
+}
+
+private final class ControllablePremiumKeychain: PremiumKeychainStoring {
+    private var values: [String: String] = [:]
+    private var failingSaveKeys: Set<String> = []
+    private var failingSaveValues: [String: Set<String>] = [:]
+    private var failingLoadKeys: Set<String> = []
+
+    func load(key: String) -> String? {
+        guard !failingLoadKeys.contains(key) else { return nil }
+        return values[key]
+    }
+
+    func save(key: String, value: String) -> OSStatus {
+        guard !failingSaveKeys.contains(key), failingSaveValues[key]?.contains(value) != true else { return errSecNotAvailable }
+        values[key] = value
+        return errSecSuccess
+    }
+
+    func delete(key: String) { values.removeValue(forKey: key) }
+    func value(for key: String) -> String? { values[key] }
+    func failSave(for key: String) { failingSaveKeys.insert(key) }
+    func allowSave(for key: String) { failingSaveKeys.remove(key) }
+    func failSave(for key: String, value: String) { failingSaveValues[key, default: []].insert(value) }
+    func allowSave(for key: String, value: String) { failingSaveValues[key]?.remove(value) }
+    func failLoad(for key: String) { failingLoadKeys.insert(key) }
+    func allowLoad(for key: String) { failingLoadKeys.remove(key) }
+}
+
+@MainActor
+private final class RecordingRemoteNotificationRegistrar: RemoteNotificationRegistering, @unchecked Sendable {
+    private(set) var registerCount = 0
+    private(set) var unregisterCount = 0
+    func register() { registerCount += 1 }
+    func unregister() { unregisterCount += 1 }
+}
+
+@MainActor
+private final class ControllablePremiumRelayAPI: PremiumRelayManaging, @unchecked Sendable {
+    private(set) var registrationRequests: [PremiumDeviceRegistrationRequest] = []
+    private(set) var deviceDeletionRequests: [PremiumDeviceDeletionRequest] = []
+    private(set) var installationDeletionCount = 0
+    private(set) var authorizationCount = 0
+    private(set) var githubLinkAttempts = 0
+    var rejectFirstGitHubLinkAsUnauthorized = false
+    private let firstGitHubLinkStarted: XCTestExpectation?
+    private let firstGitHubLinkGate: AsyncGate?
+    private(set) var blockOnlyFirstInstallationDeletion = false
+    private(set) var relayToken: String?
+    private(set) var relayRegistrationGeneration: UInt64 = 0
+    private let firstRegistrationStarted: XCTestExpectation?
+    private let firstRegistrationGate: AsyncGate?
+    private var deletionStarted: XCTestExpectation?
+    private let deletionGate: AsyncGate?
+    private let enrollmentStarted: XCTestExpectation?
+    private let enrollmentGate: AsyncGate?
+
+    init(
+        firstRegistrationStarted: XCTestExpectation? = nil,
+        firstRegistrationGate: AsyncGate? = nil,
+        deletionStarted: XCTestExpectation? = nil,
+        deletionGate: AsyncGate? = nil,
+        blockOnlyFirstInstallationDeletion: Bool = false,
+        rejectFirstGitHubLinkAsUnauthorized: Bool = false,
+        firstGitHubLinkStarted: XCTestExpectation? = nil,
+        firstGitHubLinkGate: AsyncGate? = nil,
+        enrollmentStarted: XCTestExpectation? = nil,
+        enrollmentGate: AsyncGate? = nil
+    ) {
+        self.firstRegistrationStarted = firstRegistrationStarted
+        self.firstRegistrationGate = firstRegistrationGate
+        self.deletionStarted = deletionStarted
+        self.deletionGate = deletionGate
+        self.blockOnlyFirstInstallationDeletion = blockOnlyFirstInstallationDeletion
+        self.rejectFirstGitHubLinkAsUnauthorized = rejectFirstGitHubLinkAsUnauthorized
+        self.firstGitHubLinkStarted = firstGitHubLinkStarted
+        self.firstGitHubLinkGate = firstGitHubLinkGate
+        self.enrollmentStarted = enrollmentStarted
+        self.enrollmentGate = enrollmentGate
+    }
+
+    func authorizeEntitlement(_ request: PremiumEntitlementUploadRequest) async throws -> PremiumInstallationCredential {
+        authorizationCount += 1
+        return PremiumInstallationCredential(installationID: request.installation.installationID, token: "test-bearer-\(authorizationCount)", deletionToken: "test-delete-\(authorizationCount)", expiresAt: .distantFuture)
+    }
+    func registerDevice(_ request: PremiumDeviceRegistrationRequest, credential: PremiumInstallationCredential) async throws {
+        registrationRequests.append(request)
+        if registrationRequests.count == 1, let firstRegistrationGate {
+            firstRegistrationStarted?.fulfill()
+            await firstRegistrationGate.wait()
+        }
+        if request.registrationGeneration >= relayRegistrationGeneration {
+            relayToken = request.token
+            relayRegistrationGeneration = request.registrationGeneration
+        }
+    }
+    func deleteDevice(_ request: PremiumDeviceDeletionRequest, credential: PremiumInstallationCredential) async throws {
+        deviceDeletionRequests.append(request)
+        if request.token == nil || request.token == relayToken { relayToken = nil }
+    }
+    func startGitHubLink(credential: PremiumInstallationCredential) async throws -> PremiumGitHubLink {
+        githubLinkAttempts += 1
+        if githubLinkAttempts == 1, let firstGitHubLinkGate {
+            firstGitHubLinkStarted?.fulfill()
+            await firstGitHubLinkGate.wait()
+        }
+        if rejectFirstGitHubLinkAsUnauthorized && githubLinkAttempts == 1 { throw PremiumAPIError.rejected(401) }
+        return PremiumGitHubLink(url: URL(string: "https://github.example/link")!, expiresAt: .distantFuture)
+    }
+    func githubInstallations(credential: PremiumInstallationCredential) async throws -> [PremiumGitHubInstallationSummary] { [] }
+    func createEnrollment(_ request: PremiumRepositoryEnrollmentRequest, credential: PremiumInstallationCredential) async throws -> PremiumRepositoryEnrollment {
+        enrollmentStarted?.fulfill()
+        if let enrollmentGate { await enrollmentGate.wait() }
+        return PremiumRepositoryEnrollment(channel: "channel_12345678")
+    }
+    func deleteEnrollment(channel: String, credential: PremiumInstallationCredential) async throws {}
+    func deleteInstallation(credential: PremiumInstallationCredential) async throws {
+        installationDeletionCount += 1
+        if let deletionStarted {
+            self.deletionStarted = nil
+            deletionStarted.fulfill()
+        }
+        if let deletionGate, !blockOnlyFirstInstallationDeletion || installationDeletionCount == 1 {
+            await deletionGate.wait()
+        }
+    }
+}
+
+private actor FakeAssistConditions: BackgroundSyncConditionsProviding {
+    private var value: BackgroundSyncConditions
+    init(_ value: BackgroundSyncConditions) { self.value = value }
+    func current() async -> BackgroundSyncConditions { value }
+    func set(_ value: BackgroundSyncConditions) { self.value = value }
+}
+
+@MainActor
+private final class FakeAssistRepositoryProvider: AssistRepositoryProviding {
+    var repo: RepoConfig
+    let repository: any GitRepositoryProtocol
+    init(repo: RepoConfig, repository: any GitRepositoryProtocol) {
+        self.repo = repo
+        self.repository = repository
+    }
+    func assistRepositories() -> [RepoConfig] { [repo] }
+    func assistRepository(id: UUID) -> RepoConfig? { repo.id == id ? repo : nil }
+    func assistRepositoryInstance(id: UUID) throws -> any GitRepositoryProtocol { repository }
+    func assistCredentials(for repo: RepoConfig) -> String { "" }
+    func recordAssist(result: RepositoryPullResult?, health: RepoAssistHealth, repoID: UUID) {
+        guard repo.id == repoID else { return }
+        if case .updated(_, let sha) = result { repo.gitState.commitSHA = sha }
+        repo.assist.health = health
+    }
+    func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings) {
+        guard repo.id == repoID else { return }
+        repo.assist = settings
+    }
+    func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) {}
+}
+
 private func makeLFSLockingRepo(attributes: String = "") throws -> URL {
     let fm = FileManager.default
     let repoURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-LFSLocking-\(UUID().uuidString)", isDirectory: true)
@@ -3452,6 +5069,85 @@ private func makeTemporaryGitRepository(prefix: String) throws -> URL {
         throw NSError(domain: "SyncMDTests.GitRepositoryInit", code: Int(code))
     }
     return repoURL
+}
+
+private func makeBareOrigin(at originURL: URL, copyingObjectsFrom sourceURL: URL, headSHA: String) throws {
+    var origin: OpaquePointer?
+    XCTAssertEqual(git_repository_init(&origin, originURL.path, 1), 0)
+    if let origin { git_repository_free(origin) }
+    let sourceObjects = sourceURL.appendingPathComponent(".git/objects", isDirectory: true)
+    let targetObjects = originURL.appendingPathComponent("objects", isDirectory: true)
+    try FileManager.default.removeItem(at: targetObjects)
+    try FileManager.default.copyItem(at: sourceObjects, to: targetObjects)
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    XCTAssertEqual(git_repository_open(&repo, originURL.path), 0)
+    var oid = git_oid()
+    XCTAssertEqual(headSHA.withCString { git_oid_fromstr(&oid, $0) }, 0)
+    var ref: OpaquePointer?
+    defer { if let ref { git_reference_free(ref) } }
+    XCTAssertEqual(git_reference_create(&ref, repo, "refs/heads/main", &oid, 1, "test origin"), 0)
+    XCTAssertEqual(git_repository_set_head(repo, "refs/heads/main"), 0)
+}
+
+private func setLocalAndRemoteTrackingRefs(repoURL: URL, localSHA: String, remoteSHA: String) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+    var localOID = git_oid(), remoteOID = git_oid()
+    XCTAssertEqual(localSHA.withCString { git_oid_fromstr(&localOID, $0) }, 0)
+    XCTAssertEqual(remoteSHA.withCString { git_oid_fromstr(&remoteOID, $0) }, 0)
+    var localRef: OpaquePointer?, remoteRef: OpaquePointer?
+    defer {
+        if let localRef { git_reference_free(localRef) }
+        if let remoteRef { git_reference_free(remoteRef) }
+    }
+    XCTAssertEqual(git_reference_create(&localRef, repo, "refs/heads/main", &localOID, 1, "test reset"), 0)
+    XCTAssertEqual(git_reference_create(&remoteRef, repo, "refs/remotes/origin/main", &remoteOID, 1, "test remote"), 0)
+    XCTAssertEqual(git_repository_set_head(repo, "refs/heads/main"), 0)
+}
+
+private func setLocalBranchRef(repoURL: URL, branch: String, sha: String) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repoURL.path) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not open repository")
+    }
+    var oid = git_oid()
+    guard sha.withCString({ git_oid_fromstr(&oid, $0) }) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not parse branch OID")
+    }
+    var ref: OpaquePointer?
+    defer { if let ref { git_reference_free(ref) } }
+    guard git_reference_create(&ref, repo, "refs/heads/\(branch)", &oid, 1, "test concurrent ref update") == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not advance branch")
+    }
+}
+
+private func checkoutHeadTree(repoURL: URL) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+    var head: OpaquePointer?, commit: OpaquePointer?, tree: OpaquePointer?
+    defer {
+        if let head { git_reference_free(head) }
+        if let commit { git_commit_free(commit) }
+        if let tree { git_tree_free(tree) }
+    }
+    XCTAssertEqual(git_repository_head(&head, repo), 0)
+    guard let oid = git_reference_target(head) else { throw LocalGitError.repositoryCorrupted("HEAD missing") }
+    var copy = oid.pointee
+    XCTAssertEqual(git_commit_lookup(&commit, repo, &copy), 0)
+    XCTAssertEqual(git_commit_tree(&tree, commit), 0)
+    var options = git_checkout_options()
+    XCTAssertEqual(git_checkout_options_init(&options, UInt32(GIT_CHECKOUT_OPTIONS_VERSION)), 0)
+    options.checkout_strategy = GIT_CHECKOUT_FORCE.rawValue
+    XCTAssertEqual(git_checkout_tree(repo, tree, &options), 0)
+    var index: OpaquePointer?
+    defer { if let index { git_index_free(index) } }
+    XCTAssertEqual(git_repository_index(&index, repo), 0)
+    XCTAssertEqual(git_index_read_tree(index, tree), 0)
+    XCTAssertEqual(git_index_write(index), 0)
 }
 
 private func stagePathBypassingLocalGitService(repoURL: URL, path: String) throws {
@@ -3704,12 +5400,22 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var cloneResults: [Result<LocalCloneResult, Error>] = []
     var cloneRemoteURLs: [String] = []
     var setRemoteURLCalls: [(name: String, url: String)] = []
+    var setRemoteURLGate: AsyncGate?
     var pullPlanError: Error?
     var pullPlanCallCount = 0
+    var executePullOnlyCallCount = 0
+    var executePullOnlyResult: Result<PullExecutionResult, Error>?
+    var pullFastForwardCallCount = 0
+    var pullRebaseCallCount = 0
+    var continueRebaseCallCount = 0
+    var mergeBranchCallCount = 0
+    var completeMergeCallCount = 0
+    var commitLocalCallCount = 0
     var pushCurrentBranchResult: Result<Void, Error>?
     var pushCurrentBranchCallCount = 0
     var commitAndPushResult: Result<LocalPushResult, Error>?
     var commitAndPushMessages: [String] = []
+    var executePullOnlyGate: AsyncGate?
 
     init(repoInfoResult: LocalRepoInfo) {
         self.repoInfoResult = repoInfoResult
@@ -3743,6 +5449,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func setRemoteURL(name: String, url: String) async throws {
+        if let setRemoteURLGate { await setRemoteURLGate.wait() }
         setRemoteURLCalls.append((name: name, url: url))
     }
 
@@ -3753,19 +5460,45 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func pull(pat: String) async throws -> LocalPullResult {
-        switch pullResult {
-        case .success(let result):
-            return result
-        case .failure(let error):
-            throw error
+        let plan = try await pullPlan(pat: pat)
+        switch plan.action {
+        case .upToDate:
+            return LocalPullResult(updated: false, newCommitSHA: plan.localCommitSHA)
+        case .blockedByLocalChanges:
+            throw LocalGitError.pullBlockedByLocalChanges
+        case .diverged:
+            throw LocalGitError.pullDiverged
+        case .remoteBranchMissing:
+            throw LocalGitError.pullRemoteBranchMissing(plan.branch)
+        case .fastForward:
+            return try pullResult.get()
+        }
+    }
+
+    func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult {
+        executePullOnlyCallCount += 1
+        if let executePullOnlyGate { await executePullOnlyGate.wait() }
+        if let executePullOnlyResult { return try executePullOnlyResult.get() }
+        let plan = try await pullPlan(pat: pat)
+        if let expectedBranch, expectedBranch != plan.branch {
+            throw LocalGitError.wrongBranch(expected: expectedBranch, actual: plan.branch)
+        }
+        switch plan.action {
+        case .fastForward:
+            pullFastForwardCallCount += 1
+            return PullExecutionResult(plan: plan, pullResult: try pullResult.get())
+        case .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+            return PullExecutionResult(plan: plan, pullResult: nil)
         }
     }
 
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult {
-        try await pull(pat: pat)
+        pullFastForwardCallCount += 1
+        return try pullResult.get()
     }
 
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
+        pullRebaseCallCount += 1
         switch rebaseResult ?? pullResult {
         case .success(let result):
             return result
@@ -3795,7 +5528,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult {
-        mergeResult
+        mergeBranchCallCount += 1
+        return mergeResult
     }
 
     func pushCurrentBranch(pat: String) async throws {
@@ -3818,7 +5552,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult {
-        mergeFinalizeResult
+        completeMergeCallCount += 1
+        return mergeFinalizeResult
     }
 
     func abortMerge() async throws {
@@ -3826,6 +5561,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func continueRebase(pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
+        continueRebaseCallCount += 1
         switch continueRebaseResult ?? rebaseResult ?? pullResult {
         case .success(let result):
             return result
@@ -3859,7 +5595,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func commitLocal(message: String, authorName: String, authorEmail: String) async throws -> String {
-        repoInfoResult.commitSHA
+        commitLocalCallCount += 1
+        return repoInfoResult.commitSHA
     }
 
     func lfsAutoTrackingCandidates(paths: [String]?) async throws -> [GitLFSAutoTrackingCandidate] {
@@ -4117,4 +5854,91 @@ private actor RecordingOnboardingAnalyticsTransport: OnboardingAnalyticsTranspor
     func payloadsValue() -> [OnboardingAnalyticsPayload] {
         payloads
     }
+}
+
+private actor EventRecorder {
+    private var events: [String] = []
+    func append(_ event: String) { events.append(event) }
+    func values() -> [String] { events }
+}
+
+private actor AsyncGate {
+    private var continuation: CheckedContinuation<Void, Never>?
+    private var isOpen = false
+    func wait() async {
+        if isOpen { return }
+        await withCheckedContinuation { continuation = $0 }
+    }
+    func open() {
+        isOpen = true
+        continuation?.resume()
+        continuation = nil
+    }
+}
+
+private final class SerializationProbeRepository: GitRepositoryProtocol, @unchecked Sendable {
+    private let lock = NSLock()
+    private var concurrentOperations = 0
+    private(set) var maximumConcurrentOperations = 0
+    private(set) var completedOperations = 0
+
+    var hasGitDirectory: Bool { true }
+
+    func stageAll() async throws {
+        lock.lock()
+        concurrentOperations += 1
+        maximumConcurrentOperations = max(maximumConcurrentOperations, concurrentOperations)
+        lock.unlock()
+        try await Task.sleep(for: .milliseconds(50))
+        lock.lock()
+        concurrentOperations -= 1
+        completedOperations += 1
+        lock.unlock()
+    }
+
+    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult { fatalError() }
+    func setRemoteURL(name: String, url: String) async throws { fatalError() }
+    func pullPlan(pat: String) async throws -> PullPlan { fatalError() }
+    func pull(pat: String) async throws -> LocalPullResult { fatalError() }
+    func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult { fatalError() }
+    func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult { fatalError() }
+    func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult { fatalError() }
+    func unifiedDiff(path: String?) async throws -> UnifiedDiffResult { fatalError() }
+    func listBranches() async throws -> BranchInventory { fatalError() }
+    func createBranch(name: String) async throws { fatalError() }
+    func switchBranch(name: String) async throws { fatalError() }
+    func deleteBranch(name: String) async throws { fatalError() }
+    func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult { fatalError() }
+    func pushCurrentBranch(pat: String) async throws { fatalError() }
+    func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult { fatalError() }
+    func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult { fatalError() }
+    func abortMerge() async throws { fatalError() }
+    func continueRebase(pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult { fatalError() }
+    func abortRebase() async throws { fatalError() }
+    func conflictSession() async throws -> ConflictSession { fatalError() }
+    func conflictDetail(path: String) async throws -> ConflictFileDetail { fatalError() }
+    func resolveConflict(path: String, strategy: ConflictResolutionStrategy) async throws { fatalError() }
+    func resolveConflictWithContent(path: String, content: Data, additionalPathsToRemove: [String]) async throws { fatalError() }
+    func commitLocal(message: String, authorName: String, authorEmail: String) async throws -> String { fatalError() }
+    func lfsAutoTrackingCandidates(paths: [String]?) async throws -> [GitLFSAutoTrackingCandidate] { fatalError() }
+    func stage(path: String, oldPath: String?) async throws { fatalError() }
+    func stage(path: String, oldPath: String?, lfsAutoTrack: Bool) async throws { fatalError() }
+    func stageAll(lfsAutoTrack: Bool) async throws { try await stageAll() }
+    func unstage(path: String, oldPath: String?) async throws { fatalError() }
+    func discardChanges(path: String) async throws { fatalError() }
+    func discardAllChanges() async throws { fatalError() }
+    func commitAndPush(message: String, authorName: String, authorEmail: String, pat: String) async throws -> LocalPushResult { fatalError() }
+    func listStashes() async throws -> [GitStashEntry] { fatalError() }
+    func saveStash(message: String, authorName: String, authorEmail: String, includeUntracked: Bool) async throws -> GitStashEntry { fatalError() }
+    func applyStash(index: Int, reinstateIndex: Bool) async throws -> StashApplyResult { fatalError() }
+    func popStash(index: Int, reinstateIndex: Bool) async throws -> StashApplyResult { fatalError() }
+    func dropStash(index: Int) async throws { fatalError() }
+    func listTags() async throws -> [GitTag] { fatalError() }
+    func createTag(name: String, targetOID: String?, message: String?, authorName: String, authorEmail: String) async throws -> GitTag { fatalError() }
+    func deleteTag(name: String) async throws { fatalError() }
+    func pushTag(name: String, pat: String) async throws { fatalError() }
+    func fetchRemote(pat: String) async throws { fatalError() }
+    func commitHistory(limit: Int, skip: Int) async throws -> [GitCommitSummary] { fatalError() }
+    func commitDetail(oid: String) async throws -> GitCommitDetail { fatalError() }
+    func repoInfo() async throws -> LocalRepoInfo { fatalError() }
 }

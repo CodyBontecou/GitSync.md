@@ -56,3 +56,6 @@ fastlane/screenshots/
 app-store-output/
 # Node dependencies for the self-contained App Store image tool
 scripts/app-store-images/node_modules/
+
+# Pi subagent artifacts
+.pi-subagents/

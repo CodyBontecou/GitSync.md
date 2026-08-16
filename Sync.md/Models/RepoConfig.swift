@@ -19,6 +19,8 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     /// `nil` means the repo is not tied to a specific GitHub account (or is legacy data).
     var gitHubAccountLogin: String?
     var gitState: GitState
+    /// Optional Premium automation policy. Defaults disabled for legacy records.
+    var assist: RepoAssistSettings
 
     init(
         id: UUID = UUID(),
@@ -32,7 +34,8 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         authMethod: GitAuthMethod? = nil,
         authUsername: String = "",
         gitHubAccountLogin: String? = nil,
-        gitState: GitState = .empty
+        gitState: GitState = .empty,
+        assist: RepoAssistSettings = .disabled
     ) {
         self.id = id
         self.repoURL = repoURL
@@ -52,6 +55,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         self.authUsername = authUsername
         self.gitHubAccountLogin = gitHubAccountLogin
         self.gitState = gitState
+        self.assist = assist
     }
 
     // MARK: - Codable (backward-compatible)
@@ -59,7 +63,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, repoURL, branch, authorName, authorEmail
         case vaultFolderName, customVaultBookmarkData
-        case customLocationIsParent, authMethod, authUsername, gitHubAccountLogin, gitState
+        case customLocationIsParent, authMethod, authUsername, gitHubAccountLogin, gitState, assist
     }
 
     init(from decoder: Decoder) throws {
@@ -82,6 +86,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         authUsername            = try c.decodeIfPresent(String.self, forKey: .authUsername) ?? ""
         gitHubAccountLogin      = try c.decodeIfPresent(String.self, forKey: .gitHubAccountLogin)
         gitState                = try c.decode(GitState.self, forKey: .gitState)
+        assist                  = try c.decodeIfPresent(RepoAssistSettings.self, forKey: .assist) ?? .disabled
     }
 
     // MARK: - Computed

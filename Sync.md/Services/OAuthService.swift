@@ -4,6 +4,7 @@ import Foundation
 enum OAuthError: LocalizedError {
     case noToken
     case cancelled
+    case stateMismatch
     case failed(String)
 
     var isCancelled: Bool {
@@ -15,6 +16,7 @@ enum OAuthError: LocalizedError {
         switch self {
         case .noToken: return String(localized: "No access token received from GitHub.")
         case .cancelled: return String(localized: "Sign-in was cancelled.")
+        case .stateMismatch: return String(localized: "GitHub sign-in could not be verified. Please try again.")
         case .failed(let msg): return msg
         }
     }
@@ -32,6 +34,38 @@ enum OAuthError: LocalizedError {
 final class OAuthService: NSObject, ASWebAuthenticationPresentationContextProviding {
 
     static let shared = OAuthService()
+
+    nonisolated static func validateReturnedState(_ returnedState: String?, expectedState: String) throws {
+        guard let returnedState, !returnedState.isEmpty, returnedState == expectedState else {
+            throw OAuthError.stateMismatch
+        }
+    }
+
+    nonisolated static func parseCallbackURL(_ url: URL?, expectedState: String) throws -> String {
+        guard let url,
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              components.scheme?.lowercased() == "syncmd",
+              components.host?.lowercased() == "auth",
+              components.path.isEmpty,
+              components.fragment == nil else {
+            throw OAuthError.failed(String(localized: "Invalid sign-in callback URL."))
+        }
+
+        let items = components.queryItems ?? []
+        let stateItems = items.filter { $0.name == "state" }
+        let tokenItems = items.filter { $0.name == "token" }
+        guard stateItems.count <= 1 else {
+            throw OAuthError.failed(String(localized: "Invalid sign-in callback URL."))
+        }
+        try validateReturnedState(stateItems.first?.value, expectedState: expectedState)
+        guard tokenItems.count <= 1 else {
+            throw OAuthError.failed(String(localized: "Invalid sign-in callback URL."))
+        }
+        guard tokenItems.count == 1, let token = tokenItems[0].value, !token.isEmpty else {
+            throw OAuthError.noToken
+        }
+        return token
+    }
 
     private let serverURL = "https://oauth-server-beige.vercel.app"
     private let callbackScheme = "syncmd"
@@ -61,23 +95,11 @@ final class OAuthService: NSObject, ASWebAuthenticationPresentationContextProvid
                     return
                 }
 
-                guard let url = callbackURL,
-                      let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-                      let token = components.queryItems?.first(where: { $0.name == "token" })?.value,
-                      !token.isEmpty
-                else {
-                    continuation.resume(throwing: OAuthError.noToken)
-                    return
+                do {
+                    continuation.resume(returning: try Self.parseCallbackURL(callbackURL, expectedState: state))
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-
-                // Validate state matches
-                let returnedState = components.queryItems?.first(where: { $0.name == "state" })?.value
-                if returnedState != state {
-                    // State mismatch — possible CSRF, but don't hard-fail for UX
-                    // (some browsers strip state on redirect)
-                }
-
-                continuation.resume(returning: token)
             }
 
             session.presentationContextProvider = self

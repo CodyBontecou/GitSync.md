@@ -421,6 +421,12 @@ struct RepoListView: View {
                             .tint(Color.brutalAccent)
                     }
 
+                    if repo.assist.health.kind == .attention || repo.assist.health.kind == .failed {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(Color.brutalWarning)
+                            .accessibilityLabel("GitSync Assist needs attention")
+                    }
+
                     Text("→")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)

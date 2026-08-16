@@ -9,6 +9,7 @@ struct AppSettingsView: View {
     @State private var showClearConfirm = false
     @State private var showMailCompose = false
     @State private var showOnboarding = false
+    @State private var showPremiumSettings = false
 
     var body: some View {
         NavigationStack {
@@ -114,6 +115,16 @@ struct AppSettingsView: View {
                             }
                         }
 
+                        // Optional subscription. Existing manual Git, Shortcuts,
+                        // callbacks, and local repository features remain available.
+                        settingsSection(title: "GitSync Assist") {
+                            actionRow(
+                                icon: "⚡️",
+                                title: "GitSync Assist",
+                                subtitle: "Optional best-effort pull-only automation"
+                            ) { showPremiumSettings = true }
+                        }
+
                         // Shortcuts
                         settingsSection(title: String(localized: "Shortcuts")) {
                             HStack(alignment: .top, spacing: 14) {
@@ -208,6 +219,7 @@ struct AppSettingsView: View {
                 }
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }
+            .sheet(isPresented: $showPremiumSettings) { PremiumSettingsView() }
             .fullScreenCover(isPresented: $showOnboarding) { OnboardingView() }
             .fileImporter(
                 isPresented: $showFolderPicker,

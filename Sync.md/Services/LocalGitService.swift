@@ -18,6 +18,7 @@ enum LocalGitError: LocalizedError {
     case pullBlockedByLocalChanges
     case pullDiverged
     case pullRemoteBranchMissing(String)
+    case wrongBranch(expected: String, actual: String)
     case checkoutBlockedByLocalChanges
     case branchAlreadyExists(String)
     case branchNotFound(String)
@@ -34,6 +35,7 @@ enum LocalGitError: LocalizedError {
     case repositoryCorrupted(String)
     case lfsFailed(String)
     case invalidAuthorIdentity(String)
+    case authenticationFailed(String)
     case sshHostKeyTrustRequired(GitLFSSSHHostKeyTrustError)
     case libgit2(String)
 
@@ -65,6 +67,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Pull requires a merge because local and remote have diverged.")
         case .pullRemoteBranchMissing(let branch):
             return String(localized: "Remote branch '\(branch)' was not found on origin.")
+        case .wrongBranch(let expected, let actual):
+            return String(localized: "GitSync Assist expected branch '\(expected)', but '\(actual)' is checked out.")
         case .checkoutBlockedByLocalChanges:
             return String(localized: "Switching branches is blocked to protect local edits. Commit, stash, or discard changes first.")
         case .branchAlreadyExists(let name):
@@ -97,6 +101,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Git LFS failed: \(msg)")
         case .invalidAuthorIdentity(let msg):
             return String(localized: "Git author identity is missing or invalid. \(msg) Open repository settings and set Author Name and Author Email.")
+        case .authenticationFailed(let msg):
+            return String(localized: "Authentication failed: \(msg)")
         case .sshHostKeyTrustRequired(let error):
             return error.localizedDescription
         case .libgit2(let msg):
@@ -198,6 +204,9 @@ private func git2TransportCheck(
         }
         let msg = credentialContext.callbackErrorMessage ?? git2ErrorMessage(fallback: fallback)
         let full = context.isEmpty ? msg : "\(context): \(msg)"
+        if credentialContext.callbackErrorMessage != nil {
+            throw LocalGitError.authenticationFailed(full)
+        }
         throw wrapping(full)
     }
     return code
@@ -639,6 +648,7 @@ nonisolated private func stashForeachCallback(
 /// Replaces the GitHub REST API approach which only stored file contents.
 final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     let localURL: URL
+    private let pullOnlyBeforeCheckout: (@Sendable () -> Void)?
 
     /// One-time libgit2 global init.
     private static let initOnce: Void = { git_libgit2_init() }()
@@ -655,9 +665,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }
     }
 
-    init(localURL: URL) {
+    init(localURL: URL, pullOnlyBeforeCheckout: (@Sendable () -> Void)? = nil) {
         _ = Self.initOnce
         self.localURL = localURL
+        self.pullOnlyBeforeCheckout = pullOnlyBeforeCheckout
     }
 
     /// Whether a `.git` directory exists at the local URL.
@@ -879,12 +890,48 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         case .remoteBranchMissing:
             throw LocalGitError.pullRemoteBranchMissing(plan.branch)
         case .fastForward:
-            return try await performSafeFastForward(branch: plan.branch, pat: pat, refetch: false)
+            return try await performSafeFastForward(branch: plan.branch, pat: pat, refetch: false, isPullOnly: false)
+        }
+    }
+
+    func executePullOnly(pat: String, expectedBranch: String? = nil) async throws -> PullExecutionResult {
+        try Task.checkCancellation()
+        let plan = try await pullPlan(pat: pat)
+        try Task.checkCancellation()
+        if let expectedBranch, plan.branch != expectedBranch {
+            throw LocalGitError.wrongBranch(expected: expectedBranch, actual: plan.branch)
+        }
+        switch plan.action {
+        case .fastForward:
+            do {
+                try Task.checkCancellation()
+                return PullExecutionResult(
+                    plan: plan,
+                    pullResult: try await performSafeFastForward(branch: plan.branch, pat: pat, refetch: false, isPullOnly: true)
+                )
+            } catch LocalGitError.pullBlockedByLocalChanges {
+                // The working tree can change after fetch/planning but before
+                // checkout. Preserve the typed, attention-worthy outcome.
+                return PullExecutionResult(
+                    plan: PullPlan(
+                        action: .blockedByLocalChanges,
+                        branch: plan.branch,
+                        localCommitSHA: plan.localCommitSHA,
+                        remoteCommitSHA: plan.remoteCommitSHA,
+                        hasLocalChanges: true,
+                        aheadBy: plan.aheadBy,
+                        behindBy: plan.behindBy
+                    ),
+                    pullResult: nil
+                )
+            }
+        case .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+            return PullExecutionResult(plan: plan, pullResult: nil)
         }
     }
 
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult {
-        try await performSafeFastForward(branch: branch, pat: pat, refetch: false)
+        try await performSafeFastForward(branch: branch, pat: pat, refetch: false, isPullOnly: false)
     }
 
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
@@ -897,9 +944,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         )
     }
 
-    private func performSafeFastForward(branch: String, pat: String, refetch: Bool) async throws -> LocalPullResult {
+    private func performSafeFastForward(branch: String, pat: String, refetch: Bool, isPullOnly: Bool) async throws -> LocalPullResult {
         let path = self.localURL.path
         let localURL = self.localURL
+        let pullOnlyBeforeCheckout = self.pullOnlyBeforeCheckout
 
         let fastForward = try await Task.detached {
             var repo: OpaquePointer?
@@ -929,11 +977,33 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let head { git_reference_free(head) } }
             try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
 
+            // HEAD can be changed by another process after fetch/planning.
+            // Re-read and verify it immediately before any checkout so the
+            // pull-only path never switches or updates a different branch.
+            let actualBranch = git_reference_shorthand(head).map { String(cString: $0) } ?? "HEAD"
+            guard actualBranch == branch else {
+                throw LocalGitError.wrongBranch(expected: branch, actual: actualBranch)
+            }
+
             let localOidPtr = git_reference_target(head)!
             let remoteOidPtr = git_reference_target(remoteRef)!
+            var expectedLocalOid = localOidPtr.pointee
 
             if git_oid_equal(localOidPtr, remoteOidPtr) != 0 {
                 return (result: LocalPullResult(updated: false, newCommitSHA: oidToHex(localOidPtr)), changedPaths: [String]())
+            }
+
+            // The repository may be modified by another process between the
+            // earlier plan and this mutation phase. Classify these freshly-read
+            // OIDs and refuse anything except a true clean fast-forward.
+            var ahead = 0
+            var behind = 0
+            try git2Check(
+                git_graph_ahead_behind(&ahead, &behind, repo, localOidPtr, remoteOidPtr),
+                context: "Revalidate fast-forward relation"
+            )
+            guard ahead == 0, behind > 0 else {
+                throw LocalGitError.pullDiverged
             }
 
             let changedPaths = try Self.changedPathsBetween(repo: repo, oldOID: localOidPtr, newOID: remoteOidPtr)
@@ -954,23 +1024,46 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             git_checkout_options_init(&checkoutOpts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
             checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE.rawValue
 
+            // Re-read immediately before checkout. Another process or Files
+            // provider may have changed the worktree since planning or the
+            // earlier guard; automation must fail closed rather than overwrite.
+            if try Self.hasUncommittedChanges(repo: repo) {
+                throw LocalGitError.pullBlockedByLocalChanges
+            }
+            if isPullOnly { pullOnlyBeforeCheckout?() }
+
+            // Hold both HEAD and the checked-out branch ref from the final OID
+            // validation through checkout/index mutation and the ref commit.
+            // This prevents another Git process from advancing the branch after
+            // ancestry validation and having automation overwrite its commit.
+            let localRefName = "refs/heads/\(branch)"
+            var refTransaction: OpaquePointer?
+            defer { if let refTransaction { git_transaction_free(refTransaction) } }
+            try git2Check(git_transaction_new(&refTransaction, repo), context: "Create fast-forward ref transaction")
+            try git2Check(git_transaction_lock_ref(refTransaction, "HEAD"), context: "Lock HEAD for fast-forward")
+            try git2Check(git_transaction_lock_ref(refTransaction, localRefName), context: "Lock branch for fast-forward")
+
+            var lockedHead: OpaquePointer?
+            defer { if let lockedHead { git_reference_free(lockedHead) } }
+            try git2Check(git_repository_head(&lockedHead, repo), context: "Re-read locked HEAD")
+            let lockedBranch = git_reference_shorthand(lockedHead).map { String(cString: $0) } ?? "HEAD"
+            guard lockedBranch == branch else {
+                throw LocalGitError.wrongBranch(expected: branch, actual: lockedBranch)
+            }
+            guard let lockedLocalOid = git_reference_target(lockedHead),
+                  git_oid_equal(lockedLocalOid, &expectedLocalOid) != 0 else {
+                throw LocalGitError.pullDiverged
+            }
+
             let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
             if checkoutCode == GIT_ECONFLICT.rawValue {
-                // We already verified hasUncommittedChanges == false above,
-                // so any SAFE-checkout conflict here is a libgit2 NFC/NFD
-                // artifact — the workdir filename's byte form differs from
-                // the index/tree even though they normalise to the same
-                // logical path. Force the checkout so the fast-forward can
-                // proceed; user data is not at risk because statusEntries
-                // already reported clean.
-                checkoutOpts.checkout_strategy = GIT_CHECKOUT_FORCE.rawValue
-                try git2Check(
-                    git_checkout_tree(repo, remoteTree, &checkoutOpts),
-                    context: "Checkout remote tree (force after NFC/NFD conflict)"
-                )
-            } else {
-                try git2Check(checkoutCode, context: "Checkout remote tree safely")
+                // Never force a background/pull-only checkout. A conflict may
+                // be a real local write created after the last status read;
+                // preserving user bytes is more important than normalisation
+                // recovery, which remains a manual foreground concern.
+                throw LocalGitError.pullBlockedByLocalChanges
             }
+            try git2Check(checkoutCode, context: "Checkout remote tree safely")
 
             // Explicitly rebuild the index from the remote tree and flush it
             // to disk. git_checkout_tree is supposed to update index entries
@@ -995,20 +1088,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 context: "Write index after fast-forward"
             )
 
-            let localRefName = "refs/heads/\(branch)"
-            var existingRef: OpaquePointer?
-            let refResult = git_reference_lookup(&existingRef, repo, localRefName)
-            if refResult == 0, let existingRef {
-                var updatedRef: OpaquePointer?
-                try git2Check(
-                    git_reference_set_target(&updatedRef, existingRef, &remoteOidCopy, "pull: fast-forward"),
-                    context: "Update branch ref"
-                )
-                if let updatedRef { git_reference_free(updatedRef) }
-                git_reference_free(existingRef)
-            }
-
-            try git2Check(git_repository_set_head(repo, localRefName), context: "Set HEAD")
+            try git2Check(
+                git_transaction_set_target(refTransaction, localRefName, &remoteOidCopy, nil, "pull: fast-forward"),
+                context: "Queue branch ref update"
+            )
+            try git2Check(git_transaction_commit(refTransaction), context: "Commit branch ref update")
 
             return (result: LocalPullResult(updated: true, newCommitSHA: oidToHex(&remoteOidCopy)), changedPaths: changedPaths)
         }.value

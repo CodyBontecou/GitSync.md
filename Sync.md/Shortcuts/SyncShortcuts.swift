@@ -175,11 +175,11 @@ private enum GitShortcutRunner {
     }
 
     private static func pull(repo: RepoConfig, in state: AppState) async -> GitShortcutPullResult {
-        let succeeded = await state.pull(repoID: repo.id, showsProgressDelay: false)
+        let pullResult = await state.pullOnly(repoID: repo.id, showsProgressDelay: false)
         let outcome = state.pullOutcomeByRepo[repo.id]
         let message = outcome?.message
-            ?? (succeeded ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))
-        let status = GitShortcutPullResult.Status(kind: outcome?.kind, succeeded: succeeded)
+            ?? (pullResult.completedWithoutAttention ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))
+        let status = GitShortcutPullResult.Status(result: pullResult)
 
         return GitShortcutPullResult(
             repositoryName: repo.displayName,
@@ -196,18 +196,16 @@ private struct GitShortcutPullResult {
         case blocked
         case failed
 
-        init(kind: PullOutcomeKind?, succeeded: Bool) {
-            switch kind {
-            case .fastForwarded, .rebased:
+        init(result: RepositoryPullResult) {
+            switch result {
+            case .updated:
                 self = .updated
             case .upToDate:
                 self = .upToDate
-            case .blockedByLocalChanges, .diverged, .rebaseConflicts, .remoteBranchMissing:
+            case .blockedByLocalChanges, .diverged, .remoteBranchMissing:
                 self = .blocked
-            case .failed:
+            case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
                 self = .failed
-            case .none:
-                self = succeeded ? .upToDate : .failed
             }
         }
     }

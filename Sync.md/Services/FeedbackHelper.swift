@@ -23,6 +23,41 @@ enum FeedbackHelper {
 
     static func mailtoURL(subject: String = "GitSync.md Feedback") -> URL? {
         let body = "\n\n\(diagnosticsBlock)"
+        return mailtoURL(subject: subject, body: body)
+    }
+
+    /// Creates an explicit user-mediated private request. These opaque IDs are
+    /// identifiers, not bearer/deletion credentials, and are included only in
+    /// the user's draft email—never sent automatically or posted publicly.
+    static func privacyRequestMailtoURL(
+        defaults: UserDefaults = .standard,
+        bundle: Bundle = .main,
+        identityKeychainLoad: (String) -> String? = KeychainService.load,
+        identityKeychainSave: (String, String) -> Void = { KeychainService.save(key: $0, value: $1) }
+    ) -> URL? {
+        let analyticsID = OnboardingAnalyticsInstallIDStore(
+            defaults: SystemOnboardingAnalyticsDefaults(defaults: defaults)
+        ).installID()
+        let assistID = PremiumInstallationIdentity.current(
+            defaults: defaults,
+            bundle: bundle,
+            keychainLoad: identityKeychainLoad,
+            keychainSave: identityKeychainSave
+        ).installationID.uuidString.lowercased()
+        let body = """
+        Request type: [access / delete]
+
+        Please keep these opaque installation identifiers private. They are included so support can locate this installation's first-party records:
+        Onboarding analytics installation: \(analyticsID)
+        GitSync Assist installation: \(assistID)
+
+        Details:
+
+        """
+        return mailtoURL(subject: "GitSync.md Privacy & Data Request", body: body)
+    }
+
+    private static func mailtoURL(subject: String, body: String) -> URL? {
         var components = URLComponents()
         components.scheme = "mailto"
         components.path = supportEmail
@@ -47,6 +82,11 @@ enum FeedbackHelper {
 
     static func openMailClient() {
         guard let url = mailtoURL() else { return }
+        UIApplication.shared.open(url)
+    }
+
+    static func openPrivacyRequestMailClient() {
+        guard let url = privacyRequestMailtoURL() else { return }
         UIApplication.shared.open(url)
     }
 
