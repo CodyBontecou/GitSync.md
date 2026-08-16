@@ -1,15 +1,20 @@
-import {
-  Environment,
-  SignedDataVerifier,
-  VerificationException,
-  VerificationStatus,
-} from "@apple/app-store-server-library";
+import type { SignedDataVerifier } from "@apple/app-store-server-library";
 import { APPLE_ROOTS } from "./roots";
 import type {
   Env,
   VerifiedNotificationResponse,
   VerifiedTransactionResponse,
 } from "./types";
+
+type AppleLibrary = typeof import("@apple/app-store-server-library");
+let appleLibrary: Promise<AppleLibrary> | null = null;
+
+// The Apple library's module initialization (via jsrsasign) performs work that
+// workerd forbids in global scope (randomness/I-O), so import it lazily on the
+// first request instead of evaluating it at Worker startup.
+function library(): Promise<AppleLibrary> {
+  return (appleLibrary ??= import("@apple/app-store-server-library"));
+}
 
 const JSON_HEADERS = {
   "content-type": "application/json; charset=utf-8",
@@ -73,26 +78,27 @@ function parseBoolean(value: string, label: string): boolean {
   throw new Error(`invalid ${label}`);
 }
 
-function allowedEnvironments(env: Env): AllowedEnvironment[] {
+function allowedEnvironments(env: Env, lib: AppleLibrary): AllowedEnvironment[] {
   const parsed = env.ALLOWED_ENVIRONMENTS.split(",").map((value) => value.trim());
   if (
     parsed.length === 0 ||
-    parsed.some((value) => value !== Environment.SANDBOX && value !== Environment.PRODUCTION)
+    parsed.some((value) => value !== lib.Environment.SANDBOX && value !== lib.Environment.PRODUCTION)
   ) {
     throw new Error("invalid ALLOWED_ENVIRONMENTS");
   }
   return [...new Set(parsed)] as AllowedEnvironment[];
 }
 
-function verifier(
+function buildVerifier(
   env: Env,
+  lib: AppleLibrary,
   environment: AllowedEnvironment,
-  roots: Buffer[] = APPLE_ROOTS,
+  roots: Buffer[],
 ): SignedDataVerifier {
-  return new SignedDataVerifier(
+  return new lib.SignedDataVerifier(
     roots,
     parseBoolean(env.ENABLE_ONLINE_CHECKS, "ENABLE_ONLINE_CHECKS"),
-    environment === "Production" ? Environment.PRODUCTION : Environment.SANDBOX,
+    environment === "Production" ? lib.Environment.PRODUCTION : lib.Environment.SANDBOX,
     requiredString(env.BUNDLE_ID, "BUNDLE_ID", 256),
     parsePositiveInteger(env.APP_APPLE_ID, "APP_APPLE_ID"),
   );
@@ -120,8 +126,11 @@ async function parseBody(request: Request, env: Env): Promise<JsonRecord> {
   }
 }
 
-function safeVerificationError(error: unknown): { status?: VerificationStatus; category: "verification" | "unexpected" } {
-  return error instanceof VerificationException
+function safeVerificationError(
+  error: unknown,
+  lib: AppleLibrary,
+): { status?: number; category: "verification" | "unexpected" } {
+  return error instanceof lib.VerificationException
     ? { status: error.status, category: "verification" }
     : { category: "unexpected" };
 }
@@ -131,15 +140,16 @@ export async function verifyAcrossEnvironments<T>(
   operation: (verifier: SignedDataVerifier) => Promise<T>,
   roots: Buffer[] = APPLE_ROOTS,
 ): Promise<T> {
+  const lib = await library();
   let lastVerificationError: unknown;
   let unavailableError: unknown;
-  for (const environment of allowedEnvironments(env)) {
+  for (const environment of allowedEnvironments(env, lib)) {
     try {
-      return await operation(verifier(env, environment, roots));
+      return await operation(buildVerifier(env, lib, environment, roots));
     } catch (error) {
-      if (error instanceof VerificationException) {
+      if (error instanceof lib.VerificationException) {
         lastVerificationError = error;
-        if (error.status === VerificationStatus.RETRYABLE_VERIFICATION_FAILURE) {
+        if (error.status === lib.VerificationStatus.RETRYABLE_VERIFICATION_FAILURE) {
           unavailableError = error;
         }
         continue;
@@ -150,10 +160,10 @@ export async function verifyAcrossEnvironments<T>(
   if (unavailableError) {
     // Never log verifier errors directly: their message, stack, or cause may
     // contain signed payload material supplied by a library or caller.
-    console.error("StoreKit verification unavailable", safeVerificationError(unavailableError));
+    console.error("StoreKit verification unavailable", safeVerificationError(unavailableError, lib));
     throw new HttpError(503, "verification unavailable");
   }
-  console.warn("StoreKit JWS verification rejected", safeVerificationError(lastVerificationError));
+  console.warn("StoreKit JWS verification rejected", safeVerificationError(lastVerificationError, lib));
   throw new HttpError(401, "verification failed");
 }
 
@@ -165,11 +175,12 @@ async function verifyTransaction(request: Request, env: Env): Promise<Response> 
     "signedTransaction",
     parsePositiveInteger(env.MAX_JWS_BYTES, "MAX_JWS_BYTES"),
   );
+  const lib = await library();
   const decoded = await verifyAcrossEnvironments(env, (candidate) =>
     candidate.verifyAndDecodeTransaction(signedTransaction));
 
   const environment = decoded.environment;
-  if (environment !== Environment.SANDBOX && environment !== Environment.PRODUCTION) {
+  if (environment !== lib.Environment.SANDBOX && environment !== lib.Environment.PRODUCTION) {
     throw new HttpError(422, "verified environment is invalid");
   }
   const result: VerifiedTransactionResponse = {
@@ -251,7 +262,13 @@ export default {
       return response(404, { error: "not found" });
     } catch (error) {
       if (error instanceof HttpError) return response(error.status, { error: error.message });
-      console.error("StoreKit verifier unavailable", safeVerificationError(error));
+      let lib: AppleLibrary;
+      try {
+        lib = await library();
+      } catch {
+        return response(503, { error: "verification unavailable" });
+      }
+      console.error("StoreKit verifier unavailable", safeVerificationError(error, lib));
       return response(503, { error: "verification unavailable" });
     }
   },

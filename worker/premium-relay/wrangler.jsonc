@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "premium-relay",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "9a2e6daf-3a8f-40a7-9235-54eaafceeb94",
       "migrations_dir": "migrations"
     }
   ],
