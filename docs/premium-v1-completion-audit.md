@@ -78,3 +78,37 @@ Review `90273400` then found that replacing `pending` with `completed` used dele
 Fresh broad local audit `0a67eee9` found one further P1: after ancestry validation, another Git process could advance the checked-out branch and the old unlocked `git_reference_set_target` would overwrite that commit after checkout. The fast-forward mutation now holds libgit2 transaction locks for `HEAD` and `refs/heads/<branch>`, revalidates the exact captured local OID under lock, and commits the ref only through that transaction. A real-libgit2 `A→B` / concurrent `A→C` test proves Assist preserves `C` and aborts without checkout, while a reset fixture proves clean `A→B` still succeeds (`/tmp/gitsync-pull-ref-lock-tests-2.log`). Correction review `c05b7a5a` returned `ACCEPT_PULL_REF_TRANSACTION_CORRECTION`; final broad re-review `9814dec7` returned `ACCEPT_CURRENT_LOCAL_IMPLEMENTATION_AND_AUDIT` with no remaining local blocker while independently retaining every external gate above as incomplete.
 
 No deployment, provisioning, publishing, commit, or PR was performed. The app remains relay-disabled until an explicit HTTPS build setting is authorized.
+
+## 2026-08-16 release execution update
+
+Operator authorized commit/push and external provisioning. Evidence below supersedes the corresponding "missing" items above.
+
+### Repository and CI
+
+- Entire feature tree committed and pushed to `main` (`3fb13ff..47fc59f`: iOS feature, premium workers + CI gate, analytics upgrade, docs/legal, Release-artifact CI gate, verifier deploy fix). Working tree clean; `.pi-subagents/` gitignored.
+- **GitHub-hosted Premium Workers workflow passed** (run `31936564104`, relay 40 + verifier 12 + analytics 10 tests, typecheck, generated types, dry-runs, fresh migrations) and Build Number Guard passed (`31936564107`). XCTest workflow run `31936564096` result recorded in the evidence bundle.
+
+### App Store Connect (live, authenticated)
+
+- **Push Notifications capability added** to bundle `bontecou.Sync-md` (`YVCND75XTL`); capability now `IN_APP_PURCHASE` + `PUSH_NOTIFICATIONS`.
+- **Subscription group "GitSync Assist"** (`22312794`) created with products `com.bontecou.gitsync.assist.monthly` (subscription `6802000537`, $1.99/mo) and `com.bontecou.gitsync.assist.annual` (`6802000730`, $14.99/yr): en-US display names/descriptions (≤55 chars), 1290×2796 review screenshots uploaded, complete equalized price matrix verified across 175 territories, availability set, `verify_state` completed for both.
+
+### Cloudflare (live, authenticated, account `e4265f322e6380ee832b83ad45e3e8c0`)
+
+- **`storekit-verifier` Worker deployed** (private, service-binding only, `workers_dev: false`). Deploy exposed a real bug no local gate caught: `jsrsasign` module init violates workerd global-scope rules. Fixed by lazy `import()` on first request (commit `47fc59f`); typecheck + 12/12 tests green after fix.
+- **`premium-relay` D1 created** (`9a2e6daf-3a8f-40a7-9235-54eaafceeb94`, id committed) and **migrations `0001` + `0002` applied remotely** (33 + 2 commands).
+- **Queues created**: `premium-relay-outbox` and `premium-relay-outbox-dlq`.
+- **`sync-md-onboarding-analytics` upgraded in production** to the retention/deletion version: cron trigger deployed, `DELETION_TOKEN` secret set (value handed to operator for password manager; also temporarily at `/tmp/onboarding-deletion-token.txt`), remote `onboarding_events` schema verified consistent.
+
+### Published legal pages
+
+- Updated `privacy.html`/`terms.html` deployed to the `syncmd` Cloudflare Pages project and **verified live at `https://gitsyncmd.app/privacy` and `/terms`** (Effective date August 13, 2026; GitSync Assist disclosures present). Pre/post content hashes confirmed the project maps to gitsyncmd.app.
+
+### Still blocked on operator (unchanged)
+
+1. **APNs auth key (.p8) creation** (developer.apple.com only, no API) → then set relay secrets `APNS_PRIVATE_KEY`/`APNS_KEY_ID`/`APNS_TEAM_ID`.
+2. **GitHub App creation** (UI only): Contents read-only, `push` webhook only, callback `<relay>/v1/github/callback`, webhook `<relay>/v1/webhooks/github` → then `GITHUB_APP_ID`/`GITHUB_APP_SLUG`/`GITHUB_APP_PRIVATE_KEY`/`GITHUB_WEBHOOK_SECRET` and real `GITHUB_CALLBACK_URL`.
+3. **Relay deploy** (after 1–2): real vars, secrets, public URL; then set the **App Store Server Notification v2 endpoint** in ASC to `<relay>/v1/app-store/notifications`.
+4. **ASC App Privacy answers** (web UI; no CLI surface) using `docs/premium-v1-app-privacy.md`.
+5. **Physical-device release matrix** per runbook.
+6. Relay stays intentionally undeployed until secrets exist: strict config fail-closed would reject every request, and a public half-configured endpoint is worse than none.
