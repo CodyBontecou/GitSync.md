@@ -1,6 +1,9 @@
 name = "sync-md-onboarding-analytics"
 main = "src/index.ts"
-compatibility_date = "2025-01-01"
+compatibility_date = "2026-08-13"
+
+[triggers]
+crons = ["29 3 * * *"]
 
 # D1 database created in Cloudflare account via:
 #   wrangler d1 create sync-md-onboarding-analytics
@@ -14,6 +17,7 @@ database_id = "500637ab-9d1d-4660-8291-763962b4e126"
 # repo URLs, file paths, branch names, author names/emails, tokens, SSH keys,
 # folder names, or file contents.
 MAX_BATCH_SIZE = "50"
+RETENTION_DAYS = "90"
 
 # Optional ingest token. If configured later:
 #   wrangler secret put INGEST_TOKEN

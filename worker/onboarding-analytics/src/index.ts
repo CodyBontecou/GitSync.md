@@ -1,7 +1,9 @@
 export interface Env {
   DB: D1Database;
   INGEST_TOKEN?: string;
+  DELETION_TOKEN?: string;
   MAX_BATCH_SIZE?: string;
+  RETENTION_DAYS?: string;
 }
 
 type AnalyticsValue = string | number;
@@ -16,6 +18,7 @@ type OnboardingEventRow = {
 
 const MAX_BODY_BYTES = 64 * 1024;
 const DEFAULT_MAX_BATCH_SIZE = 50;
+const DEFAULT_RETENTION_DAYS = 90;
 
 const EVENT_NAMES = new Set([
   "sync_onboarding_started",
@@ -84,9 +87,30 @@ export default {
       return ingestEvents(request, env);
     }
 
+    if (request.method === "DELETE" && pathname === "/v1/installations/current") {
+      return deleteInstallationEvents(request, env);
+    }
+
     return json({ ok: false, error: "not_found" }, 404);
   },
+
+  async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    ctx.waitUntil(cleanupExpiredEvents(env));
+  },
 };
+
+async function deleteInstallationEvents(request: Request, env: Env): Promise<Response> {
+  const authError = authorizeDeletion(request, env);
+  if (authError) return authError;
+
+  const installId = validateInstallIDHeader(request.headers.get("x-installation-id"));
+  if (!installId) return json({ ok: false, error: "invalid_install_id" }, 400);
+
+  await env.DB.prepare("DELETE FROM onboarding_events WHERE install_id = ?")
+    .bind(installId)
+    .run();
+  return new Response(null, { status: 204, headers: corsHeaders() });
+}
 
 async function ingestEvents(request: Request, env: Env): Promise<Response> {
   const authError = authorize(request, env);
@@ -254,9 +278,33 @@ function authorize(request: Request, env: Env): Response | undefined {
   return json({ ok: false, error: "unauthorized" }, 401);
 }
 
+function authorizeDeletion(request: Request, env: Env): Response | undefined {
+  if (!env.DELETION_TOKEN) return json({ ok: false, error: "deletion_unavailable" }, 503);
+
+  const expected = `Bearer ${env.DELETION_TOKEN}`;
+  if (request.headers.get("authorization") === expected) return undefined;
+
+  return json({ ok: false, error: "unauthorized" }, 401);
+}
+
+function validateInstallIDHeader(value: string | null): string | undefined {
+  return value && INSTALL_ID_RE.test(value) ? value.toLowerCase() : undefined;
+}
+
 function maxBatchSize(env: Env): number {
   const parsed = Number(env.MAX_BATCH_SIZE ?? DEFAULT_MAX_BATCH_SIZE);
   return Number.isInteger(parsed) && parsed > 0 ? Math.min(parsed, DEFAULT_MAX_BATCH_SIZE) : DEFAULT_MAX_BATCH_SIZE;
+}
+
+function retentionDays(env: Env): number {
+  const parsed = Number(env.RETENTION_DAYS ?? DEFAULT_RETENTION_DAYS);
+  return Number.isInteger(parsed) && parsed >= 1 && parsed <= 365 ? parsed : DEFAULT_RETENTION_DAYS;
+}
+
+async function cleanupExpiredEvents(env: Env): Promise<void> {
+  await env.DB.prepare(
+    "DELETE FROM onboarding_events WHERE datetime(received_at) < datetime('now', ?)",
+  ).bind(`-${retentionDays(env)} days`).run();
 }
 
 function stringProperty(properties: AnalyticsProperties, key: string): string | null {
@@ -289,8 +337,8 @@ function normalizedPathname(pathname: string): string {
 function corsHeaders(): HeadersInit {
   return {
     "access-control-allow-origin": "*",
-    "access-control-allow-methods": "GET,POST,OPTIONS",
-    "access-control-allow-headers": "authorization,content-type",
+    "access-control-allow-methods": "DELETE,GET,POST,OPTIONS",
+    "access-control-allow-headers": "authorization,content-type,x-installation-id",
     "cache-control": "no-store",
   };
 }

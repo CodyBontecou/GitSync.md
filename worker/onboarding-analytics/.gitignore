@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+.dev.vars
+.env*
+!.env.example
+coverage/
+*.cpuprofile
+.DS_Store

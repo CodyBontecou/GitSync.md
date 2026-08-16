@@ -16,7 +16,9 @@ The worker stores only validated, coarse onboarding fields:
 - whether the save location was the default app folder or a custom folder
 - coarse error category
 
-It rejects unknown event names/properties and does **not** store raw request IPs,
+Events are retained for 90 days by default (`RETENTION_DAYS`, bounded to 1–365) and a daily cron deletes older rows. This is event-level expiry, not an assertion that Cloudflare account logs or backups have the same lifecycle; verify provider settings separately before release.
+
+It rejects unknown event names/properties and does **not** deliberately persist raw request IPs,
 user agents, repository URLs, branch names, file/folder paths, author names/emails,
 GitHub usernames, tokens, SSH keys, raw device identifiers, or file contents.
 
@@ -37,6 +39,9 @@ npm run db:migrate:remote
 
 # Optional abuse-throttling token for deployed ingestion.
 wrangler secret put INGEST_TOKEN
+
+# Required for the operator/support installation-deletion endpoint.
+wrangler secret put DELETION_TOKEN
 
 npm run deploy
 ```
@@ -90,6 +95,12 @@ wrangler d1 execute sync-md-onboarding-analytics --local --command \
  ORDER BY received_at DESC
  LIMIT 5;"
 ```
+
+## Retention and deletion
+
+- The configured daily scheduled handler deletes events older than `RETENTION_DAYS` (default 90).
+- `DELETE /v1/installations/current` deletes rows for the UUID in `X-Installation-ID`. It requires the separately configured `DELETION_TOKEN` bearer and fails closed with 503 when the token is unset. This is an operator/support endpoint, not a credential embedded in public client UI. The app's user-mediated privacy-request email draft can privately provide the opaque onboarding installation ID; never put that ID in a public issue or paste the deletion token into email, shell history, or support records. Verify execution through a private/redacted operational record.
+- Review Cloudflare Worker invocation-log, D1 backup/time-travel, and legal-retention settings separately; the D1 cleanup cannot delete provider-layer records it does not control.
 
 ## Wrangler queries
 
