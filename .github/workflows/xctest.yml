@@ -31,6 +31,7 @@ jobs:
           # freed was not allocated" during TaskLocal scope teardown on task
           # deinit; newer runtimes are unaffected.
           SELECT="$(xcrun simctl list devices available | python3 -c '
+          import sys
           best = None
           runtime = None
           for line in sys.stdin:
