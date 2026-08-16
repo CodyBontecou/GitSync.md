@@ -112,3 +112,19 @@ Operator authorized commit/push and external provisioning. Evidence below supers
 4. **ASC App Privacy answers** (web UI; no CLI surface) using `docs/premium-v1-app-privacy.md`.
 5. **Physical-device release matrix** per runbook.
 6. Relay stays intentionally undeployed until secrets exist: strict config fail-closed would reject every request, and a public half-configured endpoint is worse than none.
+
+## 2026-08-16 CI resolution (XCTest on GitHub)
+
+First GitHub-hosted runs of the expanded suite failed with host-app malloc aborts ("pointer being freed was not allocated", constant address, ~5 ms into specific tests). Ruled out in order: StoreKit TestAction sessions (removed from scheme; crash persisted), ad-hoc signing vs entitlements (reproduced both ways), app-code memory errors (local full suite + ASan clean; crashed tests pass in milliseconds in isolation locally).
+
+Deployed an ASan probe run on the failing test (`ci-bisect-nosign` branch, run 31941264861). AddressSanitizer pinpointed the invalid free inside the **iOS 26.2 simruntime's `libswift_Concurrency.dylib`**:
+
+```
+#1 swift::TaskLocal::StopLookupScope::~StopLookupScope()
+#2 swift_task_deinitOnExecutorImpl(...)
+#4 Sync_md.RepoPersistenceStore.__deallocating_deinit
+```
+
+i.e., a Swift Concurrency runtime bug in task-local scope teardown during task deinit — our object just happened to be the one being deinitialized. Local runs (iOS 26.5 runtime) never hit it. The previously-green Aug 12 runs predate the persistence store/coordinator code paths that run deinits on tasks.
+
+Fix: XCTest workflow now selects an iPhone from the **newest installed runtime** instead of the first-listed device (commit `e3c772c`; diagnostic branch closed as PR #33 with the evidence). Verified: **XCTest run `31945818950` on `main` — 143 tests, 0 failures, Release artifact audit passed.** Premium Workers and Build Number Guard also green on the same push. All repository CI gates are now evidenced on GitHub-hosted runners.
