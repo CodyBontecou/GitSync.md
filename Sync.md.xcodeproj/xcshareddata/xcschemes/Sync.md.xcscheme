@@ -56,9 +56,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
-      <StoreKitConfigurationFileReference
-         identifier = "../../Sync.md/GitSyncAssist.storekit">
-      </StoreKitConfigurationFileReference>
       <Testables>
          <TestableReference
             skipped = "NO">
