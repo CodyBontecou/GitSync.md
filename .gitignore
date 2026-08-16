@@ -59,3 +59,4 @@ scripts/app-store-images/node_modules/
 
 # Pi subagent artifacts
 .pi-subagents/
+.wrangler/
