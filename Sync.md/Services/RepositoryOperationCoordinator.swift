@@ -113,6 +113,10 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
         try await run { try await $0.clone(remoteURL: remoteURL, pat: pat) }
     }
 
+    func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult {
+        try await run { try await $0.hydrateLFSObjects(pat: pat) }
+    }
+
     func setRemoteURL(name: String, url: String) async throws {
         try await run { try await $0.setRemoteURL(name: name, url: url) }
     }

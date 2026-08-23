@@ -9,6 +9,9 @@ protocol GitRepositoryProtocol: Sendable {
     var hasGitDirectory: Bool { get }
 
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult
+    /// Re-runs Git LFS hydration for the whole worktree (retry after an SSH
+    /// host-key trust prompt unblocked hydration).
+    func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult
     func setRemoteURL(name: String, url: String) async throws
     func pullPlan(pat: String) async throws -> PullPlan
     func pull(pat: String) async throws -> LocalPullResult

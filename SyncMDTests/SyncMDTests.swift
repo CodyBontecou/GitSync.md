@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import CryptoKit
+import NIOSSH
 import Clibgit2
 import libgit2
 @testable import Sync_md
@@ -1570,7 +1571,7 @@ final class SyncMDTests: XCTestCase {
         let unknown = SSHHostKeyTrustRequest(
             repoID: UUID(),
             operation: .clone,
-            trustError: .unknownHostKey(host: "forgejo.lan", port: 2222, fingerprint: "SHA256:unknown")
+            trustError: .unknownHostKey(host: "forgejo.lan", port: 2222, algorithm: "ssh-ed25519", fingerprint: "SHA256:unknown", sawOtherKeyTypes: false)
         )
         XCTAssertEqual(unknown.title, "Trust SSH Host?")
         XCTAssertEqual(unknown.confirmButtonTitle, "Trust Host")
@@ -1587,6 +1588,7 @@ final class SyncMDTests: XCTestCase {
             trustError: .changedHostKey(
                 host: "forgejo.lan",
                 port: 22,
+                algorithm: "ssh-rsa",
                 expectedFingerprint: "SHA256:old",
                 actualFingerprint: "SHA256:new"
             )
@@ -1609,7 +1611,9 @@ final class SyncMDTests: XCTestCase {
         let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
             host: "forgejo.example.com",
             port: 22,
-            fingerprint: "SHA256:clone-unknown"
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:clone-unknown",
+            sawOtherKeyTypes: false
         )
         repository.cloneResults = [.failure(LocalGitError.sshHostKeyTrustRequired(trustError))]
         let repo = RepoConfig(
@@ -1648,7 +1652,9 @@ final class SyncMDTests: XCTestCase {
         let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
             host: "forgejo-retry.example.com",
             port: 2222,
-            fingerprint: trustedFingerprint
+            algorithm: "ssh-ed25519",
+            fingerprint: trustedFingerprint,
+            sawOtherKeyTypes: false
         )
         let clonedCommit = "3333333333333333333333333333333333333333"
         repository.cloneResults = [
@@ -1681,7 +1687,7 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
         XCTAssertEqual(repository.cloneRemoteURLs.count, 2)
-        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-retry.example.com", port: 2222), trustedFingerprint)
+        XCTAssertEqual(trustStore.trustedFingerprints(forHost: "forgejo-retry.example.com", port: 2222).algorithms["ssh-ed25519"], trustedFingerprint)
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, clonedCommit)
         XCTAssertFalse(appState.showError)
     }
@@ -1693,7 +1699,9 @@ final class SyncMDTests: XCTestCase {
         let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
             host: "forgejo-cancel.example.com",
             port: 22,
-            fingerprint: "SHA256:cancelled"
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:cancelled",
+            sawOtherKeyTypes: false
         )
         repository.cloneResults = [.failure(LocalGitError.sshHostKeyTrustRequired(trustError))]
         let repo = RepoConfig(
@@ -1720,7 +1728,64 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
         XCTAssertEqual(repository.cloneRemoteURLs.count, 1)
-        XCTAssertNil(trustStore.trustedFingerprint(forHost: "forgejo-cancel.example.com", port: 22))
+        XCTAssertNil(trustStore.trustedFingerprints(forHost: "forgejo-cancel.example.com", port: 22).algorithms["ssh-ed25519"])
+    }
+
+    @MainActor
+    func testAppStateCloneLFSHostKeyTrustPromptsHydrationOnlyRetry() async throws {
+        // Clone succeeds, but Git LFS hydration (second SSH stack) presents an
+        // unseen key type. The trust prompt must retry hydration alone — not
+        // re-clone — and the repo must stay cloned.
+        let repoInfo = LocalRepoInfo(branch: "main", commitSHA: "6666666666666666666666666666666666666666", changeCount: 0)
+        let repository = FakeGitRepository(repoInfoResult: repoInfo)
+        let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
+            host: "forgejo.example.com",
+            port: 22,
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:lfs-second-stack",
+            sawOtherKeyTypes: true
+        )
+        repository.cloneResults = [
+            .success(LocalCloneResult(
+                commitSHA: repoInfo.commitSHA,
+                branch: "main",
+                fileCount: 9,
+                lfsTrustError: trustError
+            ))
+        ]
+        let repo = RepoConfig(
+            repoURL: "git@forgejo.example.com:team/notes.git",
+            branch: "main",
+            authorName: "Test User",
+            authorEmail: "test@example.com",
+            vaultFolderName: "SyncMD-SSHHostKey-LFS-\(UUID().uuidString)",
+            authMethod: .sshKey,
+            authUsername: "git"
+        )
+        let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+        let trustStore = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let appState = AppState(
+            gitRepositoryFactory: { _ in repository },
+            sshHostKeyTrustStore: trustStore,
+            loadPersistedState: false
+        )
+        appState.repos = [repo]
+
+        await appState.clone(repoID: repo.id)
+
+        XCTAssertEqual(repository.cloneRemoteURLs.count, 1)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.operation, .hydrateLFS)
+        XCTAssertEqual(appState.pendingSSHHostKeyTrustRequest?.trustError, trustError)
+        XCTAssertTrue(appState.repos.first?.isCloned ?? false)
+        XCTAssertNil(appState.lastError)
+
+        await appState.trustPendingSSHHostKeyAndRetry()
+
+        XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
+        XCTAssertEqual(repository.cloneRemoteURLs.count, 1, "hydrate retry must not re-clone")
+        XCTAssertEqual(repository.hydrateLFSCallCount, 1)
+        XCTAssertEqual(trustStore.trustedFingerprints(forHost: "forgejo.example.com", port: 22).algorithms["ssh-ed25519"], "SHA256:lfs-second-stack")
     }
 
     @MainActor
@@ -1730,7 +1795,9 @@ final class SyncMDTests: XCTestCase {
         let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
             host: "forgejo-pull.example.com",
             port: 22,
-            fingerprint: "SHA256:pull"
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:pull",
+            sawOtherKeyTypes: false
         )
         fixture.repository.pullPlanError = LocalGitError.sshHostKeyTrustRequired(trustError)
         let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
@@ -1763,8 +1830,12 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
         XCTAssertEqual(fixture.repository.pullPlanCallCount, 2)
-        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-pull.example.com", port: 22), "SHA256:pull")
+        XCTAssertEqual(trustStore.trustedFingerprints(forHost: "forgejo-pull.example.com", port: 22).algorithms["ssh-rsa"], "SHA256:pull")
         XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .upToDate)
+        // The pull trust retry also runs a hydration pass so LFS pointer
+        // stubs left behind by a hydration trust failure are recovered even
+        // when the retried pull reports up-to-date.
+        XCTAssertEqual(fixture.repository.hydrateLFSCallCount, 1)
     }
 
     @MainActor
@@ -1774,6 +1845,7 @@ final class SyncMDTests: XCTestCase {
         let trustError = GitLFSSSHHostKeyTrustError.changedHostKey(
             host: "forgejo-push.example.com",
             port: 2200,
+            algorithm: "ssh-ed25519",
             expectedFingerprint: "SHA256:old-push",
             actualFingerprint: "SHA256:new-push"
         )
@@ -1806,7 +1878,7 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
         XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 2)
-        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-push.example.com", port: 2200), "SHA256:new-push")
+        XCTAssertEqual(trustStore.trustedFingerprints(forHost: "forgejo-push.example.com", port: 2200).algorithms["ssh-ed25519"], "SHA256:new-push")
         XCTAssertEqual(appState.syncStateByRepo[fixture.repoConfig.id], .upToDate)
     }
 
@@ -1817,7 +1889,9 @@ final class SyncMDTests: XCTestCase {
         let trustError = GitLFSSSHHostKeyTrustError.unknownHostKey(
             host: "forgejo-commit-push.example.com",
             port: 22,
-            fingerprint: "SHA256:commit-push"
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:commit-push",
+            sawOtherKeyTypes: false
         )
         fixture.repository.commitAndPushResult = .failure(LocalGitError.sshHostKeyTrustRequired(trustError))
         let trustURL = FileManager.default.temporaryDirectory.appendingPathComponent("SyncMD-Trust-\(UUID().uuidString).json")
@@ -1841,7 +1915,7 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertNil(appState.pendingSSHHostKeyTrustRequest)
         XCTAssertEqual(fixture.repository.commitAndPushMessages, ["sync notes", "sync notes"])
-        XCTAssertEqual(trustStore.trustedFingerprint(forHost: "forgejo-commit-push.example.com", port: 22), "SHA256:commit-push")
+        XCTAssertEqual(trustStore.trustedFingerprints(forHost: "forgejo-commit-push.example.com", port: 22).algorithms["ssh-ed25519"], "SHA256:commit-push")
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, "5555555555555555555555555555555555555555")
     }
 
@@ -4488,10 +4562,15 @@ final class SyncMDTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: trustURL) }
 
         let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
-        try store.trust(fingerprint: "SHA256:trusted", host: "GitHub.com", port: 22)
+        try store.trust(algorithm: "ssh-ed25519", fingerprint: "SHA256:trusted", host: "git.example.com", port: 22)
 
         let reloaded = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
-        XCTAssertNoThrow(try reloaded.validate(fingerprint: "SHA256:trusted", host: "github.com", port: 22))
+        XCTAssertNoThrow(try reloaded.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:trusted",
+            host: "git.example.com",
+            port: 22
+        ))
     }
 
     func testGitLFSSSHHostKeyTrustStoreRejectsUnknownHostKeyWithFingerprintDetails() throws {
@@ -4501,14 +4580,21 @@ final class SyncMDTests: XCTestCase {
 
         let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
 
-        XCTAssertThrowsError(try store.validate(fingerprint: "SHA256:new-key", host: "git.example.com", port: 2222)) { error in
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:new-key",
+            host: "git.example.com",
+            port: 2222
+        )) { error in
             guard let trustError = error as? GitLFSSSHHostKeyTrustError,
-                  case let .unknownHostKey(host, port, fingerprint) = trustError else {
+                  case let .unknownHostKey(host, port, algorithm, fingerprint, sawOtherKeyTypes) = trustError else {
                 return XCTFail("Expected unknown host-key trust error, got \(error)")
             }
             XCTAssertEqual(host, "git.example.com")
             XCTAssertEqual(port, 2222)
+            XCTAssertEqual(algorithm, "ssh-ed25519")
             XCTAssertEqual(fingerprint, "SHA256:new-key")
+            XCTAssertFalse(sawOtherKeyTypes)
             XCTAssertTrue(error.localizedDescription.contains("SHA256:new-key"))
             XCTAssertTrue(error.localizedDescription.contains("git.example.com:2222"))
         }
@@ -4520,15 +4606,21 @@ final class SyncMDTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: trustURL) }
 
         let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
-        try store.trust(fingerprint: "SHA256:old-key", host: "git.example.com", port: 22)
+        try store.trust(algorithm: "ssh-rsa", fingerprint: "SHA256:old-key", host: "git.example.com", port: 22)
 
-        XCTAssertThrowsError(try store.validate(fingerprint: "SHA256:new-key", host: "git.example.com", port: 22)) { error in
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:new-key",
+            host: "git.example.com",
+            port: 22
+        )) { error in
             guard let trustError = error as? GitLFSSSHHostKeyTrustError,
-                  case let .changedHostKey(host, port, expected, actual) = trustError else {
+                  case let .changedHostKey(host, port, algorithm, expected, actual) = trustError else {
                 return XCTFail("Expected changed host-key trust error, got \(error)")
             }
             XCTAssertEqual(host, "git.example.com")
             XCTAssertEqual(port, 22)
+            XCTAssertEqual(algorithm, "ssh-rsa")
             XCTAssertEqual(expected, "SHA256:old-key")
             XCTAssertEqual(actual, "SHA256:new-key")
             XCTAssertTrue(error.localizedDescription.contains("changed"))
@@ -4537,25 +4629,245 @@ final class SyncMDTests: XCTestCase {
         }
     }
 
+    func testGitLFSSSHHostKeyTrustStoreTreatsUnseenAlgorithmAsUnknownNotChanged() throws {
+        // Regression: the git transport (libssh2) and the Git LFS transport
+        // (NIOSSH) negotiate different host-key algorithms against the same
+        // server. A second key type must prompt for trust, not claim a
+        // man-in-the-middle attack.
+        let trustURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("SyncMD-HostKeys-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+
+        let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        try store.trust(algorithm: "ssh-rsa", fingerprint: "SHA256:rsa-key", host: "git.example.com", port: 22)
+
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:ed25519-key",
+            host: "git.example.com",
+            port: 22
+        )) { error in
+            guard let trustError = error as? GitLFSSSHHostKeyTrustError,
+                  case let .unknownHostKey(_, _, algorithm, fingerprint, sawOtherKeyTypes) = trustError else {
+                return XCTFail("Expected unknown host-key trust error for unseen algorithm, got \(error)")
+            }
+            XCTAssertEqual(algorithm, "ssh-ed25519")
+            XCTAssertEqual(fingerprint, "SHA256:ed25519-key")
+            XCTAssertTrue(sawOtherKeyTypes)
+        }
+
+        // Once trusted, both key types validate side by side.
+        try store.trust(algorithm: "ssh-ed25519", fingerprint: "SHA256:ed25519-key", host: "git.example.com", port: 22)
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:rsa-key",
+            host: "git.example.com",
+            port: 22
+        ))
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:ed25519-key",
+            host: "git.example.com",
+            port: 22
+        ))
+    }
+
+    func testGitLFSSSHHostKeyTrustStoreAcceptsSameKeyPresentedUnderDifferentAlgorithmLabel() throws {
+        // The same key material presented by the other SSH stack (e.g. an
+        // algorithm the parser could not resolve) matches the existing pin.
+        let trustURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("SyncMD-HostKeys-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+
+        let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        try store.trust(algorithm: "ssh-ed25519", fingerprint: "SHA256:same-key", host: "git.example.com", port: 22)
+
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-unknown",
+            fingerprint: "SHA256:same-key",
+            host: "git.example.com",
+            port: 22
+        ))
+    }
+
+    func testGitLFSSSHHostKeyTrustStoreLegacyPinWithoutAlgorithmStillValidatesAndPromptsForNewKeys() throws {
+        // Pins persisted by builds before per-algorithm pinning keep working:
+        // the same fingerprint is accepted (regardless of which stack
+        // presents it), and a different fingerprint prompts for trust
+        // instead of accusing a man-in-the-middle.
+        let trustURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("SyncMD-HostKeys-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+
+        let legacyJSON = """
+        [{"host":"git.example.com","port":22,"fingerprint":"SHA256:legacy-key"}]
+        """
+        try legacyJSON.write(to: trustURL, atomically: true, encoding: .utf8)
+
+        let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ecdsa-sha2-nistp256",
+            fingerprint: "SHA256:legacy-key",
+            host: "git.example.com",
+            port: 22
+        ))
+
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:different-key",
+            host: "git.example.com",
+            port: 22
+        )) { error in
+            guard let trustError = error as? GitLFSSSHHostKeyTrustError,
+                  case .unknownHostKey = trustError else {
+                return XCTFail("Expected unknown host-key prompt for unseen key after legacy pin, got \(error)")
+            }
+        }
+    }
+
+    func testGitLFSSSHHostKeyTrustStorePreservesLegacyPinsWhenTrustingNewKeys() throws {
+        // A user upgrades, then trusts a second key type: the pre-upgrade pin
+        // must stay on disk (other SSH stacks still present that key), and a
+        // legacy fingerprint that later gets pinned under a concrete
+        // algorithm is finally dropped from the legacy bucket.
+        let trustURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("SyncMD-HostKeys-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+
+        let legacyJSON = """
+        [{"host":"git.example.com","port":22,"fingerprint":"SHA256:legacy-rsa"}]
+        """
+        try legacyJSON.write(to: trustURL, atomically: true, encoding: .utf8)
+
+        let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        try store.trust(algorithm: "ssh-ed25519", fingerprint: "SHA256:ed25519-new", host: "git.example.com", port: 22)
+
+        let reloaded = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        XCTAssertNoThrow(try reloaded.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:legacy-rsa",
+            host: "git.example.com",
+            port: 22
+        ))
+        XCTAssertNoThrow(try reloaded.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:ed25519-new",
+            host: "git.example.com",
+            port: 22
+        ))
+
+        // Pinning the legacy fingerprint under a real algorithm retires the
+        // legacy bucket entry.
+        try reloaded.trust(algorithm: "ssh-rsa", fingerprint: "SHA256:legacy-rsa", host: "git.example.com", port: 22)
+        let reloadedAgain = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+        let pins = reloadedAgain.trustedFingerprints(forHost: "git.example.com", port: 22)
+        XCTAssertEqual(pins.legacyFingerprints, [])
+        XCTAssertEqual(pins.algorithms["ssh-rsa"], "SHA256:legacy-rsa")
+        XCTAssertEqual(pins.algorithms["ssh-ed25519"], "SHA256:ed25519-new")
+    }
+
+    func testGitLFSSSHHostKeyTrustStorePreseedsGitHubPublishedFingerprints() throws {
+        let trustURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("SyncMD-HostKeys-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: trustURL) }
+
+        let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
+
+        // All three published key types validate with no prior user action,
+        // mirroring the first-use experience for HTTPS with bundled roots.
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU",
+            host: "github.com",
+            port: 22
+        ))
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ecdsa-sha2-nistp256",
+            fingerprint: "SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM",
+            host: "GitHub.com",
+            port: 22
+        ))
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:uNiVztksCsDhcc0u9e8BujQXVUpKZIDTMczCvj3tD2s",
+            host: "github.com",
+            port: 22
+        ))
+
+        // A same-algorithm key mismatch is still a hard failure.
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:attacker-key",
+            host: "github.com",
+            port: 22
+        )) { error in
+            guard let trustError = error as? GitLFSSSHHostKeyTrustError,
+                  case .changedHostKey = trustError else {
+                return XCTFail("Expected changed host-key error for mismatched GitHub seed, got \(error)")
+            }
+        }
+
+        // Seeds are not persisted: the file stays empty and other hosts
+        // still go through trust-on-first-use.
+        XCTAssertFalse(FileManager.default.fileExists(atPath: trustURL.path))
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-ed25519",
+            fingerprint: "SHA256:any",
+            host: "ssh.github.com",
+            port: 443
+        )) { error in
+            guard let trustError = error as? GitLFSSSHHostKeyTrustError,
+                  case .unknownHostKey = trustError else {
+                return XCTFail("Expected unknown host-key error for unseeded host, got \(error)")
+            }
+        }
+    }
+
+    func testGitLFSSSHHostKeyAlgorithmParsesNIOSSHPublicKeyBlob() throws {
+        let openSSHPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFheFfz6xC6XuekPEypFPgzjaQ2eoSjs05mEt09RJwl7 test@fixture"
+        let key = try NIOSSHPublicKey(openSSHPublicKey: openSSHPublicKey)
+        XCTAssertEqual(GitLFSSSHHostKeyAlgorithm.name(forNIOSSHPublicKey: key), "ssh-ed25519")
+    }
+
     func testGitLFSSSHHostKeyTrustStoreKeepsHostPortsDistinct() throws {
         let trustURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("SyncMD-HostKeys-\(UUID().uuidString).json")
         defer { try? FileManager.default.removeItem(at: trustURL) }
 
         let store = GitLFSSSHHostKeyFileTrustStore(fileURL: trustURL)
-        try store.trust(fingerprint: "SHA256:port-22", host: "git.example.com", port: 22)
+        try store.trust(algorithm: "ssh-rsa", fingerprint: "SHA256:port-22", host: "git.example.com", port: 22)
 
-        XCTAssertNoThrow(try store.validate(fingerprint: "SHA256:port-22", host: "git.example.com", port: 22))
-        XCTAssertThrowsError(try store.validate(fingerprint: "SHA256:port-22", host: "git.example.com", port: 2222)) { error in
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:port-22",
+            host: "git.example.com",
+            port: 22
+        ))
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:port-22",
+            host: "git.example.com",
+            port: 2222
+        )) { error in
             guard let trustError = error as? GitLFSSSHHostKeyTrustError,
                   case .unknownHostKey = trustError else {
                 return XCTFail("Expected unknown host-key trust error for distinct port, got \(error)")
             }
         }
 
-        try store.trust(fingerprint: "SHA256:port-2222", host: "git.example.com", port: 2222)
-        XCTAssertNoThrow(try store.validate(fingerprint: "SHA256:port-2222", host: "git.example.com", port: 2222))
-        XCTAssertThrowsError(try store.validate(fingerprint: "SHA256:port-2222", host: "git.example.com", port: 22)) { error in
+        try store.trust(algorithm: "ssh-rsa", fingerprint: "SHA256:port-2222", host: "git.example.com", port: 2222)
+        XCTAssertNoThrow(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:port-2222",
+            host: "git.example.com",
+            port: 2222
+        ))
+        XCTAssertThrowsError(try store.validate(
+            algorithm: "ssh-rsa",
+            fingerprint: "SHA256:port-2222",
+            host: "git.example.com",
+            port: 22
+        )) { error in
             guard let trustError = error as? GitLFSSSHHostKeyTrustError,
                   case .changedHostKey = trustError else {
                 return XCTFail("Expected changed host-key trust error for the separately-pinned port, got \(error)")
@@ -5367,6 +5679,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var rebaseResult: Result<LocalPullResult, Error>?
     var continueRebaseResult: Result<LocalPullResult, Error>?
     var didAbortRebase = false
+    var hydrateLFSObjectsResults: [Result<GitLFSHydrateResult, Error>] = []
+    var hydrateLFSCallCount = 0
     var diffResult: UnifiedDiffResult = .empty
     var commitHistoryResult: [GitCommitSummary] = []
     var commitDetailResultByOID: [String: GitCommitDetail] = [:]
@@ -5446,6 +5760,19 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
             }
         }
         return LocalCloneResult(commitSHA: repoInfoResult.commitSHA, branch: repoInfoResult.branch, fileCount: 1)
+    }
+
+    func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult {
+        hydrateLFSCallCount += 1
+        if !hydrateLFSObjectsResults.isEmpty {
+            switch hydrateLFSObjectsResults.removeFirst() {
+            case .success(let result):
+                return result
+            case .failure(let error):
+                throw error
+            }
+        }
+        return .empty
     }
 
     func setRemoteURL(name: String, url: String) async throws {
@@ -5897,6 +6224,7 @@ private final class SerializationProbeRepository: GitRepositoryProtocol, @unchec
     }
 
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult { fatalError() }
+    func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult { fatalError() }
     func setRemoteURL(name: String, url: String) async throws { fatalError() }
     func pullPlan(pat: String) async throws -> PullPlan { fatalError() }
     func pull(pat: String) async throws -> LocalPullResult { fatalError() }

@@ -1218,7 +1218,15 @@ final class GitLFSService: @unchecked Sendable {
                     throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication is unavailable in this build."))
                 }
                 let request = try GitLFSSSHAuthRequest(remote: parsed, credentials: credentials, operation: operation)
-                return try await sshAuthenticator.authenticate(request: request, credentials: credentials)
+                do {
+                    return try await sshAuthenticator.authenticate(request: request, credentials: credentials)
+                } catch let trustError as GitLFSSSHHostKeyTrustError {
+                    // Wrap host-key trust failures exactly like the git
+                    // transport does so the shared trust dialog handles LFS
+                    // connections too, instead of stranding the raw
+                    // man-in-the-middle text in a generic error alert.
+                    throw LocalGitError.sshHostKeyTrustRequired(trustError)
+                }
             }
 
             if let baseURL = lfsBaseURL(fromRemoteURL: remote) {

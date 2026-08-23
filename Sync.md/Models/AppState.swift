@@ -36,6 +36,9 @@ struct SSHHostKeyTrustRequest: Identifiable, Equatable {
         case pull
         case pushCurrentBranch
         case pushCommit(message: String)
+        /// The clone already completed; only Git LFS hydration is blocked on
+        /// the trust decision, so the retry re-runs hydration alone.
+        case hydrateLFS
     }
 
     let id = UUID()
@@ -63,34 +66,44 @@ struct SSHHostKeyTrustRequest: Identifiable, Equatable {
 
     var message: String {
         switch trustError {
-        case .unknownHostKey(let host, let port, let fingerprint):
+        case .unknownHostKey(let host, let port, let algorithm, let fingerprint, let sawOtherKeyTypes):
             let portString = String(port)
-            return String(localized: "\(host):\(portString) presented this SSH host key:\n\n\(fingerprint)\n\nOnly trust it if this fingerprint matches your Forgejo/Git server.")
-        case .changedHostKey(let host, let port, let expectedFingerprint, let actualFingerprint):
+            if sawOtherKeyTypes {
+                return String(localized: "\(host):\(portString) presented an SSH host key of a type not pinned before (\(algorithm)):\n\n\(fingerprint)\n\nThe git and Git LFS connections can negotiate different key types against the same server, so this is usually expected. Only trust it if this fingerprint matches your Forgejo/Git server.")
+            }
+            return String(localized: "\(host):\(portString) presented this SSH host key (\(algorithm)):\n\n\(fingerprint)\n\nOnly trust it if this fingerprint matches your Forgejo/Git server.")
+        case .changedHostKey(let host, let port, let algorithm, let expectedFingerprint, let actualFingerprint):
             let portString = String(port)
-            return String(localized: "\(host):\(portString) presented a different SSH host key.\n\nPreviously trusted:\n\(expectedFingerprint)\n\nNew key:\n\(actualFingerprint)\n\nDo not trust the new key unless you intentionally rotated the server's SSH host key.")
+            return String(localized: "\(host):\(portString) presented a different SSH host key for a previously pinned key type (\(algorithm)).\n\nPreviously trusted:\n\(expectedFingerprint)\n\nNew key:\n\(actualFingerprint)\n\nDo not trust the new key unless you intentionally rotated the server's SSH host key.")
         }
     }
 
     var host: String {
         switch trustError {
-        case .unknownHostKey(let host, _, _), .changedHostKey(let host, _, _, _):
+        case .unknownHostKey(let host, _, _, _, _), .changedHostKey(let host, _, _, _, _):
             return host
         }
     }
 
     var port: Int {
         switch trustError {
-        case .unknownHostKey(_, let port, _), .changedHostKey(_, let port, _, _):
+        case .unknownHostKey(_, let port, _, _, _), .changedHostKey(_, let port, _, _, _):
             return port
+        }
+    }
+
+    var algorithm: String {
+        switch trustError {
+        case .unknownHostKey(_, _, let algorithm, _, _), .changedHostKey(_, _, let algorithm, _, _):
+            return algorithm
         }
     }
 
     var fingerprintToTrust: String {
         switch trustError {
-        case .unknownHostKey(_, _, let fingerprint):
+        case .unknownHostKey(_, _, _, let fingerprint, _):
             return fingerprint
-        case .changedHostKey(_, _, _, let actualFingerprint):
+        case .changedHostKey(_, _, _, _, let actualFingerprint):
             return actualFingerprint
         }
     }
@@ -1310,6 +1323,7 @@ final class AppState {
         guard let request = pendingSSHHostKeyTrustRequest else { return }
         do {
             try sshHostKeyTrustStore.trust(
+                algorithm: request.algorithm,
                 fingerprint: request.fingerprintToTrust,
                 host: request.host,
                 port: request.port
@@ -1317,7 +1331,7 @@ final class AppState {
             DebugLogger.shared.info(
                 "security",
                 "Trusted SSH host key",
-                detail: "\(request.host):\(request.port) \(request.fingerprintToTrust)"
+                detail: "\(request.host):\(request.port) \(request.algorithm) \(request.fingerprintToTrust)"
             )
         } catch {
             pendingSSHHostKeyTrustRequest = nil
@@ -1334,10 +1348,40 @@ final class AppState {
             await clone(repoID: repoID)
         case .pull:
             _ = await pull(repoID: repoID)
+            // The trust failure may have come from Git LFS hydration rather
+            // than the git transport. A retried pull that now reports
+            // up-to-date would skip hydration entirely, leaving pointer
+            // stubs on disk, so finish the sync explicitly.
+            await retryLFSHydration(repoID: repoID)
         case .pushCurrentBranch:
             _ = await pushCurrentBranch(repoID: repoID)
         case .pushCommit(let message):
             _ = await push(repoID: repoID, message: message)
+        case .hydrateLFS:
+            await retryLFSHydration(repoID: repoID)
+        }
+    }
+
+    /// Re-runs Git LFS hydration after the user trusted an SSH host key that
+    /// blocked hydration at clone time (the clone itself already finished).
+    func retryLFSHydration(repoID: UUID) async {
+        guard let repo = repo(id: repoID), repo.isCloned else { return }
+
+        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+        do {
+            let result = try await gitService.hydrateLFSObjects(pat: authPayload(for: repo))
+            if result.checkedOutCount > 0 {
+                DebugLogger.shared.info(
+                    "lfs",
+                    "Hydrated Git LFS files after trusting host key",
+                    detail: "\(result.checkedOutCount) files"
+                )
+                detectChanges(repoID: repoID)
+            }
+        } catch {
+            if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .hydrateLFS) {
+                showError(message: error.localizedDescription, category: "lfs")
+            }
         }
     }
 
@@ -2266,6 +2310,13 @@ final class AppState {
             DebugLogger.shared.info("clone", "Clone complete", detail: "\(result.fileCount) files, branch: \(result.branch)")
             if let lfsWarning = result.lfsWarning {
                 showError(message: lfsWarning, category: "lfs")
+            }
+            if let lfsTrustError = result.lfsTrustError {
+                _ = handleSSHHostKeyTrustIfNeeded(
+                    LocalGitError.sshHostKeyTrustRequired(lfsTrustError),
+                    repoID: repoID,
+                    operation: .hydrateLFS
+                )
             }
 
 

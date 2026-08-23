@@ -118,12 +118,23 @@ struct LocalCloneResult: Sendable {
     let branch: String
     let fileCount: Int
     let lfsWarning: String?
+    /// Set when the clone itself succeeded but Git LFS hydration is blocked
+    /// on trusting an SSH host key. The trust dialog should offer a
+    /// hydration-only retry instead of re-cloning the whole vault.
+    let lfsTrustError: GitLFSSSHHostKeyTrustError?
 
-    init(commitSHA: String, branch: String, fileCount: Int, lfsWarning: String? = nil) {
+    init(
+        commitSHA: String,
+        branch: String,
+        fileCount: Int,
+        lfsWarning: String? = nil,
+        lfsTrustError: GitLFSSSHHostKeyTrustError? = nil
+    ) {
         self.commitSHA = commitSHA
         self.branch = branch
         self.fileCount = fileCount
         self.lfsWarning = lfsWarning
+        self.lfsTrustError = lfsTrustError
     }
 }
 
@@ -488,6 +499,15 @@ nonisolated private func sshSHA256Fingerprint(from cert: UnsafeMutablePointer<gi
     return "SHA256:\(base64)"
 }
 
+nonisolated private func sshHostKeyAlgorithmName(from cert: UnsafeMutablePointer<git_cert>) -> String {
+    let hostKey = UnsafeMutableRawPointer(cert).assumingMemoryBound(to: git_cert_hostkey.self).pointee
+    guard hostKey.type.rawValue & GIT_CERT_SSH_RAW.rawValue != 0,
+          let name = GitLFSSSHHostKeyAlgorithm.name(forLibGit2RawType: hostKey.raw_type) else {
+        return GitLFSSSHHostKeyAlgorithm.unknown
+    }
+    return name
+}
+
 nonisolated private func sshHostAndPort(for callbackHost: String, remoteURL: String?) -> (host: String, port: Int) {
     if let remoteURL,
        let remote = GitRemoteURL.parse(remoteURL),
@@ -525,7 +545,12 @@ nonisolated private func certificateCheckCallback(
 
         let (trustedHost, trustedPort) = sshHostAndPort(for: hostName, remoteURL: ctx.remoteURL)
         do {
-            try ctx.hostKeyTrustStore.validate(fingerprint: fingerprint, host: trustedHost, port: trustedPort)
+            try ctx.hostKeyTrustStore.validate(
+                algorithm: sshHostKeyAlgorithmName(from: cert),
+                fingerprint: fingerprint,
+                host: trustedHost,
+                port: trustedPort
+            )
             return 0
         } catch let error as GitLFSSSHHostKeyTrustError {
             ctx.recordSSHHostKeyTrustError(error)
@@ -768,11 +793,23 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }.value
 
         var lfsWarning: String?
+        var lfsTrustError: GitLFSSSHHostKeyTrustError?
         do {
             let lfsResult = try await Self.hydrateLFSIfNeeded(localURL: localURL, pat: pat)
             if lfsResult.checkedOutCount > 0 {
                 DebugLogger.shared.info("lfs", "Hydrated Git LFS files after clone", detail: "\(lfsResult.checkedOutCount) files")
             }
+        } catch LocalGitError.sshHostKeyTrustRequired(let trustError) {
+            // The clone itself is complete; only Git LFS hydration is blocked
+            // on trusting a host key (commonly a second key type presented by
+            // the LFS connection's SSH stack). Surface the trust prompt with a
+            // hydration-only retry instead of failing the whole clone.
+            lfsTrustError = trustError
+            DebugLogger.shared.error(
+                "lfs",
+                "Git LFS hydration after clone blocked on SSH host key trust",
+                detail: trustError.localizedDescription
+            )
         } catch LocalGitError.lfsFailed(let message) {
             lfsWarning = "Clone completed, but some Git LFS files could not be downloaded: \(message)"
             DebugLogger.shared.error("lfs", "Git LFS hydration after clone failed", detail: message)
@@ -782,7 +819,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             commitSHA: result.commitSHA,
             branch: result.branch,
             fileCount: Self.countFiles(in: localURL),
-            lfsWarning: lfsWarning
+            lfsWarning: lfsWarning,
+            lfsTrustError: lfsTrustError
         )
     }
 
@@ -3686,6 +3724,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             localURL: localURL,
             credentials: GitRemoteCredentials.fromTransportPayload(pat)
         ).hydrateWorktree(candidatePaths: candidatePaths)
+    }
+
+    /// Re-runs Git LFS hydration for the whole worktree. Used to retry after
+    /// the user trusts an SSH host key that blocked hydration during a clone
+    /// that otherwise completed.
+    func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult {
+        try await Self.hydrateLFSIfNeeded(localURL: localURL, pat: pat)
     }
 
     static func classifyPullAction(ahead: Int, behind: Int, hasLocalChanges: Bool) -> PullPlanAction {
