@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Automate Git Pulls with Apple Shortcuts — GitSync.md</title>
+<meta name="description" content="Automate GitSync.md pulls with Apple Shortcuts: native App Intents, Siri phrases, and Personal Automations that pull all repos or one repo when the app opens.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://gitsyncmd.app/blog/shortcuts-automation-ios.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Automate Git Pulls with Apple Shortcuts — GitSync.md">
+<meta property="og:description" content="Pull all repositories or one vault with a tap or a Siri phrase — then let a Personal Automation do it every time the app opens.">
+<meta property="og:url" content="https://gitsyncmd.app/blog/shortcuts-automation-ios.html">
+<meta property="og:image" content="https://gitsyncmd.app/screenshots/workflow-vault-view.png">
+<meta property="article:published_time" content="2026-08-22">
+<meta property="article:modified_time" content="2026-08-22">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Automate Git Pulls with Apple Shortcuts — GitSync.md">
+<meta name="twitter:description" content="Native App Intents for pulling repos on iOS — no URL building required.">
+<meta name="twitter:image" content="https://gitsyncmd.app/screenshots/workflow-vault-view.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Automate Git Pulls with Apple Shortcuts",
+  "description": "Automate GitSync.md pulls with Apple Shortcuts: native App Intents, Siri phrases, and Personal Automations.",
+  "image": [
+    "https://gitsyncmd.app/screenshots/workflow-vault-view.png"
+  ],
+  "datePublished": "2026-08-22",
+  "dateModified": "2026-08-22",
+  "author": { "@type": "Person", "name": "Cody Bontecou" },
+  "publisher": { "@type": "Person", "name": "Cody Bontecou" },
+  "mainEntityOfPage": "https://gitsyncmd.app/blog/shortcuts-automation-ios.html"
+}
+</script>
+<style>
+  :root {
+    --white: #f5f5f7;
+    --black: #0a0a0a;
+    --grey-1: #1a1a1a;
+    --grey-2: #2a2a2a;
+    --grey-3: #3a3a3a;
+    --grey-4: #6a6a6a;
+    --grey-5: #8a8a8a;
+    --grey-6: #b0b0b0;
+    --blue: #007AFF;
+    --blue-dim: rgba(0, 122, 255, 0.12);
+    --green: #30D158;
+    --green-dim: rgba(48, 209, 88, 0.12);
+    --amber: #FFD60A;
+    --amber-dim: rgba(255, 214, 10, 0.12);
+    --line: rgba(255, 255, 255, 0.08);
+    --mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, 'Fira Code', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: var(--blue); color: var(--black); }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(0, 122, 255, 0.12), transparent 28%),
+      radial-gradient(circle at 82% 8%, rgba(48, 209, 88, 0.06), transparent 24%),
+      linear-gradient(180deg, rgba(255,255,255,0.018), transparent 42%);
+    z-index: -2;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, transparent 72%);
+    z-index: -1;
+  }
+
+  a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(0, 122, 255, 0.3); transition: border-color 0.2s ease, color 0.2s ease; }
+  a:hover { border-color: var(--blue); }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.72);
+    border-bottom: 1px solid var(--grey-2);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-block;
+    animation: pulse-dot 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-5);
+    border-bottom: 0;
+  }
+  .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--white); }
+
+  .nav-cta {
+    color: var(--blue) !important;
+    border: 1px solid rgba(0, 122, 255, 0.3) !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+  .nav-cta:hover { background: var(--blue); color: var(--black) !important; border-color: var(--blue) !important; }
+
+  .article-hero { padding: 144px 0 72px; border-bottom: 1px solid var(--grey-2); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.55fr); gap: 56px; align-items: end; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    background: var(--blue-dim);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    max-width: 860px;
+    margin-bottom: 24px;
+  }
+
+  .accent { color: var(--blue); }
+  .subtitle { font-size: 15px; font-weight: 300; color: var(--grey-5); line-height: 1.85; max-width: 760px; }
+  .meta-line { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; color: var(--grey-4); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .toc-card {
+    border: 1px solid var(--grey-2);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012));
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  }
+
+  .toc-title { font-size: 10px; color: var(--grey-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }
+  .toc-card ol { list-style: none; display: grid; gap: 12px; counter-reset: toc; }
+  .toc-card li { counter-increment: toc; display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; color: var(--grey-6); font-size: 12px; }
+  .toc-card li::before { content: counter(toc, decimal-leading-zero); color: var(--blue); font-size: 10px; padding-top: 2px; }
+
+  .article-shell { display: grid; grid-template-columns: minmax(0, 760px) minmax(220px, 1fr); gap: 64px; padding: 72px 0 96px; align-items: start; }
+  .article-body { min-width: 0; }
+
+  .article-body h2 {
+    font-size: 25px;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin: 58px 0 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--grey-2);
+  }
+
+  .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .article-body h3 { font-size: 16px; color: var(--grey-6); margin: 34px 0 12px; letter-spacing: -0.01em; }
+  .article-body p { font-size: 14px; font-weight: 300; color: var(--grey-5); line-height: 1.9; margin-bottom: 20px; }
+  .article-body strong { color: var(--white); font-weight: 600; }
+  .article-body ul, .article-body ol { padding-left: 20px; margin-bottom: 22px; }
+  .article-body li { font-size: 14px; font-weight: 300; color: var(--grey-5); line-height: 1.85; margin-bottom: 8px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.92em;
+    background: var(--grey-1);
+    border: 1px solid var(--grey-2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--blue);
+  }
+
+  pre {
+    background: var(--grey-1);
+    border: 1px solid var(--grey-2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 18px 0 24px;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: 0; padding: 0; color: var(--grey-6); }
+
+  .tldr, .callout, .step-card, .related-card {
+    border: 1px solid var(--grey-2);
+    background: rgba(26, 26, 26, 0.76);
+    border-radius: 14px;
+  }
+
+  .tldr { padding: 24px 28px; margin-bottom: 32px; }
+  .tldr-title { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+  .tldr ol { margin-bottom: 0; }
+
+  .step-card { padding: 26px; margin: 24px 0; position: relative; }
+  .step-card::before {
+    content: attr(data-step);
+    position: absolute;
+    top: -12px;
+    left: 18px;
+    background: var(--black);
+    border: 1px solid var(--grey-2);
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .step-card h3 { margin-top: 4px; }
+  .step-card p:last-child, .step-card ul:last-child { margin-bottom: 0; }
+
+  .callout { border-left: 3px solid var(--blue); background: var(--blue-dim); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 24px 0; }
+  .callout.warning { border-left-color: var(--amber); background: var(--amber-dim); }
+  .callout.success { border-left-color: var(--green); background: var(--green-dim); }
+  .callout-label { display: block; color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  .callout.warning .callout-label { color: var(--amber); }
+  .callout.success .callout-label { color: var(--green); }
+  .callout p { color: var(--grey-6); font-size: 13px; margin-bottom: 0; }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 28px 20px;
+    border: 1px solid var(--grey-2);
+    border-radius: 14px;
+    margin: 28px 0;
+    background: var(--grey-1);
+  }
+  .flow-node { background: var(--black); border: 1px solid var(--grey-3); border-radius: 8px; padding: 10px 15px; font-size: 12px; text-align: center; white-space: nowrap; }
+  .flow-node.highlight { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
+  .flow-arrow { color: var(--grey-4); font-size: 13px; }
+
+  .screenshot-band { margin: 40px 0; }
+  .screenshot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .shot-card { border: 1px solid var(--grey-2); background: rgba(255,255,255,0.018); border-radius: 18px; padding: 14px; }
+  .phone-frame {
+    position: relative;
+    border-radius: 30px;
+    padding: 7px;
+    background: linear-gradient(180deg, #2a2a2e, #111114 55%, #2a2a2e);
+    box-shadow: 0 18px 52px rgba(0,0,0,0.45);
+  }
+  .phone-frame img { display: block; width: 100%; height: auto; border-radius: 24px; background: #000; }
+  .shot-caption { font-size: 11px; color: var(--grey-5); line-height: 1.65; margin-top: 12px; }
+  .shot-caption strong { display: block; color: var(--white); margin-bottom: 3px; }
+
+  .side-note { position: sticky; top: 112px; border-left: 1px solid var(--grey-2); padding-left: 22px; }
+  .side-note h2 { font-size: 11px; color: var(--grey-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .side-note p, .side-note li { font-size: 12px; color: var(--grey-5); line-height: 1.75; }
+  .side-note ul { padding-left: 17px; margin: 14px 0 0; }
+
+  .related-card { padding: 24px; margin-top: 40px; }
+  .related-card h2 { border-top: 0; padding-top: 0; margin-top: 0; font-size: 18px; }
+
+  .cta-strip { border-top: 1px solid var(--grey-2); padding: 56px 0; }
+  .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .cta-inner p { color: var(--grey-5); font-size: 13px; font-weight: 300; line-height: 1.7; max-width: 660px; margin-bottom: 0; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--black); background: var(--blue); border: 0; padding: 14px 22px; border-radius: 6px; text-decoration: none; white-space: nowrap; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3); border: 0; }
+
+  footer { border-top: 1px solid var(--grey-2); padding: 40px 24px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .footer-left { font-size: 11px; color: var(--grey-4); letter-spacing: 0.02em; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 24px; }
+  .footer-links a { font-size: 11px; color: var(--grey-5); border-bottom: 0; letter-spacing: 0.04em; }
+  .footer-links a:hover { color: var(--white); }
+
+  .fade-up { opacity: 0; animation: fade-up 0.8s var(--ease) forwards; }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 980px) {
+    .hero-grid, .article-shell { grid-template-columns: 1fr; gap: 36px; }
+    .side-note { position: static; border-left: 0; border-top: 1px solid var(--grey-2); padding-left: 0; padding-top: 24px; }
+    .screenshot-grid { grid-template-columns: 1fr; max-width: 360px; }
+    .cta-inner { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .container { padding: 0 20px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .article-hero { padding: 124px 0 56px; }
+    h1 { font-size: 38px; }
+    .article-shell { padding: 56px 0 72px; }
+    .step-card, .tldr, .toc-card { padding: 22px 20px; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .btn-primary { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-dot"></span>
+      GitSync.md
+    </a>
+    <div class="nav-links">
+      <a href="../index.html#features">Features</a>
+      <a href="../index.html#faq">FAQ</a>
+      <a href="./" aria-current="page">Blog</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a>
+      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
+    </div>
+  </div>
+</nav>
+
+<header class="article-hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="fade-up">
+        <div class="eyebrow">Automation Guide</div>
+        <h1>Automate Git pulls with Apple Shortcuts<span class="accent">.</span></h1>
+        <p class="subtitle">GitSync.md ships native App Intents, so the Shortcuts app can pull all your repositories — or just one — with a tap, a Siri phrase, or automatically every time you open the app. No URL building required.</p>
+        <div class="meta-line">
+          <span>August 22, 2026</span>
+          <span>Guide</span>
+          <span>iPhone + iPad</span>
+        </div>
+      </div>
+      <aside class="toc-card fade-up" style="animation-delay: 0.12s;" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li>The two built-in Shortcuts actions</li>
+          <li>Siri phrases you can use</li>
+          <li>Auto-pull on every app open</li>
+          <li>What the result dialogs tell you</li>
+          <li>Why pulls only — and how to push</li>
+        </ol>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="article-shell">
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Open the <strong>Shortcuts</strong> app — GitSync.md's actions are already there.</li>
+            <li>Use <strong>Pull All Repositories</strong> for everything, or <strong>Pull Repository</strong> and pick one.</li>
+            <li>For hands-free sync, create a Personal Automation: <em>When GitSync.md opens → Pull All Repositories</em>.</li>
+          </ol>
+        </div>
+
+        <h2 id="two-actions">Two actions, built in</h2>
+        <div class="callout">
+          <div class="callout-label">Pull All Repositories</div>
+          <p>No parameters. Walks every cloned repository, pulls each one, and reports a summary: how many updated, how many were already current, how many need your attention, and how many failed — with details for the first few that need attention.</p>
+        </div>
+        <div class="callout">
+          <div class="callout-label">Pull Repository</div>
+          <p>Takes one repository, chosen from your cloned repos (Shortcuts shows them by name as you type). Returns that repo's result: updated, up to date, or needs attention.</p>
+        </div>
+        <p>Both actions appear automatically in the Shortcuts app's action list under GitSync.md — nothing to install or enable. They return their results as a dialog, so they compose cleanly with other shortcut steps: show a notification, log to a note, or run from a Home Screen button or Control Center.</p>
+
+        <h2 id="siri">Siri phrases</h2>
+        <p>Because the actions are exposed as App Shortcuts, Siri understands them out of the box:</p>
+        <ul>
+          <li>"Pull all repositories in GitSync.md"</li>
+          <li>"Sync all repositories in GitSync.md"</li>
+          <li>"Update my notes in GitSync.md"</li>
+          <li>"Pull <em>&lt;repository name&gt;</em> in GitSync.md"</li>
+        </ul>
+
+        <h2 id="auto-pull">Auto-pull every time you open the app</h2>
+        <p>The classic setup takes thirty seconds:</p>
+        <ol>
+          <li>In Shortcuts, go to <strong>Automation → New Personal Automation</strong>.</li>
+          <li>Choose <strong>App → GitSync.md → Is Opened</strong>.</li>
+          <li>Add the <strong>Pull All Repositories</strong> action.</li>
+          <li>Turn off "Ask Before Running" for a silent sync, or leave it on if you prefer a confirmation.</li>
+        </ol>
+        <p>Open the app to check a note, and everything is already fresh — pulled with the same safe fast-forward rules the app uses everywhere.</p>
+
+        <h2 id="reading-results">Reading the result dialogs</h2>
+        <ul>
+          <li><strong>"Pulled 4 repositories: 2 updated, 1 already up to date, 1 needs attention"</strong> — the attention case names the repo and why: local changes, diverged history, a missing remote branch, or an authentication prompt waiting for you.</li>
+          <li><strong>"No cloned repositories to pull yet"</strong> — you're signed out or haven't cloned anything.</li>
+          <li>Failures never throw — they surface as text so the rest of your shortcut keeps running.</li>
+        </ul>
+
+        <h2 id="pull-only">Pulls only — pushes stay deliberate</h2>
+        <p>The Shortcuts surface is intentionally pull-only. Pulls can be safe (fetch and clean fast-forward, stopping whenever anything needs a human decision), while pushes publish your work to the world. When you want to push, do it in the app — or wire the same automation through the <code>syncmd://x-callback-url</code> API if you truly want automated push.</p>
+        <p>Anything that would require a judgment call — local edits, divergence, an SSH host key that changed, a branch that moved — stops and tells you instead of guessing. That's the rule everywhere in GitSync.md; Shortcuts inherits it.</p>
+
+        <h2 id="recap">Recap</h2>
+        <p>Native Shortcuts actions plus one Personal Automation gives you "fresh notes every time I open the app" without any URL plumbing. Combine it with the <code>syncmd://</code> API for Obsidian-triggered syncs and you have both worlds covered.</p>
+
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <p>The URL-based counterpart, for Obsidian and launchers:</p>
+          <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad →</a>
+        </div>
+      </article>
+
+      <aside class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>This guide matches the current GitSync.md capabilities:</p>
+        <ul>
+          <li>App Intents: Pull All Repositories, Pull Repository</li>
+          <li>Siri phrases as shipped in AppShortcutsProvider</li>
+          <li>Result dialogs with per-repo attention details</li>
+          <li>Pull-only by design; pushes via app or x-callback-url</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <section class="cta-strip">
+    <div class="container">
+      <div class="cta-inner">
+        <p>GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. It talks directly to your Git remote and keeps your working copies on device.</p>
+        <a class="btn-primary" href="https://apps.apple.com/us/app/gitsync-md/id6758960270">Buy on the App Store</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
+    <div class="footer-links">
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
+      <a href="./">Blog</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="../terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

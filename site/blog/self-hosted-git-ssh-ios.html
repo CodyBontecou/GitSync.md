@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Self-Hosted Git with SSH on iPhone and iPad — GitSync.md</title>
+<meta name="description" content="Clone from your own Git server — Gitea, Forgejo, GitLab, Bitbucket — on iPhone and iPad with GitSync.md using HTTPS tokens or SSH keys with verified host keys.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://gitsyncmd.app/blog/self-hosted-git-ssh-ios.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Self-Hosted Git with SSH on iPhone and iPad — GitSync.md">
+<meta property="og:description" content="Use Gitea, Forgejo, GitLab, or any Git server from iOS: add the repo by URL, authenticate with an SSH key, trust the host key once, then pull, commit, and push.">
+<meta property="og:url" content="https://gitsyncmd.app/blog/self-hosted-git-ssh-ios.html">
+<meta property="og:image" content="https://gitsyncmd.app/screenshots/workflow-vault-view.png">
+<meta property="article:published_time" content="2026-08-22">
+<meta property="article:modified_time" content="2026-08-22">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Self-Hosted Git with SSH on iPhone and iPad — GitSync.md">
+<meta name="twitter:description" content="Your own Git server, real SSH keys, verified host keys — all from iPhone or iPad.">
+<meta name="twitter:image" content="https://gitsyncmd.app/screenshots/workflow-vault-view.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Self-Hosted Git with SSH on iPhone and iPad",
+  "description": "Clone from your own Git server on iPhone and iPad with GitSync.md using HTTPS tokens or SSH keys with verified host keys.",
+  "image": [
+    "https://gitsyncmd.app/screenshots/workflow-vault-view.png"
+  ],
+  "datePublished": "2026-08-22",
+  "dateModified": "2026-08-22",
+  "author": { "@type": "Person", "name": "Cody Bontecou" },
+  "publisher": { "@type": "Person", "name": "Cody Bontecou" },
+  "mainEntityOfPage": "https://gitsyncmd.app/blog/self-hosted-git-ssh-ios.html"
+}
+</script>
+<style>
+  :root {
+    --white: #f5f5f7;
+    --black: #0a0a0a;
+    --grey-1: #1a1a1a;
+    --grey-2: #2a2a2a;
+    --grey-3: #3a3a3a;
+    --grey-4: #6a6a6a;
+    --grey-5: #8a8a8a;
+    --grey-6: #b0b0b0;
+    --blue: #007AFF;
+    --blue-dim: rgba(0, 122, 255, 0.12);
+    --green: #30D158;
+    --green-dim: rgba(48, 209, 88, 0.12);
+    --amber: #FFD60A;
+    --amber-dim: rgba(255, 214, 10, 0.12);
+    --line: rgba(255, 255, 255, 0.08);
+    --mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, 'Fira Code', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: var(--blue); color: var(--black); }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(0, 122, 255, 0.12), transparent 28%),
+      radial-gradient(circle at 82% 8%, rgba(48, 209, 88, 0.06), transparent 24%),
+      linear-gradient(180deg, rgba(255,255,255,0.018), transparent 42%);
+    z-index: -2;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, transparent 72%);
+    z-index: -1;
+  }
+
+  a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(0, 122, 255, 0.3); transition: border-color 0.2s ease, color 0.2s ease; }
+  a:hover { border-color: var(--blue); }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.72);
+    border-bottom: 1px solid var(--grey-2);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-block;
+    animation: pulse-dot 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-5);
+    border-bottom: 0;
+  }
+  .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--white); }
+
+  .nav-cta {
+    color: var(--blue) !important;
+    border: 1px solid rgba(0, 122, 255, 0.3) !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+  .nav-cta:hover { background: var(--blue); color: var(--black) !important; border-color: var(--blue) !important; }
+
+  .article-hero { padding: 144px 0 72px; border-bottom: 1px solid var(--grey-2); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.55fr); gap: 56px; align-items: end; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    background: var(--blue-dim);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    max-width: 860px;
+    margin-bottom: 24px;
+  }
+
+  .accent { color: var(--blue); }
+  .subtitle { font-size: 15px; font-weight: 300; color: var(--grey-5); line-height: 1.85; max-width: 760px; }
+  .meta-line { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; color: var(--grey-4); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .toc-card {
+    border: 1px solid var(--grey-2);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012));
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  }
+
+  .toc-title { font-size: 10px; color: var(--grey-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }
+  .toc-card ol { list-style: none; display: grid; gap: 12px; counter-reset: toc; }
+  .toc-card li { counter-increment: toc; display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; color: var(--grey-6); font-size: 12px; }
+  .toc-card li::before { content: counter(toc, decimal-leading-zero); color: var(--blue); font-size: 10px; padding-top: 2px; }
+
+  .article-shell { display: grid; grid-template-columns: minmax(0, 760px) minmax(220px, 1fr); gap: 64px; padding: 72px 0 96px; align-items: start; }
+  .article-body { min-width: 0; }
+
+  .article-body h2 {
+    font-size: 25px;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin: 58px 0 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--grey-2);
+  }
+
+  .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .article-body h3 { font-size: 16px; color: var(--grey-6); margin: 34px 0 12px; letter-spacing: -0.01em; }
+  .article-body p { font-size: 14px; font-weight: 300; color: var(--grey-5); line-height: 1.9; margin-bottom: 20px; }
+  .article-body strong { color: var(--white); font-weight: 600; }
+  .article-body ul, .article-body ol { padding-left: 20px; margin-bottom: 22px; }
+  .article-body li { font-size: 14px; font-weight: 300; color: var(--grey-5); line-height: 1.85; margin-bottom: 8px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.92em;
+    background: var(--grey-1);
+    border: 1px solid var(--grey-2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--blue);
+  }
+
+  pre {
+    background: var(--grey-1);
+    border: 1px solid var(--grey-2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 18px 0 24px;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: 0; padding: 0; color: var(--grey-6); }
+
+  .tldr, .callout, .step-card, .related-card {
+    border: 1px solid var(--grey-2);
+    background: rgba(26, 26, 26, 0.76);
+    border-radius: 14px;
+  }
+
+  .tldr { padding: 24px 28px; margin-bottom: 32px; }
+  .tldr-title { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+  .tldr ol { margin-bottom: 0; }
+
+  .step-card { padding: 26px; margin: 24px 0; position: relative; }
+  .step-card::before {
+    content: attr(data-step);
+    position: absolute;
+    top: -12px;
+    left: 18px;
+    background: var(--black);
+    border: 1px solid var(--grey-2);
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .step-card h3 { margin-top: 4px; }
+  .step-card p:last-child, .step-card ul:last-child { margin-bottom: 0; }
+
+  .callout { border-left: 3px solid var(--blue); background: var(--blue-dim); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 24px 0; }
+  .callout.warning { border-left-color: var(--amber); background: var(--amber-dim); }
+  .callout.success { border-left-color: var(--green); background: var(--green-dim); }
+  .callout-label { display: block; color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  .callout.warning .callout-label { color: var(--amber); }
+  .callout.success .callout-label { color: var(--green); }
+  .callout p { color: var(--grey-6); font-size: 13px; margin-bottom: 0; }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 28px 20px;
+    border: 1px solid var(--grey-2);
+    border-radius: 14px;
+    margin: 28px 0;
+    background: var(--grey-1);
+  }
+  .flow-node { background: var(--black); border: 1px solid var(--grey-3); border-radius: 8px; padding: 10px 15px; font-size: 12px; text-align: center; white-space: nowrap; }
+  .flow-node.highlight { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
+  .flow-arrow { color: var(--grey-4); font-size: 13px; }
+
+  .screenshot-band { margin: 40px 0; }
+  .screenshot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .shot-card { border: 1px solid var(--grey-2); background: rgba(255,255,255,0.018); border-radius: 18px; padding: 14px; }
+  .phone-frame {
+    position: relative;
+    border-radius: 30px;
+    padding: 7px;
+    background: linear-gradient(180deg, #2a2a2e, #111114 55%, #2a2a2e);
+    box-shadow: 0 18px 52px rgba(0,0,0,0.45);
+  }
+  .phone-frame img { display: block; width: 100%; height: auto; border-radius: 24px; background: #000; }
+  .shot-caption { font-size: 11px; color: var(--grey-5); line-height: 1.65; margin-top: 12px; }
+  .shot-caption strong { display: block; color: var(--white); margin-bottom: 3px; }
+
+  .side-note { position: sticky; top: 112px; border-left: 1px solid var(--grey-2); padding-left: 22px; }
+  .side-note h2 { font-size: 11px; color: var(--grey-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .side-note p, .side-note li { font-size: 12px; color: var(--grey-5); line-height: 1.75; }
+  .side-note ul { padding-left: 17px; margin: 14px 0 0; }
+
+  .related-card { padding: 24px; margin-top: 40px; }
+  .related-card h2 { border-top: 0; padding-top: 0; margin-top: 0; font-size: 18px; }
+
+  .cta-strip { border-top: 1px solid var(--grey-2); padding: 56px 0; }
+  .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .cta-inner p { color: var(--grey-5); font-size: 13px; font-weight: 300; line-height: 1.7; max-width: 660px; margin-bottom: 0; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--black); background: var(--blue); border: 0; padding: 14px 22px; border-radius: 6px; text-decoration: none; white-space: nowrap; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3); border: 0; }
+
+  footer { border-top: 1px solid var(--grey-2); padding: 40px 24px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .footer-left { font-size: 11px; color: var(--grey-4); letter-spacing: 0.02em; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 24px; }
+  .footer-links a { font-size: 11px; color: var(--grey-5); border-bottom: 0; letter-spacing: 0.04em; }
+  .footer-links a:hover { color: var(--white); }
+
+  .fade-up { opacity: 0; animation: fade-up 0.8s var(--ease) forwards; }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 980px) {
+    .hero-grid, .article-shell { grid-template-columns: 1fr; gap: 36px; }
+    .side-note { position: static; border-left: 0; border-top: 1px solid var(--grey-2); padding-left: 0; padding-top: 24px; }
+    .screenshot-grid { grid-template-columns: 1fr; max-width: 360px; }
+    .cta-inner { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .container { padding: 0 20px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .article-hero { padding: 124px 0 56px; }
+    h1 { font-size: 38px; }
+    .article-shell { padding: 56px 0 72px; }
+    .step-card, .tldr, .toc-card { padding: 22px 20px; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .btn-primary { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-dot"></span>
+      GitSync.md
+    </a>
+    <div class="nav-links">
+      <a href="../index.html#features">Features</a>
+      <a href="../index.html#faq">FAQ</a>
+      <a href="./" aria-current="page">Blog</a>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a>
+      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
+    </div>
+  </div>
+</nav>
+
+<header class="article-hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="fade-up">
+        <div class="eyebrow">Self-Hosted Git Guide</div>
+        <h1>Self-hosted Git with SSH on iPhone and iPad<span class="accent">.</span></h1>
+        <p class="subtitle">Your Git server does not have to be GitHub. GitSync.md clones from Gitea, Forgejo, GitLab, Bitbucket, or any server you run — over HTTPS with a token, or over SSH with your own key and verified host keys.</p>
+        <div class="meta-line">
+          <span>August 22, 2026</span>
+          <span>Guide</span>
+          <span>iPhone + iPad</span>
+        </div>
+      </div>
+      <aside class="toc-card fade-up" style="animation-delay: 0.12s;" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li>Add a self-hosted repository by URL</li>
+          <li>Authenticate with an HTTPS token or SSH key</li>
+          <li>Trust the server's host key on first connect</li>
+          <li>Pull, commit, and push to your own server</li>
+          <li>Fix the common SSH and token failures</li>
+        </ol>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="article-shell">
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>In GitSync.md, tap <strong>Add Repository → Enter URL Manually</strong>.</li>
+            <li>Paste your remote: <code>git@git.example.com:team/notes.git</code> (or an <code>https://</code> URL).</li>
+            <li>Pick <strong>SSH Private Key</strong> auth, paste your OpenSSH private key and passphrase.</li>
+            <li>On first connect, compare the SHA-256 host-key fingerprint and tap <strong>Trust Host</strong>.</li>
+            <li>Clone — then pull, commit, and push like any other repo.</li>
+          </ol>
+        </div>
+
+        <h2 id="why-self-hosted">Self-hosted Git on iOS, without a Mac</h2>
+        <p>iOS has no system <code>git</code> and no SSH agent your apps can borrow. GitSync.md ships the real thing embedded: libgit2 compiled with libssh2 and OpenSSL, so clone, fetch, pull, commit, and push all run on-device and speak native Git + SSH to your server. Keys and tokens live in the iOS Keychain, scoped per repository.</p>
+        <p>The result is the same as on your desktop: a real folder with a real <code>.git</code> directory that other tools — including the Obsidian Git plugin — can work with directly.</p>
+
+        <h2 id="add-the-repository">1. Add the repository by URL</h2>
+        <p>Tap <strong>Add Repository</strong> on the home screen and choose <strong>Enter URL Manually</strong>. All of these forms work:</p>
+        <ul>
+          <li><code>https://git.example.com/team/notes.git</code> — HTTPS</li>
+          <li><code>git@git.example.com:team/notes.git</code> — SSH (SCP style)</li>
+          <li><code>ssh://git@git.example.com:2222/team/notes.git</code> — SSH with a custom port</li>
+        </ul>
+        <p>Works with Gitea, Forgejo, GitLab, Bitbucket, Gogs, plain <code>git daemon</code> remotes, or any host that speaks the Git wire protocol. Set the branch and your author name and email while you are here — they go on every commit.</p>
+
+        <h2 id="pick-auth">2. Pick the authentication method</h2>
+        <p>The Authentication section adapts to the URL you entered. For a self-hosted server you will use one of:</p>
+        <div class="callout">
+          <div class="callout-label">SSH Private Key</div>
+          <p>Paste an OpenSSH private key — Ed25519, ECDSA, or RSA — with its optional passphrase. The username defaults to <code>git</code>. The key is stored in the iOS Keychain and used from memory at connect time; it never leaves the device.</p>
+        </div>
+        <div class="callout">
+          <div class="callout-label">HTTPS Token / Password</div>
+          <p>For HTTPS remotes: your server username plus an access token. On GitLab that is a personal access token with <code>read_repository</code> and <code>write_repository</code>; on Gitea/Forgejo, a generated token or your password.</p>
+        </div>
+        <p>Public repos can use <strong>No Authentication</strong>. Each repository stores its own credentials, so you can mix a GitHub account, a GitLab token, and an SSH key side by side.</p>
+
+        <h2 id="trust-the-host-key">3. Trust the host key — once</h2>
+        <p>The first time GitSync.md connects to your server over SSH, it stops and shows the server's host-key fingerprint:</p>
+        <p><code>SHA256:tQd0O4OktZ/v8GOTYc4VnHCLr+dJd3jEJbKtzqE1dXk</code></p>
+        <p>Compare it against what your server actually presents — on a desktop you can run <code>ssh-keyscan git.example.com</code> and check the fingerprint yourself. If it matches, tap <strong>Trust Host</strong>; GitSync.md pins it per host and port, then automatically retries the clone that prompted it.</p>
+        <p>This is trust-on-first-use, the same model OpenSSH uses. If the key ever <em>changes</em>, GitSync.md blocks the connection with a loud warning instead of silently continuing — a changed key means either a server migration you should know about or a possible man-in-the-middle.</p>
+
+        <h2 id="daily-workflow">4. Daily workflow against your own server</h2>
+        <ul>
+          <li><strong>Pull</strong> — fetch and fast-forward. If your device and the server have diverged, GitSync.md refuses to guess: you choose merge or pull-with-rebase explicitly.</li>
+          <li><strong>Commit &amp; Push</strong> — stage, commit, and push. Pushes are verified against the server afterward, so a silently rejected push (permissions, protected branches, hooks) surfaces as a real error instead of fake success.</li>
+          <li><strong>Branches, stash, tags, history</strong> — create, switch, merge, and delete branches; stash work in progress; create annotated or lightweight tags and push them; browse full commit history with per-commit file changes.</li>
+          <li><strong>Git LFS</strong> — self-hosted LFS works too, including <code>lfs.url</code>/<code>.lfsconfig</code> endpoints and LFS-over-SSH via <code>git-lfs-authenticate</code>.</li>
+        </ul>
+        <p>Need to repoint a repo later? Repository Settings lets you edit the remote URL and swap credentials — the <code>origin</code> remote is updated in place, no re-clone needed.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h3>"Trust SSH Host?" appears on every new server</h3>
+        <p>Expected — each host (and port) is trusted independently, once. After you tap Trust Host, the fingerprint is remembered on this device.</p>
+        <h3>"SSH Host Key Changed"</h3>
+        <p>Your server's key no longer matches the pinned fingerprint. If you intentionally rotated the host key, verify the new fingerprint out-of-band before trusting it. If you did not, treat it as a security event.</p>
+        <h3>"The remote rejected the saved SSH key"</h3>
+        <p>The key is valid but lacks access: check that its public half is added to your account's SSH keys on the server, and that the passphrase (if any) is correct.</p>
+        <h3>HTTPS authentication fails</h3>
+        <p>Confirm the token has repository read/write scope for your server (GitLab: <code>read_repository</code> + <code>write_repository</code>) and the username is not empty.</p>
+        <h3>Custom port not honored</h3>
+        <p>SCP-style URLs cannot carry a port — use the full form: <code>ssh://git@git.example.com:2222/team/notes.git</code>.</p>
+
+        <h2 id="recap">Recap</h2>
+        <p>Self-hosted Git on iOS is the same workflow as GitHub: add by URL, pick SSH key or HTTPS token auth, trust the host key once, then use real pull, commit, and push. Your server, your keys, your working copy — no middleman.</p>
+
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <p>Keeping an Obsidian vault on your own server? The full vault walkthrough lives here:</p>
+          <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad →</a>
+        </div>
+      </article>
+
+      <aside class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>This guide matches the current GitSync.md capabilities:</p>
+        <ul>
+          <li>Manual remotes: HTTPS, SSH (SCP-style and <code>ssh://</code> with port)</li>
+          <li>SSH keys: Ed25519, ECDSA, RSA (OpenSSH format, per-repo, Keychain-stored)</li>
+          <li>Host-key trust: SHA-256 fingerprint, pinned per host and port</li>
+          <li>Self-hosted Git LFS endpoints, including over SSH</li>
+          <li>Verified pushes with per-ref rejection reporting</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <section class="cta-strip">
+    <div class="container">
+      <div class="cta-inner">
+        <p>GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. It talks directly to your Git remote and keeps your working copies on device.</p>
+        <a class="btn-primary" href="https://apps.apple.com/us/app/gitsync-md/id6758960270">Buy on the App Store</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
+    <div class="footer-links">
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
+      <a href="./">Blog</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="../terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

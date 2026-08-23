@@ -31,7 +31,7 @@
   "name": "GitSync.md",
   "alternateName": "Sync.md",
   "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "iOS, iPadOS",
+  "operatingSystem": "iOS 17+, iPadOS 17+",
   "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. It clones real Git working copies, stores tokens in the iOS Keychain, and talks directly to your Git remote without a sync server.",
   "url": "https://gitsyncmd.app/",
   "downloadUrl": "https://apps.apple.com/us/app/gitsync-md/id6758960270",
@@ -48,10 +48,15 @@
   },
   "featureList": [
     "Clone private Git repositories on iPhone and iPad",
-    "Built-in syntax-highlighted editor",
+    "Self-hosted Git remotes over HTTPS or SSH (GitLab, Bitbucket, Gitea, Forgejo)",
+    "Branch, merge, rebase, stash, tags, and commit history",
+    "Three-way conflict resolution with side-by-side editor",
+    "Git LFS: automatic downloads, tracking prompts, file locking",
+    "Built-in syntax-highlighted editor (11 languages)",
     "Diff review, staging, commit, pull, and push",
-    "Obsidian x-callback-url automation",
-    "iOS Files integration",
+    "Obsidian x-callback-url and Apple Shortcuts automation",
+    "Multiple GitHub accounts and per-repo credentials",
+    "iOS Files integration, 26 localized languages",
     "No subscription and no sync server"
   ]
 }
@@ -529,7 +534,7 @@
 
   .demo-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
     align-items: start;
   }
@@ -1589,11 +1594,13 @@
     <span>No sync server</span>
     <span>Real .git directories</span>
     <span>libgit2 engine</span>
-    <span>Syntax highlighting — 20+ languages</span>
+    <span>Syntax highlighting — 11 languages</span>
     <span>Diff viewer</span>
     <span>iOS Files integration</span>
     <span>Obsidian syncmd:// automation</span>
     <span>Branch, stash, tag, merge</span>
+    <span>Self-hosted + SSH remotes</span>
+    <span>Git LFS support</span>
     <span>iPhone + iPad</span>
     <span>$9.99 one-time</span>
     <span>No subscription</span>
@@ -1603,11 +1610,13 @@
     <span>No sync server</span>
     <span>Real .git directories</span>
     <span>libgit2 engine</span>
-    <span>Syntax highlighting — 20+ languages</span>
+    <span>Syntax highlighting — 11 languages</span>
     <span>Diff viewer</span>
     <span>iOS Files integration</span>
     <span>Obsidian syncmd:// automation</span>
     <span>Branch, stash, tag, merge</span>
+    <span>Self-hosted + SSH remotes</span>
+    <span>Git LFS support</span>
     <span>iPhone + iPad</span>
   </div>
 </div>
@@ -1632,10 +1641,6 @@
       <figure class="demo-card">
         <div class="screenshot-shell"><img src="screenshots/03-blog-cloned.png" alt="Git control sheet with repository status, branches, staged changes, and sync controls" width="1206" height="2622" loading="lazy" decoding="async"></div>
         <figcaption class="demo-caption"><strong>Control Git state.</strong><span>Review branches, staged files, stash, tags, and repository status before you sync.</span></figcaption>
-      </figure>
-      <figure class="demo-card">
-        <div class="screenshot-shell"><img src="screenshots/hero-repo-list.png" alt="GitSync.md repository list with active cloned Git repositories" width="1206" height="2622" loading="lazy" decoding="async"></div>
-        <figcaption class="demo-caption"><strong>Use real working copies.</strong><span>Repos are real folders with real Git state, not an opaque notes database or a vendor sync layer.</span></figcaption>
       </figure>
     </div>
   </div>
@@ -1663,7 +1668,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         </div>
         <div class="feature-name">Private Repo Ready</div>
-        <div class="feature-desc">Sign in with GitHub OAuth or paste a Personal Access Token. Credentials are stored in Keychain and used from your device to the remote.</div>
+        <div class="feature-desc">Sign in with GitHub OAuth or paste a Personal Access Token — and connect multiple GitHub accounts, switching between them while each repo stays scoped to its owner. Credentials are stored in Keychain and used from your device to the remote.</div>
       </div>
       <div class="feature-cell">
         <div class="feature-index">03</div>
@@ -1671,7 +1676,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
         <div class="feature-name">Code Editor</div>
-        <div class="feature-desc">A full syntax-highlighted editor built into the app. Swift, Python, JavaScript, Markdown, JSON, YAML and 15+ more — with VSCode-style Dark+ and Light+ themes.</div>
+        <div class="feature-desc">A full syntax-highlighted editor built into the app. Swift, Python, JavaScript, TypeScript, Markdown, JSON, YAML, Bash, HTML, and CSS — with VSCode-style Dark+ and Light+ themes.</div>
       </div>
       <div class="feature-cell">
         <div class="feature-index">04</div>
@@ -1687,7 +1692,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="18" y2="18"/></svg>
         </div>
         <div class="feature-name">Diff Viewer</div>
-        <div class="feature-desc">Line-by-line unified diffs with color-coded additions and deletions, hunk headers, added/removed counts, and one-tap revert for any changed file.</div>
+        <div class="feature-desc">Line-by-line unified diffs with color-coded additions and deletions, hunk headers, added/removed counts, and one-tap revert for any changed file — plus a paginated commit-history browser with per-commit file changes.</div>
       </div>
       <div class="feature-cell">
         <div class="feature-index">06</div>
@@ -1703,7 +1708,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
         </div>
         <div class="feature-name">Push & Pull</div>
-        <div class="feature-desc">Full upstream workflow. Pull remote changes, stage individual files, write a commit message, push. Conflict center resolves merge conflicts with ours/theirs/manual strategies.</div>
+        <div class="feature-desc">Full upstream workflow. Pull remote changes — fast-forward, or rebase your local commits when histories diverge — stage individual files, write a commit message, and push with the result verified against the remote.</div>
       </div>
       <div class="feature-cell">
         <div class="feature-index">08</div>
@@ -1720,6 +1725,30 @@
         </div>
         <div class="feature-name">x-callback-url</div>
         <div class="feature-desc">Obsidian and Shortcuts can call <code>syncmd://x-callback-url/sync</code> to pull and push. The scheme stays <code>syncmd://</code> for compatibility.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-index">10</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <div class="feature-name">Self-Hosted &amp; SSH</div>
+        <div class="feature-desc">GitLab, Bitbucket, Gitea, Forgejo, or your own server. Add any remote by URL and authenticate with an SSH key (Ed25519/ECDSA/RSA) — host keys verified by SHA-256 fingerprint on first connect.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-index">11</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        </div>
+        <div class="feature-name">Git LFS</div>
+        <div class="feature-desc">Media and big binaries just work: LFS files download automatically after clone and pull, you're prompted before large files get LFS-tracked, and file locking plus push guards keep teams safe.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-index">12</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.5 5.5 21l2-7.5L2 9h7z"/></svg>
+        </div>
+        <div class="feature-name">Conflict Resolution</div>
+        <div class="feature-desc">When histories diverge, choose merge or rebase explicitly. Resolve conflicts per file — ours, theirs, or edit in the side-by-side three-way view — then complete or abort cleanly.</div>
       </div>
     </div>
   </div>
@@ -1844,8 +1873,8 @@
       </div>
       <div class="integration-card">
         <div class="integration-tag">Git remotes</div>
-        <div class="integration-name">GitHub first-class</div>
-        <div class="integration-desc">GitHub OAuth and Personal Access Token flows are the supported path advertised here. Other HTTPS Git remotes depend on the current app build's manual remote support.</div>
+        <div class="integration-name">GitHub first-class, any Git remote works</div>
+        <div class="integration-desc">GitHub is the smoothest path (OAuth or PAT, browse and clone). Self-hosted and other hosts — GitLab, Bitbucket, Gitea, Forgejo — work via manual URL with HTTPS token or SSH key (Ed25519/ECDSA/RSA) and verified host keys.</div>
       </div>
     </div>
   </div>
@@ -1884,6 +1913,15 @@
         </ul>
       </div>
       <div class="doc-card">
+        <h3>Apple Shortcuts</h3>
+        <p>Native App Intents, no URL building required:</p>
+        <ul>
+          <li><strong>Pull All Repositories</strong> — syncs every cloned repo</li>
+          <li><strong>Pull Repository</strong> — pick one repo</li>
+        </ul>
+        <p>Both work with Siri phrases and Personal Automations (e.g. “pull my notes” when the app opens). Pull-only by design — pushes stay deliberate.</p>
+      </div>
+      <div class="doc-card">
         <h3>Obsidian implementation</h3>
         <p>In the Obsidian Git community plugin, set your mobile sync URL to:</p>
         <span class="doc-url">syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</span>
@@ -1919,7 +1957,7 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Syntax Languages</div>
-        <div class="spec-val">20+ (Swift, Python, JS, TS, MD, JSON, YAML…)</div>
+        <div class="spec-val">11 (Swift, Python, JS, TS, Markdown, JSON, YAML, Bash, HTML, CSS)</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Editor Themes</div>
@@ -1935,7 +1973,7 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Authentication</div>
-        <div class="spec-val">GitHub OAuth + PAT</div>
+        <div class="spec-val">GitHub OAuth + PAT · SSH keys · HTTPS tokens · self-hosted</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Token Storage</div>
@@ -1947,11 +1985,11 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Storage Locations</div>
-        <div class="spec-val">App Documents · iCloud Drive · OneDrive</div>
+        <div class="spec-val">App Documents (On My iPhone › GitSync.md) · any Files-app location</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Automation</div>
-        <div class="spec-val">x-callback-url (syncmd://)</div>
+        <div class="spec-val">x-callback-url (syncmd://) · Apple Shortcuts (Pull All / Pull Repo)</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Cloud Dependency</div>
@@ -1959,11 +1997,15 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Data Collection</div>
-        <div class="spec-val">Name + email (Git author only)</div>
+        <div class="spec-val">Git author name/email · coarse onboarding analytics · optional Assist metadata (see <a href="privacy.html" style="text-decoration:underline">privacy policy</a>)</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Platforms</div>
-        <div class="spec-val">iPhone · iPad</div>
+        <div class="spec-val">iPhone · iPad · requires iOS 17+</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-key">App Languages</div>
+        <div class="spec-val">26 localized languages</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Price</div>
@@ -2011,15 +2053,27 @@
       </details>
       <details class="faq-item">
         <summary>Does it support GitLab or Bitbucket?</summary>
-        <p>GitHub is the first-class supported flow advertised on this page. Other HTTPS Git remotes may depend on manual remote/PAT support in the current App Store build, so do not buy solely for GitLab or Bitbucket unless you have confirmed that workflow.</p>
+        <p>Yes. GitHub gets the smoothest setup (sign in, browse, tap to clone), but any Git remote works: GitLab, Bitbucket, Gitea, Forgejo, or your own server. Add the repository by URL (<code>https://</code>, <code>git://</code>, or SSH like <code>git@example.com:team/notes.git</code>) and pick the matching auth — HTTPS token, or an SSH key (Ed25519/ECDSA/RSA) with per-host key verification.</p>
       </details>
       <details class="faq-item">
         <summary>What happens with merge conflicts?</summary>
-        <p>The app surfaces changed files and conflict counts, and includes conflict-resolution flows for common pull/merge cases. If a conflict is too complex, you still have a real Git working copy that can be repaired on desktop.</p>
+        <p>Conflicts get a dedicated Conflict Center: pick ours, theirs, or edit a merged result in the side-by-side three-way view (it even handles rename-vs-rename and delete-vs-modify cases), then complete the merge or rebase — or abort cleanly. When local and remote history has diverged, you choose merge or pull-with-rebase explicitly. Exotic conflicts can still be finished on desktop: it's a real Git working copy.</p>
       </details>
       <details class="faq-item">
         <summary>Can repos live in iCloud Drive or Files?</summary>
         <p>The app supports Files-visible repo locations. For reliability, keep one canonical repo folder and avoid editing duplicate cloud copies of the same repository at the same time.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I add a repository that's already on my device?</summary>
+        <p>Yes. Choose <strong>Open Existing Repository</strong> when adding, point it at any Files folder that contains a <code>.git</code> directory, and GitSync.md manages it in place — the folder is never moved or copied.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What happens to my files if I remove a repository?</summary>
+        <p>Removing a repo from GitSync.md never touches your files by default — the working copy stays right where it is. If GitSync.md created the folder itself, an explicit <strong>Delete Local Files</strong> action is available separately. Removed repos can also be re-added in one tap from the "previously cloned" list.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does it support Git LFS?</summary>
+        <p>Yes. LFS files download automatically after clone and pull, large binaries are offered LFS tracking (with your confirmation — and <code>.gitattributes</code> is updated for you), objects upload before each push, and file locking with push guards works on servers that support it. Self-hosted LFS endpoints work too, including over SSH.</p>
       </details>
       <details class="faq-item">
         <summary>Is it iPhone only? Is there a subscription?</summary>
