@@ -12,15 +12,21 @@
 
 GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](https://libgit2.org), giving you a real `.git` directory on the device filesystem. Edit markdown files with any app — [Obsidian](https://obsidian.md), ia Writer, or the built-in Files app — then pull and push changes back to GitHub.
 
-**Key features:**
+**Key features** (full featureset baseline: [`docs/features/FEATURESET.md`](docs/features/FEATURESET.md)):
 
-- **Real git** — Clone, pull, commit, and push via libgit2. No REST API workarounds, no proprietary sync.
-- **Multiple repos** — Manage several GitHub repositories at once.
-- **Custom save locations** — Store repos anywhere accessible via the Files app.
-- **Obsidian integration** — Works with Obsidian vaults via `x-callback-url` for automated sync.
-- **GitHub OAuth & PAT** — Sign in with GitHub OAuth or paste a Personal Access Token.
+- **Real git** — Clone, fetch, pull (safe fast-forward or explicit rebase), commit, and push via libgit2. Real `.git` directories, verified pushes, no REST API workarounds, no proprietary sync.
+- **Full Git toolkit** — Branches (create/switch/delete/merge, ahead-behind tracking), three-way merge with a conflict center, revert, stash (apply/pop/drop, optional untracked), annotated & lightweight tags (create/delete/push), unified diffs with rename detection, paginated commit history + per-commit detail, per-file stage/unstage, discard file or all changes.
+- **Conflict resolution** — Ours/theirs/manual strategies, side-by-side 3-way viewer, rename/rename and delete/modify handling, merge & rebase continue/abort.
+- **Git LFS** — Automatic object hydration after clone/pull, pointer staging with auto-tracking prompts and `.gitattributes` management, LFS uploads before push, file locking with push guards, self-hosted LFS endpoints, and LFS-over-SSH via `git-lfs-authenticate`.
+- **Any remote** — GitHub (OAuth or PAT), self-hosted HTTPS, git://, public repos, existing local repositories, and SSH remotes (Ed25519/ECDSA/RSA keys, per-repo credentials, TOFU host-key trust with fingerprint prompts).
+- **Multiple GitHub accounts** — Sign in with several accounts, switch between them, and keep repos scoped to the account that owns them.
+- **Multiple repos & storage** — Manage many repositories, each with its own branch, author identity, and custom save location (or app-managed storage); re-add previously cloned repos in one tap; removing a repo keeps your files by default.
+- **Built-in editor & files** — Syntax-highlighted editor (Swift, Markdown, JSON, YAML, JS/TS, Python, Bash, HTML, CSS; VSCode Dark+/Light+ themes), file browser with git status badges, create/rename/delete files, and line-by-line diff viewing.
+- **Edit anywhere** — Files live in the Files app; edit with Obsidian, ia Writer, or any editor, then sync from GitSync.md.
+- **Obsidian & automation** — `syncmd://x-callback-url` API (pull/push/sync/status with `message` param and result callbacks) plus Apple Shortcuts intents ("Pull All Repositories", "Pull Repository").
 - **Private repo support** — Works with both public and private repositories.
-- **iPad support** — Optimized layouts for iPad.
+- **Localization** — Full UI in 26 languages.
+- **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
 - **GitSync Assist (optional subscription)** — Best-effort GitHub event and foreground wake hints for enrolled repositories, followed only by a clean pull fast-forward. Local changes, divergence, auth/trust prompts, and branch mismatches stop and surface attention. Assist never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes.
 
 All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require GitSync Assist. APNs background delivery is controlled by iOS and is not guaranteed or truly real time.
@@ -43,57 +49,90 @@ GitSync.md/
 │   ├── Sync_mdApp.swift        # App entry point
 │   ├── ContentView.swift       # Root view router
 │   ├── Models/
-│   │   ├── AppState.swift      # Observable app state (repos, auth, sync)
+│   │   ├── AppState.swift      # Observable app state (repos, auth, sync orchestration)
 │   │   ├── RepoConfig.swift    # Repository configuration model
-│   │   └── GitState.swift      # Git state persistence
-│   ├── Views/
-│   │   ├── SetupView.swift     # Onboarding & sign-in
-│   │   ├── RepoListView.swift  # Home screen — repo cards
-│   │   ├── VaultView.swift     # Single repo — pull/push/status
-│   │   ├── AddRepoView.swift   # Add new repository flow
-│   │   ├── RepoPickerView.swift # GitHub repo browser
-│   │   ├── SettingsView.swift  # Per-repo settings
-│   │   ├── GitControlSheet.swift # Commit message & push sheet
-│   │   └── Theme.swift         # Design system (colors, gradients, glass cards)
+│   │   ├── GitState.swift      # Git state persistence
+│   │   ├── Git*Models.swift    # Branch/conflict/diff/history/merge/revert/stash/status/tag models
+│   │   └── PremiumModels.swift # Assist entitlement + per-repo Assist settings
+│   ├── Views/                  # 21 SwiftUI screens (repo list, vault, git sheet,
+│   │                           #  conflict editor, diff, file browser/editor, …)
+│   │   └── BrutalDesignSystem.swift # Design system (colors, typography, components)
+│   ├── Shortcuts/SyncShortcuts.swift # App Intents (Pull All / Pull Repository)
+│   ├── Analytics/              # Privacy-safe onboarding funnel events
+│   └── ReleaseNotes.swift      # In-app release notes
 │   └── Services/
-│       ├── LocalGitService.swift    # libgit2 wrapper (clone/pull/push/status)
-│       ├── GitHubService.swift      # GitHub REST API client
+│       ├── LocalGitService.swift    # libgit2 wrapper (clone/fetch/pull/push/branches/merge/
+│       │                            # rebase/revert/stash/tags/diff/history/status/conflicts)
+│       ├── GitLFSService.swift      # Git LFS (hydration, clean/stage, batch API, locking)
+│       ├── GitLFSCitadelSSHAuthenticator.swift # LFS-over-SSH (git-lfs-authenticate)
+│       ├── GitLFSSSHHostKeyTrust.swift # SSH host-key TOFU trust store
+│       ├── GitHubService.swift      # GitHub REST API client (user/repos/email)
 │       ├── OAuthService.swift       # GitHub OAuth via ASWebAuthenticationSession
-│       ├── KeychainService.swift    # Secure token storage
-│       └── CallbackURLHandler.swift # x-callback-url handler (Obsidian integration)
+│       ├── KeychainService.swift    # Secure credential storage
+│       ├── CallbackURLHandler.swift # x-callback-url handler (Obsidian integration)
+│       ├── PremiumRuntime.swift     # Assist runtime (APNs, enrollment, relay client)
+│       ├── BackgroundSyncCoordinator.swift # Assist pull policies (network/power)
+│       ├── RepositoryOperationCoordinator.swift # Per-repo operation serialization
+│       ├── SyntaxHighlighter.swift  # Editor syntax highlighting
+│       ├── DebugLogger.swift        # In-app debug log
+│       └── FeedbackHelper.swift     # Feedback & privacy-request email
 ├── Packages/
 │   └── Clibgit2/               # Swift package wrapping the libgit2 C library
 ├── oauth-server/               # Vercel serverless functions for GitHub OAuth
 │   └── api/auth/               # Login & callback endpoints
-├── worker/premium-relay/       # Optional Assist Cloudflare Worker (D1 + Queues + APNs)
-└── libgit2.xcframework/        # Pre-built libgit2 binary for iOS
+├── worker/                     # Cloudflare Workers
+│   ├── premium-relay/          # Optional Assist relay (D1 + Queues + APNs)
+│   ├── storekit-verifier/      # StoreKit JWS verification (service binding)
+│   ├── onboarding-analytics/   # Onboarding funnel ingestion (D1)
+│   └── src/                    # Legacy paid-unlock receipt verifier (dormant)
+├── site/ + site-router/        # Marketing site + campaign shortlink router
+├── scripts/                    # libgit2 build, localization pipeline, marketing capture, pricing
+└── libgit2.xcframework/        # Pre-built libgit2 (libssh2 + OpenSSL) for iOS
 ```
 
 ### Git Implementation
 
-All git operations use **libgit2** directly via C interop — no shelling out, no REST API tree manipulation. The `LocalGitService` wraps libgit2 to provide:
+All git operations use **libgit2** directly via C interop — no shelling out, no REST API tree manipulation. The `LocalGitService` provides:
 
-- **Clone** — `git_clone` with HTTPS credential callback
-- **Pull** — Fetch + fast-forward merge
-- **Commit & Push** — Stage all changes, create commit, push to remote
-- **Status** — Uncommitted change detection via `git_status_list`
+- **Clone** — `git_clone` with HTTPS/PAT and SSH-key credential callbacks, plus Git LFS hydration
+- **Pull** — Fetch + classification (up-to-date / fast-forward / blocked / diverged), then safe fast-forward (dirty-tree and branch/OID revalidation under ref-transaction locks) or explicit pull-with-rebase
+- **Commit & Push** — Commits the staged index only; pushes are verified against the remote advertisement (per-ref rejection and silent-failure detection)
+- **Branches / Merge / Rebase / Revert** — Create/switch/delete branches, three-way merge with conflict sessions, rebase continue/abort, commit revert
+- **Stash / Tags / Diff / History** — Stash save/apply/pop/drop; annotated & lightweight tags with verified tag push; unified diff with rename detection; paginated history + commit detail
+- **Status** — Staged/unstaged/untracked/conflicted entries with NFC/NFD Unicode handling
 
 This produces a standard `.git` directory, making repos compatible with other git tools like the [Obsidian Git](https://github.com/Vinzent03/obsidian-git) plugin.
 
+### Git LFS
+
+Repositories using [Git LFS](https://git-lfs.com) are supported end-to-end:
+
+- **Automatic hydration** — LFS objects are downloaded (batch API, SHA-256 + size verified) and checked out after clone, pull, and rebase; only changed paths are re-fetched after updates.
+- **Pointer staging** — real files stay in your working copy; LFS pointers are what get committed. When you stage a large binary (known media extensions or files over 10 MiB), GitSync.md offers to track it with LFS and appends the matching rule to `.gitattributes` (you confirm first; nothing is auto-tracked silently).
+- **Push integration** — LFS objects upload before the git push, other users' locks on files you changed block the push (with file + owner listed), and oversized non-LFS blobs are blocked with a clear error before they hit your remote.
+- **Locking** — LFS file locking (create/list/unlock/verify) works on servers that support it and degrades silently on servers that don't.
+- **Endpoints** — GitHub LFS, `lfs.url`/`.lfsconfig` configuration, and self-hosted servers are supported. SSH remotes authenticate via `git-lfs-authenticate` with the same host-key trust flow as git-over-SSH.
+
+Limitations: only the root `.gitattributes` is consulted, hydration is not partial-clone/on-demand (it sweeps after clone/pull), and only the `origin` remote's LFS endpoint is resolved.
+
 ### x-callback-url API
 
-External apps can trigger sync operations via URL scheme:
+External apps (e.g. Obsidian via the [Obsidian Git](https://github.com/Vinzent03/obsidian-git) plugin) can trigger sync operations via URL scheme:
 
 ```
-syncmd://x-callback-url/<action>?repo=<folder-name>&x-success=<url>&x-error=<url>
+syncmd://x-callback-url/<action>?repo=<folder-name>[&message=<commit-message>]&x-success=<url>&x-error=<url>
 ```
 
-| Action   | Description |
-|----------|-------------|
-| `pull`   | Fetch and fast-forward |
-| `push`   | Stage all, commit, and push |
-| `sync`   | Pull then push |
-| `status` | Return branch, SHA, and change count |
+Parameters: `repo` (required, vault folder name), `message` (optional, commit message for `push`/`sync`; default "Update from GitSync.md"), `x-success`/`x-error` (callback URLs; errors fall back to `x-success` when `x-error` is absent).
+
+| Action   | Description | x-success response params |
+|----------|-------------|---------------------------|
+| `pull`   | Fetch and fast-forward | `sha`, `updated` (true/false) |
+| `push`   | Stage all, commit, and push | `sha` (commit SHA) |
+| `sync`   | Pull then push | `pull_updated`, `sha`, `push_skipped` ("true" when nothing to push — not an error) |
+| `status` | Read repository state | `branch`, `sha`, `changes` (count) |
+
+All success callbacks also receive `action=…&status=ok`; error callbacks receive `action=…&status=error&message=<localized error>`. Push staging tolerates external-editor rename/copy+delete timing by retrying staging passes before committing.
 
 ## Building
 
@@ -160,11 +199,16 @@ The relay stores minimal routing/operations metadata only. Repository contents, 
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
 
-Some areas where help would be appreciated:
+Some areas where help would be appreciated (see [known non-features](docs/features/FEATURESET.md#known-non-features-documented-gaps) for the full list):
 
-- Conflict resolution UI (currently only fast-forward merges)
-- Branch switching
-- Selective file staging
+- Force-push support
+- Branch rename
+- Remote-branch checkout
+- Cherry-pick initiation
+- Submodule & worktree support
+- Fetch pruning of deleted remote branches
+- In-editor search, line numbers, and keyboard accessory toolbar
+- Dedicated iPad split-view layouts
 - Additional safe, user-controlled GitSync Assist diagnostics
 - macOS support
 
