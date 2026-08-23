@@ -493,13 +493,20 @@ async function githubWebhook(request: Request, env: Env): Promise<Response> {
 
   if (event === "installation") {
     const allowed = new Set(["action", "installation", "repositories", "requester", "sender", "enterprise"]);
-    if (Object.keys(record).some(key => !allowed.has(key)) || record.action !== "deleted") {
+    if (Object.keys(record).some(key => !allowed.has(key))) {
       throw new HttpError(400, "unsupported installation event");
     }
     if (typeof record.installation !== "object" || record.installation === null || Array.isArray(record.installation)) {
       throw new HttpError(400, "invalid installation event");
     }
     const githubInstallationID = integer((record.installation as Record<string, unknown>).id, "installation ID");
+    // Benign lifecycle events carry no relay side effects, but they must be
+    // acknowledged so GitHub does not flag the hook (and its install UI) as
+    // failing. Only removals mutate routing below.
+    if (record.action === "created" || record.action === "new_permissions_accepted" || record.action === "suspend" || record.action === "unsuspend") {
+      return json({ accepted: true }, 202);
+    }
+    if (record.action !== "deleted") throw new HttpError(400, "unsupported installation event");
     // GitHub App removal is a security/deletion event, not new admission. It
     // remains effective while push admission is kill-switched and atomically
     // detaches routing before tombstoning the retained link and enrollment.

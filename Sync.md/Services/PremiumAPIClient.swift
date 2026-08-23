@@ -3,7 +3,17 @@ import Foundation
 struct PremiumAPIConfiguration: Sendable, Equatable {
     let baseURL: URL?
     init(bundle: Bundle = .main) {
-        let raw = (bundle.object(forInfoDictionaryKey: "PREMIUM_RELAY_BASE_URL") as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+        #if DEBUG
+        // Xcode-only relay override for local device testing (set via the
+        // shared scheme's launch arguments). Never compiled into Release;
+        // non-Xcode launches never register the override, so the app still
+        // fails closed by default.
+        let override = UserDefaults.standard.string(forKey: "PREMIUM_RELAY_BASE_URL_OVERRIDE")?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        #else
+        let override: String? = nil
+        #endif
+        let raw = override ?? (bundle.object(forInfoDictionaryKey: "PREMIUM_RELAY_BASE_URL") as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
         baseURL = raw.flatMap { value in
             guard !value.isEmpty, !value.contains("$("), let url = URL(string: value), url.scheme == "https", url.host != nil else { return nil }
             return url

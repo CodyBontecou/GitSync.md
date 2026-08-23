@@ -477,6 +477,21 @@ describe("GitHub webhook and durable outbox", () => {
     }
   });
 
+  it("acknowledges benign installation lifecycle events without mutating routing", async () => {
+    await seedInstallation(INSTALLATION_A, "bearer-a");
+    await seedEnrollment(INSTALLATION_A, CHANNEL_A);
+    for (const [slug, action] of [["created", "created"], ["npa", "new_permissions_accepted"], ["suspend", "suspend"], ["unsuspend", "unsuspend"]] as const) {
+      expect((await webhook(`delivery-installation-${slug}`, {
+        action, installation: { id: 101 }, repositories: [], sender: {},
+      }, "test-webhook-secret", "installation")).status).toBe(202);
+    }
+    expect(await row("SELECT count(*) AS count FROM webhook_deliveries")).toEqual({ count: 0 });
+    expect(await row("SELECT deleted_at FROM repo_enrollments WHERE channel=?", CHANNEL_A)).toEqual({ deleted_at: null });
+    expect((await webhook("delivery-installation-rogue", {
+      action: "sneaky", installation: { id: 101 }, sender: {},
+    }, "test-webhook-secret", "installation")).status).toBe(400);
+  });
+
   it("tombstones routing on a signed GitHub App uninstall and permits recovery through a new installation", async () => {
     await seedInstallation(INSTALLATION_A, "bearer-a");
     await seedEnrollment(INSTALLATION_A, CHANNEL_A);
