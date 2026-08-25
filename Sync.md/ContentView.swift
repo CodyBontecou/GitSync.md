@@ -19,7 +19,7 @@ struct ContentView: View {
         .opacity(showContent ? 1 : 0)
         .onAppear {
             #if DEBUG
-            if MarketingCapture.isActive {
+            if MarketingCapture.usesSeededData {
                 MarketingDemoSeeder.seed(into: state)
             }
             #endif
@@ -27,7 +27,7 @@ struct ContentView: View {
                 showContent = true
             }
             #if DEBUG
-            if !MarketingCapture.isActive {
+            if !MarketingCapture.usesSeededData {
                 state.scheduleInitialChangeDetectionIfNeeded()
             }
             #else

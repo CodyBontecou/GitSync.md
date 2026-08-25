@@ -37,7 +37,8 @@ struct Sync_mdApp: App {
                 .environment(entitlementStore)
                 .environment(premiumRuntime)
                 .task {
-                    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+                    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil,
+                       FeatureFlags.gitSyncAssistEnabled {
                         await premiumRuntime.start()
                         await premiumRuntime.reconcileForeground()
                     }
@@ -63,7 +64,7 @@ struct Sync_mdApp: App {
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .active {
                 #if DEBUG
-                guard !MarketingCapture.isActive else { return }
+                guard !MarketingCapture.usesSeededData else { return }
                 #endif
 
                 // Re-validate repos when returning to foreground —
@@ -74,7 +75,9 @@ struct Sync_mdApp: App {
                 // avoid immediately re-scanning large vaults every time the app
                 // bounces through inactive/active (Control Center, app switcher).
                 appState.refreshClonedRepos(deferredBy: 0.5, skipIfRecentlyStartedWithin: 15)
-                Task { await premiumRuntime.reconcileForeground() }
+                if FeatureFlags.gitSyncAssistEnabled {
+                    Task { await premiumRuntime.reconcileForeground() }
+                }
             }
         }
     }

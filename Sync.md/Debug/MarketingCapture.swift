@@ -13,6 +13,14 @@ enum MarketingCapture {
         value(for: "-MarketingCapture") == "1"
     }
 
+    static var isFileBrowserUITestActive: Bool {
+        ProcessInfo.processInfo.arguments.contains("-FileBrowserUITest")
+    }
+
+    static var usesSeededData: Bool {
+        isActive || isFileBrowserUITestActive
+    }
+
     private static func value(for key: String) -> String? {
         let args = ProcessInfo.processInfo.arguments
         guard let idx = args.firstIndex(of: key), idx + 1 < args.count else { return nil }
@@ -163,12 +171,15 @@ enum MarketingDemoSeeder {
 
         // --- Repos ---
 
+        let primaryVaultFolderName = MarketingCapture.isFileBrowserUITestActive
+            ? "file-browser-ui-test"
+            : "second-brain"
         let repo1 = RepoConfig(
             repoURL: "https://github.com/example/second-brain.git",
             branch: "main",
             authorName: "Sample Developer",
             authorEmail: "developer@example.com",
-            vaultFolderName: "second-brain",
+            vaultFolderName: primaryVaultFolderName,
             gitState: GitState(
                 commitSHA: "a3f8c1d4e7b2a5f8c1d4e7b2a5f8c1d4e7b2a5f8",
                 treeSHA: "b2a5f8c1d4e7b2a5f8c1d4e7b2a5f8c1d4e7b2a5",
@@ -345,22 +356,43 @@ enum MarketingDemoSeeder {
         )
 
         // Public, fictional files for deterministic file-browser/editor shots.
-        let projectDirectory = repo1.defaultVaultURL.appendingPathComponent("projects", isDirectory: true)
-        let notesDirectory = repo1.defaultVaultURL.appendingPathComponent("notes", isDirectory: true)
-        try? FileManager.default.createDirectory(at: projectDirectory, withIntermediateDirectories: true)
-        try? FileManager.default.createDirectory(at: notesDirectory, withIntermediateDirectories: true)
-        try? "# App Launch\n\n## Status: In Progress\n\n- [x] Configure CI/CD\n- [ ] Submit to App Store\n"
-            .write(
-                to: projectDirectory.appendingPathComponent("app-launch.md"),
-                atomically: true,
-                encoding: .utf8
-            )
-        try? "# Meeting Notes\n\nSample notes for the GitSync.md screenshot demo.\n"
-            .write(
-                to: notesDirectory.appendingPathComponent("meeting-notes.md"),
-                atomically: true,
-                encoding: .utf8
-            )
+        let fileManager = FileManager.default
+        let vaultDirectory = repo1.defaultVaultURL
+        let gitDirectory = vaultDirectory.appendingPathComponent(".git", isDirectory: true)
+        let projectDirectory = vaultDirectory.appendingPathComponent("projects", isDirectory: true)
+        let notesDirectory = vaultDirectory.appendingPathComponent("notes", isDirectory: true)
+        let deepDirectory = projectDirectory.appendingPathComponent("mobile/client/screens", isDirectory: true)
+
+        do {
+            if MarketingCapture.isFileBrowserUITestActive,
+               fileManager.fileExists(atPath: vaultDirectory.path) {
+                try fileManager.removeItem(at: vaultDirectory)
+            }
+            try fileManager.createDirectory(at: gitDirectory, withIntermediateDirectories: true)
+            try fileManager.createDirectory(at: projectDirectory, withIntermediateDirectories: true)
+            try fileManager.createDirectory(at: notesDirectory, withIntermediateDirectories: true)
+            try fileManager.createDirectory(at: deepDirectory, withIntermediateDirectories: true)
+            try "# App Launch\n\n## Status: In Progress\n\n- [x] Configure CI/CD\n- [ ] Submit to App Store\n"
+                .write(
+                    to: projectDirectory.appendingPathComponent("app-launch.md"),
+                    atomically: true,
+                    encoding: .utf8
+                )
+            try "# Deep Note\n\nNested file-browser regression fixture.\n"
+                .write(
+                    to: deepDirectory.appendingPathComponent("deep-note.md"),
+                    atomically: true,
+                    encoding: .utf8
+                )
+            try "# Meeting Notes\n\nSample notes for the GitSync.md screenshot demo.\n"
+                .write(
+                    to: notesDirectory.appendingPathComponent("meeting-notes.md"),
+                    atomically: true,
+                    encoding: .utf8
+                )
+        } catch {
+            assertionFailure("Could not create seeded file-browser data: \(error)")
+        }
     }
 }
 #endif

@@ -74,13 +74,6 @@ struct FileBrowserView: View {
                 }
             }
         }
-        .navigationDestination(for: FileBrowserDestination.self) { dest in
-            FileBrowserView(repoID: dest.repoID, relativePath: dest.relativePath)
-                .id(dest)
-        }
-        .navigationDestination(for: FileEditorDestination.self) { dest in
-            FileEditorView(repoID: dest.repoID, fileURL: dest.fileURL)
-        }
         .alert("Rename", isPresented: $showRenameAlert, presenting: renameItem) { item in
             TextField("New name", text: $newName)
                 .autocorrectionDisabled()
@@ -102,8 +95,9 @@ struct FileBrowserView: View {
         } message: {
             Text("Enter a name for the new file in \"\(navTitle)\"")
         }
-        .onAppear { loadItems() }
-        .onChange(of: relativePath) { _, _ in loadItems() }
+        .task(id: currentURL.standardizedFileURL.path) {
+            loadItems()
+        }
     }
 
     // MARK: - File List

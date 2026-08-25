@@ -231,6 +231,9 @@ struct SettingsView: View {
 
                         // GitSync Assist remains optional and never changes
                         // manual Git controls outside this repository policy.
+                        // Hidden behind FeatureFlags.gitSyncAssistEnabled until
+                        // the tier is ready to ship.
+                        if FeatureFlags.gitSyncAssistEnabled {
                         settingsSection(title: "GitSync Assist") {
                             VStack(spacing: 0) {
                                 Toggle("Enable pull-only automation", isOn: $assistEnabled)
@@ -329,6 +332,7 @@ struct SettingsView: View {
                                     .foregroundStyle(Color.brutalText)
                                     .padding(16)
                             }
+                        }
                         }
 
                         // Debug Log
@@ -436,10 +440,12 @@ struct SettingsView: View {
                     assistPowerPolicy = repo.assist.powerPolicy
                     selectedGitHubInstallationID = premiumRuntime.githubInstallations.first?.githubInstallationID
                 }
-                Task {
-                    await premiumRuntime.prepareForSettings()
-                    if selectedGitHubInstallationID == nil {
-                        selectedGitHubInstallationID = premiumRuntime.githubInstallations.first?.githubInstallationID
+                if FeatureFlags.gitSyncAssistEnabled {
+                    Task {
+                        await premiumRuntime.prepareForSettings()
+                        if selectedGitHubInstallationID == nil {
+                            selectedGitHubInstallationID = premiumRuntime.githubInstallations.first?.githubInstallationID
+                        }
                     }
                 }
             }

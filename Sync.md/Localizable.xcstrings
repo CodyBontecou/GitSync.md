@@ -32729,156 +32729,156 @@
         }
       }
     },
-    "Delete, rename, and move files": {
+    "Create, rename, and delete files": {
       "localizations": {
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "حذف الملفات وإعادة تسميتها ونقلها"
+            "value": "إنشاء الملفات وإعادة تسميتها وحذفها"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Slet, omdøb og flyt filer"
+            "value": "Opret, omdøb og slet filer"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dateien löschen, umbenennen und verschieben"
+            "value": "Dateien erstellen, umbenennen und löschen"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eliminar, cambiar el nombre y mover archivos"
+            "value": "Crear, cambiar el nombre y eliminar archivos"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Poista, nimeä uudelleen ja siirtää tiedostoja"
+            "value": "Luo, nimeä uudelleen ja poista tiedostoja"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Supprimer, renommer et déplacer des fichiers"
+            "value": "Créer, renommer et supprimer des fichiers"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": ": מחיקת קבצים, שינוי שם ו перемעברם"
+            "value": "ליצור, לשנות שם ולמחוק קבצים"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": ": फ़ाइलों को हटाना, नाम बदलना और स्थानांतरित करना"
+            "value": "फ़ाइलें बनाएँ, नाम बदलें और हटाएँ"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Fájlok törlése, átnevezése és áthelyezése"
+            "value": "Fájlok létrehozása, átnevezése és törlése"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Menghapus, mengganti nama, dan memindahkan file"
+            "value": "Buat, ubah nama, dan hapus berkas"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Eliminazione, rinominazione e spostamento di file"
+            "value": "Crea, rinomina ed elimina file"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "：ファイルの削除、名前変更、移動"
+            "value": "ファイルの作成、名前変更、削除"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": ": 파일 삭제, 이름 변경 및 이동"
+            "value": "파일 생성, 이름 변경 및 삭제"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Fjern, endre navn på og flytt filer"
+            "value": "Opprett, gi nytt navn til og slett filer"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Bestanden verwijderen, hernoemen en verschuiven"
+            "value": "Bestanden maken, hernoemen en verwijderen"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Usunięcie, zmiana nazwy oraz przesunięcie plików"
+            "value": "Twórz, zmieniaj nazwy i usuwaj pliki"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Excluir, renomear e mover arquivos"
+            "value": "Criar, renomear e excluir arquivos"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Удаление, переименование и перемещение файлов"
+            "value": "Создание, переименование и удаление файлов"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Ta bort, ändra namn och flytta filer"
+            "value": "Skapa, byt namn på och ta bort filer"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": ": การลบ ตั้งชื่อใหม่ และย้ายไฟล์"
+            "value": "สร้าง เปลี่ยนชื่อ และลบไฟล์"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Dosyaları silme, yeniden adlandırma ve taşıma"
+            "value": "Dosya oluştur, yeniden adlandır ve sil"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Видалення, переіменування та переміщення файлів"
+            "value": "Створюйте, перейменовуйте та видаляйте файли"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": ": Xóa, đổi tên và di chuyển tệp tin"
+            "value": "Tạo, đổi tên và xóa tệp"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "：删除、重命名及移动文件"
+            "value": "创建、重命名和删除文件"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "：刪除、重命名及移動文件"
+            "value": "建立、重新命名和刪除檔案"
           }
         }
       }

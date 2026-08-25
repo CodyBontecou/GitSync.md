@@ -90,13 +90,6 @@ struct VaultView: View {
         .navigationDestination(for: ConflictEditorDestination.self) { dest in
             ConflictEditorView(repoID: dest.repoID, path: dest.path)
         }
-        .navigationDestination(for: FileBrowserDestination.self) { dest in
-            FileBrowserView(repoID: dest.repoID, relativePath: dest.relativePath)
-                .id(dest)
-        }
-        .navigationDestination(for: FileEditorDestination.self) { dest in
-            FileEditorView(repoID: dest.repoID, fileURL: dest.fileURL)
-        }
         .overlay {
             if showRevertAllConfirm {
                 RevertConfirmModal(
@@ -151,7 +144,7 @@ struct VaultView: View {
         .navigationBarBackButtonHidden(state.callbackNavigateToRepoID != nil)
         .onAppear {
             #if DEBUG
-            guard !MarketingCapture.isActive else { return }
+            guard !MarketingCapture.usesSeededData else { return }
             #endif
             state.detectChanges(repoID: repoID, skipIfRecentlyStartedWithin: 5)
         }
@@ -167,7 +160,7 @@ struct VaultView: View {
         ScrollView {
             VStack(spacing: 12) {
                 statusHeroCard(repo)
-                if repo.assist.enabled || repo.assist.health.kind != .never {
+                if FeatureFlags.gitSyncAssistEnabled, repo.assist.enabled || repo.assist.health.kind != .never {
                     assistHealthCard(repo.assist.health)
                 }
                 repoHealthCard
@@ -724,7 +717,7 @@ struct VaultView: View {
                     BActionRow(
                         icon: "🗂️",
                         title: String(localized: "Browse Files"),
-                        subtitle: String(localized: "Delete, rename, and move files")
+                        subtitle: String(localized: "Create, rename, and delete files")
                     )
                 }
                 .buttonStyle(.plain)

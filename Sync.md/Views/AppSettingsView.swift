@@ -117,12 +117,16 @@ struct AppSettingsView: View {
 
                         // Optional subscription. Existing manual Git, Shortcuts,
                         // callbacks, and local repository features remain available.
-                        settingsSection(title: "GitSync Assist") {
-                            actionRow(
-                                icon: "⚡️",
-                                title: "GitSync Assist",
-                                subtitle: "Optional best-effort pull-only automation"
-                            ) { showPremiumSettings = true }
+                        // Hidden behind FeatureFlags.gitSyncAssistEnabled until the
+                        // tier is ready to ship.
+                        if FeatureFlags.gitSyncAssistEnabled {
+                            settingsSection(title: "GitSync Assist") {
+                                actionRow(
+                                    icon: "⚡️",
+                                    title: "GitSync Assist",
+                                    subtitle: "Optional best-effort pull-only automation"
+                                ) { showPremiumSettings = true }
+                            }
                         }
 
                         // Shortcuts

@@ -49,7 +49,7 @@ enum AppReleaseNotes {
     /// current app version the user hasn't already seen.
     static func presentedVersionForHomePage(hasExistingAppData: Bool) -> NoteletPresentedVersion? {
         #if DEBUG
-        if MarketingCapture.isActive {
+        if MarketingCapture.usesSeededData {
             return nil
         }
         #endif

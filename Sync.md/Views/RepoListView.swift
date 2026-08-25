@@ -161,6 +161,10 @@ struct RepoListView: View {
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
+            .navigationDestination(for: FileBrowserDestination.self) { destination in
+                FileBrowserView(repoID: destination.repoID, relativePath: destination.relativePath)
+                    .id(destination)
+            }
             .navigationDestination(for: FileEditorDestination.self) { destination in
                 FileEditorView(repoID: destination.repoID, fileURL: destination.fileURL)
             }
@@ -421,7 +425,7 @@ struct RepoListView: View {
                             .tint(Color.brutalAccent)
                     }
 
-                    if repo.assist.health.kind == .attention || repo.assist.health.kind == .failed {
+                    if FeatureFlags.gitSyncAssistEnabled, repo.assist.health.kind == .attention || repo.assist.health.kind == .failed {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(Color.brutalWarning)
                             .accessibilityLabel("GitSync Assist needs attention")
