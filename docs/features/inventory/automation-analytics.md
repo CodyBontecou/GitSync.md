@@ -137,7 +137,7 @@ Property keys (whitelist): `appVersion`, `buildNumber`, `platform`, `onboardingS
 - Analytics/privacy: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`, `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`, `testPremiumAPIRequestContainsOnlyAllowedMetadataAndFailsClosed`.
 - Pull machinery used by Shortcuts/callback: `testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo`, `testRepositoryPullRunnerReturnsUpdatedAndUpToDate`, `testAppStatePullFastForwardUpdatesCommitAndOutcome`, `testAppStatePullBlockedByLocalChangesDoesNotMutateRepoState`, `testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead`, `testLocalGitPullOnlyDoesNotOverwriteBranchAdvancedAfterAncestryValidation`, `testAppStatePullWithRebaseUpdatesCommitAndOutcome`, `testAppStatePullWithRebaseConflictStoresOutcome`, OAuth URL parsing `testOAuthCallbackParserValidatesURLStateBeforeToken`.
 - **No direct unit tests** named for `CallbackURLHandler`, the App Intents, or `OnboardingAnalyticsClient` in this file; worker has `worker/onboarding-analytics/test/onboarding-analytics.test.mjs`.
-- `SyncMDUITests/SyncMDUITests.swift`: only `testLaunch()`.
+- `SyncMDUITests/SyncMDUITests.swift`: launch smoke coverage plus a seeded UI regression that traverses four nested repository folders and verifies the leaf file is visible.
 
 ## 9. CI workflows (`.github/workflows/`)
 
@@ -152,8 +152,8 @@ Property keys (whitelist): `appVersion`, `buildNumber`, `platform`, `onboardingS
 
 Source: `Sync.md/Debug/MarketingCapture.swift` (entire file, `#if DEBUG`). Resolves the ui-views inventory gap note (§ Gaps #6).
 
-- **Activation**: launch arguments `-MarketingCapture 1` (+ optional `-MarketingLocale <id>` defaulting to device language, `-MarketingFormFactor iphone|ipad`). `isActive` gates ContentView seeding, scene refresh skipping, release-notes suppression.
-- **Demo seeding** (`MarketingDemoSeeder.seed(into:)`): fabricates signed-in identity ("sample-developer"), 3 repos (`second-brain` ahead w/ 4 status entries incl. untracked/modified/deleted, `engineering-docs` behind w/ 1 modified, `team-wiki` up-to-date), branch inventory (main + 2 feature branches + origin/main), 1 stash ("WIP: reorganize project templates"), 2 tags (annotated v1.0.0 + lightweight v1.1.0), a realistic markdown-checklist unified diff, and writes 2 deterministic sample markdown files for browser/editor shots.
+- **Activation**: launch arguments `-MarketingCapture 1` (+ optional `-MarketingLocale <id>` defaulting to device language, `-MarketingFormFactor iphone|ipad`). The UI regression uses `-FileBrowserUITest`; `usesSeededData` gates ContentView seeding, scene/status refresh skipping, and release-notes suppression for both modes.
+- **Demo seeding** (`MarketingDemoSeeder.seed(into:)`): fabricates signed-in identity ("sample-developer"), 3 repos (`second-brain` ahead w/ 4 status entries incl. untracked/modified/deleted, `engineering-docs` behind w/ 1 modified, `team-wiki` up-to-date), branch inventory (main + 2 feature branches + origin/main), 1 stash ("WIP: reorganize project templates"), 2 tags (annotated v1.0.0 + lightweight v1.1.0), a realistic markdown-checklist unified diff, and deterministic markdown files for browser/editor shots. UI-test mode recreates an isolated vault containing `projects/mobile/client/screens/deep-note.md`.
 - **Capture coordinator** (`MarketingCaptureCoordinator.run(steps:)`): per-step navigate → settle (default 1.8s) → `snapshotKeyWindow()` (UIGraphicsImageRenderer of key window) → write PNG to `Documents/marketing/<formFactor>/<locale>/<name>.png` → optional cleanup (0.9s); writes `_done` sentinel on completion (consumed by `scripts/capture-marketing.sh` simulator loop — see infrastructure inventory §6).
 - **In-app hooks**: notifications `MarketingCapture.dismissSheet` / `showGitSheet` / `showSettings` posted by VaultView to open sheets for the capture story (ui-views §7.13).
 
