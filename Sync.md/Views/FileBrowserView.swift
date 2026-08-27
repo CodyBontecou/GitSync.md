@@ -9,9 +9,13 @@ struct FileBrowserDestination: Hashable {
 
 // MARK: - File Item
 
-private struct FileItem: Identifiable {
+struct FileItem: Identifiable {
     let url: URL
     let name: String
+    /// Path relative to the vault root (e.g. "src/lib/store.js"). Built from
+    /// the directory we enumerated plus the entry name — never by stripping
+    /// the vault path prefix off `url.path`.
+    let relativePath: String
     let isDirectory: Bool
     var id: String { url.path }
 }
@@ -24,6 +28,7 @@ struct FileBrowserView: View {
     let relativePath: String
 
     @State private var items: [FileItem] = []
+    @State private var loadErrorMessage: String?
     @State private var renameItem: FileItem? = nil
     @State private var newName: String = ""
     @State private var showRenameAlert = false
@@ -145,7 +150,7 @@ struct FileBrowserView: View {
             if item.isDirectory {
                 NavigationLink(value: FileBrowserDestination(
                     repoID: repoID,
-                    relativePath: relativePathFor(item)
+                    relativePath: item.relativePath
                 )) {
                     rowContent(item: item, gitStatus: gitStatus)
                 }
@@ -208,13 +213,13 @@ struct FileBrowserView: View {
     private var emptyState: some View {
         VStack(spacing: 12) {
             Spacer()
-            Text("📂")
+            Text(loadErrorMessage == nil ? "📂" : "🔒")
                 .font(.system(size: 44))
-            Text("Empty Directory")
+            Text(loadErrorMessage == nil ? "Empty Directory" : "Couldn't Read Folder")
                 .font(.system(size: 14, weight: .bold, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
-            Text("No files found")
+            Text(loadErrorMessage == nil ? "No files found" : (loadErrorMessage ?? ""))
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundStyle(Color.brutalTextFaint)
             Spacer()
@@ -223,20 +228,32 @@ struct FileBrowserView: View {
 
     // MARK: - Data Loading
 
-    private func loadItems() {
-        guard let contents = try? FileManager.default.contentsOfDirectory(
-            at: currentURL,
+    /// Lists a directory for the file browser.
+    ///
+    /// Relative paths are composed from `parentRelativePath` + entry name.
+    /// String-prefix math against `url.path` is explicitly avoided: on iOS the
+    /// vault URL comes back through the `/var -> /private/var` symlink while
+    /// `contentsOfDirectory` returns child URLs with symlinks resolved, so
+    /// prefix stripping silently fails and every folder two or more levels
+    /// deep navigates to a non-existent path and renders as "Empty Directory".
+    static func listContents(
+        of directory: URL,
+        parentRelativePath: String
+    ) throws -> [FileItem] {
+        let contents = try FileManager.default.contentsOfDirectory(
+            at: directory,
             includingPropertiesForKeys: [.isDirectoryKey],
             options: .skipsHiddenFiles
-        ) else {
-            items = []
-            return
-        }
+        )
 
-        items = contents.compactMap { url -> FileItem? in
-            guard url.lastPathComponent != ".git" else { return nil }
+        return contents.compactMap { url -> FileItem? in
+            let name = url.lastPathComponent
+            guard name != ".git" else { return nil }
             let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
-            return FileItem(url: url, name: url.lastPathComponent, isDirectory: isDir)
+            let relativePath = parentRelativePath.isEmpty
+                ? name
+                : parentRelativePath + "/" + name
+            return FileItem(url: url, name: name, relativePath: relativePath, isDirectory: isDir)
         }
         .sorted {
             if $0.isDirectory != $1.isDirectory { return $0.isDirectory }
@@ -244,21 +261,31 @@ struct FileBrowserView: View {
         }
     }
 
-    // MARK: - Helpers
-
-    private func relativePathFor(_ item: FileItem) -> String {
-        let vaultPath = vaultURL.path
-        let itemPath = item.url.path
-        guard itemPath.hasPrefix(vaultPath) else { return item.name }
-        let rel = String(itemPath.dropFirst(vaultPath.count))
-        return rel.hasPrefix("/") ? String(rel.dropFirst()) : rel
+    private func loadItems() {
+        do {
+            items = try Self.listContents(of: currentURL, parentRelativePath: relativePath)
+            loadErrorMessage = nil
+        } catch {
+            // A failed read is not an empty directory — surface it distinctly
+            // so navigation bugs and sandbox failures can't masquerade as
+            // "No files found" (which is exactly how the /private/var bug hid).
+            items = []
+            loadErrorMessage = error.localizedDescription
+            DebugLogger.shared.error(
+                "files",
+                "Could not list \(currentURL.path)",
+                detail: error.localizedDescription
+            )
+        }
     }
+
+    // MARK: - Helpers
 
     private func gitStatusFor(_ item: FileItem) -> GitStatusEntry? {
         // Normalise to NFC before comparing: git stores paths as NFC while
         // APFS/HFS+ gives back NFD from FileManager, so a straight == fails
         // for Korean, Japanese, and other non-ASCII filenames.
-        let rel = relativePathFor(item).precomposedStringWithCanonicalMapping
+        let rel = item.relativePath.precomposedStringWithCanonicalMapping
         if item.isDirectory {
             return statusEntries.first { $0.path.hasPrefix(rel + "/") }
         }

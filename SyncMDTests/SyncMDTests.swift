@@ -5025,6 +5025,88 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(requestCount, 2)
     }
 
+    // MARK: - File browser deep navigation (regression: /private/var symlink)
+
+    /// Reproduces the platform mechanism behind the "subfolders two levels
+    /// deep always show as Empty Directory" bug (user report, 2.5.2/2.5.3).
+    ///
+    /// On iOS the app's Documents URL arrives through the `/var ->
+    /// /private/var` symlink, while `contentsOfDirectory` returns child URLs
+    /// with symlinks RESOLVED. The old `FileBrowserView` derived each row's
+    /// relative path by prefix-stripping the vault path off `url.path`:
+    /// the prefix check failed, the code silently fell back to the bare entry
+    /// name, and navigation to `<vault>/lib` (a path that does not exist)
+    /// threw — which `try?` converted into "Empty Directory". Depth 1 kept
+    /// working only because the fallback name coincides with the correct
+    /// relative path. The simulator never caught it because its container
+    /// paths contain no symlinked ancestors.
+    func testFileBrowserListingSurvivesSymlinkedVaultAncestor() throws {
+        let fm = FileManager.default
+        let root = URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent("filebrowser-symlink-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: root) }
+
+        // <root>/real/vault mirrors /private/var/mobile/.../Documents/<vault>
+        // and <root>/varlike mirrors the unresolved /var/mobile/... form: the
+        // symlink is an ANCESTOR of the enumerated directory, exactly like
+        // /var -> /private/var on device. (Note: making the symlink the final
+        // component instead makes the URL-based contentsOfDirectory fail
+        // outright, which is a different FileManager quirk.)
+        let vault = root.appendingPathComponent("real/vault", isDirectory: true)
+        try fm.createDirectory(
+            at: vault.appendingPathComponent("src/lib", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        fm.createFile(atPath: vault.appendingPathComponent("src/lib/store.js").path, contents: nil)
+        fm.createFile(atPath: vault.appendingPathComponent("svelte.config.js").path, contents: nil)
+
+        let unresolvedVar = root.appendingPathComponent("varlike", isDirectory: true)
+        try fm.createSymbolicLink(at: unresolvedVar, withDestinationURL: root.appendingPathComponent("real", isDirectory: true))
+        let unresolvedVault = unresolvedVar.appendingPathComponent("vault", isDirectory: true)
+
+        // Precondition: child URLs come back with symlinks resolved, so their
+        // paths do NOT share the unresolved vault prefix. This is the platform
+        // behaviour that broke prefix-based relative-path math on device.
+        let rawChildren = try fm.contentsOfDirectory(
+            at: unresolvedVault,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: .skipsHiddenFiles
+        )
+        XCTAssertTrue(
+            rawChildren.contains { !$0.path.hasPrefix(unresolvedVault.path) },
+            "Test premise: enumeration through a symlinked ancestor resolves child URLs"
+        )
+
+        // Level 0: rows are navigable by name.
+        let level0 = try FileBrowserView.listContents(of: unresolvedVault, parentRelativePath: "")
+        XCTAssertEqual(
+            Set(level0.map(\.relativePath)),
+            ["src", "svelte.config.js"]
+        )
+
+        // Level 1: relative path must be "src" + name, not just the name.
+        let level1 = try FileBrowserView.listContents(
+            of: unresolvedVault.appendingPathComponent("src"),
+            parentRelativePath: "src"
+        )
+        XCTAssertEqual(level1.map(\.relativePath), ["src/lib"])
+        XCTAssertTrue(level1[0].isDirectory)
+
+        // Level 2: resolves to src/lib and actually lists its files. Under the
+        // old bug this enumerated <vault>/lib (nonexistent) and threw.
+        let level2 = try FileBrowserView.listContents(
+            of: unresolvedVault.appendingPathComponent(level1[0].relativePath),
+            parentRelativePath: level1[0].relativePath
+        )
+        XCTAssertEqual(level2.map(\.relativePath), ["src/lib/store.js"])
+
+        // And the old fallback path really is invalid: <vault>/lib does not exist.
+        XCTAssertFalse(
+            fm.fileExists(atPath: unresolvedVault.appendingPathComponent("lib").path),
+            "The depth-1 fallback name must not resolve at depth 2"
+        )
+    }
+
 }
 
 private func XCTAssertThrowsErrorAsync<T>(
