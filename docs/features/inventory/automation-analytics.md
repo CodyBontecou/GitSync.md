@@ -30,7 +30,7 @@ Source: `Sync.md/Shortcuts/SyncShortcuts.swift` (entire file).
 
 **Not present**: push/sync/status intents — Shortcuts surface is **pull-only** (push/sync/status are x-callback-url only).
 
-## 2. x-callback-url (Obsidian plugin integration)
+## 2. x-callback-url (Obsidian integration)
 
 Source: `Sync.md/Services/CallbackURLHandler.swift` (entire file). Scheme `syncmd` (Info.plist `CFBundleURLTypes`, URLName `com.bontecou.Sync-md`).
 

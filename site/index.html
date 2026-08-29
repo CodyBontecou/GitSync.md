@@ -1864,7 +1864,7 @@
       <div class="integration-card">
         <div class="integration-tag">x-callback-url</div>
         <div class="integration-name">Obsidian</div>
-        <div class="integration-desc">The Obsidian Git plugin can call <code>syncmd://x-callback-url/sync</code> to pull and push without leaving your vault. <a href="blog/obsidian-git-ios-setup.html">Implementation guide →</a></div>
+        <div class="integration-desc">Tap a <code>syncmd://x-callback-url/sync</code> link in any note, or run it from an iOS Shortcut, to pull and push without leaving your vault. <a href="blog/obsidian-git-ios-setup.html">Implementation guide →</a></div>
       </div>
       <div class="integration-card">
         <div class="integration-tag">Files App</div>
@@ -1923,9 +1923,9 @@
       </div>
       <div class="doc-card">
         <h3>Obsidian implementation</h3>
-        <p>In the Obsidian Git community plugin, set your mobile sync URL to:</p>
-        <span class="doc-url">syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</span>
-        <p><a href="blog/obsidian-git-ios-setup.html">See the complete iOS setup guide →</a></p>
+        <p>Obsidian Git has no URL setting. Instead, paste this link into any note and tap it to sync:</p>
+        <span class="doc-url">[Sync vault](syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian)</span>
+        <p>The <code>repo</code> value must match the vault folder name shown in GitSync.md — or fire the same URL from an iOS Shortcut. <a href="blog/obsidian-git-ios-setup.html">See the complete iOS setup guide →</a></p>
       </div>
     </div>
   </div>

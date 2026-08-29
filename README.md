@@ -117,7 +117,7 @@ Limitations: only the root `.gitattributes` is consulted, hydration is not parti
 
 ### x-callback-url API
 
-External apps (e.g. Obsidian via the [Obsidian Git](https://github.com/Vinzent03/obsidian-git) plugin) can trigger sync operations via URL scheme:
+External triggers — a tapped link in an Obsidian note, an iOS Shortcut, or any URL launcher — can run sync operations via URL scheme:
 
 ```
 syncmd://x-callback-url/<action>?repo=<folder-name>[&message=<commit-message>]&x-success=<url>&x-error=<url>

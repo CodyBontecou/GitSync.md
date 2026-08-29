@@ -33,7 +33,7 @@ Domain: user-facing screens and interactions. All files under `/Users/codybontec
 
 ### App entry (`Sync_mdApp.swift`)
 - Wires `AppState`, `PremiumEntitlementStore`, `PremiumRuntime`, `BackgroundSyncCoordinator` into environment.
-- **x-callback-url handling**: `onOpenURL` → `CallbackURLHandler` for `syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>` (Obsidian plugin integration). Results surface in VaultView callback banner and drive `state.callbackNavigateToRepoID` navigation.
+- **x-callback-url handling**: `onOpenURL` → `CallbackURLHandler` for `syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>` (Obsidian integration). Results surface in VaultView callback banner and drive `state.callbackNavigateToRepoID` navigation.
 - **Foreground scene activation**: re-validates cloned repos (Files-app deletions), refreshes change counts (deferred 0.5s, skip if scanned within 15s), reconciles premium foreground.
 - **Debug PAT injection**: `INJECT_PAT` env var auto sign-in for simulator testing.
 - **App Shortcuts**: `SyncMDAppShortcutsProvider.updateAppShortcutParameters()` (AppIntents; "Pull All Repositories" Shortcuts support — also advertised in AppSettingsView).

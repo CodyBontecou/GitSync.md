@@ -13,7 +13,7 @@ enum CallbackAction: String {
 
 // MARK: - Callback URL Handler
 
-/// Handles x-callback-url requests from external apps (e.g. the Obsidian plugin).
+/// Handles x-callback-url requests from external triggers (e.g. a tapped link in an Obsidian note, or an iOS Shortcut).
 ///
 /// URL format:
 ///   syncmd://x-callback-url/<action>?repo=<vaultFolderName>&x-success=<url>&x-error=<url>

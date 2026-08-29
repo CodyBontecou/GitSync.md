@@ -173,7 +173,7 @@ final class AppState {
     var gitHubAccounts: [GitHubAccount] = []
     var activeGitHubAccountLogin: String = ""
 
-    // MARK: - Callback State (x-callback-url from Obsidian plugin)
+    // MARK: - Callback State (x-callback-url from Obsidian or Shortcuts)
 
     /// When set, the UI programmatically navigates to this repo's VaultView.
     var callbackNavigateToRepoID: UUID? = nil

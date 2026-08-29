@@ -136,7 +136,7 @@ All follow the pattern: guard cloned + non-demo + `.git` exists → call gitServ
 - **`saveGlobalSettings()`** (AppState.swift:598–617): UserDefaults keys `gitHubUsername`, `gitHubDisplayName`, `gitHubAvatarURL`, `authorName`, `authorEmail`, `hasCompletedOnboarding`, `hasSeenOnboarding`, `activeGitHubAccountLogin`, `gitHubAccounts` (JSON), `defaultSaveLocationBookmark`.
 - **Default save location**: `setDefaultSaveLocation(_:)` (AppState.swift:620–640 — start scope, bookmarkData, save), `clearDefaultSaveLocation()` (AppState.swift:642–650), `resolveDefaultSaveBookmark()` (AppState.swift:661–682 — resolve, start scope, refresh stale bookmark), `defaultSaveDisplayPath`, `hasDefaultSaveLocation`. Consumed by `clone` (adopts default location when repo has no custom bookmark).
 - **Review prompt**: `shouldRequestReview` flag set once by `requestReviewIfNeeded()` (AppState.swift:2703–2709, UserDefaults `hasRequestedReview`) — triggered by successful pull/pullWithRebase/push/pushCurrentBranch/clone-adjacent flows.
-- **x-callback state** (Obsidian plugin bridge): `callbackNavigateToRepoID: UUID?` and `callbackResult: CallbackResultState?` (AppState.swift:154–158; struct at AppState.swift:3277–3283 with `repoID`, `action`, `isSuccess`, `message`). Handled by `Services/CallbackURLHandler.swift`; cleared on demo deactivation.
+- **x-callback state** (Obsidian x-callback bridge): `callbackNavigateToRepoID: UUID?` and `callbackResult: CallbackResultState?` (AppState.swift:154–158; struct at AppState.swift:3277–3283 with `repoID`, `action`, `isSuccess`, `message`). Handled by `Services/CallbackURLHandler.swift`; cleared on demo deactivation.
 
 ## 16. Error handling & surfacing patterns
 

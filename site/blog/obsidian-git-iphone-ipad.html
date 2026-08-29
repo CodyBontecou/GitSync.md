@@ -525,7 +525,7 @@ ssh://git@git.example.com:2222/team/notes.git</code></pre>
           <li><strong>Author name</strong>: the name you want on commits.</li>
           <li><strong>Author email</strong>: the email you want on commits.</li>
         </ul>
-        <p>For the most reliable iOS flow, use GitSync.md's URL scheme as the mobile sync command. The repo value should match the vault folder name shown in GitSync.md:</p>
+        <p>For the most reliable iOS flow, trigger GitSync.md's URL scheme directly — paste it into any note and tap the link, or run it from an iOS Shortcut. The repo value should match the vault folder name shown in GitSync.md:</p>
         <pre><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
         <p>The <code>sync</code> action pulls first, then stages local changes, commits them with the message you pass, and pushes back to the remote. You can also call individual actions if you want separate buttons:</p>
         <pre><code>syncmd://x-callback-url/pull?repo=MyVault
@@ -540,7 +540,7 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
         <h2 id="daily-workflow">4. Daily workflow on iPhone and iPad</h2>
         <p>A good mobile rhythm is simple:</p>
         <ol>
-          <li><strong>Pull before editing.</strong> Use Obsidian Git's mobile sync action or open GitSync.md and pull the vault.</li>
+          <li><strong>Pull before editing.</strong> Tap your <code>syncmd://</code> pull link, run a Shortcut, or open GitSync.md and pull the vault.</li>
           <li><strong>Edit notes in Obsidian.</strong> Create daily notes, update project notes, capture inbox items, or work in split view on iPad.</li>
           <li><strong>Sync after editing.</strong> Trigger the <code>syncmd://x-callback-url/sync</code> URL or use GitSync.md to commit and push.</li>
           <li><strong>Review changes when needed.</strong> Open the repo in GitSync.md to inspect changed files, branch state, diffs, conflicts, tags, or stashes before pushing.</li>

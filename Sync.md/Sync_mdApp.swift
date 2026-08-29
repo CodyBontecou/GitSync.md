@@ -115,7 +115,7 @@ struct Sync_mdApp: App {
                         }
                         return
                     }
-                    // x-callback-url from external apps (e.g. Obsidian plugin)
+                    // x-callback-url from external triggers (e.g. a link tapped in Obsidian, or an iOS Shortcut)
                     // Format: syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>
                     let handler = CallbackURLHandler(appState: appState)
                     if handler.canHandle(url) {
