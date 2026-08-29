@@ -124,26 +124,32 @@ final class CallbackURLHandler {
 
             case .push:
                 appState.syncProgress = "Committing & pushing…"
-                let pushResult = try await serialized.withLease { repository in
-                    try await self.performPush(repoID: repoID, message: message, repository: repository)
+                switch await appState.pushOnly(repoID: repoID, message: message) {
+                case .pushed(let commitSHA):
+                    result["sha"] = commitSHA
+                case .noChanges:
+                    throw LocalGitError.noChanges
+                case .authenticationOrTrustRequired(let message, _), .failed(let message):
+                    throw CallbackActionError(message: message)
                 }
-                result["sha"] = pushResult.commitSHA
 
             case .sync:
-                try await serialized.withLease { repository in
-                    self.appState.syncProgress = "Pulling from remote…"
-                    let pullResult = try await self.performPull(repoID: repoID, repository: repository)
-                    result["pull_updated"] = pullResult.updated ? "true" : "false"
-                    if let attention = pullResult.attention { throw attention }
+                appState.syncProgress = "Pulling from remote…"
+                let pullResult = try await serialized.withLease { repository in
+                    try await self.performPull(repoID: repoID, repository: repository)
+                }
+                result["pull_updated"] = pullResult.updated ? "true" : "false"
+                if let attention = pullResult.attention { throw attention }
 
-                    self.appState.syncProgress = "Pushing local changes…"
-                    do {
-                        let pushResult = try await self.performPush(repoID: repoID, message: message, repository: repository)
-                        result["sha"] = pushResult.commitSHA
-                    } catch LocalGitError.noChanges {
-                        result["sha"] = pullResult.newCommitSHA
-                        result["push_skipped"] = "true"
-                    }
+                appState.syncProgress = "Pushing local changes…"
+                switch await appState.pushOnly(repoID: repoID, message: message) {
+                case .pushed(let commitSHA):
+                    result["sha"] = commitSHA
+                case .noChanges:
+                    result["sha"] = pullResult.newCommitSHA
+                    result["push_skipped"] = "true"
+                case .authenticationOrTrustRequired(let message, _), .failed(let message):
+                    throw CallbackActionError(message: message)
                 }
 
             case .status:
@@ -257,88 +263,11 @@ final class CallbackURLHandler {
         return result
     }
 
-    private func performPush(
-        repoID: UUID,
-        message: String,
-        repository: any GitRepositoryProtocol
-    ) async throws -> LocalPushResult {
-        guard let idx = appState.repoIndex(id: repoID), repository.hasGitDirectory else {
-            throw LocalGitError.notCloned
-        }
-
-        let repo = appState.repos[idx]
-
-        // The encompassing lease keeps every status/stage pass, commit, and
-        // push indivisible relative to all other in-process repository work.
-        try await stageAllLocalChanges(repository: repository)
-
-        let commitMsg = message.isEmpty ? "Update from GitSync.md" : message
-
-        let result = try await repository.commitAndPush(
-            message: commitMsg,
-            authorName: repo.authorName,
-            authorEmail: repo.authorEmail,
-            pat: appState.authPayload(for: repo)
-        )
-
-        if let currentIndex = appState.repoIndex(id: repoID) {
-            appState.repos[currentIndex].gitState.commitSHA = result.commitSHA
-            appState.repos[currentIndex].gitState.lastSyncDate = Date()
-            appState.saveRepos()
-        }
-        appState.detectChanges(repoID: repoID)
-
-        return result
-    }
-
-    /// Stages all local changes for callback pushes, with a short settle window
-    /// to absorb delayed file-system events (e.g. Obsidian rename = copy+delete
-    /// where the delete can arrive shortly after the new file appears).
-    private func stageAllLocalChanges(repository: any GitRepositoryProtocol) async throws {
-        var sawAnyChanges = false
-
-        // Run multiple add/update passes over a short window so delayed rename
-        // deletions are captured before commit.
-        for pass in 0..<8 {
-            let before = try await repository.repoInfo()
-            if !before.statusEntries.isEmpty {
-                sawAnyChanges = true
-            }
-
-            try await repository.stageAll()
-
-            if pass < 7 {
-                try? await Task.sleep(for: .milliseconds(250))
-            }
-        }
-
-        var finalInfo = try await repository.repoInfo()
-        if finalInfo.statusEntries.contains(where: { $0.indexStatus != nil }) {
-            return
-        }
-
-        // Fallback to per-entry staging if libgit2 add/update missed anything.
-        if !finalInfo.statusEntries.isEmpty {
-            var seen = Set<String>()
-            for entry in finalInfo.statusEntries {
-                guard entry.path != "<unknown>" else { continue }
-                let key = "\(entry.path)\u{0}\(entry.oldPath ?? "")"
-                guard seen.insert(key).inserted else { continue }
-                try await repository.stage(path: entry.path, oldPath: entry.oldPath)
-            }
-
-            finalInfo = try await repository.repoInfo()
-            if finalInfo.statusEntries.contains(where: { $0.indexStatus != nil }) {
-                return
-            }
-        }
-
-        if sawAnyChanges {
-            // We saw changes but couldn't stage them into the index.
-            throw LocalGitError.commitFailed(String(localized: "Could not stage local file changes before push."))
-        }
-
-        throw LocalGitError.noChanges
+    /// Carries an already-localized failure message out of a typed
+    /// `RepositoryPushResult` so the x-error redirect preserves the exact text.
+    private struct CallbackActionError: LocalizedError {
+        let message: String
+        var errorDescription: String? { message }
     }
 
     private func performStatus(repository: any GitRepositoryProtocol) async throws -> LocalRepoInfo {

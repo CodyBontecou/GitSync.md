@@ -134,6 +134,25 @@ struct SyncMDAppShortcutsProvider: AppShortcutsProvider {
             shortTitle: "Pull Repo",
             systemImageName: "arrow.down.circle"
         )
+
+        AppShortcut(
+            intent: PushRepositoryIntent(),
+            phrases: [
+                "Push \(\.$repository) in \(.applicationName)",
+                "Commit and push \(\.$repository) in \(.applicationName)"
+            ],
+            shortTitle: "Push Repo",
+            systemImageName: "arrow.up.circle.fill"
+        )
+
+        AppShortcut(
+            intent: SyncRepositoryIntent(),
+            phrases: [
+                "Pull and push \(\.$repository) in \(.applicationName)"
+            ],
+            shortTitle: "Pull & Push",
+            systemImageName: "arrow.triangle.2.circlepath.circle.fill"
+        )
     }
 
     static var shortcutTileColor: ShortcutTileColor = .blue
@@ -281,5 +300,242 @@ private struct GitShortcutPullSummary {
         let count = results.filter { $0.status == status }.count
         guard count > 0 else { return }
         parts.append("\(count) \(count == 1 ? singular : plural)")
+    }
+}
+
+// MARK: - Push / Sync Intents
+
+/// Hard failures surfaced to Shortcuts as intent errors. Soft outcomes
+/// (pushed / noChanges / blocked) are returned as a `GitSyncResultEntity`
+/// so automations are not halted by expected states.
+enum GitShortcutError: LocalizedError {
+    case repositoryNotFound
+    case notCloned(String)
+    case authenticationRequired(String)
+    case operationFailed(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .repositoryNotFound:
+            return String(localized: "Repository not found. Pick a repository again in Shortcuts.")
+        case .notCloned(let name):
+            return String(localized: "\(name) has not been cloned yet. Open GitSync.md and clone it first.")
+        case .authenticationRequired(let message):
+            return message
+        case .operationFailed(let message):
+            return message
+        }
+    }
+}
+
+/// Structured outcome returned to Shortcuts so automations can branch on
+/// `status`, read the pushed `commitSHA`, or surface `message` in a
+/// notification — without parsing dialog text.
+struct GitSyncResultEntity: AppEntity, Identifiable {
+    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Sync Result")
+    static var defaultQuery = GitSyncResultEntityQuery()
+
+    /// One of: `pushed`, `noChanges`, `upToDate`, `blocked`.
+    static let statusPushed = "pushed"
+    static let statusNoChanges = "noChanges"
+    static let statusUpToDate = "upToDate"
+    static let statusBlocked = "blocked"
+
+    let id: String
+
+    @Property(title: "Status")
+    var status: String
+
+    @Property(title: "Commit SHA")
+    var commitSHA: String
+
+    @Property(title: "Message")
+    var message: String
+
+    @Property(title: "Repository")
+    var repositoryName: String
+
+    var displayRepresentation: DisplayRepresentation {
+        DisplayRepresentation(
+            title: "\(repositoryName): \(status)",
+            subtitle: "\(message)"
+        )
+    }
+
+    init(id: String, status: String, commitSHA: String, message: String, repositoryName: String) {
+        self.id = id
+        self.status = status
+        self.commitSHA = commitSHA
+        self.message = message
+        self.repositoryName = repositoryName
+    }
+}
+
+/// Output-only entity: resolves nothing on lookup.
+struct GitSyncResultEntityQuery: EntityQuery {
+    func entities(for identifiers: [GitSyncResultEntity.ID]) async throws -> [GitSyncResultEntity] { [] }
+}
+
+struct PushRepositoryIntent: AppIntent {
+    static var title: LocalizedStringResource = "Push Repository"
+    static var description = IntentDescription("Stage all changes, commit, and push one cloned GitSync.md repository — without opening the app.")
+    static var openAppWhenRun = false
+
+    @Parameter(title: "Repository", requestValueDialog: "Which repository should GitSync.md push?")
+    var repository: GitRepositoryEntity
+
+    @Parameter(
+        title: "Commit Message",
+        description: "Optional commit message. Defaults to \"Update from GitSync.md\"."
+    )
+    var message: String?
+
+    static var parameterSummary: some ParameterSummary {
+        Summary("Push \(\.$repository)")
+    }
+
+    init() {}
+
+    init(repository: GitRepositoryEntity, message: String? = nil) {
+        self.repository = repository
+        self.message = message
+    }
+
+    @MainActor
+    func perform() async throws -> some IntentResult & ProvidesDialog & ReturnsValue<GitSyncResultEntity> {
+        let outcome = try await GitShortcutRunner.push(id: repository.id, message: message)
+        return .result(value: outcome.entity, dialog: "\(outcome.dialog)")
+    }
+}
+
+struct SyncRepositoryIntent: AppIntent {
+    static var title: LocalizedStringResource = "Sync Repository"
+    static var description = IntentDescription("Pull one cloned GitSync.md repository, then commit and push local changes — without opening the app.")
+    static var openAppWhenRun = false
+
+    @Parameter(title: "Repository", requestValueDialog: "Which repository should GitSync.md sync?")
+    var repository: GitRepositoryEntity
+
+    @Parameter(
+        title: "Commit Message",
+        description: "Optional commit message. Defaults to \"Update from GitSync.md\"."
+    )
+    var message: String?
+
+    static var parameterSummary: some ParameterSummary {
+        Summary("Pull and push \(\.$repository)")
+    }
+
+    init() {}
+
+    init(repository: GitRepositoryEntity, message: String? = nil) {
+        self.repository = repository
+        self.message = message
+    }
+
+    @MainActor
+    func perform() async throws -> some IntentResult & ProvidesDialog & ReturnsValue<GitSyncResultEntity> {
+        let outcome = try await GitShortcutRunner.sync(id: repository.id, message: message)
+        return .result(value: outcome.entity, dialog: "\(outcome.dialog)")
+    }
+}
+
+@MainActor
+private extension GitShortcutRunner {
+    struct ShortcutOutcome {
+        let entity: GitSyncResultEntity
+        let dialog: String
+    }
+
+    static func resolveRepo(id: String) throws -> (AppState, RepoConfig) {
+        guard let repoID = UUID(uuidString: id) else {
+            throw GitShortcutError.repositoryNotFound
+        }
+        let state = AppState()
+        guard let repo = state.repo(id: repoID) else {
+            throw GitShortcutError.repositoryNotFound
+        }
+        guard repo.isCloned else {
+            throw GitShortcutError.notCloned(repo.displayName)
+        }
+        return (state, repo)
+    }
+
+    static func outcome(
+        repo: RepoConfig,
+        status: String,
+        commitSHA: String,
+        message: String
+    ) -> ShortcutOutcome {
+        ShortcutOutcome(
+            entity: GitSyncResultEntity(
+                id: "\(repo.id)-\(status)",
+                status: status,
+                commitSHA: commitSHA,
+                message: message,
+                repositoryName: repo.displayName
+            ),
+            dialog: "\(repo.displayName): \(message)"
+        )
+    }
+
+    static func push(id: String, message: String?) async throws -> ShortcutOutcome {
+        let (state, repo) = try resolveRepo(id: id)
+        switch await state.pushOnly(repoID: repo.id, message: message) {
+        case .pushed(let commitSHA):
+            let short = String(commitSHA.prefix(7))
+            return outcome(
+                repo: repo,
+                status: GitSyncResultEntity.statusPushed,
+                commitSHA: commitSHA,
+                message: String(localized: "Pushed \(short)")
+            )
+        case .noChanges:
+            return outcome(
+                repo: repo,
+                status: GitSyncResultEntity.statusNoChanges,
+                commitSHA: "",
+                message: String(localized: "No local changes to push")
+            )
+        case .authenticationOrTrustRequired(let message, _):
+            throw GitShortcutError.authenticationRequired(message)
+        case .failed(let message):
+            throw GitShortcutError.operationFailed(message)
+        }
+    }
+
+    static func sync(id: String, message: String?) async throws -> ShortcutOutcome {
+        let (state, repo) = try resolveRepo(id: id)
+        let result = await state.syncRepository(repoID: repo.id, message: message)
+
+        switch result.outcome {
+        case .synced:
+            let sha = if case .pushed(let commitSHA) = result.push { commitSHA } else { "" }
+            let short = String(sha.prefix(7))
+            return outcome(
+                repo: repo,
+                status: GitSyncResultEntity.statusPushed,
+                commitSHA: sha,
+                message: String(localized: "Synced \(short)")
+            )
+        case .pushSkipped:
+            return outcome(
+                repo: repo,
+                status: GitSyncResultEntity.statusNoChanges,
+                commitSHA: result.pull?.newCommitSHA ?? "",
+                message: String(localized: "Synced — no local changes")
+            )
+        case .blocked:
+            return outcome(
+                repo: repo,
+                status: GitSyncResultEntity.statusBlocked,
+                commitSHA: "",
+                message: result.message
+            )
+        case .authenticationOrTrustRequired(let message, _):
+            throw GitShortcutError.authenticationRequired(message)
+        case .failed(let message):
+            throw GitShortcutError.operationFailed(message)
+        }
     }
 }

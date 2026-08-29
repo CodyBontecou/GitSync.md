@@ -2502,6 +2502,173 @@ final class AppState {
         return result
     }
 
+    /// UI-independent, typed push-only execution seam for foreground, App
+    /// Intents, and the x-callback-url handler. Stages all local changes,
+    /// commits, and pushes as one serialized repository operation. Soft
+    /// outcomes (including `noChanges`) ride the typed result; this never
+    /// shows errors or prompts.
+    @discardableResult
+    func pushOnly(repoID: UUID, message: String? = nil) async -> RepositoryPushResult {
+        guard let repo = repo(id: repoID) else {
+            return .failed(message: String(localized: "Repository not found"))
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Committing and pushing...")
+        defer {
+            isSyncing = false
+            syncingRepoID = nil
+        }
+
+        if isDemoMode {
+            let fakeSHA = String(
+                UUID().uuidString
+                    .replacingOccurrences(of: "-", with: "")
+                    .prefix(40)
+                    .lowercased()
+            )
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = fakeSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+            }
+            syncProgress = String(localized: "Push complete!")
+            return .pushed(commitSHA: fakeSHA)
+        }
+
+        let serialized: SerializedGitRepository
+        do {
+            serialized = try serializedRepository(repoID: repoID)
+        } catch {
+            return .failed(message: error.localizedDescription)
+        }
+
+        // The runner stages and mutates the index and HEAD. Invalidate any
+        // status scan that began before staging starts; success advances the
+        // published state again below after the working copy is coherent.
+        markRepositoryMutated(repoID: repoID)
+        let result = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: repo,
+            credentials: authPayload(for: repo),
+            message: message
+        )
+
+        if case .pushed(let commitSHA) = result {
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = commitSHA
+                repos[currentIndex].gitState.lastSyncDate = Date()
+                saveRepos()
+            }
+            clearCommitHistoryCache(for: repoID)
+            syncProgress = String(localized: "Push complete!")
+        }
+
+        detectChanges(repoID: repoID)
+        return result
+    }
+
+    /// UI-independent, typed pull-then-push sync seam for App Intents and the
+    /// x-callback-url handler. Pulls first; only a clean pull (updated or up
+    /// to date, without attention) proceeds to stage/commit/push. Blocked
+    /// pulls never attempt a push.
+    @discardableResult
+    func syncRepository(repoID: UUID, message: String? = nil) async -> RepositorySyncResult {
+        let pullResult = await pullOnly(repoID: repoID, showsProgressDelay: false)
+
+        switch pullResult {
+        case .updated, .upToDate:
+            let pushResult = await pushOnly(repoID: repoID, message: message)
+            switch pushResult {
+            case .pushed:
+                return RepositorySyncResult(
+                    outcome: .synced,
+                    pull: pullResult,
+                    push: pushResult,
+                    message: String(localized: "Sync complete")
+                )
+            case .noChanges:
+                return RepositorySyncResult(
+                    outcome: .pushSkipped,
+                    pull: pullResult,
+                    push: pushResult,
+                    message: String(localized: "Synced — no local changes")
+                )
+            case .authenticationOrTrustRequired(let message, let trustError):
+                return RepositorySyncResult(
+                    outcome: .authenticationOrTrustRequired(message: message, trustError: trustError),
+                    pull: pullResult,
+                    push: pushResult,
+                    message: message
+                )
+            case .failed(let message):
+                return RepositorySyncResult(
+                    outcome: .failed(message: message),
+                    pull: pullResult,
+                    push: pushResult,
+                    message: message
+                )
+            }
+
+        case .updatedWithAttention(_, _, let attention):
+            return RepositorySyncResult(
+                outcome: .blocked,
+                pull: pullResult,
+                push: nil,
+                message: attention.localizedDescription
+            )
+
+        case .blockedByLocalChanges:
+            return RepositorySyncResult(
+                outcome: .blocked,
+                pull: pullResult,
+                push: nil,
+                message: String(localized: "Pull blocked by local changes. Commit, stash, or discard changes before syncing.")
+            )
+
+        case .diverged(_, let aheadBy, let behindBy):
+            return RepositorySyncResult(
+                outcome: .blocked,
+                pull: pullResult,
+                push: nil,
+                message: String(localized: "Local and remote have diverged (ahead \(aheadBy), behind \(behindBy)). Merge support is required to continue.")
+            )
+
+        case .remoteBranchMissing(let branch):
+            return RepositorySyncResult(
+                outcome: .blocked,
+                pull: pullResult,
+                push: nil,
+                message: String(localized: "Remote branch '\(branch)' was not found on origin.")
+            )
+
+        case .wrongBranch(let expected, let actual):
+            return RepositorySyncResult(
+                outcome: .failed(message: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")),
+                pull: pullResult,
+                push: nil,
+                message: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
+            )
+
+        case .authenticationOrTrustRequired(let message, let trustError):
+            return RepositorySyncResult(
+                outcome: .authenticationOrTrustRequired(message: message, trustError: trustError),
+                pull: pullResult,
+                push: nil,
+                message: message
+            )
+
+        case .unavailable(let message), .failed(let message):
+            return RepositorySyncResult(
+                outcome: .failed(message: message),
+                pull: pullResult,
+                push: nil,
+                message: message
+            )
+        }
+    }
+
     @discardableResult
     func pullWithRebase(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
         guard let repo = repo(id: repoID) else {

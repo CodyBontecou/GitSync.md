@@ -111,7 +111,7 @@
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
 | 7.1 | x-callback-url API `syncmd://x-callback-url/<action>?repo=` — actions pull/push/sync/status, optional `message`; responses: `sha`, `updated`, `pull_updated`, `push_skipped`, `branch`, `changes`; Obsidian-optimized staging (8 passes for rename/copy+delete) | Core | `CallbackURLHandler` (full contract in automation inventory §2) |
-| 7.2 | App Intents: "Pull All Repositories" + "Pull Repository" (entity picker of cloned repos, Siri phrases, dialog summaries, pull-only by design) | Core | `SyncShortcuts.swift` |
+| 7.2 | App Intents: "Pull All Repositories" + "Pull Repository" (entity picker of cloned repos, Siri phrases, dialog summaries, pull-only by design); "Push Repository" + "Sync Repository" (background execution via `openAppWhenRun=false`, auto-stage+commit+push under one lease, structured `GitSyncResultEntity` status/sha/message output, auth/uncloned errors thrown for Shortcuts branching) | Core | `SyncShortcuts.swift`, `RepositoryPushRunner.swift` |
 | 7.3 | Foreground change detection & re-validation on scene activation | Core | `Sync_mdApp` |
 | 7.4 | StoreKit review request after first clone (2s delay) | Core | `ContentView` §1.7 |
 

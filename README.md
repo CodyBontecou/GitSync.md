@@ -23,7 +23,7 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **Multiple repos & storage** — Manage many repositories, each with its own branch, author identity, and custom save location (or app-managed storage); re-add previously cloned repos in one tap; scan GitSync.md storage or any Files folder to rediscover and reconnect existing clones in a batch; removing a repo keeps your files by default.
 - **Built-in editor & files** — Syntax-highlighted editor (Swift, Markdown, JSON, YAML, JS/TS, Python, Bash, HTML, CSS; VSCode Dark+/Light+ themes), file browser with git status badges, create/rename/delete files, and line-by-line diff viewing.
 - **Edit anywhere** — Files live in the Files app; edit with Obsidian, ia Writer, or any editor, then sync from GitSync.md.
-- **Obsidian & automation** — `syncmd://x-callback-url` API (pull/push/sync/status with `message` param and result callbacks) plus Apple Shortcuts intents ("Pull All Repositories", "Pull Repository").
+- **Obsidian & automation** — `syncmd://x-callback-url` API (pull/push/sync/status with `message` param and result callbacks) plus Apple Shortcuts intents ("Pull All Repositories", "Pull Repository", "Push Repository", "Sync Repository" — push/sync run in the background without opening the app).
 - **Private repo support** — Works with both public and private repositories.
 - **Localization** — Full UI in 26 languages.
 - **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
@@ -133,6 +133,19 @@ Parameters: `repo` (required, vault folder name), `message` (optional, commit me
 | `status` | Read repository state | `branch`, `sha`, `changes` (count) |
 
 All success callbacks also receive `action=…&status=ok`; error callbacks receive `action=…&status=error&message=<localized error>`. Push staging tolerates external-editor rename/copy+delete timing by retrying staging passes before committing.
+
+### Shortcuts / App Intents
+
+For automations that must not switch apps (e.g. "When Obsidian closes → push"), use the native intents instead of the URL scheme — they run in the background and return structured results to Shortcuts:
+
+| Intent | Behavior | Output |
+|--------|----------|--------|
+| Pull All Repositories | Fetch and fast-forward every cloned repository | Dialog summary |
+| Pull Repository | Fetch and fast-forward one repository | Dialog summary |
+| Push Repository | Stage all changes, commit, and push one repository | `status` (`pushed`/`noChanges`), `commitSHA`, `message` |
+| Sync Repository | Pull, then stage/commit/push (blocked pulls never push) | `status` (`pushed`/`noChanges`/`blocked`), `commitSHA`, `message` |
+
+All four run without bringing GitSync.md to the foreground. Expected outcomes (nothing to push, diverged branches, blocked pulls) return a `blocked`/`noChanges` status instead of failing the shortcut; errors that need in-app attention (authentication, uncloned repository) fail the action so Shortcuts can branch on them. Push staging matches the x-callback-url path (rename/copy+delete tolerant).
 
 ## Building
 
