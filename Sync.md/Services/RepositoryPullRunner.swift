@@ -18,6 +18,16 @@ enum RepositoryPullResult: Sendable, Equatable {
         default: false
         }
     }
+
+    /// The local commit SHA after the pull, when the result carries one.
+    var newCommitSHA: String? {
+        switch self {
+        case .updated(_, let commitSHA), .upToDate(_, let commitSHA), .updatedWithAttention(_, let commitSHA, _):
+            return commitSHA
+        default:
+            return nil
+        }
+    }
 }
 
 /// Pure, presentation-independent pull-only policy. Foreground UI adaptation

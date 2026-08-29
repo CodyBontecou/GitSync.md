@@ -7206,6 +7206,241 @@ final class SyncMDTests: XCTestCase {
         )
     }
 
+    // MARK: - RepositoryPushRunner / pushOnly / syncRepository (Issue #32)
+
+    /// A status entry that is already staged — the fake never mutates its
+    /// `repoInfoResult`, so an `indexStatus` entry makes the 8-pass staging
+    /// loop succeed on the first pass.
+    private static func stagedEntry(path: String = "Note.md") -> GitStatusEntry {
+        GitStatusEntry(path: path, indexStatus: .modified, workTreeStatus: nil)
+    }
+
+    /// A work-tree-only entry the fake can never stage — exercises the
+    /// "saw changes but couldn't stage them" failure path.
+    private static func unstagedEntry(path: String = "Note.md") -> GitStatusEntry {
+        GitStatusEntry(path: path, indexStatus: nil, workTreeStatus: .modified)
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerMapsSuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let pushedSHA = "abc123abc123abc123abc123abc123abc123abc1"
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: pushedSHA))
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        let result = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        )
+
+        XCTAssertEqual(result, .pushed(commitSHA: pushedSHA))
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from GitSync.md"])
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerDefaultsEmptyMessageToStandardCommit() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: fixture.repoInfo.commitSHA))
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        _ = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: "   "
+        )
+
+        XCTAssertEqual(
+            fixture.repository.commitAndPushMessages,
+            ["Update from GitSync.md"],
+            "A blank message must fall back to the default commit message"
+        )
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerMapsNoChangesWithoutCommitting() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        let result = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        )
+
+        XCTAssertEqual(result, .noChanges)
+        XCTAssertTrue(
+            fixture.repository.commitAndPushMessages.isEmpty,
+            "Nothing must be committed when there are no changes"
+        )
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerMapsAuthenticationFailure() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .failure(LocalGitError.authenticationFailed("bad PAT"))
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        let result = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        )
+
+        guard case .authenticationOrTrustRequired(let message, let trustError) = result else {
+            return XCTFail("Expected authenticationOrTrustRequired, got \(result)")
+        }
+        XCTAssertTrue(message.contains("bad PAT"))
+        XCTAssertNil(trustError)
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerFailsWhenChangesCannotBeStaged() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.unstagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: fixture.repoInfo.commitSHA))
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        let result = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        )
+
+        guard case .failed(let message) = result else {
+            return XCTFail("Expected failed, got \(result)")
+        }
+        XCTAssertTrue(message.contains("stage"), "Failure should explain staging, got: \(message)")
+        XCTAssertTrue(
+            fixture.repository.commitAndPushMessages.isEmpty,
+            "A half-staged tree must never be committed or pushed"
+        )
+    }
+
+    @MainActor
+    func testAppStatePushOnlyPersistsCommitAndUpdatesGitState() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let pushedSHA = "fedcba9876543210fedcba9876543210fedcba98"
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: pushedSHA))
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.pushOnly(repoID: fixture.repoConfig.id, message: "Update from Obsidian")
+
+        XCTAssertEqual(result, .pushed(commitSHA: pushedSHA))
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from Obsidian"])
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, pushedSHA)
+        let lastSync = try XCTUnwrap(state.repo(id: fixture.repoConfig.id)?.gitState.lastSyncDate)
+        XCTAssertEqual(lastSync.timeIntervalSince1970, Date().timeIntervalSince1970, accuracy: 30)
+    }
+
+    @MainActor
+    func testAppStateSyncRepositoryShortCircuitsWhenPullDiverged() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .diverged,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: "1111111111111111111111111111111111111111",
+            hasLocalChanges: false,
+            aheadBy: 2,
+            behindBy: 3
+        )
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: "deadbeef"))
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.syncRepository(repoID: fixture.repoConfig.id)
+
+        XCTAssertEqual(result.outcome, .blocked)
+        XCTAssertTrue(
+            fixture.repository.commitAndPushMessages.isEmpty,
+            "A blocked pull must never attempt a push"
+        )
+        XCTAssertNil(result.push)
+    }
+
+    @MainActor
+    func testAppStateSyncRepositoryPushSkipsWhenNoLocalChanges() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        // Default pull plan is up-to-date; default repo info has no changes.
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.syncRepository(repoID: fixture.repoConfig.id)
+
+        XCTAssertEqual(result.outcome, .pushSkipped)
+        guard case .upToDate = result.pull else {
+            return XCTFail("Expected up-to-date pull, got \(String(describing: result.pull))")
+        }
+        XCTAssertEqual(result.push, .noChanges)
+    }
+
+    @MainActor
+    func testAppStateSyncRepositoryPushesAfterCleanPull() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let pushedSHA = "1234567890abcdef1234567890abcdef12345678"
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: pushedSHA))
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.syncRepository(repoID: fixture.repoConfig.id, message: "Update from Obsidian")
+
+        XCTAssertEqual(result.outcome, .synced)
+        XCTAssertEqual(result.push, .pushed(commitSHA: pushedSHA))
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from Obsidian"])
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, pushedSHA)
+    }
+
 }
 
 private func XCTAssertThrowsErrorAsync<T>(
