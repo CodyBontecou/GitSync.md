@@ -55,6 +55,9 @@ DO_NOT_TRANSLATE = {
     "@%@",
     "GIT",
     "GITSYNC.MD",
+    "GitSync Assist",
+    "GITSYNC ASSIST",
+    "Fast-forwarded",
     "filename.ext",
     "filename.md",
     "folder-name",
@@ -80,9 +83,19 @@ DO_NOT_TRANSLATE = {
 }
 
 PROTECTED_TERMS = [
+    "GitSync Assist",
     "GitSync.md",
     "Sync.md",
+    "GitHub App",
     "Apple Shortcuts",
+    "StoreKit",
+    "Cloudflare",
+    "APNs",
+    "HMAC",
+    "D1",
+    "pull-only",
+    "Relay",
+    "relay",
     "GitHub",
     "Git",
     "Forgejo",
@@ -212,6 +225,19 @@ def request_translation(payload: str, target: str, provider: str) -> str:
 
 
 def translate_batch(items: list[tuple[int, str]], target: str, provider: str) -> dict[int, str]:
+    # A framing marker can be reordered after translated prose in right-to-left
+    # output. A singleton needs no marker and is therefore direction-safe.
+    if len(items) == 1:
+        index, text = items[0]
+        last_error: Exception | None = None
+        for attempt in range(4):
+            try:
+                return {index: request_translation(text, target, provider).strip()}
+            except Exception as error:
+                last_error = error
+                time.sleep(2 ** attempt)
+        assert last_error is not None
+        raise last_error
     payload = "\n".join(f"ZXQITEM{index:06d}QXZ {text}" for index, text in items)
     try:
         translated = request_translation(payload, target, provider)
@@ -255,6 +281,24 @@ def translate_batch(items: list[tuple[int, str]], target: str, provider: str) ->
     return result
 
 
+def split_long_prose(text: str, limit: int = 180) -> list[str]:
+    """Split provider-limited prose at sentence or word boundaries."""
+    chunks: list[str] = []
+    remaining = text.strip()
+    while len(remaining) > limit:
+        window = remaining[: limit + 1]
+        cut = max(window.rfind(". "), window.rfind("; "), window.rfind(", "), window.rfind(" "))
+        if cut < limit // 2:
+            cut = limit
+        elif remaining[cut] in ".;,":
+            cut += 1
+        chunks.append(remaining[:cut].strip())
+        remaining = remaining[cut:].strip()
+    if remaining:
+        chunks.append(remaining)
+    return chunks
+
+
 def translate_preserving_batch(
     items: list[tuple[int, str]], target: str, provider: str, max_chars: int
 ) -> dict[int, str]:
@@ -274,9 +318,13 @@ def translate_preserving_batch(
                 assert whitespace is not None
                 leading, prose, trailing = whitespace.groups()
                 pieces.append(leading)
-                pieces.append(next_segment)
-                segments.append((next_segment, prose))
-                next_segment += 1
+                prose_chunks = split_long_prose(prose) if provider == "alibaba" and len(prose) > 180 else [prose]
+                for chunk_index, chunk in enumerate(prose_chunks):
+                    if chunk_index:
+                        pieces.append(" ")
+                    pieces.append(next_segment)
+                    segments.append((next_segment, chunk))
+                    next_segment += 1
                 pieces.append(trailing)
         templates[item_index] = pieces
 

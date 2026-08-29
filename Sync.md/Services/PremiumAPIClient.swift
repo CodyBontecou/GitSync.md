@@ -32,13 +32,14 @@ struct URLSessionPremiumHTTPTransport: PremiumHTTPTransport {
 }
 
 enum PremiumAPIError: LocalizedError {
-    case notConfigured, invalidResponse, rejected(Int), invalidCredential
+    case notConfigured, invalidResponse, rejected(Int), invalidCredential, transport(String)
     var errorDescription: String? {
         switch self {
-        case .notConfigured: "GitSync Assist relay is not configured."
-        case .invalidResponse: "The relay returned an invalid response."
-        case .rejected(let status): "The relay rejected the request (HTTP \(status))."
-        case .invalidCredential: "The relay authorization is invalid or expired."
+        case .notConfigured: String(localized: "GitSync Assist relay is not configured.")
+        case .invalidResponse: String(localized: "The relay returned an invalid response.")
+        case .rejected(let status): String(localized: "The relay rejected the request (HTTP \(status)).")
+        case .invalidCredential: String(localized: "The relay authorization is invalid or expired.")
+        case .transport(let message): String(localized: "GitSync Assist could not reach the relay: \(message)")
         }
     }
 }
@@ -68,6 +69,9 @@ struct PremiumRepositoryEnrollmentRequest: Codable, Sendable, Equatable {
 
 struct PremiumRepositoryEnrollment: Codable, Sendable, Equatable {
     let channel: String
+    let githubInstallationID: Int64
+    let repositoryID: Int64
+    let branch: String
 }
 
 protocol PremiumRelayManaging: PremiumAPIClientProtocol {
@@ -107,18 +111,18 @@ struct PremiumAPIClient: PremiumRelayManaging, Sendable {
     func startGitHubLink(credential: PremiumInstallationCredential) async throws -> PremiumGitHubLink {
         guard !credential.token.isEmpty, credential.expiresAt > Date() else { throw PremiumAPIError.invalidCredential }
         let data = try await send(path: "v1/github/link/start", method: "POST", body: Data("{}".utf8), bearer: credential.token)
-        return try decoder.decode(PremiumGitHubLink.self, from: data)
+        return try decode(PremiumGitHubLink.self, from: data)
     }
     func githubInstallations(credential: PremiumInstallationCredential) async throws -> [PremiumGitHubInstallationSummary] {
         guard !credential.token.isEmpty, credential.expiresAt > Date() else { throw PremiumAPIError.invalidCredential }
         let data = try await send(path: "v1/github/link/status", method: "GET", body: nil, bearer: credential.token)
         struct Response: Decodable { let installations: [PremiumGitHubInstallationSummary] }
-        return try decoder.decode(Response.self, from: data).installations
+        return try decode(Response.self, from: data).installations
     }
     func createEnrollment(_ request: PremiumRepositoryEnrollmentRequest, credential: PremiumInstallationCredential) async throws -> PremiumRepositoryEnrollment {
         guard !credential.token.isEmpty, credential.expiresAt > Date() else { throw PremiumAPIError.invalidCredential }
         let data = try await send(path: "v1/enrollments", method: "POST", body: try encoder.encode(request), bearer: credential.token)
-        return try decoder.decode(PremiumRepositoryEnrollment.self, from: data)
+        return try decode(PremiumRepositoryEnrollment.self, from: data)
     }
     func deleteEnrollment(channel: String, credential: PremiumInstallationCredential) async throws {
         guard !credential.token.isEmpty, credential.expiresAt > Date() else { throw PremiumAPIError.invalidCredential }
@@ -138,9 +142,24 @@ struct PremiumAPIClient: PremiumRelayManaging, Sendable {
         if let bearer { request.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization") }
         for (name, value) in additionalHeaders { request.setValue(value, forHTTPHeaderField: name) }
         request.httpBody = body
-        let (data, response) = try await transport.data(for: request)
+        let data: Data
+        let response: HTTPURLResponse
+        do {
+            (data, response) = try await transport.data(for: request)
+        } catch let error as PremiumAPIError {
+            throw error
+        } catch {
+            throw PremiumAPIError.transport(error.localizedDescription)
+        }
         guard (200..<300).contains(response.statusCode) else { throw PremiumAPIError.rejected(response.statusCode) }
         return data
+    }
+
+    private func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
+        guard let value = try? decoder.decode(type, from: data) else {
+            throw PremiumAPIError.invalidResponse
+        }
+        return value
     }
 }
 

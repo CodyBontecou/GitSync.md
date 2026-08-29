@@ -29,13 +29,13 @@
     "zh-Hant"
   ],
   "counts": {
-    "catalogEntries": 755,
-    "activeEntries": 689,
-    "translatableEntries": 659,
-    "expectedTranslatedCells": 17225,
-    "translatedCells": 17225,
-    "allowedIdenticalCells": 750,
-    "localizedTechnicalEquivalentCells": 295,
+    "catalogEntries": 924,
+    "activeEntries": 846,
+    "translatableEntries": 813,
+    "expectedTranslatedCells": 21150,
+    "translatedCells": 21150,
+    "allowedIdenticalCells": 825,
+    "localizedTechnicalEquivalentCells": 320,
     "failureCount": 0
   },
   "failures": {
@@ -47,7 +47,9 @@
     "leakedMachineTokens": [],
     "unexpectedLocales": [],
     "identicalWithoutAllowlist": [],
-    "allowlistMismatch": []
+    "allowlistMismatch": [],
+    "extractedMissingFromCatalog": [],
+    "activeNotExtracted": []
   },
   "review": {
     "allowedIdentical": [
@@ -927,6 +929,131 @@
         "value": "@%@"
       },
       {
+        "key": "Fast-forwarded",
+        "locale": "ar",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "da",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "de",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "es",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "fi",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "fr",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "he",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "hi",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "hu",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "id",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "it",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "ja",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "ko",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "nb",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "nl",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "pl",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "pt-BR",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "ru",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "sv",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "th",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "tr",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "uk",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "vi",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "zh-Hans",
+        "value": "Fast-forwarded"
+      },
+      {
+        "key": "Fast-forwarded",
+        "locale": "zh-Hant",
+        "value": "Fast-forwarded"
+      },
+      {
         "key": "GIT",
         "locale": "ar",
         "value": "GIT"
@@ -1052,6 +1179,131 @@
         "value": "GIT"
       },
       {
+        "key": "GITSYNC ASSIST",
+        "locale": "ar",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "da",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "de",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "es",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "fi",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "fr",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "he",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "hi",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "hu",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "id",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "it",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "ja",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "ko",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "nb",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "nl",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "pl",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "pt-BR",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "ru",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "sv",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "th",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "tr",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "uk",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "vi",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "zh-Hans",
+        "value": "GITSYNC ASSIST"
+      },
+      {
+        "key": "GITSYNC ASSIST",
+        "locale": "zh-Hant",
+        "value": "GITSYNC ASSIST"
+      },
+      {
         "key": "GITSYNC.MD",
         "locale": "ar",
         "value": "GITSYNC.MD"
@@ -1175,6 +1427,131 @@
         "key": "GITSYNC.MD",
         "locale": "zh-Hant",
         "value": "GITSYNC.MD"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "ar",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "da",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "de",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "es",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "fi",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "fr",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "he",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "hi",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "hu",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "id",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "it",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "ja",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "ko",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "nb",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "nl",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "pl",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "pt-BR",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "ru",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "sv",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "th",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "tr",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "uk",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "vi",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "zh-Hans",
+        "value": "GitSync Assist"
+      },
+      {
+        "key": "GitSync Assist",
+        "locale": "zh-Hant",
+        "value": "GitSync Assist"
       },
       {
         "key": "filename.ext",
@@ -4919,6 +5296,131 @@
         "value": "Rebase"
       },
       {
+        "key": "Relay",
+        "locale": "ar",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "da",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "de",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "es",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "fi",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "fr",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "he",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "hi",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "hu",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "id",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "it",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "ja",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "ko",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "nb",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "nl",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "pl",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "pt-BR",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "ru",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "sv",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "th",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "tr",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "uk",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "vi",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "zh-Hans",
+        "value": "Relay"
+      },
+      {
+        "key": "Relay",
+        "locale": "zh-Hant",
+        "value": "Relay"
+      },
+      {
         "key": "Repositories",
         "locale": "de",
         "value": "Repositories"
@@ -5279,6 +5781,13 @@
         "value": "repository"
       }
     ]
+  },
+  "compilerExtractionCoverage": {
+    "status": "checked",
+    "root": "/tmp/gitsync-assist-localization-derived/Build/Intermediates.noindex/Sync.md.build/Debug-iphonesimulator/Sync.md.build/Objects-normal/arm64",
+    "stringsdataFiles": 69,
+    "sourceFiles": 66,
+    "extractedKeys": 846
   },
   "passed": true
 }

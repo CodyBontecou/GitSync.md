@@ -117,6 +117,7 @@ struct GitCompareResponse: Codable {
 enum GitHubError: LocalizedError {
     case invalidURL
     case unauthorized
+    case forbidden
     case notFound(String)       // carries the raw GitHub response for debugging
     case rateLimited
     case conflict(String)
@@ -128,6 +129,7 @@ enum GitHubError: LocalizedError {
         switch self {
         case .invalidURL: return String(localized: "Invalid repository URL")
         case .unauthorized: return String(localized: "Invalid or expired token. Sign out and sign in again.")
+        case .forbidden: return String(localized: "GitHub access to this repository was denied.")
         case .notFound(let detail): return String(localized: "Not found: \(detail)")
         case .rateLimited: return String(localized: "GitHub API rate limit exceeded. Try again later.")
         case .conflict(let msg): return String(localized: "Conflict: \(msg)")
@@ -192,36 +194,12 @@ final class GitHubService: Sendable {
         self.session = URLSession(configuration: config)
     }
 
-    /// Parse a GitHub repo URL into (owner, repo)
+    /// Parse only an exact canonical GitHub owner/repository target.
     static func parseRepoURL(_ urlString: String) -> (owner: String, repo: String)? {
-        let cleaned = urlString
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: ".git", with: "")
-
-        // Handle HTTPS URLs
-        if let url = URL(string: cleaned),
-           let host = url.host,
-           host.contains("github.com") {
-            let components = url.pathComponents.filter { $0 != "/" }
-            guard components.count >= 2 else { return nil }
-            return (components[0], components[1])
-        }
-
-        // Handle SSH URLs: git@github.com:owner/repo
-        if cleaned.contains("git@github.com:") {
-            let parts = cleaned.replacingOccurrences(of: "git@github.com:", with: "")
-                .split(separator: "/")
-            guard parts.count >= 2 else { return nil }
-            return (String(parts[0]), String(parts[1]))
-        }
-
-        // Handle owner/repo format
-        let parts = cleaned.split(separator: "/")
-        if parts.count == 2 {
-            return (String(parts[0]), String(parts[1]))
-        }
-
-        return nil
+        guard let fullName = GitRemoteURL.parse(urlString)?.canonicalGitHubFullName else { return nil }
+        let parts = fullName.split(separator: "/", omittingEmptySubsequences: false)
+        guard parts.count == 2 else { return nil }
+        return (String(parts[0]), String(parts[1]))
     }
 
     // MARK: - Low-Level API
@@ -349,6 +327,8 @@ final class GitHubService: Sendable {
     // MARK: - Get Default Branch
 
     struct RepoInfo: Codable {
+        let id: Int64
+        let full_name: String
         let default_branch: String
     }
 
@@ -581,7 +561,7 @@ struct GitHubUser: Codable {
 }
 
 struct GitHubRepo: Codable, Identifiable {
-    let id: Int
+    let id: Int64
     let name: String
     let fullName: String
     let description: String?
@@ -619,24 +599,84 @@ extension GitHubService {
         return try JSONDecoder().decode(GitHubUser.self, from: data)
     }
 
-    /// Fetch the authenticated user's repos (sorted by last updated)
+    /// Fetch all authenticated repositories (100 per page) from `page` onward.
     static func fetchRepos(token: String, page: Int = 1) async throws -> [GitHubRepo] {
-        var components = URLComponents(string: "https://api.github.com/user/repos")!
-        components.queryItems = [
-            URLQueryItem(name: "sort", value: "updated"),
-            URLQueryItem(name: "direction", value: "desc"),
-            URLQueryItem(name: "per_page", value: "100"),
-            URLQueryItem(name: "page", value: "\(page)"),
-            URLQueryItem(name: "affiliation", value: "owner,collaborator,organization_member"),
-        ]
-        var req = URLRequest(url: components.url!)
-        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        let (data, response) = try await URLSession.shared.data(for: req)
-        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
-            throw GitHubError.unauthorized
+        var currentPage = max(1, page)
+        var result: [GitHubRepo] = []
+        while true {
+            var components = URLComponents(string: "https://api.github.com/user/repos")!
+            components.queryItems = [
+                URLQueryItem(name: "sort", value: "updated"),
+                URLQueryItem(name: "direction", value: "desc"),
+                URLQueryItem(name: "per_page", value: "100"),
+                URLQueryItem(name: "page", value: "\(currentPage)"),
+                URLQueryItem(name: "affiliation", value: "owner,collaborator,organization_member"),
+            ]
+            var req = URLRequest(url: components.url!)
+            req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            let (data, response) = try await URLSession.shared.data(for: req)
+            guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+                throw GitHubError.unauthorized
+            }
+            let repositories = try JSONDecoder().decode([GitHubRepo].self, from: data)
+            result.append(contentsOf: repositories)
+            guard repositories.count == 100 else { return result }
+            currentPage += 1
         }
-        return try JSONDecoder().decode([GitHubRepo].self, from: data)
+    }
+
+    /// Resolve one canonical owner/name target exactly. A nil token performs a
+    /// public lookup and never sends repository metadata anywhere but GitHub.
+    static func fetchRepository(owner: String, repo: String, token: String?) async throws -> GitHubRepositoryIdentity {
+        let escapedOwner = owner.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? owner
+        let escapedRepo = repo.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? repo
+        var req = URLRequest(url: URL(string: "https://api.github.com/repos/\(escapedOwner)/\(escapedRepo)")!)
+        if let token, !token.isEmpty { req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
+        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        req.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        let (data, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else { throw GitHubError.apiError(0, "Invalid response") }
+        switch http.statusCode {
+        case 200:
+            struct IdentityResponse: Decodable { let id: Int64; let full_name: String }
+            let value = try JSONDecoder().decode(IdentityResponse.self, from: data)
+            return GitHubRepositoryIdentity(repositoryID: value.id, fullName: value.full_name)
+        default:
+            let headers = Dictionary(uniqueKeysWithValues: http.allHeaderFields.map {
+                (String(describing: $0.key), String(describing: $0.value))
+            })
+            throw repositoryLookupError(
+                statusCode: http.statusCode,
+                headers: headers,
+                body: data
+            )
+        }
+    }
+
+    static func repositoryLookupError(
+        statusCode: Int,
+        headers: [String: String],
+        body: Data
+    ) -> GitHubError {
+        let normalizedHeaders = Dictionary(uniqueKeysWithValues: headers.map {
+            ($0.key.lowercased(), $0.value.trimmingCharacters(in: .whitespacesAndNewlines))
+        })
+        let bodyMessage = String(data: body, encoding: .utf8) ?? ""
+        let normalizedBody = bodyMessage.lowercased()
+        if statusCode == 429
+            || (statusCode == 403 && normalizedHeaders["x-ratelimit-remaining"] == "0")
+            || (statusCode == 403 && normalizedHeaders["retry-after"]?.isEmpty == false)
+            || (statusCode == 403 && normalizedBody.contains("rate limit")) {
+            return .rateLimited
+        }
+        switch statusCode {
+        case 401: return .unauthorized
+        case 403: return .forbidden
+        case 404: return .notFound(bodyMessage.isEmpty ? "No details" : bodyMessage)
+        case 409: return .conflict(bodyMessage.isEmpty ? "Conflict" : bodyMessage)
+        default: return .apiError(statusCode, bodyMessage.isEmpty ? "Unknown error" : bodyMessage)
+        }
     }
 
     /// Fetch the user's primary email (if not public)

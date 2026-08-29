@@ -3,7 +3,10 @@ import {
   randomToken, sha256, strictJson, text, uuid,
 } from "./core";
 import { verifyNotification, verifyTransaction } from "./verifier";
-import { getInstallation, proveRepository, verifyWebhook } from "./github";
+import {
+  exchangeGitHubUserCode, getInstallation, proveInstallationAdministrator, proveRepository,
+  revalidateInstallationAdministrator, revokeGitHubUserToken, verifyWebhook,
+} from "./github";
 import { sendApns } from "./apns";
 import type { Env, OutboxMessage } from "./types";
 
@@ -11,8 +14,11 @@ const currentTime = () => Date.now();
 let beforeInvalidTokenTombstone: (() => Promise<void>) | undefined;
 let beforeEntitlementAuthorizationBatch: (() => Promise<void>) | undefined;
 let beforeDeviceRegistrationBatch: (() => Promise<void>) | undefined;
+let beforeDeviceDeletionBatch: (() => Promise<void>) | undefined;
 let beforeGitHubLinkCompletionBatch: (() => Promise<void>) | undefined;
+let beforeEnrollmentBatch: (() => Promise<void>) | undefined;
 let proveRepositoryAccess = proveRepository;
+let revalidateInstallationAdmin = revalidateInstallationAdministrator;
 export function setBeforeInvalidTokenTombstoneForTesting(hook?: () => Promise<void>): void {
   beforeInvalidTokenTombstone = hook;
 }
@@ -22,11 +28,20 @@ export function setBeforeEntitlementAuthorizationBatchForTesting(hook?: () => Pr
 export function setBeforeDeviceRegistrationBatchForTesting(hook?: () => Promise<void>): void {
   beforeDeviceRegistrationBatch = hook;
 }
+export function setBeforeDeviceDeletionBatchForTesting(hook?: () => Promise<void>): void {
+  beforeDeviceDeletionBatch = hook;
+}
 export function setBeforeGitHubLinkCompletionBatchForTesting(hook?: () => Promise<void>): void {
   beforeGitHubLinkCompletionBatch = hook;
 }
+export function setBeforeEnrollmentBatchForTesting(hook?: () => Promise<void>): void {
+  beforeEnrollmentBatch = hook;
+}
 export function setProveRepositoryForTesting(hook?: typeof proveRepository): void {
   proveRepositoryAccess = hook ?? proveRepository;
+}
+export function setRevalidateInstallationAdministratorForTesting(hook?: typeof revalidateInstallationAdministrator): void {
+  revalidateInstallationAdmin = hook ?? revalidateInstallationAdministrator;
 }
 const IOS_APNS_TOKEN = /^[0-9a-f]{64}$/;
 const BRANCH_INVALID = /[\x00-\x1f~^:?*[\\]/;
@@ -63,14 +78,41 @@ function requireRelayConfiguration(env: Env): void {
   nonPlaceholder(env.GITHUB_WEBHOOK_SECRET, "GitHub webhook secret", 4096);
   nonPlaceholder(env.GITHUB_APP_PRIVATE_KEY, "GitHub App private key", 100_000);
   nonPlaceholder(env.APNS_PRIVATE_KEY, "APNs private key", 100_000);
-  nonPlaceholder(env.GITHUB_APP_SLUG, "GitHub App slug", 128);
-  const callback = nonPlaceholder(env.GITHUB_CALLBACK_URL, "GitHub callback URL", 2048);
-  let callbackURL: URL;
-  try { callbackURL = new URL(callback); } catch { throw new HttpError(503, "invalid GitHub callback URL configuration"); }
-  if (callbackURL.protocol !== "https:") throw new HttpError(503, "invalid GitHub callback URL configuration");
   nonPlaceholder(env.APNS_TEAM_ID, "APNs team ID", 64);
   nonPlaceholder(env.APNS_KEY_ID, "APNs key ID", 64);
   nonPlaceholder(env.APNS_TOPIC, "APNs topic", 256);
+}
+
+function exactHttpsCallback(value: string, expectedPath: string): string {
+  let callback: URL;
+  try { callback = new URL(value); } catch { throw new HttpError(503, "link unavailable"); }
+  if (callback.protocol !== "https:" || callback.username || callback.password || callback.search || callback.hash ||
+      callback.pathname !== expectedPath) throw new HttpError(503, "link unavailable");
+  return callback.toString();
+}
+
+function requireGitHubLinkConfiguration(env: Env): { setupCallback: string; authorizationCallback: string } {
+  try {
+    nonPlaceholder(env.GITHUB_APP_SLUG, "GitHub App slug", 128);
+    nonPlaceholder(env.GITHUB_CLIENT_ID, "GitHub client ID", 256);
+    nonPlaceholder(env.GITHUB_CLIENT_SECRET, "GitHub client secret", 4096);
+    return {
+      setupCallback: exactHttpsCallback(nonPlaceholder(env.GITHUB_CALLBACK_URL, "GitHub callback URL", 2048), "/v1/github/callback"),
+      authorizationCallback: exactHttpsCallback(
+        nonPlaceholder(env.GITHUB_AUTHORIZATION_CALLBACK_URL, "GitHub authorization callback URL", 2048),
+        "/v1/github/authorize/callback",
+      ),
+    };
+  } catch {
+    throw new HttpError(503, "link unavailable");
+  }
+}
+
+function requireExactCallbackRequest(request: Request, configured: string): void {
+  const incoming = new URL(request.url);
+  incoming.search = "";
+  incoming.hash = "";
+  if (incoming.toString() !== configured) throw new HttpError(400, "invalid callback");
 }
 
 function configuredEnvironments(env: Env): Set<string> {
@@ -211,7 +253,8 @@ async function putDevice(request: Request, env: Env): Promise<Response> {
   const auth = await authorize(request, env);
   await requireActiveEntitlement(auth.installationID, env);
   const body = await strictJson(request);
-  exactKeys(body, ["installation", "token", "environment", "channels", "registrationGeneration"]);
+  exactKeys(body, ["installation", "token", "environment", "channels", "registrationGeneration"],
+    ["installation", "token", "environment", "registrationGeneration"]);
   if (typeof body.installation !== "object" || body.installation === null || Array.isArray(body.installation)) throw new HttpError(400, "invalid installation");
   const installation = body.installation as Record<string, unknown>;
   exactKeys(installation, ["installationID", "bundleID", "appVersion"]);
@@ -226,14 +269,12 @@ async function putDevice(request: Request, env: Env): Promise<Response> {
     throw new HttpError(400, "invalid registration generation");
   }
   const registrationGeneration = body.registrationGeneration as number;
-  if (!Array.isArray(body.channels) || body.channels.length > 100) throw new HttpError(400, "invalid channels");
-  const channels = [...new Set(body.channels.map(value => opaqueId(value, "channel")))];
-  if (channels.length) {
-    const placeholders = channels.map(() => "?").join(",");
-    const owned = await env.DB.prepare(
-      `SELECT channel FROM repo_enrollments WHERE installation_id = ? AND deleted_at IS NULL AND channel IN (${placeholders})`,
-    ).bind(installationID, ...channels).all();
-    if (owned.results.length !== channels.length) throw new HttpError(403, "unknown channel");
+  if (body.channels !== undefined) {
+    if (!Array.isArray(body.channels)) throw new HttpError(400, "invalid channels");
+    // Legacy clients still send their complete opaque-channel snapshot. Keep
+    // syntax validation for wire compatibility, but enrollment rows now own
+    // routing and device registration is constant-size for new clients.
+    for (const channel of body.channels) opaqueId(channel, "channel");
   }
   const generation = await env.DB.prepare(
     "SELECT deletion_generation FROM installations WHERE id=? AND deleted_at IS NULL",
@@ -242,62 +283,59 @@ async function putDevice(request: Request, env: Env): Promise<Response> {
   const deviceID = await deterministicDeviceID(installationID, body.environment);
   const timestamp = currentTime();
   await beforeDeviceRegistrationBatch?.();
-  const statements: D1PreparedStatement[] = [
-    env.DB.prepare(
-      "INSERT INTO devices(id,installation_id,apns_token,apns_environment,created_at,updated_at,deleted_at,registration_generation) " +
-      "SELECT ?,?,?,?,?,?,NULL,? WHERE EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?) " +
-      "ON CONFLICT(id) DO UPDATE SET apns_token=excluded.apns_token,apns_environment=excluded.apns_environment,updated_at=excluded.updated_at,deleted_at=NULL,registration_generation=excluded.registration_generation " +
-      "WHERE installation_id=excluded.installation_id AND excluded.registration_generation>=devices.registration_generation " +
-      "AND EXISTS(SELECT 1 FROM installations WHERE id=excluded.installation_id AND deleted_at IS NULL AND deletion_generation=?)",
-    ).bind(deviceID, installationID, token, body.environment, timestamp, timestamp, registrationGeneration,
-      installationID, generation.deletion_generation, generation.deletion_generation),
-    env.DB.prepare(
-      "DELETE FROM device_channels WHERE device_id=? AND EXISTS(SELECT 1 FROM devices WHERE id=? AND registration_generation=?) " +
-      "AND EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?)",
-    ).bind(deviceID, deviceID, registrationGeneration, installationID, generation.deletion_generation),
-    ...channels.map(channel => env.DB.prepare(
-      "INSERT INTO device_channels(device_id,channel,created_at) SELECT ?,?,? " +
-      "WHERE EXISTS(SELECT 1 FROM devices d JOIN installations i ON i.id=d.installation_id " +
-      "JOIN repo_enrollments r ON r.channel=? AND r.installation_id=d.installation_id " +
-      "WHERE d.id=? AND d.deleted_at IS NULL AND d.registration_generation=? " +
-      "AND i.deleted_at IS NULL AND i.deletion_generation=? AND r.deleted_at IS NULL)",
-    ).bind(deviceID, channel, timestamp, channel, deviceID, registrationGeneration, generation.deletion_generation)),
-  ];
-  await env.DB.batch(statements);
+  await env.DB.prepare(
+    "INSERT INTO devices(id,installation_id,apns_token,apns_environment,created_at,updated_at,deleted_at,registration_generation) " +
+    "SELECT ?,?,?,?,?,?,NULL,? WHERE EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?) " +
+    "ON CONFLICT(id) DO UPDATE SET apns_token=excluded.apns_token,apns_environment=excluded.apns_environment,updated_at=excluded.updated_at,deleted_at=NULL,registration_generation=excluded.registration_generation " +
+    "WHERE installation_id=excluded.installation_id AND excluded.registration_generation>=devices.registration_generation " +
+    "AND EXISTS(SELECT 1 FROM installations WHERE id=excluded.installation_id AND deleted_at IS NULL AND deletion_generation=?)",
+  ).bind(deviceID, installationID, token, body.environment, timestamp, timestamp, registrationGeneration,
+    installationID, generation.deletion_generation, generation.deletion_generation).run();
   return json({ ok: true });
 }
 
 async function deleteDevice(request: Request, env: Env): Promise<Response> {
   const auth = await authorize(request, env);
   const body = await strictJson(request);
-  exactKeys(body, ["installationID", "token", "environment"], ["installationID", "environment"]);
+  exactKeys(body, ["installationID", "token", "environment", "maximumRegistrationGeneration"], ["installationID", "environment"]);
   const installationID = uuid(body.installationID);
   if (installationID !== auth.installationID) throw new HttpError(403, "cross-installation access denied");
   if (body.environment !== "sandbox" && body.environment !== "production") throw new HttpError(400, "invalid APNs environment");
   const token = body.token === null || body.token === undefined ? null : text(body.token, "APNs token", 64).toLowerCase();
   if (token !== null && !IOS_APNS_TOKEN.test(token)) throw new HttpError(400, "invalid APNs token");
+  const maximumGeneration = body.maximumRegistrationGeneration === null || body.maximumRegistrationGeneration === undefined
+    ? null
+    : body.maximumRegistrationGeneration;
+  if (maximumGeneration !== null &&
+      (typeof maximumGeneration !== "number" || !Number.isSafeInteger(maximumGeneration) || maximumGeneration < 0)) {
+    throw new HttpError(400, "invalid maximum registration generation");
+  }
   const tokenClause = token === null ? "" : " AND apns_token = ?";
+  const generationClause = maximumGeneration === null ? "" : " AND registration_generation <= ?";
   const bindings: unknown[] = [installationID, body.environment];
   if (token !== null) bindings.push(token);
+  if (maximumGeneration !== null) bindings.push(maximumGeneration);
   const ids = await env.DB.prepare(
-    `SELECT id,registration_generation FROM devices WHERE installation_id = ? AND apns_environment = ? AND deleted_at IS NULL${tokenClause}`,
-  ).bind(...bindings).all<{ id: string; registration_generation: number }>();
+    `SELECT id,apns_token,registration_generation FROM devices WHERE installation_id = ? AND apns_environment = ? AND deleted_at IS NULL${tokenClause}${generationClause}`,
+  ).bind(...bindings).all<{ id: string; apns_token: string; registration_generation: number }>();
   const timestamp = currentTime();
+  await beforeDeviceDeletionBatch?.();
   if (ids.results.length) await env.DB.batch([
     ...ids.results.map(row => env.DB.prepare(
       "DELETE FROM device_channels WHERE device_id = ? AND EXISTS(SELECT 1 FROM devices WHERE id=? AND registration_generation=? " +
-      "AND deleted_at IS NULL" + (token === null ? "" : " AND apns_token=?") + ")",
-    ).bind(row.id, row.id, row.registration_generation, ...(token === null ? [] : [token]))),
+      "AND deleted_at IS NULL AND apns_token=?)",
+    ).bind(row.id, row.id, row.registration_generation, row.apns_token)),
     ...ids.results.map(row => env.DB.prepare(
       "UPDATE devices SET deleted_at=?,apns_token='deleted-'||id,updated_at=? WHERE id=? AND registration_generation=? " +
-      "AND deleted_at IS NULL" + (token === null ? "" : " AND apns_token=?"),
-    ).bind(timestamp, timestamp, row.id, row.registration_generation, ...(token === null ? [] : [token]))),
+      "AND deleted_at IS NULL AND apns_token=?",
+    ).bind(timestamp, timestamp, row.id, row.registration_generation, row.apns_token)),
   ]);
   return noContent();
 }
 
 async function startGitHubLink(request: Request, env: Env): Promise<Response> {
   requireEnabled(env);
+  requireGitHubLinkConfiguration(env);
   const auth = await authorize(request, env);
   await requireActiveEntitlement(auth.installationID, env);
   const state = randomToken();
@@ -314,11 +352,32 @@ async function startGitHubLink(request: Request, env: Env): Promise<Response> {
   return json({ url: url.toString(), expiresAt: new Date(expiresAt).toISOString() });
 }
 
-async function completeGitHubLink(request: Request, env: Env): Promise<Response> {
+function redirectToGitHubAuthorization(env: Env, state: string, callback: string): Response {
+  const authorization = new URL("https://github.com/login/oauth/authorize");
+  authorization.searchParams.set("client_id", env.GITHUB_CLIENT_ID);
+  authorization.searchParams.set("redirect_uri", callback);
+  authorization.searchParams.set("state", state);
+  return new Response(null, {
+    status: 302,
+    headers: {
+      "cache-control": "no-store",
+      location: authorization.toString(),
+      pragma: "no-cache",
+      "referrer-policy": "no-referrer",
+      "x-content-type-options": "nosniff",
+    },
+  });
+}
+
+async function completeGitHubSetup(request: Request, env: Env): Promise<Response> {
   requireEnabled(env);
+  const configuration = requireGitHubLinkConfiguration(env);
+  requireExactCallbackRequest(request, configuration.setupCallback);
   const url = new URL(request.url);
   const allowed = new Set(["state", "installation_id", "setup_action"]);
-  if ([...url.searchParams.keys()].some(key => !allowed.has(key))) throw new HttpError(400, "invalid callback");
+  if ([...url.searchParams.keys()].some(key => !allowed.has(key)) || url.searchParams.getAll("setup_action").length > 1) {
+    throw new HttpError(400, "invalid callback");
+  }
   const states = url.searchParams.getAll("state");
   const installations = url.searchParams.getAll("installation_id");
   if (states.length !== 1 || installations.length !== 1) throw new HttpError(400, "invalid callback");
@@ -332,37 +391,110 @@ async function completeGitHubLink(request: Request, env: Env): Promise<Response>
   ).bind(stateHash, currentTime()).first<{ installation_id: string; deletion_generation: number }>();
   if (!row) throw new HttpError(400, "invalid state");
   await getInstallation(env, githubInstallationID);
+  const authorizationState = randomToken();
+  const authorizationStateHash = await sha256(authorizationState);
   const timestamp = currentTime();
-  const consumptionNonce = randomToken(16);
-  await beforeGitHubLinkCompletionBatch?.();
-  const claim = await env.DB.prepare(
-    "UPDATE github_link_states SET consumed_at=?,consumed_nonce=? WHERE state_hash=? AND consumed_at IS NULL " +
+  const authorizationExpiresAt = timestamp + positiveSetting(env.LINK_STATE_TTL_SECONDS, "LINK_STATE_TTL_SECONDS", 3600) * 1000;
+  const setupNonce = randomToken(16);
+  const rotated = await env.DB.prepare(
+    "UPDATE github_link_states SET consumed_at=?,consumed_nonce=?,github_installation_id=?,authorization_state_hash=?,authorization_expires_at=? " +
+    "WHERE state_hash=? AND installation_id=? AND deletion_generation=? AND consumed_at IS NULL AND expires_at>? " +
     "AND EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?)",
-  ).bind(timestamp, consumptionNonce, stateHash, row.installation_id, row.deletion_generation).run();
-  if (!claim.meta.changes) throw new HttpError(409, "state already used");
-  const linked = await env.DB.prepare(
-    "INSERT INTO github_installations(github_installation_id,installation_id,linked_at,deleted_at) " +
-    "SELECT ?,?,?,NULL WHERE EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?) " +
-    "AND EXISTS(SELECT 1 FROM github_link_states WHERE state_hash=? AND installation_id=? " +
-    "AND deletion_generation=? AND consumed_at=? AND consumed_nonce=?) " +
-    "ON CONFLICT(github_installation_id,installation_id) DO UPDATE SET linked_at=excluded.linked_at,deleted_at=NULL " +
-    "WHERE EXISTS(SELECT 1 FROM installations WHERE id=excluded.installation_id AND deleted_at IS NULL AND deletion_generation=?) " +
-    "AND EXISTS(SELECT 1 FROM github_link_states WHERE state_hash=? AND installation_id=? " +
-    "AND deletion_generation=? AND consumed_at=? AND consumed_nonce=?)",
-  ).bind(githubInstallationID, row.installation_id, timestamp,
-    row.installation_id, row.deletion_generation,
-    stateHash, row.installation_id, row.deletion_generation, timestamp, consumptionNonce,
-    row.deletion_generation,
-    stateHash, row.installation_id, row.deletion_generation, timestamp, consumptionNonce).run();
-  if (!linked.meta.changes) throw new HttpError(409, "installation changed");
-  return json({ linked: true });
+  ).bind(timestamp, setupNonce, githubInstallationID, authorizationStateHash, authorizationExpiresAt,
+    stateHash, row.installation_id, row.deletion_generation, timestamp,
+    row.installation_id, row.deletion_generation).run();
+  if (!rotated.meta.changes) throw new HttpError(409, "invalid state");
+  return redirectToGitHubAuthorization(env, authorizationState, configuration.authorizationCallback);
+}
+
+function githubLinkCompletionPage(): Response {
+  return new Response(
+    "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>GitSync Assist linked</title><body><p>GitSync Assist is linked.</p><p><a href=\"syncmd://assist-linked\">Return to GitSync.md</a></p></body></html>",
+    {
+      status: 200,
+      headers: {
+        "cache-control": "no-store",
+        "content-security-policy": "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+      },
+    },
+  );
+}
+
+async function completeGitHubAuthorization(request: Request, env: Env): Promise<Response> {
+  requireEnabled(env);
+  const configuration = requireGitHubLinkConfiguration(env);
+  requireExactCallbackRequest(request, configuration.authorizationCallback);
+  const url = new URL(request.url);
+  const allowed = new Set(["code", "state"]);
+  if ([...url.searchParams.keys()].some(key => !allowed.has(key))) throw new HttpError(400, "invalid callback");
+  const codes = url.searchParams.getAll("code");
+  const states = url.searchParams.getAll("state");
+  if (codes.length !== 1 || states.length !== 1) throw new HttpError(400, "invalid callback");
+  const code = text(codes[0], "code", 1024);
+  const stateHash = await sha256(text(states[0], "state", 200));
+  const row = await env.DB.prepare(
+    "SELECT s.installation_id,s.deletion_generation,s.github_installation_id FROM github_link_states s " +
+    "JOIN installations i ON i.id=s.installation_id WHERE s.authorization_state_hash=? AND s.consumed_at IS NOT NULL " +
+    "AND s.authorized_at IS NULL AND s.authorization_expires_at>? AND s.github_installation_id IS NOT NULL " +
+    "AND i.deleted_at IS NULL AND i.deletion_generation=s.deletion_generation",
+  ).bind(stateHash, currentTime()).first<{
+    installation_id: string; deletion_generation: number; github_installation_id: number;
+  }>();
+  if (!row) throw new HttpError(400, "invalid state");
+
+  let userToken: string | undefined;
+  try {
+    userToken = await exchangeGitHubUserCode(env, code);
+    const administrator = await proveInstallationAdministrator(env, row.github_installation_id, userToken);
+    const timestamp = currentTime();
+    const authorizationNonce = randomToken(16);
+    await beforeGitHubLinkCompletionBatch?.();
+    const [, linked] = await env.DB.batch([
+      env.DB.prepare(
+        "UPDATE github_link_states SET authorized_at=?,authorized_nonce=? WHERE authorization_state_hash=? " +
+        "AND installation_id=? AND deletion_generation=? AND github_installation_id=? AND authorized_at IS NULL " +
+        "AND authorization_expires_at>? AND EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?)",
+      ).bind(timestamp, authorizationNonce, stateHash, row.installation_id, row.deletion_generation,
+        row.github_installation_id, timestamp, row.installation_id, row.deletion_generation),
+      env.DB.prepare(
+        "INSERT INTO github_installations(github_installation_id,installation_id,linked_at,deleted_at,authorizing_user_id) " +
+        "SELECT github_installation_id,installation_id,?,NULL,? FROM github_link_states WHERE authorization_state_hash=? " +
+        "AND installation_id=? AND deletion_generation=? AND github_installation_id=? AND authorized_at=? AND authorized_nonce=? " +
+        "AND EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?) " +
+        "AND NOT EXISTS(SELECT 1 FROM github_installation_tombstones t WHERE t.github_installation_id=github_link_states.github_installation_id) " +
+        "ON CONFLICT(github_installation_id,installation_id) DO UPDATE SET linked_at=excluded.linked_at,deleted_at=NULL,authorizing_user_id=excluded.authorizing_user_id " +
+        "WHERE NOT EXISTS(SELECT 1 FROM github_installation_tombstones t WHERE t.github_installation_id=excluded.github_installation_id) " +
+        "AND EXISTS(SELECT 1 FROM github_link_states WHERE authorization_state_hash=? AND installation_id=excluded.installation_id " +
+        "AND deletion_generation=? AND github_installation_id=excluded.github_installation_id AND authorized_at=? AND authorized_nonce=?)",
+      ).bind(timestamp, administrator.userId, stateHash, row.installation_id, row.deletion_generation, row.github_installation_id,
+        timestamp, authorizationNonce, row.installation_id, row.deletion_generation,
+        stateHash, row.deletion_generation, timestamp, authorizationNonce),
+    ]);
+    if (!linked?.meta.changes) throw new HttpError(409, "invalid state");
+    return githubLinkCompletionPage();
+  } finally {
+    if (userToken) {
+      try { await revokeGitHubUserToken(env, userToken); }
+      catch { log("github_user_token_revocation_failed"); }
+    }
+  }
 }
 
 async function githubLinkStatus(request: Request, env: Env): Promise<Response> {
   const auth = await authorize(request, env);
   const rows = await env.DB.prepare(
-    "SELECT github_installation_id AS githubInstallationID,linked_at AS linkedAt FROM github_installations WHERE installation_id=? AND deleted_at IS NULL",
-  ).bind(auth.installationID).all<{ githubInstallationID: number; linkedAt: number }>();
+    "SELECT g.github_installation_id AS githubInstallationID,g.linked_at AS linkedAt,g.authorizing_user_id AS authorizingUserID " +
+    "FROM github_installations g WHERE g.installation_id=? AND g.deleted_at IS NULL " +
+    "AND NOT EXISTS(SELECT 1 FROM github_installation_tombstones t WHERE t.github_installation_id=g.github_installation_id)",
+  ).bind(auth.installationID).all<{ githubInstallationID: number; linkedAt: number; authorizingUserID: number | null }>();
+  for (const row of rows.results) {
+    if (row.authorizingUserID === null) throw new HttpError(409, "GitHub installation must be relinked");
+    await revalidateInstallationAdmin(env, row.githubInstallationID, row.authorizingUserID);
+  }
   return json({ installations: rows.results.map(row => ({
     githubInstallationID: row.githubInstallationID,
     linkedAt: new Date(row.linkedAt).toISOString(),
@@ -387,25 +519,33 @@ async function createEnrollment(request: Request, env: Env): Promise<Response> {
   const repositoryID = integer(body.repositoryID, "repository ID");
   const branch = validBranch(body.branch);
   const linked = await env.DB.prepare(
-    "SELECT 1 AS linked FROM github_installations WHERE github_installation_id=? AND installation_id=? AND deleted_at IS NULL",
-  ).bind(githubInstallationID, auth.installationID).first();
+    "SELECT authorizing_user_id AS authorizingUserID FROM github_installations g " +
+    "WHERE github_installation_id=? AND installation_id=? AND deleted_at IS NULL AND authorizing_user_id IS NOT NULL " +
+    "AND NOT EXISTS(SELECT 1 FROM github_installation_tombstones t WHERE t.github_installation_id=g.github_installation_id)",
+  ).bind(githubInstallationID, auth.installationID).first<{ authorizingUserID: number }>();
   if (!linked) throw new HttpError(403, "GitHub installation not linked");
+  await revalidateInstallationAdmin(env, githubInstallationID, linked.authorizingUserID);
   await proveRepositoryAccess(env, githubInstallationID, repositoryID);
   const generation = await env.DB.prepare(
     "SELECT deletion_generation FROM installations WHERE id=? AND deleted_at IS NULL",
   ).bind(auth.installationID).first<{ deletion_generation: number }>();
   if (!generation) throw new HttpError(409, "installation changed");
   const proposedChannel = randomToken(24);
+  await beforeEnrollmentBatch?.();
   try {
     const inserted = await env.DB.prepare(
       "INSERT INTO repo_enrollments(channel,installation_id,github_installation_id,repository_id,branch,created_at,deleted_at) " +
       "SELECT ?,?,?,?,?,?,NULL WHERE EXISTS(SELECT 1 FROM installations WHERE id=? AND deleted_at IS NULL AND deletion_generation=?) " +
+      "AND EXISTS(SELECT 1 FROM github_installations g WHERE g.github_installation_id=? AND g.installation_id=? AND g.deleted_at IS NULL " +
+      "AND g.authorizing_user_id IS NOT NULL AND NOT EXISTS(SELECT 1 FROM github_installation_tombstones t WHERE t.github_installation_id=g.github_installation_id)) " +
       "ON CONFLICT(installation_id,repository_id,branch) DO UPDATE SET github_installation_id=excluded.github_installation_id,created_at=excluded.created_at,deleted_at=NULL " +
       "WHERE repo_enrollments.deleted_at IS NOT NULL AND EXISTS(SELECT 1 FROM installations WHERE id=excluded.installation_id AND deleted_at IS NULL AND deletion_generation=?) " +
       "AND EXISTS(SELECT 1 FROM github_installations g WHERE g.github_installation_id=excluded.github_installation_id " +
-      "AND g.installation_id=excluded.installation_id AND g.deleted_at IS NULL)",
+      "AND g.installation_id=excluded.installation_id AND g.deleted_at IS NULL AND g.authorizing_user_id IS NOT NULL " +
+      "AND NOT EXISTS(SELECT 1 FROM github_installation_tombstones t WHERE t.github_installation_id=g.github_installation_id))",
     ).bind(proposedChannel, auth.installationID, githubInstallationID, repositoryID, branch, currentTime(),
-      auth.installationID, generation.deletion_generation, generation.deletion_generation).run();
+      auth.installationID, generation.deletion_generation, githubInstallationID, auth.installationID,
+      generation.deletion_generation).run();
     const enrollment = await env.DB.prepare(
       "SELECT channel,github_installation_id AS githubInstallationID FROM repo_enrollments " +
       "WHERE installation_id=? AND repository_id=? AND branch=? AND deleted_at IS NULL",
@@ -416,7 +556,12 @@ async function createEnrollment(request: Request, env: Env): Promise<Response> {
     }
     // A byte-for-byte retry after a committed response loss returns the
     // existing opaque channel rather than stranding the local enrollment.
-    return json({ channel: enrollment.channel }, inserted.meta.changes ? 201 : 200);
+    return json({
+      channel: enrollment.channel,
+      githubInstallationID,
+      repositoryID,
+      branch,
+    }, inserted.meta.changes ? 201 : 200);
   } catch (error) {
     if (error instanceof HttpError) throw error;
     throw new HttpError(409, "repository branch already enrolled");
@@ -508,12 +653,18 @@ async function githubWebhook(request: Request, env: Env): Promise<Response> {
     }
     if (record.action !== "deleted") throw new HttpError(400, "unsupported installation event");
     // GitHub App removal is a security/deletion event, not new admission. It
-    // remains effective while push admission is kill-switched and atomically
-    // detaches routing before tombstoning the retained link and enrollment.
+    // remains effective while push admission is kill-switched. The durable,
+    // globally keyed tombstone makes either ordering with delayed link or
+    // enrollment admission safe; new GitHub installation IDs remain usable.
     await env.DB.batch([
       env.DB.prepare(
         "INSERT OR IGNORE INTO webhook_deliveries(delivery_id,event,repository_id,received_at,retention_until) VALUES(?,?,?,?,?)",
       ).bind(deliveryID, event, githubInstallationID, timestamp, retentionUntil),
+      env.DB.prepare(
+        "INSERT INTO github_installation_tombstones(github_installation_id,deleted_at) " +
+        "SELECT ?,? WHERE EXISTS(SELECT 1 FROM webhook_deliveries WHERE delivery_id=? AND event='installation' AND repository_id=?) " +
+        "ON CONFLICT(github_installation_id) DO NOTHING",
+      ).bind(githubInstallationID, timestamp, deliveryID, githubInstallationID),
       env.DB.prepare(
         "DELETE FROM device_channels WHERE channel IN (SELECT channel FROM repo_enrollments WHERE github_installation_id=? AND deleted_at IS NULL) " +
         "AND EXISTS(SELECT 1 FROM webhook_deliveries WHERE delivery_id=? AND event='installation' AND repository_id=?)",
@@ -670,7 +821,7 @@ export async function cleanupRetention(env: Env, timestamp = currentTime()): Pro
   await env.DB.batch([
     env.DB.prepare("DELETE FROM app_store_notifications WHERE retention_until < ?").bind(timestamp),
     env.DB.prepare("DELETE FROM webhook_deliveries WHERE retention_until < ?").bind(timestamp),
-    env.DB.prepare("DELETE FROM github_link_states WHERE expires_at < ?").bind(timestamp),
+    env.DB.prepare("DELETE FROM github_link_states WHERE COALESCE(authorization_expires_at,expires_at) < ?").bind(timestamp),
     env.DB.prepare("DELETE FROM sessions WHERE expires_at < ? OR revoked_at IS NOT NULL").bind(timestamp),
   ]);
 }
@@ -684,10 +835,12 @@ export async function consumeOutbox(message: Message<OutboxMessage>, env: Env): 
   ).bind(outboxID).first<{ channel: string; hint: string; completed_at: number | null }>();
   if (!outbox || outbox.completed_at !== null) { message.ack(); return; }
   const devices = await env.DB.prepare(
-    "SELECT DISTINCT d.id,d.apns_token,d.apns_environment,d.registration_generation FROM devices d " +
-    "JOIN device_channels dc ON dc.device_id=d.id JOIN repo_enrollments r ON r.channel=dc.channel " +
-    "JOIN entitlements e ON e.installation_id=d.installation_id " +
-    "WHERE dc.channel=? AND d.deleted_at IS NULL AND r.deleted_at IS NULL AND e.revoked_at IS NULL AND e.expires_at>?",
+    "SELECT DISTINCT d.id,d.apns_token,d.apns_environment,d.registration_generation FROM repo_enrollments r " +
+    "JOIN installations i ON i.id=r.installation_id " +
+    "JOIN devices d ON d.installation_id=r.installation_id " +
+    "JOIN entitlements e ON e.installation_id=r.installation_id " +
+    "WHERE r.channel=? AND r.deleted_at IS NULL AND i.deleted_at IS NULL " +
+    "AND d.deleted_at IS NULL AND e.revoked_at IS NULL AND e.expires_at>?",
   ).bind(outbox.channel, currentTime()).all<{ id: string; apns_token: string; apns_environment: "sandbox" | "production"; registration_generation: number }>();
   let transient = false;
   for (const device of devices.results) {
@@ -741,7 +894,8 @@ async function route(request: Request, env: Env): Promise<Response> {
   if (request.method === "DELETE" && path === "/v1/devices") return deleteDevice(request, env);
   if (request.method === "DELETE" && path === "/v1/installation") return deleteInstallation(request, env);
   if (request.method === "POST" && path === "/v1/github/link/start") return startGitHubLink(request, env);
-  if (request.method === "GET" && path === "/v1/github/callback") return completeGitHubLink(request, env);
+  if (request.method === "GET" && path === "/v1/github/callback") return completeGitHubSetup(request, env);
+  if (request.method === "GET" && path === "/v1/github/authorize/callback") return completeGitHubAuthorization(request, env);
   if (request.method === "GET" && path === "/v1/github/link/status") return githubLinkStatus(request, env);
   if (request.method === "POST" && path === "/v1/enrollments") return createEnrollment(request, env);
   if (request.method === "POST" && path === "/v1/webhooks/github") return githubWebhook(request, env);

@@ -10,8 +10,18 @@ the relay's narrow, fail-closed DTO.
 - `@apple/app-store-server-library` verifies ES256 signatures, the `x5c`
   certificate chain, Apple certificate-purpose OIDs, bundle ID, environment,
   signed `appAccountToken`, and (for Production) App Apple ID.
-- Online revocation checks are enabled by default (`ENABLE_ONLINE_CHECKS=true`).
-  A verification or availability error grants no access.
+- Online revocation checks via OCSP are **disabled** (`ENABLE_ONLINE_CHECKS=false`):
+  Apple's CDN (`ocsp.apple.com`) rejects the Workers runtime's TLS fingerprint
+  with `403 Forbidden` on every request (verified 2026-08-27: identical OCSP
+  bytes succeed from Node's TLS stack and fail from workerd's, regardless of
+  headers; Apple serves no HTTPS OCSP endpoint). Online checks are therefore
+  impossible on this platform, and the flag is a deliberate decision, not a
+  weakening shortcut. Compensating controls: Apple Root CA SHA-256 pinning in
+  `src/roots.ts` (rotate when Apple rotates roots), certificate-purpose OID
+  checks, full `x5c` chain validation, bundle/environment/App Apple ID checks,
+  and relay-side product, appAccountToken, revocation, and expiry enforcement
+  with a 30-day session cap. A verification or availability error grants no
+  access.
 - The Worker has no route in configuration. Keep it private and invoke it only
   through the relay service binding.
 - Requests are JSON-only, exact-schema, and bounded by `MAX_JWS_BYTES`.
@@ -33,7 +43,8 @@ Review these non-secret vars in `wrangler.jsonc` before deployment:
 - `BUNDLE_ID`
 - `APP_APPLE_ID` (required for Production verification)
 - `ALLOWED_ENVIRONMENTS` (`Sandbox,Production` for release)
-- `ENABLE_ONLINE_CHECKS` (keep `true` in release)
+- `ENABLE_ONLINE_CHECKS` (keep `false`; see the security-boundary note above —
+  online OCSP is blocked by Apple's CDN for the Workers runtime)
 - `MAX_JWS_BYTES`
 
 The relay binding service name must match this Worker's deployed name,

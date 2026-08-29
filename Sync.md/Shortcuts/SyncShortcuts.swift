@@ -200,6 +200,8 @@ private struct GitShortcutPullResult {
             switch result {
             case .updated:
                 self = .updated
+            case .updatedWithAttention:
+                self = .blocked
             case .upToDate:
                 self = .upToDate
             case .blockedByLocalChanges, .diverged, .remoteBranchMissing:

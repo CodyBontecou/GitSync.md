@@ -120,15 +120,15 @@
 |---|---|---|---|
 | 8.1 | Products: monthly $1.99 / annual $14.99 (no trials) | Assist | `GitSyncAssist.storekit` |
 | 8.2 | StoreKit 2 purchases (JWS-verified, appAccountToken-bound), restore, manage | Assist | `PremiumStorefront` |
-| 8.3 | Pull-only automation: GitHub webhook → relay → APNs wake → clean fast-forward (fail-closed; never stage/commit/merge/rebase/force-push/push) | Assist | relay + `RepositoryPullRunner` |
-| 8.4 | Per-repo enrollment via GitHub App link (state-nonce flow, repo access proof, opaque channels) | Assist | `enroll`, relay routes |
-| 8.5 | Network (any/Wi-Fi) & power (any/external) policies per repo | Assist | `RepoAssistSettings` |
-| 8.6 | Assist health/attention states surfaced (waiting/updated/up-to-date/deferred/attention/failed) | Assist | `RepoAssistHealth` |
+| 8.3 | Pull-only automation: one explicit installation-level opt-in covers current/future managed repos; clean fast-forward on each configured branch only (never stage/commit/merge/rebase/force-push/push) | Assist | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryPullRunner` |
+| 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, non-GitHub/unresolved repos are foreground-only; per-repo exclusion | Assist | `reconcileAutomaticRepository`, relay routes |
+| 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate Assist branch | Assist | `RepoAssistSettings`, `SettingsView` |
+| 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Assist | `PremiumAssistSummary`, production settings views |
 | 8.7 | StoreKit verification service (Apple roots pinned, OCSP, fail-closed) | Assist | `storekit-verifier` |
 | 8.8 | App Store Server Notifications v2 (expiry/refund/revoke handling) | Assist | relay `appStoreNotification` |
-| 8.9 | Relay data deletion (terminal, reinstall-durable barrier, server purge+tombstone) | Assist | `deleteRelayData`, `DELETE /v1/installation` |
+| 8.9 | Relay data deletion (terminal, reinstall-durable barrier, server tombstone/removal with hashed receipt and retention-scoped operational records) | Assist | `deleteRelayData`, `DELETE /v1/installation` |
 | 8.10 | Kill switch + retention crons + DLQ + monitoring | Assist | relay KILL_SWITCH, crons |
-| 8.11 | Privacy: minimal metadata only, hashed tokens, no repo contents/paths | Assist | `premium-v1-app-privacy.md` |
+| 8.11 | Privacy: app API requests never send names/URLs/contents/local paths/credentials; signed GitHub webhooks are transiently processed, with only numeric repository ID, branch, and opaque operational IDs extracted/persisted; APNs is opaque | Assist | `premium-v1-app-privacy.md` |
 
 ## 9. Onboarding & account UX
 

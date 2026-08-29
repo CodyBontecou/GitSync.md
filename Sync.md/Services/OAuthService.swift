@@ -17,7 +17,7 @@ enum OAuthError: LocalizedError {
         case .noToken: return String(localized: "No access token received from GitHub.")
         case .cancelled: return String(localized: "Sign-in was cancelled.")
         case .stateMismatch: return String(localized: "GitHub sign-in could not be verified. Please try again.")
-        case .failed(let msg): return msg
+        case .failed(let msg): return String(localized: "GitHub sign-in failed: \(msg)")
         }
     }
 }

@@ -8,10 +8,13 @@ export default defineConfig({
       bindings: {
         GITHUB_APP_PRIVATE_KEY: "unused-in-relay-tests",
         GITHUB_WEBHOOK_SECRET: "test-webhook-secret",
+        GITHUB_CLIENT_SECRET: "test-client-secret",
         APNS_PRIVATE_KEY: "unused-in-relay-tests",
         GITHUB_APP_ID: "123456",
         GITHUB_APP_SLUG: "gitsync-test-app",
         GITHUB_CALLBACK_URL: "https://relay.test/v1/github/callback",
+        GITHUB_CLIENT_ID: "Iv1.test-client-id",
+        GITHUB_AUTHORIZATION_CALLBACK_URL: "https://relay.test/v1/github/authorize/callback",
         APNS_TEAM_ID: "TESTTEAM01",
         APNS_KEY_ID: "TESTKEY001",
       },

@@ -80,13 +80,14 @@ Do not retain raw signed payloads in this document. Store them only in an access
 
 | Gate | Evidence reference | Result |
 |---|---|---|
-| App requests Contents: read-only and subscribes only to `push` | | ☐ Pass ☐ Fail |
+| App requests Contents: read-only plus Organization members: read-only, and subscribes to `push`/installation lifecycle events | | ☐ Pass ☐ Fail |
 | Callback and webhook URLs match deployed relay | | ☐ Pass ☐ Fail |
+| Exact personal owner and active organization owner succeed; ordinary members/collaborators, numeric identity mismatch, setup-only, and target substitution are rejected | | ☐ Pass ☐ Fail |
 | Repository access proof succeeds only for installed repositories | | ☐ Pass ☐ Fail |
 | Valid signed push produces one routing event | | ☐ Pass ☐ Fail |
 | Wrong signature/event/repository/branch is rejected or ignored | | ☐ Pass ☐ Fail |
 | Duplicate and delayed delivery is idempotent | | ☐ Pass ☐ Fail |
-| Uninstall/reinstall and credential rotation validated | | ☐ Pass ☐ Fail |
+| Durable uninstall tombstone wins both delayed-link/delayed-enrollment orderings; new installation ID and credential rotation validated | | ☐ Pass ☐ Fail |
 
 Use redacted GitHub delivery references; do not include repository identity.
 

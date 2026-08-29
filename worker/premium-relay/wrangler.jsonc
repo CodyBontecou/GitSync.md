@@ -6,7 +6,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true,
-    "logs": { "enabled": true, "invocation_logs": true }
+    "logs": { "enabled": true, "invocation_logs": false }
   },
   "d1_databases": [
     {
@@ -35,8 +35,9 @@
     "PRODUCT_IDS": "com.bontecou.gitsync.assist.monthly,com.bontecou.gitsync.assist.annual",
     "APP_STORE_ENVIRONMENTS": "Sandbox,Production",
     "GITHUB_APP_ID": "4687322",
-    "GITHUB_APP_SLUG": "gitsync-assist",
+    "GITHUB_APP_SLUG": "gitsync-md-assist",
     "GITHUB_CALLBACK_URL": "https://gitsync-premium-relay.costream.workers.dev/v1/github/callback",
+    "GITHUB_AUTHORIZATION_CALLBACK_URL": "https://gitsync-premium-relay.costream.workers.dev/v1/github/authorize/callback",
     "APNS_TEAM_ID": "67KC823C9A",
     "APNS_KEY_ID": "V76THLWH9L",
     "APNS_TOPIC": "bontecou.Sync-md",

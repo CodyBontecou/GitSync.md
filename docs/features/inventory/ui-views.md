@@ -261,12 +261,10 @@ Toolbar: title SETTINGS, Cancel, Save (`saveChanges()` async; disabled while sav
 - Last Sync (relative or Never), Commit SHA (7 chars), Files count (`blobSHAs.count`).
 
 ### 8.6 GitSync Assist section
-- **"Enable pull-only automation" toggle** — disabled unless premium active AND repo enrolled (`assist.channel != nil`).
-- If not enrolled: premium → **"Link GitHub App"** (opens `premiumRuntime.startGitHubLink()` URL) + **GitHub installation Picker** + **"Enroll this repository"** (matches GitHub repo by URL/name; onboarding errors surfaced via validation alert); non-premium → guidance text to subscribe first.
-- If enrolled: **"Remove Assist enrollment"** (destructive) → `premiumRuntime.unenroll(repoID:)`.
-- Assist **Branch** field, **Network policy picker** (Any connection / Wi-Fi only), **Power policy picker** (Any power state / External power only).
-- Assist health block (title/message/last attempt) when attempted.
-- Disclaimer text about best-effort background delivery and what blocks automation.
+- **"Include in automatic sync" toggle** — inverse of `excludedFromAutomaticSync`; it remains editable while installation-level automatic mode is off so users can save exclusions before first activation. Guidance explains that the saved choice applies the next time global mode is enabled.
+- No per-repository GitHub-link, installation picker, enroll/remove-enrollment, basename-matching helper, or duplicate Assist branch editor. The configured Repository Branch is the automatic target.
+- **Network policy picker** (Any connection / Wi-Fi only) and **Power policy picker** (Any power state / External power only) remain per repository.
+- Shows enrollment status/message, exact GitHub `fullName` when available, enrolled/configured branch, enrollment attempt, health/message/sync attempt, and **Retry** (`prepareForSettings`). Copy distinguishes GitHub event-wake eligibility from foreground-only non-GitHub/unresolved repositories and repeats clean-fast-forward stop conditions.
 
 ### 8.7 Debug section
 - **View Debug Log** NavigationLink → `DebugLogView`; error-count badge on the row.
@@ -278,7 +276,7 @@ Toolbar: title SETTINGS, Cancel, Save (`saveChanges()` async; disabled while sav
 - Removal re-records repo in history (so it can be re-added via ghost list).
 
 ### 8.9 Save validation
-- URL required/valid; GitHub PAT eligibility; auth field completeness; author name required (no line breaks/angle brackets); email format (no spaces/angle brackets, must contain @); persists via `state.saveRepoConfiguration` then updates assist settings (`state.updateRepo`).
+- URL required/valid; GitHub PAT eligibility; auth field completeness; author name required (no line breaks/angle brackets); email format (no spaces/angle brackets, must contain @). Save order is local-first: `state.saveRepoConfiguration`, local network/power/branch policy, `setAutomaticSyncExcluded`, then settings reconciliation while global mode is on.
 
 ---
 
@@ -397,7 +395,7 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 
 - **Account section**: Name, @Username, Email data rows (conditional on non-empty).
 - **Default Save Location section**: current folder card (name+path) with **CHANGE** (folder picker) and **REMOVE** (confirm alert → `state.clearDefaultSaveLocation`); when unset, info row + "CHOOSE DEFAULT LOCATION".
-- **GitSync Assist section**: action row → `PremiumSettingsView` sheet (§17).
+- **GitSync Assist section**: "Best-effort pull-only automation for all repositories" action row → `PremiumSettingsView` sheet (§16).
 - **Shortcuts section**: informational row about "Pull All Repositories" Apple Shortcuts automation.
 - **Feedback section**: **Send Feedback** (MailCompose sheet if mail available, else opens mail client via `FeedbackHelper`); **Join our Discord** → opens `discord.gg/RaQYS4t6gn`.
 - **Help section**: **Show App Tour** → full-screen `OnboardingView`.
@@ -406,12 +404,14 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 
 ---
 
-## 16. Premium / GitSync Assist Settings — `Views/PremiumSettingsView.swift` (119 lines)
+## 16. Premium / GitSync Assist Settings — `Views/PremiumSettingsView.swift`
 
-- **About section**: pull-only automation description; explicit list of what Assist never does (stage/commit/rebase/merge/resolve/force-push/push).
-- **Subscription section**: entitlement state rows (Checking…, Active + product ID, Purchase pending, Not subscribed, error); purchasable products (Annual "Best value" / Monthly "Flexible billing" with prices) → `entitlement.purchase(productID:)` (disabled while active/working); **Restore Purchases**; **Manage Subscription** (App Store URL).
-- **Relay & devices section**: rows for Relay access, Relay configured, This device registered; relay-data-deleted notice; registration error; privacy description of what the relay stores; **"Delete this device's relay data"** (destructive, disabled unless allowed) → confirmation dialog with strong warning → `runtime.deleteRelayData()`.
-- **Privacy & terms section**: Privacy Policy link (gitsyncmd.app/privacy.html), Terms of Use link, **Request data access or deletion** (opens private email draft with opaque identifiers + caution note).
+- **About section**: all current/future cloned or managed repositories after one installation-level opt-in, per-repo exclusions, eligible GitHub event wakes versus foreground-only fallback, configured branch, clean-fast-forward-only behavior, and explicit stop/never-does caveats.
+- **Automatic sync section**: the single production **"Automatically sync all repositories"** toggle/action. Enabling requires the full consent confirmation and calls `setAutomaticallySyncAllRepositories`; any returned GitHub link opens. While enabled, **Link / Manage GitHub App** calls `startGitHubLink`. Turning off calls the runtime off path and is explicitly distinguished from terminal deletion.
+- **Subscription section**: entitlement states; Annual/Monthly product buttons; **Restore Purchases**; **Manage Subscription**.
+- **Automatic sync status**: reconciliation progress; total/enrolled/foreground-only/excluded/failed/disabled aggregate counts; linked-installation count; device registration and relay errors; **Retry** calls `prepareForSettings`.
+- **Relay & device data**: global consent/configuration, constant-size device registration and installation-wide live-enrollment routing copy, unchanged metadata exclusions, and separately labeled terminal **"Delete this device's relay data"** confirmation.
+- **Privacy & terms section**: Privacy Policy, Terms of Use, and private data request/deletion draft.
 - Toolbar Done; `runtime.prepareForSettings()` on task.
 
 ---

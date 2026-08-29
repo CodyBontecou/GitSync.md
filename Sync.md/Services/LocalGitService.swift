@@ -34,6 +34,7 @@ enum LocalGitError: LocalizedError {
     case tagNotFound(String)
     case repositoryCorrupted(String)
     case lfsFailed(String)
+    case lfsHydrationBlockedByLocalChanges(String)
     case invalidAuthorIdentity(String)
     case authenticationFailed(String)
     case sshHostKeyTrustRequired(GitLFSSSHHostKeyTrustError)
@@ -99,6 +100,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
         case .lfsFailed(let msg):
             return String(localized: "Git LFS failed: \(msg)")
+        case .lfsHydrationBlockedByLocalChanges:
+            return String(localized: "Pull blocked to protect local edits. Commit, stash, or discard local changes first.")
         case .invalidAuthorIdentity(let msg):
             return String(localized: "Git author identity is missing or invalid. \(msg) Open repository settings and set Author Name and Author Email.")
         case .authenticationFailed(let msg):
@@ -138,9 +141,36 @@ struct LocalCloneResult: Sendable {
     }
 }
 
+enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
+    case lfsHydrationBlockedByLocalChanges(path: String)
+    case lfsHydrationFailed(message: String)
+    case lfsAuthenticationOrTrustRequired(message: String)
+    case cancelledAfterUpdate
+
+    var errorDescription: String? {
+        switch self {
+        case .lfsHydrationBlockedByLocalChanges:
+            return String(localized: "Git updated, but a Git LFS file changed before hydration. Local bytes were preserved and need attention.")
+        case .lfsHydrationFailed(let message):
+            return String(localized: "Git updated, but Git LFS hydration failed and needs attention: \(message)")
+        case .lfsAuthenticationOrTrustRequired(let message):
+            return String(localized: "Git updated, but Git LFS authentication or trust needs attention: \(message)")
+        case .cancelledAfterUpdate:
+            return String(localized: "Git updated before cancellation completed. Verify the working tree before the next sync.")
+        }
+    }
+}
+
 struct LocalPullResult: Sendable {
     let updated: Bool
     let newCommitSHA: String
+    let attention: PullPostUpdateAttention?
+
+    init(updated: Bool, newCommitSHA: String, attention: PullPostUpdateAttention? = nil) {
+        self.updated = updated
+        self.newCommitSHA = newCommitSHA
+        self.attention = attention
+    }
 }
 
 struct LocalPushResult: Sendable {
@@ -210,6 +240,9 @@ private func git2TransportCheck(
     wrapping: (String) -> LocalGitError
 ) throws -> Int32 {
     guard code >= 0 else {
+        if credentialContext.cancellationSignal?.isCancelled == true {
+            throw CancellationError()
+        }
         if let sshHostKeyTrustError = credentialContext.sshHostKeyTrustError {
             throw LocalGitError.sshHostKeyTrustRequired(sshHostKeyTrustError)
         }
@@ -283,11 +316,35 @@ private func makeStrarray(_ cStr: UnsafeMutablePointer<CChar>, into arr: inout g
 
 // MARK: - Credential Callback
 
+/// Lock-protected bridge from structured-concurrency cancellation into
+/// synchronous libgit2 callbacks and detached mutation work.
+nonisolated private final class LocalGitCancellationSignal: @unchecked Sendable {
+    private let lock = NSLock()
+    private var cancelled = false
+
+    var isCancelled: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return cancelled
+    }
+
+    func cancel() {
+        lock.lock()
+        cancelled = true
+        lock.unlock()
+    }
+
+    func checkCancellation() throws {
+        if isCancelled { throw CancellationError() }
+    }
+}
+
 /// Context passed through libgit2's credential callback payload.
 private class CredentialContext {
     let credentials: GitRemoteCredentials
     let remoteURL: String?
     let hostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
+    let cancellationSignal: LocalGitCancellationSignal?
     var didAttemptUsername = false
     var didAttemptUserPass = false
     var didAttemptSSHKey = false
@@ -298,11 +355,13 @@ private class CredentialContext {
     init(
         credentials: GitRemoteCredentials,
         remoteURL: String? = nil,
-        hostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default
+        hostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default,
+        cancellationSignal: LocalGitCancellationSignal? = nil
     ) {
         self.credentials = credentials
         self.remoteURL = remoteURL
         self.hostKeyTrustStore = hostKeyTrustStore
+        self.cancellationSignal = cancellationSignal
     }
 
     func resetAttempts() {
@@ -480,6 +539,7 @@ nonisolated private func credentialCallback(
 ) -> Int32 {
     guard let payload else { return GIT_EUSER.rawValue }
     let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    guard ctx.cancellationSignal?.isCancelled != true else { return GIT_EUSER.rawValue }
     return acquireCredential(
         cred: cred,
         usernameFromURL: usernameFromURL,
@@ -533,6 +593,7 @@ nonisolated private func certificateCheckCallback(
     guard let payload, let cert else { return GIT_ECERTIFICATE.rawValue }
 
     let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    guard ctx.cancellationSignal?.isCancelled != true else { return GIT_EUSER.rawValue }
     if cert.pointee.cert_type == GIT_CERT_HOSTKEY_LIBSSH2 {
         guard ctx.credentials.method == .sshKey else {
             ctx.recordCallbackError(String(localized: "SSH host key verification failed for \(hostName). Configure this repository with SSH key credentials or use HTTPS."))
@@ -564,6 +625,30 @@ nonisolated private func certificateCheckCallback(
     if valid != 0 { return 0 }
     ctx.recordCallbackError(String(localized: "TLS certificate verification failed for \(hostName). Check your network or the remote's certificate."))
     return GIT_ECERTIFICATE.rawValue
+}
+
+/// libgit2 invokes these callbacks during network transfer and immediately
+/// before updating each remote-tracking ref. Returning a nonzero value aborts
+/// the fetch; `git2TransportCheck` then restores `CancellationError` rather
+/// than misclassifying the callback abort as authentication failure.
+nonisolated private func transferProgressCallback(
+    stats: UnsafePointer<git_indexer_progress>?,
+    payload: UnsafeMutableRawPointer?
+) -> Int32 {
+    guard let payload else { return GIT_EUSER.rawValue }
+    let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    return ctx.cancellationSignal?.isCancelled == true ? GIT_EUSER.rawValue : 0
+}
+
+nonisolated private func updateTipsCallback(
+    refname: UnsafePointer<CChar>?,
+    oldOID: UnsafePointer<git_oid>?,
+    newOID: UnsafePointer<git_oid>?,
+    payload: UnsafeMutableRawPointer?
+) -> Int32 {
+    guard let payload else { return GIT_EUSER.rawValue }
+    let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    return ctx.cancellationSignal?.isCancelled == true ? GIT_EUSER.rawValue : 0
 }
 
 // MARK: - Push Callbacks
@@ -674,6 +759,7 @@ nonisolated private func stashForeachCallback(
 final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     let localURL: URL
     private let pullOnlyBeforeCheckout: (@Sendable () -> Void)?
+    private let pullOnlyBeforeLFSReplacement: (@Sendable (String) -> Void)?
 
     /// One-time libgit2 global init.
     private static let initOnce: Void = { git_libgit2_init() }()
@@ -690,10 +776,15 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }
     }
 
-    init(localURL: URL, pullOnlyBeforeCheckout: (@Sendable () -> Void)? = nil) {
+    init(
+        localURL: URL,
+        pullOnlyBeforeCheckout: (@Sendable () -> Void)? = nil,
+        pullOnlyBeforeLFSReplacement: (@Sendable (String) -> Void)? = nil
+    ) {
         _ = Self.initOnce
         self.localURL = localURL
         self.pullOnlyBeforeCheckout = pullOnlyBeforeCheckout
+        self.pullOnlyBeforeLFSReplacement = pullOnlyBeforeLFSReplacement
     }
 
     /// Whether a `.git` directory exists at the local URL.
@@ -813,6 +904,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         } catch LocalGitError.lfsFailed(let message) {
             lfsWarning = "Clone completed, but some Git LFS files could not be downloaded: \(message)"
             DebugLogger.shared.error("lfs", "Git LFS hydration after clone failed", detail: message)
+        } catch LocalGitError.lfsHydrationBlockedByLocalChanges(let path) {
+            // Cloning itself is complete. A concurrent local edit must survive,
+            // so report hydration as the warning rather than turning a finished
+            // clone into a destructive retry opportunity.
+            lfsWarning = LocalGitError.lfsHydrationBlockedByLocalChanges(path).localizedDescription
+            DebugLogger.shared.warning("lfs", "Git LFS hydration preserved a concurrent local edit", detail: path)
         }
 
         return LocalCloneResult(
@@ -828,12 +925,16 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     func pullPlan(pat: String) async throws -> PullPlan {
         let path = self.localURL.path
+        let cancellationSignal = LocalGitCancellationSignal()
 
-        return try await Task.detached {
-            var repo: OpaquePointer?
-            defer { if let repo { git_repository_free(repo) } }
-            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+        return try await withTaskCancellationHandler {
+            let plan = try await Task.detached {
+                try cancellationSignal.checkCancellation()
+                var repo: OpaquePointer?
+                defer { if let repo { git_repository_free(repo) } }
+                try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
+            try cancellationSignal.checkCancellation()
             // Mirror repoInfo(): persist core.precomposeunicode before any
             // status read so the dirty check agrees with the UI. Without
             // this, freshly-opened handles on repos cloned by older builds
@@ -855,7 +956,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 branch = "main"
             }
 
-            try Self.fetchOrigin(repo: repo, pat: pat)
+            try cancellationSignal.checkCancellation()
+            try Self.fetchOrigin(repo: repo, pat: pat, cancellationSignal: cancellationSignal)
+            try cancellationSignal.checkCancellation()
 
             let remoteRefName = "refs/remotes/origin/\(branch)"
             var remoteRef: OpaquePointer?
@@ -903,16 +1006,21 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 hasLocalChanges: hasLocalChanges
             )
 
-            return PullPlan(
-                action: action,
-                branch: branch,
-                localCommitSHA: localCommitSHA,
-                remoteCommitSHA: remoteCommitSHA,
-                hasLocalChanges: hasLocalChanges,
-                aheadBy: ahead,
-                behindBy: behind
-            )
-        }.value
+                return PullPlan(
+                    action: action,
+                    branch: branch,
+                    localCommitSHA: localCommitSHA,
+                    remoteCommitSHA: remoteCommitSHA,
+                    hasLocalChanges: hasLocalChanges,
+                    aheadBy: ahead,
+                    behindBy: behind
+                )
+            }.value
+            try cancellationSignal.checkCancellation()
+            return plan
+        } onCancel: {
+            cancellationSignal.cancel()
+        }
     }
 
     func pull(pat: String) async throws -> LocalPullResult {
@@ -947,7 +1055,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     plan: plan,
                     pullResult: try await performSafeFastForward(branch: plan.branch, pat: pat, refetch: false, isPullOnly: true)
                 )
-            } catch LocalGitError.pullBlockedByLocalChanges {
+            } catch LocalGitError.pullBlockedByLocalChanges,
+                    LocalGitError.lfsHydrationBlockedByLocalChanges(_) {
                 // The working tree can change after fetch/planning but before
                 // checkout. Preserve the typed, attention-worthy outcome.
                 return PullExecutionResult(
@@ -986,12 +1095,17 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         let path = self.localURL.path
         let localURL = self.localURL
         let pullOnlyBeforeCheckout = self.pullOnlyBeforeCheckout
+        let pullOnlyBeforeLFSReplacement = self.pullOnlyBeforeLFSReplacement
+        let cancellationSignal = LocalGitCancellationSignal()
 
-        let fastForward = try await Task.detached {
-            var repo: OpaquePointer?
-            defer { if let repo { git_repository_free(repo) } }
-            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+        let fastForward = try await withTaskCancellationHandler {
+            try await Task.detached {
+                try cancellationSignal.checkCancellation()
+                var repo: OpaquePointer?
+                defer { if let repo { git_repository_free(repo) } }
+                try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
+            try cancellationSignal.checkCancellation()
             Self.setPrecomposeUnicode(repo: repo)
 
             if try Self.hasUncommittedChanges(repo: repo) {
@@ -999,7 +1113,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
 
             if refetch {
-                try Self.fetchOrigin(repo: repo, pat: pat)
+                try cancellationSignal.checkCancellation()
+                try Self.fetchOrigin(repo: repo, pat: pat, cancellationSignal: cancellationSignal)
+                try cancellationSignal.checkCancellation()
             }
 
             let remoteRefName = "refs/remotes/origin/\(branch)"
@@ -1069,6 +1185,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 throw LocalGitError.pullBlockedByLocalChanges
             }
             if isPullOnly { pullOnlyBeforeCheckout?() }
+            try cancellationSignal.checkCancellation()
 
             // Hold both HEAD and the checked-out branch ref from the final OID
             // validation through checkout/index mutation and the ref commit.
@@ -1077,6 +1194,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             let localRefName = "refs/heads/\(branch)"
             var refTransaction: OpaquePointer?
             defer { if let refTransaction { git_transaction_free(refTransaction) } }
+            try cancellationSignal.checkCancellation()
             try git2Check(git_transaction_new(&refTransaction, repo), context: "Create fast-forward ref transaction")
             try git2Check(git_transaction_lock_ref(refTransaction, "HEAD"), context: "Lock HEAD for fast-forward")
             try git2Check(git_transaction_lock_ref(refTransaction, localRefName), context: "Lock branch for fast-forward")
@@ -1093,6 +1211,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 throw LocalGitError.pullDiverged
             }
 
+            // Cancellation is interruptible through this point. Once LFS
+            // normalization begins, normalization + checkout + index rebuild +
+            // branch transaction commit form one short noninterruptible
+            // coherence window. Known-clean hydrated paths are converted to
+            // their exact old index pointers so SAFE checkout can update or
+            // delete them without ever requiring FORCE.
+            try cancellationSignal.checkCancellation()
+            var lfsNormalizations: [GitLFSCheckoutNormalization] = []
+            do {
+                lfsNormalizations = try GitLFSService.normalizeHydratedFilesForSafeCheckout(
+                    repo: repo,
+                    repositoryURL: localURL,
+                    paths: changedPaths
+                )
             let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
             if checkoutCode == GIT_ECONFLICT.rawValue {
                 // Never force a background/pull-only checkout. A conflict may
@@ -1131,21 +1263,56 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 context: "Queue branch ref update"
             )
             try git2Check(git_transaction_commit(refTransaction), context: "Commit branch ref update")
-
-            return (result: LocalPullResult(updated: true, newCommitSHA: oidToHex(&remoteOidCopy)), changedPaths: changedPaths)
-        }.value
-
-        if fastForward.result.updated {
-            let lfsResult = try await Self.hydrateLFSIfNeeded(
-                localURL: localURL,
-                pat: pat,
-                candidatePaths: fastForward.changedPaths
-            )
-            if lfsResult.checkedOutCount > 0 {
-                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after pull", detail: "\(lfsResult.checkedOutCount) files")
+            } catch {
+                GitLFSService.rollbackHydratedFilesAfterFailedCheckout(lfsNormalizations)
+                throw error
             }
+
+                return (result: LocalPullResult(updated: true, newCommitSHA: oidToHex(&remoteOidCopy)), changedPaths: changedPaths)
+            }.value
+        } onCancel: {
+            cancellationSignal.cancel()
         }
 
+        // The ref transaction has committed before this point. Every later
+        // cancellation or hydration failure must therefore return the new SHA
+        // with attention instead of throwing an outcome that implies HEAD did
+        // not move.
+        if cancellationSignal.isCancelled || Task.isCancelled {
+            return LocalPullResult(
+                updated: fastForward.result.updated,
+                newCommitSHA: fastForward.result.newCommitSHA,
+                attention: fastForward.result.updated ? .cancelledAfterUpdate : nil
+            )
+        }
+        if fastForward.result.updated {
+            do {
+                let lfsResult = try await Self.hydrateLFSIfNeeded(
+                    localURL: localURL,
+                    pat: pat,
+                    candidatePaths: fastForward.changedPaths,
+                    beforeReplacement: pullOnlyBeforeLFSReplacement
+                )
+                if lfsResult.checkedOutCount > 0 {
+                    DebugLogger.shared.info("lfs", "Hydrated Git LFS files after pull", detail: "\(lfsResult.checkedOutCount) files")
+                }
+            } catch is CancellationError {
+                return LocalPullResult(updated: true, newCommitSHA: fastForward.result.newCommitSHA,
+                                       attention: .cancelledAfterUpdate)
+            } catch LocalGitError.lfsHydrationBlockedByLocalChanges(let path) {
+                return LocalPullResult(updated: true, newCommitSHA: fastForward.result.newCommitSHA,
+                                       attention: .lfsHydrationBlockedByLocalChanges(path: path))
+            } catch LocalGitError.sshHostKeyTrustRequired(let error) {
+                return LocalPullResult(updated: true, newCommitSHA: fastForward.result.newCommitSHA,
+                                       attention: .lfsAuthenticationOrTrustRequired(message: error.localizedDescription))
+            } catch let error as LocalGitError {
+                return LocalPullResult(updated: true, newCommitSHA: fastForward.result.newCommitSHA,
+                                       attention: .lfsHydrationFailed(message: error.localizedDescription))
+            } catch {
+                return LocalPullResult(updated: true, newCommitSHA: fastForward.result.newCommitSHA,
+                                       attention: .lfsHydrationFailed(message: error.localizedDescription))
+            }
+        }
         return fastForward.result
     }
 
@@ -3718,11 +3885,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     private static func hydrateLFSIfNeeded(
         localURL: URL,
         pat: String,
-        candidatePaths: [String]? = nil
+        candidatePaths: [String]? = nil,
+        beforeReplacement: (@Sendable (String) -> Void)? = nil
     ) async throws -> GitLFSHydrateResult {
         try await GitLFSService(
             localURL: localURL,
-            credentials: GitRemoteCredentials.fromTransportPayload(pat)
+            credentials: GitRemoteCredentials.fromTransportPayload(pat),
+            beforeReplacement: beforeReplacement
         ).hydrateWorktree(candidatePaths: candidatePaths)
     }
 
@@ -4056,7 +4225,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         return diffPaths(diff)
     }
 
-    private static func fetchOrigin(repo: OpaquePointer?, pat: String) throws {
+    private static func fetchOrigin(
+        repo: OpaquePointer?,
+        pat: String,
+        cancellationSignal: LocalGitCancellationSignal? = nil
+    ) throws {
+        try cancellationSignal?.checkCancellation()
         var remote: OpaquePointer?
         defer { if let remote { git_remote_free(remote) } }
         try git2Check(git_remote_lookup(&remote, repo, "origin"), context: "Lookup remote")
@@ -4065,14 +4239,21 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         git_fetch_options_init(&fetchOpts, UInt32(GIT_FETCH_OPTIONS_VERSION))
 
         let remoteURL = git_remote_url(remote).map { String(cString: $0) }
-        let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
+        let ctx = CredentialContext(
+            credentials: GitRemoteCredentials.fromTransportPayload(pat),
+            remoteURL: remoteURL,
+            cancellationSignal: cancellationSignal
+        )
         let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
         defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
         fetchOpts.callbacks.credentials = credentialCallback
         fetchOpts.callbacks.certificate_check = certificateCheckCallback
+        fetchOpts.callbacks.transfer_progress = transferProgressCallback
+        fetchOpts.callbacks.update_tips = updateTipsCallback
         fetchOpts.callbacks.payload = ctxPtr
 
+        try cancellationSignal?.checkCancellation()
         try git2TransportCheck(
             git_remote_fetch(remote, nil, &fetchOpts, nil),
             context: "Fetch",
@@ -4080,6 +4261,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             credentialContext: ctx,
             wrapping: LocalGitError.fetchFailed
         )
+        try cancellationSignal?.checkCancellation()
     }
 
     private static func hasUncommittedChanges(repo: OpaquePointer?) throws -> Bool {

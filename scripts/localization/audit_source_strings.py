@@ -14,6 +14,17 @@ RAW_SINKS = re.compile(
 )
 LOCALIZED = re.compile(r"String\(localized:\s*\"")
 CONTEXT = re.compile(r'context:\s*"([^"]+)"')
+RAW_LOCALIZED_ERROR_LITERAL = re.compile(r'(?:return\s+|:\s*)"[A-Za-z]')
+RAW_LOCALIZED_ERROR_PASSTHROUGH = re.compile(
+    r'case\s+[^:]*\blet\s+([A-Za-z_][A-Za-z0-9_]*)\s*\)[^:]*:\s*(?:return\s+)?\1\s*$'
+)
+RAW_ASSIST_MESSAGE = re.compile(r'message:\s*"[A-Za-z]')
+RAW_AUTH_RESULT = re.compile(r'\.authenticationOrTrustRequired\(message:\s*[A-Za-z][A-Za-z0-9_]*\s*,')
+ASSIST_MESSAGE_FILES = {
+    "BackgroundSyncCoordinator.swift",
+    "PremiumRuntime.swift",
+    "RepositoryPullRunner.swift",
+}
 RAW_VARIABLE_UI = [
     re.compile(r'Text\([^\n]*(?:\?\?|\?)\s*"[A-Za-z(]'),
     re.compile(r'let\s+placeholder\s*=.*"[A-Za-z]'),
@@ -29,8 +40,59 @@ def main() -> None:
     diagnostics: list[dict[str, object]] = []
     localized_sink_count = 0
     swift_files = sorted(Path("Sync.md").rglob("*.swift"))
+    localized_error_description_count = 0
+    dynamic_assist_sink_count = 0
     for path in swift_files:
-        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        lines = path.read_text(encoding="utf-8").splitlines()
+        error_description_depth: int | None = None
+        for line_number, line in enumerate(lines, start=1):
+            if "var errorDescription: String?" in line:
+                error_description_depth = line.count("{") - line.count("}")
+                localized_error_description_count += 1
+                continue
+            if error_description_depth is not None:
+                if RAW_LOCALIZED_ERROR_LITERAL.search(line) and "String(localized:" not in line:
+                    failures.append(
+                        {
+                            "file": str(path),
+                            "line": line_number,
+                            "source": line.strip(),
+                            "classification": "raw LocalizedError description",
+                        }
+                    )
+                if RAW_LOCALIZED_ERROR_PASSTHROUGH.search(line):
+                    failures.append(
+                        {
+                            "file": str(path),
+                            "line": line_number,
+                            "source": line.strip(),
+                            "classification": "raw LocalizedError description",
+                        }
+                    )
+                error_description_depth += line.count("{") - line.count("}")
+                if error_description_depth <= 0:
+                    error_description_depth = None
+
+            if path.name in ASSIST_MESSAGE_FILES and RAW_ASSIST_MESSAGE.search(line) and "String(localized:" not in line:
+                failures.append(
+                    {
+                        "file": str(path),
+                        "line": line_number,
+                        "source": line.strip(),
+                        "classification": "raw persisted Assist status message",
+                    }
+                )
+            if RAW_AUTH_RESULT.search(line) and "localizedDescription" not in line and "String(localized:" not in line:
+                failures.append(
+                    {
+                        "file": str(path),
+                        "line": line_number,
+                        "source": line.strip(),
+                        "classification": "unwrapped dynamic authentication result",
+                    }
+                )
+            if any(token in line for token in ("Label(message", "Text(message", "value: error")):
+                dynamic_assist_sink_count += 1
             if LOCALIZED.search(line) and any(
                 token in line
                 for token in ("lastError", "recordCallbackError", "failCredential", "throw ")
@@ -65,10 +127,12 @@ def main() -> None:
     report = {
         "swiftFileCount": len(swift_files),
         "localizedUserFacingSinkCount": localized_sink_count,
+        "localizedErrorDescriptionCount": localized_error_description_count,
+        "dynamicUserFacingSinkCount": dynamic_assist_sink_count,
         "rawUserFacingSinkFailures": failures,
         "intentionalDeveloperDiagnostics": diagnostics,
         "intentionalDemoFixture": "Sync.md/Debug/MarketingCapture.swift",
-        "compilerExtractionAudit": "active String Catalog coverage is verified separately by catalog-audit.json",
+        "compilerExtractionAudit": "run audit_catalog.py with current .stringsdata; its compilerExtractionCoverage must be checked",
         "passed": not failures,
     }
     output = Path("localization/reports/source-string-audit.json")

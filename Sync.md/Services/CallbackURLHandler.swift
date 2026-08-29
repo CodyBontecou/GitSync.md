@@ -120,6 +120,7 @@ final class CallbackURLHandler {
                 }
                 result["sha"] = pullResult.newCommitSHA
                 result["updated"] = pullResult.updated ? "true" : "false"
+                if let attention = pullResult.attention { throw attention }
 
             case .push:
                 appState.syncProgress = "Committing & pushing…"
@@ -133,6 +134,7 @@ final class CallbackURLHandler {
                     self.appState.syncProgress = "Pulling from remote…"
                     let pullResult = try await self.performPull(repoID: repoID, repository: repository)
                     result["pull_updated"] = pullResult.updated ? "true" : "false"
+                    if let attention = pullResult.attention { throw attention }
 
                     self.appState.syncProgress = "Pushing local changes…"
                     do {

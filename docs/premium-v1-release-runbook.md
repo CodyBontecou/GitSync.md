@@ -1,12 +1,12 @@
 # GitSync Assist — Premium v1 release runbook
 
-GitSync Assist is an **optional** auto-renewable subscription layered on the existing paid-up-front Git client. It provides best-effort event wake hints and foreground reconciliation for explicitly enrolled repositories. It is not guaranteed or truly real time.
+GitSync Assist is an **optional** auto-renewable subscription layered on the existing paid-up-front Git client. One explicit installation-level opt-in covers all current and future cloned or managed repositories, with per-repository exclusions. Repositories covered by linked GitHub App installations are eligible for best-effort event wake hints; non-GitHub and unresolved repositories reconcile only in the foreground. It is not guaranteed or truly real time.
 
 ## Product and safety contract
 
 - Products: `com.bontecou.gitsync.assist.monthly` and `com.bontecou.gitsync.assist.annual` in one subscription group (`gitsync-assist`). Tentative US storefront positioning is $1.99/month or $14.99/year; App Store Connect is authoritative.
 - Existing manual clone, fetch, pull, stage, commit, branch, merge, rebase, conflict, push, Shortcuts, and callback behavior is not paywalled.
-- Automated Assist execution may fetch and apply **only a clean fast-forward** on the selected branch.
+- Automated Assist execution may fetch and apply **only a clean fast-forward** on each repository's configured branch.
 - It must never automatically stage, commit, rebase, merge, resolve conflicts, force-push, or push.
 - APNs is a wake hint. Locked/background scheduling, Low Power Mode, force-quit, network, power, and iOS policy can delay or suppress it.
 
@@ -29,11 +29,11 @@ GitSync Assist is an **optional** auto-renewable subscription layered on the exi
 
 ## GitHub App
 
-1. Create a GitHub App with **Contents: read-only**. Subscribe only to `push`.
-2. Configure setup/callback URL as `<relay>/v1/github/callback` and webhook URL as `<relay>/v1/webhooks/github`.
-3. Configure `GITHUB_APP_ID` and `GITHUB_APP_SLUG` as Worker vars. Store the private key as `GITHUB_APP_PRIVATE_KEY` and the webhook secret as `GITHUB_WEBHOOK_SECRET` using `wrangler secret put`.
-4. Install on only repositories the operator authorizes. Verify the relay proves repository membership before enrollment.
-5. Validate signed push delivery, wrong signature, duplicate delivery, branch filtering, uninstall/reinstall, and credential rotation.
+1. Create a GitHub App with **Contents: read-only** and **Organization members: read-only** (the minimum organization permission needed to verify active organization owners). Subscribe to `push` and installation lifecycle events.
+2. Configure the setup URL as the exact HTTPS `<relay>/v1/github/callback`, the GitHub App user-authorization callback as exact HTTPS `<relay>/v1/github/authorize/callback`, and webhook URL as `<relay>/v1/webhooks/github`. Verify the setup leg only redirects and never links. Verify only the ownership-proven authorization leg returns a no-store HTML page with the exact `syncmd://assist-linked` app handoff (no code, state, installation ID, token, or secret) and that opening it refreshes Assist settings.
+3. Configure `GITHUB_APP_ID`, `GITHUB_APP_SLUG`, `GITHUB_CALLBACK_URL`, and `GITHUB_AUTHORIZATION_CALLBACK_URL` as Worker vars. Supply `GITHUB_APP_PRIVATE_KEY`, `GITHUB_WEBHOOK_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, and `APNS_PRIVATE_KEY` with `wrangler secret put`; the client ID is non-confidential but intentionally kept out of committed deploy configuration so no placeholder can ship.
+4. Install on the repositories the user authorizes for event-wake eligibility. The installation-level Assist opt-in still covers other managed repositories as foreground-only; verify the relay proves membership before creating each live enrollment.
+5. Validate exact numeric personal-owner proof; exact numeric organization identity plus active `admin`/owner membership; denial of ordinary organization members and repository collaborators; setup-only and target substitution denial; state single-use/expiry/concurrency/deletion-generation behavior; best-effort single-purpose transient GitHub App user-token revocation; ongoing owner-demotion denial; invocation-log suppression; signed push delivery; wrong signature; duplicate delivery; durable uninstall race handling; new-installation-ID recovery; and credential rotation.
 
 ## Cloudflare relay
 
@@ -72,14 +72,31 @@ npm run startup-check
 
 Deployment/provisioning requires explicit operator authority and credentials. No deploy is performed by repository tests.
 
+Use `scripts/deploy/premium-relay-release.sh` for gated execution: the default mode is read-only verification (auth, dry run, secret-name presence, pending remote migrations, current deployment, liveness probe); `--execute` applies remote D1 migrations and deploys, and refuses to run while any required secret is missing.
+
+Verified infrastructure status as of 2026-08-28 (read-only checks, then gated release executed):
+
+| Gate | Status |
+|---|---|
+| Wrangler auth (account `e4265f32…`) | present |
+| Relay Worker deployed | ✅ deployed 2026-08-28 via `scripts/deploy/premium-relay-release.sh --execute` (version `f5b7fb01…`, milestone-3 code confirmed serving via the two-leg `/v1/github/authorize/callback` route) |
+| Remote D1 migrations | ✅ `0003`, `0004` applied 2026-08-28 (post-check: no migrations pending) |
+| Secrets `GITHUB_APP_PRIVATE_KEY`, `GITHUB_WEBHOOK_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `APNS_PRIVATE_KEY` | ✅ all present |
+| StoreKit verifier Worker | deployed (2026-08-27) |
+| Live relay liveness (`GET /` → 404 JSON) | responding |
+| GitHub App | installed and live — slug `gitsync-md-assist` (page 200), webhook deliveries arriving and validating continuously (78 push events recorded, signature-verified, all completed; latest 2026-08-28). Still confirm: numeric **App ID** = `4687322`, OAuth callback URLs, and installation-lifecycle event subscription |
+| ASC subscription products `com.bontecou.gitsync.assist.monthly` / `.annual` | unverified |
+
 ## Retention, deletion, and incident operations
 
+- Automatic mode consent is installation-scoped. Global disable stops local automatic execution and unregisters notifications locally immediately, then makes a best-effort remote device-unregister request; it is distinct from terminal authenticated relay-data deletion. Per-repository exclusion removes that repository's enrollment.
 - Device and enrollment deletion are installation-scoped and authenticated.
 - APNs permanent token errors detach/tombstone the token.
 - Revocation notifications revoke sessions and devices.
 - Cleanup removes expired sessions/link states and retention-expired webhook/outbox/APNs/App Store notification records. Current targets are 30 days for webhook/outbox operational data and 90 days for App Store notification dedupe.
-- Fulfill deletion requests by removing/tombstoning the installation's device channels, devices, enrollments, GitHub links, sessions, entitlement, and installation record consistent with D1 foreign keys and legal retention requirements.
-- Logs must contain route/status/opaque IDs only—never repository names/content/paths, Git credentials, entitlement JWS, bearer values, webhook secrets, APNs tokens, or signing keys.
+- Terminal deletion removes routing links and tombstones the installation's devices, enrollments, GitHub links, sessions, entitlement, and installation state. It retains hashed deletion receipts and retention-scoped operational/security records; do not describe it as purging everything.
+- Numeric administrator authority is revalidated on link status and new enrollment. Owner demotion fails closed for discovery/new enrollment but does not proactively tombstone existing enrollment routing; existing routes end on signed App uninstall, per-enrollment/terminal deletion, or entitlement lifecycle cleanup.
+- App API requests must never include repository names/URLs/content/local paths/credentials. During GitHub linking, OAuth codes and single-purpose transient GitHub App user tokens are transient administrator-proof inputs only and must never enter D1 or application logs; revocation is best effort after proof. Persist only the numeric authorizing user ID, never username or OAuth credentials. Signed GitHub webhook payloads may transiently contain names/URLs/commit messages/paths/authors, but logs and persistence must contain only numeric repository ID, branch, delivery/outbox operational IDs, route/status, and other disclosed opaque metadata—never those descriptive fields, Git credentials, entitlement JWS, bearer values, webhook secrets, APNs tokens, or signing keys. Disable provider invocation logs so callback query strings containing OAuth code/state are not recorded. APNs payloads remain opaque.
 
 Monitoring:
 
@@ -110,7 +127,10 @@ Run on a signed physical device with staging/production-like services:
 - Low Power Mode and offline→online transition
 - Wi-Fi-only and external-power-only policies
 - APNs token rotation and app reinstall
-- two or more devices enrolled to one repository (fan-out)
+- one global opt-in covering existing repositories, a newly cloned/managed repository, and a per-repository exclusion
+- GitHub repository covered/not covered by linked App access, plus non-GitHub and unresolved foreground-only repositories
+- constant-size device registration with installation-wide routing across multiple live enrollments
+- two or more eligible devices routed to one repository (fan-out)
 - clean up-to-date and clean fast-forward
 - dirty/staged/untracked worktree (no mutation; attention)
 - diverged/ahead history (no mutation; attention)
@@ -125,7 +145,7 @@ Capture timestamped logs/screenshots, exact build, device/iOS version, environme
 
 ## App Review notes
 
-> GitSync Assist is an optional subscription. The one-time-purchase app's existing manual Git, Shortcuts, callback, and local repository features remain available without it. Assist receives a GitHub push event through a minimal relay and sends a best-effort silent APNs wake hint. On wake or foreground activation the app checks the verified StoreKit current entitlement, per-repository network/power policy, current checked-out branch, worktree cleanliness, and commit ancestry. It only performs a clean fast-forward pull. It never automatically stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Ambiguous conditions show an attention state. Repository contents and Git credentials travel only between the device and Git provider; the relay stores limited entitlement/routing/delivery metadata described in the Privacy Policy. iOS may delay or suppress background delivery, especially after force-quit.
+> GitSync Assist is an optional subscription. The one-time-purchase app's existing manual Git, Shortcuts, callback, and local repository features remain available without it. The user explicitly enables automatic sync once for this installation; that consent covers all current and future cloned or managed repositories unless individually excluded. GitHub repositories covered by linked GitHub App installations are eligible for push-event wake hints; non-GitHub or unresolved repositories are foreground-only. The minimal relay sends best-effort silent APNs wake hints, and the app also reconciles on foreground activation. On an attempted run the app checks the verified StoreKit current entitlement, per-repository network/power policy, configured/current branch, worktree cleanliness, and commit ancestry. It only performs a clean fast-forward pull. It never automatically stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Ambiguous conditions show an attention state. Device registration is constant-size and the relay performs installation-wide routing against current live enrollments. Repository contents and Git credentials travel only between the device and Git provider; the relay receives only numeric IDs, branch, and opaque routing/delivery metadata—not names, URLs, contents, paths, or credentials. iOS may delay or suppress APNs delivery, especially after force-quit; Assist is not truly real time.
 
 ## Release blockers checklist
 

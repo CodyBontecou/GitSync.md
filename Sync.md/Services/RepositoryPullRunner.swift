@@ -2,6 +2,7 @@ import Foundation
 
 enum RepositoryPullResult: Sendable, Equatable {
     case updated(branch: String, commitSHA: String)
+    case updatedWithAttention(branch: String, commitSHA: String, attention: PullPostUpdateAttention)
     case upToDate(branch: String, commitSHA: String)
     case blockedByLocalChanges(branch: String)
     case diverged(branch: String, aheadBy: Int, behindBy: Int)
@@ -38,6 +39,13 @@ struct RepositoryPullRunner: Sendable {
                 guard let result = execution.pullResult else {
                     return .failed(message: String(localized: "Pull did not return a fast-forward result."))
                 }
+                if let attention = result.attention {
+                    return .updatedWithAttention(
+                        branch: plan.branch,
+                        commitSHA: result.newCommitSHA,
+                        attention: attention
+                    )
+                }
                 return result.updated
                     ? .updated(branch: plan.branch, commitSHA: result.newCommitSHA)
                     : .upToDate(branch: plan.branch, commitSHA: result.newCommitSHA)
@@ -54,9 +62,9 @@ struct RepositoryPullRunner: Sendable {
             return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: error)
         } catch let error as LocalGitError {
             switch error {
-            case .authenticationFailed(let message):
-                return .authenticationOrTrustRequired(message: message, trustError: nil)
-            case .pullBlockedByLocalChanges:
+            case .authenticationFailed:
+                return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: nil)
+            case .pullBlockedByLocalChanges, .lfsHydrationBlockedByLocalChanges:
                 return .blockedByLocalChanges(branch: expectedBranch ?? "HEAD")
             case .pullDiverged:
                 // A second ancestry check immediately before checkout protects

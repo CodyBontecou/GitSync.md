@@ -111,9 +111,9 @@ enum PremiumStorefrontError: LocalizedError {
     case productNotFound, unverifiedTransaction, missingAccountToken
     var errorDescription: String? {
         switch self {
-        case .productNotFound: "Subscription product is unavailable."
-        case .unverifiedTransaction: "The App Store transaction could not be verified."
-        case .missingAccountToken: "GitSync Assist could not bind this purchase to the current installation."
+        case .productNotFound: String(localized: "Subscription product is unavailable.")
+        case .unverifiedTransaction: String(localized: "The App Store transaction could not be verified.")
+        case .missingAccountToken: String(localized: "GitSync Assist could not bind this purchase to the current installation.")
         }
     }
 }
@@ -163,7 +163,7 @@ final class PremiumEntitlementStore {
         }
         await refresh()
         do { products = try await storefront.products(identifiers: identifiers.all) }
-        catch { if !state.isActive { setState(.error(error.localizedDescription)) } }
+        catch { if !state.isActive { setState(.error(storefrontErrorDescription(error))) } }
     }
 
     func refresh() async {
@@ -193,12 +193,19 @@ final class PremiumEntitlementStore {
             case .pending: setState(.pending)
             case .cancelled: await refresh()
             }
-        } catch { setState(.error(error.localizedDescription)) }
+        } catch { setState(.error(storefrontErrorDescription(error))) }
     }
 
     func restore() async {
         do { try await storefront.sync(); await refresh() }
-        catch { setState(.error(error.localizedDescription)) }
+        catch { setState(.error(storefrontErrorDescription(error))) }
+    }
+
+    private func storefrontErrorDescription(_ error: Error) -> String {
+        if let error = error as? PremiumStorefrontError {
+            return error.localizedDescription
+        }
+        return String(localized: "The App Store request failed: \(error.localizedDescription)")
     }
 
     /// Retry/UI continuity only. This value is never consulted by `start`,

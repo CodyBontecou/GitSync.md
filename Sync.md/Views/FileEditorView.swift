@@ -19,7 +19,10 @@ struct FileEditorView: View {
     @State private var liveURL: URL
     @State private var content: String = ""
     @State private var originalContent: String = ""
+    @State private var loadedBytes = Data()
     @State private var isBinary = false
+    @State private var isSaving = false
+    @State private var operationError: String?
     @State private var showDeleteConfirm = false
     @State private var showRenameModal = false
     @State private var renameText: String = ""
@@ -95,7 +98,7 @@ struct FileEditorView: View {
                         Button("Save") { performSave() }
                             .font(.system(size: 12, weight: .bold, design: .monospaced))
                             .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
-                            .disabled(!isDirty)
+                            .disabled(!isDirty || isSaving)
                     }
                     Button {
                         renameText = fileName
@@ -116,6 +119,17 @@ struct FileEditorView: View {
             }
         }
         .onAppear { loadContent() }
+        .alert(
+            String(localized: "Unable to Update File"),
+            isPresented: Binding(
+                get: { operationError != nil },
+                set: { if !$0 { operationError = nil } }
+            )
+        ) {
+            Button(String(localized: "OK"), role: .cancel) { operationError = nil }
+        } message: {
+            Text(operationError ?? "")
+        }
     }
 
     // MARK: - Binary Fallback
@@ -139,8 +153,12 @@ struct FileEditorView: View {
     // MARK: - Operations
 
     private func loadContent() {
-        guard let data = try? Data(contentsOf: liveURL),
-              let text = String(data: data, encoding: .utf8) else {
+        guard let data = try? Data(contentsOf: liveURL) else {
+            isBinary = true
+            return
+        }
+        loadedBytes = data
+        guard let text = String(data: data, encoding: .utf8) else {
             isBinary = true
             return
         }
@@ -150,22 +168,56 @@ struct FileEditorView: View {
 
     private func performSave() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        guard let data = content.data(using: .utf8) else { return }
-        try? data.write(to: liveURL, options: .atomic)
-        originalContent = content
-        state.detectChanges(repoID: repoID)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-            showSaveToast = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+        guard !isSaving, let replacement = content.data(using: .utf8) else { return }
+        let expected = loadedBytes
+        let savedContent = content
+        let destination = liveURL
+        let repositoryURL = state.vaultURL(for: repoID)
+        isSaving = true
+
+        Task {
+            do {
+                try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {
+                    try CoordinatedFileMutation.replace(
+                        itemAt: destination,
+                        expected: .bytes(expected),
+                        with: replacement,
+                        temporaryPrefix: ".syncmd-editor-"
+                    )
+                }
+                // `content` may have changed while the lease was queued. Advance
+                // the saved baseline only to the snapshot actually written so
+                // those newer edits remain dirty and visible.
+                loadedBytes = replacement
+                originalContent = savedContent
+                state.detectChanges(repoID: repoID)
+                isSaving = false
+                showSaveToast = true
+                try? await Task.sleep(for: .seconds(1.8))
                 showSaveToast = false
+            } catch {
+                operationError = error.localizedDescription
+                isSaving = false
             }
         }
     }
 
     private func performDelete() {
-        try? FileManager.default.removeItem(at: liveURL)
-        state.detectChanges(repoID: repoID)
-        dismiss()
+        showDeleteConfirm = false
+        let expected = loadedBytes
+        let destination = liveURL
+        let repositoryURL = state.vaultURL(for: repoID)
+        Task {
+            do {
+                try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {
+                    try CoordinatedFileMutation.remove(itemAt: destination, expected: .bytes(expected))
+                }
+                state.detectChanges(repoID: repoID)
+                dismiss()
+            } catch {
+                operationError = error.localizedDescription
+            }
+        }
     }
 
     private func performRename() {

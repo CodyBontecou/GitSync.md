@@ -27,9 +27,9 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **Private repo support** — Works with both public and private repositories.
 - **Localization** — Full UI in 26 languages.
 - **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
-- **GitSync Assist (optional subscription)** — Best-effort GitHub event and foreground wake hints for enrolled repositories, followed only by a clean pull fast-forward. Local changes, divergence, auth/trust prompts, and branch mismatches stop and surface attention. Assist never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes.
+- **GitSync Assist (optional subscription)** — One explicit installation-level opt-in automatically covers all current and future cloned or managed repositories, with per-repository exclusions and network/power policies. GitHub repositories covered by linked GitHub App installations are eligible for best-effort event wakes; non-GitHub or unresolved repositories are foreground-only. Assist performs only clean fast-forward pulls on each configured branch. Local changes, divergence, auth/trust prompts, and branch mismatches stop and surface attention; it never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes.
 
-All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require GitSync Assist. APNs background delivery is controlled by iOS and is not guaranteed or truly real time.
+All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require GitSync Assist. APNs wake delivery is best effort, controlled by iOS, and not guaranteed or truly real time. Device registration is constant-size. The app's Assist API requests never send repository names, URLs, contents, local paths, or Git credentials. During GitHub App linking, the browser sends a transient OAuth authorization code to the relay; the relay exchanges it for a single-purpose transient GitHub App user token solely to verify that the authenticated user owns a personal installation or is an active organization owner for an organization installation. Neither credential is persisted or application-logged, and token revocation is best effort after proof. The relay retains only the numeric authorizing user ID for administrator revalidation on link status and new enrollment; demotion blocks new enrollment but does not proactively remove already-live routing. Signed GitHub webhook payloads pass transiently through the relay and may contain repository names/URLs, commit messages, paths, and author metadata; the relay extracts and persists only numeric repository ID, branch, and opaque delivery/outbox identifiers, and does not log or persist those descriptive fields. APNs payloads are opaque.
 
 ## How It Works
 
@@ -53,7 +53,7 @@ GitSync.md/
 │   │   ├── RepoConfig.swift    # Repository configuration model
 │   │   ├── GitState.swift      # Git state persistence
 │   │   ├── Git*Models.swift    # Branch/conflict/diff/history/merge/revert/stash/status/tag models
-│   │   └── PremiumModels.swift # Assist entitlement + per-repo Assist settings
+│   │   └── PremiumModels.swift # Assist entitlement + global/per-repo policy models
 │   ├── Views/                  # 21 SwiftUI screens (repo list, vault, git sheet,
 │   │                           #  conflict editor, diff, file browser/editor, …)
 │   │   └── BrutalDesignSystem.swift # Design system (colors, typography, components)
@@ -70,7 +70,7 @@ GitSync.md/
 │       ├── OAuthService.swift       # GitHub OAuth via ASWebAuthenticationSession
 │       ├── KeychainService.swift    # Secure credential storage
 │       ├── CallbackURLHandler.swift # x-callback-url handler (Obsidian integration)
-│       ├── PremiumRuntime.swift     # Assist runtime (APNs, enrollment, relay client)
+│       ├── PremiumRuntime.swift     # Assist runtime (global mode, reconciliation, APNs, relay)
 │       ├── BackgroundSyncCoordinator.swift # Assist pull policies (network/power)
 │       ├── RepositoryOperationCoordinator.swift # Per-repo operation serialization
 │       ├── SyntaxHighlighter.swift  # Editor syntax highlighting
@@ -191,9 +191,9 @@ Using a **Personal Access Token** works without any server setup — just paste 
 
 ### GitSync Assist relay (optional)
 
-The relay source, threat boundary, D1 schema, local commands, provisioning checklist, retention/deletion procedures, monitoring, kill switch, and rollback steps are documented in [`worker/premium-relay/README.md`](worker/premium-relay/README.md). It uses Wrangler 4+, `wrangler.jsonc`, generated `Env` types, D1, Queues, and the fail-closed verifier in [`worker/storekit-verifier`](worker/storekit-verifier) through `STOREKIT_VERIFIER`. No relay URL or secrets are committed, and this repository does not deploy or provision the service automatically.
+The relay source, threat boundary, D1 schema, local commands, provisioning checklist, retention/deletion procedures, monitoring, kill switch, and rollback steps are documented in [`worker/premium-relay/README.md`](worker/premium-relay/README.md). It uses Wrangler 4+, `wrangler.jsonc`, generated `Env` types, D1, Queues, and the fail-closed verifier in [`worker/storekit-verifier`](worker/storekit-verifier) through `STOREKIT_VERIFIER`. Release configuration commits the relay URL and selected non-secret Cloudflare/GitHub/APNs resource identifiers, while the GitHub OAuth client ID/secret remain out-of-repository bindings and `FeatureFlags.gitSyncAssistEnabled` remains `false`; committed values do not by themselves prove a current deployment or working live credentials. Secrets are not committed, and this repository does not deploy or provision the service automatically.
 
-The relay stores minimal routing/operations metadata only. Repository contents, local paths, Git credentials, and APNs signing keys are not stored in D1. Git data and credentials continue to travel directly from the device to the Git provider.
+The relay stores minimal routing/operations metadata only. Repository names/URLs, webhook commit messages/paths/authors, repository contents, local paths, Git credentials, OAuth authorization codes, transient GitHub user tokens, and APNs signing keys are not stored in D1 or application logs. Git data and credentials continue to travel directly from the device to the Git provider.
 
 ## Contributing
 

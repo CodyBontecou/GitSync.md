@@ -1,5 +1,136 @@
 import Foundation
 
+/// Expected destination contents for a coordinated replacement. Large LFS
+/// objects use a streaming digest; editor snapshots use exact retained bytes.
+enum CoordinatedFileExpectation: Sendable, Equatable {
+    case bytes(Data)
+    case sha256(oid: String, size: Int64)
+}
+
+enum CoordinatedFileMutationError: LocalizedError, Sendable, Equatable {
+    case destinationChanged(String)
+    case destinationMissing(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .destinationChanged:
+            return String(localized: "The file changed outside GitSync.md. Your edits were not saved.")
+        case .destinationMissing:
+            return String(localized: "The file was removed outside GitSync.md. Your edits were not saved.")
+        }
+    }
+}
+
+/// Shared coordinated compare-and-atomic mutation primitive. Replacement bytes
+/// are staged beside the destination, the expected contents are rechecked only
+/// after file coordination has been acquired, and one atomic rename performs
+/// the mutation. Temporary files are removed on every failure path.
+enum CoordinatedFileMutation {
+    static func replace(
+        itemAt destinationURL: URL,
+        expected: CoordinatedFileExpectation,
+        with replacementData: Data,
+        temporaryPrefix: String = ".syncmd-replace-"
+    ) throws {
+        try withStagedItem(
+            beside: destinationURL,
+            temporaryPrefix: temporaryPrefix,
+            stage: { try replacementData.write(to: $0, options: .withoutOverwriting) }
+        ) { stagedURL in
+            try coordinate(itemAt: destinationURL, options: .forReplacing) { coordinatedURL in
+                try verify(coordinatedURL, matches: expected)
+                _ = try FileManager.default.replaceItemAt(
+                    coordinatedURL,
+                    withItemAt: stagedURL,
+                    backupItemName: nil,
+                    options: []
+                )
+            }
+        }
+    }
+
+    static func replace(
+        itemAt destinationURL: URL,
+        expected: CoordinatedFileExpectation,
+        withItemAt replacementURL: URL,
+        temporaryPrefix: String = ".syncmd-replace-"
+    ) throws {
+        try withStagedItem(
+            beside: destinationURL,
+            temporaryPrefix: temporaryPrefix,
+            stage: { try FileManager.default.copyItem(at: replacementURL, to: $0) }
+        ) { stagedURL in
+            try coordinate(itemAt: destinationURL, options: .forReplacing) { coordinatedURL in
+                try verify(coordinatedURL, matches: expected)
+                _ = try FileManager.default.replaceItemAt(
+                    coordinatedURL,
+                    withItemAt: stagedURL,
+                    backupItemName: nil,
+                    options: []
+                )
+            }
+        }
+    }
+
+    static func remove(itemAt destinationURL: URL, expected: CoordinatedFileExpectation) throws {
+        try coordinate(itemAt: destinationURL, options: .forDeleting) { coordinatedURL in
+            try verify(coordinatedURL, matches: expected)
+            try FileManager.default.removeItem(at: coordinatedURL)
+        }
+    }
+
+    static func verify(_ fileURL: URL, matches expected: CoordinatedFileExpectation) throws {
+        guard FileManager.default.fileExists(atPath: fileURL.path) else {
+            throw CoordinatedFileMutationError.destinationMissing(fileURL.path)
+        }
+        let matches: Bool
+        switch expected {
+        case .bytes(let bytes):
+            matches = (try? Data(contentsOf: fileURL)) == bytes
+        case .sha256(let oid, let size):
+            guard let actual = try? GitLFSPointer.sha256HexAndSize(forFileAt: fileURL) else {
+                throw CoordinatedFileMutationError.destinationChanged(fileURL.path)
+            }
+            matches = actual.oid == oid.lowercased() && actual.size == size
+        }
+        guard matches else {
+            throw CoordinatedFileMutationError.destinationChanged(fileURL.path)
+        }
+    }
+
+    private static func withStagedItem(
+        beside destinationURL: URL,
+        temporaryPrefix: String,
+        stage: (URL) throws -> Void,
+        operation: (URL) throws -> Void
+    ) throws {
+        let stagedURL = destinationURL.deletingLastPathComponent()
+            .appendingPathComponent("\(temporaryPrefix)\(UUID().uuidString).tmp")
+        defer { try? FileManager.default.removeItem(at: stagedURL) }
+        try stage(stagedURL)
+        try operation(stagedURL)
+    }
+
+    private static func coordinate(
+        itemAt destinationURL: URL,
+        options: NSFileCoordinator.WritingOptions,
+        operation: (URL) throws -> Void
+    ) throws {
+        var coordinationError: NSError?
+        var operationError: Error?
+        NSFileCoordinator(filePresenter: nil).coordinate(
+            writingItemAt: destinationURL,
+            options: options,
+            error: &coordinationError
+        ) { coordinatedURL in
+            do { try operation(coordinatedURL) }
+            catch { operationError = error }
+        }
+        if let operationError { throw operationError }
+        if let coordinationError { throw coordinationError }
+    }
+}
+
 /// Process-wide, cancellation-aware serialization for repository working copies.
 /// Every call acquires the path lease. Composite workflows must use the unwrapped
 /// repository supplied by `SerializedGitRepository.withLease`.

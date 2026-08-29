@@ -20,16 +20,37 @@ struct AppSettingsView: View {
                     VStack(spacing: 12) {
                         // Account
                         settingsSection(title: String(localized: "Account")) {
-                            VStack(spacing: 0) {
-                                if !state.gitHubDisplayName.isEmpty {
-                                    dataRow(label: String(localized: "Name"), value: state.gitHubDisplayName)
-                                    BDivider().padding(.horizontal, 16)
+                            if state.isSignedIn {
+                                VStack(spacing: 0) {
+                                    if !state.gitHubDisplayName.isEmpty {
+                                        dataRow(label: String(localized: "Name"), value: state.gitHubDisplayName)
+                                        BDivider().padding(.horizontal, 16)
+                                    }
+                                    dataRow(label: String(localized: "Username"), value: "@\(state.gitHubUsername)")
+                                    if !state.defaultAuthorEmail.isEmpty {
+                                        BDivider().padding(.horizontal, 16)
+                                        dataRow(label: String(localized: "Email"), value: state.defaultAuthorEmail)
+                                    }
                                 }
-                                dataRow(label: String(localized: "Username"), value: "@\(state.gitHubUsername)")
-                                if !state.defaultAuthorEmail.isEmpty {
-                                    BDivider().padding(.horizontal, 16)
-                                    dataRow(label: String(localized: "Email"), value: state.defaultAuthorEmail)
+                            } else {
+                                Button {
+                                    Task { await state.signInWithGitHub() }
+                                } label: {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "person.crop.circle.badge.plus")
+                                            .accessibilityHidden(true)
+                                        Text("Sign in with GitHub")
+                                            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .accessibilityHidden(true)
+                                    }
+                                    .padding(.horizontal, 16)
                                 }
+                                .frame(maxWidth: .infinity, minHeight: 44)
+                                .contentShape(Rectangle())
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(String(localized: "Sign in with GitHub"))
                             }
                         }
 
@@ -120,11 +141,11 @@ struct AppSettingsView: View {
                         // Hidden behind FeatureFlags.gitSyncAssistEnabled until the
                         // tier is ready to ship.
                         if FeatureFlags.gitSyncAssistEnabled {
-                            settingsSection(title: "GitSync Assist") {
+                            settingsSection(title: String(localized: "GitSync Assist")) {
                                 actionRow(
                                     icon: "⚡️",
-                                    title: "GitSync Assist",
-                                    subtitle: "Optional best-effort pull-only automation"
+                                    title: String(localized: "GitSync Assist"),
+                                    subtitle: String(localized: "Best-effort pull-only automation for all repositories")
                                 ) { showPremiumSettings = true }
                             }
                         }
@@ -210,7 +231,7 @@ struct AppSettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("APP SETTINGS")
+                    Text(String(localized: "App Settings").uppercased())
                         .font(.system(size: 12, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
@@ -278,6 +299,7 @@ struct AppSettingsView: View {
                 Text(icon)
                     .font(.system(size: 18))
                     .frame(width: 28)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
@@ -293,11 +315,14 @@ struct AppSettingsView: View {
                 Text("→")
                     .font(.system(size: 13, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
+                    .accessibilityHidden(true)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text(title))
+        .accessibilityHint(Text(subtitle))
     }
 }

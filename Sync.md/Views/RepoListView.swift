@@ -7,11 +7,15 @@ extension UUID: @retroactive Identifiable {
 
 struct RepoListView: View {
     @Environment(AppState.self) private var state
+    @Environment(PremiumEntitlementStore.self) private var entitlement
+    @Environment(PremiumRuntime.self) private var premiumRuntime
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
     @State private var showAddRepo = false
     @State private var addRepoInitialURL: String = ""
     @State private var showSignOutConfirm = false
     @State private var showAppSettings = false
+    @State private var showAssistMilestoneUpsell = false
+    @State private var showAssistPremiumFromUpsell = false
     @State private var settingsRepoID: UUID? = nil
     @State private var pendingGhostRemovalIdentifier: String? = nil
     @State private var showGhostRemovalConfirm = false
@@ -27,6 +31,7 @@ struct RepoListView: View {
 
                 VStack(spacing: 0) {
                     DiscordPromoBanner()
+                    AssistUpsellBanner(onLearnMore: { showAssistPremiumFromUpsell = true })
 
                     if state.visibleRepos.isEmpty {
                         emptyState
@@ -146,20 +151,51 @@ struct RepoListView: View {
                         }
                         .menuStyle(.borderlessButton)
                     } else {
-                        Button {
-                            Task { await state.signInWithGitHub() }
-                        } label: {
-                            Text(String(localized: "Sign In").uppercased())
-                                .font(.system(size: 13, weight: .bold, design: .monospaced))
-                                .tracking(1)
+                        HStack(spacing: 0) {
+                            Button {
+                                Task { await state.signInWithGitHub() }
+                            } label: {
+                                Image(systemName: "person.crop.circle.badge.plus")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .frame(width: 44, height: 44)
+                                    .accessibilityHidden(true)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(String(localized: "Sign In"))
+
+                            Button {
+                                showAppSettings = true
+                            } label: {
+                                Image(systemName: "gearshape")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .frame(width: 44, height: 44)
+                                    .accessibilityHidden(true)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(String(localized: "App Settings"))
                         }
-                        .tint(Color.brutalAccent)
+                        .foregroundStyle(Color.brutalAccent)
                     }
                 }
             }
             .sheet(isPresented: $showAddRepo) { AddRepoView(initialURL: addRepoInitialURL) }
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
+            .sheet(isPresented: $showAssistMilestoneUpsell) {
+                AssistUpsellMilestoneSheet(
+                    onLearnMore: {
+                        showAssistMilestoneUpsell = false
+                        Task { @MainActor in
+                            try? await Task.sleep(for: .milliseconds(350))
+                            showAssistPremiumFromUpsell = true
+                        }
+                    },
+                    onDismiss: { showAssistMilestoneUpsell = false }
+                )
+            }
+            .sheet(isPresented: $showAssistPremiumFromUpsell) { PremiumSettingsView() }
+            .onAppear(perform: evaluateAssistMilestoneUpsell)
+            .onChange(of: state.assistManualPullSuccessCount) { _, _ in evaluateAssistMilestoneUpsell() }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
             .navigationDestination(for: FileBrowserDestination.self) { destination in
                 FileBrowserView(repoID: destination.repoID, relativePath: destination.relativePath)
@@ -425,7 +461,8 @@ struct RepoListView: View {
                             .tint(Color.brutalAccent)
                     }
 
-                    if FeatureFlags.gitSyncAssistEnabled, repo.assist.health.kind == .attention || repo.assist.health.kind == .failed {
+                    if FeatureFlags.gitSyncAssistEnabled,
+                       (repo.assist.health.kind == .attention || repo.assist.health.kind == .failed) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(Color.brutalWarning)
                             .accessibilityLabel("GitSync Assist needs attention")
@@ -676,5 +713,161 @@ struct RepoListView: View {
     private func handleAddRepoTapped() {
         addRepoInitialURL = ""
         showAddRepo = true
+    }
+
+    private func evaluateAssistMilestoneUpsell() {
+        guard !showAssistMilestoneUpsell,
+              AssistUpsellEligibility.shouldShowMilestone(
+                featureEnabled: FeatureFlags.gitSyncAssistEnabled,
+                subscriptionActive: entitlement.state.isActive,
+                assistEnabled: premiumRuntime.automaticallySyncAllRepositories,
+                milestoneShown: state.assistUpsellMilestoneShown,
+                successfulPullCount: state.assistManualPullSuccessCount
+              )
+        else { return }
+        // Consume permanently before presenting so dismissal or interruption
+        // can never resurface it.
+        state.markAssistUpsellMilestoneShown()
+        showAssistMilestoneUpsell = true
+    }
+}
+
+// MARK: - Assist Upsell Surfaces
+
+/// One-time, dismissible discovery banner for the optional GitSync Assist
+/// subscription. Shown only while the feature flag is on, the user manages at
+/// least one repository, and neither an active subscription nor enabled
+/// automation exists. Dismissal is permanent. Manual Git features are never
+/// affected.
+private struct AssistUpsellBanner: View {
+    @Environment(AppState.self) private var state
+    @Environment(PremiumEntitlementStore.self) private var entitlement
+    @Environment(PremiumRuntime.self) private var premiumRuntime
+    @AppStorage("assist.upsell.bannerDismissed.v1") private var dismissed: Bool = false
+    let onLearnMore: () -> Void
+
+    var body: some View {
+        let isVisible = AssistUpsellEligibility.shouldShowBanner(
+            featureEnabled: FeatureFlags.gitSyncAssistEnabled,
+            hasRepositories: !state.visibleRepos.isEmpty,
+            subscriptionActive: entitlement.state.isActive,
+            assistEnabled: premiumRuntime.automaticallySyncAllRepositories,
+            bannerDismissed: dismissed
+        )
+        if isVisible {
+            BCard(padding: 12, bg: .brutalSurface) {
+                HStack(spacing: 12) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "bolt.badge.clock.fill")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(Color.brutalText)
+                            .frame(width: 28)
+                            .accessibilityHidden(true)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Automatic sync is available")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(Color.brutalText)
+                            Text("GitSync Assist keeps your repositories current with safe, pull-only automation. Optional subscription.")
+                                .font(.system(size: 13, design: .monospaced))
+                                .foregroundStyle(Color.brutalTextMid)
+                        }
+                    }
+                    .accessibilityElement(children: .combine)
+
+                    Spacer(minLength: 8)
+
+                    Button {
+                        onLearnMore()
+                    } label: {
+                        Text("LEARN MORE")
+                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Color.brutalAccent)
+                            .tracking(1)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(Color.brutalAccent.opacity(0.10))
+                            .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Learn more about GitSync Assist"))
+
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            dismissed = true
+                        }
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(Color.brutalTextMid)
+                            .frame(width: 28, height: 28)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Dismiss GitSync Assist banner"))
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 8)
+            .padding(.bottom, 4)
+            .transition(.opacity)
+        }
+    }
+}
+
+/// One-time milestone sheet presented after the user's fifth successful
+/// manual pull. Consuming the milestone marks it shown permanently.
+private struct AssistUpsellMilestoneSheet: View {
+    let onLearnMore: () -> Void
+    let onDismiss: () -> Void
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "bolt.badge.clock.fill")
+                .font(.system(size: 36, weight: .semibold))
+                .foregroundStyle(Color.brutalText)
+                .padding(.top, 32)
+                .accessibilityHidden(true)
+
+            VStack(spacing: 10) {
+                Text("Pulling a lot?")
+                    .font(.system(size: 22, weight: .black))
+                    .foregroundStyle(Color.brutalText)
+                Text("GitSync Assist can keep every repository up to date automatically — clean, pull-only sync with GitHub event wakes. Optional subscription; all manual features stay included.")
+                    .font(.system(size: 14, design: .monospaced))
+                    .foregroundStyle(Color.brutalTextMid)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+
+            VStack(spacing: 10) {
+                Button {
+                    onLearnMore()
+                } label: {
+                    Text("LEARN MORE")
+                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .foregroundStyle(Color(.systemBackground))
+                        .tracking(1)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .background(Color.brutalAccent)
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    onDismiss()
+                } label: {
+                    Text("Not now")
+                        .font(.system(size: 14, design: .monospaced))
+                        .foregroundStyle(Color.brutalTextMid)
+                        .frame(minHeight: 44)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 24)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color.brutalBg.ignoresSafeArea())
+        .presentationDetents([.height(420)])
     }
 }

@@ -18,10 +18,10 @@ final class RepoPersistenceStore: @unchecked Sendable {
 
         var errorDescription: String? {
             switch self {
-            case .malformedFile(let error): return "Repository settings could not be read: \(error.localizedDescription)"
-            case .duplicateIdentifier(let id): return "Repository settings contain duplicate identifier \(id)."
-            case .staleUpdateAfterDeletion(let id): return "Repository \(id) was deleted by another operation; stale changes were not restored."
-            case .addConflictsWithExisting(let id): return "Repository \(id) already exists; it was not overwritten."
+            case .malformedFile(let error): return String(localized: "Repository settings could not be read: \(error.localizedDescription)")
+            case .duplicateIdentifier(let id): return String(localized: "Repository settings contain duplicate identifier \(id).")
+            case .staleUpdateAfterDeletion(let id): return String(localized: "Repository \(id) was deleted by another operation; stale changes were not restored.")
+            case .addConflictsWithExisting(let id): return String(localized: "Repository \(id) already exists; it was not overwritten.")
             }
         }
     }
@@ -126,12 +126,24 @@ final class RepoPersistenceStore: @unchecked Sendable {
         if original.assist.selectedBranch != modified.assist.selectedBranch { merged.assist.selectedBranch = modified.assist.selectedBranch }
         if original.assist.networkPolicy != modified.assist.networkPolicy { merged.assist.networkPolicy = modified.assist.networkPolicy }
         if original.assist.powerPolicy != modified.assist.powerPolicy { merged.assist.powerPolicy = modified.assist.powerPolicy }
+        if original.assist.excludedFromAutomaticSync != modified.assist.excludedFromAutomaticSync { merged.assist.excludedFromAutomaticSync = modified.assist.excludedFromAutomaticSync }
+        if original.assist.githubRepositoryID != modified.assist.githubRepositoryID { merged.assist.githubRepositoryID = modified.assist.githubRepositoryID }
+        if original.assist.githubRepositoryFullName != modified.assist.githubRepositoryFullName { merged.assist.githubRepositoryFullName = modified.assist.githubRepositoryFullName }
+        if original.assist.linkedGitHubInstallationID != modified.assist.linkedGitHubInstallationID { merged.assist.linkedGitHubInstallationID = modified.assist.linkedGitHubInstallationID }
+        if original.assist.enrolledBranch != modified.assist.enrolledBranch { merged.assist.enrolledBranch = modified.assist.enrolledBranch }
+        if original.assist.enrollmentStatus != modified.assist.enrollmentStatus { merged.assist.enrollmentStatus = modified.assist.enrollmentStatus }
+        if original.assist.enrollmentMessage != modified.assist.enrollmentMessage { merged.assist.enrollmentMessage = modified.assist.enrollmentMessage }
+        if original.assist.enrollmentLastAttemptDate != modified.assist.enrollmentLastAttemptDate { merged.assist.enrollmentLastAttemptDate = modified.assist.enrollmentLastAttemptDate }
         if original.assist.health.kind != modified.assist.health.kind { merged.assist.health.kind = modified.assist.health.kind }
         if original.assist.health.attention != modified.assist.health.attention { merged.assist.health.attention = modified.assist.health.attention }
         if original.assist.health.message != modified.assist.health.message { merged.assist.health.message = modified.assist.health.message }
         if original.assist.health.lastAttemptDate != modified.assist.health.lastAttemptDate { merged.assist.health.lastAttemptDate = modified.assist.health.lastAttemptDate }
         if original.assist.health.lastSuccessDate != modified.assist.health.lastSuccessDate { merged.assist.health.lastSuccessDate = modified.assist.health.lastSuccessDate }
         if original.assist.health.commitSHA != modified.assist.health.commitSHA { merged.assist.health.commitSHA = modified.assist.health.commitSHA }
+        // Exclusion is a local safety policy. A stale writer completing an
+        // enrollment must never resurrect relay automation after another
+        // writer excluded the repository.
+        merged.assist.normalizeAutomaticExclusion()
         return merged
     }
 }

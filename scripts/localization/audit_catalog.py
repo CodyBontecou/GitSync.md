@@ -20,6 +20,14 @@ LEAKED_TOKEN_RE = re.compile(r"(?:__GSPH\d+__|ZXQITEM\d+QXZ)")
 STRICT_PROTECTED_TERMS = [
     term for term in PROTECTED_TERMS if term not in {"iPhone", "iPad", "iOS"}
 ]
+IGNORED_STRINGSDATA_FILES = {
+    "GeneratedAssetSymbols.stringsdata",
+    "GeneratedStringSymbols_Localizable.stringsdata",
+}
+DEFAULT_STRINGSDATA_ROOT = (
+    "/tmp/gitsync-localization-derived/Build/Intermediates.noindex/"
+    "Sync.md.build/Debug-iphonesimulator/Sync.md.build/Objects-normal/arm64"
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -27,6 +35,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--catalog", default="Sync.md/Localizable.xcstrings")
     parser.add_argument("--allowlist", default="scripts/localization/intentional-equivalents.json")
     parser.add_argument("--output", default="localization/reports/catalog-audit.json")
+    parser.add_argument("--stringsdata-root", default=DEFAULT_STRINGSDATA_ROOT)
     return parser.parse_args()
 
 
@@ -58,6 +67,8 @@ def main() -> None:
             "unexpectedLocales": [],
             "identicalWithoutAllowlist": [],
             "allowlistMismatch": [],
+            "extractedMissingFromCatalog": [],
+            "activeNotExtracted": [],
         },
         "review": {"allowedIdentical": [], "localizedTechnicalEquivalents": []},
     }
@@ -124,6 +135,39 @@ def main() -> None:
                     review["localizedTechnicalEquivalents"].append(item)
                 elif should_translate:
                     failures["identicalWithoutAllowlist"].append(item)
+
+    stringsdata_root = Path(args.stringsdata_root)
+    stringsdata_paths = sorted(stringsdata_root.glob("*.stringsdata"))
+    if stringsdata_paths:
+        extracted_keys: set[str] = set()
+        source_files: set[str] = set()
+        for path in stringsdata_paths:
+            if path.name in IGNORED_STRINGSDATA_FILES:
+                continue
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            source_files.add(payload.get("source", path.name))
+            extracted_keys.update(
+                record["key"]
+                for record in payload.get("tables", {}).get("Localizable", [])
+            )
+        active_catalog_keys = {
+            key for key, entry in catalog["strings"].items() if is_active(entry)
+        }
+        failures["extractedMissingFromCatalog"].extend(sorted(extracted_keys - active_catalog_keys))
+        failures["activeNotExtracted"].extend(sorted(active_catalog_keys - extracted_keys))
+        report["compilerExtractionCoverage"] = {
+            "status": "checked",
+            "root": str(stringsdata_root),
+            "stringsdataFiles": len(stringsdata_paths),
+            "sourceFiles": len(source_files),
+            "extractedKeys": len(extracted_keys),
+        }
+    else:
+        report["compilerExtractionCoverage"] = {
+            "status": "notRun",
+            "root": str(stringsdata_root),
+            "reason": "no .stringsdata files found; pass --stringsdata-root from a current build",
+        }
 
     for key in sorted(allowed_identical - catalog_keys):
         failures["allowlistMismatch"].append({"key": key, "reason": "not in catalog"})

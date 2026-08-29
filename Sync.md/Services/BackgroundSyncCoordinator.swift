@@ -21,6 +21,12 @@ final class SystemBackgroundSyncConditions: BackgroundSyncConditionsProviding, @
 }
 private extension NSLock { func withLock<T>(_ operation: () -> T) -> T { lock(); defer { unlock() }; return operation() } }
 
+enum AssistGitHubIdentityResolution: Sendable, Equatable {
+    case resolved(GitHubRepositoryIdentity)
+    case definitiveNoAccess
+    case transientFailure(String)
+}
+
 @MainActor
 protocol AssistRepositoryProviding: AnyObject {
     func assistRepositories() -> [RepoConfig]
@@ -29,7 +35,10 @@ protocol AssistRepositoryProviding: AnyObject {
     func assistCredentials(for repo: RepoConfig) -> String
     func recordAssist(result: RepositoryPullResult?, health: RepoAssistHealth, repoID: UUID)
     func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings)
+    func assistCanonicalGitHubFullName(repoID: UUID) -> String?
+    func resolveAssistGitHubIdentity(repoID: UUID) async -> AssistGitHubIdentityResolution
     func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?)
+    func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?)
 }
 
 @MainActor
@@ -41,12 +50,61 @@ extension AppState: AssistRepositoryProviding {
     func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings) {
         updateRepo(id: repoID) { $0.assist = settings }
     }
+    func assistCanonicalGitHubFullName(repoID: UUID) -> String? {
+        guard let repo = repo(id: repoID) else { return nil }
+        let origin = repo.isCloned ? Self.readGitRemoteURL(at: vaultURL(for: repoID)) : nil
+        return GitRemoteURL.parse(origin ?? repo.repoURL)?.canonicalGitHubFullName
+    }
+    func resolveAssistGitHubIdentity(repoID: UUID) async -> AssistGitHubIdentityResolution {
+        guard let repo = repo(id: repoID), let fullName = assistCanonicalGitHubFullName(repoID: repoID) else {
+            return .definitiveNoAccess
+        }
+        if let cached = gitHubRepos.first(where: { $0.fullName.caseInsensitiveCompare(fullName) == .orderedSame }) {
+            return .resolved(GitHubRepositoryIdentity(repositoryID: cached.id, fullName: cached.fullName))
+        }
+        let parts = fullName.split(separator: "/", omittingEmptySubsequences: false)
+        guard parts.count == 2 else { return .definitiveNoAccess }
+        var tokens: [String?] = []
+        if let token = gitHubToken(for: repo.gitHubAccountLogin), !token.isEmpty { tokens.append(token) }
+        if let token = gitHubToken(for: activeGitHubAccountLogin), !token.isEmpty,
+           !tokens.contains(where: { $0 == token }) { tokens.append(token) }
+        for account in gitHubAccounts {
+            if let token = gitHubToken(for: account.login), !token.isEmpty,
+               !tokens.contains(where: { $0 == token }) { tokens.append(token) }
+        }
+        if !pat.isEmpty, !tokens.contains(where: { $0 == pat }) { tokens.append(pat) }
+        tokens.append(nil) // Public-repository access is a final candidate.
+
+        var transientMessage: String?
+        for token in tokens {
+            guard !Task.isCancelled else { return .transientFailure(String(localized: "Cancelled")) }
+            do {
+                let identity = try await GitHubService.fetchRepository(
+                    owner: String(parts[0]), repo: String(parts[1]), token: token
+                )
+                guard identity.fullName.caseInsensitiveCompare(fullName) == .orderedSame else {
+                    return .definitiveNoAccess
+                }
+                return .resolved(identity)
+            } catch GitHubError.notFound, GitHubError.forbidden, GitHubError.conflict {
+                continue
+            } catch {
+                transientMessage = error.localizedDescription
+            }
+        }
+        if let transientMessage { return .transientFailure(transientMessage) }
+        return .definitiveNoAccess
+    }
     func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) { assistConfigurationChangeHandler = handler }
+    func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) { assistInventoryChangeHandler = handler }
     func recordAssist(result: RepositoryPullResult?, health: RepoAssistHealth, repoID: UUID) {
         guard let index = repoIndex(id: repoID) else { return }
         switch result {
         case .updated(_, let sha), .upToDate(_, let sha):
             repos[index].gitState.commitSHA = sha; repos[index].gitState.lastSyncDate = health.lastSuccessDate ?? Date()
+            commitHistoryByRepo[repoID] = []; commitHistoryHasMoreByRepo[repoID] = true; commitDetailByRepo[repoID] = [:]
+        case .updatedWithAttention(_, let sha, _):
+            repos[index].gitState.commitSHA = sha
             commitHistoryByRepo[repoID] = []; commitHistoryHasMoreByRepo[repoID] = true; commitDetailByRepo[repoID] = [:]
         default: break
         }
@@ -65,6 +123,7 @@ final class BackgroundSyncCoordinator {
     private let conditionsProvider: any BackgroundSyncConditionsProviding
     private let now: @Sendable () -> Date
     private var inFlight: [UUID: Flight] = [:]
+    private var foregroundFlightGenerations: [UUID: UUID] = [:]
     private var seenHints: Set<String> = []; private var hintOrder: [String] = []; private let hintLimit = 256
 
     init(entitlementIsActive: @escaping @MainActor () -> Bool, repositoryProvider: any AssistRepositoryProviding,
@@ -74,71 +133,179 @@ final class BackgroundSyncCoordinator {
     }
 
     func handlePush(_ userInfo: [AnyHashable: Any]) async -> BackgroundSyncDisposition {
-        guard let push = try? PremiumSilentPush.parse(userInfo), entitlementIsActive(), let provider = repositoryProvider,
-              let repo = provider.assistRepositories().first(where: { $0.assist.enabled && $0.assist.channel == push.channel }),
-              remember(channel: push.channel, hint: push.hintID) else { return .ignored }
-        return await reconcile(repoID: repo.id)
+        guard !Task.isCancelled, let push = try? PremiumSilentPush.parse(userInfo), entitlementIsActive(),
+              let provider = repositoryProvider else { return .ignored }
+        let ids = provider.assistRepositories()
+            .filter { $0.assist.enabled && $0.assist.channel == push.channel }
+            .map(\.id)
+        guard !ids.isEmpty, remember(channel: push.channel, hint: push.hintID) else { return .ignored }
+        let results = await reconcileMany(ids, limit: 3)
+        if let updated = results.values.first(where: { if case .completed(.updated) = $0 { true } else { false } }) { return updated }
+        if let failed = results.values.first(where: { if case .completed(.failed) = $0 { true } else { false } }) { return failed }
+        return results.values.first ?? .ignored
     }
 
     func cancelPush(_ userInfo: [AnyHashable: Any]) {
-        guard let push = try? PremiumSilentPush.parse(userInfo), let provider = repositoryProvider,
-              let repo = provider.assistRepositories().first(where: { $0.assist.channel == push.channel }) else { return }
-        cancel(repoID: repo.id)
+        guard let push = try? PremiumSilentPush.parse(userInfo), let provider = repositoryProvider else { return }
+        provider.assistRepositories()
+            .filter { $0.assist.channel == push.channel }
+            .forEach { cancel(repoID: $0.id) }
     }
 
     func reconcileForeground() async -> [UUID: BackgroundSyncDisposition] {
         guard entitlementIsActive(), let provider = repositoryProvider else { return [:] }
+        return await reconcileMany(
+            provider.assistRepositories().filter(\.assist.enabled).map(\.id),
+            limit: 3,
+            foreground: true
+        )
+    }
+
+    private func reconcileMany(
+        _ ids: [UUID],
+        limit: Int,
+        foreground: Bool = false
+    ) async -> [UUID: BackgroundSyncDisposition] {
+        guard !Task.isCancelled else { return [:] }
         var results: [UUID: BackgroundSyncDisposition] = [:]
-        for repo in provider.assistRepositories() where repo.assist.enabled { results[repo.id] = await reconcile(repoID: repo.id) }
+        for start in stride(from: 0, to: ids.count, by: max(1, limit)) {
+            guard !Task.isCancelled else { break }
+            let batch = Array(ids[start..<min(ids.count, start + max(1, limit))])
+            await withTaskGroup(of: (UUID, BackgroundSyncDisposition).self) { group in
+                for id in batch {
+                    guard !Task.isCancelled else { break }
+                    group.addTask { @MainActor [weak self] in
+                        guard !Task.isCancelled, let self else { return (id, .ignored) }
+                        return (id, await self.reconcile(repoID: id, foreground: foreground))
+                    }
+                }
+                for await (id, result) in group { results[id] = result }
+            }
+        }
         return results
     }
 
     func reconcile(repoID: UUID) async -> BackgroundSyncDisposition {
-        guard entitlementIsActive(), let provider = repositoryProvider,
+        await reconcile(repoID: repoID, foreground: false)
+    }
+
+    private func reconcile(repoID: UUID, foreground: Bool) async -> BackgroundSyncDisposition {
+        guard !Task.isCancelled, entitlementIsActive(), let provider = repositoryProvider,
               provider.assistRepository(id: repoID)?.assist.enabled == true else { return .ignored }
         if let existing = inFlight[repoID] { return await existing.task.value }
+        guard !Task.isCancelled, entitlementIsActive(),
+              provider.assistRepository(id: repoID)?.assist.enabled == true else { return .ignored }
         let generation = UUID(); let conditions = conditionsProvider
         let task = Task<BackgroundSyncDisposition, Never> { [weak self] in
             guard let self else { return .ignored }
             return await self.execute(repoID: repoID, conditionsProvider: conditions)
         }
         inFlight[repoID] = Flight(generation: generation, task: task)
+        if foreground { foregroundFlightGenerations[repoID] = generation }
         let result = await task.value
         if inFlight[repoID]?.generation == generation { inFlight.removeValue(forKey: repoID) }
+        if foregroundFlightGenerations[repoID] == generation {
+            foregroundFlightGenerations.removeValue(forKey: repoID)
+        }
         return result
     }
 
-    func cancel(repoID: UUID) { inFlight.removeValue(forKey: repoID)?.task.cancel() }
-    func cancelAll() { let flights = inFlight.values; inFlight.removeAll(); flights.forEach { $0.task.cancel() } }
+    func cancel(repoID: UUID) {
+        foregroundFlightGenerations.removeValue(forKey: repoID)
+        inFlight.removeValue(forKey: repoID)?.task.cancel()
+    }
+
+    func cancelForegroundReconciliation() {
+        let foreground = foregroundFlightGenerations
+        foregroundFlightGenerations.removeAll()
+        for (repoID, generation) in foreground where inFlight[repoID]?.generation == generation {
+            inFlight.removeValue(forKey: repoID)?.task.cancel()
+        }
+    }
+
+    func cancelAll() {
+        let flights = inFlight.values
+        inFlight.removeAll()
+        foregroundFlightGenerations.removeAll()
+        flights.forEach { $0.task.cancel() }
+    }
 
     private func execute(repoID: UUID, conditionsProvider: any BackgroundSyncConditionsProviding) async -> BackgroundSyncDisposition {
-        guard !Task.isCancelled else { return .deferred("Cancelled") }
+        guard !Task.isCancelled else { return .deferred(String(localized: "Cancelled")) }
         let conditions = await conditionsProvider.current()
         guard !Task.isCancelled, entitlementIsActive(), let provider = repositoryProvider,
               let repo = provider.assistRepository(id: repoID), repo.assist.enabled else { return .ignored }
-        if repo.assist.networkPolicy == .wifiOnly && !conditions.isWiFi { return recordDeferred(repoID: repoID, message: "Waiting for Wi-Fi.") }
-        if repo.assist.powerPolicy == .externalPowerOnly && !conditions.isExternalPower { return recordDeferred(repoID: repoID, message: "Waiting for external power.") }
+        if repo.assist.networkPolicy == .wifiOnly && !conditions.isWiFi {
+            return recordDeferred(repoID: repoID, message: String(localized: "Waiting for Wi-Fi."))
+        }
+        if repo.assist.powerPolicy == .externalPowerOnly && !conditions.isExternalPower {
+            return recordDeferred(repoID: repoID, message: String(localized: "Waiting for external power."))
+        }
         let repository: any GitRepositoryProtocol
         do { repository = try provider.assistRepositoryInstance(id: repoID) }
         catch { return recordDeferred(repoID: repoID, message: error.localizedDescription) }
         let selected = repo.assist.selectedBranch?.trimmingCharacters(in: .whitespacesAndNewlines)
         let expectedBranch = (selected?.isEmpty == false ? selected : repo.branch)
         let result = await RepositoryPullRunner().run(repository: repository, credentials: provider.assistCredentials(for: repo), expectedBranch: expectedBranch)
-        guard !Task.isCancelled else { return .deferred("Cancelled") }
+        let cancelledAfterRun = Task.isCancelled
+        if cancelledAfterRun {
+            switch result {
+            case .updated, .updatedWithAttention:
+                // The Git transaction already committed. Persist its SHA and
+                // attention before returning a cancelled disposition.
+                break
+            default:
+                return .deferred(String(localized: "Cancelled"))
+            }
+        }
         let timestamp = now(); let prior = provider.assistRepository(id: repoID)?.assist.health ?? .never
         let health: RepoAssistHealth
         switch result {
         case .updated(_, let sha): health = .init(kind: .updated, lastAttemptDate: timestamp, lastSuccessDate: timestamp, commitSHA: sha)
+        case .updatedWithAttention(_, let sha, let attention):
+            health = postUpdateAttention(prior, attention: attention, commitSHA: sha, at: timestamp)
         case .upToDate(_, let sha): health = .init(kind: .upToDate, lastAttemptDate: timestamp, lastSuccessDate: timestamp, commitSHA: sha)
-        case .blockedByLocalChanges: health = preserved(prior, kind: .attention, attention: .localChanges, message: "Local changes need attention.", at: timestamp)
-        case .diverged: health = preserved(prior, kind: .attention, attention: .diverged, message: "Local and remote history diverged.", at: timestamp)
-        case .remoteBranchMissing: health = preserved(prior, kind: .attention, attention: .remoteBranchMissing, message: "Remote branch is missing.", at: timestamp)
+        case .blockedByLocalChanges:
+            health = preserved(prior, kind: .attention, attention: .localChanges,
+                               message: String(localized: "Local changes need attention."), at: timestamp)
+        case .diverged:
+            health = preserved(prior, kind: .attention, attention: .diverged,
+                               message: String(localized: "Local and remote history diverged."), at: timestamp)
+        case .remoteBranchMissing:
+            health = preserved(prior, kind: .attention, attention: .remoteBranchMissing,
+                               message: String(localized: "Remote branch is missing."), at: timestamp)
         case .authenticationOrTrustRequired(let message, _): health = preserved(prior, kind: .attention, attention: .authenticationOrTrust, message: message, at: timestamp)
-        case .wrongBranch: health = preserved(prior, kind: .attention, attention: .wrongBranch, message: "Selected branch is not currently checked out.", at: timestamp)
+        case .wrongBranch:
+            health = preserved(prior, kind: .attention, attention: .wrongBranch,
+                               message: String(localized: "Selected branch is not currently checked out."), at: timestamp)
         case .unavailable(let message): health = preserved(prior, kind: .attention, attention: .unavailable, message: message, at: timestamp)
         case .failed(let message): health = preserved(prior, kind: .failed, attention: .failed, message: message, at: timestamp)
         }
-        provider.recordAssist(result: result, health: health, repoID: repoID); return .completed(result)
+        provider.recordAssist(result: result, health: health, repoID: repoID)
+        return cancelledAfterRun ? .deferred(String(localized: "Cancelled")) : .completed(result)
+    }
+
+    private func postUpdateAttention(
+        _ old: RepoAssistHealth,
+        attention: PullPostUpdateAttention,
+        commitSHA: String,
+        at date: Date
+    ) -> RepoAssistHealth {
+        let kind: RepoAssistAttention
+        switch attention {
+        case .lfsHydrationBlockedByLocalChanges, .lfsHydrationFailed, .cancelledAfterUpdate:
+            kind = .lfsHydration
+        case .lfsAuthenticationOrTrustRequired:
+            kind = .authenticationOrTrust
+        }
+        return .init(
+            kind: .attention,
+            attention: kind,
+            message: attention.localizedDescription,
+            lastAttemptDate: date,
+            lastSuccessDate: old.lastSuccessDate,
+            commitSHA: commitSHA
+        )
     }
 
     private func preserved(_ old: RepoAssistHealth, kind: RepoAssistHealthKind, attention: RepoAssistAttention? = nil, message: String, at: Date) -> RepoAssistHealth {

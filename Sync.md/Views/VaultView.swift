@@ -64,9 +64,11 @@ struct VaultView: View {
                     Image(systemName: "gearshape")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
-                        .frame(width: 32, height: 32)
+                        .frame(width: 44, height: 44)
+                        .accessibilityHidden(true)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(String(localized: "Settings"))
             }
         }
         .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
@@ -305,12 +307,12 @@ struct VaultView: View {
 
     private func assistHealthLabel(_ health: RepoAssistHealth) -> String {
         switch health.kind {
-        case .never: "Waiting for first wake"
-        case .updated: "Fast-forwarded"
-        case .upToDate: "Up to date"
-        case .deferred: "Deferred by policy"
-        case .attention: "Attention required"
-        case .failed: "Last attempt failed"
+        case .never: String(localized: "Waiting for first wake")
+        case .updated: String(localized: "Fast-forwarded")
+        case .upToDate: String(localized: "Up to date")
+        case .deferred: String(localized: "Deferred by policy")
+        case .attention: String(localized: "Attention required")
+        case .failed: String(localized: "Last attempt failed")
         }
     }
 
@@ -429,6 +431,7 @@ struct VaultView: View {
         case .rebased:               return "arrow.triangle.2.circlepath.circle.fill"
         case .rebaseConflicts:       return "exclamationmark.triangle.fill"
         case .blockedByLocalChanges: return "exclamationmark.triangle.fill"
+        case .lfsHydrationBlocked:   return "externaldrive.badge.exclamationmark"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark.circle.fill"
         case .failed:                return "xmark.circle.fill"
@@ -442,6 +445,7 @@ struct VaultView: View {
         case .rebased:               return .brutalSuccess
         case .rebaseConflicts:       return .brutalWarning
         case .blockedByLocalChanges: return .brutalWarning
+        case .lfsHydrationBlocked:   return .brutalWarning
         case .diverged:              return .brutalError
         case .remoteBranchMissing:   return .brutalWarning
         case .failed:                return .brutalError

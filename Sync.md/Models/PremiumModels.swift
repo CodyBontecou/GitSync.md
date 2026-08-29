@@ -75,11 +75,44 @@ enum PremiumEntitlementState: Sendable, Equatable {
     }
 }
 
+/// Pure gating rules for the optional Assist upsell surfaces. Every surface is
+/// compile-time disabled until `gitSyncAssistEnabled` ships, never targets an
+/// active subscriber or an installation that already enabled automation, and
+/// is dismissible forever after one use. Manual Git features are never gated.
+enum AssistUpsellEligibility {
+    /// Successful manual pulls after which the one-time milestone sheet may
+    /// appear. Counting runs even while the feature flag is off so long-time
+    /// users are offered the upgrade on their first post-release pull instead
+    /// of starting from zero.
+    static let milestonePullThreshold = 5
+
+    static func shouldShowBanner(
+        featureEnabled: Bool,
+        hasRepositories: Bool,
+        subscriptionActive: Bool,
+        assistEnabled: Bool,
+        bannerDismissed: Bool
+    ) -> Bool {
+        featureEnabled && hasRepositories && !subscriptionActive && !assistEnabled && !bannerDismissed
+    }
+
+    static func shouldShowMilestone(
+        featureEnabled: Bool,
+        subscriptionActive: Bool,
+        assistEnabled: Bool,
+        milestoneShown: Bool,
+        successfulPullCount: Int
+    ) -> Bool {
+        featureEnabled && !subscriptionActive && !assistEnabled && !milestoneShown
+            && successfulPullCount >= milestonePullThreshold
+    }
+}
+
 enum RepoAssistNetworkPolicy: String, Codable, Sendable { case any, wifiOnly }
 enum RepoAssistPowerPolicy: String, Codable, Sendable { case any, externalPowerOnly }
 
 enum RepoAssistAttention: String, Codable, Sendable, Equatable {
-    case localChanges, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, failed
+    case localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, failed
 }
 
 enum OpaqueAssistIdentifier {
@@ -134,13 +167,33 @@ struct RepoAssistHealth: Codable, Sendable, Equatable {
     }
 }
 
+enum RepoAssistEnrollmentStatus: String, Codable, Sendable, Equatable {
+    case disabled, excluded, foregroundOnly, enrolling, enrolled, failed
+}
+
+struct GitHubRepositoryIdentity: Codable, Sendable, Equatable {
+    let repositoryID: Int64
+    let fullName: String
+}
+
 struct RepoAssistSettings: Codable, Sendable, Equatable {
+    // Historical fields remain intact for persisted records and callers.
     var enabled: Bool
     var channel: String?
     var selectedBranch: String?
     var networkPolicy: RepoAssistNetworkPolicy
     var powerPolicy: RepoAssistPowerPolicy
     var health: RepoAssistHealth
+
+    // Automatic-mode policy and exact enrolled target.
+    var excludedFromAutomaticSync: Bool
+    var githubRepositoryID: Int64?
+    var githubRepositoryFullName: String?
+    var linkedGitHubInstallationID: Int64?
+    var enrolledBranch: String?
+    var enrollmentStatus: RepoAssistEnrollmentStatus
+    var enrollmentMessage: String?
+    var enrollmentLastAttemptDate: Date?
 
     static let disabled = RepoAssistSettings()
 
@@ -150,7 +203,15 @@ struct RepoAssistSettings: Codable, Sendable, Equatable {
         selectedBranch: String? = nil,
         networkPolicy: RepoAssistNetworkPolicy = .any,
         powerPolicy: RepoAssistPowerPolicy = .any,
-        health: RepoAssistHealth = .never
+        health: RepoAssistHealth = .never,
+        excludedFromAutomaticSync: Bool = false,
+        githubRepositoryID: Int64? = nil,
+        githubRepositoryFullName: String? = nil,
+        linkedGitHubInstallationID: Int64? = nil,
+        enrolledBranch: String? = nil,
+        enrollmentStatus: RepoAssistEnrollmentStatus = .disabled,
+        enrollmentMessage: String? = nil,
+        enrollmentLastAttemptDate: Date? = nil
     ) {
         self.enabled = enabled
         self.channel = channel
@@ -158,10 +219,22 @@ struct RepoAssistSettings: Codable, Sendable, Equatable {
         self.networkPolicy = networkPolicy
         self.powerPolicy = powerPolicy
         self.health = health
+        self.excludedFromAutomaticSync = excludedFromAutomaticSync
+        self.githubRepositoryID = githubRepositoryID
+        self.githubRepositoryFullName = githubRepositoryFullName
+        self.linkedGitHubInstallationID = linkedGitHubInstallationID
+        self.enrolledBranch = enrolledBranch
+        self.enrollmentStatus = enrollmentStatus
+        self.enrollmentMessage = enrollmentMessage
+        self.enrollmentLastAttemptDate = enrollmentLastAttemptDate
+        normalizeAutomaticExclusion()
     }
 
     private enum CodingKeys: String, CodingKey {
         case enabled, channel, selectedBranch, networkPolicy, powerPolicy, health
+        case excludedFromAutomaticSync, githubRepositoryID, githubRepositoryFullName
+        case linkedGitHubInstallationID, enrolledBranch, enrollmentStatus
+        case enrollmentMessage, enrollmentLastAttemptDate
     }
 
     init(from decoder: Decoder) throws {
@@ -172,7 +245,37 @@ struct RepoAssistSettings: Codable, Sendable, Equatable {
         networkPolicy = try c.decodeIfPresent(RepoAssistNetworkPolicy.self, forKey: .networkPolicy) ?? .any
         powerPolicy = try c.decodeIfPresent(RepoAssistPowerPolicy.self, forKey: .powerPolicy) ?? .any
         health = try c.decodeIfPresent(RepoAssistHealth.self, forKey: .health) ?? .never
+        excludedFromAutomaticSync = try c.decodeIfPresent(Bool.self, forKey: .excludedFromAutomaticSync) ?? false
+        githubRepositoryID = try c.decodeIfPresent(Int64.self, forKey: .githubRepositoryID)
+        githubRepositoryFullName = try c.decodeIfPresent(String.self, forKey: .githubRepositoryFullName)
+        linkedGitHubInstallationID = try c.decodeIfPresent(Int64.self, forKey: .linkedGitHubInstallationID)
+        enrolledBranch = try c.decodeIfPresent(String.self, forKey: .enrolledBranch)
+        enrollmentStatus = try c.decodeIfPresent(RepoAssistEnrollmentStatus.self, forKey: .enrollmentStatus)
+            ?? (channel == nil ? .disabled : .enrolled)
+        enrollmentMessage = try c.decodeIfPresent(String.self, forKey: .enrollmentMessage)
+        enrollmentLastAttemptDate = try c.decodeIfPresent(Date.self, forKey: .enrollmentLastAttemptDate)
+        normalizeAutomaticExclusion()
     }
+
+    mutating func normalizeAutomaticExclusion() {
+        guard excludedFromAutomaticSync else { return }
+        enabled = false
+        channel = nil
+        githubRepositoryID = nil
+        githubRepositoryFullName = nil
+        linkedGitHubInstallationID = nil
+        enrolledBranch = nil
+        enrollmentStatus = .excluded
+    }
+}
+
+struct PremiumAssistSummary: Sendable, Equatable {
+    let total: Int
+    let enrolled: Int
+    let foregroundOnly: Int
+    let excluded: Int
+    let disabled: Int
+    let failed: Int
 }
 
 struct PremiumInstallation: Codable, Sendable, Equatable {
@@ -207,7 +310,6 @@ struct PremiumDeviceRegistrationRequest: Codable, Sendable, Equatable {
     let installation: PremiumInstallation
     let token: String
     let environment: APNsEnvironment
-    let channels: [String]
     /// Monotonic per-installation sequence. The relay accepts an update only
     /// when it is not older than the device row it already committed.
     let registrationGeneration: UInt64
@@ -217,6 +319,21 @@ struct PremiumDeviceDeletionRequest: Codable, Sendable, Equatable {
     let installationID: UUID
     let token: String?
     let environment: APNsEnvironment
+    /// Deletes only registrations at or below this captured generation. Nil is
+    /// retained for wire compatibility with legacy clients.
+    let maximumRegistrationGeneration: UInt64?
+
+    init(
+        installationID: UUID,
+        token: String?,
+        environment: APNsEnvironment,
+        maximumRegistrationGeneration: UInt64? = nil
+    ) {
+        self.installationID = installationID
+        self.token = token
+        self.environment = environment
+        self.maximumRegistrationGeneration = maximumRegistrationGeneration
+    }
 }
 
 struct PremiumSilentPush: Sendable, Equatable {

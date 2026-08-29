@@ -10,6 +10,7 @@
     "types": "wrangler types",
     "types:check": "wrangler types --check",
     "migrate:local": "wrangler d1 migrations apply premium-relay --local",
+ "migrate:remote": "wrangler d1 migrations apply premium-relay --remote",
     "dry-run": "wrangler deploy --dry-run"
   },
   "devDependencies": {

@@ -154,6 +154,16 @@ struct GitRemoteURL: Equatable, Sendable {
         return repoName
     }
 
+    /// Exact GitHub owner/name target accepted by Assist. This deliberately
+    /// rejects lookalike hosts and paths with extra components.
+    var canonicalGitHubFullName: String? {
+        guard isGitHub, pathComponents.count == 2 else { return nil }
+        let owner = pathComponents[0]
+        let name = Self.strippingGitSuffix(pathComponents[1])
+        guard !owner.isEmpty, !name.isEmpty else { return nil }
+        return "\(owner)/\(name)"
+    }
+
     /// A clone URL suitable for libgit2. This preserves fully-qualified custom
     /// remotes exactly as entered; only the historical `owner/repo` shorthand is
     /// expanded to GitHub.

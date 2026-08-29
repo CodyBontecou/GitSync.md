@@ -67,6 +67,7 @@ enum PullOutcomeKind: String, Codable, Sendable {
     case rebased
     case rebaseConflicts
     case blockedByLocalChanges
+    case lfsHydrationBlocked
     case diverged
     case remoteBranchMissing
     case failed

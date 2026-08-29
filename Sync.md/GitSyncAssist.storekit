@@ -34,7 +34,7 @@
       "id" : "gitsync-assist",
       "localizations" : [
         {
-          "description" : "Optional pull-only automation for explicitly enrolled repositories.",
+          "description" : "Optional pull-only automation for all managed repositories after one installation-level opt-in, with per-repository exclusions.",
           "displayName" : "GitSync Assist",
           "locale" : "en_US"
         }
@@ -66,7 +66,7 @@
           ],
           "localizations" : [
             {
-              "description" : "Best-effort GitHub wake hints and foreground reconciliation with clean fast-forward pulls only.",
+              "description" : "All-repository automation: eligible GitHub event wakes, foreground reconciliation, and clean fast-forward pulls only.",
               "displayName" : "GitSync Assist Monthly",
               "locale" : "en_US"
             }
@@ -105,7 +105,7 @@
           ],
           "localizations" : [
             {
-              "description" : "One year of best-effort GitHub wake hints and foreground reconciliation with clean fast-forward pulls only.",
+              "description" : "One year of all-repository automation with eligible GitHub event wakes, foreground reconciliation, and clean fast-forward pulls only.",
               "displayName" : "GitSync Assist Annual",
               "locale" : "en_US"
             }

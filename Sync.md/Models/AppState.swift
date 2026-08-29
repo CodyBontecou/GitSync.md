@@ -356,7 +356,18 @@ final class AppState {
     private let persistedReposURL: URL
     private var persistedRepoSnapshot: [UUID: RepoConfig] = [:]
     var assistConfigurationChangeHandler: (@MainActor @Sendable () -> Void)?
+    var assistInventoryChangeHandler: (@MainActor @Sendable () -> Void)?
     var assistRepositoryRemovalHandler: (@MainActor @Sendable (RepoConfig) -> Void)?
+
+    // MARK: - Assist upsell state
+
+    /// Successful manual pull count used by the one-time milestone upsell.
+    var assistManualPullSuccessCount: Int = 0
+    /// Whether the one-time milestone upsell sheet has already been shown.
+    var assistUpsellMilestoneShown: Bool = false
+
+    nonisolated private static let assistUpsellPullCountKey = "assist.upsell.manualPullSuccessCount.v1"
+    nonisolated private static let assistUpsellMilestoneShownKey = "assist.upsell.milestoneShown.v1"
 
     // MARK: - Init
 
@@ -405,6 +416,8 @@ final class AppState {
         defaultAuthorEmail = defaults.string(forKey: "authorEmail") ?? ""
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         hasSeenOnboarding = defaults.bool(forKey: "hasSeenOnboarding")
+        assistManualPullSuccessCount = max(0, defaults.integer(forKey: Self.assistUpsellPullCountKey))
+        assistUpsellMilestoneShown = defaults.bool(forKey: Self.assistUpsellMilestoneShownKey)
 
         if let accountData = defaults.data(forKey: "gitHubAccounts"),
            let decodedAccounts = try? JSONDecoder().decode([GitHubAccount].self, from: accountData) {
@@ -2303,6 +2316,7 @@ final class AppState {
                     lastSyncDate: Date()
                 )
                 saveRepos()
+                assistInventoryChangeHandler?()
             }
             clearCommitHistoryCache(for: repoID)
             detectChanges(repoID: repoID)
@@ -2337,7 +2351,7 @@ final class AppState {
         // (including a safe attention state) returns true so existing sheets can
         // dismiss. Headless callers consume the precise `pullOnly` result.
         switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay) {
-        case .updated, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+        case .updated, .updatedWithAttention, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return true
         case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
             return false
@@ -2402,6 +2416,20 @@ final class AppState {
             syncProgress = String(localized: "Pull complete!")
             setPullOutcome(repoID: repoID, kind: .fastForwarded, message: String(localized: "Pulled latest changes (fast-forward)"))
             requestReviewIfNeeded()
+
+        case .updatedWithAttention(_, let commitSHA, let attention):
+            markRepositoryMutated(repoID: repoID)
+            if let currentIndex = repoIndex(id: repoID) {
+                repos[currentIndex].gitState.commitSHA = commitSHA
+                saveRepos()
+            }
+            clearCommitHistoryCache(for: repoID)
+            syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
+            setPullOutcome(
+                repoID: repoID,
+                kind: .lfsHydrationBlocked,
+                message: attention.localizedDescription
+            )
 
         case .upToDate:
             syncProgress = String(localized: "Already up to date!")
@@ -2777,6 +2805,7 @@ final class AppState {
         repos.append(config)
         saveRepos()
         resolveVaultBookmark(for: config.id)
+        assistInventoryChangeHandler?()
     }
 
     /// Add a repository that already exists on the local filesystem.
@@ -2846,6 +2875,7 @@ final class AppState {
             repos.append(config)
             saveRepos()
             detectChanges(repoID: config.id)
+            assistInventoryChangeHandler?()
         } catch {
             resolvedURL.stopAccessingSecurityScopedResource()
             showError(message: String(localized: "Failed to read repository info: \(error.localizedDescription)"))
@@ -2853,7 +2883,7 @@ final class AppState {
     }
 
     /// Read the `origin` remote URL from a git repository's config.
-    private static func readGitRemoteURL(at repoURL: URL) -> String? {
+    static func readGitRemoteURL(at repoURL: URL) -> String? {
         let configURL = repoURL.appendingPathComponent(".git/config")
         guard let contents = try? String(contentsOf: configURL, encoding: .utf8) else { return nil }
 
@@ -2882,7 +2912,7 @@ final class AppState {
 
     func removeRepo(id: UUID, deleteLocalFiles: Bool = false) {
         guard let repo = repo(id: id) else { return }
-        if repo.assist.channel != nil { assistRepositoryRemovalHandler?(repo) }
+        assistRepositoryRemovalHandler?(repo)
         let vaultDir = vaultURL(for: id)
 
         // Existing local repositories are user-owned folders that may also be
@@ -2897,6 +2927,7 @@ final class AppState {
         clearCachedRepoState(for: id)
         repos.removeAll { $0.id == id }
         saveRepos()
+        assistInventoryChangeHandler?()
     }
 
     private func clearCachedRepoState(for repoID: UUID) {
@@ -2917,10 +2948,13 @@ final class AppState {
     func updateRepo(id: UUID, mutate: (inout RepoConfig) -> Void) {
         guard let idx = repoIndex(id: id) else { return }
         let oldRegistration = (repos[idx].assist.enabled, repos[idx].assist.channel)
+        let oldInventory = (repos[idx].repoURL, repos[idx].branch, repos[idx].gitState.commitSHA, repos[idx].assist.excludedFromAutomaticSync)
         mutate(&repos[idx])
         let newRegistration = (repos[idx].assist.enabled, repos[idx].assist.channel)
+        let newInventory = (repos[idx].repoURL, repos[idx].branch, repos[idx].gitState.commitSHA, repos[idx].assist.excludedFromAutomaticSync)
         saveRepos()
         if oldRegistration != newRegistration { assistConfigurationChangeHandler?() }
+        if oldInventory != newInventory { assistInventoryChangeHandler?() }
     }
 
     @discardableResult
@@ -2981,6 +3015,7 @@ final class AppState {
         repoMutationGeneration[id, default: 0] += 1
         saveRepos()
         detectChanges(repoID: id)
+        assistInventoryChangeHandler?()
         return true
     }
 
@@ -3154,6 +3189,23 @@ final class AppState {
 
     private func setPullOutcome(repoID: UUID, kind: PullOutcomeKind, message: String) {
         pullOutcomeByRepo[repoID] = PullOutcomeState(kind: kind, message: message, date: Date())
+        // Successful manual pulls (UI pull, pull-with-rebase, Shortcuts) drive
+        // the one-time Assist upsell milestone. Assist automation records
+        // through `recordAssist`, never here.
+        switch kind {
+        case .upToDate, .fastForwarded, .rebased:
+            assistManualPullSuccessCount += 1
+            UserDefaults.standard.set(assistManualPullSuccessCount, forKey: Self.assistUpsellPullCountKey)
+        case .rebaseConflicts, .blockedByLocalChanges, .lfsHydrationBlocked, .diverged,
+             .remoteBranchMissing, .failed:
+            break
+        }
+    }
+
+    /// Marks the one-time milestone upsell as consumed so it never reappears.
+    func markAssistUpsellMilestoneShown() {
+        assistUpsellMilestoneShown = true
+        UserDefaults.standard.set(true, forKey: Self.assistUpsellMilestoneShownKey)
     }
 
     private func clearCommitHistoryCache(for repoID: UUID) {

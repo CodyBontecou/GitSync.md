@@ -3,7 +3,13 @@ import Notelet
 
 enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
-        [
+        var notes: [NoteletVersionNotes] = []
+        // Assist ships only when its feature flag is enabled; its release-note
+        // section (and version registration) must not appear otherwise.
+        if FeatureFlags.gitSyncAssistEnabled {
+            notes.append(.init(version: "2.6.0", items: version26Items))
+        }
+        notes.append(contentsOf: [
             .init(
                 version: "2.5.1",
                 items: version25Items
@@ -20,7 +26,8 @@ enum AppReleaseNotes {
                 version: "2.4.1",
                 items: version241Items
             )
-        ]
+        ])
+        return notes
     }
 
     static let configuration = NoteletConfiguration(
@@ -68,7 +75,11 @@ enum AppReleaseNotes {
         NoteletStorage.markCurrentVersionAsSeen()
     }
 
-    private static let availableVersions: Set<String> = ["2.5.1", "2.4.7", "2.4.5", "2.4.1"]
+    private static var availableVersions: Set<String> {
+        FeatureFlags.gitSyncAssistEnabled
+            ? ["2.6.0", "2.5.1", "2.4.7", "2.4.5", "2.4.1"]
+            : ["2.5.1", "2.4.7", "2.4.5", "2.4.1"]
+    }
 
     private static var currentVersion: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
@@ -76,6 +87,31 @@ enum AppReleaseNotes {
 
     private static func hasNotes(for version: String) -> Bool {
         availableVersions.contains(version)
+    }
+
+    private static var version26Items: [NoteletVersionNoteItem] {
+        [
+            .list(
+                title: "Automatic sync, optionally",
+                rows: [
+                    .init(
+                        symbolSystemName: "bolt.badge.clock.fill",
+                        title: "GitSync Assist",
+                        description: "An optional subscription that keeps every repository current automatically. One installation-level opt-in covers all current and future repositories; exclude any repository anytime."
+                    ),
+                    .init(
+                        symbolSystemName: "arrow.down.circle.fill",
+                        title: "Pull-only and safe",
+                        description: "Assist only performs clean fast-forward pulls. It never commits, rebases, merges, force-pushes, or pushes, and stops on local changes, divergence, or authentication needs."
+                    ),
+                    .init(
+                        symbolSystemName: "lock.shield.fill",
+                        title: "Privacy-first relay",
+                        description: "GitHub event wakes use only opaque identifiers — never repository names, contents, paths, or credentials. Everything manual stays included with the app you already own."
+                    )
+                ]
+            )
+        ]
     }
 
     private static var version25Items: [NoteletVersionNoteItem] {

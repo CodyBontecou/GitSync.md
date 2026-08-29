@@ -11,6 +11,8 @@ export interface Env {
   GITHUB_APP_ID: string;
   GITHUB_APP_SLUG: string;
   GITHUB_CALLBACK_URL: string;
+  GITHUB_CLIENT_ID: string;
+  GITHUB_AUTHORIZATION_CALLBACK_URL: string;
   APNS_TEAM_ID: string;
   APNS_KEY_ID: string;
   APNS_TOPIC: string;
@@ -22,6 +24,7 @@ export interface Env {
 
   GITHUB_APP_PRIVATE_KEY: string;
   GITHUB_WEBHOOK_SECRET: string;
+  GITHUB_CLIENT_SECRET: string;
   APNS_PRIVATE_KEY: string;
 }
 
