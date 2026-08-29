@@ -798,9 +798,23 @@ final class SyncMDTests: XCTestCase {
             .deletingLastPathComponent()
             .appendingPathComponent("Sync.md.xcodeproj/project.pbxproj")
         let project = try String(contentsOf: projectURL, encoding: .utf8)
-        XCTAssertTrue(project.contains("APS_ENVIRONMENT = development;"))
-        XCTAssertTrue(project.contains("APS_ENVIRONMENT = production;"))
-        XCTAssertEqual(project.components(separatedBy: "CODE_SIGN_ENTITLEMENTS = Sync.md/Sync_md.entitlements;").count - 1, 2)
+        // Xcode writes build-setting keys with or without quotes depending on
+        // the project file revision; accept both spellings.
+        XCTAssertTrue(
+            project.contains("APS_ENVIRONMENT = development;")
+                || project.contains("\"APS_ENVIRONMENT\" = development;"),
+            "Debug builds must configure an APNs development environment"
+        )
+        XCTAssertTrue(
+            project.contains("APS_ENVIRONMENT = production;")
+                || project.contains("\"APS_ENVIRONMENT\" = production;"),
+            "Release builds must configure an APNs production environment"
+        )
+        XCTAssertEqual(
+            project.components(separatedBy: "CODE_SIGN_ENTITLEMENTS = Sync.md/Sync_md.entitlements;").count - 1
+                + project.components(separatedBy: "\"CODE_SIGN_ENTITLEMENTS\" = \"Sync.md/Sync_md.entitlements\";").count - 1,
+            2
+        )
 
         let entitlementsURL = projectURL
             .deletingLastPathComponent()
@@ -906,6 +920,247 @@ final class SyncMDTests: XCTestCase {
         let decoded = try JSONDecoder().decode(RepoConfig.self, from: JSONSerialization.data(withJSONObject: json))
         XCTAssertEqual(decoded.assist, .disabled)
         XCTAssertFalse(decoded.assist.enabled)
+    }
+
+    // MARK: - Repository Discovery
+
+    private func makeScanFixture() throws -> URL {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-Scan-\(UUID().uuidString)", isDirectory: true)
+
+        func mkdir(_ relativePath: String) throws -> URL {
+            let url = root.appendingPathComponent(relativePath, isDirectory: true)
+            try fm.createDirectory(at: url, withIntermediateDirectories: true)
+            return url
+        }
+
+        // Plain repository with a readable origin remote.
+        let alpha = try mkdir("alpha/.git")
+        let config = """
+        [remote "origin"]
+        \turl = https://github.com/owner/alpha.git
+        \tfetch = +refs/heads/*:refs/remotes/origin/*
+
+        [branch "main"]
+        \tremote = origin
+        """
+        try config.write(to: alpha.appendingPathComponent("config"), atomically: true, encoding: .utf8)
+
+        // Repository nested several levels below the root, without a remote.
+        try mkdir("nested/deep/beta/.git")
+
+        // Nested working copy inside an already-discovered repository.
+        try mkdir("alpha/inner/.git")
+
+        // Repository hidden inside a dependency tree.
+        try mkdir("site/node_modules/pkg/.git")
+
+        // Working copy below a dot directory.
+        try mkdir(".secret/repo/.git")
+
+        // Worktree-style repository whose `.git` is a file, not a directory.
+        let fileGit = try mkdir("filegit")
+        try "gitdir: ../elsewhere\n".write(
+            to: fileGit.appendingPathComponent(".git"),
+            atomically: true,
+            encoding: .utf8
+        )
+
+        // Plain directory that is not a repository at all.
+        try mkdir("not-a-repo")
+
+        return root
+    }
+
+    func testGitRepoScannerFindsWorkingCopiesWithRelativePathsAndRemotes() throws {
+        let root = try makeScanFixture()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let results = GitRepoScanner.discoverRepositories(root: root)
+
+        XCTAssertEqual(Set(results.map(\.relativePath)), ["alpha", "nested/deep/beta", "filegit"])
+
+        let alpha = try XCTUnwrap(results.first { $0.relativePath == "alpha" })
+        XCTAssertEqual(alpha.remoteURL, "https://github.com/owner/alpha.git")
+        XCTAssertEqual(alpha.name, "alpha")
+        XCTAssertFalse(alpha.isInsideAppContainer)
+        XCTAssertEqual(alpha.url.lastPathComponent, "alpha")
+
+        let beta = try XCTUnwrap(results.first { $0.relativePath == "nested/deep/beta" })
+        XCTAssertNil(beta.remoteURL)
+
+        let fileGit = try XCTUnwrap(results.first { $0.relativePath == "filegit" })
+        XCTAssertEqual(fileGit.name, "filegit")
+    }
+
+    func testGitRepoScannerMarksContainerResultsAndRespectsDepthLimit() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-ScanDepth-\(UUID().uuidString)", isDirectory: true)
+        // D1/D2/D3/D4/D5/at-limit/.git sits exactly at depth 6.
+        try fm.createDirectory(
+            at: root.appendingPathComponent("D1/D2/D3/D4/D5/at-limit/.git"),
+            withIntermediateDirectories: true
+        )
+        // D1/D2/D3/D4/D5/D6/too-deep/.git sits one level past the boundary.
+        try fm.createDirectory(
+            at: root.appendingPathComponent("D1/D2/D3/D4/D5/D6/too-deep/.git"),
+            withIntermediateDirectories: true
+        )
+        defer { try? fm.removeItem(at: root) }
+
+        let results = GitRepoScanner.discoverRepositories(
+            root: root,
+            maxDepth: GitRepoScanner.defaultMaxDepth,
+            isInsideAppContainer: true
+        )
+
+        XCTAssertEqual(results.map(\.relativePath), ["D1/D2/D3/D4/D5/at-limit"])
+        XCTAssertTrue(results.allSatisfy(\.isInsideAppContainer))
+    }
+
+    func testGitRepoScannerReturnsGrantRootWhenRootItselfIsARepository() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-ScanRoot-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: root.appendingPathComponent(".git"), withIntermediateDirectories: true)
+        try fm.createDirectory(at: root.appendingPathComponent("sub-repo/.git"), withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: root) }
+
+        let results = GitRepoScanner.discoverRepositories(root: root)
+
+        XCTAssertEqual(results.count, 1)
+        XCTAssertEqual(results.first?.relativePath, "")
+        XCTAssertEqual(results.first?.url.standardizedFileURL.path, root.standardizedFileURL.path)
+        XCTAssertEqual(results.first?.name, root.lastPathComponent)
+    }
+
+    func testRepoConfigLegacyDecodeDefaultsRelativePathNil() throws {
+        let repo = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(repo)) as? [String: Any])
+        json.removeValue(forKey: "customVaultRelativePath")
+        let decoded = try JSONDecoder().decode(RepoConfig.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertNil(decoded.customVaultRelativePath)
+
+        var anchored = repo
+        anchored.customVaultRelativePath = "projects/notes"
+        XCTAssertNotNil(anchored.customVaultRelativePath)
+        let roundTripped = try JSONDecoder().decode(RepoConfig.self, from: JSONEncoder().encode(anchored))
+        XCTAssertEqual(roundTripped.customVaultRelativePath, "projects/notes")
+    }
+
+    func testRepoPersistenceStoreMergesCustomVaultRelativePath() throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("relative-path-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let store = RepoPersistenceStore()
+        let original = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
+        try store.replaceAll([original], at: fileURL)
+
+        var anchored = original
+        anchored.customVaultRelativePath = "repos/notes"
+        anchored.customVaultBookmarkData = Data("bookmark".utf8)
+        _ = try store.apply([.update(original: original, modified: anchored)], to: fileURL)
+
+        var unrelated = anchored
+        unrelated.branch = "notes"
+        _ = try store.apply([.update(original: anchored, modified: unrelated)], to: fileURL)
+
+        let persisted = try XCTUnwrap(store.loadStrict(from: fileURL).first)
+        XCTAssertEqual(persisted.customVaultRelativePath, "repos/notes")
+        XCTAssertNotNil(persisted.customVaultBookmarkData)
+        XCTAssertEqual(persisted.branch, "notes")
+        XCTAssertTrue(persisted.isExternalLocalRepository)
+    }
+
+    @MainActor
+    func testAppStateAddLocalRepoAnchorsRelativePathToGrantRoot() async throws {
+        let fm = FileManager.default
+        let grantRoot = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-Grant-\(UUID().uuidString)", isDirectory: true)
+        let repoURL = grantRoot.appendingPathComponent("projects/notes", isDirectory: true)
+        let gitDir = repoURL.appendingPathComponent(".git", isDirectory: true)
+        try fm.createDirectory(at: gitDir, withIntermediateDirectories: true)
+        try "\n[remote \"origin\"]\n\turl = https://github.com/owner/notes.git\n".write(
+            to: gitDir.appendingPathComponent("config"), atomically: true, encoding: .utf8
+        )
+        defer { try? fm.removeItem(at: grantRoot) }
+
+        let bookmark = try grantRoot.bookmarkData()
+        let reposFile = fm.temporaryDirectory.appendingPathComponent("repos-discovery-\(UUID()).json")
+        defer { try? fm.removeItem(at: reposFile) }
+
+        let fixtureRepository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: "aaaa", changeCount: 0)
+        )
+        let appState = AppState(
+            gitRepositoryFactory: { url in
+                XCTAssertEqual(url.standardizedFileURL.path, repoURL.standardizedFileURL.path)
+                return fixtureRepository
+            },
+            reposFileURL: reposFile,
+            loadPersistedState: false
+        )
+
+        await appState.addLocalRepo(
+            url: repoURL,
+            bookmarkData: bookmark,
+            authorName: "Discoverer",
+            authorEmail: "discover@example.com",
+            relativePath: "projects/notes"
+        )
+
+        let added = try XCTUnwrap(appState.repos.first)
+        XCTAssertEqual(added.customVaultRelativePath, "projects/notes")
+        XCTAssertEqual(added.repoURL, "https://github.com/owner/notes.git")
+        XCTAssertEqual(added.vaultFolderName, "notes")
+        XCTAssertTrue(added.isExternalLocalRepository)
+        XCTAssertFalse(added.isGitSyncManagedStorage)
+        XCTAssertEqual(
+            appState.vaultURL(for: added.id).standardizedFileURL.path,
+            repoURL.standardizedFileURL.path
+        )
+        XCTAssertTrue(appState.isRepoAlreadyTracked(atPath: repoURL.path))
+        XCTAssertFalse(appState.isRepoAlreadyTracked(atPath: grantRoot.path))
+    }
+
+    @MainActor
+    func testAppStateRelinkManagedRepoUsesDocumentsRelativePath() async throws {
+        let fm = FileManager.default
+        let documents = AppState.appDocumentsDirectory
+        let repoName = "ScanRelink-\(UUID().uuidString.prefix(8))"
+        let repoURL = documents.appendingPathComponent(repoName, isDirectory: true)
+        let gitDir = repoURL.appendingPathComponent(".git", isDirectory: true)
+        try fm.createDirectory(at: gitDir, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: repoURL) }
+
+        let reposFile = fm.temporaryDirectory.appendingPathComponent("repos-relink-\(UUID()).json")
+        defer { try? fm.removeItem(at: reposFile) }
+
+        let fixtureRepository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: "bbbb", changeCount: 0)
+        )
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixtureRepository },
+            reposFileURL: reposFile,
+            loadPersistedState: false
+        )
+
+        await appState.relinkManagedRepo(
+            atURL: repoURL,
+            authorName: "Relinker",
+            authorEmail: "relink@example.com"
+        )
+
+        let added = try XCTUnwrap(appState.repos.first)
+        XCTAssertEqual(added.customVaultRelativePath, repoName)
+        XCTAssertNil(added.customVaultBookmarkData)
+        XCTAssertTrue(added.isGitSyncManagedStorage)
+        XCTAssertFalse(added.isExternalLocalRepository)
+        XCTAssertEqual(
+            appState.vaultURL(for: added.id).standardizedFileURL.path,
+            repoURL.standardizedFileURL.path
+        )
     }
 
     func testRepoPersistenceStoreMergesAssistPolicyAndHealthFields() throws {

@@ -392,6 +392,12 @@ final class AppState {
 
     // MARK: - Persistence
 
+    /// The app's own Documents directory — the root of GitSync.md-managed
+    /// storage and the anchor for rediscovered in-container repositories.
+    nonisolated static var appDocumentsDirectory: URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+
     nonisolated static var persistedReposFileURL: URL {
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let dir = support.appendingPathComponent("SyncMD", isDirectory: true)
@@ -723,6 +729,14 @@ final class AppState {
 
     func vaultURL(for repoID: UUID) -> URL {
         if let customURL = resolvedCustomURLs[repoID] {
+            if let repo = repo(id: repoID), let relativePath = repo.customVaultRelativePath,
+               !relativePath.isEmpty {
+                // Repository discovered by scanning a user-granted folder: one
+                // bookmark anchors the grant root and the relative path
+                // locates the working copy beneath it. An empty relative path
+                // means the grant root is itself the working copy.
+                return customURL.appendingPathComponent(relativePath, isDirectory: true)
+            }
             // When the bookmark points to a parent directory (clone to custom
             // location), append the repo folder name — just like `git clone`.
             if let repo = repo(id: repoID), repo.customLocationIsParent {
@@ -733,17 +747,29 @@ final class AppState {
         guard let repo = repo(id: repoID) else {
             return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         }
+        if let relativePath = repo.customVaultRelativePath {
+            // Rediscovered working copy inside the app's own container,
+            // possibly nested below Documents.
+            return Self.appDocumentsDirectory.appendingPathComponent(relativePath, isDirectory: true)
+        }
         return repo.defaultVaultURL
     }
 
     func vaultDisplayPath(for repoID: UUID) -> String {
         if let customURL = resolvedCustomURLs[repoID] {
+            if let repo = repo(id: repoID), let relativePath = repo.customVaultRelativePath,
+               !relativePath.isEmpty {
+                return customURL.appendingPathComponent(relativePath).path
+            }
             if let repo = repo(id: repoID), repo.customLocationIsParent {
                 return customURL.appendingPathComponent(repo.vaultFolderName).path
             }
             return customURL.path
         }
         guard let repo = repo(id: repoID) else { return "" }
+        if let relativePath = repo.customVaultRelativePath {
+            return String(localized: "On My iPhone › GitSync.md › \(relativePath)")
+        }
         return String(localized: "On My iPhone › GitSync.md › \(repo.vaultFolderName)")
     }
 
@@ -2815,11 +2841,15 @@ final class AppState {
         url: URL,
         bookmarkData: Data,
         authorName: String,
-        authorEmail: String
+        authorEmail: String,
+        relativePath: String? = nil
     ) async {
-        // Resolve the bookmark and start security-scoped access
+        // Resolve the bookmark and start security-scoped access. The bookmark
+        // may point at the repository itself (single folder pick) or at a
+        // user-granted parent folder whose scope covers every repository
+        // discovered beneath it (repository scanning).
         var isStale = false
-        guard let resolvedURL = try? URL(
+        guard let resolvedGrantURL = try? URL(
             resolvingBookmarkData: bookmarkData,
             options: [],
             relativeTo: nil,
@@ -2829,15 +2859,18 @@ final class AppState {
             return
         }
 
-        guard resolvedURL.startAccessingSecurityScopedResource() else {
+        guard resolvedGrantURL.startAccessingSecurityScopedResource() else {
             showError(message: String(localized: "Could not access the selected folder."))
             return
         }
 
-        let gitService = gitRepositoryFactory(resolvedURL)
+        let repoURL = (relativePath.flatMap { $0.isEmpty ? nil : $0 })
+            .map { resolvedGrantURL.appendingPathComponent($0, isDirectory: true) }
+            ?? resolvedGrantURL
+        let gitService = gitRepositoryFactory(repoURL)
 
         guard gitService.hasGitDirectory else {
-            resolvedURL.stopAccessingSecurityScopedResource()
+            resolvedGrantURL.stopAccessingSecurityScopedResource()
             showError(message: String(localized: "No .git directory found. Please select a folder that contains a git repository."))
             return
         }
@@ -2846,7 +2879,7 @@ final class AppState {
             let info = try await gitService.repoInfo()
 
             // Try to read the remote URL from the git config
-            let remoteURL = Self.readGitRemoteURL(at: resolvedURL) ?? ""
+            let remoteURL = Self.readGitRemoteURL(at: repoURL) ?? ""
 
             let remoteInfo = GitRemoteURL.parse(remoteURL)
             let config = RepoConfig(
@@ -2854,8 +2887,10 @@ final class AppState {
                 branch: info.branch,
                 authorName: authorName,
                 authorEmail: authorEmail,
-                vaultFolderName: resolvedURL.lastPathComponent,
+                vaultFolderName: repoURL.lastPathComponent,
                 customVaultBookmarkData: bookmarkData,
+                customLocationIsParent: false,
+                customVaultRelativePath: relativePath,
                 authMethod: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false && isSignedIn ? .gitHubPAT : GitAuthMethod.none,
                 authUsername: remoteInfo?.username ?? "",
                 gitHubAccountLogin: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false && isSignedIn ? activeGitHubAccountLogin : nil,
@@ -2868,8 +2903,8 @@ final class AppState {
                 )
             )
 
-            // Track resolved URL and security scope
-            resolvedCustomURLs[config.id] = resolvedURL
+            // Track resolved grant URL and security scope
+            resolvedCustomURLs[config.id] = resolvedGrantURL
             accessingSecurityScope.insert(config.id)
 
             repos.append(config)
@@ -2877,13 +2912,74 @@ final class AppState {
             detectChanges(repoID: config.id)
             assistInventoryChangeHandler?()
         } catch {
-            resolvedURL.stopAccessingSecurityScopedResource()
+            resolvedGrantURL.stopAccessingSecurityScopedResource()
+            showError(message: String(localized: "Failed to read repository info: \(error.localizedDescription)"))
+        }
+    }
+
+    /// Whether a working copy at `path` is already tracked as a repository.
+    /// Used to grey out discoveries the user has previously added.
+    func isRepoAlreadyTracked(atPath path: String) -> Bool {
+        let target = URL(fileURLWithPath: path).standardizedFileURL.path
+        return repos.contains { repo in
+            vaultURL(for: repo.id).standardizedFileURL.path == target
+        }
+    }
+
+    /// Reconnects a working copy found inside the app's own Documents
+    /// directory (for example after a reinstall or backup restore that kept
+    /// the folders but lost `repos.json`). No security-scoped bookmark is
+    /// needed for app-container paths.
+    func relinkManagedRepo(atURL url: URL, authorName: String, authorEmail: String) async {
+        let documentsPath = Self.appDocumentsDirectory.standardizedFileURL.path
+        let repoPath = url.standardizedFileURL.path
+        guard repoPath.hasPrefix(documentsPath + "/") || repoPath == documentsPath else {
+            showError(message: String(localized: "Only folders inside GitSync.md storage can be relinked without granting access."))
+            return
+        }
+
+        let gitService = gitRepositoryFactory(url)
+        guard gitService.hasGitDirectory else {
+            showError(message: String(localized: "No .git directory found in \(url.lastPathComponent)."))
+            return
+        }
+
+        do {
+            let info = try await gitService.repoInfo()
+            let remoteURL = Self.readGitRemoteURL(at: url) ?? ""
+            let remoteInfo = GitRemoteURL.parse(remoteURL)
+            let relativePath = String(repoPath.dropFirst(documentsPath.count + 1))
+
+            let config = RepoConfig(
+                repoURL: remoteURL,
+                branch: info.branch,
+                authorName: authorName,
+                authorEmail: authorEmail,
+                vaultFolderName: url.lastPathComponent,
+                customVaultRelativePath: relativePath.isEmpty ? nil : relativePath,
+                authMethod: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false && isSignedIn ? .gitHubPAT : GitAuthMethod.none,
+                authUsername: remoteInfo?.username ?? "",
+                gitHubAccountLogin: remoteInfo?.isGitHub == true && remoteInfo?.isSSH == false && isSignedIn ? activeGitHubAccountLogin : nil,
+                gitState: GitState(
+                    commitSHA: info.commitSHA,
+                    treeSHA: "",
+                    branch: info.branch,
+                    blobSHAs: [:],
+                    lastSyncDate: Date()
+                )
+            )
+
+            repos.append(config)
+            saveRepos()
+            detectChanges(repoID: config.id)
+            assistInventoryChangeHandler?()
+        } catch {
             showError(message: String(localized: "Failed to read repository info: \(error.localizedDescription)"))
         }
     }
 
     /// Read the `origin` remote URL from a git repository's config.
-    static func readGitRemoteURL(at repoURL: URL) -> String? {
+    nonisolated static func readGitRemoteURL(at repoURL: URL) -> String? {
         let configURL = repoURL.appendingPathComponent(".git/config")
         guard let contents = try? String(contentsOf: configURL, encoding: .utf8) else { return nil }
 

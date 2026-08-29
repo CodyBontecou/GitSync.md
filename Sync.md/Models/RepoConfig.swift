@@ -13,6 +13,12 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     /// and `vaultFolderName` should be appended to form the actual repo path.
     /// This mirrors `git clone` behaviour: clone into `<parent>/<repoName>/`.
     var customLocationIsParent: Bool
+    /// Path of an external repository working copy relative to the directory
+    /// the user granted (discovered via repository scanning). When set,
+    /// `customVaultBookmarkData` holds the bookmark of that grant root — one
+    /// grant can anchor many repositories — or is `nil` for working copies
+    /// inside the app's own Documents directory.
+    var customVaultRelativePath: String?
     var authMethod: GitAuthMethod
     var authUsername: String
     /// GitHub login whose OAuth/PAT token should be used for `.gitHubPAT` remotes.
@@ -31,6 +37,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         vaultFolderName: String,
         customVaultBookmarkData: Data? = nil,
         customLocationIsParent: Bool = false,
+        customVaultRelativePath: String? = nil,
         authMethod: GitAuthMethod? = nil,
         authUsername: String = "",
         gitHubAccountLogin: String? = nil,
@@ -45,6 +52,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         self.vaultFolderName = vaultFolderName
         self.customVaultBookmarkData = customVaultBookmarkData
         self.customLocationIsParent = customLocationIsParent
+        self.customVaultRelativePath = customVaultRelativePath
         if let authMethod {
             self.authMethod = authMethod
         } else if let remote = GitRemoteURL.parse(repoURL), remote.isGitHub && !remote.isSSH {
@@ -63,7 +71,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, repoURL, branch, authorName, authorEmail
         case vaultFolderName, customVaultBookmarkData
-        case customLocationIsParent, authMethod, authUsername, gitHubAccountLogin, gitState, assist
+        case customLocationIsParent, customVaultRelativePath, authMethod, authUsername, gitHubAccountLogin, gitState, assist
     }
 
     init(from decoder: Decoder) throws {
@@ -76,6 +84,7 @@ struct RepoConfig: Codable, Identifiable, Equatable {
         vaultFolderName         = try c.decode(String.self, forKey: .vaultFolderName)
         customVaultBookmarkData = try c.decodeIfPresent(Data.self, forKey: .customVaultBookmarkData)
         customLocationIsParent  = try c.decodeIfPresent(Bool.self, forKey: .customLocationIsParent) ?? false
+        customVaultRelativePath = try c.decodeIfPresent(String.self, forKey: .customVaultRelativePath)
         if let decodedAuthMethod = try c.decodeIfPresent(GitAuthMethod.self, forKey: .authMethod) {
             authMethod = decodedAuthMethod
         } else if let remote = GitRemoteURL.parse(repoURL), remote.isGitHub && !remote.isSSH {
@@ -104,7 +113,17 @@ struct RepoConfig: Codable, Identifiable, Equatable {
     /// delete the underlying Files folder, because it may be owned by another
     /// app such as PolyGit.
     var isExternalLocalRepository: Bool {
-        customVaultBookmarkData != nil && !customLocationIsParent
+        guard customVaultBookmarkData != nil else {
+            // Working copies inside the app's own container (relativized to
+            // Documents after a rediscovery) are still GitSync.md-managed
+            // storage; deleting them is safe.
+            return false
+        }
+        if customVaultRelativePath != nil {
+            // Repos anchored to a user-granted folder live in user-owned space.
+            return true
+        }
+        return !customLocationIsParent
     }
 
     var isGitSyncManagedStorage: Bool {

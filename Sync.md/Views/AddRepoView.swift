@@ -42,6 +42,7 @@ struct AddRepoView: View {
     private enum FolderPickerPurpose { case cloneLocation, localRepo }
     @State private var folderPickerPurpose: FolderPickerPurpose = .cloneLocation
     @State private var showFolderPicker = false
+    @State private var showDiscovery = false
     @State private var validationMessage: String? = nil
     @State private var showValidationAlert = false
 
@@ -95,6 +96,9 @@ struct AddRepoView: View {
                     localRepoError = nil
                     configureAuthDefaults(for: repo.htmlURL)
                 }
+            }
+            .sheet(isPresented: $showDiscovery) {
+                RepoDiscoveryView(onComplete: { dismiss() })
             }
             .fileImporter(
                 isPresented: $showFolderPicker,
@@ -261,6 +265,37 @@ struct AddRepoView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
                 }
+
+                BDivider(label: String(localized: "or")).padding(.horizontal, 16).padding(.vertical, 10)
+
+                // Discover repositories by scanning
+                Button {
+                    showDiscovery = true
+                } label: {
+                    HStack(spacing: 12) {
+                        Text("🔍")
+                            .font(.system(size: 18))
+                            .frame(width: 32)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Scan for Repositories")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(Color.brutalText)
+                            Text("Find existing clones on this device")
+                                .font(.system(size: 13, design: .monospaced))
+                                .foregroundStyle(Color.brutalText)
+                        }
+
+                        Spacer()
+
+                        Text("→")
+                            .font(.system(size: 13, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                }
+                .buttonStyle(.plain)
 
                 BDivider(label: String(localized: "or")).padding(.horizontal, 16).padding(.vertical, 10)
 

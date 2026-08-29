@@ -113,6 +113,7 @@ final class RepoPersistenceStore: @unchecked Sendable {
         if original.vaultFolderName != modified.vaultFolderName { merged.vaultFolderName = modified.vaultFolderName }
         if original.customVaultBookmarkData != modified.customVaultBookmarkData { merged.customVaultBookmarkData = modified.customVaultBookmarkData }
         if original.customLocationIsParent != modified.customLocationIsParent { merged.customLocationIsParent = modified.customLocationIsParent }
+        if original.customVaultRelativePath != modified.customVaultRelativePath { merged.customVaultRelativePath = modified.customVaultRelativePath }
         if original.authMethod != modified.authMethod { merged.authMethod = modified.authMethod }
         if original.authUsername != modified.authUsername { merged.authUsername = modified.authUsername }
         if original.gitHubAccountLogin != modified.gitHubAccountLogin { merged.gitHubAccountLogin = modified.gitHubAccountLogin }

@@ -12,6 +12,7 @@
 | 1.3 | Clone self-hosted HTTPS / git:// remotes | Core | `GitRemoteURL.parse` (http/git schemes) |
 | 1.4 | Clone SSH remotes (incl. custom port) | Core | credential callback + `build-libgit2-ios-ssh.sh` |
 | 1.5 | Add existing local repository (folder picker, `.git` validation, security-scoped bookmark) | Core | `AddRepoView` §5.1 |
+| 1.5.1 | Repository discovery: scan app storage + any user-granted folder for working copies; batch reconnect from one grant-root bookmark (`customVaultRelativePath`) or Documents-relative relink | Core | `GitRepoScanner`, `RepoDiscoveryView`, `AppState.addLocalRepo`/`relinkManagedRepo` |
 | 1.6 | Add repo by manual URL (GitHub shorthand `owner/repo`, HTTPS, SSH SCP-style, file://) | Core | `GitRemoteURL.parse` |
 | 1.7 | GitHub repo browser/picker (search, public/private badges, default branch, updated date) | Core | `RepoPickerView`, `GitHubService` |
 | 1.8 | Custom clone/save location per repo + default save location app-wide | Core | `AddRepoView` §5.4, `AppSettingsView` §15 |
