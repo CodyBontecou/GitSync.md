@@ -519,7 +519,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202608262227;
+		"CURRENT_PROJECT_VERSION" = 202608291050;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -533,7 +533,7 @@
 			"$(inherited)",
 			"@executable_path/Frameworks",
 		);
-		"MARKETING_VERSION" = "2.5.4";
+		"MARKETING_VERSION" = "2.6.0";
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;
@@ -554,7 +554,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202608262227;
+		"CURRENT_PROJECT_VERSION" = 202608291050;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -568,7 +568,7 @@
 			"$(inherited)",
 			"@executable_path/Frameworks",
 		);
-		"MARKETING_VERSION" = "2.5.4";
+		"MARKETING_VERSION" = "2.6.0";
 		"PREMIUM_RELAY_BASE_URL" = "https://gitsync-premium-relay.costream.workers.dev";
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
