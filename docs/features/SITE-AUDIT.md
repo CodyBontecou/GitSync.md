@@ -2,7 +2,7 @@
 
 **Date**: 2026-08-22 · **Baseline**: `FEATURESET.md` (117 verified features) · **Scope**: `site/index.html`, `site/blog/` (2 posts + index), `site/privacy.html`, `site/terms.html`, `site/sitemap.xml`.
 
-**Status of fixes**: P0-1, P0-2, P0-3, P0-6 ✅ applied 2026-08-22 · P1-5 (Shortcuts card + spec), P1-10 (iOS 17+) ✅ applied · **Second pass (D-1/D-2/D-3 decided)**: D-1 = stay subscription-silent (no Assist copy; "no subscription" claims retained, revisit only if Assist launches). D-2 executed: grid 9→12 cards (Self-Hosted & SSH, Git LFS, Conflict Resolution) + fold-ins (multi-account → card 02, history → card 05, rebase/verified-push → card 07) + hero strip additions. P1-8/P1-9 FAQ items added. D-3 executed: three blog posts — `self-hosted-git-ssh-ios.html`, `git-lfs-ios.html`, `shortcuts-automation-ios.html` — blog index + sitemap (9 URLs) updated. **Third pass**: P1-3 LFS FAQ entry ✅ · P2-8 landing JSON-LD featureList expanded to 11 entries + OS requirement ✅ · P2-3 LFS + Shortcuts blog posts ✅. **Remaining**: ~~P2-7 screenshot refresh~~ **✅ DONE 2026-08-23** — ran `scripts/capture-marketing.sh` (iPhone 17 Pro Max + iPad Pro 13" simulators, iOS 26.5, demo-seeded Brutal UI, en-US): 10 iPhone + 4 iPad current-generation captures. Wired in: hero + band slot 1 = repo list; band = repo list / vault / Git control sheet; workflow phone-frame = diff view (new `diff-view.png`); obsidian blog inline assets replaced; byte-duplicate `04-home-both-cloned.png` deleted; 4 current-UI iPad shots staged at `site/screenshots/ipad-*.png` (unreferenced — available for a future iPad section; pre-Brutal `screenshots/ipad/` shots now obsolete). Img width/height attrs updated to 1320×2868.
+**Status of fixes**: P0-1, P0-2, P0-3, P0-6 ✅ applied 2026-08-22 · P1-5 (Shortcuts card + spec), P1-10 (iOS 17+) ✅ applied · D-2 executed: grid 9→12 cards (Self-Hosted & SSH, Git LFS, Conflict Resolution) + fold-ins (multi-account → card 02, history → card 05, rebase/verified-push → card 07) + hero strip additions. P1-8/P1-9 FAQ items added. D-3 executed: three blog posts — `self-hosted-git-ssh-ios.html`, `git-lfs-ios.html`, `shortcuts-automation-ios.html` — blog index + sitemap (9 URLs) updated. **Third pass**: P1-3 LFS FAQ entry ✅ · P2-8 landing JSON-LD featureList expanded to 11 entries + OS requirement ✅ · P2-3 LFS + Shortcuts blog posts ✅. **Background Sync launch pass (2026-08-30)**: the prior subscription-silent D-1 decision was superseded; P0-4/P0-5 and P2-2/P2-6 are ✅ fixed with optional-subscription copy that preserves the one-time manual Git purchase, describes pull-only best-effort behavior, and qualifies iOS background timing. **Remaining**: ~~P2-7 screenshot refresh~~ **✅ DONE 2026-08-23** — ran `scripts/capture-marketing.sh` (iPhone 17 Pro Max + iPad Pro 13" simulators, iOS 26.5, demo-seeded Brutal UI, en-US): 10 iPhone + 4 iPad current-generation captures. Wired in: hero + band slot 1 = repo list; band = repo list / vault / Git control sheet; workflow phone-frame = diff view (new `diff-view.png`); obsidian blog inline assets replaced; byte-duplicate `04-home-both-cloned.png` deleted; 4 current-UI iPad shots staged at `site/screenshots/ipad-*.png` (unreferenced — available for a future iPad section; pre-Brutal `screenshots/ipad/` shots now obsolete). Img width/height attrs updated to 1320×2868.
 
 **Bonus fix found via capture**: the app UI itself promised "Delete, rename, and **move** files" (VaultView.swift) but no move-file feature exists — fixed to "Create, rename, and delete files" (Swift + Localizable.xcstrings key swapped with hand-written translations for all 25 locales, verified in re-captured shots). Full-locale re-capture for App Store use: run the script without `MARKETING_LOCALE_PAIRS` to regenerate all 26 locales.
 
@@ -39,14 +39,14 @@
 **Evidence**: `inventory/ui-views.md` §9.3, §13; `git-engine.md` §7, §15–17.
 **Fix**: describe the conflict center accurately; keep the desktop-repair sentence only as an edge-case note (e.g., exotic octopus conflicts).
 
-### P0-4. "Is there a subscription?" answer contradicts the site's own Terms
+### P0-4. ✅ Fixed — subscription answer now distinguishes base app and optional Background Sync
 **Current text**: *"$9.99 one-time: no subscription and unlimited repositories"* (plus 7 more "No subscription" instances: OG/twitter meta, hero strip ×2, price card, closing CTA).
-**Reality**: `site/terms.html` (§"GitSync Assist Safety and Subscription Terms") and `privacy.html` already document the **optional GitSync Assist auto-renewable subscription**. The absolute "no subscription" copy contradicts the same domain's legal pages. (Note: per `docs/premium-v1-completion-audit.md`, Assist products are **not yet live in ASC** — so today's buyer literally cannot buy a subscription, but the app build contains the Assist UI.)
-**Fix options** (decision D-1): (a) "Everything on this page is in the one-time purchase. An optional Assist subscription adds best-effort background pull automation — never required for any Git feature." (b) stay silent until Assist launches, but soften absolutes to "No subscription **required**". Option (a) matches the app UI's own framing and pre-emips confusion.
+**Reality**: `site/terms.html` (§"Background Sync Safety and Subscription Terms") and `privacy.html` already document the **optional Background Sync auto-renewable subscription**. The absolute "no subscription" copy contradicts the same domain's legal pages. (Note: per `docs/premium-v1-completion-audit.md`, Background Sync products are **not yet live in ASC** — so today's buyer literally cannot buy a subscription, but the app build contains the Background Sync UI.)
+**Applied 2026-08-30**: landing copy now says the full manual Git client is a one-time purchase and the optional Background Sync subscription adds best-effort pull-only updates. No subscription is required for manual Git, Shortcuts, or callbacks.
 
-### P0-5. "Cloud Dependency: Device-to-remote only · no GitSync server" — needs Assist nuance
-**Reality**: true for all manual Git; **false as an absolute** for Assist subscribers (opt-in relay handles wake hints only — no repo content/credentials, per privacy policy).
-**Fix**: "Manual Git: device→remote, no server. Optional Assist: opt-in relay relays wake hints only — never repo content or credentials."
+### P0-5. ✅ Fixed — cloud-dependency copy now includes Background Sync relay nuance
+**Reality**: true for all manual Git; **false as an absolute** for Background Sync subscribers (opt-in relay handles wake hints only — no repo content/credentials, per privacy policy).
+**Applied 2026-08-30**: "Manual Git: device→remote, no server. Optional Background Sync: opt-in relay handles wake hints and minimal operational metadata only — never repository content or credentials."
 
 ### P0-6 (minor). Spec "Storage Locations: App Documents · iCloud Drive · OneDrive"
 Naming OneDrive specifically is arbitrary (any Files-provider location works, incl. USB/external on iPad). **Fix**: "App Documents · any Files-app location". Also consider adding the default path (`On My iPhone › GitSync.md`) since the FAQ and blog lean on it.
@@ -73,11 +73,11 @@ Naming OneDrive specifically is arbitrary (any Files-provider location works, in
 ## P2 — Expansion opportunities
 
 1. **New capability cards** to round the grid to 12: "Self-hosted & SSH", "Git LFS", "Shortcuts & Automations", "Conflict Resolution" (promote from card-07 fragment). Grid is `002 — Capabilities` (currently 9).
-2. **Assist section** (after D-1): a short "Optional automation" block mirroring the app's honest framing (wake hints → clean fast-forward only; never stages/commits/merges/pushes).
+2. ✅ **Background Sync marketing**: capability card, specification row, FAQ, pricing notes, metadata descriptions, and CTAs now mirror the app's honest framing (best-effort wake hints → clean fast-forward pulls only; never stages/commits/merges/rebases/pushes; iOS controls timing).
 3. **Blog pipeline** (index already says "More soon"): (a) *Self-hosted Git (Forgejo/Gitea) over SSH on iOS* — the 26-locale 2.5.1 release is the hook; (b) *Git LFS vaults/media on iOS*; (c) *Automate pulls with Apple Shortcuts*; (d) release writeups.
-4. **FAQ additions**: SSH host-key trust ("first connect shows a SHA-256 fingerprint you approve; changes are blocked"), LFS ("downloaded automatically; you're prompted before big binaries are tracked"), multi-account, Assist, local-repo-add, removal behavior.
+4. **FAQ additions**: SSH host-key trust ("first connect shows a SHA-256 fingerprint you approve; changes are blocked"), LFS ("downloaded automatically; you're prompted before big binaries are tracked"), multi-account, Background Sync, local-repo-add, removal behavior.
 5. **Spec table rows**: "Requires iOS 17+", "Pull modes: fast-forward · rebase", "SSH keys: Ed25519 · ECDSA · RSA (host-key verification)", "Git LFS: hydration · locking · auto-track", "Automation: x-callback-url · App Shortcuts".
-6. **OG/twitter meta descriptions** still say "$9.99 one-time. No subscription." — must move in lockstep with D-1.
+6. ✅ **OG/twitter meta descriptions** now distinguish the $9.99 one-time manual Git client from the optional Background Sync subscription.
 7. **Screenshot freshness check**: `site/screenshots/` alt texts describe current screens, but confirm visuals match the shipped "Brutal" design system and latest UI (conflict editor, branches/tags sheet are strong candidates to add).
 8. **Trust/SEO nits**: blog Feb-2026 post's line "the same C library that powers GitHub Desktop" is unverifiable (GitHub Desktop ships git CLI via dugite; source check inconclusive) — replace with a safe formulation ("libgit2, the open-source C implementation of Git, embedded in countless clients"). Consider `lastmod` refresh + JSON-LD `SoftwareApplication` with `featureList` when cards land.
 
@@ -85,7 +85,7 @@ Naming OneDrive specifically is arbitrary (any Files-provider location works, in
 
 ## Decisions needed (blocking final copy)
 
-- **D-1 Assist positioning — DECIDED 2026-08-22: stay subscription-silent.** The subscription is on the fence and may not ship; the site will not mention Assist for now. "$9.99 one-time / no subscription" copy stays as-is (accurate for the current App Store state). ⚠️ If Assist ever launches, P0-4/P0-5 and the "No subscription" copy (7 locations incl. OG/twitter meta) MUST be revisited — the app binary and terms.html already describe it.
+- **D-1 Background Sync positioning — SUPERSEDED 2026-08-30: market it as optional.** The site now clearly separates the $9.99 one-time manual Git client from the optional auto-renewable Background Sync subscription. Copy describes pull-only clean fast-forward attempts, best-effort GitHub wake hints, foreground reconciliation, and iOS-controlled timing; it never presents background execution as guaranteed or real time.
 - **D-2 Card grid — DECIDED 2026-08-22: grow 9 → 12 cards** (Self-hosted & SSH, Git LFS, Conflict Resolution) + fold smaller features into existing cards and FAQ.
 - **D-3 Blog — DECIDED 2026-08-22: proceed.** Flagship post (self-hosted Git over SSH) written first; LFS and Shortcuts guides queued behind it.
 
@@ -102,12 +102,12 @@ Naming OneDrive specifically is arbitrary (any Files-provider location works, in
 | 5 Git LFS | ❌ | ❌ | ❌ | ❌ | **Entire category absent** |
 | 6 Editor & files | ✅ | ✅ (fixed) | — | ✅ | Good |
 | 7 Automation | ⚠️ x-callback only | ⚠️ x-callback only | — | ✅ | **Shortcuts absent** |
-| 8 Assist | ❌ | ❌ (contradicted) | ❌ (contradicted) | — | Decision D-1 |
+| 8 Background Sync | ✅ optional capability | ✅ qualified pricing/relay rows | ✅ behavior + subscription answer | ✅ Obsidian guide | Pull-only, best-effort, and iOS timing are explicit |
 | 9 Onboarding/UX | — | — | — | — | Demo-mode/ghost re-add optional mentions |
 | 10 Diagnostics | ❌ | — | — | — | Optional support angle |
 | 11 Analytics/privacy | — | ✅ (fixed) | ✅ | — | ✅ (privacy policy current) |
 | 12 Localization | — | ✅ (added) | — | — | Could be a marketing point |
 | 13 Platform | ✅ iPhone/iPad | ⚠️ no iOS version | ✅ | ✅ | Add iOS 17+ |
-| 14 Infra/credibility | ✅ source callout | ✅ | ✅ no-middleman | — | Cloud-dependency row needs Assist nuance |
+| 14 Infra/credibility | ✅ source callout | ✅ | ✅ content-path boundary | — | Background Sync relay nuance added |
 
-**Verified accurate elsewhere**: hero claims, price strip mechanics, Keychain claims, no-middleman architecture (for manual Git), 5-step workflow, Obsidian use-case block, x-callback quick-start + params (now complete), both blog posts' technical content (except the libgit2/GitHub Desktop line), sitemap URLs, terms.html (already Assist-aware), privacy.html (already covers analytics + Assist + web analytics gate).
+**Verified accurate elsewhere**: hero claims, price strip mechanics, Keychain claims, no-middleman architecture (for manual Git), 5-step workflow, Obsidian use-case block, x-callback quick-start + params (now complete), both blog posts' technical content (except the libgit2/GitHub Desktop line), sitemap URLs, terms.html (already Background Sync-aware), privacy.html (already covers analytics + Background Sync + web analytics gate).

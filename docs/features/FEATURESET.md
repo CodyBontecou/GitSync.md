@@ -1,7 +1,7 @@
 # GitSync.md — Master Featureset
 
 **Status**: Baseline v1.0 (draft) — every row verified against source; see `inventory/*.md` for mechanical detail and citations.
-**Tier legend**: Core = paid-up-front app · Assist = GitSync Assist subscription · Dev = developer infrastructure · Debug = debug builds only.
+**Tier legend**: Core = paid-up-front app · Background Sync = Background Sync subscription · Dev = developer infrastructure · Debug = debug builds only.
 
 ## 1. Repositories & storage
 
@@ -115,21 +115,21 @@
 | 7.3 | Foreground change detection & re-validation on scene activation | Core | `Sync_mdApp` |
 | 7.4 | StoreKit review request after first clone (2s delay) | Core | `ContentView` §1.7 |
 
-## 8. GitSync Assist (subscription)
+## 8. Background Sync (subscription)
 
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
-| 8.1 | Products: monthly $1.99 / annual $14.99 (no trials) | Assist | `GitSyncAssist.storekit` |
-| 8.2 | StoreKit 2 purchases (JWS-verified, appAccountToken-bound), restore, manage | Assist | `PremiumStorefront` |
-| 8.3 | Pull-only automation: one explicit installation-level opt-in covers current/future managed repos; clean fast-forward on each configured branch only (never stage/commit/merge/rebase/force-push/push) | Assist | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryPullRunner` |
-| 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, non-GitHub/unresolved repos are foreground-only; per-repo exclusion | Assist | `reconcileAutomaticRepository`, relay routes |
-| 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate Assist branch | Assist | `RepoAssistSettings`, `SettingsView` |
-| 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Assist | `PremiumAssistSummary`, production settings views |
-| 8.7 | StoreKit verification service (Apple roots pinned, OCSP, fail-closed) | Assist | `storekit-verifier` |
-| 8.8 | App Store Server Notifications v2 (expiry/refund/revoke handling) | Assist | relay `appStoreNotification` |
-| 8.9 | Relay data deletion (terminal, reinstall-durable barrier, server tombstone/removal with hashed receipt and retention-scoped operational records) | Assist | `deleteRelayData`, `DELETE /v1/installation` |
-| 8.10 | Kill switch + retention crons + DLQ + monitoring | Assist | relay KILL_SWITCH, crons |
-| 8.11 | Privacy: app API requests never send names/URLs/contents/local paths/credentials; signed GitHub webhooks are transiently processed, with only numeric repository ID, branch, and opaque operational IDs extracted/persisted; APNs is opaque | Assist | `premium-v1-app-privacy.md` |
+| 8.1 | Products: monthly $1.99 / annual $14.99 (no trials) | Background Sync | `GitSyncAssist.storekit` |
+| 8.2 | StoreKit 2 purchases (JWS-verified, appAccountToken-bound), restore, manage | Background Sync | `PremiumStorefront` |
+| 8.3 | Pull-only automation: one explicit installation-level opt-in covers current/future managed repos; clean fast-forward on each configured branch only (never stage/commit/merge/rebase/force-push/push) | Background Sync | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryPullRunner` |
+| 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, non-GitHub/unresolved repos are foreground-only; per-repo exclusion | Background Sync | `reconcileAutomaticRepository`, relay routes |
+| 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate automatic-sync branch setting | Background Sync | `RepoAssistSettings`, `SettingsView` |
+| 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Background Sync | `PremiumAssistSummary`, production settings views |
+| 8.7 | StoreKit verification service (Apple roots pinned, OCSP, fail-closed) | Background Sync | `storekit-verifier` |
+| 8.8 | App Store Server Notifications v2 (expiry/refund/revoke handling) | Background Sync | relay `appStoreNotification` |
+| 8.9 | Relay data deletion (terminal, reinstall-durable barrier, server tombstone/removal with hashed receipt and retention-scoped operational records) | Background Sync | `deleteRelayData`, `DELETE /v1/installation` |
+| 8.10 | Kill switch + retention crons + DLQ + monitoring | Background Sync | relay KILL_SWITCH, crons |
+| 8.11 | Privacy: app API requests never send names/URLs/contents/local paths/credentials; signed GitHub webhooks are transiently processed, with only numeric repository ID, branch, and opaque operational IDs extracted/persisted; APNs is opaque | Background Sync | `premium-v1-app-privacy.md` |
 
 ## 9. Onboarding & account UX
 
@@ -163,14 +163,14 @@
 
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
-| 12.1 | 26 languages, 755 localized strings | Core | `Localizable.xcstrings` |
+| 12.1 | 26 languages, 922 localized strings | Core | `Localizable.xcstrings` |
 | 12.2 | App Store metadata localization (release notes per language, pipeline + reports) | Dev | `localization/` |
 
 ## 13. Platform & compliance
 
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
-| 13.1 | Privacy manifest (no tracking; analytics + Assist declared) | Core | `PrivacyInfo.xcprivacy`, test |
+| 13.1 | Privacy manifest (no tracking; analytics + Background Sync declared) | Core | `PrivacyInfo.xcprivacy`, test |
 | 13.2 | Entitlements: keychain, background remote-notification | Core | `Sync_md.entitlements`, Info.plist |
 | 13.3 | iPad support (single-column layouts; no dedicated split-view) | Core | ui-views gap note |
 | 13.4 | iOS 17+ target, libgit2 1.9.2 xcframework w/ libssh2+OpenSSL memory credentials | Dev | build script |
@@ -201,4 +201,4 @@ Version-by-version shipped-feature history (2.4.1 delete-cloned-repos, 2.4.5 Sho
 - No force-push, branch rename, remote-branch checkout, cherry-pick initiation, submodule/worktree support, fetch prune, multi-ref push.
 - No in-editor search, line numbers, keyboard accessory toolbar; no file move UI.
 - No dedicated iPad split-view layouts.
-- Assist never stages/commits/rebases/merges/resolves/force-pushes/pushes (by design, enforced + tested).
+- Background Sync never stages/commits/rebases/merges/resolves/force-pushes/pushes (by design, enforced + tested).

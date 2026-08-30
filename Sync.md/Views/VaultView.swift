@@ -275,7 +275,7 @@ struct VaultView: View {
         }
     }
 
-    // MARK: - Assist Health
+    // MARK: - Background Sync Health
 
     private func assistHealthCard(_ health: RepoAssistHealth) -> some View {
         BCard(padding: 0) {
@@ -285,7 +285,7 @@ struct VaultView: View {
                     .foregroundStyle(health.kind == .attention || health.kind == .failed
                                      ? Color.brutalWarning : Color.brutalSuccess)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("GITSYNC ASSIST")
+                    Text("BACKGROUND SYNC")
                         .font(.system(size: 12, weight: .black, design: .monospaced))
                         .tracking(1)
                     Text(assistHealthLabel(health))

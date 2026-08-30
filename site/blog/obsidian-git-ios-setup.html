@@ -697,11 +697,11 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
       <li><strong>Obsidian Git: Push</strong> — push commits to GitHub</li>
     </ul>
 
-    <h3>What about auto-sync?</h3>
+    <h3>What about automatic syncing?</h3>
 
     <p>The plugin does have automatic settings — auto commit-and-sync interval, auto push interval, auto pull interval — and they work, but <strong>we recommend leaving them off on iPhone</strong>. The plugin's mobile Git engine is experimental and memory-limited on iOS, its timers only fire while Obsidian is open in the foreground, and two apps driving the same <code>.git</code> on independent schedules is far less predictable than one owner.</p>
 
-    <p>Instead, let <strong>GitSync.md be the single engine</strong> for automated sync — trigger the <code>syncmd://x-callback-url/sync</code> URL from Step 7 for one-tap round-trips. Edit a note on your phone, sync once, and it shows up on your desktop. Edit on your desktop, sync on your phone. <strong>Real Git, real version history, no sync conflicts.</strong></p>
+    <p>Instead, let <strong>GitSync.md be the single Git engine</strong>. Trigger the <code>syncmd://x-callback-url/sync</code> URL from Step 7 for an explicit one-tap round trip that can pull, commit, and push. If you only want incoming changes pulled while the app is closed, optional <strong>Background Sync</strong> attempts clean fast-forward pulls whenever iOS grants background time. GitHub events provide best-effort wake hints, but iOS controls delivery and timing, so background updates are not guaranteed or real time. Background Sync never commits, merges, rebases, or pushes.</p>
 
     <div class="callout tip">
       <span class="callout-label">Tip</span>
@@ -715,8 +715,8 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
     <ul>
       <li><strong>Full compatibility</strong> — any tool that reads <code>.git</code> directories works out of the box</li>
       <li><strong>Complete history</strong> — your entire commit log is on your device</li>
-      <li><strong>No middleman</strong> — your iPhone talks directly to GitHub, no third-party cloud in between</li>
-      <li><strong>No subscription</strong> — unlike Obsidian Sync ($8/mo), this is a one-time purchase + your existing GitHub account</li>
+      <li><strong>No content middleman</strong> — manual Git talks directly to GitHub; the optional Background Sync relay handles entitlement, wake, and operational metadata, never repository contents or Git credentials</li>
+      <li><strong>Manual Git stays included</strong> — the base app is a one-time purchase; Background Sync is an optional subscription, not a requirement for clone, pull, commit, or push</li>
     </ul>
 
     <h2>Troubleshooting</h2>
@@ -744,10 +744,10 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
       <li>Keep the plugin's auto-sync timers off and use <code>syncmd://x-callback-url/sync</code> for one-tap syncing</li>
     </ol>
 
-    <p>No complex configuration, no SSH keys, no cloud middleman. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>
+    <p>No complex configuration and no cloud service in the path of your repository content. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>
 
     <p style="margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--grey-2);">
-      <strong>GitSync.md</strong> is available on the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store for $9.99 one-time</a> and is <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">open source on GitHub</a>.
+      <strong>GitSync.md</strong> is available on the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store for a $9.99 one-time base-app purchase</a> and is <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">open source on GitHub</a>. Optional Background Sync is a separate auto-renewable subscription.
     </p>
 
   </div>

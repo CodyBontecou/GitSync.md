@@ -138,14 +138,14 @@ struct AppSettingsView: View {
 
                         // Optional subscription. Existing manual Git, Shortcuts,
                         // callbacks, and local repository features remain available.
-                        // Hidden behind FeatureFlags.gitSyncAssistEnabled until the
-                        // tier is ready to ship.
+                        // Hidden behind the legacy gitSyncAssistEnabled feature flag until the
+                        // Background Sync tier is ready to ship.
                         if FeatureFlags.gitSyncAssistEnabled {
-                            settingsSection(title: String(localized: "GitSync Assist")) {
+                            settingsSection(title: String(localized: "Background Sync")) {
                                 actionRow(
                                     icon: "⚡️",
-                                    title: String(localized: "GitSync Assist"),
-                                    subtitle: String(localized: "Best-effort pull-only automation for all repositories")
+                                    title: String(localized: "Background Sync"),
+                                    subtitle: String(localized: "Safe pull-only updates when iOS allows background work")
                                 ) { showPremiumSettings = true }
                             }
                         }

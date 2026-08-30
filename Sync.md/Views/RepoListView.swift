@@ -465,7 +465,7 @@ struct RepoListView: View {
                        (repo.assist.health.kind == .attention || repo.assist.health.kind == .failed) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(Color.brutalWarning)
-                            .accessibilityLabel("GitSync Assist needs attention")
+                            .accessibilityLabel("Background Sync needs attention")
                     }
 
                     Text("→")
@@ -732,9 +732,9 @@ struct RepoListView: View {
     }
 }
 
-// MARK: - Assist Upsell Surfaces
+// MARK: - Background Sync Upsell Surfaces
 
-/// One-time, dismissible discovery banner for the optional GitSync Assist
+/// One-time, dismissible discovery banner for the optional Background Sync
 /// subscription. Shown only while the feature flag is on, the user manages at
 /// least one repository, and neither an active subscription nor enabled
 /// automation exists. Dismissal is permanent. Manual Git features are never
@@ -765,10 +765,10 @@ private struct AssistUpsellBanner: View {
                             .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Automatic sync is available")
+                            Text("Background Sync is available")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundStyle(Color.brutalText)
-                            Text("GitSync Assist keeps your repositories current with safe, pull-only automation. Optional subscription.")
+                            Text("Get safe, pull-only updates in the background whenever iOS allows. Optional subscription.")
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalTextMid)
                         }
@@ -790,7 +790,7 @@ private struct AssistUpsellBanner: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(String(localized: "Learn more about GitSync Assist"))
+                    .accessibilityLabel(String(localized: "Learn more about Background Sync"))
 
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -804,7 +804,7 @@ private struct AssistUpsellBanner: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(String(localized: "Dismiss GitSync Assist banner"))
+                    .accessibilityLabel(String(localized: "Dismiss Background Sync banner"))
                 }
             }
             .padding(.horizontal, 20)
@@ -833,7 +833,7 @@ private struct AssistUpsellMilestoneSheet: View {
                 Text("Pulling a lot?")
                     .font(.system(size: 22, weight: .black))
                     .foregroundStyle(Color.brutalText)
-                Text("GitSync Assist can keep every repository up to date automatically — clean, pull-only sync with GitHub event wakes. Optional subscription; all manual features stay included.")
+                Text("Background Sync can pull safe, fast-forward updates while the app is closed whenever iOS allows background work. GitHub push events provide best-effort wake hints. Optional subscription; all manual features stay included.")
                     .font(.system(size: 14, design: .monospaced))
                     .foregroundStyle(Color.brutalTextMid)
                     .multilineTextAlignment(.center)

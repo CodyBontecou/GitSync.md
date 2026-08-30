@@ -359,7 +359,7 @@ final class AppState {
     var assistInventoryChangeHandler: (@MainActor @Sendable () -> Void)?
     var assistRepositoryRemovalHandler: (@MainActor @Sendable (RepoConfig) -> Void)?
 
-    // MARK: - Assist upsell state
+    // MARK: - Background Sync upsell state
 
     /// Successful manual pull count used by the one-time milestone upsell.
     var assistManualPullSuccessCount: Int = 0
@@ -2595,12 +2595,12 @@ final class AppState {
                     push: pushResult,
                     message: String(localized: "Synced — no local changes")
                 )
-            case .authenticationOrTrustRequired(let message, let trustError):
+            case .authenticationOrTrustRequired(let localizedDescription, let trustError):
                 return RepositorySyncResult(
-                    outcome: .authenticationOrTrustRequired(message: message, trustError: trustError),
+                    outcome: .authenticationOrTrustRequired(message: localizedDescription, trustError: trustError),
                     pull: pullResult,
                     push: pushResult,
-                    message: message
+                    message: localizedDescription
                 )
             case .failed(let message):
                 return RepositorySyncResult(
@@ -2651,12 +2651,12 @@ final class AppState {
                 message: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
             )
 
-        case .authenticationOrTrustRequired(let message, let trustError):
+        case .authenticationOrTrustRequired(let localizedDescription, let trustError):
             return RepositorySyncResult(
-                outcome: .authenticationOrTrustRequired(message: message, trustError: trustError),
+                outcome: .authenticationOrTrustRequired(message: localizedDescription, trustError: trustError),
                 pull: pullResult,
                 push: nil,
-                message: message
+                message: localizedDescription
             )
 
         case .unavailable(let message), .failed(let message):
@@ -3453,7 +3453,7 @@ final class AppState {
     private func setPullOutcome(repoID: UUID, kind: PullOutcomeKind, message: String) {
         pullOutcomeByRepo[repoID] = PullOutcomeState(kind: kind, message: message, date: Date())
         // Successful manual pulls (UI pull, pull-with-rebase, Shortcuts) drive
-        // the one-time Assist upsell milestone. Assist automation records
+        // the one-time Background Sync upsell milestone. Background Sync records
         // through `recordAssist`, never here.
         switch kind {
         case .upToDate, .fastForwarded, .rebased:

@@ -113,7 +113,7 @@ enum PremiumStorefrontError: LocalizedError {
         switch self {
         case .productNotFound: String(localized: "Subscription product is unavailable.")
         case .unverifiedTransaction: String(localized: "The App Store transaction could not be verified.")
-        case .missingAccountToken: String(localized: "GitSync Assist could not bind this purchase to the current installation.")
+        case .missingAccountToken: String(localized: "Background Sync could not bind this purchase to the current installation.")
         }
     }
 }

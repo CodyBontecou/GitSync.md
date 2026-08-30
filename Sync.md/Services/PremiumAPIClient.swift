@@ -35,11 +35,11 @@ enum PremiumAPIError: LocalizedError {
     case notConfigured, invalidResponse, rejected(Int), invalidCredential, transport(String)
     var errorDescription: String? {
         switch self {
-        case .notConfigured: String(localized: "GitSync Assist relay is not configured.")
+        case .notConfigured: String(localized: "Background Sync relay is not configured.")
         case .invalidResponse: String(localized: "The relay returned an invalid response.")
         case .rejected(let status): String(localized: "The relay rejected the request (HTTP \(status)).")
         case .invalidCredential: String(localized: "The relay authorization is invalid or expired.")
-        case .transport(let message): String(localized: "GitSync Assist could not reach the relay: \(message)")
+        case .transport(let message): String(localized: "Background Sync could not reach the relay: \(message)")
         }
     }
 }

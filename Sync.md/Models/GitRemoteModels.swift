@@ -154,7 +154,7 @@ struct GitRemoteURL: Equatable, Sendable {
         return repoName
     }
 
-    /// Exact GitHub owner/name target accepted by Assist. This deliberately
+    /// Exact GitHub owner/name target accepted by Background Sync. This deliberately
     /// rejects lookalike hosts and paths with extra components.
     var canonicalGitHubFullName: String? {
         guard isGitHub, pathComponents.count == 2 else { return nil }

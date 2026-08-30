@@ -1,4 +1,4 @@
-# GitSync Assist premium relay
+# Background Sync premium relay
 
 A standalone Cloudflare Worker for best-effort GitHub push wake hints. The app API never sends repository names/URLs/content/local paths/credentials. Signed GitHub webhook bodies pass transiently through verification and may contain repository names/URLs, commit messages, paths, and author metadata; the relay does not log or persist those descriptive fields. It extracts numeric repository ID and branch, records opaque D1 delivery/outbox state, and sends opaque silent APNs notifications through a Queue. APNs is a wake hint only; delivery and background execution are not guaranteed.
 

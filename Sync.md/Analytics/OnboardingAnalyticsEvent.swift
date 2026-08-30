@@ -227,6 +227,7 @@ nonisolated enum OnboardingAnalyticsStep: String, CaseIterable, Sendable {
     case welcome
     case editAnywhere = "edit_anywhere"
     case fullGit = "full_git"
+    case backgroundSync = "background_sync"
     case accountChoice = "account_choice"
     case githubSignIn = "github_sign_in"
     case personalAccessToken = "personal_access_token"

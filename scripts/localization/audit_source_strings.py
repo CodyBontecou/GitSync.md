@@ -79,7 +79,7 @@ def main() -> None:
                         "file": str(path),
                         "line": line_number,
                         "source": line.strip(),
-                        "classification": "raw persisted Assist status message",
+                        "classification": "raw persisted Background Sync status message",
                     }
                 )
             if RAW_AUTH_RESULT.search(line) and "localizedDescription" not in line and "String(localized:" not in line:

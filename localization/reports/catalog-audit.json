@@ -29,13 +29,13 @@
     "zh-Hant"
   ],
   "counts": {
-    "catalogEntries": 924,
-    "activeEntries": 846,
-    "translatableEntries": 813,
-    "expectedTranslatedCells": 21150,
-    "translatedCells": 21150,
-    "allowedIdenticalCells": 825,
-    "localizedTechnicalEquivalentCells": 320,
+    "catalogEntries": 922,
+    "activeEntries": 922,
+    "translatableEntries": 881,
+    "expectedTranslatedCells": 23050,
+    "translatedCells": 23050,
+    "allowedIdenticalCells": 1025,
+    "localizedTechnicalEquivalentCells": 327,
     "failureCount": 0
   },
   "failures": {
@@ -179,6 +179,131 @@
         "value": ""
       },
       {
+        "key": "!",
+        "locale": "ar",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "da",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "de",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "es",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "fi",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "fr",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "he",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "hi",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "hu",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "id",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "it",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "ja",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "ko",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "nb",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "nl",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "pl",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "pt-BR",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "ru",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "sv",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "th",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "tr",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "uk",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "vi",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "zh-Hans",
+        "value": "!"
+      },
+      {
+        "key": "!",
+        "locale": "zh-Hant",
+        "value": "!"
+      },
+      {
         "key": "%@",
         "locale": "ar",
         "value": "%@"
@@ -304,6 +429,256 @@
         "value": "%@"
       },
       {
+        "key": "%@, %@ %@",
+        "locale": "ar",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "da",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "de",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "es",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "fi",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "fr",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "he",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "hi",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "hu",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "id",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "it",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "ja",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "ko",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "nb",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "nl",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "pl",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "pt-BR",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "ru",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "sv",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "th",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "tr",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "uk",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "vi",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "zh-Hans",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@",
+        "locale": "zh-Hant",
+        "value": "%@, %@ %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "ar",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "da",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "de",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "es",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "fi",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "fr",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "he",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "hi",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "hu",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "id",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "it",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "ja",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "ko",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "nb",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "nl",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "pl",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "pt-BR",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "ru",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "sv",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "th",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "tr",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "uk",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "vi",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "zh-Hans",
+        "value": "%@, %@ %@, %@"
+      },
+      {
+        "key": "%@, %@ %@, %@",
+        "locale": "zh-Hant",
+        "value": "%@, %@ %@, %@"
+      },
+      {
         "key": "%@/%@",
         "locale": "ar",
         "value": "%1$@/%2$@"
@@ -429,6 +804,131 @@
         "value": "%1$@/%2$@"
       },
       {
+        "key": "%@: %@",
+        "locale": "ar",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "da",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "de",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "es",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "fi",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "fr",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "he",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "hi",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "hu",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "id",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "it",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "ja",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "ko",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "nb",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "nl",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "pl",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "pt-BR",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "ru",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "sv",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "th",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "tr",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "uk",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "vi",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "zh-Hans",
+        "value": "%@: %@"
+      },
+      {
+        "key": "%@: %@",
+        "locale": "zh-Hant",
+        "value": "%@: %@"
+      },
+      {
         "key": "%lld",
         "locale": "ar",
         "value": "%lld"
@@ -929,6 +1429,381 @@
         "value": "@%@"
       },
       {
+        "key": "BACKGROUND",
+        "locale": "ar",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "da",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "de",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "es",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "fi",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "fr",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "he",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "hi",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "hu",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "id",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "it",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "ja",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "ko",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "nb",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "nl",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "pl",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "pt-BR",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "ru",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "sv",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "th",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "tr",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "uk",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "vi",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "zh-Hans",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND",
+        "locale": "zh-Hant",
+        "value": "BACKGROUND"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "ar",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "da",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "de",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "es",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "fi",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "fr",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "he",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "hi",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "hu",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "id",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "it",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "ja",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "ko",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "nb",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "nl",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "pl",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "pt-BR",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "ru",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "sv",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "th",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "tr",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "uk",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "vi",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "zh-Hans",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "BACKGROUND SYNC",
+        "locale": "zh-Hant",
+        "value": "BACKGROUND SYNC"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "ar",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "da",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "de",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "es",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "fi",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "fr",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "he",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "hi",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "hu",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "id",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "it",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "ja",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "ko",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "nb",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "nl",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "pl",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "pt-BR",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "ru",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "sv",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "th",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "tr",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "uk",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "vi",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "zh-Hans",
+        "value": "Background Sync"
+      },
+      {
+        "key": "Background Sync",
+        "locale": "zh-Hant",
+        "value": "Background Sync"
+      },
+      {
         "key": "Fast-forwarded",
         "locale": "ar",
         "value": "Fast-forwarded"
@@ -1179,131 +2054,6 @@
         "value": "GIT"
       },
       {
-        "key": "GITSYNC ASSIST",
-        "locale": "ar",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "da",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "de",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "es",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "fi",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "fr",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "he",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "hi",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "hu",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "id",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "it",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "ja",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "ko",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "nb",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "nl",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "pl",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "pt-BR",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "ru",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "sv",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "th",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "tr",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "uk",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "vi",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "zh-Hans",
-        "value": "GITSYNC ASSIST"
-      },
-      {
-        "key": "GITSYNC ASSIST",
-        "locale": "zh-Hant",
-        "value": "GITSYNC ASSIST"
-      },
-      {
         "key": "GITSYNC.MD",
         "locale": "ar",
         "value": "GITSYNC.MD"
@@ -1429,129 +2179,129 @@
         "value": "GITSYNC.MD"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "ar",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "da",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "de",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "es",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "fi",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "fr",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "he",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "hi",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "hu",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "id",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "it",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "ja",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "ko",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "nb",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "nl",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "pl",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "pt-BR",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "ru",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "sv",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "th",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "tr",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "uk",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "vi",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "zh-Hans",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
-        "key": "GitSync Assist",
+        "key": "SYNC",
         "locale": "zh-Hant",
-        "value": "GitSync Assist"
+        "value": "SYNC"
       },
       {
         "key": "filename.ext",
@@ -3927,6 +4677,256 @@
         "key": "📋",
         "locale": "zh-Hant",
         "value": "📋"
+      },
+      {
+        "key": "📦",
+        "locale": "ar",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "da",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "de",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "es",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "fi",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "fr",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "he",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "hi",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "hu",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "id",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "it",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "ja",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "ko",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "nb",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "nl",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "pl",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "pt-BR",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "ru",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "sv",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "th",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "tr",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "uk",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "vi",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "zh-Hans",
+        "value": "📦"
+      },
+      {
+        "key": "📦",
+        "locale": "zh-Hant",
+        "value": "📦"
+      },
+      {
+        "key": "🔍",
+        "locale": "ar",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "da",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "de",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "es",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "fi",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "fr",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "he",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "hi",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "hu",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "id",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "it",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "ja",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "ko",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "nb",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "nl",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "pl",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "pt-BR",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "ru",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "sv",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "th",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "tr",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "uk",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "vi",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "zh-Hans",
+        "value": "🔍"
+      },
+      {
+        "key": "🔍",
+        "locale": "zh-Hant",
+        "value": "🔍"
       },
       {
         "key": "🔒",
@@ -4646,6 +5646,11 @@
         "value": "Merge branch"
       },
       {
+        "key": "Message",
+        "locale": "fr",
+        "value": "Message"
+      },
+      {
         "key": "Name",
         "locale": "de",
         "value": "Name"
@@ -4986,6 +5991,16 @@
         "value": "Pop"
       },
       {
+        "key": "Privacy",
+        "locale": "it",
+        "value": "Privacy"
+      },
+      {
+        "key": "Privacy",
+        "locale": "nl",
+        "value": "Privacy"
+      },
+      {
         "key": "Pull",
         "locale": "da",
         "value": "Pull"
@@ -5079,6 +6094,11 @@
         "key": "Pull ${repository}",
         "locale": "pl",
         "value": "Pull ${repository}"
+      },
+      {
+        "key": "Pull & Push",
+        "locale": "vi",
+        "value": "Pull & Push"
       },
       {
         "key": "Pull All",
@@ -5196,6 +6216,21 @@
         "value": "Push"
       },
       {
+        "key": "Push ${repository}",
+        "locale": "da",
+        "value": "Push ${repository}"
+      },
+      {
+        "key": "Push ${repository}",
+        "locale": "nb",
+        "value": "Push ${repository}"
+      },
+      {
+        "key": "Push ${repository}",
+        "locale": "vi",
+        "value": "Push ${repository}"
+      },
+      {
         "key": "Push Current Branch",
         "locale": "da",
         "value": "Push Current Branch"
@@ -5209,6 +6244,31 @@
         "key": "Push Current Branch",
         "locale": "sv",
         "value": "Push Current Branch"
+      },
+      {
+        "key": "Push Repository",
+        "locale": "fr",
+        "value": "Push Repository"
+      },
+      {
+        "key": "Push Repository",
+        "locale": "he",
+        "value": "Push Repository"
+      },
+      {
+        "key": "Push Repository",
+        "locale": "hi",
+        "value": "Push Repository"
+      },
+      {
+        "key": "Push Repository",
+        "locale": "hu",
+        "value": "Push Repository"
+      },
+      {
+        "key": "Push Repository",
+        "locale": "id",
+        "value": "Push Repository"
       },
       {
         "key": "Rebase",
@@ -5441,119 +6501,94 @@
         "value": "Repository"
       },
       {
-        "key": "SYNC",
+        "key": "Stage All",
+        "locale": "id",
+        "value": "Stage All"
+      },
+      {
+        "key": "Stage All",
+        "locale": "nb",
+        "value": "Stage All"
+      },
+      {
+        "key": "Stash",
+        "locale": "de",
+        "value": "Stash"
+      },
+      {
+        "key": "Stash",
+        "locale": "it",
+        "value": "Stash"
+      },
+      {
+        "key": "Stash",
+        "locale": "nl",
+        "value": "Stash"
+      },
+      {
+        "key": "Status",
         "locale": "da",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "de",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
-        "locale": "he",
-        "value": "SYNC"
-      },
-      {
-        "key": "SYNC",
-        "locale": "hi",
-        "value": "SYNC"
-      },
-      {
-        "key": "SYNC",
-        "locale": "hu",
-        "value": "SYNC"
-      },
-      {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "id",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
-        "locale": "it",
-        "value": "SYNC"
-      },
-      {
-        "key": "SYNC",
-        "locale": "ja",
-        "value": "SYNC"
-      },
-      {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "nb",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "nl",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "pl",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "pt-BR",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
-        "locale": "ru",
-        "value": "SYNC"
-      },
-      {
-        "key": "SYNC",
+        "key": "Status",
         "locale": "sv",
-        "value": "SYNC"
+        "value": "Status"
       },
       {
-        "key": "SYNC",
-        "locale": "th",
-        "value": "SYNC"
+        "key": "Sync Repository",
+        "locale": "fr",
+        "value": "Sync Repository"
       },
       {
-        "key": "SYNC",
-        "locale": "tr",
-        "value": "SYNC"
+        "key": "Sync Repository",
+        "locale": "he",
+        "value": "Sync Repository"
       },
       {
-        "key": "SYNC",
-        "locale": "uk",
-        "value": "SYNC"
+        "key": "Sync Repository",
+        "locale": "hi",
+        "value": "Sync Repository"
       },
       {
-        "key": "SYNC",
-        "locale": "vi",
-        "value": "SYNC"
+        "key": "Sync Repository",
+        "locale": "hu",
+        "value": "Sync Repository"
       },
       {
-        "key": "Stage All",
+        "key": "Sync Repository",
         "locale": "id",
-        "value": "Stage All"
-      },
-      {
-        "key": "Stage All",
-        "locale": "nb",
-        "value": "Stage All"
-      },
-      {
-        "key": "Stash",
-        "locale": "de",
-        "value": "Stash"
-      },
-      {
-        "key": "Stash",
-        "locale": "it",
-        "value": "Stash"
-      },
-      {
-        "key": "Stash",
-        "locale": "nl",
-        "value": "Stash"
+        "value": "Sync Repository"
       },
       {
         "key": "Tags",
@@ -5784,10 +6819,10 @@
   },
   "compilerExtractionCoverage": {
     "status": "checked",
-    "root": "/tmp/gitsync-assist-localization-derived/Build/Intermediates.noindex/Sync.md.build/Debug-iphonesimulator/Sync.md.build/Objects-normal/arm64",
-    "stringsdataFiles": 69,
-    "sourceFiles": 66,
-    "extractedKeys": 846
+    "root": "/tmp/gitsync-rebrand-clean-build/Build/Intermediates.noindex/Sync.md.build/Debug-iphonesimulator/Sync.md.build/Objects-normal/arm64",
+    "stringsdataFiles": 72,
+    "sourceFiles": 69,
+    "extractedKeys": 922
   },
   "passed": true
 }

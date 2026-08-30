@@ -62,7 +62,7 @@ All: `action`, `status=ok`, plus:
 3. Push staging: 8 stage passes (~250ms apart) to absorb Obsidian rename = copy+delete delay, per-entry fallback staging (`stage(path:oldPath:)`, skip `"<unknown>"`); errors `commitFailed("Could not stage local file changes before push.")` or `LocalGitError.noChanges`.
 4. Success: banner ~1.5s → redirect (params appended to existing queryItems) → cleanup 300ms. Error: banner ~2s → redirect `x-error ?? x-success`.
 
-## 3. Background Sync (Premium "Assist")
+## 3. Background Sync (legacy internal `Assist` identifiers)
 
 Source: `Sync.md/Services/BackgroundSyncCoordinator.swift` (entire file).
 
@@ -71,7 +71,7 @@ Source: `Sync.md/Services/BackgroundSyncCoordinator.swift` (entire file).
 - Eligibility: exact GitHub repositories covered by linked GitHub App installations receive opaque live enrollments and are eligible for best-effort event wakes. Non-GitHub and unresolved/uncovered GitHub repositories stay foreground-only (`foregroundOnly`); they can run only during foreground reconciliation. APNs timing/execution remains controlled by iOS and is neither guaranteed nor truly real time.
 - Triggers: (a) silent APNs push → `PremiumSilentPush.parse(userInfo)` with `channel` + `hintID`; gated on global mode, active entitlement, and a repo with `assist.enabled && assist.channel == push.channel`; duplicate hints deduped via 256-entry LRU. (b) Foreground `reconcileForeground()` first reconciles all non-excluded repositories and then attempts assist-enabled repos — called from app startup/`scenePhase == .active`.
 - Device registration is constant-size (`installation`, APNs token/environment, monotonic generation), independent of repository count. The relay derives delivery targets by joining each channel's live enrollment to devices for that installation; it does not trust a client-uploaded channel list for routing.
-- Per-repo policies (`RepoAssistSettings`): `excludedFromAutomaticSync`, `networkPolicy == .wifiOnly` (NWPathMonitor `SystemBackgroundSyncConditions`), and `powerPolicy == .externalPowerOnly` (batteryState charging/full). The automatic branch is `RepoConfig.branch`; the old duplicate Assist branch editor is not a production entry point. Policy violations → `.deferred("Waiting for Wi-Fi."/"Waiting for external power.")` recorded as health `.deferred`.
+- Per-repo policies (`RepoAssistSettings`): `excludedFromAutomaticSync`, `networkPolicy == .wifiOnly` (NWPathMonitor `SystemBackgroundSyncConditions`), and `powerPolicy == .externalPowerOnly` (batteryState charging/full). The automatic branch is `RepoConfig.branch`; the old duplicate automatic-sync branch editor is not a production entry point. Policy violations → `.deferred("Waiting for Wi-Fi."/"Waiting for external power.")` recorded as health `.deferred`.
 - Dispositions: `.completed(RepositoryPullResult)` / `.deferred(String)` / `.ignored`. Per-repo in-flight dedupe (generation-keyed `Flight`); `cancelPush(userInfo:)`, `cancel(repoID:)`, `cancelAll()`.
 - Health (`RepoAssistHealth`): kinds updated/upToDate/attention/failed/deferred; attention reasons localChanges, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, failed; lastSuccessDate/commitSHA preserved across failures. `AppState.recordAssist` updates gitState + invalidates commit history caches.
 

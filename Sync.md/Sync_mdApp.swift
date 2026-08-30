@@ -86,7 +86,7 @@ struct Sync_mdApp: App {
                     if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
                         // Terminal deletion is installation safety state, not an
                         // enabled-feature path. Retry it even in a release where
-                        // Assist remains gated off.
+                        // Background Sync remains gated off.
                         await premiumRuntime.recoverPendingDeletion()
                         guard !Task.isCancelled else { return }
                         if FeatureFlags.gitSyncAssistEnabled {

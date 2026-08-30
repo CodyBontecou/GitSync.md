@@ -4,7 +4,7 @@ import Notelet
 enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
         var notes: [NoteletVersionNotes] = []
-        // Assist ships only when its feature flag is enabled; its release-note
+        // Background Sync ships only when its legacy feature flag is enabled; its release-note
         // section (and version registration) must not appear otherwise.
         if FeatureFlags.gitSyncAssistEnabled {
             notes.append(.init(version: "2.6.0", items: version26Items))
@@ -92,17 +92,17 @@ enum AppReleaseNotes {
     private static var version26Items: [NoteletVersionNoteItem] {
         [
             .list(
-                title: "Automatic sync, optionally",
+                title: "Background Sync, optionally",
                 rows: [
                     .init(
                         symbolSystemName: "bolt.badge.clock.fill",
-                        title: "GitSync Assist",
-                        description: "An optional subscription that keeps every repository current automatically. One installation-level opt-in covers all current and future repositories; exclude any repository anytime."
+                        title: "Background Sync",
+                        description: "An optional subscription that pulls updates while the app is closed whenever iOS grants background time. One installation-level opt-in covers all current and future repositories; exclude any repository anytime."
                     ),
                     .init(
                         symbolSystemName: "arrow.down.circle.fill",
                         title: "Pull-only and safe",
-                        description: "Assist only performs clean fast-forward pulls. It never commits, rebases, merges, force-pushes, or pushes, and stops on local changes, divergence, or authentication needs."
+                        description: "Background Sync only performs clean fast-forward pulls. It never commits, rebases, merges, force-pushes, or pushes, and stops on local changes, divergence, or authentication needs."
                     ),
                     .init(
                         symbolSystemName: "lock.shield.fill",

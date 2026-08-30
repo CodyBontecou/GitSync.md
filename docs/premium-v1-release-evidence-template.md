@@ -1,4 +1,4 @@
-# GitSync Assist — Premium v1 release evidence bundle
+# Background Sync — Premium v1 release evidence bundle
 
 Copy this file into the private release record for each candidate build. Do not commit completed evidence that contains private account, device, repository, delivery, transaction, or infrastructure identifiers.
 
@@ -25,7 +25,7 @@ Never paste StoreKit JWS values, bearer/deletion capabilities, APNs tokens or pr
 | Annual product `com.bontecou.gitsync.assist.annual` is complete | | ☐ Pass ☐ Fail |
 | Pricing, localizations, availability, and review metadata verified | | ☐ Pass ☐ Fail |
 | App Store Server Notification v2 URL configured | | ☐ Pass ☐ Fail |
-| App Privacy answers recorded and reviewed against the binary/manifest, existing onboarding analytics, and Assist | | ☐ Pass ☐ Fail |
+| App Privacy answers recorded and reviewed against the binary/manifest, existing onboarding analytics, and Background Sync | | ☐ Pass ☐ Fail |
 | Onboarding analytics cron, 90-day row retention, separate deletion secret, provider logs/backups, and installation deletion verified | | ☐ Pass ☐ Fail |
 | Sandbox account/product configuration supplied for review | | ☐ Pass ☐ Fail |
 

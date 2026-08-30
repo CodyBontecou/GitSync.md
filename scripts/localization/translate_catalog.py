@@ -47,16 +47,22 @@ RUNTIME_LOCALES = {
 
 DO_NOT_TRANSLATE = {
     "",
+    "!",
     "%@",
     "%lld",
     "%@/%@",
+    "%@: %@",
+    "%@, %@ %@",
+    "%@, %@ %@, %@",
     "+",
     ".MD",
     "@%@",
     "GIT",
     "GITSYNC.MD",
-    "GitSync Assist",
-    "GITSYNC ASSIST",
+    "Background Sync",
+    "BACKGROUND",
+    "BACKGROUND SYNC",
+    "SYNC",
     "Fast-forwarded",
     "filename.ext",
     "filename.md",
@@ -77,13 +83,15 @@ DO_NOT_TRANSLATE = {
     "⬆",
     "📁",
     "📂",
+    "📦",
     "📋",
     "🔒",
     "🔗",
+    "🔍",
 }
 
 PROTECTED_TERMS = [
-    "GitSync Assist",
+    "Background Sync",
     "GitSync.md",
     "Sync.md",
     "GitHub App",
@@ -93,9 +101,6 @@ PROTECTED_TERMS = [
     "APNs",
     "HMAC",
     "D1",
-    "pull-only",
-    "Relay",
-    "relay",
     "GitHub",
     "Git",
     "Forgejo",
@@ -125,7 +130,7 @@ TOKEN_PATTERN = re.compile(
     r"|(?:https?|ssh|git|file)://[^\s\"')]+"
     r"|git@[^\s\"')]+"
 )
-MARKER_RE = re.compile(r"ZXQITEM(\d{6})QXZ\s*")
+MARKER_RE = re.compile(r"ZXQITEM(\d{6})QXZ:\s*")
 PROTECTED_RE = re.compile(
     "(" + TOKEN_PATTERN.pattern + "|" + "|".join(
         re.escape(term) for term in sorted(PROTECTED_TERMS, key=len, reverse=True)
@@ -238,7 +243,10 @@ def translate_batch(items: list[tuple[int, str]], target: str, provider: str) ->
                 time.sleep(2 ** attempt)
         assert last_error is not None
         raise last_error
-    payload = "\n".join(f"ZXQITEM{index:06d}QXZ {text}" for index, text in items)
+    # The colon pins the marker before translated right-to-left text. Without a
+    # separator, providers can reorder an Arabic/Hebrew value ahead of its
+    # marker and silently shift it onto the preceding catalog key.
+    payload = "\n".join(f"ZXQITEM{index:06d}QXZ: {text}" for index, text in items)
     try:
         translated = request_translation(payload, target, provider)
     except Exception:

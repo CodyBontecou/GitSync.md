@@ -313,14 +313,14 @@ final class PremiumRuntime {
         }
         guard assistFeatureIsEnabled() else { return nil }
         guard relayIsConfigured else {
-            relayError = String(localized: "GitSync Assist relay is not configured.")
+            relayError = String(localized: "Background Sync relay is not configured.")
             return nil
         }
         await start()
         guard !Task.isCancelled, !deletionInProgress, !relayDataWasDeleted else { return nil }
         await entitlementStore.refresh()
         guard !Task.isCancelled, entitlementStore.state.isActive, !deletionInProgress, !relayDataWasDeleted else {
-            relayError = String(localized: "An active subscription is required to enable automatic sync.")
+            relayError = String(localized: "An active subscription is required to enable Background Sync.")
             return nil
         }
         automaticallySyncAllRepositories = true
@@ -350,7 +350,7 @@ final class PremiumRuntime {
             coordinator.cancel(repoID: repoID)
             repo.assist.excludedFromAutomaticSync = true
             repo.assist.normalizeAutomaticExclusion()
-            repo.assist.enrollmentMessage = String(localized: "Excluded from automatic sync.")
+            repo.assist.enrollmentMessage = String(localized: "Excluded from Background Sync.")
             provider.updateAssistSettings(repoID: repoID, repo.assist)
             await cleanupStaleChannels()
         } else {
@@ -479,7 +479,7 @@ final class PremiumRuntime {
     func startGitHubLink() async -> URL? {
         guard assistFeatureIsEnabled() else { return nil }
         guard !relayDataWasDeleted else {
-            deletionError = String(localized: "Assist relay data was permanently deleted for this installation. Contact support if you need to use Assist again.")
+            deletionError = String(localized: "Background Sync relay data was permanently deleted for this installation. Contact support if you need to use Background Sync again.")
             return nil
         }
         await start()
@@ -693,7 +693,7 @@ final class PremiumRuntime {
             // pending/completed marker or reopen consent when persistence is
             // unavailable; restart/support recovery must retain the barrier.
             if !relayDataWasDeleted {
-                deletionError = String(localized: "Could not securely save the relay deletion authorization. Assist remains disabled; retry or contact support.")
+                deletionError = String(localized: "Could not securely save the relay deletion authorization. Background Sync remains disabled; retry or contact support.")
             }
             return
         }
@@ -793,7 +793,7 @@ final class PremiumRuntime {
         }
         guard ensurePendingDeletionState() else {
             if !relayDataWasDeleted {
-                deletionError = String(localized: "Relay deletion is pending but its durable state could not be saved. Assist remains disabled; retry or contact support.")
+                deletionError = String(localized: "Relay deletion is pending but its durable state could not be saved. Background Sync remains disabled; retry or contact support.")
             }
             return
         }
@@ -1101,13 +1101,13 @@ final class PremiumRuntime {
         let attempt = Date()
         if repo.assist.excludedFromAutomaticSync {
             transitionLocally(&repo, status: .excluded, enabled: false,
-                              message: String(localized: "Excluded from automatic sync."), clearEnrollment: true)
+                              message: String(localized: "Excluded from Background Sync."), clearEnrollment: true)
             provider.updateAssistSettings(repoID: repoID, repo.assist)
             return
         }
         guard repo.isCloned else {
             transitionLocally(&repo, status: .disabled, enabled: false,
-                              message: String(localized: "Clone this repository to enable automatic sync."), clearEnrollment: true)
+                              message: String(localized: "Clone this repository to include it in Background Sync."), clearEnrollment: true)
             provider.updateAssistSettings(repoID: repoID, repo.assist)
             return
         }

@@ -409,7 +409,7 @@ async function completeGitHubSetup(request: Request, env: Env): Promise<Response
 
 function githubLinkCompletionPage(): Response {
   return new Response(
-    "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>GitSync Assist linked</title><body><p>GitSync Assist is linked.</p><p><a href=\"syncmd://assist-linked\">Return to GitSync.md</a></p></body></html>",
+    "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Background Sync linked</title><body><p>Background Sync is linked.</p><p><a href=\"syncmd://assist-linked\">Return to GitSync.md</a></p></body></html>",
     {
       status: 200,
       headers: {

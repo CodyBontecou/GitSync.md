@@ -648,10 +648,17 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(groups.count, 1)
         let group = try XCTUnwrap(groups.first)
         XCTAssertEqual(group["id"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
+        XCTAssertEqual(group["name"] as? String, "Background Sync")
+        let groupLocalizations = try XCTUnwrap(group["localizations"] as? [[String: Any]])
+        XCTAssertEqual(groupLocalizations.first?["displayName"] as? String, "Background Sync")
+
         let subscriptions = try XCTUnwrap(group["subscriptions"] as? [[String: Any]])
         let products = Dictionary(uniqueKeysWithValues: try subscriptions.map { subscription -> (String, String) in
             let id = try XCTUnwrap(subscription["productID"] as? String)
             let period = try XCTUnwrap(subscription["recurringSubscriptionPeriod"] as? String)
+            let localizations = try XCTUnwrap(subscription["localizations"] as? [[String: Any]])
+            let displayName = try XCTUnwrap(localizations.first?["displayName"] as? String)
+            XCTAssertTrue(displayName.hasPrefix("Background Sync"))
             XCTAssertEqual(subscription["subscriptionGroupID"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
             XCTAssertEqual(subscription["type"] as? String, "RecurringSubscription")
             return (id, period)
@@ -1328,16 +1335,16 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(claims.filter { !$0 }.count, 99)
     }
 
-    func testApplicationDelegateAssistCallbackGateUsesReleaseFlagBoundary() {
+    func testApplicationDelegateBackgroundSyncCallbackGateUsesReleaseFlagBoundary() {
         XCTAssertFalse(SyncMDApplicationDelegate.shouldForwardAssistCallbacks(
             assistFeatureIsEnabled: { false }
         ))
         XCTAssertTrue(SyncMDApplicationDelegate.shouldForwardAssistCallbacks(
             assistFeatureIsEnabled: { true }
         ))
-        XCTAssertFalse(
+        XCTAssertTrue(
             SyncMDApplicationDelegate.shouldForwardAssistCallbacks(),
-            "The production release flag must continue to block delegate forwarding"
+            "The production release flag must forward Background Sync callbacks"
         )
     }
 
@@ -2345,7 +2352,7 @@ final class SyncMDTests: XCTestCase {
             )
         }
         XCTAssertTrue(check(base))
-        // Feature flag, empty repo list, active subscription, enabled Assist,
+        // Feature flag, empty repo list, active subscription, enabled Background Sync,
         // and prior dismissal each suppress the banner.
         for i in 0..<5 {
             var args = base

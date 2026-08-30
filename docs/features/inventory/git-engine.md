@@ -69,10 +69,10 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
 2. **Mechanics**: Clean-tree required; fetch; guard: behind==0 → no-op; ahead==0&&behind>0 → internal error (should use FF path). `git_rebase_init` onto annotated origin ref with `GIT_MERGE_FIND_RENAMES` + SAFE checkout, `advanceRebase` loop (`git_rebase_next`/`git_rebase_commit`, conflict → `rebaseConflictsDetected`), finish, compute changed paths, LFS hydrate changed paths.
 3. **Source**: lines ~1114–1230, `advanceRebase` ~3708.
 
-## 8. Assist/automation pull-only execution
+## 8. Background Sync pull-only execution
 
 1. **Name**: `executePullOnly(pat:expectedBranch:)`
-2. **Mechanics**: Single-operation variant for GitSync Assist/background: plan → optional `expectedBranch` guard ( Assist expected branch X but Y checked out) → only `.fastForward` action executes (via performSafeFastForward with `isPullOnly: true`); `pullBlockedByLocalChanges` caught and returned as plan (typed attention outcome, not thrown); all other actions returned as plan-only. `pullOnlyBeforeCheckout` callback hook fires before checkout (used by AppState for attention surfacing). Cancellation-checked (`Task.checkCancellation`).
+2. **Mechanics**: Single-operation variant for Background Sync: plan → optional `expectedBranch` guard (Background Sync expected branch X but Y checked out) → only `.fastForward` action executes (via performSafeFastForward with `isPullOnly: true`); `pullBlockedByLocalChanges` caught and returned as plan (typed attention outcome, not thrown); all other actions returned as plan-only. `pullOnlyBeforeCheckout` callback hook fires before checkout (used by AppState for attention surfacing). Cancellation-checked (`Task.checkCancellation`).
 3. **Source**: lines ~897–932.
 
 ## 9. Branch inventory (local + remote + upstream tracking)
@@ -238,7 +238,7 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
 
 ## Cross-cutting guarantees (documentation-worthy)
 
-- **Fail-closed automation**: Assist/pull-only path re-validates branch + OID + clean tree immediately before checkout under ref-transaction locks; never merges/rebases/switches branches.
+- **Fail-closed automation**: Background Sync/pull-only path re-validates branch + OID + clean tree immediately before checkout under ref-transaction locks; never merges/rebases/switches branches.
 - **No silent fake success**: pushes (branch + tag) verified against remote advertisement after reported success.
 - **Unicode correctness**: NFC/NFD handling at status, diff, staging, checkout config layers.
 - **Dirty-tree protection**: pull/switch/merge/revert/stash all refuse when uncommitted changes exist (typed errors with actionable text).

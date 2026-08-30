@@ -73,7 +73,10 @@ struct RepositoryPushRunner: Sendable {
         } catch LocalGitError.noChanges {
             return .noChanges
         } catch LocalGitError.authenticationFailed(let message) {
-            return .authenticationOrTrustRequired(message: message, trustError: nil)
+            return .authenticationOrTrustRequired(
+                message: LocalGitError.authenticationFailed(message).localizedDescription,
+                trustError: nil
+            )
         } catch LocalGitError.sshHostKeyTrustRequired(let trustError) {
             return .authenticationOrTrustRequired(
                 message: LocalGitError.sshHostKeyTrustRequired(trustError).localizedDescription,

@@ -49,7 +49,7 @@ enum FeedbackHelper {
 
         Please keep these opaque installation identifiers private. They are included so support can locate this installation's first-party records:
         Onboarding analytics installation: \(analyticsID)
-        GitSync Assist installation: \(assistID)
+        Background Sync installation: \(assistID)
 
         Details:
 

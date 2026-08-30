@@ -1,4 +1,4 @@
-# GitSync Assist — App Privacy inventory
+# Background Sync — App Privacy inventory
 
 Use this as an implementation inventory when completing App Store Connect. Apple's current taxonomy and the actual production configuration are authoritative; re-audit immediately before submission.
 
@@ -10,11 +10,11 @@ The release app also sends coarse onboarding funnel events to the first-party Cl
 
 ## Core Git client
 
-- **Repository contents, local paths, history, and Git credentials:** processed on device and sent directly to the user-selected Git provider to perform requested Git operations. The app's Assist API requests never send repository names, URLs, contents, local paths, or credentials to the relay.
+- **Repository contents, local paths, history, and Git credentials:** processed on device and sent directly to the user-selected Git provider to perform requested Git operations. The app's Background Sync API requests never send repository names, URLs, contents, local paths, or credentials to the relay.
 - **Git author name/email:** locally configured and included in user-created commit metadata sent to the Git provider. Not used for tracking or advertising.
-- **Authentication tokens/SSH keys:** stored in iOS Keychain; not sent to the Assist relay.
+- **Authentication tokens/SSH keys:** stored in iOS Keychain; not sent to the Background Sync relay.
 
-## Optional GitSync Assist relay data
+## Optional Background Sync relay data
 
 | Data | Purpose | Linked | Tracking | Retention/control |
 |---|---|---:|---:|---|
@@ -35,7 +35,7 @@ The app API never sends repository names, URLs, file contents, local paths, or G
 - GitHub Apps and webhooks (plus the user's selected Git provider for core Git)
 - Cloudflare Workers, D1, and Queues for the optional relay
 
-No app or relay data is used for third-party advertising or cross-app tracking. The production website source conditionally loads Cloudflare Web Analytics after a first-party gate; `site/privacy.html` separately discloses its aggregate page-view/performance and country/host/path/referrer/device/browser/OS/navigation measurements. Website analytics is separate from App Store Connect answers for the iOS app, the disclosed first-party iOS onboarding analytics, and the Assist relay. Re-audit production website configuration, crash reporting, and any future SDK before release.
+No app or relay data is used for third-party advertising or cross-app tracking. The production website source conditionally loads Cloudflare Web Analytics after a first-party gate; `site/privacy.html` separately discloses its aggregate page-view/performance and country/host/path/referrer/device/browser/OS/navigation measurements. Website analytics is separate from App Store Connect answers for the iOS app, the disclosed first-party iOS onboarding analytics, and the Background Sync relay. Re-audit production website configuration, crash reporting, and any future SDK before release.
 
 ## User controls
 
@@ -43,7 +43,7 @@ No app or relay data is used for third-party advertising or cross-app tracking. 
 - One explicit installation-level opt-in covering all current and future cloned or managed repositories, plus per-repository exclusion and network/power policy. Each repository's configured branch is the automatic target.
 - Linked GitHub App installation management for best-effort event-wake eligibility. Non-GitHub or unresolved repositories remain foreground-only.
 - Global disable stops automatic execution and unregisters notifications locally immediately, then makes a best-effort remote device-unregister request. It does not perform terminal relay-data deletion. Device unregister also occurs on inactive entitlement and token lifecycle handling.
-- In-app **Request data access or deletion** opens a user-reviewed private email draft to the documented support address with separate opaque onboarding and Assist installation IDs. The IDs are not credentials and are never sent automatically; the UI/policy warn against posting them publicly. Assist also provides separate, authenticated terminal relay deletion.
+- In-app **Request data access or deletion** opens a user-reviewed private email draft to the documented support address with separate opaque onboarding and Background Sync installation IDs. The IDs are not credentials and are never sent automatically; the UI/policy warn against posting them publicly. Background Sync also provides separate, authenticated terminal relay deletion.
 
 APNs delivery is best effort and may be delayed or suppressed by iOS. Device registration is constant-size (installation, token, environment, generation); repository channels are not uploaded in that request. The relay performs installation-wide routing against current live enrollments. The app API carries only numeric IDs, branch, and opaque routing/operations metadata. Separately, signed GitHub webhook bodies are transiently processed as described above; descriptive fields are not logged or persisted.
 

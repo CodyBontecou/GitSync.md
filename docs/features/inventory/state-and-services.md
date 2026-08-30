@@ -23,7 +23,7 @@ Sources read in full: `Services/GitHubService.swift`, `Services/OAuthService.swi
 ## 3. Keychain credential storage
 
 1. **Name**: `KeychainService`
-2. **Mechanics**: Generic-password items, service `com.bontecou.Sync-md`, accessibility **`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`** (background Assist usable after first unlock; never migrates to backups). **Update-in-place-first** write strategy so a failed write cannot erase an existing credential or deletion marker. Lazy per-key accessibility migration (`migrateAccessibilityIfNeeded`, re-run for every known credential key; no global completion marker). `attributes()`, `delete(key:)`.
+2. **Mechanics**: Generic-password items, service `com.bontecou.Sync-md`, accessibility **`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`** (Background Sync usable after first unlock; never migrates to backups). **Update-in-place-first** write strategy so a failed write cannot erase an existing credential or deletion marker. Lazy per-key accessibility migration (`migrateAccessibilityIfNeeded`, re-run for every known credential key; no global completion marker). `attributes()`, `delete(key:)`.
 3. **Stored keys**: GitHub account tokens (multi-account), per-repo credentials (HTTPS username+token, SSH private/public key + passphrase), premium installation identity + APNs generation, deletion credentials. (Exact key names in `state-appstate.md`.)
 4. **Test**: `testKeychainCredentialsUseAfterFirstUnlockDeviceOnlyAccessibility`.
 5. **Source**: `KeychainService.swift`.
@@ -57,7 +57,7 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 ## 8. Feedback & support email
 
 1. **Name**: `FeedbackHelper`
-2. **Mechanics**: `supportEmail cody@isolated.tech`; diagnostics block (app version/build, iOS version, device model — non-identifying) auto-appended; MailCompose in-app sheet when available else `mailto:` URL open; **privacy data-request mailto** pre-populates subject "GitSync.md Privacy & Data Request" + template with BOTH opaque installation IDs (onboarding analytics install ID + Assist installation ID) for support verification — explicitly user-mediated (draft only, never auto-sent). Test: `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`.
+2. **Mechanics**: `supportEmail cody@isolated.tech`; diagnostics block (app version/build, iOS version, device model — non-identifying) auto-appended; MailCompose in-app sheet when available else `mailto:` URL open; **privacy data-request mailto** pre-populates subject "GitSync.md Privacy & Data Request" + template with BOTH opaque installation IDs (onboarding analytics install ID + Background Sync installation ID) for support verification — explicitly user-mediated (draft only, never auto-sent). Test: `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`.
 3. **User-visible**: Send Feedback row (AppSettings), Request data access/deletion (PremiumSettings privacy section).
 4. **Source**: `FeedbackHelper.swift`.
 
@@ -70,9 +70,9 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 
 ## 10. Entitlements, Info.plist, privacy manifest
 
-- **Entitlements**: `aps-environment` (build-config injected) — APNs for Assist.
-- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [remote-notification]` (silent push only); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]` (open vault in Files); `PREMIUM_RELAY_BASE_URL` (relay config; empty ⇒ Assist disabled fail-closed); `INJECT_PAT` env (DEBUG).
-- **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; collected data types declared: **DeviceID** (linked, analytics+appFunctionality), **ProductInteraction** (analytics), **PurchaseHistory** (appFunctionality), **UserID** (appFunctionality) — matching analytics + Assist flows. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
+- **Entitlements**: `aps-environment` (build-config injected) — APNs for Background Sync.
+- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [remote-notification]` (silent push only); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]` (open vault in Files); `PREMIUM_RELAY_BASE_URL` (relay config; empty ⇒ Background Sync disabled fail-closed); `INJECT_PAT` env (DEBUG).
+- **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; collected data types declared: **DeviceID** (linked, analytics+appFunctionality), **ProductInteraction** (analytics), **PurchaseHistory** (appFunctionality), **UserID** (appFunctionality) — matching analytics + Background Sync flows. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
 - **Source**: `Sync_md.entitlements`, `Info.plist`, `PrivacyInfo.xcprivacy`.
 
 ## Gaps / uncertainties

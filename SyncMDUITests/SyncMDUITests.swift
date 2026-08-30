@@ -50,9 +50,8 @@ final class SyncMDUITests: XCTestCase {
 
     /// Regression test for the simulator-QA finding: users who chose
     /// "Continue without GitHub" previously had no route to App Settings even
-    /// though Assist and manual repository features support non-GitHub remotes.
-    /// With the release feature flag off, Assist must also stay hidden.
-    func testSignedOutUserCanOpenAppSettingsWhileAssistIsGated() {
+    /// though Background Sync and manual repository features support non-GitHub remotes.
+    func testSignedOutUserCanOpenAppSettingsAndSeeBackgroundSync() {
         let app = XCUIApplication()
         app.launchArguments = [
             "-SignedOutUITest",
@@ -68,17 +67,24 @@ final class SyncMDUITests: XCTestCase {
         let signIn = app.buttons["Sign In"]
         let appSettings = app.buttons["App Settings"]
         XCTAssertTrue(signIn.waitForExistence(timeout: 10), "Signed-out Sign In toolbar action should exist")
-        XCTAssertTrue(appSettings.exists, "Signed-out App Settings toolbar action should exist")
+        XCTAssertTrue(appSettings.waitForExistence(timeout: 10), "Signed-out App Settings toolbar action should exist")
+        let appSettingsIsHittable = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isHittable == true"),
+            object: appSettings
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [appSettingsIsHittable], timeout: 10),
+            .completed,
+            "Signed-out App Settings toolbar action should become tappable"
+        )
 
         appSettings.tap()
 
         let settingsSignIn = app.buttons["Sign in with GitHub"]
         XCTAssertTrue(settingsSignIn.waitForExistence(timeout: 10), "App Settings should offer GitHub sign-in when signed out")
-        // Release gating: the Assist entry point must not exist while the
-        // feature flag is off.
-        XCTAssertFalse(
-            app.staticTexts["GITSYNC ASSIST"].exists || app.buttons["GitSync Assist"].exists,
-            "Assist UI must stay hidden while gitSyncAssistEnabled is false"
+        XCTAssertTrue(
+            app.staticTexts["BACKGROUND SYNC"].exists || app.buttons["Background Sync"].exists,
+            "Background Sync should be available from signed-out App Settings"
         )
 
         let done = app.buttons["Done"]

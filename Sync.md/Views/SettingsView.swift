@@ -226,20 +226,20 @@ struct SettingsView: View {
                             }
                         }
 
-                        // GitSync Assist remains optional and never changes
+                        // Background Sync remains optional and never changes
                         // manual Git controls outside this repository policy.
-                        // Hidden behind FeatureFlags.gitSyncAssistEnabled until
-                        // the tier is ready to ship.
+                        // Hidden behind the legacy gitSyncAssistEnabled feature flag until the
+                        // tier is ready to ship.
                         if FeatureFlags.gitSyncAssistEnabled {
-                            settingsSection(title: String(localized: "GitSync Assist")) {
+                            settingsSection(title: String(localized: "Background Sync")) {
                                 VStack(spacing: 0) {
-                                    Toggle("Include in automatic sync", isOn: $includeInAutomaticSync)
+                                    Toggle("Include in Background Sync", isOn: $includeInAutomaticSync)
                                         .frame(minHeight: 44)
                                         .padding(.horizontal, 16)
 
                                     if !premiumRuntime.automaticallySyncAllRepositories {
                                         BDivider().padding(.horizontal, 16)
-                                        Text("Automatic sync is off. This inclusion choice is saved now and will apply the next time you enable it in App Settings → GitSync Assist.")
+                                        Text("Background Sync is off. This inclusion choice is saved and will apply the next time you enable it in App Settings → Background Sync.")
                                             .font(.caption.monospaced())
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                             .padding(16)

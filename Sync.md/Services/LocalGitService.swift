@@ -69,7 +69,7 @@ enum LocalGitError: LocalizedError {
         case .pullRemoteBranchMissing(let branch):
             return String(localized: "Remote branch '\(branch)' was not found on origin.")
         case .wrongBranch(let expected, let actual):
-            return String(localized: "GitSync Assist expected branch '\(expected)', but '\(actual)' is checked out.")
+            return String(localized: "Background Sync expected branch '\(expected)', but '\(actual)' is checked out.")
         case .checkoutBlockedByLocalChanges:
             return String(localized: "Switching branches is blocked to protect local edits. Commit, stash, or discard changes first.")
         case .branchAlreadyExists(let name):

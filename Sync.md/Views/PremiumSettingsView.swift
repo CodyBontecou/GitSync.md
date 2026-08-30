@@ -15,7 +15,7 @@ enum PremiumAutomaticSyncToggleAvailability {
     }
 }
 
-/// GitSync Assist paywall + management surface, styled after the onboarding
+/// Background Sync paywall + management surface, styled after the onboarding
 /// slides: giant black-weight hero with an accent word, hairline dividers,
 /// monospaced micro-labels, and hard-bordered cards. Nothing here gates the
 /// app's manual Git features — the layout leads with the upsell and defers
@@ -62,7 +62,7 @@ struct PremiumSettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(String(localized: "GitSync Assist").uppercased())
+                    Text(String(localized: "Background Sync").uppercased())
                         .font(.system(size: 12, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
@@ -74,18 +74,18 @@ struct PremiumSettingsView: View {
             }
             .task { await runtime.prepareForSettings() }
             .confirmationDialog(
-                String(localized: "Automatically sync all repositories?"),
+                String(localized: "Enable Background Sync for all repositories?"),
                 isPresented: $automaticSyncConfirmation
             ) {
-                Button(String(localized: "Enable automatic sync")) {
+                Button(String(localized: "Enable Background Sync")) {
                     Task { await setAutomaticSyncEnabled() }
                 }
                 Button(String(localized: "Cancel"), role: .cancel) {}
             } message: {
-                Text("This installation-level consent covers every current and future cloned or managed repository unless you exclude it in Repository Settings. GitHub repositories covered by linked GitHub App installations get best-effort event wakes; non-GitHub or unresolved repositories are foreground-only. Pulls remain clean fast-forward only. Local changes, divergence, the wrong branch, or authentication/trust requirements stop automation.")
+                Text("Background Sync attempts pull-only updates when iOS grants background time. One installation-level opt-in covers every current and future cloned or managed repository unless you exclude it in Repository Settings. GitHub repositories covered by linked GitHub App installations get best-effort wake hints; non-GitHub or unresolved repositories sync only while the app is open. Pulls remain clean fast-forward only. Local changes, divergence, the wrong branch, or authentication and trust requirements stop the update.")
             }
             .confirmationDialog(
-                String(localized: "Delete Assist relay data?"),
+                String(localized: "Delete Background Sync relay data?"),
                 isPresented: $relayDataDeletionConfirmation
             ) {
                 Button(String(localized: "Delete relay data"), role: .destructive) {
@@ -93,7 +93,7 @@ struct PremiumSettingsView: View {
                 }
                 Button(String(localized: "Cancel"), role: .cancel) {}
             } message: {
-                Text("This permanently retires this installation's Assist relay identity and removes its device registration and repository enrollments. Assist cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To disable automatic sync without deleting relay data, turn off Automatically sync all repositories instead.")
+                Text("This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Sync all repositories in the background instead.")
             }
             .opacity(appeared ? 1 : 0)
             .onAppear {
@@ -106,13 +106,13 @@ struct PremiumSettingsView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("GITSYNC")
+            Text("BACKGROUND")
                 .font(.system(size: 48, weight: .black))
                 .foregroundStyle(Color.brutalText)
                 .tracking(-1.5)
                 .accessibilityHidden(true)
 
-            Text("ASSIST")
+            Text("SYNC")
                 .font(.system(size: 48, weight: .black))
                 .foregroundStyle(Color.brutalAccent)
                 .tracking(-1.5)
@@ -128,7 +128,7 @@ struct PremiumSettingsView: View {
                 Rectangle()
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
-                Text("YOUR REPOS, ALWAYS CURRENT")
+                Text("SAFE PULLS WHILE YOU'RE AWAY")
                     .font(.system(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1.5)
@@ -137,7 +137,7 @@ struct PremiumSettingsView: View {
             .accessibilityElement(children: .combine)
 
             // Pipeline strip — the whole feature in one line.
-            Text("GITHUB PUSH → APNS WAKE → CLEAN PULL")
+            Text("PUSH → WAKE HINT → CLEAN PULL")
                 .font(.system(size: 12, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Color.brutalTextMid)
                 .tracking(1)
@@ -159,7 +159,7 @@ struct PremiumSettingsView: View {
             HStack(spacing: 8) {
                 BBadge(text: String(localized: "Active"), style: .success)
                 if runtime.automaticallySyncAllRepositories {
-                    BBadge(text: String(localized: "Automatic sync"), style: .accent)
+                    BBadge(text: String(localized: "Background Sync"), style: .accent)
                 }
             }
         case .pending:
@@ -180,8 +180,8 @@ struct PremiumSettingsView: View {
             VStack(spacing: 0) {
                 AssistFeatureRow(
                     icon: "bolt.badge.clock.fill",
-                    title: String(localized: "Event-driven wakes"),
-                    description: String(localized: "A GitHub push wakes your device and pulls your branch in the background — best effort, no app open required.")
+                    title: String(localized: "Best-effort background pulls"),
+                    description: String(localized: "When iOS grants background time, GitHub pushes can provide wake hints and GitSync.md attempts a clean pull without opening the app.")
                 )
                 AssistRowDivider()
                 AssistFeatureRow(
@@ -200,7 +200,7 @@ struct PremiumSettingsView: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
 
             AssistFinePrint(
-                "Optional pull-only automation for all current and future cloned or managed repositories on this installation, except repositories you exclude. GitHub repositories covered by a linked GitHub App installation are eligible for best-effort event wakes; non-GitHub and unresolved repositories reconcile only while the app is in the foreground."
+                "Background Sync is optional pull-only syncing for all current and future cloned or managed repositories on this installation, except repositories you exclude. GitHub repositories covered by a linked GitHub App installation are eligible for best-effort background wake hints; non-GitHub and unresolved repositories sync only while the app is open. iOS controls background timing, so updates are not guaranteed or real time."
             )
         }
     }
@@ -245,7 +245,7 @@ struct PremiumSettingsView: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
 
             AssistFinePrint(
-                "Assist only applies clean fast-forward pulls on each repository's configured branch. It never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes, divergence, the wrong branch, and authentication or trust requirements stop automation."
+                "Background Sync only applies clean fast-forward pulls on each repository's configured branch. It never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes, divergence, the wrong branch, and authentication or trust requirements stop the background update."
             )
         }
     }
@@ -353,19 +353,19 @@ struct PremiumSettingsView: View {
         purchasingProductID = nil
     }
 
-    // MARK: - Automatic sync activation
+    // MARK: - Background Sync activation
 
     private var activationSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "Automatic sync"))
+            BSectionHeader(title: String(localized: "Background Sync"))
 
             VStack(alignment: .leading, spacing: 14) {
                 Toggle(isOn: automaticSyncBinding) {
                     VStack(alignment: .leading, spacing: 3) {
-                        Text("Automatically sync all repositories")
+                        Text("Sync all repositories in the background")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
-                        Text("One switch covers every repository on this installation.")
+                        Text("One switch covers every repository whenever iOS allows background work.")
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                     }
@@ -407,7 +407,7 @@ struct PremiumSettingsView: View {
                         "Linking a personal GitHub App installation requires that account's owner. Linking an organization installation requires an active organization owner; ordinary members and repository collaborators cannot authorize installation-wide wakes."
                     )
                 } else {
-                    Text("Off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged.")
+                    Text("Background Sync is off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged.")
                         .font(.system(size: 13, design: .monospaced))
                         .foregroundStyle(Color.brutalTextMid)
                 }
@@ -426,7 +426,7 @@ struct PremiumSettingsView: View {
 
     private var statusSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "Sync status"))
+            BSectionHeader(title: String(localized: "Background Sync status"))
 
             VStack(alignment: .leading, spacing: 0) {
                 if runtime.isReconcilingAutomaticSync {
@@ -511,7 +511,7 @@ struct PremiumSettingsView: View {
                         Text("!")
                             .font(.system(size: 13, weight: .black, design: .monospaced))
                             .foregroundStyle(Color.brutalWarning)
-                        Text("Relay data was permanently deleted for this installation. Contact support before trying to use Assist again.")
+                        Text("Relay data was permanently deleted for this installation. Contact support before trying to use Background Sync again.")
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                     }
@@ -524,7 +524,7 @@ struct PremiumSettingsView: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
 
             AssistFinePrint(
-                "Global consent begins only after you confirm automatic sync. The app never sends repository names, URLs, contents, local paths, or Git credentials to relay APIs. During GitHub App linking, the browser sends a transient OAuth code; the relay uses a single-purpose transient GitHub App user token only to verify personal-owner or organization-owner authority, stores only the numeric authorizing user ID, never persists or application-logs either credential, and best-effort revokes the token. Signed GitHub webhook payloads may include GitHub-provided repository, commit, path, and author metadata; the relay extracts only numeric repository ID plus branch and delivery data and does not persist or log names, URLs, commit messages, changed paths, authors, contents, or credentials. APNs payloads contain only opaque IDs."
+                "Global consent begins only after you confirm Background Sync. The app never sends repository names, URLs, contents, local paths, or Git credentials to relay APIs. During GitHub App linking, the browser sends a transient OAuth code; the relay uses a single-purpose transient GitHub App user token only to verify personal-owner or organization-owner authority, stores only the numeric authorizing user ID, never persists or application-logs either credential, and best-effort revokes the token. Signed GitHub webhook payloads may include GitHub-provided repository, commit, path, and author metadata; the relay extracts only numeric repository ID plus branch and delivery data and does not persist or log names, URLs, commit messages, changed paths, authors, contents, or credentials. APNs payloads contain only opaque IDs."
             )
             .padding(.bottom, 2)
 
@@ -543,7 +543,7 @@ struct PremiumSettingsView: View {
                     .padding(.bottom, 10)
                 }
                 AssistFinePrint(
-                    "Deletion is pending. Automatic sync and conflicting relay controls remain disabled until the authenticated removal succeeds."
+                    "Deletion is pending. Background Sync and conflicting relay controls remain disabled until the authenticated removal succeeds."
                 )
             } else {
                 BDestructiveButton(
@@ -555,7 +555,7 @@ struct PremiumSettingsView: View {
                 .opacity(runtime.canDeleteRelayData ? 1 : 0.45)
                 .padding(.bottom, 10)
                 AssistFinePrint(
-                    "Terminal action: unlike turning automatic sync off, deletion permanently retires this installation's Assist relay identity."
+                    "Terminal action: unlike turning Background Sync off, deletion permanently retires this installation's Background Sync relay identity."
                 )
             }
 
@@ -580,7 +580,7 @@ struct PremiumSettingsView: View {
             .padding(.top, 4)
 
             AssistFinePrint(
-                "Opens a private email draft with this installation's opaque onboarding and Assist identifiers. Review it before sending; never post these identifiers publicly."
+                "Opens a private email draft with this installation's opaque onboarding and Background Sync identifiers. Review it before sending; never post these identifiers publicly."
             )
         }
     }
@@ -592,7 +592,7 @@ struct PremiumSettingsView: View {
             Rectangle()
                 .fill(Color.brutalBorderSoft)
                 .frame(height: 1)
-            Text("Manual Git, Shortcuts, callbacks, and local repository features stay included — Assist is entirely optional.")
+            Text("Manual Git, Shortcuts, callbacks, and local repository features stay included — Background Sync is entirely optional.")
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundStyle(Color.brutalTextFaint)
                 .multilineTextAlignment(.center)
@@ -616,16 +616,16 @@ struct PremiumSettingsView: View {
 
     private var automaticSyncPrerequisiteMessage: String? {
         if runtime.deletionInProgress {
-            return String(localized: "Relay deletion is in progress. Automatic sync remains unavailable until deletion finishes.")
+            return String(localized: "Relay deletion is in progress. Background Sync remains unavailable until deletion finishes.")
         }
         if runtime.relayDataWasDeleted {
-            return String(localized: "This installation's Assist relay identity was permanently retired. Contact support to use Assist again.")
+            return String(localized: "This installation's Background Sync relay identity was permanently retired. Contact support to use Background Sync again.")
         }
         if !runtime.automaticallySyncAllRepositories, !runtime.relayIsConfigured {
-            return String(localized: "Automatic sync is unavailable because the GitSync Assist relay is not configured in this build.")
+            return String(localized: "Background Sync is unavailable because its relay is not configured in this build.")
         }
         if !runtime.automaticallySyncAllRepositories, !entitlement.state.isActive {
-            return String(localized: "An active GitSync Assist subscription is required before automatic sync can be enabled.")
+            return String(localized: "An active Background Sync subscription is required before background syncing can be enabled.")
         }
         return nil
     }
@@ -835,7 +835,8 @@ private struct AssistStatRow: View {
 
 // MARK: - Fine Print
 
-private struct AssistFinePrint: View {
+// Shared with the onboarding Background Sync soft paywall.
+struct AssistFinePrint: View {
     private let text: LocalizedStringKey
 
     init(_ text: LocalizedStringKey) {

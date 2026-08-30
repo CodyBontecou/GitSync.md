@@ -75,7 +75,7 @@ enum PremiumEntitlementState: Sendable, Equatable {
     }
 }
 
-/// Pure gating rules for the optional Assist upsell surfaces. Every surface is
+/// Pure gating rules for the optional Background Sync upsell surfaces. Every surface is
 /// compile-time disabled until `gitSyncAssistEnabled` ships, never targets an
 /// active subscriber or an installation that already enabled automation, and
 /// is dismissible forever after one use. Manual Git features are never gated.

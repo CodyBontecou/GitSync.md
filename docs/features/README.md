@@ -20,7 +20,7 @@
 | UI screens & interactions | `inventory/ui-views.md` | ✅ complete |
 | Core services (GitHub API, OAuth, Keychain, persistence, highlighting, feedback, logging, config, privacy) | `inventory/state-and-services.md` | ✅ complete |
 | AppState orchestration layer | `inventory/state-appstate.md` | ✅ complete |
-| GitSync Assist premium (client + relay + verifier) | `inventory/premium-assist.md` | ✅ complete |
+| Background Sync premium (client + relay + verifier) | `inventory/premium-assist.md` | ✅ complete |
 | Automation, x-callback, analytics, release chronology, CI | `inventory/automation-analytics.md` | ✅ complete |
 | Infrastructure (OAuth server, site, site-router, fastlane, localization, distribution, worker topology) | `inventory/infrastructure.md` | ✅ complete |
 
@@ -32,12 +32,12 @@
 4. **Conflict resolution** — sessions from merge/rebase/revert/cherry-pick, ours/theirs/manual, side-by-side editor, rename/rename + delete/modify handling.
 5. **Git LFS** — hydration after clone/pull, pointer staging with auto-track policy + .gitattributes management, object upload before push, file locking + push guard, self-hosted endpoints, large-blob guard.
 6. **Editor & files** — file browser (create/rename, status badges), code editor (syntax highlighting, binary fallback), diff viewer, Files-app interop (Open in Files), external editor compatibility (real .git).
-7. **Automation & integrations** — x-callback-url API (Obsidian), App Intents/Shortcuts ("Pull All Repositories"), remote-notification background wake (Assist).
-8. **GitSync Assist (premium subscription)** — pull-only automation with fail-closed safety, per-repo enrollment via GitHub App, network/power policies, health/attention surfacing, relay + StoreKit verification backend, privacy guarantees.
+7. **Automation & integrations** — x-callback-url API (Obsidian), App Intents/Shortcuts ("Pull All Repositories"), remote-notification background wake (Background Sync).
+8. **Background Sync (premium subscription)** — pull-only automation with fail-closed safety, per-repo enrollment via GitHub App, network/power policies, health/attention surfacing, relay + StoreKit verification backend, privacy guarantees.
 9. **Onboarding & account UX** — tour, sign-in flows, default save location, demo mode, release notes (Notelet), StoreKit review prompts.
 10. **Diagnostics & feedback** — debug log viewer (filter/share/copy/clear), in-app feedback email, Discord community.
 11. **Analytics (onboarding funnel)** — opt-out-able, coarse event capture, Cloudflare Worker transport.
-12. **Localization & accessibility** — localized strings (10+ languages), App Store metadata localization.
+12. **Localization & accessibility** — localized strings in 26 languages, App Store metadata localization.
 13. **Platform & compliance** — privacy manifest, entitlements, Files-app document provider storage, iPad (single-column).
 14. **Developer infrastructure** — libgit2 xcframework build w/ SSH, CI XCTest gate, fastlane, oauth-server, site + site-router, marketing capture (DEBUG), pricing scripts.
 

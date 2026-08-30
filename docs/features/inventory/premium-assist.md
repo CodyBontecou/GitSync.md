@@ -1,4 +1,4 @@
-# GitSync Assist Premium Subscription — Feature Inventory
+# Background Sync Premium Subscription — Feature Inventory
 
 Domain: client (Sync.md) + premium-relay Worker + storekit-verifier Worker + docs.
 
@@ -6,7 +6,7 @@ Domain: client (Sync.md) + premium-relay Worker + storekit-verifier Worker + doc
 
 ## 1. Product / price / trial structure (StoreKit config)
 
-- `Sync.md/GitSyncAssist.storekit` — one subscription group `gitsync-assist` ("GitSync Assist", all-repository pull-only automation after one installation-level opt-in, with per-repository exclusions):
+- `Sync.md/GitSyncAssist.storekit` — one subscription group `gitsync-assist` ("Background Sync", all-repository pull-only automation after one installation-level opt-in, with per-repository exclusions):
   - `com.bontecou.gitsync.assist.monthly` — RecurringSubscription, P1M, $1.99 ("Best-effort GitHub wake hints and foreground reconciliation with clean fast-forward pulls only"), familyShareable=false, **no introductory offers / trials / winback / adHoc offers**.
   - `com.bontecou.gitsync.assist.annual` — P1Y, $14.99, same caveats.
 - Billing grace period and billing issues are disabled in the local StoreKit config (`_billingGracePeriodEnabled: false`), though the server side handles signed grace-period notifications (feature 7).
@@ -58,8 +58,8 @@ File: `Sync.md/Services/PremiumRuntime.swift` (~1,000 lines). Key state: `hasRel
 ## 6. Global mode, per-repo exclusion/settings, and health
 
 Files: `Sync.md/Models/PremiumModels.swift`, `Sync.md/Views/PremiumSettingsView.swift`, `Sync.md/Views/SettingsView.swift`.
-- Production entry point: App Settings → GitSync Assist contains the single **Automatically sync all repositories** control and explicit confirmation covering current/future repositories, GitHub event eligibility, foreground-only fallback, clean fast-forward-only safety, and stop conditions. It shows reconciliation progress, aggregate enrolled/foreground-only/excluded/failed/disabled counts, linked-installation count, registration/relay errors, Retry, Link/Manage GitHub App, purchase/restore/manage, global disable, and separately labeled terminal relay deletion.
-- Repository Settings contains only **Include in automatic sync** (inverse of `excludedFromAutomaticSync`, editable even while global mode is off so exclusions can be saved before activation), network/power policies, exact GitHub full name/enrolled branch when available, enrollment status/message/attempt, health, and Retry. It uses the repository's configured branch and has no duplicate Assist branch editor or manual link/installation/enroll/remove UX. Save is local-first, then exclusion update and reconciliation.
+- Production entry point: App Settings → Background Sync contains the single **Sync all repositories in the background** control and explicit confirmation covering current/future repositories, GitHub event eligibility, foreground-only fallback, clean fast-forward-only safety, and stop conditions. It shows reconciliation progress, aggregate enrolled/foreground-only/excluded/failed/disabled counts, linked-installation count, registration/relay errors, Retry, Link/Manage GitHub App, purchase/restore/manage, global disable, and separately labeled terminal relay deletion.
+- Repository Settings contains only **Include in Background Sync** (inverse of `excludedFromAutomaticSync`, editable even while global mode is off so exclusions can be saved before activation), network/power policies, exact GitHub full name/enrolled branch when available, enrollment status/message/attempt, health, and Retry. It uses the repository's configured branch and has no duplicate automatic-sync branch editor or manual link/installation/enroll/remove UX. Save is local-first, then exclusion update and reconciliation.
 - `RepoAssistSettings` retains historical `enabled/channel/selectedBranch` fields for persistence/runtime compatibility and adds `excludedFromAutomaticSync`, exact numeric/full-name/installation/branch enrollment identity, `enrollmentStatus` (`disabled/excluded/foregroundOnly/enrolling/enrolled/failed`), message, and last-attempt date, plus network/power policy and health with lenient decoding defaults.
 - `RepoAssistHealth` kinds: `never, updated, upToDate, deferred, attention, failed` + timestamps/commitSHA; `RepoAssistAttention`: `localChanges, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, failed` — attention states surface dirty/diverged/missing/auth problems to the user instead of automating past them.
 - `OpaqueAssistIdentifier.isValid` guards channel/hint format on both client and relay.
@@ -127,7 +127,7 @@ File: `worker/storekit-verifier/src/index.ts`, `roots.ts` (pinned Apple Root CA 
 
 ## 9. Safety boundaries ("never stages/commits/merges/force-pushes")
 
-- Declared in `PremiumSettingsView.swift` ("Assist never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes and diverged history require your attention."), StoreKit product descriptions, runbook, and README.
+- Declared in `PremiumSettingsView.swift` ("Background Sync never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes and diverged history require your attention."), StoreKit product descriptions, runbook, and README.
 - Enforced device-side: `RepositoryPullRunner → executePullOnly` (per completion audit): fresh branch/ancestry/worktree checks, SAFE checkout only (no FORCE), libgit2 reference transaction locking HEAD + checked-out branch with expected-OID revalidation (review-accepted race tests). Automated coordinator call graph reaches only `executePullOnly`; spy-counter tests assert zero stage/commit/rebase/merge/push/tag-push/conflict-resolution calls.
 - Relay-side structural enforcement: app API requests never send repo names/URLs/contents/local paths/credentials; signed GitHub webhook bodies are transiently verified and parsed, but descriptive names/URLs/commit messages/paths/authors are not logged or persisted; APNs contains only opaque channel + hint.
 - APNs is a wake hint only — best-effort, never real-time; iOS background policy caveats surfaced in UI text.
@@ -145,11 +145,11 @@ Existing manual Git (clone/fetch/pull/stage/commit/branch/merge/rebase/conflict/
 
 **Resolved by cross-reference (later inventories):**
 - *BackgroundSyncCoordinator / RepositoryPullRunner not deep-read* → both now documented from source: `automation-analytics.md` §3 (coordinator: gates, policies, dispositions, LRU dedupe, cancellation) and `RepositoryPullRunner.swift` read in full (pure typed-outcome policy mapping, never mutates blocked repos; tests `testRepositoryPullRunner*`). The §9 safety-boundary claims are therefore source-backed, not doc-sourced.
-- *"did not re-verify every claimed test exists"* → resolved: the named Assist tests exist in `SyncMDTests.swift`; use the current test runner output rather than a hard-coded suite count.
+- *"did not re-verify every claimed test exists"* → resolved: the named Background Sync tests exist in `SyncMDTests.swift`; use the current test runner output rather than a hard-coded suite count.
 
-Still open: live state must be re-verified at Assist launch. Historical audit sections describe earlier observations and are not proof of current deployment state.
+Still open: live state must be re-verified at Background Sync launch. Historical audit sections describe earlier observations and are not proof of current deployment state.
 
-- Current committed `wrangler.jsonc` contains a Release relay URL plus non-secret D1/Queue/GitHub App/APNs identifiers, while `GITHUB_CLIENT_ID` is intentionally absent and must be supplied as an out-of-repository Worker binding alongside the client secret; `FeatureFlags.gitSyncAssistEnabled` remains `false`. Committed configuration does not prove the Worker, migrations `0003`/`0004`, secrets, GitHub callback settings, APNs credentials, or physical-device flow are live or working.
+- Current committed `wrangler.jsonc` contains a Release relay URL plus non-secret D1/Queue/GitHub App/APNs identifiers, while `GITHUB_CLIENT_ID` is intentionally absent and must be supplied as an out-of-repository Worker binding alongside the client secret; the candidate build now enables Background Sync through the legacy `FeatureFlags.gitSyncAssistEnabled` identifier. Committed configuration and feature exposure do not prove the Worker, migrations `0003`/`0004`, secrets, GitHub callback settings, APNs credentials, or physical-device flow are live or working.
 - App Store Connect products, Push capability, prior Worker provisioning, and local legal-page updates are documented in later dated completion-audit history, but all live provider state and published content still require authorized re-verification rather than being inferred from repository values.
 - Pull-safety and relay-helper claims have since been checked against the implementation and deterministic tests; current command output remains the release authority.
 - Billing grace disabled in local `.storekit` config while server supports grace via notifications — live ASC grace-period setting is undecided ("configure if desired").

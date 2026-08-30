@@ -49,6 +49,7 @@ const ONBOARDING_STEPS = new Set([
   "welcome",
   "edit_anywhere",
   "full_git",
+  "background_sync",
   "account_choice",
   "github_sign_in",
   "personal_access_token",

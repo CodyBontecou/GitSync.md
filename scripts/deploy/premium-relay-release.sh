@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# premium-relay-release.sh — verified release tooling for the GitSync Assist relay.
+# premium-relay-release.sh — verified release tooling for the Background Sync relay.
 #
 # Default mode is VERIFY ONLY: read-only wrangler queries plus a local deploy
 # dry run. Nothing is deployed, migrated, or mutated.

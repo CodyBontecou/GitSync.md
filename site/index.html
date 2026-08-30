@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <title>GitSync.md — Real Git for Obsidian and code on iPhone/iPad</title>
-<meta name="description" content="A paid iOS Git client for Obsidian vaults, Markdown notes, and code projects. Clone private repos, edit files, review diffs, commit, pull, and push with no sync server.">
+<meta name="description" content="A full iOS Git client for Obsidian, Markdown, and code. Clone, edit, diff, commit, pull, and push manually—or add optional Background Sync for safe pull-only updates when iOS allows background work.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
 <meta name="theme-color" content="#0a0a0a">
@@ -17,12 +17,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GitSync.md">
 <meta property="og:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta property="og:description" content="Clone, edit, diff, commit, pull, and push real Git repositories from iPhone and iPad. $9.99 one-time. No subscription. No sync server.">
+<meta property="og:description" content="Real Git on iPhone and iPad for $9.99 once. Manual Git stays included; optional Background Sync adds safe pull-only updates when iOS allows background work.">
 <meta property="og:url" content="https://gitsyncmd.app/">
 <meta property="og:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta name="twitter:description" content="A buyer-ready iOS Git client for Obsidian, Markdown, and code workflows. $9.99 one-time, unlimited repos, no sync server.">
+<meta name="twitter:description" content="Real Git for Obsidian, Markdown, and code on iOS. $9.99 once, with optional Background Sync for safe pull-only updates.">
 <meta name="twitter:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <script type="application/ld+json">
 {
@@ -32,7 +32,7 @@
   "alternateName": "Sync.md",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "iOS 17+, iPadOS 17+",
-  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. It clones real Git working copies, stores tokens in the iOS Keychain, and talks directly to your Git remote without a sync server.",
+  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. Manual Git talks directly to your remote; optional Background Sync uses a metadata-only relay that never handles repository content.",
   "url": "https://gitsyncmd.app/",
   "downloadUrl": "https://apps.apple.com/us/app/gitsync-md/id6758960270",
   "author": {
@@ -57,7 +57,8 @@
     "Obsidian x-callback-url and Apple Shortcuts automation",
     "Multiple GitHub accounts and per-repo credentials",
     "iOS Files integration, 26 localized languages",
-    "No subscription and no sync server"
+    "Optional Background Sync with safe pull-only updates when iOS allows background work",
+    "No subscription required for manual Git; no server handles repository contents"
   ]
 }
 </script>
@@ -1541,7 +1542,7 @@
           </a>
           <a href="#screenshots" class="btn-ghost">See the workflow</a>
         </div>
-        <div class="price-note">One-time purchase. No subscription. Unlimited repositories.</div>
+        <div class="price-note">The full manual Git client is a one-time purchase. Background Sync is an optional subscription.</div>
       </div>
       <div class="hero-phone">
         <div class="phone-frame">
@@ -1561,7 +1562,7 @@
     <div class="trust-grid reveal-stagger reveal">
       <div class="trust-item">
         <span class="trust-kicker">Price</span>
-        <span class="trust-value">$9.99 one-time<small>No subscription, no recurring bill.</small></span>
+        <span class="trust-value">$9.99 one-time<small>All manual Git is included. Background Sync is optional.</small></span>
       </div>
       <div class="trust-item">
         <span class="trust-kicker">Repos</span>
@@ -1577,7 +1578,7 @@
       </div>
       <div class="trust-item">
         <span class="trust-kicker">Architecture</span>
-        <span class="trust-value">No sync server<small>Your device talks directly to your Git remote.</small></span>
+        <span class="trust-value">Direct Git traffic<small>Manual Git goes device-to-remote; the Background Sync relay never handles repository content.</small></span>
       </div>
     </div>
   </div>
@@ -1587,11 +1588,11 @@
 <div class="specs-bar">
   <div class="specs-track" aria-label="GitSync.md technical highlights">
     <span>$9.99 one-time</span>
-    <span>No subscription</span>
+    <span>Background Sync optional</span>
     <span>Unlimited repositories</span>
     <span>Private GitHub repos</span>
     <span>Tokens in iOS Keychain</span>
-    <span>No sync server</span>
+    <span>Direct Git traffic</span>
     <span>Real .git directories</span>
     <span>libgit2 engine</span>
     <span>Syntax highlighting — 11 languages</span>
@@ -1603,11 +1604,11 @@
     <span>Git LFS support</span>
     <span>iPhone + iPad</span>
     <span>$9.99 one-time</span>
-    <span>No subscription</span>
+    <span>Background Sync optional</span>
     <span>Unlimited repositories</span>
     <span>Private GitHub repos</span>
     <span>Tokens in iOS Keychain</span>
-    <span>No sync server</span>
+    <span>Direct Git traffic</span>
     <span>Real .git directories</span>
     <span>libgit2 engine</span>
     <span>Syntax highlighting — 11 languages</span>
@@ -1651,7 +1652,7 @@
   <div class="container">
     <div class="reveal">
       <div class="section-label">002 — Capabilities</div>
-      <h2 class="section-title">The paid-app checklist: Git, editor, diffs, automation.</h2>
+      <h2 class="section-title">Real Git, a full editor, and optional background syncing.</h2>
     </div>
     <div class="features-grid reveal-stagger reveal">
       <div class="feature-cell">
@@ -1750,6 +1751,14 @@
         <div class="feature-name">Conflict Resolution</div>
         <div class="feature-desc">When histories diverge, choose merge or rebase explicitly. Resolve conflicts per file — ours, theirs, or edit in the side-by-side three-way view — then complete or abort cleanly.</div>
       </div>
+      <div class="feature-cell">
+        <div class="feature-index">13</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div class="feature-name">Background Sync</div>
+        <div class="feature-desc">An optional subscription that pulls clean fast-forward updates while the app is closed whenever iOS grants background time. GitHub push events provide best-effort wake hints. It never commits, merges, rebases, or pushes, and it is not guaranteed or real time.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1846,7 +1855,7 @@
         <div class="segment-list">
           <span>Open repo folders from the iOS Files app</span>
           <span>Use one source folder to avoid duplicate cloud copies</span>
-          <span>Device-to-remote architecture, no middleman sync service</span>
+          <span>Repository content stays device-to-remote and is never relayed</span>
         </div>
       </article>
     </div>
@@ -1989,15 +1998,15 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Automation</div>
-        <div class="spec-val">x-callback-url (syncmd://) · Apple Shortcuts (Pull All / Pull Repo)</div>
+        <div class="spec-val">x-callback-url (syncmd://) · Apple Shortcuts · optional Background Sync</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Cloud Dependency</div>
-        <div class="spec-val">Device-to-remote only · no GitSync server</div>
+        <div class="spec-val">Manual Git: device-to-remote · Background Sync: opt-in entitlement and wake metadata relay, never repository content</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Data Collection</div>
-        <div class="spec-val">Git author name/email · coarse onboarding analytics · optional Assist metadata (see <a href="privacy.html" style="text-decoration:underline">privacy policy</a>)</div>
+        <div class="spec-val">Git author name/email · coarse onboarding analytics · optional Background Sync metadata (see <a href="privacy.html" style="text-decoration:underline">privacy policy</a>)</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Platforms</div>
@@ -2009,7 +2018,7 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Price</div>
-        <div class="spec-val">$9.99 one-time · no subscription · unlimited repositories</div>
+        <div class="spec-val">$9.99 one-time for the full manual Git client · optional Background Sync subscription</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Source</div>
@@ -2041,7 +2050,7 @@
       </details>
       <details class="faq-item">
         <summary>Is there a GitSync.md server in the middle?</summary>
-        <p>No. Git operations run on device through the app's native Git engine and talk directly to the configured remote. Your repos are not mirrored through a Cody-operated sync service.</p>
+        <p>Git operations run on device through the app's native Git engine and talk directly to the configured remote. Your repos are not mirrored through a Cody-operated sync service. Optional Background Sync uses a relay for entitlement, wake, and operational metadata only; it never handles repository content or Git credentials.</p>
       </details>
       <details class="faq-item">
         <summary>How do I use it with Obsidian?</summary>
@@ -2076,8 +2085,12 @@
         <p>Yes. LFS files download automatically after clone and pull, large binaries are offered LFS tracking (with your confirmation — and <code>.gitattributes</code> is updated for you), objects upload before each push, and file locking with push guards works on servers that support it. Self-hosted LFS endpoints work too, including over SSH.</p>
       </details>
       <details class="faq-item">
+        <summary>How does Background Sync work?</summary>
+        <p>Background Sync is an optional subscription for pull-only updates while the app is closed. When iOS grants background time, GitHub push events can provide best-effort wake hints and GitSync.md attempts a clean fast-forward pull. iOS controls whether and when background work runs, so it is not guaranteed or real time. It never commits, merges, rebases, force-pushes, or pushes.</p>
+      </details>
+      <details class="faq-item">
         <summary>Is it iPhone only? Is there a subscription?</summary>
-        <p>GitSync.md is for iPhone and iPad. The App Store price is $9.99 one-time: no subscription and unlimited repositories.</p>
+        <p>GitSync.md is for iPhone and iPad. The full manual Git client is $9.99 once with unlimited repositories. Background Sync is an optional auto-renewable subscription; no subscription is required to clone, edit, pull, commit, branch, merge, push, or use Shortcuts and callbacks.</p>
       </details>
     </div>
   </div>
@@ -2112,8 +2125,8 @@
   <div class="container">
     <div class="reveal">
       <div class="section-label" style="text-align: center;">010 — Get Started</div>
-      <h2 class="cta-title">Buy once<span class="accent">.</span> Clone unlimited<span class="accent">.</span><br>Push from iOS<span class="accent">.</span></h2>
-      <p class="cta-sub">A full Git client and code editor for Obsidian vaults, Markdown folders, and code repositories. $9.99 one-time. No subscription. No sync server.</p>
+      <h2 class="cta-title">Buy manual Git once<span class="accent">.</span><br>Clone unlimited<span class="accent">.</span> Sync optionally<span class="accent">.</span></h2>
+      <p class="cta-sub">A full Git client and code editor for Obsidian vaults, Markdown folders, and code repositories. $9.99 one-time for every manual Git feature, with optional Background Sync when you want pull-only updates while the app is closed.</p>
       <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
         <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="btn-primary" style="font-size: 14px; padding: 16px 32px;">
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>

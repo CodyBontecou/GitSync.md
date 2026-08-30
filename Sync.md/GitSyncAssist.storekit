@@ -34,12 +34,12 @@
       "id" : "gitsync-assist",
       "localizations" : [
         {
-          "description" : "Optional pull-only automation for all managed repositories after one installation-level opt-in, with per-repository exclusions.",
-          "displayName" : "GitSync Assist",
+          "description" : "Optional Background Sync attempts safe pull-only updates for managed repositories whenever iOS grants background time.",
+          "displayName" : "Background Sync",
           "locale" : "en_US"
         }
       ],
-      "name" : "GitSync Assist",
+      "name" : "Background Sync",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -66,14 +66,14 @@
           ],
           "localizations" : [
             {
-              "description" : "All-repository automation: eligible GitHub event wakes, foreground reconciliation, and clean fast-forward pulls only.",
-              "displayName" : "GitSync Assist Monthly",
+              "description" : "Background pulls when iOS allows, with best-effort GitHub wake hints and clean fast-forwards only.",
+              "displayName" : "Background Sync Monthly",
               "locale" : "en_US"
             }
           ],
           "productID" : "com.bontecou.gitsync.assist.monthly",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "GitSync Assist Monthly",
+          "referenceName" : "Background Sync Monthly",
           "subscriptionGroupID" : "gitsync-assist",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
@@ -105,14 +105,14 @@
           ],
           "localizations" : [
             {
-              "description" : "One year of all-repository automation with eligible GitHub event wakes, foreground reconciliation, and clean fast-forward pulls only.",
-              "displayName" : "GitSync Assist Annual",
+              "description" : "One year of background pulls when iOS allows, with best-effort GitHub wake hints and clean fast-forwards only.",
+              "displayName" : "Background Sync Annual",
               "locale" : "en_US"
             }
           ],
           "productID" : "com.bontecou.gitsync.assist.annual",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "GitSync Assist Annual",
+          "referenceName" : "Background Sync Annual",
           "subscriptionGroupID" : "gitsync-assist",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
