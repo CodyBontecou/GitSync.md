@@ -3,7 +3,18 @@ import UniformTypeIdentifiers
 
 struct SetupView: View {
     @Environment(AppState.self) private var state
+    @Environment(\.dismiss) private var dismiss
     private let analytics = OnboardingAnalyticsClient.shared
+
+    /// Requests a return to the previous onboarding page. When non-`nil`, the
+    /// account-choice step renders a back affordance so this view reads as
+    /// the final page of the paged onboarding flow rather than a separate
+    /// screen.
+    private let onBack: (() -> Void)?
+
+    init(onBack: (() -> Void)? = nil) {
+        self.onBack = onBack
+    }
 
     // PAT flow
     @State private var showPATFlow = false
@@ -31,6 +42,10 @@ struct SetupView: View {
                                 removal: .move(edge: .leading).combined(with: .opacity)
                             ))
                     } else {
+                        if let onBack, !showPATFlow {
+                            onboardingBackButton(onBack)
+                        }
+
                         hero
                             .padding(.bottom, 40)
 
@@ -166,21 +181,54 @@ struct SetupView: View {
             .padding(.horizontal, 24)
             .padding(.bottom, 16)
 
-            // Demo Mode
-            BGhostButton(title: String(localized: "Try Demo"), icon: "play.fill") {
-                completedAuthMethod = .demo
-                analytics.trackOnboardingAuthCompleted(method: .demo, outcome: .succeeded)
-                analytics.trackOnboardingCompleted(
-                    authMethod: .demo,
-                    saveLocationPreference: .defaultAppFolder
-                )
-                state.activateDemoMode()
-                state.hasCompletedOnboarding = true
-                state.saveGlobalSettings()
+            // Demo Mode — first-run only. Existing users replaying onboarding
+            // from App Settings keep their real data and must not be offered a
+            // demo-mode takeover.
+            if showsDemoMode {
+                BGhostButton(title: String(localized: "Try Demo"), icon: "play.fill") {
+                    completedAuthMethod = .demo
+                    analytics.trackOnboardingAuthCompleted(method: .demo, outcome: .succeeded)
+                    analytics.trackOnboardingCompleted(
+                        authMethod: .demo,
+                        saveLocationPreference: .defaultAppFolder
+                    )
+                    state.activateDemoMode()
+                    state.hasSeenOnboarding = true
+                    state.hasCompletedOnboarding = true
+                    state.saveGlobalSettings()
+                    dismiss()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
         }
+    }
+
+    /// Demo mode is a first-run affordance; it swaps in a seeded demo
+    /// repository and fake credentials.
+    private var showsDemoMode: Bool {
+        !state.hasCompletedOnboarding && state.repos.isEmpty
+    }
+
+    // MARK: - Onboarding Back
+
+    /// Monospaced "← BACK" affordance mirroring the PAT flow's back button so
+    /// the sign-in step reads as just another onboarding page.
+    private func onboardingBackButton(_ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Text("←")
+                    .font(.system(size: 14, design: .monospaced))
+                Text("BACK")
+                    .font(.system(size: 13, weight: .medium, design: .monospaced))
+                    .tracking(1)
+            }
+            .foregroundStyle(Color.brutalText)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 24)
+        .padding(.top, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: - PAT Flow
@@ -292,8 +340,13 @@ struct SetupView: View {
             authMethod: completedAuthMethod ?? (state.isSignedIn ? .githubOAuth : .none),
             saveLocationPreference: saveLocationPreference
         )
+        state.hasSeenOnboarding = true
         state.hasCompletedOnboarding = true
         state.saveGlobalSettings()
+        // No-op when this view is embedded in ContentView's root hierarchy
+        // (the flag change above swaps in RepoListView); dismisses the
+        // fullScreenCover when onboarding was replayed from App Settings.
+        dismiss()
     }
 
     private func trackSetupStep(_ step: OnboardingAnalyticsStep) {

@@ -9,6 +9,16 @@ struct OnboardingView: View {
     @State private var trackedSteps: Set<OnboardingAnalyticsStep> = []
     @State private var purchasingProductID: String?
     @State private var isWorking = false
+
+    /// `true` when onboarding is re-presented from App Settings for an
+    /// existing user. Replays always start from the first slide, never resume
+    /// at the sign-in step, and treat "Skip" as a dismissal.
+    private let isReplay: Bool
+
+    init(isReplay: Bool = false) {
+        self.isReplay = isReplay
+    }
+
     private let analytics = OnboardingAnalyticsClient.shared
 
     /// DEBUG-only preview hook: launch the app with `PREVIEW_PROSPECT_PAYWALL=1`
@@ -30,12 +40,18 @@ struct OnboardingView: View {
         return entitlement.state
     }
 
-    /// The final Background Sync soft paywall is only offered while the legacy
-    /// `gitSyncAssistEnabled` feature flag is enabled. While `false`, onboarding shows exactly
-    /// the three informational slides.
+    /// The Background Sync soft paywall is only offered while the legacy
+    /// `gitSyncAssistEnabled` feature flag is enabled. While `false`, onboarding
+    /// shows exactly the three informational slides (then the sign-in step).
     private var showsAssistPaywall: Bool { FeatureFlags.gitSyncAssistEnabled }
 
-    private var pageCount: Int { slides.count + (showsAssistPaywall ? 1 : 0) }
+    /// Total pages: informational slides, the optional Background Sync soft
+    /// paywall, and the final sign-in step. The sign-in step is always last so
+    /// it stays swipe-navigable like every other onboarding page.
+    private var pageCount: Int { slides.count + (showsAssistPaywall ? 1 : 0) + 1 }
+
+    /// Index of the embedded sign-in step (`SetupView`).
+    private var signInIndex: Int { pageCount - 1 }
 
     private let slides: [OnboardingSlide] = [
         OnboardingSlide(
@@ -82,62 +98,82 @@ struct OnboardingView: View {
                     assistPaywallView
                         .tag(slides.count)
                 }
+                SetupView(onBack: {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        currentPage = signInIndex - 1
+                    }
+                })
+                .tag(signInIndex)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut(duration: 0.3), value: currentPage)
 
-            // Bottom section
-            VStack(spacing: 20) {
-                // Page indicators
-                HStack(spacing: 8) {
-                    ForEach(0..<pageCount, id: \.self) { index in
-                        Rectangle()
-                            .fill(index == currentPage ? Color.brutalText : Color.brutalBorderSoft)
-                            .frame(width: index == currentPage ? 24 : 8, height: 3)
-                            .animation(.easeInOut(duration: 0.25), value: currentPage)
-                    }
-                }
-
-                if currentPage == pageCount - 1 {
-                    BPrimaryButton(title: lastPagePrimaryTitle, icon: "arrow.right") {
-                        finishOnboarding()
-                    }
-                    .padding(.horizontal, 24)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                } else {
-                    BPrimaryButton(title: String(localized: "Continue"), icon: "arrow.right") {
-                        withAnimation {
-                            currentPage += 1
+            // Bottom section — hidden on the sign-in step, which provides its
+            // own calls to action (and its own back affordance).
+            if currentPage != signInIndex {
+                VStack(spacing: 20) {
+                    // Page indicators
+                    HStack(spacing: 8) {
+                        ForEach(0..<pageCount, id: \.self) { index in
+                            Rectangle()
+                                .fill(index == currentPage ? Color.brutalText : Color.brutalBorderSoft)
+                                .frame(width: index == currentPage ? 24 : 8, height: 3)
+                                .animation(.easeInOut(duration: 0.25), value: currentPage)
                         }
                     }
-                    .padding(.horizontal, 24)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                }
 
-                BGhostButton(title: String(localized: "Skip")) {
-                    finishOnboarding()
+                    if currentPage == pageCount - 2 {
+                        BPrimaryButton(title: lastPagePrimaryTitle, icon: "arrow.right") {
+                            advanceToSignIn()
+                        }
+                        .padding(.horizontal, 24)
+                        .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    } else {
+                        BPrimaryButton(title: String(localized: "Continue"), icon: "arrow.right") {
+                            withAnimation {
+                                currentPage += 1
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    }
+
+                    BGhostButton(title: String(localized: "Skip")) {
+                        skipTapped()
+                    }
+                    .padding(.bottom, 8)
                 }
-                .padding(.bottom, 8)
+                .padding(.bottom, 40)
+                .animation(.easeInOut(duration: 0.25), value: currentPage)
             }
-            .padding(.bottom, 40)
-            .animation(.easeInOut(duration: 0.25), value: currentPage)
         }
         .background(Color.brutalBg)
         .opacity(appeared ? 1 : 0)
         .onAppear {
+            if !isReplay, state.hasSeenOnboarding, currentPage != signInIndex {
+                // Resume an interrupted first run directly at the sign-in
+                // step instead of replaying the slides.
+                currentPage = signInIndex
+            }
             trackCurrentPageIfNeeded(markOnboardingStart: true)
             withAnimation(.easeOut(duration: 0.5)) {
                 appeared = true
             }
         }
-        .onChange(of: currentPage) { _, _ in
+        .onChange(of: currentPage) { _, newPage in
+            if newPage == signInIndex, !state.hasSeenOnboarding {
+                // The user has passed the slides/paywall. Persist it so an
+                // interrupted first run resumes at the sign-in step.
+                state.hasSeenOnboarding = true
+                state.saveGlobalSettings()
+            }
             trackCurrentPageIfNeeded()
         }
     }
 
     /// On the paywall page the primary button reads "Continue" until the user
-    /// subscribes — a soft decline that always finishes onboarding. Once
-    /// active, it returns to "Get Started".
+    /// subscribes — a soft decline that always moves on to the sign-in step.
+    /// Once active, it returns to "Get Started".
     private var lastPagePrimaryTitle: String {
         if showsAssistPaywall, currentPage == slides.count, !paywallEntitlementState.isActive {
             return String(localized: "Continue")
@@ -424,14 +460,26 @@ struct OnboardingView: View {
 
     // MARK: - Actions
 
-    private func finishOnboarding() {
-        state.hasSeenOnboarding = true
-        state.saveGlobalSettings()
-        dismiss()
+    /// Advances to the embedded sign-in step — the last onboarding page.
+    private func advanceToSignIn() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            currentPage = signInIndex
+        }
+    }
+
+    /// "Skip" jumps past the remaining slides/paywall to the sign-in step. On
+    /// a replay from App Settings it simply dismisses, matching the old
+    /// escape hatch for existing users.
+    private func skipTapped() {
+        if isReplay {
+            dismiss()
+        } else {
+            advanceToSignIn()
+        }
     }
 
     private func trackCurrentPageIfNeeded(markOnboardingStart: Bool = false) {
-        let step = analyticsStep(for: currentPage)
+        guard let step = analyticsStep(for: currentPage) else { return }
         if markOnboardingStart {
             analytics.trackOnboardingStarted(step: step)
         }
@@ -439,13 +487,16 @@ struct OnboardingView: View {
         analytics.trackOnboardingStepViewed(step)
     }
 
-    private func analyticsStep(for page: Int) -> OnboardingAnalyticsStep {
+    /// Step analytics for a page index. The embedded sign-in step reports its
+    /// own `accountChoice` step from within `SetupView`, so it maps to `nil`
+    /// here to avoid double tracking.
+    private func analyticsStep(for page: Int) -> OnboardingAnalyticsStep? {
         switch page {
         case 0: return .welcome
         case 1: return .editAnywhere
         case 2: return .fullGit
-        case 3: return .backgroundSync
-        default: return .fullGit
+        case 3: return showsAssistPaywall ? .backgroundSync : nil
+        default: return nil
         }
     }
 }

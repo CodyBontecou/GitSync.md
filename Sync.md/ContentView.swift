@@ -8,12 +8,14 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if !state.hasSeenOnboarding && state.repos.isEmpty {
-                OnboardingView()
-            } else if state.hasCompletedOnboarding || !state.repos.isEmpty {
+            if state.hasCompletedOnboarding || !state.repos.isEmpty {
                 RepoListView()
             } else {
-                SetupView()
+                // First run: the slides, optional soft paywall, and the
+                // sign-in step all live inside OnboardingView as one paged
+                // flow. `hasSeenOnboarding` marks an interrupted run so the
+                // flow resumes at the sign-in step, never mid-slides.
+                OnboardingView()
             }
         }
         .opacity(showContent ? 1 : 0)

@@ -245,7 +245,7 @@ struct AppSettingsView: View {
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }
             .sheet(isPresented: $showPremiumSettings) { PremiumSettingsView() }
-            .fullScreenCover(isPresented: $showOnboarding) { OnboardingView() }
+            .fullScreenCover(isPresented: $showOnboarding) { OnboardingView(isReplay: true) }
             .fileImporter(
                 isPresented: $showFolderPicker,
                 allowedContentTypes: [.folder],
