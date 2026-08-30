@@ -19,6 +19,8 @@ Mutation scripts refuse to run unless their explicit confirmation flag is set.
 
 The runtime matrix is English plus 25 translations: `ar`, `da`, `de`, `es`, `fi`, `fr`, `he`, `hi`, `hu`, `id`, `it`, `ja`, `ko`, `nb`, `nl`, `pl`, `pt-BR`, `ru`, `sv`, `th`, `tr`, `uk`, `vi`, `zh-Hans`, and `zh-Hant`.
 
+The current integrated candidate has complete compiler extraction coverage but intentionally fails `localization/reports/catalog-audit.json`: 57 source entries still need human translation/review across all 25 non-source locales (1,425 cells). Do not treat English fallback or unreviewed machine output as a completed release gate.
+
 ## Reproduce local artifacts
 
 Create an isolated Python environment and install `scripts/localization/requirements.txt`, then run:

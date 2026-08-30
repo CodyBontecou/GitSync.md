@@ -71,7 +71,7 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 ## 10. Entitlements, Info.plist, privacy manifest
 
 - **Entitlements**: `aps-environment` (build-config injected) — APNs for Background Sync.
-- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [remote-notification]` (silent push only); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]` (open vault in Files); `PREMIUM_RELAY_BASE_URL` (relay config; empty ⇒ Background Sync disabled fail-closed); `INJECT_PAT` env (DEBUG).
+- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [remote-notification, processing]` plus `BGTaskSchedulerPermittedIdentifiers: [com.bontecou.Sync-md.background-sync]` (silent event wakes and discretionary network-capable processing); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]`; `PREMIUM_RELAY_BASE_URL` (empty ⇒ Background Sync disabled fail-closed); `INJECT_PAT` env (DEBUG).
 - **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; collected data types declared: **DeviceID** (linked, analytics+appFunctionality), **ProductInteraction** (analytics), **PurchaseHistory** (appFunctionality), **UserID** (appFunctionality) — matching analytics + Background Sync flows. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
 - **Source**: `Sync_md.entitlements`, `Info.plist`, `PrivacyInfo.xcprivacy`.
 

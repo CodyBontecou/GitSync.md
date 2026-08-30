@@ -23,12 +23,13 @@ Source: `Sync.md/Shortcuts/SyncShortcuts.swift` (entire file).
 - Invalid UUID / not found → "Repository not found. Pick a repository again in Shortcuts."; not cloned → "…has not been cloned yet…".
 - Same pull path; dialog "<repo>: <message>".
 
-### 1.4 `SyncMDAppShortcutsProvider`
-- AppShortcut 1 (`PullAllRepositoriesIntent`): phrases "Pull all repositories in \(.applicationName)", "Sync all repositories in \(.applicationName)", "Update my notes in \(.applicationName)"; shortTitle "Pull All"; icon `arrow.down.circle.fill`.
-- AppShortcut 2 (`PullRepositoryIntent`): "Pull \(\.$repository) in …", "Sync \(\.$repository) in …", "Update \(\.$repository) in …"; shortTitle "Pull Repo"; icon `arrow.down.circle`.
-- `shortcutTileColor = .blue`. `Sync_mdApp.init` calls `updateAppShortcutParameters()` (skipped under XCTest).
+### 1.4 Push and sync intents
+- `PushRepositoryIntent` stages all non-ignored changes, blocks active conflict sessions, commits with the repository identity, pushes directly to the configured remote, and returns structured status/SHA/message output.
+- `SyncRepositoryIntent` runs configured-branch pull-first reconciliation under one repository lease, then publishes only when conflict and remote-state checks remain safe. It never merges, rebases, switches branches, resolves conflicts, or force-pushes.
 
-**Not present**: push/sync/status intents — Shortcuts surface is **pull-only** (push/sync/status are x-callback-url only).
+### 1.5 `SyncMDAppShortcutsProvider`
+- App shortcuts expose Pull All Repositories, Pull Repository, Push Repository, and Sync Repository with repository entity parameters and Siri phrases.
+- `shortcutTileColor = .blue`. `Sync_mdApp.init` calls `updateAppShortcutParameters()` (skipped under XCTest).
 
 ## 2. x-callback-url (Obsidian integration)
 
@@ -54,26 +55,26 @@ All: `action`, `status=ok`, plus:
 - `status`: `branch`, `sha`, `changes` (count).
 
 ### x-error response params
-`action`, `status=error`, `message` (localizedDescription). Pre-flight errors (unknown action, missing `repo`, repo not found, not cloned) redirect to `x-error ?? x-success` with `status`/`message` only. No numeric error codes.
+`action`, `status=error`, `message` (localizedDescription). Completed-work metadata is preserved when applicable: pull attention after an update includes `sha` + `updated=true`; a saved-but-unpublished push commit includes `sha` + `commit_saved=true`; sync failures include `pull_updated` and any known SHA. Pre-flight errors (unknown action, missing `repo`, repo not found, not cloned) redirect to `x-error ?? x-success` with `status`/`message` only. No numeric error codes.
 
 ### Behavior on trigger
 1. Navigate to repo's VaultView (`callbackNavigateToRepoID`), set `isSyncing`/`syncingRepoID`/`syncProgress` ("Pulling from remote…", "Committing & pushing…", "Syncing…", "Reading status…").
-2. 400ms navigation pause, then execute under repository **lease** (`serializedRepository(repoID:).withLease`) so callback work is atomic vs in-app work.
-3. Push staging: 8 stage passes (~250ms apart) to absorb Obsidian rename = copy+delete delay, per-entry fallback staging (`stage(path:oldPath:)`, skip `"<unknown>"`); errors `commitFailed("Could not stage local file changes before push.")` or `LocalGitError.noChanges`.
+2. After the navigation pause, execute Git work under repository serialization. Pull routes through the typed `AppState.pullOnly`/`RepositoryPullResult` boundary; sync uses the same configured-branch composed reconciliation lease as App Intents; pull and push cannot interleave with another operation.
+3. Push staging checks `conflictSession()` before stage-all, performs settle/re-stage passes, and proceeds only with staged changes and no remaining stageable worktree changes. Active operations/unmerged index state and incomplete staging fail closed.
 4. Success: banner ~1.5s → redirect (params appended to existing queryItems) → cleanup 300ms. Error: banner ~2s → redirect `x-error ?? x-success`.
 
 ## 3. Background Sync (legacy internal `Assist` identifiers)
 
 Source: `Sync.md/Services/BackgroundSyncCoordinator.swift` (entire file).
 
-- Info.plist `UIBackgroundModes = ["remote-notification"]` (silent push only; **no** BGAppRefresh/`fetch`). Build var `PREMIUM_RELAY_BASE_URL`.
-- Production consent is global: `PremiumSettingsView` calls `setAutomaticallySyncAllRepositories` only after explicit installation-level confirmation that current and future cloned/managed repositories are included unless individually excluded. `PremiumRuntime` automatically reconciles inventory changes and exact configured branches; historical per-repository channels never imply consent.
-- Eligibility: exact GitHub repositories covered by linked GitHub App installations receive opaque live enrollments and are eligible for best-effort event wakes. Non-GitHub and unresolved/uncovered GitHub repositories stay foreground-only (`foregroundOnly`); they can run only during foreground reconciliation. APNs timing/execution remains controlled by iOS and is neither guaranteed nor truly real time.
-- Triggers: (a) silent APNs push → `PremiumSilentPush.parse(userInfo)` with `channel` + `hintID`; gated on global mode, active entitlement, and a repo with `assist.enabled && assist.channel == push.channel`; duplicate hints deduped via 256-entry LRU. (b) Foreground `reconcileForeground()` first reconciles all non-excluded repositories and then attempts assist-enabled repos — called from app startup/`scenePhase == .active`.
+- Info.plist `UIBackgroundModes = ["remote-notification", "processing"]` and permits `com.bontecou.Sync-md.background-sync`. Processing requests require network connectivity and remain discretionary; there is no guaranteed interval or real-time execution. Build var `PREMIUM_RELAY_BASE_URL`.
+- Background Sync has installation-scoped global consent, then independent automatic-pull and automatic-push preferences. Existing enabled installations migrate pull-on/push-off; publishing remains separately confirmed and default-off. Global disable clears both action preferences, and re-enable starts pull-on/push-off. Historical channels never imply consent.
+- Eligibility: exact GitHub repositories covered by linked GitHub App installations receive opaque live enrollments and best-effort event wakes. Non-GitHub and unresolved repositories can still receive discretionary opportunities for whichever automatic action is enabled through BG processing; foreground reconciliation remains available.
+- Triggers: silent APNs push, scene activation, and best-effort `BGProcessingTask`. Processing is rescheduled at invocation, retained through exactly-once completion, and expiration completes false while cancelling processing flights.
 - Device registration is constant-size (`installation`, APNs token/environment, monotonic generation), independent of repository count. The relay derives delivery targets by joining each channel's live enrollment to devices for that installation; it does not trust a client-uploaded channel list for routing.
 - Per-repo policies (`RepoAssistSettings`): `excludedFromAutomaticSync`, `networkPolicy == .wifiOnly` (NWPathMonitor `SystemBackgroundSyncConditions`), and `powerPolicy == .externalPowerOnly` (batteryState charging/full). The automatic branch is `RepoConfig.branch`; the old duplicate automatic-sync branch editor is not a production entry point. Policy violations → `.deferred("Waiting for Wi-Fi."/"Waiting for external power.")` recorded as health `.deferred`.
-- Dispositions: `.completed(RepositoryPullResult)` / `.deferred(String)` / `.ignored`. Per-repo in-flight dedupe (generation-keyed `Flight`); `cancelPush(userInfo:)`, `cancel(repoID:)`, `cancelAll()`.
-- Health (`RepoAssistHealth`): kinds updated/upToDate/attention/failed/deferred; attention reasons localChanges, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, failed; lastSuccessDate/commitSHA preserved across failures. `AppState.recordAssist` updates gitState + invalidates commit history caches.
+- Dispositions: `.completed(RepositoryReconciliationResult)` / `.deferred(String)` / `.ignored`. Composite results retain pull, push, final local SHA, and actual transfer truth even when a successful pull is followed by push attention/failure. Per-repo in-flight dedupe is generation keyed.
+- Health (`RepoAssistHealth`): kinds never/updated/upToDate/deferred/attention/failed; attention reasons localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, unpushedCommit, failed. Successful pull transfer/SHA remains recorded if publication later fails; post-update LFS auth/trust maps to authentication attention.
 
 ## 4. Scene/URL handling, Files interop
 
@@ -138,8 +139,8 @@ Property keys (whitelist): `appVersion`, `buildNumber`, `platform`, `onboardingS
 `SyncMDTests/SyncMDTests.swift` (single file, 100+ tests). Automation-domain relevant:
 - Background sync / silent push: `testBackgroundCoordinatorGatesAndRecordsTypedResults`, `testBackgroundCoordinatorMapsAllAttentionOutcomesAndPreservesLastSuccess`, `testPremiumSilentPushParserAcceptsOnlyOpaqueBackgroundPayload`, `testPremiumPushCompletionGateIsExactlyOnceUnderConcurrentClaims`, `testPremiumNotificationBridgeTimesOutCancelsAndCompletesExactlyOnce`, `testPremiumNotificationBridgeReturnsSuccessfulResultBeforeTimeoutOnce`, `testPremiumReleaseConfigurationAndBackgroundCapabilities`.
 - Analytics/privacy: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`, `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`, `testPremiumAPIRequestContainsOnlyAllowedMetadataAndFailsClosed`.
-- Pull machinery used by Shortcuts/callback: `testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo`, `testRepositoryPullRunnerReturnsUpdatedAndUpToDate`, `testAppStatePullFastForwardUpdatesCommitAndOutcome`, `testAppStatePullBlockedByLocalChangesDoesNotMutateRepoState`, `testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead`, `testLocalGitPullOnlyDoesNotOverwriteBranchAdvancedAfterAncestryValidation`, `testAppStatePullWithRebaseUpdatesCommitAndOutcome`, `testAppStatePullWithRebaseConflictStoresOutcome`, OAuth URL parsing `testOAuthCallbackParserValidatesURLStateBeforeToken`.
-- **No direct unit tests** named for `CallbackURLHandler`, the App Intents, or `OnboardingAnalyticsClient` in this file; worker has `worker/onboarding-analytics/test/onboarding-analytics.test.mjs`.
+- Pull machinery used by Shortcuts/callback: `testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo`, `testRepositoryPullRunnerReturnsUpdatedAndUpToDate`, `testAppStatePullFastForwardUpdatesCommitAndOutcome`, `testAppStatePullBlockedByLocalChangesDoesNotMutateRepoState`, `testCallbackPullMappingPreservesEveryTypedOutcome`, `testCallbackPushAndSyncMappingsPreserveStatusesAndCompletedWork`, `testShortcutPushAndSyncMappingsReturnBlockedEntitiesAndThrowHardFailures`, `testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead`, `testLocalGitPullOnlyDoesNotOverwriteBranchAdvancedAfterAncestryValidation`, `testAppStatePullWithRebaseUpdatesCommitAndOutcome`, `testAppStatePullWithRebaseConflictStoresOutcome`, OAuth URL parsing `testOAuthCallbackParserValidatesURLStateBeforeToken`.
+- Callback typed pull/push/sync mappings have direct outcome coverage. Shortcuts push/sync entity-vs-thrown-error mapping is directly tested; full URL-opening/UI redirection, system App Intent invocation, and `OnboardingAnalyticsClient` still lack end-to-end unit tests in this file. The analytics worker has `worker/onboarding-analytics/test/onboarding-analytics.test.mjs`.
 - `SyncMDUITests/SyncMDUITests.swift`: launch smoke coverage plus a seeded UI regression that traverses four nested repository folders and verifies the leaf file is visible.
 
 ## 9. CI workflows (`.github/workflows/`)
@@ -171,10 +172,10 @@ Not user-facing: ships only in DEBUG builds; excluded from App Store builds.
 ## Gaps / uncertainties
 
 - No dates attached to release notes in code (versions only).
-- No dedicated unit tests found for `CallbackURLHandler`, App Intents, or `OnboardingAnalyticsClient` inside `SyncMDTests.swift` (indirect coverage of underlying pull machinery only).
+- Callback pull/push/sync mapping and Shortcuts push/sync customer-visible mapping have direct coverage; URL-opening/UI redirection, system App Intent invocation, and `OnboardingAnalyticsClient` still rely on underlying-path coverage rather than dedicated end-to-end tests.
 - x-callback-url errors carry no machine-readable codes — only `status=error` + localized `message`.
 - `SyncMDApplicationDelegate` (APNs delegate) not read in this pass; only its wiring in `Sync_mdApp.swift`.
 - No user-facing analytics opt-out toggle on iOS; worker DELETE endpoint exists but the client call site was not found in files read.
 - Worker paywall columns are not emitted by the iOS client — future feature placeholders, not shipped.
-- No BGAppRefresh usage found; background sync relies solely on `remote-notification` + foreground reconcile.
+- No BGAppRefresh usage; Background Sync combines `remote-notification`, discretionary `BGProcessingTask`, and foreground reconciliation.
 - **Resolved elsewhere**: `SyncMDApplicationDelegate` APNs wiring is documented in `premium-assist.md` §5 (silent-push bridge, 25s completion gate); the delegate itself is thin glue over `PremiumNotificationBridge`.

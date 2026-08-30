@@ -55,8 +55,15 @@ struct RepoDiscoveryView: View {
         containerResults.filter { selectedRepoIDs.contains($0.id) }
     }
 
+    /// Results already shown in GitSync.md storage are omitted from the grant
+    /// section. A user can grant a folder inside Documents, so both scans may
+    /// otherwise surface and process the exact same working copy.
+    private var visibleGrantResults: [DiscoveredRepo] {
+        GitRepoScanner.deduplicatedRepositories(grantResults, excluding: containerResults)
+    }
+
     private var selectedGrantRepos: [DiscoveredRepo] {
-        grantResults.filter { selectedRepoIDs.contains($0.id) }
+        visibleGrantResults.filter { selectedRepoIDs.contains($0.id) }
     }
 
     private var selectedCount: Int {
@@ -228,8 +235,8 @@ struct RepoDiscoveryView: View {
                             Spacer()
                             if grantScan.isScanning {
                                 ProgressView().controlSize(.small)
-                            } else if !grantResults.isEmpty {
-                                BBadge(text: String(localized: "\(grantResults.count) found"), style: .accent)
+                            } else if !visibleGrantResults.isEmpty {
+                                BBadge(text: String(localized: "\(visibleGrantResults.count) found"), style: .accent)
                             }
                         }
                         .padding(.horizontal, 16)
@@ -245,15 +252,19 @@ struct RepoDiscoveryView: View {
                             }
                             .padding(.horizontal, 16)
                             .padding(.vertical, 12)
-                        } else if grantScan == .done && grantResults.isEmpty {
+                        } else if grantScan == .done && visibleGrantResults.isEmpty {
                             BDivider().padding(.horizontal, 16)
-                            Text("No git repositories found inside this folder.")
+                            Text(
+                                grantResults.isEmpty
+                                    ? String(localized: "No git repositories found inside this folder.")
+                                    : String(localized: "Repositories from this folder are already listed above.")
+                            )
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 12)
                         } else {
-                            ForEach(Array(grantResults.enumerated()), id: \.element.id) { index, repo in
+                            ForEach(Array(visibleGrantResults.enumerated()), id: \.element.id) { index, repo in
                                 if index > 0 { BDivider().padding(.horizontal, 16) }
                                 repoRow(repo)
                             }
@@ -312,7 +323,7 @@ struct RepoDiscoveryView: View {
                             BBadge(text: String(localized: "added"), style: .success)
                         }
                     }
-                    Text(subtitle(for: repo))
+                    Text(Self.repositorySubtitle(for: repo))
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .lineLimit(1)
@@ -329,9 +340,9 @@ struct RepoDiscoveryView: View {
         .disabled(isTracked)
     }
 
-    private func subtitle(for repo: DiscoveredRepo) -> String {
+    static func repositorySubtitle(for repo: DiscoveredRepo) -> String {
         if let remote = repo.remoteURL, let parsed = GitRemoteURL.parse(remote) {
-            return "\(parsed.ownerName)/\(parsed.repoName)"
+            return parsed.displayPath
         }
         if let remote = repo.remoteURL, !remote.isEmpty {
             return remote
@@ -402,13 +413,13 @@ struct RepoDiscoveryView: View {
             grantScan = .failed(String(localized: "Could not access the selected folder."))
             return
         }
-        defer { url.stopAccessingSecurityScopedResource() }
 
         guard let bookmark = try? url.bookmarkData(
             options: [],
             includingResourceValuesForKeys: nil,
             relativeTo: nil
         ) else {
+            url.stopAccessingSecurityScopedResource()
             grantScan = .failed(String(localized: "Could not create a bookmark for the selected folder."))
             return
         }
@@ -422,10 +433,18 @@ struct RepoDiscoveryView: View {
         grantResults = []
         grantScan = .scanning
 
+        // Keep the security scope alive for the detached filesystem scan. The
+        // old function-level defer released it as soon as this method returned,
+        // so the scan commonly ran after access had already been revoked.
         Task {
+            defer { url.stopAccessingSecurityScopedResource() }
             let results = await Task.detached(priority: .userInitiated) {
                 GitRepoScanner.discoverRepositories(root: url)
             }.value
+
+            // Ignore a stale result if the user selected another folder while
+            // this scan was still running.
+            guard grantRootURL == url else { return }
             grantResults = results
             grantScan = .done
         }
@@ -451,8 +470,13 @@ struct RepoDiscoveryView: View {
             return
         }
 
-        let containerSelections = selectedContainerRepos
-        let grantSelections = selectedGrantRepos
+        let containerSelections = GitRepoScanner.deduplicatedRepositories(selectedContainerRepos)
+        // Container storage takes precedence if scan state changes while the
+        // user is selecting rows. Never process one working copy twice.
+        let grantSelections = GitRepoScanner.deduplicatedRepositories(
+            selectedGrantRepos,
+            excluding: containerSelections
+        )
         guard !containerSelections.isEmpty || !grantSelections.isEmpty else { return }
         let grantBookmark: Data
         if grantSelections.isEmpty {

@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <title>Automate Git Pulls with Apple Shortcuts — GitSync.md</title>
-<meta name="description" content="Automate GitSync.md pulls with Apple Shortcuts: native App Intents, Siri phrases, and Personal Automations that pull all repos or one repo when the app opens.">
+<meta name="description" content="Request GitSync.md pull attempts with Apple Shortcuts: native App Intents, Siri phrases, and app-open Personal Automations for all repos or one repo.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
 <meta name="theme-color" content="#0a0a0a">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GitSync.md">
 <meta property="og:title" content="Automate Git Pulls with Apple Shortcuts — GitSync.md">
-<meta property="og:description" content="Pull all repositories or one vault with a tap or a Siri phrase — then let a Personal Automation do it every time the app opens.">
+<meta property="og:description" content="Request a pull for all repositories or one vault with a tap, Siri phrase, or app-open Personal Automation, then inspect the result.">
 <meta property="og:url" content="https://gitsyncmd.app/blog/shortcuts-automation-ios.html">
 <meta property="og:image" content="https://gitsyncmd.app/screenshots/workflow-vault-view.png">
 <meta property="article:published_time" content="2026-08-22">
@@ -397,7 +397,7 @@
       <div class="fade-up">
         <div class="eyebrow">Automation Guide</div>
         <h1>Automate Git pulls with Apple Shortcuts<span class="accent">.</span></h1>
-        <p class="subtitle">GitSync.md ships native App Intents, so the Shortcuts app can pull all your repositories — or just one — with a tap, a Siri phrase, or automatically every time you open the app. No URL building required.</p>
+        <p class="subtitle">GitSync.md ships native App Intents, so the Shortcuts app can attempt to pull all your repositories — or just one — with a tap, a Siri phrase, or an app-open Personal Automation. No URL building required.</p>
         <div class="meta-line">
           <span>August 22, 2026</span>
           <span>Guide</span>
@@ -407,9 +407,9 @@
       <aside class="toc-card fade-up" style="animation-delay: 0.12s;" aria-label="Article outline">
         <div class="toc-title">What this covers</div>
         <ol>
-          <li>The two built-in Shortcuts actions</li>
+          <li>The four built-in Shortcuts actions</li>
           <li>Siri phrases you can use</li>
-          <li>Auto-pull on every app open</li>
+          <li>Attempt a pull when the app opens</li>
           <li>What the result dialogs tell you</li>
           <li>Why pulls only — and how to push</li>
         </ol>
@@ -427,20 +427,28 @@
           <ol>
             <li>Open the <strong>Shortcuts</strong> app — GitSync.md's actions are already there.</li>
             <li>Use <strong>Pull All Repositories</strong> for everything, or <strong>Pull Repository</strong> and pick one.</li>
-            <li>For hands-free sync, create a Personal Automation: <em>When GitSync.md opens → Pull All Repositories</em>.</li>
+            <li>For a hands-free attempt, create a Personal Automation: <em>When GitSync.md opens → Pull All Repositories</em>.</li>
           </ol>
         </div>
 
-        <h2 id="two-actions">Two actions, built in</h2>
+        <h2 id="two-actions">Four actions, built in</h2>
         <div class="callout">
           <div class="callout-label">Pull All Repositories</div>
-          <p>No parameters. Walks every cloned repository, pulls each one, and reports a summary: how many updated, how many were already current, how many need your attention, and how many failed — with details for the first few that need attention.</p>
+          <p>No parameters. Walks every cloned repository, attempts each pull, and reports a summary: how many updated, how many were already current, how many need your attention, and how many failed — with details for the first few that need attention.</p>
         </div>
         <div class="callout">
           <div class="callout-label">Pull Repository</div>
           <p>Takes one repository, chosen from your cloned repos (Shortcuts shows them by name as you type). Returns that repo's result: updated, up to date, or needs attention.</p>
         </div>
-        <p>Both actions appear automatically in the Shortcuts app's action list under GitSync.md — nothing to install or enable. They return their results as a dialog, so they compose cleanly with other shortcut steps: show a notification, log to a note, or run from a Home Screen button or Control Center.</p>
+        <div class="callout">
+          <div class="callout-label">Push Repository</div>
+          <p>Stages all non-ignored edits, creates a commit with the configured Git identity, and pushes one repository. Active conflicts stop before staging.</p>
+        </div>
+        <div class="callout">
+          <div class="callout-label">Sync Repository</div>
+          <p>Runs a configured-branch, clean-fast-forward pull first, then stages, commits, and pushes only when remote state remains safe. It returns structured status, commit SHA, and message fields for later Shortcut steps.</p>
+        </div>
+        <p>All four actions appear automatically in the Shortcuts app's action list under GitSync.md — nothing to install or enable. They return dialogs or structured results so they compose cleanly with notifications, logging, Home Screen buttons, and Personal Automations.</p>
 
         <h2 id="siri">Siri phrases</h2>
         <p>Because the actions are exposed as App Shortcuts, Siri understands them out of the box:</p>
@@ -451,29 +459,29 @@
           <li>"Pull <em>&lt;repository name&gt;</em> in GitSync.md"</li>
         </ul>
 
-        <h2 id="auto-pull">Auto-pull every time you open the app</h2>
+        <h2 id="auto-pull">Attempt a pull when you open the app</h2>
         <p>The classic setup takes thirty seconds:</p>
         <ol>
           <li>In Shortcuts, go to <strong>Automation → New Personal Automation</strong>.</li>
           <li>Choose <strong>App → GitSync.md → Is Opened</strong>.</li>
           <li>Add the <strong>Pull All Repositories</strong> action.</li>
-          <li>Turn off "Ask Before Running" for a silent sync, or leave it on if you prefer a confirmation.</li>
+          <li>Turn off "Ask Before Running" for an unprompted attempt, or leave it on if you prefer a confirmation.</li>
         </ol>
-        <p>Open the app to check a note, and everything is already fresh — pulled with the same safe fast-forward rules the app uses everywhere.</p>
+        <p>When the automation is allowed to run, it attempts the same safe fast-forward pull the app uses everywhere. Check its result for repositories that were updated, already current, blocked, or need attention; iOS automation delivery and Git/network success are not guaranteed.</p>
 
         <h2 id="reading-results">Reading the result dialogs</h2>
         <ul>
           <li><strong>"Pulled 4 repositories: 2 updated, 1 already up to date, 1 needs attention"</strong> — the attention case names the repo and why: local changes, diverged history, a missing remote branch, or an authentication prompt waiting for you.</li>
           <li><strong>"No cloned repositories to pull yet"</strong> — you're signed out or haven't cloned anything.</li>
-          <li>Failures never throw — they surface as text so the rest of your shortcut keeps running.</li>
+          <li>Pull summaries return structured attention text. Push and Sync return <code>blocked</code> status for safety stops such as divergence or concurrent work; missing repositories, authentication/trust prompts, and hard operation failures throw actionable errors. Branch on the returned status first, then handle thrown errors.</li>
         </ul>
 
-        <h2 id="pull-only">Pulls only — pushes stay deliberate</h2>
-        <p>The Shortcuts surface is intentionally pull-only. Pulls can be safe (fetch and clean fast-forward, stopping whenever anything needs a human decision), while pushes publish your work to the world. When you want to push, do it in the app — or wire the same automation through the <code>syncmd://x-callback-url</code> API if you truly want automated push.</p>
-        <p>Anything that would require a judgment call — local edits, divergence, an SSH host key that changed, a branch that moved — stops and tells you instead of guessing. That's the rule everywhere in GitSync.md; Shortcuts inherits it.</p>
+        <h2 id="pull-only">Publishing stays explicit and fail-closed</h2>
+        <p>Pull actions never publish. Push Repository and Sync Repository publish only when you deliberately add those actions to a Shortcut or Personal Automation. They stage all non-ignored changes and push directly to the repository's configured remote.</p>
+        <p>Anything that would require a judgment call — an active conflict, divergence, remote work arriving alongside local edits, an SSH trust prompt, or the wrong checked-out branch — stops and reports attention instead of guessing. Shortcut publishing never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
 
         <h2 id="recap">Recap</h2>
-        <p>Native Shortcuts actions plus one Personal Automation gives you "fresh notes every time I open the app" without any URL plumbing. Combine it with the <code>syncmd://</code> API for Obsidian-triggered syncs and you have both worlds covered.</p>
+        <p>Native Shortcuts actions plus one Personal Automation can attempt a safe pull when GitSync.md opens, without URL plumbing. Review the returned summary because iOS may suppress an automation and Git safety or network conditions may require attention. Combine it with the <code>syncmd://</code> API for explicit Obsidian-triggered attempts.</p>
 
         <h2>Related guides</h2>
         <div class="related-card">
@@ -486,10 +494,10 @@
         <h2>Details checked</h2>
         <p>This guide matches the current GitSync.md capabilities:</p>
         <ul>
-          <li>App Intents: Pull All Repositories, Pull Repository</li>
+          <li>App Intents: Pull All Repositories, Pull Repository, Push Repository, Sync Repository</li>
           <li>Siri phrases as shipped in AppShortcutsProvider</li>
           <li>Result dialogs with per-repo attention details</li>
-          <li>Pull-only by design; pushes via app or x-callback-url</li>
+          <li>Structured push/sync results with fail-closed conflict and remote-state checks</li>
         </ul>
       </aside>
     </div>

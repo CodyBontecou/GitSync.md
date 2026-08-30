@@ -81,8 +81,8 @@ struct OnboardingView: View {
             title: [String(localized: "BACKGROUND"), String(localized: "SYNC")],
             accentIndex: 1,
             subtitle: paywallEntitlementState.isActive
-                ? String(localized: "PULL-ONLY — INCLUDED")
-                : String(localized: "PULL-ONLY — OPTIONAL SUBSCRIPTION"),
+                ? String(localized: "BEST-EFFORT — INCLUDED")
+                : String(localized: "BEST-EFFORT — OPTIONAL SUBSCRIPTION"),
             description: ""
         )
     }
@@ -262,7 +262,7 @@ struct OnboardingView: View {
                     )
                     assistFeatureRow(
                         icon: "checkmark.shield.fill",
-                        title: String(localized: "Clean pull-only updates — never commits or pushes")
+                        title: String(localized: "Control automatic pull and push separately")
                     )
                 }
                 .padding(12)

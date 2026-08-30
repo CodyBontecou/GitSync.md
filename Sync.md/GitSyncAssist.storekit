@@ -34,7 +34,7 @@
       "id" : "gitsync-assist",
       "localizations" : [
         {
-          "description" : "Optional Background Sync attempts safe pull-only updates for managed repositories whenever iOS grants background time.",
+          "description" : "Optional Background Sync offers independent automatic pull and push controls whenever iOS grants time.",
           "displayName" : "Background Sync",
           "locale" : "en_US"
         }
@@ -66,7 +66,7 @@
           ],
           "localizations" : [
             {
-              "description" : "Background pulls when iOS allows, with best-effort GitHub wake hints and clean fast-forwards only.",
+              "description" : "Best-effort Background Sync with independent automatic pull and push controls.",
               "displayName" : "Background Sync Monthly",
               "locale" : "en_US"
             }
@@ -105,7 +105,7 @@
           ],
           "localizations" : [
             {
-              "description" : "One year of background pulls when iOS allows, with best-effort GitHub wake hints and clean fast-forwards only.",
+              "description" : "One year of best-effort Background Sync with independent automatic pull and push controls.",
               "displayName" : "Background Sync Annual",
               "locale" : "en_US"
             }

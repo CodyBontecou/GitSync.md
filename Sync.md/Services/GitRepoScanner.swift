@@ -13,8 +13,10 @@ struct DiscoveredRepo: Identifiable, Hashable {
     /// (GitSync.md storage) rather than a user-granted folder.
     let isInsideAppContainer: Bool
 
-    /// Stable identity: the working copy's absolute path.
-    var id: String { url.path }
+    /// Stable identity: the working copy's canonical absolute path. This keeps
+    /// the same repository identical when one scan uses a symlinked path (for
+    /// example iOS's `/var` alias) and another returns its resolved path.
+    var id: String { AppState.canonicalFilePath(for: url) }
     var name: String { url.lastPathComponent }
 }
 
@@ -35,6 +37,16 @@ enum GitRepoScanner {
         "vendor", "venv", ".venv", "target", "__pycache__", "Carthage"
     ]
 
+    /// Preserves discovery order while removing repositories already present
+    /// in another scan source and repeated paths within `repositories`.
+    static func deduplicatedRepositories(
+        _ repositories: [DiscoveredRepo],
+        excluding excluded: [DiscoveredRepo] = []
+    ) -> [DiscoveredRepo] {
+        var seenIDs = Set(excluded.map(\.id))
+        return repositories.filter { seenIDs.insert($0.id).inserted }
+    }
+
     /// Synchronously scans `root` for git working copies. Runs Foundation-only
     /// work and is safe to invoke from a detached task; pass the result back
     /// to the main actor for presentation.
@@ -52,8 +64,12 @@ enum GitRepoScanner {
         maxDepth: Int = defaultMaxDepth,
         isInsideAppContainer: Bool = false
     ) -> [DiscoveredRepo] {
-        let rootPath = root.standardizedFileURL.path
-        let rootDepth = root.standardizedFileURL.pathComponents.count
+        // FileManager can preserve a symlink in the root URL while returning
+        // enumerated descendants with that symlink resolved. Canonicalize both
+        // sides before deriving a relative path (`/var` vs `/private/var` is the
+        // common on-device case).
+        let rootPath = AppState.canonicalFilePath(for: root)
+        let rootPrefix = rootPath.hasSuffix("/") ? rootPath : rootPath + "/"
         let fileManager = FileManager.default
 
         guard let enumerator = fileManager.enumerator(
@@ -65,10 +81,14 @@ enum GitRepoScanner {
         var results: [DiscoveredRepo] = []
 
         func appendResult(at url: URL) {
-            let fullPath = url.standardizedFileURL.path
-            let relativePath = fullPath.hasPrefix(rootPath + "/")
-                ? String(fullPath.dropFirst(rootPath.count + 1))
-                : ""
+            let fullPath = AppState.canonicalFilePath(for: url)
+            let relativePath: String
+            if fullPath == rootPath {
+                relativePath = ""
+            } else {
+                guard fullPath.hasPrefix(rootPrefix) else { return }
+                relativePath = String(fullPath.dropFirst(rootPrefix.count))
+            }
 
             results.append(DiscoveredRepo(
                 url: url,
@@ -114,7 +134,7 @@ enum GitRepoScanner {
             // Repositories at the depth boundary were still eligible above;
             // everything else stops traversal here. Dependency and build
             // trees never hold a user's own working copy.
-            let depth = url.pathComponents.count - rootDepth
+            let depth = enumerator.level
             if depth >= maxDepth || skippedDirectoryNames.contains(name) {
                 enumerator.skipDescendants()
                 continue

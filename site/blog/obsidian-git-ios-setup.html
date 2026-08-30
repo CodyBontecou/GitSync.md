@@ -574,7 +574,7 @@
 
     <div class="callout note">
       <span class="callout-label">Update — June 2026</span>
-      <p>This post now recommends keeping the plugin's automatic timers off on iPhone and letting GitSync.md own automated sync via the <code>syncmd://x-callback-url/sync</code> URL. For the fuller walkthrough, see <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad</a>.</p>
+      <p>This post now recommends keeping the plugin's automatic timers off on iPhone and giving GitSync.md each explicit sync attempt via the <code>syncmd://x-callback-url/sync</code> URL. For the fuller walkthrough, see <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad</a>.</p>
     </div>
 
     <h2>The problem</h2>
@@ -583,7 +583,7 @@
 
     <p>Then you open Obsidian on your iPhone and realize — <strong>there's no Git on iOS</strong>. The mobile app doesn't ship with git, and the Obsidian Git plugin can't clone or push on its own without a real <code>.git</code> directory already in place.</p>
 
-    <p>That's what GitSync.md solves. It uses <strong>libgit2</strong> to perform real Git operations natively on iOS — clone, pull, commit, push — and writes an actual <code>.git</code> directory to the filesystem. Once that directory exists inside Obsidian's file system, the Obsidian Git plugin picks it up and everything just works.</p>
+    <p>That's what GitSync.md solves. It uses <strong>libgit2</strong> to perform real Git operations natively on iOS — clone, pull, commit, push — and writes an actual <code>.git</code> directory to the filesystem. Once that directory exists inside Obsidian's file system, the Obsidian Git plugin can detect and use it.</p>
 
     <!-- Architecture diagram -->
     <div class="flow-diagram">
@@ -679,15 +679,15 @@
     <!-- STEP 7 -->
     <div class="step-card" data-step="Step 7">
       <h3>Automate it with the sync URL (recommended)</h3>
-      <p>For a workflow you don't have to think about, hand the Git work to GitSync.md instead of driving the plugin's timers. Trigger this URL whenever you want a full round-trip sync:</p>
-      <pre><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
-      <p>The <code>sync</code> action pulls first, then stages your local changes, commits them with the message you pass, and pushes to GitHub — then hands you right back to Obsidian. The <code>repo</code> value must match the <strong>vault folder name</strong> shown in GitSync.md, not the GitHub repository title.</p>
-      <p>You can fire it from a tapped link in a note, an iOS Shortcut, or any automation you build — one tap and your vault is synced with real Git. Separate actions are also available if you want distinct pull and push buttons:</p>
+      <p>To give GitSync.md one explicit attempt instead of running competing plugin timers, trigger this URL when you want a pull-then-push round trip. This example includes an encoded <code>x-success</code> URL so a successful attempt can return to the named Obsidian vault:</p>
+      <pre><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian&amp;x-success=obsidian%3A%2F%2Fopen%3Fvault%3DMyVault</code></pre>
+      <p>The <code>sync</code> action attempts a clean fast-forward pull first, then stages local changes, commits them with the message you pass, and pushes only if the safety checks still pass. The <code>repo</code> value must match the <strong>vault folder name</strong> shown in GitSync.md, not the GitHub repository title. A return occurs only when you supply a callback URL, and blocked, authentication, or network outcomes may require attention instead of returning success.</p>
+      <p>You can fire it from a tapped link in a note, an iOS Shortcut, or an automation you build. Treat it as one sync attempt and inspect the result rather than assuming publication. Separate actions are also available if you want distinct pull and push buttons:</p>
       <pre><code>syncmd://x-callback-url/pull?repo=MyVault
 syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
     </div>
 
-    <h2>That's it — it just works</h2>
+    <h2>You're ready to use it</h2>
 
     <p>Once those three fields are set, Obsidian Git can pull, commit, and push your vault. You can use the command palette (<strong>Ctrl+P</strong> or swipe down) and run commands like:</p>
 
@@ -701,7 +701,7 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
 
     <p>The plugin does have automatic settings — auto commit-and-sync interval, auto push interval, auto pull interval — and they work, but <strong>we recommend leaving them off on iPhone</strong>. The plugin's mobile Git engine is experimental and memory-limited on iOS, its timers only fire while Obsidian is open in the foreground, and two apps driving the same <code>.git</code> on independent schedules is far less predictable than one owner.</p>
 
-    <p>Instead, let <strong>GitSync.md be the single Git engine</strong>. Trigger the <code>syncmd://x-callback-url/sync</code> URL from Step 7 for an explicit one-tap round trip that can pull, commit, and push. If you only want incoming changes pulled while the app is closed, optional <strong>Background Sync</strong> attempts clean fast-forward pulls whenever iOS grants background time. GitHub events provide best-effort wake hints, but iOS controls delivery and timing, so background updates are not guaranteed or real time. Background Sync never commits, merges, rebases, or pushes.</p>
+    <p>Instead, let <strong>GitSync.md be the single Git engine</strong>. Trigger the <code>syncmd://x-callback-url/sync</code> URL from Step 7 for an explicit one-tap round trip that can pull, commit, and push. Optional <strong>Background Sync</strong> lets you independently enable clean fast-forward pulls, separately consented commit-and-push attempts, or both whenever iOS grants background time. Push-only mode checks remote state without updating the worktree and stops if incoming changes need attention. GitHub events and discretionary iOS processing provide best-effort wakes, but iOS controls delivery and timing, so background updates are not guaranteed or real time. Automatic work never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
 
     <div class="callout tip">
       <span class="callout-label">Tip</span>
@@ -741,7 +741,7 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
       <li>Point GitSync.md's save directory at Obsidian's iOS file system</li>
       <li>Clone your vault repo</li>
       <li>Set up Obsidian Git with your username, name, and email</li>
-      <li>Keep the plugin's auto-sync timers off and use <code>syncmd://x-callback-url/sync</code> for one-tap syncing</li>
+      <li>Keep the plugin's auto-sync timers off and use <code>syncmd://x-callback-url/sync</code> for an explicit one-tap sync attempt</li>
     </ol>
 
     <p>No complex configuration and no cloud service in the path of your repository content. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>

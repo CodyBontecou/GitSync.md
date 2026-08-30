@@ -28,6 +28,7 @@ struct PremiumSettingsView: View {
     @State private var isWorking = false
     @State private var purchasingProductID: String?
     @State private var automaticSyncConfirmation = false
+    @State private var automaticPushConfirmation = false
     @State private var relayDataDeletionConfirmation = false
     @State private var appeared = false
 
@@ -82,7 +83,18 @@ struct PremiumSettingsView: View {
                 }
                 Button(String(localized: "Cancel"), role: .cancel) {}
             } message: {
-                Text("Background Sync attempts pull-only updates when iOS grants background time. One installation-level opt-in covers every current and future cloned or managed repository unless you exclude it in Repository Settings. GitHub repositories covered by linked GitHub App installations get best-effort wake hints; non-GitHub or unresolved repositories sync only while the app is open. Pulls remain clean fast-forward only. Local changes, divergence, the wrong branch, or authentication and trust requirements stop the update.")
+                Text("Background Sync enables best-effort wake delivery for current and future cloned or managed repositories unless you exclude one in Repository Settings. Automatic pull starts on and automatic publishing starts off; you can then control each action independently. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. iOS may delay or suppress every attempt.")
+            }
+            .confirmationDialog(
+                String(localized: "Automatically commit and push local changes?"),
+                isPresented: $automaticPushConfirmation
+            ) {
+                Button(String(localized: "Enable automatic push")) {
+                    runtime.setAutomaticallyPushLocalChanges(true)
+                }
+                Button(String(localized: "Cancel"), role: .cancel) {}
+            } message: {
+                Text("When iOS grants background time, GitSync.md may stage all non-ignored changes, create a commit using this repository's configured author and the default commit message, and push directly to its remote. It never force-pushes, rebases, merges, switches branches, or resolves conflicts. Concurrent local and remote changes stop for your attention. iOS may delay or suppress this work, so it is not guaranteed or real time.")
             }
             .confirmationDialog(
                 String(localized: "Delete Background Sync relay data?"),
@@ -93,7 +105,7 @@ struct PremiumSettingsView: View {
                 }
                 Button(String(localized: "Cancel"), role: .cancel) {}
             } message: {
-                Text("This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Sync all repositories in the background instead.")
+                Text("This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Enable Background Sync instead.")
             }
             .opacity(appeared ? 1 : 0)
             .onAppear {
@@ -128,7 +140,7 @@ struct PremiumSettingsView: View {
                 Rectangle()
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
-                Text("SAFE PULLS WHILE YOU'RE AWAY")
+                Text("BEST-EFFORT TWO-WAY SYNC")
                     .font(.system(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brutalText)
                     .tracking(1.5)
@@ -137,7 +149,7 @@ struct PremiumSettingsView: View {
             .accessibilityElement(children: .combine)
 
             // Pipeline strip — the whole feature in one line.
-            Text("PUSH → WAKE HINT → CLEAN PULL")
+            Text("WAKE → OPTIONAL PULL / OPTIONAL PUSH")
                 .font(.system(size: 12, weight: .semibold, design: .monospaced))
                 .foregroundStyle(Color.brutalTextMid)
                 .tracking(1)
@@ -180,8 +192,8 @@ struct PremiumSettingsView: View {
             VStack(spacing: 0) {
                 AssistFeatureRow(
                     icon: "bolt.badge.clock.fill",
-                    title: String(localized: "Best-effort background pulls"),
-                    description: String(localized: "When iOS grants background time, GitHub pushes can provide wake hints and GitSync.md attempts a clean pull without opening the app.")
+                    title: String(localized: "Best-effort background reconciliation"),
+                    description: String(localized: "Choose automatic fast-forward pulls, automatic commit and push, or both whenever iOS grants background time.")
                 )
                 AssistRowDivider()
                 AssistFeatureRow(
@@ -200,7 +212,7 @@ struct PremiumSettingsView: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
 
             AssistFinePrint(
-                "Background Sync is optional pull-only syncing for all current and future cloned or managed repositories on this installation, except repositories you exclude. GitHub repositories covered by a linked GitHub App installation are eligible for best-effort background wake hints; non-GitHub and unresolved repositories sync only while the app is open. iOS controls background timing, so updates are not guaranteed or real time."
+                "Background Sync provides best-effort wakes for current and future managed repositories. Automatic pull and automatic push are separate controls; publishing remains default-off. GitHub events and iOS processing may provide opportunities, but iOS controls timing, so work is not guaranteed or real time."
             )
         }
     }
@@ -216,9 +228,9 @@ struct PremiumSettingsView: View {
                     AssistRuleColumn(
                         heading: String(localized: "Always"),
                         rules: [
-                            String(localized: "Clean fast-forward pulls on your branch"),
+                            String(localized: "Clean fast-forward pulls when enabled"),
+                            String(localized: "Commit and push only when enabled"),
                             String(localized: "Stops safely when attention is needed"),
-                            String(localized: "Per-repository exclusions and policies"),
                         ],
                         markerSystemImage: "checkmark",
                         markerColor: .brutalSuccess
@@ -232,9 +244,9 @@ struct PremiumSettingsView: View {
                     AssistRuleColumn(
                         heading: String(localized: "Never"),
                         rules: [
-                            String(localized: "Stages or commits"),
-                            String(localized: "Pushes or force-pushes"),
+                            String(localized: "Force-pushes or overwrites remote work"),
                             String(localized: "Rebases, merges, or resolves conflicts"),
+                            String(localized: "Switches branches or creates missing branches"),
                         ],
                         markerSystemImage: "xmark",
                         markerColor: .brutalError
@@ -245,7 +257,7 @@ struct PremiumSettingsView: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
 
             AssistFinePrint(
-                "Background Sync only applies clean fast-forward pulls on each repository's configured branch. It never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes, divergence, the wrong branch, and authentication or trust requirements stop the background update."
+                "Automatic pulls remain clean fast-forwards. Automatic push stages non-ignored edits, commits with the configured author and default message, and pushes directly to the remote. With pull off, push still fetches remote metadata to fail closed but never updates the worktree. Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention."
             )
         }
     }
@@ -362,10 +374,10 @@ struct PremiumSettingsView: View {
             VStack(alignment: .leading, spacing: 14) {
                 Toggle(isOn: automaticSyncBinding) {
                     VStack(alignment: .leading, spacing: 3) {
-                        Text("Sync all repositories in the background")
+                        Text("Enable Background Sync")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
-                        Text("One switch covers every repository whenever iOS allows background work.")
+                        Text("Enables best-effort wakes for every included repository; choose pull and push separately below.")
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                     }
@@ -391,6 +403,46 @@ struct PremiumSettingsView: View {
                     .frame(height: 1)
 
                 if runtime.automaticallySyncAllRepositories {
+                    Toggle(isOn: automaticPullBinding) {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Pull remote changes")
+                                .font(.system(size: 17, weight: .semibold))
+                            Text("Clean fast-forward only; unsafe state stops for attention.")
+                                .font(.system(size: 12, design: .monospaced))
+                                .foregroundStyle(Color.brutalTextMid)
+                        }
+                    }
+                    .toggleStyle(.switch)
+                    .tint(Color.brutalText)
+                    .disabled(isWorking || runtime.deletionInProgress || runtime.relayDataWasDeleted)
+
+                    Rectangle()
+                        .fill(Color.brutalBorderSoft)
+                        .frame(height: 1)
+
+                    Toggle(isOn: automaticPushBinding) {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Commit and push local changes")
+                                .font(.system(size: 17, weight: .semibold))
+                            Text("Independent, default-off publishing consent.")
+                                .font(.system(size: 12, design: .monospaced))
+                                .foregroundStyle(Color.brutalTextMid)
+                        }
+                    }
+                    .toggleStyle(.switch)
+                    .tint(Color.brutalText)
+                    .disabled(isWorking || runtime.deletionInProgress || runtime.relayDataWasDeleted)
+
+                    AssistFinePrint(
+                        "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. If automatic pull is off, it checks remote state without updating the worktree and stops when remote changes must be pulled. It never recreates a missing branch, force-pushes, merges, rebases, switches branches, or resolves conflicts."
+                    )
+
+                    if !runtime.automaticallyPullRemoteChanges && !runtime.automaticallyPushLocalChanges {
+                        AssistFinePrint(
+                            "Both automatic actions are off. Wake delivery may remain enrolled, but no background Git operation will run."
+                        )
+                    }
+
                     BSecondaryButton(
                         title: String(localized: "Link / Manage GitHub App"),
                         isDisabled: isWorking || runtime.deletionInProgress || runtime.relayDataWasDeleted,
@@ -400,7 +452,7 @@ struct PremiumSettingsView: View {
                     }
 
                     AssistFinePrint(
-                        "Turning this off immediately stops local automatic processing and makes a best-effort attempt to unregister this device from wake delivery. After a network failure, remote device rows or delivery attempts may remain until later cleanup, entitlement loss, or terminal deletion. It does not delete the installation's other relay records; the terminal deletion control is separate below."
+                        "Turning off Enable Background Sync prevents new automatic work, requests cancellation of work already in flight, and makes a best-effort attempt to unregister this device from wake delivery. Turning off either action requests cancellation before that action can continue; a Git update or publication already completed cannot be recalled. Remote device rows or delivery attempts may remain after network failure until later cleanup, entitlement loss, or terminal deletion."
                     )
 
                     AssistFinePrint(
@@ -439,7 +491,7 @@ struct PremiumSettingsView: View {
                 let summary = runtime.automaticSyncSummary
                 AssistStatRow(key: String(localized: "Repositories"), value: "\(summary.total)")
                 AssistStatRow(key: String(localized: "Enrolled for GitHub wakes"), value: "\(summary.enrolled)")
-                AssistStatRow(key: String(localized: "Foreground-only"), value: "\(summary.foregroundOnly)")
+                AssistStatRow(key: String(localized: "No event hint"), value: "\(summary.foregroundOnly)")
                 AssistStatRow(key: String(localized: "Excluded"), value: "\(summary.excluded)")
                 AssistStatRow(key: String(localized: "Failed / disabled"), value: "\(summary.failed) / \(summary.disabled)")
                 AssistStatRow(key: String(localized: "Linked GitHub installations"), value: "\(runtime.githubInstallations.count)")
@@ -643,6 +695,23 @@ struct PremiumSettingsView: View {
                         isWorking = false
                     }
                 }
+            }
+        )
+    }
+
+    private var automaticPullBinding: Binding<Bool> {
+        Binding(
+            get: { runtime.automaticallyPullRemoteChanges },
+            set: { runtime.setAutomaticallyPullRemoteChanges($0) }
+        )
+    }
+
+    private var automaticPushBinding: Binding<Bool> {
+        Binding(
+            get: { runtime.automaticallyPushLocalChanges },
+            set: { enabled in
+                if enabled { automaticPushConfirmation = true }
+                else { runtime.setAutomaticallyPushLocalChanges(false) }
             }
         )
     }

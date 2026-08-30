@@ -23,13 +23,13 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **Multiple repos & storage** — Manage many repositories, each with its own branch, author identity, and custom save location (or app-managed storage); re-add previously cloned repos in one tap; scan GitSync.md storage or any Files folder to rediscover and reconnect existing clones in a batch; removing a repo keeps your files by default.
 - **Built-in editor & files** — Syntax-highlighted editor (Swift, Markdown, JSON, YAML, JS/TS, Python, Bash, HTML, CSS; VSCode Dark+/Light+ themes), file browser with git status badges, create/rename/delete files, and line-by-line diff viewing.
 - **Edit anywhere** — Files live in the Files app; edit with Obsidian, ia Writer, or any editor, then sync from GitSync.md.
-- **Obsidian & automation** — `syncmd://x-callback-url` API (pull/push/sync/status with `message` param and result callbacks) plus Apple Shortcuts intents ("Pull All Repositories", "Pull Repository", "Push Repository", "Sync Repository" — push/sync run in the background without opening the app).
+- **Obsidian & automation** — `syncmd://x-callback-url` API (pull/push/sync/status with `message` param and optional result callbacks) plus Apple Shortcuts intents ("Pull All Repositories", "Pull Repository", "Push Repository", "Sync Repository" — configured not to request a foreground app launch).
 - **Private repo support** — Works with both public and private repositories.
-- **Localization** — Full UI in 26 languages.
+- **Localization** — Catalogs cover 26 languages. Newly added Background Sync publishing and safety text currently falls back to English until the outstanding human translations recorded in `localization/reports/catalog-audit.json` are reviewed.
 - **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
-- **Background Sync (optional subscription)** — Attempts pull-only updates while the app is closed whenever iOS grants background time. One explicit installation-level opt-in covers all current and future cloned or managed repositories, with per-repository exclusions and network/power policies. GitHub repositories covered by linked GitHub App installations are eligible for best-effort push-event wake hints; non-GitHub or unresolved repositories sync only while the app is open. Background Sync performs only clean fast-forward pulls on each configured branch. Local changes, divergence, auth/trust prompts, and branch mismatches stop and surface attention; it never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes.
+- **Background Sync (optional subscription)** — Attempts best-effort reconciliation whenever iOS grants background time. While Background Sync is enabled, **Pull remote changes** and **Commit and push local changes** are independent controls: use pull only, push only, both, or neither. Existing enabled installations migrate to pull on and publishing off. Automatic pulls are clean fast-forwards. Push-only mode still fetches and validates remote state but never updates the worktree; remote-ahead edits, divergence, auth/trust prompts, and branch mismatches stop for attention. Background Sync never rebases, merges, switches branches, resolves conflicts, recreates missing branches, overwrites concurrent work, or force-pushes.
 
-All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require Background Sync. APNs wake delivery is best effort, controlled by iOS, and not guaranteed or truly real time. Device registration is constant-size. The app's Background Sync API requests never send repository names, URLs, contents, local paths, or Git credentials. During GitHub App linking, the browser sends a transient OAuth authorization code to the relay; the relay exchanges it for a single-purpose transient GitHub App user token solely to verify that the authenticated user owns a personal installation or is an active organization owner for an organization installation. Neither credential is persisted or application-logged, and token revocation is best effort after proof. The relay retains only the numeric authorizing user ID for administrator revalidation on link status and new enrollment; demotion blocks new enrollment but does not proactively remove already-live routing. Signed GitHub webhook payloads pass transiently through the relay and may contain repository names/URLs, commit messages, paths, and author metadata; the relay extracts and persists only numeric repository ID, branch, and opaque delivery/outbox identifiers, and does not log or persist those descriptive fields. APNs payloads are opaque.
+All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require Background Sync. GitHub event wakes and iOS background-processing scheduling are best effort, controlled by iOS, and not guaranteed or truly real time. Device registration is constant-size. The app's Background Sync API requests never send repository names, URLs, contents, local paths, or Git credentials. During GitHub App linking, the browser sends a transient OAuth authorization code to the relay; the relay exchanges it for a single-purpose transient GitHub App user token solely to verify that the authenticated user owns a personal installation or is an active organization owner for an organization installation. Neither credential is persisted or application-logged, and token revocation is best effort after proof. The relay retains only the numeric authorizing user ID for administrator revalidation on link status and new enrollment; demotion blocks new enrollment but does not proactively remove already-live routing. Signed GitHub webhook payloads pass transiently through the relay and may contain repository names/URLs, commit messages, paths, and author metadata; the relay extracts and persists only numeric repository ID, branch, and opaque delivery/outbox identifiers, and does not log or persist those descriptive fields. APNs payloads are opaque.
 
 ## How It Works
 
@@ -57,7 +57,7 @@ GitSync.md/
 │   ├── Views/                  # 21 SwiftUI screens (repo list, vault, git sheet,
 │   │                           #  conflict editor, diff, file browser/editor, …)
 │   │   └── BrutalDesignSystem.swift # Design system (colors, typography, components)
-│   ├── Shortcuts/SyncShortcuts.swift # App Intents (Pull All / Pull Repository)
+│   ├── Shortcuts/SyncShortcuts.swift # App Intents (pull / push / composed sync)
 │   ├── Analytics/              # Privacy-safe onboarding funnel events
 │   └── ReleaseNotes.swift      # In-app release notes
 │   └── Services/
@@ -70,9 +70,11 @@ GitSync.md/
 │       ├── OAuthService.swift       # GitHub OAuth via ASWebAuthenticationSession
 │       ├── KeychainService.swift    # Secure credential storage
 │       ├── CallbackURLHandler.swift # x-callback-url handler (Obsidian integration)
-│       ├── PremiumRuntime.swift     # Background Sync runtime (global mode, reconciliation, APNs, relay)
-│       ├── BackgroundSyncCoordinator.swift # Background Sync pull policies (network/power)
-│       ├── RepositoryOperationCoordinator.swift # Per-repo operation serialization
+│       ├── PremiumRuntime.swift     # Background Sync runtime (consents, reconciliation, APNs, relay)
+│       ├── BackgroundProcessingScheduler.swift # Best-effort BGProcessing registration/scheduling
+│       ├── BackgroundSyncCoordinator.swift # Independently selected pull/push reconciliation and policies
+│       ├── RepositoryPushRunner.swift # Conflict-safe stage/commit/push and composed sync
+│       ├── RepositoryOperationCoordinator.swift # Per-repo operation serialization/deletion barrier
 │       ├── SyntaxHighlighter.swift  # Editor syntax highlighting
 │       ├── DebugLogger.swift        # In-app debug log
 │       └── FeedbackHelper.swift     # Feedback & privacy-request email
@@ -132,11 +134,11 @@ Parameters: `repo` (required, vault folder name), `message` (optional, commit me
 | `sync`   | Pull then push | `pull_updated`, `sha`, `push_skipped` ("true" when nothing to push — not an error) |
 | `status` | Read repository state | `branch`, `sha`, `changes` (count) |
 
-All success callbacks also receive `action=…&status=ok`; error callbacks receive `action=…&status=error&message=<localized error>`. Push staging tolerates external-editor rename/copy+delete timing by retrying staging passes before committing.
+All success callbacks also receive `action=…&status=ok`; error callbacks receive `action=…&status=error&message=<localized error>`. Errors preserve completed-work metadata when applicable: an updated pull that later needs attention includes `sha` and `updated=true`, a saved-but-unpublished commit includes `sha` and `commit_saved=true`, and sync errors include `pull_updated`. Push staging tolerates external-editor rename/copy+delete timing by retrying staging passes before committing.
 
 ### Shortcuts / App Intents
 
-For automations that must not switch apps (e.g. "When Obsidian closes → push"), use the native intents instead of the URL scheme — they run in the background and return structured results to Shortcuts:
+For automations that should not request an app switch (e.g. "When Obsidian closes → push"), use the native intents instead of the URL scheme. When iOS runs them, they return results to Shortcuts:
 
 | Intent | Behavior | Output |
 |--------|----------|--------|
@@ -145,7 +147,7 @@ For automations that must not switch apps (e.g. "When Obsidian closes → push")
 | Push Repository | Stage all changes, commit, and push one repository | `status` (`pushed`/`noChanges`), `commitSHA`, `message` |
 | Sync Repository | Pull, then stage/commit/push (blocked pulls never push) | `status` (`pushed`/`noChanges`/`blocked`), `commitSHA`, `message` |
 
-All four run without bringing GitSync.md to the foreground. Expected outcomes (nothing to push, diverged branches, blocked pulls) return a `blocked`/`noChanges` status instead of failing the shortcut; errors that need in-app attention (authentication, uncloned repository) fail the action so Shortcuts can branch on them. Push staging matches the x-callback-url path (rename/copy+delete tolerant).
+All four are configured not to bring GitSync.md to the foreground, but iOS can delay or suppress Personal Automations. Push/Sync safety stops such as divergence return `blocked`, and nothing-to-push returns `noChanges`; missing repositories, authentication/trust prompts, and hard operation failures throw so Shortcuts can branch on them. Push staging matches the x-callback-url path (rename/copy+delete tolerant).
 
 ## Building
 

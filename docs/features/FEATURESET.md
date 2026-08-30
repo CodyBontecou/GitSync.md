@@ -51,7 +51,7 @@
 | 3.8 | Commit & push (staged content; LFS upload; push verified against remote advertisement) | Core | `commitAndPush` |
 | 3.9 | Push current branch without new commit (post-merge) | Core | `pushCurrentBranch` |
 | 3.10 | Per-ref push rejection surfacing (protected branch, hooks, non-FF) | Core | `pushUpdateReferenceCallback` |
-| 3.11 | Silent-failure push detection (re-fetch + OID verification) | Core | `commitAndPush` verify block |
+| 3.11 | Authoritative push verification: live negotiation must match intended local OID (plus pull-planned origin/remote OID for automation), and exact destination requires nil-status acceptance; missing acknowledgement is indeterminate | Core | `PushContext`, `pushNegotiationCallback`, `pushUpdateReferenceCallback` |
 | 3.12 | Branch inventory: local + remote + upstream + ahead/behind + detached HEAD | Core | `listBranches` |
 | 3.13 | Branch create / switch (dirty-tree guard) / delete (current guard) | Core | `createBranch`/`switchBranch`/`deleteBranch` |
 | 3.14 | Merge branch (FF or merge-commit; in-memory merge; conflicts → session) | Core | `mergeBranch` |
@@ -121,8 +121,8 @@
 |---|---|---|---|
 | 8.1 | Products: monthly $1.99 / annual $14.99 (no trials) | Background Sync | `GitSyncAssist.storekit` |
 | 8.2 | StoreKit 2 purchases (JWS-verified, appAccountToken-bound), restore, manage | Background Sync | `PremiumStorefront` |
-| 8.3 | Pull-only automation: one explicit installation-level opt-in covers current/future managed repos; clean fast-forward on each configured branch only (never stage/commit/merge/rebase/force-push/push) | Background Sync | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryPullRunner` |
-| 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, non-GitHub/unresolved repos are foreground-only; per-repo exclusion | Background Sync | `reconcileAutomaticRepository`, relay routes |
+| 8.3 | Best-effort automation with independent automatic-pull and automatic-push controls. Existing enabled installations migrate pull-on/push-off. Pulls are clean fast-forward only; push-only validates remote state without checkout; concurrent remote/local changes stop; never merge/rebase/switch/resolve/force-push | Background Sync | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryReconciliationRunner` |
+| 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, while non-GitHub/unresolved repos have no event hints but remain eligible for foreground and separately consented discretionary processing; per-repo exclusion | Background Sync | `reconcileAutomaticRepository`, relay routes, `BackgroundProcessingScheduler` |
 | 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate automatic-sync branch setting | Background Sync | `RepoAssistSettings`, `SettingsView` |
 | 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Background Sync | `PremiumAssistSummary`, production settings views |
 | 8.7 | StoreKit verification service (Apple roots pinned, OCSP, fail-closed) | Background Sync | `storekit-verifier` |
@@ -163,7 +163,7 @@
 
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
-| 12.1 | 26 languages, 922 localized strings | Core | `Localizable.xcstrings` |
+| 12.1 | 26 locale catalogs; current extraction coverage is complete, with 57 source entries still awaiting human translation across 25 non-source locales | Core | `Localizable.xcstrings`, `localization/reports/catalog-audit.json` |
 | 12.2 | App Store metadata localization (release notes per language, pipeline + reports) | Dev | `localization/` |
 
 ## 13. Platform & compliance
@@ -171,7 +171,7 @@
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
 | 13.1 | Privacy manifest (no tracking; analytics + Background Sync declared) | Core | `PrivacyInfo.xcprivacy`, test |
-| 13.2 | Entitlements: keychain, background remote-notification | Core | `Sync_md.entitlements`, Info.plist |
+| 13.2 | Entitlements/capabilities: keychain, background remote-notification, discretionary BGProcessing identifier | Core | `Sync_md.entitlements`, `Info.plist`, `BackgroundProcessingScheduler.swift` |
 | 13.3 | iPad support (single-column layouts; no dedicated split-view) | Core | ui-views gap note |
 | 13.4 | iOS 17+ target, libgit2 1.9.2 xcframework w/ libssh2+OpenSSL memory credentials | Dev | build script |
 
@@ -201,4 +201,4 @@ Version-by-version shipped-feature history (2.4.1 delete-cloned-repos, 2.4.5 Sho
 - No force-push, branch rename, remote-branch checkout, cherry-pick initiation, submodule/worktree support, fetch prune, multi-ref push.
 - No in-editor search, line numbers, keyboard accessory toolbar; no file move UI.
 - No dedicated iPad split-view layouts.
-- Background Sync never stages/commits/rebases/merges/resolves/force-pushes/pushes (by design, enforced + tested).
+- Background Sync stages/commits/pushes only after separate explicit publishing consent; it never rebases, merges, switches branches, resolves conflicts, recreates missing branches, or force-pushes.

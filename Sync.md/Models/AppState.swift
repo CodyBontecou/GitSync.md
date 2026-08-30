@@ -398,6 +398,13 @@ final class AppState {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
 
+    /// Stable filesystem identity for path comparisons. FileManager may return
+    /// descendants with symlinked ancestors resolved (notably `/var` as
+    /// `/private/var` on iOS), even when the root URL keeps the unresolved form.
+    nonisolated static func canonicalFilePath(for url: URL) -> String {
+        url.standardizedFileURL.resolvingSymlinksInPath().path
+    }
+
     nonisolated static var persistedReposFileURL: URL {
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let dir = support.appendingPathComponent("SyncMD", isDirectory: true)
@@ -1228,6 +1235,9 @@ final class AppState {
             let serialized = try serializedRepository(repoID: repoID)
             let execution = try await serialized.withLease { repository in
                 guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                guard !(try await repository.conflictSession()).isActive else {
+                    throw LocalGitError.commitFailed(String(localized: "Resolve the active Git conflict before committing or pushing."))
+                }
                 try await repository.stageAll()
 
                 let committedSHA: String?
@@ -2555,117 +2565,119 @@ final class AppState {
             message: message
         )
 
-        if case .pushed(let commitSHA) = result {
+        if let commitSHA = result.finalLocalCommitSHA {
             if let currentIndex = repoIndex(id: repoID) {
                 repos[currentIndex].gitState.commitSHA = commitSHA
-                repos[currentIndex].gitState.lastSyncDate = Date()
+                if result.didPush { repos[currentIndex].gitState.lastSyncDate = Date() }
                 saveRepos()
             }
             clearCommitHistoryCache(for: repoID)
-            syncProgress = String(localized: "Push complete!")
+            if result.didPush { syncProgress = String(localized: "Push complete!") }
         }
 
         detectChanges(repoID: repoID)
         return result
     }
 
-    /// UI-independent, typed pull-then-push sync seam for App Intents and the
-    /// x-callback-url handler. Pulls first; only a clean pull (updated or up
-    /// to date, without attention) proceeds to stage/commit/push. Blocked
-    /// pulls never attempt a push.
+    /// UI-independent pull-then-push sync seam for App Intents and the
+    /// x-callback-url handler. The configured branch guard, pull, staging,
+    /// commit, and push all run under one repository lease.
     @discardableResult
     func syncRepository(repoID: UUID, message: String? = nil) async -> RepositorySyncResult {
-        let pullResult = await pullOnly(repoID: repoID, showsProgressDelay: false)
+        guard let repo = repo(id: repoID) else {
+            return RepositorySyncResult(
+                outcome: .failed(message: String(localized: "Repository not found")),
+                pull: nil,
+                push: nil,
+                message: String(localized: "Repository not found")
+            )
+        }
+        if isDemoMode {
+            let fakeSHA = String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(40)).lowercased()
+            if let index = repoIndex(id: repoID) {
+                repos[index].gitState.commitSHA = fakeSHA
+                repos[index].gitState.lastSyncDate = Date()
+                saveRepos()
+            }
+            return .init(
+                outcome: .synced,
+                pull: .upToDate(branch: repo.branch, commitSHA: fakeSHA),
+                push: .pushed(commitSHA: fakeSHA),
+                message: String(localized: "Sync complete")
+            )
+        }
+        let serialized: SerializedGitRepository
+        do { serialized = try serializedRepository(repoID: repoID) }
+        catch {
+            return RepositorySyncResult(
+                outcome: .failed(message: error.localizedDescription),
+                pull: nil,
+                push: nil,
+                message: error.localizedDescription
+            )
+        }
 
-        switch pullResult {
-        case .updated, .upToDate:
-            let pushResult = await pushOnly(repoID: repoID, message: message)
-            switch pushResult {
-            case .pushed:
-                return RepositorySyncResult(
-                    outcome: .synced,
-                    pull: pullResult,
-                    push: pushResult,
-                    message: String(localized: "Sync complete")
-                )
-            case .noChanges:
-                return RepositorySyncResult(
-                    outcome: .pushSkipped,
-                    pull: pullResult,
-                    push: pushResult,
-                    message: String(localized: "Synced — no local changes")
-                )
-            case .authenticationOrTrustRequired(let localizedDescription, let trustError):
-                return RepositorySyncResult(
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Checking for updates...")
+        defer { isSyncing = false; syncingRepoID = nil }
+        markRepositoryMutated(repoID: repoID)
+
+        let result = await RepositoryReconciliationRunner().run(
+            serialized: serialized,
+            repo: repo,
+            credentials: authPayload(for: repo),
+            expectedBranch: repo.branch,
+            allowsPull: true,
+            allowsPush: true,
+            message: message
+        )
+        if let sha = result.finalLocalCommitSHA, !sha.isEmpty, let index = repoIndex(id: repoID) {
+            repos[index].gitState.commitSHA = sha
+            if result.outcome == .upToDate || result.didTransferData {
+                repos[index].gitState.lastSyncDate = Date()
+            }
+            saveRepos()
+            clearCommitHistoryCache(for: repoID)
+        }
+        detectChanges(repoID: repoID)
+        return Self.syncResult(from: result)
+    }
+
+    private static func syncResult(from result: RepositoryReconciliationResult) -> RepositorySyncResult {
+        let pull = result.pull
+        let push = result.push
+        switch result.outcome {
+        case .pushed, .pulledAndPushed:
+            return .init(outcome: .synced, pull: pull, push: push, message: String(localized: "Sync complete"))
+        case .pulled, .upToDate:
+            return .init(outcome: .pushSkipped, pull: pull, push: push, message: String(localized: "Synced — no local changes"))
+        case .blocked:
+            if case .commitSavedNotPushed(_, let localizedDescription, let trustError) = push, let trustError {
+                return .init(
                     outcome: .authenticationOrTrustRequired(message: localizedDescription, trustError: trustError),
-                    pull: pullResult,
-                    push: pushResult,
-                    message: localizedDescription
-                )
-            case .failed(let message):
-                return RepositorySyncResult(
-                    outcome: .failed(message: message),
-                    pull: pullResult,
-                    push: pushResult,
-                    message: message
+                    pull: pull, push: push, message: localizedDescription
                 )
             }
-
-        case .updatedWithAttention(_, _, let attention):
-            return RepositorySyncResult(
+            return .init(
                 outcome: .blocked,
-                pull: pullResult,
-                push: nil,
-                message: attention.localizedDescription
+                pull: pull,
+                push: push,
+                message: result.message ?? String(localized: "Sync needs attention")
             )
-
-        case .blockedByLocalChanges:
-            return RepositorySyncResult(
-                outcome: .blocked,
-                pull: pullResult,
-                push: nil,
-                message: String(localized: "Pull blocked by local changes. Commit, stash, or discard changes before syncing.")
-            )
-
-        case .diverged(_, let aheadBy, let behindBy):
-            return RepositorySyncResult(
-                outcome: .blocked,
-                pull: pullResult,
-                push: nil,
-                message: String(localized: "Local and remote have diverged (ahead \(aheadBy), behind \(behindBy)). Merge support is required to continue.")
-            )
-
-        case .remoteBranchMissing(let branch):
-            return RepositorySyncResult(
-                outcome: .blocked,
-                pull: pullResult,
-                push: nil,
-                message: String(localized: "Remote branch '\(branch)' was not found on origin.")
-            )
-
-        case .wrongBranch(let expected, let actual):
-            return RepositorySyncResult(
-                outcome: .failed(message: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")),
-                pull: pullResult,
-                push: nil,
-                message: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
-            )
-
-        case .authenticationOrTrustRequired(let localizedDescription, let trustError):
-            return RepositorySyncResult(
+        case .authenticationOrTrustRequired:
+            let trustError: GitLFSSSHHostKeyTrustError?
+            if case .authenticationOrTrustRequired(_, let value) = push { trustError = value }
+            else if case .authenticationOrTrustRequired(_, let value) = pull { trustError = value }
+            else { trustError = nil }
+            let localizedDescription = result.message ?? String(localized: "Authentication or trust needs attention.")
+            return .init(
                 outcome: .authenticationOrTrustRequired(message: localizedDescription, trustError: trustError),
-                pull: pullResult,
-                push: nil,
-                message: localizedDescription
+                pull: pull, push: push, message: localizedDescription
             )
-
-        case .unavailable(let message), .failed(let message):
-            return RepositorySyncResult(
-                outcome: .failed(message: message),
-                pull: pullResult,
-                push: nil,
-                message: message
-            )
+        case .failed:
+            let message = result.message ?? String(localized: "Sync failed")
+            return .init(outcome: .failed(message: message), pull: pull, push: push, message: message)
         }
     }
 
@@ -3034,6 +3046,15 @@ final class AppState {
         let repoURL = (relativePath.flatMap { $0.isEmpty ? nil : $0 })
             .map { resolvedGrantURL.appendingPathComponent($0, isDirectory: true) }
             ?? resolvedGrantURL
+
+        // Treat reconnecting an already-tracked working copy as an idempotent
+        // success. Overlapping discovery roots must never create two configs
+        // for the same canonical filesystem path.
+        guard !isRepoAlreadyTracked(atPath: repoURL.path) else {
+            resolvedGrantURL.stopAccessingSecurityScopedResource()
+            return
+        }
+
         let gitService = gitRepositoryFactory(repoURL)
 
         guard gitService.hasGitDirectory else {
@@ -3087,9 +3108,9 @@ final class AppState {
     /// Whether a working copy at `path` is already tracked as a repository.
     /// Used to grey out discoveries the user has previously added.
     func isRepoAlreadyTracked(atPath path: String) -> Bool {
-        let target = URL(fileURLWithPath: path).standardizedFileURL.path
+        let target = Self.canonicalFilePath(for: URL(fileURLWithPath: path))
         return repos.contains { repo in
-            vaultURL(for: repo.id).standardizedFileURL.path == target
+            Self.canonicalFilePath(for: vaultURL(for: repo.id)) == target
         }
     }
 
@@ -3098,12 +3119,16 @@ final class AppState {
     /// the folders but lost `repos.json`). No security-scoped bookmark is
     /// needed for app-container paths.
     func relinkManagedRepo(atURL url: URL, authorName: String, authorEmail: String) async {
-        let documentsPath = Self.appDocumentsDirectory.standardizedFileURL.path
-        let repoPath = url.standardizedFileURL.path
+        let documentsPath = Self.canonicalFilePath(for: Self.appDocumentsDirectory)
+        let repoPath = Self.canonicalFilePath(for: url)
         guard repoPath.hasPrefix(documentsPath + "/") || repoPath == documentsPath else {
             showError(message: String(localized: "Only folders inside GitSync.md storage can be relinked without granting access."))
             return
         }
+
+        // The discovery UI also deduplicates overlapping scan sources, but
+        // enforce path uniqueness here so every caller is safe.
+        guard !isRepoAlreadyTracked(atPath: repoPath) else { return }
 
         let gitService = gitRepositoryFactory(url)
         guard gitService.hasGitDirectory else {
@@ -3115,7 +3140,9 @@ final class AppState {
             let info = try await gitService.repoInfo()
             let remoteURL = Self.readGitRemoteURL(at: url) ?? ""
             let remoteInfo = GitRemoteURL.parse(remoteURL)
-            let relativePath = String(repoPath.dropFirst(documentsPath.count + 1))
+            let relativePath = repoPath == documentsPath
+                ? ""
+                : String(repoPath.dropFirst(documentsPath.count + 1))
 
             let config = RepoConfig(
                 repoURL: remoteURL,
@@ -3173,7 +3200,11 @@ final class AppState {
         return nil
     }
 
-    func removeRepo(id: UUID, deleteLocalFiles: Bool = false) {
+    func removeRepo(
+        id: UUID,
+        deleteLocalFiles: Bool = false,
+        operationCoordinator: RepositoryOperationCoordinator = .shared
+    ) async {
         guard let repo = repo(id: id) else { return }
         assistRepositoryRemovalHandler?(repo)
         let vaultDir = vaultURL(for: id)
@@ -3182,7 +3213,11 @@ final class AppState {
         // managed by another app. Removing GitSync.md's bookmark must never
         // delete those files.
         if deleteLocalFiles && repo.isGitSyncManagedStorage {
-            try? FileManager.default.removeItem(at: vaultDir)
+            // Cancellation above is synchronous, but detached libgit2 work may
+            // still be unwinding. Delete only after the repository lease is ours.
+            try? await operationCoordinator.withRepository(at: vaultDir) {
+                try FileManager.default.removeItem(at: vaultDir)
+            }
         }
 
         clearCustomLocation(for: id)

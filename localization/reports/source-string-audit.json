@@ -1,7 +1,7 @@
 {
-  "swiftFileCount": 69,
-  "localizedUserFacingSinkCount": 96,
-  "localizedErrorDescriptionCount": 12,
+  "swiftFileCount": 70,
+  "localizedUserFacingSinkCount": 111,
+  "localizedErrorDescriptionCount": 13,
   "dynamicUserFacingSinkCount": 13,
   "rawUserFacingSinkFailures": [],
   "intentionalDeveloperDiagnostics": [
@@ -73,1459 +73,1615 @@
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 811,
+      "line": 414,
+      "value": "Create guarded index snapshot",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 418,
+      "value": "Preserve index version",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 424,
+      "value": "Preserve index capabilities",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 429,
+      "value": "Copy guarded index entry",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 431,
+      "value": "Serialize guarded index snapshot",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1085,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 822,
+      "line": 1096,
       "value": "Create remote \\(trimmedName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 825,
+      "line": 1099,
       "value": "Lookup remote \\(trimmedName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 828,
+      "line": 1102,
       "value": "Set remote \\(trimmedName) URL",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 871,
+      "line": 1145,
       "value": "Read HEAD after clone",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 935,
+      "line": 1209,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 948,
+      "line": 1223,
       "value": "Read HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 978,
-      "value": "Lookup \\(remoteRefName)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1000,
-      "value": "Compute ahead/behind",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1106,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1128,
-      "value": "Lookup \\(remoteRefName)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1132,
-      "value": "Read HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1157,
-      "value": "Revalidate fast-forward relation",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1170,
-      "value": "Lookup remote commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1175,
-      "value": "Get remote tree",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1198,
-      "value": "Create fast-forward ref transaction",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1199,
-      "value": "Lock HEAD for fast-forward",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1200,
-      "value": "Lock branch for fast-forward",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1204,
-      "value": "Re-read locked HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1236,
-      "value": "Checkout remote tree safely",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1250,
-      "value": "Open index after fast-forward checkout",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
       "line": 1254,
-      "value": "Rebuild index from remote tree",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1258,
-      "value": "Write index after fast-forward",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1263,
-      "value": "Queue branch ref update",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1265,
-      "value": "Commit branch ref update",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1332,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1346,
-      "value": "Read HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1360,
       "value": "Lookup \\(remoteRefName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1374,
-      "value": "Compute ahead/behind for rebase",
+      "line": 1277,
+      "value": "Compute ahead/behind",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1390,
-      "value": "Create annotated remote commit for rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1402,
-      "value": "Start rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1413,
-      "value": "Read rebased HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1444,
+      "line": 1386,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1470,
-      "value": "Create branch iterator",
+      "line": 1408,
+      "value": "Lookup \\(remoteRefName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1485,
-      "value": "Iterate branches",
+      "line": 1412,
+      "value": "Read HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1437,
+      "value": "Revalidate fast-forward relation",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1449,
+      "value": "Lookup local commit for checkout baseline",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1453,
+      "value": "Get local checkout baseline tree",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1460,
+      "value": "Lookup remote commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1465,
+      "value": "Get remote tree",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1489,
+      "value": "Create fast-forward ref transaction",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1490,
+      "value": "Lock HEAD for fast-forward",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1491,
+      "value": "Lock branch for fast-forward",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1500,
+      "value": "Open guarded fast-forward index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1503,
+      "value": "Refresh guarded fast-forward index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1518,
+      "value": "Create private fast-forward index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1522,
+      "value": "Preserve private index version",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
       "line": 1528,
-      "value": "Read branch upstream",
+      "value": "Preserve private index capabilities",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1567,
-      "value": "Open repo",
+      "line": 1533,
+      "value": "Copy private index entry",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1535,
+      "value": "Write private fast-forward index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1536,
+      "value": "Use private fast-forward index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1541,
+      "value": "Re-read locked HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1564,
+      "value": "Create fast-forward publication index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1568,
+      "value": "Preserve publication index version",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1573,
+      "value": "Preserve publication index capabilities",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
       "line": 1576,
-      "value": "Lookup branch \\(branchName)",
+      "value": "Build remote-tree publication index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1581,
+      "line": 1580,
+      "value": "Queue branch ref update",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1597,
+      "value": "Commit branch ref update",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1704,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1718,
       "value": "Read HEAD",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1591,
+      "line": 1732,
+      "value": "Lookup \\(remoteRefName)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1746,
+      "value": "Compute ahead/behind for rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1762,
+      "value": "Create annotated remote commit for rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1774,
+      "value": "Start rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1785,
+      "value": "Read rebased HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1816,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1842,
+      "value": "Create branch iterator",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1857,
+      "value": "Iterate branches",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1900,
+      "value": "Read branch upstream",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1939,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1948,
+      "value": "Lookup branch \\(branchName)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1953,
+      "value": "Read HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 1963,
       "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1599,
+      "line": 1971,
       "value": "Create branch \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1612,
+      "line": 1984,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1624,
+      "line": 1996,
       "value": "Lookup branch \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1630,
+      "line": 2002,
       "value": "Resolve branch target \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1639,
+      "line": 2011,
       "value": "Checkout branch tree \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1645,
+      "line": 2017,
       "value": "Set HEAD to \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1656,
+      "line": 2028,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1664,
+      "line": 2036,
       "value": "Lookup branch \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1670,
+      "line": 2042,
       "value": "Delete branch \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1681,
+      "line": 2053,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1689,
+      "line": 2061,
       "value": "Read HEAD",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1700,
+      "line": 2072,
       "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1712,
+      "line": 2084,
       "value": "Lookup merge branch \\(branchName)",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1723,
+      "line": 2095,
       "value": "Lookup source branch commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1730,
+      "line": 2102,
       "value": "Create annotated source commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1740,
+      "line": 2112,
       "value": "Analyze merge",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1755,
+      "line": 2127,
       "value": "Fast-forward merge",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1784,
+      "line": 2156,
       "value": "Compute merge index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1791,
+      "line": 2163,
       "value": "Open repo index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1792,
+      "line": 2164,
       "value": "Clear repo index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1797,
+      "line": 2169,
       "value": "Copy merge entry",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1800,
+      "line": 2172,
       "value": "Write merge index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1831,
+      "line": 2203,
       "value": "Checkout merged index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1835,
+      "line": 2207,
       "value": "Write merge tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1836,
+      "line": 2208,
       "value": "Write merge index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1840,
+      "line": 2212,
       "value": "Lookup merge tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1863,
+      "line": 2235,
       "value": "Create merge commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1867,
+      "line": 2239,
       "value": "Cleanup merge state",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1884,
+      "line": 2256,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1892,
+      "line": 2264,
       "value": "Parse revert OID",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1898,
+      "line": 2270,
       "value": "Lookup revert target",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1906,
+      "line": 2278,
       "value": "Apply revert",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1911,
+      "line": 2283,
       "value": "Read revert index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1918,
+      "line": 2290,
       "value": "Write revert tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1919,
+      "line": 2291,
       "value": "Write revert index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1923,
+      "line": 2295,
       "value": "Lookup revert tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1927,
+      "line": 2299,
       "value": "Read HEAD for revert commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1936,
+      "line": 2308,
       "value": "Lookup HEAD commit for revert",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1965,
+      "line": 2337,
       "value": "Create revert commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1970,
+      "line": 2342,
       "value": "Cleanup revert state",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1983,
+      "line": 2355,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1991,
+      "line": 2363,
       "value": "Read merge index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 1999,
+      "line": 2371,
       "value": "Read HEAD",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2008,
+      "line": 2380,
       "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2013,
+      "line": 2385,
       "value": "Lookup MERGE_HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2016,
+      "line": 2388,
       "value": "Write merge tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2017,
+      "line": 2389,
       "value": "Write merge index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2021,
+      "line": 2393,
       "value": "Lookup merge tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2047,
+      "line": 2419,
       "value": "Create merge commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2051,
+      "line": 2423,
       "value": "Cleanup merge state",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2063,
+      "line": 2435,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2071,
+      "line": 2443,
       "value": "Read HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2080,
-      "value": "Lookup HEAD commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2082,
-      "value": "Reset working tree on merge abort",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2083,
-      "value": "Cleanup merge state",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2094,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2102,
-      "value": "Read HEAD before continuing rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2110,
-      "value": "Read rebase index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2122,
-      "value": "Open rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2134,
-      "value": "Commit resolved rebase change",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2141,
-      "value": "Read HEAD after continuing rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2170,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2181,
-      "value": "Open rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2182,
-      "value": "Abort rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2192,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2218,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2222,
-      "value": "Read index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2234,
-      "value": "Lookup conflict entry for \\(trimmedPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2252,
-      "value": "Apply \\(strategy.rawValue) resolution for \\(trimmedPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2259,
-      "value": "Remove conflict state for \\(trimmedPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2262,
-      "value": "Stage resolved file \\(trimmedPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2265,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2280,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2284,
-      "value": "Read index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2290,
-      "value": "Create conflict iterator",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2305,
-      "value": "Iterate conflicts",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2349,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2353,
-      "value": "Read index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2374,
-      "value": "Remove conflict for \\(clearPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2386,
-      "value": "Remove index entry for \\(extra)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2399,
-      "value": "Stage resolved file \\(trimmedPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2403,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2417,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2421,
-      "value": "Get index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2427,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2430,
-      "value": "Write tree from index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2434,
-      "value": "Lookup tree",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2449,
-      "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
       "line": 2452,
-      "value": "Read HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2473,
-      "value": "Create commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2487,
-      "value": "Create initial commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2512,
-      "value": "Lookup conflict blob for \\(entryPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2544,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2565,
-      "value": "Create HEAD-to-workdir diff",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2580,
-      "value": "Render unified diff",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2653,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2657,
-      "value": "Get index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2661,
-      "value": "Stage all added/modified files",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2666,
-      "value": "Stage tracked deletions/modifications",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2675,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2697,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2701,
-      "value": "Get index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2715,
-      "value": "Stage deletion of \\(path)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2718,
-      "value": "Stage \\(path)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2729,
-      "value": "Stage removal of renamed old path \\(oldPath)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2741,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2751,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2766,
-      "value": "Lookup HEAD object",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2769,
-      "value": "Read HEAD for unstage",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2796,
-      "value": "Unstage \\(path)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2808,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2812,
-      "value": "Get index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2865,
-      "value": "Lookup HEAD for reset",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2870,
-      "value": "Unstage \\(path)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2876,
-      "value": "Remove from index \\(path)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2878,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2890,
-      "value": "Discard changes in \\(path)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2905,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2916,
-      "value": "Get index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2917,
-      "value": "Clear index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2918,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2921,
-      "value": "Read HEAD for discard all",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2932,
-      "value": "Lookup HEAD commit for discard all",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2947,
-      "value": "Hard reset to HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2960,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2968,
-      "value": "List stashes",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2981,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 2995,
-      "value": "Save stash",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3013,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3029,
-      "value": "Apply stash",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3041,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3057,
-      "value": "Pop stash",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3069,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3075,
-      "value": "Drop stash",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3087,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3091,
-      "value": "List tags",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3145,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3153,
-      "value": "Parse target OID",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3154,
-      "value": "Lookup target commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3156,
-      "value": "Resolve HEAD for tag",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3172,
-      "value": "Create annotated tag",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3182,
-      "value": "Create lightweight tag",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3196,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3202,
-      "value": "Delete tag",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3212,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3220,
-      "value": "Lookup local tag \\(name)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3258,
-      "value": "Push tag \\(name)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3282,
-      "value": "Reconnect to verify tag \\(name)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3293,
-      "value": "List remote refs to verify tag \\(name)",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3336,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3341,
-      "value": "Get index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3355,
-      "value": "Write index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3359,
-      "value": "Write tree from staged index",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3363,
-      "value": "Lookup tree",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3380,
       "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3383,
-      "value": "Read HEAD",
+      "line": 2454,
+      "value": "Reset working tree on merge abort",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3406,
-      "value": "Create commit",
+      "line": 2455,
+      "value": "Cleanup merge state",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3420,
-      "value": "Create initial commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3487,
-      "value": "Push to origin",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3539,
+      "line": 2466,
       "value": "Open repo",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3543,
-      "value": "Read HEAD",
+      "line": 2474,
+      "value": "Read HEAD before continuing rebase",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3561,
-      "value": "Open index before push",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3621,
-      "value": "Push to origin",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3666,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3670,
-      "value": "Create revwalk",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3679,
-      "value": "Push HEAD to revwalk",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3692,
-      "value": "Read next commit from history",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3702,
-      "value": "Lookup history commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3738,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3742,
-      "value": "Parse commit OID",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3747,
-      "value": "Lookup commit detail",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3769,
-      "value": "Read commit tree",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3778,
-      "value": "Lookup parent commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3779,
-      "value": "Read parent tree",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3789,
-      "value": "Build commit detail diff",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3838,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3847,
-      "value": "Read HEAD",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3878,
-      "value": "Open repo",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3932,
-      "value": "Finish rebase",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3940,
-      "value": "Apply next rebase commit",
-      "classification": "developer Git operation diagnostic"
-    },
-    {
-      "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3944,
+      "line": 2482,
       "value": "Read rebase index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3957,
-      "value": "Commit rebased change",
+      "line": 2494,
+      "value": "Open rebase",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 3981,
-      "value": "Parse MERGE_HEAD",
+      "line": 2506,
+      "value": "Commit resolved rebase change",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2513,
+      "value": "Read HEAD after continuing rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2542,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2553,
+      "value": "Open rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2554,
+      "value": "Abort rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2564,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2590,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2594,
+      "value": "Read index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2606,
+      "value": "Lookup conflict entry for \\(trimmedPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2624,
+      "value": "Apply \\(strategy.rawValue) resolution for \\(trimmedPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2631,
+      "value": "Remove conflict state for \\(trimmedPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2634,
+      "value": "Stage resolved file \\(trimmedPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2637,
+      "value": "Write index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2652,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2656,
+      "value": "Read index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2662,
+      "value": "Create conflict iterator",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2677,
+      "value": "Iterate conflicts",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2721,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2725,
+      "value": "Read index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2746,
+      "value": "Remove conflict for \\(clearPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2758,
+      "value": "Remove index entry for \\(extra)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2771,
+      "value": "Stage resolved file \\(trimmedPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2775,
+      "value": "Write index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2819,
+      "value": "Open locked on-disk index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2820,
+      "value": "Refresh locked on-disk index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2837,
+      "value": "Re-read HEAD branch",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2851,
+      "value": "Re-read HEAD branch target",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2923,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2927,
+      "value": "Get index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2943,
+      "value": "Write tree from index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2947,
+      "value": "Lookup tree",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2962,
+      "value": "Lookup HEAD commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2965,
+      "value": "Read HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 2986,
+      "value": "Create commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3000,
+      "value": "Create initial commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3025,
+      "value": "Lookup conflict blob for \\(entryPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3057,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3078,
+      "value": "Create HEAD-to-workdir diff",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3093,
+      "value": "Render unified diff",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3166,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3170,
+      "value": "Get index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3176,
+      "value": "Stage all added/modified files",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3181,
+      "value": "Stage tracked deletions/modifications",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3225,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3229,
+      "value": "Get index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3245,
+      "value": "Stage deletion of \\(path)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3248,
+      "value": "Stage \\(path)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3259,
+      "value": "Stage removal of renamed old path \\(oldPath)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3288,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3303,
+      "value": "Lookup HEAD object",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3306,
+      "value": "Read HEAD for unstage",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3333,
+      "value": "Unstage \\(path)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3345,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3349,
+      "value": "Get index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3402,
+      "value": "Lookup HEAD for reset",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3407,
+      "value": "Unstage \\(path)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3413,
+      "value": "Remove from index \\(path)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3415,
+      "value": "Write index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3427,
+      "value": "Discard changes in \\(path)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3442,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3453,
+      "value": "Get index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3454,
+      "value": "Clear index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3455,
+      "value": "Write index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3458,
+      "value": "Read HEAD for discard all",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3469,
+      "value": "Lookup HEAD commit for discard all",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3484,
+      "value": "Hard reset to HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3497,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3505,
+      "value": "List stashes",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3518,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3532,
+      "value": "Save stash",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3550,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3566,
+      "value": "Apply stash",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3578,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3594,
+      "value": "Pop stash",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3606,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3612,
+      "value": "Drop stash",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3624,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3628,
+      "value": "List tags",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3682,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3690,
+      "value": "Parse target OID",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3691,
+      "value": "Lookup target commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3693,
+      "value": "Resolve HEAD for tag",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3709,
+      "value": "Create annotated tag",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3719,
+      "value": "Create lightweight tag",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3733,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3739,
+      "value": "Delete tag",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3749,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3757,
+      "value": "Lookup local tag \\(name)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3795,
+      "value": "Push tag \\(name)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3819,
+      "value": "Reconnect to verify tag \\(name)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3830,
+      "value": "List remote refs to verify tag \\(name)",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3877,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3882,
+      "value": "Get index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3914,
+      "value": "Write tree from staged index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3918,
+      "value": "Lookup tree",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3938,
+      "value": "Lookup HEAD commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3941,
+      "value": "Read HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3952,
+      "value": "Read unborn HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 3991,
+      "value": "Create commit object",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4005,
+      "value": "Create initial commit object",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4012,
+      "value": "Create commit ref transaction",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4013,
+      "value": "Lock HEAD for commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4014,
+      "value": "Lock branch for commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4018,
+      "value": "Re-read locked HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4028,
+      "value": "Re-read locked branch",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
       "line": 4041,
+      "value": "Re-read unborn branch",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4046,
+      "value": "Queue commit branch update",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4048,
+      "value": "Commit branch update",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4137,
+      "value": "Read expected remote branch target",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4171,
+      "value": "Push to origin",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4230,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4234,
+      "value": "Read HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4253,
+      "value": "Open index before push",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4342,
+      "value": "Read expected remote branch target",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4376,
+      "value": "Push to origin",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4414,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4418,
+      "value": "Create revwalk",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4427,
+      "value": "Push HEAD to revwalk",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4440,
+      "value": "Read next commit from history",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4450,
+      "value": "Lookup history commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4486,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4490,
+      "value": "Parse commit OID",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4495,
+      "value": "Lookup commit detail",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4517,
+      "value": "Read commit tree",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4526,
+      "value": "Lookup parent commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4527,
+      "value": "Read parent tree",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4537,
+      "value": "Build commit detail diff",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4586,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4595,
+      "value": "Read HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4626,
+      "value": "Open repo",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4680,
+      "value": "Finish rebase",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4688,
+      "value": "Apply next rebase commit",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4692,
+      "value": "Read rebase index",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4705,
+      "value": "Commit rebased change",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4729,
+      "value": "Parse MERGE_HEAD",
+      "classification": "developer Git operation diagnostic"
+    },
+    {
+      "file": "Sync.md/Services/LocalGitService.swift",
+      "line": 4789,
       "value": "Read HEAD for diff",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4052,
+      "line": 4800,
       "value": "Lookup HEAD commit for diff",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4058,
+      "line": 4806,
       "value": "Get HEAD tree for diff",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4102,
+      "line": 4850,
       "value": "Read HEAD for staged diff",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4112,
+      "line": 4860,
       "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4117,
+      "line": 4865,
       "value": "Get HEAD tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4123,
+      "line": 4871,
       "value": "Diff HEAD tree to index",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4140,
+      "line": 4888,
       "value": "Lookup upstream commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4145,
+      "line": 4893,
       "value": "Lookup HEAD commit",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4149,
+      "line": 4897,
       "value": "Get upstream tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4153,
+      "line": 4901,
       "value": "Get HEAD tree",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4159,
+      "line": 4907,
       "value": "Diff upstream tree to HEAD",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4204,
+      "line": 4952,
       "value": "Lookup old commit for changed paths",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4208,
+      "line": 4956,
       "value": "Lookup new commit for changed paths",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4212,
+      "line": 4960,
       "value": "Read old tree for changed paths",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4216,
+      "line": 4964,
       "value": "Read new tree for changed paths",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4222,
+      "line": 4970,
       "value": "Diff changed paths",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4236,
+      "line": 4984,
       "value": "Lookup remote",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4259,
+      "line": 5007,
       "value": "Fetch",
       "classification": "developer Git operation diagnostic"
     },
     {
       "file": "Sync.md/Services/LocalGitService.swift",
-      "line": 4289,
+      "line": 5037,
       "value": "Read status entries",
       "classification": "developer Git operation diagnostic"
     }

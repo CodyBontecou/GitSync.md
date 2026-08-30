@@ -166,6 +166,10 @@ actor RepositoryOperationCoordinator {
         url.standardizedFileURL.resolvingSymlinksInPath().path
     }
 
+    func queuedOperationCount(at url: URL) -> Int {
+        waiters[Self.canonicalKey(for: url)]?.count ?? 0
+    }
+
     private func acquire(_ key: String) async throws {
         try Task.checkCancellation()
         if activeKeys.insert(key).inserted { return }
@@ -296,8 +300,18 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
         try await run { try await $0.mergeBranch(name: name, authorName: authorName, authorEmail: authorEmail) }
     }
 
-    func pushCurrentBranch(pat: String) async throws {
-        try await run { try await $0.pushCurrentBranch(pat: pat) }
+    func pushCurrentBranch(
+        pat: String,
+        expectedBranch: String?,
+        safetyExpectation: PushSafetyExpectation?
+    ) async throws {
+        try await run {
+            try await $0.pushCurrentBranch(
+                pat: pat,
+                expectedBranch: expectedBranch,
+                safetyExpectation: safetyExpectation
+            )
+        }
     }
 
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult {
@@ -370,13 +384,22 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
 
     func discardAllChanges() async throws { try await run { try await $0.discardAllChanges() } }
 
-    func commitAndPush(message: String, authorName: String, authorEmail: String, pat: String) async throws -> LocalPushResult {
+    func commitAndPush(
+        message: String,
+        authorName: String,
+        authorEmail: String,
+        pat: String,
+        expectedBranch: String?,
+        safetyExpectation: PushSafetyExpectation?
+    ) async throws -> LocalPushResult {
         try await run {
             try await $0.commitAndPush(
                 message: message,
                 authorName: authorName,
                 authorEmail: authorEmail,
-                pat: pat
+                pat: pat,
+                expectedBranch: expectedBranch,
+                safetyExpectation: safetyExpectation
             )
         }
     }

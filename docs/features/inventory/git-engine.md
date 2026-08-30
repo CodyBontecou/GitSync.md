@@ -49,18 +49,18 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
    - `.diverged` (ahead>0 && behind>0)
    - `.remoteBranchMissing`
    Classification also exposed as static `classifyPullAction` (unit-tested).
-3. **Result**: `PullPlan{action, branch, localCommitSHA, remoteCommitSHA, hasLocalChanges, aheadBy, behindBy}` — powers UI decision (fast-forward vs merge/rebase prompt).
+3. **Result**: `PullPlan{action, branch, localCommitSHA, remoteCommitSHA, hasLocalChanges, aheadBy, behindBy, remoteIdentity}` — powers UI decision (fast-forward vs merge/rebase prompt) and carries the exact origin fetch/push URL identity into separately consented automatic publication.
 4. **Source**: line ~791; `GitStatusModels.PullPlan`.
 
 ## 6. Safe fast-forward pull
 
 1. **Name**: `pull(pat:)` / `pullFastForward(branch:pat:)` / `performSafeFastForward`
 2. **Mechanics**: After planning: re-opens repo, re-checks clean tree, re-fetches if `refetch`, re-reads HEAD and **verifies branch unchanged** (`wrongBranch` guard), re-validates ahead==0/behind>0 (refuses divergence), computes changed paths old→new, then:
-   - `git_checkout_tree(remote tree, GIT_CHECKOUT_SAFE)` — GIT_ECONFLICT → `pullBlockedByLocalChanges` (never forces).
-   - **Ref-transaction locking**: `git_transaction` locks HEAD + branch ref, re-reads locked HEAD, re-validates OID, checkout, rebuilds index from remote tree (`git_index_read_tree` + write) to guarantee HEAD==index==workdir, commits branch ref update via transaction.
-   - Re-read dirty check immediately before checkout (Files-app/other-process TOCTOU protection).
-   - After update: LFS hydration limited to `changedPaths`.
-3. **Safety**: pull NEVER merges/rebases implicitly; diverged → explicit error; automation/pull-only path can never switch branches or overwrite local writes.
+   - **Ref-transaction locking**: `git_transaction` locks HEAD + branch ref, then re-reads the locked HEAD and re-validates its OID.
+   - **Atomic shared-index exclusion**: the conventional `.git/index.lock` is acquired before the final conflict/worktree checks and held through checkout, index serialization, and ref commit. A concurrent Git client therefore cannot persist a newly unmerged index inside the check-to-write window.
+   - **Private-index SAFE checkout**: a disk-backed copy of the guarded old index is attached to the operation's repository handle through the narrow `Clibgit2Sys` wrapper. A separate exact remote-tree index is fsynced into the held lock and atomically swapped with the shared index; the old index remains at `.git/index.lock`, so cross-process exclusion continues through the branch transaction and checkout. Publication failure leaves HEAD/worktree untouched and lock release swaps the old index back. After the branch transaction commits, `git_checkout_tree(remote tree, GIT_CHECKOUT_SAFE)` uses the explicit old local tree as its baseline and the private index, never the shared lock. It never forces: a last-moment editor write is preserved and returned as an explicit updated-with-attention result while HEAD/index truthfully remain at the new commit.
+   - Re-read dirty/conflict checks immediately before checkout (Files-app/other-process TOCTOU protection); after update, LFS hydration is limited to `changedPaths`.
+3. **Safety**: pull NEVER merges/rebases implicitly; divergence is explicit attention; automation/pull-only never switches branches or intentionally overwrites local writes. Deterministic race tests inject both a concurrent branch advance and a conflict-producing merge at the mutation boundary.
 4. **Source**: lines ~880–1113.
 
 ## 7. Pull-with-rebase (explicit user action)
@@ -69,10 +69,10 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
 2. **Mechanics**: Clean-tree required; fetch; guard: behind==0 → no-op; ahead==0&&behind>0 → internal error (should use FF path). `git_rebase_init` onto annotated origin ref with `GIT_MERGE_FIND_RENAMES` + SAFE checkout, `advanceRebase` loop (`git_rebase_next`/`git_rebase_commit`, conflict → `rebaseConflictsDetected`), finish, compute changed paths, LFS hydrate changed paths.
 3. **Source**: lines ~1114–1230, `advanceRebase` ~3708.
 
-## 8. Background Sync pull-only execution
+## 8. Background Sync independently selected pull/push reconciliation
 
 1. **Name**: `executePullOnly(pat:expectedBranch:)`
-2. **Mechanics**: Single-operation variant for Background Sync: plan → optional `expectedBranch` guard (Background Sync expected branch X but Y checked out) → only `.fastForward` action executes (via performSafeFastForward with `isPullOnly: true`); `pullBlockedByLocalChanges` caught and returned as plan (typed attention outcome, not thrown); all other actions returned as plan-only. `pullOnlyBeforeCheckout` callback hook fires before checkout (used by AppState for attention surfacing). Cancellation-checked (`Task.checkCancellation`).
+2. **Mechanics**: `RepositoryReconciliationRunner` owns one repository lease and honors independent pull/push choices. Pull-only runs plan → optional `expectedBranch` guard → only `.fastForward` executes (via `performSafeFastForward` with `isPullOnly: true`). Both mode runs that pull first and proceeds to publishing only after a clean result. Push-only skips `executePullOnly` and checkout entirely, but fetches remote state and exact origin identity after staging and revalidates them before commit; the live push negotiation must match the planned remote OID and intended local OID. Neither mode performs no Git operation. Remote-ahead dirty trees, divergence, missing/wrong branches, origin changes, branch deletion, and concurrent local/remote advances stop without publishing. A failed push records the saved local commit SHA, and clean ahead-only retries push the existing commit. Cancellation is checked throughout.
 3. **Source**: lines ~897–932.
 
 ## 9. Branch inventory (local + remote + upstream tracking)
@@ -160,6 +160,7 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
    - Single: `git_index_add_bypath`; ENOTFOUND → `git_index_remove_bypath` (deletion staging, TOCTOU-safe); renames also remove old path from index; optional LFS clean+auto-track (`GitLFSService.cleanAndStageLFSFiles`, see LFS inventory).
    - All: `git_index_add_all` + `git_index_update_all` (adds + captures tracked deletions atomically like `git add -A`) + optional LFS clean.
    - Unstage: `git_reset_default` to HEAD for path(s) (rename restores old path entry too); unborn-HEAD-safe.
+   - Every shared-index replacement is fail-closed across processes: compute in memory, acquire the conventional `.git/index.lock`, refresh and compare the on-disk checksum, reject unmerged entries after lock acquisition, serialize/fsync into the held lock, then atomically rename. A failed lock acquisition never removes another writer's lock.
 3. **Source**: lines ~2438–2595.
 
 ## 21. Discard changes (single file / all)
@@ -189,14 +190,14 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
 ## 24. Commit & push (staged content, LFS upload, verified)
 
 1. **Name**: `commitAndPush(message:authorName:authorEmail:pat:)`
-2. **Mechanics**: Staged-paths required (`noChanges`); **large-blob guard** (`GitLFSService.validateNoLargeNonLFSBlobs` — blocks >threshold non-LFS blobs pre-push); **LFS lock guard** (`verifyPushAllowed` — other users' locks on changed lockable files block push); writes tree; commit (initial-commit aware); LFS pointer discovery (`pointersInIndex` on pushed paths) + **LFS object upload before push**; push refspec `refs/heads/<branch>:refs/heads/<branch>` with per-ref rejection capture; **silent-failure verification**: re-fetch + confirm `refs/remotes/origin/<branch>` == new commit, else throw with actionable message (branch protection, PAT scope hints).
+2. **Mechanics**: Staged-paths required (`noChanges`); **large-blob guard** (`GitLFSService.validateNoLargeNonLFSBlobs` — blocks >threshold non-LFS blobs pre-push); **LFS lock guard** (`verifyPushAllowed` — other users' locks on changed lockable files block push); holds `.git/index.lock` through tree creation, creates an immutable commit object without moving HEAD, then locks `HEAD` + the checked-out branch and transactionally compares/updates the exact expected old OID; preserves the app-created SHA if a later push step fails; LFS pointer discovery (`pointersInIndex` on pushed paths) + **LFS object upload before push**; reacquires and revalidates the shared index and exact local branch target before transport. Separate-consent automation also requires the configured origin identity and live advertised destination OID to equal the exact fetched push-safety snapshot, whether or not automatic pull is enabled. Push negotiation must describe exactly one expected destination/new OID update, and success requires the exact destination's nil-status `push_update_reference` acknowledgement; a missing acknowledgement is indeterminate, not success.
 3. **Result**: `LocalPushResult{commitSHA}`.
 4. **Source**: lines ~3117–3325.
 
 ## 25. Push current branch (no commit)
 
 1. **Name**: `pushCurrentBranch(pat:)`
-2. **Mechanics**: Same guards/verification as commitAndPush (large-blob, LFS locks, LFS upload using `pushedChangePaths` = upstream→HEAD diff), but pushes existing HEAD without creating a commit (post-merge use).
+2. **Mechanics**: Same guards and exact transport negotiation/acceptance requirements as commitAndPush (including final branch target/index revalidation under `.git/index.lock`, optional automatic-push origin/OID lease, large-blob checks, LFS locks, and LFS upload using `pushedChangePaths` = upstream→HEAD diff), but pushes the immutable OID captured from existing HEAD without creating a commit (post-merge or ahead-only retry use).
 3. **Source**: lines ~3326–3448.
 
 ## 26. History & commit detail

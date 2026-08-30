@@ -1,5 +1,7 @@
 import Foundation
+import Darwin
 import Clibgit2
+import Clibgit2Sys
 import libgit2
 
 // MARK: - Errors
@@ -114,6 +116,17 @@ enum LocalGitError: LocalizedError {
     }
 }
 
+/// Preserves the exact app-created commit when a later publication step fails.
+/// Callers must not infer this SHA from a branch that another Git client may
+/// have advanced after the commit transaction completed.
+struct LocalCommitSavedNotPushedError: LocalizedError, Sendable {
+    let commitSHA: String
+    let message: String
+    let trustError: GitLFSSSHHostKeyTrustError?
+
+    var errorDescription: String? { message }
+}
+
 // MARK: - Result Types
 
 struct LocalCloneResult: Sendable {
@@ -145,6 +158,7 @@ enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
     case lfsHydrationBlockedByLocalChanges(path: String)
     case lfsHydrationFailed(message: String)
     case lfsAuthenticationOrTrustRequired(message: String)
+    case checkoutIncomplete(message: String)
     case cancelledAfterUpdate
 
     var errorDescription: String? {
@@ -155,6 +169,8 @@ enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
             return String(localized: "Git updated, but Git LFS hydration failed and needs attention: \(message)")
         case .lfsAuthenticationOrTrustRequired(let message):
             return String(localized: "Git updated, but Git LFS authentication or trust needs attention: \(message)")
+        case .checkoutIncomplete(let message):
+            return String(localized: "Git references updated, but the working tree checkout needs attention. Concurrent local bytes were preserved: \(message)")
         case .cancelledAfterUpdate:
             return String(localized: "Git updated before cancellation completed. Verify the working tree before the next sync.")
         }
@@ -321,6 +337,7 @@ private func makeStrarray(_ cStr: UnsafeMutablePointer<CChar>, into arr: inout g
 nonisolated private final class LocalGitCancellationSignal: @unchecked Sendable {
     private let lock = NSLock()
     private var cancelled = false
+    private var activeRemote: OpaquePointer?
 
     var isCancelled: Bool {
         lock.lock()
@@ -328,14 +345,193 @@ nonisolated private final class LocalGitCancellationSignal: @unchecked Sendable 
         return cancelled
     }
 
+    func register(remote: OpaquePointer?) {
+        guard let remote else { return }
+        lock.lock()
+        activeRemote = remote
+        if cancelled { git_remote_stop(remote) }
+        lock.unlock()
+    }
+
+    func unregister(remote: OpaquePointer?) {
+        guard let remote else { return }
+        lock.lock()
+        if activeRemote == remote { activeRemote = nil }
+        lock.unlock()
+    }
+
     func cancel() {
         lock.lock()
         cancelled = true
+        if let activeRemote { git_remote_stop(activeRemote) }
         lock.unlock()
     }
 
     func checkCancellation() throws {
         if isCancelled { throw CancellationError() }
+    }
+}
+
+/// Owns Git's conventional `<index>.lock` for one cross-process critical
+/// section. Well-behaved Git clients refuse index mutation while this file
+/// exists. When a new index must be persisted, libgit2 serializes a copied
+/// entry set to a private path; those bytes are fsynced into the held lock and
+/// atomically renamed over the real index.
+nonisolated private final class GitIndexFileLock {
+    private let indexPath: String
+    private let lockPath: String
+    private var descriptor: Int32
+    private var ownsLock = false
+    private var prepared = false
+    private var publishedRetainingLock = false
+
+    init(index: OpaquePointer?) throws {
+        guard let rawPath = git_index_path(index) else {
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+        }
+        indexPath = String(cString: rawPath)
+        lockPath = indexPath + ".lock"
+        descriptor = lockPath.withCString {
+            Darwin.open($0, O_WRONLY | O_CREAT | O_EXCL, mode_t(0o666))
+        }
+        guard descriptor >= 0 else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Could not stage all local file changes before push.")
+            )
+        }
+        ownsLock = true
+    }
+
+    deinit { release() }
+
+    func prepare(index source: OpaquePointer?) throws {
+        let temporaryPath = indexPath + ".gitsync-" + UUID().uuidString
+        defer { temporaryPath.withCString { _ = Darwin.unlink($0) } }
+
+        var serialized: OpaquePointer?
+        defer { if let serialized { git_index_free(serialized) } }
+        try temporaryPath.withCString { path in
+            try git2Check(git_index_open(&serialized, path), context: "Create guarded index snapshot")
+        }
+        try git2Check(
+            git_index_set_version(serialized, git_index_version(source)),
+            context: "Preserve index version"
+        )
+        let capabilities = git_index_caps(source)
+        if capabilities >= 0 {
+            try git2Check(
+                git_index_set_caps(serialized, capabilities),
+                context: "Preserve index capabilities"
+            )
+        }
+        for position in 0..<git_index_entrycount(source) {
+            guard let entry = git_index_get_byindex(source, position) else { continue }
+            try git2Check(git_index_add(serialized, entry), context: "Copy guarded index entry")
+        }
+        try git2Check(git_index_write(serialized), context: "Serialize guarded index snapshot")
+
+        let data = try Data(contentsOf: URL(fileURLWithPath: temporaryPath))
+        guard Darwin.ftruncate(descriptor, 0) == 0,
+              Darwin.lseek(descriptor, 0, SEEK_SET) >= 0 else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Could not stage all local file changes before push.")
+            )
+        }
+        try data.withUnsafeBytes { bytes in
+            guard let base = bytes.baseAddress else { return }
+            var offset = 0
+            while offset < bytes.count {
+                let written = Darwin.write(descriptor, base.advanced(by: offset), bytes.count - offset)
+                if written < 0 && errno == EINTR { continue }
+                guard written > 0 else {
+                    throw LocalGitError.commitFailed(
+                        String(localized: "Could not stage all local file changes before push.")
+                    )
+                }
+                offset += written
+            }
+        }
+        guard Darwin.fsync(descriptor) == 0 else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Could not stage all local file changes before push.")
+            )
+        }
+        prepared = true
+    }
+
+    func commitPreparedIndex() throws {
+        guard prepared else {
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+        }
+        closeDescriptor()
+        let result = lockPath.withCString { lock in
+            indexPath.withCString { index in Darwin.rename(lock, index) }
+        }
+        guard result == 0 else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Could not stage all local file changes before push.")
+            )
+        }
+        ownsLock = false
+    }
+
+    /// Atomically exchange the prepared lock file with the shared index. The
+    /// old index remains at `<index>.lock`, so every conventional Git writer is
+    /// still excluded while a related branch-ref transaction is committed.
+    func publishPreparedIndexRetainingLock() throws {
+        guard prepared else {
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+        }
+        closeDescriptor()
+        let result = lockPath.withCString { lock in
+            indexPath.withCString { index in
+                Darwin.renamex_np(lock, index, UInt32(RENAME_SWAP))
+            }
+        }
+        guard result == 0 else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Could not publish the updated Git index.")
+            )
+        }
+        publishedRetainingLock = true
+    }
+
+    /// Call only after the paired ref transaction committed. From this point,
+    /// release removes the old-index lock instead of swapping it back.
+    @discardableResult
+    func finalizePublishedIndex() -> Bool {
+        publishedRetainingLock = false
+        if ownsLock {
+            let removed = lockPath.withCString { Darwin.unlink($0) == 0 || errno == ENOENT }
+            if removed { ownsLock = false }
+        }
+        return !ownsLock
+    }
+
+    func release() {
+        closeDescriptor()
+        if ownsLock, publishedRetainingLock {
+            let restored = lockPath.withCString { lock in
+                indexPath.withCString { index in
+                    Darwin.renamex_np(lock, index, UInt32(RENAME_SWAP)) == 0
+                }
+            }
+            // If restoration fails, preserve the conventional lock rather than
+            // exposing a known-incoherent repository to another writer.
+            guard restored else { return }
+            publishedRetainingLock = false
+        }
+        if ownsLock {
+            let removed = lockPath.withCString { Darwin.unlink($0) == 0 || errno == ENOENT }
+            if removed { ownsLock = false }
+        }
+    }
+
+    private func closeDescriptor() {
+        if descriptor >= 0 {
+            _ = Darwin.close(descriptor)
+            descriptor = -1
+        }
     }
 }
 
@@ -662,6 +858,11 @@ nonisolated private func updateTipsCallback(
 /// that ref was rejected.
 private final class PushContext: CredentialContext {
     var rejectedRefs: [(refname: String, reason: String)] = []
+    var acceptedRefs: Set<String> = []
+    var expectedDestinationRef: String?
+    var expectedRemoteOID: git_oid?
+    var expectedLocalOID: git_oid?
+    var negotiationValidated = false
 }
 
 nonisolated private func pushCredentialCallback(
@@ -673,12 +874,58 @@ nonisolated private func pushCredentialCallback(
 ) -> Int32 {
     guard let payload else { return GIT_EUSER.rawValue }
     let ctx = Unmanaged<PushContext>.fromOpaque(payload).takeUnretainedValue()
+    guard ctx.cancellationSignal?.isCancelled != true else { return GIT_EUSER.rawValue }
     return acquireCredential(
         cred: cred,
         usernameFromURL: usernameFromURL,
         allowedTypes: allowedTypes,
         context: ctx
     )
+}
+
+nonisolated private func pushTransferProgressCallback(
+    current: UInt32,
+    total: UInt32,
+    bytes: Int,
+    payload: UnsafeMutableRawPointer?
+) -> Int32 {
+    guard let payload else { return GIT_EUSER.rawValue }
+    let ctx = Unmanaged<PushContext>.fromOpaque(payload).takeUnretainedValue()
+    return ctx.cancellationSignal?.isCancelled == true ? GIT_EUSER.rawValue : 0
+}
+
+nonisolated private func pushNegotiationCallback(
+    updates: UnsafeMutablePointer<UnsafePointer<git_push_update>?>?,
+    count: Int,
+    payload: UnsafeMutableRawPointer?
+) -> Int32 {
+    guard let payload else { return GIT_EUSER.rawValue }
+    let ctx = Unmanaged<PushContext>.fromOpaque(payload).takeUnretainedValue()
+    guard ctx.cancellationSignal?.isCancelled != true else { return GIT_EUSER.rawValue }
+    guard count == 1,
+          let update = updates?[0]?.pointee,
+          let expectedRef = ctx.expectedDestinationRef,
+          let destination = update.dst_refname,
+          String(cString: destination) == expectedRef else {
+        ctx.recordCallbackError(String(localized: "The remote branch changed before push. Publication was stopped."))
+        return GIT_EUSER.rawValue
+    }
+
+    var advertisedLocal = update.dst
+    if var expectedLocal = ctx.expectedLocalOID,
+       git_oid_equal(&advertisedLocal, &expectedLocal) == 0 {
+        ctx.recordCallbackError(String(localized: "The local branch changed before push. Publication was stopped."))
+        return GIT_EUSER.rawValue
+    }
+    var advertisedRemote = update.src
+    if var expectedRemote = ctx.expectedRemoteOID,
+       git_oid_equal(&advertisedRemote, &expectedRemote) == 0 {
+        ctx.recordCallbackError(String(localized: "The remote branch changed before push. Publication was stopped."))
+        return GIT_EUSER.rawValue
+    }
+
+    ctx.negotiationValidated = true
+    return 0
 }
 
 nonisolated private func pushUpdateReferenceCallback(
@@ -688,12 +935,15 @@ nonisolated private func pushUpdateReferenceCallback(
 ) -> Int32 {
     guard let payload else { return 0 }
     let ctx = Unmanaged<PushContext>.fromOpaque(payload).takeUnretainedValue()
+    let refnameString = refname.map { String(cString: $0) } ?? "(unknown)"
 
-    // A non-nil status means the remote rejected this ref update.
+    // A non-nil status means the remote rejected this ref update. A nil status
+    // is the authoritative acknowledgement that this ref was accepted; once
+    // observed, later cancellation must not rewrite publication as failure.
     if let status {
-        let refnameString = refname.map { String(cString: $0) } ?? "(unknown)"
-        let reason = String(cString: status)
-        ctx.rejectedRefs.append((refname: refnameString, reason: reason))
+        ctx.rejectedRefs.append((refname: refnameString, reason: String(cString: status)))
+    } else {
+        ctx.acceptedRefs.insert(refnameString)
     }
     return 0
 }
@@ -759,7 +1009,15 @@ nonisolated private func stashForeachCallback(
 final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     let localURL: URL
     private let pullOnlyBeforeCheckout: (@Sendable () -> Void)?
+    private let pullOnlyAfterIndexLock: (@Sendable () -> Void)?
+    private let pullOnlyBeforeIndexPublication: (@Sendable () throws -> Void)?
+    private let pullOnlyBeforeFinalCheckout: (@Sendable () -> Void)?
     private let pullOnlyBeforeLFSReplacement: (@Sendable (String) -> Void)?
+    private let stageAllBeforeWrite: (@Sendable () -> Void)?
+    private let stageAllAfterIndexLock: (@Sendable () -> Void)?
+    private let commitBeforeRefTransaction: (@Sendable () -> Void)?
+    private let pushBeforeTransport: (@Sendable () -> Void)?
+    private let pushAccepted: (@Sendable () -> Void)?
 
     /// One-time libgit2 global init.
     private static let initOnce: Void = { git_libgit2_init() }()
@@ -779,12 +1037,28 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     init(
         localURL: URL,
         pullOnlyBeforeCheckout: (@Sendable () -> Void)? = nil,
-        pullOnlyBeforeLFSReplacement: (@Sendable (String) -> Void)? = nil
+        pullOnlyAfterIndexLock: (@Sendable () -> Void)? = nil,
+        pullOnlyBeforeIndexPublication: (@Sendable () throws -> Void)? = nil,
+        pullOnlyBeforeFinalCheckout: (@Sendable () -> Void)? = nil,
+        pullOnlyBeforeLFSReplacement: (@Sendable (String) -> Void)? = nil,
+        stageAllBeforeWrite: (@Sendable () -> Void)? = nil,
+        stageAllAfterIndexLock: (@Sendable () -> Void)? = nil,
+        commitBeforeRefTransaction: (@Sendable () -> Void)? = nil,
+        pushBeforeTransport: (@Sendable () -> Void)? = nil,
+        pushAccepted: (@Sendable () -> Void)? = nil
     ) {
         _ = Self.initOnce
         self.localURL = localURL
         self.pullOnlyBeforeCheckout = pullOnlyBeforeCheckout
+        self.pullOnlyAfterIndexLock = pullOnlyAfterIndexLock
+        self.pullOnlyBeforeIndexPublication = pullOnlyBeforeIndexPublication
+        self.pullOnlyBeforeFinalCheckout = pullOnlyBeforeFinalCheckout
         self.pullOnlyBeforeLFSReplacement = pullOnlyBeforeLFSReplacement
+        self.stageAllBeforeWrite = stageAllBeforeWrite
+        self.stageAllAfterIndexLock = stageAllAfterIndexLock
+        self.commitBeforeRefTransaction = commitBeforeRefTransaction
+        self.pushBeforeTransport = pushBeforeTransport
+        self.pushAccepted = pushAccepted
     }
 
     /// Whether a `.git` directory exists at the local URL.
@@ -942,6 +1216,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // health card (which sets the flag first) reports clean — and
             // the pull is blocked even though the workdir is logically clean.
             Self.setPrecomposeUnicode(repo: repo)
+            let plannedRemoteIdentity = try Self.originIdentity(repo: repo)
 
             var head: OpaquePointer?
             defer { if let head { git_reference_free(head) } }
@@ -972,7 +1247,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     remoteCommitSHA: "",
                     hasLocalChanges: try Self.hasUncommittedChanges(repo: repo),
                     aheadBy: 0,
-                    behindBy: 0
+                    behindBy: 0,
+                    remoteIdentity: plannedRemoteIdentity
                 )
             }
             try git2Check(remoteLookupCode, context: "Lookup \(remoteRefName)")
@@ -989,7 +1265,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     remoteCommitSHA: remoteCommitSHA,
                     hasLocalChanges: hasLocalChanges,
                     aheadBy: 0,
-                    behindBy: 0
+                    behindBy: 0,
+                    remoteIdentity: plannedRemoteIdentity
                 )
             }
 
@@ -1013,7 +1290,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     remoteCommitSHA: remoteCommitSHA,
                     hasLocalChanges: hasLocalChanges,
                     aheadBy: ahead,
-                    behindBy: behind
+                    behindBy: behind,
+                    remoteIdentity: plannedRemoteIdentity
                 )
             }.value
             try cancellationSignal.checkCancellation()
@@ -1067,7 +1345,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                         remoteCommitSHA: plan.remoteCommitSHA,
                         hasLocalChanges: true,
                         aheadBy: plan.aheadBy,
-                        behindBy: plan.behindBy
+                        behindBy: plan.behindBy,
+                        remoteIdentity: plan.remoteIdentity
                     ),
                     pullResult: nil
                 )
@@ -1095,6 +1374,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         let path = self.localURL.path
         let localURL = self.localURL
         let pullOnlyBeforeCheckout = self.pullOnlyBeforeCheckout
+        let pullOnlyAfterIndexLock = self.pullOnlyAfterIndexLock
         let pullOnlyBeforeLFSReplacement = self.pullOnlyBeforeLFSReplacement
         let cancellationSignal = LocalGitCancellationSignal()
 
@@ -1162,6 +1442,16 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             let changedPaths = try Self.changedPathsBetween(repo: repo, oldOID: localOidPtr, newOID: remoteOidPtr)
 
+            var localCommit: OpaquePointer?
+            defer { if let localCommit { git_commit_free(localCommit) } }
+            try git2Check(
+                git_commit_lookup(&localCommit, repo, &expectedLocalOid),
+                context: "Lookup local commit for checkout baseline"
+            )
+            var localTree: OpaquePointer?
+            defer { if let localTree { git_tree_free(localTree) } }
+            try git2Check(git_commit_tree(&localTree, localCommit), context: "Get local checkout baseline tree")
+
             var remoteOidCopy = remoteOidPtr.pointee
             var remoteCommit: OpaquePointer?
             defer { if let remoteCommit { git_commit_free(remoteCommit) } }
@@ -1177,6 +1467,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var checkoutOpts = git_checkout_options()
             git_checkout_options_init(&checkoutOpts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
             checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE.rawValue
+            checkoutOpts.baseline = localTree
 
             // Re-read immediately before checkout. Another process or Files
             // provider may have changed the worktree since planning or the
@@ -1199,6 +1490,52 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_transaction_lock_ref(refTransaction, "HEAD"), context: "Lock HEAD for fast-forward")
             try git2Check(git_transaction_lock_ref(refTransaction, localRefName), context: "Lock branch for fast-forward")
 
+            // Hold Git's conventional shared-index lock across the final
+            // conflict/worktree checks, SAFE checkout, index serialization,
+            // and ref transaction. libgit2 performs checkout against a private
+            // disk-backed copy, so its own index writer never removes or
+            // replaces the shared lock owned by this critical section.
+            var guardedIndex: OpaquePointer?
+            defer { if let guardedIndex { git_index_free(guardedIndex) } }
+            try git2Check(git_repository_index(&guardedIndex, repo), context: "Open guarded fast-forward index")
+            let indexLock = try GitIndexFileLock(index: guardedIndex)
+            defer { indexLock.release() }
+            try git2Check(git_index_read(guardedIndex, 1), context: "Refresh guarded fast-forward index")
+            try Self.ensureNoActiveConflict(repo: repo, index: guardedIndex)
+            if isPullOnly { pullOnlyAfterIndexLock?() }
+
+            guard let rawIndexPath = git_index_path(guardedIndex) else {
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+            }
+            let privateIndexPath = String(cString: rawIndexPath) + ".gitsync-checkout-" + UUID().uuidString
+            defer {
+                privateIndexPath.withCString { _ = Darwin.unlink($0) }
+                (privateIndexPath + ".lock").withCString { _ = Darwin.unlink($0) }
+            }
+            var checkoutIndex: OpaquePointer?
+            defer { if let checkoutIndex { git_index_free(checkoutIndex) } }
+            try privateIndexPath.withCString { path in
+                try git2Check(git_index_open(&checkoutIndex, path), context: "Create private fast-forward index")
+            }
+            try git2Check(
+                git_index_set_version(checkoutIndex, git_index_version(guardedIndex)),
+                context: "Preserve private index version"
+            )
+            let guardedCapabilities = git_index_caps(guardedIndex)
+            if guardedCapabilities >= 0 {
+                try git2Check(
+                    git_index_set_caps(checkoutIndex, guardedCapabilities),
+                    context: "Preserve private index capabilities"
+                )
+            }
+            for position in 0..<git_index_entrycount(guardedIndex) {
+                guard let entry = git_index_get_byindex(guardedIndex, position) else { continue }
+                try git2Check(git_index_add(checkoutIndex, entry), context: "Copy private index entry")
+            }
+            try git2Check(git_index_write(checkoutIndex), context: "Write private fast-forward index")
+            try git2Check(clibgit2_repository_set_index(repo, checkoutIndex), context: "Use private fast-forward index")
+            defer { _ = clibgit2_repository_set_index(repo, guardedIndex) }
+
             var lockedHead: OpaquePointer?
             defer { if let lockedHead { git_reference_free(lockedHead) } }
             try git2Check(git_repository_head(&lockedHead, repo), context: "Re-read locked HEAD")
@@ -1210,13 +1547,43 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                   git_oid_equal(lockedLocalOid, &expectedLocalOid) != 0 else {
                 throw LocalGitError.pullDiverged
             }
+            if try Self.hasUncommittedChanges(repo: repo) {
+                throw LocalGitError.pullBlockedByLocalChanges
+            }
+
+            // Build the exact remote-tree index before mutating the worktree.
+            // This lets index publication fail with HEAD and worktree untouched.
+            let publicationIndexPath = String(cString: rawIndexPath) + ".gitsync-publication-" + UUID().uuidString
+            defer {
+                publicationIndexPath.withCString { _ = Darwin.unlink($0) }
+                (publicationIndexPath + ".lock").withCString { _ = Darwin.unlink($0) }
+            }
+            var publicationIndex: OpaquePointer?
+            defer { if let publicationIndex { git_index_free(publicationIndex) } }
+            try publicationIndexPath.withCString { path in
+                try git2Check(git_index_open(&publicationIndex, path), context: "Create fast-forward publication index")
+            }
+            try git2Check(
+                git_index_set_version(publicationIndex, git_index_version(guardedIndex)),
+                context: "Preserve publication index version"
+            )
+            if guardedCapabilities >= 0 {
+                try git2Check(
+                    git_index_set_caps(publicationIndex, guardedCapabilities),
+                    context: "Preserve publication index capabilities"
+                )
+            }
+            try git2Check(git_index_read_tree(publicationIndex, remoteTree), context: "Build remote-tree publication index")
+            try indexLock.prepare(index: publicationIndex)
+            try git2Check(
+                git_transaction_set_target(refTransaction, localRefName, &remoteOidCopy, nil, "pull: fast-forward"),
+                context: "Queue branch ref update"
+            )
 
             // Cancellation is interruptible through this point. Once LFS
-            // normalization begins, normalization + checkout + index rebuild +
-            // branch transaction commit form one short noninterruptible
-            // coherence window. Known-clean hydrated paths are converted to
-            // their exact old index pointers so SAFE checkout can update or
-            // delete them without ever requiring FORCE.
+            // normalization begins, index swap + branch commit + SAFE checkout
+            // form one short noninterruptible coherence window. The index swap
+            // retains the old index at `.git/index.lock` until checkout ends.
             try cancellationSignal.checkCancellation()
             var lfsNormalizations: [GitLFSCheckoutNormalization] = []
             do {
@@ -1225,45 +1592,47 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     repositoryURL: localURL,
                     paths: changedPaths
                 )
-            let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
-            if checkoutCode == GIT_ECONFLICT.rawValue {
-                // Never force a background/pull-only checkout. A conflict may
-                // be a real local write created after the last status read;
-                // preserving user bytes is more important than normalisation
-                // recovery, which remains a manual foreground concern.
-                throw LocalGitError.pullBlockedByLocalChanges
-            }
-            try git2Check(checkoutCode, context: "Checkout remote tree safely")
+                if isPullOnly { try self.pullOnlyBeforeIndexPublication?() }
+                try indexLock.publishPreparedIndexRetainingLock()
+                try git2Check(git_transaction_commit(refTransaction), context: "Commit branch ref update")
 
-            // Explicitly rebuild the index from the remote tree and flush it
-            // to disk. git_checkout_tree is supposed to update index entries
-            // as it walks files, but relying on that leaves a window where a
-            // freshly-added file pulled from the remote can still appear as
-            // untracked in subsequent status reads — the working tree has the
-            // file while the on-disk index never recorded it. Re-reading the
-            // remote tree into the index and writing it guarantees HEAD ==
-            // index == workdir after a fast-forward pull.
-            var pulledIndex: OpaquePointer?
-            defer { if let pulledIndex { git_index_free(pulledIndex) } }
-            try git2Check(
-                git_repository_index(&pulledIndex, repo),
-                context: "Open index after fast-forward checkout"
-            )
-            try git2Check(
-                git_index_read_tree(pulledIndex, remoteTree),
-                context: "Rebuild index from remote tree"
-            )
-            try git2Check(
-                git_index_write(pulledIndex),
-                context: "Write index after fast-forward"
-            )
-
-            try git2Check(
-                git_transaction_set_target(refTransaction, localRefName, &remoteOidCopy, nil, "pull: fast-forward"),
-                context: "Queue branch ref update"
-            )
-            try git2Check(git_transaction_commit(refTransaction), context: "Commit branch ref update")
+                // The ref and shared index now authoritatively name the remote
+                // commit. SAFE checkout may still discover a last-moment editor
+                // write; preserve it and return an explicit updated-with-attention
+                // outcome instead of force-overwriting or reporting no update.
+                if isPullOnly { self.pullOnlyBeforeFinalCheckout?() }
+                let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                let indexLockReleased = indexLock.finalizePublishedIndex()
+                if checkoutCode != 0 {
+                    GitLFSService.rollbackHydratedFilesAfterFailedCheckout(lfsNormalizations)
+                    let detail = checkoutCode == GIT_ECONFLICT.rawValue
+                        ? LocalGitError.pullBlockedByLocalChanges.localizedDescription
+                        : git2ErrorMessage(fallback: String(localized: "The working tree checkout did not complete."))
+                    return (
+                        result: LocalPullResult(
+                            updated: true,
+                            newCommitSHA: oidToHex(&remoteOidCopy),
+                            attention: .checkoutIncomplete(message: detail)
+                        ),
+                        changedPaths: changedPaths
+                    )
+                }
+                if !indexLockReleased {
+                    return (
+                        result: LocalPullResult(
+                            updated: true,
+                            newCommitSHA: oidToHex(&remoteOidCopy),
+                            attention: .checkoutIncomplete(
+                                message: String(localized: "Could not publish the updated Git index.")
+                            )
+                        ),
+                        changedPaths: changedPaths
+                    )
+                }
             } catch {
+                // No operation after a successful ref commit throws. Therefore
+                // this path still has the old ref; lock release swaps the old
+                // index back, and LFS rollback is compare-and-atomic.
                 GitLFSService.rollbackHydratedFilesAfterFailedCheckout(lfsNormalizations)
                 throw error
             }
@@ -1274,10 +1643,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             cancellationSignal.cancel()
         }
 
-        // The ref transaction has committed before this point. Every later
-        // cancellation or hydration failure must therefore return the new SHA
-        // with attention instead of throwing an outcome that implies HEAD did
-        // not move.
+        // The ref transaction has committed before this point. Preserve an
+        // explicit checkout attention outcome and do not attempt LFS hydration
+        // against a worktree whose SAFE checkout did not fully complete.
+        if fastForward.result.attention != nil { return fastForward.result }
+
+        // Every later cancellation or hydration failure must return the new SHA
+        // with attention instead of implying HEAD did not move.
         if cancellationSignal.isCancelled || Task.isCancelled {
             return LocalPullResult(
                 updated: fastForward.result.updated,
@@ -2404,6 +2776,140 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }.value
     }
 
+    private static func ensureNoActiveConflict(
+        repo: OpaquePointer?,
+        index: OpaquePointer?
+    ) throws {
+        let hasRepositoryOperation = git_repository_state(repo) != Int32(GIT_REPOSITORY_STATE_NONE.rawValue)
+        let hasUnmergedIndexEntries = git_index_has_conflicts(index) == 1
+        guard !hasRepositoryOperation, !hasUnmergedIndexEntries else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Resolve the active Git conflict before committing or pushing.")
+            )
+        }
+    }
+
+    /// Snapshot the checksum of the index file last read by this object.
+    /// In-memory staging does not change it until the index is persisted.
+    private static func indexChecksumHex(_ index: OpaquePointer?) throws -> String {
+        guard let checksum = git_index_checksum(index) else {
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+        }
+        return oidToHex(checksum)
+    }
+
+    /// Acquire Git's cross-process index lock, then force-read a second index
+    /// object from the real on-disk path. This preserves the caller's desired
+    /// in-memory staging snapshot while detecting every writer that completed
+    /// before lock acquisition, independent of cached mtime/size metadata. A
+    /// later writer sees `<index>.lock` and cannot enter. The returned lock must
+    /// span the guarded mutation.
+    private static func lockUnchangedIndex(
+        repo: OpaquePointer?,
+        index: OpaquePointer?,
+        baselineChecksum: String
+    ) throws -> GitIndexFileLock {
+        let lock = try GitIndexFileLock(index: index)
+        do {
+            guard let rawPath = git_index_path(index) else {
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+            }
+            var diskIndex: OpaquePointer?
+            defer { if let diskIndex { git_index_free(diskIndex) } }
+            try git2Check(git_index_open(&diskIndex, rawPath), context: "Open locked on-disk index")
+            try git2Check(git_index_read(diskIndex, 1), context: "Refresh locked on-disk index")
+            try ensureNoActiveConflict(repo: repo, index: diskIndex)
+            guard try indexChecksumHex(diskIndex) == baselineChecksum else {
+                throw LocalGitError.commitFailed(
+                    String(localized: "Could not stage all local file changes before push.")
+                )
+            }
+            return lock
+        } catch {
+            lock.release()
+            throw error
+        }
+    }
+
+    private static func ensureCurrentBranch(repo: OpaquePointer?, expected: String) throws {
+        var head: OpaquePointer?
+        defer { if let head { git_reference_free(head) } }
+        try git2Check(git_repository_head(&head, repo), context: "Re-read HEAD branch")
+        let actual = git_reference_shorthand(head).map { String(cString: $0) } ?? ""
+        guard actual == expected else {
+            throw LocalGitError.wrongBranch(expected: expected, actual: actual)
+        }
+    }
+
+    private static func ensureCurrentBranch(
+        repo: OpaquePointer?,
+        expected branch: String,
+        target expectedOID: inout git_oid
+    ) throws {
+        var head: OpaquePointer?
+        defer { if let head { git_reference_free(head) } }
+        try git2Check(git_repository_head(&head, repo), context: "Re-read HEAD branch target")
+        let actual = git_reference_shorthand(head).map { String(cString: $0) } ?? ""
+        guard actual == branch else {
+            throw LocalGitError.wrongBranch(expected: branch, actual: actual)
+        }
+        guard let actualOID = git_reference_target(head),
+              git_oid_equal(actualOID, &expectedOID) != 0 else {
+            throw LocalGitError.pushFailed(
+                String(localized: "The local branch changed before push. Publication was stopped.")
+            )
+        }
+    }
+
+    private static func oid(hex: String, context: String) throws -> git_oid {
+        var oid = git_oid()
+        let code = hex.withCString { git_oid_fromstr(&oid, $0) }
+        try git2Check(code, context: context)
+        return oid
+    }
+
+    private static func remoteIdentity(_ remote: OpaquePointer?) throws -> GitRemoteIdentity {
+        guard let rawFetchURL = git_remote_url(remote) else {
+            throw LocalGitError.pushFailed(
+                String(localized: "The origin remote changed before push. Publication was stopped.")
+            )
+        }
+        let fetchURL = String(cString: rawFetchURL)
+        let pushURL = git_remote_pushurl(remote).map { String(cString: $0) } ?? fetchURL
+        return GitRemoteIdentity(fetchURL: fetchURL, pushURL: pushURL)
+    }
+
+    private static func originIdentity(repo: OpaquePointer?) throws -> GitRemoteIdentity {
+        var remote: OpaquePointer?
+        defer { if let remote { git_remote_free(remote) } }
+        let code = git_remote_lookup(&remote, repo, "origin")
+        guard code == 0 else {
+            throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
+        }
+        return try remoteIdentity(remote)
+    }
+
+    private static func ensureRemoteIdentity(
+        _ remote: OpaquePointer?,
+        matches expectation: PushSafetyExpectation?
+    ) throws {
+        guard let expectation else { return }
+        guard try remoteIdentity(remote) == expectation.remoteIdentity else {
+            throw LocalGitError.pushFailed(
+                String(localized: "The origin remote changed before push. Publication was stopped.")
+            )
+        }
+    }
+
+    private static func ensureNoUnstagedWorktreeChanges(repo: OpaquePointer?) throws {
+        let entries = try statusEntries(repo: repo)
+        guard !entries.contains(where: { $0.workTreeStatus != nil }) else {
+            throw LocalGitError.commitFailed(
+                String(localized: "Could not stage all local file changes before push.")
+            )
+        }
+    }
+
     func commitLocal(
         message: String,
         authorName: String,
@@ -2419,12 +2925,19 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
             guard try Self.hasStagedChanges(repo: repo, index: index) else {
                 throw LocalGitError.noChanges
             }
 
-            try git2Check(git_index_write(index), context: "Write index")
+            let indexLock = try Self.lockUnchangedIndex(
+                repo: repo,
+                index: index,
+                baselineChecksum: baselineIndexChecksum
+            )
+            defer { indexLock.release() }
 
             var treeOid = git_oid()
             try git2Check(git_index_write_tree(&treeOid, index), context: "Write tree from index")
@@ -2655,6 +3168,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
             try git2Check(
                 git_index_add_all(index, nil, UInt32(GIT_INDEX_ADD_DEFAULT.rawValue), nil, nil),
@@ -2672,7 +3187,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 autoTrackingPolicy: lfsAutoTrack ? .default : .disabled
             )
 
-            try git2Check(git_index_write(index), context: "Write index")
+            // `git_index_add_all` collapses conflict stages in memory. Acquire
+            // Git's index lock before the final refresh/checksum comparison and
+            // keep it through the atomic replacement, so an external conflict
+            // can be neither missed nor overwritten.
+            self.stageAllBeforeWrite?()
+            let indexLock = try Self.lockUnchangedIndex(
+                repo: repo,
+                index: index,
+                baselineChecksum: baselineIndexChecksum
+            )
+            defer { indexLock.release() }
+            self.stageAllAfterIndexLock?()
+            try indexLock.prepare(index: index)
+            try indexLock.commitPreparedIndex()
         }.value
     }
 
@@ -2699,6 +3227,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
             // Try to add the file first. If it no longer exists on disk
             // (deletion, rename, or move), `git_index_add_bypath` returns
@@ -2738,7 +3268,14 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 autoTrackingPolicy: lfsAutoTrack ? .default : .disabled
             )
 
-            try git2Check(git_index_write(index), context: "Write index")
+            let indexLock = try Self.lockUnchangedIndex(
+                repo: repo,
+                index: index,
+                baselineChecksum: baselineIndexChecksum
+            )
+            defer { indexLock.release() }
+            try indexLock.prepare(index: index)
+            try indexLock.commitPreparedIndex()
         }.value
     }
 
@@ -3325,20 +3862,29 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         message: String,
         authorName: String,
         authorEmail: String,
-        pat: String
+        pat: String,
+        expectedBranch: String? = nil,
+        safetyExpectation: PushSafetyExpectation? = nil
     ) async throws -> LocalPushResult {
         let path = self.localURL.path
+        let cancellationSignal = LocalGitCancellationSignal()
 
-        return try await Task.detached {
+        let operation = Task.detached {
+            try cancellationSignal.checkCancellation()
             // Open repository
             var repo: OpaquePointer?
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
-            // Use currently staged content only
+            // Use currently staged content only.
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            if expectedBranch != nil {
+                try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+            }
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
             let stagedPaths = try Self.stagedChangePaths(repo: repo, index: index)
             guard !stagedPaths.isEmpty else {
@@ -3352,7 +3898,16 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 credentials: GitRemoteCredentials.fromTransportPayload(pat)
             ).verifyPushAllowed(changedPaths: stagedPaths)
 
-            try git2Check(git_index_write(index), context: "Write index")
+            try cancellationSignal.checkCancellation()
+            let commitIndexLock = try Self.lockUnchangedIndex(
+                repo: repo,
+                index: index,
+                baselineChecksum: baselineIndexChecksum
+            )
+            defer { commitIndexLock.release() }
+            if expectedBranch != nil {
+                try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+            }
 
             // Write the staged index tree
             var treeOid = git_oid()
@@ -3368,34 +3923,64 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             var parentCommit: OpaquePointer?
             defer { if let parentCommit { git_commit_free(parentCommit) } }
+            var expectedParentOID: git_oid?
 
             let headCode = git_repository_head(&headRef, repo)
             if headCode == 0 {
                 guard let headOid = git_reference_target(headRef) else {
                     throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for commit"))
                 }
-                var headOidCopy = headOid.pointee
+                let headOidCopy = headOid.pointee
+                expectedParentOID = headOidCopy
+                var lookupOID = headOidCopy
                 try git2Check(
-                    git_commit_lookup(&parentCommit, repo, &headOidCopy),
+                    git_commit_lookup(&parentCommit, repo, &lookupOID),
                     context: "Lookup HEAD commit"
                 )
             } else if headCode != GIT_EUNBORNBRANCH.rawValue && headCode != GIT_ENOTFOUND.rawValue {
                 try git2Check(headCode, context: "Read HEAD")
             }
 
-            // Create author/committer signature
+            let localRefName: String
+            let branchName: String
+            if headCode == 0, let headRef {
+                branchName = git_reference_shorthand(headRef).map { String(cString: $0) } ?? "main"
+                localRefName = "refs/heads/\(branchName)"
+            } else {
+                var symbolicHead: OpaquePointer?
+                defer { if let symbolicHead { git_reference_free(symbolicHead) } }
+                try git2Check(git_reference_lookup(&symbolicHead, repo, "HEAD"), context: "Read unborn HEAD")
+                guard let target = git_reference_symbolic_target(symbolicHead) else {
+                    throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for commit"))
+                }
+                localRefName = String(cString: target)
+                branchName = localRefName.replacingOccurrences(of: "refs/heads/", with: "")
+            }
+            if let expectedBranch, branchName != expectedBranch {
+                throw LocalGitError.wrongBranch(expected: expectedBranch, actual: branchName)
+            }
+            if let safetyExpectation, safetyExpectation.branch != branchName {
+                throw LocalGitError.wrongBranch(expected: safetyExpectation.branch, actual: branchName)
+            }
+
+            // Create author/committer signature.
             var sig: UnsafeMutablePointer<git_signature>?
             defer { if let sig { git_signature_free(sig) } }
             try createGitSignature(&sig, authorName: authorName, authorEmail: authorEmail)
 
-            // Create the commit
+            // First create an immutable commit object without updating HEAD.
+            // Then lock symbolic HEAD and its branch, compare the exact old OID,
+            // and publish the new target transactionally. A same-named branch
+            // advance can therefore never be replaced by automation.
+            try cancellationSignal.checkCancellation()
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
             var commitOid = git_oid()
             if let parentCommit {
                 var parents: [OpaquePointer?] = [parentCommit]
                 try parents.withUnsafeMutableBufferPointer { buf in
                     try git2Check(
                         git_commit_create(
-                            &commitOid, repo, "HEAD",
+                            &commitOid, repo, nil,
                             sig, sig,
                             nil,
                             message,
@@ -3403,13 +3988,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                             1,
                             buf.baseAddress
                         ),
-                        context: "Create commit"
+                        context: "Create commit object"
                     )
                 }
             } else {
                 try git2Check(
                     git_commit_create(
-                        &commitOid, repo, "HEAD",
+                        &commitOid, repo, nil,
                         sig, sig,
                         nil,
                         message,
@@ -3417,11 +4002,55 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                         0,
                         nil
                     ),
-                    context: "Create initial commit"
+                    context: "Create initial commit object"
                 )
             }
 
+            self.commitBeforeRefTransaction?()
+            var commitTransaction: OpaquePointer?
+            defer { if let commitTransaction { git_transaction_free(commitTransaction) } }
+            try git2Check(git_transaction_new(&commitTransaction, repo), context: "Create commit ref transaction")
+            try git2Check(git_transaction_lock_ref(commitTransaction, "HEAD"), context: "Lock HEAD for commit")
+            try git2Check(git_transaction_lock_ref(commitTransaction, localRefName), context: "Lock branch for commit")
+
+            var lockedHEAD: OpaquePointer?
+            defer { if let lockedHEAD { git_reference_free(lockedHEAD) } }
+            try git2Check(git_reference_lookup(&lockedHEAD, repo, "HEAD"), context: "Re-read locked HEAD")
+            guard let lockedTarget = git_reference_symbolic_target(lockedHEAD),
+                  String(cString: lockedTarget) == localRefName else {
+                throw LocalGitError.wrongBranch(expected: branchName, actual: "HEAD")
+            }
+
+            var lockedBranch: OpaquePointer?
+            defer { if let lockedBranch { git_reference_free(lockedBranch) } }
+            let lockedBranchCode = git_reference_lookup(&lockedBranch, repo, localRefName)
+            if var expectedParentOID {
+                try git2Check(lockedBranchCode, context: "Re-read locked branch")
+                guard let lockedOID = git_reference_target(lockedBranch),
+                      git_oid_equal(lockedOID, &expectedParentOID) != 0 else {
+                    throw LocalGitError.commitFailed(
+                        String(localized: "The local branch changed before commit. Publication was stopped.")
+                    )
+                }
+            } else if lockedBranchCode != GIT_ENOTFOUND.rawValue {
+                if lockedBranchCode == 0 {
+                    throw LocalGitError.commitFailed(
+                        String(localized: "The local branch changed before commit. Publication was stopped.")
+                    )
+                }
+                try git2Check(lockedBranchCode, context: "Re-read unborn branch")
+            }
+
+            try git2Check(
+                git_transaction_set_target(commitTransaction, localRefName, &commitOid, sig, "commit: \(message)"),
+                context: "Queue commit branch update"
+            )
+            try git2Check(git_transaction_commit(commitTransaction), context: "Commit branch update")
+
             let commitSHA = oidToHex(&commitOid)
+            do {
+            commitIndexLock.release()
+            try cancellationSignal.checkCancellation()
 
             var lfsPointerPaths = stagedPaths
             var pushHeadRef: OpaquePointer?
@@ -3445,36 +4074,80 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 ).uploadObjects(lfsPointers)
                 DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
             }
+            try cancellationSignal.checkCancellation()
+            do {
+                let prePushIndexLock = try Self.lockUnchangedIndex(
+                    repo: repo,
+                    index: index,
+                    baselineChecksum: baselineIndexChecksum
+                )
+                defer { prePushIndexLock.release() }
+                if expectedBranch != nil {
+                    try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+                }
+                try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &commitOid)
+            }
 
-            // Push to origin
+            // The deterministic race hook is before the final branch and origin
+            // snapshots. Production then pushes the exact OID observed below;
+            // negotiation rejects a deleted/advanced destination branch.
+            self.pushBeforeTransport?()
+            try cancellationSignal.checkCancellation()
+            do {
+                let transportIndexLock = try Self.lockUnchangedIndex(
+                    repo: repo,
+                    index: index,
+                    baselineChecksum: baselineIndexChecksum
+                )
+                defer { transportIndexLock.release() }
+                if expectedBranch != nil {
+                    try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+                }
+                try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &commitOid)
+            }
+
             var pushRemote: OpaquePointer?
-            defer { if let pushRemote { git_remote_free(pushRemote) } }
+            defer {
+                cancellationSignal.unregister(remote: pushRemote)
+                if let pushRemote { git_remote_free(pushRemote) }
+            }
             let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
             if remoteCode != 0 {
                 throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
             }
+            try Self.ensureRemoteIdentity(pushRemote, matches: safetyExpectation)
+            cancellationSignal.register(remote: pushRemote)
+            try cancellationSignal.checkCancellation()
 
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
             let remoteURL = git_remote_url(pushRemote).map { String(cString: $0) }
-            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
+            let pushCtx = PushContext(
+                credentials: GitRemoteCredentials.fromTransportPayload(pat),
+                remoteURL: remoteURL,
+                cancellationSignal: cancellationSignal
+            )
+            let destinationRef = "refs/heads/\(branchName)"
+            pushCtx.expectedDestinationRef = destinationRef
+            pushCtx.expectedLocalOID = commitOid
+            if let safetyExpectation {
+                pushCtx.expectedRemoteOID = try Self.oid(
+                    hex: safetyExpectation.remoteCommitSHA,
+                    context: "Read expected remote branch target"
+                )
+            }
             let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
 
             pushOpts.callbacks.credentials = pushCredentialCallback
             pushOpts.callbacks.certificate_check = certificateCheckCallback
+            pushOpts.callbacks.push_transfer_progress = pushTransferProgressCallback
+            pushOpts.callbacks.push_negotiation = pushNegotiationCallback
             pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
             pushOpts.callbacks.payload = pushCtxPtr
 
-            // Build push refspec for current branch
-            let branchName: String
-            if let name = git_reference_shorthand(headRef) {
-                branchName = String(cString: name)
-            } else {
-                branchName = "main"
-            }
-            let refspec = "refs/heads/\(branchName):refs/heads/\(branchName)"
+            let refspec = "\(destinationRef):\(destinationRef)"
             let refspecCStr = strdup(refspec)!
             defer { free(refspecCStr) }
             let refStringsPtr = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
@@ -3482,58 +4155,76 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             refStringsPtr[0] = refspecCStr
             var refspecs = git_strarray(strings: refStringsPtr, count: 1)
 
-            try git2TransportCheck(
-                git_remote_push(pushRemote, &refspecs, &pushOpts),
-                context: "Push to origin",
-                fallback: pushCtx.callbackErrorMessage,
-                credentialContext: pushCtx,
-                wrapping: LocalGitError.pushFailed
-            )
+            let pushCode = git_remote_push(pushRemote, &refspecs, &pushOpts)
 
-            // git_remote_push returns 0 when the network upload completes, even
-            // if the remote rejected the ref update. Check the per-ref status
-            // captured by pushUpdateReferenceCallback and surface it as an error.
             if !pushCtx.rejectedRefs.isEmpty {
                 let detail = pushCtx.rejectedRefs
                     .map { "\($0.refname): \($0.reason)" }
                     .joined(separator: "; ")
                 throw LocalGitError.pushFailed(detail)
             }
-
-            // git_remote_push can also return 0 with an empty rejectedRefs list
-            // when libgit2 decides there was nothing to send (e.g. the local
-            // branch didn't actually advance past origin/<branch>, the smart-HTTP
-            // exchange returned no ack lines, or the server quietly dropped the
-            // update). Re-fetch and verify refs/remotes/origin/<branch> actually
-            // points at our new commit; if not, surface the failure so the user
-            // sees a real error instead of a fake "Push complete".
-            try Self.fetchOrigin(repo: repo, pat: pat)
-            let remoteTrackingRefName = "refs/remotes/origin/\(branchName)"
-            var verifyRef: OpaquePointer?
-            defer { if let verifyRef { git_reference_free(verifyRef) } }
-            let verifyCode = git_reference_lookup(&verifyRef, repo, remoteTrackingRefName)
-            guard verifyCode == 0, let verifyOidPtr = git_reference_target(verifyRef) else {
+            let destinationAccepted = pushCtx.acceptedRefs.contains(destinationRef)
+            if !destinationAccepted {
+                if pushCode < 0 {
+                    try git2TransportCheck(
+                        pushCode,
+                        context: "Push to origin",
+                        fallback: pushCtx.callbackErrorMessage,
+                        credentialContext: pushCtx,
+                        wrapping: LocalGitError.pushFailed
+                    )
+                }
                 throw LocalGitError.pushFailed(
-                    "Push reported success but origin does not advertise refs/heads/\(branchName). Check that origin URL, branch name, and PAT scope are correct."
+                    String(localized: "Origin did not confirm that the branch was published. Publication status is unknown.")
                 )
             }
-            if git_oid_equal(verifyOidPtr, &commitOid) == 0 {
-                let remoteHex = oidToHex(verifyOidPtr)
+            guard pushCtx.negotiationValidated else {
                 throw LocalGitError.pushFailed(
-                    "Push reported success but origin/\(branchName) is at \(remoteHex.prefix(7)), expected \(commitSHA.prefix(7)). The remote silently rejected the update — check branch protection rules, PAT scope, and that origin URL points at the right repository."
+                    String(localized: "Origin did not confirm the expected branch update. Publication status is unknown.")
                 )
             }
 
+            // An exact nil-status update callback is authoritative even if the
+            // surrounding transport later reports cancellation or disconnect.
+            self.pushAccepted?()
+
+            // Exact per-ref acceptance is authoritative publication success.
             return LocalPushResult(commitSHA: commitSHA)
-        }.value
+            } catch {
+                if error is CancellationError { throw error }
+                let trustError: GitLFSSSHHostKeyTrustError?
+                if case LocalGitError.sshHostKeyTrustRequired(let value) = error {
+                    trustError = value
+                } else {
+                    trustError = nil
+                }
+                throw LocalCommitSavedNotPushedError(
+                    commitSHA: commitSHA,
+                    message: error.localizedDescription,
+                    trustError: trustError
+                )
+            }
+        }
+        return try await withTaskCancellationHandler {
+            try await operation.value
+        } onCancel: {
+            cancellationSignal.cancel()
+            operation.cancel()
+        }
     }
 
     // MARK: - Push Current Branch (post-merge push without committing)
 
-    func pushCurrentBranch(pat: String) async throws {
+    func pushCurrentBranch(
+        pat: String,
+        expectedBranch: String? = nil,
+        safetyExpectation: PushSafetyExpectation? = nil
+    ) async throws {
         let path = self.localURL.path
+        let cancellationSignal = LocalGitCancellationSignal()
 
-        try await Task.detached {
+        let operation = Task.detached {
+            try cancellationSignal.checkCancellation()
             var repo: OpaquePointer?
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
@@ -3542,16 +4233,17 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let headRef { git_reference_free(headRef) } }
             try git2Check(git_repository_head(&headRef, repo), context: "Read HEAD")
 
-            guard let headOidPtr = git_reference_target(headRef) else {
+            guard let headTarget = git_reference_target(headRef) else {
                 throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for push"))
             }
-            var headOid = headOidPtr.pointee
+            var expectedLocalOID = headTarget.pointee
 
-            let branchName: String
-            if let name = git_reference_shorthand(headRef) {
-                branchName = String(cString: name)
-            } else {
-                branchName = "main"
+            let branchName = git_reference_shorthand(headRef).map { String(cString: $0) } ?? "main"
+            if let expectedBranch, branchName != expectedBranch {
+                throw LocalGitError.wrongBranch(expected: expectedBranch, actual: branchName)
+            }
+            if let safetyExpectation, safetyExpectation.branch != branchName {
+                throw LocalGitError.wrongBranch(expected: safetyExpectation.branch, actual: branchName)
             }
 
             let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)
@@ -3559,6 +4251,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Open index before push")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
             try GitLFSService.validateNoLargeNonLFSBlobs(
                 repo: repo,
                 index: index,
@@ -3569,6 +4263,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 localURL: URL(fileURLWithPath: path, isDirectory: true),
                 credentials: GitRemoteCredentials.fromTransportPayload(pat)
             ).verifyPushAllowed(changedPaths: pushedPaths, refName: "refs/heads/\(branchName)")
+            try cancellationSignal.checkCancellation()
 
             let lfsPointers: [GitLFSPointer]
             if pushedPaths.isEmpty {
@@ -3587,28 +4282,77 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 ).uploadObjects(lfsPointers)
                 DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
             }
+            try cancellationSignal.checkCancellation()
+            do {
+                let prePushIndexLock = try Self.lockUnchangedIndex(
+                    repo: repo,
+                    index: index,
+                    baselineChecksum: baselineIndexChecksum
+                )
+                defer { prePushIndexLock.release() }
+                if expectedBranch != nil {
+                    try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+                }
+                try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &expectedLocalOID)
+            }
+
+            self.pushBeforeTransport?()
+            try cancellationSignal.checkCancellation()
+            do {
+                let transportIndexLock = try Self.lockUnchangedIndex(
+                    repo: repo,
+                    index: index,
+                    baselineChecksum: baselineIndexChecksum
+                )
+                defer { transportIndexLock.release() }
+                if expectedBranch != nil {
+                    try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+                }
+                try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &expectedLocalOID)
+            }
 
             var pushRemote: OpaquePointer?
-            defer { if let pushRemote { git_remote_free(pushRemote) } }
+            defer {
+                cancellationSignal.unregister(remote: pushRemote)
+                if let pushRemote { git_remote_free(pushRemote) }
+            }
             let remoteCode = git_remote_lookup(&pushRemote, repo, "origin")
             if remoteCode != 0 {
                 throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
             }
+            try Self.ensureRemoteIdentity(pushRemote, matches: safetyExpectation)
+            cancellationSignal.register(remote: pushRemote)
+            try cancellationSignal.checkCancellation()
 
             var pushOpts = git_push_options()
             git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
 
             let remoteURL = git_remote_url(pushRemote).map { String(cString: $0) }
-            let pushCtx = PushContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
+            let pushCtx = PushContext(
+                credentials: GitRemoteCredentials.fromTransportPayload(pat),
+                remoteURL: remoteURL,
+                cancellationSignal: cancellationSignal
+            )
+            let destinationRef = "refs/heads/\(branchName)"
+            pushCtx.expectedDestinationRef = destinationRef
+            pushCtx.expectedLocalOID = expectedLocalOID
+            if let safetyExpectation {
+                pushCtx.expectedRemoteOID = try Self.oid(
+                    hex: safetyExpectation.remoteCommitSHA,
+                    context: "Read expected remote branch target"
+                )
+            }
             let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
             defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
 
             pushOpts.callbacks.credentials = pushCredentialCallback
             pushOpts.callbacks.certificate_check = certificateCheckCallback
+            pushOpts.callbacks.push_transfer_progress = pushTransferProgressCallback
+            pushOpts.callbacks.push_negotiation = pushNegotiationCallback
             pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
             pushOpts.callbacks.payload = pushCtxPtr
 
-            let refspec = "refs/heads/\(branchName):refs/heads/\(branchName)"
+            let refspec = "\(destinationRef):\(destinationRef)"
             let refspecCStr = strdup(refspec)!
             defer { free(refspecCStr) }
             let refStringsPtr = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
@@ -3616,13 +4360,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             refStringsPtr[0] = refspecCStr
             var refspecs = git_strarray(strings: refStringsPtr, count: 1)
 
-            try git2TransportCheck(
-                git_remote_push(pushRemote, &refspecs, &pushOpts),
-                context: "Push to origin",
-                fallback: pushCtx.callbackErrorMessage,
-                credentialContext: pushCtx,
-                wrapping: LocalGitError.pushFailed
-            )
+            let pushCode = git_remote_push(pushRemote, &refspecs, &pushOpts)
 
             if !pushCtx.rejectedRefs.isEmpty {
                 let detail = pushCtx.rejectedRefs
@@ -3630,25 +4368,35 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     .joined(separator: "; ")
                 throw LocalGitError.pushFailed(detail)
             }
+            let destinationAccepted = pushCtx.acceptedRefs.contains(destinationRef)
+            if !destinationAccepted {
+                if pushCode < 0 {
+                    try git2TransportCheck(
+                        pushCode,
+                        context: "Push to origin",
+                        fallback: pushCtx.callbackErrorMessage,
+                        credentialContext: pushCtx,
+                        wrapping: LocalGitError.pushFailed
+                    )
+                }
+                throw LocalGitError.pushFailed(
+                    String(localized: "Origin did not confirm that the branch was published. Publication status is unknown.")
+                )
+            }
+            guard pushCtx.negotiationValidated else {
+                throw LocalGitError.pushFailed(
+                    String(localized: "Origin did not confirm the expected branch update. Publication status is unknown.")
+                )
+            }
 
-            try Self.fetchOrigin(repo: repo, pat: pat)
-            let remoteTrackingRefName = "refs/remotes/origin/\(branchName)"
-            var verifyRef: OpaquePointer?
-            defer { if let verifyRef { git_reference_free(verifyRef) } }
-            let verifyCode = git_reference_lookup(&verifyRef, repo, remoteTrackingRefName)
-            guard verifyCode == 0, let verifyOidPtr = git_reference_target(verifyRef) else {
-                throw LocalGitError.pushFailed(
-                    "Push reported success but origin does not advertise refs/heads/\(branchName). Check that origin URL, branch name, and PAT scope are correct."
-                )
-            }
-            if git_oid_equal(verifyOidPtr, &headOid) == 0 {
-                let remoteHex = oidToHex(verifyOidPtr)
-                let localHex = oidToHex(&headOid)
-                throw LocalGitError.pushFailed(
-                    "Push reported success but origin/\(branchName) is at \(remoteHex.prefix(7)), expected \(localHex.prefix(7)). The remote silently rejected the update — check branch protection rules, PAT scope, and that origin URL points at the right repository."
-                )
-            }
-        }.value
+            self.pushAccepted?()
+        }
+        try await withTaskCancellationHandler {
+            try await operation.value
+        } onCancel: {
+            cancellationSignal.cancel()
+            operation.cancel()
+        }
     }
 
     // MARK: - History

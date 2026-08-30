@@ -112,7 +112,7 @@ enum RepoAssistNetworkPolicy: String, Codable, Sendable { case any, wifiOnly }
 enum RepoAssistPowerPolicy: String, Codable, Sendable { case any, externalPowerOnly }
 
 enum RepoAssistAttention: String, Codable, Sendable, Equatable {
-    case localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, failed
+    case localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, unpushedCommit, failed
 }
 
 enum OpaqueAssistIdentifier {

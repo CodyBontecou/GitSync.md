@@ -138,8 +138,8 @@ Pipeline order (per `localization/README.md`): `translate_catalog.py` (machine t
 ## 7. Localization
 
 - **Languages:** English + 25 translations = 26 locales: ar, da, de, es, fi, fr, he, hi, hu, id, it, ja, ko, nb, nl, pl, pt-BR, ru, sv, th, tr, uk, vi, zh-Hans, zh-Hant.
-- `Sync.md/Localizable.xcstrings`: **922 active string keys** across English plus 25 translated locales; English keys without an explicit value inherit their source key.
-- `ADD_TRANSLATIONS_PROMPT.md`: parallel-agent workflow — one agent per locale writes `Sync.md/<locale>.lproj/Localizable.strings`; Xcode 16 `PBXFileSystemSynchronizedRootGroup` auto-discovers files (no pbxproj edits). Its 173-key note is historical; the catalog has since grown to 922 keys.
+- `Sync.md/Localizable.xcstrings`: **949 active source keys** across English plus 25 non-source locales. Compiler extraction coverage is complete, but 57 source entries (1,425 locale cells) still await human translation and review; `localization/reports/catalog-audit.json` intentionally records this failing release gate.
+- `ADD_TRANSLATIONS_PROMPT.md`: parallel-agent workflow — one agent per locale writes `Sync.md/<locale>.lproj/Localizable.strings`; Xcode 16 `PBXFileSystemSynchronizedRootGroup` auto-discovers files (no pbxproj edits). Its 173-key note is historical; use the current catalog audit rather than that count.
 - Runtime→ASC locale mapping: ar→ar-SA, de→de-DE, es→es-ES, fr→fr-FR, nl→nl-NL, nb→no, others identical.
 
 ---

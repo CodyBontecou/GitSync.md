@@ -303,7 +303,7 @@ struct SettingsView: View {
                                         .padding(16)
                                     }
 
-                                    Text("Uses this repository's configured branch. GitHub repositories covered by a linked GitHub App installation are eligible for best-effort event wakes; non-GitHub or unresolved repositories are foreground-only. Pulls are clean fast-forward only. Local changes, divergence, authentication/trust requirements, or the wrong branch stop automation.")
+                                    Text("Uses this repository's configured branch and the installation's independent automatic-pull and automatic-push choices. Pulls stay clean fast-forwards. Push-only mode validates remote state without updating the worktree. Publishing may stage, commit, and push local edits only after separate consent. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.")
                                         .font(.system(size: 12, design: .monospaced))
                                         .foregroundStyle(Color.brutalText)
                                         .padding(16)
@@ -749,8 +749,10 @@ struct SettingsView: View {
                 : repo.repoURL
             repositoryHistory.recordRepoAdded(identifier: identifier)
         }
-        state.removeRepo(id: repoID, deleteLocalFiles: deleteLocalFiles)
-        dismiss()
+        Task {
+            await state.removeRepo(id: repoID, deleteLocalFiles: deleteLocalFiles)
+            dismiss()
+        }
     }
 
     private func relativeDate(_ date: Date) -> String {
@@ -775,7 +777,7 @@ struct SettingsView: View {
         switch status {
         case .disabled: return String(localized: "Disabled")
         case .excluded: return String(localized: "Excluded")
-        case .foregroundOnly: return String(localized: "Foreground-only")
+        case .foregroundOnly: return String(localized: "No event hint")
         case .enrolling: return String(localized: "Reconciling")
         case .enrolled: return String(localized: "Enrolled")
         case .failed: return String(localized: "Failed")

@@ -37,7 +37,8 @@ Record the exact App Privacy answers in the private release record and compare t
 |---|---|---|
 | Release provisioning contains `aps-environment=production` | | ☐ Pass ☐ Fail |
 | Debug/staging provisioning contains the intended APNs environment | | ☐ Pass ☐ Fail |
-| Remote-notification background mode present in signed binary | | ☐ Pass ☐ Fail |
+| Remote-notification and processing background modes present in signed binary | | ☐ Pass ☐ Fail |
+| Signed binary permits `com.bontecou.Sync-md.background-sync`; physical-device launch, reschedule, and expiration checked | | ☐ Pass ☐ Fail |
 | APNs team/key/topic match the signed app | | ☐ Pass ☐ Fail |
 | Sandbox token delivery validated | | ☐ Pass ☐ Fail |
 | Production token delivery validated | | ☐ Pass ☐ Fail |
@@ -116,7 +117,11 @@ Use one row per device, environment, and scenario. Capture repository HEAD/index
 | External-power-only policy | | | Battery/charging | Deferred then allowed | | | ☐ |
 | Two-device fan-out | | Mixed | | Both eligible devices receive independent hints | | | ☐ |
 | Clean up-to-date | | | | No mutation | | | ☐ |
-| Clean fast-forward | | | | Pull-only fast-forward | | | ☐ |
+| Clean fast-forward | | | | Pull fast-forward | | | ☐ |
+| Independent automatic-pull control | | | | Pull on/off persists per installation; revocation cancels captured pull | | | ☐ |
+| Separate automatic-push consent | | | | Default off / explicit confirmation; on/off persists independently | | | ☐ |
+| Pull-only / push-only / both / neither | | | | Only selected actions run; push-only validates remote without checkout; neither performs no Git operation | | | ☐ |
+| Automatic push safety | | | | Equal or ahead-only; no merge/rebase/force | | | ☐ |
 | Dirty/staged/untracked | | | | Attention; bytes/index/HEAD preserved | | | ☐ |
 | Diverged/ahead | | | | Attention; no rebase/merge/push | | | ☐ |
 | Wrong/missing branch / branch race | | | | Attention; no checkout | | | ☐ |

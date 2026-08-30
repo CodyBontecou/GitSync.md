@@ -264,7 +264,7 @@ Toolbar: title SETTINGS, Cancel, Save (`saveChanges()` async; disabled while sav
 - **"Include in Background Sync" toggle** — inverse of `excludedFromAutomaticSync`; it remains editable while installation-level automatic mode is off so users can save exclusions before first activation. Guidance explains that the saved choice applies the next time global mode is enabled.
 - No per-repository GitHub-link, installation picker, enroll/remove-enrollment, basename-matching helper, or duplicate automatic-sync branch editor. The configured Repository Branch is the automatic target.
 - **Network policy picker** (Any connection / Wi-Fi only) and **Power policy picker** (Any power state / External power only) remain per repository.
-- Shows enrollment status/message, exact GitHub `fullName` when available, enrolled/configured branch, enrollment attempt, health/message/sync attempt, and **Retry** (`prepareForSettings`). Copy distinguishes GitHub event-wake eligibility from foreground-only non-GitHub/unresolved repositories and repeats clean-fast-forward stop conditions.
+- Shows enrollment status/message, exact GitHub `fullName` when available, enrolled/configured branch, enrollment attempt, health/message/sync attempt, and **Retry** (`prepareForSettings`). Copy distinguishes GitHub event-wake eligibility from non-GitHub/unresolved repositories that have no event hint but may run in foreground or discretionary processing, and repeats fail-closed pull/publish stop conditions.
 
 ### 8.7 Debug section
 - **View Debug Log** NavigationLink → `DebugLogView`; error-count badge on the row.
@@ -395,7 +395,7 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 
 - **Account section**: Name, @Username, Email data rows (conditional on non-empty).
 - **Default Save Location section**: current folder card (name+path) with **CHANGE** (folder picker) and **REMOVE** (confirm alert → `state.clearDefaultSaveLocation`); when unset, info row + "CHOOSE DEFAULT LOCATION".
-- **Background Sync section**: "Safe pull-only updates when iOS allows background work" action row → `PremiumSettingsView` sheet (§16).
+- **Background Sync section**: "Independent automatic pull and push controls" action row → `PremiumSettingsView` sheet (§16).
 - **Shortcuts section**: informational row about "Pull All Repositories" Apple Shortcuts automation.
 - **Feedback section**: **Send Feedback** (MailCompose sheet if mail available, else opens mail client via `FeedbackHelper`); **Join our Discord** → opens `discord.gg/RaQYS4t6gn`.
 - **Help section**: **Show App Tour** → full-screen `OnboardingView`.
@@ -406,8 +406,8 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 
 ## 16. Premium / Background Sync Settings — `Views/PremiumSettingsView.swift`
 
-- **About section**: all current/future cloned or managed repositories after one installation-level opt-in, per-repo exclusions, eligible GitHub event wakes versus foreground-only fallback, configured branch, clean-fast-forward-only behavior, and explicit stop/never-does caveats.
-- **Background Sync section**: the single production **"Sync all repositories in the background"** toggle/action. Enabling requires the full consent confirmation and calls `setAutomaticallySyncAllRepositories`; any returned GitHub link opens. While enabled, **Link / Manage GitHub App** calls `startGitHubLink`. Turning off calls the runtime off path and is explicitly distinguished from terminal deletion.
+- **About section**: all current/future cloned or managed repositories after one installation-level opt-in, per-repo exclusions, eligible GitHub event wakes versus no-event-hint fallback, discretionary processing limits, independent pull/push controls, configured branch, clean-fast-forward pull behavior, separately consented publishing, push-only no-checkout behavior, and explicit stop/never-does caveats.
+- **Background Sync section**: **"Enable Background Sync"** controls installation-wide wake/enrollment infrastructure. While enabled, independent **"Pull remote changes"** and confirmation-backed **"Commit and push local changes"** toggles allow pull-only, push-only, both, or neither. Existing enabled installations migrate pull-on/push-off. Copy discloses push-only remote validation without checkout, stage-all/commit/push behavior, fail-closed safety, and discretionary iOS processing timing. Enabling the global mode calls `setAutomaticallySyncAllRepositories`; any returned GitHub link opens. While enabled, **Link / Manage GitHub App** calls `startGitHubLink`. Turning off calls the runtime off path and is explicitly distinguished from terminal deletion.
 - **Subscription section**: entitlement states; Annual/Monthly product buttons; **Restore Purchases**; **Manage Subscription**.
 - **Background Sync status**: reconciliation progress; total/enrolled/foreground-only/excluded/failed/disabled aggregate counts; linked-installation count; device registration and relay errors; **Retry** calls `prepareForSettings`.
 - **Relay & device data**: global consent/configuration, constant-size device registration and installation-wide live-enrollment routing copy, unchanged metadata exclusions, and separately labeled terminal **"Delete this device's relay data"** confirmation.

@@ -79,9 +79,9 @@ final class PremiumNotificationBridge {
     private enum BridgeOutcome: Sendable { case result(BackgroundSyncDisposition) }
     private static func fetchResult(_ outcome: BridgeOutcome) -> UIBackgroundFetchResult {
         switch outcome {
-        case .result(.completed(.updated)): return .newData
-        case .result(.completed(.failed)): return .failed
-        case .result(.completed), .result(.deferred), .result(.ignored): return .noData
+        case .result(let disposition) where disposition.didTransferData: return .newData
+        case .result(let disposition) where disposition.isFailure: return .failed
+        case .result: return .noData
         }
     }
 }
@@ -128,6 +128,43 @@ final class SyncMDApplicationDelegate: NSObject, UIApplicationDelegate {
 }
 
 @MainActor
+final class PremiumBackgroundProcessingExecution {
+    private var backgroundTask: (any PremiumBackgroundProcessingTask)?
+    private var operation: Task<Void, Never>?
+    private weak var coordinator: BackgroundSyncCoordinator?
+    private var completed = false
+
+    init(task: any PremiumBackgroundProcessingTask, coordinator: BackgroundSyncCoordinator) {
+        backgroundTask = task
+        self.coordinator = coordinator
+        task.expirationHandler = { [weak self] in self?.expire() }
+    }
+
+    func start(_ body: @escaping @MainActor () async -> Bool) {
+        operation = Task { @MainActor [self] in
+            let success = await body()
+            finish(success: success)
+        }
+    }
+
+    private func expire() {
+        guard !completed else { return }
+        operation?.cancel()
+        coordinator?.cancelProcessingReconciliation()
+        finish(success: false)
+    }
+
+    private func finish(success: Bool) {
+        guard !completed else { return }
+        completed = true
+        backgroundTask?.expirationHandler = nil
+        backgroundTask?.complete(success: success)
+        backgroundTask = nil
+        operation = nil
+    }
+}
+
+@MainActor
 @Observable
 final class PremiumRuntime {
     private(set) var deviceRegistrationError: String?
@@ -144,6 +181,11 @@ final class PremiumRuntime {
     private(set) var githubInstallations: [PremiumGitHubInstallationSummary] = []
     private(set) var hasRelayConsent: Bool
     private(set) var automaticallySyncAllRepositories: Bool
+    /// Pull and push are independently controlled while Background Sync is on.
+    /// Existing enabled installations migrate to pull-on, preserving behavior.
+    private(set) var automaticallyPullRemoteChanges: Bool
+    /// Separate publishing consent. New and migrated installations default off.
+    private(set) var automaticallyPushLocalChanges: Bool
     private(set) var isReconcilingAutomaticSync = false
     /// Durable terminal-deletion barrier, including retryable failed requests.
     private(set) var deletionInProgress = false
@@ -181,6 +223,7 @@ final class PremiumRuntime {
     let coordinator: BackgroundSyncCoordinator
     private let api: any PremiumAPIClientProtocol
     private let registrar: any RemoteNotificationRegistering
+    private let backgroundScheduler: any PremiumBackgroundProcessingScheduling
     private let installation: PremiumInstallation
     private let environment: APNsEnvironment
     private let keychain: any PremiumKeychainStoring
@@ -205,6 +248,8 @@ final class PremiumRuntime {
     private let tokenGenerationKeychainKey: String
     private let relayConsentKey: String
     private let automaticSyncKey: String
+    private let automaticPullKey: String
+    private let automaticPushKey: String
     private let staleChannelsKey: String
     private let deletionBarrierKey: String
     private let deletionCredentialKey: String
@@ -216,9 +261,11 @@ final class PremiumRuntime {
          registrar: any RemoteNotificationRegistering, installation: PremiumInstallation,
          environment: APNsEnvironment, bridge: PremiumNotificationBridge = .shared,
          assistFeatureIsEnabled: @escaping () -> Bool = { FeatureFlags.gitSyncAssistEnabled },
+         backgroundScheduler: (any PremiumBackgroundProcessingScheduling)? = nil,
          keychain: (any PremiumKeychainStoring)? = nil, defaults: UserDefaults = .standard) {
         self.entitlementStore = entitlementStore; self.coordinator = coordinator; self.repositoryProvider = repositoryProvider
         self.api = api; self.registrar = registrar; self.installation = installation; self.environment = environment
+        self.backgroundScheduler = backgroundScheduler ?? NoopPremiumBackgroundProcessingScheduler()
         self.assistFeatureIsEnabled = assistFeatureIsEnabled
         self.defaults = defaults
         let resolvedKeychain = keychain ?? SystemPremiumKeychainStore()
@@ -232,6 +279,8 @@ final class PremiumRuntime {
         tokenGeneration = restoredTokenGeneration
         relayConsentKey = "premium.relay-consent.\(installation.installationID.uuidString)"
         automaticSyncKey = "premium.automatic-sync.v1.\(installation.installationID.uuidString)"
+        automaticPullKey = "premium.automatic-pull.v1.\(installation.installationID.uuidString)"
+        automaticPushKey = "premium.automatic-push.v1.\(installation.installationID.uuidString)"
         staleChannelsKey = "premium.stale-channels.v1.\(installation.installationID.uuidString)"
         deletionBarrierKey = "premium.relay-deletion-barrier.\(installation.installationID.uuidString)"
         deletionCredentialKey = "premium.relay-deletion-credential.\(installation.installationID.uuidString)"
@@ -252,9 +301,24 @@ final class PremiumRuntime {
         deletionInProgress = persistedDeletionBarrier
         relayDataWasDeleted = completedDeletion
         hasRelayConsent = !persistedDeletionBarrier && !completedDeletion && defaults.bool(forKey: relayConsentKey)
-        automaticallySyncAllRepositories = !persistedDeletionBarrier && !completedDeletion && defaults.bool(forKey: automaticSyncKey)
+        let automationStateIsAvailable = !persistedDeletionBarrier && !completedDeletion
+        let restoredAutomaticSync = automationStateIsAvailable && defaults.bool(forKey: automaticSyncKey)
+        automaticallySyncAllRepositories = restoredAutomaticSync
+        let storedAutomaticPull = defaults.object(forKey: automaticPullKey) as? NSNumber
+        automaticallyPullRemoteChanges = automationStateIsAvailable
+            && (storedAutomaticPull?.boolValue ?? restoredAutomaticSync)
+        automaticallyPushLocalChanges = automationStateIsAvailable && defaults.bool(forKey: automaticPushKey)
+        if restoredAutomaticSync && storedAutomaticPull == nil {
+            // Historical Background Sync was pull-only. Materialize that
+            // behavior as the new independent installation preference.
+            defaults.set(true, forKey: automaticPullKey)
+        }
         latestToken = resolvedKeychain.load(key: tokenKey)
+        coordinator.setAutomaticallyPullRemoteChanges(automaticallyPullRemoteChanges)
+        coordinator.setAutomaticallyPushLocalChanges(automaticallyPushLocalChanges)
         bridge.connect(runtime: self)
+        self.backgroundScheduler.register { [weak self] task in self?.handleBackgroundProcessing(task) }
+        updateBackgroundProcessingSchedule()
         repositoryProvider.setAssistConfigurationChangeHandler { [weak self] in self?.configurationChanged() }
         repositoryProvider.setAssistInventoryChangeHandler { [weak self] in self?.inventoryChanged() }
         (repositoryProvider as? AppState)?.assistRepositoryRemovalHandler = { [weak self] repo in
@@ -271,7 +335,8 @@ final class PremiumRuntime {
                      repositoryProvider: any AssistRepositoryProviding) {
         self.init(entitlementStore: entitlementStore, coordinator: coordinator, repositoryProvider: repositoryProvider,
                   api: PremiumAPIClient(), registrar: UIApplicationRemoteNotificationRegistrar(),
-                  installation: PremiumInstallationIdentity.current(), environment: APNsDeviceToken.buildEnvironment)
+                  installation: PremiumInstallationIdentity.current(), environment: APNsDeviceToken.buildEnvironment,
+                  backgroundScheduler: SystemPremiumBackgroundProcessingScheduler())
     }
     /// Retries only a previously persisted terminal deletion. This entry point
     /// deliberately bypasses the release gate and performs no entitlement,
@@ -325,7 +390,15 @@ final class PremiumRuntime {
         }
         automaticallySyncAllRepositories = true
         defaults.set(true, forKey: automaticSyncKey)
+        if !automaticallyPullRemoteChanges && !automaticallyPushLocalChanges {
+            // A fresh activation starts in the historical safe pull-only mode;
+            // the two controls can then be changed independently.
+            automaticallyPullRemoteChanges = true
+            defaults.set(true, forKey: automaticPullKey)
+            coordinator.setAutomaticallyPullRemoteChanges(true)
+        }
         setRelayConsent(true)
+        updateBackgroundProcessingSchedule()
         registrar.register()
         _ = await ensureAuthorizedAndRegistered()
         guard automaticOperationsAllowed,
@@ -340,6 +413,26 @@ final class PremiumRuntime {
             return await startGitHubLink()
         }
         return nil
+    }
+
+    /// Independent control over automatic fast-forward pulls. Disabling this
+    /// cancels any captured pull flight without changing publishing consent.
+    func setAutomaticallyPullRemoteChanges(_ enabled: Bool) {
+        guard assistFeatureIsEnabled(), !deletionInProgress, !relayDataWasDeleted else { return }
+        automaticallyPullRemoteChanges = enabled
+        defaults.set(enabled, forKey: automaticPullKey)
+        coordinator.setAutomaticallyPullRemoteChanges(enabled)
+        updateBackgroundProcessingSchedule()
+    }
+
+    /// Separate explicit consent for automatic publication. Disabling leaves
+    /// the independent pull preference and relay enrollment unchanged.
+    func setAutomaticallyPushLocalChanges(_ enabled: Bool) {
+        guard assistFeatureIsEnabled(), !deletionInProgress, !relayDataWasDeleted else { return }
+        automaticallyPushLocalChanges = enabled
+        defaults.set(enabled, forKey: automaticPushKey)
+        coordinator.setAutomaticallyPushLocalChanges(enabled)
+        updateBackgroundProcessingSchedule()
     }
 
     func setAutomaticSyncExcluded(repoID: UUID, excluded: Bool) async {
@@ -367,7 +460,14 @@ final class PremiumRuntime {
         let deletionToken = latestToken
         automaticallySyncAllRepositories = false
         defaults.set(false, forKey: automaticSyncKey)
+        automaticallyPullRemoteChanges = false
+        defaults.set(false, forKey: automaticPullKey)
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        automaticallyPushLocalChanges = false
+        defaults.set(false, forKey: automaticPushKey)
+        coordinator.setAutomaticallyPushLocalChanges(false)
         setRelayConsent(false)
+        updateBackgroundProcessingSchedule()
         reconciliationTask?.cancel()
         reconciliationTask = nil
         reconciliationRequested = false
@@ -388,6 +488,7 @@ final class PremiumRuntime {
             }
         }
         registrar.unregister()
+        backgroundScheduler.cancel()
         isRegistered = false
         if let pendingRegistration { await pendingRegistration.value }
         if let credential {
@@ -438,6 +539,49 @@ final class PremiumRuntime {
 
     func cancelForegroundReconciliation() {
         coordinator.cancelForegroundReconciliation()
+    }
+
+    private func handleBackgroundProcessing(_ task: any PremiumBackgroundProcessingTask) {
+        updateBackgroundProcessingSchedule()
+        let execution = PremiumBackgroundProcessingExecution(task: task, coordinator: coordinator)
+        execution.start { [weak self] in
+            guard let self else { return false }
+            return await self.processBackgroundProcessing()
+        }
+    }
+
+    private func processBackgroundProcessing() async -> Bool {
+        guard !Task.isCancelled,
+              automaticallyPullRemoteChanges || automaticallyPushLocalChanges else { return !Task.isCancelled }
+        await start()
+        guard !Task.isCancelled, automaticOperationsAllowed else { return false }
+        await entitlementStore.refresh()
+        guard !Task.isCancelled, automaticOperationsAllowed else { return false }
+        let results = await coordinator.reconcileProcessing()
+        guard !Task.isCancelled else { return false }
+        return !results.values.contains(where: \.isFailure)
+    }
+
+    private func updateBackgroundProcessingSchedule() {
+        let nonEntitlementGatesAllowScheduling = assistFeatureIsEnabled()
+            && automaticallySyncAllRepositories
+            && (automaticallyPullRemoteChanges || automaticallyPushLocalChanges)
+            && !deletionInProgress && !relayDataWasDeleted
+        guard nonEntitlementGatesAllowScheduling else {
+            backgroundScheduler.cancel()
+            return
+        }
+        switch entitlementStore.state {
+        case .active:
+            backgroundScheduler.schedule()
+        case .loading:
+            // A cold BG launch consumes its pending request before StoreKit has
+            // necessarily restored entitlement state. Submit the next best-effort
+            // opportunity now; execution still revalidates entitlement before Git.
+            backgroundScheduler.schedule()
+        case .inactive, .pending, .error:
+            backgroundScheduler.cancel()
+        }
     }
 
     func reconcileForeground() async {
@@ -663,7 +807,14 @@ final class PremiumRuntime {
         defaults.set(true, forKey: deletionBarrierKey)
         automaticallySyncAllRepositories = false
         defaults.set(false, forKey: automaticSyncKey)
+        automaticallyPullRemoteChanges = false
+        defaults.set(false, forKey: automaticPullKey)
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        automaticallyPushLocalChanges = false
+        defaults.set(false, forKey: automaticPushKey)
+        coordinator.setAutomaticallyPushLocalChanges(false)
         setRelayConsent(false)
+        updateBackgroundProcessingSchedule()
 
         // Enter the local terminal barrier synchronously. No registration,
         // configuration reconciliation, cleanup, or pull flight may survive
@@ -753,6 +904,13 @@ final class PremiumRuntime {
         defaults.removeObject(forKey: deletionBarrierKey)
         automaticallySyncAllRepositories = false
         defaults.set(false, forKey: automaticSyncKey)
+        automaticallyPullRemoteChanges = false
+        defaults.set(false, forKey: automaticPullKey)
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        automaticallyPushLocalChanges = false
+        defaults.set(false, forKey: automaticPushKey)
+        coordinator.setAutomaticallyPushLocalChanges(false)
+        updateBackgroundProcessingSchedule()
         defaults.removeObject(forKey: staleChannelsKey)
         keychain.delete(key: deletionCredentialKey)
     }
@@ -827,6 +985,7 @@ final class PremiumRuntime {
     }
 
     private func entitlementChanged(_ state: PremiumEntitlementState) {
+        updateBackgroundProcessingSchedule()
         guard assistFeatureIsEnabled() else {
             coordinator.cancelAll()
             isRegistered = false

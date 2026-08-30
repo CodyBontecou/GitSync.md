@@ -8,9 +8,14 @@
 	<false/>
 	<key>PREMIUM_RELAY_BASE_URL</key>
 	<string>$(PREMIUM_RELAY_BASE_URL)</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.bontecou.Sync-md.background-sync</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>processing</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>

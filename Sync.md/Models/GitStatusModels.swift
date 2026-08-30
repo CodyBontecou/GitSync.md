@@ -51,6 +51,11 @@ enum PullPlanAction: String, Codable, Sendable {
     case remoteBranchMissing
 }
 
+struct GitRemoteIdentity: Codable, Sendable, Equatable {
+    let fetchURL: String
+    let pushURL: String
+}
+
 struct PullPlan: Codable, Sendable, Equatable {
     let action: PullPlanAction
     let branch: String
@@ -59,6 +64,29 @@ struct PullPlan: Codable, Sendable, Equatable {
     let hasLocalChanges: Bool
     let aheadBy: Int
     let behindBy: Int
+    /// Exact configured origin identity used for this fetch. LocalGitService
+    /// always supplies it; nil preserves compatibility for synthetic callers.
+    let remoteIdentity: GitRemoteIdentity?
+
+    init(
+        action: PullPlanAction,
+        branch: String,
+        localCommitSHA: String,
+        remoteCommitSHA: String,
+        hasLocalChanges: Bool,
+        aheadBy: Int,
+        behindBy: Int,
+        remoteIdentity: GitRemoteIdentity? = nil
+    ) {
+        self.action = action
+        self.branch = branch
+        self.localCommitSHA = localCommitSHA
+        self.remoteCommitSHA = remoteCommitSHA
+        self.hasLocalChanges = hasLocalChanges
+        self.aheadBy = aheadBy
+        self.behindBy = behindBy
+        self.remoteIdentity = remoteIdentity
+    }
 }
 
 enum PullOutcomeKind: String, Codable, Sendable {

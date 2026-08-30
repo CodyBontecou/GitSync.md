@@ -145,7 +145,7 @@ struct AppSettingsView: View {
                                 actionRow(
                                     icon: "⚡️",
                                     title: String(localized: "Background Sync"),
-                                    subtitle: String(localized: "Safe pull-only updates when iOS allows background work")
+                                    subtitle: String(localized: "Independent automatic pull and push controls")
                                 ) { showPremiumSettings = true }
                             }
                         }
@@ -158,10 +158,10 @@ struct AppSettingsView: View {
                                     .frame(width: 28)
 
                                 VStack(alignment: .leading, spacing: 6) {
-                                    Text("Pull from Shortcuts")
+                                    Text("Git actions from Shortcuts")
                                         .font(.system(size: 14, weight: .medium))
                                         .foregroundStyle(Color.brutalText)
-                                    Text("Use Pull All Repositories in Apple Shortcuts. Add a Personal Automation → App → GitSync.md is opened to auto-pull on launch.")
+                                    Text("Use Pull All, Pull Repository, Push Repository, or Sync Repository in Apple Shortcuts. Push and Sync stage all non-ignored changes, stop on conflicts or unsafe remote state, and publish directly to your configured remote.")
                                         .font(.system(size: 13, design: .monospaced))
                                         .foregroundStyle(Color.brutalText)
                                         .fixedSize(horizontal: false, vertical: true)

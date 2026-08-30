@@ -5,6 +5,29 @@ struct PullExecutionResult: Sendable {
     let pullResult: LocalPullResult?
 }
 
+/// A lease captured by automatic push safety validation and enforced again against the
+/// push server's live advertisement. Manual foreground pushes may omit it.
+struct PushSafetyExpectation: Sendable, Equatable {
+    let branch: String
+    let remoteCommitSHA: String
+    let remoteIdentity: GitRemoteIdentity
+
+    init(branch: String, remoteCommitSHA: String, remoteIdentity: GitRemoteIdentity) {
+        self.branch = branch
+        self.remoteCommitSHA = remoteCommitSHA
+        self.remoteIdentity = remoteIdentity
+    }
+
+    /// Convenience for remotes without a distinct pushurl.
+    init(branch: String, remoteCommitSHA: String, remoteURL: String) {
+        self.init(
+            branch: branch,
+            remoteCommitSHA: remoteCommitSHA,
+            remoteIdentity: GitRemoteIdentity(fetchURL: remoteURL, pushURL: remoteURL)
+        )
+    }
+}
+
 protocol GitRepositoryProtocol: Sendable {
     var hasGitDirectory: Bool { get }
 
@@ -27,7 +50,11 @@ protocol GitRepositoryProtocol: Sendable {
     func switchBranch(name: String) async throws
     func deleteBranch(name: String) async throws
     func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult
-    func pushCurrentBranch(pat: String) async throws
+    func pushCurrentBranch(
+        pat: String,
+        expectedBranch: String?,
+        safetyExpectation: PushSafetyExpectation?
+    ) async throws
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult
     func abortMerge() async throws
@@ -54,7 +81,9 @@ protocol GitRepositoryProtocol: Sendable {
         message: String,
         authorName: String,
         authorEmail: String,
-        pat: String
+        pat: String,
+        expectedBranch: String?,
+        safetyExpectation: PushSafetyExpectation?
     ) async throws -> LocalPushResult
     func listStashes() async throws -> [GitStashEntry]
     func saveStash(message: String, authorName: String, authorEmail: String, includeUntracked: Bool) async throws -> GitStashEntry
@@ -69,4 +98,51 @@ protocol GitRepositoryProtocol: Sendable {
     func commitHistory(limit: Int, skip: Int) async throws -> [GitCommitSummary]
     func commitDetail(oid: String) async throws -> GitCommitDetail
     func repoInfo() async throws -> LocalRepoInfo
+}
+
+extension GitRepositoryProtocol {
+    func pushCurrentBranch(pat: String) async throws {
+        try await pushCurrentBranch(pat: pat, expectedBranch: nil, safetyExpectation: nil)
+    }
+
+    func pushCurrentBranch(pat: String, expectedBranch: String?) async throws {
+        try await pushCurrentBranch(
+            pat: pat,
+            expectedBranch: expectedBranch,
+            safetyExpectation: nil
+        )
+    }
+
+    func commitAndPush(
+        message: String,
+        authorName: String,
+        authorEmail: String,
+        pat: String
+    ) async throws -> LocalPushResult {
+        try await commitAndPush(
+            message: message,
+            authorName: authorName,
+            authorEmail: authorEmail,
+            pat: pat,
+            expectedBranch: nil,
+            safetyExpectation: nil
+        )
+    }
+
+    func commitAndPush(
+        message: String,
+        authorName: String,
+        authorEmail: String,
+        pat: String,
+        expectedBranch: String?
+    ) async throws -> LocalPushResult {
+        try await commitAndPush(
+            message: message,
+            authorName: authorName,
+            authorEmail: authorEmail,
+            pat: pat,
+            expectedBranch: expectedBranch,
+            safetyExpectation: nil
+        )
+    }
 }

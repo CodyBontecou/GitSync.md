@@ -11376,6 +11376,7 @@
         }
       }
     },
+    "Authentication or trust needs attention.": {},
     "Author": {
       "localizations": {
         "ar": {
@@ -13392,6 +13393,14 @@
         }
       }
     },
+    "Automatic pulls remain clean fast-forwards. Automatic push stages non-ignored edits, commits with the configured author and default message, and pushes directly to the remote. With pull off, push still fetches remote metadata to fail closed but never updates the worktree. Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention.": {},
+    "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. If automatic pull is off, it checks remote state without updating the worktree and stops when remote changes must be pulled. It never recreates a missing branch, force-pushes, merges, rebases, switches branches, or resolves conflicts.": {},
+    "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. It stops if the local branch, remote branch, or origin changes, and never recreates a missing branch, force-pushes, merges, rebases, switches branches, or resolves conflicts.": {
+      "extractionState": "stale"
+    },
+    "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. It stops on concurrent remote changes and never force-pushes, merges, rebases, switches branches, or resolves conflicts.": {
+      "extractionState": "stale"
+    },
     "Automatic target: %@": {
       "localizations": {
         "ar": {
@@ -13546,6 +13555,7 @@
         }
       }
     },
+    "Automatically commit and push local changes?": {},
     "BACK": {
       "localizations": {
         "ar": {
@@ -14164,6 +14174,9 @@
         }
       }
     },
+    "BEST-EFFORT TWO-WAY SYNC": {},
+    "BEST-EFFORT — INCLUDED": {},
+    "BEST-EFFORT — OPTIONAL SUBSCRIPTION": {},
     "BRANCHES, DIFFS, HISTORY": {
       "localizations": {
         "ar": {
@@ -14625,7 +14638,17 @@
             "value": "當 iOS 授予背景執行時間時，Background Sync 會嘗試僅 pull 更新。安裝層級的一次加入選擇會涵蓋目前及未來的每個複製或管理的儲存庫，除非您在「儲存庫設定」中將其排除。由已連結 GitHub App 安裝項目涵蓋的 GitHub 儲存庫會獲得盡力而為的喚醒提示；非 GitHub 儲存庫或未解析的儲存庫僅在 App 開啟時同步。pull 仍僅限無衝突的 fast-forward。存在本機變更、分支分歧、簽出錯誤分支，或需要身分驗證和信任確認時，更新會停止。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
+    },
+    "Background Sync attempts safe pulls for current and future managed repositories. A separate, default-off control can publish local edits directly to your configured Git provider. GitHub events and iOS processing provide best-effort wakes; iOS controls timing, so work is not guaranteed or real time.": {
+      "extractionState": "stale"
+    },
+    "Background Sync attempts safe pulls when iOS grants background time. One installation-level opt-in covers every current and future cloned or managed repository unless you exclude it in Repository Settings. Linked GitHub App repositories get best-effort event hints. Other repositories have no event hints, but may reconcile while the app is open or during discretionary iOS processing when automatic publishing is separately enabled. Pulls remain clean fast-forwards, and unsafe state stops for attention.": {
+      "extractionState": "stale"
+    },
+    "Background Sync attempts safe pulls while the app is closed and can separately commit and push local edits after explicit consent. GitHub events and iOS processing provide best-effort wakes; timing is not guaranteed or real time. Optional subscription; all manual features stay included.": {
+      "extractionState": "stale"
     },
     "Background Sync can pull safe, fast-forward updates while the app is closed whenever iOS allows background work. GitHub push events provide best-effort wake hints. Optional subscription; all manual features stay included.": {
       "localizations": {
@@ -14779,7 +14802,8 @@
             "value": "App 關閉時，只要 iOS 允許背景執行，Background Sync 就能以 fast-forward 安全地 pull 更新。GitHub push 事件會提供盡力而為的喚醒提示。訂閱可選用；所有手動功能仍包含在內。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync could not bind this purchase to the current installation.": {
       "localizations": {
@@ -15089,6 +15113,10 @@
         }
       }
     },
+    "Background Sync enables best-effort wake delivery for current and future cloned or managed repositories unless you exclude one in Repository Settings. Automatic pull starts on and automatic publishing starts off; you can then control each action independently. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. iOS may delay or suppress every attempt.": {},
+    "Background Sync enables best-effort wake delivery for current and future cloned or managed repositories unless you exclude one in Repository Settings. You can independently enable automatic fast-forward pulls, automatic commit and push, or both. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. iOS may delay or suppress every attempt.": {
+      "extractionState": "stale"
+    },
     "Background Sync expected branch '%@', but '%@' is checked out.": {
       "localizations": {
         "ar": {
@@ -15243,6 +15271,8 @@
         }
       }
     },
+    "Background Sync failed.": {},
+    "Background Sync gives you independent automatic pull and push controls. Publishing requires separate consent, and push-only mode never updates the worktree. GitHub events and iOS processing provide best-effort wakes; timing is not guaranteed or real time. Optional subscription; all manual features stay included.": {},
     "Background Sync is available": {
       "localizations": {
         "ar": {
@@ -15857,7 +15887,8 @@
             "value": "Background Sync 是一項選用的僅 pull 同步服務，適用於此安裝項目上目前及未來的所有複製或管理的儲存庫，但您排除的儲存庫除外。由已連結 GitHub App 安裝項目涵蓋的 GitHub 儲存庫可獲得盡力而為的背景喚醒提示；非 GitHub 儲存庫和未解析的儲存庫僅在 App 開啟時同步。背景執行時機由 iOS 控制，因此更新不保證執行，也並非即時。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync is unavailable because its relay is not configured in this build.": {
       "localizations": {
@@ -16013,6 +16044,9 @@
         }
       }
     },
+    "Background Sync keeps clean fast-forward pulls fail-closed. A separate default-off consent can stage, commit, and push local edits; it never rebases, merges, switches branches, resolves conflicts, or force-pushes, and stops on unsafe remote or conflict state.": {
+      "extractionState": "stale"
+    },
     "Background Sync needs attention": {
       "localizations": {
         "ar": {
@@ -16167,6 +16201,8 @@
         }
       }
     },
+    "Background Sync needs attention.": {},
+    "Background Sync now lets you control automatic pull and automatic push independently. Publishing stays default-off; push-only mode checks remote state without updating the worktree, and unsafe or conflicting state stops for attention.": {},
     "Background Sync only applies clean fast-forward pulls on each repository's configured branch. It never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes, divergence, the wrong branch, and authentication or trust requirements stop the background update.": {
       "localizations": {
         "ar": {
@@ -16319,7 +16355,8 @@
             "value": "Background Sync 僅在每個儲存庫設定的分支上執行無衝突的 fast-forward pull。它絕不會暫存、commit、rebase、merge、解決衝突、force-push 或 push。存在本機變更、分支分歧、簽出錯誤分支，以及需要身分驗證或信任確認時，背景更新會停止。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync only performs clean fast-forward pulls. It never commits, rebases, merges, force-pushes, or pushes, and stops on local changes, divergence, or authentication needs.": {
       "localizations": {
@@ -16473,8 +16510,10 @@
             "value": "Background Sync 僅執行無衝突的 fast-forward pull。它絕不會 commit、rebase、merge、force-push 或 push；遇到本機變更、分支分歧或需要身分驗證時就會停止。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Background Sync provides best-effort wakes for current and future managed repositories. Automatic pull and automatic push are separate controls; publishing remains default-off. GitHub events and iOS processing may provide opportunities, but iOS controls timing, so work is not guaranteed or real time.": {},
     "Background Sync relay data was permanently deleted for this installation. Contact support if you need to use Background Sync again.": {
       "localizations": {
         "ar": {
@@ -17557,7 +17596,12 @@
             "value": "盡力而為的背景 pull"
           }
         }
-      }
+      },
+      "extractionState": "stale"
+    },
+    "Best-effort background reconciliation": {},
+    "Best-effort pulls with separately enabled automatic pushes": {
+      "extractionState": "stale"
     },
     "Binary File": {
       "localizations": {
@@ -18021,6 +18065,7 @@
         }
       }
     },
+    "Both automatic actions are off. Wake delivery may remain enrolled, but no background Git operation will run.": {},
     "Branch": {
       "comment": "Git branch field or row label",
       "localizations": {
@@ -22238,6 +22283,8 @@
         }
       }
     },
+    "Choose automatic fast-forward pulls, automatic commit and push, or both whenever iOS grants background time.": {},
+    "Choose automatic pulls, separately consented automatic pushes, or both when iOS allows. Optional subscription.": {},
     "Choose the account you want": {
       "localizations": {
         "ar": {
@@ -22392,6 +22439,7 @@
         }
       }
     },
+    "Clean fast-forward only; unsafe state stops for attention.": {},
     "Clean fast-forward pulls on your branch": {
       "localizations": {
         "ar": {
@@ -22544,8 +22592,10 @@
             "value": "在您的分支上執行無衝突的 fast-forward pull"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Clean fast-forward pulls when enabled": {},
     "Clean pull-only updates — never commits or pushes": {
       "localizations": {
         "ar": {
@@ -22698,7 +22748,8 @@
             "value": "無衝突的僅 pull 更新 — 絕不 commit 或 push"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Clean up local files without affecting the repository on GitHub.": {
       "localizations": {
@@ -25997,6 +26048,8 @@
         }
       }
     },
+    "Commit and push local changes": {},
+    "Commit and push only when enabled": {},
     "Commit failed: %@": {
       "comment": "Error when creating a commit fails. %@ is the libgit2 error detail.",
       "localizations": {
@@ -30059,6 +30112,7 @@
         }
       }
     },
+    "Control automatic pull and push separately": {},
     "Copied!": {
       "comment": "Transient confirmation text shown after copying the repository URL",
       "localizations": {
@@ -32082,6 +32136,7 @@
         }
       }
     },
+    "Could not publish the updated Git index.": {},
     "Could not read branch ref name for %@": {
       "localizations": {
         "ar": {
@@ -32390,6 +32445,7 @@
         }
       }
     },
+    "Could not read the Git index.": {},
     "Could not resolve HEAD after continuing rebase": {
       "localizations": {
         "ar": {
@@ -35631,6 +35687,7 @@
         }
       }
     },
+    "Could not stage all local file changes before push.": {},
     "Could not stage local file changes before push.": {
       "localizations": {
         "ar": {
@@ -35783,7 +35840,8 @@
             "value": "：在推送前無法對本地文件變更進行暫存。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Couldn't Read Folder": {
       "localizations": {
@@ -43401,6 +43459,7 @@
         }
       }
     },
+    "Enable automatic push": {},
     "Enabled": {
       "localizations": {
         "ar": {
@@ -43555,6 +43614,7 @@
         }
       }
     },
+    "Enables best-effort wakes for every included repository; choose pull and push separately below.": {},
     "Enrolled": {
       "localizations": {
         "ar": {
@@ -50736,6 +50796,7 @@
         }
       }
     },
+    "Force-pushes or overwrites remote work": {},
     "Foreground-only": {
       "localizations": {
         "ar": {
@@ -50888,7 +50949,8 @@
             "value": "僅前景"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Foreground-only: GitHub access could not be resolved.": {
       "localizations": {
@@ -52124,6 +52186,9 @@
         }
       }
     },
+    "Get safe pulls and separately opt in to automatic commits and pushes when iOS allows. Optional subscription.": {
+      "extractionState": "stale"
+    },
     "Get safe, pull-only updates in the background whenever iOS allows. Optional subscription.": {
       "localizations": {
         "ar": {
@@ -52276,7 +52341,8 @@
             "value": "在 iOS 允許時，於背景安全接收更新，而不上傳變更。訂閱為選用項目。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Git Author": {
       "comment": "Section header for git author name and email fields",
@@ -55057,6 +55123,7 @@
         }
       }
     },
+    "Git actions from Shortcuts": {},
     "Git author identity is missing or invalid. %@ Open repository settings and set Author Name and Author Email.": {
       "localizations": {
         "ar": {
@@ -55372,6 +55439,7 @@
         }
       }
     },
+    "Git references updated, but the working tree checkout needs attention. Concurrent local bytes were preserved: %@": {},
     "Git updated before cancellation completed. Verify the working tree before the next sync.": {
       "localizations": {
         "ar": {
@@ -60922,6 +60990,8 @@
         }
       }
     },
+    "Independent automatic pull and push controls": {},
+    "Independent, default-off publishing consent.": {},
     "Info": {
       "localizations": {
         "ar": {
@@ -65734,7 +65804,8 @@
             "value": "本機與遠端已分歧（領先 %lld，落後 %lld）。需要支援合併才能繼續。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Local and remote have diverged. Merge support is required to continue.": {
       "localizations": {
@@ -75068,6 +75139,7 @@
         }
       }
     },
+    "No event hint": {},
     "No files found": {
       "localizations": {
         "ar": {
@@ -79744,7 +79816,8 @@
             "value": "只要 iOS 允許背景執行，一個開關即可涵蓋每個儲存庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Only folders inside GitSync.md storage can be relinked without granting access.": {
       "localizations": {
@@ -80831,6 +80904,9 @@
         }
       }
     },
+    "Optional commit and push after separate consent": {
+      "extractionState": "stale"
+    },
     "Optional commit message. Defaults to \"Update from GitSync.md\".": {
       "localizations": {
         "ar": {
@@ -80985,6 +81061,8 @@
         }
       }
     },
+    "Origin did not confirm that the branch was published. Publication status is unknown.": {},
+    "Origin did not confirm the expected branch update. Publication status is unknown.": {},
     "Other Folders": {
       "localizations": {
         "ar": {
@@ -81913,7 +81991,8 @@
             "value": "僅 PULL — 已包含"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "PULL-ONLY — OPTIONAL SUBSCRIPTION": {
       "localizations": {
@@ -82067,7 +82146,8 @@
             "value": "僅 PULL — 選用訂閱"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "PUSH → WAKE HINT → CLEAN PULL": {
       "localizations": {
@@ -82221,7 +82301,8 @@
             "value": "PUSH → 喚醒提示 → 無衝突 PULL"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Passphrase": {
       "localizations": {
@@ -83152,7 +83233,8 @@
             "value": "各儲存庫的排除項目和政策"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Personal Access Token": {
       "comment": "Label for the GitHub Personal Access Token input field",
@@ -87840,7 +87922,8 @@
             "value": "本機變更阻止了提取。請在同步前提交、暫存或捨棄變更。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Pull blocked to protect local edits. Commit, stash, or discard local changes first.": {
       "localizations": {
@@ -88771,7 +88854,8 @@
             "value": "從快捷方式中拉取"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Pull one cloned GitSync.md repository, then commit and push local changes — without opening the app.": {
       "localizations": {
@@ -88927,6 +89011,7 @@
         }
       }
     },
+    "Pull remote changes": {},
     "Pull requires a merge because local and remote have diverged.": {
       "localizations": {
         "ar": {
@@ -89849,7 +89934,8 @@
             "value": "僅拉力操作，安全可靠"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Pulled %@": {
       "localizations": {
@@ -90626,6 +90712,9 @@
           }
         }
       }
+    },
+    "Pulls remain clean fast-forwards. If you separately enable automatic push, GitSync.md stages non-ignored edits, commits with the configured author and default message, and pushes directly to the remote. Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention.": {
+      "extractionState": "stale"
     },
     "Purchase pending": {
       "localizations": {
@@ -93128,7 +93217,8 @@
             "value": "push 或 force-push"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Pushing committed changes...": {
       "localizations": {
@@ -98219,6 +98309,8 @@
         }
       }
     },
+    "Remote updates arrived while local changes were being prepared.": {},
+    "Remote updates must be pulled before pushing.": {},
     "Remove": {
       "comment": "Generic remove or delete button",
       "localizations": {
@@ -101646,6 +101738,7 @@
         }
       }
     },
+    "Repositories from this folder are already listed above.": {},
     "Repositories opened from existing Files folders are unlinked from GitSync.md without removing the original folder.": {
       "localizations": {
         "ar": {
@@ -104775,6 +104868,7 @@
         }
       }
     },
+    "Resolve the active Git conflict before committing or pushing.": {},
     "Restore": {
       "localizations": {
         "ar": {
@@ -107107,7 +107201,8 @@
             "value": "離開期間也能安全 PULL"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "SAVE": {
       "localizations": {
@@ -109110,8 +109205,13 @@
             "value": "iOS 允許背景執行時進行安全的僅 pull 更新"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Safe pulls; automatic push requires separate consent": {
+      "extractionState": "stale"
+    },
+    "Safe, separately consented publishing": {},
     "Safer repository removal": {
       "localizations": {
         "ar": {
@@ -111301,6 +111401,9 @@
           }
         }
       }
+    },
+    "Separate consent; existing installations stay pull-only until enabled.": {
+      "extractionState": "stale"
     },
     "Server returned an HTML error page.": {
       "localizations": {
@@ -114595,7 +114698,8 @@
             "value": "暫存或 commit"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Stash": {
       "localizations": {
@@ -116470,6 +116574,7 @@
         }
       }
     },
+    "Switches branches or creates missing branches": {},
     "Switching branch...": {
       "localizations": {
         "ar": {
@@ -117399,7 +117504,8 @@
             "value": "在背景同步所有儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Sync complete": {
       "localizations": {
@@ -117555,6 +117661,8 @@
         }
       }
     },
+    "Sync failed": {},
+    "Sync needs attention": {},
     "Synced %@": {
       "localizations": {
         "ar": {
@@ -117863,6 +117971,7 @@
         }
       }
     },
+    "Syncing repository…": {},
     "Syncing…": {
       "localizations": {
         "ar": {
@@ -120186,6 +120295,10 @@
         }
       }
     },
+    "The local branch changed before commit. Publication was stopped.": {},
+    "The local branch changed before push. Publication was stopped.": {},
+    "The origin remote changed before push. Publication was stopped.": {},
+    "The push did not complete. Local commit: %@. %@": {},
     "The relay authorization is invalid or expired.": {
       "localizations": {
         "ar": {
@@ -120802,6 +120915,7 @@
         }
       }
     },
+    "The remote branch changed before push. Publication was stopped.": {},
     "The remote rejected the default system credentials.": {
       "localizations": {
         "ar": {
@@ -122502,6 +122616,7 @@
         }
       }
     },
+    "The working tree checkout did not complete.": {},
     "Theirs": {
       "localizations": {
         "ar": {
@@ -123752,6 +123867,7 @@
         }
       }
     },
+    "This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Enable Background Sync instead.": {},
     "This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Sync all repositories in the background instead.": {
       "localizations": {
         "ar": {
@@ -123904,7 +124020,8 @@
             "value": "這會永久停用此安裝項目的 Background Sync 中繼身分，並移除其裝置註冊和儲存庫登記。沒有支援人員協助，此安裝項目將無法再次啟用 Background Sync。此操作不會刪除本機儲存庫，也不會取消 Apple 訂閱。若要停止背景同步但不刪除中繼資料，請改為關閉「在背景同步所有儲存庫」。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "This removes the repository from GitSync.md only. Files will remain at:\n%@": {
       "localizations": {
@@ -125761,6 +125878,7 @@
         }
       }
     },
+    "Turning off Enable Background Sync prevents new automatic work, requests cancellation of work already in flight, and makes a best-effort attempt to unregister this device from wake delivery. Turning off either action requests cancellation before that action can continue; a Git update or publication already completed cannot be recalled. Remote device rows or delivery attempts may remain after network failure until later cleanup, entitlement loss, or terminal deletion.": {},
     "Turning this off immediately stops local automatic processing and makes a best-effort attempt to unregister this device from wake delivery. After a network failure, remote device rows or delivery attempts may remain until later cleanup, entitlement loss, or terminal deletion. It does not delete the installation's other relay records; the terminal deletion control is separate below.": {
       "localizations": {
         "ar": {
@@ -125913,7 +126031,11 @@
             "value": "關閉此功能將立即停止本地自動處理流程，並盡力嘗試將該裝置從喚醒通知推送服務中解除註冊。在發生網路故障後，遠端裝置記錄或推送嘗試可能仍保留，直至後續進行清理、許可權失效或終端裝置被刪除。此操作不會刪除該安裝包中的其他內容。 relay 記錄；終端刪除控制功能詳見下文。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
+    },
+    "Turning this off prevents new automatic work, requests cancellation of work already in flight, and makes a best-effort attempt to unregister this device from wake delivery. A Git update or publication that completed before cancellation cannot be recalled. After a network failure, remote device rows or delivery attempts may remain until later cleanup, entitlement loss, or terminal deletion. It does not delete the installation's other relay records; the terminal deletion control is separate below.": {
+      "extractionState": "stale"
     },
     "Type Chg": {
       "localizations": {
@@ -129666,8 +129788,10 @@
             "value": "：使用“拉取所有倉庫”功能 Apple Shortcuts：添加“個人自動化”→“應用” GitSync.md 在啟動時已設置爲自動拉取模式。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Use Pull All, Pull Repository, Push Repository, or Sync Repository in Apple Shortcuts. Push and Sync stage all non-ignored changes, stop on conflicts or unsafe remote state, and publish directly to your configured remote.": {},
     "Use personal and work accounts": {
       "localizations": {
         "ar": {
@@ -130291,6 +130415,7 @@
         }
       }
     },
+    "Uses this repository's configured branch and the installation's independent automatic-pull and automatic-push choices. Pulls stay clean fast-forwards. Push-only mode validates remote state without updating the worktree. Publishing may stage, commit, and push local edits only after separate consent. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.": {},
     "Uses this repository's configured branch. GitHub repositories covered by a linked GitHub App installation are eligible for best-effort event wakes; non-GitHub or unresolved repositories are foreground-only. Pulls are clean fast-forward only. Local changes, divergence, authentication/trust requirements, or the wrong branch stop automation.": {
       "localizations": {
         "ar": {
@@ -130443,7 +130568,11 @@
             "value": "使用本倉庫中已配置的分支。 GitHub 受連結覆蓋的儲存庫 GitHub App 安裝裝置符合“盡力而為事件喚醒”條件；非安裝裝置則不適用。GitHub 未解決的倉庫僅適用於前臺操作；拉取操作僅支援乾淨的快進更新。若存在本地更改、分支不一致、認證/信任要求或分支選擇錯誤，將中止自動化流程。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
+    },
+    "Uses this repository's configured branch. Pulls stay clean fast-forwards. If the separate global automatic-push consent is enabled, local edits may be staged, committed, and pushed directly to the remote. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.": {
+      "extractionState": "stale"
     },
     "Using the GitHub token from your account. Sign out or choose another method to use a different provider.": {
       "localizations": {
@@ -130919,6 +131048,10 @@
           }
         }
       }
+    },
+    "WAKE → OPTIONAL PULL / OPTIONAL PUSH": {},
+    "WAKE → SAFE PULL → OPTIONAL PUSH": {
+      "extractionState": "stale"
     },
     "Waiting for Wi-Fi.": {
       "localizations": {
@@ -132150,8 +132283,13 @@
             "value": "當 iOS 授予背景執行時間時，GitHub push 可提供喚醒提示，GitSync.md 會嘗試在不開啟 App 的情況下執行無衝突的 pull。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "When iOS grants background time, GitSync.md attempts safe pulls and can optionally commit and push local edits after separate consent.": {
+      "extractionState": "stale"
+    },
+    "When iOS grants background time, GitSync.md may stage all non-ignored changes, create a commit using this repository's configured author and the default commit message, and push directly to its remote. It never force-pushes, rebases, merges, switches branches, or resolves conflicts. Concurrent local and remote changes stop for your attention. iOS may delay or suppress this work, so it is not guaranteed or real time.": {},
     "When your local commits and remote changes both move forward, GitSync.md can now replay your local commits on top of the latest remote branch.": {
       "localizations": {
         "ar": {

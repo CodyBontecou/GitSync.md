@@ -115,41 +115,32 @@ final class CallbackURLHandler {
             switch action {
             case .pull:
                 appState.syncProgress = "Pulling from remote…"
-                let pullResult = try await serialized.withLease { repository in
-                    try await self.performPull(repoID: repoID, repository: repository)
+                let mapping = Self.mapPullResult(
+                    await appState.pullOnly(repoID: repoID, showsProgressDelay: false)
+                )
+                result.merge(mapping.params, uniquingKeysWith: { _, latest in latest })
+                if let message = mapping.errorMessage {
+                    throw CallbackActionError(message: message, params: mapping.params)
                 }
-                result["sha"] = pullResult.newCommitSHA
-                result["updated"] = pullResult.updated ? "true" : "false"
-                if let attention = pullResult.attention { throw attention }
 
             case .push:
                 appState.syncProgress = "Committing & pushing…"
-                switch await appState.pushOnly(repoID: repoID, message: message) {
-                case .pushed(let commitSHA):
-                    result["sha"] = commitSHA
-                case .noChanges:
-                    throw LocalGitError.noChanges
-                case .authenticationOrTrustRequired(let message, _), .failed(let message):
-                    throw CallbackActionError(message: message)
+                let mapping = Self.mapPushResult(
+                    await appState.pushOnly(repoID: repoID, message: message)
+                )
+                result.merge(mapping.params, uniquingKeysWith: { _, latest in latest })
+                if let message = mapping.errorMessage {
+                    throw CallbackActionError(message: message, params: mapping.params)
                 }
 
             case .sync:
-                appState.syncProgress = "Pulling from remote…"
-                let pullResult = try await serialized.withLease { repository in
-                    try await self.performPull(repoID: repoID, repository: repository)
-                }
-                result["pull_updated"] = pullResult.updated ? "true" : "false"
-                if let attention = pullResult.attention { throw attention }
-
-                appState.syncProgress = "Pushing local changes…"
-                switch await appState.pushOnly(repoID: repoID, message: message) {
-                case .pushed(let commitSHA):
-                    result["sha"] = commitSHA
-                case .noChanges:
-                    result["sha"] = pullResult.newCommitSHA
-                    result["push_skipped"] = "true"
-                case .authenticationOrTrustRequired(let message, _), .failed(let message):
-                    throw CallbackActionError(message: message)
+                appState.syncProgress = String(localized: "Syncing repository…")
+                let mapping = Self.mapSyncResult(
+                    await appState.syncRepository(repoID: repoID, message: message)
+                )
+                result.merge(mapping.params, uniquingKeysWith: { _, latest in latest })
+                if let message = mapping.errorMessage {
+                    throw CallbackActionError(message: message, params: mapping.params)
                 }
 
             case .status:
@@ -197,11 +188,14 @@ final class CallbackURLHandler {
                 message: error.localizedDescription
             )
 
-            let errorParams: [String: String] = [
+            var errorParams: [String: String] = [
                 "action":  action.rawValue,
                 "status":  "error",
                 "message": error.localizedDescription,
             ]
+            if let callbackError = error as? CallbackActionError {
+                errorParams.merge(callbackError.params, uniquingKeysWith: { current, _ in current })
+            }
 
             try? await Task.sleep(for: .seconds(2))
             redirect(to: errorURL ?? successURL, params: errorParams)
@@ -240,33 +234,107 @@ final class CallbackURLHandler {
         }
     }
 
-    // MARK: - Git Operations
+    // MARK: - Typed Result Mapping
 
-    private func performPull(
-        repoID: UUID,
-        repository: any GitRepositoryProtocol
-    ) async throws -> LocalPullResult {
-        guard let idx = appState.repoIndex(id: repoID), repository.hasGitDirectory else {
-            throw LocalGitError.notCloned
-        }
-
-        let repo = appState.repos[idx]
-        let result = try await repository.pull(pat: appState.authPayload(for: repo))
-
-        if result.updated, let currentIndex = appState.repoIndex(id: repoID) {
-            appState.repos[currentIndex].gitState.commitSHA = result.newCommitSHA
-            appState.repos[currentIndex].gitState.lastSyncDate = Date()
-            appState.saveRepos()
-            appState.detectChanges(repoID: repoID)
-        }
-
-        return result
+    struct PullResponseMapping: Equatable {
+        let params: [String: String]
+        let errorMessage: String?
     }
 
-    /// Carries an already-localized failure message out of a typed
-    /// `RepositoryPushResult` so the x-error redirect preserves the exact text.
+    static func mapPullResult(_ pull: RepositoryPullResult) -> PullResponseMapping {
+        switch pull {
+        case .updated(_, let commitSHA):
+            return .init(params: ["sha": commitSHA, "updated": "true"], errorMessage: nil)
+        case .upToDate(_, let commitSHA):
+            return .init(params: ["sha": commitSHA, "updated": "false"], errorMessage: nil)
+        case .updatedWithAttention(_, let commitSHA, let attention):
+            return .init(
+                params: ["sha": commitSHA, "updated": "true"],
+                errorMessage: attention.localizedDescription
+            )
+        case .blockedByLocalChanges:
+            return .init(
+                params: ["updated": "false"],
+                errorMessage: String(localized: "Local changes need attention.")
+            )
+        case .diverged:
+            return .init(
+                params: ["updated": "false"],
+                errorMessage: String(localized: "Local and remote history diverged.")
+            )
+        case .remoteBranchMissing(let branch):
+            return .init(
+                params: ["updated": "false"],
+                errorMessage: String(localized: "Remote branch '\(branch)' was not found.")
+            )
+        case .wrongBranch(let expected, let actual):
+            return .init(
+                params: ["updated": "false"],
+                errorMessage: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
+            )
+        case .authenticationOrTrustRequired(let message, _),
+             .unavailable(let message),
+             .failed(let message):
+            return .init(params: ["updated": "false"], errorMessage: message)
+        }
+    }
+
+    static func mapPushResult(_ push: RepositoryPushResult) -> PullResponseMapping {
+        switch push {
+        case .pushed(let commitSHA):
+            return .init(params: ["sha": commitSHA], errorMessage: nil)
+        case .noChanges:
+            return .init(params: [:], errorMessage: LocalGitError.noChanges.localizedDescription)
+        case .blocked(let message),
+             .authenticationOrTrustRequired(let message, _),
+             .failed(let message):
+            return .init(params: [:], errorMessage: message)
+        case .commitSavedNotPushed(let commitSHA, let message, _):
+            return .init(
+                params: ["sha": commitSHA, "commit_saved": "true"],
+                errorMessage: message
+            )
+        }
+    }
+
+    static func mapSyncResult(_ sync: RepositorySyncResult) -> PullResponseMapping {
+        let pullUpdated: Bool
+        switch sync.pull {
+        case .updated, .updatedWithAttention: pullUpdated = true
+        default: pullUpdated = false
+        }
+        var params = ["pull_updated": pullUpdated ? "true" : "false"]
+        if let commitSHA = sync.push?.finalLocalCommitSHA ?? sync.pull?.newCommitSHA {
+            params["sha"] = commitSHA
+        }
+        if case .commitSavedNotPushed = sync.push {
+            params["commit_saved"] = "true"
+        }
+
+        switch sync.outcome {
+        case .synced:
+            return .init(params: params, errorMessage: nil)
+        case .pushSkipped:
+            params["push_skipped"] = "true"
+            return .init(params: params, errorMessage: nil)
+        case .blocked:
+            return .init(params: params, errorMessage: sync.message)
+        case .authenticationOrTrustRequired(let message, _), .failed(let message):
+            return .init(params: params, errorMessage: message)
+        }
+    }
+
+    // MARK: - Git Operations
+
+    /// Carries an already-localized failure message and any completed-work
+    /// metadata out to x-error (or the x-success fallback).
     private struct CallbackActionError: LocalizedError {
         let message: String
+        let params: [String: String]
+        init(message: String, params: [String: String] = [:]) {
+            self.message = message
+            self.params = params
+        }
         var errorDescription: String? { message }
     }
 
@@ -290,12 +358,15 @@ final class CallbackURLHandler {
     }
 
     private func redirectError(from components: URLComponents, message: String) {
-        let params   = Self.queryDict(from: components)
+        let params = Self.queryDict(from: components)
         let errorURL = params["x-error"] ?? params["x-success"]
-        redirect(to: errorURL, params: [
-            "status":  "error",
+        let action = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        var errorParams = [
+            "status": "error",
             "message": message,
-        ])
+        ]
+        if !action.isEmpty { errorParams["action"] = action }
+        redirect(to: errorURL, params: errorParams)
     }
 
     // MARK: - Parsing Helpers

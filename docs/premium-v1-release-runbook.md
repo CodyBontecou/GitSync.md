@@ -1,14 +1,14 @@
 # Background Sync — Premium v1 release runbook
 
-Background Sync is an **optional** auto-renewable subscription layered on the existing paid-up-front Git client. One explicit installation-level opt-in covers all current and future cloned or managed repositories, with per-repository exclusions. Repositories covered by linked GitHub App installations are eligible for best-effort event wake hints; non-GitHub and unresolved repositories reconcile only in the foreground. It is not guaranteed or truly real time.
+Background Sync is an **optional** auto-renewable subscription layered on the existing paid-up-front Git client. One explicit installation-level opt-in covers all current and future cloned or managed repositories, with per-repository exclusions. While enabled, automatic pull and automatic publishing are independent controls; publishing retains separate default-off consent. GitHub App repositories receive best-effort event hints, while discretionary iOS processing may attempt whichever actions are selected. Neither path is guaranteed or truly real time.
 
 ## Product and safety contract
 
 - Products: `com.bontecou.gitsync.assist.monthly` and `com.bontecou.gitsync.assist.annual` in one subscription group (`gitsync-assist`). Tentative US storefront positioning is $1.99/month or $14.99/year; App Store Connect is authoritative.
 - Existing manual clone, fetch, pull, stage, commit, branch, merge, rebase, conflict, push, Shortcuts, and callback behavior is not paywalled.
-- Automated Background Sync execution may fetch and apply **only a clean fast-forward** on each repository's configured branch.
-- It must never automatically stage, commit, rebase, merge, resolve conflicts, force-push, or push.
-- APNs is a wake hint. Locked/background scheduling, Low Power Mode, force-quit, network, power, and iOS policy can delay or suppress it.
+- Automated pulls may fetch and apply **only a clean fast-forward** on each repository's configured branch.
+- Automatic pull and automatic publishing can be enabled or disabled independently. Automatic staging/commit/push requires separate default-off publishing consent. Push-only mode may fetch remote metadata for validation but must not update the worktree. It must never rebase, merge, switch branches, resolve conflicts, recreate missing branches, overwrite concurrent remote work, or force-push.
+- APNs and submitted BG processing requests are best-effort wake opportunities. Locked/background scheduling, Low Power Mode, force-quit, network, power, and iOS policy can delay or suppress either.
 
 ## App Store Connect
 
@@ -21,7 +21,7 @@ Background Sync is an **optional** auto-renewable subscription layered on the ex
 
 ## Apple signing and APNs
 
-1. Enable Push Notifications and Background Modes → Remote notifications for `bontecou.Sync-md`.
+1. Enable Push Notifications and Background Modes → Remote notifications plus Background processing for `bontecou.Sync-md`; verify `UIBackgroundModes` includes `remote-notification` and `processing`, and the permitted identifier is `com.bontecou.Sync-md.background-sync`.
 2. Confirm Debug uses `aps-environment=development`, Release uses `production`, and both use `Sync.md/Sync_md.entitlements`.
 3. Create an APNs token key. Store its private key as the Worker secret `APNS_PRIVATE_KEY`; configure `APNS_KEY_ID` and `APNS_TEAM_ID` as non-secret Worker vars, as documented in `worker/premium-relay/README.md`.
 4. Set `APNS_TOPIC=bontecou.Sync-md`. Test sandbox and production tokens separately.
@@ -84,12 +84,12 @@ Verified infrastructure status as of 2026-08-28 (read-only checks, then gated re
 | Secrets `GITHUB_APP_PRIVATE_KEY`, `GITHUB_WEBHOOK_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `APNS_PRIVATE_KEY` | ✅ all present |
 | StoreKit verifier Worker | deployed (2026-08-27) |
 | Live relay liveness (`GET /` → 404 JSON) | responding |
-| GitHub App | installed and live — slug `gitsync-md-assist` (page 200), webhook deliveries arriving and validating continuously (78 push events recorded, signature-verified, all completed; latest 2026-08-28). Still confirm: numeric **App ID** = `4687322`, OAuth callback URLs, and installation-lifecycle event subscription |
+| GitHub App | installed and live — slug `gitsync-md-assist` (page 200), webhook deliveries observed arriving and validating (78 push events recorded, signature-verified, all completed; latest 2026-08-28). Still confirm: numeric **App ID** = `4687322`, OAuth callback URLs, and installation-lifecycle event subscription |
 | ASC subscription products `com.bontecou.gitsync.assist.monthly` / `.annual` | unverified |
 
 ## Retention, deletion, and incident operations
 
-- Automatic mode consent is installation-scoped. Global disable stops local automatic execution and unregisters notifications locally immediately, then makes a best-effort remote device-unregister request; it is distinct from terminal authenticated relay-data deletion. Per-repository exclusion removes that repository's enrollment.
+- Automatic mode consent is installation-scoped. Global disable prevents new automatic work, requests cancellation of work already in flight, removes local notification registration, then makes a best-effort remote device-unregister request; an update or publication completed before cancellation cannot be recalled. It is distinct from terminal authenticated relay-data deletion. Per-repository exclusion removes that repository's enrollment.
 - Device and enrollment deletion are installation-scoped and authenticated.
 - APNs permanent token errors detach/tombstone the token.
 - Revocation notifications revoke sessions and devices.
@@ -122,7 +122,7 @@ Run on a signed physical device with staging/production-like services:
 
 - unlocked foreground reconciliation
 - locked-device silent push after first unlock
-- app backgrounded and suspended
+- app backgrounded and suspended, including a debugger-triggered BG processing launch and expiration
 - force-quit (document expected iOS suppression; do not claim delivery)
 - Low Power Mode and offline→online transition
 - Wi-Fi-only and external-power-only policies
@@ -145,7 +145,7 @@ Capture timestamped logs/screenshots, exact build, device/iOS version, environme
 
 ## App Review notes
 
-> Background Sync is an optional subscription. The one-time-purchase app's existing manual Git, Shortcuts, callback, and local repository features remain available without it. The user explicitly enables Background Sync once for this installation; that consent covers all current and future cloned or managed repositories unless individually excluded. GitHub repositories covered by linked GitHub App installations are eligible for push-event wake hints; non-GitHub or unresolved repositories are foreground-only. The minimal relay sends best-effort silent APNs wake hints, and the app also reconciles on foreground activation. On an attempted run the app checks the verified StoreKit current entitlement, per-repository network/power policy, configured/current branch, worktree cleanliness, and commit ancestry. It only performs a clean fast-forward pull. It never automatically stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Ambiguous conditions show an attention state. Device registration is constant-size and the relay performs installation-wide routing against current live enrollments. Repository contents and Git credentials travel only between the device and Git provider; the relay receives only numeric IDs, branch, and opaque routing/delivery metadata—not names, URLs, contents, paths, or credentials. iOS may delay or suppress APNs delivery, especially after force-quit; Background Sync is not truly real time.
+> Background Sync is an optional subscription. The one-time-purchase app's existing manual Git, Shortcuts, callback, and local repository features remain available without it. The user explicitly enables Background Sync once for this installation; that consent covers all current and future cloned or managed repositories unless individually excluded. Existing enabled installations and new opt-ins start with automatic pull on and automatic publishing off. The user may independently turn either action on or off. A separate publishing confirmation may allow the app to stage non-ignored local edits, create a commit with the configured author and default message, and push directly from the device; push-only mode fetches remote metadata for fail-closed validation without updating the worktree. GitHub repositories covered by linked GitHub App installations are eligible for push-event wake hints; discretionary iOS processing can also attempt reconciliation for enabled repositories, including local-only edits, without expanding relay metadata or GitHub App permissions. Every attempt revalidates StoreKit entitlement, per-repository network/power policy, configured/current branch, worktree state, conflicts, and commit ancestry. Pulls are clean fast-forwards only. Remote-ahead local edits, divergence, missing/wrong branches, conflicts, auth/trust prompts, and concurrent changes stop for attention. Automatic work never merges, rebases, switches branches, resolves conflicts, recreates branches, or force-pushes. Device registration is constant-size and the relay performs installation-wide routing against current live enrollments. Repository contents and Git credentials travel only between the device and Git provider; the relay receives only numeric IDs, branch, and opaque routing/delivery metadata—not names, URLs, contents, paths, or credentials. GitHub/APNs wakes and iOS processing are best effort; iOS may delay or suppress them, especially after force-quit, so Background Sync is not guaranteed or truly real time.
 
 ## Release blockers checklist
 

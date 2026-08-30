@@ -32,12 +32,12 @@
 4. **Conflict resolution** — sessions from merge/rebase/revert/cherry-pick, ours/theirs/manual, side-by-side editor, rename/rename + delete/modify handling.
 5. **Git LFS** — hydration after clone/pull, pointer staging with auto-track policy + .gitattributes management, object upload before push, file locking + push guard, self-hosted endpoints, large-blob guard.
 6. **Editor & files** — file browser (create/rename, status badges), code editor (syntax highlighting, binary fallback), diff viewer, Files-app interop (Open in Files), external editor compatibility (real .git).
-7. **Automation & integrations** — x-callback-url API (Obsidian), App Intents/Shortcuts ("Pull All Repositories"), remote-notification background wake (Background Sync).
-8. **Background Sync (premium subscription)** — pull-only automation with fail-closed safety, per-repo enrollment via GitHub App, network/power policies, health/attention surfacing, relay + StoreKit verification backend, privacy guarantees.
+7. **Automation & integrations** — x-callback-url API, pull/push/sync App Intents with fail-closed publishing, and best-effort remote-notification/BGProcessing Background Sync wakes.
+8. **Background Sync (premium subscription)** — independently controlled fail-closed automatic pull and separately consented automatic commit/push, including safe push-only mode without checkout, per-repo enrollment, network/power policies, health/attention surfacing, best-effort iOS processing, relay + StoreKit verification, and privacy guarantees.
 9. **Onboarding & account UX** — tour, sign-in flows, default save location, demo mode, release notes (Notelet), StoreKit review prompts.
 10. **Diagnostics & feedback** — debug log viewer (filter/share/copy/clear), in-app feedback email, Discord community.
 11. **Analytics (onboarding funnel)** — opt-out-able, coarse event capture, Cloudflare Worker transport.
-12. **Localization & accessibility** — localized strings in 26 languages, App Store metadata localization.
+12. **Localization & accessibility** — 26 locale catalogs and App Store metadata localization; current compiler extraction is complete, while new Background Sync/safety entries remain an explicit human-translation release gate.
 13. **Platform & compliance** — privacy manifest, entitlements, Files-app document provider storage, iPad (single-column).
 14. **Developer infrastructure** — libgit2 xcframework build w/ SSH, CI XCTest gate, fastlane, oauth-server, site + site-router, marketing capture (DEBUG), pricing scripts.
 

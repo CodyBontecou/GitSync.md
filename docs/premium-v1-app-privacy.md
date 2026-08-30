@@ -40,8 +40,8 @@ No app or relay data is used for third-party advertising or cross-app tracking. 
 ## User controls
 
 - Subscription purchase/restore/manage through StoreKit/Apple.
-- One explicit installation-level opt-in covering all current and future cloned or managed repositories, plus per-repository exclusion and network/power policy. Each repository's configured branch is the automatic target.
-- Linked GitHub App installation management for best-effort event-wake eligibility. Non-GitHub or unresolved repositories remain foreground-only.
+- One explicit installation-level opt-in covering all current and future cloned or managed repositories, independent automatic-pull and default-off automatic-publishing controls, plus per-repository exclusion and network/power policy. Each repository's configured branch is the automatic target.
+- Linked GitHub App installation management for best-effort event-wake eligibility. Non-GitHub or unresolved repositories receive no GitHub event wake, but remain eligible for foreground reconciliation and discretionary iOS processing of whichever automatic actions the user enabled.
 - Global disable stops automatic execution and unregisters notifications locally immediately, then makes a best-effort remote device-unregister request. It does not perform terminal relay-data deletion. Device unregister also occurs on inactive entitlement and token lifecycle handling.
 - In-app **Request data access or deletion** opens a user-reviewed private email draft to the documented support address with separate opaque onboarding and Background Sync installation IDs. The IDs are not credentials and are never sent automatically; the UI/policy warn against posting them publicly. Background Sync also provides separate, authenticated terminal relay deletion.
 

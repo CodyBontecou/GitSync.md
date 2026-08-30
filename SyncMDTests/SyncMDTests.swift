@@ -16,6 +16,210 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(true)
     }
 
+    @MainActor
+    func testCallbackPullMappingPreservesEveryTypedOutcome() {
+        let updated = CallbackURLHandler.mapPullResult(.updated(branch: "main", commitSHA: "new"))
+        XCTAssertEqual(updated.params, ["sha": "new", "updated": "true"])
+        XCTAssertNil(updated.errorMessage)
+
+        let current = CallbackURLHandler.mapPullResult(.upToDate(branch: "main", commitSHA: "same"))
+        XCTAssertEqual(current.params, ["sha": "same", "updated": "false"])
+        XCTAssertNil(current.errorMessage)
+
+        let attention = CallbackURLHandler.mapPullResult(
+            .updatedWithAttention(
+                branch: "main",
+                commitSHA: "saved",
+                attention: .cancelledAfterUpdate
+            )
+        )
+        XCTAssertEqual(attention.params, ["sha": "saved", "updated": "true"])
+        XCTAssertNotNil(attention.errorMessage)
+
+        let softStops: [RepositoryPullResult] = [
+            .blockedByLocalChanges(branch: "main"),
+            .diverged(branch: "main", aheadBy: 1, behindBy: 1),
+            .remoteBranchMissing(branch: "main"),
+            .wrongBranch(expected: "main", actual: "notes"),
+            .authenticationOrTrustRequired(message: "authenticate", trustError: nil),
+            .unavailable(message: "unavailable"),
+            .failed(message: "failed")
+        ]
+        for outcome in softStops {
+            let mapping = CallbackURLHandler.mapPullResult(outcome)
+            XCTAssertEqual(mapping.params["updated"], "false", "\(outcome)")
+            XCTAssertNotNil(mapping.errorMessage, "\(outcome)")
+        }
+    }
+
+    @MainActor
+    func testCallbackPushAndSyncMappingsPreserveStatusesAndCompletedWork() {
+        let pushed = CallbackURLHandler.mapPushResult(.pushed(commitSHA: "published"))
+        XCTAssertEqual(pushed.params, ["sha": "published"])
+        XCTAssertNil(pushed.errorMessage)
+
+        let noChanges = CallbackURLHandler.mapPushResult(.noChanges)
+        XCTAssertTrue(noChanges.params.isEmpty)
+        XCTAssertNotNil(noChanges.errorMessage)
+
+        for push in [
+            RepositoryPushResult.blocked(message: "blocked"),
+            .authenticationOrTrustRequired(message: "authenticate", trustError: nil),
+            .failed(message: "failed")
+        ] {
+            let mapping = CallbackURLHandler.mapPushResult(push)
+            XCTAssertTrue(mapping.params.isEmpty)
+            XCTAssertNotNil(mapping.errorMessage)
+        }
+
+        let saved = CallbackURLHandler.mapPushResult(
+            .commitSavedNotPushed(commitSHA: "local", message: "not published", trustError: nil)
+        )
+        XCTAssertEqual(saved.params, ["sha": "local", "commit_saved": "true"])
+        XCTAssertEqual(saved.errorMessage, "not published")
+
+        let synced = CallbackURLHandler.mapSyncResult(.init(
+            outcome: .synced,
+            pull: .updated(branch: "main", commitSHA: "incoming"),
+            push: .pushed(commitSHA: "outgoing"),
+            message: "complete"
+        ))
+        XCTAssertEqual(synced.params, ["pull_updated": "true", "sha": "outgoing"])
+        XCTAssertNil(synced.errorMessage)
+
+        let skipped = CallbackURLHandler.mapSyncResult(.init(
+            outcome: .pushSkipped,
+            pull: .upToDate(branch: "main", commitSHA: "current"),
+            push: .noChanges,
+            message: "nothing to publish"
+        ))
+        XCTAssertEqual(
+            skipped.params,
+            ["pull_updated": "false", "sha": "current", "push_skipped": "true"]
+        )
+        XCTAssertNil(skipped.errorMessage)
+
+        let blockedAfterCommit = CallbackURLHandler.mapSyncResult(.init(
+            outcome: .blocked,
+            pull: .upToDate(branch: "main", commitSHA: "before"),
+            push: .commitSavedNotPushed(
+                commitSHA: "saved",
+                message: "publication stopped",
+                trustError: nil
+            ),
+            message: "publication stopped"
+        ))
+        XCTAssertEqual(
+            blockedAfterCommit.params,
+            ["pull_updated": "false", "sha": "saved", "commit_saved": "true"]
+        )
+        XCTAssertEqual(blockedAfterCommit.errorMessage, "publication stopped")
+
+        let authenticationAfterPull = CallbackURLHandler.mapSyncResult(.init(
+            outcome: .authenticationOrTrustRequired(message: "authenticate", trustError: nil),
+            pull: .updated(branch: "main", commitSHA: "pulled"),
+            push: .authenticationOrTrustRequired(message: "authenticate", trustError: nil),
+            message: "authenticate"
+        ))
+        XCTAssertEqual(authenticationAfterPull.params, ["pull_updated": "true", "sha": "pulled"])
+        XCTAssertEqual(authenticationAfterPull.errorMessage, "authenticate")
+
+        let failed = CallbackURLHandler.mapSyncResult(.init(
+            outcome: .failed(message: "failed"),
+            pull: nil,
+            push: .failed(message: "failed"),
+            message: "failed"
+        ))
+        XCTAssertEqual(failed.params, ["pull_updated": "false"])
+        XCTAssertEqual(failed.errorMessage, "failed")
+    }
+
+    @MainActor
+    func testShortcutPushAndSyncMappingsReturnBlockedEntitiesAndThrowHardFailures() throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let repo = fixture.repoConfig
+
+        let pushed = try GitShortcutRunner.pushOutcome(
+            repo: repo,
+            result: .pushed(commitSHA: "published")
+        )
+        XCTAssertEqual(pushed.entity.status, GitSyncResultEntity.statusPushed)
+        XCTAssertEqual(pushed.entity.commitSHA, "published")
+
+        let noChanges = try GitShortcutRunner.pushOutcome(repo: repo, result: .noChanges)
+        XCTAssertEqual(noChanges.entity.status, GitSyncResultEntity.statusNoChanges)
+
+        let blocked = try GitShortcutRunner.pushOutcome(
+            repo: repo,
+            result: .blocked(message: "needs attention")
+        )
+        XCTAssertEqual(blocked.entity.status, GitSyncResultEntity.statusBlocked)
+        XCTAssertEqual(blocked.entity.message, "needs attention")
+
+        XCTAssertThrowsError(
+            try GitShortcutRunner.pushOutcome(
+                repo: repo,
+                result: .authenticationOrTrustRequired(message: "authenticate", trustError: nil)
+            )
+        ) { error in
+            guard case GitShortcutError.authenticationRequired = error else {
+                return XCTFail("Authentication must throw the customer-visible authentication error: \(error)")
+            }
+        }
+        XCTAssertThrowsError(
+            try GitShortcutRunner.pushOutcome(repo: repo, result: .failed(message: "hard failure"))
+        ) { error in
+            guard case GitShortcutError.operationFailed = error else {
+                return XCTFail("Hard push failures must throw: \(error)")
+            }
+        }
+
+        let synced = try GitShortcutRunner.syncOutcome(
+            repo: repo,
+            result: .init(
+                outcome: .synced,
+                pull: .updated(branch: "main", commitSHA: "incoming"),
+                push: .pushed(commitSHA: "outgoing"),
+                message: "complete"
+            )
+        )
+        XCTAssertEqual(synced.entity.status, GitSyncResultEntity.statusPushed)
+        XCTAssertEqual(synced.entity.commitSHA, "outgoing")
+
+        let syncBlocked = try GitShortcutRunner.syncOutcome(
+            repo: repo,
+            result: .init(
+                outcome: .blocked,
+                pull: .upToDate(branch: "main", commitSHA: "before"),
+                push: .commitSavedNotPushed(
+                    commitSHA: "saved",
+                    message: "publication stopped",
+                    trustError: nil
+                ),
+                message: "publication stopped"
+            )
+        )
+        XCTAssertEqual(syncBlocked.entity.status, GitSyncResultEntity.statusBlocked)
+        XCTAssertEqual(syncBlocked.entity.commitSHA, "saved")
+
+        XCTAssertThrowsError(
+            try GitShortcutRunner.syncOutcome(
+                repo: repo,
+                result: .init(
+                    outcome: .authenticationOrTrustRequired(message: "authenticate", trustError: nil),
+                    pull: nil,
+                    push: nil,
+                    message: "authenticate"
+                )
+            )
+        ) { error in
+            guard case GitShortcutError.authenticationRequired = error else {
+                return XCTFail("Sync authentication must throw: \(error)")
+            }
+        }
+    }
+
     func testAssistLinkCompletionURLMatchesOnlyExactSafeHandoff() throws {
         for value in ["syncmd://assist-linked", "syncmd://assist-linked/"] {
             XCTAssertTrue(AssistLinkCompletionURL.matches(try XCTUnwrap(URL(string: value))), value)
@@ -504,6 +708,47 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(recordedEvents.contains("canceled-ran"))
     }
 
+    @MainActor
+    func testManagedRepositoryRemovalWaitsForRepositoryLeaseBeforeDeletingFiles() async throws {
+        let coordinator = RepositoryOperationCoordinator()
+        let state = AppState(gitRepositoryFactory: { _ in
+            FakeGitRepository(repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: "a", changeCount: 0))
+        }, loadPersistedState: false)
+        let repo = RepoConfig(
+            repoURL: "owner/removal-race", branch: "main", authorName: "Test",
+            authorEmail: "test@example.com", vaultFolderName: "removal-\(UUID().uuidString)"
+        )
+        state.repos = [repo]
+        var cancellationRequested = false
+        state.assistRepositoryRemovalHandler = { _ in cancellationRequested = true }
+        let vaultURL = state.vaultURL(for: repo.id)
+        try FileManager.default.createDirectory(at: vaultURL, withIntermediateDirectories: true)
+        try Data("keep until lease releases".utf8).write(to: vaultURL.appendingPathComponent("Note.md"))
+        let gate = AsyncGate()
+        let holderStarted = expectation(description: "lease holder started")
+        let holder = Task {
+            try await coordinator.withRepository(at: vaultURL) {
+                holderStarted.fulfill()
+                await gate.wait()
+            }
+        }
+        await fulfillment(of: [holderStarted], timeout: 2)
+
+        let removal = Task { @MainActor in
+            await state.removeRepo(id: repo.id, deleteLocalFiles: true, operationCoordinator: coordinator)
+        }
+        while await coordinator.queuedOperationCount(at: vaultURL) == 0 { await Task.yield() }
+        XCTAssertTrue(cancellationRequested, "Coordinator cancellation callback must run before waiting for deletion lease")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: vaultURL.path))
+        XCTAssertNotNil(state.repo(id: repo.id))
+
+        await gate.open()
+        try await holder.value
+        await removal.value
+        XCTAssertFalse(FileManager.default.fileExists(atPath: vaultURL.path))
+        XCTAssertNil(state.repo(id: repo.id))
+    }
+
     func testRepoPersistenceStoreMergesIndependentRepositoryChanges() throws {
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("repos-\(UUID()).json")
         defer { try? FileManager.default.removeItem(at: fileURL) }
@@ -651,6 +896,10 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(group["name"] as? String, "Background Sync")
         let groupLocalizations = try XCTUnwrap(group["localizations"] as? [[String: Any]])
         XCTAssertEqual(groupLocalizations.first?["displayName"] as? String, "Background Sync")
+        XCTAssertTrue(
+            (groupLocalizations.first?["description"] as? String)?
+                .localizedCaseInsensitiveContains("independent automatic pull and push controls") == true
+        )
 
         let subscriptions = try XCTUnwrap(group["subscriptions"] as? [[String: Any]])
         let products = Dictionary(uniqueKeysWithValues: try subscriptions.map { subscription -> (String, String) in
@@ -658,7 +907,9 @@ final class SyncMDTests: XCTestCase {
             let period = try XCTUnwrap(subscription["recurringSubscriptionPeriod"] as? String)
             let localizations = try XCTUnwrap(subscription["localizations"] as? [[String: Any]])
             let displayName = try XCTUnwrap(localizations.first?["displayName"] as? String)
+            let description = try XCTUnwrap(localizations.first?["description"] as? String)
             XCTAssertTrue(displayName.hasPrefix("Background Sync"))
+            XCTAssertTrue(description.localizedCaseInsensitiveContains("independent automatic pull and push controls"))
             XCTAssertEqual(subscription["subscriptionGroupID"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
             XCTAssertEqual(subscription["type"] as? String, "RecurringSubscription")
             return (id, period)
@@ -793,7 +1044,11 @@ final class SyncMDTests: XCTestCase {
 
     func testPremiumReleaseConfigurationAndBackgroundCapabilities() throws {
         let info = Bundle.main.infoDictionary ?? [:]
-        XCTAssertEqual(info["UIBackgroundModes"] as? [String], ["remote-notification"])
+        XCTAssertEqual(info["UIBackgroundModes"] as? [String], ["remote-notification", "processing"])
+        XCTAssertEqual(
+            info["BGTaskSchedulerPermittedIdentifiers"] as? [String],
+            [SystemPremiumBackgroundProcessingScheduler.identifier]
+        )
 
         let unresolvedRelay = try XCTUnwrap(info["PREMIUM_RELAY_BASE_URL"] as? String)
         XCTAssertNil(PremiumAPIConfiguration(bundle: .main).baseURL)
@@ -1043,6 +1298,89 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(results.first?.name, root.lastPathComponent)
     }
 
+    func testGitRepoScannerPreservesRelativePathThroughSymlinkedRootAncestor() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-ScanSymlink-\(UUID().uuidString)", isDirectory: true)
+        let realRoot = root.appendingPathComponent("real/grant", isDirectory: true)
+        try fm.createDirectory(
+            at: realRoot.appendingPathComponent("projects/notes/.git", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        defer { try? fm.removeItem(at: root) }
+
+        // Mirrors iOS's /var -> /private/var alias: the selected root retains
+        // the symlink, while FileManager returns resolved descendant URLs.
+        let alias = root.appendingPathComponent("varlike", isDirectory: true)
+        try fm.createSymbolicLink(
+            at: alias,
+            withDestinationURL: root.appendingPathComponent("real", isDirectory: true)
+        )
+        let selectedRoot = alias.appendingPathComponent("grant", isDirectory: true)
+
+        let results = GitRepoScanner.discoverRepositories(root: selectedRoot)
+
+        XCTAssertEqual(results.count, 1)
+        XCTAssertEqual(results.first?.relativePath, "projects/notes")
+        XCTAssertEqual(results.first?.name, "notes")
+    }
+
+    func testDiscoveryDeduplicatesCanonicalPathsAcrossScanSources() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-ScanDedup-\(UUID().uuidString)", isDirectory: true)
+        let realRoot = root.appendingPathComponent("real", isDirectory: true)
+        let realRepo = realRoot.appendingPathComponent("shared", isDirectory: true)
+        let otherRepo = realRoot.appendingPathComponent("other", isDirectory: true)
+        try fm.createDirectory(at: realRepo, withIntermediateDirectories: true)
+        try fm.createDirectory(at: otherRepo, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: root) }
+
+        let aliasRoot = root.appendingPathComponent("alias", isDirectory: true)
+        try fm.createSymbolicLink(at: aliasRoot, withDestinationURL: realRoot)
+        let aliasedRepo = aliasRoot.appendingPathComponent("shared", isDirectory: true)
+
+        let containerResult = DiscoveredRepo(
+            url: realRepo,
+            relativePath: "shared",
+            remoteURL: "https://github.com/owner/shared.git",
+            isInsideAppContainer: true
+        )
+        let duplicateGrantResult = DiscoveredRepo(
+            url: aliasedRepo,
+            relativePath: "shared",
+            remoteURL: "https://github.com/owner/shared.git",
+            isInsideAppContainer: false
+        )
+        let uniqueGrantResult = DiscoveredRepo(
+            url: otherRepo,
+            relativePath: "other",
+            remoteURL: nil,
+            isInsideAppContainer: false
+        )
+
+        XCTAssertEqual(containerResult.id, duplicateGrantResult.id)
+        let visible = GitRepoScanner.deduplicatedRepositories(
+            [duplicateGrantResult, uniqueGrantResult, uniqueGrantResult],
+            excluding: [containerResult]
+        )
+        XCTAssertEqual(visible.map(\.id), [uniqueGrantResult.id])
+    }
+
+    @MainActor
+    func testRepoDiscoverySubtitleDoesNotExposeOptionalOwner() {
+        let repo = DiscoveredRepo(
+            url: URL(fileURLWithPath: "/tmp/notes"),
+            relativePath: "notes",
+            remoteURL: "https://github.com/owner/notes.git",
+            isInsideAppContainer: false
+        )
+
+        let subtitle = RepoDiscoveryView.repositorySubtitle(for: repo)
+        XCTAssertEqual(subtitle, "owner/notes")
+        XCTAssertFalse(subtitle.contains("Optional"))
+    }
+
     func testRepoConfigLegacyDecodeDefaultsRelativePathNil() throws {
         let repo = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
         var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(repo)) as? [String: Any])
@@ -1116,7 +1454,15 @@ final class SyncMDTests: XCTestCase {
             authorEmail: "discover@example.com",
             relativePath: "projects/notes"
         )
+        await appState.addLocalRepo(
+            url: repoURL,
+            bookmarkData: bookmark,
+            authorName: "Discoverer",
+            authorEmail: "discover@example.com",
+            relativePath: "projects/notes"
+        )
 
+        XCTAssertEqual(appState.repos.count, 1)
         let added = try XCTUnwrap(appState.repos.first)
         XCTAssertEqual(added.customVaultRelativePath, "projects/notes")
         XCTAssertEqual(added.repoURL, "https://github.com/owner/notes.git")
@@ -1158,7 +1504,13 @@ final class SyncMDTests: XCTestCase {
             authorName: "Relinker",
             authorEmail: "relink@example.com"
         )
+        await appState.relinkManagedRepo(
+            atURL: repoURL,
+            authorName: "Relinker",
+            authorEmail: "relink@example.com"
+        )
 
+        XCTAssertEqual(appState.repos.count, 1)
         let added = try XCTUnwrap(appState.repos.first)
         XCTAssertEqual(added.customVaultRelativePath, repoName)
         XCTAssertNil(added.customVaultBookmarkData)
@@ -1168,6 +1520,55 @@ final class SyncMDTests: XCTestCase {
             appState.vaultURL(for: added.id).standardizedFileURL.path,
             repoURL.standardizedFileURL.path
         )
+    }
+
+    @MainActor
+    func testAppStateRelinkManagedRepoAcceptsSymlinkedDocumentsPath() async throws {
+        let fm = FileManager.default
+        let documents = AppState.appDocumentsDirectory
+        let repoName = "ScanRelinkAlias-\(UUID().uuidString.prefix(8))"
+        let repoURL = documents.appendingPathComponent(repoName, isDirectory: true)
+        try fm.createDirectory(
+            at: repoURL.appendingPathComponent(".git", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+
+        let aliasRoot = fm.temporaryDirectory
+            .appendingPathComponent("SyncMD-DocumentsAlias-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: aliasRoot, withIntermediateDirectories: true)
+        let documentsAlias = aliasRoot.appendingPathComponent("Documents", isDirectory: true)
+        try fm.createSymbolicLink(at: documentsAlias, withDestinationURL: documents)
+        let aliasedRepoURL = documentsAlias.appendingPathComponent(repoName, isDirectory: true)
+
+        let reposFile = fm.temporaryDirectory.appendingPathComponent("repos-relink-alias-\(UUID()).json")
+        defer {
+            try? fm.removeItem(at: repoURL)
+            try? fm.removeItem(at: aliasRoot)
+            try? fm.removeItem(at: reposFile)
+        }
+
+        let fixtureRepository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: "cccc", changeCount: 0)
+        )
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixtureRepository },
+            reposFileURL: reposFile,
+            loadPersistedState: false
+        )
+
+        await appState.relinkManagedRepo(
+            atURL: aliasedRepoURL,
+            authorName: "Relinker",
+            authorEmail: "relink@example.com"
+        )
+
+        let added = try XCTUnwrap(appState.repos.first)
+        XCTAssertEqual(added.customVaultRelativePath, repoName)
+        XCTAssertEqual(
+            AppState.canonicalFilePath(for: appState.vaultURL(for: added.id)),
+            AppState.canonicalFilePath(for: repoURL)
+        )
+        XCTAssertTrue(appState.isRepoAlreadyTracked(atPath: aliasedRepoURL.path))
     }
 
     func testRepoPersistenceStoreMergesAssistPolicyAndHealthFields() throws {
@@ -1361,7 +1762,7 @@ final class SyncMDTests: XCTestCase {
             timeoutNanoseconds: 1_000_000,
             processPush: { _ in
                 await operationGate.wait()
-                return .completed(.updated(branch: "main", commitSHA: String(repeating: "a", count: 40)))
+                return .completed(.pullOnly(.updated(branch: "main", commitSHA: String(repeating: "a", count: 40))))
             },
             cancelPush: { _ in cancelled.fulfill() }
         )
@@ -1386,7 +1787,7 @@ final class SyncMDTests: XCTestCase {
         var results: [UIBackgroundFetchResult] = []
         bridge.connectForTesting(
             timeoutNanoseconds: 50_000_000,
-            processPush: { _ in .completed(.updated(branch: "main", commitSHA: String(repeating: "a", count: 40))) },
+            processPush: { _ in .completed(.pullOnly(.updated(branch: "main", commitSHA: String(repeating: "a", count: 40)))) },
             cancelPush: { _ in cancellations += 1 }
         )
 
@@ -1493,8 +1894,234 @@ final class SyncMDTests: XCTestCase {
         defer { harness.cleanup() }
 
         XCTAssertFalse(harness.runtime.automaticallySyncAllRepositories)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges, "Automatic publishing must default off")
         XCTAssertFalse(harness.runtime.hasRelayConsent)
         XCTAssertEqual(harness.provider.repo.assist.channel, "channel_12345678")
+
+        harness.runtime.setAutomaticallyPushLocalChanges(true)
+        XCTAssertTrue(harness.runtime.automaticallyPushLocalChanges)
+        let restored = await PremiumRuntimeTestHarness.make(
+            api: ControllablePremiumRelayAPI(), installationID: harness.installationID
+        )
+        XCTAssertTrue(restored.runtime.automaticallyPushLocalChanges, "Publishing consent persists per installation")
+        harness.runtime.setAutomaticallyPushLocalChanges(false)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+        restored.cleanup()
+    }
+
+    @MainActor
+    func testPremiumRuntimeMigratesEnabledInstallationToIndependentPullOnPreference() async {
+        let installationID = UUID()
+        let syncKey = "premium.automatic-sync.v1.\(installationID.uuidString)"
+        let pullKey = "premium.automatic-pull.v1.\(installationID.uuidString)"
+        let consentKey = "premium.relay-consent.\(installationID.uuidString)"
+        UserDefaults.standard.set(true, forKey: syncKey)
+        UserDefaults.standard.set(true, forKey: consentKey)
+        UserDefaults.standard.removeObject(forKey: pullKey)
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: ControllablePremiumRelayAPI(), installationID: installationID
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories)
+        XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: pullKey))
+
+        harness.runtime.setAutomaticallyPullRemoteChanges(false)
+        let restored = await PremiumRuntimeTestHarness.make(
+            api: ControllablePremiumRelayAPI(), installationID: installationID
+        )
+        XCTAssertFalse(restored.runtime.automaticallyPullRemoteChanges, "Explicit pull-off must survive relaunch")
+        XCTAssertFalse(restored.runtime.automaticallyPushLocalChanges)
+        restored.cleanup()
+    }
+
+    @MainActor
+    func testPremiumRuntimeRelaunchPreservesEnabledNeitherMode() async {
+        let installationID = UUID()
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: ControllablePremiumRelayAPI(), installationID: installationID
+        )
+        defer { harness.cleanup() }
+        _ = await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        harness.runtime.setAutomaticallyPullRemoteChanges(false)
+        XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+
+        let restored = await PremiumRuntimeTestHarness.make(
+            api: ControllablePremiumRelayAPI(), installationID: installationID
+        )
+        XCTAssertTrue(restored.runtime.automaticallySyncAllRepositories)
+        XCTAssertFalse(restored.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(restored.runtime.automaticallyPushLocalChanges)
+        restored.cleanup()
+    }
+
+    @MainActor
+    func testPremiumRuntimeSchedulesProcessingWithEitherAutomaticActionAndReschedulesAfterInvocation() async {
+        let api = ControllablePremiumRelayAPI()
+        api.githubInstallationSummaries = [.init(githubInstallationID: 101, linkedAt: Date())]
+        var repo = RepoConfig(
+            repoURL: "owner/repo", branch: "main", authorName: "One",
+            authorEmail: "one@example.com", vaultFolderName: "one"
+        )
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: api, repo: repo, backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertEqual(scheduler.registerCount, 1)
+        XCTAssertEqual(scheduler.scheduleCount, 0)
+
+        _ = await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertGreaterThanOrEqual(scheduler.scheduleCount, 1, "Automatic pull receives discretionary processing opportunities")
+
+        let cancelsBeforePullOff = scheduler.cancelCount
+        harness.runtime.setAutomaticallyPullRemoteChanges(false)
+        XCTAssertGreaterThan(scheduler.cancelCount, cancelsBeforePullOff)
+
+        let schedulesBeforePushOn = scheduler.scheduleCount
+        harness.runtime.setAutomaticallyPushLocalChanges(true)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertGreaterThan(scheduler.scheduleCount, schedulesBeforePushOn, "Push-only mode receives discretionary processing opportunities")
+
+        let refreshGate = AsyncGate()
+        let refreshStarted = expectation(description: "entitlement refresh entered loading")
+        await harness.storefront.setCurrentEntitlementsGate(refreshGate, started: { refreshStarted.fulfill() })
+        let cancelsBeforeLoading = scheduler.cancelCount
+        let schedulesBeforeLoading = scheduler.scheduleCount
+        let refresh = Task { @MainActor in await harness.entitlementStore.refresh() }
+        await fulfillment(of: [refreshStarted], timeout: 2)
+        XCTAssertEqual(scheduler.cancelCount, cancelsBeforeLoading, "Transient entitlement loading must preserve an already scheduled request")
+        XCTAssertGreaterThan(scheduler.scheduleCount, schedulesBeforeLoading, "A cold/loading invocation must resubmit its next opportunity")
+        await refreshGate.open()
+        await refresh.value
+        await harness.storefront.setCurrentEntitlementsGate(nil)
+
+        let scheduledBeforeInvocation = scheduler.scheduleCount
+        let completed = expectation(description: "processing task completed")
+        let completionRecorder = BackgroundTaskCompletionRecorder()
+        completionRecorder.onComplete = { _ in completed.fulfill() }
+        var task: RecordingBackgroundProcessingTask? = RecordingBackgroundProcessingTask(recorder: completionRecorder)
+        weak var retainedTask = task
+        scheduler.invoke(task!)
+        task = nil
+        XCTAssertNotNil(retainedTask, "Runtime must retain the wrapper while work is active")
+        await fulfillment(of: [completed], timeout: 5)
+        XCTAssertEqual(completionRecorder.values, [true])
+        XCTAssertNil(retainedTask, "Completion must release the wrapper and its expiration closure")
+        XCTAssertGreaterThan(scheduler.scheduleCount, scheduledBeforeInvocation, "Each invocation requests another best-effort opportunity")
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0, "Push-only processing must never enter pull checkout")
+        XCTAssertGreaterThan(harness.repository.pullPlanCallCount, 0, "Push-only processing still validates remote state")
+
+        harness.runtime.setAutomaticallyPushLocalChanges(false)
+        XCTAssertGreaterThanOrEqual(scheduler.cancelCount, 1)
+    }
+
+    @MainActor
+    func testPremiumRuntimeStaleProcessingInvocationRunsNoGitWhenBothActionsAreOff() async {
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            api: ControllablePremiumRelayAPI(), backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+        _ = await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        harness.runtime.setAutomaticallyPullRemoteChanges(false)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+
+        let completed = expectation(description: "stale processing task completed")
+        let recorder = BackgroundTaskCompletionRecorder()
+        recorder.onComplete = { _ in completed.fulfill() }
+        scheduler.invoke(RecordingBackgroundProcessingTask(recorder: recorder))
+        await fulfillment(of: [completed], timeout: 2)
+
+        XCTAssertEqual(recorder.values, [true])
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0)
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 0)
+        XCTAssertTrue(harness.repository.stagedPaths.isEmpty)
+        XCTAssertTrue(harness.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testPremiumBackgroundProcessingExecutionRetainsWrapperAndExpiresExactlyOnceWhileBlocked() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let provider = FakeAssistRepositoryProvider(repo: fixture.repoConfig, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        let started = expectation(description: "processing operation started")
+        let bodyReturned = expectation(description: "processing operation returned after cancellation")
+        let completed = expectation(description: "expiration completed task")
+        let gate = AsyncGate()
+        let recorder = BackgroundTaskCompletionRecorder()
+        recorder.onComplete = { _ in completed.fulfill() }
+        var backgroundTask: RecordingBackgroundProcessingTask? = RecordingBackgroundProcessingTask(recorder: recorder)
+        weak var retainedBackgroundTask = backgroundTask
+        var execution: PremiumBackgroundProcessingExecution? = PremiumBackgroundProcessingExecution(
+            task: backgroundTask!, coordinator: coordinator
+        )
+        weak var retainedExecution = execution
+        let expiration = backgroundTask?.expirationHandler
+        execution?.start {
+            started.fulfill()
+            await gate.wait()
+            bodyReturned.fulfill()
+            return true
+        }
+        execution = nil
+        backgroundTask = nil
+
+        await fulfillment(of: [started], timeout: 2)
+        XCTAssertNotNil(retainedExecution)
+        XCTAssertNotNil(retainedBackgroundTask, "Execution must retain the production wrapper while work is blocked")
+        expiration?()
+        expiration?()
+        await fulfillment(of: [completed], timeout: 1)
+        XCTAssertEqual(recorder.values, [false], "Expiration completes false exactly once")
+        XCTAssertNil(retainedBackgroundTask, "Expiration releases the wrapper without waiting for blocked work")
+
+        await gate.open()
+        await fulfillment(of: [bodyReturned], timeout: 2)
+        await Task.yield()
+        XCTAssertEqual(recorder.values, [false], "Late operation completion must not complete the BG task again")
+        XCTAssertNil(retainedExecution, "Completion breaks the operation retention cycle")
+    }
+
+    @MainActor
+    func testPremiumRuntimeGlobalDisableClearsPublishingConsentAcrossRelaunchAndReenable() async {
+        let installationID = UUID()
+        let api = ControllablePremiumRelayAPI()
+        api.githubInstallationSummaries = [.init(githubInstallationID: 101, linkedAt: Date())]
+        let harness = await PremiumRuntimeTestHarness.make(api: api, installationID: installationID)
+        defer { harness.cleanup() }
+        _ = await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
+        harness.runtime.setAutomaticallyPushLocalChanges(true)
+        XCTAssertTrue(harness.runtime.automaticallyPushLocalChanges)
+
+        _ = await harness.runtime.setAutomaticallySyncAllRepositories(false)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+
+        let relaunchedAPI = ControllablePremiumRelayAPI()
+        relaunchedAPI.githubInstallationSummaries = [.init(githubInstallationID: 101, linkedAt: Date())]
+        let relaunched = await PremiumRuntimeTestHarness.make(api: relaunchedAPI, installationID: installationID)
+        XCTAssertFalse(relaunched.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(relaunched.runtime.automaticallyPushLocalChanges)
+        _ = await relaunched.runtime.setAutomaticallySyncAllRepositories(true)
+        XCTAssertTrue(relaunched.runtime.automaticallyPullRemoteChanges, "A fresh activation restores the safe pull-only default")
+        XCTAssertFalse(relaunched.runtime.automaticallyPushLocalChanges, "Re-enabling pull automation requires fresh publishing consent")
+        relaunched.cleanup()
     }
 
     @MainActor
@@ -1939,6 +2566,7 @@ final class SyncMDTests: XCTestCase {
         defer {
             UserDefaults.standard.removeObject(forKey: "premium.relay-consent.\(installationID.uuidString)")
             UserDefaults.standard.removeObject(forKey: "premium.automatic-sync.v1.\(installationID.uuidString)")
+            UserDefaults.standard.removeObject(forKey: "premium.automatic-pull.v1.\(installationID.uuidString)")
             UserDefaults.standard.removeObject(forKey: "premium.apns-token-generation.sandbox.\(installationID.uuidString)")
             KeychainService.delete(key: "premium.apns-token-generation.keychain.sandbox.\(installationID.uuidString)")
             KeychainService.delete(key: "premium.relay-deletion-credential.\(installationID.uuidString)")
@@ -2504,6 +3132,8 @@ final class SyncMDTests: XCTestCase {
         UserDefaults.standard.set(true, forKey: "premium.relay-deletion-barrier.\(installationID.uuidString)")
         UserDefaults.standard.set(true, forKey: "premium.relay-consent.\(installationID.uuidString)")
         UserDefaults.standard.set(true, forKey: "premium.automatic-sync.v1.\(installationID.uuidString)")
+        UserDefaults.standard.set(true, forKey: "premium.automatic-pull.v1.\(installationID.uuidString)")
+        UserDefaults.standard.set(true, forKey: "premium.automatic-push.v1.\(installationID.uuidString)")
     }
 
     @MainActor
@@ -2526,7 +3156,11 @@ final class SyncMDTests: XCTestCase {
             file: file, line: line
         )
         XCTAssertFalse(harness.runtime.isRegistered, file: file, line: line)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges, file: file, line: line)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges, file: file, line: line)
         XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0, file: file, line: line)
+        XCTAssertTrue(harness.repository.commitAndPushMessages.isEmpty, file: file, line: line)
+        XCTAssertEqual(harness.repository.pushCurrentBranchCallCount, 0, file: file, line: line)
         let entitlementRequests = await harness.storefront.currentEntitlementRequestCount()
         let appAccountTokenSets = await harness.storefront.appAccountTokenSetCount()
         XCTAssertEqual(entitlementRequests, 0, file: file, line: line)
@@ -2578,6 +3212,8 @@ final class SyncMDTests: XCTestCase {
         defer { harness.cleanup() }
         let linkURL = await harness.runtime.setAutomaticallySyncAllRepositories(true)
         XCTAssertNotNil(linkURL)
+        harness.runtime.setAutomaticallyPushLocalChanges(true)
+        XCTAssertTrue(harness.runtime.automaticallyPushLocalChanges)
         let deletion = Task { @MainActor in await harness.runtime.deleteRelayData() }
         await fulfillment(of: [deletionStarted], timeout: 2)
 
@@ -2587,6 +3223,8 @@ final class SyncMDTests: XCTestCase {
             repo: harness.provider.repo
         )
         XCTAssertFalse(restarted.runtime.hasRelayConsent)
+        XCTAssertFalse(restarted.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(restarted.runtime.automaticallyPushLocalChanges)
         XCTAssertTrue(UserDefaults.standard.bool(forKey: "premium.relay-deletion-barrier.\(harness.installationID.uuidString)"))
         await restarted.runtime.start()
         XCTAssertFalse(restarted.runtime.hasRelayConsent)
@@ -2605,6 +3243,8 @@ final class SyncMDTests: XCTestCase {
         defer { reinstalled.cleanup() }
         XCTAssertTrue(reinstalled.runtime.relayDataWasDeleted)
         XCTAssertFalse(reinstalled.runtime.hasRelayConsent)
+        XCTAssertFalse(reinstalled.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(reinstalled.runtime.automaticallyPushLocalChanges)
         let reinstalledLinkURL = await reinstalled.runtime.startGitHubLink()
         XCTAssertNil(reinstalledLinkURL)
         XCTAssertEqual(api.authorizationCount, 1, "A completed deletion must fail closed locally before relay reauthorization")
@@ -2870,11 +3510,17 @@ final class SyncMDTests: XCTestCase {
             defaults: defaults
         )
         _ = runtime
+        // This test drives the coordinator directly; select pull explicitly
+        // because the production runtime correctly restores both actions off
+        // while global Background Sync is disabled.
+        coordinator.setAutomaticallyPullRemoteChanges(true)
 
         let flight = Task { @MainActor in await coordinator.reconcile(repoID: repo.id) }
         await waitUntil { repository.executePullOnlyCallCount == 1 }
-        provider.removeRepo(id: repo.id)
+        let removal = Task { @MainActor in await provider.removeRepo(id: repo.id) }
+        await Task.yield()
         await gate.open()
+        await removal.value
 
         let result = await flight.value
         XCTAssertEqual(result, .deferred("Cancelled"))
@@ -2916,6 +3562,9 @@ final class SyncMDTests: XCTestCase {
             keychain: ControllablePremiumKeychain(),
             defaults: defaults
         )
+        // This test drives the coordinator directly rather than enabling the
+        // runtime's global mode, so opt into the pull action under test.
+        coordinator.setAutomaticallyPullRemoteChanges(true)
 
         let foreground = Task { @MainActor in await coordinator.reconcileForeground() }
         await waitUntil { repository.executePullOnlyCallCount == 1 }
@@ -2925,6 +3574,47 @@ final class SyncMDTests: XCTestCase {
         let results = await foreground.value
         XCTAssertEqual(results[repo.id], .deferred("Cancelled"))
         XCTAssertEqual(provider.repo.assist.health, .never)
+    }
+
+    @MainActor
+    func testPushTimeoutDoesNotCancelProcessingOwnedCoalescedFlight() async throws {
+        let gate = AsyncGate()
+        let commit = String(repeating: "1", count: 40)
+        let repository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: commit, changeCount: 0)
+        )
+        repository.executePullOnlyGate = gate
+        var repo = RepoConfig(
+            repoURL: "owner/repo", branch: "main", authorName: "One",
+            authorEmail: "one@example.com", vaultFolderName: "one"
+        )
+        repo.gitState.commitSHA = commit
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        let payload: [AnyHashable: Any] = [
+            "aps": ["content-available": 1],
+            "channel": "channel_12345678",
+            "hint": "coalesced-12345678"
+        ]
+
+        let processing = Task { @MainActor in await coordinator.reconcileProcessing() }
+        await waitUntil { repository.executePullOnlyCallCount == 1 }
+        let push = Task { @MainActor in await coordinator.handlePush(payload) }
+        await Task.yield()
+        coordinator.cancelPush(payload)
+        await gate.open()
+
+        let processingResult = await processing.value[repo.id]
+        let pushResult = await push.value
+        let expected = BackgroundSyncDisposition.completed(
+            .pullOnly(.upToDate(branch: "main", commitSHA: commit))
+        )
+        XCTAssertEqual(processingResult, expected)
+        XCTAssertEqual(pushResult, expected)
     }
 
     @MainActor
@@ -2940,7 +3630,7 @@ final class SyncMDTests: XCTestCase {
         let result = await coordinator.handlePush([
             "aps": ["content-available": 1], "channel": "channel_12345678", "hint": "event-12345678"
         ])
-        XCTAssertEqual(result, .completed(.upToDate(branch: "main", commitSHA: repo.gitState.commitSHA)))
+        XCTAssertEqual(result, .completed(.pullOnly(.upToDate(branch: "main", commitSHA: repo.gitState.commitSHA))))
         XCTAssertEqual(provider.repo.assist.health.kind, .upToDate)
         XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 1)
         XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
@@ -2965,7 +3655,7 @@ final class SyncMDTests: XCTestCase {
         provider.repo.assist.networkPolicy = .any
         provider.repo.assist.selectedBranch = "notes"
         let branchResult = await coordinator.reconcile(repoID: repo.id)
-        XCTAssertEqual(branchResult, .completed(.wrongBranch(expected: "notes", actual: "main")))
+        XCTAssertEqual(branchResult, .completed(.pullOnly(.wrongBranch(expected: "notes", actual: "main"))))
         XCTAssertEqual(provider.repo.assist.health.attention, .wrongBranch)
 
         let inactive = BackgroundSyncCoordinator(entitlementIsActive: { false }, repositoryProvider: provider, conditionsProvider: conditions)
@@ -2997,7 +3687,7 @@ final class SyncMDTests: XCTestCase {
         let ownedChannel = await coordinator.handlePush(payload)
         XCTAssertEqual(
             ownedChannel,
-            .completed(.upToDate(branch: "main", commitSHA: added.gitState.commitSHA))
+            .completed(.pullOnly(.upToDate(branch: "main", commitSHA: added.gitState.commitSHA)))
         )
     }
 
@@ -3018,7 +3708,7 @@ final class SyncMDTests: XCTestCase {
             "aps": ["content-available": 1], "channel": "channel_12345678", "hint": "shared-12345678"
         ])
 
-        XCTAssertEqual(result, .completed(.upToDate(branch: "main", commitSHA: first.gitState.commitSHA)))
+        XCTAssertEqual(result, .completed(.pullOnly(.upToDate(branch: "main", commitSHA: first.gitState.commitSHA))))
         XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 2)
         XCTAssertEqual(provider.repos.map(\.assist.health.kind), [.upToDate, .upToDate])
     }
@@ -3100,7 +3790,8 @@ final class SyncMDTests: XCTestCase {
 
         let disposition = await coordinator.reconcile(repoID: repo.id)
 
-        guard case .completed(.updatedWithAttention(_, let resultSHA, _)) = disposition else {
+        guard case .completed(let reconciliation) = disposition,
+              case .updatedWithAttention(_, let resultSHA, _) = reconciliation.pull else {
             return XCTFail("Expected completed updated-with-attention, got \(disposition)")
         }
         XCTAssertEqual(resultSHA, newCommit)
@@ -3109,6 +3800,75 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(provider.repo.assist.health.attention, .lfsHydration)
         XCTAssertEqual(provider.repo.assist.health.commitSHA, newCommit)
         XCTAssertEqual(provider.repo.assist.health.lastSuccessDate, successDate)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorPreservesSuccessfulPullTruthWhenFollowingPushFails() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let newCommit = String(repeating: "d", count: 40)
+        let completedAt = Date(timeIntervalSince1970: 1_800_000_000)
+        let initialPlan = PullPlan(
+            action: .fastForward, branch: "main", localCommitSHA: repo.gitState.commitSHA,
+            remoteCommitSHA: newCommit, hasLocalChanges: false, aheadBy: 0, behindBy: 1
+        )
+        let revalidatedPlan = PullPlan(
+            action: .upToDate, branch: "main", localCommitSHA: newCommit,
+            remoteCommitSHA: newCommit, hasLocalChanges: true, aheadBy: 0, behindBy: 0
+        )
+        fixture.repository.pullPlanResults = [initialPlan, revalidatedPlan]
+        fixture.repository.pullResult = .success(LocalPullResult(updated: true, newCommitSHA: newCommit))
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: newCommit, changeCount: 1, statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushResult = .failure(LocalGitError.pushFailed("offline"))
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions(), now: { completedAt }
+        )
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let disposition = await coordinator.reconcile(repoID: repo.id)
+
+        guard case .completed(let result) = disposition else { return XCTFail("Expected composite failure result") }
+        XCTAssertEqual(result.outcome, .failed)
+        XCTAssertTrue(result.didTransferData)
+        XCTAssertEqual(result.finalLocalCommitSHA, newCommit)
+        XCTAssertEqual(provider.repo.gitState.commitSHA, newCommit)
+        XCTAssertEqual(provider.repo.assist.health.kind, .failed)
+        XCTAssertEqual(provider.repo.assist.health.lastSuccessDate, completedAt)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorClassifiesPostUpdateLFSAuthenticationAsAuthenticationAttention() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let newCommit = String(repeating: "e", count: 40)
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .fastForward, branch: "main", localCommitSHA: repo.gitState.commitSHA,
+            remoteCommitSHA: newCommit, hasLocalChanges: false, aheadBy: 0, behindBy: 1
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(
+            updated: true, newCommitSHA: newCommit,
+            attention: .lfsAuthenticationOrTrustRequired(message: "Trust required")
+        ))
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+
+        let result = await coordinator.reconcile(repoID: repo.id)
+
+        XCTAssertTrue(result.didTransferData)
+        XCTAssertEqual(provider.repo.gitState.commitSHA, newCommit)
+        XCTAssertEqual(provider.repo.assist.health.kind, .attention)
+        XCTAssertEqual(provider.repo.assist.health.attention, .authenticationOrTrust)
     }
 
     func testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead() async throws {
@@ -3363,6 +4123,75 @@ final class SyncMDTests: XCTestCase {
         let successfulInfo = try await setup.repoInfo()
         XCTAssertEqual(successfulInfo.commitSHA, remoteSHA)
         XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "remote\n")
+    }
+
+    func testLocalGitPullOnlyHoldsIndexLockAcrossCheckoutAndRefCommit() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PullOnlyIndexLock")
+        defer { try? fm.removeItem(at: repoURL) }
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-PullOnlyIndexLock-Origin-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("README.md")
+        let setup = LocalGitService(localURL: repoURL)
+
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        _ = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseBranch = try await setup.repoInfo().branch
+        try await setup.createBranch(name: "feature")
+        try await setup.switchBranch(name: "feature")
+        try "feature\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        _ = try await setup.commitLocal(message: "Feature", authorName: "Tests", authorEmail: "tests@example.com")
+        try await setup.switchBranch(name: baseBranch)
+        try "local\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let localSHA = try await setup.commitLocal(message: "Local", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: localSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+
+        let lockHeld = expectation(description: "pull-only holds index lock")
+        let releaseLock = DispatchSemaphore(value: 0)
+        let service = LocalGitService(localURL: repoURL, pullOnlyAfterIndexLock: {
+            lockHeld.fulfill()
+            releaseLock.wait()
+        })
+        let pullTask = Task { try await service.executePullOnly(pat: "", expectedBranch: "main") }
+        await fulfillment(of: [lockHeld], timeout: 5)
+        let indexLockURL = repoURL.appendingPathComponent(".git/index.lock")
+        XCTAssertTrue(fm.fileExists(atPath: indexLockURL.path))
+
+        do {
+            _ = try await setup.mergeBranch(
+                name: "feature",
+                authorName: "Tests",
+                authorEmail: "tests@example.com"
+            )
+            XCTFail("A concurrent merge must not mutate the index while pull-only owns index.lock")
+        } catch LocalGitError.mergeConflictsDetected {
+            XCTFail("The concurrent conflict must be rejected before its index is persisted")
+        } catch {}
+        let conflictWhileLocked = try await setup.conflictSession()
+        let infoWhileLocked = try await setup.repoInfo()
+        XCTAssertFalse(conflictWhileLocked.isActive)
+        XCTAssertEqual(infoWhileLocked.commitSHA, localSHA)
+        XCTAssertTrue(fm.fileExists(atPath: indexLockURL.path))
+
+        releaseLock.signal()
+        let execution = try await pullTask.value
+        XCTAssertEqual(execution.plan.action, .fastForward)
+        XCTAssertEqual(execution.pullResult?.newCommitSHA, remoteSHA)
+        let finalInfo = try await setup.repoInfo()
+        XCTAssertEqual(finalInfo.commitSHA, remoteSHA)
+        XCTAssertFalse(fm.fileExists(atPath: indexLockURL.path))
     }
 
     func testLocalGitPullOnlyCancellationBeforeMutationPreventsCheckoutAndReleasesLease() async throws {
@@ -7358,6 +8187,753 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testRepositoryPushRunnerBlocksActiveConflictBeforeStageAll() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.conflictSessionResult = ConflictSession(kind: .cherryPick, unmergedPaths: ["Note.md"])
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.unstagedEntry()]
+        )
+
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig, credentials: "pat", message: nil
+        )
+
+        guard case .blocked(let message) = result else { return XCTFail("Expected conflict block, got \(result)") }
+        XCTAssertTrue(message.localizedCaseInsensitiveContains("conflict"))
+        XCTAssertGreaterThanOrEqual(fixture.repository.conflictSessionCallCount, 1)
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    func testRepositoryPushRunnerPreservesRealLocalGitConflictSessionWithoutStaging() async throws {
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-ConflictPushGuard")
+        defer { try? FileManager.default.removeItem(at: repoURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let service = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        _ = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseBranch = try await service.repoInfo().branch
+        try await service.createBranch(name: "feature")
+        try await service.switchBranch(name: "feature")
+        try "feature\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        _ = try await service.commitLocal(message: "Feature", authorName: "Tests", authorEmail: "tests@example.com")
+        try await service.switchBranch(name: baseBranch)
+        try "main\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let mainSHA = try await service.commitLocal(message: "Main", authorName: "Tests", authorEmail: "tests@example.com")
+        do {
+            _ = try await service.mergeBranch(name: "feature", authorName: "Tests", authorEmail: "tests@example.com")
+        } catch {
+            // Expected: the service leaves a typed conflict session for manual resolution.
+        }
+        let conflictBeforePush = try await service.conflictSession()
+        XCTAssertTrue(conflictBeforePush.isActive)
+
+        let repo = RepoConfig(
+            repoURL: "owner/conflicted", branch: baseBranch, authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: repoURL.lastPathComponent
+        )
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: service, localURL: repoURL),
+            repo: repo, credentials: "", message: nil
+        )
+
+        guard case .blocked = result else { return XCTFail("Expected active conflict to block push, got \(result)") }
+        let finalInfo = try await service.repoInfo()
+        let conflictAfterPush = try await service.conflictSession()
+        XCTAssertEqual(finalInfo.commitSHA, mainSHA)
+        XCTAssertTrue(conflictAfterPush.isActive)
+    }
+
+    func testLocalGitOrdinaryStageAndCommitPreserveActiveConflictIndex() async throws {
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-ConflictStageGuard")
+        defer { try? FileManager.default.removeItem(at: repoURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let service = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        _ = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseBranch = try await service.repoInfo().branch
+        try await service.createBranch(name: "feature")
+        try await service.switchBranch(name: "feature")
+        try "feature\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        _ = try await service.commitLocal(message: "Feature", authorName: "Tests", authorEmail: "tests@example.com")
+        try await service.switchBranch(name: baseBranch)
+        try "main\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let mainSHA = try await service.commitLocal(message: "Main", authorName: "Tests", authorEmail: "tests@example.com")
+        _ = try? await service.mergeBranch(name: "feature", authorName: "Tests", authorEmail: "tests@example.com")
+        let before = try await service.conflictSession()
+        XCTAssertTrue(before.isActive)
+        XCTAssertFalse(before.unmergedPaths.isEmpty)
+
+        do {
+            try await service.stageAll()
+            XCTFail("Ordinary stage-all must reject an active conflict")
+        } catch {}
+        do {
+            _ = try await service.commitLocal(message: "Must not commit", authorName: "Tests", authorEmail: "tests@example.com")
+            XCTFail("Ordinary commit must reject an active conflict")
+        } catch {}
+
+        let after = try await service.conflictSession()
+        XCTAssertEqual(after.kind, before.kind)
+        XCTAssertEqual(after.unmergedPaths, before.unmergedPaths)
+        let finalSHA = try await service.repoInfo().commitSHA
+        XCTAssertEqual(finalSHA, mainSHA)
+    }
+
+    func testLocalGitStageAllPreservesConflictIntroducedAtMutationBoundary() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-ConflictStageRace")
+        defer { try? fm.removeItem(at: repoURL) }
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        _ = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseBranch = try await setup.repoInfo().branch
+        try await setup.createBranch(name: "feature")
+        try await setup.switchBranch(name: "feature")
+        try "feature\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        _ = try await setup.commitLocal(message: "Feature", authorName: "Tests", authorEmail: "tests@example.com")
+        try await setup.switchBranch(name: baseBranch)
+        try "main\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let mainSHA = try await setup.commitLocal(message: "Main", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let reachedWriteBoundary = expectation(description: "stage-all reached guarded index write")
+        let releaseWriteBoundary = DispatchSemaphore(value: 0)
+        let guarded = LocalGitService(localURL: repoURL, stageAllBeforeWrite: {
+            reachedWriteBoundary.fulfill()
+            releaseWriteBoundary.wait()
+        })
+        let stageTask = Task { try await guarded.stageAll() }
+        await fulfillment(of: [reachedWriteBoundary], timeout: 2)
+
+        // Simulate an external Git client producing an unmerged index after the
+        // runner's preflight but before ordinary staging writes. Removing the
+        // merge markers leaves repository state NONE while preserving stages
+        // 1/2/3, the exact race that must not be collapsed by `git add -A`.
+        _ = try? await setup.mergeBranch(
+            name: "feature",
+            authorName: "Tests",
+            authorEmail: "tests@example.com"
+        )
+        let gitDirectory = repoURL.appendingPathComponent(".git", isDirectory: true)
+        for marker in ["MERGE_HEAD", "MERGE_MSG", "MERGE_MODE", "AUTO_MERGE"] {
+            try? fm.removeItem(at: gitDirectory.appendingPathComponent(marker))
+        }
+        let conflictBeforeRelease = try await setup.conflictSession()
+        XCTAssertTrue(conflictBeforeRelease.isActive)
+        XCTAssertEqual(conflictBeforeRelease.kind, .none)
+        XCTAssertFalse(conflictBeforeRelease.unmergedPaths.isEmpty)
+
+        releaseWriteBoundary.signal()
+        do {
+            try await stageTask.value
+            XCTFail("Stage-all must reject an index conflict introduced at the write boundary")
+        } catch {}
+
+        let conflictAfter = try await setup.conflictSession()
+        XCTAssertEqual(conflictAfter.kind, .none)
+        XCTAssertEqual(conflictAfter.unmergedPaths, conflictBeforeRelease.unmergedPaths)
+        let finalSHA = try await setup.repoInfo().commitSHA
+        XCTAssertEqual(finalSHA, mainSHA)
+    }
+
+    func testLocalGitStageAllHoldsIndexLockThroughAtomicReplacement() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-AtomicIndexLock")
+        defer { try? fm.removeItem(at: repoURL) }
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        _ = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let baseBranch = try await setup.repoInfo().branch
+        try await setup.createBranch(name: "feature")
+        try await setup.switchBranch(name: "feature")
+        try "feature\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        _ = try await setup.commitLocal(message: "Feature", authorName: "Tests", authorEmail: "tests@example.com")
+        try await setup.switchBranch(name: baseBranch)
+        try "main\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let mainSHA = try await setup.commitLocal(message: "Main", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let lockHeld = expectation(description: "stage-all holds the cross-process index lock")
+        let releaseLock = DispatchSemaphore(value: 0)
+        let guarded = LocalGitService(localURL: repoURL, stageAllAfterIndexLock: {
+            lockHeld.fulfill()
+            releaseLock.wait()
+        })
+        let stageTask = Task { try await guarded.stageAll() }
+        await fulfillment(of: [lockHeld], timeout: 5)
+        let indexLockURL = repoURL.appendingPathComponent(".git/index.lock")
+        XCTAssertTrue(fm.fileExists(atPath: indexLockURL.path))
+
+        do {
+            try await setup.stageAll()
+            XCTFail("A second GitSync.md index writer must not enter the held lock")
+        } catch {}
+        XCTAssertTrue(
+            fm.fileExists(atPath: indexLockURL.path),
+            "A failed lock acquisition must never unlink the owning writer's index.lock"
+        )
+
+        do {
+            _ = try await setup.mergeBranch(
+                name: "feature",
+                authorName: "Tests",
+                authorEmail: "tests@example.com"
+            )
+            XCTFail("An external merge must not mutate the index while staging owns index.lock")
+        } catch LocalGitError.mergeConflictsDetected {
+            XCTFail("The external conflict must be rejected before its index is persisted")
+        } catch {
+            // Expected: libgit2 honors the existing index.lock and fails closed.
+        }
+        let conflictWhileLocked = try await setup.conflictSession()
+        XCTAssertFalse(conflictWhileLocked.isActive)
+
+        releaseLock.signal()
+        try await stageTask.value
+        let finalConflict = try await setup.conflictSession()
+        let finalSHA = try await setup.repoInfo().commitSHA
+        XCTAssertFalse(finalConflict.isActive)
+        XCTAssertEqual(finalSHA, mainSHA)
+        XCTAssertFalse(fm.fileExists(atPath: indexLockURL.path))
+    }
+
+    func testLocalGitPullOnlyRollsBackWhenFinalIndexPublicationIsInterrupted() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PullIndexPublicationFailure")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-PullIndexPublicationFailure-Origin-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let remoteURL = "file://localhost\(originURL.path)"
+        try await setup.setRemoteURL(name: "origin", url: remoteURL)
+        let service = LocalGitService(localURL: repoURL, pullOnlyBeforeIndexPublication: {
+            throw LocalGitError.commitFailed("injected final index publication failure")
+        })
+
+        await XCTAssertThrowsErrorAsync(
+            try await service.executePullOnly(pat: "", expectedBranch: "main")
+        )
+
+        let finalInfo = try await setup.repoInfo()
+        XCTAssertEqual(finalInfo.commitSHA, baseSHA)
+        XCTAssertEqual(finalInfo.changeCount, 0)
+        XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "base\n")
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: repoURL, name: "refs/heads/main"), baseSHA)
+    }
+
+    func testLocalGitPullOnlyPreservesWriteAfterRefCommitAsUpdatedAttention() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PullFinalCheckoutWrite")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-PullFinalCheckoutWrite-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        let service = LocalGitService(localURL: repoURL, pullOnlyBeforeFinalCheckout: {
+            try? "external write\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        })
+
+        let execution = try await service.executePullOnly(pat: "", expectedBranch: "main")
+
+        XCTAssertEqual(execution.plan.action, .fastForward)
+        XCTAssertEqual(execution.pullResult?.newCommitSHA, remoteSHA)
+        guard case .checkoutIncomplete = execution.pullResult?.attention else {
+            return XCTFail("Expected explicit post-update checkout attention")
+        }
+        XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "external write\n")
+        let finalInfo = try await setup.repoInfo()
+        XCTAssertEqual(finalInfo.commitSHA, remoteSHA)
+        XCTAssertGreaterThan(finalInfo.changeCount, 0)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    func testLocalGitCommitAndPushDoesNotRecreateRemoteBranchDeletedAtTransportBoundary() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DeletedRemoteBranch")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-DeletedRemoteBranch-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        let remoteURL = "file://localhost\(originURL.path)"
+        try await setup.setRemoteURL(name: "origin", url: remoteURL)
+        try "publish\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let service = LocalGitService(localURL: repoURL, pushBeforeTransport: {
+            try? deleteReference(repositoryURL: originURL, name: "refs/heads/main")
+        })
+
+        do {
+            _ = try await service.commitAndPush(
+                message: "Publish",
+                authorName: "Tests",
+                authorEmail: "tests@example.com",
+                pat: "",
+                expectedBranch: "main",
+                safetyExpectation: PushSafetyExpectation(
+                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                )
+            )
+            XCTFail("A deleted destination branch must never be recreated automatically")
+        } catch let saved as LocalCommitSavedNotPushedError {
+            XCTAssertNotEqual(saved.commitSHA, baseSHA)
+        }
+
+        XCTAssertNil(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"))
+    }
+
+    func testLocalGitPushCurrentBranchRejectsOriginChangeAtTransportBoundary() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-OriginRace")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-OriginRace-A-\(UUID().uuidString)", isDirectory: true)
+        let replacementURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-OriginRace-B-\(UUID().uuidString)", isDirectory: true)
+        defer {
+            try? fm.removeItem(at: repoURL)
+            try? fm.removeItem(at: originURL)
+            try? fm.removeItem(at: replacementURL)
+        }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "ahead\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let aheadSHA = try await setup.commitLocal(message: "Ahead", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try makeBareOrigin(at: replacementURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: aheadSHA, remoteSHA: baseSHA)
+        let remoteURL = "file://localhost\(originURL.path)"
+        let replacementRemoteURL = "file://localhost\(replacementURL.path)"
+        try await setup.setRemoteURL(name: "origin", url: remoteURL)
+        let service = LocalGitService(localURL: repoURL, pushBeforeTransport: {
+            try? setRemoteURLDirect(repositoryURL: repoURL, name: "origin", url: replacementRemoteURL)
+        })
+
+        await XCTAssertThrowsErrorAsync(
+            try await service.pushCurrentBranch(
+                pat: "",
+                expectedBranch: "main",
+                safetyExpectation: PushSafetyExpectation(
+                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                )
+            )
+        )
+
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"), baseSHA)
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: replacementURL, name: "refs/heads/main"), baseSHA)
+    }
+
+    func testLocalGitCommitAndPushDoesNotOverwriteSameBranchAdvanceAtCommitBoundary() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-CommitTransactionAdvance")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-CommitTransactionAdvance-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "concurrent\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let concurrentSHA = try await setup.commitLocal(message: "Concurrent", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        try "automatic\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let service = LocalGitService(localURL: repoURL, commitBeforeRefTransaction: {
+            try? setLocalBranchRef(repoURL: repoURL, branch: "main", sha: concurrentSHA)
+        })
+
+        await XCTAssertThrowsErrorAsync(
+            try await service.commitAndPush(
+                message: "Automatic",
+                authorName: "Tests",
+                authorEmail: "tests@example.com",
+                pat: "",
+                expectedBranch: "main"
+            )
+        )
+
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: repoURL, name: "refs/heads/main"), concurrentSHA)
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"), baseSHA)
+    }
+
+    func testLocalGitCommitAndPushPreservesSameBranchAdvanceAtTransportBoundary() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-CommitBranchAdvance")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-CommitBranchAdvance-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "concurrent\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let concurrentSHA = try await setup.commitLocal(message: "Concurrent", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let remoteURL = "file://localhost\(originURL.path)"
+        try await setup.setRemoteURL(name: "origin", url: remoteURL)
+        try "automatic\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let service = LocalGitService(localURL: repoURL, pushBeforeTransport: {
+            try? setLocalBranchRef(repoURL: repoURL, branch: "main", sha: concurrentSHA)
+        })
+
+        do {
+            _ = try await service.commitAndPush(
+                message: "Automatic",
+                authorName: "Tests",
+                authorEmail: "tests@example.com",
+                pat: "",
+                expectedBranch: "main",
+                safetyExpectation: PushSafetyExpectation(
+                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                )
+            )
+            XCTFail("A concurrent same-branch advance must stop publication")
+        } catch let saved as LocalCommitSavedNotPushedError {
+            XCTAssertNotEqual(saved.commitSHA, baseSHA)
+            XCTAssertNotEqual(saved.commitSHA, concurrentSHA)
+        }
+
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: repoURL, name: "refs/heads/main"), concurrentSHA)
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"), baseSHA)
+    }
+
+    func testLocalGitPushCurrentBranchPreservesSameBranchAdvanceAtTransportBoundary() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-AheadBranchAdvance")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-AheadBranchAdvance-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "ahead\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let aheadSHA = try await setup.commitLocal(message: "Ahead", authorName: "Tests", authorEmail: "tests@example.com")
+        try "concurrent\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let concurrentSHA = try await setup.commitLocal(message: "Concurrent", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: aheadSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let remoteURL = "file://localhost\(originURL.path)"
+        try await setup.setRemoteURL(name: "origin", url: remoteURL)
+        let service = LocalGitService(localURL: repoURL, pushBeforeTransport: {
+            try? setLocalBranchRef(repoURL: repoURL, branch: "main", sha: concurrentSHA)
+        })
+
+        await XCTAssertThrowsErrorAsync(
+            try await service.pushCurrentBranch(
+                pat: "",
+                expectedBranch: "main",
+                safetyExpectation: PushSafetyExpectation(
+                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                )
+            )
+        )
+
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: repoURL, name: "refs/heads/main"), concurrentSHA)
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"), baseSHA)
+    }
+
+    func testLocalGitCommitAndPushCancellationBeforeTransportSavesCommitWithoutPublishing() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-CancelCommitPush")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-CancelCommitPush-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        try "publish\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+
+        let beforeTransport = expectation(description: "commit push reached cancellable transport gate")
+        let releaseTransport = DispatchSemaphore(value: 0)
+        let service = LocalGitService(localURL: repoURL, pushBeforeTransport: {
+            beforeTransport.fulfill()
+            releaseTransport.wait()
+        })
+        let push = Task {
+            try await service.commitAndPush(
+                message: "Publish", authorName: "Tests", authorEmail: "tests@example.com", pat: "", expectedBranch: "main"
+            )
+        }
+
+        await fulfillment(of: [beforeTransport], timeout: 2)
+        push.cancel()
+        releaseTransport.signal()
+        do {
+            _ = try await push.value
+            XCTFail("Expected cancellation before remote publication")
+        } catch is CancellationError {}
+
+        let localSHA = try await setup.repoInfo().commitSHA
+        XCTAssertNotEqual(localSHA, baseSHA, "The locally saved commit remains retryable")
+        let plan = try await setup.pullPlan(pat: "")
+        XCTAssertEqual(plan.remoteCommitSHA, baseSHA)
+        XCTAssertGreaterThan(plan.aheadBy, 0)
+    }
+
+    func testLocalGitPushCurrentBranchCancellationBeforeTransportDoesNotPublish() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-CancelAheadPush")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-CancelAheadPush-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "ahead\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let aheadSHA = try await setup.commitLocal(message: "Ahead", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: aheadSHA, remoteSHA: baseSHA)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+
+        let beforeTransport = expectation(description: "ahead push reached cancellable transport gate")
+        let releaseTransport = DispatchSemaphore(value: 0)
+        let service = LocalGitService(localURL: repoURL, pushBeforeTransport: {
+            beforeTransport.fulfill()
+            releaseTransport.wait()
+        })
+        let push = Task { try await service.pushCurrentBranch(pat: "", expectedBranch: "main") }
+
+        await fulfillment(of: [beforeTransport], timeout: 2)
+        push.cancel()
+        releaseTransport.signal()
+        do {
+            try await push.value
+            XCTFail("Expected cancellation before ahead-branch publication")
+        } catch is CancellationError {}
+
+        let plan = try await setup.pullPlan(pat: "")
+        XCTAssertEqual(plan.localCommitSHA, aheadSHA)
+        XCTAssertEqual(plan.remoteCommitSHA, baseSHA)
+        XCTAssertGreaterThan(plan.aheadBy, 0)
+    }
+
+    func testLocalGitCommitAndPushRemainsSuccessfulWhenOriginBecomesUnavailableAfterAcceptance() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PushAccepted")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-PushAccepted-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        let service = LocalGitService(localURL: repoURL, pushAccepted: { try? FileManager.default.removeItem(at: originURL) })
+        try "publish\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+
+        let result = try await service.commitAndPush(
+            message: "Publish", authorName: "Tests", authorEmail: "tests@example.com", pat: ""
+        )
+
+        XCTAssertFalse(result.commitSHA.isEmpty)
+        XCTAssertFalse(fm.fileExists(atPath: originURL.path), "Hook proves any post-push verification fetch would fail")
+    }
+
+    func testLocalGitPushCurrentBranchRemainsSuccessfulWhenOriginBecomesUnavailableAfterAcceptance() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-AheadPushAccepted")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-AheadPushAccepted-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "ahead\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await setup.stage(path: "Note.md")
+        let aheadSHA = try await setup.commitLocal(message: "Ahead", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: aheadSHA, remoteSHA: baseSHA)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        let service = LocalGitService(localURL: repoURL, pushAccepted: { try? FileManager.default.removeItem(at: originURL) })
+
+        try await service.pushCurrentBranch(pat: "")
+
+        XCTAssertFalse(fm.fileExists(atPath: originURL.path), "Hook proves accepted push does not depend on a later fetch")
+    }
+
+    @MainActor
+    func testManualCommitAndMergePathBlocksConflictBeforeStageAll() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.conflictSessionResult = ConflictSession(kind: .revert, unmergedPaths: ["Note.md"])
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+
+        await state.commitLocalAndAttemptMerge(repoID: fixture.repoConfig.id, message: "Do not commit conflicts")
+
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertEqual(fixture.repository.commitLocalCallCount, 0)
+        XCTAssertEqual(fixture.repository.mergeBranchCallCount, 0)
+        XCTAssertNotNil(state.lastError)
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerRejectsMixedIndexAndWorktreeStateThatCannotFullyRestage() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [GitStatusEntry(path: "Note.md", indexStatus: .modified, workTreeStatus: .modified)]
+        )
+
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig, credentials: "pat", message: nil
+        )
+
+        guard case .failed(let message) = result else { return XCTFail("Expected fail-closed staging result, got \(result)") }
+        XCTAssertTrue(message.localizedCaseInsensitiveContains("stage"))
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerFailsClosedWhenBaselineSHAIsUnavailable() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.repoInfoResults = [.failure(LocalGitError.repositoryCorrupted("baseline unavailable"))]
+
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig, credentials: "pat", message: nil
+        )
+
+        guard case .failed = result else { return XCTFail("Expected baseline read failure, got \(result)") }
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerRejectsWriteArrivingDuringRemoteRevalidation() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+
+        let result = await RepositoryPushRunner().runUnserialized(
+            repository: fixture.repository,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        ) { _ in
+            fixture.repository.repoInfoResult = LocalRepoInfo(
+                branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+                statusEntries: [GitStatusEntry(path: "Note.md", indexStatus: .modified, workTreeStatus: .modified)]
+            )
+        }
+
+        guard case .failed(let message) = result else { return XCTFail("Expected fail-closed late-write result, got \(result)") }
+        XCTAssertTrue(message.localizedCaseInsensitiveContains("stage"))
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testReconciliationCleanAheadRetryRevalidatesConfiguredBranch() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanResults = [
+            PullPlan(
+                action: .upToDate, branch: "main", localCommitSHA: fixture.repoInfo.commitSHA,
+                remoteCommitSHA: fixture.repoInfo.commitSHA, hasLocalChanges: false, aheadBy: 0, behindBy: 0
+            ),
+            PullPlan(
+                action: .upToDate, branch: "notes", localCommitSHA: String(repeating: "a", count: 40),
+                remoteCommitSHA: String(repeating: "b", count: 40), hasLocalChanges: false, aheadBy: 1, behindBy: 0
+            )
+        ]
+
+        let result = await RepositoryReconciliationRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            expectedBranch: "main",
+            allowsPull: true,
+            allowsPush: true
+        )
+
+        XCTAssertEqual(result.outcome, .blocked)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
     func testAppStatePushOnlyPersistsCommitAndUpdatesGitState() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -7426,6 +9002,393 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testRepositoryPushRunnerPushesAheadOnlyCleanBranchOnRetry() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: String(repeating: "0", count: 40),
+            hasLocalChanges: false, aheadBy: 1, behindBy: 0
+        )
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig, credentials: "pat", message: nil
+        )
+        XCTAssertEqual(result, .pushed(commitSHA: fixture.repoInfo.commitSHA))
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 1)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerReportsCommitSavedWhenPushFails() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let savedSHA = String(repeating: "9", count: 40)
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.commitAndPushPostFailureSHA = savedSHA
+        fixture.repository.commitAndPushResult = .failure(LocalGitError.authenticationFailed("offline"))
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig, credentials: "pat", message: nil
+        )
+        guard case .commitSavedNotPushed(let sha, let message, _) = result else {
+            return XCTFail("Expected saved local commit, got \(result)")
+        }
+        XCTAssertEqual(sha, savedSHA)
+        XCTAssertTrue(message.contains("offline"))
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorAutoPushRequiresSeparateConsent() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+
+        _ = await coordinator.reconcile(repoID: repo.id)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+
+        coordinator.setAutomaticallyPushLocalChanges(true)
+        let result = await coordinator.reconcile(repoID: repo.id)
+        XCTAssertTrue(result.didTransferData)
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from GitSync.md"])
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorPushOnlyPublishesWithoutRunningPullCheckout() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate,
+            branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: fixture.repoInfo.commitSHA,
+            hasLocalChanges: true,
+            aheadBy: 0,
+            behindBy: 0
+        )
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let disposition = await coordinator.reconcile(repoID: repo.id)
+
+        guard case .completed(let result) = disposition else { return XCTFail("Expected push-only result") }
+        XCTAssertEqual(result.outcome, .pushed)
+        XCTAssertNil(result.pull)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+        XCTAssertGreaterThanOrEqual(fixture.repository.pullPlanCallCount, 1, "Push-only must still fetch and validate remote state")
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from GitSync.md"])
+        let safety = try XCTUnwrap(fixture.repository.commitAndPushSafetyExpectations.last ?? nil)
+        XCTAssertEqual(safety.branch, "main")
+        XCTAssertEqual(safety.remoteCommitSHA, fixture.repoInfo.commitSHA)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorPushOnlyBlocksRemoteAheadWithoutPulling() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .blockedByLocalChanges,
+            branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: String(repeating: "8", count: 40),
+            hasLocalChanges: true,
+            aheadBy: 0,
+            behindBy: 1
+        )
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let disposition = await coordinator.reconcile(repoID: repo.id)
+
+        guard case .completed(let result) = disposition else { return XCTFail("Expected blocked push-only result") }
+        XCTAssertEqual(result.outcome, .blocked)
+        XCTAssertNil(result.pull)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorRunsNoGitOperationWhenPullAndPushAreOff() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        coordinator.setAutomaticallyPushLocalChanges(false)
+
+        let disposition = await coordinator.reconcile(repoID: repo.id)
+
+        XCTAssertEqual(disposition, .ignored)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+        XCTAssertEqual(fixture.repository.pullPlanCallCount, 0)
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testRevokingAutomaticPullConsentCancelsCapturedPullFlight() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let gate = AsyncGate()
+        fixture.repository.executePullOnlyGate = gate
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+
+        let flight = Task { @MainActor in await coordinator.reconcile(repoID: repo.id) }
+        await waitUntil { fixture.repository.executePullOnlyCallCount == 1 }
+        coordinator.setAutomaticallyPullRemoteChanges(false)
+        await gate.open()
+
+        let disposition = await flight.value
+        guard case .deferred(let message) = disposition else {
+            return XCTFail("Revoked pull consent must defer the captured flight, got \(disposition)")
+        }
+        XCTAssertTrue(message.localizedCaseInsensitiveContains("cancel"))
+        XCTAssertEqual(provider.repo.assist.health, .never)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testRevokingAutomaticPushConsentCancelsCapturedPublishingFlight() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        let commitGate = AsyncGate()
+        let commitStarted = expectation(description: "automatic publishing reached commit boundary")
+        fixture.repository.commitAndPushGate = commitGate
+        fixture.repository.commitAndPushStarted = { commitStarted.fulfill() }
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let flight = Task { await coordinator.reconcile(repoID: repo.id) }
+        await fulfillment(of: [commitStarted], timeout: 2)
+        coordinator.setAutomaticallyPushLocalChanges(false)
+        await commitGate.open()
+        let result = await flight.value
+
+        guard case .deferred(let message) = result else {
+            return XCTFail("Revoked consent must defer the cancelled flight, got \(result)")
+        }
+        XCTAssertTrue(message.localizedCaseInsensitiveContains("cancel"))
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorBlocksRemoteAheadDirtyTreeWithoutPush() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .blockedByLocalChanges, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: String(repeating: "8", count: 40),
+            hasLocalChanges: true, aheadBy: 0, behindBy: 1
+        )
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let result = await coordinator.reconcile(repoID: repo.id)
+        guard case .completed(let reconciliation) = result else { return XCTFail("Expected result") }
+        XCTAssertEqual(reconciliation.outcome, .blocked)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorDivergenceNeverMutatesRepository() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .diverged, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: String(repeating: "7", count: 40),
+            hasLocalChanges: true, aheadBy: 1, behindBy: 1
+        )
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let result = await coordinator.reconcile(repoID: repo.id)
+        guard case .completed(let reconciliation) = result else { return XCTFail("Expected result") }
+        XCTAssertEqual(reconciliation.outcome, .blocked)
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorRevalidatesRemoteAfterStagingBeforeCommit() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        let equal = PullPlan(
+            action: .upToDate, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA, remoteCommitSHA: fixture.repoInfo.commitSHA,
+            hasLocalChanges: true, aheadBy: 0, behindBy: 0
+        )
+        let advanced = PullPlan(
+            action: .blockedByLocalChanges, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA, remoteCommitSHA: String(repeating: "6", count: 40),
+            hasLocalChanges: true, aheadBy: 0, behindBy: 1
+        )
+        fixture.repository.pullPlanResults = [equal, advanced]
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            entitlementIsActive: { true }, repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPushLocalChanges(true)
+
+        let result = await coordinator.reconcile(repoID: repo.id)
+        guard case .completed(let reconciliation) = result else { return XCTFail("Expected result") }
+        XCTAssertEqual(reconciliation.outcome, .blocked)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+        XCTAssertGreaterThanOrEqual(fixture.repository.pullPlanCallCount, 2)
+    }
+
+    @MainActor
+    func testPremiumNotificationBridgeTreatsBackgroundPushAsNewData() async throws {
+        let bridge = PremiumNotificationBridge()
+        let completed = expectation(description: "push completion")
+        var fetched: UIBackgroundFetchResult?
+        let reconciliation = RepositoryReconciliationResult(
+            outcome: .pushed, pull: .upToDate(branch: "main", commitSHA: "a"),
+            push: .pushed(commitSHA: "b"), finalLocalCommitSHA: "b", message: nil
+        )
+        bridge.connectForTesting(
+            timeoutNanoseconds: 1_000_000_000,
+            processPush: { _ in .completed(reconciliation) },
+            cancelPush: { _ in }
+        )
+        bridge.didReceive(userInfo: [:]) { result in fetched = result; completed.fulfill() }
+        await fulfillment(of: [completed], timeout: 2)
+        XCTAssertEqual(fetched, .newData)
+    }
+
+    @MainActor
+    func testPremiumNotificationBridgeReportsNewDataWhenPullSucceededBeforePushFailure() async {
+        let completed = expectation(description: "pull transfer completion")
+        var fetched: UIBackgroundFetchResult?
+        let sha = String(repeating: "4", count: 40)
+        let reconciliation = RepositoryReconciliationResult(
+            outcome: .failed,
+            pull: .updated(branch: "main", commitSHA: sha),
+            push: .failed(message: "push failed"),
+            finalLocalCommitSHA: sha,
+            message: "push failed"
+        )
+        XCTAssertTrue(reconciliation.didTransferData)
+        let bridge = PremiumNotificationBridge()
+        bridge.connectForTesting(
+            timeoutNanoseconds: 1_000_000_000,
+            processPush: { _ in .completed(reconciliation) },
+            cancelPush: { _ in }
+        )
+        bridge.didReceive(userInfo: [:]) { result in fetched = result; completed.fulfill() }
+        await fulfillment(of: [completed], timeout: 2)
+        XCTAssertEqual(fetched, .newData)
+    }
+
+    @MainActor
+    func testAppStateSyncRepositoryEnforcesConfiguredBranchBeforePush() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.branch = "notes"
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate, branch: "main", localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: fixture.repoInfo.commitSHA, hasLocalChanges: true, aheadBy: 0, behindBy: 0
+        )
+        fixture.repository.repoInfoResult = LocalRepoInfo(
+            branch: "main", commitSHA: fixture.repoInfo.commitSHA, changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [repo]
+
+        let result = await state.syncRepository(repoID: repo.id)
+
+        XCTAssertEqual(result.outcome, .blocked)
+        guard case .wrongBranch(let expected, let actual) = result.pull else { return XCTFail("Expected wrong-branch pull result") }
+        XCTAssertEqual(expected, "notes")
+        XCTAssertEqual(actual, "main")
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
     func testAppStateSyncRepositoryPushesAfterCleanPull() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -7437,6 +9400,20 @@ final class SyncMDTests: XCTestCase {
             statusEntries: [Self.stagedEntry()]
         )
         fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: pushedSHA))
+        let plannedIdentity = GitRemoteIdentity(
+            fetchURL: fixture.repoConfig.repoURL + ".git",
+            pushURL: fixture.repoConfig.repoURL + ".git"
+        )
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate,
+            branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: fixture.repoInfo.commitSHA,
+            hasLocalChanges: true,
+            aheadBy: 0,
+            behindBy: 0,
+            remoteIdentity: plannedIdentity
+        )
         let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
         state.repos = [fixture.repoConfig]
 
@@ -7445,6 +9422,14 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(result.outcome, .synced)
         XCTAssertEqual(result.push, .pushed(commitSHA: pushedSHA))
         XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from Obsidian"])
+        XCTAssertEqual(
+            fixture.repository.commitAndPushSafetyExpectations,
+            [PushSafetyExpectation(
+                branch: "main",
+                remoteCommitSHA: fixture.repoInfo.commitSHA,
+                remoteIdentity: plannedIdentity
+            )]
+        )
         XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, pushedSHA)
     }
 
@@ -7494,6 +9479,8 @@ private actor FakePremiumStorefront: PremiumStorefront {
     private var syncs = 0
     private var appAccountTokenSets = 0
     private var currentEntitlementRequests = 0
+    private var currentEntitlementsGate: AsyncGate?
+    private var currentEntitlementsStarted: (@Sendable () -> Void)?
     private var continuation: AsyncStream<PremiumFinishableTransaction>.Continuation?
 
     func setAppAccountToken(_ token: UUID) { appAccountTokenSets += 1 }
@@ -7502,6 +9489,8 @@ private actor FakePremiumStorefront: PremiumStorefront {
     }
     func currentEntitlements() async -> [PremiumVerifiedTransaction] {
         currentEntitlementRequests += 1
+        currentEntitlementsStarted?()
+        if let currentEntitlementsGate { await currentEntitlementsGate.wait() }
         return entitlements
     }
     func purchase(productID: String) async throws -> PremiumPurchaseOutcome { purchaseOutcome }
@@ -7512,6 +9501,10 @@ private actor FakePremiumStorefront: PremiumStorefront {
     func finish(_ id: UInt64) { finishedIDs.append(id) }
     func setPurchase(_ value: PremiumPurchaseOutcome) { purchaseOutcome = value }
     func setEntitlements(_ values: [PremiumVerifiedTransaction]) { entitlements = values }
+    func setCurrentEntitlementsGate(_ gate: AsyncGate?, started: (@Sendable () -> Void)? = nil) {
+        currentEntitlementsGate = gate
+        currentEntitlementsStarted = started
+    }
     func setContinuation(_ value: AsyncStream<PremiumFinishableTransaction>.Continuation) { continuation = value }
     func finishable(_ transaction: PremiumVerifiedTransaction) -> PremiumFinishableTransaction {
         PremiumFinishableTransaction(value: transaction) { await self.finish(transaction.transactionID) }
@@ -7524,8 +9517,45 @@ private actor FakePremiumStorefront: PremiumStorefront {
 }
 
 @MainActor
+private final class RecordingBackgroundProcessingScheduler: PremiumBackgroundProcessingScheduling {
+    private(set) var registerCount = 0
+    private(set) var scheduleCount = 0
+    private(set) var cancelCount = 0
+    private var handler: (@MainActor (any PremiumBackgroundProcessingTask) -> Void)?
+
+    func register(handler: @escaping @MainActor (any PremiumBackgroundProcessingTask) -> Void) {
+        registerCount += 1
+        self.handler = handler
+    }
+    func schedule() { scheduleCount += 1 }
+    func cancel() { cancelCount += 1 }
+    func invoke(_ task: any PremiumBackgroundProcessingTask) { handler?(task) }
+}
+
+@MainActor
+private final class BackgroundTaskCompletionRecorder {
+    private(set) var values: [Bool] = []
+    var onComplete: ((Bool) -> Void)?
+    func record(_ value: Bool) {
+        values.append(value)
+        onComplete?(value)
+    }
+}
+
+@MainActor
+private final class RecordingBackgroundProcessingTask: PremiumBackgroundProcessingTask {
+    var expirationHandler: (() -> Void)?
+    let recorder: BackgroundTaskCompletionRecorder
+    var completion: Bool? { recorder.values.last }
+    init(recorder: BackgroundTaskCompletionRecorder) { self.recorder = recorder }
+    convenience init() { self.init(recorder: BackgroundTaskCompletionRecorder()) }
+    func complete(success: Bool) { recorder.record(success) }
+}
+
+@MainActor
 private struct PremiumRuntimeTestHarness {
     let runtime: PremiumRuntime
+    let entitlementStore: PremiumEntitlementStore
     let provider: FakeAssistRepositoryProvider
     let repository: FakeGitRepository
     let registrar: RecordingRemoteNotificationRegistrar
@@ -7540,7 +9570,8 @@ private struct PremiumRuntimeTestHarness {
         repo existingRepo: RepoConfig? = nil,
         activeEntitlement: Bool = true,
         assistFeatureIsEnabled: Bool = true,
-        keychain: any PremiumKeychainStoring = SystemPremiumKeychainStore()
+        keychain: any PremiumKeychainStoring = SystemPremiumKeychainStore(),
+        backgroundScheduler: (any PremiumBackgroundProcessingScheduling)? = nil
     ) async -> PremiumRuntimeTestHarness {
         let defaultsSuite = "premium-runtime-\(installationID.uuidString)"
         let defaults = UserDefaults(suiteName: defaultsSuite)!
@@ -7573,10 +9604,12 @@ private struct PremiumRuntimeTestHarness {
             environment: .sandbox,
             bridge: PremiumNotificationBridge(),
             assistFeatureIsEnabled: { assistFeatureIsEnabled },
+            backgroundScheduler: backgroundScheduler,
             keychain: keychain
         )
         return PremiumRuntimeTestHarness(
             runtime: runtime,
+            entitlementStore: entitlement,
             provider: provider,
             repository: repository,
             registrar: registrar,
@@ -7590,6 +9623,8 @@ private struct PremiumRuntimeTestHarness {
     func cleanup() {
         UserDefaults.standard.removeObject(forKey: "premium.relay-consent.\(installationID.uuidString)")
         UserDefaults.standard.removeObject(forKey: "premium.automatic-sync.v1.\(installationID.uuidString)")
+        UserDefaults.standard.removeObject(forKey: "premium.automatic-pull.v1.\(installationID.uuidString)")
+        UserDefaults.standard.removeObject(forKey: "premium.automatic-push.v1.\(installationID.uuidString)")
         UserDefaults.standard.removeObject(forKey: "premium.stale-channels.v1.\(installationID.uuidString)")
         UserDefaults.standard.removeObject(forKey: "premium.apns-token-generation.sandbox.\(installationID.uuidString)")
         keychain.delete(key: "premium.apns-token-generation.keychain.sandbox.\(installationID.uuidString)")
@@ -7858,6 +9893,7 @@ private final class FakeAssistRepositoryProvider: AssistRepositoryProviding {
         set { repos[0] = newValue }
     }
     let repository: any GitRepositoryProtocol
+    private let repositoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("assist-provider-\(UUID().uuidString)")
     init(repo: RepoConfig, repository: any GitRepositoryProtocol) {
         self.repos = [repo]
         self.repository = repository
@@ -7868,15 +9904,13 @@ private final class FakeAssistRepositoryProvider: AssistRepositoryProviding {
     }
     func assistRepositories() -> [RepoConfig] { repos }
     func assistRepository(id: UUID) -> RepoConfig? { repos.first { $0.id == id } }
-    func assistRepositoryInstance(id: UUID) throws -> any GitRepositoryProtocol { repository }
+    func assistRepositoryInstance(id: UUID) throws -> SerializedGitRepository {
+        SerializedGitRepository(base: repository, localURL: repositoryURL)
+    }
     func assistCredentials(for repo: RepoConfig) -> String { "" }
-    func recordAssist(result: RepositoryPullResult?, health: RepoAssistHealth, repoID: UUID) {
+    func recordAssist(result: RepositoryReconciliationResult?, health: RepoAssistHealth, repoID: UUID) {
         guard let index = repos.firstIndex(where: { $0.id == repoID }) else { return }
-        switch result {
-        case .updated(_, let sha), .updatedWithAttention(_, let sha, _):
-            repos[index].gitState.commitSHA = sha
-        default: break
-        }
+        if let sha = result?.finalLocalCommitSHA { repos[index].gitState.commitSHA = sha }
         repos[index].assist.health = health
     }
     func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings) {
@@ -8025,6 +10059,46 @@ private func setLocalBranchRef(repoURL: URL, branch: String, sha: String) throws
     defer { if let ref { git_reference_free(ref) } }
     guard git_reference_create(&ref, repo, "refs/heads/\(branch)", &oid, 1, "test concurrent ref update") == 0 else {
         throw LocalGitError.repositoryCorrupted("Test could not advance branch")
+    }
+}
+
+private func referenceTargetSHA(repositoryURL: URL, name: String) throws -> String? {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repositoryURL.path) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not open repository")
+    }
+    var ref: OpaquePointer?
+    defer { if let ref { git_reference_free(ref) } }
+    let code = git_reference_lookup(&ref, repo, name)
+    if code == GIT_ENOTFOUND.rawValue { return nil }
+    guard code == 0, let oid = git_reference_target(ref), let raw = git_oid_tostr_s(oid) else {
+        throw LocalGitError.repositoryCorrupted("Test could not read reference target")
+    }
+    return String(cString: raw)
+}
+
+private func deleteReference(repositoryURL: URL, name: String) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repositoryURL.path) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not open repository")
+    }
+    var ref: OpaquePointer?
+    defer { if let ref { git_reference_free(ref) } }
+    let lookup = git_reference_lookup(&ref, repo, name)
+    if lookup == GIT_ENOTFOUND.rawValue { return }
+    guard lookup == 0, git_reference_delete(ref) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not delete reference")
+    }
+}
+
+private func setRemoteURLDirect(repositoryURL: URL, name: String, url: String) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repositoryURL.path) == 0,
+          git_remote_set_url(repo, name, url) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not change origin URL")
     }
 }
 
@@ -8266,7 +10340,9 @@ private struct GitFixture {
 private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendable {
     var hasGitDirectoryValue: Bool = true
     var repoInfoResult: LocalRepoInfo
+    var repoInfoResults: [Result<LocalRepoInfo, Error>] = []
     var pullPlanResult: PullPlan
+    var pullPlanResults: [PullPlan] = []
     var pullResult: Result<LocalPullResult, Error>
     var rebaseResult: Result<LocalPullResult, Error>?
     var continueRebaseResult: Result<LocalPullResult, Error>?
@@ -8297,6 +10373,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var didPushCurrentBranch = false
     var didAbortMerge = false
     var conflictSessionResult: ConflictSession = .none
+    var conflictSessionCallCount = 0
     var resolvedConflicts: [(path: String, strategy: ConflictResolutionStrategy)] = []
     var stagedPaths: [String] = []
     var lfsAutoTrackStageFlags: [Bool] = []
@@ -8319,9 +10396,15 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var commitLocalCallCount = 0
     var pushCurrentBranchResult: Result<Void, Error>?
     var pushCurrentBranchCallCount = 0
+    var pushCurrentBranchSafetyExpectations: [PushSafetyExpectation?] = []
     var commitAndPushResult: Result<LocalPushResult, Error>?
+    var commitAndPushPostFailureSHA: String?
     var commitAndPushMessages: [String] = []
+    var commitAndPushSafetyExpectations: [PushSafetyExpectation?] = []
+    var commitAndPushGate: AsyncGate?
+    var commitAndPushStarted: (@Sendable () -> Void)?
     var executePullOnlyGate: AsyncGate?
+    var executePullOnlyStarted: (@Sendable () -> Void)?
 
     init(repoInfoResult: LocalRepoInfo) {
         self.repoInfoResult = repoInfoResult
@@ -8375,6 +10458,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     func pullPlan(pat: String) async throws -> PullPlan {
         pullPlanCallCount += 1
         if let pullPlanError { throw pullPlanError }
+        if !pullPlanResults.isEmpty { return pullPlanResults.removeFirst() }
         return pullPlanResult
     }
 
@@ -8396,6 +10480,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult {
         executePullOnlyCallCount += 1
+        executePullOnlyStarted?()
         if let executePullOnlyGate { await executePullOnlyGate.wait() }
         if let executePullOnlyResult { return try executePullOnlyResult.get() }
         let plan = try await pullPlan(pat: pat)
@@ -8451,9 +10536,17 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         return mergeResult
     }
 
-    func pushCurrentBranch(pat: String) async throws {
+    func pushCurrentBranch(
+        pat: String,
+        expectedBranch: String?,
+        safetyExpectation: PushSafetyExpectation?
+    ) async throws {
+        if let expectedBranch, repoInfoResult.branch != expectedBranch {
+            throw LocalGitError.wrongBranch(expected: expectedBranch, actual: repoInfoResult.branch)
+        }
         didPushCurrentBranch = true
         pushCurrentBranchCallCount += 1
+        pushCurrentBranchSafetyExpectations.append(safetyExpectation)
         if let pushCurrentBranchResult {
             switch pushCurrentBranchResult {
             case .success:
@@ -8494,7 +10587,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func conflictSession() async throws -> ConflictSession {
-        conflictSessionResult
+        conflictSessionCallCount += 1
+        return conflictSessionResult
     }
 
     func resolveConflict(path: String, strategy: ConflictResolutionStrategy) async throws {
@@ -8559,14 +10653,31 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         message: String,
         authorName: String,
         authorEmail: String,
-        pat: String
+        pat: String,
+        expectedBranch: String?,
+        safetyExpectation: PushSafetyExpectation?
     ) async throws -> LocalPushResult {
+        if let expectedBranch, repoInfoResult.branch != expectedBranch {
+            throw LocalGitError.wrongBranch(expected: expectedBranch, actual: repoInfoResult.branch)
+        }
+        commitAndPushSafetyExpectations.append(safetyExpectation)
+        commitAndPushStarted?()
+        if let commitAndPushGate { await commitAndPushGate.wait() }
+        try Task.checkCancellation()
         commitAndPushMessages.append(message)
         if let commitAndPushResult {
             switch commitAndPushResult {
             case .success(let result):
                 return result
             case .failure(let error):
+                if let sha = commitAndPushPostFailureSHA {
+                    repoInfoResult = LocalRepoInfo(
+                        branch: repoInfoResult.branch,
+                        commitSHA: sha,
+                        changeCount: 0,
+                        statusEntries: []
+                    )
+                }
                 throw error
             }
         }
@@ -8637,7 +10748,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func repoInfo() async throws -> LocalRepoInfo {
-        repoInfoResult
+        if !repoInfoResults.isEmpty { return try repoInfoResults.removeFirst().get() }
+        return repoInfoResult
     }
 }
 
@@ -8829,7 +10941,7 @@ private final class SerializationProbeRepository: GitRepositoryProtocol, @unchec
     func switchBranch(name: String) async throws { fatalError() }
     func deleteBranch(name: String) async throws { fatalError() }
     func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult { fatalError() }
-    func pushCurrentBranch(pat: String) async throws { fatalError() }
+    func pushCurrentBranch(pat: String, expectedBranch: String?, safetyExpectation: PushSafetyExpectation?) async throws { fatalError() }
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult { fatalError() }
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult { fatalError() }
     func abortMerge() async throws { fatalError() }
@@ -8847,7 +10959,7 @@ private final class SerializationProbeRepository: GitRepositoryProtocol, @unchec
     func unstage(path: String, oldPath: String?) async throws { fatalError() }
     func discardChanges(path: String) async throws { fatalError() }
     func discardAllChanges() async throws { fatalError() }
-    func commitAndPush(message: String, authorName: String, authorEmail: String, pat: String) async throws -> LocalPushResult { fatalError() }
+    func commitAndPush(message: String, authorName: String, authorEmail: String, pat: String, expectedBranch: String?, safetyExpectation: PushSafetyExpectation?) async throws -> LocalPushResult { fatalError() }
     func listStashes() async throws -> [GitStashEntry] { fatalError() }
     func saveStash(message: String, authorName: String, authorEmail: String, includeUntracked: Bool) async throws -> GitStashEntry { fatalError() }
     func applyStash(index: Int, reinstateIndex: Bool) async throws -> StashApplyResult { fatalError() }

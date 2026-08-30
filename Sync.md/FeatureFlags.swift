@@ -2,7 +2,7 @@ import Foundation
 
 /// Compile-time feature availability switches.
 enum FeatureFlags {
-    /// Whether the Background Sync subscription tier and its pull-only
+    /// Whether the Background Sync subscription tier and its best-effort
     /// updates are visible and active in this build.
     ///
     /// While `false`, every Background Sync entry point is hidden: the App Settings

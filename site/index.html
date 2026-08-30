@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <title>GitSync.md — Real Git for Obsidian and code on iPhone/iPad</title>
-<meta name="description" content="A full iOS Git client for Obsidian, Markdown, and code. Clone, edit, diff, commit, pull, and push manually—or add optional Background Sync for safe pull-only updates when iOS allows background work.">
+<meta name="description" content="A full iOS Git client for Obsidian, Markdown, and code. Work manually—or add optional Background Sync with independent automatic pull and push controls.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
 <meta name="theme-color" content="#0a0a0a">
@@ -17,12 +17,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GitSync.md">
 <meta property="og:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta property="og:description" content="Real Git on iPhone and iPad for $9.99 once. Manual Git stays included; optional Background Sync adds safe pull-only updates when iOS allows background work.">
+<meta property="og:description" content="Real Git on iPhone and iPad for $9.99 once. Manual Git stays included; optional Background Sync adds independent automatic pull and push controls.">
 <meta property="og:url" content="https://gitsyncmd.app/">
 <meta property="og:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta name="twitter:description" content="Real Git for Obsidian, Markdown, and code on iOS. $9.99 once, with optional Background Sync for safe pull-only updates.">
+<meta name="twitter:description" content="Real Git for Obsidian, Markdown, and code on iOS. $9.99 once, with optional Background Sync and independent automatic pull and push controls.">
 <meta name="twitter:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <script type="application/ld+json">
 {
@@ -57,7 +57,7 @@
     "Obsidian x-callback-url and Apple Shortcuts automation",
     "Multiple GitHub accounts and per-repo credentials",
     "iOS Files integration, 26 localized languages",
-    "Optional Background Sync with safe pull-only updates when iOS allows background work",
+    "Optional Background Sync with independently controlled automatic pulls and pushes when iOS allows background work",
     "No subscription required for manual Git; no server handles repository contents"
   ]
 }
@@ -1757,7 +1757,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
         </div>
         <div class="feature-name">Background Sync</div>
-        <div class="feature-desc">An optional subscription that pulls clean fast-forward updates while the app is closed whenever iOS grants background time. GitHub push events provide best-effort wake hints. It never commits, merges, rebases, or pushes, and it is not guaranteed or real time.</div>
+        <div class="feature-desc">An optional subscription for best-effort reconciliation when iOS grants background time. Automatic pull and automatic push are independent controls; publishing stays default-off. Push-only mode checks remote state without updating the worktree. Concurrent changes stop safely. It never merges, rebases, switches branches, or force-pushes, and it is not guaranteed or real time.</div>
       </div>
     </div>
   </div>
@@ -1873,7 +1873,7 @@
       <div class="integration-card">
         <div class="integration-tag">x-callback-url</div>
         <div class="integration-name">Obsidian</div>
-        <div class="integration-desc">Tap a <code>syncmd://x-callback-url/sync</code> link in any note, or run it from an iOS Shortcut, to pull and push without leaving your vault. <a href="blog/obsidian-git-ios-setup.html">Implementation guide →</a></div>
+        <div class="integration-desc">Tap a <code>syncmd://x-callback-url/sync</code> link in any note, or run it from an iOS Shortcut, to attempt a safe pull-then-push. Add an <code>x-success</code> URL if you want a successful attempt to return to your vault. <a href="blog/obsidian-git-ios-setup.html">Implementation guide →</a></div>
       </div>
       <div class="integration-card">
         <div class="integration-tag">Files App</div>
@@ -1899,7 +1899,7 @@
     <div class="docs-grid reveal-stagger reveal">
       <div class="doc-card">
         <h3>Quick start URL</h3>
-        <p>Any app that can open URLs can trigger a full pull + push by opening this URL:</p>
+        <p>Any app that can open URLs can request one safe pull-then-push attempt by opening this URL:</p>
         <span class="doc-url">syncmd://x-callback-url/sync?repo=MyVault</span>
         <p>The <code>repo</code> value must match the vault or repo folder name shown in GitSync.md.</p>
       </div>
@@ -1925,14 +1925,16 @@
         <h3>Apple Shortcuts</h3>
         <p>Native App Intents, no URL building required:</p>
         <ul>
-          <li><strong>Pull All Repositories</strong> — syncs every cloned repo</li>
-          <li><strong>Pull Repository</strong> — pick one repo</li>
+          <li><strong>Pull All Repositories</strong> — attempts each cloned repo and returns a summary</li>
+          <li><strong>Pull Repository</strong> — pick one repo for a pull attempt</li>
+          <li><strong>Push Repository</strong> — stage, commit, and push one repo</li>
+          <li><strong>Sync Repository</strong> — pull first, then publish only when safe</li>
         </ul>
-        <p>Both work with Siri phrases and Personal Automations (e.g. “pull my notes” when the app opens). Pull-only by design — pushes stay deliberate.</p>
+        <p>These actions work with Siri phrases and Personal Automations. Push and Sync publish directly to your configured remote, stop on active conflicts or unsafe remote state, and never merge, rebase, switch branches, resolve conflicts, or force-push.</p>
       </div>
       <div class="doc-card">
         <h3>Obsidian implementation</h3>
-        <p>Obsidian Git has no URL setting. Instead, paste this link into any note and tap it to sync:</p>
+        <p>Obsidian Git has no URL setting. Instead, paste this link into any note and tap it for one explicit sync attempt:</p>
         <span class="doc-url">[Sync vault](syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian)</span>
         <p>The <code>repo</code> value must match the vault folder name shown in GitSync.md — or fire the same URL from an iOS Shortcut. <a href="blog/obsidian-git-ios-setup.html">See the complete iOS setup guide →</a></p>
       </div>
@@ -2086,7 +2088,7 @@
       </details>
       <details class="faq-item">
         <summary>How does Background Sync work?</summary>
-        <p>Background Sync is an optional subscription for pull-only updates while the app is closed. When iOS grants background time, GitHub push events can provide best-effort wake hints and GitSync.md attempts a clean fast-forward pull. iOS controls whether and when background work runs, so it is not guaranteed or real time. It never commits, merges, rebases, force-pushes, or pushes.</p>
+        <p>Background Sync is an optional subscription for best-effort repository reconciliation while the app is closed. You can independently enable automatic fast-forward pulls, automatic commit and push, or both; publishing remains default-off. Push-only mode checks remote state without updating the worktree, and concurrent local and remote edits stop for attention. GitHub events and iOS processing provide best-effort wakes, so work is not guaranteed or real time. It never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
       </details>
       <details class="faq-item">
         <summary>Is it iPhone only? Is there a subscription?</summary>
@@ -2126,7 +2128,7 @@
     <div class="reveal">
       <div class="section-label" style="text-align: center;">010 — Get Started</div>
       <h2 class="cta-title">Buy manual Git once<span class="accent">.</span><br>Clone unlimited<span class="accent">.</span> Sync optionally<span class="accent">.</span></h2>
-      <p class="cta-sub">A full Git client and code editor for Obsidian vaults, Markdown folders, and code repositories. $9.99 one-time for every manual Git feature, with optional Background Sync when you want pull-only updates while the app is closed.</p>
+      <p class="cta-sub">A full Git client and code editor for Obsidian vaults, Markdown folders, and code repositories. $9.99 one-time for every manual Git feature, with optional Background Sync and independent automatic pull and push controls.</p>
       <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
         <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="btn-primary" style="font-size: 14px; padding: 16px 32px;">
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>

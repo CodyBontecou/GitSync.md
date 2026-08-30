@@ -159,7 +159,7 @@ struct SyncMDAppShortcutsProvider: AppShortcutsProvider {
 }
 
 @MainActor
-private enum GitShortcutRunner {
+enum GitShortcutRunner {
     static func pullAllRepositories() async -> String {
         let state = AppState()
         let clonedRepos = state.repos.filter(\.isCloned)
@@ -441,7 +441,7 @@ struct SyncRepositoryIntent: AppIntent {
 }
 
 @MainActor
-private extension GitShortcutRunner {
+extension GitShortcutRunner {
     struct ShortcutOutcome {
         let entity: GitSyncResultEntity
         let dialog: String
@@ -481,7 +481,14 @@ private extension GitShortcutRunner {
 
     static func push(id: String, message: String?) async throws -> ShortcutOutcome {
         let (state, repo) = try resolveRepo(id: id)
-        switch await state.pushOnly(repoID: repo.id, message: message) {
+        return try pushOutcome(
+            repo: repo,
+            result: await state.pushOnly(repoID: repo.id, message: message)
+        )
+    }
+
+    static func pushOutcome(repo: RepoConfig, result: RepositoryPushResult) throws -> ShortcutOutcome {
+        switch result {
         case .pushed(let commitSHA):
             let short = String(commitSHA.prefix(7))
             return outcome(
@@ -497,6 +504,11 @@ private extension GitShortcutRunner {
                 commitSHA: "",
                 message: String(localized: "No local changes to push")
             )
+        case .blocked(let message):
+            return outcome(repo: repo, status: GitSyncResultEntity.statusBlocked, commitSHA: "", message: message)
+        case .commitSavedNotPushed(let commitSHA, let message, let trustError):
+            if trustError != nil { throw GitShortcutError.authenticationRequired(message) }
+            throw GitShortcutError.operationFailed(String(localized: "The push did not complete. Local commit: \(commitSHA.prefix(7)). \(message)"))
         case .authenticationOrTrustRequired(let message, _):
             throw GitShortcutError.authenticationRequired(message)
         case .failed(let message):
@@ -506,8 +518,13 @@ private extension GitShortcutRunner {
 
     static func sync(id: String, message: String?) async throws -> ShortcutOutcome {
         let (state, repo) = try resolveRepo(id: id)
-        let result = await state.syncRepository(repoID: repo.id, message: message)
+        return try syncOutcome(
+            repo: repo,
+            result: await state.syncRepository(repoID: repo.id, message: message)
+        )
+    }
 
+    static func syncOutcome(repo: RepoConfig, result: RepositorySyncResult) throws -> ShortcutOutcome {
         switch result.outcome {
         case .synced:
             let sha = if case .pushed(let commitSHA) = result.push { commitSHA } else { "" }
@@ -529,7 +546,7 @@ private extension GitShortcutRunner {
             return outcome(
                 repo: repo,
                 status: GitSyncResultEntity.statusBlocked,
-                commitSHA: "",
+                commitSHA: result.push?.finalLocalCommitSHA ?? result.pull?.newCommitSHA ?? "",
                 message: result.message
             )
         case .authenticationOrTrustRequired(let message, _):

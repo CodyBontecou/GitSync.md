@@ -768,7 +768,7 @@ private struct AssistUpsellBanner: View {
                             Text("Background Sync is available")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundStyle(Color.brutalText)
-                            Text("Get safe, pull-only updates in the background whenever iOS allows. Optional subscription.")
+                            Text("Choose automatic pulls, separately consented automatic pushes, or both when iOS allows. Optional subscription.")
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalTextMid)
                         }
@@ -833,7 +833,7 @@ private struct AssistUpsellMilestoneSheet: View {
                 Text("Pulling a lot?")
                     .font(.system(size: 22, weight: .black))
                     .foregroundStyle(Color.brutalText)
-                Text("Background Sync can pull safe, fast-forward updates while the app is closed whenever iOS allows background work. GitHub push events provide best-effort wake hints. Optional subscription; all manual features stay included.")
+                Text("Background Sync gives you independent automatic pull and push controls. Publishing requires separate consent, and push-only mode never updates the worktree. GitHub events and iOS processing provide best-effort wakes; timing is not guaranteed or real time. Optional subscription; all manual features stay included.")
                     .font(.system(size: 14, design: .monospaced))
                     .foregroundStyle(Color.brutalTextMid)
                     .multilineTextAlignment(.center)

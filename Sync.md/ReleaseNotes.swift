@@ -101,8 +101,8 @@ enum AppReleaseNotes {
                     ),
                     .init(
                         symbolSystemName: "arrow.down.circle.fill",
-                        title: "Pull-only and safe",
-                        description: "Background Sync only performs clean fast-forward pulls. It never commits, rebases, merges, force-pushes, or pushes, and stops on local changes, divergence, or authentication needs."
+                        title: "Safe, separately consented publishing",
+                        description: "Background Sync now lets you control automatic pull and automatic push independently. Publishing stays default-off; push-only mode checks remote state without updating the worktree, and unsafe or conflicting state stops for attention."
                     ),
                     .init(
                         symbolSystemName: "lock.shield.fill",
