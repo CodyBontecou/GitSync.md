@@ -32,7 +32,7 @@ Domain: user-facing screens and interactions. All files under `/Users/codybontec
 - When `state.shouldRequestReview` becomes true (post-clone), delays 2s then calls `requestReview()`.
 
 ### App entry (`Sync_mdApp.swift`)
-- Wires `AppState`, `PremiumEntitlementStore`, `PremiumRuntime`, `BackgroundSyncCoordinator` into environment.
+- Wires `AppState`, `PremiumRuntime`, `BackgroundSyncCoordinator` into environment.
 - **x-callback-url handling**: `onOpenURL` → `CallbackURLHandler` for `syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>` (Obsidian integration). Results surface in VaultView callback banner and drive `state.callbackNavigateToRepoID` navigation.
 - **Foreground scene activation**: re-validates cloned repos (Files-app deletions), refreshes change counts (deferred 0.5s, skip if scanned within 15s), reconciles premium foreground.
 - **Debug PAT injection**: `INJECT_PAT` env var auto sign-in for simulator testing.
@@ -408,7 +408,7 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 
 - **About section**: all current/future cloned or managed repositories after one installation-level opt-in, per-repo exclusions, eligible GitHub event wakes versus no-event-hint fallback, discretionary processing limits, independent pull/push controls, configured branch, clean-fast-forward pull behavior, separately consented publishing, push-only no-checkout behavior, and explicit stop/never-does caveats.
 - **Background Sync section**: **"Enable Background Sync"** controls installation-wide wake/enrollment infrastructure. While enabled, independent **"Pull remote changes"** and confirmation-backed **"Commit and push local changes"** toggles allow pull-only, push-only, both, or neither. Existing enabled installations migrate pull-on/push-off. Copy discloses push-only remote validation without checkout, stage-all/commit/push behavior, fail-closed safety, and discretionary iOS processing timing. Enabling the global mode calls `setAutomaticallySyncAllRepositories`; any returned GitHub link opens. While enabled, **Link / Manage GitHub App** calls `startGitHubLink`. Turning off calls the runtime off path and is explicitly distinguished from terminal deletion.
-- **Subscription section**: entitlement states; Annual/Monthly product buttons; **Restore Purchases**; **Manage Subscription**.
+- (Subscription/paywall section removed with the subscription; the screen is now management-only)**; **Manage Subscription**.
 - **Background Sync status**: reconciliation progress; total/included/excluded/disabled/attention aggregate counts; **Retry** calls `prepareForSettings`.
 - **Data & privacy**: on-device architecture copy (no relay, no push registration, no off-device Background Sync data) plus privacy/terms links and the data-request email flow.
 - **Privacy & terms section**: Privacy Policy, Terms of Use, and private data request/deletion draft.

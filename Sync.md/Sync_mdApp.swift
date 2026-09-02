@@ -30,7 +30,6 @@ extension Sync_mdApp {
 @main
 struct Sync_mdApp: App {
     @State private var appState: AppState
-    @State private var entitlementStore: PremiumEntitlementStore
     @State private var premiumRuntime: PremiumRuntime
     @State private var assistForegroundReconciliationTask: Task<Void, Never>? = nil
     @Environment(\.scenePhase) private var scenePhase
@@ -44,16 +43,12 @@ struct Sync_mdApp: App {
         }
         #endif
         let appState = AppState()
-        let entitlementStore = PremiumEntitlementStore()
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { entitlementStore.state.isActive },
             repositoryProvider: appState,
             conditionsProvider: SystemBackgroundSyncConditions()
         )
         _appState = State(initialValue: appState)
-        _entitlementStore = State(initialValue: entitlementStore)
         _premiumRuntime = State(initialValue: PremiumRuntime(
-            entitlementStore: entitlementStore,
             coordinator: coordinator,
             repositoryProvider: appState
         ))
@@ -66,13 +61,10 @@ struct Sync_mdApp: App {
         WindowGroup {
             ContentView()
                 .environment(appState)
-                .environment(entitlementStore)
                 .environment(premiumRuntime)
                 .task {
                     if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
                         if FeatureFlags.gitSyncAssistEnabled {
-                            await premiumRuntime.start()
-                            guard !Task.isCancelled else { return }
                             assistForegroundReconciliationTask = Task { @MainActor in
                                 await premiumRuntime.reconcileForeground()
                             }

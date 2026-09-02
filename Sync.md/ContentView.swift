@@ -80,5 +80,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environment(AppState())
-        .environment(PremiumEntitlementStore())
 }

@@ -1,28 +1,15 @@
-import StoreKit
 import SwiftUI
 
-enum PremiumAutomaticSyncToggleAvailability {
-    static func isDisabled(
-        currentlyEnabled: Bool,
-        isWorking: Bool,
-        entitlementIsActive: Bool
-    ) -> Bool {
-        isWorking || (!currentlyEnabled && !entitlementIsActive)
-    }
-}
-
-/// Background Sync paywall + management surface, styled after the onboarding
+/// Background Sync management surface, styled after the onboarding
 /// slides: giant black-weight hero with an accent word, hairline dividers,
-/// monospaced micro-labels, and hard-bordered cards. Nothing here gates the
-/// app's manual Git features — the layout leads with the upsell and defers
-/// installation controls and status below the fold.
+/// monospaced micro-labels, and hard-bordered cards. Background Sync is part
+/// of the app — there is no subscription or paywall, so this screen manages
+/// the opt-in, pull/push consent, status, and privacy posture.
 struct PremiumSettingsView: View {
-    @Environment(PremiumEntitlementStore.self) private var entitlement
     @Environment(PremiumRuntime.self) private var runtime
     @Environment(\.dismiss) private var dismiss
 
     @State private var isWorking = false
-    @State private var purchasingProductID: String?
     @State private var automaticSyncConfirmation = false
     @State private var automaticPushConfirmation = false
     @State private var appeared = false
@@ -36,8 +23,6 @@ struct PremiumSettingsView: View {
                     whatYouGetSection
 
                     rulesSection
-
-                    plansSection
 
                     activationSection
 
@@ -148,27 +133,20 @@ struct PremiumSettingsView: View {
                 .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                 .padding(.bottom, 18)
 
-            subscriptionStateBadge
+            syncStateBadge
         }
         .accessibilityElement(children: .contain)
     }
 
     @ViewBuilder
-    private var subscriptionStateBadge: some View {
-        switch entitlement.state {
-        case .active:
+    private var syncStateBadge: some View {
+        if runtime.automaticallySyncAllRepositories {
             HStack(spacing: 8) {
-                BBadge(text: String(localized: "Active"), style: .success)
-                if runtime.automaticallySyncAllRepositories {
-                    BBadge(text: String(localized: "Background Sync"), style: .accent)
-                }
+                BBadge(text: String(localized: "Included with GitSync.md"), style: .success)
+                BBadge(text: String(localized: "Background Sync"), style: .accent)
             }
-        case .pending:
-            BBadge(text: String(localized: "Purchase pending"), style: .warning)
-        case .inactive:
-            BBadge(text: String(localized: "Not subscribed"), style: .default)
-        case .loading, .error:
-            EmptyView()
+        } else {
+            BBadge(text: String(localized: "Included with GitSync.md"), style: .success)
         }
     }
 
@@ -251,109 +229,6 @@ struct PremiumSettingsView: View {
         }
     }
 
-    // MARK: - Plans
-
-    private var sortedProducts: [PremiumProduct] {
-        entitlement.products.sorted {
-            ($0.period == .year ? 0 : 1) < ($1.period == .year ? 0 : 1)
-        }
-    }
-
-    private var plansSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "Plans"))
-
-            // Live subscription state line.
-            VStack(alignment: .leading, spacing: 8) {
-                switch entitlement.state {
-                case .loading:
-                    BLoading(text: String(localized: "Checking App Store…"))
-                case .active(let proof):
-                    HStack(spacing: 8) {
-                        BBadge(text: String(localized: "Active"), style: .success)
-                        Text(proof.productID)
-                            .font(.system(size: 12, design: .monospaced))
-                            .foregroundStyle(Color.brutalTextFaint)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                    }
-                case .pending:
-                    BBadge(text: String(localized: "Purchase pending"), style: .warning)
-                case .inactive:
-                    BBadge(text: String(localized: "Not subscribed"), style: .default)
-                case .error(let message):
-                    Label(message, systemImage: "exclamationmark.triangle")
-                        .font(.system(size: 13, design: .monospaced))
-                        .foregroundStyle(Color.brutalError)
-                }
-
-                if sortedProducts.isEmpty, case .inactive = entitlement.state {
-                    BLoading(text: String(localized: "Checking App Store…"))
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            ForEach(sortedProducts) { product in
-                AssistPlanCard(
-                    name: planName(for: product),
-                    caption: product.period == .year
-                        ? String(localized: "Best value")
-                        : String(localized: "Flexible billing"),
-                    price: product.displayPrice,
-                    periodLabel: product.period == .year
-                        ? String(localized: "Per year")
-                        : String(localized: "Per month"),
-                    isFeatured: product.period == .year,
-                    isCurrentPlan: currentProductID == product.id,
-                    isDisabled: isWorking || entitlement.state.isActive,
-                    isLoading: purchasingProductID == product.id,
-                    action: {
-                        Task { await purchase(product) }
-                    }
-                )
-            }
-
-            HStack(spacing: 24) {
-                BGhostButton(title: String(localized: "Restore Purchases")) {
-                    Task {
-                        isWorking = true
-                        await entitlement.restore()
-                        isWorking = false
-                    }
-                }
-                if entitlement.state.isActive {
-                    BGhostButton(title: String(localized: "Manage Subscription")) {
-                        guard let url = URL(string: "https://apps.apple.com/account/subscriptions") else { return }
-                        UIApplication.shared.open(url)
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.top, 4)
-        }
-    }
-
-    private var currentProductID: String? {
-        if case .active(let proof) = entitlement.state { return proof.productID }
-        return nil
-    }
-
-    private func planName(for product: PremiumProduct) -> String {
-        switch product.period {
-        case .year: return String(localized: "Annual")
-        case .month: return String(localized: "Monthly")
-        case .unknown: return product.displayName
-        }
-    }
-
-    private func purchase(_ product: PremiumProduct) async {
-        purchasingProductID = product.id
-        isWorking = true
-        await entitlement.purchase(productID: product.id)
-        isWorking = false
-        purchasingProductID = nil
-    }
-
     // MARK: - Background Sync activation
 
     private var activationSection: some View {
@@ -374,18 +249,6 @@ struct PremiumSettingsView: View {
                 .toggleStyle(.switch)
                 .tint(Color.brutalText)
                 .disabled(automaticSyncToggleIsDisabled)
-
-                if let prerequisiteMessage = automaticSyncPrerequisiteMessage {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text("!")
-                            .font(.system(size: 13, weight: .black, design: .monospaced))
-                            .foregroundStyle(Color.brutalWarning)
-                        Text(prerequisiteMessage)
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(Color.brutalWarning)
-                    }
-                    .accessibilityElement(children: .combine)
-                }
 
                 Rectangle()
                     .fill(Color.brutalBorderSoft)
@@ -450,7 +313,7 @@ struct PremiumSettingsView: View {
     // MARK: - Status
 
     private var showStatusSection: Bool {
-        entitlement.state.isActive || runtime.automaticallySyncAllRepositories
+        runtime.automaticSyncSummary.total > 0
     }
 
     private var statusSection: some View {
@@ -552,21 +415,10 @@ struct PremiumSettingsView: View {
         .padding(.top, 4)
     }
 
-    // MARK: - Logic (unchanged behavior)
+    // MARK: - Logic
 
     private var automaticSyncToggleIsDisabled: Bool {
-        PremiumAutomaticSyncToggleAvailability.isDisabled(
-            currentlyEnabled: runtime.automaticallySyncAllRepositories,
-            isWorking: isWorking,
-            entitlementIsActive: entitlement.state.isActive
-        )
-    }
-
-    private var automaticSyncPrerequisiteMessage: String? {
-        if !runtime.automaticallySyncAllRepositories, !entitlement.state.isActive {
-            return String(localized: "An active Background Sync subscription is required before background syncing can be enabled.")
-        }
-        return nil
+        isWorking
     }
 
     private var automaticSyncBinding: Binding<Bool> {
@@ -691,75 +543,6 @@ private struct AssistRuleColumn: View {
         .padding(.horizontal, 14)
         .padding(.bottom, 14)
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-// MARK: - Plan Card
-
-private struct AssistPlanCard: View {
-    let name: String
-    let caption: String
-    let price: String
-    let periodLabel: String
-    let isFeatured: Bool
-    let isCurrentPlan: Bool
-    let isDisabled: Bool
-    let isLoading: Bool
-    let action: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 10) {
-                Text(name.uppercased())
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(2)
-                Spacer(minLength: 8)
-                BBadge(text: caption, style: isFeatured ? .accent : .default)
-            }
-
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text(price)
-                    .font(.system(size: 34, weight: .black, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                Text(periodLabel.uppercased())
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
-                    .foregroundStyle(Color.brutalTextMid)
-                    .tracking(1)
-            }
-
-            if isCurrentPlan {
-                HStack(spacing: 8) {
-                    Image(systemName: "checkmark.seal.fill")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(Color.brutalSuccess)
-                        .accessibilityHidden(true)
-                    Text("Current plan")
-                        .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                        .foregroundStyle(Color.brutalSuccess)
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 44)
-                .background(Color.brutalSuccess.opacity(0.08))
-                .overlay(Rectangle().strokeBorder(Color.brutalSuccess.opacity(0.30), lineWidth: 1))
-            } else if isFeatured {
-                BPrimaryButton(title: String(localized: "Subscribe"), isLoading: isLoading, isDisabled: isDisabled, action: action)
-            } else {
-                BSecondaryButton(title: String(localized: "Subscribe"), isLoading: isLoading, isDisabled: isDisabled, action: action)
-            }
-        }
-        .padding(16)
-        .background(Color.brutalBg)
-        .overlay(
-            Rectangle().strokeBorder(
-                isFeatured ? Color.brutalBorder : Color.brutalBorderSoft,
-                lineWidth: isFeatured ? 2 : 1
-            )
-        )
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(name), \(price) \(periodLabel)")
     }
 }
 

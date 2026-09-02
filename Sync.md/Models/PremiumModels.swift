@@ -1,112 +1,8 @@
 import Foundation
 
-struct PremiumProductIdentifiers: Sendable, Equatable {
-    static let `default` = PremiumProductIdentifiers(
-        monthly: "com.bontecou.gitsync.assist.monthly",
-        annual: "com.bontecou.gitsync.assist.annual",
-        subscriptionGroup: "gitsync-assist"
-    )
-
-    let monthly: String
-    let annual: String
-    let subscriptionGroup: String
-
-    var all: [String] { [monthly, annual] }
-}
-
-enum PremiumBillingPeriod: String, Codable, Sendable { case month, year, unknown }
-
-struct PremiumProduct: Identifiable, Codable, Sendable, Equatable {
-    let id: String
-    let displayName: String
-    let displayPrice: String
-    let period: PremiumBillingPeriod
-}
-
-enum PremiumStoreEnvironment: String, Codable, Sendable { case sandbox, production, xcode, unknown }
-
-struct PremiumVerifiedTransaction: Codable, Sendable, Equatable {
-    let productID: String
-    let transactionID: UInt64
-    let originalTransactionID: UInt64
-    let purchaseDate: Date
-    let expirationDate: Date?
-    let revocationDate: Date?
-    let appAccountToken: UUID?
-    let environment: PremiumStoreEnvironment
-    let signedTransaction: String
-
-    /// Used only for newly delivered purchase/update transactions. StoreKit's
-    /// `currentEntitlements` sequence is authoritative and may include access
-    /// granted during a subscription grace period past this date.
-    func isUsableEvent(at date: Date = Date()) -> Bool {
-        revocationDate == nil && (expirationDate.map { $0 > date } ?? true)
-    }
-}
-
-struct PremiumEntitlementProof: Codable, Sendable, Equatable {
-    let productID: String
-    let transactionID: UInt64
-    let originalTransactionID: UInt64
-    let expirationDate: Date?
-    let environment: PremiumStoreEnvironment
-    let signedTransaction: String
-
-    init(transaction: PremiumVerifiedTransaction) {
-        productID = transaction.productID
-        transactionID = transaction.transactionID
-        originalTransactionID = transaction.originalTransactionID
-        expirationDate = transaction.expirationDate
-        environment = transaction.environment
-        signedTransaction = transaction.signedTransaction
-    }
-}
-
-enum PremiumEntitlementState: Sendable, Equatable {
-    case loading
-    case inactive
-    case active(PremiumEntitlementProof)
-    case pending
-    case error(String)
-
-    var isActive: Bool {
-        if case .active = self { return true }
-        return false
-    }
-}
-
-/// Pure gating rules for the optional Background Sync upsell surfaces. Every surface is
-/// compile-time disabled until `gitSyncAssistEnabled` ships, never targets an
-/// active subscriber or an installation that already enabled automation, and
-/// is dismissible forever after one use. Manual Git features are never gated.
-enum AssistUpsellEligibility {
-    /// Successful manual pulls after which the one-time milestone sheet may
-    /// appear. Counting runs even while the feature flag is off so long-time
-    /// users are offered the upgrade on their first post-release pull instead
-    /// of starting from zero.
-    static let milestonePullThreshold = 5
-
-    static func shouldShowBanner(
-        featureEnabled: Bool,
-        hasRepositories: Bool,
-        subscriptionActive: Bool,
-        assistEnabled: Bool,
-        bannerDismissed: Bool
-    ) -> Bool {
-        featureEnabled && hasRepositories && !subscriptionActive && !assistEnabled && !bannerDismissed
-    }
-
-    static func shouldShowMilestone(
-        featureEnabled: Bool,
-        subscriptionActive: Bool,
-        assistEnabled: Bool,
-        milestoneShown: Bool,
-        successfulPullCount: Int
-    ) -> Bool {
-        featureEnabled && !subscriptionActive && !assistEnabled && !milestoneShown
-            && successfulPullCount >= milestonePullThreshold
-    }
-}
+// Background Sync is part of the paid-up-front app: no subscription,
+// entitlement, or installation-identity types remain. The models below cover
+// per-repository automatic sync policy, health, and aggregate status only.
 
 enum RepoAssistNetworkPolicy: String, Codable, Sendable { case any, wifiOnly }
 enum RepoAssistPowerPolicy: String, Codable, Sendable { case any, externalPowerOnly }
@@ -168,33 +64,6 @@ struct PremiumAssistSummary: Sendable, Equatable {
     let excluded: Int
     let disabled: Int
     let failed: Int
-}
-
-struct PremiumInstallation: Codable, Sendable, Equatable {
-    let installationID: UUID
-    let bundleID: String
-    let appVersion: String
-}
-
-/// Stable per-installation identity used solely to bind StoreKit purchases
-/// to this install via the app account token. Entirely local: no server
-/// registration is involved.
-enum PremiumInstallationIdentity {
-    static let defaultsKey = "premium.installation-id.v1"
-
-    static func current(
-        defaults: UserDefaults = .standard,
-        bundle: Bundle = .main
-    ) -> PremiumInstallation {
-        let id = defaults.string(forKey: defaultsKey).flatMap(UUID.init(uuidString:))
-            ?? UUID()
-        defaults.set(id.uuidString, forKey: defaultsKey)
-        return PremiumInstallation(
-            installationID: id,
-            bundleID: bundle.bundleIdentifier ?? "unknown",
-            appVersion: bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
-        )
-    }
 }
 
 struct RepoAssistSettings: Codable, Sendable, Equatable {

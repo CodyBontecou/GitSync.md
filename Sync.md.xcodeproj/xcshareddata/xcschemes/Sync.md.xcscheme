@@ -89,16 +89,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <CommandLineArguments
-         isEnabled = "YES">
-         <CommandLineArgument
-            argument = "-PREMIUM_RELAY_BASE_URL_OVERRIDE https://gitsync-premium-relay.costream.workers.dev"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
-      <StoreKitConfigurationFileReference
-         identifier = "../../Sync.md/GitSyncAssist.storekit">
-      </StoreKitConfigurationFileReference>
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference

@@ -2,13 +2,10 @@ import SwiftUI
 
 struct OnboardingView: View {
     @Environment(AppState.self) private var state
-    @Environment(PremiumEntitlementStore.self) private var entitlement
     @Environment(\.dismiss) private var dismiss
     @State private var currentPage = 0
     @State private var appeared = false
     @State private var trackedSteps: Set<OnboardingAnalyticsStep> = []
-    @State private var purchasingProductID: String?
-    @State private var isWorking = false
 
     /// `true` when onboarding is re-presented from App Settings for an
     /// existing user. Replays always start from the first slide, never resume
@@ -21,34 +18,15 @@ struct OnboardingView: View {
 
     private let analytics = OnboardingAnalyticsClient.shared
 
-    /// DEBUG-only preview hook: launch the app with `PREVIEW_PROSPECT_PAYWALL=1`
-    /// to view the sales-state paywall even when this install's entitlement is
-    /// active (e.g. a sandbox-subscribed developer device).
-    #if DEBUG
-    private static let previewProspectPaywall =
-        ProcessInfo.processInfo.environment["PREVIEW_PROSPECT_PAYWALL"] == "1"
-    #else
-    private static let previewProspectPaywall = false
-    #endif
-
-    /// The entitlement state the paywall renders from. Purchase calls always
-    /// hit the real store; this only shapes the previewed UI.
-    private var paywallEntitlementState: PremiumEntitlementState {
-        if Self.previewProspectPaywall, case .active = entitlement.state {
-            return .inactive
-        }
-        return entitlement.state
-    }
-
-    /// The Background Sync soft paywall is only offered while the legacy
+    /// The Background Sync feature slide is only offered while the legacy
     /// `gitSyncAssistEnabled` feature flag is enabled. While `false`, onboarding
     /// shows exactly the three informational slides (then the sign-in step).
-    private var showsAssistPaywall: Bool { FeatureFlags.gitSyncAssistEnabled }
+    private var showsAssistSlide: Bool { FeatureFlags.gitSyncAssistEnabled }
 
-    /// Total pages: informational slides, the optional Background Sync soft
-    /// paywall, and the final sign-in step. The sign-in step is always last so
+    /// Total pages: informational slides, the optional Background Sync feature
+    /// slide, and the final sign-in step. The sign-in step is always last so
     /// it stays swipe-navigable like every other onboarding page.
-    private var pageCount: Int { slides.count + (showsAssistPaywall ? 1 : 0) + 1 }
+    private var pageCount: Int { slides.count + (showsAssistSlide ? 1 : 0) + 1 }
 
     /// Index of the embedded sign-in step (`SetupView`).
     private var signInIndex: Int { pageCount - 1 }
@@ -74,15 +52,11 @@ struct OnboardingView: View {
         ),
     ]
 
-    /// Subscribers see "INCLUDED" instead of "PREMIUM" — the page confirms
-    /// their benefit rather than selling it again.
     private var assistSlide: OnboardingSlide {
         OnboardingSlide(
             title: [String(localized: "BACKGROUND"), String(localized: "SYNC")],
             accentIndex: 1,
-            subtitle: paywallEntitlementState.isActive
-                ? String(localized: "BEST-EFFORT — INCLUDED")
-                : String(localized: "BEST-EFFORT — OPTIONAL SUBSCRIPTION"),
+            subtitle: String(localized: "BEST-EFFORT — INCLUDED WITH GITSYNC.MD"),
             description: ""
         )
     }
@@ -94,8 +68,8 @@ struct OnboardingView: View {
                     slideView(slide)
                         .tag(index)
                 }
-                if showsAssistPaywall {
-                    assistPaywallView
+                if showsAssistSlide {
+                    assistSlideView
                         .tag(slides.count)
                 }
                 SetupView(onBack: {
@@ -162,7 +136,7 @@ struct OnboardingView: View {
         }
         .onChange(of: currentPage) { _, newPage in
             if newPage == signInIndex, !state.hasSeenOnboarding {
-                // The user has passed the slides/paywall. Persist it so an
+                // The user has passed the slides. Persist it so an
                 // interrupted first run resumes at the sign-in step.
                 state.hasSeenOnboarding = true
                 state.saveGlobalSettings()
@@ -171,14 +145,8 @@ struct OnboardingView: View {
         }
     }
 
-    /// On the paywall page the primary button reads "Continue" until the user
-    /// subscribes — a soft decline that always moves on to the sign-in step.
-    /// Once active, it returns to "Get Started".
     private var lastPagePrimaryTitle: String {
-        if showsAssistPaywall, currentPage == slides.count, !paywallEntitlementState.isActive {
-            return String(localized: "Continue")
-        }
-        return String(localized: "Get Started")
+        String(localized: "Get Started")
     }
 
     // MARK: - Slide View
@@ -205,7 +173,7 @@ struct OnboardingView: View {
 
     /// Giant hero title, hairline divider, and monospaced micro-label shared
     /// by every onboarding page. Informational slides use the default 56pt
-    /// hero; the paywall passes a compact size to fit one screen.
+    /// hero; the Background Sync slide passes a compact size to fit one screen.
     private func slideHeader(_ slide: OnboardingSlide, titleSize: CGFloat = 56) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             // Title lines
@@ -237,13 +205,13 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Background Sync Soft Paywall
+    // MARK: - Background Sync Feature Slide
 
-    /// Compact paywall: hero, feature list, side-by-side tappable plan cards,
-    /// and a legal row. Vertical scrolling keeps every purchase and disclosure
-    /// reachable on compact devices and with longer localizations while the
-    /// decline CTA stays pinned below the page.
-    private var assistPaywallView: some View {
+    /// Feature slide: hero, feature list, and an "included" note. Background
+    /// Sync is part of the app — no purchase surface here. Vertical scrolling
+    /// keeps disclosures reachable on compact devices and longer localizations
+    /// while the CTA stays pinned below the page.
+    private var assistSlideView: some View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 14) {
                 Spacer(minLength: 0)
@@ -271,18 +239,16 @@ struct OnboardingView: View {
 
                 Spacer(minLength: 0)
 
-                if paywallEntitlementState.isActive {
-                    // Subscribers get a confirmation page, not a sales pitch.
-                    assistActiveSection
-                } else {
-                    assistPlansSection
-
-                    assistLegalRow
-
-                    AssistFinePrint(
-                        "Tap a plan to add Background Sync. It runs only when iOS grants background time and is not real time. Auto-renews until cancelled in App Store settings. Manual Git stays included."
-                    )
+                HStack(spacing: 8) {
+                    BBadge(text: String(localized: "Included with GitSync.md"), style: .success)
+                    Text(String(localized: "No subscription. Runs entirely on this device."))
+                        .font(.system(size: 13, design: .monospaced))
+                        .foregroundStyle(Color.brutalTextMid)
                 }
+
+                AssistFinePrint(
+                    "Enable it anytime in App Settings → Background Sync. It runs only when iOS grants background time and is not real time. Manual Git stays included."
+                )
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
@@ -290,39 +256,6 @@ struct OnboardingView: View {
             .padding(.bottom, 12)
         }
         .scrollIndicators(.hidden)
-        .task { await entitlement.start() }
-    }
-
-    /// Already subscribed: confirm the benefit instead of reselling it.
-    private var assistActiveSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                BBadge(text: String(localized: "Active"), style: .success)
-                Text(String(localized: "Your Background Sync subscription is active on this device."))
-                    .font(.system(size: 13, design: .monospaced))
-                    .foregroundStyle(Color.brutalTextMid)
-            }
-            AssistFinePrint(
-                "Manage billing and background syncing anytime in App Settings → Background Sync."
-            )
-        }
-    }
-
-    private var assistLegalRow: some View {
-        HStack(spacing: 16) {
-            Button(String(localized: "Restore")) {
-                Task { await restoreAssistPurchases() }
-            }
-            .font(.system(size: 12, weight: .semibold, design: .monospaced))
-            .foregroundStyle(Color.brutalAccent)
-            Spacer()
-            Link("Privacy", destination: URL(string: "https://gitsyncmd.app/privacy.html")!)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Color.brutalAccent)
-            Link("Terms", destination: URL(string: "https://gitsyncmd.app/terms.html")!)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Color.brutalAccent)
-        }
     }
 
     private func assistFeatureRow(icon: String, title: String) -> some View {
@@ -342,122 +275,6 @@ struct OnboardingView: View {
         .accessibilityElement(children: .combine)
     }
 
-    // MARK: - Paywall Plans
-
-    private var sortedAssistProducts: [PremiumProduct] {
-        entitlement.products.sorted {
-            ($0.period == .year ? 0 : 1) < ($1.period == .year ? 0 : 1)
-        }
-    }
-
-    @ViewBuilder
-    private var assistPlansSection: some View {
-        switch paywallEntitlementState {
-        case .active:
-            // Unreachable in practice: the paywall swaps to assistActiveSection
-            // when the entitlement is active.
-            EmptyView()
-        case .pending:
-            BBadge(text: String(localized: "Purchase pending"), style: .warning)
-        case .error(let message):
-            Label(message, systemImage: "exclamationmark.triangle")
-                .font(.system(size: 13, design: .monospaced))
-                .foregroundStyle(Color.brutalError)
-        case .loading, .inactive:
-            if sortedAssistProducts.isEmpty {
-                BLoading(text: String(localized: "Checking App Store…"))
-            } else {
-                HStack(spacing: 12) {
-                    ForEach(sortedAssistProducts) { product in
-                        assistPlanCard(product)
-                    }
-                }
-            }
-        }
-    }
-
-    /// The whole card is the purchase button — compact enough to sit beside
-    /// its sibling on one line.
-    private func assistPlanCard(_ product: PremiumProduct) -> some View {
-        let isFeatured = product.period == .year
-        return Button {
-            Task { await purchaseAssist(product) }
-        } label: {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 6) {
-                    Text(assistPlanName(for: product).uppercased())
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .tracking(1.5)
-                    Spacer(minLength: 0)
-                    if purchasingProductID == product.id {
-                        ProgressView()
-                            .controlSize(.small)
-                    } else if isFeatured {
-                        Text(String(localized: "BEST VALUE"))
-                            .font(.system(size: 9, weight: .black, design: .monospaced))
-                            .foregroundStyle(Color.brutalAccent)
-                            .tracking(1)
-                            .padding(.horizontal, 5)
-                            .padding(.vertical, 2)
-                            .background(Color.brutalAccent.opacity(0.10))
-                            .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
-                    }
-                }
-                Text(product.displayPrice)
-                    .font(.system(size: 26, weight: .black, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                Text(assistPeriodLabel(for: product).uppercased())
-                    .font(.system(size: 11, weight: .medium, design: .monospaced))
-                    .foregroundStyle(Color.brutalTextMid)
-                    .tracking(1)
-            }
-            .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.brutalBg)
-            .overlay(
-                Rectangle().strokeBorder(
-                    isFeatured ? Color.brutalBorder : Color.brutalBorderSoft,
-                    lineWidth: isFeatured ? 2 : 1
-                )
-            )
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .disabled(isWorking || paywallEntitlementState.isActive)
-        .accessibilityLabel("\(assistPlanName(for: product)), \(product.displayPrice) \(assistPeriodLabel(for: product)), \(String(localized: "Subscribe"))")
-    }
-
-    private func assistPeriodLabel(for product: PremiumProduct) -> String {
-        product.period == .year
-            ? String(localized: "Per year")
-            : String(localized: "Per month")
-    }
-
-    private func assistPlanName(for product: PremiumProduct) -> String {
-        switch product.period {
-        case .year: return String(localized: "Annual")
-        case .month: return String(localized: "Monthly")
-        case .unknown: return product.displayName
-        }
-    }
-
-    private func purchaseAssist(_ product: PremiumProduct) async {
-        purchasingProductID = product.id
-        isWorking = true
-        await entitlement.purchase(productID: product.id)
-        isWorking = false
-        purchasingProductID = nil
-    }
-
-    private func restoreAssistPurchases() async {
-        isWorking = true
-        await entitlement.restore()
-        isWorking = false
-    }
-
     // MARK: - Actions
 
     /// Advances to the embedded sign-in step — the last onboarding page.
@@ -467,7 +284,7 @@ struct OnboardingView: View {
         }
     }
 
-    /// "Skip" jumps past the remaining slides/paywall to the sign-in step. On
+    /// "Skip" jumps past the remaining slides to the sign-in step. On
     /// a replay from App Settings it simply dismisses, matching the old
     /// escape hatch for existing users.
     private func skipTapped() {
@@ -495,7 +312,7 @@ struct OnboardingView: View {
         case 0: return .welcome
         case 1: return .editAnywhere
         case 2: return .fullGit
-        case 3: return showsAssistPaywall ? .backgroundSync : nil
+        case 3: return showsAssistSlide ? .backgroundSync : nil
         default: return nil
         }
     }

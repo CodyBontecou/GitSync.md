@@ -1,54 +1,41 @@
-# Background Sync Premium Subscription — Feature Inventory
+# Background Sync — Feature Inventory
 
-Domain: client (Sync.md) only. Background Sync is fully on-device: StoreKit 2 entitlements, an in-app scheduler, and the app's own libgit2 engine. The historical webhook→APNs relay (Cloudflare Worker + D1 + Queues + storekit-verifier) was removed; no server component remains.
+Domain: client (Sync.md) only. Background Sync is part of the paid-up-front app: no subscription, no entitlement verification, no server component. An in-app scheduler and the app's own libgit2 engine do all the work on-device. The historical webhook→APNs relay (Cloudflare Worker + D1 + Queues + storekit-verifier) and the StoreKit subscription tier were both removed.
 
 ---
 
-## 1. Product / price / trial structure (StoreKit config)
+## 1. Product structure
 
-- `Sync.md/GitSyncAssist.storekit` — one subscription group `gitsync-assist` ("Background Sync", all-repository best-effort automatic reconciliation after one installation-level opt-in, with per-repository exclusions and independent automatic-pull/default-off automatic-publishing controls):
-  - `com.bontecou.gitsync.assist.monthly` — RecurringSubscription, P1M, $1.99 (best-effort Background Sync with independent pull/push controls), familyShareable=false, **no introductory offers / trials / winback / adHoc offers**.
-  - `com.bontecou.gitsync.assist.annual` — P1Y, $14.99, same caveats.
-- App Store Connect is authoritative; local `.storekit` is Debug-only (excluded from Release bundle; CI gate fails if any `.storekit` ships — completion-audit).
-- Product IDs mirrored in Swift at `PremiumModels.swift` `PremiumProductIdentifiers.default` (monthly/annual/subscriptionGroup).
+- Background Sync is included with the one-time app purchase. There are no in-app purchases, subscriptions, StoreKit products, or paywalls. `GitSyncAssist.storekit` was deleted along with `PremiumStorefront.swift` (purchase/entitlement client), `PremiumProductIdentifiers`, entitlement state/proof types, `AssistUpsellEligibility`, and the per-installation appAccountToken identity.
+- The App Store Connect auto-renewable subscriptions (`com.bontecou.gitsync.assist.monthly`/`.annual`) were retired from sale; existing subscribers stop being billed at their next renewal once removed (Apple-side administration).
 
-## 2. StoreKit 2 purchase / entitlement client (fully local)
+## 2. Runtime gates
 
-Files: `Sync.md/Services/PremiumStorefront.swift`, `Sync.md/Views/PremiumSettingsView.swift`.
+- `FeatureFlags.gitSyncAssistEnabled` is the only compile-time gate (kill switch for the whole feature surface).
+- The single runtime consent gate is `automaticallySyncAllRepositories` (explicit user opt-in with confirmation modal). Pull and push consents are independent (`automaticallyPullRemoteChanges` default-on at first enable, `automaticallyPushLocalChanges` default-off).
+- `automaticOperationsAllowed` = feature flag && global opt-in && not cancelled. No entitlement clause exists anywhere.
 
-Mechanics:
-- `PremiumStorefront` protocol (`setAppAccountToken`, `products`, `currentEntitlements`, `purchase`, `sync`, `transactionUpdates`) implemented by actor `StoreKitPremiumStorefront`.
-- Purchase: `Product.purchase(options: [.appAccountToken(installationUUID)])`; result must be `.verified` (JWS via StoreKit 2 on-device verification) else throws `unverifiedTransaction`. Outcome enum: `verified(PremiumFinishableTransaction) | pending | cancelled`. `PremiumFinishableTransaction` wraps the exact delivered `Transaction` plus a `finish()` closure so the delivered object is finished exactly once.
-- `PremiumEntitlementStore.refresh()`: `Transaction.currentEntitlements` (verified only) filtered to known product IDs with `revocationDate == nil`, sorted by latest expiration; presence in the verified sequence — **not** local expiration math — is authoritative (grace period included). A monotonic `refreshGeneration` guard prevents an older async StoreKit query from overwriting a newer snapshot.
-- `consumeEvent`: transaction is finished, then `refresh()` is re-run; "a queued event is never itself an authorization grant."
-- Restore: `AppStore.sync()` then refresh. Cached proof (`premium.verified-proof.v1` in UserDefaults) is UI-continuity only and never gates access.
-- Transaction listener: `Transaction.updates` AsyncStream started once in `performStart()`.
+## 3. Preference persistence and migration
 
-User-visible: `PremiumSettingsView` shows state (Active w/ productID, pending, inactive, error), product rows with displayPrice ("Annual — Best value", "Monthly — Flexible billing"), Restore Purchases, Manage Subscription (opens `https://apps.apple.com/account/subscriptions`).
-
-## 3. Installation identity & appAccountToken binding
-
-- `PremiumModels.swift` `PremiumInstallation{installationID, bundleID, appVersion}`; `PremiumInstallationIdentity.current()`: UUID persisted in UserDefaults only. The identity exists solely to bind the Apple-signed `appAccountToken` to this install for purchase association.
-- `PremiumRuntime.start()` calls `entitlementStore.bindAppAccountToken(installationID)` before any purchase.
-- A subscription restored on another device grants local Background Sync there independently; there is no cross-device server state.
+- Fixed UserDefaults keys: `premium.automatic-sync.v1`, `premium.automatic-pull.v1`, `premium.automatic-push.v1`.
+- One-time migration adopts the subscription-era installation-scoped keys (`premium.automatic-*.v1.<uuid>` under the persisted `premium.installation-id.v1`) into the fixed keys, then marks `premium.automatic-preferences.migrated.v1`. Existing users keep their enabled state and consents across the update.
 
 ## 4. PremiumRuntime orchestration (local lifecycle)
 
 File: `Sync.md/Services/PremiumRuntime.swift`. Key state: `automaticallySyncAllRepositories`, `automaticallyPullRemoteChanges`, `automaticallyPushLocalChanges`, `isReconcilingAutomaticSync`, `automaticSyncSummary`.
 
 - **Release gate**: `PremiumRuntime` production defaults its injected `assistFeatureIsEnabled` boundary to `FeatureFlags.gitSyncAssistEnabled`. When false, startup, global enable, settings reconciliation, and processing work perform no StoreKit or Git work. Persisted global preferences remain intact rather than being rewritten merely because the release gate is off. Manual Git, Shortcuts, and callback paths are outside this gate.
-- **Consent and global mode**: `setAutomaticallySyncAllRepositories(true)` requires an active entitlement and establishes fresh, explicit installation-scoped consent. While enabled, `setAutomaticallyPullRemoteChanges` and `setAutomaticallyPushLocalChanges` control the two actions independently. Existing enabled installations migrate `premium.automatic-pull.v1.<installation>` on while `premium.automatic-push.v1.<installation>` remains off; publishing still requires separate confirmation. Revoking either action cancels captured reconciliation, and global disable clears both action preferences so re-enable starts safely pull-on/push-off. The mode covers every current and future cloned/managed repository unless `excludedFromAutomaticSync`. An update or publication completed before cancellation cannot be recalled.
+- **Consent and global mode**: `setAutomaticallySyncAllRepositories(true)` establishes fresh, explicit installation-scoped consent. While enabled, `setAutomaticallyPullRemoteChanges` and `setAutomaticallyPushLocalChanges` control the two actions independently. Existing enabled installations migrate `premium.automatic-pull.v1.<installation>` on while `premium.automatic-push.v1.<installation>` remains off; publishing still requires separate confirmation. Revoking either action cancels captured reconciliation, and global disable clears both action preferences so re-enable starts safely pull-on/push-off. The mode covers every current and future cloned/managed repository unless `excludedFromAutomaticSync`. An update or publication completed before cancellation cannot be recalled.
 - **Automatic reconciliation** (entirely local): every non-excluded cloned repository is included (`assist.enabled = true`, `selectedBranch` follows `RepoConfig.branch`, enrollment status `enrolled`); non-cloned repositories are marked disabled with a clone hint; excluded repositories keep their exclusion. No GitHub identity resolution, App installations, enrollments, or channels are involved. Inventory/configuration handlers reconcile existing and newly cloned/managed repositories.
-- **Foreground reconciliation**: `reconcileForeground()` on scene-active refreshes entitlement, reconciles the automatic inventory, then attempts eligible repositories through the coordinator. This is the primary foreground freshness trigger now that wake pushes are gone. Rapid scene bounces coalesce into a running pass (no cancel-and-restart), a completed pass stamps a 30-second cooldown that suppresses redundant bounces, and a pass cancelled before finishing leaves the cooldown unstamped so the next activation retries immediately. Explicit user actions (`reconcileNow()` behind "Sync now" / "Retry") bypass the cooldown.
+- **Foreground reconciliation**: `reconcileForeground()` on scene-active reconciles the automatic inventory, then attempts eligible repositories through the coordinator. This is the primary foreground freshness trigger now that wake pushes are gone. Rapid scene bounces coalesce into a running pass (no cancel-and-restart), a completed pass stamps a 30-second cooldown that suppresses redundant bounces, and a pass cancelled before finishing leaves the cooldown unstamped so the next activation retries immediately. Explicit user actions (`reconcileNow()` behind "Sync now" / "Retry") bypass the cooldown.
 - **Background processing reconciliation**: with global Background Sync enabled and either automatic action selected, an injectable scheduler (`BackgroundProcessingScheduler.swift`) registers two complementary best-effort opportunities: `com.bontecou.Sync-md.background-refresh` (`BGAppRefreshTask`, the primary closed-app freshness mechanism — short windows iOS grants generously) and `com.bontecou.Sync-md.background-sync` (`BGProcessingTask` fallback, longer runtime, network required, battery allowed). Both use a 15-minute `earliestBeginDate`, reschedule on invocation, and cancel flights on expiration (`PremiumBackgroundProcessingExecution` with exactly-once completion). iOS controls whether and when they run. `prepareForSettings()` performs the settings-side refresh/reconciliation.
 - **Exclusion**: `setAutomaticSyncExcluded` cancels one repository's flights and marks its saved exclusion, or schedules re-inclusion. Repo removal cancels that repo's in-flight work synchronously via `assistRepositoryRemovalHandler`.
-- **Entitlement loss** (`entitlementChanged .inactive`): cancel all syncs and stop scheduling; per-repo inclusion flags are preserved so re-subscribing resumes automatically.
 
 ## 5. BackgroundSyncCoordinator (shared engine)
 
 File: `Sync.md/Services/BackgroundSyncCoordinator.swift`.
 - Triggers: `reconcileForeground()`, `reconcileProcessing()`, and single-repo `reconcile(repoID:)`. Batches of 3 repositories; per-repo in-flight dedup with generation-tagged flights; independent foreground/processing cancellation sets; `cancelAll()` when either action consent is revoked.
-- Per-repo gates before any Git work: entitlement active, `assist.enabled`, at least one action consented, `networkPolicy == .wifiOnly` → Wi-Fi required, `powerPolicy == .externalPowerOnly` → external power required (conditions via `NWPathMonitor` + `UIDevice` battery state).
+- Per-repo gates before any Git work: `assist.enabled`, at least one action consented, `networkPolicy == .wifiOnly` → Wi-Fi required, `powerPolicy == .externalPowerOnly` → external power required (conditions via `NWPathMonitor` + `UIDevice` battery state).
 - Execution: `RepositoryReconciliationRunner` under the repository's serialized lease — pull (clean fast-forward via `RepositoryPullRunner`), then optionally push (`RepositoryPushRunner`) with the safety revalidation below. Results are recorded as `RepoAssistHealth` (kinds `never/updated/upToDate/deferred/attention/failed` + timestamps/commitSHA) including post-update LFS-hydration attention mapping.
 
 ## 6. Per-repo exclusion/settings, and health
@@ -67,14 +54,15 @@ Files: `Sync.md/Models/PremiumModels.swift`, `Sync.md/Views/PremiumSettingsView.
 ## 8. Privacy posture
 
 - Background Sync sends nothing anywhere except normal Git traffic (fetch/push) from the app's libgit2 engine directly to the user's configured Git provider, using credentials already on the device. No relay, no push registration, no server-side Background Sync data. Entitlements verified on-device from Apple-signed StoreKit 2 transactions.
-- Privacy-request email flow (`FeedbackHelper.privacyRequestMailtoURL`) includes only the onboarding-analytics installation identifier (the only remaining first-party record).
+- Privacy-request email flow (`FeedbackHelper.privacyRequestMailtoURL`) includes only the onboarding-analytics installation identifier (the only remaining first-party record). No purchase metadata is collected because there are no purchases.
 
 ## 9. Paywall scope boundary
 
-Existing manual Git (clone/fetch/pull/stage/commit/branch/merge/rebase/conflict/push), Shortcuts, and callbacks are **not** paywalled — no entitlement gate on manual paths (completion audit; runbook "Product and safety contract").
+Everything is included with the one-time purchase: manual Git (clone/fetch/pull/stage/commit/branch/merge/rebase/conflict/push), Shortcuts, callbacks, and Background Sync. No entitlement gate exists anywhere (completion audit; runbook "Product and safety contract").
 
 ## Migration notes (relay removal)
 
 - Existing installations keep working: `assist.enabled` repos continue to be reconciled on foreground/processing triggers with their saved policies and health. Persisted channel/enrollment fields are ignored.
 - Users who had previously performed a terminal relay-data deletion can simply re-enable Background Sync; the local barrier state was relay-scoped and no longer applies.
 - `UIBackgroundModes` no longer includes `remote-notification`; entitlements carry no `aps-environment`; `PREMIUM_RELAY_BASE_URL` is gone from Info.plist and the project file.
+- Subscription removal (2026-09): paywall UI, onboarding plan cards, repo-list upsell banner/milestone sheet, entitlement store, and StoreKit configuration file were deleted. Existing installs migrate their preferences (see §3) and keep syncing with their saved opt-in and per-repo policies.

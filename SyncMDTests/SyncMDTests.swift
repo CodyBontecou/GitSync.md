@@ -866,42 +866,6 @@ final class SyncMDTests: XCTestCase {
                        kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String)
     }
 
-    func testPremiumStoreKitConfigurationMatchesRuntimeProducts() throws {
-        let sourceURL = URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appendingPathComponent("Sync.md/GitSyncAssist.storekit")
-        let root = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: sourceURL)) as? [String: Any])
-        let groups = try XCTUnwrap(root["subscriptionGroups"] as? [[String: Any]])
-        XCTAssertEqual(groups.count, 1)
-        let group = try XCTUnwrap(groups.first)
-        XCTAssertEqual(group["id"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
-        XCTAssertEqual(group["name"] as? String, "Background Sync")
-        let groupLocalizations = try XCTUnwrap(group["localizations"] as? [[String: Any]])
-        XCTAssertEqual(groupLocalizations.first?["displayName"] as? String, "Background Sync")
-        XCTAssertTrue(
-            (groupLocalizations.first?["description"] as? String)?
-                .localizedCaseInsensitiveContains("independent automatic pull and push controls") == true
-        )
-
-        let subscriptions = try XCTUnwrap(group["subscriptions"] as? [[String: Any]])
-        let products = Dictionary(uniqueKeysWithValues: try subscriptions.map { subscription -> (String, String) in
-            let id = try XCTUnwrap(subscription["productID"] as? String)
-            let period = try XCTUnwrap(subscription["recurringSubscriptionPeriod"] as? String)
-            let localizations = try XCTUnwrap(subscription["localizations"] as? [[String: Any]])
-            let displayName = try XCTUnwrap(localizations.first?["displayName"] as? String)
-            let description = try XCTUnwrap(localizations.first?["description"] as? String)
-            XCTAssertTrue(displayName.hasPrefix("Background Sync"))
-            XCTAssertTrue(description.localizedCaseInsensitiveContains("independent automatic pull and push controls"))
-            XCTAssertEqual(subscription["subscriptionGroupID"] as? String, PremiumProductIdentifiers.default.subscriptionGroup)
-            XCTAssertEqual(subscription["type"] as? String, "RecurringSubscription")
-            return (id, period)
-        })
-        XCTAssertEqual(Set(products.keys), Set(PremiumProductIdentifiers.default.all))
-        XCTAssertEqual(products[PremiumProductIdentifiers.default.monthly], "P1M")
-        XCTAssertEqual(products[PremiumProductIdentifiers.default.annual], "P1Y")
-    }
-
     func testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking() throws {
         let manifestURL = try XCTUnwrap(Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy"))
         let manifest = try XCTUnwrap(PropertyListSerialization.propertyList(
@@ -1522,53 +1486,6 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
-    func testPremiumEntitlementStorePurchaseRestoreAndVerifiedUpdate() async throws {
-        let storefront = FakePremiumStorefront()
-        let defaults = UserDefaults(suiteName: "premium-store-\(UUID())")!
-        let store = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
-        await store.start()
-        XCTAssertEqual(store.state, .inactive)
-        let transaction = premiumTransaction(id: 12)
-        let purchase = await storefront.finishable(transaction)
-        await storefront.setEntitlements([transaction])
-        await storefront.setPurchase(.verified(purchase))
-        await store.purchase(productID: PremiumProductIdentifiers.default.monthly)
-        XCTAssertEqual(store.state, .active(PremiumEntitlementProof(transaction: transaction)))
-        let finished = await storefront.finished()
-        XCTAssertEqual(finished, [12])
-        await store.restore()
-        let syncCount = await storefront.syncCount()
-        XCTAssertEqual(syncCount, 1)
-        let annual = premiumTransaction(id: 13, productID: PremiumProductIdentifiers.default.annual)
-        await storefront.setEntitlements([annual])
-        await storefront.emit(annual)
-        for _ in 0..<20 where store.state != .active(PremiumEntitlementProof(transaction: annual)) {
-            await Task.yield()
-        }
-        XCTAssertEqual(store.state, .active(PremiumEntitlementProof(transaction: annual)))
-        let finishedUpdates = await storefront.finished()
-        XCTAssertEqual(finishedUpdates, [12, 13])
-    }
-
-    @MainActor
-    func testPremiumTransactionEventCannotGrantAccessWithoutCurrentEntitlement() async {
-        let storefront = FakePremiumStorefront()
-        let defaults = UserDefaults(suiteName: "premium-event-authority-\(UUID())")!
-        let store = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
-        await store.start()
-        let transaction = premiumTransaction(id: 99)
-        await storefront.emit(transaction)
-        for _ in 0..<20 {
-            if await storefront.finished().contains(99), store.state == .inactive { break }
-            await Task.yield()
-        }
-        XCTAssertEqual(store.state, .inactive)
-        let finished = await storefront.finished()
-        XCTAssertEqual(finished, [99])
-        XCTAssertNil(store.cachedVerifiedProof())
-    }
-
-    @MainActor
     func testGitHubCanonicalIdentityRequiresExactOwnerAndRepository() {
         XCTAssertEqual(GitRemoteURL.parse("https://github.com/Owner/Repo.git")?.canonicalGitHubFullName, "Owner/Repo")
         XCTAssertEqual(GitRemoteURL.parse("Owner/Repo")?.canonicalGitHubFullName, "Owner/Repo")
@@ -1618,37 +1535,36 @@ final class SyncMDTests: XCTestCase {
 
         harness.runtime.setAutomaticallyPushLocalChanges(true)
         XCTAssertTrue(harness.runtime.automaticallyPushLocalChanges)
-        let restored = await PremiumRuntimeTestHarness.make(
-            installationID: harness.installationID
-        )
-        XCTAssertTrue(restored.runtime.automaticallyPushLocalChanges, "Publishing consent persists per installation")
+        let restored = await PremiumRuntimeTestHarness.make(defaultsSuite: harness.defaultsSuite)
+        XCTAssertTrue(restored.runtime.automaticallyPushLocalChanges, "Publishing consent persists across relaunch")
         harness.runtime.setAutomaticallyPushLocalChanges(false)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
         restored.cleanup()
     }
 
     @MainActor
-    func testPremiumRuntimeMigratesEnabledInstallationToIndependentPullOnPreference() async {
+    func testPremiumRuntimeMigratesInstallationScopedPreferencesAndMaterializesPullOn() async {
+        let defaultsSuite = "premium-runtime-migration-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
         let installationID = UUID()
-        let syncKey = "premium.automatic-sync.v1.\(installationID.uuidString)"
-        let pullKey = "premium.automatic-pull.v1.\(installationID.uuidString)"
-        UserDefaults.standard.set(true, forKey: syncKey)
-        UserDefaults.standard.removeObject(forKey: pullKey)
+        defaults.set(installationID.uuidString, forKey: "premium.installation-id.v1")
+        defaults.set(true, forKey: "premium.automatic-sync.v1.\(installationID.uuidString)")
+        // No installation-scoped pull key: an enabled legacy install must
+        // materialize the historical pull-only default under the fixed key.
 
-        let harness = await PremiumRuntimeTestHarness.make(
-            installationID: installationID
-        )
+        let harness = await PremiumRuntimeTestHarness.make(defaultsSuite: defaultsSuite)
         defer { harness.cleanup() }
 
         XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories)
         XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
-        XCTAssertTrue(UserDefaults.standard.bool(forKey: pullKey))
+        XCTAssertTrue(defaults.bool(forKey: "premium.automatic-pull.v1"),
+                      "The pull-only default is materialized under the fixed key")
+        XCTAssertTrue(defaults.bool(forKey: "premium.automatic-sync.v1"),
+                      "The legacy value is adopted under the fixed key")
 
         harness.runtime.setAutomaticallyPullRemoteChanges(false)
-        let restored = await PremiumRuntimeTestHarness.make(
-            installationID: installationID
-        )
+        let restored = await PremiumRuntimeTestHarness.make(defaultsSuite: defaultsSuite)
         XCTAssertFalse(restored.runtime.automaticallyPullRemoteChanges, "Explicit pull-off must survive relaunch")
         XCTAssertFalse(restored.runtime.automaticallyPushLocalChanges)
         restored.cleanup()
@@ -1656,10 +1572,7 @@ final class SyncMDTests: XCTestCase {
 
     @MainActor
     func testPremiumRuntimeRelaunchPreservesEnabledNeitherMode() async {
-        let installationID = UUID()
-        let harness = await PremiumRuntimeTestHarness.make(
-            installationID: installationID
-        )
+        let harness = await PremiumRuntimeTestHarness.make()
         defer { harness.cleanup() }
         await harness.runtime.setAutomaticallySyncAllRepositories(true)
         harness.runtime.setAutomaticallyPullRemoteChanges(false)
@@ -1667,9 +1580,7 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
 
-        let restored = await PremiumRuntimeTestHarness.make(
-            installationID: installationID
-        )
+        let restored = await PremiumRuntimeTestHarness.make(defaultsSuite: harness.defaultsSuite)
         XCTAssertTrue(restored.runtime.automaticallySyncAllRepositories)
         XCTAssertFalse(restored.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(restored.runtime.automaticallyPushLocalChanges)
@@ -1705,19 +1616,6 @@ final class SyncMDTests: XCTestCase {
         harness.runtime.setAutomaticallyPushLocalChanges(true)
         XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
         XCTAssertGreaterThan(scheduler.scheduleCount, schedulesBeforePushOn, "Push-only mode receives discretionary processing opportunities")
-
-        let refreshGate = AsyncGate()
-        let refreshStarted = expectation(description: "entitlement refresh entered loading")
-        await harness.storefront.setCurrentEntitlementsGate(refreshGate, started: { refreshStarted.fulfill() })
-        let cancelsBeforeLoading = scheduler.cancelCount
-        let schedulesBeforeLoading = scheduler.scheduleCount
-        let refresh = Task { @MainActor in await harness.entitlementStore.refresh() }
-        await fulfillment(of: [refreshStarted], timeout: 2)
-        XCTAssertEqual(scheduler.cancelCount, cancelsBeforeLoading, "Transient entitlement loading must preserve an already scheduled request")
-        XCTAssertGreaterThan(scheduler.scheduleCount, schedulesBeforeLoading, "A cold/loading invocation must resubmit its next opportunity")
-        await refreshGate.open()
-        await refresh.value
-        await harness.storefront.setCurrentEntitlementsGate(nil)
 
         let scheduledBeforeInvocation = scheduler.scheduleCount
         let completed = expectation(description: "processing task completed")
@@ -1769,7 +1667,7 @@ final class SyncMDTests: XCTestCase {
         defer { fixture.cleanup() }
         let provider = FakeAssistRepositoryProvider(repo: fixture.repoConfig, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         let started = expectation(description: "processing operation started")
@@ -1812,8 +1710,7 @@ final class SyncMDTests: XCTestCase {
 
     @MainActor
     func testPremiumRuntimeGlobalDisableClearsPublishingConsentAcrossRelaunchAndReenable() async {
-        let installationID = UUID()
-        let harness = await PremiumRuntimeTestHarness.make(installationID: installationID)
+        let harness = await PremiumRuntimeTestHarness.make()
         defer { harness.cleanup() }
         await harness.runtime.setAutomaticallySyncAllRepositories(true)
         XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
@@ -1824,90 +1721,13 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
 
-        let relaunched = await PremiumRuntimeTestHarness.make(installationID: installationID)
+        let relaunched = await PremiumRuntimeTestHarness.make(defaultsSuite: harness.defaultsSuite)
         XCTAssertFalse(relaunched.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(relaunched.runtime.automaticallyPushLocalChanges)
         await relaunched.runtime.setAutomaticallySyncAllRepositories(true)
         XCTAssertTrue(relaunched.runtime.automaticallyPullRemoteChanges, "A fresh activation restores the safe pull-only default")
         XCTAssertFalse(relaunched.runtime.automaticallyPushLocalChanges, "Re-enabling pull automation requires fresh publishing consent")
         relaunched.cleanup()
-    }
-
-    @MainActor
-    func testAutomaticSyncTogglePrerequisitesApplyOnlyWhenEnabling() {
-        XCTAssertFalse(PremiumAutomaticSyncToggleAvailability.isDisabled(
-            currentlyEnabled: true, isWorking: false, entitlementIsActive: false
-        ))
-        XCTAssertTrue(PremiumAutomaticSyncToggleAvailability.isDisabled(
-            currentlyEnabled: false, isWorking: false, entitlementIsActive: false
-        ))
-        XCTAssertTrue(PremiumAutomaticSyncToggleAvailability.isDisabled(
-            currentlyEnabled: true, isWorking: true, entitlementIsActive: true
-        ))
-    }
-
-    func testAssistUpsellBannerEligibilityGates() {
-        let base: [Bool] = [true, true, false, false, false] // feature, repos, sub, assist, dismissed
-        func check(_ args: [Bool]) -> Bool {
-            AssistUpsellEligibility.shouldShowBanner(
-                featureEnabled: args[0], hasRepositories: args[1],
-                subscriptionActive: args[2], assistEnabled: args[3], bannerDismissed: args[4]
-            )
-        }
-        XCTAssertTrue(check(base))
-        // Feature flag, empty repo list, active subscription, enabled Background Sync,
-        // and prior dismissal each suppress the banner.
-        for i in 0..<5 {
-            var args = base
-            args[i].toggle()
-            XCTAssertFalse(check(args), "banner should hide when flag #\(i) flips")
-        }
-    }
-
-    func testAssistUpsellMilestoneEligibilityGates() {
-        func check(feature: Bool = true, sub: Bool = false, assist: Bool = false,
-                   shown: Bool = false, pulls: Int = AssistUpsellEligibility.milestonePullThreshold) -> Bool {
-            AssistUpsellEligibility.shouldShowMilestone(
-                featureEnabled: feature, subscriptionActive: sub, assistEnabled: assist,
-                milestoneShown: shown, successfulPullCount: pulls
-            )
-        }
-        XCTAssertTrue(check())
-        XCTAssertFalse(check(feature: false))
-        XCTAssertFalse(check(sub: true))
-        XCTAssertFalse(check(assist: true))
-        XCTAssertFalse(check(shown: true))
-        XCTAssertFalse(check(pulls: AssistUpsellEligibility.milestonePullThreshold - 1))
-        // Power users who already exceeded the threshold remain eligible.
-        XCTAssertTrue(check(pulls: 50))
-    }
-
-    @MainActor
-    func testSuccessfulManualPullsAdvanceAssistUpsellMilestoneCounter() async throws {
-        let fixture = try GitFixtureFactory.make(state: .clean)
-        defer { fixture.cleanup() }
-        fixture.repository.pullPlanResult = PullPlan(
-            action: .upToDate,
-            branch: "main",
-            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
-            remoteCommitSHA: fixture.repoConfig.gitState.commitSHA,
-            hasLocalChanges: false,
-            aheadBy: 0,
-            behindBy: 0
-        )
-        fixture.repository.pullResult = .success(
-            LocalPullResult(updated: false, newCommitSHA: fixture.repoConfig.gitState.commitSHA)
-        )
-        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
-        state.repos = [fixture.repoConfig]
-        XCTAssertEqual(state.assistManualPullSuccessCount, 0)
-
-        _ = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false)
-        XCTAssertEqual(state.assistManualPullSuccessCount, 1)
-        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .upToDate)
-
-        state.markAssistUpsellMilestoneShown()
-        XCTAssertTrue(state.assistUpsellMilestoneShown)
     }
 
     @MainActor
@@ -1945,19 +1765,15 @@ final class SyncMDTests: XCTestCase {
         )
         provider.repos = [repo]
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
-        let storefront = FakePremiumStorefront()
         let defaultsSuite = "provider-removal-runtime-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: defaultsSuite)!
         defer { defaults.removePersistentDomain(forName: defaultsSuite) }
-        let entitlement = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
         let runtime = PremiumRuntime(
-            entitlementStore: entitlement,
             coordinator: coordinator,
             repositoryProvider: provider,
-            installation: .init(installationID: UUID(), bundleID: "test", appVersion: "test"),
             assistFeatureIsEnabled: { true },
             defaults: defaults
         )
@@ -1993,19 +1809,15 @@ final class SyncMDTests: XCTestCase {
         repo.assist = RepoAssistSettings(enabled: true, channel: nil, selectedBranch: "main")
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
-        let storefront = FakePremiumStorefront()
         let defaultsSuite = "foreground-cancel-runtime-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: defaultsSuite)!
         defer { defaults.removePersistentDomain(forName: defaultsSuite) }
-        let entitlement = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
         let runtime = PremiumRuntime(
-            entitlementStore: entitlement,
             coordinator: coordinator,
             repositoryProvider: provider,
-            installation: .init(installationID: UUID(), bundleID: "test", appVersion: "test"),
             assistFeatureIsEnabled: { true },
             defaults: defaults
         )
@@ -2069,7 +1881,7 @@ final class SyncMDTests: XCTestCase {
         repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let conditions = FakeAssistConditions(BackgroundSyncConditions(isWiFi: true, isExternalPower: true))
-        let coordinator = BackgroundSyncCoordinator(entitlementIsActive: { true }, repositoryProvider: provider, conditionsProvider: conditions)
+        let coordinator = BackgroundSyncCoordinator(repositoryProvider: provider, conditionsProvider: conditions)
 
         let result = await coordinator.reconcile(repoID: repo.id)
         XCTAssertEqual(result, .completed(.pullOnly(.upToDate(branch: "main", commitSHA: repo.gitState.commitSHA))))
@@ -2096,9 +1908,11 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(branchResult, .completed(.pullOnly(.wrongBranch(expected: "notes", actual: "main"))))
         XCTAssertEqual(provider.repo.assist.health.attention, .wrongBranch)
 
-        let inactive = BackgroundSyncCoordinator(entitlementIsActive: { false }, repositoryProvider: provider, conditionsProvider: conditions)
-        let inactiveResult = await inactive.reconcile(repoID: repo.id)
-        XCTAssertEqual(inactiveResult, .ignored)
+        let disabledProvider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        disabledProvider.repo.assist.enabled = false
+        let disabled = BackgroundSyncCoordinator(repositoryProvider: disabledProvider, conditionsProvider: conditions)
+        let disabledResult = await disabled.reconcile(repoID: repo.id)
+        XCTAssertEqual(disabledResult, .ignored, "Repos opted out of Background Sync are never reconciled")
     }
 
     @MainActor
@@ -2115,7 +1929,7 @@ final class SyncMDTests: XCTestCase {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let conditions = FakeAssistConditions(.init(isWiFi: true, isExternalPower: true))
-        let coordinator = BackgroundSyncCoordinator(entitlementIsActive: { true }, repositoryProvider: provider, conditionsProvider: conditions)
+        let coordinator = BackgroundSyncCoordinator(repositoryProvider: provider, conditionsProvider: conditions)
 
         let cases: [(Result<PullExecutionResult, Error>, RepoAssistAttention, RepoAssistHealthKind)] = [
             (.success(.init(plan: .init(action: .blockedByLocalChanges, branch: "main", localCommitSHA: "a", remoteCommitSHA: "b", hasLocalChanges: true, aheadBy: 0, behindBy: 1), pullResult: nil)), .localChanges, .attention),
@@ -2171,7 +1985,6 @@ final class SyncMDTests: XCTestCase {
         ))
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true },
             repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
@@ -2214,7 +2027,7 @@ final class SyncMDTests: XCTestCase {
         fixture.repository.commitAndPushResult = .failure(LocalGitError.pushFailed("offline"))
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions(), now: { completedAt }
         )
         coordinator.setAutomaticallyPushLocalChanges(true)
@@ -2247,7 +2060,7 @@ final class SyncMDTests: XCTestCase {
         ))
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
 
@@ -7442,7 +7255,7 @@ final class SyncMDTests: XCTestCase {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
 
@@ -7476,7 +7289,7 @@ final class SyncMDTests: XCTestCase {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPullRemoteChanges(false)
@@ -7516,7 +7329,7 @@ final class SyncMDTests: XCTestCase {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPullRemoteChanges(false)
@@ -7540,7 +7353,7 @@ final class SyncMDTests: XCTestCase {
         repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPullRemoteChanges(false)
@@ -7565,7 +7378,7 @@ final class SyncMDTests: XCTestCase {
         fixture.repository.executePullOnlyGate = gate
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
 
@@ -7599,7 +7412,7 @@ final class SyncMDTests: XCTestCase {
         fixture.repository.commitAndPushStarted = { commitStarted.fulfill() }
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPushLocalChanges(true)
@@ -7631,7 +7444,7 @@ final class SyncMDTests: XCTestCase {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPushLocalChanges(true)
@@ -7657,7 +7470,7 @@ final class SyncMDTests: XCTestCase {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPushLocalChanges(true)
@@ -7693,7 +7506,7 @@ final class SyncMDTests: XCTestCase {
         fixture.repository.pullPlanResults = [equal, advanced]
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { true }, repositoryProvider: provider,
+            repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         coordinator.setAutomaticallyPushLocalChanges(true)
@@ -7791,67 +7604,6 @@ private func XCTAssertThrowsErrorAsync<T>(
     } catch {}
 }
 
-private func premiumTransaction(
-    id: UInt64,
-    productID: String = PremiumProductIdentifiers.default.monthly
-) -> PremiumVerifiedTransaction {
-    PremiumVerifiedTransaction(
-        productID: productID,
-        transactionID: id,
-        originalTransactionID: 1,
-        purchaseDate: Date(timeIntervalSince1970: 100),
-        expirationDate: Date.distantFuture,
-        revocationDate: nil,
-        appAccountToken: nil,
-        environment: .sandbox,
-        signedTransaction: "signed-jws"
-    )
-}
-
-private actor FakePremiumStorefront: PremiumStorefront {
-    private var entitlements: [PremiumVerifiedTransaction] = []
-    private var purchaseOutcome: PremiumPurchaseOutcome = .pending
-    private var finishedIDs: [UInt64] = []
-    private var syncs = 0
-    private var appAccountTokenSets = 0
-    private var currentEntitlementRequests = 0
-    private var currentEntitlementsGate: AsyncGate?
-    private var currentEntitlementsStarted: (@Sendable () -> Void)?
-    private var continuation: AsyncStream<PremiumFinishableTransaction>.Continuation?
-
-    func setAppAccountToken(_ token: UUID) { appAccountTokenSets += 1 }
-    func products(identifiers: [String]) async throws -> [PremiumProduct] {
-        identifiers.map { PremiumProduct(id: $0, displayName: $0, displayPrice: "$1.99", period: .month) }
-    }
-    func currentEntitlements() async -> [PremiumVerifiedTransaction] {
-        currentEntitlementRequests += 1
-        currentEntitlementsStarted?()
-        if let currentEntitlementsGate { await currentEntitlementsGate.wait() }
-        return entitlements
-    }
-    func purchase(productID: String) async throws -> PremiumPurchaseOutcome { purchaseOutcome }
-    func sync() async throws { syncs += 1 }
-    nonisolated func transactionUpdates() -> AsyncStream<PremiumFinishableTransaction> {
-        AsyncStream { continuation in Task { await self.setContinuation(continuation) } }
-    }
-    func finish(_ id: UInt64) { finishedIDs.append(id) }
-    func setPurchase(_ value: PremiumPurchaseOutcome) { purchaseOutcome = value }
-    func setEntitlements(_ values: [PremiumVerifiedTransaction]) { entitlements = values }
-    func setCurrentEntitlementsGate(_ gate: AsyncGate?, started: (@Sendable () -> Void)? = nil) {
-        currentEntitlementsGate = gate
-        currentEntitlementsStarted = started
-    }
-    func setContinuation(_ value: AsyncStream<PremiumFinishableTransaction>.Continuation) { continuation = value }
-    func finishable(_ transaction: PremiumVerifiedTransaction) -> PremiumFinishableTransaction {
-        PremiumFinishableTransaction(value: transaction) { await self.finish(transaction.transactionID) }
-    }
-    func emit(_ transaction: PremiumVerifiedTransaction) { continuation?.yield(finishable(transaction)) }
-    func finished() -> [UInt64] { finishedIDs }
-    func syncCount() -> Int { syncs }
-    func appAccountTokenSetCount() -> Int { appAccountTokenSets }
-    func currentEntitlementRequestCount() -> Int { currentEntitlementRequests }
-}
-
 @MainActor
 private final class RecordingBackgroundProcessingScheduler: PremiumBackgroundProcessingScheduling {
     private(set) var registerCount = 0
@@ -7891,25 +7643,17 @@ private final class RecordingBackgroundProcessingTask: PremiumBackgroundProcessi
 @MainActor
 private struct PremiumRuntimeTestHarness {
     let runtime: PremiumRuntime
-    let entitlementStore: PremiumEntitlementStore
     let provider: FakeAssistRepositoryProvider
     let repository: FakeGitRepository
-    let storefront: FakePremiumStorefront
     let defaultsSuite: String
-    let installationID: UUID
 
     static func make(
-        installationID: UUID = UUID(),
+        defaultsSuite: String = "premium-runtime-\(UUID().uuidString)",
         repo existingRepo: RepoConfig? = nil,
-        activeEntitlement: Bool = true,
         assistFeatureIsEnabled: Bool = true,
         backgroundScheduler: (any PremiumBackgroundProcessingScheduling)? = nil
     ) async -> PremiumRuntimeTestHarness {
-        let defaultsSuite = "premium-runtime-\(installationID.uuidString)"
         let defaults = UserDefaults(suiteName: defaultsSuite)!
-        let storefront = FakePremiumStorefront()
-        await storefront.setEntitlements(activeEntitlement ? [premiumTransaction(id: 501)] : [])
-        let entitlement = PremiumEntitlementStore(storefront: storefront, identifiers: .default, defaults: defaults)
         var repo = existingRepo ?? RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
         if existingRepo == nil {
             repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
@@ -7921,33 +7665,25 @@ private struct PremiumRuntimeTestHarness {
         )
         let provider = FakeAssistRepositoryProvider(repo: repo, repository: repository)
         let coordinator = BackgroundSyncCoordinator(
-            entitlementIsActive: { entitlement.state.isActive },
             repositoryProvider: provider,
             conditionsProvider: PermissiveBackgroundSyncConditions()
         )
         let runtime = PremiumRuntime(
-            entitlementStore: entitlement,
             coordinator: coordinator,
             repositoryProvider: provider,
-            installation: PremiumInstallation(installationID: installationID, bundleID: "bontecou.Sync-md", appVersion: "test"),
             assistFeatureIsEnabled: { assistFeatureIsEnabled },
-            backgroundScheduler: backgroundScheduler
+            backgroundScheduler: backgroundScheduler,
+            defaults: defaults
         )
         return PremiumRuntimeTestHarness(
             runtime: runtime,
-            entitlementStore: entitlement,
             provider: provider,
             repository: repository,
-            storefront: storefront,
-            defaultsSuite: defaultsSuite,
-            installationID: installationID
+            defaultsSuite: defaultsSuite
         )
     }
 
     func cleanup() {
-        UserDefaults.standard.removeObject(forKey: "premium.automatic-sync.v1.\(installationID.uuidString)")
-        UserDefaults.standard.removeObject(forKey: "premium.automatic-pull.v1.\(installationID.uuidString)")
-        UserDefaults.standard.removeObject(forKey: "premium.automatic-push.v1.\(installationID.uuidString)")
         UserDefaults.standard.removePersistentDomain(forName: defaultsSuite)
     }
 }

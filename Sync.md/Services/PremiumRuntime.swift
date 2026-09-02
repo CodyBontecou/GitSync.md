@@ -39,10 +39,10 @@ final class PremiumBackgroundProcessingExecution {
     }
 }
 
-/// Local-only Background Sync runtime. Entitlements are verified on-device via
-/// StoreKit 2, and every sync trigger (foreground activation and iOS-granted
-/// background processing time) runs entirely within the app — no relay,
-/// device registration, or push delivery is involved.
+/// Local Background Sync runtime. Background Sync is part of the paid-up-front
+/// app — there is no subscription, entitlement, or server component. Every
+/// sync trigger (foreground activation and iOS-granted background time) runs
+/// entirely within the app.
 @MainActor
 @Observable
 final class PremiumRuntime {
@@ -65,13 +65,10 @@ final class PremiumRuntime {
         )
     }
 
-    let entitlementStore: PremiumEntitlementStore
     let coordinator: BackgroundSyncCoordinator
     private let backgroundScheduler: any PremiumBackgroundProcessingScheduling
-    private let installation: PremiumInstallation
     private let defaults: UserDefaults
     private weak var repositoryProvider: (any AssistRepositoryProviding)?
-    private var startupTask: Task<Void, Never>?
     private var configurationTask: Task<Void, Never>?
     private var reconciliationTask: Task<Void, Never>?
     private var reconciliationRequested = false
@@ -86,37 +83,40 @@ final class PremiumRuntime {
     /// (Control Center, app-switcher peeks). Short by design: freshness is
     /// the product; this only kills bounce churn.
     let foregroundReconciliationCooldown: TimeInterval
-    private let automaticSyncKey: String
-    private let automaticPullKey: String
-    private let automaticPushKey: String
     private let assistFeatureIsEnabled: () -> Bool
 
-    init(entitlementStore: PremiumEntitlementStore, coordinator: BackgroundSyncCoordinator,
-         repositoryProvider: any AssistRepositoryProviding, installation: PremiumInstallation,
+    private static let automaticSyncKey = "premium.automatic-sync.v1"
+    private static let automaticPullKey = "premium.automatic-pull.v1"
+    private static let automaticPushKey = "premium.automatic-push.v1"
+    /// Historical subscription-era installations scoped their automatic-sync
+    /// preferences to a per-installation UUID. This migration adopts those
+    /// values under the modern fixed keys exactly once.
+    private static let legacyInstallationIDKey = "premium.installation-id.v1"
+    private static let legacyPreferencesMigratedKey = "premium.automatic-preferences.migrated.v1"
+
+    init(coordinator: BackgroundSyncCoordinator,
+         repositoryProvider: any AssistRepositoryProviding,
          assistFeatureIsEnabled: @escaping () -> Bool = { FeatureFlags.gitSyncAssistEnabled },
          backgroundScheduler: (any PremiumBackgroundProcessingScheduling)? = nil,
          foregroundReconciliationCooldown: TimeInterval = 30,
          defaults: UserDefaults = .standard) {
-        self.entitlementStore = entitlementStore; self.coordinator = coordinator; self.repositoryProvider = repositoryProvider
-        self.installation = installation
+        self.coordinator = coordinator; self.repositoryProvider = repositoryProvider
         let resolvedScheduler: any PremiumBackgroundProcessingScheduling
             = backgroundScheduler ?? NoopPremiumBackgroundProcessingScheduler()
         self.backgroundScheduler = resolvedScheduler
         self.assistFeatureIsEnabled = assistFeatureIsEnabled
         self.foregroundReconciliationCooldown = foregroundReconciliationCooldown
         self.defaults = defaults
-        automaticSyncKey = "premium.automatic-sync.v1.\(installation.installationID.uuidString)"
-        automaticPullKey = "premium.automatic-pull.v1.\(installation.installationID.uuidString)"
-        automaticPushKey = "premium.automatic-push.v1.\(installation.installationID.uuidString)"
-        let restoredAutomaticSync = defaults.bool(forKey: automaticSyncKey)
+        Self.migrateLegacyInstallationScopedPreferences(defaults: defaults)
+        let restoredAutomaticSync = defaults.bool(forKey: Self.automaticSyncKey)
         automaticallySyncAllRepositories = restoredAutomaticSync
-        let storedAutomaticPull = defaults.object(forKey: automaticPullKey) as? NSNumber
+        let storedAutomaticPull = defaults.object(forKey: Self.automaticPullKey) as? NSNumber
         automaticallyPullRemoteChanges = storedAutomaticPull?.boolValue ?? restoredAutomaticSync
-        automaticallyPushLocalChanges = defaults.bool(forKey: automaticPushKey)
+        automaticallyPushLocalChanges = defaults.bool(forKey: Self.automaticPushKey)
         if restoredAutomaticSync && storedAutomaticPull == nil {
             // Historical Background Sync was pull-only. Materialize that
             // behavior as the new independent installation preference.
-            defaults.set(true, forKey: automaticPullKey)
+            defaults.set(true, forKey: Self.automaticPullKey)
         }
         coordinator.setAutomaticallyPullRemoteChanges(automaticallyPullRemoteChanges)
         coordinator.setAutomaticallyPushLocalChanges(automaticallyPushLocalChanges)
@@ -128,28 +128,30 @@ final class PremiumRuntime {
             self?.repositoryWillBeRemoved(repo)
         }
     }
-    convenience init(entitlementStore: PremiumEntitlementStore, coordinator: BackgroundSyncCoordinator,
-                     repositoryProvider: any AssistRepositoryProviding) {
-        self.init(entitlementStore: entitlementStore, coordinator: coordinator, repositoryProvider: repositoryProvider,
-                  installation: PremiumInstallationIdentity.current(),
-                  backgroundScheduler: SystemPremiumBackgroundProcessingScheduler())
-    }
 
-    func start() async {
-        guard !Task.isCancelled, assistFeatureIsEnabled() else { return }
-        if let startupTask {
-            await startupTask.value
+    private static func migrateLegacyInstallationScopedPreferences(defaults: UserDefaults) {
+        guard !defaults.bool(forKey: Self.legacyPreferencesMigratedKey),
+              let installationID = defaults.string(forKey: Self.legacyInstallationIDKey),
+              !installationID.isEmpty else {
+            defaults.set(true, forKey: Self.legacyPreferencesMigratedKey)
             return
         }
-        await entitlementStore.bindAppAccountToken(installation.installationID)
-        guard !Task.isCancelled else { return }
-        let task = Task { @MainActor [weak self] in
-            guard let self else { return }
-            entitlementStore.onChange = { [weak self] state in self?.entitlementChanged(state) }
-            await entitlementStore.start()
+        let legacySyncKey = "\(Self.automaticSyncKey).\(installationID)"
+        let legacyPullKey = "\(Self.automaticPullKey).\(installationID)"
+        let legacyPushKey = "\(Self.automaticPushKey).\(installationID)"
+        if defaults.object(forKey: Self.automaticSyncKey) == nil,
+           defaults.object(forKey: legacySyncKey) != nil {
+            defaults.set(defaults.bool(forKey: legacySyncKey), forKey: Self.automaticSyncKey)
         }
-        startupTask = task
-        await task.value
+        if defaults.object(forKey: Self.automaticPullKey) == nil,
+           defaults.object(forKey: legacyPullKey) != nil {
+            defaults.set(defaults.object(forKey: legacyPullKey)!, forKey: Self.automaticPullKey)
+        }
+        if defaults.object(forKey: Self.automaticPushKey) == nil,
+           defaults.object(forKey: legacyPushKey) != nil {
+            defaults.set(defaults.object(forKey: legacyPushKey)!, forKey: Self.automaticPushKey)
+        }
+        defaults.set(true, forKey: Self.legacyPreferencesMigratedKey)
     }
 
     /// Explicit installation-scoped automatic mode.
@@ -159,17 +161,13 @@ final class PremiumRuntime {
             return
         }
         guard assistFeatureIsEnabled() else { return }
-        await start()
-        guard !Task.isCancelled else { return }
-        await entitlementStore.refresh()
-        guard !Task.isCancelled, entitlementStore.state.isActive else { return }
         automaticallySyncAllRepositories = true
-        defaults.set(true, forKey: automaticSyncKey)
+        defaults.set(true, forKey: Self.automaticSyncKey)
         if !automaticallyPullRemoteChanges && !automaticallyPushLocalChanges {
             // A fresh activation starts in the historical safe pull-only mode;
             // the two controls can then be changed independently.
             automaticallyPullRemoteChanges = true
-            defaults.set(true, forKey: automaticPullKey)
+            defaults.set(true, forKey: Self.automaticPullKey)
             coordinator.setAutomaticallyPullRemoteChanges(true)
         }
         updateBackgroundProcessingSchedule()
@@ -181,7 +179,7 @@ final class PremiumRuntime {
     func setAutomaticallyPullRemoteChanges(_ enabled: Bool) {
         guard assistFeatureIsEnabled() else { return }
         automaticallyPullRemoteChanges = enabled
-        defaults.set(enabled, forKey: automaticPullKey)
+        defaults.set(enabled, forKey: Self.automaticPullKey)
         coordinator.setAutomaticallyPullRemoteChanges(enabled)
         updateBackgroundProcessingSchedule()
     }
@@ -191,7 +189,7 @@ final class PremiumRuntime {
     func setAutomaticallyPushLocalChanges(_ enabled: Bool) {
         guard assistFeatureIsEnabled() else { return }
         automaticallyPushLocalChanges = enabled
-        defaults.set(enabled, forKey: automaticPushKey)
+        defaults.set(enabled, forKey: Self.automaticPushKey)
         coordinator.setAutomaticallyPushLocalChanges(enabled)
         updateBackgroundProcessingSchedule()
     }
@@ -216,12 +214,12 @@ final class PremiumRuntime {
 
     private func disableAutomaticSync() async {
         automaticallySyncAllRepositories = false
-        defaults.set(false, forKey: automaticSyncKey)
+        defaults.set(false, forKey: Self.automaticSyncKey)
         automaticallyPullRemoteChanges = false
-        defaults.set(false, forKey: automaticPullKey)
+        defaults.set(false, forKey: Self.automaticPullKey)
         coordinator.setAutomaticallyPullRemoteChanges(false)
         automaticallyPushLocalChanges = false
-        defaults.set(false, forKey: automaticPushKey)
+        defaults.set(false, forKey: Self.automaticPushKey)
         coordinator.setAutomaticallyPushLocalChanges(false)
         reconciliationTask?.cancel()
         reconciliationTask = nil
@@ -256,10 +254,7 @@ final class PremiumRuntime {
     private func processBackgroundProcessing() async -> Bool {
         guard !Task.isCancelled,
               automaticallyPullRemoteChanges || automaticallyPushLocalChanges else { return !Task.isCancelled }
-        await start()
-        guard !Task.isCancelled, automaticOperationsAllowed else { return false }
-        await entitlementStore.refresh()
-        guard !Task.isCancelled, automaticOperationsAllowed else { return false }
+        guard automaticOperationsAllowed else { return false }
         let results = await coordinator.reconcileProcessing()
         guard !Task.isCancelled else { return false }
         return !results.values.contains(where: \.isFailure)
@@ -273,17 +268,7 @@ final class PremiumRuntime {
             backgroundScheduler.cancel()
             return
         }
-        switch entitlementStore.state {
-        case .active:
-            backgroundScheduler.schedule()
-        case .loading:
-            // A cold BG launch consumes its pending request before StoreKit has
-            // necessarily restored entitlement state. Submit the next best-effort
-            // opportunity now; execution still revalidates entitlement before Git.
-            backgroundScheduler.schedule()
-        case .inactive, .pending, .error:
-            backgroundScheduler.cancel()
-        }
+        backgroundScheduler.schedule()
     }
 
     /// Foreground reconciliation. A pass already in flight absorbs the call
@@ -318,9 +303,6 @@ final class PremiumRuntime {
             foregroundPassInFlight = false
             if passFinished { lastForegroundPassCompletion = Date() }
         }
-        await start()
-        guard automaticOperationsAllowed else { coordinator.cancelAll(); return }
-        await entitlementStore.refresh()
         guard automaticOperationsAllowed else { coordinator.cancelAll(); return }
         await reconcileAutomaticRepositories()
         guard automaticOperationsAllowed else { coordinator.cancelAll(); return }
@@ -328,33 +310,16 @@ final class PremiumRuntime {
         passFinished = !Task.isCancelled
     }
 
+    /// Settings-side refresh: brings per-repository assist flags in line with
+    /// the installation-wide automatic preference without attempting Git work.
     func prepareForSettings() async {
-        guard assistFeatureIsEnabled() else { return }
-        await start()
-        guard !Task.isCancelled else { return }
-        await entitlementStore.refresh()
-        guard !Task.isCancelled, automaticOperationsAllowed else { return }
+        guard assistFeatureIsEnabled(), !Task.isCancelled else { return }
         await reconcileAutomaticRepositories()
-    }
-
-    private func entitlementChanged(_ state: PremiumEntitlementState) {
-        updateBackgroundProcessingSchedule()
-        guard assistFeatureIsEnabled() else {
-            coordinator.cancelAll()
-            return
-        }
-        switch state {
-        case .active:
-            if automaticallySyncAllRepositories { scheduleAutomaticReconciliation() }
-        case .inactive, .loading, .pending, .error:
-            coordinator.cancelAll()
-        }
     }
 
     private var automaticOperationsAllowed: Bool {
         !Task.isCancelled && assistFeatureIsEnabled()
             && automaticallySyncAllRepositories
-            && entitlementStore.state.isActive
     }
 
     private func repositoryWillBeRemoved(_ repo: RepoConfig) {

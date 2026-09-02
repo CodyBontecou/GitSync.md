@@ -359,16 +359,6 @@ final class AppState {
     var assistInventoryChangeHandler: (@MainActor @Sendable () -> Void)?
     var assistRepositoryRemovalHandler: (@MainActor @Sendable (RepoConfig) -> Void)?
 
-    // MARK: - Background Sync upsell state
-
-    /// Successful manual pull count used by the one-time milestone upsell.
-    var assistManualPullSuccessCount: Int = 0
-    /// Whether the one-time milestone upsell sheet has already been shown.
-    var assistUpsellMilestoneShown: Bool = false
-
-    nonisolated private static let assistUpsellPullCountKey = "assist.upsell.manualPullSuccessCount.v1"
-    nonisolated private static let assistUpsellMilestoneShownKey = "assist.upsell.milestoneShown.v1"
-
     // MARK: - Init
 
     init(
@@ -429,8 +419,6 @@ final class AppState {
         defaultAuthorEmail = defaults.string(forKey: "authorEmail") ?? ""
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         hasSeenOnboarding = defaults.bool(forKey: "hasSeenOnboarding")
-        assistManualPullSuccessCount = max(0, defaults.integer(forKey: Self.assistUpsellPullCountKey))
-        assistUpsellMilestoneShown = defaults.bool(forKey: Self.assistUpsellMilestoneShownKey)
 
         if let accountData = defaults.data(forKey: "gitHubAccounts"),
            let decodedAccounts = try? JSONDecoder().decode([GitHubAccount].self, from: accountData) {
@@ -3487,23 +3475,6 @@ final class AppState {
 
     private func setPullOutcome(repoID: UUID, kind: PullOutcomeKind, message: String) {
         pullOutcomeByRepo[repoID] = PullOutcomeState(kind: kind, message: message, date: Date())
-        // Successful manual pulls (UI pull, pull-with-rebase, Shortcuts) drive
-        // the one-time Background Sync upsell milestone. Background Sync records
-        // through `recordAssist`, never here.
-        switch kind {
-        case .upToDate, .fastForwarded, .rebased:
-            assistManualPullSuccessCount += 1
-            UserDefaults.standard.set(assistManualPullSuccessCount, forKey: Self.assistUpsellPullCountKey)
-        case .rebaseConflicts, .blockedByLocalChanges, .lfsHydrationBlocked, .diverged,
-             .remoteBranchMissing, .failed:
-            break
-        }
-    }
-
-    /// Marks the one-time milestone upsell as consumed so it never reappears.
-    func markAssistUpsellMilestoneShown() {
-        assistUpsellMilestoneShown = true
-        UserDefaults.standard.set(true, forKey: Self.assistUpsellMilestoneShownKey)
     }
 
     private func clearCommitHistoryCache(for repoID: UUID) {

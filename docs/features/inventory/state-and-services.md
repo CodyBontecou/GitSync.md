@@ -70,7 +70,7 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 
 ## 10. Entitlements, Info.plist, privacy manifest
 
-- **Entitlements**: `aps-environment` (build-config injected) — APNs for Background Sync.
+- **Entitlements**: none (empty — the APNs entitlement was removed with the relay).
 - **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [processing]` plus `BGTaskSchedulerPermittedIdentifiers: [com.bontecou.Sync-md.background-sync]` (discretionary network-capable processing); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]`; `INJECT_PAT` env (DEBUG). Background Sync runs entirely on-device — no relay URL key exists.
 - **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; collected data types declared: **DeviceID** (linked, analytics+appFunctionality), **ProductInteraction** (analytics), **PurchaseHistory** (appFunctionality), **UserID** (appFunctionality) — matching analytics + Background Sync flows. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
 - **Source**: `Sync_md.entitlements`, `Info.plist`, `PrivacyInfo.xcprivacy`.

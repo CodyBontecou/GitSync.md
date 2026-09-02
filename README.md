@@ -27,7 +27,7 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **Private repo support** — Works with both public and private repositories.
 - **Localization** — Catalogs cover 26 languages. Newly added Background Sync publishing and safety text currently falls back to English until the outstanding human translations recorded in `localization/reports/catalog-audit.json` are reviewed.
 - **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
-- **Background Sync (optional subscription)** — Attempts best-effort reconciliation whenever iOS grants background time. While Background Sync is enabled, **Pull remote changes** and **Commit and push local changes** are independent controls: use pull only, push only, both, or neither. Existing enabled installations migrate to pull on and publishing off. Automatic pulls are clean fast-forwards. Push-only mode still fetches and validates remote state but never updates the worktree; remote-ahead edits, divergence, auth/trust prompts, and branch mismatches stop for attention. Background Sync never rebases, merges, switches branches, resolves conflicts, recreates missing branches, overwrites concurrent work, or force-pushes.
+- **Background Sync (included with the app)** — Attempts best-effort reconciliation whenever iOS grants background time. While Background Sync is enabled, **Pull remote changes** and **Commit and push local changes** are independent controls: use pull only, push only, both, or neither. Existing enabled installations migrate to pull on and publishing off. Automatic pulls are clean fast-forwards. Push-only mode still fetches and validates remote state but never updates the worktree; remote-ahead edits, divergence, auth/trust prompts, and branch mismatches stop for attention. Background Sync never rebases, merges, switches branches, resolves conflicts, recreates missing branches, overwrites concurrent work, or force-pushes.
 
 All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require Background Sync. iOS background-processing scheduling and foreground activation are best effort, controlled by iOS, and not guaranteed or truly real time. Background Sync runs **entirely on-device**: entitlements are verified locally with StoreKit 2, reconciliation runs through the app's own libgit2 engine, and repository names, URLs, contents, local paths, and Git credentials never go anywhere except directly to your configured Git provider during a normal fetch or push. There is no relay server, no push notification registration, and no Background Sync data stored off the device.
 
@@ -53,7 +53,7 @@ GitSync.md/
 │   │   ├── RepoConfig.swift    # Repository configuration model
 │   │   ├── GitState.swift      # Git state persistence
 │   │   ├── Git*Models.swift    # Branch/conflict/diff/history/merge/revert/stash/status/tag models
-│   │   └── PremiumModels.swift # Background Sync entitlement + global/per-repo policy models
+│   │   └── PremiumModels.swift # Background Sync global/per-repo policy models
 │   ├── Views/                  # 21 SwiftUI screens (repo list, vault, git sheet,
 │   │                           #  conflict editor, diff, file browser/editor, …)
 │   │   └── BrutalDesignSystem.swift # Design system (colors, typography, components)
@@ -70,7 +70,7 @@ GitSync.md/
 │       ├── OAuthService.swift       # GitHub OAuth via ASWebAuthenticationSession
 │       ├── KeychainService.swift    # Secure credential storage
 │       ├── CallbackURLHandler.swift # x-callback-url handler (Obsidian integration)
-│       ├── PremiumRuntime.swift     # Background Sync runtime (local entitlements, consents, scheduling)
+│       ├── PremiumRuntime.swift     # Background Sync runtime (consents, scheduling, reconciliation)
 │       ├── BackgroundProcessingScheduler.swift # Best-effort BGProcessing registration/scheduling
 │       ├── BackgroundSyncCoordinator.swift # Independently selected pull/push reconciliation and policies
 │       ├── RepositoryPushRunner.swift # Conflict-safe stage/commit/push and composed sync

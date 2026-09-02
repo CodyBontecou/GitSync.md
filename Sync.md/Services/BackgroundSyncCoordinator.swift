@@ -76,7 +76,6 @@ enum BackgroundSyncDisposition: Sendable, Equatable {
 @MainActor
 final class BackgroundSyncCoordinator {
     private struct Flight { let generation: UUID; let task: Task<BackgroundSyncDisposition, Never> }
-    private let entitlementIsActive: @MainActor () -> Bool
     private weak var repositoryProvider: (any AssistRepositoryProviding)?
     private let conditionsProvider: any BackgroundSyncConditionsProviding
     private let now: @Sendable () -> Date
@@ -89,9 +88,9 @@ final class BackgroundSyncCoordinator {
     private var automaticallyPullRemoteChanges = true
     private var automaticallyPushLocalChanges = false
 
-    init(entitlementIsActive: @escaping @MainActor () -> Bool, repositoryProvider: any AssistRepositoryProviding,
+    init(repositoryProvider: any AssistRepositoryProviding,
          conditionsProvider: any BackgroundSyncConditionsProviding, now: @escaping @Sendable () -> Date = { Date() }) {
-        self.entitlementIsActive = entitlementIsActive; self.repositoryProvider = repositoryProvider
+        self.repositoryProvider = repositoryProvider
         self.conditionsProvider = conditionsProvider; self.now = now
     }
 
@@ -114,7 +113,7 @@ final class BackgroundSyncCoordinator {
     }
 
     func reconcileForeground() async -> [UUID: BackgroundSyncDisposition] {
-        guard entitlementIsActive(), let provider = repositoryProvider else { return [:] }
+        guard let provider = repositoryProvider else { return [:] }
         return await reconcileMany(
             provider.assistRepositories().filter(\.assist.enabled).map(\.id),
             limit: 3,
@@ -123,7 +122,7 @@ final class BackgroundSyncCoordinator {
     }
 
     func reconcileProcessing() async -> [UUID: BackgroundSyncDisposition] {
-        guard entitlementIsActive(), let provider = repositoryProvider else { return [:] }
+        guard let provider = repositoryProvider else { return [:] }
         return await reconcileMany(
             provider.assistRepositories().filter(\.assist.enabled).map(\.id),
             limit: 3,
@@ -160,10 +159,10 @@ final class BackgroundSyncCoordinator {
     }
 
     private func reconcile(repoID: UUID, trigger: BackgroundSyncTrigger?) async -> BackgroundSyncDisposition {
-        guard !Task.isCancelled, entitlementIsActive(), let provider = repositoryProvider,
+        guard !Task.isCancelled, let provider = repositoryProvider,
               provider.assistRepository(id: repoID)?.assist.enabled == true else { return .ignored }
         if let existing = inFlight[repoID] { return await existing.task.value }
-        guard !Task.isCancelled, entitlementIsActive(),
+        guard !Task.isCancelled,
               provider.assistRepository(id: repoID)?.assist.enabled == true else { return .ignored }
         let generation = UUID(); let conditions = conditionsProvider
         let task = Task<BackgroundSyncDisposition, Never> { [weak self] in
@@ -213,7 +212,7 @@ final class BackgroundSyncCoordinator {
     private func execute(repoID: UUID, conditionsProvider: any BackgroundSyncConditionsProviding) async -> BackgroundSyncDisposition {
         guard !Task.isCancelled else { return .deferred(String(localized: "Cancelled")) }
         let conditions = await conditionsProvider.current()
-        guard !Task.isCancelled, entitlementIsActive(), let provider = repositoryProvider,
+        guard !Task.isCancelled, let provider = repositoryProvider,
               let repo = provider.assistRepository(id: repoID), repo.assist.enabled else { return .ignored }
         let allowsPull = automaticallyPullRemoteChanges
         let allowsPush = automaticallyPushLocalChanges

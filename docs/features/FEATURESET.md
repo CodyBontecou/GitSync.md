@@ -1,7 +1,7 @@
 # GitSync.md — Master Featureset
 
 **Status**: Baseline v1.0 (draft) — every row verified against source; see `inventory/*.md` for mechanical detail and citations.
-**Tier legend**: Core = paid-up-front app · Background Sync = Background Sync subscription · Dev = developer infrastructure · Debug = debug builds only.
+**Tier legend**: Core = paid-up-front app (Background Sync included — subscription retired) · Dev = developer infrastructure · Debug = debug builds only.
 
 ## 1. Repositories & storage
 
@@ -115,7 +115,7 @@
 | 7.3 | Foreground change detection & re-validation on scene activation | Core | `Sync_mdApp` |
 | 7.4 | StoreKit review request after first clone (2s delay) | Core | `ContentView` §1.7 |
 
-## 8. Background Sync (subscription)
+## 8. Background Sync (included with the app)
 
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
@@ -171,7 +171,7 @@
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
 | 13.1 | Privacy manifest (no tracking; analytics + Background Sync declared) | Core | `PrivacyInfo.xcprivacy`, test |
-| 13.2 | Entitlements/capabilities: keychain, background remote-notification, discretionary BGProcessing identifier | Core | `Sync_md.entitlements`, `Info.plist`, `BackgroundProcessingScheduler.swift` |
+| 13.2 | Entitlements/capabilities: keychain, discretionary BGProcessing (app refresh + processing) identifier | Core | `Sync_md.entitlements`, `Info.plist`, `BackgroundProcessingScheduler.swift` |
 | 13.3 | iPad support (single-column layouts; no dedicated split-view) | Core | ui-views gap note |
 | 13.4 | iOS 17+ target, libgit2 1.9.2 xcframework w/ libssh2+OpenSSL memory credentials | Dev | build script |
 

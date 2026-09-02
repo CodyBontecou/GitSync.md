@@ -7,15 +7,12 @@ extension UUID: @retroactive Identifiable {
 
 struct RepoListView: View {
     @Environment(AppState.self) private var state
-    @Environment(PremiumEntitlementStore.self) private var entitlement
     @Environment(PremiumRuntime.self) private var premiumRuntime
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
     @State private var showAddRepo = false
     @State private var addRepoInitialURL: String = ""
     @State private var showSignOutConfirm = false
     @State private var showAppSettings = false
-    @State private var showAssistMilestoneUpsell = false
-    @State private var showAssistPremiumFromUpsell = false
     @State private var settingsRepoID: UUID? = nil
     @State private var pendingGhostRemovalIdentifier: String? = nil
     @State private var showGhostRemovalConfirm = false
@@ -31,7 +28,6 @@ struct RepoListView: View {
 
                 VStack(spacing: 0) {
                     DiscordPromoBanner()
-                    AssistUpsellBanner(onOpen: { showAssistPremiumFromUpsell = true })
 
                     if state.visibleRepos.isEmpty {
                         emptyState
@@ -181,21 +177,6 @@ struct RepoListView: View {
             .sheet(isPresented: $showAddRepo) { AddRepoView(initialURL: addRepoInitialURL) }
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
-            .sheet(isPresented: $showAssistMilestoneUpsell) {
-                AssistUpsellMilestoneSheet(
-                    onLearnMore: {
-                        showAssistMilestoneUpsell = false
-                        Task { @MainActor in
-                            try? await Task.sleep(for: .milliseconds(350))
-                            showAssistPremiumFromUpsell = true
-                        }
-                    },
-                    onDismiss: { showAssistMilestoneUpsell = false }
-                )
-            }
-            .sheet(isPresented: $showAssistPremiumFromUpsell) { PremiumSettingsView() }
-            .onAppear(perform: evaluateAssistMilestoneUpsell)
-            .onChange(of: state.assistManualPullSuccessCount) { _, _ in evaluateAssistMilestoneUpsell() }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
             .navigationDestination(for: FileBrowserDestination.self) { destination in
                 FileBrowserView(repoID: destination.repoID, relativePath: destination.relativePath)
@@ -715,134 +696,4 @@ struct RepoListView: View {
         showAddRepo = true
     }
 
-    private func evaluateAssistMilestoneUpsell() {
-        guard !showAssistMilestoneUpsell,
-              AssistUpsellEligibility.shouldShowMilestone(
-                featureEnabled: FeatureFlags.gitSyncAssistEnabled,
-                subscriptionActive: entitlement.state.isActive,
-                assistEnabled: premiumRuntime.automaticallySyncAllRepositories,
-                milestoneShown: state.assistUpsellMilestoneShown,
-                successfulPullCount: state.assistManualPullSuccessCount
-              )
-        else { return }
-        // Consume permanently before presenting so dismissal or interruption
-        // can never resurface it.
-        state.markAssistUpsellMilestoneShown()
-        showAssistMilestoneUpsell = true
-    }
-}
-
-// MARK: - Background Sync Upsell Surfaces
-
-/// One-time, dismissible discovery banner for the optional Background Sync
-/// subscription. Shown only while the feature flag is on, the user manages at
-/// least one repository, and neither an active subscription nor enabled
-/// automation exists. Dismissal is permanent. Manual Git features are never
-/// affected.
-private struct AssistUpsellBanner: View {
-    @Environment(AppState.self) private var state
-    @Environment(PremiumEntitlementStore.self) private var entitlement
-    @Environment(PremiumRuntime.self) private var premiumRuntime
-    @AppStorage("assist.upsell.bannerDismissed.v1") private var dismissed: Bool = false
-    let onOpen: () -> Void
-
-    var body: some View {
-        let isVisible = AssistUpsellEligibility.shouldShowBanner(
-            featureEnabled: FeatureFlags.gitSyncAssistEnabled,
-            hasRepositories: !state.visibleRepos.isEmpty,
-            subscriptionActive: entitlement.state.isActive,
-            assistEnabled: premiumRuntime.automaticallySyncAllRepositories,
-            bannerDismissed: dismissed
-        )
-        if isVisible {
-            BCard(padding: 0, bg: .brutalSurface) {
-                HStack(spacing: 0) {
-                    Button(action: onOpen) {
-                        Text("Unlock Background Sync")
-                            .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                            .padding(.horizontal, 12)
-                            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-
-                    Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            dismissed = true
-                        }
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(Color.brutalTextMid)
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(String(localized: "Dismiss Background Sync banner"))
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 4)
-            .transition(.opacity)
-        }
-    }
-}
-
-/// One-time milestone sheet presented after the user's fifth successful
-/// manual pull. Consuming the milestone marks it shown permanently.
-private struct AssistUpsellMilestoneSheet: View {
-    let onLearnMore: () -> Void
-    let onDismiss: () -> Void
-
-    var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "bolt.badge.clock.fill")
-                .font(.system(size: 36, weight: .semibold))
-                .foregroundStyle(Color.brutalText)
-                .padding(.top, 32)
-                .accessibilityHidden(true)
-
-            VStack(spacing: 10) {
-                Text("Pulling a lot?")
-                    .font(.system(size: 22, weight: .black))
-                    .foregroundStyle(Color.brutalText)
-                Text("Background Sync gives you independent automatic pull and push controls. Publishing requires separate consent, and push-only mode never updates the worktree. GitHub events and iOS processing provide best-effort wakes; timing is not guaranteed or real time. Optional subscription; all manual features stay included.")
-                    .font(.system(size: 14, design: .monospaced))
-                    .foregroundStyle(Color.brutalTextMid)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-            }
-
-            VStack(spacing: 10) {
-                Button {
-                    onLearnMore()
-                } label: {
-                    Text("LEARN MORE")
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Color(.systemBackground))
-                        .tracking(1)
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                        .background(Color.brutalAccent)
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    onDismiss()
-                } label: {
-                    Text("Not now")
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalTextMid)
-                        .frame(minHeight: 44)
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 24)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color.brutalBg.ignoresSafeArea())
-        .presentationDetents([.height(420)])
-    }
 }
