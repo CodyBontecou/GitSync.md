@@ -21,12 +21,6 @@ final class SystemBackgroundSyncConditions: BackgroundSyncConditionsProviding, @
 }
 private extension NSLock { func withLock<T>(_ operation: () -> T) -> T { lock(); defer { unlock() }; return operation() } }
 
-enum AssistGitHubIdentityResolution: Sendable, Equatable {
-    case resolved(GitHubRepositoryIdentity)
-    case definitiveNoAccess
-    case transientFailure(String)
-}
-
 @MainActor
 protocol AssistRepositoryProviding: AnyObject {
     func assistRepositories() -> [RepoConfig]
@@ -35,8 +29,6 @@ protocol AssistRepositoryProviding: AnyObject {
     func assistCredentials(for repo: RepoConfig) -> String
     func recordAssist(result: RepositoryReconciliationResult?, health: RepoAssistHealth, repoID: UUID)
     func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings)
-    func assistCanonicalGitHubFullName(repoID: UUID) -> String?
-    func resolveAssistGitHubIdentity(repoID: UUID) async -> AssistGitHubIdentityResolution
     func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?)
     func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?)
 }
@@ -49,51 +41,6 @@ extension AppState: AssistRepositoryProviding {
     func assistCredentials(for repo: RepoConfig) -> String { authPayload(for: repo) }
     func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings) {
         updateRepo(id: repoID) { $0.assist = settings }
-    }
-    func assistCanonicalGitHubFullName(repoID: UUID) -> String? {
-        guard let repo = repo(id: repoID) else { return nil }
-        let origin = repo.isCloned ? Self.readGitRemoteURL(at: vaultURL(for: repoID)) : nil
-        return GitRemoteURL.parse(origin ?? repo.repoURL)?.canonicalGitHubFullName
-    }
-    func resolveAssistGitHubIdentity(repoID: UUID) async -> AssistGitHubIdentityResolution {
-        guard let repo = repo(id: repoID), let fullName = assistCanonicalGitHubFullName(repoID: repoID) else {
-            return .definitiveNoAccess
-        }
-        if let cached = gitHubRepos.first(where: { $0.fullName.caseInsensitiveCompare(fullName) == .orderedSame }) {
-            return .resolved(GitHubRepositoryIdentity(repositoryID: cached.id, fullName: cached.fullName))
-        }
-        let parts = fullName.split(separator: "/", omittingEmptySubsequences: false)
-        guard parts.count == 2 else { return .definitiveNoAccess }
-        var tokens: [String?] = []
-        if let token = gitHubToken(for: repo.gitHubAccountLogin), !token.isEmpty { tokens.append(token) }
-        if let token = gitHubToken(for: activeGitHubAccountLogin), !token.isEmpty,
-           !tokens.contains(where: { $0 == token }) { tokens.append(token) }
-        for account in gitHubAccounts {
-            if let token = gitHubToken(for: account.login), !token.isEmpty,
-               !tokens.contains(where: { $0 == token }) { tokens.append(token) }
-        }
-        if !pat.isEmpty, !tokens.contains(where: { $0 == pat }) { tokens.append(pat) }
-        tokens.append(nil) // Public-repository access is a final candidate.
-
-        var transientMessage: String?
-        for token in tokens {
-            guard !Task.isCancelled else { return .transientFailure(String(localized: "Cancelled")) }
-            do {
-                let identity = try await GitHubService.fetchRepository(
-                    owner: String(parts[0]), repo: String(parts[1]), token: token
-                )
-                guard identity.fullName.caseInsensitiveCompare(fullName) == .orderedSame else {
-                    return .definitiveNoAccess
-                }
-                return .resolved(identity)
-            } catch GitHubError.notFound, GitHubError.forbidden, GitHubError.conflict {
-                continue
-            } catch {
-                transientMessage = error.localizedDescription
-            }
-        }
-        if let transientMessage { return .transientFailure(transientMessage) }
-        return .definitiveNoAccess
     }
     func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) { assistConfigurationChangeHandler = handler }
     func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) { assistInventoryChangeHandler = handler }
@@ -110,7 +57,7 @@ extension AppState: AssistRepositoryProviding {
     }
 }
 
-enum BackgroundSyncTrigger: Sendable, Equatable { case push(PremiumSilentPush), foreground, processing }
+enum BackgroundSyncTrigger: Sendable, Equatable { case foreground, processing }
 enum BackgroundSyncDisposition: Sendable, Equatable {
     case completed(RepositoryReconciliationResult)
     case deferred(String)
@@ -129,7 +76,6 @@ enum BackgroundSyncDisposition: Sendable, Equatable {
 @MainActor
 final class BackgroundSyncCoordinator {
     private struct Flight { let generation: UUID; let task: Task<BackgroundSyncDisposition, Never> }
-    private struct PushFlightKey: Hashable { let repoID: UUID; let hintID: String }
     private let entitlementIsActive: @MainActor () -> Bool
     private weak var repositoryProvider: (any AssistRepositoryProviding)?
     private let conditionsProvider: any BackgroundSyncConditionsProviding
@@ -137,13 +83,11 @@ final class BackgroundSyncCoordinator {
     private var inFlight: [UUID: Flight] = [:]
     private var foregroundFlightGenerations: [UUID: UUID] = [:]
     private var processingFlightGenerations: [UUID: UUID] = [:]
-    private var pushFlightGenerations: [PushFlightKey: UUID] = [:]
     /// Standalone coordinators retain the historical pull-only default. The
     /// installation runtime immediately replaces this with the persisted user
     /// preference during initialization.
     private var automaticallyPullRemoteChanges = true
     private var automaticallyPushLocalChanges = false
-    private var seenHints: Set<String> = []; private var hintOrder: [String] = []; private let hintLimit = 256
 
     init(entitlementIsActive: @escaping @MainActor () -> Bool, repositoryProvider: any AssistRepositoryProviding,
          conditionsProvider: any BackgroundSyncConditionsProviding, now: @escaping @Sendable () -> Date = { Date() }) {
@@ -167,29 +111,6 @@ final class BackgroundSyncCoordinator {
             cancelAll()
         }
         automaticallyPushLocalChanges = enabled
-    }
-
-    func handlePush(_ userInfo: [AnyHashable: Any]) async -> BackgroundSyncDisposition {
-        guard !Task.isCancelled, let push = try? PremiumSilentPush.parse(userInfo), entitlementIsActive(),
-              let provider = repositoryProvider else { return .ignored }
-        let ids = provider.assistRepositories()
-            .filter { $0.assist.enabled && $0.assist.channel == push.channel }
-            .map(\.id)
-        guard !ids.isEmpty, remember(channel: push.channel, hint: push.hintID) else { return .ignored }
-        let results = await reconcileMany(ids, limit: 3, trigger: .push(push))
-        if let updated = results.values.first(where: \.didTransferData) { return updated }
-        if let failed = results.values.first(where: \.isFailure) { return failed }
-        return results.values.first ?? .ignored
-    }
-
-    func cancelPush(_ userInfo: [AnyHashable: Any]) {
-        guard let push = try? PremiumSilentPush.parse(userInfo), let provider = repositoryProvider else { return }
-        for repo in provider.assistRepositories() where repo.assist.channel == push.channel {
-            let key = PushFlightKey(repoID: repo.id, hintID: push.hintID)
-            guard let generation = pushFlightGenerations.removeValue(forKey: key),
-                  inFlight[repo.id]?.generation == generation else { continue }
-            inFlight.removeValue(forKey: repo.id)?.task.cancel()
-        }
     }
 
     func reconcileForeground() async -> [UUID: BackgroundSyncDisposition] {
@@ -252,27 +173,16 @@ final class BackgroundSyncCoordinator {
         inFlight[repoID] = Flight(generation: generation, task: task)
         if trigger == .foreground { foregroundFlightGenerations[repoID] = generation }
         if trigger == .processing { processingFlightGenerations[repoID] = generation }
-        let pushKey: PushFlightKey?
-        if case .push(let push)? = trigger {
-            let key = PushFlightKey(repoID: repoID, hintID: push.hintID)
-            pushFlightGenerations[key] = generation
-            pushKey = key
-        } else {
-            pushKey = nil
-        }
         let result = await task.value
         if inFlight[repoID]?.generation == generation { inFlight.removeValue(forKey: repoID) }
         if foregroundFlightGenerations[repoID] == generation { foregroundFlightGenerations.removeValue(forKey: repoID) }
         if processingFlightGenerations[repoID] == generation { processingFlightGenerations.removeValue(forKey: repoID) }
-        if let pushKey, pushFlightGenerations[pushKey] == generation { pushFlightGenerations.removeValue(forKey: pushKey) }
         return result
     }
 
     func cancel(repoID: UUID) {
         foregroundFlightGenerations.removeValue(forKey: repoID)
         processingFlightGenerations.removeValue(forKey: repoID)
-        let pushKeys = pushFlightGenerations.keys.filter { $0.repoID == repoID }
-        for key in pushKeys { pushFlightGenerations.removeValue(forKey: key) }
         inFlight.removeValue(forKey: repoID)?.task.cancel()
     }
 
@@ -297,7 +207,6 @@ final class BackgroundSyncCoordinator {
         inFlight.removeAll()
         foregroundFlightGenerations.removeAll()
         processingFlightGenerations.removeAll()
-        pushFlightGenerations.removeAll()
         flights.forEach { $0.task.cancel() }
     }
 
@@ -408,9 +317,5 @@ final class BackgroundSyncCoordinator {
         let old = repositoryProvider?.assistRepository(id: repoID)?.assist.health ?? .never
         repositoryProvider?.recordAssist(result: nil, health: preserved(old, kind: .deferred, message: message, at: now()), repoID: repoID)
         return .deferred(message)
-    }
-    private func remember(channel: String, hint: String) -> Bool {
-        let key = channel + "\u{1f}" + hint; guard seenHints.insert(key).inserted else { return false }
-        hintOrder.append(key); if hintOrder.count > hintLimit { seenHints.remove(hintOrder.removeFirst()) }; return true
     }
 }

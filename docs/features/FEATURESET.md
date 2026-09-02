@@ -125,7 +125,7 @@
 | 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, while non-GitHub/unresolved repos have no event hints but remain eligible for foreground and separately consented discretionary processing; per-repo exclusion | Background Sync | `reconcileAutomaticRepository`, relay routes, `BackgroundProcessingScheduler` |
 | 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate automatic-sync branch setting | Background Sync | `RepoAssistSettings`, `SettingsView` |
 | 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Background Sync | `PremiumAssistSummary`, production settings views |
-| 8.7 | StoreKit verification service (Apple roots pinned, OCSP, fail-closed) | Background Sync | `storekit-verifier` |
+| 8.7 | StoreKit verification (on-device, Apple-signed transactions) | Background Sync | `PremiumStorefront.swift` (relay-era server verifier removed) |
 | 8.8 | App Store Server Notifications v2 (expiry/refund/revoke handling) | Background Sync | relay `appStoreNotification` |
 | 8.9 | Relay data deletion (terminal, reinstall-durable barrier, server tombstone/removal with hashed receipt and retention-scoped operational records) | Background Sync | `deleteRelayData`, `DELETE /v1/installation` |
 | 8.10 | Kill switch + retention crons + DLQ + monitoring | Background Sync | relay KILL_SWITCH, crons |

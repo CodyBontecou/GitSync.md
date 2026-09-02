@@ -1,19 +1,6 @@
 import AppIntents
 import SwiftUI
 
-enum AssistLinkCompletionURL {
-    static func matches(_ url: URL) -> Bool {
-        url.scheme == "syncmd"
-            && url.host == "assist-linked"
-            && url.user == nil
-            && url.password == nil
-            && url.port == nil
-            && url.query == nil
-            && url.fragment == nil
-            && (url.path.isEmpty || url.path == "/")
-    }
-}
-
 #if DEBUG
 extension Sync_mdApp {
     static func resetPersistedAuthAndReposForUITest() {
@@ -42,7 +29,6 @@ extension Sync_mdApp {
 @MainActor
 @main
 struct Sync_mdApp: App {
-    @UIApplicationDelegateAdaptor(SyncMDApplicationDelegate.self) private var applicationDelegate
     @State private var appState: AppState
     @State private var entitlementStore: PremiumEntitlementStore
     @State private var premiumRuntime: PremiumRuntime
@@ -84,15 +70,9 @@ struct Sync_mdApp: App {
                 .environment(premiumRuntime)
                 .task {
                     if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-                        // Terminal deletion is installation safety state, not an
-                        // enabled-feature path. Retry it even in a release where
-                        // Background Sync remains gated off.
-                        await premiumRuntime.recoverPendingDeletion()
-                        guard !Task.isCancelled else { return }
                         if FeatureFlags.gitSyncAssistEnabled {
                             await premiumRuntime.start()
                             guard !Task.isCancelled else { return }
-                            assistForegroundReconciliationTask?.cancel()
                             assistForegroundReconciliationTask = Task { @MainActor in
                                 await premiumRuntime.reconcileForeground()
                             }
@@ -109,12 +89,6 @@ struct Sync_mdApp: App {
                     #endif
                 }
                 .onOpenURL { url in
-                    if FeatureFlags.gitSyncAssistEnabled, AssistLinkCompletionURL.matches(url) {
-                        Task { @MainActor in
-                            await premiumRuntime.prepareForSettings()
-                        }
-                        return
-                    }
                     // x-callback-url from external triggers (e.g. a link tapped in Obsidian, or an iOS Shortcut)
                     // Format: syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>
                     let handler = CallbackURLHandler(appState: appState)
@@ -138,7 +112,8 @@ struct Sync_mdApp: App {
                 // bounces through inactive/active (Control Center, app switcher).
                 appState.refreshClonedRepos(deferredBy: 0.5, skipIfRecentlyStartedWithin: 15)
                 if FeatureFlags.gitSyncAssistEnabled {
-                    assistForegroundReconciliationTask?.cancel()
+                    // Never cancel-and-restart here: the runtime coalesces a
+                    // running pass and applies a short bounce cooldown.
                     assistForegroundReconciliationTask = Task { @MainActor in
                         await premiumRuntime.reconcileForeground()
                     }

@@ -4,14 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - "worker/premium-relay/**"
-      - "worker/storekit-verifier/**"
       - "worker/onboarding-analytics/**"
       - ".github/workflows/premium-workers.yml"
   pull_request:
     paths:
-      - "worker/premium-relay/**"
-      - "worker/storekit-verifier/**"
       - "worker/onboarding-analytics/**"
       - ".github/workflows/premium-workers.yml"
 
@@ -31,10 +27,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - worker: premium-relay
-            startup_check: false
-          - worker: storekit-verifier
-            startup_check: true
           - worker: onboarding-analytics
             startup_check: false
     defaults:
@@ -77,8 +69,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - worker: premium-relay
-            command: migrate:local
           - worker: onboarding-analytics
             command: db:migrate:local
     defaults:

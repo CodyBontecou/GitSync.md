@@ -626,34 +626,6 @@ extension GitHubService {
         }
     }
 
-    /// Resolve one canonical owner/name target exactly. A nil token performs a
-    /// public lookup and never sends repository metadata anywhere but GitHub.
-    static func fetchRepository(owner: String, repo: String, token: String?) async throws -> GitHubRepositoryIdentity {
-        let escapedOwner = owner.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? owner
-        let escapedRepo = repo.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? repo
-        var req = URLRequest(url: URL(string: "https://api.github.com/repos/\(escapedOwner)/\(escapedRepo)")!)
-        if let token, !token.isEmpty { req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
-        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        req.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
-        let (data, response) = try await URLSession.shared.data(for: req)
-        guard let http = response as? HTTPURLResponse else { throw GitHubError.apiError(0, "Invalid response") }
-        switch http.statusCode {
-        case 200:
-            struct IdentityResponse: Decodable { let id: Int64; let full_name: String }
-            let value = try JSONDecoder().decode(IdentityResponse.self, from: data)
-            return GitHubRepositoryIdentity(repositoryID: value.id, fullName: value.full_name)
-        default:
-            let headers = Dictionary(uniqueKeysWithValues: http.allHeaderFields.map {
-                (String(describing: $0.key), String(describing: $0.value))
-            })
-            throw repositoryLookupError(
-                statusCode: http.statusCode,
-                headers: headers,
-                body: data
-            )
-        }
-    }
-
     static func repositoryLookupError(
         statusCode: Int,
         headers: [String: String],

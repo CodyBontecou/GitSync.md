@@ -31,7 +31,7 @@ struct RepoListView: View {
 
                 VStack(spacing: 0) {
                     DiscordPromoBanner()
-                    AssistUpsellBanner(onLearnMore: { showAssistPremiumFromUpsell = true })
+                    AssistUpsellBanner(onOpen: { showAssistPremiumFromUpsell = true })
 
                     if state.visibleRepos.isEmpty {
                         emptyState
@@ -744,7 +744,7 @@ private struct AssistUpsellBanner: View {
     @Environment(PremiumEntitlementStore.self) private var entitlement
     @Environment(PremiumRuntime.self) private var premiumRuntime
     @AppStorage("assist.upsell.bannerDismissed.v1") private var dismissed: Bool = false
-    let onLearnMore: () -> Void
+    let onOpen: () -> Void
 
     var body: some View {
         let isVisible = AssistUpsellEligibility.shouldShowBanner(
@@ -755,42 +755,17 @@ private struct AssistUpsellBanner: View {
             bannerDismissed: dismissed
         )
         if isVisible {
-            BCard(padding: 12, bg: .brutalSurface) {
-                HStack(spacing: 12) {
-                    HStack(spacing: 12) {
-                        Image(systemName: "bolt.badge.clock.fill")
-                            .font(.system(size: 18, weight: .semibold))
+            BCard(padding: 0, bg: .brutalSurface) {
+                HStack(spacing: 0) {
+                    Button(action: onOpen) {
+                        Text("Unlock Background Sync")
+                            .font(.system(size: 13, weight: .semibold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
-                            .frame(width: 28)
-                            .accessibilityHidden(true)
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Background Sync is available")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(Color.brutalText)
-                            Text("Choose automatic pulls, separately consented automatic pushes, or both when iOS allows. Optional subscription.")
-                                .font(.system(size: 13, design: .monospaced))
-                                .foregroundStyle(Color.brutalTextMid)
-                        }
-                    }
-                    .accessibilityElement(children: .combine)
-
-                    Spacer(minLength: 8)
-
-                    Button {
-                        onLearnMore()
-                    } label: {
-                        Text("LEARN MORE")
-                            .font(.system(size: 12, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color.brutalAccent)
-                            .tracking(1)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
-                            .background(Color.brutalAccent.opacity(0.10))
-                            .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
+                            .padding(.horizontal, 12)
+                            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(String(localized: "Learn more about Background Sync"))
 
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -800,7 +775,7 @@ private struct AssistUpsellBanner: View {
                         Image(systemName: "xmark")
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundStyle(Color.brutalTextMid)
-                            .frame(width: 28, height: 28)
+                            .frame(width: 44, height: 44)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)

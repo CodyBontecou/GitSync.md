@@ -266,31 +266,18 @@ struct SettingsView: View {
                                     if let assist = repo?.assist {
                                         BDivider().padding(.horizontal, 16)
                                         VStack(alignment: .leading, spacing: 5) {
-                                            Text("ENROLLMENT: \(assistEnrollmentTitle(assist.enrollmentStatus).uppercased())")
+                                            Text("STATUS: \(assistInclusionTitle(assist).uppercased())")
                                                 .font(.system(size: 12, weight: .bold, design: .monospaced))
-                                            if let fullName = assist.githubRepositoryFullName {
-                                                Text("GitHub repository: \(fullName)").font(.caption.monospaced())
-                                            }
-                                            if let enrolledBranch = assist.enrolledBranch {
-                                                Text("Enrolled branch: \(enrolledBranch)").font(.caption.monospaced())
-                                            } else {
-                                                let automaticTarget = branch.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "main" : branch
-                                                Text("Automatic target: \(automaticTarget)")
-                                                    .font(.caption.monospaced())
-                                            }
                                             if let message = assist.enrollmentMessage {
                                                 Text(message).font(.caption.monospaced())
-                                            }
-                                            if let date = assist.enrollmentLastAttemptDate {
-                                                Text("Enrollment attempt \(relativeDate(date))").font(.caption)
                                             }
                                             Text("Health: \(assistHealthTitle(assist.health))").font(.caption.monospaced())
                                             if let message = assist.health.message { Text(message).font(.caption.monospaced()) }
                                             if let date = assist.health.lastAttemptDate { Text("Last sync attempt \(relativeDate(date))").font(.caption) }
-                                            Button("Retry") {
+                                            Button("Sync now") {
                                                 Task {
                                                     isManagingAssist = true
-                                                    await premiumRuntime.prepareForSettings()
+                                                    await premiumRuntime.reconcileNow()
                                                     isManagingAssist = false
                                                 }
                                             }
@@ -773,14 +760,13 @@ struct SettingsView: View {
         }
     }
 
-    private func assistEnrollmentTitle(_ status: RepoAssistEnrollmentStatus) -> String {
-        switch status {
-        case .disabled: return String(localized: "Disabled")
+    private func assistInclusionTitle(_ assist: RepoAssistSettings) -> String {
+        if assist.excludedFromAutomaticSync { return String(localized: "Excluded") }
+        switch assist.enrollmentStatus {
         case .excluded: return String(localized: "Excluded")
-        case .foregroundOnly: return String(localized: "No event hint")
-        case .enrolling: return String(localized: "Reconciling")
-        case .enrolled: return String(localized: "Enrolled")
-        case .failed: return String(localized: "Failed")
+        case .enrolled, .enrolling, .foregroundOnly: return String(localized: "Included")
+        case .disabled: return String(localized: "Not included")
+        case .failed: return String(localized: "Needs attention")
         }
     }
 

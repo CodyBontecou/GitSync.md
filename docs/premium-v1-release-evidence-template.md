@@ -1,5 +1,8 @@
 # Background Sync — Premium v1 release evidence bundle
 
+> **2026-09-02:** Background Sync was re-architected to run entirely on-device; the premium relay, storekit-verifier, APNs registration, and GitHub App linkage no longer exist. Relay-era checklist rows below are retained for history only.
+
+
 Copy this file into the private release record for each candidate build. Do not commit completed evidence that contains private account, device, repository, delivery, transaction, or infrastructure identifiers.
 
 Never paste StoreKit JWS values, bearer/deletion capabilities, APNs tokens or private keys, Git credentials, webhook secrets/signatures, repository contents/paths/names, or user identity into this record. Use redacted screenshots and opaque evidence references.

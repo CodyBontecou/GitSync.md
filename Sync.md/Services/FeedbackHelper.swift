@@ -26,30 +26,22 @@ enum FeedbackHelper {
         return mailtoURL(subject: subject, body: body)
     }
 
-    /// Creates an explicit user-mediated private request. These opaque IDs are
-    /// identifiers, not bearer/deletion credentials, and are included only in
+    /// Creates an explicit user-mediated private request. The opaque onboarding
+    /// ID is an identifier, not a bearer credential, and is included only in
     /// the user's draft email—never sent automatically or posted publicly.
+    /// Background Sync has no server records (it runs entirely on-device), so
+    /// no installation identifier is collected for it.
     static func privacyRequestMailtoURL(
-        defaults: UserDefaults = .standard,
-        bundle: Bundle = .main,
-        identityKeychainLoad: (String) -> String? = KeychainService.load,
-        identityKeychainSave: (String, String) -> Void = { KeychainService.save(key: $0, value: $1) }
+        defaults: UserDefaults = .standard
     ) -> URL? {
         let analyticsID = OnboardingAnalyticsInstallIDStore(
             defaults: SystemOnboardingAnalyticsDefaults(defaults: defaults)
         ).installID()
-        let assistID = PremiumInstallationIdentity.current(
-            defaults: defaults,
-            bundle: bundle,
-            keychainLoad: identityKeychainLoad,
-            keychainSave: identityKeychainSave
-        ).installationID.uuidString.lowercased()
         let body = """
         Request type: [access / delete]
 
-        Please keep these opaque installation identifiers private. They are included so support can locate this installation's first-party records:
+        Please keep this opaque installation identifier private. It is included so support can locate this installation's first-party records:
         Onboarding analytics installation: \(analyticsID)
-        Background Sync installation: \(assistID)
 
         Details:
 

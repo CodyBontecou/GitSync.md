@@ -67,11 +67,10 @@ All: `action`, `status=ok`, plus:
 
 Source: `Sync.md/Services/BackgroundSyncCoordinator.swift` (entire file).
 
-- Info.plist `UIBackgroundModes = ["remote-notification", "processing"]` and permits `com.bontecou.Sync-md.background-sync`. Processing requests require network connectivity and remain discretionary; there is no guaranteed interval or real-time execution. Build var `PREMIUM_RELAY_BASE_URL`.
+- Info.plist `UIBackgroundModes = ["processing"]` and permits `com.bontecou.Sync-md.background-refresh` (BGAppRefreshTask — the primary closed-app freshness mechanism, short refresh windows granted generously for recently-used apps) plus `com.bontecou.Sync-md.background-sync` (BGProcessingTask fallback with longer runtime, network required, battery allowed; both use a 15-minute `earliestBeginDate` and remain discretionary — no guaranteed interval or real-time execution). Foreground activation is the other reconciliation trigger; there are no push wakes. Rapid scene bounces coalesce into a running foreground pass and a 30-second completion cooldown suppresses redundant passes; an explicit `reconcileNow()` ("Sync now" / "Retry") bypasses the cooldown.
 - Background Sync has installation-scoped global consent, then independent automatic-pull and automatic-push preferences. Existing enabled installations migrate pull-on/push-off; publishing remains separately confirmed and default-off. Global disable clears both action preferences, and re-enable starts pull-on/push-off. Historical channels never imply consent.
-- Eligibility: exact GitHub repositories covered by linked GitHub App installations receive opaque live enrollments and best-effort event wakes. Non-GitHub and unresolved repositories can still receive discretionary opportunities for whichever automatic action is enabled through BG processing; foreground reconciliation remains available.
-- Triggers: silent APNs push, scene activation, and best-effort `BGProcessingTask`. Processing is rescheduled at invocation, retained through exactly-once completion, and expiration completes false while cancelling processing flights.
-- Device registration is constant-size (`installation`, APNs token/environment, monotonic generation), independent of repository count. The relay derives delivery targets by joining each channel's live enrollment to devices for that installation; it does not trust a client-uploaded channel list for routing.
+- Eligibility: every non-excluded cloned repository is included locally; no GitHub App linkage, enrollment, or wake channel exists.
+- Triggers: scene activation and best-effort `BGProcessingTask`. Processing is rescheduled at invocation, retained through exactly-once completion, and expiration completes false while cancelling processing flights.
 - Per-repo policies (`RepoAssistSettings`): `excludedFromAutomaticSync`, `networkPolicy == .wifiOnly` (NWPathMonitor `SystemBackgroundSyncConditions`), and `powerPolicy == .externalPowerOnly` (batteryState charging/full). The automatic branch is `RepoConfig.branch`; the old duplicate automatic-sync branch editor is not a production entry point. Policy violations → `.deferred("Waiting for Wi-Fi."/"Waiting for external power.")` recorded as health `.deferred`.
 - Dispositions: `.completed(RepositoryReconciliationResult)` / `.deferred(String)` / `.ignored`. Composite results retain pull, push, final local SHA, and actual transfer truth even when a successful pull is followed by push attention/failure. Per-repo in-flight dedupe is generation keyed.
 - Health (`RepoAssistHealth`): kinds never/updated/upToDate/deferred/attention/failed; attention reasons localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, unpushedCommit, failed. Successful pull transfer/SHA remains recorded if publication later fails; post-update LFS auth/trust maps to authentication attention.
@@ -137,7 +136,7 @@ Property keys (whitelist): `appVersion`, `buildNumber`, `platform`, `onboardingS
 ## 8. Test coverage evidence
 
 `SyncMDTests/SyncMDTests.swift` (single file, 100+ tests). Automation-domain relevant:
-- Background sync / silent push: `testBackgroundCoordinatorGatesAndRecordsTypedResults`, `testBackgroundCoordinatorMapsAllAttentionOutcomesAndPreservesLastSuccess`, `testPremiumSilentPushParserAcceptsOnlyOpaqueBackgroundPayload`, `testPremiumPushCompletionGateIsExactlyOnceUnderConcurrentClaims`, `testPremiumNotificationBridgeTimesOutCancelsAndCompletesExactlyOnce`, `testPremiumNotificationBridgeReturnsSuccessfulResultBeforeTimeoutOnce`, `testPremiumReleaseConfigurationAndBackgroundCapabilities`.
+- Background sync: `testBackgroundCoordinatorGatesAndRecordsTypedResults`, `testBackgroundCoordinatorMapsAllAttentionOutcomesAndPreservesLastSuccess`, `testPremiumReleaseConfigurationAndBackgroundCapabilities` (silent-push/bridge tests removed with the relay).
 - Analytics/privacy: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`, `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`, `testPremiumAPIRequestContainsOnlyAllowedMetadataAndFailsClosed`.
 - Pull machinery used by Shortcuts/callback: `testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo`, `testRepositoryPullRunnerReturnsUpdatedAndUpToDate`, `testAppStatePullFastForwardUpdatesCommitAndOutcome`, `testAppStatePullBlockedByLocalChangesDoesNotMutateRepoState`, `testCallbackPullMappingPreservesEveryTypedOutcome`, `testCallbackPushAndSyncMappingsPreserveStatusesAndCompletedWork`, `testShortcutPushAndSyncMappingsReturnBlockedEntitiesAndThrowHardFailures`, `testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead`, `testLocalGitPullOnlyDoesNotOverwriteBranchAdvancedAfterAncestryValidation`, `testAppStatePullWithRebaseUpdatesCommitAndOutcome`, `testAppStatePullWithRebaseConflictStoresOutcome`, OAuth URL parsing `testOAuthCallbackParserValidatesURLStateBeforeToken`.
 - Callback typed pull/push/sync mappings have direct outcome coverage. Shortcuts push/sync entity-vs-thrown-error mapping is directly tested; full URL-opening/UI redirection, system App Intent invocation, and `OnboardingAnalyticsClient` still lack end-to-end unit tests in this file. The analytics worker has `worker/onboarding-analytics/test/onboarding-analytics.test.mjs`.
@@ -165,8 +164,7 @@ Not user-facing: ships only in DEBUG builds; excluded from App Store builds.
 
 ## 11. Worker test suites (evidence)
 
-- `worker/premium-relay/test/relay.test.ts` — relay unit tests (CI `premium-workers.yml` matrix: typecheck, tests, migrations validation).
-- `worker/storekit-verifier/test/verifier.test.ts` + `fixtures.ts` — verifier tests incl. Apple JWS fixtures.
+- (The premium-relay and storekit-verifier worker test suites were removed with those workers.)
 - `worker/onboarding-analytics/test/onboarding-analytics.test.mjs` — analytics worker tests (cited §7 above).
 
 ## Gaps / uncertainties
@@ -178,4 +176,4 @@ Not user-facing: ships only in DEBUG builds; excluded from App Store builds.
 - No user-facing analytics opt-out toggle on iOS; worker DELETE endpoint exists but the client call site was not found in files read.
 - Worker paywall columns are not emitted by the iOS client — future feature placeholders, not shipped.
 - No BGAppRefresh usage; Background Sync combines `remote-notification`, discretionary `BGProcessingTask`, and foreground reconciliation.
-- **Resolved elsewhere**: `SyncMDApplicationDelegate` APNs wiring is documented in `premium-assist.md` §5 (silent-push bridge, 25s completion gate); the delegate itself is thin glue over `PremiumNotificationBridge`.
+- **Resolved elsewhere**: the app delegate and push bridge were removed with the relay; foreground/processing reconciliation wiring is documented in `premium-assist.md` §4.

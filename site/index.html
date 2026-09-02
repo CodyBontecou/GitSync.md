@@ -32,7 +32,7 @@
   "alternateName": "Sync.md",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "iOS 17+, iPadOS 17+",
-  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. Manual Git talks directly to your remote; optional Background Sync uses a metadata-only relay that never handles repository content.",
+  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. All Git traffic — manual and optional Background Sync — goes directly from your device to your remote; there is no sync server."
   "url": "https://gitsyncmd.app/",
   "downloadUrl": "https://apps.apple.com/us/app/gitsync-md/id6758960270",
   "author": {
@@ -1578,7 +1578,7 @@
       </div>
       <div class="trust-item">
         <span class="trust-kicker">Architecture</span>
-        <span class="trust-value">Direct Git traffic<small>Manual Git goes device-to-remote; the Background Sync relay never handles repository content.</small></span>
+        <span class="trust-value">Direct Git traffic<small>All Git traffic — manual and Background Sync — goes device-to-remote; there is no sync server.</small></span>
       </div>
     </div>
   </div>
@@ -1855,7 +1855,7 @@
         <div class="segment-list">
           <span>Open repo folders from the iOS Files app</span>
           <span>Use one source folder to avoid duplicate cloud copies</span>
-          <span>Repository content stays device-to-remote and is never relayed</span>
+          <span>Repository content stays device-to-remote with no middleman</span>
         </div>
       </article>
     </div>
@@ -2004,7 +2004,7 @@
       </div>
       <div class="spec-row">
         <div class="spec-key">Cloud Dependency</div>
-        <div class="spec-val">Manual Git: device-to-remote · Background Sync: opt-in entitlement and wake metadata relay, never repository content</div>
+        <div class="spec-val">Device-to-remote for everything — manual Git and optional Background Sync; no sync server, ever</div>
       </div>
       <div class="spec-row">
         <div class="spec-key">Data Collection</div>
@@ -2052,7 +2052,7 @@
       </details>
       <details class="faq-item">
         <summary>Is there a GitSync.md server in the middle?</summary>
-        <p>Git operations run on device through the app's native Git engine and talk directly to the configured remote. Your repos are not mirrored through a Cody-operated sync service. Optional Background Sync uses a relay for entitlement, wake, and operational metadata only; it never handles repository content or Git credentials.</p>
+        <p>Git operations run on device through the app's native Git engine and talk directly to the configured remote. Your repos are not mirrored through a Cody-operated sync service. Background Sync runs entirely on your device too — it reuses the same Git engine and your existing credentials, with no relay, no push server, and no repository metadata leaving your device.</p>
       </details>
       <details class="faq-item">
         <summary>How do I use it with Obsidian?</summary>
@@ -2088,7 +2088,7 @@
       </details>
       <details class="faq-item">
         <summary>How does Background Sync work?</summary>
-        <p>Background Sync is an optional subscription for best-effort repository reconciliation while the app is closed. You can independently enable automatic fast-forward pulls, automatic commit and push, or both; publishing remains default-off. Push-only mode checks remote state without updating the worktree, and concurrent local and remote edits stop for attention. GitHub events and iOS processing provide best-effort wakes, so work is not guaranteed or real time. It never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
+        <p>Background Sync is an optional subscription for best-effort repository reconciliation while the app is closed. You can independently enable automatic fast-forward pulls, automatic commit and push, or both; publishing remains default-off. Push-only mode checks remote state without updating the worktree, and concurrent local and remote edits stop for attention. Sync attempts run when the app opens and when iOS grants background processing time, so work is not guaranteed or real time. It never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
       </details>
       <details class="faq-item">
         <summary>Is it iPhone only? Is there a subscription?</summary>

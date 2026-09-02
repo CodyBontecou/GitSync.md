@@ -115,15 +115,6 @@ enum RepoAssistAttention: String, Codable, Sendable, Equatable {
     case localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, unpushedCommit, failed
 }
 
-enum OpaqueAssistIdentifier {
-    static func isValid(_ value: String) -> Bool {
-        guard (8...128).contains(value.utf8.count) else { return false }
-        return value.unicodeScalars.allSatisfy {
-            CharacterSet.alphanumerics.contains($0) || $0 == "-" || $0 == "_"
-        }
-    }
-} 
-
 enum RepoAssistHealthKind: String, Codable, Sendable { case never, updated, upToDate, deferred, attention, failed }
 
 struct RepoAssistHealth: Codable, Sendable, Equatable {
@@ -171,9 +162,39 @@ enum RepoAssistEnrollmentStatus: String, Codable, Sendable, Equatable {
     case disabled, excluded, foregroundOnly, enrolling, enrolled, failed
 }
 
-struct GitHubRepositoryIdentity: Codable, Sendable, Equatable {
-    let repositoryID: Int64
-    let fullName: String
+struct PremiumAssistSummary: Sendable, Equatable {
+    let total: Int
+    let included: Int
+    let excluded: Int
+    let disabled: Int
+    let failed: Int
+}
+
+struct PremiumInstallation: Codable, Sendable, Equatable {
+    let installationID: UUID
+    let bundleID: String
+    let appVersion: String
+}
+
+/// Stable per-installation identity used solely to bind StoreKit purchases
+/// to this install via the app account token. Entirely local: no server
+/// registration is involved.
+enum PremiumInstallationIdentity {
+    static let defaultsKey = "premium.installation-id.v1"
+
+    static func current(
+        defaults: UserDefaults = .standard,
+        bundle: Bundle = .main
+    ) -> PremiumInstallation {
+        let id = defaults.string(forKey: defaultsKey).flatMap(UUID.init(uuidString:))
+            ?? UUID()
+        defaults.set(id.uuidString, forKey: defaultsKey)
+        return PremiumInstallation(
+            installationID: id,
+            bundleID: bundle.bundleIdentifier ?? "unknown",
+            appVersion: bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        )
+    }
 }
 
 struct RepoAssistSettings: Codable, Sendable, Equatable {
@@ -269,91 +290,3 @@ struct RepoAssistSettings: Codable, Sendable, Equatable {
     }
 }
 
-struct PremiumAssistSummary: Sendable, Equatable {
-    let total: Int
-    let enrolled: Int
-    let foregroundOnly: Int
-    let excluded: Int
-    let disabled: Int
-    let failed: Int
-}
-
-struct PremiumInstallation: Codable, Sendable, Equatable {
-    let installationID: UUID
-    let bundleID: String
-    let appVersion: String
-}
-
-enum APNsEnvironment: String, Codable, Sendable { case sandbox, production }
-
-struct PremiumEntitlementUploadRequest: Codable, Sendable, Equatable {
-    let installation: PremiumInstallation
-    let proof: PremiumEntitlementProof
-}
-
-struct PremiumInstallationCredential: Codable, Sendable, Equatable {
-    let installationID: UUID
-    let token: String
-    let deletionToken: String
-    let expiresAt: Date
-
-    func isValid(for installationID: UUID, at date: Date = Date()) -> Bool {
-        self.installationID == installationID && !token.isEmpty && expiresAt > date
-    }
-
-    func canDelete(for installationID: UUID) -> Bool {
-        self.installationID == installationID && !deletionToken.isEmpty
-    }
-}
-
-struct PremiumDeviceRegistrationRequest: Codable, Sendable, Equatable {
-    let installation: PremiumInstallation
-    let token: String
-    let environment: APNsEnvironment
-    /// Monotonic per-installation sequence. The relay accepts an update only
-    /// when it is not older than the device row it already committed.
-    let registrationGeneration: UInt64
-}
-
-struct PremiumDeviceDeletionRequest: Codable, Sendable, Equatable {
-    let installationID: UUID
-    let token: String?
-    let environment: APNsEnvironment
-    /// Deletes only registrations at or below this captured generation. Nil is
-    /// retained for wire compatibility with legacy clients.
-    let maximumRegistrationGeneration: UInt64?
-
-    init(
-        installationID: UUID,
-        token: String?,
-        environment: APNsEnvironment,
-        maximumRegistrationGeneration: UInt64? = nil
-    ) {
-        self.installationID = installationID
-        self.token = token
-        self.environment = environment
-        self.maximumRegistrationGeneration = maximumRegistrationGeneration
-    }
-}
-
-struct PremiumSilentPush: Sendable, Equatable {
-    let channel: String
-    let hintID: String
-
-    enum ParseError: Error, Equatable { case invalidPayload }
-
-    static func parse(_ userInfo: [AnyHashable: Any]) throws -> PremiumSilentPush {
-        guard Set(userInfo.keys.compactMap { $0 as? String }) == ["aps", "channel", "hint"],
-              let aps = userInfo["aps"] as? [String: Any],
-              Set(aps.keys) == ["content-available"],
-              let contentAvailable = aps["content-available"] as? NSNumber,
-              contentAvailable.intValue == 1,
-              let channel = userInfo["channel"] as? String,
-              let hint = userInfo["hint"] as? String,
-              OpaqueAssistIdentifier.isValid(channel), OpaqueAssistIdentifier.isValid(hint) else {
-            throw ParseError.invalidPayload
-        }
-        return PremiumSilentPush(channel: channel, hintID: hint)
-    }
-
-}

@@ -1,5 +1,8 @@
 # Background Sync — App Privacy inventory
 
+> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlements are verified locally with StoreKit 2; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+
+
 Use this as an implementation inventory when completing App Store Connect. Apple's current taxonomy and the actual production configuration are authoritative; re-audit immediately before submission.
 
 The app target ships `Sync.md/PrivacyInfo.xcprivacy`. It declares no tracking and records approved required-reason API use for same-app `UserDefaults` (`CA92.1`) plus file timestamps inside the app container (`C617.1`) and user-selected security-scoped repositories (`3B52.1`). Its collected-data inventory conservatively covers app-install identifiers, coarse onboarding interactions, StoreKit transaction/subscription history, GitHub App numeric enrollment identifiers/selected branch, and opaque delivery diagnostics. These manifest declarations are separate from App Store Connect's privacy nutrition-label answers below: a privacy manifest does not replace production review or entering matching answers.

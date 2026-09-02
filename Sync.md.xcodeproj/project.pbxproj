@@ -514,7 +514,6 @@
 		};
 		62C951A22F39302A001F79DF /* Debug */ = {
 	buildSettings = {
-		"APS_ENVIRONMENT" = development;
 		"ASSETCATALOG_COMPILER_APPICON_NAME" = AppIcon;
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
@@ -549,7 +548,6 @@
 };
 		62C951A32F39302A001F79DF /* Release */ = {
 	buildSettings = {
-		"APS_ENVIRONMENT" = production;
 		"ASSETCATALOG_COMPILER_APPICON_NAME" = AppIcon;
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
@@ -569,7 +567,6 @@
 			"@executable_path/Frameworks",
 		);
 		"MARKETING_VERSION" = "2.6.0";
-		"PREMIUM_RELAY_BASE_URL" = "https://gitsync-premium-relay.costream.workers.dev";
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;

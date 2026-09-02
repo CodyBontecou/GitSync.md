@@ -146,7 +146,7 @@ Sources read in full:
 - *Host-key trust sharing between libgit2 and Citadel* → **verified**: `LocalGitService.certificateCheckCallback` routes libgit2 SSH transport through the same `GitLFSSSHHostKeyFileTrustStore` (see `git-engine.md` §28).
 - *No biometric/LAContext gating — "may exist elsewhere"* → **verified absent**: `KeychainService` uses plain generic-password items with `AfterFirstUnlockThisDeviceOnly`; no LAContext anywhere (`state-and-services.md` §3).
 - *Media viewing of LFS files* → **resolved**: no in-app image/media rendering; hydrated non-text files hit the editor's binary fallback view (`ui-views.md` §11.1).
-- *PremiumRuntime grep match re: key generation* → **confirmed unrelated**: PremiumRuntime is subscription/relay orchestration (`premium-assist.md` §5). Keys are user-supplied only — accurate as stated.
+- *PremiumRuntime grep match re: key generation* → **confirmed unrelated**: PremiumRuntime is local Background Sync orchestration (`premium-assist.md` §4). Keys are user-supplied only — accurate as stated.
 
 Still open (genuine limitations — accurate as written):
 

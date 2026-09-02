@@ -1,5 +1,8 @@
 # Premium v1 / Background Sync completion audit
 
+> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlements are verified locally with StoreKit 2; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+
+
 > Historical naming note: this August 2026 audit originally shipped the customer-facing name **GitSync Assist**. Current product copy uses **Background Sync**; stable product IDs and internal `assist` identifiers remain unchanged.
 
 Audit date: 2026-08-13. This is a prompt-to-artifact checklist, not a release certificate.
