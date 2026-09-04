@@ -192,14 +192,15 @@ async function handleGithubWebhook(env: Env, request: Request, ctx: ExecutionCon
               const raw = await env.REGISTRY.get(`device:${secret}`);
               if (!raw) return null;
               try {
-                return JSON.parse(raw) as DeviceRecord;
+                return { secret, record: JSON.parse(raw) as DeviceRecord };
               } catch {
                 return null;
               }
             }),
         );
-        for (const device of devices) {
-          if (!device || !device.repos.includes(summary.repoFullName!)) continue;
+        for (const entry of devices) {
+          if (!entry || !entry.record.repos.includes(summary.repoFullName!)) continue;
+          const { secret, record: device } = entry;
           const throttleKey = `notif:${summary.repoFullName}:${device.token}`;
           if (await env.REGISTRY.get(throttleKey)) continue;
           const text = notificationText(summary.repoFullName!, summary.commitCount);
@@ -213,8 +214,12 @@ async function handleGithubWebhook(env: Env, request: Request, ctx: ExecutionCon
               userInfo: { repo: summary.repoFullName },
             });
             if (response.status === 410 || response.status === 400) {
-              // Token no longer valid — drop the registration.
-              await env.REGISTRY.delete(`device:${summary.repoFullName}:${device.token}`);
+              // Token no longer valid — drop the registration. Registrations live under
+              // device:<secret> (see the KV schema in wrangler.toml), so prune that key;
+              // the app re-registers via /v1/register on next launch. The throttle key
+              // below is still written, which is harmless: the registration is gone, so
+              // future scans never reach this token again.
+              await env.REGISTRY.delete(`device:${secret}`);
             }
           } catch {
             // Per-device delivery failures are logged only; the webhook has already been acked.
