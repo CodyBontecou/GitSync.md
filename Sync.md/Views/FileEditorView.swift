@@ -87,7 +87,7 @@ struct FileEditorView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(fileName.uppercased())
-                    .font(.system(size: 12, weight: .black, design: .monospaced))
+                    .bType(.monoCaption, weight: .black)
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
                     .lineLimit(1)
@@ -96,7 +96,7 @@ struct FileEditorView: View {
                 HStack(spacing: 16) {
                     if !isBinary {
                         Button("Save") { performSave() }
-                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                            .bType(.monoCaption)
                             .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
                             .disabled(!isDirty || isSaving)
                     }
@@ -105,7 +105,7 @@ struct FileEditorView: View {
                         showRenameModal = true
                     } label: {
                         Image(systemName: "pencil")
-                            .font(.system(size: 14, weight: .semibold))
+                            .bType(.mono, weight: .semibold)
                             .foregroundStyle(Color.brutalText)
                     }
                     .accessibilityLabel(String(localized: "Rename File"))
@@ -113,7 +113,7 @@ struct FileEditorView: View {
                         showDeleteConfirm = true
                     } label: {
                         Image(systemName: "trash")
-                            .font(.system(size: 14, weight: .semibold))
+                            .bType(.mono, weight: .semibold)
                             .foregroundStyle(Color.brutalError)
                     }
                     .accessibilityLabel(String(localized: "Delete File"))
@@ -139,14 +139,16 @@ struct FileEditorView: View {
     private var binaryState: some View {
         VStack(spacing: 12) {
             Spacer()
+            // Decorative emoji glyph (lock ornament, carries no information)
+            // — fixed size per Issue #16's decorative allowance.
             Text("🔒")
                 .font(.system(size: 44))
             Text("Binary File")
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .bType(.mono, weight: .bold)
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Text("This file cannot be edited as text")
-                .font(.system(size: 12, design: .monospaced))
+                .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(Color.brutalTextFaint)
             Spacer()
         }

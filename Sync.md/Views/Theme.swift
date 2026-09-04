@@ -87,7 +87,9 @@ struct LiquidButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 17, weight: .semibold, design: .rounded))
+            // Semantic text style (Issue #16): .headline is 17pt semibold at
+            // the default category — the legacy fixed size — and now scales.
+            .font(.system(.headline, design: .rounded).weight(.semibold))
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
@@ -104,7 +106,9 @@ struct LiquidButtonStyle: ButtonStyle {
 struct SubtleButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 15, weight: .medium, design: .rounded))
+            // Semantic text style (Issue #16): .subheadline is 15pt at the
+            // default category — the legacy fixed size — and now scales.
+            .font(.system(.subheadline, design: .rounded).weight(.medium))
             .foregroundStyle(.secondary)
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
