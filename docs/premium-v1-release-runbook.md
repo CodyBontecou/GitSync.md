@@ -2,6 +2,8 @@
 
 > **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlements are verified locally with StoreKit 2; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
 
+> **2026-09-02 follow-up (ed001a9, later the same day):** the subscription was removed — Background Sync is now **included with the app purchase**. `GitSyncAssist.storekit`, `PremiumStorefront.swift` (StoreKit 2 purchase/restore/manage and on-device entitlement verification), the paywall, and every in-app purchase surface were deleted; the only gate is the user's explicit opt-in (plus independent pull/push consent). The subscription-era operational content below is historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+
 
 Background Sync is an **optional** auto-renewable subscription layered on the existing paid-up-front Git client. One explicit installation-level opt-in covers all current and future cloned or managed repositories, with per-repository exclusions. While enabled, automatic pull and automatic publishing are independent controls; publishing retains separate default-off consent. GitHub App repositories receive best-effort event hints, while discretionary iOS processing may attempt whichever actions are selected. Neither path is guaranteed or truly real time.
 
