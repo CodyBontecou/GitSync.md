@@ -69,7 +69,7 @@ struct ConflictEditorView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(String(localized: "RESOLVE CONFLICT"))
-                    .font(.system(size: 12, weight: .black, design: .monospaced))
+                    .bType(.monoCaption, weight: .black)
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
             }
@@ -78,7 +78,7 @@ struct ConflictEditorView: View {
                     showResolveConfirm = true
                 } label: {
                     Text(String(localized: "RESOLVE"))
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .bType(.monoCaption)
                         .foregroundStyle(canResolve ? Color.brutalAccent : Color.brutalTextFaint)
                         .tracking(1)
                 }
@@ -141,7 +141,7 @@ struct ConflictEditorView: View {
                     BBadge(text: conflictKindLabel(detail), style: .error)
                 }
                 Text(path)
-                    .font(.system(size: 13, design: .monospaced))
+                    .bType(.monoSm, weight: .regular)
                     .foregroundStyle(Color.brutalText)
                     .lineLimit(2)
                     .truncationMode(.middle)
@@ -155,7 +155,7 @@ struct ConflictEditorView: View {
             VStack(alignment: .leading, spacing: 10) {
                 BSectionHeader(title: String(localized: "Pick Filename"))
                 Text(String(localized: "This file was renamed differently on each side. Choose which name to keep — the other will be removed."))
-                    .font(.system(size: 12, design: .monospaced))
+                    .bType(.monoCaption, weight: .regular)
                     .foregroundStyle(Color.brutalTextMid)
 
                 if let ours = detail.ours {
@@ -175,16 +175,16 @@ struct ConflictEditorView: View {
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: keepPath == candidate ? "largecircle.fill.circle" : "circle")
-                    .font(.system(size: 16))
+                    .bType(.body)
                     .foregroundStyle(keepPath == candidate ? Color.brutalAccent : Color.brutalTextMid)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(label.uppercased())
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .bType(.monoCaption)
                         .foregroundStyle(Color.brutalTextMid)
                         .tracking(1)
                     Text(candidate)
-                        .font(.system(size: 13, design: .monospaced))
+                        .bType(.monoSm, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                         .lineLimit(2)
                         .truncationMode(.middle)
@@ -199,6 +199,9 @@ struct ConflictEditorView: View {
                     lineWidth: 1
                 )
             )
+            // Full option row is a ≥44pt-tall pick target.
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(keepPath == candidate ? .isSelected : [])
@@ -208,10 +211,10 @@ struct ConflictEditorView: View {
         BCard {
             VStack(alignment: .leading, spacing: 8) {
                 Text(String(localized: "Binary file"))
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                    .bType(.mono, weight: .bold)
                     .foregroundStyle(Color.brutalText)
                 Text(String(localized: "Binary content can't be merged in-app. Use the Conflict Center to pick Ours or Theirs at the file level."))
-                    .font(.system(size: 12, design: .monospaced))
+                    .bType(.monoCaption, weight: .regular)
                     .foregroundStyle(Color.brutalTextMid)
             }
         }
@@ -239,23 +242,26 @@ struct ConflictEditorView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(spacing: 8) {
                     Text(title.uppercased())
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .bType(.monoCaption, weight: .black)
                         .foregroundStyle(accent)
                         .tracking(1)
                     Text(subtitle)
-                        .font(.system(size: 11, design: .monospaced))
+                        .bType(.monoCaption, weight: .regular)
                         .foregroundStyle(Color.brutalTextMid)
                     Spacer()
                     Button {
                         resultText = text
                     } label: {
                         Text(String(localized: "USE THIS"))
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .bType(.monoCaption)
                             .foregroundStyle(accent)
                             .tracking(1)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .overlay(Rectangle().strokeBorder(accent.opacity(0.4), lineWidth: 1))
+                            // Compact chip, 44pt hit target.
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
@@ -266,7 +272,7 @@ struct ConflictEditorView: View {
 
                 ScrollView {
                     Text(text.isEmpty ? String(localized: "(empty)") : text)
-                        .font(.system(size: 12, design: .monospaced))
+                        .bType(.monoCaption, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(12)
@@ -283,12 +289,12 @@ struct ConflictEditorView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Text(String(localized: "RESULT"))
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .bType(.monoCaption, weight: .black)
                         .foregroundStyle(Color.brutalSuccess)
                         .tracking(1)
                     Spacer()
                     Text(String(localized: "this is what gets staged"))
-                        .font(.system(size: 11, design: .monospaced))
+                        .bType(.monoCaption, weight: .regular)
                         .foregroundStyle(Color.brutalTextMid)
                 }
                 .padding(.horizontal, 12)
@@ -297,7 +303,7 @@ struct ConflictEditorView: View {
                 BDivider()
 
                 TextEditor(text: $resultText)
-                    .font(.system(size: 13, design: .monospaced))
+                    .bType(.monoSm, weight: .regular)
                     .scrollContentBackground(.hidden)
                     .background(Color.brutalSurface)
                     .frame(minHeight: 220)
@@ -312,12 +318,15 @@ struct ConflictEditorView: View {
                 resultText = oursText
             } label: {
                 Text(String(localized: "USE OURS"))
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .bType(.monoCaption)
                     .tracking(1)
                     .foregroundStyle(Color.brutalAccent)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                    // Compact chip, 44pt hit target.
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
@@ -325,12 +334,15 @@ struct ConflictEditorView: View {
                 resultText = theirsText
             } label: {
                 Text(String(localized: "USE THEIRS"))
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .bType(.monoCaption)
                     .tracking(1)
                     .foregroundStyle(Color.brutalWarning)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .overlay(Rectangle().strokeBorder(Color.brutalWarning.opacity(0.4), lineWidth: 1))
+                    // Compact chip, 44pt hit target.
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }
