@@ -95,10 +95,18 @@ struct FileEditorView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 16) {
                     if !isBinary {
-                        Button("Save") { performSave() }
-                            .bType(.monoCaption)
-                            .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
-                            .disabled(!isDirty || isSaving)
+                        Button {
+                            performSave()
+                        } label: {
+                            Text("Save")
+                                .bType(.monoCaption)
+                                .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
+                                // 44x44pt hit target, glyph stays compact.
+                                .frame(minWidth: 44, minHeight: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(!isDirty || isSaving)
                     }
                     Button {
                         renameText = fileName
@@ -107,6 +115,9 @@ struct FileEditorView: View {
                         Image(systemName: "pencil")
                             .bType(.mono, weight: .semibold)
                             .foregroundStyle(Color.brutalText)
+                            // Icon-only toolbar action: 44x44pt hit target.
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
                     }
                     .accessibilityLabel(String(localized: "Rename File"))
                     Button {
@@ -115,6 +126,9 @@ struct FileEditorView: View {
                         Image(systemName: "trash")
                             .bType(.mono, weight: .semibold)
                             .foregroundStyle(Color.brutalError)
+                            // Icon-only toolbar action: 44x44pt hit target.
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
                     }
                     .accessibilityLabel(String(localized: "Delete File"))
                 }
