@@ -601,6 +601,7 @@ private struct AssistConfirmationModal: View {
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(isDestructive ? Color.brutalError : Color.brutalAccent)
                         .frame(width: 24, height: 24)
+                        .accessibilityHidden(true)
 
                     Text(title)
                         .font(.system(size: 24, weight: .black))

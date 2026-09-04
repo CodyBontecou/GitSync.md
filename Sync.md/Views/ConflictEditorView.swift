@@ -177,6 +177,7 @@ struct ConflictEditorView: View {
                 Image(systemName: keepPath == candidate ? "largecircle.fill.circle" : "circle")
                     .font(.system(size: 16))
                     .foregroundStyle(keepPath == candidate ? Color.brutalAccent : Color.brutalTextMid)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(label.uppercased())
                         .font(.system(size: 11, weight: .bold, design: .monospaced))
@@ -200,6 +201,7 @@ struct ConflictEditorView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(keepPath == candidate ? .isSelected : [])
     }
 
     private var binaryNotice: some View {

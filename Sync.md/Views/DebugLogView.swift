@@ -96,6 +96,7 @@ struct DebugLogView: View {
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                 }
+                .accessibilityLabel(String(localized: "Log Actions"))
             }
         }
         .sheet(isPresented: $showShareSheet) {

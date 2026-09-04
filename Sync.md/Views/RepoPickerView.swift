@@ -109,6 +109,7 @@ struct RepoPickerView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.triangle.branch")
                             .font(.system(size: 12, weight: .semibold))
+                            .accessibilityHidden(true)
                         Text(repo.defaultBranch)
                             .font(.system(size: 14, design: .monospaced))
                     }
@@ -118,6 +119,7 @@ struct RepoPickerView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "clock")
                                 .font(.system(size: 12, weight: .semibold))
+                                .accessibilityHidden(true)
                             Text(updated)
                                 .font(.system(size: 14, design: .monospaced))
                         }
@@ -132,6 +134,7 @@ struct RepoPickerView: View {
                 .font(.system(size: 13, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
                 .padding(.top, 3)
+                .accessibilityHidden(true)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)

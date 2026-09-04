@@ -108,6 +108,7 @@ struct AppSettingsView: View {
                                             Image(systemName: "info.circle")
                                                 .font(.system(size: 11))
                                                 .foregroundStyle(Color.brutalText)
+                                                .accessibilityHidden(true)
                                             Text("New repositories will be saved to the app's default location.")
                                                 .font(.system(size: 14, design: .monospaced))
                                                 .foregroundStyle(Color.brutalText)

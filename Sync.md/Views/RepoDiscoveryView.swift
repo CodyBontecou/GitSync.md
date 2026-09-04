@@ -177,6 +177,7 @@ struct RepoDiscoveryView: View {
                         BDivider().padding(.horizontal, 16)
                         HStack(spacing: 8) {
                             Image(systemName: "magnifyingglass")
+                                .accessibilityHidden(true)
                             Text("Scanning…")
                                 .font(.system(size: 13, design: .monospaced))
                         }
@@ -312,6 +313,7 @@ struct RepoDiscoveryView: View {
                 Image(systemName: isSelected ? "checkmark.square.fill" : "square")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(isSelected ? Color.brutalAccent : Color.brutalText)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 6) {
@@ -338,6 +340,7 @@ struct RepoDiscoveryView: View {
         }
         .buttonStyle(.plain)
         .disabled(isTracked)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     static func repositorySubtitle(for repo: DiscoveredRepo) -> String {
