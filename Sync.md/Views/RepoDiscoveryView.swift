@@ -96,7 +96,7 @@ struct RepoDiscoveryView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("DISCOVER REPOSITORIES")
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .bType(.monoCaption, weight: .black)
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
                 }
@@ -134,10 +134,12 @@ struct RepoDiscoveryView: View {
     private var introCard: some View {
         BCard(padding: 14) {
             HStack(alignment: .top, spacing: 10) {
+                // Decorative emoji glyph (magnifier ornament, carries no
+                // information) - fixed per Issue #16's decorative allowance.
                 Text("🔍")
                     .font(.system(size: 18))
                 Text("Scan GitSync.md storage or any folder you grant access to. Every git working copy inside is listed for one-tap reconnect.")
-                    .font(.system(size: 13, design: .monospaced))
+                    .bType(.monoSm, weight: .regular)
                     .foregroundStyle(Color.brutalText)
             }
         }
@@ -159,9 +161,11 @@ struct RepoDiscoveryView: View {
             BCard(padding: 0) {
                 VStack(spacing: 0) {
                     HStack(spacing: 8) {
+                        // Decorative emoji glyph (box ornament, carries no
+                        // information) - fixed per Issue #16's decorative allowance.
                         Text("📦").font(.system(size: 16))
                         Text("On My iPhone › GitSync.md")
-                            .font(.system(size: 13, design: .monospaced))
+                            .bType(.monoSm, weight: .regular)
                             .foregroundStyle(Color.brutalText)
                         Spacer()
                         if containerScan.isScanning {
@@ -179,7 +183,7 @@ struct RepoDiscoveryView: View {
                             Image(systemName: "magnifyingglass")
                                 .accessibilityHidden(true)
                             Text("Scanning…")
-                                .font(.system(size: 13, design: .monospaced))
+                                .bType(.monoSm, weight: .regular)
                         }
                         .foregroundStyle(Color.brutalText)
                         .padding(.horizontal, 16)
@@ -189,7 +193,7 @@ struct RepoDiscoveryView: View {
                         HStack(spacing: 6) {
                             BBadge(text: String(localized: "ERROR"), style: .error)
                             Text(message)
-                                .font(.system(size: 13, design: .monospaced))
+                                .bType(.monoSm, weight: .regular)
                                 .foregroundStyle(Color.brutalError)
                         }
                         .padding(.horizontal, 16)
@@ -222,13 +226,15 @@ struct RepoDiscoveryView: View {
                 VStack(spacing: 0) {
                     if let grantURL = grantRootURL {
                         HStack(spacing: 12) {
+                            // Decorative emoji glyph (folder ornament, carries no
+                            // information) - fixed per Issue #16's decorative allowance.
                             Text("📁").font(.system(size: 18))
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(grantURL.lastPathComponent)
-                                    .font(.system(size: 15, weight: .semibold, design: .monospaced))
+                                    .bType(.mono, weight: .semibold)
                                     .foregroundStyle(Color.brutalText)
                                 Text(grantURL.path)
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .bType(.monoSm, weight: .regular)
                                     .foregroundStyle(Color.brutalText)
                                     .lineLimit(1)
                                     .truncationMode(.middle)
@@ -248,7 +254,7 @@ struct RepoDiscoveryView: View {
                             HStack(spacing: 6) {
                                 BBadge(text: String(localized: "ERROR"), style: .error)
                                 Text(message)
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .bType(.monoSm, weight: .regular)
                                     .foregroundStyle(Color.brutalError)
                             }
                             .padding(.horizontal, 16)
@@ -260,7 +266,7 @@ struct RepoDiscoveryView: View {
                                     ? String(localized: "No git repositories found inside this folder.")
                                     : String(localized: "Repositories from this folder are already listed above.")
                             )
-                                .font(.system(size: 13, design: .monospaced))
+                                .bType(.monoSm, weight: .regular)
                                 .foregroundStyle(Color.brutalText)
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 12)
@@ -284,7 +290,7 @@ struct RepoDiscoveryView: View {
                                     ? String(localized: "CHOOSE FOLDER TO SCAN")
                                     : String(localized: "SCAN DIFFERENT FOLDER")
                             )
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .bType(.monoCaption)
                                 .foregroundStyle(Color.brutalAccent)
                                 .tracking(1)
                         }
@@ -311,14 +317,14 @@ struct RepoDiscoveryView: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: isSelected ? "checkmark.square.fill" : "square")
-                    .font(.system(size: 17, weight: .semibold))
+                    .bType(.monoLg, weight: .semibold)
                     .foregroundStyle(isSelected ? Color.brutalAccent : Color.brutalText)
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 6) {
                         Text(repo.name)
-                            .font(.system(size: 15, weight: .semibold, design: .monospaced))
+                            .bType(.mono, weight: .semibold)
                             .foregroundStyle(isTracked ? Color.brutalText.opacity(0.5) : Color.brutalText)
                             .lineLimit(1)
                         if isTracked {
@@ -326,7 +332,7 @@ struct RepoDiscoveryView: View {
                         }
                     }
                     Text(Self.repositorySubtitle(for: repo))
-                        .font(.system(size: 12, design: .monospaced))
+                        .bType(.monoCaption, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                         .lineLimit(1)
                         .truncationMode(.middle)
