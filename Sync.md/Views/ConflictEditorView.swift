@@ -199,6 +199,9 @@ struct ConflictEditorView: View {
                     lineWidth: 1
                 )
             )
+            // Full option row is a ≥44pt-tall pick target.
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(keepPath == candidate ? .isSelected : [])
@@ -256,6 +259,9 @@ struct ConflictEditorView: View {
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .overlay(Rectangle().strokeBorder(accent.opacity(0.4), lineWidth: 1))
+                            // Compact chip, 44pt hit target.
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
@@ -318,6 +324,9 @@ struct ConflictEditorView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                    // Compact chip, 44pt hit target.
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
@@ -331,6 +340,9 @@ struct ConflictEditorView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .overlay(Rectangle().strokeBorder(Color.brutalWarning.opacity(0.4), lineWidth: 1))
+                    // Compact chip, 44pt hit target.
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }
