@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <title>GitSync.md — Real Git for Obsidian and code on iPhone/iPad</title>
-<meta name="description" content="A full iOS Git client for Obsidian, Markdown, and code. Work manually—or add optional Background Sync with independent automatic pull and push controls.">
+<meta name="description" content="A full iOS Git client for Obsidian, Markdown, and code. Work manually—or add optional Background Sync with independent automatic pull and push controls, a one-tap pull-all widget, and opt-in GitHub push notifications.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
 <meta name="theme-color" content="#0a0a0a">
@@ -17,12 +17,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GitSync.md">
 <meta property="og:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta property="og:description" content="Real Git on iPhone and iPad for $9.99 once. Manual Git stays included; optional Background Sync adds independent automatic pull and push controls.">
+<meta property="og:description" content="Real Git on iPhone and iPad for $9.99 once. Manual Git stays included; optional Background Sync adds independent automatic pull and push controls. Pull all your repos from a Home Screen widget or Control Center, with opt-in GitHub push notifications.">
 <meta property="og:url" content="https://gitsyncmd.app/">
 <meta property="og:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta name="twitter:description" content="Real Git for Obsidian, Markdown, and code on iOS. $9.99 once, with optional Background Sync and independent automatic pull and push controls.">
+<meta name="twitter:description" content="Real Git for Obsidian, Markdown, and code on iOS. $9.99 once, with optional Background Sync and independent automatic pull and push controls. Plus a one-tap pull-all widget and opt-in GitHub push alerts.">
 <meta name="twitter:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <script type="application/ld+json">
 {
@@ -32,7 +32,7 @@
   "alternateName": "Sync.md",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "iOS 17+, iPadOS 17+",
-  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. All Git traffic — manual and optional Background Sync — goes directly from your device to your remote; there is no sync server."
+  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. All Git traffic — manual and optional Background Sync — goes directly from your device to your remote; there is no sync server.",
   "url": "https://gitsyncmd.app/",
   "downloadUrl": "https://apps.apple.com/us/app/gitsync-md/id6758960270",
   "author": {
@@ -58,6 +58,8 @@
     "Multiple GitHub accounts and per-repo credentials",
     "iOS Files integration, 26 localized languages",
     "Optional Background Sync with independently controlled automatic pulls and pushes when iOS allows background work",
+    "Home Screen widget and iOS 18 Control Center button for one-tap pull-all sync",
+    "Opt-in GitHub push notifications (tap-to-sync alerts; relay sees repository names only)",
     "No subscription, no server: one purchase, everything included"
   ]
 }
@@ -1758,6 +1760,14 @@
         </div>
         <div class="feature-name">Background Sync</div>
         <div class="feature-desc">Best-effort reconciliation when iOS grants background time, included with the app. Automatic pull and automatic push are independent controls; publishing stays default-off. Push-only mode checks remote state without updating the worktree. Concurrent changes stop safely. It never merges, rebases, switches branches, or force-pushes, and it is not guaranteed or real time.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-index">14</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="feature-name">Widget &amp; Push Alerts</div>
+        <div class="feature-desc">Put Pull All Repositories on your Home Screen or in Control Center (iOS 18+) — one tap opens the app and runs the same reconciliation pass as the in-app Sync now button. Opt-in Push Sync shows a notification when someone pushes to a cloned GitHub repository; tap it to open that repo and pull. The notification relay sees repository names only, never file contents, and repositories excluded from Background Sync are skipped.</div>
       </div>
     </div>
   </div>
