@@ -159,7 +159,7 @@ struct OnboardingView: View {
 
             // Description
             Text(slide.description)
-                .font(.system(size: 16, weight: .regular))
+                .bType(.body)
                 .foregroundStyle(Color.brutalTextMid)
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
@@ -172,14 +172,15 @@ struct OnboardingView: View {
     }
 
     /// Giant hero title, hairline divider, and monospaced micro-label shared
-    /// by every onboarding page. Informational slides use the default 56pt
-    /// hero; the Background Sync slide passes a compact size to fit one screen.
-    private func slideHeader(_ slide: OnboardingSlide, titleSize: CGFloat = 56) -> some View {
+    /// by every onboarding page. Informational slides use the default
+    /// displayLg hero; the Background Sync slide passes the compact spine
+    /// token to fit one screen.
+    private func slideHeader(_ slide: OnboardingSlide, hero: BType = .displayLg) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             // Title lines
             ForEach(Array(slide.title.enumerated()), id: \.offset) { index, line in
                 Text(line)
-                    .font(.system(size: titleSize, weight: .black))
+                    .bType(hero)
                     .foregroundStyle(index == slide.accentIndex ? Color.brutalAccent : Color.brutalText)
                     .tracking(-2)
             }
@@ -196,7 +197,7 @@ struct OnboardingView: View {
                     .fill(Color.brutalBorder)
                     .frame(width: 20, height: 1)
                 Text(slide.subtitle)
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .bType(.monoCaption, weight: .medium)
                     .foregroundStyle(Color.brutalText)
                     .tracking(1.5)
             }
@@ -216,7 +217,7 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 14) {
                 Spacer(minLength: 0)
 
-                slideHeader(assistSlide, titleSize: 40)
+                slideHeader(assistSlide, hero: .spine)
 
                 // What you get — one line each.
                 VStack(spacing: 8) {
@@ -242,7 +243,7 @@ struct OnboardingView: View {
                 HStack(spacing: 8) {
                     BBadge(text: String(localized: "Included with GitSync.md"), style: .success)
                     Text(String(localized: "No subscription. Runs entirely on this device."))
-                        .font(.system(size: 13, design: .monospaced))
+                        .bType(.monoSm, weight: .regular)
                         .foregroundStyle(Color.brutalTextMid)
                 }
 
@@ -260,6 +261,8 @@ struct OnboardingView: View {
 
     private func assistFeatureRow(icon: String, title: String) -> some View {
         HStack(spacing: 10) {
+            // Decorative icon ornament (a11y-hidden, fixed 28pt column) —
+            // fixed size per Issue #16's decorative allowance.
             Image(systemName: icon)
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
@@ -268,7 +271,7 @@ struct OnboardingView: View {
                 .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                 .accessibilityHidden(true)
             Text(title)
-                .font(.system(size: 15, weight: .semibold))
+                .bType(.bodySm, weight: .semibold)
                 .foregroundStyle(Color.brutalText)
             Spacer(minLength: 0)
         }
