@@ -919,6 +919,133 @@ final class SyncMDUITests: XCTestCase {
         }
     }
 
+    // MARK: - Push Sync Settings Surface (Issue #19)
+
+    /// Issue #19 Push Sync slice (assert-only): the per-repository Settings
+    /// sheet exposes the Push Sync notification preference — its section
+    /// header, the "Notify when GitHub changes" toggle, and the relay privacy
+    /// disclosure — all discoverable by label, with the toggle off by default
+    /// (the unset `pushSyncEnabled` UserDefaults key reads false). The Push
+    /// Sync surface lives in SettingsView (the per-repo sheet opened from a
+    /// vault's Settings gear — AppSettingsView has no Push Sync surface), so
+    /// this launches signed-out with the local conflict fixture, which seeds
+    /// `isSignedIn == false` plus one credential-free local repository — no
+    /// network, no sign-in, no APNs. The toggle is NEVER tapped: enabling it
+    /// drives APNs registration (an external-service path).
+    func testPushSyncSettingsSurfaceDiscoverableWithRelayDisclosure() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-SignedOutUITest",
+            "-UITestConflictFixture",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US"
+        ]
+        app.launch()
+
+        // Seeding completes in ContentView.onAppear, which may briefly flash
+        // onboarding before the seeded (onboarded) state lands (clone-test
+        // rule for the same launch-arg composition).
+        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+            completeOnboardingIfPresent(in: app)
+            continueWithoutGitHubIfPresent(in: app)
+        }
+
+        // Open the seeded (signed-out, credential-free) repository.
+        tap("conflict-fixture", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            "Seeded repo should open into the vault view"
+        )
+
+        // The vault's Settings gear opens the per-repo SettingsView sheet.
+        let settingsGear = app.buttons["Settings"]
+        XCTAssertTrue(
+            settingsGear.waitForExistence(timeout: 10),
+            "Vault should expose the per-repo Settings action as a labelled button"
+        )
+        settingsGear.tap()
+
+        // Wait for the sheet's stable leading content: BSectionHeader
+        // uppercases section titles, so the first section reads REPOSITORY.
+        XCTAssertTrue(
+            app.staticTexts["REPOSITORY"].waitForExistence(timeout: 10),
+            "Settings sheet should expose its leading Repository section header"
+        )
+
+        // Push Sync sits below Repository / Authentication / Git Author /
+        // Storage / Sync Info / Background Sync — scroll gently within the
+        // sheet until its section header is exposed (label-based, never
+        // positional).
+        let pushSyncHeader = app.staticTexts["PUSH SYNC"]
+        var found = pushSyncHeader.exists
+        for _ in 0..<10 where !found {
+            app.swipeUp()
+            found = pushSyncHeader.exists
+        }
+        XCTAssertTrue(
+            found,
+            "Settings sheet should expose the PUSH SYNC section header to accessibility"
+        )
+
+        // The notification toggle is discoverable by its label (switch
+        // elements carry the Toggle's text as their accessibility label).
+        let notifyToggle = app.switches.matching(
+            NSPredicate(format: "label BEGINSWITH 'Notify when GitHub changes'")
+        ).firstMatch
+        var toggleFound = notifyToggle.exists
+        for _ in 0..<6 where !toggleFound {
+            app.swipeUp()
+            toggleFound = notifyToggle.exists
+        }
+        XCTAssertTrue(
+            toggleFound,
+            "Push Sync should expose the Notify when GitHub changes toggle by label"
+        )
+
+        // Off by default: PushSyncManager.isEnabled reads the
+        // `pushSyncEnabled` UserDefaults key, and an unset key reads false.
+        // Assert-only — the toggle is never tapped.
+        let toggleValue = (notifyToggle.value as? String ?? "").lowercased()
+        XCTAssertTrue(
+            ["0", "off", "false"].contains(toggleValue),
+            "Notify when GitHub changes should be off by default (got: \(toggleValue))"
+        )
+
+        // The relay privacy disclosure is present as static text (CONTAINS
+        // query for the long multi-sentence copy, pinned-copy rule).
+        let disclosure = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS 'Uses a relay that sees repository names only'")
+        ).firstMatch
+        var disclosureFound = disclosure.exists
+        for _ in 0..<6 where !disclosureFound {
+            app.swipeUp()
+            disclosureFound = disclosure.exists
+        }
+        XCTAssertTrue(
+            disclosureFound,
+            "Push Sync should disclose the relay privacy copy as accessibility text"
+        )
+
+        // Close via Cancel — SettingsView's side-effect-free dismiss (Save
+        // would write repo settings) — and confirm the stable return states:
+        // back in the vault, then the repo list still lists the fixture.
+        tapFirstHittableButton(labeled: "Cancel", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            "Cancel should close the settings sheet back to the vault"
+        )
+        let back = app.navigationBars.firstMatch.buttons.element(boundBy: 0)
+        XCTAssertTrue(
+            back.waitForExistence(timeout: 10),
+            "Vault should expose a back navigation control"
+        )
+        back.tap()
+        XCTAssertTrue(
+            app.staticTexts["conflict-fixture"].waitForExistence(timeout: 15),
+            "Repo list should still list the conflict-fixture repository"
+        )
+    }
+
     private func completeOnboardingIfPresent(in app: XCUIApplication) {
         let skip = button(app, labels: ["Skip", "SKIP"])
         guard skip.waitForExistence(timeout: 8) else { return }
