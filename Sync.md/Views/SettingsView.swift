@@ -74,6 +74,7 @@ struct SettingsView: View {
                                         .font(.system(size: 12, weight: .bold, design: .monospaced))
                                         .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalAccent)
                                         .disabled(repoURL.isEmpty)
+                                        .accessibilityHint(String(localized: "Copies the repository URL to the clipboard"))
                                     }
 
                                     TextField("https://host/user/repo or git@host:user/repo.git", text: $repoURL)

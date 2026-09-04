@@ -200,10 +200,15 @@ struct BGhostButton: View {
     let title: String
     var color: Color = .brutalText
     var icon: String? = nil
+    /// Semantic button role (e.g. `.cancel` for modal dismissals) surfaced to
+    /// VoiceOver, Switch Control, and UI tests. Visually neutral with this
+    /// style's explicit colors. Defaults to nil so existing call sites are
+    /// unchanged.
+    var role: ButtonRole? = nil
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button(role: role, action: action) {
             HStack(spacing: 6) {
                 if let icon {
                     Image(systemName: icon)
@@ -227,7 +232,10 @@ struct BDestructiveButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        // `role: .destructive` announces the destructive intent to assistive
+        // tech. Visually neutral here: PlainButtonStyle applies no role
+        // tinting and every color below is explicit.
+        Button(role: .destructive, action: action) {
             ZStack {
                 Rectangle()
                     .fill(Color.brutalError.opacity(0.08))
@@ -576,6 +584,28 @@ struct BCardRow: View {
     }
 }
 
+// MARK: - Modal Backdrop
+
+/// Dimmed, full-bleed backdrop for custom modals that doubles as the
+/// tap-to-dismiss surface.
+///
+/// Implemented as a real `Button` — not a `.onTapGesture` handler — so the
+/// dismiss action is reachable by VoiceOver, Switch Control, full keyboard
+/// access, and UI tests. Renders and behaves identically for sighted touch
+/// users: the same dimmed full-screen color, tapped anywhere to dismiss.
+struct BModalBackdrop: View {
+    let onDismiss: () -> Void
+
+    var body: some View {
+        Button(action: onDismiss) {
+            Color.black.opacity(0.45)
+                .ignoresSafeArea()
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(String(localized: "Dismiss"))
+    }
+}
+
 // MARK: - Confirmation Modal
 
 struct BConfirmModal: View {
@@ -588,9 +618,7 @@ struct BConfirmModal: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-                .onTapGesture { onCancel() }
+            BModalBackdrop(onDismiss: onCancel)
 
             VStack(spacing: 0) {
                 // Header
@@ -619,7 +647,7 @@ struct BConfirmModal: View {
                     } else {
                         BPrimaryButton(title: confirmLabel, action: onConfirm)
                     }
-                    BGhostButton(title: String(localized: "Cancel"), action: onCancel)
+                    BGhostButton(title: String(localized: "Cancel"), role: .cancel, action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }
@@ -645,9 +673,7 @@ struct BRenameModal: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-                .onTapGesture { onCancel() }
+            BModalBackdrop(onDismiss: onCancel)
 
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -682,7 +708,7 @@ struct BRenameModal: View {
 
                 VStack(spacing: 8) {
                     BPrimaryButton(title: String(localized: "Rename"), action: onConfirm)
-                    BGhostButton(title: String(localized: "Cancel"), action: onCancel)
+                    BGhostButton(title: String(localized: "Cancel"), role: .cancel, action: onCancel)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                 }
