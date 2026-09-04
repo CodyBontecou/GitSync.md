@@ -628,6 +628,250 @@ final class SyncMDUITests: XCTestCase {
         )
     }
 
+    // MARK: - Rebase Conflict Session (Issue #19)
+
+    /// Issue #19 rebase-session slice (extends the merge conflict-resolver
+    /// test): the same `-UITestConflictFixture` divergent working copy drives
+    /// a genuine REBASE conflict session. Pull reports divergence, REBASE
+    /// replays the local commit onto the diverged remote and conflicts on
+    /// `notes/shared.md` with rebase-flavored outcome copy, the SAME resolver
+    /// path (keep theirs) clears the conflict, and the Git sheet's Conflict
+    /// Center reports "All conflicts resolved" with CONTINUE REBASE / ABORT
+    /// REBASE escape hatches. ABORT REBASE (local `git rebase --abort`, never
+    /// a push) is the sanctioned exit: it must return the vault to a stable,
+    /// healthy state with the repository still listed. Continue Rebase,
+    /// Complete Merge, and every push path are NEVER tapped.
+    func testRebaseConflictSessionResolvableAndAbortReturnsCleanState() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-UITestConflictFixture",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US"
+        ]
+        app.launch()
+
+        // Seeded divergent repo is in the list; open it.
+        tap("conflict-fixture", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            "Seeded repo should open into the vault view"
+        )
+
+        // Pull against the local bare remote classifies the fixture as
+        // diverged (same banner the merge test asserts).
+        tap("Pull", in: app)
+        XCTAssertTrue(
+            app.staticTexts[
+                "Local and remote have diverged. Merge support is required to continue."
+            ].waitForExistence(timeout: 20),
+            "Pull on the diverged fixture should surface the diverged outcome"
+        )
+        let rebase = app.buttons["REBASE"]
+        XCTAssertTrue(
+            rebase.waitForExistence(timeout: 10),
+            "Diverged banner should expose the Rebase action as a labelled button"
+        )
+
+        // The banner can appear while the pull's trailing progress delay still
+        // holds isSyncing, so wait for enabled, not merely hittable.
+        let rebaseReady = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
+            object: rebase
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [rebaseReady], timeout: 15),
+            .completed,
+            "Rebase action should become enabled and tappable"
+        )
+        rebase.tap()
+
+        // Rebase replays the local commit onto origin/main and conflicts on
+        // notes/shared.md — the rebase-flavored outcome copy surfaces.
+        XCTAssertTrue(
+            app.staticTexts[
+                "Rebase has conflicts — resolve them, then continue rebase"
+            ].waitForExistence(timeout: 20),
+            "Rebasing the fixture should surface the rebase conflict outcome"
+        )
+
+        // The conflicted file is listed; its row exposes the conflict state
+        // through its combined accessibility label (same technique as the
+        // merge test).
+        let conflictedRow = app.staticTexts["notes/shared.md"]
+        XCTAssertTrue(
+            conflictedRow.waitForExistence(timeout: 10),
+            "Conflicted file should be listed in Changed Files during the rebase session"
+        )
+        let conflictedRowButton = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "notes/shared.md,")
+        ).firstMatch
+        XCTAssertTrue(
+            conflictedRowButton.exists,
+            "Conflicted file row should be discoverable as a labelled element"
+        )
+        XCTAssertTrue(
+            conflictedRowButton.label.contains("CONFLICT"),
+            "Conflicted file row should expose its Conflict badge by label (got: \(conflictedRowButton.label))"
+        )
+
+        // Open the resolver and drive the SAME resolution path as the merge
+        // test: take theirs explicitly, resolve, confirm via the modal.
+        tap("notes/shared.md", in: app)
+        XCTAssertTrue(
+            app.staticTexts["RESOLVE CONFLICT"].waitForExistence(timeout: 10),
+            "Conflict editor should expose its titled chrome"
+        )
+        XCTAssertTrue(
+            app.staticTexts["OURS"].waitForExistence(timeout: 10),
+            "Ours pane should be discoverable by label"
+        )
+        XCTAssertTrue(
+            app.staticTexts["THEIRS"].exists,
+            "Theirs pane should be discoverable by label"
+        )
+
+        let useTheirs = app.buttons["USE THEIRS"]
+        XCTAssertTrue(
+            useTheirs.waitForExistence(timeout: 10),
+            "USE THEIRS picker should be discoverable by label"
+        )
+        for _ in 0..<6 where !useTheirs.isHittable { app.swipeUp() }
+        useTheirs.tap()
+
+        let resolve = app.buttons["RESOLVE"]
+        XCTAssertTrue(
+            resolve.waitForExistence(timeout: 10),
+            "Conflict editor should expose the Resolve action as a labelled button"
+        )
+        let resolveEnabled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true"),
+            object: resolve
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [resolveEnabled], timeout: 10),
+            .completed,
+            "Resolve should be enabled for a text conflict"
+        )
+        resolve.tap()
+
+        XCTAssertTrue(
+            app.staticTexts["MARK AS RESOLVED?"].waitForExistence(timeout: 10),
+            "Resolve should present a discoverable confirmation modal"
+        )
+        // The toolbar RESOLVE and the modal's confirm share a label; the modal
+        // button sits below the navigation bar, so pick the lower match.
+        tapLowermostButton(labeled: "RESOLVE", in: app)
+
+        // Resolution completes and dismisses back to the vault view. Open the
+        // Git control sheet via the vault's Commit & Push row (never tapped
+        // inside the sheet); the staged theirs-resolution is an async change
+        // scan away, so wait for the row to be enabled first (merge-test rule).
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            "Resolving should dismiss back to the vault view"
+        )
+        let commitPush = app.buttons.matching(
+            NSPredicate(format: "label CONTAINS %@", "Commit & Push")
+        ).firstMatch
+        XCTAssertTrue(
+            commitPush.waitForExistence(timeout: 10),
+            "Vault view should expose the Commit & Push row after resolving"
+        )
+        let commitPushEnabled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true"),
+            object: commitPush
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [commitPushEnabled], timeout: 15),
+            .completed,
+            "Commit & Push row should become enabled once the staged resolution is scanned"
+        )
+        for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
+        commitPush.tap()
+        XCTAssertTrue(
+            app.staticTexts["GIT"].waitForExistence(timeout: 10) || app.buttons["Close"].waitForExistence(timeout: 10),
+            "Commit & Push row should open the Git control sheet"
+        )
+
+        // Rebase-flavored stable state: the Conflict Center reports all
+        // conflicts resolved with both Continue and Abort Rebase escape
+        // hatches discoverable as labelled (uppercased) buttons. Continue
+        // Rebase is asserted discoverable but NEVER tapped (it pushes).
+        let allResolved = app.staticTexts["All conflicts resolved. Continue or abort the rebase."]
+        var found = allResolved.exists
+        for _ in 0..<8 where !found {
+            app.swipeUp()
+            found = allResolved.exists
+        }
+        XCTAssertTrue(
+            found,
+            "Conflict Center should report all conflicts resolved for the rebase session"
+        )
+        XCTAssertTrue(
+            app.buttons["CONTINUE REBASE"].firstMatch.exists,
+            "Conflict Center should expose Continue Rebase as a labelled button"
+        )
+        let abortRebase = app.buttons["ABORT REBASE"].firstMatch
+        XCTAssertTrue(
+            abortRebase.exists,
+            "Conflict Center should expose Abort Rebase as a labelled button"
+        )
+
+        // Abort is the sanctioned escape hatch: a local `git rebase --abort`
+        // that never pushes. It must clear the conflict session (Conflict
+        // Center and its buttons disappear) and leave a stable state behind.
+        for _ in 0..<6 where !abortRebase.isHittable { app.swipeUp() }
+        let abortReady = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
+            object: abortRebase
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [abortReady], timeout: 15),
+            .completed,
+            "Abort Rebase should become enabled and tappable"
+        )
+        abortRebase.tap()
+
+        let sessionCleared = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "exists == false"),
+            object: allResolved
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [sessionCleared], timeout: 20),
+            .completed,
+            "Aborting the rebase should clear the Conflict Center"
+        )
+        XCTAssertFalse(
+            app.buttons["ABORT REBASE"].exists,
+            "Abort Rebase should disappear once the rebase session is cleared"
+        )
+
+        // Close the Git sheet; the vault returns healthy with the stable
+        // post-abort diverged banner (abort restores the pre-rebase state —
+        // local and remote still diverge, nothing was merged or pushed).
+        tapFirstHittableButton(labeled: "Close", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            "Vault should remain healthy after aborting the rebase"
+        )
+        XCTAssertTrue(
+            app.staticTexts["Rebase aborted. Local and remote still diverge."].waitForExistence(timeout: 10),
+            "Post-abort state should surface the stable diverged banner copy"
+        )
+
+        // The repository list still lists the fixture repository.
+        let back = app.navigationBars.firstMatch.buttons.element(boundBy: 0)
+        XCTAssertTrue(
+            back.waitForExistence(timeout: 10),
+            "Vault should expose a back navigation control"
+        )
+        back.tap()
+        XCTAssertTrue(
+            app.staticTexts["conflict-fixture"].waitForExistence(timeout: 15),
+            "Repo list should still list the conflict-fixture repository"
+        )
+    }
+
     // MARK: - Signed-Out App Settings Access
 
     /// Regression test for the simulator-QA finding: users who chose
