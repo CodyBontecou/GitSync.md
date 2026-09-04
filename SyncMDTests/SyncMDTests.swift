@@ -8971,7 +8971,14 @@ final class OnboardingAnalyticsClientTests: XCTestCase {
                 XCTFail("\(token) should be a text-style token")
                 continue
             }
-            let rendered = UIFont.preferredFont(forTextStyle: UIFont.TextStyle(rawValue: textStyle.rawValue), compatibleWith: traits).pointSize
+            // SwiftUI `.caption` renders UIKit's 12pt `caption1` metric.
+            let uiKitStyles: [Font.TextStyle: UIFont.TextStyle] = [
+                .largeTitle: .largeTitle, .title3: .title3, .headline: .headline,
+                .callout: .callout, .subheadline: .subheadline, .body: .body,
+                .footnote: .footnote, .caption: .caption1, .caption2: .caption2,
+            ]
+            let uiKitStyle = uiKitStyles[textStyle] ?? .body
+            let rendered = UIFont.preferredFont(forTextStyle: uiKitStyle, compatibleWith: traits).pointSize
             XCTAssertEqual(rendered, legacySize, accuracy: 0.01, "\(token) drifted from legacy size \(legacySize)")
         }
     }
