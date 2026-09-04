@@ -365,6 +365,11 @@ struct BGhostButton: View {
                     .tracking(1)
             }
             .foregroundStyle(color)
+            // 44x44pt hit target (Issue #17): the frame sits after the visual
+            // chrome so the painted chip stays compact while the tappable area
+            // grows — every call site benefits without wrapper changes.
+            .frame(minWidth: 44, minHeight: 44)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
