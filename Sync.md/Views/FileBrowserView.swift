@@ -77,6 +77,7 @@ struct FileBrowserView: View {
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
                 }
+                .accessibilityLabel(String(localized: "Create New File"))
             }
         }
         .alert("Rename", isPresented: $showRenameAlert, presenting: renameItem) { item in
@@ -115,6 +116,7 @@ struct FileBrowserView: View {
                     Image(systemName: "folder")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(Color.brutalTextFaint)
+                        .accessibilityHidden(true)
                     Text(relativePath)
                         .font(.system(size: 12, weight: .medium, design: .monospaced))
                         .foregroundStyle(Color.brutalTextFaint)
@@ -195,12 +197,14 @@ struct FileBrowserView: View {
                     text: statusLabel(for: status).uppercased(),
                     style: statusBadgeStyle(for: status)
                 )
+                .accessibilityLabel(statusWord(for: status))
             }
 
             if item.isDirectory {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(Color.brutalTextFaint)
+                    .accessibilityHidden(true)
             }
         }
         .padding(.horizontal, 16)
@@ -302,6 +306,20 @@ struct FileBrowserView: View {
         case .untracked:   return "?"
         case .conflicted:  return "!"
         default:           return "~"
+        }
+    }
+
+    /// Spoken equivalent of the single-letter status badge.
+    private func statusWord(for entry: GitStatusEntry) -> String {
+        if entry.isConflicted { return String(localized: "conflicted") }
+        let kind = entry.indexStatus ?? entry.workTreeStatus
+        switch kind {
+        case .added:       return String(localized: "added")
+        case .modified:    return String(localized: "modified")
+        case .deleted:     return String(localized: "deleted")
+        case .renamed:     return String(localized: "renamed")
+        case .untracked:   return String(localized: "untracked")
+        default:           return String(localized: "changed")
         }
     }
 
