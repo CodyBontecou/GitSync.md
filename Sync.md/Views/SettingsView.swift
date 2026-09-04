@@ -62,7 +62,7 @@ struct SettingsView: View {
                                             .foregroundStyle(Color.brutalText)
                                             .tracking(1)
                                         Spacer()
-                                        Button(showCopiedToast ? String(localized: "Copied!") : String(localized: "Copy")) {
+                                        Button {
                                             if !repoURL.isEmpty {
                                                 UIPasteboard.general.string = repoURL
                                                 withAnimation { showCopiedToast = true }
@@ -70,9 +70,15 @@ struct SettingsView: View {
                                                     withAnimation { showCopiedToast = false }
                                                 }
                                             }
+                                        } label: {
+                                            Text(showCopiedToast ? String(localized: "Copied!") : String(localized: "Copy"))
+                                                .bType(.monoCaption)
+                                                .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalAccent)
+                                                // Compact text link, 44x44pt hit target.
+                                                .frame(minWidth: 44, minHeight: 44)
+                                                .contentShape(Rectangle())
                                         }
-                                        .bType(.monoCaption)
-                                        .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalAccent)
+                                        .buttonStyle(.plain)
                                         .disabled(repoURL.isEmpty)
                                         .accessibilityHint(String(localized: "Copies the repository URL to the clipboard"))
                                     }
@@ -192,6 +198,9 @@ struct SettingsView: View {
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 13)
+                                    // Full-row action, ≥44pt-tall hit target.
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -348,6 +357,9 @@ struct SettingsView: View {
                                 }
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 13)
+                                // Full-row link, ≥44pt-tall hit target.
+                                .frame(minHeight: 44)
+                                .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                         }
