@@ -146,6 +146,7 @@ struct RepoListView: View {
                                 .contentShape(Circle())
                         }
                         .menuStyle(.borderlessButton)
+                        .accessibilityLabel(String(localized: "Account Menu"))
                     } else {
                         HStack(spacing: 0) {
                             Button {
