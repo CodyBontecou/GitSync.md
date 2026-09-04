@@ -202,6 +202,7 @@ struct AddRepoView: View {
                             Text("→")
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -247,6 +248,7 @@ struct AddRepoView: View {
                             Text("→")
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -291,6 +293,7 @@ struct AddRepoView: View {
                         Text("→")
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
+                            .accessibilityHidden(true)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)
@@ -574,6 +577,7 @@ struct AddRepoView: View {
             Image(systemName: "info.circle")
                 .font(.system(size: 12))
                 .foregroundStyle(Color.brutalText)
+                .accessibilityHidden(true)
             Text(message)
                 .font(.system(size: 13, design: .monospaced))
                 .foregroundStyle(Color.brutalText)
@@ -620,6 +624,7 @@ struct AddRepoView: View {
                                     .padding(6)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel(String(localized: "Use Default Location"))
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)
@@ -644,6 +649,7 @@ struct AddRepoView: View {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 10))
                                     .foregroundStyle(Color.brutalText)
+                                    .accessibilityHidden(true)
                                 Text("Files › On My iPhone › GitSync.md › \(vaultName)")
                                     .font(.system(size: 14, design: .monospaced))
                                     .foregroundStyle(Color.brutalText)
