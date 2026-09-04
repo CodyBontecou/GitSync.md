@@ -405,8 +405,19 @@ final class PremiumRuntime {
             return
         }
         let branch = repo.branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        let targetBranch = branch.isEmpty ? repo.branch : branch
+        if repo.assist.enabled,
+           repo.assist.enrollmentStatus == .enrolled,
+           repo.assist.selectedBranch == targetBranch,
+           repo.assist.enrollmentMessage == nil {
+            // Already enrolled on the target branch. Stamping the enrollment
+            // timestamp every pass defeats saveRepos()'s diff (the Date always
+            // differs), forcing a synchronous main-actor encode + disk write
+            // for every repository on every pass. Only persist transitions.
+            return
+        }
         repo.assist.enabled = true
-        repo.assist.selectedBranch = branch.isEmpty ? repo.branch : branch
+        repo.assist.selectedBranch = targetBranch
         repo.assist.enrollmentStatus = .enrolled
         repo.assist.enrollmentMessage = nil
         repo.assist.enrollmentLastAttemptDate = Date()
