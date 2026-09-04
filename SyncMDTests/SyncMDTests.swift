@@ -8971,7 +8971,7 @@ final class OnboardingAnalyticsClientTests: XCTestCase {
                 XCTFail("\(token) should be a text-style token")
                 continue
             }
-            let rendered = UIFont.preferredFont(forTextStyle: UIFont.TextStyle(textStyle), compatibleWith: traits).pointSize
+            let rendered = UIFont.preferredFont(forTextStyle: UIFont.TextStyle(rawValue: textStyle.rawValue), compatibleWith: traits).pointSize
             XCTAssertEqual(rendered, legacySize, accuracy: 0.01, "\(token) drifted from legacy size \(legacySize)")
         }
     }
