@@ -87,6 +87,9 @@ struct AppSettingsView: View {
                                                 .bType(.mono, weight: .bold)
                                                 .foregroundStyle(Color.brutalAccent)
                                                 .tracking(1)
+                                                // 44x44pt hit target, text stays compact.
+                                                .frame(minWidth: 44, minHeight: 44)
+                                                .contentShape(Rectangle())
                                         }
                                         .buttonStyle(.plain)
 
@@ -99,6 +102,9 @@ struct AppSettingsView: View {
                                                 .bType(.mono, weight: .bold)
                                                 .foregroundStyle(Color.brutalError)
                                                 .tracking(1)
+                                                // 44x44pt hit target, text stays compact.
+                                                .frame(minWidth: 44, minHeight: 44)
+                                                .contentShape(Rectangle())
                                         }
                                         .buttonStyle(.plain)
                                     }
@@ -132,6 +138,9 @@ struct AppSettingsView: View {
                                             }
                                             .padding(.horizontal, 16)
                                             .padding(.vertical, 12)
+                                            // 44x44pt hit target, text stays compact.
+                                            .frame(minWidth: 44, minHeight: 44)
+                                            .contentShape(Rectangle())
                                         }
                                         .buttonStyle(.plain)
                                     }
