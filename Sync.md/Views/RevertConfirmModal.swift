@@ -36,6 +36,10 @@ struct RevertConfirmModal: View {
                             .frame(width: 28, height: 28)
                             .background(Color.brutalSurface)
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                            // Icon-only close: 44x44pt hit target around the
+                            // 28pt bordered glyph.
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(String(localized: "Close"))
@@ -128,6 +132,8 @@ struct RevertConfirmModal: View {
                             .padding(.vertical, 13)
                             .background(Color.brutalSurface)
                             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
 
@@ -140,6 +146,8 @@ struct RevertConfirmModal: View {
                             .padding(.vertical, 13)
                             .background(Color.brutalError)
                             .overlay(Rectangle().strokeBorder(Color.brutalError, lineWidth: 1))
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }

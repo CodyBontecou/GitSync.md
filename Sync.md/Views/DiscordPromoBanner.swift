@@ -40,6 +40,9 @@ struct DiscordPromoBanner: View {
                             .padding(.vertical, 6)
                             .background(Color.brutalAccent.opacity(0.10))
                             .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
+                            // Compact chip, 44pt hit target.
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
 
@@ -52,6 +55,9 @@ struct DiscordPromoBanner: View {
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundStyle(Color.brutalTextMid)
                             .frame(width: 28, height: 28)
+                            // Icon-only dismiss: 44x44pt hit target around the
+                            // 28pt glyph, 12pt clear of the JOIN target.
+                            .frame(minWidth: 44, minHeight: 44)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
