@@ -22,6 +22,14 @@ extension Sync_mdApp {
         if FileManager.default.fileExists(atPath: AppState.persistedReposFileURL.path) {
             try? FileManager.default.removeItem(at: AppState.persistedReposFileURL)
         }
+        // Reset the Keychain-backed "previously cloned" history too: suite runs
+        // that clone a repo (e.g. the local-git-fixture clone UI test) record
+        // its identifier, which would otherwise surface as a ghost card and
+        // replace the deterministic "No Repositories" empty state in later
+        // signed-out launches.
+        for identifier in RepositoryHistoryStore.shared.seenRepoIdentifiers() {
+            RepositoryHistoryStore.shared.forgetSeenRepoIdentifier(identifier)
+        }
     }
 }
 #endif
