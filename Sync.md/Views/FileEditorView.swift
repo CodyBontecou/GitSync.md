@@ -108,6 +108,7 @@ struct FileEditorView: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
                     }
+                    .accessibilityLabel(String(localized: "Rename File"))
                     Button {
                         showDeleteConfirm = true
                     } label: {
@@ -115,6 +116,7 @@ struct FileEditorView: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(Color.brutalError)
                     }
+                    .accessibilityLabel(String(localized: "Delete File"))
                 }
             }
         }
