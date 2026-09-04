@@ -11,10 +11,10 @@ struct RevertConfirmModal: View {
 
     var body: some View {
         ZStack {
-            // Dim backdrop
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-                .onTapGesture { onCancel() }
+            // Dim backdrop — a semantic Button (not a tap gesture) so the
+            // dismiss action is reachable via VoiceOver, Switch Control,
+            // keyboard navigation, and UI tests.
+            BModalBackdrop(onDismiss: onCancel)
 
             // Card
             VStack(alignment: .leading, spacing: 0) {
@@ -38,6 +38,7 @@ struct RevertConfirmModal: View {
                             .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Close"))
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 18)
@@ -116,7 +117,9 @@ struct RevertConfirmModal: View {
 
                 // Actions
                 HStack(spacing: 10) {
-                    Button(action: onCancel) {
+                    // `role:` is visually neutral here (PlainButtonStyle +
+                    // explicit colors) but announces intent to assistive tech.
+                    Button(role: .cancel, action: onCancel) {
                         Text("CANCEL")
                             .font(.system(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
@@ -128,7 +131,7 @@ struct RevertConfirmModal: View {
                     }
                     .buttonStyle(.plain)
 
-                    Button(action: onConfirm) {
+                    Button(role: .destructive, action: onConfirm) {
                         Text(confirmLabel.uppercased())
                             .font(.system(size: 13, weight: .bold, design: .monospaced))
                             .foregroundStyle(.white)
