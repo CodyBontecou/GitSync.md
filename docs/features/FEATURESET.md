@@ -122,14 +122,11 @@
 | 8.1 | Products: monthly $1.99 / annual $14.99 (no trials) | Background Sync | `GitSyncAssist.storekit` |
 | 8.2 | StoreKit 2 purchases (JWS-verified, appAccountToken-bound), restore, manage | Background Sync | `PremiumStorefront` |
 | 8.3 | Best-effort automation with independent automatic-pull and automatic-push controls. Existing enabled installations migrate pull-on/push-off. Pulls are clean fast-forward only; push-only validates remote state without checkout; concurrent remote/local changes stop; never merge/rebase/switch/resolve/force-push | Background Sync | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryReconciliationRunner` |
-| 8.4 | Automatic exact GitHub enrollment via linked App access and opaque channels; eligible repos get best-effort event wakes, while non-GitHub/unresolved repos have no event hints but remain eligible for foreground and separately consented discretionary processing; per-repo exclusion | Background Sync | `reconcileAutomaticRepository`, relay routes, `BackgroundProcessingScheduler` |
+| 8.4 | Local automatic enrollment: every non-excluded cloned repository is enrolled on-device on its configured branch across foreground, discretionary background (app-refresh + processing), and manual passes; uncloned repositories are disabled with a clone hint and per-repo exclusion is honored — no GitHub App installation, server enrollment, or event wakes remain (relay removed in d8c6e98) | Background Sync | `reconcileAutomaticRepository`, `BackgroundProcessingScheduler`, `RepoAssistSettings.excludedFromAutomaticSync` |
 | 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate automatic-sync branch setting | Background Sync | `RepoAssistSettings`, `SettingsView` |
 | 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Background Sync | `PremiumAssistSummary`, production settings views |
 | 8.7 | StoreKit verification (on-device, Apple-signed transactions) | Background Sync | `PremiumStorefront.swift` (relay-era server verifier removed) |
-| 8.8 | App Store Server Notifications v2 (expiry/refund/revoke handling) | Background Sync | relay `appStoreNotification` |
-| 8.9 | Relay data deletion (terminal, reinstall-durable barrier, server tombstone/removal with hashed receipt and retention-scoped operational records) | Background Sync | `deleteRelayData`, `DELETE /v1/installation` |
-| 8.10 | Kill switch + retention crons + DLQ + monitoring | Background Sync | relay KILL_SWITCH, crons |
-| 8.11 | Privacy: app API requests never send names/URLs/contents/local paths/credentials; signed GitHub webhooks are transiently processed, with only numeric repository ID, branch, and opaque operational IDs extracted/persisted; APNs is opaque | Background Sync | `premium-v1-app-privacy.md` |
+| 8.11 | Privacy: Background Sync runs entirely on-device — no relay, no push registration, no server-side Background Sync data; repository names, URLs, contents, local paths, and credentials go only to the user's configured Git provider during normal fetch/push. (`premium-v1-app-privacy.md` is retained as historical record only; the opt-in Push Sync relay is category 15, not Background Sync) | Background Sync | `inventory/premium-assist.md` §8, `PrivacyInfo.xcprivacy` |
 
 ## 9. Onboarding & account UX
 
@@ -218,4 +215,7 @@ Version-by-version shipped-feature history (2.4.1 delete-cloned-repos, 2.4.5 Sho
 - No in-editor search, line numbers, keyboard accessory toolbar; no file move UI.
 - No dedicated iPad split-view layouts.
 - Background Sync stages/commits/pushes only after separate explicit publishing consent; it never rebases, merges, switches branches, resolves conflicts, recreates missing branches, or force-pushes.
+- No server-side purchase lifecycle: App Store Server Notifications v2 handling (relay `appStoreNotification`) was removed with the relay in d8c6e98 (former row 8.8) — Background Sync no longer verifies or tracks purchases server-side.
+- No relay data to delete: terminal relay-data deletion (`deleteRelayData`, `DELETE /v1/installation`) was removed in d8c6e98 (former row 8.9) — Background Sync runs entirely on-device and stores no Background Sync data off-device.
+- No relay operations tooling: the relay kill switch, retention crons, DLQ, and monitoring were removed in d8c6e98 (former row 8.10); the remaining gate is the compile-time in-app flag `FeatureFlags.gitSyncAssistEnabled`.
 - Push Sync is opt-in and GitHub-remote-only (webhook-driven); it delivers visible alerts (no silent pushes) via a separately deployed relay, and the widget/Control Center/notification triggers run the Background Sync reconciliation pass — repositories excluded from Background Sync are not pulled by them.
