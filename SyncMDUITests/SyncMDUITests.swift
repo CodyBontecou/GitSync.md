@@ -77,16 +77,9 @@ final class SyncMDUITests: XCTestCase {
             "First onboarding slide subtitle should be exposed to accessibility"
         )
 
-        advanceOnboardingToSignIn(in: app)
-
-        // Slide copy stays discoverable as accessibility elements after walking.
-        XCTAssertTrue(
-            app.staticTexts["MARKDOWN-FIRST WORKFLOW"].exists,
-            "Edit-anywhere slide subtitle should be exposed to accessibility"
-        )
-        XCTAssertTrue(
-            app.staticTexts["BRANCHES, DIFFS, HISTORY"].exists,
-            "Full-git slide subtitle should be exposed to accessibility"
+        advanceOnboardingToSignIn(
+            in: app,
+            expectingSlideSubtitles: ["MARKDOWN-FIRST WORKFLOW", "BRANCHES, DIFFS, HISTORY"]
         )
 
         // The final sign-in step exposes each auth choice as a labelled button.
@@ -256,9 +249,17 @@ final class SyncMDUITests: XCTestCase {
         )
         save.tap()
 
-        XCTAssertTrue(
-            app.staticTexts["SAVED"].waitForExistence(timeout: 10),
-            "Saving should surface a Saved confirmation"
+        // Save completes asynchronously and settles the editor back to its
+        // clean state (the transient "SAVED" toast is too short-lived to
+        // assert deterministically under XCUITest idle-waiting).
+        let saveSettled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == false"),
+            object: save
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [saveSettled], timeout: 10),
+            .completed,
+            "Save should complete and return the editor to its clean state"
         )
 
         // Persisted state: leave the editor and reopen the file — the marker
@@ -364,10 +365,16 @@ final class SyncMDUITests: XCTestCase {
     }
 
     /// Taps Continue / Get Started until the embedded sign-in step of the
-    /// onboarding paged flow is showing. Works with or without the optional
-    /// Background Sync feature slide.
-    private func advanceOnboardingToSignIn(in app: XCUIApplication) {
+    /// onboarding paged flow is showing, asserting each informational slide's
+    /// subtitle while that page is current (TabView materializes only nearby
+    /// pages, so offscreen slides are not queryable afterwards). Works with or
+    /// without the optional Background Sync feature slide.
+    private func advanceOnboardingToSignIn(
+        in app: XCUIApplication,
+        expectingSlideSubtitles subtitles: [String]
+    ) {
         let signInStep = button(app, labels: ["Sign in with GitHub", "SIGN IN WITH GITHUB"])
+        var pendingSubtitles = subtitles
         var taps = 0
         while !signInStep.exists, taps < 6 {
             let advance = button(app, labels: ["Continue", "CONTINUE", "Get Started", "GET STARTED"])
@@ -378,8 +385,19 @@ final class SyncMDUITests: XCTestCase {
             for _ in 0..<4 where !advance.isHittable { app.swipeUp() }
             advance.tap()
             taps += 1
+            if !pendingSubtitles.isEmpty {
+                let subtitle = pendingSubtitles.removeFirst()
+                XCTAssertTrue(
+                    app.staticTexts[subtitle].waitForExistence(timeout: 5),
+                    "Onboarding slide copy \(subtitle) should be exposed to accessibility while shown"
+                )
+            }
             _ = signInStep.waitForExistence(timeout: 2)
         }
+        XCTAssertTrue(
+            pendingSubtitles.isEmpty,
+            "Every informational onboarding slide should have been walked"
+        )
         XCTAssertTrue(
             signInStep.waitForExistence(timeout: 5),
             "Walking onboarding slides should reach the sign-in step"
