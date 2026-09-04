@@ -138,7 +138,10 @@ final class BackgroundSyncCoordinator {
         guard let provider = repositoryProvider else { return [:] }
         return await reconcileMany(
             provider.assistRepositories().filter(\.assist.enabled).map(\.id),
-            limit: 3,
+            // Foreground work is deliberately serialized. Multiple concurrent
+            // libgit2 scans can saturate device I/O even when they are off the
+            // main actor, which still makes scrolling and navigation stutter.
+            limit: 1,
             trigger: .foreground
         )
     }
@@ -255,14 +258,28 @@ final class BackgroundSyncCoordinator {
         // finish signal even when the flight is cancelled mid-run.
         provider.backgroundSyncDidBegin(repoID: repoID)
         defer { provider.backgroundSyncDidFinish(repoID: repoID) }
-        let result = await RepositoryReconciliationRunner().run(
-            serialized: repository,
-            repo: repo,
-            credentials: provider.assistCredentials(for: repo),
-            expectedBranch: expectedBranch,
-            allowsPull: allowsPull,
-            allowsPush: allowsPush
-        )
+        let credentials = provider.assistCredentials(for: repo)
+        // `BackgroundSyncCoordinator` owns UI-facing state and is therefore
+        // main-actor isolated. Keep only that state bookkeeping here: the
+        // complete Git workflow runs in a detached utility task so synchronous
+        // filesystem/LFS work between suspension points can never occupy the
+        // UI executor. Explicit cancellation forwarding is required because a
+        // detached task does not inherit its parent's cancellation.
+        let gitTask = Task.detached(priority: .utility) {
+            await RepositoryReconciliationRunner().run(
+                serialized: repository,
+                repo: repo,
+                credentials: credentials,
+                expectedBranch: expectedBranch,
+                allowsPull: allowsPull,
+                allowsPush: allowsPush
+            )
+        }
+        let result = await withTaskCancellationHandler {
+            await gitTask.value
+        } onCancel: {
+            gitTask.cancel()
+        }
         let cancelledAfterRun = Task.isCancelled
         if cancelledAfterRun, !result.retainsCompletedWorkOnCancellation {
             return .deferred(String(localized: "Cancelled"))

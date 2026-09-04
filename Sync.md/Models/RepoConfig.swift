@@ -1,7 +1,7 @@
 import Foundation
 
 /// Configuration and state for a single managed repository
-struct RepoConfig: Codable, Identifiable, Equatable {
+struct RepoConfig: Codable, Identifiable, Equatable, Sendable {
     let id: UUID
     var repoURL: String
     var branch: String

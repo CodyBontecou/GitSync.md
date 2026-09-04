@@ -1162,7 +1162,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         do {
             let lfsResult = try await Self.hydrateLFSIfNeeded(localURL: localURL, pat: pat)
             if lfsResult.checkedOutCount > 0 {
-                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after clone", detail: "\(lfsResult.checkedOutCount) files")
+                await DebugLogger.shared.info("lfs", "Hydrated Git LFS files after clone", detail: "\(lfsResult.checkedOutCount) files")
             }
         } catch LocalGitError.sshHostKeyTrustRequired(let trustError) {
             // The clone itself is complete; only Git LFS hydration is blocked
@@ -1170,20 +1170,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // the LFS connection's SSH stack). Surface the trust prompt with a
             // hydration-only retry instead of failing the whole clone.
             lfsTrustError = trustError
-            DebugLogger.shared.error(
+            await DebugLogger.shared.error(
                 "lfs",
                 "Git LFS hydration after clone blocked on SSH host key trust",
                 detail: trustError.localizedDescription
             )
         } catch LocalGitError.lfsFailed(let message) {
             lfsWarning = "Clone completed, but some Git LFS files could not be downloaded: \(message)"
-            DebugLogger.shared.error("lfs", "Git LFS hydration after clone failed", detail: message)
+            await DebugLogger.shared.error("lfs", "Git LFS hydration after clone failed", detail: message)
         } catch LocalGitError.lfsHydrationBlockedByLocalChanges(let path) {
             // Cloning itself is complete. A concurrent local edit must survive,
             // so report hydration as the warning rather than turning a finished
             // clone into a destructive retry opportunity.
             lfsWarning = LocalGitError.lfsHydrationBlockedByLocalChanges(path).localizedDescription
-            DebugLogger.shared.warning("lfs", "Git LFS hydration preserved a concurrent local edit", detail: path)
+            await DebugLogger.shared.warning("lfs", "Git LFS hydration preserved a concurrent local edit", detail: path)
         }
 
         return LocalCloneResult(
@@ -1674,7 +1674,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     beforeReplacement: pullOnlyBeforeLFSReplacement
                 )
                 if lfsResult.checkedOutCount > 0 {
-                    DebugLogger.shared.info("lfs", "Hydrated Git LFS files after pull", detail: "\(lfsResult.checkedOutCount) files")
+                    await DebugLogger.shared.info("lfs", "Hydrated Git LFS files after pull", detail: "\(lfsResult.checkedOutCount) files")
                 }
             } catch is CancellationError {
                 return LocalPullResult(updated: true, newCommitSHA: fastForward.result.newCommitSHA,
@@ -1806,7 +1806,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 candidatePaths: rebaseResult.changedPaths
             )
             if lfsResult.checkedOutCount > 0 {
-                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after rebase", detail: "\(lfsResult.checkedOutCount) files")
+                await DebugLogger.shared.info("lfs", "Hydrated Git LFS files after rebase", detail: "\(lfsResult.checkedOutCount) files")
             }
         }
 
@@ -2534,7 +2534,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 candidatePaths: rebaseResult.changedPaths
             )
             if lfsResult.checkedOutCount > 0 {
-                DebugLogger.shared.info("lfs", "Hydrated Git LFS files after continuing rebase", detail: "\(lfsResult.checkedOutCount) files")
+                await DebugLogger.shared.info("lfs", "Hydrated Git LFS files after continuing rebase", detail: "\(lfsResult.checkedOutCount) files")
             }
         }
 
@@ -4080,7 +4080,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     localURL: URL(fileURLWithPath: path, isDirectory: true),
                     credentials: GitRemoteCredentials.fromTransportPayload(pat)
                 ).uploadObjects(lfsPointers)
-                DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+                await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
             }
             try cancellationSignal.checkCancellation()
             do {
@@ -4288,7 +4288,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     localURL: URL(fileURLWithPath: path, isDirectory: true),
                     credentials: GitRemoteCredentials.fromTransportPayload(pat)
                 ).uploadObjects(lfsPointers)
-                DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+                await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
             }
             try cancellationSignal.checkCancellation()
             do {

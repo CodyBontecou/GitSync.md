@@ -174,6 +174,7 @@ final class MarketingCaptureCoordinator {
 
 // MARK: - Demo Data Seeder
 
+@MainActor
 enum MarketingDemoSeeder {
 
     static func seed(into state: AppState) {

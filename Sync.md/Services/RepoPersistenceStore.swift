@@ -46,7 +46,10 @@ final class RepoPersistenceStore: @unchecked Sendable {
     func load(from fileURL: URL) -> [RepoConfig] {
         do { return try loadStrict(from: fileURL) }
         catch {
-            DebugLogger.shared.error("persistence", "Could not load repository settings", detail: error.localizedDescription)
+            let detail = error.localizedDescription
+            Task { @MainActor in
+                DebugLogger.shared.error("persistence", "Could not load repository settings", detail: detail)
+            }
             return []
         }
     }

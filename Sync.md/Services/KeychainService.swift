@@ -69,11 +69,14 @@ enum KeychainService {
         for key in Set(keys) {
             let status = migrateAccessibilityIfNeeded(key: key)
             guard status != errSecSuccess, status != errSecItemNotFound else { continue }
-            DebugLogger.shared.error(
-                "keychain",
-                "Could not update Git credential accessibility",
-                detail: "account: \(key), status: \(status)"
-            )
+            let detail = "account: \(key), status: \(status)"
+            Task { @MainActor in
+                DebugLogger.shared.error(
+                    "keychain",
+                    "Could not update Git credential accessibility",
+                    detail: detail
+                )
+            }
         }
     }
 

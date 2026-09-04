@@ -2059,6 +2059,53 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testBackgroundCoordinatorKeepsMainActorResponsiveDuringGitWork() async {
+        let commit = String(repeating: "1", count: 40)
+        let repository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: commit, changeCount: 0)
+        )
+        var repo = RepoConfig(
+            repoURL: "owner/repo", branch: "main", authorName: "One",
+            authorEmail: "one@example.com", vaultFolderName: "one"
+        )
+        repo.gitState.commitSHA = commit
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: repository)
+        let coordinator = BackgroundSyncCoordinator(
+            repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        let gitStarted = expectation(description: "detached Git work started")
+        let mainActorHeartbeat = expectation(description: "main actor remained responsive")
+        let releaseGitWork = DispatchSemaphore(value: 0)
+        let threadProbe = SynchronousThreadProbe()
+        repository.executePullOnlyStarted = {
+            threadProbe.recordIsMainThread()
+            gitStarted.fulfill()
+            _ = releaseGitWork.wait(timeout: .now() + 5)
+        }
+
+        let flight = Task { @MainActor in
+            await coordinator.reconcile(repoID: repo.id)
+        }
+        await fulfillment(of: [gitStarted], timeout: 2)
+        XCTAssertFalse(
+            threadProbe.wasMainThread,
+            "Background Git work must not inherit BackgroundSyncCoordinator's main-actor executor"
+        )
+
+        DispatchQueue.main.async { mainActorHeartbeat.fulfill() }
+        await fulfillment(of: [mainActorHeartbeat], timeout: 1)
+        releaseGitWork.signal()
+
+        let result = await flight.value
+        XCTAssertEqual(
+            result,
+            .completed(.pullOnly(.upToDate(branch: "main", commitSHA: commit)))
+        )
+    }
+
+    @MainActor
     func testBackgroundCoordinatorReportsActivityLifecycleAroundReconciliation() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -9094,6 +9141,23 @@ private actor AsyncGate {
         isOpen = true
         continuation?.resume()
         continuation = nil
+    }
+}
+
+private final class SynchronousThreadProbe: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storedWasMainThread: Bool?
+
+    func recordIsMainThread() {
+        lock.lock()
+        storedWasMainThread = Thread.isMainThread
+        lock.unlock()
+    }
+
+    var wasMainThread: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return storedWasMainThread ?? true
     }
 }
 

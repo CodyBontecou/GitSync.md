@@ -46,41 +46,55 @@ final class GitLFSCitadelSSHAuthenticator: GitLFSSSHAuthenticator {
             port: request.port,
             trustStore: hostKeyTrustStore
         )
-        let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-        defer { try? group.syncShutdownGracefully() }
 
-        let client: SSHClient
-        do {
-            client = try await SSHClient.connect(
-                host: request.host,
-                port: request.port,
-                authenticationMethod: authMethod,
-                hostKeyValidator: .custom(hostKeyTrustDelegate),
-                reconnect: .never,
-                group: group,
-                connectTimeout: connectTimeout
-            )
-        } catch {
-            if let trustError = hostKeyTrustDelegate.failure {
-                throw trustError
+        return try await Self.withEventLoopGroup { group in
+            let client: SSHClient
+            do {
+                client = try await SSHClient.connect(
+                    host: request.host,
+                    port: request.port,
+                    authenticationMethod: authMethod,
+                    hostKeyValidator: .custom(hostKeyTrustDelegate),
+                    reconnect: .never,
+                    group: group,
+                    connectTimeout: connectTimeout
+                )
+            } catch {
+                if let trustError = hostKeyTrustDelegate.failure {
+                    throw trustError
+                }
+                if let trustError = error as? GitLFSSSHHostKeyTrustError {
+                    throw trustError
+                }
+                throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication failed: \(error.localizedDescription)"))
             }
-            if let trustError = error as? GitLFSSSHHostKeyTrustError {
-                throw trustError
+
+            do {
+                var output = try await client.executeCommand(request.command, maxResponseSize: maxResponseSize)
+                try? await client.close()
+                guard let text = output.readString(length: output.readableBytes) else {
+                    throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication returned non-UTF8 output."))
+                }
+                return try Self.parseAccess(from: text, now: now())
+            } catch {
+                try? await client.close()
+                if error is LocalGitError { throw error }
+                throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication failed: \(error.localizedDescription)"))
             }
-            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication failed: \(error.localizedDescription)"))
         }
+    }
 
+    private static func withEventLoopGroup<Result>(
+        _ operation: (MultiThreadedEventLoopGroup) async throws -> Result
+    ) async throws -> Result {
+        let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         do {
-            var output = try await client.executeCommand(request.command, maxResponseSize: maxResponseSize)
-            try? await client.close()
-            guard let text = output.readString(length: output.readableBytes) else {
-                throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication returned non-UTF8 output."))
-            }
-            return try Self.parseAccess(from: text, now: now())
+            let result = try await operation(group)
+            try? await group.shutdownGracefully()
+            return result
         } catch {
-            try? await client.close()
-            if error is LocalGitError { throw error }
-            throw LocalGitError.lfsFailed(String(localized: "Git LFS SSH authentication failed: \(error.localizedDescription)"))
+            try? await group.shutdownGracefully()
+            throw error
         }
     }
 
