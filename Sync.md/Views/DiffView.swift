@@ -364,6 +364,8 @@ struct FileDiffView: View {
             Text(line.oldLineNo.map { "\($0)" } ?? "")
                 .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(cfg.gutterFg)
+                .minimumScaleFactor(0.6)
+                .lineLimit(1)
                 .frame(width: 40, alignment: .trailing)
                 .padding(.vertical, 3)
 
@@ -371,6 +373,8 @@ struct FileDiffView: View {
             Text(line.newLineNo.map { "\($0)" } ?? "")
                 .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(cfg.gutterFg)
+                .minimumScaleFactor(0.6)
+                .lineLimit(1)
                 .frame(width: 40, alignment: .trailing)
                 .padding(.vertical, 3)
 
