@@ -76,6 +76,9 @@ struct FileBrowserView: View {
                     Image(systemName: "plus")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.brutalText)
+                        // Icon-only toolbar action: 44x44pt hit target.
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
                 }
                 .accessibilityLabel(String(localized: "Create New File"))
             }
