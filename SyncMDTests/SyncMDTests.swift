@@ -1,5 +1,7 @@
 import Foundation
 import XCTest
+import SwiftUI
+import UIKit
 import CryptoKit
 import NIOSSH
 import Clibgit2
@@ -8915,6 +8917,117 @@ final class OnboardingAnalyticsClientTests: XCTestCase {
         XCTAssertEqual(payloads.first?.eventName, "sync_onboarding_completed")
         XCTAssertEqual(payloads.first?.properties[.authMethod], .string("github_oauth"))
         XCTAssertEqual(payloads.first?.properties[.saveLocationPreference], .string("custom_folder"))
+    }
+
+    // MARK: - Brutal Typography Tokens (Issue #16)
+
+    func testBrutalTypeTokensMapToNearestSystemTextStyles() {
+        // Text-scale tokens must be backed by system text styles (native
+        // Dynamic Type), mapped to the nearest default size per issue #16.
+        let expected: [BType: Font.TextStyle] = [
+            .displayMd: .largeTitle,
+            .titleLg: .title3,
+            .titleMd: .headline,
+            .body: .callout,
+            .bodySm: .subheadline,
+            .monoLg: .body,
+            .mono: .subheadline,
+            .monoSm: .footnote,
+            .monoCaption: .caption1,
+        ]
+        for (token, textStyle) in expected {
+            XCTAssertEqual(token.backing, .textStyle(textStyle), "token \(token) should be backed by \(textStyle)")
+        }
+    }
+
+    func testBrutalTypeDisplayTokensScaleRelativeToLargeTitles() {
+        // Oversized display tokens have no covering system text style; they
+        // must carry their legacy base size plus a relative-to text style so
+        // @ScaledMetric can scale them.
+        XCTAssertEqual(BType.hero.backing, .display(baseSize: 72, relativeTo: .largeTitle))
+        XCTAssertEqual(BType.displayLg.backing, .display(baseSize: 48, relativeTo: .largeTitle))
+        XCTAssertEqual(BType.monoHero.backing, .display(baseSize: 42, relativeTo: .largeTitle))
+        XCTAssertEqual(BType.spine.backing, .display(baseSize: 40, relativeTo: .largeTitle))
+        XCTAssertEqual(BType.displaySm.backing, .display(baseSize: 26, relativeTo: .title))
+    }
+
+    func testBrutalTypeSemanticBackingReproducesLegacySizesAtDefaultCategory() {
+        // At the default content size category the semantic backing must
+        // render the exact legacy fixed sizes (no visual drift at .large).
+        let traits = UITraitCollection(preferredContentSizeCategory: .large)
+        let legacySizes: [BType: CGFloat] = [
+            .displayMd: 34,
+            .titleLg: 20,
+            .titleMd: 17,
+            .body: 16,
+            .bodySm: 15,
+            .monoLg: 17,
+            .mono: 15,
+            .monoSm: 13,
+            .monoCaption: 12,
+        ]
+        for (token, legacySize) in legacySizes {
+            guard case .textStyle(let textStyle) = token.backing else {
+                XCTFail("\(token) should be a text-style token")
+                continue
+            }
+            let rendered = UIFont.preferredFont(forTextStyle: UIFont.TextStyle(textStyle), compatibleWith: traits).pointSize
+            XCTAssertEqual(rendered, legacySize, accuracy: 0.01, "\(token) drifted from legacy size \(legacySize)")
+        }
+    }
+
+    func testBrutalTypePreservesMonospacedDesignIdentity() {
+        // The brutalist look leans on monospaced chrome text; the mono token
+        // family must keep `design: .monospaced` through the conversion.
+        for token in [BType.monoHero, .monoLg, .mono, .monoSm, .monoCaption] {
+            XCTAssertEqual(token.design, .monospaced, "\(token) must stay monospaced")
+        }
+        for token in [BType.hero, .displayLg, .displaySm, .displayMd, .spine, .titleLg, .titleMd, .body, .bodySm] {
+            XCTAssertEqual(token.design, .default, "\(token) must stay default-design")
+        }
+    }
+
+    func testBrutalTypeWeightsPreserveBrutalistHierarchy() {
+        XCTAssertEqual(BType.hero.weight, .black)
+        XCTAssertEqual(BType.displayLg.weight, .black)
+        XCTAssertEqual(BType.monoHero.weight, .black)
+        XCTAssertEqual(BType.spine.weight, .black)
+        XCTAssertEqual(BType.displaySm.weight, .black)
+        XCTAssertEqual(BType.displayMd.weight, .black)
+        XCTAssertEqual(BType.titleLg.weight, .bold)
+        XCTAssertEqual(BType.titleMd.weight, .semibold)
+        XCTAssertEqual(BType.body.weight, .regular)
+        XCTAssertEqual(BType.bodySm.weight, .regular)
+        XCTAssertEqual(BType.monoLg.weight, .medium)
+        XCTAssertEqual(BType.mono.weight, .medium)
+        XCTAssertEqual(BType.monoSm.weight, .medium)
+        XCTAssertEqual(BType.monoCaption.weight, .bold)
+    }
+
+    func testEditorTypographyScalesWithDynamicTypeWithinClamps() {
+        // Default content size reproduces the shipped 13pt editor size exactly.
+        XCTAssertEqual(BEditorType.scaledSize(for: .large), BEditorType.baseSize)
+
+        // Growth is monotonic across the full category ladder…
+        let ladder: [ContentSizeCategory] = [
+            .extraSmall, .small, .medium, .large, .extraLarge, .extraExtraLarge,
+            .extraExtraExtraLarge, .accessibilityMedium, .accessibilityLarge,
+            .accessibilityExtraLarge, .accessibilityExtraExtraLarge,
+            .accessibilityExtraExtraExtraLarge,
+        ]
+        let sizes = ladder.map(BEditorType.scaledSize(for:))
+        for (smaller, larger) in zip(sizes, sizes.dropFirst()) {
+            XCTAssertLessThanOrEqual(smaller, larger, "editor size must never decrease up the ladder")
+        }
+
+        // …and bounded by the documented clamps.
+        for size in sizes {
+            XCTAssertGreaterThanOrEqual(size, BEditorType.minSize)
+            XCTAssertLessThanOrEqual(size, BEditorType.maxSize)
+        }
+
+        // Large accessibility sizes saturate at the conservative max.
+        XCTAssertEqual(BEditorType.scaledSize(for: .accessibilityExtraExtraExtraLarge), BEditorType.maxSize)
     }
 }
 

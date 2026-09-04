@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import Combine
 
 // MARK: - GitSync.md Brutal Design System
@@ -43,43 +44,188 @@ extension Color {
     }
 }
 
-// MARK: - Typography
+// MARK: - Typography (semantic, Dynamic Type-scaled — Issue #16)
+//
+// Every token is backed by a system text style via `Font.system(_:design:)`
+// so text scales with the user's Dynamic Type setting while preserving the
+// brutalist weights and the monospaced identity. The oversized display
+// scale (26–72pt) has no covering system text style, so those tokens scale
+// through `@ScaledMetric` relative to `.largeTitle` / `.title` instead.
 
-enum BType {
-    case hero        // 72pt black — onboarding splash
-    case displayLg   // 48pt black
-    case displayMd   // 34pt black
-    case displaySm   // 26pt black
-    case titleLg     // 20pt bold
-    case titleMd     // 17pt semibold
-    case body        // 16pt regular
-    case bodySm      // 15pt regular
-    case mono        // 15pt medium monospaced
-    case monoSm      // 13pt medium monospaced
-    case monoLg      // 17pt medium monospaced
-    case monoHero    // 42pt black monospaced
+enum BType: CaseIterable {
+    // Display scale — black weight.
+    case hero        // was 72pt → scaled, relativeTo .largeTitle (onboarding splash)
+    case displayLg   // was 48pt → scaled, relativeTo .largeTitle
+    case monoHero    // was 42pt monospaced → scaled, relativeTo .largeTitle
+    case spine       // was 40pt → scaled, relativeTo .largeTitle (screen headers)
+    case displaySm   // was 26pt → scaled, relativeTo .title
+    case displayMd   // was 34pt → .largeTitle (exact size match)
 
-    var font: Font {
+    // Title scale.
+    case titleLg     // was 20pt bold → .title3 (exact)
+    case titleMd     // was 17pt semibold → .headline (exact, incl. weight)
+
+    // Body scale.
+    case body        // was 16pt → .callout (exact)
+    case bodySm      // was 15pt → .subheadline (exact)
+
+    // Monospaced chrome scale — `design: .monospaced` preserved on every
+    // token; sizes map to the nearest text style (14pt → .subheadline).
+    case monoLg      // was 17pt medium → .body (exact)
+    case mono        // was 15pt medium → .subheadline (exact)
+    case monoSm      // was 13pt medium → .footnote (exact)
+    case monoCaption // was 12pt → .caption1 (exact; badges, labels, dividers)
+
+    /// How a token scales. Exposed raw for unit tests because `Font` has no
+    /// public equality — tests assert the semantic backing instead.
+    enum Backing: Equatable {
+        /// `Font.system(_:design:)` on a system text style — native Dynamic Type.
+        case textStyle(Font.TextStyle)
+        /// Display-scale token: no system text style covers this size, so the
+        /// base size scales via `@ScaledMetric` relative to the given style.
+        case display(baseSize: CGFloat, relativeTo: Font.TextStyle)
+    }
+
+    var backing: Backing {
         switch self {
-        case .hero:      return .system(size: 72, weight: .black)
-        case .displayLg: return .system(size: 48, weight: .black)
-        case .displayMd: return .system(size: 34, weight: .black)
-        case .displaySm: return .system(size: 26, weight: .black)
-        case .titleLg:   return .system(size: 20, weight: .bold)
-        case .titleMd:   return .system(size: 17, weight: .semibold)
-        case .body:      return .system(size: 16, weight: .regular)
-        case .bodySm:    return .system(size: 15, weight: .regular)
-        case .mono:      return .system(size: 15, weight: .medium, design: .monospaced)
-        case .monoSm:    return .system(size: 13, weight: .medium, design: .monospaced)
-        case .monoLg:    return .system(size: 17, weight: .medium, design: .monospaced)
-        case .monoHero:  return .system(size: 42, weight: .black, design: .monospaced)
+        case .hero:        return .display(baseSize: 72, relativeTo: .largeTitle)
+        case .displayLg:   return .display(baseSize: 48, relativeTo: .largeTitle)
+        case .monoHero:    return .display(baseSize: 42, relativeTo: .largeTitle)
+        case .spine:       return .display(baseSize: 40, relativeTo: .largeTitle)
+        case .displaySm:   return .display(baseSize: 26, relativeTo: .title)
+        case .displayMd:   return .textStyle(.largeTitle)
+        case .titleLg:     return .textStyle(.title3)
+        case .titleMd:     return .textStyle(.headline)
+        case .body:        return .textStyle(.callout)
+        case .bodySm:      return .textStyle(.subheadline)
+        case .monoLg:      return .textStyle(.body)
+        case .mono:        return .textStyle(.subheadline)
+        case .monoSm:      return .textStyle(.footnote)
+        case .monoCaption: return .textStyle(.caption1)
+        }
+    }
+
+    /// Default weight — the brutalist hierarchy (black display, bold titles,
+    /// medium mono chrome). Call sites override via `bType(_:weight:)`.
+    var weight: Font.Weight {
+        switch self {
+        case .hero, .displayLg, .monoHero, .spine, .displaySm, .displayMd:
+            return .black
+        case .titleLg:        return .bold
+        case .titleMd:        return .semibold
+        case .body, .bodySm:  return .regular
+        case .monoLg, .mono, .monoSm:
+            return .medium
+        case .monoCaption:    return .bold
+        }
+    }
+
+    /// Design identity: the brutalist look leans on monospaced chrome text.
+    var design: Font.Design {
+        switch self {
+        case .monoHero, .monoLg, .mono, .monoSm, .monoCaption:
+            return .monospaced
+        default:
+            return .default
+        }
+    }
+
+    /// The semantic font for this token.
+    ///
+    /// Text-style tokens return `Font.system(_:design:)`, which scales
+    /// natively with Dynamic Type. Display tokens have no covering system
+    /// text style and a bare `Font` value cannot carry `@ScaledMetric`, so
+    /// they fall back to their base size here — view call sites must use
+    /// `bType(_:weight:color:)`, which scales them properly. This property
+    /// exists for `Font`-typed APIs (e.g. `BMonoRow.valueFont`) that only
+    /// ever receive text-style tokens.
+    var font: Font {
+        switch backing {
+        case .textStyle(let textStyle):
+            return .system(textStyle, design: design).weight(weight)
+        case .display(let baseSize, _):
+            return .system(size: baseSize, weight: weight, design: design)
         }
     }
 }
 
 extension View {
-    func bType(_ style: BType, color: Color = .brutalText) -> some View {
-        self.font(style.font).foregroundStyle(color)
+    /// Applies a semantic brutalist type token (Issue #16). Scales with
+    /// Dynamic Type; `weight` overrides the token's default when a call
+    /// site needs a variant (e.g. `.mono` at `.black` for modal titles).
+    @ViewBuilder
+    func bType(_ style: BType, weight: Font.Weight? = nil, color: Color = .brutalText) -> some View {
+        switch style.backing {
+        case .textStyle(let textStyle):
+            self.font(.system(textStyle, design: style.design).weight(weight ?? style.weight))
+                .foregroundStyle(color)
+        case .display(let baseSize, let relativeTo):
+            self.modifier(BDisplayTypeText(
+                baseSize: baseSize,
+                relativeTo: relativeTo,
+                weight: weight ?? style.weight,
+                design: style.design,
+                color: color
+            ))
+        }
+    }
+}
+
+/// `@ScaledMetric` backing for display-scale tokens (26–72pt), where no
+/// system text style applies. The fixed base size is deliberate: it is the
+/// scaling *input*, not a fixed render size (Issue #16).
+private struct BDisplayTypeText: ViewModifier {
+    @ScaledMetric private var size: CGFloat
+    private let weight: Font.Weight
+    private let design: Font.Design
+    private let color: Color
+
+    init(baseSize: CGFloat, relativeTo: Font.TextStyle, weight: Font.Weight, design: Font.Design, color: Color) {
+        self.weight = weight
+        self.design = design
+        self.color = color
+        _size = ScaledMetric(wrappedValue: baseSize, relativeTo: relativeTo)
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: size, weight: weight, design: design))
+            .foregroundStyle(color)
+    }
+}
+
+// MARK: - Editor Typography (clamped Dynamic Type — Issue #16)
+
+/// Dynamic Type sizing for monospaced editor content.
+///
+/// UITextView renders NSAttributedString and does not auto-scale its fonts
+/// with the user's content size category, so `CodeEditorView` drives its
+/// fonts through this token instead.
+///
+/// Editor scaling is deliberately more conservative than chrome text:
+/// - min 13pt — the shipped default. Code decorated with syntax coloring
+///   needs a higher legibility floor than prose (which may shrink to 11pt
+///   via `.caption2`); below 13pt token shapes smear.
+/// - max 22pt — at larger sizes monospaced line lengths collapse (~30
+///   chars/line on a 430pt screen), making code structure harder to scan.
+///   22pt still gives a ~1.7× bump over the default for users who need it.
+enum BEditorType {
+    /// The editor's base (100%) point size — matches SyntaxHighlighter's font.
+    static let baseSize: CGFloat = 13
+    /// Lower clamp: never smaller than the shipped default.
+    static let minSize: CGFloat = 13
+    /// Upper clamp: keeps monospaced lines scannable at accessibility sizes.
+    static let maxSize: CGFloat = 22
+
+    /// Scales `baseSize` with Dynamic Type (relative to `.body`), clamped to
+    /// `[minSize, maxSize]`. At the default `.large` category this reproduces
+    /// the historical 13pt exactly.
+    static func scaledSize(for category: ContentSizeCategory) -> CGFloat {
+        let scaled = UIFontMetrics(forTextStyle: .body).scaledValue(
+            for: baseSize,
+            compatibleWith: UITraitCollection(preferredContentSizeCategory: category.uiKit)
+        )
+        return min(max(scaled, minSize), maxSize)
     }
 }
 
@@ -134,11 +280,11 @@ struct BPrimaryButton: View {
                     HStack(spacing: 8) {
                         if let icon {
                             Image(systemName: icon)
-                                .font(.system(size: 16, weight: .bold))
+                                .bType(.body, weight: .bold)
                                 .foregroundStyle(Color(.systemBackground))
                         }
                         Text(title.uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .bType(.mono, weight: .bold)
                             .foregroundStyle(Color(.systemBackground))
                             .tracking(2)
                     }
@@ -178,11 +324,11 @@ struct BSecondaryButton: View {
                     HStack(spacing: 8) {
                         if let icon {
                             Image(systemName: icon)
-                                .font(.system(size: 16, weight: .semibold))
+                                .bType(.body, weight: .semibold)
                                 .foregroundStyle(isDisabled ? Color.brutalText : Color.brutalText)
                         }
                         Text(title.uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .bType(.mono, weight: .bold)
                             .foregroundStyle(isDisabled ? Color.brutalText : Color.brutalText)
                             .tracking(2)
                     }
@@ -212,10 +358,10 @@ struct BGhostButton: View {
             HStack(spacing: 6) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.system(size: 13, weight: .medium))
+                        .bType(.monoSm)
                 }
                 Text(title.uppercased())
-                    .font(.system(size: 13, weight: .medium, design: .monospaced))
+                    .bType(.monoSm)
                     .tracking(1)
             }
             .foregroundStyle(color)
@@ -248,7 +394,7 @@ struct BDestructiveButton: View {
                         .scaleEffect(0.85)
                 } else {
                     Text(title.uppercased())
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .bType(.mono, weight: .bold)
                         .foregroundStyle(Color.brutalError)
                         .tracking(2)
                 }
@@ -275,7 +421,7 @@ struct BTextField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .bType(.monoCaption, weight: .semibold)
                 .foregroundStyle(isFocused ? Color.brutalText : Color.brutalText)
                 .tracking(2)
 
@@ -291,7 +437,7 @@ struct BTextField: View {
             }
             .focused($isFocused)
             .autocorrectionDisabled()
-            .font(.system(size: 16, design: .monospaced))
+            .bType(.monoLg, weight: .regular)
             .padding(.horizontal, 12)
             .padding(.vertical, 13)
             .background(Color.brutalSurface)
@@ -317,14 +463,14 @@ struct BSectionHeader: View {
                     .frame(width: 3, height: 13)
 
                 Text(title.uppercased())
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .bType(.monoCaption)
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
             }
 
             if let sub = subtitle {
                 Text(sub)
-                    .font(.system(size: 14, design: .monospaced))
+                    .bType(.mono, weight: .regular)
                     .foregroundStyle(Color.brutalText)
                     .padding(.leading, 11)
             }
@@ -345,7 +491,7 @@ struct BDivider: View {
                     .frame(height: 1)
 
                 Text(label.uppercased())
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .bType(.monoCaption, weight: .medium)
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
                     .fixedSize()
@@ -404,7 +550,7 @@ struct BBadge: View {
 
     var body: some View {
         Text(text.uppercased())
-            .font(.system(size: 12, weight: .bold, design: .monospaced))
+            .bType(.monoCaption)
             .foregroundStyle(style.fg)
             .tracking(1)
             .padding(.horizontal, 8)
@@ -419,13 +565,13 @@ struct BBadge: View {
 struct BMonoRow: View {
     let key: String
     let value: String
-    var valueFont: Font = .system(size: 15, weight: .medium, design: .monospaced)
+    var valueFont: Font = BType.mono.font
     var valueColor: Color = .brutalText
 
     var body: some View {
         HStack {
             Text(key.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .bType(.monoCaption, weight: .medium)
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Spacer()
@@ -466,20 +612,22 @@ struct BEmptyState: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // Decorative non-text glyph (em-dash ornament, carries no
+            // information) — fixed size per Issue #16's decorative allowance.
             Text("—")
                 .font(.system(size: 72, weight: .black))
                 .foregroundStyle(Color.brutalText)
                 .padding(.bottom, 16)
 
             Text(title.uppercased())
-                .font(.system(size: 18, weight: .bold, design: .monospaced))
+                .bType(.monoLg, weight: .bold)
                 .foregroundStyle(Color.brutalText)
                 .tracking(2)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 8)
 
             Text(subtitle)
-                .font(.system(size: 15, design: .monospaced))
+                .bType(.mono, weight: .regular)
                 .foregroundStyle(Color.brutalText)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 28)
@@ -502,7 +650,7 @@ struct BLoading: View {
 
     var body: some View {
         Text((text + String(repeating: ".", count: dotCount)).uppercased())
-            .font(.system(size: 14, weight: .medium, design: .monospaced))
+            .bType(.mono)
             .foregroundStyle(Color.brutalText)
             .tracking(2)
             .onReceive(timer) { _ in dotCount = (dotCount + 1) % 4 }
@@ -519,10 +667,10 @@ struct BToast: View {
         HStack(spacing: 10) {
             if let icon = systemImage {
                 Image(systemName: icon)
-                    .font(.system(size: 13, weight: .black))
+                    .bType(.monoSm, weight: .black)
             }
             Text(message.uppercased())
-                .font(.system(size: 12, weight: .black, design: .monospaced))
+                .bType(.monoCaption, weight: .black)
                 .tracking(2)
         }
         .foregroundStyle(Color.brutalBg)
@@ -549,12 +697,12 @@ struct BCardRow: View {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(.system(size: 16, weight: .medium))
+                        .bType(.body, weight: .medium)
                         .foregroundStyle(destructive ? Color.brutalError : Color.brutalText)
 
                     if let sub = subtitle {
                         Text(sub)
-                            .font(.system(size: 14, design: .monospaced))
+                            .bType(.mono, weight: .regular)
                             .foregroundStyle(Color.brutalText)
                     }
                 }
@@ -567,13 +715,13 @@ struct BCardRow: View {
 
                 if let val = value {
                     Text(val)
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                 }
 
                 if showArrow {
                     Text("→")
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                 }
             }
@@ -624,12 +772,12 @@ struct BConfirmModal: View {
                 // Header
                 VStack(alignment: .leading, spacing: 8) {
                     Text(title.uppercased())
-                        .font(.system(size: 15, weight: .black, design: .monospaced))
+                        .bType(.mono, weight: .black)
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
 
                     Text(message)
-                        .font(.system(size: 13, design: .monospaced))
+                        .bType(.monoSm, weight: .regular)
                         .foregroundStyle(Color.brutalTextMid)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -678,12 +826,12 @@ struct BRenameModal: View {
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title.uppercased())
-                        .font(.system(size: 15, weight: .black, design: .monospaced))
+                        .bType(.mono, weight: .black)
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
 
                     Text("Include the file extension (e.g. notes.ts)")
-                        .font(.system(size: 12, design: .monospaced))
+                        .bType(.monoCaption, weight: .regular)
                         .foregroundStyle(Color.brutalTextMid)
                 }
                 .padding(20)
@@ -697,7 +845,7 @@ struct BRenameModal: View {
                     .focused($isFocused)
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
-                    .font(.system(size: 15, design: .monospaced))
+                    .bType(.mono, weight: .regular)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 13)
                     .background(Color.brutalSurface)
@@ -737,17 +885,20 @@ struct BActionRow: View {
     // inside an outer Button (SwiftUI nested-button hit-testing conflict).
     var body: some View {
         HStack(spacing: 14) {
+            // Decorative emoji glyph sized for the fixed 32pt icon column —
+            // non-text, so fixed per Issue #16 (scaling would break column
+            // alignment; the adjacent title/subtitle do scale).
             Text(icon)
                 .font(.system(size: 20))
                 .frame(width: 32)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: 17, weight: .semibold))
+                    .bType(.titleMd)
                     .foregroundStyle(Color.brutalText)
                 if let sub = subtitle {
                     Text(sub)
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .foregroundStyle(Color.brutalTextFaint)
                 }
             }
@@ -758,7 +909,7 @@ struct BActionRow: View {
                 BBadge(text: "\(count)", style: badgeStyle)
             } else {
                 Text("→")
-                    .font(.system(size: 14, design: .monospaced))
+                    .bType(.mono, weight: .regular)
                     .foregroundStyle(Color.brutalText)
             }
         }
@@ -777,7 +928,7 @@ struct BSpineHeader: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 40, weight: .black))
+                .bType(.spine)
                 .foregroundStyle(Color.brutalText)
                 .tracking(-1)
                 .minimumScaleFactor(0.7)
@@ -790,7 +941,7 @@ struct BSpineHeader: View {
                         .frame(width: 20, height: 1)
 
                     Text(sub.uppercased())
-                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                        .bType(.monoCaption, weight: .medium)
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
                 }
