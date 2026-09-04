@@ -265,6 +265,9 @@ struct RepoListView: View {
                             .tracking(2)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
+                            // Full-width link, ≥44pt-tall hit target.
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .padding(.horizontal, 20)
@@ -382,7 +385,8 @@ struct RepoListView: View {
                             BBadge(text: String(localized: "previously cloned"), style: .default)
                             Spacer(minLength: 8)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        // Flexible-width clone affordance, ≥44pt-tall target.
+                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
@@ -410,6 +414,9 @@ struct RepoListView: View {
                 .bType(.monoCaption)
                 .foregroundStyle(Color.brutalError)
                 .tracking(1)
+                // Compact text link, 44x44pt hit target.
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(String(localized: "Remove from previously cloned repositories"))
@@ -555,6 +562,9 @@ struct RepoListView: View {
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                         .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                        // Compact chip, 44pt hit target.
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
