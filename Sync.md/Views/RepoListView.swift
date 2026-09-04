@@ -360,6 +360,7 @@ struct RepoListView: View {
                         Text("→")
                             .font(.system(size: 14, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
+                            .accessibilityHidden(true)
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
@@ -441,6 +442,7 @@ struct RepoListView: View {
                         ProgressView()
                             .controlSize(.small)
                             .tint(Color.brutalAccent)
+                            .accessibilityLabel(String(localized: "Syncing"))
                     }
 
                     if FeatureFlags.gitSyncAssistEnabled,
@@ -453,6 +455,7 @@ struct RepoListView: View {
                     Text("→")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -560,6 +563,7 @@ struct RepoListView: View {
             Image(systemName: icon)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
+                .accessibilityHidden(true)
             Text(text)
                 .font(mono
                     ? .system(size: 13, weight: .medium, design: .monospaced)
