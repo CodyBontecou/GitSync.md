@@ -6,6 +6,7 @@ struct SettingsView: View {
     @Environment(PremiumRuntime.self) private var premiumRuntime
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
+    @ObservedObject private var pushSyncStatusObject = PushSyncManager.shared
 
     let repoID: UUID
 
@@ -295,6 +296,36 @@ struct SettingsView: View {
                                         .foregroundStyle(Color.brutalText)
                                         .padding(16)
                                 }
+                            }
+                        }
+
+                        // Push Sync
+                        settingsSection(title: String(localized: "Push Sync")) {
+                            VStack(spacing: 0) {
+                                Toggle("Notify when GitHub changes", isOn: Binding(
+                                    get: { pushSyncStatusObject.isEnabled },
+                                    set: { newValue in
+                                        Task { await pushSyncStatusObject.setEnabled(newValue) }
+                                    }
+                                ))
+                                .frame(minHeight: 44)
+                                .padding(.horizontal, 16)
+
+                                if let error = pushSyncStatusObject.lastError {
+                                    Text(error)
+                                        .font(.caption.monospaced())
+                                        .foregroundStyle(.red)
+                                        .padding(.horizontal, 16)
+                                }
+                                if let date = pushSyncStatusObject.lastRegistrationDate {
+                                    Text("Registered \(relativeDate(date))")
+                                        .font(.caption.monospaced())
+                                        .padding(.horizontal, 16)
+                                }
+                                Text("When someone pushes to a repository you've cloned, GitSync.md shows a notification. Tapping it opens the app and pulls. Uses a relay that sees repository names only — never file contents.")
+                                    .font(.system(size: 12, design: .monospaced))
+                                    .foregroundStyle(Color.brutalText)
+                                    .padding(16)
                             }
                         }
 

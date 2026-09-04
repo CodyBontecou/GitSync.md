@@ -1,0 +1,24 @@
+name = "syncmd-push"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# KV registry: device:<secret> → { token, environment, repos[], updatedAt }
+# Create with: wrangler kv namespace create REGISTRY
+[[kv_namespaces]]
+binding = "REGISTRY"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+# APNs topic = the app's bundle id.
+APNS_TOPIC = "bontecou.Sync-md"
+# Collapse window per (repo, device): skip sending if we notified within N seconds.
+NOTIFY_COLLAPSE_SECONDS = "120"
+# Webhook sends acknowledged before per-device APNs delivery finishes.
+# Rate limit for /v1/register per IP.
+REGISTER_RATE_LIMIT_PER_HOUR = "20"
+
+# Secrets (set via `wrangler secret put`, never committed):
+#   GITHUB_WEBHOOK_SECRET — GitHub webhook "Secret" field
+#   APNS_KEY_P8           — Apple .p8 key contents (raw PEM, including header/footer)
+#   APNS_KEY_ID           — 10-char key id from developer.apple.com
+#   APNS_TEAM_ID          — 10-char team id

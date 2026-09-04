@@ -29,9 +29,11 @@ extension Sync_mdApp {
 @MainActor
 @main
 struct Sync_mdApp: App {
+    @UIApplicationDelegateAdaptor(SyncAppDelegate.self) private var appDelegate
     @State private var appState: AppState
     @State private var premiumRuntime: PremiumRuntime
     @State private var assistForegroundReconciliationTask: Task<Void, Never>? = nil
+    @State private var pushRegistrationTask: Task<Void, Never>? = nil
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -48,10 +50,12 @@ struct Sync_mdApp: App {
             conditionsProvider: SystemBackgroundSyncConditions()
         )
         _appState = State(initialValue: appState)
-        _premiumRuntime = State(initialValue: PremiumRuntime(
+        let runtime = PremiumRuntime(
             coordinator: coordinator,
             repositoryProvider: appState
-        ))
+        )
+        _premiumRuntime = State(initialValue: runtime)
+        SyncRuntimeLocator.configure(runtime: runtime, state: appState)
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
             SyncMDAppShortcutsProvider.updateAppShortcutParameters()
         }
@@ -81,6 +85,11 @@ struct Sync_mdApp: App {
                     #endif
                 }
                 .onOpenURL { url in
+                    // Widget deep link: one-tap full pull from the Home Screen.
+                    if url.scheme == "syncmd", url.host == "pull-all" {
+                        SyncRuntimeLocator.requestPullAll()
+                        return
+                    }
                     // x-callback-url from external triggers (e.g. a link tapped in Obsidian, or an iOS Shortcut)
                     // Format: syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>
                     let handler = CallbackURLHandler(appState: appState)
@@ -109,6 +118,11 @@ struct Sync_mdApp: App {
                     assistForegroundReconciliationTask = Task { @MainActor in
                         await premiumRuntime.reconcileForeground()
                     }
+                }
+                // Keep push-sync registration in sync with the current repo set.
+                pushRegistrationTask?.cancel()
+                pushRegistrationTask = Task { @MainActor in
+                    await PushSyncManager.shared.refreshRegistration(repos: appState.repos)
                 }
             } else {
                 assistForegroundReconciliationTask?.cancel()

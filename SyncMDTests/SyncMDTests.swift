@@ -2202,6 +2202,36 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testPushSyncRegistrationBodyOnlyIncludesClonedGitHubRepos() {
+        var cloned = RepoConfig(repoURL: "https://github.com/CodyBontecou/Travel.git", branch: "main", authorName: "A", authorEmail: "a@b.c", vaultFolderName: "travel")
+        cloned.gitState.commitSHA = "abc123"
+        var notCloned = RepoConfig(repoURL: "https://github.com/CodyBontecou/Other.git", branch: "main", authorName: "A", authorEmail: "a@b.c", vaultFolderName: "other")
+        notCloned.gitState.commitSHA = ""
+        var nonGitHub = RepoConfig(repoURL: "https://gitlab.com/someone/repo.git", branch: "main", authorName: "A", authorEmail: "a@b.c", vaultFolderName: "repo")
+        nonGitHub.gitState.commitSHA = "abc123"
+
+        let body = PushSyncManager.makeRegistrationBody(
+            tokenHex: String(repeating: "a", count: 64),
+            repos: [cloned, notCloned, nonGitHub],
+            deviceSecret: "test-secret-123"
+        )
+        let json = (try? JSONSerialization.jsonObject(with: body) as? [String: Any])
+        XCTAssertNotNil(json)
+        XCTAssertEqual(json?["token"] as? String, String(repeating: "a", count: 64))
+        XCTAssertEqual(json?["deviceSecret"] as? String, "test-secret-123")
+        let names = ((json?["repos"] as? [[String: Any]]) ?? []).compactMap { $0["name"] as? String }
+        XCTAssertEqual(names.count, 1)
+        XCTAssertTrue(names.first?.lowercased().hasSuffix("/travel") == true, "expected owner/travel, got \(names)")
+    }
+
+    @MainActor
+    func testPushSyncHexStringFormatting() {
+        let data = Data([0x00, 0x0f, 0xff, 0xa5])
+        XCTAssertEqual(PushSyncManager.hexString(from: data), "000fffa5")
+        XCTAssertEqual(PushSyncManager.hexString(from: Data()).count, 0)
+    }
+
+    @MainActor
     func testBackgroundCoordinatorClassifiesPostUpdateLFSAuthenticationAsAuthenticationAttention() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }

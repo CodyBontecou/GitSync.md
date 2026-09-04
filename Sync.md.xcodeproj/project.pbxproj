@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		aa5e0001000000000000000f /* PullAllControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e0001000000000000000e /* PullAllControlIntent.swift */; };
+		aa5e00010000000000000010 /* PullAllControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e0001000000000000000e /* PullAllControlIntent.swift */; };
+		aa5e00010000000000000007 /* SyncWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000001 /* SyncWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1273715551CDF043029317F6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
 		336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */; };
 		62C953FE2F397E44001F79DF /* Clibgit2 in Frameworks */ = {isa = PBXBuildFile; productRef = 62C951C12F3A0001001F79DF /* Clibgit2 */; };
@@ -31,9 +34,32 @@
 			remoteGlobalIDString = 62C951952F393029001F79DF;
 			remoteInfo = Sync.md;
 		};
+		aa5e00010000000000000009 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 62C9518E2F393029001F79DF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = aa5e00010000000000000003;
+			remoteInfo = SyncWidget;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		aa5e00010000000000000008 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				aa5e00010000000000000007 /* SyncWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		aa5e0001000000000000000e /* PullAllControlIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullAllControlIntent.swift; sourceTree = "<group>"; };
+		aa5e00010000000000000001 /* SyncWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SyncWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0443B75C1B0FB847251F8B3F /* SyncMDTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDUITests.swift; sourceTree = "<group>"; };
 		4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -51,9 +77,25 @@
 			);
 			target = 62C951952F393029001F79DF /* Sync.md */;
 		};
+		aa5e00010000000000000012 /* Exceptions for "SyncWidget" folder in "SyncWidget" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				SyncWidget.entitlements,
+			);
+			target = aa5e00010000000000000003 /* SyncWidget */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		aa5e00010000000000000002 /* SyncWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				aa5e00010000000000000012 /* Exceptions for "SyncWidget" folder in "SyncWidget" target */,
+			);
+			path = SyncWidget;
+			sourceTree = "<group>";
+		};
 		62C951982F393029001F79DF /* Sync.md */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -65,6 +107,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		aa5e00010000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		47E5881AADD3B45EFF16DB8A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -120,10 +169,20 @@
 			path = SyncMDUITests;
 			sourceTree = "<group>";
 		};
+		aa5e00010000000000000011 /* SharedSources */ = {
+			isa = PBXGroup;
+			children = (
+				aa5e0001000000000000000e /* PullAllControlIntent.swift */,
+			);
+			path = SharedSources;
+			sourceTree = "<group>";
+		};
 		62C9518D2F393029001F79DF = {
 			isa = PBXGroup;
 			children = (
 				62C951982F393029001F79DF /* Sync.md */,
+				aa5e00010000000000000002 /* SyncWidget */,
+				aa5e00010000000000000011 /* SharedSources */,
 				62C951972F393029001F79DF /* Products */,
 				62CC2E749F5430344090D51D /* Frameworks */,
 				0ECE099157F397A2ECB950E7 /* SyncMDTests */,
@@ -135,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				62C951962F393029001F79DF /* Sync.md.app */,
+				aa5e00010000000000000001 /* SyncWidget.appex */,
 				0443B75C1B0FB847251F8B3F /* SyncMDTests.xctest */,
 				E70D88DABEB05A34746D5412 /* SyncMDUITests.xctest */,
 			);
@@ -195,10 +255,12 @@
 				62C951922F393029001F79DF /* Sources */,
 				62C951932F393029001F79DF /* Frameworks */,
 				62C951942F393029001F79DF /* Resources */,
+				aa5e00010000000000000008 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				aa5e0001000000000000000a /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				62C951982F393029001F79DF /* Sync.md */,
@@ -212,6 +274,26 @@
 			productName = Sync.md;
 			productReference = 62C951962F393029001F79DF /* Sync.md.app */;
 			productType = "com.apple.product-type.application";
+		};
+		aa5e00010000000000000003 /* SyncWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = aa5e0001000000000000000d /* Build configuration list for PBXNativeTarget "SyncWidget" */;
+			buildPhases = (
+				aa5e00010000000000000004 /* Sources */,
+				aa5e00010000000000000005 /* Frameworks */,
+				aa5e00010000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				aa5e00010000000000000002 /* SyncWidget */,
+			);
+			name = SyncWidget;
+			productName = SyncWidget;
+			productReference = aa5e00010000000000000001 /* SyncWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -232,6 +314,9 @@
 						TestTargetID = 62C951952F393029001F79DF;
 					};
 					62C951952F393029001F79DF = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					aa5e00010000000000000003 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -281,6 +366,7 @@
 			projectRoot = "";
 			targets = (
 				62C951952F393029001F79DF /* Sync.md */,
+				aa5e00010000000000000003 /* SyncWidget */,
 				14987975A668149FDBCABA01 /* SyncMDTests */,
 				473E34D37D224A766EA8EB79 /* SyncMDUITests */,
 			);
@@ -309,6 +395,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		aa5e00010000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -328,10 +421,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		aa5e00010000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				aa5e00010000000000000010 /* PullAllControlIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		62C951922F393029001F79DF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				aa5e0001000000000000000f /* PullAllControlIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,9 +452,73 @@
 			target = 62C951952F393029001F79DF /* Sync.md */;
 			targetProxy = 7D0CA8344FE0B8A3897B86C0 /* PBXContainerItemProxy */;
 		};
+		aa5e0001000000000000000a /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SyncWidget;
+			target = aa5e00010000000000000003 /* SyncWidget */;
+			targetProxy = aa5e00010000000000000009 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		aa5e0001000000000000000b /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 202608291050;
+				DEVELOPMENT_TEAM = 67KC823C9A;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SyncWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG WIDGET_EXTENSION";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		aa5e0001000000000000000c /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 202608291050;
+					DEVELOPMENT_TEAM = 67KC823C9A;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SyncWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = WIDGET_EXTENSION;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		407F23335BA8BB42F5B12FF6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -649,6 +815,15 @@
 			buildConfigurations = (
 				543A48814706DDEF6F3513C5 /* Release */,
 				C7481529886E864B717DB849 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		aa5e0001000000000000000d /* Build configuration list for PBXNativeTarget "SyncWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				aa5e0001000000000000000b /* Debug */,
+				aa5e0001000000000000000c /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
