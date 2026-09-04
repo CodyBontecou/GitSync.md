@@ -224,6 +224,9 @@ struct SetupView: View {
                     .tracking(1)
             }
             .foregroundStyle(Color.brutalText)
+            // 44x44pt hit target, text stays compact.
+            .frame(minWidth: 44, minHeight: 44)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 24)
@@ -247,6 +250,9 @@ struct SetupView: View {
                         .tracking(1)
                 }
                 .foregroundStyle(Color.brutalText)
+                // 44x44pt hit target, text stays compact.
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .padding(.horizontal, 24)
@@ -268,6 +274,9 @@ struct SetupView: View {
                         Image(systemName: showPAT ? "eye.slash" : "eye")
                             .bType(.mono, weight: .regular)
                             .foregroundStyle(Color.brutalText)
+                            // Icon-only toggle: 44x44pt hit target.
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(showPAT ? String(localized: "Hide Token") : String(localized: "Show Token"))
@@ -286,6 +295,9 @@ struct SetupView: View {
                         .bType(.monoCaption, weight: .semibold)
                         .foregroundStyle(Color.brutalAccent)
                         .tracking(1)
+                        // 44x44pt hit target, text stays compact.
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
                 }
             }
             .padding(.horizontal, 24)
@@ -420,6 +432,9 @@ struct SetupView: View {
                                 .bType(.mono, weight: .bold)
                                 .foregroundStyle(Color.brutalText)
                                 .padding(6)
+                                // Icon-only clear affordance: 44x44pt hit target.
+                                .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(String(localized: "Use Default Location"))
