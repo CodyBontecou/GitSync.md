@@ -371,6 +371,9 @@ struct VaultView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 5)
                                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                                    // Compact chip, 44pt hit target.
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
@@ -387,6 +390,9 @@ struct VaultView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 5)
                                     .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                                    // Compact chip, 44pt hit target.
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
@@ -401,6 +407,9 @@ struct VaultView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 5)
                                     .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.4), lineWidth: 1))
+                                    // Compact chip, 44pt hit target.
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                             .disabled(state.isSyncing)
@@ -480,6 +489,9 @@ struct VaultView: View {
                                 .foregroundStyle(Color.brutalText)
                                 .accessibilityHidden(true)
                         }
+                        // Disclosure control gets a 44pt-tall tappable band.
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
 
@@ -500,12 +512,15 @@ struct VaultView: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 5)
                         .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                        // Compact destructive chip, 44pt hit target.
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(String(localized: "Revert All Changes"))
                 }
                 .padding(.horizontal, 16)
-                .padding(.vertical, 14)
+                .padding(.vertical, 8)
 
                 if showChangedFiles {
                     let entries = sortedStatusEntries

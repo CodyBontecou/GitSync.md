@@ -219,22 +219,28 @@ struct GitControlSheet: View {
                         .padding(.vertical, 9)
                         .background(Color.brutalSurface)
 
-                    Button(String(localized: "Create").uppercased()) {
+                    Button {
                         let name = newBranchName.trimmingCharacters(in: .whitespacesAndNewlines)
                         guard !name.isEmpty else { return }
                         Task {
                             await state.createBranch(repoID: repoID, name: name)
                             newBranchName = ""
                         }
+                    } label: {
+                        Text(String(localized: "Create").uppercased())
+                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Color(.systemBackground))
+                            .tracking(1)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 9)
+                            .background(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
+                                        ? Color.primary.opacity(0.3)
+                                        : Color.primary)
+                            // Hit target ≥44pt tall; filled visual stays compact.
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Color(.systemBackground))
-                    .tracking(1)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 9)
-                    .background(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
-                                ? Color.primary.opacity(0.3)
-                                : Color.primary)
+                    .buttonStyle(.plain)
                     .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
                 }
                 .padding(.horizontal, 16)
@@ -286,7 +292,7 @@ struct GitControlSheet: View {
             if branch.isCurrent {
                 BBadge(text: String(localized: "Current"), style: .success)
             } else {
-                HStack(spacing: 6) {
+                HStack(spacing: 8) {
                     smallActionButton(String(localized: "Switch").uppercased()) {
                         Task { await state.switchBranch(repoID: repoID, name: branch.shortName) }
                     }
@@ -349,19 +355,25 @@ struct GitControlSheet: View {
                                 .background(Color.brutalSurface)
                                 .disabled(state.isSyncing)
 
-                            Button(String(localized: "Complete").uppercased()) {
+                            Button {
                                 Task {
                                     await state.completeMerge(repoID: repoID, message: mergeCommitMessage)
                                     mergeCommitMessage = ""
                                 }
+                            } label: {
+                                Text(String(localized: "Complete").uppercased())
+                                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                    .foregroundStyle(Color(.systemBackground))
+                                    .tracking(1)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 9)
+                                    .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
+                                                ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
+                                    // Hit target ≥44pt tall; filled visual stays compact.
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
                             }
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color(.systemBackground))
-                            .tracking(1)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 9)
-                            .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
-                                        ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
+                            .buttonStyle(.plain)
                             .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
                         }
 
@@ -380,6 +392,8 @@ struct GitControlSheet: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
                             .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .disabled(state.isSyncing)
@@ -388,16 +402,22 @@ struct GitControlSheet: View {
                     .padding(.vertical, 12)
                 } else if conflictSession.kind == .rebase {
                     VStack(spacing: 8) {
-                        Button(String(localized: "Continue Rebase").uppercased()) {
+                        Button {
                             Task { await state.continueRebase(repoID: repoID) }
+                        } label: {
+                            Text(String(localized: "Continue Rebase").uppercased())
+                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                .foregroundStyle(Color(.systemBackground))
+                                .tracking(1)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 10)
+                                .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
+                                            ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
+                                // Hit target ≥44pt tall; filled visual stays compact.
+                                .frame(minHeight: 44)
+                                .contentShape(Rectangle())
                         }
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Color(.systemBackground))
-                        .tracking(1)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                        .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
-                                    ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
+                        .buttonStyle(.plain)
                         .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
 
                         Button {
@@ -415,6 +435,8 @@ struct GitControlSheet: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
                             .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .disabled(state.isSyncing)
@@ -595,7 +617,7 @@ struct GitControlSheet: View {
                             .padding(.vertical, 9)
                             .background(Color.brutalSurface)
 
-                        Button(String(localized: "Create").uppercased()) {
+                        Button {
                             let name = newTagName.trimmingCharacters(in: .whitespacesAndNewlines)
                             guard !name.isEmpty else { return }
                             let msg = newTagMessage.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -604,14 +626,20 @@ struct GitControlSheet: View {
                                 newTagName = ""
                                 newTagMessage = ""
                             }
+                        } label: {
+                            Text(String(localized: "Create").uppercased())
+                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                .foregroundStyle(Color(.systemBackground))
+                                .tracking(1)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 9)
+                                .background(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
+                                            ? Color.primary.opacity(0.3) : Color.primary)
+                                // Hit target ≥44pt tall; filled visual stays compact.
+                                .frame(minHeight: 44)
+                                .contentShape(Rectangle())
                         }
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Color(.systemBackground))
-                        .tracking(1)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 9)
-                        .background(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
-                                    ? Color.primary.opacity(0.3) : Color.primary)
+                        .buttonStyle(.plain)
                         .disabled(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
                     }
                 }
@@ -698,19 +726,25 @@ struct GitControlSheet: View {
                         .padding(.vertical, 9)
                         .background(Color.brutalSurface)
 
-                    Button(String(localized: "Save").uppercased()) {
+                    Button {
                         let msg = stashMessage.trimmingCharacters(in: .whitespacesAndNewlines)
                         Task {
                             await state.saveStash(repoID: repoID, message: msg, includeUntracked: true)
                             stashMessage = ""
                         }
+                    } label: {
+                        Text(String(localized: "Save").uppercased())
+                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .foregroundStyle(Color(.systemBackground))
+                            .tracking(1)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 9)
+                            .background(changeCount == 0 || state.isSyncing ? Color.primary.opacity(0.3) : Color.primary)
+                            // Hit target ≥44pt tall; filled visual stays compact.
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Color(.systemBackground))
-                    .tracking(1)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 9)
-                    .background(changeCount == 0 || state.isSyncing ? Color.primary.opacity(0.3) : Color.primary)
+                    .buttonStyle(.plain)
                     .disabled(changeCount == 0 || state.isSyncing)
                 }
                 .padding(.horizontal, 16)
@@ -983,6 +1017,10 @@ struct GitControlSheet: View {
                     Rectangle()
                         .strokeBorder(isDestructive ? Color.brutalError.opacity(0.4) : Color.brutalBorder, lineWidth: 1)
                 )
+                // Compact visual, 44pt hit target: the frame expands the
+                // tappable area around the small chip without changing it.
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }

@@ -347,6 +347,8 @@ struct AddRepoView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
@@ -622,6 +624,10 @@ struct AddRepoView: View {
                                     .font(.system(size: 13, weight: .bold))
                                     .foregroundStyle(Color.brutalText)
                                     .padding(6)
+                                    // Icon-only close: 44x44pt hit target,
+                                    // glyph stays visually compact.
+                                    .frame(minWidth: 44, minHeight: 44)
+                                    .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(String(localized: "Use Default Location"))
@@ -678,6 +684,8 @@ struct AddRepoView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
