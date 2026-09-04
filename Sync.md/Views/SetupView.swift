@@ -270,6 +270,7 @@ struct SetupView: View {
                             .foregroundStyle(Color.brutalText)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(showPAT ? String(localized: "Hide Token") : String(localized: "Show Token"))
                     .padding(.leading, 8)
                 }
                 .padding(13)
@@ -418,6 +419,7 @@ struct SetupView: View {
                                 .padding(6)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(String(localized: "Use Default Location"))
                     }
                 }
                 .padding(.horizontal, 24)
@@ -429,6 +431,7 @@ struct SetupView: View {
                     Image(systemName: "info.circle")
                         .font(.system(size: 12))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                     Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
