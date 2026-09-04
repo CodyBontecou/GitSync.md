@@ -571,6 +571,7 @@ struct RepoListView: View {
 
     private func relativeDate(_ date: Date) -> String {
         if date == .distantPast { return String(localized: "Never") }
+        if date.timeIntervalSinceNow > -1 { return String(localized: "just now") }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: date, relativeTo: Date())

@@ -63,7 +63,10 @@ extension AppState: AssistRepositoryProviding {
             repos[index].gitState.commitSHA = sha
             commitHistoryByRepo[repoID] = []; commitHistoryHasMoreByRepo[repoID] = true; commitDetailByRepo[repoID] = [:]
         }
-        if result?.outcome == .upToDate || result?.didTransferData == true {
+        // Only a pass that moved data (pulled/pushed commits) advances the
+        // "last sync" clock — an up-to-date verification must not, or the
+        // repo-card chip would reset to "just now" on every app open.
+        if result?.didTransferData == true {
             repos[index].gitState.lastSyncDate = health.lastSuccessDate ?? repos[index].gitState.lastSyncDate
         }
         repos[index].assist.health = health; saveRepos()

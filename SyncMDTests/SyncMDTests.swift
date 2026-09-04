@@ -2145,6 +2145,63 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testAppStateRecordAssistOnlyAdvancesLastSyncDateWhenDataTransferred() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let persistenceURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("record-assist-sync-date-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: persistenceURL) }
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: persistenceURL,
+            loadPersistedState: false
+        )
+        var repo = fixture.repoConfig
+        repo.assist.enabled = true
+        let staleSyncDate = Date(timeIntervalSinceNow: -3600)
+        repo.gitState.lastSyncDate = staleSyncDate
+        appState.repos = [repo]
+
+        // An up-to-date verification on app open must not reset the repo-card
+        // "last sync" clock — otherwise the chip always reads "just now".
+        appState.recordAssist(
+            result: .pullOnly(.upToDate(branch: repo.branch, commitSHA: repo.gitState.commitSHA)),
+            health: RepoAssistHealth(
+                kind: .upToDate,
+                lastAttemptDate: Date(),
+                lastSuccessDate: Date(),
+                commitSHA: repo.gitState.commitSHA
+            ),
+            repoID: repo.id
+        )
+        let unchanged = try XCTUnwrap(appState.repo(id: repo.id)?.gitState.lastSyncDate)
+        XCTAssertEqual(
+            unchanged.timeIntervalSince(staleSyncDate),
+            0,
+            accuracy: 0.001,
+            "An up-to-date verification must not advance lastSyncDate"
+        )
+
+        // A pass that pulled commits moved data and must advance the clock.
+        let newSHA = String(repeating: "b", count: 40)
+        appState.recordAssist(
+            result: .pullOnly(.updated(branch: repo.branch, commitSHA: newSHA)),
+            health: RepoAssistHealth(
+                kind: .updated,
+                lastAttemptDate: Date(),
+                lastSuccessDate: Date(),
+                commitSHA: newSHA
+            ),
+            repoID: repo.id
+        )
+        let advanced = try XCTUnwrap(appState.repo(id: repo.id)?.gitState.lastSyncDate)
+        XCTAssertGreaterThan(
+            advanced.timeIntervalSince(staleSyncDate), 3500,
+            "A pass that transferred data must advance lastSyncDate"
+        )
+    }
+
+    @MainActor
     func testBackgroundCoordinatorClassifiesPostUpdateLFSAuthenticationAsAuthenticationAttention() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }

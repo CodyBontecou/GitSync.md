@@ -744,6 +744,7 @@ struct SettingsView: View {
 
     private func relativeDate(_ date: Date) -> String {
         if date == .distantPast { return String(localized: "Never") }
+        if date.timeIntervalSinceNow > -1 { return String(localized: "just now") }
         let fmt = RelativeDateTimeFormatter()
         fmt.unitsStyle = .full
         return fmt.localizedString(for: date, relativeTo: Date())

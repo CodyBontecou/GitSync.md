@@ -170,6 +170,7 @@ struct GitControlSheet: View {
     private var lastSyncText: String {
         guard let repo else { return String(localized: "Never") }
         if repo.gitState.lastSyncDate == .distantPast { return String(localized: "Never") }
+        if repo.gitState.lastSyncDate.timeIntervalSinceNow > -1 { return String(localized: "just now") }
         let fmt = RelativeDateTimeFormatter()
         fmt.unitsStyle = .abbreviated
         return fmt.localizedString(for: repo.gitState.lastSyncDate, relativeTo: Date())
