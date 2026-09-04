@@ -1,6 +1,6 @@
 # Background Sync — App Privacy inventory
 
-> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlements are verified locally with StoreKit 2; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlement verification was removed entirely in `ed001a9` (later on 2026-09-02): Background Sync is now **included with the paid-up-front app purchase** — no subscriptions, StoreKit products, or entitlements remain; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
 
 
 Use this as an implementation inventory when completing App Store Connect. Apple's current taxonomy and the actual production configuration are authoritative; re-audit immediately before submission.
