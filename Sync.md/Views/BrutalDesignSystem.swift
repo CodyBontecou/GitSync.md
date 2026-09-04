@@ -74,7 +74,7 @@ enum BType: CaseIterable {
     case monoLg      // was 17pt medium → .body (exact)
     case mono        // was 15pt medium → .subheadline (exact)
     case monoSm      // was 13pt medium → .footnote (exact)
-    case monoCaption // was 12pt → .caption1 (exact; badges, labels, dividers)
+    case monoCaption // was 12pt → .caption (exact; badges, labels, dividers)
 
     /// How a token scales. Exposed raw for unit tests because `Font` has no
     /// public equality — tests assert the semantic backing instead.
