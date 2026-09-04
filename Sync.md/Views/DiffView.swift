@@ -148,7 +148,7 @@ struct FileDiffView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(filename.uppercased())
-                    .font(.system(size: 12, weight: .black, design: .monospaced))
+                    .bType(.monoCaption, weight: .black)
                     .foregroundStyle(Color.brutalText)
                     .tracking(2)
             }
@@ -162,7 +162,7 @@ struct FileDiffView: View {
                             .tint(Color.brutalError)
                     } else {
                         Image(systemName: "arrow.uturn.backward")
-                            .font(.system(size: 14, weight: .semibold))
+                            .bType(.mono, weight: .semibold)
                             .foregroundStyle(Color.brutalError)
                     }
                 }
@@ -241,11 +241,11 @@ struct FileDiffView: View {
                 HStack(alignment: .top, spacing: 12) {
                     VStack(alignment: .leading, spacing: 5) {
                         Text(filename)
-                            .font(.system(size: 24, weight: .black))
+                            .bType(.displaySm)
                             .foregroundStyle(Color.brutalText)
                         if !directory.isEmpty {
                             Text(directory)
-                                .font(.system(size: 12, design: .monospaced))
+                                .bType(.monoCaption, weight: .regular)
                                 .foregroundStyle(Color.brutalTextFaint)
                                 .lineLimit(1)
                                 .truncationMode(.middle)
@@ -298,10 +298,10 @@ struct FileDiffView: View {
     private func statPill(count: Int, label: String, color: Color) -> some View {
         VStack(spacing: 2) {
             Text("\(count)")
-                .font(.system(size: 22, weight: .black, design: .monospaced))
+                .bType(.monoLg, weight: .black)
                 .foregroundStyle(count > 0 ? color : Color.brutalTextFaint)
             Text(label)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .bType(.monoCaption)
                 .foregroundStyle(Color.brutalTextFaint)
                 .tracking(1)
         }
@@ -311,18 +311,21 @@ struct FileDiffView: View {
         VStack(spacing: 2) {
             HStack(spacing: 4) {
                 Text(old)
-                    .font(.system(size: 11, design: .monospaced))
+                    .bType(.monoCaption, weight: .regular)
                     .foregroundStyle(Color.brutalTextMid)
+                // Decorative arrow ornament between the SHAs — sized below
+                // the smallest token (12pt monoCaption) so it stays subordinate
+                // inside the tight chip; fixed per Issue #16's allowance.
                 Image(systemName: "arrow.right")
                     .font(.system(size: 9, weight: .bold))
                     .foregroundStyle(Color.brutalTextFaint)
                     .accessibilityHidden(true)
                 Text(new)
-                    .font(.system(size: 11, design: .monospaced))
+                    .bType(.monoCaption, weight: .regular)
                     .foregroundStyle(Color.brutalTextMid)
             }
             Text(String(localized: "Commit").uppercased())
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .bType(.monoCaption)
                 .foregroundStyle(Color.brutalTextFaint)
                 .tracking(1)
         }
@@ -359,14 +362,14 @@ struct FileDiffView: View {
         return HStack(alignment: .top, spacing: 0) {
             // Old line number
             Text(line.oldLineNo.map { "\($0)" } ?? "")
-                .font(.system(size: 11, design: .monospaced))
+                .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(cfg.gutterFg)
                 .frame(width: 40, alignment: .trailing)
                 .padding(.vertical, 3)
 
             // New line number
             Text(line.newLineNo.map { "\($0)" } ?? "")
-                .font(.system(size: 11, design: .monospaced))
+                .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(cfg.gutterFg)
                 .frame(width: 40, alignment: .trailing)
                 .padding(.vertical, 3)
@@ -379,14 +382,14 @@ struct FileDiffView: View {
 
             // +/−/↕ prefix
             Text(linePrefix(line.kind))
-                .font(.system(size: 13, weight: .bold, design: .monospaced))
+                .bType(.monoSm, weight: .bold)
                 .foregroundStyle(cfg.prefixFg)
                 .frame(width: 22, alignment: .center)
                 .padding(.vertical, 3)
 
             // Content
             Text(line.body)
-                .font(.system(size: 13, design: .monospaced))
+                .bType(.monoSm, weight: .regular)
                 .foregroundStyle(cfg.textFg)
                 .padding(.vertical, 3)
                 .padding(.trailing, 24)
