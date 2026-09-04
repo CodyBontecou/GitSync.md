@@ -7431,6 +7431,62 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(message.contains("offline"))
     }
 
+    /// Issue #36 retry shape at the user-facing seam: a Shortcut, x-callback,
+    /// or in-app push retry after a failed publication must not report
+    /// "nothing to push" while HEAD sits ahead of origin with a clean tree.
+    @MainActor
+    func testAppStatePushOnlyRetriesStrandedCommitWhenTreeIsClean() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: String(repeating: "0", count: 40),
+            hasLocalChanges: false, aheadBy: 1, behindBy: 0
+        )
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.pushOnly(repoID: fixture.repoConfig.id, message: "Retry from Shortcut")
+
+        XCTAssertEqual(result, .pushed(commitSHA: fixture.repoInfo.commitSHA))
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 1)
+        XCTAssertTrue(
+            fixture.repository.commitAndPushMessages.isEmpty,
+            "A clean-tree retry must push the stranded commit, not create a second one"
+        )
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, fixture.repoInfo.commitSHA)
+    }
+
+    /// The stranded-commit retry must also fail loudly: when the push of the
+    /// already-committed work fails (auth, network), the typed failure has to
+    /// reach callers instead of a soft `.noChanges` success misreport.
+    @MainActor
+    func testRepositoryPushRunnerRetrySurfacesPushFailureInsteadOfNoChanges() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate, branch: "main",
+            localCommitSHA: fixture.repoInfo.commitSHA,
+            remoteCommitSHA: String(repeating: "0", count: 40),
+            hasLocalChanges: false, aheadBy: 1, behindBy: 0
+        )
+        fixture.repository.pushCurrentBranchResult = .failure(LocalGitError.authenticationFailed("token expired"))
+
+        let result = await RepositoryPushRunner().run(
+            serialized: SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL),
+            repo: fixture.repoConfig, credentials: "pat", message: nil
+        )
+
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 1)
+        guard case .authenticationOrTrustRequired(let message, let trustError) = result else {
+            return XCTFail("Expected the retry push failure to surface, got \(result)")
+        }
+        XCTAssertTrue(message.contains("token expired"))
+        XCTAssertNil(trustError)
+        XCTAssertFalse(result.didPush)
+    }
+
     @MainActor
     func testBackgroundCoordinatorAutoPushRequiresSeparateConsent() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
