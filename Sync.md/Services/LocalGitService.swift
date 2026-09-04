@@ -1255,20 +1255,28 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
             let remoteOidPtr = git_reference_target(remoteRef)!
             let remoteCommitSHA = oidToHex(remoteOidPtr)
-            let hasLocalChanges = try Self.hasUncommittedChanges(repo: repo)
 
+            // Fast path for unchanged repositories: when local and remote
+            // point at the same commit, no pull is possible and the expensive
+            // working-tree status scan is unnecessary — the dirty check only
+            // classifies fast-forward vs blocked-by-local-changes, which both
+            // require differing OIDs. `hasLocalChanges` is therefore only
+            // meaningful when the OIDs differ; no consumer reads it for an
+            // up-to-date plan.
             if git_oid_equal(localOidPtr, remoteOidPtr) != 0 {
                 return PullPlan(
                     action: .upToDate,
                     branch: branch,
                     localCommitSHA: localCommitSHA,
                     remoteCommitSHA: remoteCommitSHA,
-                    hasLocalChanges: hasLocalChanges,
+                    hasLocalChanges: false,
                     aheadBy: 0,
                     behindBy: 0,
                     remoteIdentity: plannedRemoteIdentity
                 )
             }
+
+            let hasLocalChanges = try Self.hasUncommittedChanges(repo: repo)
 
             var ahead: Int = 0
             var behind: Int = 0

@@ -160,6 +160,14 @@ final class AppState {
     var syncingRepoID: UUID? = nil
     var syncProgress: String = ""
 
+    /// In-flight Background Sync reconciliations per repository, refcounted
+    /// so a cancelled flight unwinding late cannot hide a replacement
+    /// flight's activity. Backs the transient Background Sync banner so
+    /// foreground Git work is visible instead of experienced as unexplained lag.
+    var backgroundSyncFlightCounts: [UUID: Int] = [:]
+    var isBackgroundSyncing: Bool { backgroundSyncFlightCounts.values.contains { $0 > 0 } }
+    var backgroundSyncRepoCount: Int { backgroundSyncFlightCounts.values.filter { $0 > 0 }.count }
+
     // MARK: - OAuth / Auth
 
     var isSignedIn: Bool = false

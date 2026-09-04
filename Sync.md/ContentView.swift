@@ -19,6 +19,16 @@ struct ContentView: View {
             }
         }
         .opacity(showContent ? 1 : 0)
+        .overlay(alignment: .top) {
+            if state.isBackgroundSyncing {
+                BackgroundSyncBanner(repositoryCount: state.backgroundSyncRepoCount)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .allowsHitTesting(false)
+            }
+        }
+        .animation(.spring(duration: 0.35, bounce: 0.12), value: state.isBackgroundSyncing)
         .onAppear {
             #if DEBUG
             if MarketingCapture.usesSeededData {

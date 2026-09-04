@@ -2044,6 +2044,107 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testBackgroundCoordinatorReportsActivityLifecycleAroundReconciliation() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(
+            repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+
+        _ = await coordinator.reconcile(repoID: repo.id)
+
+        XCTAssertEqual(provider.backgroundSyncActivityEvents.count, 2, "A completed flight must report exactly one begin/finish pair")
+        XCTAssertEqual(provider.backgroundSyncActivityEvents.first?.repoID, repo.id)
+        XCTAssertTrue(provider.backgroundSyncActivityEvents.first?.began == true)
+        XCTAssertEqual(provider.backgroundSyncActivityEvents.last?.repoID, repo.id)
+        XCTAssertTrue(provider.backgroundSyncActivityEvents.last?.began == false)
+    }
+
+    @MainActor
+    func testBackgroundCoordinatorReportsActivityFinishEvenWhenFlightIsCancelledMidRun() async {
+        let gate = AsyncGate()
+        let commit = String(repeating: "1", count: 40)
+        let repository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: commit, changeCount: 0)
+        )
+        repository.executePullOnlyGate = gate
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = commit
+        repo.assist = RepoAssistSettings(enabled: true, channel: nil, selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: repository)
+        let coordinator = BackgroundSyncCoordinator(
+            repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPullRemoteChanges(true)
+
+        let flight = Task { @MainActor in await coordinator.reconcile(repoID: repo.id) }
+        await waitUntil { provider.backgroundSyncActivityEvents.count == 1 }
+        XCTAssertEqual(provider.backgroundSyncActivityEvents.first?.repoID, repo.id)
+        XCTAssertTrue(provider.backgroundSyncActivityEvents.first?.began == true)
+
+        coordinator.cancel(repoID: repo.id)
+        await gate.open()
+        _ = await flight.value
+
+        XCTAssertEqual(provider.backgroundSyncActivityEvents.count, 2, "Cancellation mid-run must still report the finish half of the pair")
+        XCTAssertEqual(provider.backgroundSyncActivityEvents.last?.repoID, repo.id)
+        XCTAssertTrue(provider.backgroundSyncActivityEvents.last?.began == false)
+    }
+
+    @MainActor
+    func testAppStateRecordAssistSkipsStatusRescanWhenPassVerifiedUpToDate() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let persistenceURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("record-assist-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: persistenceURL) }
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: persistenceURL,
+            loadPersistedState: false
+        )
+        var repo = fixture.repoConfig
+        repo.assist.enabled = true
+        appState.repos = [repo]
+
+        // An up-to-date pass verified freshness without touching the tree;
+        // the cached status entries remain valid so no rescan may start.
+        appState.recordAssist(
+            result: .pullOnly(.upToDate(branch: repo.branch, commitSHA: repo.gitState.commitSHA)),
+            health: RepoAssistHealth(
+                kind: .upToDate,
+                lastAttemptDate: Date(),
+                lastSuccessDate: Date(),
+                commitSHA: repo.gitState.commitSHA
+            ),
+            repoID: repo.id
+        )
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertEqual(fixture.repository.repoInfoCallCount, 0, "An up-to-date verification must not trigger a redundant working-tree rescan")
+
+        // A pass that pulled new commits changed the tree and must rescan.
+        let newSHA = String(repeating: "a", count: 40)
+        appState.recordAssist(
+            result: .pullOnly(.updated(branch: repo.branch, commitSHA: newSHA)),
+            health: RepoAssistHealth(
+                kind: .updated,
+                lastAttemptDate: Date(),
+                lastSuccessDate: Date(),
+                commitSHA: newSHA
+            ),
+            repoID: repo.id
+        )
+        await waitUntil { fixture.repository.repoInfoCallCount == 1 }
+        XCTAssertEqual(fixture.repository.repoInfoCallCount, 1, "A pass that transferred data must rescan the working tree")
+    }
+
+    @MainActor
     func testBackgroundCoordinatorClassifiesPostUpdateLFSAuthenticationAsAuthenticationAttention() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -7698,6 +7799,8 @@ private actor FakeAssistConditions: BackgroundSyncConditionsProviding {
 @MainActor
 private final class FakeAssistRepositoryProvider: AssistRepositoryProviding {
     var repos: [RepoConfig]
+    /// Ordered activity lifecycle notifications: `true` = didBegin, `false` = didFinish.
+    private(set) var backgroundSyncActivityEvents: [(repoID: UUID, began: Bool)] = []
     private var configurationChangeHandler: (@MainActor @Sendable () -> Void)?
     private var inventoryChangeHandler: (@MainActor @Sendable () -> Void)?
     var repo: RepoConfig {
@@ -7734,6 +7837,12 @@ private final class FakeAssistRepositoryProvider: AssistRepositoryProviding {
     }
     func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) {
         inventoryChangeHandler = handler
+    }
+    func backgroundSyncDidBegin(repoID: UUID) {
+        backgroundSyncActivityEvents.append((repoID, true))
+    }
+    func backgroundSyncDidFinish(repoID: UUID) {
+        backgroundSyncActivityEvents.append((repoID, false))
     }
     func triggerConfigurationChange() { configurationChangeHandler?() }
     func triggerInventoryChange() { inventoryChangeHandler?() }
@@ -8144,6 +8253,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var hasGitDirectoryValue: Bool = true
     var repoInfoResult: LocalRepoInfo
     var repoInfoResults: [Result<LocalRepoInfo, Error>] = []
+    var repoInfoCallCount = 0
     var pullPlanResult: PullPlan
     var pullPlanResults: [PullPlan] = []
     var pullResult: Result<LocalPullResult, Error>
@@ -8551,6 +8661,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func repoInfo() async throws -> LocalRepoInfo {
+        repoInfoCallCount += 1
         if !repoInfoResults.isEmpty { return try repoInfoResults.removeFirst().get() }
         return repoInfoResult
     }

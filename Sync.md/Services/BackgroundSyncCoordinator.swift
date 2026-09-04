@@ -31,6 +31,13 @@ protocol AssistRepositoryProviding: AnyObject {
     func updateAssistSettings(repoID: UUID, _ settings: RepoAssistSettings)
     func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?)
     func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?)
+    /// Called when a reconciliation flight begins actual Git work (fetch,
+    /// pull, push). Pairs with `backgroundSyncDidFinish(repoID:)` so UI can
+    /// surface an activity indicator around the exact window of lag.
+    func backgroundSyncDidBegin(repoID: UUID)
+    /// Called exactly once per `backgroundSyncDidBegin(repoID:)`, including
+    /// when the flight is cancelled mid-run.
+    func backgroundSyncDidFinish(repoID: UUID)
 }
 
 @MainActor
@@ -44,6 +51,12 @@ extension AppState: AssistRepositoryProviding {
     }
     func setAssistConfigurationChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) { assistConfigurationChangeHandler = handler }
     func setAssistInventoryChangeHandler(_ handler: (@MainActor @Sendable () -> Void)?) { assistInventoryChangeHandler = handler }
+    func backgroundSyncDidBegin(repoID: UUID) { backgroundSyncFlightCounts[repoID, default: 0] += 1 }
+    func backgroundSyncDidFinish(repoID: UUID) {
+        let remaining = (backgroundSyncFlightCounts[repoID] ?? 0) - 1
+        if remaining > 0 { backgroundSyncFlightCounts[repoID] = remaining }
+        else { backgroundSyncFlightCounts.removeValue(forKey: repoID) }
+    }
     func recordAssist(result: RepositoryReconciliationResult?, health: RepoAssistHealth, repoID: UUID) {
         guard let index = repoIndex(id: repoID) else { return }
         if let sha = result?.finalLocalCommitSHA, !sha.isEmpty {
@@ -53,7 +66,13 @@ extension AppState: AssistRepositoryProviding {
         if result?.outcome == .upToDate || result?.didTransferData == true {
             repos[index].gitState.lastSyncDate = health.lastSuccessDate ?? repos[index].gitState.lastSyncDate
         }
-        repos[index].assist.health = health; saveRepos(); detectChanges(repoID: repoID)
+        repos[index].assist.health = health; saveRepos()
+        // A deferred pass (nil result) or an up-to-date verification touched
+        // neither the working tree nor HEAD, so the cached status entries are
+        // still valid. Skipping the rescan halves the Git work of a no-op
+        // pass — the remaining fetch-only plan is the fast change check.
+        let treeUntouched = result == nil || result?.outcome == .upToDate
+        if !treeUntouched { detectChanges(repoID: repoID) }
     }
 }
 
@@ -228,6 +247,11 @@ final class BackgroundSyncCoordinator {
         catch { return recordDeferred(repoID: repoID, message: error.localizedDescription) }
         let selected = repo.assist.selectedBranch?.trimmingCharacters(in: .whitespacesAndNewlines)
         let expectedBranch = (selected?.isEmpty == false ? selected : repo.branch)
+        // Actual Git work starts here — surface it so foreground lag during
+        // the fetch/pull/push is explained. `defer` guarantees the matching
+        // finish signal even when the flight is cancelled mid-run.
+        provider.backgroundSyncDidBegin(repoID: repoID)
+        defer { provider.backgroundSyncDidFinish(repoID: repoID) }
         let result = await RepositoryReconciliationRunner().run(
             serialized: repository,
             repo: repo,

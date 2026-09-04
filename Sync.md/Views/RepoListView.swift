@@ -415,6 +415,7 @@ struct RepoListView: View {
 
     private func repoCard(_ repo: RepoConfig) -> some View {
         let isThisRepoSyncing = state.isSyncing && state.syncingRepoID == repo.id
+        let isThisRepoBackgroundSyncing = (state.backgroundSyncFlightCounts[repo.id] ?? 0) > 0
 
         return BCard(padding: 0) {
             VStack(spacing: 0) {
@@ -436,7 +437,7 @@ struct RepoListView: View {
 
                     Spacer()
 
-                    if isThisRepoSyncing {
+                    if isThisRepoSyncing || isThisRepoBackgroundSyncing {
                         ProgressView()
                             .controlSize(.small)
                             .tint(Color.brutalAccent)
@@ -461,6 +462,17 @@ struct RepoListView: View {
                     HStack(spacing: 8) {
                         BBadge(text: String(localized: "syncing"), style: .accent)
                         Text(state.syncProgress)
+                            .font(.system(size: 13, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
+                            .lineLimit(1)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                } else if isThisRepoBackgroundSyncing {
+                    HStack(spacing: 8) {
+                        BBadge(text: String(localized: "background sync"), style: .accent)
+                        Text(String(localized: "Fetching latest changes…"))
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
                             .lineLimit(1)

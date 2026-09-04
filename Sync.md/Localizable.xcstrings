@@ -152385,6 +152385,46 @@
         }
       },
       "shouldTranslate": false
+    },
+    "Background Sync running": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync running"
+          }
+        }
+      }
+    },
+    "Background Sync: %lld repositories": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync: %lld repositories"
+          }
+        }
+      }
+    },
+    "background sync": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "background sync"
+          }
+        }
+      }
+    },
+    "Fetching latest changes…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching latest changes…"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

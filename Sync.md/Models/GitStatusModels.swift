@@ -61,6 +61,9 @@ struct PullPlan: Codable, Sendable, Equatable {
     let branch: String
     let localCommitSHA: String
     let remoteCommitSHA: String
+    /// Working-tree dirty state. Only populated when the local and remote
+    /// OIDs differ (where it classifies fast-forward vs blocked); an
+    /// `.upToDate` plan reports `false` without scanning the working tree.
     let hasLocalChanges: Bool
     let aheadBy: Int
     let behindBy: Int
