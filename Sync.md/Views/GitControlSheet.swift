@@ -371,6 +371,7 @@ struct GitControlSheet: View {
                             HStack(spacing: 6) {
                                 Image(systemName: "xmark")
                                     .font(.system(size: 13, weight: .bold))
+                                    .accessibilityHidden(true)
                                 Text(String(localized: "Abort Merge").uppercased())
                                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                                     .tracking(1)
@@ -405,6 +406,7 @@ struct GitControlSheet: View {
                             HStack(spacing: 6) {
                                 Image(systemName: "xmark")
                                     .font(.system(size: 13, weight: .bold))
+                                    .accessibilityHidden(true)
                                 Text(String(localized: "Abort Rebase").uppercased())
                                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                                     .tracking(1)
@@ -930,6 +932,7 @@ struct GitControlSheet: View {
                     HStack(spacing: 8) {
                         Image(systemName: inConflictOperation ? "checkmark" : "arrow.up")
                             .font(.system(size: 14, weight: .bold))
+                            .accessibilityHidden(true)
                         Text(buttonLabel)
                             .font(.system(size: 14, weight: .bold, design: .monospaced))
                             .tracking(1)
