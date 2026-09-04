@@ -10,6 +10,7 @@ struct AppSettingsView: View {
     @State private var showMailCompose = false
     @State private var showOnboarding = false
     @State private var showPremiumSettings = false
+    @ObservedObject private var pushSyncStatusObject = PushSyncManager.shared
 
     var body: some View {
         NavigationStack {
@@ -162,6 +163,39 @@ struct AppSettingsView: View {
                             }
                         }
 
+                        // Push Sync — installation-global, opt-in notification
+                        // relay. The toggle registers every cloned GitHub
+                        // repository (new clones re-register automatically), so
+                        // it is surfaced here, not only inside per-repo settings.
+                        settingsSection(title: String(localized: "Push Sync")) {
+                            VStack(spacing: 0) {
+                                Toggle("Notify when GitHub changes", isOn: Binding(
+                                    get: { pushSyncStatusObject.isEnabled },
+                                    set: { newValue in
+                                        Task { await pushSyncStatusObject.setEnabled(newValue) }
+                                    }
+                                ))
+                                .frame(minHeight: 44)
+                                .padding(.horizontal, 16)
+
+                                if let error = pushSyncStatusObject.lastError {
+                                    Text(error)
+                                        .bType(.monoCaption, weight: .regular)
+                                        .foregroundStyle(.red)
+                                        .padding(.horizontal, 16)
+                                }
+                                if let date = pushSyncStatusObject.lastRegistrationDate {
+                                    Text("Registered \(relativeDate(date))")
+                                        .bType(.monoCaption, weight: .regular)
+                                        .padding(.horizontal, 16)
+                                }
+                                Text("When someone pushes to a repository you've cloned from GitHub, GitSync.md shows a notification. Tapping it opens the app and pulls. Covers all of your cloned GitHub repositories, including ones you add later. Uses a relay that sees repository names only — never file contents.")
+                                    .bType(.monoCaption, weight: .regular)
+                                    .foregroundStyle(Color.brutalText)
+                                    .padding(16)
+                            }
+                        }
+
                         // Shortcuts
                         settingsSection(title: String(localized: "Shortcuts")) {
                             HStack(alignment: .top, spacing: 14) {
@@ -291,6 +325,14 @@ struct AppSettingsView: View {
             }
             .padding(.horizontal, 20)
         }
+    }
+
+    private func relativeDate(_ date: Date) -> String {
+        if date == .distantPast { return String(localized: "Never") }
+        if date.timeIntervalSinceNow > -1 { return String(localized: "just now") }
+        let fmt = RelativeDateTimeFormatter()
+        fmt.unitsStyle = .full
+        return fmt.localizedString(for: date, relativeTo: Date())
     }
 
     private func dataRow(label: String, value: String) -> some View {
