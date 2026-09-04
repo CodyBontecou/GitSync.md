@@ -23,6 +23,10 @@ class FakeRegistry {
   putCalls: Array<{ key: string; value: string; options?: { expirationTtl?: number } }> = [];
   /** Keys that list() reports but get() returns null for (simulates a delete race). */
   nullOnGet = new Set<string>();
+  /** When set, list() pages in chunks of this size with cursors (KV pagination). */
+  pageSize = 0;
+  /** Every list() call's options, in order (for cursor-round-trip assertions). */
+  listCalls: Array<{ prefix?: string; cursor?: string }> = [];
 
   async get(key: string): Promise<string | null> {
     if (this.nullOnGet.has(key)) return null;
@@ -36,11 +40,23 @@ class FakeRegistry {
     this.deletedKeys.push(key);
     this.store.delete(key);
   }
-  async list(options: { prefix?: string }) {
+  async list(options: { prefix?: string; cursor?: string }) {
+    this.listCalls.push(options);
     const names = [...this.store.keys()]
       .filter((k) => k.startsWith(options.prefix ?? ""))
       .sort();
-    return { keys: names.map((name) => ({ name })), list_complete: true };
+    if (this.pageSize <= 0) {
+      return { keys: names.map((name) => ({ name })), list_complete: true };
+    }
+    // KV semantics: cursor is an opaque offset into the remaining result set.
+    const start = options.cursor ? Number(options.cursor) : 0;
+    const page = names.slice(start, start + this.pageSize);
+    const next = start + this.pageSize;
+    return {
+      keys: page.map((name) => ({ name })),
+      list_complete: next >= names.length,
+      cursor: next < names.length ? String(next) : undefined,
+    };
   }
 }
 
@@ -392,6 +408,77 @@ describe("github-webhook throttle skip", () => {
     expect(sendApnsMock.mock.calls[1][1].token).toBe(tokenB);
     expect(registry.store.has(`notif:${repo}:${tokenA}`)).toBe(true);
     expect(registry.store.has(`notif:${repo}:${tokenB}`)).toBe(true);
+  });
+});
+
+describe("github-webhook device-scan pagination", () => {
+  const repo = "acme/app";
+  const tokenA = "a".repeat(64);
+  const tokenB = "b".repeat(64);
+  const tokenC = "c".repeat(64);
+  let registry: FakeRegistry;
+  let env: Env;
+
+  beforeEach(() => {
+    registry = new FakeRegistry();
+    env = makeEnv(registry);
+    sendApnsMock.mockReset();
+    sendApnsMock.mockImplementation(() => apnsOk());
+  });
+
+  it("notifies subscribers across every KV page via the cursor loop", async () => {
+    registry.store.set("device:secret-a", deviceRecord(tokenA, [repo]));
+    registry.store.set("device:secret-b", deviceRecord(tokenB, [repo]));
+    registry.store.set("device:secret-c", deviceRecord(tokenC, [repo]));
+    // One key per page → the scan must follow two cursor round-trips.
+    registry.pageSize = 1;
+
+    const response = await runWebhook(env, await signedWebhookRequest("push", pushEvent(repo)));
+    expect(response.status).toBe(200);
+
+    // All three devices were found across three pages.
+    expect(sendApnsMock).toHaveBeenCalledTimes(3);
+    const notified = sendApnsMock.mock.calls.map((call) => call[1].token).sort();
+    expect(notified).toEqual([tokenA, tokenB, tokenC].sort());
+    // Every device got its throttle key.
+    for (const token of [tokenA, tokenB, tokenC]) {
+      expect(registry.store.has(`notif:${repo}:${token}`)).toBe(true);
+    }
+    // The scan actually paged: first call without a cursor, then two cursor follow-ups.
+    expect(registry.listCalls.length).toBe(3);
+    expect(registry.listCalls[0].cursor).toBeUndefined();
+    expect(registry.listCalls[1].cursor).toBe("1");
+    expect(registry.listCalls[2].cursor).toBe("2");
+    expect(registry.listCalls.every((call) => call.prefix === "device:")).toBe(true);
+  });
+
+  it("recovers at the next webhook when a mid-scan prune shifts the cursor", async () => {
+    registry.store.set("device:secret-a", deviceRecord(tokenA, [repo]));
+    registry.store.set("device:secret-b", deviceRecord(tokenB, [repo]));
+    registry.pageSize = 1;
+    // Page one's device rejects with 410 and is pruned mid-scan.
+    sendApnsMock.mockImplementation((_cfg, n) =>
+      Promise.resolve(n.token === tokenA ? new Response(null, { status: 410 }) : apnsOk()),
+    );
+
+    // Scan one: A is attempted + pruned. With index-shifted pagination (our
+    // fake's semantics — real KV is eventually consistent, so production may
+    // see either outcome), the deletion shifts the cursor past B for THIS scan.
+    const response = await runWebhook(env, await signedWebhookRequest("push", pushEvent(repo)));
+    expect(response.status).toBe(200);
+    expect(sendApnsMock).toHaveBeenCalledTimes(1);
+    expect(registry.deletedKeys).toEqual(["device:secret-a"]);
+    expect(registry.store.has("device:secret-b")).toBe(true);
+    // No throttle key for B — it was never notified.
+    expect(registry.store.has(`notif:${repo}:${tokenB}`)).toBe(false);
+
+    // Scan two (next push to the repo): B is the only device left and gets
+    // its notification — the miss was transient, not a lost subscription.
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent(repo, 2)));
+    expect(sendApnsMock).toHaveBeenCalledTimes(2);
+    expect(sendApnsMock.mock.calls[1][1].token).toBe(tokenB);
+    expect(registry.store.has(`notif:${repo}:${tokenB}`)).toBe(true);
+    expect(registry.store.has("device:secret-b")).toBe(true);
   });
 });
 
