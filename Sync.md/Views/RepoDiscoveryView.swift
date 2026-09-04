@@ -297,6 +297,9 @@ struct RepoDiscoveryView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
+                        // 44x44pt hit target, text stays compact.
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
@@ -342,6 +345,8 @@ struct RepoDiscoveryView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
+            // Defensive 44pt row minimum — content already exceeds it (Issue #17).
+            .frame(minHeight: 44)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
