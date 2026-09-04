@@ -153,7 +153,7 @@ struct RepoListView: View {
                                 Task { await state.signInWithGitHub() }
                             } label: {
                                 Image(systemName: "person.crop.circle.badge.plus")
-                                    .bType(.mono, weight: .semibold)
+                                    .bType(.mono, weight: .semibold, color: .brutalAccent)
                                     .frame(width: 44, height: 44)
                                     .accessibilityHidden(true)
                             }
@@ -164,7 +164,7 @@ struct RepoListView: View {
                                 showAppSettings = true
                             } label: {
                                 Image(systemName: "gearshape")
-                                    .bType(.mono, weight: .semibold)
+                                    .bType(.mono, weight: .semibold, color: .brutalAccent)
                                     .frame(width: 44, height: 44)
                                     .accessibilityHidden(true)
                             }
