@@ -1046,6 +1046,87 @@ final class SyncMDUITests: XCTestCase {
         )
     }
 
+    // MARK: - Push Sync Global Settings Surface
+
+    /// The Push Sync toggle is installation-global (`PushSyncManager.shared`)
+    /// and registers every cloned GitHub repository; App Settings exposes it
+    /// so users can enable notifications for all repos — including signed-out
+    /// users with no repositories yet. Assert-only: the toggle is NEVER tapped
+    /// (enabling drives APNs registration, an external-service path).
+    func testPushSyncGlobalSurfaceInAppSettings() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-SignedOutUITest",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US"
+        ]
+        app.launch()
+
+        completeOnboardingIfPresent(in: app)
+        continueWithoutGitHubIfPresent(in: app)
+
+        let appSettings = app.buttons["App Settings"]
+        XCTAssertTrue(
+            appSettings.waitForExistence(timeout: 10),
+            "Signed-out App Settings toolbar action should exist"
+        )
+        appSettings.tap()
+
+        XCTAssertTrue(
+            app.buttons["Sign in with GitHub"].waitForExistence(timeout: 10),
+            "App Settings should offer GitHub sign-in when signed out"
+        )
+
+        // Scroll to the Push Sync section (below Background Sync).
+        var pushSyncHeaderFound = false
+        for _ in 0..<10 {
+            if app.staticTexts["PUSH SYNC"].exists {
+                pushSyncHeaderFound = true
+                break
+            }
+            app.swipeUp()
+        }
+        XCTAssertTrue(
+            pushSyncHeaderFound,
+            "App Settings should expose the global Push Sync section"
+        )
+
+        let toggle = app.switches.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Notify when GitHub changes")
+        ).firstMatch
+        XCTAssertTrue(
+            toggle.waitForExistence(timeout: 10),
+            "Global Push Sync toggle should be discoverable by label"
+        )
+        let toggleValue = (toggle.value as? String ?? "").lowercased()
+        XCTAssertTrue(
+            ["0", "off", "false"].contains(toggleValue),
+            "Push Sync should be off by default (got \(toggleValue))"
+        )
+
+        let disclosure = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS %@", "Uses a relay that sees repository names only")
+        ).firstMatch
+        XCTAssertTrue(
+            disclosure.exists,
+            "Relay disclosure copy should be present on the global surface"
+        )
+        let scopeDisclosure = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS %@", "Covers all of your cloned GitHub repositories")
+        ).firstMatch
+        XCTAssertTrue(
+            scopeDisclosure.exists,
+            "Global surface should state it covers all cloned GitHub repositories"
+        )
+
+        // Close via Done and confirm the stable return to the repo list.
+        tapFirstHittableButton(labeled: "Done", in: app)
+        XCTAssertTrue(
+            app.buttons["App Settings"].waitForExistence(timeout: 10),
+            "Done should close App Settings back to the repo list"
+        )
+    }
+
     private func completeOnboardingIfPresent(in app: XCUIApplication) {
         let skip = button(app, labels: ["Skip", "SKIP"])
         guard skip.waitForExistence(timeout: 8) else { return }
