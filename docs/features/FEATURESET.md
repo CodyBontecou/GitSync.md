@@ -1,6 +1,6 @@
 # GitSync.md — Master Featureset
 
-**Status**: Baseline v1.0 (draft) — every row verified against source; see `inventory/*.md` for mechanical detail and citations.
+**Status**: Baseline v1.0 (draft) — every row verified against source; see `inventory/*.md` for mechanical detail and citations. **Post-baseline refresh (2026-09-04, post-`b911f13`)**: category 15 added for the widget / Control Center / push-initiated sync scope (inventory: [`inventory/widget-push-sync.md`](inventory/widget-push-sync.md)).
 **Tier legend**: Core = paid-up-front app (Background Sync included — subscription retired) · Dev = developer infrastructure · Debug = debug builds only.
 
 ## 1. Repositories & storage
@@ -191,10 +191,26 @@
 | 14.10 | ASC pricing script (JWT-signed REST price update) | Dev | `scripts/set_price_paid.py` |
 | 14.11 | Legacy paid-unlock receipt verifier Worker (freemium-era; app now paid-up-front, worker dormant) | Dev (legacy) | `worker/src/index.ts` |
 
+## 15. Push Sync & quick sync triggers (widget / Control Center / notifications)
+
+Post-v1.0-baseline scope shipped in `b911f13`, extending the deterministic-trigger story of issue #32 ("Add background Push/Sync actions for Shortcuts", closed by the 7.2 intents). All triggers funnel into the same on-device foreground reconciliation as the in-app "Sync now" button. **Not** the removed premium relay referenced by the relay-era rows in category 8: reconciliation never runs server-side, and the push relay below only delivers a visible notification the user taps. Tier: Core (app surfaces) / Dev (relay infra).
+
+| # | Feature | Tier | Evidence |
+|---|---|---|---|
+| 15.1 | Home Screen "Pull All Repositories" widget (systemSmall, static timeline, tap deep-links `syncmd://pull-all`) | Core | `SyncWidget/PullAllWidget.swift` (inventory §2) |
+| 15.2 | Control Center "Pull All" control (iOS 18+ `ControlWidget` button) | Core | `SyncWidget/PullAllControl.swift` (inventory §3) |
+| 15.3 | Shared `PullAllControlIntent` App Intent compiled into app + widget with `openAppWhenRun`; executes only in the app process (no App Group — repos stay in app Documents) | Core | `SharedSources/PullAllControlIntent.swift` (inventory §4) |
+| 15.4 | One-tap full reconciliation: `SyncRuntimeLocator.requestPullAll` → `PremiumRuntime.reconcileNow` (immediate cooldown-bypassing pass, same as in-app Sync now); `syncmd://pull-all` deep link routes the same way | Core | `SyncRuntimeLocator.swift:22`, `PremiumRuntime.swift:289`, `Sync_mdApp.swift:87` (inventory §5–6) |
+| 15.5 | Push Sync opt-in (Settings → Push Sync): notification authorization, APNs registration, Keychain device secret, overridable worker URL; disable unregisters device + APNs | Core | `PushSyncManager.swift:51-132`, `SettingsView.swift:303` (inventory §7, §10) |
+| 15.6 | Registration payload sends cloned GitHub repos as `owner/name` strings only (+ APNs token, environment, device secret); auto re-register on foreground/repo-set change/token delivery | Core | `PushSyncManager.makeRegistrationBody:146` (inventory §8) |
+| 15.7 | Notification handling: foreground banner presentation; tap routes to the affected repo (case-insensitive owner/name match) and pulls all | Core | `SyncAppDelegate.swift:29-46`, `SyncRuntimeLocator.handlePushNotificationTap:44` (inventory §9) |
+| 15.8 | `push-worker/` ("syncmd-push") relay — separately deployed, opt-in: GitHub webhook → timing-safe HMAC-SHA256 verification → visible APNs alert per subscribed device; per-(repo, device) 120 s collapse window; register/unregister endpoints with per-IP rate limit (20/h) and strict payload validation; KV persists `{repo names, APNs token, environment}` only | Dev | `push-worker/src/index.ts` (inventory §11–13) |
+| 15.9 | APNs token-based provider auth (ES256 JWT, 30-min cache, sandbox + production hosts, passive alerts, collapse IDs); 17 vitest unit tests; Swift tests pin registration-body privacy filter + intentional `aps-environment`/background-modes config | Dev | `push-worker/src/apns.ts`, `webhook.test.ts`, `SyncMDTests.swift:951-994, 2204-2244` (inventory §14, §16) |
+
 ---
 ## Feature chronology
 
-Version-by-version shipped-feature history (2.4.1 delete-cloned-repos, 2.4.5 Shortcuts + author validation, 2.4.7 pull-with-rebase + conflict resolution, 2.5.1 SSH/Forgejo + multi-account + safer removal): `inventory/automation-analytics.md` §5.
+Version-by-version shipped-feature history (2.4.1 delete-cloned-repos, 2.4.5 Shortcuts + author validation, 2.4.7 pull-with-rebase + conflict resolution, 2.5.1 SSH/Forgejo + multi-account + safer removal): `inventory/automation-analytics.md` §5. Post-baseline additions (`b911f13`: widget + Control Center pull buttons, push-initiated sync, push-worker relay): `inventory/widget-push-sync.md`.
 
 ## Known non-features (documented gaps)
 
@@ -202,3 +218,4 @@ Version-by-version shipped-feature history (2.4.1 delete-cloned-repos, 2.4.5 Sho
 - No in-editor search, line numbers, keyboard accessory toolbar; no file move UI.
 - No dedicated iPad split-view layouts.
 - Background Sync stages/commits/pushes only after separate explicit publishing consent; it never rebases, merges, switches branches, resolves conflicts, recreates missing branches, or force-pushes.
+- Push Sync is opt-in and GitHub-remote-only (webhook-driven); it delivers visible alerts (no silent pushes) via a separately deployed relay, and the widget/Control Center/notification triggers run the Background Sync reconciliation pass — repositories excluded from Background Sync are not pulled by them.

@@ -25,12 +25,14 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **Built-in editor & files** — Syntax-highlighted editor (Swift, Markdown, JSON, YAML, JS/TS, Python, Bash, HTML, CSS; VSCode Dark+/Light+ themes), file browser with git status badges, create/rename/delete files, and line-by-line diff viewing.
 - **Edit anywhere** — Files live in the Files app; edit with Obsidian, ia Writer, or any editor, then sync from GitSync.md.
 - **Obsidian & automation** — `syncmd://x-callback-url` API (pull/push/sync/status with `message` param and optional result callbacks) plus Apple Shortcuts intents ("Pull All Repositories", "Pull Repository", "Push Repository", "Sync Repository" — configured not to request a foreground app launch).
+- **One-tap pull buttons** — A Home Screen widget ("Pull All Repositories") and an iOS 18 Control Center control ("Pull All") trigger an immediate pull across your repositories — the same reconciliation pass as the in-app Sync now button.
+- **Push Sync (optional)** — Opt in under Settings to get a visible notification ("N new commits — tap to sync") when someone pushes to a GitHub repository you've cloned; tapping it opens GitSync.md on that repository and pulls. GitHub remotes only, off by default, and powered by a tiny separately deployed [Cloudflare Worker](push-worker/) that sees repository names and device tokens only — never file contents, credentials, or paths.
 - **Private repo support** — Works with both public and private repositories.
 - **Localization** — Catalogs cover 26 languages. Newly added Background Sync publishing and safety text currently falls back to English until the outstanding human translations recorded in `localization/reports/catalog-audit.json` are reviewed.
 - **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
 - **Background Sync (included with the app)** — Attempts best-effort reconciliation whenever iOS grants background time. While Background Sync is enabled, **Pull remote changes** and **Commit and push local changes** are independent controls: use pull only, push only, both, or neither. Existing enabled installations migrate to pull on and publishing off. Automatic pulls are clean fast-forwards. Push-only mode still fetches and validates remote state but never updates the worktree; remote-ahead edits, divergence, auth/trust prompts, and branch mismatches stop for attention. Background Sync never rebases, merges, switches branches, resolves conflicts, recreates missing branches, overwrites concurrent work, or force-pushes.
 
-All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require Background Sync. iOS background-processing scheduling and foreground activation are best effort, controlled by iOS, and not guaranteed or truly real time. Background Sync runs **entirely on-device**: entitlements are verified locally with StoreKit 2, reconciliation runs through the app's own libgit2 engine, and repository names, URLs, contents, local paths, and Git credentials never go anywhere except directly to your configured Git provider during a normal fetch or push. There is no relay server, no push notification registration, and no Background Sync data stored off the device.
+All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require Background Sync. iOS background-processing scheduling and foreground activation are best effort, controlled by iOS, and not guaranteed or truly real time. Background Sync runs **entirely on-device**: entitlements are verified locally with StoreKit 2, reconciliation runs through the app's own libgit2 engine, and repository names, URLs, contents, local paths, and Git credentials never go anywhere except directly to your configured Git provider during a normal fetch or push. There is no relay server, no push notification registration, and no Background Sync data stored off the device. (The optional **Push Sync** feature above is a separate matter: it is off by default and, when enabled, uses a small relay whose only job is delivering a visible "tap to sync" notification — the pull itself still runs on-device after you tap, and Background Sync works fully without it.)
 
 ## How It Works
 
@@ -47,7 +49,8 @@ Files live under `On My iPhone › GitSync.md` by default, or in a custom locati
 ```
 GitSync.md/
 ├── Sync.md/                    # iOS app source
-│   ├── Sync_mdApp.swift        # App entry point
+│   ├── Sync_mdApp.swift        # App entry point (deep links, push registration refresh)
+│   ├── SyncAppDelegate.swift  # UIApplicationDelegate adaptor: APNs token delivery + notification routing
 │   ├── ContentView.swift       # Root view router
 │   ├── Models/
 │   │   ├── AppState.swift      # Observable app state (repos, auth, sync orchestration)
@@ -76,9 +79,14 @@ GitSync.md/
 │       ├── BackgroundSyncCoordinator.swift # Independently selected pull/push reconciliation and policies
 │       ├── RepositoryPushRunner.swift # Conflict-safe stage/commit/push and composed sync
 │       ├── RepositoryOperationCoordinator.swift # Per-repo operation serialization/deletion barrier
+│       ├── PushSyncManager.swift    # Push Sync registration & relay client (opt-in notifications)
+│       ├── SyncRuntimeLocator.swift # App-process bridge for widget/Control Center/notification triggers
 │       ├── SyntaxHighlighter.swift  # Editor syntax highlighting
 │       ├── DebugLogger.swift        # In-app debug log
 │       └── FeedbackHelper.swift     # Feedback & privacy-request email
+├── SyncWidget/                 # Widget extension: Home Screen "Pull All" widget + iOS 18 Control Center control
+├── SharedSources/
+│   └── PullAllControlIntent.swift # App Intent shared by app + widget (executes in the app process)
 ├── Packages/
 │   └── Clibgit2/               # Swift package wrapping the libgit2 C library
 ├── oauth-server/               # Vercel serverless functions for GitHub OAuth
@@ -86,6 +94,8 @@ GitSync.md/
 ├── worker/                     # Cloudflare Workers
 │   ├── onboarding-analytics/   # Onboarding funnel ingestion (D1)
 │   └── src/                    # Legacy paid-unlock receipt verifier (dormant)
+├── push-worker/                # Optional opt-in relay: GitHub webhook → visible APNs "tap to sync" notification
+│   └── src/                    # register/unregister/webhook endpoints, HMAC verification, APNs JWT provider
 ├── site/ + site-router/        # Marketing site + campaign shortlink router
 ├── scripts/                    # libgit2 build, localization pipeline, marketing capture, pricing
 └── libgit2.xcframework/        # Pre-built libgit2 (libssh2 + OpenSSL) for iOS
@@ -205,7 +215,7 @@ Using a **Personal Access Token** works without any server setup — just paste 
 
 ### Background Sync architecture (fully on-device)
 
-Background Sync has no server component. Entitlements are verified on-device with StoreKit 2 signed transactions, automatic work is scheduled through `BGTaskScheduler` (plus foreground activation), and every pull/push runs through the same in-app libgit2 engine used by manual Git. The historical webhook→APNs relay (Cloudflare Worker + D1 + Queues) was removed; existing installations keep their per-repository inclusion and policy settings, and enrollments/channels in persisted state are simply dormant fields.
+Background Sync has no server component. Entitlements are verified on-device with StoreKit 2 signed transactions, automatic work is scheduled through `BGTaskScheduler` (plus foreground activation), and every pull/push runs through the same in-app libgit2 engine used by manual Git. The historical webhook→APNs relay (Cloudflare Worker + D1 + Queues) was removed; existing installations keep their per-repository inclusion and policy settings, and enrollments/channels in persisted state are simply dormant fields. Note that [`push-worker/`](push-worker/) is an unrelated, optional relay for the Push Sync notification feature — it never performs reconciliation, stores only repository names and device tokens, and Background Sync works fully without it.
 
 ## Contributing
 
