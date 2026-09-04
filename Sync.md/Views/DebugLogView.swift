@@ -17,11 +17,13 @@ struct DebugLogView: View {
 
             if filtered.isEmpty {
                 VStack(spacing: 8) {
+                    // Decorative non-text glyph (em-dash ornament, carries no
+                    // information) - fixed size per Issue #16's decorative allowance.
                     Text("—")
                         .font(.system(size: 34, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalTextFaint)
                     Text("NO LOGS YET")
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .bType(.monoCaption)
                         .foregroundStyle(Color.brutalTextFaint)
                         .tracking(2)
                 }
@@ -42,7 +44,7 @@ struct DebugLogView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("DEBUG LOG")
-                    .font(.system(size: 13, weight: .black, design: .monospaced))
+                    .bType(.monoSm, weight: .black)
                     .foregroundStyle(Color.brutalText)
                     .tracking(3)
             }
@@ -93,7 +95,7 @@ struct DebugLogView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
-                        .font(.system(size: 15, weight: .semibold))
+                        .bType(.mono, weight: .semibold)
                         .foregroundStyle(Color.brutalText)
                 }
                 .accessibilityLabel(String(localized: "Log Actions"))
@@ -126,27 +128,27 @@ struct DebugLogView: View {
                 levelBadge(entry.level)
 
                 Text(entry.category.uppercased())
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .bType(.monoCaption)
                     .foregroundStyle(Color.brutalText)
                     .tracking(1)
 
                 Spacer()
 
                 Text(relativeTimestamp(entry.date))
-                    .font(.system(size: 11, design: .monospaced))
+                    .bType(.monoCaption, weight: .regular)
                     .foregroundStyle(Color.brutalTextFaint)
             }
 
             // Message
             Text(entry.message)
-                .font(.system(size: 13, design: .monospaced))
+                .bType(.monoSm, weight: .regular)
                 .foregroundStyle(Color.brutalText)
                 .fixedSize(horizontal: false, vertical: true)
 
             // Detail
             if let detail = entry.detail {
                 Text(detail)
-                    .font(.system(size: 12, design: .monospaced))
+                    .bType(.monoCaption, weight: .regular)
                     .foregroundStyle(Color.brutalTextMid)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -165,7 +167,7 @@ struct DebugLogView: View {
         }()
 
         return Text(localizedLabel(for: level).uppercased())
-            .font(.system(size: 10, weight: .bold, design: .monospaced))
+            .bType(.monoCaption)
             .tracking(0.5)
             .foregroundStyle(fg)
             .padding(.horizontal, 6)
