@@ -945,7 +945,10 @@ final class SyncMDTests: XCTestCase {
 
     func testPremiumReleaseConfigurationAndBackgroundCapabilities() throws {
         let info = Bundle.main.infoDictionary ?? [:]
-        XCTAssertEqual(info["UIBackgroundModes"] as? [String], ["processing"])
+        // "processing" covers on-device Background Sync; "fetch" was added
+        // intentionally (b26eb3a) so BGAppRefreshTask app-refresh tasks can be
+        // scheduled.
+        XCTAssertEqual(info["UIBackgroundModes"] as? [String], ["fetch", "processing"])
         XCTAssertEqual(
             info["BGTaskSchedulerPermittedIdentifiers"] as? [String],
             SystemPremiumBackgroundProcessingScheduler.permittedIdentifiers
@@ -957,9 +960,12 @@ final class SyncMDTests: XCTestCase {
             .deletingLastPathComponent()
             .appendingPathComponent("Sync.md.xcodeproj/project.pbxproj")
         let project = try String(contentsOf: projectURL, encoding: .utf8)
+        // Background Sync still runs entirely on-device; the push environment
+        // is configured through Sync_md.entitlements (below), not the project
+        // file, for push-initiated sync notifications.
         XCTAssertFalse(
             project.contains("APS_ENVIRONMENT"),
-            "No APNs push environment is configured because Background Sync runs entirely on-device"
+            "The APNs environment must be declared in the entitlements file, not the project file"
         )
         XCTAssertFalse(
             project.contains("PREMIUM_RELAY_BASE_URL"),
@@ -980,7 +986,14 @@ final class SyncMDTests: XCTestCase {
             options: [],
             format: nil
         ) as? [String: String])
-        XCTAssertEqual(entitlements, [:], "No push entitlements remain")
+        // Intentional since b911f13 (push-initiated sync): the aps-environment
+        // entitlement lets push-worker APNs notifications surface "tap to sync"
+        // prompts. Background Sync itself remains entirely on-device.
+        XCTAssertEqual(
+            entitlements,
+            ["aps-environment": "development"],
+            "Push entitlement is intentional for push-initiated sync; no other entitlements should accumulate"
+        )
     }
 
     func testRepoConfigLegacyDecodeDefaultsAssistDisabled() throws {
