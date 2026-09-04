@@ -267,6 +267,7 @@ struct VaultView: View {
             Image(systemName: icon)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(Color.brutalText)
+                .accessibilityHidden(true)
             Text(text)
                 .font(mono
                     ? .system(size: 13, weight: .medium, design: .monospaced)
@@ -285,6 +286,7 @@ struct VaultView: View {
                       ? "exclamationmark.triangle.fill" : "bolt.horizontal.circle.fill")
                     .foregroundStyle(health.kind == .attention || health.kind == .failed
                                      ? Color.brutalWarning : Color.brutalSuccess)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 4) {
                     Text("BACKGROUND SYNC")
                         .font(.system(size: 12, weight: .black, design: .monospaced))
@@ -351,6 +353,7 @@ struct VaultView: View {
                         Image(systemName: pullOutcomeIcon(outcome.kind))
                             .font(.system(size: 13))
                             .foregroundStyle(pullOutcomeColor(outcome.kind))
+                            .accessibilityHidden(true)
                         Text(outcome.message)
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalText)
@@ -475,6 +478,7 @@ struct VaultView: View {
                             Image(systemName: showChangedFiles ? "chevron.up" : "chevron.down")
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
                         }
                     }
                     .buttonStyle(.plain)
@@ -498,6 +502,7 @@ struct VaultView: View {
                         .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Revert All Changes"))
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
@@ -546,6 +551,8 @@ struct VaultView: View {
                     .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Revert Changes"))
+            .accessibilityHint(String(localized: "Discard local edits to this file"))
         }
     }
 
@@ -566,6 +573,7 @@ struct VaultView: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(Color.brutalText.opacity(0.3))
+                .accessibilityHidden(true)
         }
         .padding(.leading, 16)
         .padding(.trailing, 8)
@@ -708,6 +716,7 @@ struct VaultView: View {
                     Image(systemName: "arrow.uturn.backward")
                         .font(.system(size: 14))
                         .foregroundStyle(Color.brutalText)
+                        .accessibilityHidden(true)
                 }
             }
         }
