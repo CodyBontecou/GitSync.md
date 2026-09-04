@@ -40,7 +40,7 @@ struct AppSettingsView: View {
                                         Image(systemName: "person.crop.circle.badge.plus")
                                             .accessibilityHidden(true)
                                         Text("Sign in with GitHub")
-                                            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                            .bType(.mono, weight: .semibold)
                                         Spacer()
                                         Image(systemName: "chevron.right")
                                             .accessibilityHidden(true)
@@ -59,13 +59,15 @@ struct AppSettingsView: View {
                             VStack(spacing: 0) {
                                 if let url = state.resolvedDefaultSaveURL {
                                     HStack(spacing: 12) {
+                                        // Decorative emoji glyph (folder ornament, carries no
+                                        // information) - fixed per Issue #16's decorative allowance.
                                         Text("📁").font(.system(size: 18))
                                         VStack(alignment: .leading, spacing: 2) {
                                             Text(url.lastPathComponent)
-                                                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                                                .bType(.monoSm, weight: .semibold)
                                                 .foregroundStyle(Color.brutalText)
                                             Text(url.path)
-                                                .font(.system(size: 14, design: .monospaced))
+                                                .bType(.mono, weight: .regular)
                                                 .foregroundStyle(Color.brutalText)
                                                 .lineLimit(1)
                                                 .truncationMode(.middle)
@@ -82,7 +84,7 @@ struct AppSettingsView: View {
                                             showFolderPicker = true
                                         } label: {
                                             Text("CHANGE")
-                                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                                .bType(.mono, weight: .bold)
                                                 .foregroundStyle(Color.brutalAccent)
                                                 .tracking(1)
                                         }
@@ -94,7 +96,7 @@ struct AppSettingsView: View {
                                             showClearConfirm = true
                                         } label: {
                                             Text("REMOVE")
-                                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                                .bType(.mono, weight: .bold)
                                                 .foregroundStyle(Color.brutalError)
                                                 .tracking(1)
                                         }
@@ -106,11 +108,11 @@ struct AppSettingsView: View {
                                     VStack(spacing: 10) {
                                         HStack(spacing: 6) {
                                             Image(systemName: "info.circle")
-                                                .font(.system(size: 11))
+                                                .bType(.monoCaption, weight: .regular)
                                                 .foregroundStyle(Color.brutalText)
                                                 .accessibilityHidden(true)
                                             Text("New repositories will be saved to the app's default location.")
-                                                .font(.system(size: 14, design: .monospaced))
+                                                .bType(.mono, weight: .regular)
                                                 .foregroundStyle(Color.brutalText)
                                         }
                                         .padding(.horizontal, 16)
@@ -124,7 +126,7 @@ struct AppSettingsView: View {
                                             HStack(spacing: 6) {
                                                 Text("📂")
                                                 Text("CHOOSE DEFAULT LOCATION")
-                                                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                                    .bType(.mono, weight: .bold)
                                                     .foregroundStyle(Color.brutalAccent)
                                                     .tracking(1)
                                             }
@@ -154,16 +156,19 @@ struct AppSettingsView: View {
                         // Shortcuts
                         settingsSection(title: String(localized: "Shortcuts")) {
                             HStack(alignment: .top, spacing: 14) {
+                                // Decorative emoji glyph sized for the fixed 28pt icon
+                                // column - non-text, so fixed per Issue #16 (scaling would
+                                // break column alignment; the adjacent texts do scale).
                                 Text("⚡️")
                                     .font(.system(size: 18))
                                     .frame(width: 28)
 
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text("Git actions from Shortcuts")
-                                        .font(.system(size: 14, weight: .medium))
+                                        .bType(.body, weight: .medium)
                                         .foregroundStyle(Color.brutalText)
                                     Text("Use Pull All, Pull Repository, Push Repository, or Sync Repository in Apple Shortcuts. Push and Sync stage all non-ignored changes, stop on conflicts or unsafe remote state, and publish directly to your configured remote.")
-                                        .font(.system(size: 13, design: .monospaced))
+                                        .bType(.monoSm, weight: .regular)
                                         .foregroundStyle(Color.brutalText)
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
@@ -233,7 +238,7 @@ struct AppSettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(String(localized: "App Settings").uppercased())
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
+                        .bType(.monoCaption, weight: .black)
                         .foregroundStyle(Color.brutalText)
                         .tracking(2)
                 }
@@ -282,12 +287,12 @@ struct AppSettingsView: View {
     private func dataRow(label: String, value: String) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .bType(.monoCaption, weight: .medium)
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Spacer()
             Text(value)
-                .font(.system(size: 13, design: .monospaced))
+                .bType(.monoSm, weight: .regular)
                 .foregroundStyle(Color.brutalText)
         }
         .padding(.horizontal, 16)
@@ -297,6 +302,9 @@ struct AppSettingsView: View {
     private func actionRow(icon: String, title: String, subtitle: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 14) {
+                // Decorative emoji glyph sized for the fixed 28pt icon
+                // column - non-text, so fixed per Issue #16 (scaling would
+                // break column alignment; the adjacent title/subtitle do scale).
                 Text(icon)
                     .font(.system(size: 18))
                     .frame(width: 28)
@@ -304,17 +312,17 @@ struct AppSettingsView: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(.system(size: 14, weight: .medium))
+                        .bType(.body, weight: .medium)
                         .foregroundStyle(Color.brutalText)
                     Text(subtitle)
-                        .font(.system(size: 13, design: .monospaced))
+                        .bType(.monoSm, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                 }
 
                 Spacer()
 
                 Text("→")
-                    .font(.system(size: 13, design: .monospaced))
+                    .bType(.monoSm, weight: .regular)
                     .foregroundStyle(Color.brutalText)
                     .accessibilityHidden(true)
             }
