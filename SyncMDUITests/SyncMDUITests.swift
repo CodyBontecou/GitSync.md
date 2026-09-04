@@ -281,6 +281,353 @@ final class SyncMDUITests: XCTestCase {
         )
     }
 
+    // MARK: - Repo Clone Flow (Issue #19)
+
+    /// Issue #19 clone-flow slice: from the signed-out repo list, add a
+    /// repository by manual `file://` URL pointing at the `-UITestCloneFixture`
+    /// bare remote (a REAL git repository seeded under /tmp), with `none`
+    /// credentials — no network, no GitHub. Asserts the Add form's key controls
+    /// are discoverable by label, the clone completes into the repo list, and
+    /// the cloned repo's files are browsable.
+    func testCloneFlowAddsRepositoryFromLocalFileRemote() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-SignedOutUITest",
+            "-UITestCloneFixture",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US"
+        ]
+        app.launch()
+
+        // Seeding completes in ContentView.onAppear, which may briefly flash
+        // onboarding before the seeded (onboarded) state lands.
+        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+            completeOnboardingIfPresent(in: app)
+            continueWithoutGitHubIfPresent(in: app)
+        }
+
+        // Signed-out empty repo list exposes its copy and Add action by label
+        // (the label varies if a "previously cloned" ghost row is present).
+        XCTAssertTrue(
+            app.staticTexts["NO REPOSITORIES"].waitForExistence(timeout: 10),
+            "Seeded signed-out repo list should expose the empty state copy"
+        )
+        let addRepository = app.buttons.matching(
+            NSPredicate(format: "label CONTAINS 'ADD' AND label CONTAINS 'REPOSITORY'")
+        ).firstMatch
+        XCTAssertTrue(
+            addRepository.waitForExistence(timeout: 10),
+            "Repo list should expose the Add Repository action as a labelled button"
+        )
+        for _ in 0..<4 where !addRepository.isHittable { app.swipeUp() }
+        addRepository.tap()
+
+        // AddRepoView chrome is discoverable by label.
+        XCTAssertTrue(
+            app.staticTexts["ADD REPOSITORY"].waitForExistence(timeout: 10),
+            "Add Repository sheet should expose its titled chrome"
+        )
+        let enterURL = app.staticTexts["ENTER URL MANUALLY"]
+        XCTAssertTrue(
+            enterURL.waitForExistence(timeout: 10),
+            "Manual URL entry affordance should be discoverable by label"
+        )
+        for _ in 0..<4 where !enterURL.isHittable { app.swipeUp() }
+        enterURL.tap()
+
+        // Type the local file remote. `GitRemoteURL.parse` accepts file://
+        // URLs, so the INVALID URL badge must stay absent.
+        let urlField = app.textFields.firstMatch
+        XCTAssertTrue(
+            urlField.waitForExistence(timeout: 10),
+            "Manual URL entry should expose a text field"
+        )
+        urlField.tap()
+        urlField.typeText("file:///tmp/syncmd-uitest-fixtures/bare-remote.git")
+        urlField.typeText("\n") // dismiss the keyboard for the sections below
+        XCTAssertFalse(
+            app.staticTexts["INVALID URL"].waitForExistence(timeout: 1),
+            "A file:// remote URL should validate"
+        )
+
+        // Configuration and authentication sections surface by label. The
+        // "No Authentication" method is the credential-free default for a
+        // non-GitHub remote; author defaults arrive from the seeded state.
+        XCTAssertTrue(
+            app.staticTexts["BRANCH"].waitForExistence(timeout: 10),
+            "Configuration section should expose the Branch field label"
+        )
+        let noAuthentication = app.staticTexts["No Authentication"]
+        XCTAssertTrue(
+            noAuthentication.waitForExistence(timeout: 10),
+            "Credential-free (No Authentication) method should be discoverable by label"
+        )
+        for _ in 0..<6 where !noAuthentication.isHittable { app.swipeUp() }
+        XCTAssertTrue(
+            app.staticTexts["CLONE TO"].exists,
+            "Clone location section should be exposed to accessibility"
+        )
+
+        // Submit: Add & Clone Repository runs a real libgit2 clone against the
+        // local bare remote with `none` credentials.
+        let addAndClone = app.buttons.matching(
+            NSPredicate(format: "label CONTAINS %@", "ADD & CLONE REPOSITORY")
+        ).firstMatch
+        XCTAssertTrue(
+            addAndClone.waitForExistence(timeout: 10),
+            "Add & Clone action should be discoverable as a labelled button"
+        )
+        let cloneEnabled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true"),
+            object: addAndClone
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [cloneEnabled], timeout: 10),
+            .completed,
+            "Add & Clone should be enabled for a valid file:// remote with no credentials"
+        )
+        for _ in 0..<6 where !addAndClone.isHittable { app.swipeUp() }
+        addAndClone.tap()
+
+        // The clone lands the repo in the list. Wait for the stable cloned
+        // state (the transient syncing badge is too short-lived to assert).
+        let repoCard = app.staticTexts["bare-remote"]
+        XCTAssertTrue(
+            repoCard.waitForExistence(timeout: 20),
+            "Cloned repository should appear in the repo list"
+        )
+        let cloneSettled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "exists == false"),
+            object: app.staticTexts["syncing"]
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [cloneSettled], timeout: 30),
+            .completed,
+            "Clone should settle (syncing indicator should clear)"
+        )
+        tap("bare-remote", in: app)
+
+        // The cloned repo opens with its health card and file browser, and the
+        // cloned files are browsable — proving the clone wrote real content.
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            "Cloned repo should land in the vault view"
+        )
+        tap("Browse Files", in: app)
+        XCTAssertTrue(
+            app.staticTexts["README.md"].waitForExistence(timeout: 10),
+            "File browser should list the cloned README.md"
+        )
+        XCTAssertTrue(
+            app.staticTexts["notes"].exists,
+            "File browser should list the cloned notes directory"
+        )
+    }
+
+    // MARK: - Conflict Resolver (Issue #19)
+
+    /// Issue #19 conflict-resolver slice: the `-UITestConflictFixture` launch
+    /// arg seeds a real working copy whose local commit diverged from its
+    /// local bare remote. Pull reports divergence, Merge produces a genuine
+    /// conflict, and the resolver's controls (ours/theirs panes, USE
+    /// OURS/THEIRS, RESOLVE, confirm) are discoverable by label. Resolving
+    /// with theirs stages a real change and clears the conflict (Conflict
+    /// Center: "All conflicts resolved") with the Abort escape hatch still
+    /// discoverable. No network, no credentials, no pushes.
+    func testConflictResolverControlsDiscoverableAndKeepTheirsClearsConflict() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-UITestConflictFixture",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US"
+        ]
+        app.launch()
+
+        // Seeded divergent repo is in the list; open it.
+        tap("conflict-fixture", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            "Seeded repo should open into the vault view"
+        )
+
+        // Pull against the local bare remote classifies the fixture as
+        // diverged and surfaces Merge/Rebase controls by label.
+        tap("Pull", in: app)
+        XCTAssertTrue(
+            app.staticTexts[
+                "Local and remote have diverged. Merge support is required to continue."
+            ].waitForExistence(timeout: 20),
+            "Pull on the diverged fixture should surface the diverged outcome"
+        )
+        let merge = app.buttons["MERGE"]
+        XCTAssertTrue(
+            merge.waitForExistence(timeout: 10),
+            "Diverged banner should expose the Merge action as a labelled button"
+        )
+        XCTAssertTrue(
+            app.buttons["REBASE"].exists,
+            "Diverged banner should expose the Rebase action as a labelled button"
+        )
+
+        // Merging the diverged fixture produces a genuine conflict session.
+        // (The banner can appear while the pull's progress delay still holds
+        // isSyncing, so wait for enabled, not merely hittable.)
+        let mergeReady = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
+            object: merge
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [mergeReady], timeout: 10),
+            .completed,
+            "Merge action should become enabled and tappable"
+        )
+        merge.tap()
+        XCTAssertTrue(
+            app.staticTexts[
+                "Merge has conflicts — tap a conflicted file to resolve"
+            ].waitForExistence(timeout: 20),
+            "Merging the fixture should surface the conflict outcome"
+        )
+
+        // The conflicted file is listed; its row exposes the conflict state
+        // through its accessibility label (path + status summary + CONFLICT
+        // badge are combined by SwiftUI into the row button's label).
+        let conflictedRow = app.staticTexts["notes/shared.md"]
+        XCTAssertTrue(
+            conflictedRow.waitForExistence(timeout: 10),
+            "Conflicted file should be listed in Changed Files"
+        )
+        let conflictedRowButton = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "notes/shared.md,")
+        ).firstMatch
+        XCTAssertTrue(
+            conflictedRowButton.exists,
+            "Conflicted file row should be discoverable as a labelled element"
+        )
+        XCTAssertTrue(
+            conflictedRowButton.label.contains("CONFLICT"),
+            "Conflicted file row should expose its Conflict badge by label (got: \(conflictedRowButton.label))"
+        )
+
+        // Open the resolver by tapping the conflicted file.
+        tap("notes/shared.md", in: app)
+
+        // Resolver chrome and both sides are discoverable by label.
+        XCTAssertTrue(
+            app.staticTexts["RESOLVE CONFLICT"].waitForExistence(timeout: 10),
+            "Conflict editor should expose its titled chrome"
+        )
+        XCTAssertTrue(
+            app.staticTexts["OURS"].waitForExistence(timeout: 10),
+            "Ours pane should be discoverable by label"
+        )
+        XCTAssertTrue(
+            app.staticTexts["THEIRS"].exists,
+            "Theirs pane should be discoverable by label"
+        )
+        XCTAssertTrue(
+            app.staticTexts["your version"].exists,
+            "Ours pane should expose its descriptive subtitle"
+        )
+        XCTAssertTrue(
+            app.staticTexts["remote version"].exists,
+            "Theirs pane should expose its descriptive subtitle"
+        )
+        XCTAssertTrue(
+            app.buttons["USE THIS"].firstMatch.exists,
+            "Per-pane USE THIS pickers should be discoverable by label"
+        )
+        XCTAssertTrue(
+            app.staticTexts["RESULT"].exists,
+            "Result editor section should be exposed to accessibility"
+        )
+        XCTAssertTrue(
+            app.buttons["USE OURS"].exists,
+            "USE OURS picker should be discoverable by label"
+        )
+        XCTAssertTrue(
+            app.buttons["USE THEIRS"].exists,
+            "USE THEIRS picker should be discoverable by label"
+        )
+
+        // Resolve by explicitly taking theirs (which differs from HEAD, so the
+        // staged resolution surfaces as a change), then confirm via the modal.
+        let useTheirs = app.buttons["USE THEIRS"]
+        for _ in 0..<6 where !useTheirs.isHittable { app.swipeUp() }
+        useTheirs.tap()
+
+        let resolve = app.buttons["RESOLVE"]
+        XCTAssertTrue(
+            resolve.waitForExistence(timeout: 10),
+            "Conflict editor should expose the Resolve action as a labelled button"
+        )
+        let resolveEnabled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true"),
+            object: resolve
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [resolveEnabled], timeout: 10),
+            .completed,
+            "Resolve should be enabled for a text conflict"
+        )
+        resolve.tap()
+
+        XCTAssertTrue(
+            app.staticTexts["MARK AS RESOLVED?"].waitForExistence(timeout: 10),
+            "Resolve should present a discoverable confirmation modal"
+        )
+        // The toolbar RESOLVE and the modal's confirm share a label; the modal
+        // button sits below the navigation bar, so pick the lower match.
+        tapLowermostButton(labeled: "RESOLVE", in: app)
+
+        // Resolution completes and dismisses back to the vault view. The
+        // stable end state: the conflict is cleared (staged), verified via the
+        // Git sheet's Conflict Center.
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            "Resolving should dismiss back to the vault view"
+        )
+        // The staged resolution is an async change scan away; wait until the
+        // Commit & Push row is actually enabled before opening the Git sheet.
+        let commitPush = app.buttons.matching(
+            NSPredicate(format: "label CONTAINS %@", "Commit & Push")
+        ).firstMatch
+        XCTAssertTrue(
+            commitPush.waitForExistence(timeout: 10),
+            "Vault view should expose the Commit & Push action after resolving"
+        )
+        let commitPushEnabled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true"),
+            object: commitPush
+        )
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [commitPushEnabled], timeout: 15),
+            .completed,
+            "Commit & Push should become enabled once the staged resolution is scanned"
+        )
+        for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
+        commitPush.tap()
+        XCTAssertTrue(
+            app.staticTexts["GIT"].waitForExistence(timeout: 10) || app.buttons["Close"].waitForExistence(timeout: 10),
+            "Commit & Push should open the Git control sheet"
+        )
+
+        let allResolved = app.staticTexts["All conflicts resolved. Complete or abort the merge."]
+        var found = allResolved.exists
+        for _ in 0..<6 where !found {
+            app.swipeUp()
+            found = allResolved.exists
+        }
+        XCTAssertTrue(
+            found,
+            "Conflict Center should report all conflicts resolved after the keep-theirs resolution"
+        )
+        XCTAssertTrue(
+            app.buttons["ABORT MERGE"].exists,
+            "Conflict Center should keep the Abort Merge escape hatch discoverable by label"
+        )
+    }
+
     // MARK: - Signed-Out App Settings Access
 
     /// Regression test for the simulator-QA finding: users who chose
@@ -417,5 +764,29 @@ final class SyncMDUITests: XCTestCase {
             }
         }
         XCTFail("Expected a tappable \(label) button")
+    }
+
+    /// Taps the vertically-lowest button with the given label — used when a
+    /// confirmation modal and the toolbar behind it expose the same label
+    /// (e.g. the conflict editor's "RESOLVE" toolbar action vs. the modal's
+    /// confirm button); the modal button always sits below the nav bar.
+    private func tapLowermostButton(labeled label: String, in app: XCUIApplication) {
+        let candidates = app.buttons.matching(NSPredicate(format: "label == %@", label))
+        var best: XCUIElement?
+        var bestY: CGFloat = -1
+        for index in 0..<max(candidates.count, 1) {
+            let candidate = candidates.element(boundBy: index)
+            guard candidate.exists, candidate.isHittable else { continue }
+            let y = candidate.frame.midY
+            if y > bestY {
+                bestY = y
+                best = candidate
+            }
+        }
+        guard let best else {
+            XCTFail("Expected a tappable \(label) button")
+            return
+        }
+        best.tap()
     }
 }
