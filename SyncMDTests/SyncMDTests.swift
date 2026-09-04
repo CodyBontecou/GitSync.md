@@ -8933,7 +8933,7 @@ final class OnboardingAnalyticsClientTests: XCTestCase {
             .monoLg: .body,
             .mono: .subheadline,
             .monoSm: .footnote,
-            .monoCaption: .caption1,
+            .monoCaption: .caption,
         ]
         for (token, textStyle) in expected {
             XCTAssertEqual(token.backing, .textStyle(textStyle), "token \(token) should be backed by \(textStyle)")

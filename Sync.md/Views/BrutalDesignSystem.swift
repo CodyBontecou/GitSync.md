@@ -101,7 +101,7 @@ enum BType: CaseIterable {
         case .monoLg:      return .textStyle(.body)
         case .mono:        return .textStyle(.subheadline)
         case .monoSm:      return .textStyle(.footnote)
-        case .monoCaption: return .textStyle(.caption1)
+        case .monoCaption: return .textStyle(.caption)
         }
     }
 
@@ -223,7 +223,7 @@ enum BEditorType {
     static func scaledSize(for category: ContentSizeCategory) -> CGFloat {
         let scaled = UIFontMetrics(forTextStyle: .body).scaledValue(
             for: baseSize,
-            compatibleWith: UITraitCollection(preferredContentSizeCategory: category.uiKit)
+            compatibleWith: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory(category))
         )
         return min(max(scaled, minSize), maxSize)
     }
