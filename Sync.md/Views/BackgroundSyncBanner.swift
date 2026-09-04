@@ -19,7 +19,7 @@ struct BackgroundSyncBanner: View {
                 .controlSize(.small)
                 .tint(Color.brutalText)
             Text(message.uppercased())
-                .font(.system(size: 11, weight: .black, design: .monospaced))
+                .bType(.monoCaption, weight: .black)
                 .tracking(2)
                 .foregroundStyle(Color.brutalText)
                 .lineLimit(1)
