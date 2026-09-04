@@ -58,7 +58,7 @@ struct SettingsView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     HStack {
                                         Text(String(localized: "URL").uppercased())
-                                            .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                            .bType(.monoCaption, weight: .medium)
                                             .foregroundStyle(Color.brutalText)
                                             .tracking(1)
                                         Spacer()
@@ -71,14 +71,14 @@ struct SettingsView: View {
                                                 }
                                             }
                                         }
-                                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                        .bType(.monoCaption)
                                         .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalAccent)
                                         .disabled(repoURL.isEmpty)
                                         .accessibilityHint(String(localized: "Copies the repository URL to the clipboard"))
                                     }
 
                                     TextField("https://host/user/repo or git@host:user/repo.git", text: $repoURL)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .bType(.mono, weight: .regular)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
                                         .foregroundStyle(Color.brutalText)
@@ -94,7 +94,7 @@ struct SettingsView: View {
                                     HStack(spacing: 6) {
                                         BBadge(text: String(localized: "INVALID URL"), style: .error)
                                         Text(String(localized: "Use HTTPS, SSH, git://, file://, or owner/repo."))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .bType(.monoSm, weight: .regular)
                                             .foregroundStyle(Color.brutalError)
                                     }
                                     .padding(.horizontal, 16)
@@ -105,7 +105,7 @@ struct SettingsView: View {
 
                                 settingsInputRow(label: String(localized: "Branch")) {
                                     TextField("main", text: $branch)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .bType(.mono, weight: .regular)
                                         .multilineTextAlignment(.trailing)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
@@ -121,7 +121,7 @@ struct SettingsView: View {
                             VStack(spacing: 0) {
                                 settingsInputRow(label: String(localized: "Name")) {
                                     TextField("Your Name", text: $authorName)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .bType(.mono, weight: .regular)
                                         .multilineTextAlignment(.trailing)
                                         .foregroundStyle(Color.brutalText)
                                 }
@@ -130,7 +130,7 @@ struct SettingsView: View {
 
                                 settingsInputRow(label: String(localized: "Email")) {
                                     TextField("you@example.com", text: $authorEmail)
-                                        .font(.system(size: 14, design: .monospaced))
+                                        .bType(.mono, weight: .regular)
                                         .multilineTextAlignment(.trailing)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
@@ -145,7 +145,7 @@ struct SettingsView: View {
                                 if state.isUsingCustomLocation(for: repoID) {
                                     settingsFieldRow(label: String(localized: "Location")) {
                                         Text(state.vaultURL(for: repoID).lastPathComponent)
-                                            .font(.system(size: 14, design: .monospaced))
+                                            .bType(.mono, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -153,7 +153,7 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Path")) {
                                         Text(state.vaultDisplayPath(for: repoID))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .bType(.monoSm, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                             .lineLimit(1)
                                             .truncationMode(.middle)
@@ -161,7 +161,7 @@ struct SettingsView: View {
                                 } else {
                                     settingsFieldRow(label: String(localized: "Folder")) {
                                         Text(vaultName)
-                                            .font(.system(size: 14, design: .monospaced))
+                                            .bType(.mono, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -169,7 +169,7 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Path")) {
                                         Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .bType(.monoSm, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                             .lineLimit(1)
                                     }
@@ -182,12 +182,12 @@ struct SettingsView: View {
                                 } label: {
                                     HStack {
                                         Text(String(localized: "Move Vault").uppercased())
-                                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                            .bType(.monoCaption)
                                             .foregroundStyle(Color.brutalAccent)
                                             .tracking(1)
                                         Spacer()
                                         Image(systemName: "folder.badge.plus")
-                                            .font(.system(size: 13))
+                                            .bType(.monoSm, weight: .regular)
                                             .foregroundStyle(Color.brutalAccent)
                                     }
                                     .padding(.horizontal, 16)
@@ -205,7 +205,7 @@ struct SettingsView: View {
                                         Text(repo.gitState.lastSyncDate == .distantPast
                                              ? String(localized: "Never")
                                              : relativeDate(repo.gitState.lastSyncDate))
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .bType(.monoSm, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -213,7 +213,7 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Commit SHA")) {
                                         Text(String(repo.gitState.commitSHA.prefix(7)))
-                                            .font(.system(size: 13, weight: .medium, design: .monospaced))
+                                            .bType(.monoSm)
                                             .foregroundStyle(Color.brutalText)
                                     }
 
@@ -221,7 +221,7 @@ struct SettingsView: View {
 
                                     settingsFieldRow(label: String(localized: "Files")) {
                                         Text("\(repo.gitState.blobSHAs.count)")
-                                            .font(.system(size: 13, design: .monospaced))
+                                            .bType(.monoSm, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                     }
                                 }
@@ -242,7 +242,7 @@ struct SettingsView: View {
                                     if !premiumRuntime.automaticallySyncAllRepositories {
                                         BDivider().padding(.horizontal, 16)
                                         Text("Background Sync is off. This inclusion choice is saved and will apply the next time you enable it in App Settings → Background Sync.")
-                                            .font(.caption.monospaced())
+                                            .bType(.monoCaption, weight: .regular)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                             .padding(16)
                                     }
@@ -269,12 +269,12 @@ struct SettingsView: View {
                                         BDivider().padding(.horizontal, 16)
                                         VStack(alignment: .leading, spacing: 5) {
                                             Text("STATUS: \(assistInclusionTitle(assist).uppercased())")
-                                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                                .bType(.monoCaption)
                                             if let message = assist.enrollmentMessage {
-                                                Text(message).font(.caption.monospaced())
+                                                Text(message).bType(.monoCaption, weight: .regular)
                                             }
-                                            Text("Health: \(assistHealthTitle(assist.health))").font(.caption.monospaced())
-                                            if let message = assist.health.message { Text(message).font(.caption.monospaced()) }
+                                            Text("Health: \(assistHealthTitle(assist.health))").bType(.monoCaption, weight: .regular)
+                                            if let message = assist.health.message { Text(message).bType(.monoCaption, weight: .regular) }
                                             if let date = assist.health.lastAttemptDate { Text("Last sync attempt \(relativeDate(date))").font(.caption) }
                                             Button("Sync now") {
                                                 Task {
@@ -293,7 +293,7 @@ struct SettingsView: View {
                                     }
 
                                     Text("Uses this repository's configured branch and the installation's independent automatic-pull and automatic-push choices. Pulls stay clean fast-forwards. Push-only mode validates remote state without updating the worktree. Publishing may stage, commit, and push local edits only after separate consent. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.")
-                                        .font(.system(size: 12, design: .monospaced))
+                                        .bType(.monoCaption, weight: .regular)
                                         .foregroundStyle(Color.brutalText)
                                         .padding(16)
                                 }
@@ -314,17 +314,17 @@ struct SettingsView: View {
 
                                 if let error = pushSyncStatusObject.lastError {
                                     Text(error)
-                                        .font(.caption.monospaced())
+                                        .bType(.monoCaption, weight: .regular)
                                         .foregroundStyle(.red)
                                         .padding(.horizontal, 16)
                                 }
                                 if let date = pushSyncStatusObject.lastRegistrationDate {
                                     Text("Registered \(relativeDate(date))")
-                                        .font(.caption.monospaced())
+                                        .bType(.monoCaption, weight: .regular)
                                         .padding(.horizontal, 16)
                                 }
                                 Text("When someone pushes to a repository you've cloned, GitSync.md shows a notification. Tapping it opens the app and pulls. Uses a relay that sees repository names only — never file contents.")
-                                    .font(.system(size: 12, design: .monospaced))
+                                    .bType(.monoCaption, weight: .regular)
                                     .foregroundStyle(Color.brutalText)
                                     .padding(16)
                             }
@@ -337,13 +337,13 @@ struct SettingsView: View {
                             } label: {
                                 HStack {
                                     Text(String(localized: "View Debug Log").uppercased())
-                                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                        .bType(.monoCaption)
                                         .foregroundStyle(Color.brutalText)
                                         .tracking(1)
                                     Spacer()
                                     logCountBadge
                                     Image(systemName: "chevron.right")
-                                        .font(.system(size: 11, weight: .semibold))
+                                        .bType(.monoCaption, weight: .semibold)
                                         .foregroundStyle(Color.brutalTextFaint)
                                 }
                                 .padding(.horizontal, 16)
@@ -355,7 +355,7 @@ struct SettingsView: View {
                         // Remove / Delete
                         VStack(alignment: .leading, spacing: 8) {
                             Text(String(localized: "Removing from GitSync.md keeps the files on this device."))
-                                .font(.system(size: 12, design: .monospaced))
+                                .bType(.monoCaption, weight: .regular)
                                 .foregroundStyle(Color.brutalText)
 
                             BDestructiveButton(title: String(localized: "Remove from GitSync.md")) {
@@ -380,7 +380,7 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(String(localized: "Settings").uppercased())
-                        .font(.system(size: 13, weight: .black, design: .monospaced))
+                        .bType(.monoSm, weight: .black)
                         .foregroundStyle(Color.brutalText)
                         .tracking(3)
                 }
@@ -535,16 +535,18 @@ struct SettingsView: View {
             }
         } label: {
             HStack(spacing: 12) {
+                // Decorative provider emoji (fixed 32pt column) — fixed
+                // size per Issue #16's decorative allowance.
                 Text(icon)
                     .font(.system(size: 18))
                     .frame(width: 32)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(.system(size: 15, weight: .semibold))
+                        .bType(.bodySm, weight: .semibold)
                         .foregroundStyle(Color.brutalText)
                     Text(subtitle)
-                        .font(.system(size: 13, design: .monospaced))
+                        .bType(.monoSm, weight: .regular)
                         .foregroundStyle(Color.brutalText)
                 }
 
@@ -577,7 +579,7 @@ struct SettingsView: View {
             VStack(spacing: 0) {
                 settingsInputRow(label: String(localized: "Username")) {
                     TextField(parsedRemote?.username ?? "username", text: $authUsername)
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -588,7 +590,7 @@ struct SettingsView: View {
 
                 settingsInputRow(label: String(localized: "Token")) {
                     SecureField("token or password", text: $authPassword)
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -601,7 +603,7 @@ struct SettingsView: View {
             VStack(spacing: 0) {
                 settingsInputRow(label: String(localized: "SSH User")) {
                     TextField(parsedRemote?.username ?? "git", text: $authUsername)
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -621,7 +623,7 @@ struct SettingsView: View {
 
                 settingsInputRow(label: String(localized: "Passphrase")) {
                     SecureField("optional", text: $sshPassphrase)
-                        .font(.system(size: 14, design: .monospaced))
+                        .bType(.mono, weight: .regular)
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -643,10 +645,10 @@ struct SettingsView: View {
     private func authHelpRow(_ message: String) -> some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: "info.circle")
-                .font(.system(size: 12))
+                .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(Color.brutalText)
             Text(message)
-                .font(.system(size: 13, design: .monospaced))
+                .bType(.monoSm, weight: .regular)
                 .foregroundStyle(Color.brutalText)
             Spacer()
         }
@@ -657,18 +659,18 @@ struct SettingsView: View {
     private func multilineSecretField(label: String, text: Binding<String>, minHeight: CGFloat, footer: String) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .bType(.monoCaption, weight: .medium)
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             TextEditor(text: text)
-                .font(.system(size: 13, design: .monospaced))
+                .bType(.monoSm, weight: .regular)
                 .frame(minHeight: minHeight)
                 .scrollContentBackground(.hidden)
                 .padding(8)
                 .background(Color.brutalSurface)
                 .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
             Text(footer)
-                .font(.system(size: 12, design: .monospaced))
+                .bType(.monoCaption, weight: .regular)
                 .foregroundStyle(Color.brutalText)
         }
         .padding(16)
@@ -721,7 +723,7 @@ struct SettingsView: View {
     private func settingsFieldRow<Content: View>(label: String, @ViewBuilder content: () -> Content) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .bType(.monoCaption, weight: .medium)
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Spacer()
@@ -734,7 +736,7 @@ struct SettingsView: View {
     private func settingsInputRow<Content: View>(label: String, @ViewBuilder content: () -> Content) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .bType(.monoCaption, weight: .medium)
                 .foregroundStyle(Color.brutalText)
                 .tracking(1)
             Spacer()
@@ -750,7 +752,7 @@ struct SettingsView: View {
         let errorCount = DebugLogger.shared.entries.filter { $0.level == .error }.count
         if errorCount > 0 {
             Text("\(errorCount)")
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .bType(.monoCaption)
                 .foregroundStyle(Color.brutalError)
                 .padding(.horizontal, 6)
                 .padding(.vertical, 2)
