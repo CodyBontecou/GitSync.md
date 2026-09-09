@@ -282,7 +282,11 @@ lldb_status=$?
 set -e
 bs_receipt_note "lldb_exit_status=$lldb_status"
 [[ "$lldb_status" -eq 0 ]] || bs_die "LLDB failed or timed out; inspect $LLDB_LOG"
-if grep -Eiq '(^|[[:space:]])error:|unable to attach|attach failed|invalid process|timed out' "$LLDB_LOG"; then
+# LLDB echoes expression source, whose Objective-C writeToFile selector includes
+# an `error:` argument. Exclude only those prompt lines before scanning the
+# remaining diagnostics so that source text is not mistaken for a failure.
+if grep -Ev '^\(lldb\) expression ' "$LLDB_LOG" \
+    | grep -Eiq '(^|[[:space:]])error:|unable to attach|attach failed|invalid process|timed out'; then
     bs_die "LLDB reported an error; no execution claim is made (see $LLDB_LOG)"
 fi
 bs_receipt_note 'selector_invocation=completed_without_lldb_error'
