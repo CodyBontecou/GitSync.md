@@ -4,7 +4,7 @@
 
 ## Current product and safety contract
 
-- Production explicitly injects `SystemPremiumBackgroundProcessingScheduler` into `PremiumRuntime`; retaining the runtime's no-op default in production is a release blocker.
+- Production explicitly injects `SystemPremiumBackgroundProcessingScheduler` into `PremiumRuntime`; the initializer has no scheduler default, and explicitly injecting the no-op test double in production is a release blocker.
 - `com.bontecou.Sync-md.background-refresh` is the primary `BGAppRefreshTask` opportunity and requires `fetch`; `com.bontecou.Sync-md.background-sync` is the `BGProcessingTask` fallback and requires `processing`. Processing requests require network and allow battery power.
 - Both requests use a 15-minute `earliestBeginDate`, reschedule when invoked, and remain discretionary. Never translate that date, a pending request, or a debugger trigger into an interval, reliability, real-time, or OS-cadence claim.
 - Foreground reconciliation runs one repository at a time. Processing may batch up to three.

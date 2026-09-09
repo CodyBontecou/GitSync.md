@@ -4,7 +4,7 @@ This is the current, no-secret validation path for Background Sync. It produces 
 
 ## Source contract
 
-Production must construct `PremiumRuntime` with an explicitly injected `SystemPremiumBackgroundProcessingScheduler`. The runtime's `NoopPremiumBackgroundProcessingScheduler` default is a test/injection fallback; omitting the production injection disables registration and submission.
+Production constructs `PremiumRuntime` with an explicitly injected `SystemPremiumBackgroundProcessingScheduler`. The runtime initializer has no scheduler default, so every composition must make the choice explicit; tests may inject `NoopPremiumBackgroundProcessingScheduler` as a test double, while production must inject the system implementation.
 
 The system scheduler registers and submits two complementary, discretionary requests:
 

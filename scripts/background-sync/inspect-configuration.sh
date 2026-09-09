@@ -19,8 +19,9 @@ Options:
   --output DIR   Operator-chosen root for a timestamped report (required).
   -h, --help     Show this help.
 
-Exit status is nonzero if any required invariant is absent. In particular, a
-PremiumRuntime created without an explicitly injected system scheduler fails.
+Exit status is nonzero if any required invariant is absent. In particular,
+production must explicitly inject the system scheduler; the runtime initializer
+has no scheduler default.
 EOF
 }
 
@@ -121,6 +122,14 @@ observations["source_info_plist"] = {
 observations["source_entitlements"] = entitlements
 observations["privacy_tracking"] = privacy.get("NSPrivacyTracking")
 
+registration_mapping = re.search(
+    r'registrations\s*=\s*\[\s*'
+    r'Registration\(\s*identifier:\s*refreshIdentifier\s*,\s*kind:\s*\.appRefresh\s*\)\s*,\s*'
+    r'Registration\(\s*identifier:\s*processingIdentifier\s*,\s*kind:\s*\.processing\s*\)\s*,?\s*\]',
+    scheduler,
+    re.S,
+) is not None
+
 check(
     "Info.plist exact permitted task identifiers",
     permitted == [refresh_id, processing_id],
@@ -148,49 +157,89 @@ check(
 )
 check(
     "Registers BGAppRefreshTask handler",
-    "forTaskWithIdentifier: Self.refreshIdentifier" in scheduler,
-    "BGTaskScheduler registration for refresh identifier",
+    registration_mapping
+    and "init(scheduler: BGTaskScheduler = BGTaskScheduler.shared)" in scheduler
+    and "forTaskWithIdentifier: identifier" in scheduler
+    and "if task is BGAppRefreshTask" in scheduler,
+    "refresh identifier/kind mapping through the BGTaskScheduler.shared backend",
 )
 check(
     "Registers BGProcessingTask handler",
-    "forTaskWithIdentifier: Self.processingIdentifier" in scheduler and "task as? BGProcessingTask" in scheduler,
-    "BGTaskScheduler registration and BGProcessingTask type guard",
+    registration_mapping
+    and "else if task is BGProcessingTask" in scheduler
+    and "SystemPremiumBackgroundProcessingTask(task)" in scheduler,
+    "processing identifier/kind mapping and platform task wrapper",
 )
 check(
-    "Registration state requires both handlers",
-    re.search(r'registered\s*=\s*refreshRegistered\s*&&\s*processingRegistered', scheduler) is not None,
-    "partial registration is not represented as fully registered",
+    "Registration state is independent per task kind",
+    "private var registeredKinds: Set<PremiumBackgroundTaskKind>" in scheduler
+    and "where !registeredKinds.contains(registration.kind)" in scheduler
+    and re.search(
+        r'if\s+didRegister\s*\{\s*registeredKinds\.insert\(registration\.kind\)',
+        scheduler,
+        re.S,
+    ) is not None,
+    "successful refresh/processing kinds are retained independently; failed kinds remain retryable",
 )
 check(
     "Submits primary app-refresh request",
-    re.search(r'BGAppRefreshTaskRequest\s*\(\s*identifier:\s*Self\.refreshIdentifier\s*\)', scheduler) is not None,
-    "BGAppRefreshTaskRequest(refreshIdentifier)",
+    re.search(
+        r'case\s+\.appRefresh\(let identifier,\s*let earliestBeginDate\).*?'
+        r'BGAppRefreshTaskRequest\(identifier:\s*identifier\).*?scheduler\.submit\(request\)',
+        scheduler,
+        re.S,
+    ) is not None,
+    "app-refresh descriptor converts to BGAppRefreshTaskRequest and is submitted",
 )
 check(
     "Submits processing fallback request",
-    re.search(r'BGProcessingTaskRequest\s*\(\s*identifier:\s*Self\.processingIdentifier\s*\)', scheduler) is not None,
-    "BGProcessingTaskRequest(processingIdentifier)",
+    re.search(
+        r'case\s+\.processing\(.*?let identifier,.*?'
+        r'BGProcessingTaskRequest\(identifier:\s*identifier\).*?scheduler\.submit\(request\)',
+        scheduler,
+        re.S,
+    ) is not None,
+    "processing descriptor converts to BGProcessingTaskRequest and is submitted",
 )
 check(
     "Both requests use fifteen-minute earliest begin dates",
-    len(re.findall(r'earliestBeginDate\s*=\s*Date\s*\(\s*timeIntervalSinceNow:\s*15\s*\*\s*60\s*\)', scheduler)) == 2,
-    "two Date(timeIntervalSinceNow: 15 * 60) assignments",
+    re.search(
+        r'static\s+let\s+earliestBeginDelay:\s*TimeInterval\s*=\s*15\s*\*\s*60',
+        scheduler,
+    ) is not None
+    and "now().addingTimeInterval(Self.earliestBeginDelay)" in scheduler
+    and scheduler.count("earliestBeginDate: earliestBeginDate") == 2,
+    "one injected clock read plus the 15-minute delay feeds both descriptors",
 )
 check(
     "Processing fallback requires network but not external power",
-    "requiresNetworkConnectivity = true" in scheduler and "requiresExternalPower = false" in scheduler,
-    "network=true, externalPower=false",
+    "requiresNetworkConnectivity: true" in scheduler
+    and "requiresExternalPower: false" in scheduler
+    and "request.requiresNetworkConnectivity = requiresNetworkConnectivity" in scheduler
+    and "request.requiresExternalPower = requiresExternalPower" in scheduler,
+    "descriptor network=true/power=false values are copied to BGProcessingTaskRequest",
 )
 check(
-    "Cancellation covers both requests",
-    "cancel(taskRequestWithIdentifier: Self.refreshIdentifier)" in scheduler
-    and "cancel(taskRequestWithIdentifier: Self.processingIdentifier)" in scheduler,
-    "refresh and processing cancellation",
+    "Cancellation and replacement cover both requests",
+    registration_mapping
+    and re.search(
+        r'func\s+cancel\(\)\s*\{.*?for registration in Self\.registrations.*?'
+        r'backend\.cancel\(taskRequestWithIdentifier:\s*registration\.identifier\)',
+        scheduler,
+        re.S,
+    ) is not None
+    and re.search(
+        r'replacePendingRequest.*?backend\.cancel\(taskRequestWithIdentifier:\s*request\.identifier\)'
+        r'.*?backend\.submit\(request\)',
+        scheduler,
+        re.S,
+    ) is not None,
+    "public cancel iterates both mappings; each schedule path cancels before submitting its replacement",
 )
 check(
     "Runtime registers injected scheduler",
-    re.search(r'resolvedScheduler\.register\s*\{', runtime) is not None,
-    "PremiumRuntime.init registration",
+    re.search(r'backgroundScheduler\.register\s*\{', runtime) is not None,
+    "PremiumRuntime.init registers its required injected scheduler",
 )
 check(
     "Invocation reschedules before processing",
@@ -215,7 +264,7 @@ check(
     "Production app explicitly composes system scheduler",
     "SystemPremiumBackgroundProcessingScheduler()" in app
     and re.search(r'PremiumRuntime\s*\(.*?backgroundScheduler\s*:', app, re.S) is not None,
-    "Sync_mdApp.init must inject SystemPremiumBackgroundProcessingScheduler; omitted injection resolves to Noop",
+    "Sync_mdApp.init must inject SystemPremiumBackgroundProcessingScheduler; the runtime has no scheduler default",
 )
 check(
     "Foreground reconciliation is serialized",
