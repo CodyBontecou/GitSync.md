@@ -57,10 +57,12 @@ struct Sync_mdApp: App {
             repositoryProvider: appState,
             conditionsProvider: SystemBackgroundSyncConditions()
         )
+        let backgroundScheduler = SystemPremiumBackgroundProcessingScheduler()
         _appState = State(initialValue: appState)
         let runtime = PremiumRuntime(
             coordinator: coordinator,
-            repositoryProvider: appState
+            repositoryProvider: appState,
+            backgroundScheduler: backgroundScheduler
         )
         _premiumRuntime = State(initialValue: runtime)
         SyncRuntimeLocator.configure(runtime: runtime, state: appState)
