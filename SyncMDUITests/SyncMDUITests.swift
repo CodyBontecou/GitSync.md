@@ -132,65 +132,295 @@ final class SyncMDUITests: XCTestCase {
         )
     }
 
-    // MARK: - Premium (Background Sync) Surface
+    // MARK: - Background Sync Behavior
 
-    /// Issue #19 slice (paywall): the app has no purchasable paywall — the
-    /// premium surface is PremiumSettingsView (Background Sync), which ships
-    /// included with no StoreKit products, so there are no upgrade/restore
-    /// purchase controls to assert. This test pins that surface's key
-    /// controls (close, consent toggle) are discoverable by label, using only
-    /// launch-arg-seeded signed-out state — no network, no purchase actions.
-    func testBackgroundSyncPremiumSurfaceControlsAreDiscoverable() {
+    /// Exercises the installation-global Background Sync consent and action
+    /// preferences without a repository, so no Git transport or publication
+    /// can occur. The starting state is normalized through the UI because the
+    /// simulator's UserDefaults intentionally survive UI-test launches.
+    func testBackgroundSyncBehaviorPersistsAndResetsSafeDefaults() {
         let app = XCUIApplication()
-        app.launchArguments = [
-            "-SignedOutUITest",
-            "-AppleLanguages", "(en)",
-            "-AppleLocale", "en_US"
-        ]
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
         app.launch()
+        finishSignedOutEmptyLaunch(in: app)
 
-        completeOnboardingIfPresent(in: app)
-        continueWithoutGitHubIfPresent(in: app)
+        var globalToggle = openBackgroundSyncSettings(in: app)
+        normalizeBackgroundSyncOff(globalToggle: globalToggle, in: app)
 
-        let appSettings = app.buttons["App Settings"]
-        XCTAssertTrue(appSettings.waitForExistence(timeout: 10), "Signed-out App Settings action should exist")
-        appSettings.tap()
-
-        // The Background Sync management surface opens from an
-        // accessibility-labelled action row in App Settings.
-        let backgroundSyncRow = app.buttons["Background Sync"]
-        XCTAssertTrue(
-            backgroundSyncRow.waitForExistence(timeout: 10),
-            "App Settings should expose the Background Sync (premium) row as a labelled button"
+        let pullToggle = backgroundSyncSwitch(
+            in: app,
+            labelPrefix: "Pull remote changes"
         )
-        for _ in 0..<6 where !backgroundSyncRow.isHittable { app.swipeUp() }
-        backgroundSyncRow.tap()
-
-        // Premium surface is up: titled chrome, close control, and the main
-        // consent control are all discoverable by label.
-        XCTAssertTrue(
-            app.staticTexts["BACKGROUND SYNC"].exists || app.buttons["BACKGROUND SYNC"].exists,
-            "Premium surface should expose its titled chrome to accessibility"
-        )
-        XCTAssertTrue(
-            app.buttons["Done"].firstMatch.waitForExistence(timeout: 10),
-            "Premium surface should expose a Done close control"
-        )
-        let enableSyncControl = app.switches.matching(
-            NSPredicate(format: "label BEGINSWITH 'Enable Background Sync'")
-        ).firstMatch
-        XCTAssertTrue(
-            enableSyncControl.waitForExistence(timeout: 10) || app.staticTexts["Enable Background Sync"].exists,
-            "Enable Background Sync consent control should be discoverable by label"
+        let pushToggle = backgroundSyncSwitch(
+            in: app,
+            labelPrefix: "Commit and push local changes"
         )
 
-        // Close via the tappable Done (the presenting App Settings sheet has
-        // its own Done behind this one) and confirm we return to App Settings.
-        tapFirstHittableButton(labeled: "Done", in: app)
-        XCTAssertTrue(
-            backgroundSyncRow.waitForExistence(timeout: 10),
-            "Done should close the premium surface and return to App Settings"
+        // First consent request is cancelled: the branded modal disappears,
+        // global mode remains off, and action controls remain unavailable.
+        tapWhenHittable(globalToggle, in: app, message: "Enable Background Sync toggle should be tappable")
+        assertBrandedConfirmation(
+            title: "Enable Background Sync for all repositories?",
+            in: app
         )
+        tapFirstHittableButton(labeled: "Cancel", in: app)
+        XCTAssertTrue(
+            waitUntil(timeout: 5) {
+                !app.staticTexts["Enable Background Sync for all repositories?"].exists
+            },
+            "Cancelling should dismiss the Background Sync confirmation"
+        )
+        assertSwitch(globalToggle, isOn: false, "Cancelling global consent should leave Background Sync off")
+        XCTAssertFalse(pullToggle.exists, "Pull control should stay hidden after cancelled global consent")
+        XCTAssertFalse(pushToggle.exists, "Push control should stay hidden after cancelled global consent")
+
+        // Confirming global consent starts with fail-closed publishing:
+        // automatic pull on, automatic commit/push off.
+        tapWhenHittable(globalToggle, in: app, message: "Enable Background Sync toggle should remain tappable")
+        assertBrandedConfirmation(
+            title: "Enable Background Sync for all repositories?",
+            in: app
+        )
+        tapFirstHittableButton(labeled: "Enable Background Sync", in: app)
+        assertSwitch(globalToggle, isOn: true, "Confirming should enable Background Sync")
+        XCTAssertTrue(
+            reveal(pullToggle, in: app),
+            "Enabled Background Sync should expose the automatic pull control"
+        )
+        assertSwitch(pullToggle, isOn: true, "A fresh activation should default automatic pull on")
+        XCTAssertTrue(
+            reveal(pushToggle, in: app),
+            "Enabled Background Sync should expose the automatic push control"
+        )
+        assertSwitch(pushToggle, isOn: false, "A fresh activation should default automatic push off")
+
+        // Publishing has its own explicit consent. Cancel once, then request
+        // again and confirm. The empty repository list makes this incapable of
+        // publishing even after the preference turns on.
+        tapWhenHittable(pushToggle, in: app, message: "Automatic push toggle should be tappable")
+        assertBrandedConfirmation(
+            title: "Automatically commit and push local changes?",
+            in: app
+        )
+        tapFirstHittableButton(labeled: "Cancel", in: app)
+        XCTAssertTrue(
+            waitUntil(timeout: 5) {
+                !app.staticTexts["Automatically commit and push local changes?"].exists
+            },
+            "Cancelling should dismiss the automatic push confirmation"
+        )
+        assertSwitch(pushToggle, isOn: false, "Cancelling publishing consent should leave push off")
+
+        tapWhenHittable(pushToggle, in: app, message: "Automatic push toggle should remain tappable")
+        assertBrandedConfirmation(
+            title: "Automatically commit and push local changes?",
+            in: app
+        )
+        tapFirstHittableButton(labeled: "Enable automatic push", in: app)
+        assertSwitch(pushToggle, isOn: true, "Confirming publishing consent should turn push on")
+
+        // Pull and push are independent. Push stays on when pull turns off;
+        // with both actions off, the UI must expose the no-operation warning.
+        tapWhenHittable(pullToggle, in: app, message: "Automatic pull toggle should be tappable")
+        assertSwitch(pullToggle, isOn: false, "Automatic pull should turn off independently")
+        assertSwitch(pushToggle, isOn: true, "Turning pull off must not revoke push consent")
+
+        tapWhenHittable(pushToggle, in: app, message: "Enabled automatic push toggle should be tappable")
+        assertSwitch(pushToggle, isOn: false, "Automatic push should turn off independently")
+        assertSwitch(pullToggle, isOn: false, "Turning push off must leave pull off")
+        let neitherActionWarning = app.staticTexts[
+            "Both automatic actions are off. No background Git operation will run."
+        ]
+        XCTAssertTrue(
+            reveal(neitherActionWarning, in: app),
+            "The visible surface should warn when neither automatic action can run"
+        )
+
+        // Restore an intentionally non-default state so relaunch proves both
+        // independent preferences, not merely the global bit, persisted.
+        tapWhenHittable(pullToggle, in: app, message: "Automatic pull toggle should be restorable")
+        assertSwitch(pullToggle, isOn: true, "Automatic pull should restore to on")
+        XCTAssertTrue(
+            waitUntil(timeout: 5) { !neitherActionWarning.exists },
+            "The neither-action warning should clear once pull is restored"
+        )
+        tapWhenHittable(pushToggle, in: app, message: "Automatic push toggle should be restorable")
+        assertBrandedConfirmation(
+            title: "Automatically commit and push local changes?",
+            in: app
+        )
+        tapFirstHittableButton(labeled: "Enable automatic push", in: app)
+        assertSwitch(pushToggle, isOn: true, "Automatic push consent should restore to on")
+        assertSwitch(pullToggle, isOn: true, "Restoring push must leave pull on")
+
+        // UserDefaults persistence boundary: terminate, relaunch into another
+        // UI-seeded empty signed-out state, and reopen the settings surface.
+        app.terminate()
+        app.launch()
+        finishSignedOutEmptyLaunch(in: app)
+
+        globalToggle = openBackgroundSyncSettings(in: app)
+        let persistedPullToggle = backgroundSyncSwitch(
+            in: app,
+            labelPrefix: "Pull remote changes"
+        )
+        let persistedPushToggle = backgroundSyncSwitch(
+            in: app,
+            labelPrefix: "Commit and push local changes"
+        )
+        assertSwitch(globalToggle, isOn: true, "Global Background Sync should persist across relaunch")
+        XCTAssertTrue(reveal(persistedPullToggle, in: app), "Persisted pull control should be visible")
+        assertSwitch(persistedPullToggle, isOn: true, "Automatic pull should persist across relaunch")
+        XCTAssertTrue(reveal(persistedPushToggle, in: app), "Persisted push control should be visible")
+        assertSwitch(persistedPushToggle, isOn: true, "Automatic push should persist across relaunch")
+
+        // Return to a freshly presented sheet before tapping the global row;
+        // the prior assertions leave the long action card scrolled near its
+        // bottom, where iOS can report the offscreen global switch hittable.
+        globalToggle = reopenBackgroundSyncFromAppSettings(in: app)
+        assertSwitch(globalToggle, isOn: true, "Global preference should remain on before explicit disable")
+
+        // Global disable revokes both action preferences. Re-enabling must
+        // therefore return to the safe pull-on / push-off defaults.
+        setSwitchDirectly(
+            globalToggle,
+            to: false,
+            in: app,
+            message: "Global disable should turn Background Sync off"
+        )
+        XCTAssertTrue(
+            waitUntil(timeout: 5) { !persistedPullToggle.exists && !persistedPushToggle.exists },
+            "Global disable should remove both reset action controls"
+        )
+        XCTAssertTrue(
+            reveal(
+                app.staticTexts[
+                    "Background Sync is off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged."
+                ],
+                in: app
+            ),
+            "Global disable should expose the stable off-state copy"
+        )
+
+        // Reopen after the conditional pull/push rows collapse. This gives
+        // XCUITest a fresh switch snapshot instead of tapping through a
+        // just-mutated scroll hierarchy.
+        globalToggle = reopenBackgroundSyncFromAppSettings(in: app)
+        assertSwitch(globalToggle, isOn: false, "Global disable should persist across reopening the sheet")
+        tapWhenHittable(globalToggle, in: app, message: "Disabled global toggle should be re-enableable")
+        assertBrandedConfirmation(
+            title: "Enable Background Sync for all repositories?",
+            in: app
+        )
+        tapFirstHittableButton(labeled: "Enable Background Sync", in: app)
+        assertSwitch(globalToggle, isOn: true, "Background Sync should re-enable")
+        XCTAssertTrue(reveal(persistedPullToggle, in: app), "Re-enabled pull control should return")
+        assertSwitch(persistedPullToggle, isOn: true, "Re-enable should restore the safe pull-on default")
+        XCTAssertTrue(reveal(persistedPushToggle, in: app), "Re-enabled push control should return")
+        assertSwitch(persistedPushToggle, isOn: false, "Re-enable should keep publishing default-off")
+
+        // Fail-closed test cleanup: leave installation-global mode off. This
+        // also resets both independent action preferences for later tests.
+        globalToggle = reopenBackgroundSyncFromAppSettings(in: app)
+        setSwitchDirectly(
+            globalToggle,
+            to: false,
+            in: app,
+            message: "Background Sync should be off at test completion"
+        )
+        XCTAssertTrue(
+            waitUntil(timeout: 5) { !persistedPullToggle.exists && !persistedPushToggle.exists },
+            "Cleanup should leave no automatic action control enabled"
+        )
+        closeBackgroundSyncAndAppSettings(in: app)
+    }
+
+    /// The local `file://` conflict fixture is used only as persisted settings
+    /// data here. No Pull, Push, Sync now, merge, rebase, notification, or
+    /// other transport control is touched.
+    func testRepositoryBackgroundSyncExclusionPersistsAndRestoresWhileGlobalModeIsOff() {
+        let app = XCUIApplication()
+
+        // Normalize installation preferences before introducing any managed
+        // repository, then relaunch into the local fixture with global mode off.
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launch()
+        finishSignedOutEmptyLaunch(in: app)
+        let emptyGlobalToggle = openBackgroundSyncSettings(in: app)
+        normalizeBackgroundSyncOff(globalToggle: emptyGlobalToggle, in: app)
+        closeBackgroundSyncAndAppSettings(in: app)
+        app.terminate()
+
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestConflictFixture"])
+        app.launch()
+        finishConflictFixtureLaunch(in: app)
+
+        // Verify the fixture arrived under the normalized global-off gate
+        // before opening its repository settings.
+        let fixtureGlobalToggle = openBackgroundSyncSettings(in: app)
+        assertSwitch(fixtureGlobalToggle, isOn: false, "Fixture should start with global mode off")
+        XCTAssertFalse(
+            backgroundSyncSwitch(in: app, labelPrefix: "Pull remote changes").exists,
+            "Global-off fixture should expose no automatic pull control"
+        )
+        XCTAssertFalse(
+            backgroundSyncSwitch(in: app, labelPrefix: "Commit and push local changes").exists,
+            "Global-off fixture should expose no automatic push control"
+        )
+        closeBackgroundSyncAndAppSettings(in: app)
+
+        tap("conflict-fixture", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            "Seeded local repository should open without a Git action"
+        )
+
+        var inclusionToggle = openRepositorySettingsAndRevealBackgroundSync(in: app)
+        assertSwitch(inclusionToggle, isOn: true, "The new fixture should initially be included")
+        tapWhenHittable(inclusionToggle, in: app, message: "Repository inclusion toggle should be tappable")
+        assertSwitch(inclusionToggle, isOn: false, "Repository should be locally excluded")
+        tapFirstHittableButton(labeled: "Save", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            "Saving exclusion should dismiss back to the repository"
+        )
+
+        inclusionToggle = openRepositorySettingsAndRevealBackgroundSync(in: app)
+        assertSwitch(inclusionToggle, isOn: false, "Exclusion should persist after reopening Settings")
+        tapWhenHittable(inclusionToggle, in: app, message: "Repository inclusion should be restorable")
+        assertSwitch(inclusionToggle, isOn: true, "Repository inclusion should restore locally")
+        tapFirstHittableButton(labeled: "Save", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            "Saving restored inclusion should dismiss back to the repository"
+        )
+
+        inclusionToggle = openRepositorySettingsAndRevealBackgroundSync(in: app)
+        assertSwitch(inclusionToggle, isOn: true, "Restored inclusion should persist after reopening Settings")
+        tapFirstHittableButton(labeled: "Cancel", in: app)
+        XCTAssertTrue(
+            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            "Cancel should close the final read-only Settings check"
+        )
+
+        let back = app.navigationBars.firstMatch.buttons.element(boundBy: 0)
+        tapWhenHittable(back, in: app, message: "Repository view should expose labelled back navigation")
+        XCTAssertTrue(
+            app.staticTexts["conflict-fixture"].waitForExistence(timeout: 10),
+            "Fixture should remain listed after restoring inclusion"
+        )
+
+        let finalGlobalToggle = openBackgroundSyncSettings(in: app)
+        assertSwitch(finalGlobalToggle, isOn: false, "Per-repository test must leave global mode off")
+        XCTAssertFalse(
+            backgroundSyncSwitch(in: app, labelPrefix: "Pull remote changes").exists,
+            "Per-repository cleanup should leave automatic pull unavailable"
+        )
+        XCTAssertFalse(
+            backgroundSyncSwitch(in: app, labelPrefix: "Commit and push local changes").exists,
+            "Per-repository cleanup should leave automatic push unavailable"
+        )
+        closeBackgroundSyncAndAppSettings(in: app)
     }
 
     // MARK: - File Edit Flow
@@ -1125,6 +1355,266 @@ final class SyncMDUITests: XCTestCase {
             app.buttons["App Settings"].waitForExistence(timeout: 10),
             "Done should close App Settings back to the repo list"
         )
+    }
+
+    private func signedOutLaunchArguments(extra: [String] = []) -> [String] {
+        [
+            "-SignedOutUITest",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US"
+        ] + extra
+    }
+
+    private func finishSignedOutEmptyLaunch(in app: XCUIApplication) {
+        let emptyState = app.staticTexts["NO REPOSITORIES"]
+        if !emptyState.waitForExistence(timeout: 3) {
+            completeOnboardingIfPresent(in: app)
+            continueWithoutGitHubIfPresent(in: app)
+        }
+        XCTAssertTrue(
+            emptyState.waitForExistence(timeout: 10)
+                || app.staticTexts["No Repositories"].exists,
+            "Background Sync behavior must run with no managed repositories"
+        )
+    }
+
+    private func finishConflictFixtureLaunch(in app: XCUIApplication) {
+        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+            completeOnboardingIfPresent(in: app)
+            continueWithoutGitHubIfPresent(in: app)
+        }
+        XCTAssertTrue(
+            app.staticTexts["conflict-fixture"].waitForExistence(timeout: 15),
+            "The local file:// conflict fixture should be present"
+        )
+    }
+
+    /// Opens App Settings and its Background Sync sheet using only labelled
+    /// controls, scrolling whichever duplicate-free row is currently hidden.
+    @discardableResult
+    private func openBackgroundSyncSettings(in app: XCUIApplication) -> XCUIElement {
+        let appSettings = app.buttons["App Settings"].firstMatch
+        tapWhenHittable(appSettings, in: app, message: "App Settings should be available")
+        XCTAssertTrue(
+            app.buttons["Sign in with GitHub"].waitForExistence(timeout: 10),
+            "Signed-out App Settings should finish presenting"
+        )
+
+        let row = app.buttons.matching(
+            NSPredicate(format: "label == %@", "Background Sync")
+        ).firstMatch
+        tapWhenHittable(row, in: app, message: "Background Sync row should be tappable by label")
+        XCTAssertTrue(
+            app.buttons["Done"].firstMatch.waitForExistence(timeout: 10),
+            "Background Sync settings should expose its Done toolbar control"
+        )
+
+        let globalToggle = backgroundSyncSwitch(
+            in: app,
+            labelPrefix: "Enable Background Sync"
+        )
+        XCTAssertTrue(
+            reveal(globalToggle, in: app),
+            "Background Sync settings should expose its global toggle by label"
+        )
+        return globalToggle
+    }
+
+    private func closeBackgroundSyncAndAppSettings(in app: XCUIApplication) {
+        tapFirstHittableButton(labeled: "Done", in: app)
+        XCTAssertTrue(
+            app.buttons["Background Sync"].firstMatch.waitForExistence(timeout: 10),
+            "Done should close Background Sync settings back to App Settings"
+        )
+        tapFirstHittableButton(labeled: "Done", in: app)
+        XCTAssertTrue(
+            app.buttons["App Settings"].firstMatch.waitForExistence(timeout: 10),
+            "Done should close App Settings"
+        )
+    }
+
+    private func reopenBackgroundSyncFromAppSettings(in app: XCUIApplication) -> XCUIElement {
+        tapFirstHittableButton(labeled: "Done", in: app)
+        let row = app.buttons["Background Sync"].firstMatch
+        XCTAssertTrue(
+            row.waitForExistence(timeout: 10),
+            "Done should close Background Sync settings back to App Settings"
+        )
+        tapWhenHittable(row, in: app, message: "Background Sync row should reopen by label")
+        XCTAssertTrue(
+            app.buttons["Done"].firstMatch.waitForExistence(timeout: 10),
+            "Reopened Background Sync settings should expose Done"
+        )
+        let globalToggle = backgroundSyncSwitch(in: app, labelPrefix: "Enable Background Sync")
+        XCTAssertTrue(
+            reveal(globalToggle, in: app),
+            "Reopened Background Sync settings should expose its global toggle"
+        )
+        return globalToggle
+    }
+
+    private func openRepositorySettingsAndRevealBackgroundSync(in app: XCUIApplication) -> XCUIElement {
+        let settings = app.buttons["Settings"].firstMatch
+        tapWhenHittable(settings, in: app, message: "Repository Settings should be tappable by label")
+        XCTAssertTrue(
+            app.staticTexts["REPOSITORY"].waitForExistence(timeout: 10),
+            "Repository Settings should finish presenting"
+        )
+        let inclusionToggle = backgroundSyncSwitch(
+            in: app,
+            labelPrefix: "Include in Background Sync"
+        )
+        XCTAssertTrue(
+            reveal(inclusionToggle, in: app),
+            "Repository Settings should expose inclusion by accessibility label"
+        )
+        return inclusionToggle
+    }
+
+    private func backgroundSyncSwitch(in app: XCUIApplication, labelPrefix: String) -> XCUIElement {
+        app.switches.matching(
+            NSPredicate(format: "label BEGINSWITH %@", labelPrefix)
+        ).firstMatch
+    }
+
+    /// Forces the runtime through its public UI disable path. If global mode
+    /// already appears off, it is enabled (with consent) and disabled once so
+    /// stale hidden pull/push defaults cannot leak in from an earlier run.
+    private func normalizeBackgroundSyncOff(globalToggle: XCUIElement, in app: XCUIApplication) {
+        guard waitUntil(timeout: 5, condition: { switchState(of: globalToggle) != nil }),
+              let initiallyOn = switchState(of: globalToggle) else {
+            XCTFail("Global Background Sync toggle should expose a readable value")
+            return
+        }
+
+        if !initiallyOn {
+            tapWhenHittable(globalToggle, in: app, message: "Global toggle should be tappable for normalization")
+            assertBrandedConfirmation(
+                title: "Enable Background Sync for all repositories?",
+                in: app
+            )
+            tapFirstHittableButton(labeled: "Enable Background Sync", in: app)
+            assertSwitch(globalToggle, isOn: true, "Normalization should reach the enabled state")
+        }
+
+        setSwitchDirectly(
+            globalToggle,
+            to: false,
+            in: app,
+            message: "Normalization should finish with global mode off"
+        )
+        let pull = backgroundSyncSwitch(in: app, labelPrefix: "Pull remote changes")
+        let push = backgroundSyncSwitch(in: app, labelPrefix: "Commit and push local changes")
+        XCTAssertTrue(
+            waitUntil(timeout: 5) { !pull.exists && !push.exists },
+            "Normalization should reset and remove both automatic action controls"
+        )
+    }
+
+    private func assertBrandedConfirmation(title: String, in app: XCUIApplication) {
+        XCTAssertTrue(
+            app.staticTexts[title].waitForExistence(timeout: 10),
+            "Expected branded confirmation titled: \(title)"
+        )
+        XCTAssertTrue(
+            app.buttons["Cancel"].firstMatch.exists,
+            "Branded confirmation should expose a labelled Cancel button"
+        )
+    }
+
+    private func switchState(of element: XCUIElement) -> Bool? {
+        guard element.exists else { return nil }
+        if let number = element.value as? NSNumber {
+            return number.boolValue
+        }
+        guard let value = element.value as? String else { return nil }
+        switch value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() {
+        case "1", "on", "true", "yes": return true
+        case "0", "off", "false", "no": return false
+        default: return nil
+        }
+    }
+
+    private func assertSwitch(
+        _ element: XCUIElement,
+        isOn expected: Bool,
+        _ message: String,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertTrue(
+            waitUntil(timeout: 10) { switchState(of: element) == expected },
+            "\(message) (accessibility value: \(String(describing: element.value)))",
+            file: file,
+            line: line
+        )
+    }
+
+    @discardableResult
+    private func setSwitchDirectly(
+        _ element: XCUIElement,
+        to expected: Bool,
+        in app: XCUIApplication,
+        message: String
+    ) -> Bool {
+        if switchState(of: element) == expected { return true }
+
+        for attempt in 0..<3 {
+            tapWhenHittable(element, in: app, message: message)
+            if waitUntil(timeout: 5, condition: { switchState(of: element) == expected }) {
+                return true
+            }
+            if attempt < 2 {
+                // Refresh the scroll position before retrying an accessibility
+                // element that iOS considered hittable but whose tap was lost.
+                app.swipeDown()
+                _ = reveal(element, in: app)
+            }
+        }
+        XCTFail("\(message) (accessibility value: \(String(describing: element.value)))")
+        return false
+    }
+
+    private func tapWhenHittable(_ element: XCUIElement, in app: XCUIApplication, message: String) {
+        guard reveal(element, in: app) else {
+            XCTFail(message)
+            return
+        }
+        guard waitUntil(timeout: 10, condition: {
+            element.exists && element.isEnabled && element.isHittable
+        }) else {
+            XCTFail("\(message) (element did not become enabled)")
+            return
+        }
+        element.tap()
+    }
+
+    /// Reveals elements in either direction based on their accessibility
+    /// frame. Taps still target the element itself; frames are never used as
+    /// tap coordinates.
+    private func reveal(_ element: XCUIElement, in app: XCUIApplication, maxSwipes: Int = 16) -> Bool {
+        if element.waitForExistence(timeout: 2), element.isHittable { return true }
+
+        for _ in 0..<maxSwipes {
+            let window = app.windows.firstMatch
+            let viewportMidY = window.exists ? window.frame.midY : app.frame.midY
+            if element.exists, !element.frame.isEmpty, element.frame.midY < viewportMidY {
+                app.swipeDown()
+            } else {
+                app.swipeUp()
+            }
+            if element.waitForExistence(timeout: 0.5), element.isHittable { return true }
+        }
+        return element.exists && element.isHittable
+    }
+
+    private func waitUntil(timeout: TimeInterval, condition: () -> Bool) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        repeat {
+            if condition() { return true }
+            RunLoop.current.run(until: min(deadline, Date().addingTimeInterval(0.1)))
+        } while Date() < deadline
+        return condition()
     }
 
     private func completeOnboardingIfPresent(in app: XCUIApplication) {
