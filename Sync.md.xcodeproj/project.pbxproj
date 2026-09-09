@@ -12,6 +12,7 @@
 		aa5e00010000000000000007 /* SyncWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000001 /* SyncWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1273715551CDF043029317F6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
 		336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */; };
+		B6C100000000000000000001 /* BackgroundProcessingSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */; };
 		62C953FE2F397E44001F79DF /* Clibgit2 in Frameworks */ = {isa = PBXBuildFile; productRef = 62C951C12F3A0001001F79DF /* Clibgit2 */; };
 		7A1C53CFCAF12009E81A0EE4 /* SyncMDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */; };
 		9B1CC33021E2FBF384971478 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
@@ -65,6 +66,7 @@
 		4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		62C951962F393029001F79DF /* Sync.md.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sync.md.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDTests.swift; sourceTree = "<group>"; };
+		B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BackgroundProcessingSchedulerTests.swift; sourceTree = "<group>"; };
 		E70D88DABEB05A34746D5412 /* SyncMDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -147,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */,
+				B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */,
 			);
 			name = SyncMDTests;
 			path = SyncMDTests;
@@ -418,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */,
+				B6C100000000000000000001 /* BackgroundProcessingSchedulerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
