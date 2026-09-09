@@ -211,7 +211,7 @@ import sys
 print(sys.argv[1].replace("\\", "\\\\").replace('"', '\\"'))
 PY
 )"
-        printf '%s\n' "expression -l objc++ -- (void)[[BGTaskScheduler sharedScheduler] getPendingTaskRequestsWithCompletionHandler:^(NSArray *requests) { NSMutableArray *lines = [NSMutableArray array]; for (id request in requests) { NSString *identifier = [request valueForKey:@\"identifier\"]; NSDate *earliest = [request valueForKey:@\"earliestBeginDate\"]; [lines addObject:[NSString stringWithFormat:@\"%@|%@\", identifier ? identifier : @\"<nil>\", earliest ? earliest : @\"<nil>\"]]; } NSString *text = [[lines componentsJoinedByString:@\"\\n\"] stringByAppendingString:@\"\\n\"]; [text writeToFile:@\"$OBJC_CALLBACK_PATH\" atomically:YES encoding:NSUTF8StringEncoding error:(NSError **)0]; }]"
+        printf '%s\n' "expression -l objc++ -- (void)[[BGTaskScheduler sharedScheduler] getPendingTaskRequestsWithCompletionHandler:^(NSArray *requests) { NSMutableArray *lines = [NSMutableArray array]; for (id request in requests) { NSString *identifier = [(BGTaskRequest *)request identifier]; NSDate *earliest = [(BGTaskRequest *)request earliestBeginDate]; [lines addObject:[NSString stringWithFormat:@\"%@|%@\", identifier ? identifier : @\"<nil>\", earliest ? earliest : @\"<nil>\"]]; } NSString *text = [[lines componentsJoinedByString:@\"\\n\"] stringByAppendingString:@\"\\n\"]; [text writeToFile:@\"$OBJC_CALLBACK_PATH\" atomically:YES encoding:NSUTF8StringEncoding error:(NSError **)0]; }]"
     fi
     printf 'process detach\n'
     printf 'quit\n'
