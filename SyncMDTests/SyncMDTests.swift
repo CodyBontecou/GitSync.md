@@ -1539,7 +1539,9 @@ final class SyncMDTests: XCTestCase {
 
     @MainActor
     func testPremiumRuntimeGlobalPreferenceDefaultsOffWithoutAutomaticWork() async {
-        let harness = await PremiumRuntimeTestHarness.make()
+        let harness = await PremiumRuntimeTestHarness.make(
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         defer { harness.cleanup() }
 
         XCTAssertFalse(harness.runtime.automaticallySyncAllRepositories)
@@ -1550,11 +1552,158 @@ final class SyncMDTests: XCTestCase {
 
         harness.runtime.setAutomaticallyPushLocalChanges(true)
         XCTAssertTrue(harness.runtime.automaticallyPushLocalChanges)
-        let restored = await PremiumRuntimeTestHarness.make(defaultsSuite: harness.defaultsSuite)
+        let restored = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: harness.defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         XCTAssertTrue(restored.runtime.automaticallyPushLocalChanges, "Publishing consent persists across relaunch")
         harness.runtime.setAutomaticallyPushLocalChanges(false)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
         restored.cleanup()
+    }
+
+    @MainActor
+    func testPremiumRuntimeColdLaunchRestoredPullRegistersOnceAndSchedulesImmediately() async {
+        let defaultsSuite = "premium-runtime-cold-pull-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(false, forKey: "premium.automatic-push.v1")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertEqual(scheduler.registerCount, 1)
+        XCTAssertEqual(scheduler.scheduleCount, 1)
+        XCTAssertEqual(scheduler.cancelCount, 0)
+        XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+    }
+
+    @MainActor
+    func testPremiumRuntimeColdLaunchRestoredPushRegistersOnceAndSchedulesImmediately() async {
+        let defaultsSuite = "premium-runtime-cold-push-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(false, forKey: "premium.automatic-pull.v1")
+        defaults.set(true, forKey: "premium.automatic-push.v1")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertEqual(scheduler.registerCount, 1)
+        XCTAssertEqual(scheduler.scheduleCount, 1)
+        XCTAssertEqual(scheduler.cancelCount, 0)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertTrue(harness.runtime.automaticallyPushLocalChanges)
+    }
+
+    @MainActor
+    func testPremiumRuntimeColdLaunchRestoredEnabledNeitherRegistersOnceAndCancels() async {
+        let defaultsSuite = "premium-runtime-cold-neither-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(false, forKey: "premium.automatic-pull.v1")
+        defaults.set(false, forKey: "premium.automatic-push.v1")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertEqual(scheduler.registerCount, 1)
+        XCTAssertEqual(scheduler.scheduleCount, 0)
+        XCTAssertEqual(scheduler.cancelCount, 1)
+        XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories)
+        XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
+        XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
+    }
+
+    @MainActor
+    func testPremiumRuntimeColdLaunchFeatureGateFailsClosedWithRestoredPreference() async {
+        let defaultsSuite = "premium-runtime-cold-gated-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(false, forKey: "premium.automatic-push.v1")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            assistFeatureIsEnabled: false,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertEqual(scheduler.registerCount, 1)
+        XCTAssertEqual(scheduler.scheduleCount, 0)
+        XCTAssertEqual(scheduler.cancelCount, 1)
+
+        let completed = expectation(description: "feature-gated processing task completed")
+        let recorder = BackgroundTaskCompletionRecorder()
+        recorder.onComplete = { _ in completed.fulfill() }
+        scheduler.invoke(RecordingBackgroundProcessingTask(recorder: recorder))
+        await fulfillment(of: [completed], timeout: 2)
+        await harness.runtime.reconcileForeground()
+
+        XCTAssertEqual(recorder.values, [false])
+        XCTAssertEqual(scheduler.registerCount, 1)
+        XCTAssertEqual(scheduler.scheduleCount, 0)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0)
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 0)
+        XCTAssertTrue(harness.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testPremiumRuntimeAutomaticSyncSummaryUsesCurrentHealthNotStaleEnrollmentFailure() async {
+        var attention = RepoConfig(
+            repoURL: "owner/attention", branch: "main", authorName: "One",
+            authorEmail: "one@example.com", vaultFolderName: "attention"
+        )
+        attention.assist = RepoAssistSettings(
+            enabled: true,
+            health: RepoAssistHealth(kind: .attention, attention: .localChanges),
+            enrollmentStatus: .enrolled
+        )
+        var failed = RepoConfig(
+            repoURL: "owner/failed", branch: "main", authorName: "One",
+            authorEmail: "one@example.com", vaultFolderName: "failed"
+        )
+        failed.assist = RepoAssistSettings(
+            enabled: true,
+            health: RepoAssistHealth(kind: .failed, attention: .failed),
+            enrollmentStatus: .enrolled
+        )
+        var staleEnrollmentFailure = RepoConfig(
+            repoURL: "owner/stale", branch: "main", authorName: "One",
+            authorEmail: "one@example.com", vaultFolderName: "stale"
+        )
+        staleEnrollmentFailure.assist = RepoAssistSettings(
+            enabled: true,
+            health: RepoAssistHealth(kind: .upToDate),
+            enrollmentStatus: .failed
+        )
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: attention,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        harness.provider.repos = [attention, failed, staleEnrollmentFailure]
+
+        XCTAssertEqual(harness.runtime.automaticSyncSummary.failed, 2)
+
+        harness.provider.repos = [staleEnrollmentFailure]
+        XCTAssertEqual(harness.runtime.automaticSyncSummary.failed, 0)
     }
 
     @MainActor
@@ -1567,7 +1716,10 @@ final class SyncMDTests: XCTestCase {
         // No installation-scoped pull key: an enabled legacy install must
         // materialize the historical pull-only default under the fixed key.
 
-        let harness = await PremiumRuntimeTestHarness.make(defaultsSuite: defaultsSuite)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         defer { harness.cleanup() }
 
         XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories)
@@ -1579,7 +1731,10 @@ final class SyncMDTests: XCTestCase {
                       "The legacy value is adopted under the fixed key")
 
         harness.runtime.setAutomaticallyPullRemoteChanges(false)
-        let restored = await PremiumRuntimeTestHarness.make(defaultsSuite: defaultsSuite)
+        let restored = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         XCTAssertFalse(restored.runtime.automaticallyPullRemoteChanges, "Explicit pull-off must survive relaunch")
         XCTAssertFalse(restored.runtime.automaticallyPushLocalChanges)
         restored.cleanup()
@@ -1587,7 +1742,9 @@ final class SyncMDTests: XCTestCase {
 
     @MainActor
     func testPremiumRuntimeRelaunchPreservesEnabledNeitherMode() async {
-        let harness = await PremiumRuntimeTestHarness.make()
+        let harness = await PremiumRuntimeTestHarness.make(
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         defer { harness.cleanup() }
         await harness.runtime.setAutomaticallySyncAllRepositories(true)
         harness.runtime.setAutomaticallyPullRemoteChanges(false)
@@ -1595,7 +1752,10 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
 
-        let restored = await PremiumRuntimeTestHarness.make(defaultsSuite: harness.defaultsSuite)
+        let restored = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: harness.defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         XCTAssertTrue(restored.runtime.automaticallySyncAllRepositories)
         XCTAssertFalse(restored.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(restored.runtime.automaticallyPushLocalChanges)
@@ -1725,7 +1885,9 @@ final class SyncMDTests: XCTestCase {
 
     @MainActor
     func testPremiumRuntimeGlobalDisableClearsPublishingConsentAcrossRelaunchAndReenable() async {
-        let harness = await PremiumRuntimeTestHarness.make()
+        let harness = await PremiumRuntimeTestHarness.make(
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         defer { harness.cleanup() }
         await harness.runtime.setAutomaticallySyncAllRepositories(true)
         XCTAssertTrue(harness.runtime.automaticallyPullRemoteChanges)
@@ -1736,7 +1898,10 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(harness.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(harness.runtime.automaticallyPushLocalChanges)
 
-        let relaunched = await PremiumRuntimeTestHarness.make(defaultsSuite: harness.defaultsSuite)
+        let relaunched = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: harness.defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         XCTAssertFalse(relaunched.runtime.automaticallyPullRemoteChanges)
         XCTAssertFalse(relaunched.runtime.automaticallyPushLocalChanges)
         await relaunched.runtime.setAutomaticallySyncAllRepositories(true)
@@ -1789,6 +1954,7 @@ final class SyncMDTests: XCTestCase {
         let runtime = PremiumRuntime(
             coordinator: coordinator,
             repositoryProvider: provider,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler(),
             assistFeatureIsEnabled: { true },
             defaults: defaults
         )
@@ -1833,6 +1999,7 @@ final class SyncMDTests: XCTestCase {
         let runtime = PremiumRuntime(
             coordinator: coordinator,
             repositoryProvider: provider,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler(),
             assistFeatureIsEnabled: { true },
             defaults: defaults
         )
@@ -1855,7 +2022,10 @@ final class SyncMDTests: XCTestCase {
         var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
                               authorEmail: "one@example.com", vaultFolderName: "one")
         repo.gitState.commitSHA = String(repeating: "1", count: 40)
-        let harness = await PremiumRuntimeTestHarness.make(repo: repo)
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         defer { harness.cleanup() }
         await harness.runtime.setAutomaticallySyncAllRepositories(true)
 
@@ -1871,7 +2041,10 @@ final class SyncMDTests: XCTestCase {
         var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
                               authorEmail: "one@example.com", vaultFolderName: "one")
         repo.gitState.commitSHA = String(repeating: "1", count: 40)
-        let harness = await PremiumRuntimeTestHarness.make(repo: repo)
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
         defer { harness.cleanup() }
         await harness.runtime.setAutomaticallySyncAllRepositories(true)
 
@@ -7957,7 +8130,7 @@ private struct PremiumRuntimeTestHarness {
         defaultsSuite: String = "premium-runtime-\(UUID().uuidString)",
         repo existingRepo: RepoConfig? = nil,
         assistFeatureIsEnabled: Bool = true,
-        backgroundScheduler: (any PremiumBackgroundProcessingScheduling)? = nil
+        backgroundScheduler: any PremiumBackgroundProcessingScheduling
     ) async -> PremiumRuntimeTestHarness {
         let defaults = UserDefaults(suiteName: defaultsSuite)!
         var repo = existingRepo ?? RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
@@ -7977,8 +8150,8 @@ private struct PremiumRuntimeTestHarness {
         let runtime = PremiumRuntime(
             coordinator: coordinator,
             repositoryProvider: provider,
-            assistFeatureIsEnabled: { assistFeatureIsEnabled },
             backgroundScheduler: backgroundScheduler,
+            assistFeatureIsEnabled: { assistFeatureIsEnabled },
             defaults: defaults
         )
         return PremiumRuntimeTestHarness(

@@ -61,7 +61,9 @@ final class PremiumRuntime {
             included: repos.filter { $0.assist.enabled && !$0.assist.excludedFromAutomaticSync }.count,
             excluded: repos.filter { $0.assist.excludedFromAutomaticSync }.count,
             disabled: repos.filter { !$0.assist.enabled && !$0.assist.excludedFromAutomaticSync }.count,
-            failed: repos.filter { $0.assist.enrollmentStatus == .failed }.count
+            failed: repos.filter {
+                $0.assist.health.kind == .attention || $0.assist.health.kind == .failed
+            }.count
         )
     }
 
@@ -96,14 +98,12 @@ final class PremiumRuntime {
 
     init(coordinator: BackgroundSyncCoordinator,
          repositoryProvider: any AssistRepositoryProviding,
+         backgroundScheduler: any PremiumBackgroundProcessingScheduling,
          assistFeatureIsEnabled: @escaping () -> Bool = { FeatureFlags.gitSyncAssistEnabled },
-         backgroundScheduler: (any PremiumBackgroundProcessingScheduling)? = nil,
          foregroundReconciliationCooldown: TimeInterval = 30,
          defaults: UserDefaults = .standard) {
         self.coordinator = coordinator; self.repositoryProvider = repositoryProvider
-        let resolvedScheduler: any PremiumBackgroundProcessingScheduling
-            = backgroundScheduler ?? NoopPremiumBackgroundProcessingScheduler()
-        self.backgroundScheduler = resolvedScheduler
+        self.backgroundScheduler = backgroundScheduler
         self.assistFeatureIsEnabled = assistFeatureIsEnabled
         self.foregroundReconciliationCooldown = foregroundReconciliationCooldown
         self.defaults = defaults
@@ -120,7 +120,7 @@ final class PremiumRuntime {
         }
         coordinator.setAutomaticallyPullRemoteChanges(automaticallyPullRemoteChanges)
         coordinator.setAutomaticallyPushLocalChanges(automaticallyPushLocalChanges)
-        resolvedScheduler.register { [weak self] task in self?.handleBackgroundProcessing(task) }
+        backgroundScheduler.register { [weak self] task in self?.handleBackgroundProcessing(task) }
         updateBackgroundProcessingSchedule()
         repositoryProvider.setAssistConfigurationChangeHandler { [weak self] in self?.configurationChanged() }
         repositoryProvider.setAssistInventoryChangeHandler { [weak self] in self?.inventoryChanged() }
