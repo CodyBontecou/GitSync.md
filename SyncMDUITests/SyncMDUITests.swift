@@ -140,7 +140,7 @@ final class SyncMDUITests: XCTestCase {
     /// simulator's UserDefaults intentionally survive UI-test launches.
     func testBackgroundSyncBehaviorPersistsAndResetsSafeDefaults() {
         let app = XCUIApplication()
-        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launchArguments = signedOutLaunchArguments()
         app.launch()
         finishSignedOutEmptyLaunch(in: app)
 
@@ -343,7 +343,7 @@ final class SyncMDUITests: XCTestCase {
 
         // Normalize installation preferences before introducing any managed
         // repository, then relaunch into the local fixture with global mode off.
-        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launchArguments = signedOutLaunchArguments()
         app.launch()
         finishSignedOutEmptyLaunch(in: app)
         let emptyGlobalToggle = openBackgroundSyncSettings(in: app)
