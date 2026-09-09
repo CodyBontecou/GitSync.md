@@ -1,9 +1,26 @@
 # Background Sync — App Privacy inventory
 
-> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlement verification was removed entirely in `ed001a9` (later on 2026-09-02): Background Sync is now **included with the paid-up-front app purchase** — no subscriptions, StoreKit products, or entitlements remain; triggers are foreground activation plus BGAppRefreshTask as the primary closed-app trigger, with BGProcessingTask as fallback. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+> **Current architecture:** Background Sync is included with the paid-up-front app and runs on-device. It has no subscription, StoreKit entitlement verification, premium relay, device registration, GitHub App link, silent push, or server-side Background Sync record. Foreground activation plus primary BGAppRefresh and processing fallback are best-effort triggers. The App Store review-request API and the separate opt-in Push Sync APNs/relay feature are not Background Sync gates.
 
+## Current release privacy truth
 
-Use this as an implementation inventory when completing App Store Connect. Apple's current taxonomy and the actual production configuration are authoritative; re-audit immediately before submission.
+Background Sync sends repository data only as ordinary fetch/push traffic from the device to the Git provider selected by the user. It sends no Background Sync metadata to a first-party relay. Automatic publishing remains separately consented and default-off. Local policy, inclusion, health, and persisted `DebugLogger` entries remain in the app container/UserDefaults; validation exports must omit the full defaults domain and redact repository URLs, paths, content, credentials, identities, and object IDs.
+
+The shipped `Sync.md/PrivacyInfo.xcprivacy` is app-wide. Its conservative collected-data declarations—including PurchaseHistory and UserID—do **not** establish a Background Sync purchase or entitlement. Reconcile every declaration against the complete candidate binary and its other features (onboarding analytics, legacy paid-unlock code if still shipped, and separately opt-in Push Sync) before entering App Store Connect answers. The no-secret local artifact procedure is `docs/background-sync-validation.md`.
+
+Current submission checks:
+
+1. Inspect the exact candidate binary, privacy manifest, and network endpoints.
+2. Confirm no Background Sync StoreKit product, entitlement client, relay endpoint, or `.storekit` resource ships.
+3. Confirm both Background Sync identifiers/modes and on-device scheduling without describing simulator/debugger triggers as natural OS cadence.
+4. Review the separate onboarding analytics and Push Sync disclosures on their own merits.
+5. Record App Store privacy answers and reviewer/date in the private release bundle; never include credentials, repository identity/content/path, APNs values, or user identity.
+
+## Superseded relay/subscription privacy archive
+
+Everything below this heading describes the August 2026 premium-relay/subscription candidate. It is retained for provenance only and must not be used as a current App Store Connect checklist or as a description of current Background Sync.
+
+Use this as an implementation inventory only when interpreting that historical candidate. Apple's current taxonomy and the actual production configuration remain authoritative.
 
 The app target ships `Sync.md/PrivacyInfo.xcprivacy`. It declares no tracking and records approved required-reason API use for same-app `UserDefaults` (`CA92.1`) plus file timestamps inside the app container (`C617.1`) and user-selected security-scoped repositories (`3B52.1`). Its collected-data inventory conservatively covers app-install identifiers, coarse onboarding interactions, StoreKit transaction/subscription history, GitHub App numeric enrollment identifiers/selected branch, and opaque delivery diagnostics. These manifest declarations are separate from App Store Connect's privacy nutrition-label answers below: a privacy manifest does not replace production review or entering matching answers.
 

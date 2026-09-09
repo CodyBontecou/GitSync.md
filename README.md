@@ -30,7 +30,7 @@ GitSync.md clones GitHub repos directly to your iPhone or iPad using [libgit2](h
 - **Private repo support** — Works with both public and private repositories.
 - **Localization** — Catalogs cover 26 languages. Newly added Background Sync publishing and safety text currently falls back to English until the outstanding human translations recorded in `localization/reports/catalog-audit.json` are reviewed.
 - **Diagnostics** — In-app debug log viewer (filter/share/copy), feedback email with diagnostics, and a privacy data-request flow.
-- **Background Sync (included with the app)** — Attempts best-effort reconciliation whenever iOS grants background time. While Background Sync is enabled, **Pull remote changes** and **Commit and push local changes** are independent controls: use pull only, push only, both, or neither. Existing enabled installations migrate to pull on and publishing off. Automatic pulls are clean fast-forwards. Push-only mode still fetches and validates remote state but never updates the worktree; remote-ahead edits, divergence, auth/trust prompts, and branch mismatches stop for attention. Background Sync never rebases, merges, switches branches, resolves conflicts, recreates missing branches, overwrites concurrent work, or force-pushes.
+- **Background Sync (included with the app)** — Attempts best-effort reconciliation whenever iOS grants background time. While Background Sync is enabled, **Pull remote changes** and **Commit and push local changes** are independent controls: use pull only, push only, both, or neither. Existing enabled installations migrate to pull on and publishing off. Automatic pulls are clean fast-forwards. Push-only mode still fetches and validates remote state but never updates the worktree; remote-ahead edits, divergence, auth/trust prompts, and branch mismatches stop for attention. Background Sync never rebases, merges, switches branches, resolves conflicts, recreates missing branches, overwrites concurrent work, or force-pushes. Foreground reconciliation runs one repository at a time; iOS-granted processing may batch up to three.
 
 All existing manual Git operations, Shortcuts, callbacks, and local repository features remain part of the paid-up-front app and do not require Background Sync. iOS background-processing scheduling and foreground activation are best effort, controlled by iOS, and not guaranteed or truly real time. Background Sync runs **entirely on-device**: it is included with the paid-up-front app purchase (no subscription, entitlement verification, or StoreKit products remain), reconciliation runs through the app's own libgit2 engine, and repository names, URLs, contents, local paths, and Git credentials never go anywhere except directly to your configured Git provider during a normal fetch or push. There is no relay server, no push notification registration, and no Background Sync data stored off the device. (The optional **Push Sync** feature above is a separate matter: it is off by default and, when enabled, uses a small relay whose only job is delivering a visible "tap to sync" notification — the pull itself still runs on-device after you tap, and Background Sync works fully without it.)
 
@@ -75,7 +75,7 @@ GitSync.md/
 │       ├── KeychainService.swift    # Secure credential storage
 │       ├── CallbackURLHandler.swift # x-callback-url handler (Obsidian integration)
 │       ├── PremiumRuntime.swift     # Background Sync runtime (consents, scheduling, reconciliation)
-│       ├── BackgroundProcessingScheduler.swift # Best-effort BGProcessing registration/scheduling
+│       ├── BackgroundProcessingScheduler.swift # Primary app-refresh + processing-fallback scheduling
 │       ├── BackgroundSyncCoordinator.swift # Independently selected pull/push reconciliation and policies
 │       ├── RepositoryPushRunner.swift # Conflict-safe stage/commit/push and composed sync
 │       ├── RepositoryOperationCoordinator.swift # Per-repo operation serialization/deletion barrier
@@ -200,7 +200,7 @@ If your machine does not have an `iPhone 17` simulator, replace the destination 
 
 The local git tests create isolated temporary repositories via `FileManager.default.temporaryDirectory` and clean them up with `defer`. Fixture setup should use local-only commits (`commitLocalFixtureChanges` in `SyncMDTests`) unless the test is explicitly exercising push behavior; this avoids depending on expected push failures from repositories without an `origin` remote.
 
-The same unit gate runs in GitHub Actions via `.github/workflows/xctest.yml` on pull requests and pushes to `main`.
+The same unit gate runs in GitHub Actions via `.github/workflows/xctest.yml` on pull requests and pushes to `main`. Repeatable no-secret Background Sync configuration, simulator, LLDB, local Git fixture, persisted-log, and Release artifact checks are documented in [`docs/background-sync-validation.md`](docs/background-sync-validation.md) and implemented under [`scripts/background-sync/`](scripts/background-sync/).
 
 ### OAuth Server (Optional)
 
@@ -215,7 +215,7 @@ Using a **Personal Access Token** works without any server setup — just paste 
 
 ### Background Sync architecture (fully on-device)
 
-Background Sync has no server component. There are no subscriptions or entitlements to verify — Background Sync is included with the app purchase — and automatic work is scheduled through `BGTaskScheduler` (plus foreground activation), while every pull/push runs through the same in-app libgit2 engine used by manual Git. The historical webhook→APNs relay (Cloudflare Worker + D1 + Queues) was removed; existing installations keep their per-repository inclusion and policy settings, and enrollments/channels in persisted state are simply dormant fields. Note that [`push-worker/`](push-worker/) is an unrelated, optional relay for the Push Sync notification feature — it never performs reconciliation, stores only repository names and device tokens, and Background Sync works fully without it.
+Background Sync has no server component. There are no subscriptions or Background Sync entitlements to verify — it is included with the app purchase — and production explicitly injects `SystemPremiumBackgroundProcessingScheduler` into `PremiumRuntime`. `BGAppRefreshTask` (`com.bontecou.Sync-md.background-refresh`) is the primary closed-app opportunity; `BGProcessingTask` (`com.bontecou.Sync-md.background-sync`) is the longer fallback. Both are discretionary, and foreground activation is an additional trigger. Every pull/push runs through the same in-app libgit2 engine used by manual Git. The historical webhook→APNs relay (Cloudflare Worker + D1 + Queues) was removed; existing installations keep their per-repository inclusion and policy settings, and enrollments/channels in persisted state are simply dormant fields. Note that [`push-worker/`](push-worker/) and the app's APNs entitlement belong to the unrelated, optional Push Sync notification feature — it never performs reconciliation, and Background Sync works fully without it. The remaining StoreKit review-request API is also unrelated to Background Sync.
 
 ## Contributing
 

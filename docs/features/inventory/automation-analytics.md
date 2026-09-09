@@ -65,12 +65,12 @@ All: `action`, `status=ok`, plus:
 
 ## 3. Background Sync (legacy internal `Assist` identifiers)
 
-Source: `Sync.md/Services/BackgroundSyncCoordinator.swift` (entire file).
+Sources: `Sync.md/Services/BackgroundProcessingScheduler.swift`, `PremiumRuntime.swift`, `BackgroundSyncCoordinator.swift`, and `Sync_mdApp.swift`.
 
-- Info.plist `UIBackgroundModes = ["processing"]` and permits `com.bontecou.Sync-md.background-refresh` (BGAppRefreshTask — the primary closed-app freshness mechanism, short refresh windows granted generously for recently-used apps) plus `com.bontecou.Sync-md.background-sync` (BGProcessingTask fallback with longer runtime, network required, battery allowed; both use a 15-minute `earliestBeginDate` and remain discretionary — no guaranteed interval or real-time execution). Foreground activation is the other reconciliation trigger; there are no push wakes. Rapid scene bounces coalesce into a running foreground pass and a 30-second completion cooldown suppresses redundant passes; an explicit `reconcileNow()` ("Sync now" / "Retry") bypasses the cooldown.
+- Info.plist `UIBackgroundModes = ["fetch", "processing"]` and permits `com.bontecou.Sync-md.background-refresh` (BGAppRefreshTask — the primary closed-app freshness opportunity) plus `com.bontecou.Sync-md.background-sync` (BGProcessingTask fallback with longer runtime, network required, external power not required). Both use a 15-minute `earliestBeginDate` and remain discretionary—the date is not a guaranteed interval or real-time execution claim. Foreground activation is the other reconciliation trigger; there are no Background Sync push wakes. Rapid scene bounces coalesce into a running foreground pass and a 30-second completion cooldown suppresses redundant passes; an explicit `reconcileNow()` ("Sync now" / "Retry") bypasses the cooldown.
 - Background Sync has installation-scoped global consent, then independent automatic-pull and automatic-push preferences. Existing enabled installations migrate pull-on/push-off; publishing remains separately confirmed and default-off. Global disable clears both action preferences, and re-enable starts pull-on/push-off. Historical channels never imply consent.
 - Eligibility: every non-excluded cloned repository is included locally; no GitHub App linkage, enrollment, or wake channel exists.
-- Triggers: scene activation and best-effort `BGProcessingTask`. Processing is rescheduled at invocation, retained through exactly-once completion, and expiration completes false while cancelling processing flights.
+- Triggers: scene activation, primary best-effort `BGAppRefreshTask`, and fallback best-effort `BGProcessingTask`. Production must explicitly inject `SystemPremiumBackgroundProcessingScheduler` into `PremiumRuntime`; the omitted-injection default is no-op. Both request types are rescheduled at invocation, retained through exactly-once completion, and expiration completes false while cancelling processing flights. Foreground work is serialized one repository at a time; processing may batch up to three.
 - Per-repo policies (`RepoAssistSettings`): `excludedFromAutomaticSync`, `networkPolicy == .wifiOnly` (NWPathMonitor `SystemBackgroundSyncConditions`), and `powerPolicy == .externalPowerOnly` (batteryState charging/full). The automatic branch is `RepoConfig.branch`; the old duplicate automatic-sync branch editor is not a production entry point. Policy violations → `.deferred("Waiting for Wi-Fi."/"Waiting for external power.")` recorded as health `.deferred`.
 - Dispositions: `.completed(RepositoryReconciliationResult)` / `.deferred(String)` / `.ignored`. Composite results retain pull, push, final local SHA, and actual transfer truth even when a successful pull is followed by push attention/failure. Per-repo in-flight dedupe is generation keyed.
 - Health (`RepoAssistHealth`): kinds never/updated/upToDate/deferred/attention/failed; attention reasons localChanges, lfsHydration, diverged, remoteBranchMissing, authenticationOrTrust, wrongBranch, unavailable, unpushedCommit, failed. Successful pull transfer/SHA remains recorded if publication later fails; post-update LFS auth/trust maps to authentication attention.
@@ -78,7 +78,7 @@ Source: `Sync.md/Services/BackgroundSyncCoordinator.swift` (entire file).
 ## 4. Scene/URL handling, Files interop
 
 `Sync.md/Sync_mdApp.swift`:
-- `@UIApplicationDelegateAdaptor(SyncMDApplicationDelegate.self)` (APNs/notification handling lives there).
+- `@UIApplicationDelegateAdaptor(SyncAppDelegate.self)` handles APNs/notification routing for the separate opt-in Push Sync feature; it is not a Background Sync wake or entitlement gate.
 - `.onOpenURL` → `CallbackURLHandler`.
 - On `.active`: `validateClonedRepos()` (Files-app deletions), `refreshClonedRepos(deferredBy: 0.5, skipIfRecentlyStartedWithin: 15)`, `premiumRuntime.reconcileForeground()`; skipped under `MarketingCapture.isActive` (DEBUG).
 - DEBUG: `INJECT_PAT` / `SIMCTL_CHILD_INJECT_PAT` env-var PAT injection.
@@ -172,8 +172,8 @@ Not user-facing: ships only in DEBUG builds; excluded from App Store builds.
 - No dates attached to release notes in code (versions only).
 - Callback pull/push/sync mapping and Shortcuts push/sync customer-visible mapping have direct coverage; URL-opening/UI redirection, system App Intent invocation, and `OnboardingAnalyticsClient` still rely on underlying-path coverage rather than dedicated end-to-end tests.
 - x-callback-url errors carry no machine-readable codes — only `status=error` + localized `message`.
-- `SyncMDApplicationDelegate` (APNs delegate) not read in this pass; only its wiring in `Sync_mdApp.swift`.
+- `SyncAppDelegate` belongs to separately inventoried Push Sync; its APNs path must not be presented as Background Sync scheduling evidence.
 - No user-facing analytics opt-out toggle on iOS; worker DELETE endpoint exists but the client call site was not found in files read.
 - Worker paywall columns are not emitted by the iOS client — future feature placeholders, not shipped.
-- No BGAppRefresh usage; Background Sync combines `remote-notification`, discretionary `BGProcessingTask`, and foreground reconciliation.
-- **Resolved elsewhere**: the app delegate and push bridge were removed with the relay; foreground/processing reconciliation wiring is documented in `premium-assist.md` §4.
+- Simulator pending requests and debugger triggers do not establish unforced OS cadence; signed physical-device evidence remains an operator release gate (`docs/background-sync-validation.md`).
+- **Resolved:** Background Sync uses primary BGAppRefresh plus processing fallback and foreground reconciliation. APNs/app-delegate behavior remains only for the separate Push Sync feature; the removed premium relay does not participate.

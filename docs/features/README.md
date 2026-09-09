@@ -20,7 +20,7 @@
 | UI screens & interactions | `inventory/ui-views.md` | ✅ complete |
 | Core services (GitHub API, OAuth, Keychain, persistence, highlighting, feedback, logging, config, privacy) | `inventory/state-and-services.md` | ✅ complete |
 | AppState orchestration layer | `inventory/state-appstate.md` | ✅ complete |
-| Background Sync premium (client + relay + verifier) | `inventory/premium-assist.md` | ✅ complete |
+| Background Sync (on-device runtime + scheduler + reconciliation) | `inventory/premium-assist.md` | ✅ complete |
 | Automation, x-callback, analytics, release chronology, CI | `inventory/automation-analytics.md` | ✅ complete |
 | Infrastructure (OAuth server, site, site-router, fastlane, localization, distribution, worker topology) | `inventory/infrastructure.md` | ✅ complete |
 
@@ -32,8 +32,8 @@
 4. **Conflict resolution** — sessions from merge/rebase/revert/cherry-pick, ours/theirs/manual, side-by-side editor, rename/rename + delete/modify handling.
 5. **Git LFS** — hydration after clone/pull, pointer staging with auto-track policy + .gitattributes management, object upload before push, file locking + push guard, self-hosted endpoints, large-blob guard.
 6. **Editor & files** — file browser (create/rename, status badges), code editor (syntax highlighting, binary fallback), diff viewer, Files-app interop (Open in Files), external editor compatibility (real .git).
-7. **Automation & integrations** — x-callback-url API, pull/push/sync App Intents with fail-closed publishing, and best-effort remote-notification/BGProcessing Background Sync wakes.
-8. **Background Sync (premium subscription)** — independently controlled fail-closed automatic pull and separately consented automatic commit/push, including safe push-only mode without checkout, per-repo enrollment, network/power policies, health/attention surfacing, best-effort iOS processing, relay + StoreKit verification, and privacy guarantees.
+7. **Automation & integrations** — x-callback-url API, pull/push/sync App Intents with fail-closed publishing, foreground reconciliation, and best-effort BGAppRefresh/BGProcessing opportunities.
+8. **Background Sync (included with the app)** — independently controlled fail-closed automatic pull and separately consented automatic commit/push, including safe push-only mode without checkout, local per-repo inclusion, network/power policies, health/attention surfacing, best-effort on-device iOS scheduling, and privacy guarantees. There is no Background Sync relay, subscription, or StoreKit entitlement verification.
 9. **Onboarding & account UX** — tour, sign-in flows, default save location, demo mode, release notes (Notelet), StoreKit review prompts.
 10. **Diagnostics & feedback** — debug log viewer (filter/share/copy/clear), in-app feedback email, Discord community.
 11. **Analytics (onboarding funnel)** — opt-out-able, coarse event capture, Cloudflare Worker transport.

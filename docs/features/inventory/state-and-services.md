@@ -23,8 +23,8 @@ Sources read in full: `Services/GitHubService.swift`, `Services/OAuthService.swi
 ## 3. Keychain credential storage
 
 1. **Name**: `KeychainService`
-2. **Mechanics**: Generic-password items, service `com.bontecou.Sync-md`, accessibility **`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`** (Background Sync usable after first unlock; never migrates to backups). **Update-in-place-first** write strategy so a failed write cannot erase an existing credential or deletion marker. Lazy per-key accessibility migration (`migrateAccessibilityIfNeeded`, re-run for every known credential key; no global completion marker). `attributes()`, `delete(key:)`.
-3. **Stored keys**: GitHub account tokens (multi-account), per-repo credentials (HTTPS username+token, SSH private/public key + passphrase), premium installation identity + APNs generation, deletion credentials. (Exact key names in `state-appstate.md`.)
+2. **Mechanics**: Generic-password items, service `com.bontecou.Sync-md`, accessibility **`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`** (Background Sync credentials usable after first unlock; never migrate to backups). **Update-in-place-first** write strategy so a failed write cannot erase an existing credential. Lazy per-key accessibility migration (`migrateAccessibilityIfNeeded`, re-run for every known credential key; no global completion marker). `attributes()`, `delete(key:)`.
+3. **Stored keys**: GitHub account tokens (multi-account), per-repo credentials (HTTPS username+token, SSH private/public key + passphrase), and the separate Push Sync device secret. Background Sync has no installation identity, entitlement proof, APNs generation, or deletion credential.
 4. **Test**: `testKeychainCredentialsUseAfterFirstUnlockDeviceOnlyAccessibility`.
 5. **Source**: `KeychainService.swift`.
 
@@ -57,8 +57,8 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 ## 8. Feedback & support email
 
 1. **Name**: `FeedbackHelper`
-2. **Mechanics**: `supportEmail cody@isolated.tech`; diagnostics block (app version/build, iOS version, device model — non-identifying) auto-appended; MailCompose in-app sheet when available else `mailto:` URL open; **privacy data-request mailto** pre-populates subject "GitSync.md Privacy & Data Request" + template with BOTH opaque installation IDs (onboarding analytics install ID + Background Sync installation ID) for support verification — explicitly user-mediated (draft only, never auto-sent). Test: `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`.
-3. **User-visible**: Send Feedback row (AppSettings), Request data access/deletion (PremiumSettings privacy section).
+2. **Mechanics**: `supportEmail cody@isolated.tech`; diagnostics block (app version/build, iOS version, device model — non-identifying) auto-appended; MailCompose in-app sheet when available else `mailto:` URL open; **privacy data-request mailto** pre-populates subject "GitSync.md Privacy & Data Request" with the onboarding-analytics installation ID only. Background Sync has no server record or installation ID. The draft is explicitly user-mediated and never auto-sent. Test: `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`.
+3. **User-visible**: Send Feedback row (AppSettings), Request data access/deletion (Background Sync settings privacy section).
 4. **Source**: `FeedbackHelper.swift`.
 
 ## 9. Debug logging pipeline
@@ -70,9 +70,9 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 
 ## 10. Entitlements, Info.plist, privacy manifest
 
-- **Entitlements**: none (empty — the APNs entitlement was removed with the relay).
-- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [processing]` plus `BGTaskSchedulerPermittedIdentifiers: [com.bontecou.Sync-md.background-sync]` (discretionary network-capable processing); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]`; `INJECT_PAT` env (DEBUG). Background Sync runs entirely on-device — no relay URL key exists.
-- **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; collected data types declared: **DeviceID** (linked, analytics+appFunctionality), **ProductInteraction** (analytics), **PurchaseHistory** (appFunctionality), **UserID** (appFunctionality) — matching analytics + Background Sync flows. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
+- **Entitlements**: `aps-environment=development` for the separate, opt-in Push Sync notification feature (distribution provisioning rewrites the effective environment). Background Sync has no entitlement and no StoreKit entitlement verification.
+- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [fetch, processing]`; `BGTaskSchedulerPermittedIdentifiers: [com.bontecou.Sync-md.background-refresh, com.bontecou.Sync-md.background-sync]` (primary app refresh plus network-capable processing fallback); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]`; `INJECT_PAT` env (DEBUG). Background Sync runs entirely on-device—no relay URL key exists.
+- **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; the current app-wide manifest conservatively declares DeviceID, ProductInteraction, PurchaseHistory, UserID, OtherUserContent, and OtherDiagnosticData with their listed purposes. Those declarations do not imply a Background Sync purchase or entitlement and must be reconciled against the whole binary before release. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
 - **Source**: `Sync_md.entitlements`, `Info.plist`, `PrivacyInfo.xcprivacy`.
 
 ## Gaps / uncertainties
