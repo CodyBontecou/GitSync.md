@@ -12,14 +12,17 @@ Usage: scripts/background-sync/simulator-validate.sh --output DIR [options]
 Creates a fresh ephemeral iPhone simulator by default, statically validates the
 source, builds/installs/launches a no-signing Debug app, seeds deterministic
 Background Sync preferences (global on, pull on, push off), verifies empty repo
-inventory, inspects both pending BG requests through LLDB, captures redacted
+inventory, inspects the pending BG request queue through LLDB, captures redacted
 logs/state/screenshots, terminates/relaunches, and proves the selected persisted
 state survives that process transition.
 
 No credential is accepted or injected. Debug analytics is disabled. The fresh
 container has no repositories, so debugger task launches cannot perform Git
-traffic. This script inspects pending requests but only generates (does not run)
-the launch/expiration command files.
+traffic. A simulator that supports submissions must expose both pending IDs. If
+BackgroundTasks reports simulator-unavailable (domain/code 1), the queue must be
+empty and both independent registration/submission outcomes must be present in
+the redacted app log. This script only generates (does not run) the separate
+launch/expiration command files.
 
 Options:
   --output DIR             Operator-chosen evidence root (required).
@@ -345,14 +348,24 @@ for identifier in \
     done
 done
 
-# Pending-request inspection does attach and uses the public asynchronous
-# getPendingTaskRequests API. It requires the exact two-identifier set.
+# Pending-request inspection attaches and uses the public asynchronous
+# getPendingTaskRequests API. A partial/unexpected set fails immediately. An
+# empty queue is assessed later against persisted per-identifier registration
+# and BGTaskSchedulerErrorDomain/code-1 submission diagnostics, because current
+# Simulator runtimes can explicitly report scheduling as unavailable.
 "$SCRIPT_DIR/debug-bg-task.sh" \
     --udid "$UDID" \
     --pid "$APP_PID" \
     --output "$BS_RUN_DIR/pending-request-inspection" \
     --action pending \
     --timeout "$TIMEOUT_SECONDS"
+PENDING_CLASSIFICATION_FILE="$(find "$BS_RUN_DIR/pending-request-inspection" \
+    -type f -name pending-classification.txt -print -quit)"
+PENDING_REQUESTS_FILE="$(find "$BS_RUN_DIR/pending-request-inspection" \
+    -type f -name pending-requests.txt -print -quit)"
+[[ -f "$PENDING_CLASSIFICATION_FILE" && -f "$PENDING_REQUESTS_FILE" ]] \
+    || bs_die 'pending-request inspection did not emit its classification files'
+PENDING_CLASSIFICATION="$(cat "$PENDING_CLASSIFICATION_FILE")"
 
 LOG_PREDICATE='eventMessage CONTAINS[c] "com.bontecou.Sync-md.background-refresh" OR eventMessage CONTAINS[c] "com.bontecou.Sync-md.background-sync" OR eventMessage CONTAINS[c] "background-sync" OR subsystem CONTAINS[c] "BackgroundTask"'
 set +e
@@ -380,6 +393,125 @@ xcrun simctl terminate "$UDID" "$BUNDLE_ID"
     --udid "$UDID" \
     --output "$BS_RUN_DIR/persisted-state" \
     --phase after-relaunch-and-termination
+
+LATEST_STATE_LOG="$(find "$BS_RUN_DIR/persisted-state" \
+    -type f -name debug-log-background-sync.jsonl | LC_ALL=C sort | tail -n 1)"
+[[ -f "$LATEST_STATE_LOG" ]] || bs_die 'persisted-state extraction did not emit a Background Sync log'
+python3 - \
+    "$PENDING_CLASSIFICATION" \
+    "$PENDING_REQUESTS_FILE" \
+    "$LATEST_STATE_LOG" \
+    "$BS_RUN_DIR/scheduler-runtime-assessment.json" \
+    "$BS_RUN_DIR/scheduler-runtime-assessment.txt" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+classification, pending_path, log_path, json_path, report_path = sys.argv[1:]
+refresh = "com.bontecou.Sync-md.background-refresh"
+processing = "com.bontecou.Sync-md.background-sync"
+expected = {refresh, processing}
+pending_rows = [
+    line.strip() for line in Path(pending_path).read_text(encoding="utf-8").splitlines()
+    if line.strip()
+]
+pending_identifiers = {row.split("|", 1)[0] for row in pending_rows}
+events = [
+    json.loads(line) for line in Path(log_path).read_text(encoding="utf-8").splitlines()
+    if line.strip()
+]
+
+
+def matching_identifiers(messages, detail_fragment=None):
+    found = set()
+    for event in events:
+        if event.get("message") not in messages:
+            continue
+        detail = event.get("detail") or ""
+        if detail_fragment is not None and detail_fragment not in detail:
+            continue
+        for identifier in expected:
+            if f"identifier={identifier}" in detail:
+                found.add(identifier)
+    return found
+
+
+registered = matching_identifiers({
+    "Registered background task",
+    "Registered background task after retry",
+})
+unavailable = matching_identifiers(
+    {"Could not replace background task"},
+    "error=BGTaskSchedulerErrorDomain 1:",
+)
+checks = [
+    {
+        "name": "both task handlers registered in the app process",
+        "pass": registered == expected,
+        "detail": sorted(registered),
+    }
+]
+if classification == "exact_refresh_and_processing_set":
+    checks.append({
+        "name": "public pending-request API returned both exact identifiers",
+        "pass": pending_identifiers == expected and len(pending_rows) == 2,
+        "detail": pending_rows,
+    })
+    outcome = "exact-two-pending-identifiers"
+elif classification == "empty_simulator_queue":
+    checks.extend([
+        {
+            "name": "public pending-request API returned an empty queue",
+            "pass": not pending_rows,
+            "detail": pending_rows,
+        },
+        {
+            "name": "both submissions independently reported simulator-unavailable",
+            "pass": unavailable == expected,
+            "detail": sorted(unavailable),
+        },
+    ])
+    outcome = "simulator-scheduling-unavailable-domain-1"
+else:
+    checks.append({
+        "name": "pending classification is recognized",
+        "pass": False,
+        "detail": classification,
+    })
+    outcome = "invalid-pending-classification"
+
+passed = all(check["pass"] for check in checks)
+payload = {
+    "schema": "background-sync-simulator-runtime-assessment-v1",
+    "passed": passed,
+    "outcome": outcome,
+    "pending_identifiers": sorted(pending_identifiers),
+    "registered_identifiers": sorted(registered),
+    "simulator_unavailable_submission_identifiers": sorted(unavailable),
+    "checks": checks,
+    "boundary": (
+        "BGTaskSchedulerErrorDomain code 1 is the platform unavailable outcome. "
+        "An empty Simulator queue proves no scheduling success and cannot exercise a task handler; "
+        "signed physical-device evidence remains required."
+        if outcome == "simulator-scheduling-unavailable-domain-1"
+        else
+        "Pending Simulator requests are controlled process evidence only, not an OS grant or cadence measurement."
+    ),
+}
+Path(json_path).write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+with Path(report_path).open("w", encoding="utf-8") as report:
+    report.write("Background Sync simulator scheduler assessment\n")
+    report.write("===============================================\n\n")
+    report.write(f"Outcome: {outcome}\n\n")
+    for check in checks:
+        report.write(f"[{'PASS' if check['pass'] else 'FAIL'}] {check['name']}\n")
+        report.write(f"       {check['detail']}\n")
+    report.write("\nEVIDENCE BOUNDARY\n")
+    report.write(payload["boundary"] + "\n")
+raise SystemExit(0 if passed else 1)
+PY
+PENDING_OUTCOME="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["outcome"])' \
+    "$BS_RUN_DIR/scheduler-runtime-assessment.json")"
 
 # A retained target needs command files bound to a live final PID; files made
 # earlier remain immutable evidence of that earlier process and are stale after
@@ -411,7 +543,12 @@ fi
     printf '%s\n' '==========================================='
     printf '%s\n' '- Source and built app configuration were inspected.'
     printf '%s\n' '- A fresh/reset app with no repositories or credentials persisted pull-on/push-off preferences.'
-    printf '%s\n' '- The public pending-request API reported both exact task identifiers through a controlled LLDB attach/detach.'
+    if [[ "$PENDING_OUTCOME" == 'exact-two-pending-identifiers' ]]; then
+        printf '%s\n' '- The public pending-request API reported both exact task identifiers through a controlled LLDB attach/detach.'
+    else
+        printf '%s\n' '- The public pending-request API returned no requests; both handlers registered, but both submissions independently returned BGTaskSchedulerErrorDomain code 1 (Simulator unavailable).'
+        printf '%s\n' '- This run therefore proves no successful pending request and cannot exercise either handler through a scheduled request.'
+    fi
     printf '%s\n' '- Launch/expiration files were generated for both identifiers but were NOT executed by this workflow.'
     printf '%s\n' '- Simulator/debugger evidence does NOT prove an unforced iOS grant, cadence, timing, device signing, or production provisioning.'
 } >"$BS_RUN_DIR/evidence-boundary.txt"
@@ -422,6 +559,10 @@ bs_receipt_note "second_app_pid=$SECOND_PID"
 bs_receipt_note 'credentials_injected=false'
 bs_receipt_note 'repository_inventory=empty'
 bs_receipt_note 'automatic_preferences=global_true_pull_true_push_false'
-bs_receipt_note 'pending_request_inspection=exact_two_identifiers'
+bs_receipt_note "pending_request_inspection=$PENDING_OUTCOME"
+if [[ "$PENDING_OUTCOME" == 'simulator-scheduling-unavailable-domain-1' ]]; then
+    bs_receipt_note 'pending_request_success_claim=false'
+    bs_receipt_note 'simulator_handler_exercise_claim=false'
+fi
 bs_receipt_note 'simulated_launch_expiration=NOT_EXECUTED_COMMAND_FILES_ONLY'
 bs_receipt_note 'os_cadence_claim=false'

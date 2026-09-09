@@ -14,8 +14,10 @@ Usage: scripts/background-sync/debug-bg-task.sh \\
   --udid SIMULATOR_UDID --pid APP_PID --output DIR \\
   --action pending|launch|expire [--identifier TASK_ID] [options]
 
-Debugger-assisted, simulator-only BGTask inspection. The launch and expiration
-operations issue Apple's documented debug selectors:
+Debugger-assisted, simulator-only BGTask inspection. Pending inspection accepts
+either the exact two-identifier set or an empty simulator queue, but rejects a
+partial/unexpected set. An empty queue is evidence, not scheduling success. The
+launch and expiration operations issue Apple's documented debug selectors:
   _simulateLaunchForTaskWithIdentifier:
   _simulateExpirationForTaskWithIdentifier:
 
@@ -298,13 +300,22 @@ if [[ "$ACTION" == 'pending' ]]; then
     done
     [[ -s "$CALLBACK_FILE" ]] || bs_die 'pending-request callback did not persist output within 15 seconds'
     cp -- "$CALLBACK_FILE" "$BS_RUN_DIR/pending-requests.txt"
-    python3 - "$BS_RUN_DIR/pending-requests.txt" "$REFRESH_ID" "$PROCESSING_ID" <<'PY'
+    pending_classification="$(python3 - "$BS_RUN_DIR/pending-requests.txt" "$REFRESH_ID" "$PROCESSING_ID" <<'PY'
 import sys
 path, refresh, processing = sys.argv[1:]
 rows = [line.strip() for line in open(path, encoding="utf-8") if line.strip()]
 identifiers = [row.split("|", 1)[0] for row in rows]
-if sorted(identifiers) != sorted([refresh, processing]):
+if sorted(identifiers) == sorted([refresh, processing]):
+    print("exact_refresh_and_processing_set")
+elif not identifiers:
+    print("empty_simulator_queue")
+else:
     raise SystemExit(f"pending identifier mismatch: {identifiers!r}")
 PY
-    bs_receipt_note 'pending_identifiers=exact_refresh_and_processing_set'
+)"
+    printf '%s\n' "$pending_classification" >"$BS_RUN_DIR/pending-classification.txt"
+    bs_receipt_note "pending_identifiers=$pending_classification"
+    if [[ "$pending_classification" == 'empty_simulator_queue' ]]; then
+        bs_receipt_note 'pending_scheduling_success_claim=false'
+    fi
 fi

@@ -36,12 +36,12 @@ Copy the **current template** below into the private release record for each can
 | Gate | Evidence reference | Result |
 |---|---|---|
 | Fresh/reset empty container; no credential; global on / pull on / push off | | ☐ Pass ☐ Fail |
-| Both exact pending requests returned by public pending-request API | | ☐ Pass ☐ Fail |
+| Pending assessment: both exact requests, or empty queue classified with independent code-1 Simulator-unavailable diagnostics for both IDs | | ☐ Pending IDs pass ☐ Simulator unavailable ☐ Fail |
 | Preferences and redacted `background-sync` DebugLogger extraction survive terminate/relaunch | | ☐ Pass ☐ Fail |
-| Refresh launch selector invoked with explicit attach/detach + timeout | | ☐ Pass ☐ Fail ☐ Not run |
-| Refresh expiration selector invoked while active | | ☐ Pass ☐ Fail ☐ Not run |
-| Processing launch selector invoked with explicit attach/detach + timeout | | ☐ Pass ☐ Fail ☐ Not run |
-| Processing expiration selector invoked while active | | ☐ Pass ☐ Fail ☐ Not run |
+| Refresh launch selector invoked with explicit attach/detach + timeout | | ☐ Pass ☐ Blocked by no pending request ☐ Fail ☐ Not run |
+| Refresh expiration selector invoked while active | | ☐ Pass ☐ Blocked by no active task ☐ Fail ☐ Not run |
+| Processing launch selector invoked with explicit attach/detach + timeout | | ☐ Pass ☐ Blocked by no pending request ☐ Fail ☐ Not run |
+| Processing expiration selector invoked while active | | ☐ Pass ☐ Blocked by no active task ☐ Fail ☐ Not run |
 | Generated-only files are labeled NOT PERFORMED | | ☐ Pass ☐ Fail ☐ N/A |
 | Evidence explicitly makes no natural OS cadence claim | | ☐ Pass ☐ Fail |
 

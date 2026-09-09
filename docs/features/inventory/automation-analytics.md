@@ -175,5 +175,5 @@ Not user-facing: ships only in DEBUG builds; excluded from App Store builds.
 - `SyncAppDelegate` belongs to separately inventoried Push Sync; its APNs path must not be presented as Background Sync scheduling evidence.
 - No user-facing analytics opt-out toggle on iOS; worker DELETE endpoint exists but the client call site was not found in files read.
 - Worker paywall columns are not emitted by the iOS client — future feature placeholders, not shipped.
-- Simulator pending requests and debugger triggers do not establish unforced OS cadence; signed physical-device evidence remains an operator release gate (`docs/background-sync-validation.md`).
+- Simulator pending requests and debugger triggers do not establish unforced OS cadence. Some Simulator runtimes reject both submissions with `BGTaskSchedulerErrorDomain` code 1; an empty queue in that case is unavailable evidence, not handler execution. Signed physical-device evidence remains an operator release gate (`docs/background-sync-validation.md`).
 - **Resolved:** Background Sync uses primary BGAppRefresh plus processing fallback and foreground reconciliation. APNs/app-delegate behavior remains only for the separate Push Sync feature; the removed premium relay does not participate.

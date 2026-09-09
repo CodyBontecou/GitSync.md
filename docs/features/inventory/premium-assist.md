@@ -63,7 +63,7 @@ Everything is included with the one-time purchase: manual Git (clone/fetch/pull/
 ## 10. Validation boundary
 
 - `scripts/background-sync/inspect-configuration.sh` fails if production omits the system scheduler or if either identifier/mode/semantic drifts.
-- `scripts/background-sync/simulator-validate.sh` uses a fresh, credential-free, empty-repository simulator; it inspects pending requests and persists redacted preference/log evidence across termination and relaunch. Generated LLDB launch/expiration commands cover both identifiers.
+- `scripts/background-sync/simulator-validate.sh` uses a fresh, credential-free, empty-repository simulator; it inspects the pending queue and persists redacted preference/log evidence across termination and relaunch. It accepts both exact pending IDs, or classifies an empty queue only when both submissions independently report Simulator-unavailable code 1—without claiming scheduling or handler execution. Generated LLDB launch/expiration commands cover both identifiers.
 - `scripts/background-sync/create-local-fixtures.sh` creates local bare-remote safety oracles without network or a push command. `audit-release-artifact.sh` strengthens the CI Release simulator resource audit.
 - Simulator/debugger triggers are controlled tests, never evidence of real OS cadence. Signed physical-device discretionary scheduling and provider safety remain separate operator gates; see `docs/background-sync-validation.md`.
 

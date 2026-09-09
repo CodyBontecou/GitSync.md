@@ -40,6 +40,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output", required=True, type=Path, help="existing private evidence directory")
     parser.add_argument("--expect-seeded", action="store_true", help="fail unless deterministic pull-on/push-off values are present")
+    parser.add_argument(
+        "--debug-plist",
+        type=Path,
+        help=(
+            "optional app-container preferences plist used only for DebugLogger data; "
+            "simctl defaults export can omit app-process writes"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -112,9 +120,21 @@ def main() -> int:
     )
 
     debug_blob = domain.get("debug_log_entries")
+    debug_log_source = "simctl-defaults-export"
     decoded_entries: list[object] = []
     decode_error: str | None = None
-    if debug_blob is not None:
+    if args.debug_plist is not None:
+        try:
+            debug_domain = plistlib.loads(args.debug_plist.read_bytes())
+        except Exception as exc:  # plistlib errors vary by input format
+            decode_error = f"app preferences plist decode failed: {type(exc).__name__}"
+        else:
+            if not isinstance(debug_domain, dict):
+                decode_error = "app preferences plist root is not a dictionary"
+            elif "debug_log_entries" in debug_domain:
+                debug_blob = debug_domain["debug_log_entries"]
+                debug_log_source = "app-preferences-plist"
+    if debug_blob is not None and decode_error is None:
         if not isinstance(debug_blob, bytes):
             decode_error = f"unexpected DebugLogger storage type: {type(debug_blob).__name__}"
         else:
@@ -154,6 +174,8 @@ def main() -> int:
                 "exported_background_sync_entry_count": len(selected),
                 "omitted_other_category_count": omitted,
                 "decode_error": decode_error,
+                "debug_log_source": debug_log_source,
+                "raw_preferences_persisted": False,
                 "redaction": "Other categories are omitted; credential, URL, path, object-ID, and email shapes are redacted.",
             },
             indent=2,

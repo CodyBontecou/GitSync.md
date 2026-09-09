@@ -119,11 +119,17 @@ PREFERENCES_FILE="$DATA_CONTAINER/Library/Preferences/$BUNDLE_ID.plist"
     printf 'absolute_container_path_persisted=false\n'
 } >"$BS_RUN_DIR/container-inspection.txt"
 
-# defaults export emits the full domain only into this pipe. The sanitizer
-# persists the fixed preference keys and redacted Background Sync log entries;
-# raw domain bytes never touch disk.
+# defaults export emits the full domain only into this pipe. Simulator
+# CFPreferences can keep app-process DebugLogger writes in the container plist
+# while `simctl spawn defaults export` exposes the externally seeded keys. Give
+# the sanitizer that plist as a read-only fallback for the one DebugLogger key;
+# it persists neither raw source and emits only the fixed/redacted projection.
+SANITIZER_ARGS=(--output "$BS_RUN_DIR" --expect-seeded)
+if [[ -f "$PREFERENCES_FILE" ]]; then
+    SANITIZER_ARGS+=(--debug-plist "$PREFERENCES_FILE")
+fi
 xcrun simctl spawn "$UDID" defaults export "$BUNDLE_ID" - \
-    | python3 "$SCRIPT_DIR/_sanitize-defaults.py" --output "$BS_RUN_DIR" --expect-seeded \
+    | python3 "$SCRIPT_DIR/_sanitize-defaults.py" "${SANITIZER_ARGS[@]}" \
     >"$BS_RUN_DIR/extraction-summary.txt"
 
 bs_receipt_note "bundle_id=$BUNDLE_ID"

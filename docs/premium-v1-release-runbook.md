@@ -29,7 +29,7 @@ The simulator workflow is intentionally credential-free and uses an empty app co
 scripts/background-sync/simulator-validate.sh --output "$OUT"
 ```
 
-It inspects both pending identifiers and generates explicit attach/detach LLDB launch and expiration files for both identifiers. Generated-only receipts are not execution evidence. Any LLDB execution must retain its timeout/output receipt. Simulator and debugger evidence does not prove natural iOS cadence or signed-device behavior.
+It inspects the pending queue and generates explicit attach/detach LLDB launch and expiration files for both identifiers. A supporting Simulator returns both exact pending IDs. A runtime that reports `BGTaskSchedulerErrorDomain` code 1 may return an empty queue; the workflow accepts that only with independent registration and code-1 submission diagnostics for both IDs, and explicitly records that scheduling and handler exercise were not proved. Generated-only receipts are not execution evidence. Any LLDB execution must retain its timeout/output receipt. Simulator and debugger evidence does not prove natural iOS cadence or signed-device behavior.
 
 ## Current signed physical-device release gate
 

@@ -26,9 +26,9 @@ Every public shell command uses `set -euo pipefail`, validates arguments/depende
 | Command | Purpose |
 |---|---|
 | `scripts/background-sync/inspect-configuration.sh` | Lint source plists and verify identifiers, modes, scheduler/runtime semantics, explicit production composition, concurrency limits, StoreKit absence, entitlements, and the current CI baseline. |
-| `scripts/background-sync/simulator-validate.sh` | Create/reset a safe simulator app, build/install/launch, seed pull-on/push-off preferences, inspect pending requests, persist redacted logs/state, and generate all launch/expiration LLDB files. |
-| `scripts/background-sync/debug-bg-task.sh` | Fail-closed LLDB attach/invoke/detach for pending, launch, or expiration. Only accepts an empty marked validation container. |
-| `scripts/background-sync/extract-simulator-state.sh` | Export only fixed Background Sync preference keys and redacted `background-sync` DebugLogger entries; never copy the full defaults domain or Keychain. |
+| `scripts/background-sync/simulator-validate.sh` | Create/reset a safe simulator app, build/install/launch, inspect the pending queue, classify exact pending IDs or the explicit Simulator-unavailable outcome, persist redacted logs/state, and generate all launch/expiration LLDB files. |
+| `scripts/background-sync/debug-bg-task.sh` | Fail-closed LLDB attach/invoke/detach for pending, launch, or expiration. It rejects partial/unexpected pending sets and records an empty queue without treating it as scheduling success. Only accepts an empty marked validation container. |
+| `scripts/background-sync/extract-simulator-state.sh` | Export only fixed Background Sync preference keys and redacted `background-sync` DebugLogger entries; handles Simulator CFPreferences split visibility without copying a raw defaults domain or Keychain. |
 | `scripts/background-sync/create-local-fixtures.sh` | Build six deterministic local bare-remote Git states and before/expected-after ref/status evidence without network or a push command. |
 | `scripts/background-sync/audit-release-artifact.sh` | Build or inspect a Release simulator `.app`, extending CI's privacy/StoreKit resource audit with exact Background Sync configuration checks. |
 
@@ -64,9 +64,12 @@ The workflow performs these checks in order:
 4. app launch with no credentials, no repositories, publishing off, and analytics off;
 5. built Info.plist inspection and a screenshot;
 6. generated launch/expiration LLDB files for both identifiers (not executed);
-7. controlled LLDB pending-request inspection, requiring the exact two-identifier set;
+7. controlled LLDB pending-request inspection, rejecting any partial or unexpected identifier set;
 8. redacted BackgroundTasks/system logs;
-9. terminate, narrow UserDefaults/DebugLogger extraction, relaunch/terminate, and a second extraction proving persistence across process transitions.
+9. terminate, narrow UserDefaults/DebugLogger extraction, relaunch/terminate, and a second extraction proving persistence across process transitions;
+10. a machine-readable assessment that accepts either both exact pending identifiers, or an empty queue only when both handlers registered and both submissions independently logged `BGTaskSchedulerErrorDomain` code 1 (unavailable).
+
+Apple defines code 1 as the unavailable outcome and explicitly lists a Simulator that does not support background processing as one cause. The unavailable assessment is a successful **collection/classification** result, not successful scheduling: its receipt sets `pending_request_success_claim=false` and `simulator_handler_exercise_claim=false`. A partial queue, missing registration, a different submission error, or one-sided outcome still fails.
 
 The created simulator is deleted at the end. Retain it only when you intend to run the generated LLDB files:
 
@@ -100,7 +103,7 @@ The helper detects an outer `thermal_guard.py run` ancestor, so an inherited `LO
 
 ## 3. Pending requests and debugger triggers
 
-`simulator-validate.sh` uses `BGTaskScheduler.getPendingTaskRequests` through a bounded LLDB attach and requires both identifiers in the persisted callback result. The command file always contains explicit `process attach --pid …`, expression, `process detach`, and `quit`. A process-group timeout kills a stuck LLDB and returns failure. If Developer Mode, debugger authorization, process identity, the callback, or expression is unsupported, the script fails and makes no execution claim.
+`simulator-validate.sh` uses `BGTaskScheduler.getPendingTaskRequests` through a bounded LLDB attach. Both identifiers are a successful pending result. An empty result is retained and can pass only through the strict Simulator-unavailable assessment described above; it proves no request was scheduled. Partial/unknown sets fail. The command file always contains explicit `process attach --pid …`, expression, `process detach`, and `quit`. A process-group timeout kills a stuck LLDB and returns failure. If Developer Mode, debugger authorization, process identity, the callback, or expression is unsupported, the script fails and makes no execution claim.
 
 For a retained validation simulator, obtain the UDID/PID from its receipt and run the following commands **one at a time**. Launch and expiration are controlled debugger tests, so they are intentionally separate from the default workflow:
 
@@ -116,7 +119,7 @@ scripts/background-sync/debug-bg-task.sh --output "$OUT" --udid "$SIMULATOR_UDID
   --action expire --identifier 'com.bontecou.Sync-md.background-sync' --timeout 30
 ```
 
-Invoke expiration while the corresponding simulated task is active; an expiration selector issued after completion cannot demonstrate cancellation. Preserve each receipt and LLDB output. Selector acceptance alone does not prove handler completion—correlate it with app state/log evidence.
+Invoke expiration while the corresponding simulated task is active; an expiration selector issued after completion cannot demonstrate cancellation. Preserve each receipt and LLDB output. Selector acceptance alone does not prove handler completion—correlate it with app state/log evidence. If the simulator assessment reports code 1 with an empty queue, a launch selector normally has no scheduled request to launch. Record the system rejection/absence of handler evidence as a Simulator limitation; do not mark launch, completion, or expiration behavior passed. Those checks remain signed-device gates.
 
 To generate a command file without attaching, add `--generate-only`. Its receipt says `NOT_PERFORMED_GENERATED_ONLY`; generated commands are never represented as executed evidence.
 
@@ -136,7 +139,7 @@ When Xcode already owns the process, do not run a generated `process attach`; us
 
 ## 4. Persisted DebugLogger and defaults evidence
 
-`DebugLogger` persists its 500-entry JSON buffer under UserDefaults key `debug_log_entries`. The extraction command streams `defaults export` directly into a sanitizer and writes only:
+`DebugLogger` persists its 500-entry JSON buffer under UserDefaults key `debug_log_entries`. Simulator CFPreferences can expose externally seeded keys through `simctl spawn defaults export` while app-process writes appear only in the container preferences plist. The extraction command streams the exported domain and lets the sanitizer read only the DebugLogger value from that plist as a fallback. Neither raw source is copied. It writes only:
 
 - the four fixed preferences above;
 - entries whose category is exactly `background-sync`;
@@ -152,7 +155,7 @@ xcrun simctl get_app_container "$SIMULATOR_UDID" bontecou.Sync-md data
 
 The relevant plist is `Library/Preferences/bontecou.Sync-md.plist`. Do not copy or publish the whole file. Prefer `extract-simulator-state.sh`, which requires the workflow's safety marker and records no absolute container path.
 
-The current scheduler logs submission **failures** to DebugLogger; successful registration/submission must be evidenced by exact pending requests and runtime behavior rather than inferred from an empty error log.
+The current scheduler logs per-identifier registration and deduplicated submission outcomes to DebugLogger. A success log is useful diagnostics, but successful submission should still be corroborated by the exact pending set where the runtime supports it. Code 1 plus an empty Simulator queue is explicitly unavailable evidence, never successful scheduling or handler execution.
 
 ## 5. Deterministic local Git fixtures
 
