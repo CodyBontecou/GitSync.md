@@ -1,9 +1,32 @@
 # Premium v1 / Background Sync completion audit
 
-> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlements are verified locally with StoreKit 2; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+> **Current architecture:** Background Sync is included with the app and runs entirely on-device. It has no subscription, StoreKit entitlement verification, premium relay, GitHub App enrollment, or Background Sync push registration. `BGAppRefreshTask` is the primary closed-app opportunity and `BGProcessingTask` the fallback; foreground activation is additional. The App Store review request and separate Push Sync APNs entitlement/relay are unrelated gates.
 
+## Current candidate audit
 
-> Historical naming note: this August 2026 audit originally shipped the customer-facing name **GitSync Assist**. Current product copy uses **Background Sync**; stable product IDs and internal `assist` identifiers remain unchanged.
+This audit is not a release certificate. Generate fresh, redacted evidence for each candidate with `docs/background-sync-validation.md` and `scripts/background-sync/`.
+
+| Current gate | Required evidence | Status rule |
+|---|---|---|
+| Production scheduler composition | `Sync_mdApp.init` explicitly injects `SystemPremiumBackgroundProcessingScheduler`; static inspection passes | Block if runtime falls back to the no-op scheduler |
+| Source and built configuration | Both exact identifiers; `fetch` + `processing`; plist/entitlement/privacy lint | Block on any mismatch |
+| Scheduler semantics | app refresh primary, processing fallback, 15-minute earliest date (not cadence), reschedule, cancellation/expiration, exactly-once completion | Source/unit evidence plus device observation |
+| Reconciliation concurrency | foreground serialized one repo at a time; processing up to three | Source/unit/device evidence |
+| No Background Sync purchase gate | no StoreKit product/config/entitlement verification; review-request API and Push Sync APNs remain separate | Source and Release artifact evidence |
+| Safety fixtures | up-to-date, fast-forward, safe push, dirty, diverged, wrong branch with before/after refs/status | Deterministic local evidence; real-provider writes remain separately authorized |
+| Release simulator artifact | app/resources, both IDs/modes, privacy manifest, no `.storekit`, available config/entitlement diagnostics | Useful but unsigned simulator evidence only |
+| Signed physical device | registration/submission/handler/reschedule/expiration for both tasks; policy and Git safety matrix | Required before release; user/OS-gated |
+| Unforced discretionary grant | timestamped physical-device observation if iOS grants one | Best-effort; never substitute a debugger trigger or promise cadence |
+| Force-quit behavior | expected iOS suppression explicitly recorded | Required documentation boundary |
+| Evidence hygiene | receipts private and redacted; no credentials/repository identity/content/path/user identity | Block on leakage |
+
+No current relay deployment, subscription product, StoreKit verifier, GitHub App, silent APNs, or relay-deletion drill belongs in this release gate. Keep real-provider operations sequential, disposable, and explicitly user-authorized; local validation performs none.
+
+## Superseded August 2026 relay/subscription audit
+
+Everything below this heading is retained as detailed historical provenance for the former GitSync Assist candidate. Its relay, subscription, entitlement, APNs-silent-wake, GitHub App, and deployment criteria are superseded and must not be counted as current Background Sync evidence.
+
+> Historical naming note: this August 2026 audit originally shipped the customer-facing name **GitSync Assist**. Current product copy uses **Background Sync**; former product IDs and internal `assist` identifiers appear below only to explain that candidate.
 
 Audit date: 2026-08-13. This is a prompt-to-artifact checklist, not a release certificate.
 

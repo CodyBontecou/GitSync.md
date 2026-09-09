@@ -120,7 +120,7 @@
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
 | 8.3 | Best-effort automation with independent automatic-pull and automatic-push controls. Existing enabled installations migrate pull-on/push-off. Pulls are clean fast-forward only; push-only validates remote state without checkout; concurrent remote/local changes stop; never merge/rebase/switch/resolve/force-push | Core | `PremiumSettingsView`, `PremiumRuntime`, `RepositoryReconciliationRunner` |
-| 8.4 | Local automatic enrollment: every non-excluded cloned repository is enrolled on-device on its configured branch across foreground, discretionary background (app-refresh + processing), and manual passes; uncloned repositories are disabled with a clone hint and per-repo exclusion is honored — no GitHub App installation, server enrollment, or event wakes remain (relay removed in d8c6e98) | Core | `reconcileAutomaticRepository`, `BackgroundProcessingScheduler`, `RepoAssistSettings.excludedFromAutomaticSync` |
+| 8.4 | Local automatic inclusion: every non-excluded cloned repository uses its configured branch across foreground, discretionary background, and manual passes. Production explicitly injects `SystemPremiumBackgroundProcessingScheduler`: BGAppRefreshTask (`com.bontecou.Sync-md.background-refresh`) is primary and BGProcessingTask (`com.bontecou.Sync-md.background-sync`) fallback; both reschedule best-effort and never imply cadence. Uncloned/excluded repositories remain disabled locally; no GitHub App/server enrollment/event wake exists | Core | `Sync_mdApp.init`, `reconcileAutomaticRepository`, `SystemPremiumBackgroundProcessingScheduler`, `RepoAssistSettings.excludedFromAutomaticSync` |
 | 8.5 | Network (any/Wi-Fi), power (any/external), and include/exclude policy per repo; no duplicate automatic-sync branch setting | Core | `RepoAssistSettings`, `SettingsView` |
 | 8.6 | Reconciliation counts/progress plus enrollment and health/attention states surfaced (enrolled/foreground-only/excluded/failed; waiting/updated/up-to-date/deferred/attention) | Core | `PremiumAssistSummary`, production settings views |
 | 8.11 | Privacy: Background Sync runs entirely on-device — no relay, no push registration, no server-side Background Sync data; repository names, URLs, contents, local paths, and credentials go only to the user's configured Git provider during normal fetch/push. (`premium-v1-app-privacy.md` is retained as historical record only; the opt-in Push Sync relay is category 15, not Background Sync) | Core | `inventory/premium-assist.md` §8, `PrivacyInfo.xcprivacy` |
@@ -164,8 +164,8 @@
 
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
-| 13.1 | Privacy manifest (no tracking; analytics + Background Sync declared) | Core | `PrivacyInfo.xcprivacy`, test |
-| 13.2 | Entitlements/capabilities: keychain, discretionary BGProcessing (app refresh + processing) identifier | Core | `Sync_md.entitlements`, `Info.plist`, `BackgroundProcessingScheduler.swift` |
+| 13.1 | Privacy manifest (no tracking; app-wide collected-data and required-reason API declarations) | Core | `PrivacyInfo.xcprivacy`, test |
+| 13.2 | Background configuration: `fetch` + `processing` modes and exact app-refresh + processing permitted identifiers. No Background Sync entitlement exists; `aps-environment` belongs separately to Push Sync | Core | `Sync_md.entitlements`, `Info.plist`, `SystemPremiumBackgroundProcessingScheduler` |
 | 13.3 | iPad support (single-column layouts; no dedicated split-view) | Core | ui-views gap note |
 | 13.4 | iOS 17+ target, libgit2 1.9.2 xcframework w/ libssh2+OpenSSL memory credentials | Dev | build script |
 
@@ -184,6 +184,7 @@
 | 14.9 | AI-assisted App Store marketing image generator (OpenAI backgrounds + screenshot compositing) | Dev | `scripts/app-store-images/` |
 | 14.10 | ASC pricing script (JWT-signed REST price update) | Dev | `scripts/set_price_paid.py` |
 | 14.11 | Legacy paid-unlock receipt verifier Worker (freemium-era; app now paid-up-front, worker dormant) | Dev (legacy) | `worker/src/index.ts` |
+| 14.12 | No-secret Background Sync validation: static source/config lint, safe simulator + persisted defaults/log extraction, fail-closed LLDB task commands, deterministic local bare-remote fixtures, and strengthened Release simulator artifact audit with timestamped receipts | Dev | `scripts/background-sync/`, `docs/background-sync-validation.md` |
 
 ## 15. Push Sync & quick sync triggers (widget / Control Center / notifications)
 

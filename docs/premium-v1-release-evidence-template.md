@@ -1,13 +1,104 @@
-# Background Sync — Premium v1 release evidence bundle
+# Background Sync — release evidence bundle
 
-> **2026-09-02:** Background Sync was re-architected to run entirely on-device; the premium relay, storekit-verifier, APNs registration, and GitHub App linkage no longer exist. Relay-era checklist rows below are retained for history only.
+> **Current architecture:** Background Sync is included and on-device. It has no subscription, StoreKit entitlement verification, premium relay, GitHub App linkage, silent-push registration, or server-side Background Sync data. App-review StoreKit use and the separate Push Sync APNs entitlement/relay are outside this gate.
 
+Copy the **current template** below into the private release record for each candidate. Do not commit completed evidence containing device, repository, account, or user identifiers. Never paste credentials, APNs values, repository content/path/name, or raw UserDefaults. Use redacted screenshots and opaque references.
 
-Copy this file into the private release record for each candidate build. Do not commit completed evidence that contains private account, device, repository, delivery, transaction, or infrastructure identifiers.
+## Current template
 
-Never paste StoreKit JWS values, bearer/deletion capabilities, APNs tokens or private keys, Git credentials, webhook secrets/signatures, repository contents/paths/names, or user identity into this record. Use redacted screenshots and opaque evidence references.
+### 1. Candidate identity
 
-## 1. Candidate identity
+| Field | Value |
+|---|---|
+| Git commit / source archive hash | |
+| Marketing version / build number | |
+| Xcode / Swift version | |
+| Release configuration | |
+| Signed archive identifier (private reference) | |
+| Tester / reviewer | |
+| UTC test window | |
+
+### 2. Local configuration and artifact gates
+
+| Gate | Evidence reference | Result |
+|---|---|---|
+| Static inspection passes, including explicit `SystemPremiumBackgroundProcessingScheduler` production injection | | ☐ Pass ☐ Fail |
+| Source Info.plist has exact app-refresh + processing identifiers and `fetch` + `processing` | | ☐ Pass ☐ Fail |
+| Scheduler semantics: refresh primary, processing fallback, reschedule, cancellation/expiration, exactly-once completion | | ☐ Pass ☐ Fail |
+| Foreground limit 1; processing limit 3 | | ☐ Pass ☐ Fail |
+| No Background Sync StoreKit product/config/entitlement check | | ☐ Pass ☐ Fail |
+| Release simulator `.app`, executable, privacy manifest, and no `.storekit` pass artifact audit | | ☐ Pass ☐ Fail |
+| Simulator signature/config diagnostics retained and labeled unsigned/ad-hoc | | ☐ Pass ☐ Fail |
+| Deterministic six-scenario local Git fixture receipt passes | | ☐ Pass ☐ Fail |
+
+### 3. Safe simulator and debugger evidence
+
+| Gate | Evidence reference | Result |
+|---|---|---|
+| Fresh/reset empty container; no credential; global on / pull on / push off | | ☐ Pass ☐ Fail |
+| Both exact pending requests returned by public pending-request API | | ☐ Pass ☐ Fail |
+| Preferences and redacted `background-sync` DebugLogger extraction survive terminate/relaunch | | ☐ Pass ☐ Fail |
+| Refresh launch selector invoked with explicit attach/detach + timeout | | ☐ Pass ☐ Fail ☐ Not run |
+| Refresh expiration selector invoked while active | | ☐ Pass ☐ Fail ☐ Not run |
+| Processing launch selector invoked with explicit attach/detach + timeout | | ☐ Pass ☐ Fail ☐ Not run |
+| Processing expiration selector invoked while active | | ☐ Pass ☐ Fail ☐ Not run |
+| Generated-only files are labeled NOT PERFORMED | | ☐ Pass ☐ Fail ☐ N/A |
+| Evidence explicitly makes no natural OS cadence claim | | ☐ Pass ☐ Fail |
+
+### 4. Signed physical-device configuration and scheduling
+
+| Case | Device / iOS | App state | Expected | Actual / timestamps | Evidence | Result |
+|---|---|---|---|---|---|---|
+| Built plist/config + signed provisioning inspection | | | Both IDs/modes; Background Sync has no entitlement; Push Sync APNs separate | | | ☐ |
+| Registration and submission | | Foreground | Both handlers register and eligible requests submit | | | ☐ |
+| Unforced app-refresh grant | | Background | Best-effort only; no deadline/cadence promise | | | ☐ |
+| Unforced processing grant | | Background | Best-effort fallback only | | | ☐ |
+| Handler reschedule/completion | | Background | Next requests submitted; exactly-once completion | | | ☐ |
+| Debugger expiration | | Background | Processing flights cancel; task completes false | | | ☐ |
+| Locked/suspended after first unlock | | Locked | Best-effort, safely bounded | | | ☐ |
+| Force-quit | | Force-quit | Expected iOS suppression documented | | | ☐ |
+| Low Power / offline→online | | Mixed | No unsafe mutation; later opportunity may reconcile | | | ☐ |
+| Wi-Fi-only / external-power-only | | Mixed | Deferred until policy permits | | | ☐ |
+
+A debugger-triggered row cannot satisfy either unforced-grant row. If iOS does not grant a task during the window, record “not observed”; do not invent cadence evidence.
+
+### 5. Repository safety matrix
+
+Use a dedicated disposable repository. Record only opaque fixture/case IDs and HEAD/index/worktree hashes. Real-provider operations require explicit user authorization, run sequentially, and keep automatic push off except for the single planned publication case.
+
+| Case | Expected | Before evidence | After evidence | Result |
+|---|---|---|---|---|
+| Clean up to date | No mutation | | | ☐ |
+| Clean fast-forward | Exact fast-forward | | | ☐ |
+| Safe ahead-only push | Guarded non-force publication | | | ☐ |
+| Dirty/staged/untracked | Attention; preserve bytes/index/HEAD | | | ☐ |
+| Diverged | Attention; no merge/rebase/push | | | ☐ |
+| Wrong/missing branch or branch race | Attention; no switch/checkout | | | ☐ |
+| Auth/trust failure | Attention; no destructive mutation | | | ☐ |
+| External folder unavailable | Deferred/attention; no mutation | | | ☐ |
+| LFS success/failure | Hydrate or explicit attention; preserve safety | | | ☐ |
+| Foreground repository count >1 | Serialized one at a time | | | ☐ |
+| Processing repository count >3 | At most three concurrently | | | ☐ |
+
+### 6. Current release decision
+
+- [ ] Every required current row has concrete, redacted evidence.
+- [ ] Failures link to fixes and complete reruns.
+- [ ] No simulator/debugger result is represented as an unforced OS grant or cadence measurement.
+- [ ] No credential, token, repository identity/content/path, device/user identity, or raw defaults domain appears in the bundle.
+- [ ] Real-provider writes, if any, were explicitly authorized and sequential.
+
+**Decision:** ☐ Approved ☐ Blocked
+
+**Approver / UTC timestamp:**
+
+**Residual risks / App Review notes:**
+
+## Superseded relay/subscription evidence template
+
+Everything below this heading belongs to the August 2026 premium-relay/subscription candidate. It is retained as provenance only and must not be required, completed, or presented as current Background Sync evidence.
+
+### Historical 1. Candidate identity
 
 | Field | Value |
 |---|---|

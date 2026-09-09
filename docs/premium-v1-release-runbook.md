@@ -1,13 +1,59 @@
-# Background Sync — Premium v1 release runbook
+# Background Sync — release runbook
 
-> **2026-09-02 architecture change:** Background Sync now runs **entirely on-device**. The premium-relay Worker (webhook→APNs wakes, D1, Queues), the storekit-verifier service, device registration, GitHub App linking, enrollments/channels, silent push handling, and terminal relay-data deletion were all removed. Entitlements are verified locally with StoreKit 2; triggers are foreground activation and BGProcessingTask. The relay-era content below is retained as historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+> **Current architecture:** Background Sync is included with the paid-up-front app and runs entirely on-device. There is no subscription, StoreKit entitlement verification, premium relay, GitHub App enrollment, silent push, or Background Sync server record. The remaining App Store review-request API and separate opt-in Push Sync APNs/relay feature are not Background Sync gates.
 
-> **2026-09-02 follow-up (ed001a9, later the same day):** the subscription was removed — Background Sync is now **included with the app purchase**. `GitSyncAssist.storekit`, `PremiumStorefront.swift` (StoreKit 2 purchase/restore/manage and on-device entitlement verification), the paywall, and every in-app purchase surface were deleted; the only gate is the user's explicit opt-in (plus independent pull/push consent). The subscription-era operational content below is historical record only — see `docs/features/inventory/premium-assist.md` for the current architecture.
+## Current product and safety contract
 
+- Production explicitly injects `SystemPremiumBackgroundProcessingScheduler` into `PremiumRuntime`; retaining the runtime's no-op default in production is a release blocker.
+- `com.bontecou.Sync-md.background-refresh` is the primary `BGAppRefreshTask` opportunity and requires `fetch`; `com.bontecou.Sync-md.background-sync` is the `BGProcessingTask` fallback and requires `processing`. Processing requests require network and allow battery power.
+- Both requests use a 15-minute `earliestBeginDate`, reschedule when invoked, and remain discretionary. Never translate that date, a pending request, or a debugger trigger into an interval, reliability, real-time, or OS-cadence claim.
+- Foreground reconciliation runs one repository at a time. Processing may batch up to three.
+- One installation opt-in covers non-excluded cloned/managed repositories. Automatic pull and push are independent; automatic push is default-off and separately confirmed.
+- Automatic pull is clean fast-forward only. Push-only mode may fetch validation metadata but cannot update the worktree. Dirty/diverged/wrong-or-missing-branch/auth/trust/concurrent-change cases stop for attention. Automation never merges, rebases, switches/recreates branches, resolves conflicts, overwrites work, or force-pushes.
+- Background Sync sends only normal device-to-provider Git traffic. No first-party Background Sync server receives repository or credential data.
 
-Background Sync is an **optional** auto-renewable subscription layered on the existing paid-up-front Git client. One explicit installation-level opt-in covers all current and future cloned or managed repositories, with per-repository exclusions. While enabled, automatic pull and automatic publishing are independent controls; publishing retains separate default-off consent. GitHub App repositories receive best-effort event hints, while discretionary iOS processing may attempt whichever actions are selected. Neither path is guaranteed or truly real time.
+## Current local gates
 
-## Product and safety contract
+Use [`docs/background-sync-validation.md`](background-sync-validation.md). Store all outputs under an operator-chosen private directory.
+
+```bash
+OUT=/path/chosen/by/operator
+scripts/background-sync/inspect-configuration.sh --output "$OUT"
+scripts/background-sync/create-local-fixtures.sh --output "$OUT" --cleanup
+scripts/background-sync/audit-release-artifact.sh --output "$OUT"
+```
+
+The simulator workflow is intentionally credential-free and uses an empty app container with pull on and publishing off:
+
+```bash
+scripts/background-sync/simulator-validate.sh --output "$OUT"
+```
+
+It inspects both pending identifiers and generates explicit attach/detach LLDB launch and expiration files for both identifiers. Generated-only receipts are not execution evidence. Any LLDB execution must retain its timeout/output receipt. Simulator and debugger evidence does not prove natural iOS cadence or signed-device behavior.
+
+## Current signed physical-device release gate
+
+No script in this lane performs these user/operator-gated actions. Before release:
+
+- [ ] inspect the signed candidate's built Info.plist for both identifiers and `fetch` + `processing`;
+- [ ] inspect signed provisioning/entitlements separately, treating APNs as Push Sync—not Background Sync entitlement or StoreKit gating;
+- [ ] after first unlock, observe registration, submission, invocation, rescheduling, completion, and expiration for both task types with redacted timestamps;
+- [ ] seek at least one true unforced discretionary grant, while recording that it is best-effort and OS/user-gated; never substitute simulator/debugger execution;
+- [ ] record expected force-quit suppression and do not promise execution after force-quit;
+- [ ] verify foreground serialization and processing's maximum batch of three;
+- [ ] cover Low Power/offline, network/power policies, locked/background/suspended, unavailable external storage, clean fast-forward/up-to-date, dirty/diverged/wrong-or-missing branch, auth/trust, races, and LFS attention;
+- [ ] perform any real-provider operation only in a dedicated disposable repository, sequentially, after explicit user authorization; keep publishing off except for the one planned push case;
+- [ ] keep evidence private and remove credentials, device/user/repository identity, content, and paths before sharing.
+
+Current App Review wording must say that Background Sync is included, on-device, discretionary, independently controls pull/push, and has no subscription entitlement. Do not reuse the historical note below.
+
+## Superseded premium-relay/subscription runbook
+
+Everything below this heading describes the August 2026 optional-subscription/relay candidate. It is retained as operational provenance only. Its App Store products, StoreKit verifier, GitHub App, Cloudflare relay, silent APNs, relay deletion, and old release blockers are not current Background Sync requirements.
+
+Background Sync was an **optional** auto-renewable subscription layered on the existing paid-up-front Git client in that historical candidate. The following contract is superseded.
+
+## Historical product and safety contract
 
 - Products: `com.bontecou.gitsync.assist.monthly` and `com.bontecou.gitsync.assist.annual` in one subscription group (`gitsync-assist`). Tentative US storefront positioning is $1.99/month or $14.99/year; App Store Connect is authoritative.
 - Existing manual clone, fetch, pull, stage, commit, branch, merge, rebase, conflict, push, Shortcuts, and callback behavior is not paywalled.
