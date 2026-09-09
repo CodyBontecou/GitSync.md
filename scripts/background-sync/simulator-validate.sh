@@ -311,7 +311,7 @@ launch_app() {
         SIMCTL_CHILD_INJECT_PAT= \
         SIMCTL_CHILD_ONBOARDING_ANALYTICS_ENABLED=0 \
         SIMCTL_CHILD_ONBOARDING_ANALYTICS_INGEST_TOKEN= \
-        xcrun simctl launch --terminate-running "$UDID" "$BUNDLE_ID")"
+        xcrun simctl launch --terminate-running-process "$UDID" "$BUNDLE_ID")"
     printf '%s\n' "$launch_output" >"$BS_RUN_DIR/${label}-launch.txt"
     python3 -c 'import re,sys; m=re.search(r":\s*([0-9]+)\s*$", sys.stdin.read()); print(m.group(1) if m else "")' <<<"$launch_output"
 }
