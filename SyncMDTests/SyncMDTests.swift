@@ -340,6 +340,118 @@ final class SyncMDTests: XCTestCase {
         }
     }
 
+    func testGitHubAppLinkStartAndCallbackAreStrictlyStateBound() throws {
+        let state = String(repeating: "a", count: 43)
+        let start = GitHubAppLinkStartResponse(
+            ok: true,
+            state: state,
+            url: URL(string: "https://github.com/apps/gitsync-md-push-sync/installations/new?state=\(state)")!
+        )
+        XCTAssertNoThrow(try GitHubAppLinkService.validateStart(start))
+        XCTAssertNoThrow(try GitHubAppLinkService.parseCallbackURL(
+            URL(string: "syncmd://github-app?state=\(state)&result=connected"),
+            expectedState: state
+        ))
+
+        XCTAssertThrowsError(try GitHubAppLinkService.parseCallbackURL(
+            URL(string: "syncmd://github-app?state=wrong&result=connected"),
+            expectedState: state
+        )) { error in
+            XCTAssertEqual(error as? GitHubAppLinkError, .stateMismatch)
+        }
+        for url in [
+            "https://github-app?state=\(state)&result=connected",
+            "syncmd://github-app/path?state=\(state)&result=connected",
+            "syncmd://github-app?state=\(state)&state=\(state)&result=connected",
+            "syncmd://github-app?state=\(state)&result=connected&error=cancelled",
+            "syncmd://github-app?state=\(state)&result=unknown"
+        ] {
+            XCTAssertThrowsError(try GitHubAppLinkService.parseCallbackURL(
+                URL(string: url),
+                expectedState: state
+            ))
+        }
+    }
+
+    func testGitHubAppLinkCallbackMapsBoundedRelayErrors() {
+        let state = String(repeating: "b", count: 43)
+        for (code, expected) in [
+            ("cancelled", GitHubAppLinkError.cancelled),
+            ("authorization_failed", GitHubAppLinkError.authorizationFailed),
+            ("account_owner_required", GitHubAppLinkError.accountOwnerRequired),
+            ("verification_failed", GitHubAppLinkError.verificationFailed)
+        ] {
+            XCTAssertThrowsError(try GitHubAppLinkService.parseCallbackURL(
+                URL(string: "syncmd://github-app?state=\(state)&result=error&error=\(code)"),
+                expectedState: state
+            )) { error in
+                XCTAssertEqual(error as? GitHubAppLinkError, expected)
+            }
+        }
+    }
+
+    func testGitHubAppLinkStartRejectsOffOriginOrMismatchedState() {
+        let state = String(repeating: "c", count: 43)
+        for url in [
+            "https://evil.example/apps/gitsync/installations/new?state=\(state)",
+            "http://github.com/apps/gitsync/installations/new?state=\(state)",
+            "https://github.com/apps/gitsync/installations/new?state=wrong",
+            "https://github.com/settings/installations?state=\(state)"
+        ] {
+            let start = GitHubAppLinkStartResponse(ok: true, state: state, url: URL(string: url)!)
+            XCTAssertThrowsError(try GitHubAppLinkService.validateStart(start))
+        }
+    }
+
+    func testGitHubAppStatusDecodesEpochMillisecondsWithoutReceivingCredentials() throws {
+        let data = Data(#"{"ok":true,"installations":[{"id":123,"accountLogin":"octo-org","accountType":"Organization","repositorySelection":"all","htmlURL":"https://github.com/settings/installations/123","status":"active","connectedAt":1800000000123}]}"#.utf8)
+        let status = try JSONDecoder().decode(GitHubAppLinkStatusResponse.self, from: data)
+        let installations = try GitHubAppLinkService.validateStatus(status)
+        XCTAssertEqual(installations.count, 1)
+        XCTAssertTrue(status.ok)
+        XCTAssertEqual(status.installations.first?.id, 123)
+        XCTAssertEqual(status.installations.first?.accountLogin, "octo-org")
+        XCTAssertEqual(status.installations.first?.coversAllRepositories, true)
+        let connectedDate = try XCTUnwrap(status.installations.first?.connectedDate)
+        XCTAssertEqual(connectedDate.timeIntervalSince1970, 1_800_000_000.123, accuracy: 0.001)
+        let wireText = String(decoding: data, as: UTF8.self)
+        XCTAssertFalse(wireText.contains("token"))
+        XCTAssertFalse(wireText.contains("authorizingUser"))
+    }
+
+    func testGitHubAppStatusRejectsOffOriginManagementURL() throws {
+        let installation = PushSyncGitHubInstallation(
+            id: 123,
+            accountLogin: "octo-org",
+            accountType: "Organization",
+            repositorySelection: "all",
+            htmlURL: try XCTUnwrap(URL(string: "https://evil.example/installations/123")),
+            status: "active",
+            connectedAt: 1
+        )
+        XCTAssertThrowsError(try GitHubAppLinkService.validateStatus(
+            GitHubAppLinkStatusResponse(ok: true, installations: [installation])
+        )) { error in
+            XCTAssertEqual(error as? GitHubAppLinkError, .verificationFailed)
+        }
+    }
+
+    func testGitHubAppDeviceRequestBodiesContainOnlyOpaqueDeviceLinkage() throws {
+        let deviceData = PushSyncManager.makeDeviceRequestBody(deviceSecret: "opaque-device")
+        XCTAssertEqual(
+            try JSONSerialization.jsonObject(with: deviceData) as? [String: String],
+            ["deviceSecret": "opaque-device"]
+        )
+        let unlinkData = PushSyncManager.makeInstallationRequestBody(
+            deviceSecret: "opaque-device",
+            installationID: 123
+        )
+        let unlink = try XCTUnwrap(JSONSerialization.jsonObject(with: unlinkData) as? [String: Any])
+        XCTAssertEqual(unlink["deviceSecret"] as? String, "opaque-device")
+        XCTAssertEqual(unlink["installationID"] as? Int, 123)
+        XCTAssertEqual(unlink.count, 2)
+    }
+
     func testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo() async throws {
         let fixture = try GitFixtureFactory.make(state: .dirty)
         defer { fixture.cleanup() }
@@ -947,10 +1059,13 @@ final class SyncMDTests: XCTestCase {
 
     func testPremiumReleaseConfigurationAndBackgroundCapabilities() throws {
         let info = Bundle.main.infoDictionary ?? [:]
-        // "processing" covers on-device Background Sync; "fetch" was added
-        // intentionally (b26eb3a) so BGAppRefreshTask app-refresh tasks can be
-        // scheduled.
-        XCTAssertEqual(info["UIBackgroundModes"] as? [String], ["fetch", "processing"])
+        // `fetch` and `processing` back the discretionary scheduler. The
+        // separately opted-in Push Sync path adds `remote-notification` so a
+        // visible alert can also request a headless targeted reconciliation.
+        XCTAssertEqual(
+            info["UIBackgroundModes"] as? [String],
+            ["fetch", "processing", "remote-notification"]
+        )
         XCTAssertEqual(
             info["BGTaskSchedulerPermittedIdentifiers"] as? [String],
             SystemPremiumBackgroundProcessingScheduler.permittedIdentifiers
@@ -2018,6 +2133,45 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testPushTimeoutCannotCancelForegroundFlightItJoined() async {
+        let gate = AsyncGate()
+        let commit = String(repeating: "1", count: 40)
+        let repository = FakeGitRepository(
+            repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: commit, changeCount: 0)
+        )
+        repository.executePullOnlyGate = gate
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = commit
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: repository)
+        let coordinator = BackgroundSyncCoordinator(
+            repositoryProvider: provider,
+            conditionsProvider: PermissiveBackgroundSyncConditions()
+        )
+        coordinator.setAutomaticallyPullRemoteChanges(true)
+
+        let foreground = Task { @MainActor in await coordinator.reconcileForeground() }
+        await waitUntil { repository.executePullOnlyCallCount == 1 }
+        let push = Task { @MainActor in
+            await coordinator.reconcilePush(repoIDs: [repo.id], hintID: "joined-push")
+        }
+        for _ in 0..<10 { await Task.yield() }
+
+        coordinator.cancelPush(hintID: "joined-push")
+        await gate.open()
+
+        let foregroundResults = await foreground.value
+        let foregroundResult = foregroundResults[repo.id]
+        let pushResult = await push.value
+        guard let foregroundResult, case .completed = foregroundResult else {
+            return XCTFail("Push timeout cancelled pre-existing foreground work: \(String(describing: foregroundResult))")
+        }
+        XCTAssertEqual(pushResult, foregroundResult)
+        XCTAssertEqual(repository.executePullOnlyCallCount, 1)
+    }
+
+    @MainActor
     func testConcurrentForegroundReconciliationsCoalesceIntoOnePass() async {
         var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
                               authorEmail: "one@example.com", vaultFolderName: "one")
@@ -2454,9 +2608,42 @@ final class SyncMDTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["token"] as? String, String(repeating: "a", count: 64))
         XCTAssertEqual(json?["deviceSecret"] as? String, "test-secret-123")
-        let names = ((json?["repos"] as? [[String: Any]]) ?? []).compactMap { $0["name"] as? String }
+        let names = json?["repos"] as? [String] ?? []
         XCTAssertEqual(names.count, 1)
         XCTAssertTrue(names.first?.lowercased().hasSuffix("/travel") == true, "expected owner/travel, got \(names)")
+    }
+
+    @MainActor
+    func testPushSyncRegistrationFingerprintIsStableAcrossInventoryOrder() {
+        var alpha = RepoConfig(repoURL: "https://github.com/Acme/Alpha.git", branch: "main", authorName: "A", authorEmail: "a@b.c", vaultFolderName: "alpha")
+        alpha.gitState.commitSHA = "abc123"
+        var beta = RepoConfig(repoURL: "https://github.com/Acme/Beta.git", branch: "main", authorName: "A", authorEmail: "a@b.c", vaultFolderName: "beta")
+        beta.gitState.commitSHA = "def456"
+        let first = PushSyncManager.makeRegistrationBody(
+            tokenHex: String(repeating: "a", count: 64),
+            repos: [alpha, beta],
+            deviceSecret: "test-secret-123"
+        )
+        let reordered = PushSyncManager.makeRegistrationBody(
+            tokenHex: String(repeating: "a", count: 64),
+            repos: [beta, alpha, alpha],
+            deviceSecret: "test-secret-123"
+        )
+        let changedToken = PushSyncManager.makeRegistrationBody(
+            tokenHex: String(repeating: "b", count: 64),
+            repos: [alpha, beta],
+            deviceSecret: "test-secret-123"
+        )
+
+        XCTAssertEqual(first, reordered)
+        XCTAssertEqual(
+            PushSyncManager.registrationFingerprint(for: first),
+            PushSyncManager.registrationFingerprint(for: reordered)
+        )
+        XCTAssertNotEqual(
+            PushSyncManager.registrationFingerprint(for: first),
+            PushSyncManager.registrationFingerprint(for: changedToken)
+        )
     }
 
     @MainActor
@@ -2464,6 +2651,187 @@ final class SyncMDTests: XCTestCase {
         let data = Data([0x00, 0x0f, 0xff, 0xa5])
         XCTAssertEqual(PushSyncManager.hexString(from: data), "000fffa5")
         XCTAssertEqual(PushSyncManager.hexString(from: Data()).count, 0)
+    }
+
+    @MainActor
+    func testPushSyncDefaultWorkerURLMatchesProductionRelay() {
+        XCTAssertEqual(
+            PushSyncManager.defaultWorkerURL.absoluteString,
+            "https://syncmd-push.costream.workers.dev"
+        )
+    }
+
+    func testPushSyncEventParserAcceptsCombinedAlertWakeAndRejectsUnsafeRouting() throws {
+        let payload: [AnyHashable: Any] = [
+            "aps": [
+                "alert": ["title": "owner/vault", "body": "Update available"],
+                "content-available": 1,
+                "interruption-level": "passive",
+            ],
+            "repo": "Owner/Vault",
+            "branch": "feature/mobile-notes",
+            "head": String(repeating: "A", count: 40),
+            "hint": "delivery-1234",
+        ]
+        let event = try XCTUnwrap(PushSyncEvent.parse(payload))
+        XCTAssertEqual(event.repositoryFullName, "owner/vault")
+        XCTAssertEqual(event.branch, "feature/mobile-notes")
+        XCTAssertEqual(event.headSHA, String(repeating: "a", count: 40))
+        XCTAssertEqual(event.hintID, "delivery-1234")
+
+        for invalid: [AnyHashable: Any] in [
+            ["aps": ["alert": "missing wake"], "repo": "owner/vault", "branch": "main", "hint": "event-1234"],
+            ["aps": ["content-available": 0], "repo": "owner/vault", "branch": "main", "hint": "event-1234"],
+            ["aps": ["content-available": 1], "repo": "../vault", "branch": "main", "hint": "event-1234"],
+            ["aps": ["content-available": 1], "repo": "owner/private/vault", "branch": "main", "hint": "event-1234"],
+            ["aps": ["content-available": 1], "repo": "owner/vault", "branch": "", "hint": "event-1234"],
+            ["aps": ["content-available": 1], "repo": "owner/vault", "branch": "main", "hint": "bad hint/value"],
+            ["aps": ["content-available": 1], "repo": "owner/vault", "branch": "main", "head": "not-a-sha", "hint": "event-1234"],
+            ["aps": ["content-available": 1], "repo": "owner/vault", "branch": "main", "head": String(repeating: "a", count: 41), "hint": "event-1234"],
+            ["aps": ["content-available": 1], "repo": "owner/vault", "branch": "main", "head": String(repeating: "Ａ", count: 40), "hint": "event-1234"],
+        ] {
+            XCTAssertNil(PushSyncEvent.parse(invalid))
+        }
+    }
+
+    @MainActor
+    func testPushSyncNotificationBridgeCompletesNewDataOnceBeforeTimeout() async throws {
+        let bridge = PushSyncNotificationBridge()
+        let completed = expectation(description: "remote notification completed")
+        completed.assertForOverFulfill = true
+        var results: [UIBackgroundFetchResult] = []
+        var cancellationCount = 0
+        bridge.connectForTesting(
+            timeoutNanoseconds: 50_000_000,
+            process: { _ in
+                .completed(.pullOnly(.updated(
+                    branch: "main",
+                    commitSHA: String(repeating: "a", count: 40)
+                )))
+            },
+            cancel: { _ in cancellationCount += 1 }
+        )
+
+        bridge.didReceive(userInfo: pushSyncWakePayload()) { result in
+            results.append(result)
+            completed.fulfill()
+        }
+        await fulfillment(of: [completed], timeout: 2)
+        try await Task.sleep(for: .milliseconds(100))
+
+        XCTAssertEqual(results, [.newData])
+        XCTAssertEqual(cancellationCount, 0)
+        XCTAssertEqual(
+            DebugLogger.shared.entries.last?.message,
+            "APNs background reconciliation transferred data"
+        )
+    }
+
+    @MainActor
+    func testPushSyncNotificationBridgeTimesOutCancelsAndCompletesExactlyOnce() async {
+        let bridge = PushSyncNotificationBridge()
+        let operationGate = AsyncGate()
+        let cancelled = expectation(description: "targeted push work cancelled")
+        let completed = expectation(description: "remote notification completed once")
+        completed.assertForOverFulfill = true
+        var results: [UIBackgroundFetchResult] = []
+        bridge.connectForTesting(
+            timeoutNanoseconds: 1_000_000,
+            process: { _ in
+                await operationGate.wait()
+                return .completed(.pullOnly(.updated(
+                    branch: "main",
+                    commitSHA: String(repeating: "a", count: 40)
+                )))
+            },
+            cancel: { _ in cancelled.fulfill() }
+        )
+
+        bridge.didReceive(userInfo: pushSyncWakePayload()) { result in
+            results.append(result)
+            completed.fulfill()
+        }
+        await fulfillment(of: [cancelled, completed], timeout: 2)
+        await operationGate.open()
+        for _ in 0..<20 { await Task.yield() }
+
+        XCTAssertEqual(results, [.failed])
+        XCTAssertEqual(
+            DebugLogger.shared.entries.last?.message,
+            "APNs background reconciliation timed out"
+        )
+    }
+
+    @MainActor
+    func testRemotePushReconcilesOnlyMatchingEnabledBranchWithPullConsent() async {
+        var repo = RepoConfig(
+            repoURL: "https://github.com/Owner/Vault.git",
+            branch: "main",
+            authorName: "One",
+            authorEmail: "one@example.com",
+            vaultFolderName: "vault"
+        )
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+
+        let matching = PushSyncEvent(
+            repositoryFullName: "owner/vault",
+            branch: "main",
+            headSHA: String(repeating: "a", count: 40),
+            hintID: "event-match"
+        )
+        let result = await harness.runtime.processPush(matching)
+        XCTAssertNotEqual(result, .ignored)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 1)
+
+        let wrongBranch = PushSyncEvent(
+            repositoryFullName: "owner/vault",
+            branch: "feature",
+            headSHA: String(repeating: "b", count: 40),
+            hintID: "event-wrong-branch"
+        )
+        let wrongBranchResult = await harness.runtime.processPush(wrongBranch)
+        XCTAssertEqual(wrongBranchResult, .ignored)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 1)
+    }
+
+    @MainActor
+    func testRemotePushDoesNoGitWhenAutomaticPullConsentIsOff() async {
+        var repo = RepoConfig(
+            repoURL: "https://github.com/owner/vault.git",
+            branch: "main",
+            authorName: "One",
+            authorEmail: "one@example.com",
+            vaultFolderName: "vault"
+        )
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main")
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        harness.runtime.setAutomaticallyPullRemoteChanges(false)
+        harness.runtime.setAutomaticallyPushLocalChanges(true)
+
+        let result = await harness.runtime.processPush(PushSyncEvent(
+            repositoryFullName: "owner/vault",
+            branch: "main",
+            headSHA: String(repeating: "a", count: 40),
+            hintID: "event-pull-disabled"
+        ))
+
+        XCTAssertEqual(result, .ignored)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0)
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 0)
+        XCTAssertTrue(harness.repository.commitAndPushMessages.isEmpty)
     }
 
     @MainActor
@@ -8097,6 +8465,23 @@ private final class RecordingBackgroundProcessingScheduler: PremiumBackgroundPro
     func schedule() { scheduleCount += 1 }
     func cancel() { cancelCount += 1 }
     func invoke(_ task: any PremiumBackgroundProcessingTask) { handler?(task) }
+}
+
+private func pushSyncWakePayload(
+    repository: String = "owner/vault",
+    branch: String = "main",
+    hint: String = "event-1234"
+) -> [AnyHashable: Any] {
+    [
+        "aps": [
+            "alert": ["title": repository, "body": "Update available"],
+            "content-available": 1,
+        ],
+        "repo": repository,
+        "branch": branch,
+        "head": String(repeating: "a", count: 40),
+        "hint": hint,
+    ]
 }
 
 @MainActor

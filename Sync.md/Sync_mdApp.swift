@@ -1,5 +1,6 @@
 import AppIntents
 import SwiftUI
+import UIKit
 
 #if DEBUG
 extension Sync_mdApp {
@@ -65,9 +66,16 @@ struct Sync_mdApp: App {
             backgroundScheduler: backgroundScheduler
         )
         _premiumRuntime = State(initialValue: runtime)
-        SyncRuntimeLocator.configure(runtime: runtime, state: appState)
+        SyncRuntimeLocator.configure(state: appState)
+        PushSyncNotificationBridge.shared.connect(runtime: runtime)
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
             SyncMDAppShortcutsProvider.updateAppShortcutParameters()
+        }
+    }
+
+    private var pushRegistrationInventoryFingerprint: [String] {
+        appState.repos.map { repo in
+            "\(repo.id.uuidString)|\(repo.repoURL)|\(repo.isCloned)"
         }
     }
 
@@ -77,11 +85,20 @@ struct Sync_mdApp: App {
                 .environment(appState)
                 .environment(premiumRuntime)
                 .task {
-                    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+                    let isTestProcess = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+                    let isActiveLaunch = UIApplication.shared.applicationState == .active
+                    if !isTestProcess, isActiveLaunch {
                         if FeatureFlags.gitSyncAssistEnabled {
+                            // A remote notification can cold-launch the process
+                            // in the background. Do not start an all-repository
+                            // foreground pass in that case; the APNs bridge runs
+                            // a bounded targeted reconciliation instead.
                             assistForegroundReconciliationTask = Task { @MainActor in
                                 await premiumRuntime.reconcileForeground()
                             }
+                        }
+                        pushRegistrationTask = Task { @MainActor in
+                            await PushSyncManager.shared.resumeRegistration(repos: appState.repos)
                         }
                     }
                     #if DEBUG
@@ -93,6 +110,13 @@ struct Sync_mdApp: App {
                         await appState.signInWithPAT(token: injectedPAT)
                     }
                     #endif
+                }
+                .onChange(of: pushRegistrationInventoryFingerprint) { _, _ in
+                    guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
+                    pushRegistrationTask?.cancel()
+                    pushRegistrationTask = Task { @MainActor in
+                        await PushSyncManager.shared.refreshRegistration(repos: appState.repos)
+                    }
                 }
                 .onOpenURL { url in
                     // Widget deep link: one-tap full pull from the Home Screen.
@@ -132,7 +156,8 @@ struct Sync_mdApp: App {
                 // Keep push-sync registration in sync with the current repo set.
                 pushRegistrationTask?.cancel()
                 pushRegistrationTask = Task { @MainActor in
-                    await PushSyncManager.shared.refreshRegistration(repos: appState.repos)
+                    _ = await PushSyncManager.shared.refreshRegistration(repos: appState.repos)
+                    await PushSyncManager.shared.refreshGitHubAppStatus()
                 }
             } else {
                 assistForegroundReconciliationTask?.cancel()

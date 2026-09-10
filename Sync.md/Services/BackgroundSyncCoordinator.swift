@@ -79,7 +79,11 @@ extension AppState: AssistRepositoryProviding {
     }
 }
 
-enum BackgroundSyncTrigger: Sendable, Equatable { case foreground, processing }
+enum BackgroundSyncTrigger: Sendable, Equatable {
+    case foreground
+    case processing
+    case push(hintID: String)
+}
 enum BackgroundSyncDisposition: Sendable, Equatable {
     case completed(RepositoryReconciliationResult)
     case deferred(String)
@@ -98,12 +102,17 @@ enum BackgroundSyncDisposition: Sendable, Equatable {
 @MainActor
 final class BackgroundSyncCoordinator {
     private struct Flight { let generation: UUID; let task: Task<BackgroundSyncDisposition, Never> }
+    private struct PushFlightKey: Hashable { let repoID: UUID; let hintID: String }
     private weak var repositoryProvider: (any AssistRepositoryProviding)?
     private let conditionsProvider: any BackgroundSyncConditionsProviding
     private let now: @Sendable () -> Date
     private var inFlight: [UUID: Flight] = [:]
     private var foregroundFlightGenerations: [UUID: UUID] = [:]
     private var processingFlightGenerations: [UUID: UUID] = [:]
+    /// Only flights actually started by a remote notification are recorded
+    /// here. If a push coalesces into existing foreground work, expiration of
+    /// the push callback must not cancel that independently-owned work.
+    private var pushFlightGenerations: [PushFlightKey: UUID] = [:]
     /// Standalone coordinators retain the historical pull-only default. The
     /// installation runtime immediately replaces this with the persisted user
     /// preference during initialization.
@@ -155,6 +164,31 @@ final class BackgroundSyncCoordinator {
         )
     }
 
+    /// Reconciles only repositories selected by a validated APNs routing hint.
+    /// Multiple clones of the same GitHub repository/branch are supported and
+    /// share the processing concurrency ceiling.
+    func reconcilePush(repoIDs: [UUID], hintID: String) async -> BackgroundSyncDisposition {
+        let results = await reconcileMany(
+            Array(Set(repoIDs)),
+            limit: 3,
+            trigger: .push(hintID: hintID)
+        )
+        if let transferred = results.values.first(where: \.didTransferData) { return transferred }
+        if let failed = results.values.first(where: \.isFailure) { return failed }
+        return results.values.first ?? .ignored
+    }
+
+    /// Cancels only work whose generation was started for this exact push.
+    /// Coalesced foreground or BGTask work remains independently owned.
+    func cancelPush(hintID: String) {
+        let owned = pushFlightGenerations.filter { $0.key.hintID == hintID }
+        for (key, generation) in owned {
+            pushFlightGenerations.removeValue(forKey: key)
+            guard inFlight[key.repoID]?.generation == generation else { continue }
+            inFlight.removeValue(forKey: key.repoID)?.task.cancel()
+        }
+    }
+
     private func reconcileMany(
         _ ids: [UUID],
         limit: Int,
@@ -197,16 +231,28 @@ final class BackgroundSyncCoordinator {
         inFlight[repoID] = Flight(generation: generation, task: task)
         if trigger == .foreground { foregroundFlightGenerations[repoID] = generation }
         if trigger == .processing { processingFlightGenerations[repoID] = generation }
+        let pushKey: PushFlightKey?
+        if case .push(let hintID)? = trigger {
+            let key = PushFlightKey(repoID: repoID, hintID: hintID)
+            pushFlightGenerations[key] = generation
+            pushKey = key
+        } else {
+            pushKey = nil
+        }
         let result = await task.value
         if inFlight[repoID]?.generation == generation { inFlight.removeValue(forKey: repoID) }
         if foregroundFlightGenerations[repoID] == generation { foregroundFlightGenerations.removeValue(forKey: repoID) }
         if processingFlightGenerations[repoID] == generation { processingFlightGenerations.removeValue(forKey: repoID) }
+        if let pushKey, pushFlightGenerations[pushKey] == generation {
+            pushFlightGenerations.removeValue(forKey: pushKey)
+        }
         return result
     }
 
     func cancel(repoID: UUID) {
         foregroundFlightGenerations.removeValue(forKey: repoID)
         processingFlightGenerations.removeValue(forKey: repoID)
+        pushFlightGenerations = pushFlightGenerations.filter { $0.key.repoID != repoID }
         inFlight.removeValue(forKey: repoID)?.task.cancel()
     }
 
@@ -231,6 +277,7 @@ final class BackgroundSyncCoordinator {
         inFlight.removeAll()
         foregroundFlightGenerations.removeAll()
         processingFlightGenerations.removeAll()
+        pushFlightGenerations.removeAll()
         flights.forEach { $0.task.cancel() }
     }
 

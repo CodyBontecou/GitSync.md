@@ -24,7 +24,7 @@ Sources read in full: `Services/GitHubService.swift`, `Services/OAuthService.swi
 
 1. **Name**: `KeychainService`
 2. **Mechanics**: Generic-password items, service `com.bontecou.Sync-md`, accessibility **`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`** (Background Sync credentials usable after first unlock; never migrate to backups). **Update-in-place-first** write strategy so a failed write cannot erase an existing credential. Lazy per-key accessibility migration (`migrateAccessibilityIfNeeded`, re-run for every known credential key; no global completion marker). `attributes()`, `delete(key:)`.
-3. **Stored keys**: GitHub account tokens (multi-account), per-repo credentials (HTTPS username+token, SSH private/public key + passphrase), and the separate Push Sync device secret. Background Sync has no installation identity, entitlement proof, APNs generation, or deletion credential.
+3. **Stored keys**: GitHub account tokens (multi-account), per-repo credentials (HTTPS username+token, SSH private/public key + passphrase), and the separate opaque Push Sync device secret. GitHub App link OAuth/installation tokens are never stored on-device. Background Sync has no installation identity, entitlement proof, APNs generation, or deletion credential.
 4. **Test**: `testKeychainCredentialsUseAfterFirstUnlockDeviceOnlyAccessibility`.
 5. **Source**: `KeychainService.swift`.
 
@@ -71,7 +71,7 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 ## 10. Entitlements, Info.plist, privacy manifest
 
 - **Entitlements**: `aps-environment=development` for the separate, opt-in Push Sync notification feature (distribution provisioning rewrites the effective environment). Background Sync has no entitlement and no StoreKit entitlement verification.
-- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [fetch, processing]`; `BGTaskSchedulerPermittedIdentifiers: [com.bontecou.Sync-md.background-refresh, com.bontecou.Sync-md.background-sync]` (primary app refresh plus network-capable processing fallback); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]`; `INJECT_PAT` env (DEBUG). Background Sync runs entirely on-device—no relay URL key exists.
+- **Info.plist keys (feature-bearing)**: `CFBundleURLSchemes: [syncmd]` (OAuth callback + x-callback-url); `UIBackgroundModes: [fetch, processing, remote-notification]` (`fetch`/`processing` for scheduled reconciliation; `remote-notification` for optional Push Sync acceleration); `BGTaskSchedulerPermittedIdentifiers: [com.bontecou.Sync-md.background-refresh, com.bontecou.Sync-md.background-sync]` (primary app refresh plus network-capable processing fallback); `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` (Files app); `LSApplicationQueriesSchemes: [shareddocuments]`; `INJECT_PAT` env (DEBUG). Git reconciliation remains on-device and no premium-relay URL key exists.
 - **Privacy manifest**: `NSPrivacyTracking=false`, no tracking domains; the current app-wide manifest conservatively declares DeviceID, ProductInteraction, PurchaseHistory, UserID, OtherUserContent, and OtherDiagnosticData with their listed purposes. Those declarations do not imply a Background Sync purchase or entitlement and must be reconciled against the whole binary before release. Test: `testPrivacyManifestCoversAppAnalyticsAndAssistWithoutTracking`.
 - **Source**: `Sync_md.entitlements`, `Info.plist`, `PrivacyInfo.xcprivacy`.
 

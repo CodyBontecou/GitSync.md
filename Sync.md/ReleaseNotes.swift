@@ -4,7 +4,7 @@ import Notelet
 enum AppReleaseNotes {
     static var all: [NoteletVersionNotes] {
         var notes: [NoteletVersionNotes] = []
-        // Background Sync ships only when its legacy feature flag is enabled; its release-note
+        // Background Sync ships only when its release feature flag is enabled; its release-note
         // section (and version registration) must not appear otherwise.
         if FeatureFlags.gitSyncAssistEnabled {
             notes.append(.init(version: "2.6.0", items: version26Items))
@@ -92,22 +92,22 @@ enum AppReleaseNotes {
     private static var version26Items: [NoteletVersionNoteItem] {
         [
             .list(
-                title: "Background Sync, optionally",
+                title: "Background Sync and push alerts",
                 rows: [
                     .init(
                         symbolSystemName: "bolt.badge.clock.fill",
-                        title: "Background Sync",
-                        description: "An optional subscription that pulls updates while the app is closed whenever iOS grants background time. One installation-level opt-in covers all current and future repositories; exclude any repository anytime."
+                        title: "Background Sync is included",
+                        description: "Opt in once to let GitSync.md reconcile current and future repositories whenever iOS grants background time. Exclude any repository in its settings—there is no subscription."
                     ),
                     .init(
-                        symbolSystemName: "arrow.down.circle.fill",
-                        title: "Safe, separately consented publishing",
-                        description: "Background Sync now lets you control automatic pull and automatic push independently. Publishing stays default-off; push-only mode checks remote state without updating the worktree, and unsafe or conflicting state stops for attention."
+                        symbolSystemName: "arrow.triangle.2.circlepath.circle.fill",
+                        title: "Choose pull and publish separately",
+                        description: "Automatic publishing stays off until you approve it. Pulls remain clean fast-forwards, and unsafe, conflicting, wrong-branch, or authentication states stop for your attention."
                     ),
                     .init(
-                        symbolSystemName: "lock.shield.fill",
-                        title: "Privacy-first relay",
-                        description: "GitHub event wakes use only opaque identifiers — never repository names, contents, paths, or credentials. Everything manual stays included with the app you already own."
+                        symbolSystemName: "bell.badge.fill",
+                        title: "Connect GitHub once for Push Sync",
+                        description: "Choose all or selected repositories through the GitSync.md GitHub App—no webhook setup. Push alerts request best-effort background reconciliation, and tapping always performs a pull-only check."
                     )
                 ]
             )

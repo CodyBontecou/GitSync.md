@@ -264,12 +264,15 @@ Toolbar: title SETTINGS, Cancel, Save (`saveChanges()` async; disabled while sav
 - **"Include in Background Sync" toggle** — inverse of `excludedFromAutomaticSync`; it remains editable while installation-level automatic mode is off so users can save exclusions before first activation. Guidance explains that the saved choice applies the next time global mode is enabled.
 - No per-repository GitHub-link, installation picker, enroll/remove-enrollment, basename-matching helper, or duplicate automatic-sync branch editor. The configured Repository Branch is the automatic target.
 - **Network policy picker** (Any connection / Wi-Fi only) and **Power policy picker** (Any power state / External power only) remain per repository.
-- Shows local inclusion status/message, health/message/last sync attempt, and **Sync now** (`reconcileNow`, disabled while installation-wide mode is off). There is no GitHub App/event-wake eligibility UI. Copy states that the configured repository branch and independent installation pull/push choices apply, and repeats clean-fast-forward/push-only/fail-closed stop conditions.
+- Shows local inclusion status/message, health/message/last sync attempt, and **Sync now** (`reconcileNow`, disabled while installation-wide mode is off). The Background Sync section itself has no GitHub App eligibility control. Copy states that the configured repository branch and independent installation pull/push choices apply, and repeats clean-fast-forward/push-only/fail-closed stop conditions.
 
-### 8.7 Debug section
+### 8.7 Push Sync section
+- Reuses the installation-global `PushSyncSettingsContent` described in §15. The repository scope changes only the explanatory target text to “this repository”; enabling, GitHub App connections, and APNs registration still apply installation-wide to all cloned GitHub repositories.
+
+### 8.8 Debug section
 - **View Debug Log** NavigationLink → `DebugLogView`; error-count badge on the row.
 
-### 8.8 Removal section
+### 8.9 Removal section
 - Note "Removing from GitSync.md keeps the files on this device."
 - **Remove from GitSync.md** (destructive) → confirm alert with full path → `state.removeRepo(deleteLocalFiles: false)`.
 - **Delete Local Files** (destructive) — only when `repo.isGitSyncManagedStorage` — → confirm alert ("cannot be undone") → `state.removeRepo(deleteLocalFiles: true)`.
@@ -396,7 +399,8 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 - **Account section**: Name, @Username, Email data rows (conditional on non-empty).
 - **Default Save Location section**: current folder card (name+path) with **CHANGE** (folder picker) and **REMOVE** (confirm alert → `state.clearDefaultSaveLocation`); when unset, info row + "CHOOSE DEFAULT LOCATION".
 - **Background Sync section**: "Independent automatic pull and push controls" action row → `PremiumSettingsView` sheet (§16).
-- **Shortcuts section**: informational row about "Pull All Repositories" Apple Shortcuts automation.
+- **Push Sync section**: installation-global opt-in for cloned GitHub repositories; one-time GitHub App connection for personal accounts/organizations; all/selected repository coverage; active/suspended linked-account rows; GitHub manage, confirmation-backed device-only unlink, and always-visible installed-App management actions; inline registration/connection/error state; and disclosure of App permissions, owner verification, relay storage, visible alert, best-effort APNs wake, required automatic-pull consent, and pull-only tap fallback.
+- **Shortcuts section**: informational row about pull/push/sync Apple Shortcuts actions.
 - **Feedback section**: **Send Feedback** (MailCompose sheet if mail available, else opens mail client via `FeedbackHelper`); **Join our Discord** → opens `discord.gg/RaQYS4t6gn`.
 - **Help section**: **Show App Tour** → full-screen `OnboardingView`.
 - **About section**: app Version, repository count.
@@ -406,11 +410,11 @@ Note: no dedicated keyboard accessory toolbar exists; smart-input disabled only.
 
 ## 16. Background Sync Settings — `Views/PremiumSettingsView.swift`
 
-- **About section**: Background Sync is included with the app and runs entirely on-device. One installation-level opt-in covers current/future cloned or managed repositories, with per-repo exclusions, discretionary iOS timing, independent pull/push controls, configured branches, clean-fast-forward pull behavior, separately consented publishing, push-only no-checkout behavior, and explicit stop/never-does caveats. It makes no event-wake or cadence promise.
+- **About section**: Background Sync is included with the app and runs on-device. One installation-level opt-in covers current/future cloned or managed repositories, with per-repo exclusions, discretionary iOS timing, independent pull/push controls, configured branches, clean-fast-forward pull behavior, separately consented publishing, push-only no-checkout behavior, and explicit stop/never-does caveats. Separately opted-in Push Sync may request APNs-triggered targeted reconciliation, but makes no execution or cadence promise.
 - **Background Sync section**: **"Enable Background Sync"** controls installation-wide local scheduling/inclusion. While enabled, independent **"Pull remote changes"** and confirmation-backed **"Commit and push local changes"** toggles allow pull-only, push-only, both, or neither. Existing enabled installations migrate pull-on/push-off. Copy discloses push-only remote validation without checkout, stage-all/commit/push behavior, fail-closed safety, and discretionary iOS timing. Enabling calls `setAutomaticallySyncAllRepositories`; turning off cancels local automatic work and clears both action preferences.
 - There is no subscription/paywall, purchase/restore/manage action, GitHub App link, relay deletion, or Background Sync StoreKit entitlement state on this screen.
 - **Background Sync status**: reconciliation progress; total/included/excluded/disabled/attention aggregate counts; **Retry** calls `prepareForSettings`.
-- **Data & privacy**: on-device architecture copy (no relay, no push registration, no off-device Background Sync data) plus privacy/terms links and the data-request email flow.
+- **Data & privacy**: scheduled reconciliation and Git credentials remain on-device/direct-to-provider, with no required Background Sync relay. Copy separately discloses optional Push Sync's repository-name, verified GitHub installation/account identifier, and APNs registration storage plus its prohibition on local file contents, credentials, and paths; privacy/terms links and the data-request email flow follow.
 - **Privacy & terms section**: Privacy Policy, Terms of Use, and private data request/deletion draft.
 - Toolbar Done; `runtime.prepareForSettings()` on task.
 

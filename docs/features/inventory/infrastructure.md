@@ -156,9 +156,10 @@ Pipeline order (per `localization/README.md`): `translate_catalog.py` (machine t
 1. **xctest.yml** — push to main + PRs. Runs `SyncMDTests` unit tests on `macos-26` runner, auto-selecting an iPhone simulator from the newest runtime (iOS 26.2 simruntime has a libswift_Concurrency crash workaround comment). Gate for app code.
 2. **build-number-guard.yml** — push to main + PRs. Fails if `CURRENT_PROJECT_VERSION` in `project.pbxproj` is not a 12-digit `YYYYMMDDHHMM` timestamp. Rationale: a small-int build number would defeat any build-number-based legacy-unlock threshold (defense-in-depth for the freemium cutoff).
 3. **premium-workers.yml** — push/PR touching `worker/onboarding-analytics/**`. Matrix over onboarding-analytics: typecheck/tests/migrations validation per worker. Gate for infra code. (The premium-relay and storekit-verifier workers were removed when Background Sync moved fully on-device.)
-4. **announce.yml** — `repository_dispatch` type `asc-approved` (from a central `asc-webhook-worker`) + manual dispatch with dry-run default. After Apple approves: promotes the draft GitHub release for `v<version>` to published and triggers an `llm-wiki` launch checklist scaffold. Secrets: `INTERNAL_RELEASE_API_TOKEN`, `LLM_WIKI_DISPATCH_TOKEN`.
-5. **review-state.yml** — `repository_dispatch` type `asc-review-state-changed`. Uses `asc` CLI (asccli.sh) with ASC API key secrets to record App Store review state transitions (env: APP_NAME GitSync.md, ASC_APP_ID 6758960270).
-6. **claude.yml** — Claude Code GitHub Action on @claude mentions in issues/PRs (`anthropics/claude-code-action@v1`, OAuth token secret).
+4. **push-worker.yml** — push/PR touching `push-worker/**`. Node 24 locked install, TypeScript, Workers-runtime tests, high-severity dependency audit, and no-publish Wrangler dry run. It receives no deployment/provider secrets.
+5. **announce.yml** — `repository_dispatch` type `asc-approved` (from a central `asc-webhook-worker`) + manual dispatch with dry-run default. After Apple approves: promotes the draft GitHub release for `v<version>` to published and triggers an `llm-wiki` launch checklist scaffold. Secrets: `INTERNAL_RELEASE_API_TOKEN`, `LLM_WIKI_DISPATCH_TOKEN`.
+6. **review-state.yml** — `repository_dispatch` type `asc-review-state-changed`. Uses `asc` CLI (asccli.sh) with ASC API key secrets to record App Store review state transitions (env: APP_NAME GitSync.md, ASC_APP_ID 6758960270).
+7. **claude.yml** — Claude Code GitHub Action on @claude mentions in issues/PRs (`anthropics/claude-code-action@v1`, OAuth token secret).
 
 `.github/scripts/` exists (support scripts for the above).
 
@@ -178,12 +179,12 @@ Legacy-purchase (paid-app) unlock verifier. Routes (implied by code; wrangler.to
 
 ### b) Removed: `gitsync-premium-relay` + `storekit-verifier`
 
-The Background Sync relay (webhook→outbox→APNs wake fan-out, D1 `premium-relay`, Queue `premium-relay-outbox`) and its private `storekit-verifier` service-binding worker were removed when Background Sync became fully on-device. Background Sync has no replacement server and no local or remote StoreKit entitlement verification; it is included with the paid-up-front app. The remaining receipt-verifier Worker is legacy paid-unlock infrastructure, and `push-worker/` is the separate opt-in Push Sync notification relay; neither gates Background Sync. See `premium-assist.md`.
+The subscription-era Background Sync relay (webhook→outbox→APNs fan-out, D1 `premium-relay`, Queue `premium-relay-outbox`) and its private `storekit-verifier` service-binding worker were removed when Background Sync became included with the paid-up-front app. There is no local or remote StoreKit entitlement verification. The remaining receipt-verifier Worker is legacy paid-unlock infrastructure. The narrower `push-worker/` is independently opt-in: it provides a one-time, owner-verified GitHub App connection, indexed push-event routing, and a visible alert carrying a best-effort background wake, but it neither executes Git nor gates scheduled Background Sync. See `premium-assist.md` and `widget-push-sync.md`.
 
 ### d) `onboarding-analytics` (`worker/onboarding-analytics/`, D1 `sync-md-onboarding-analytics`)
 Privacy-safe onboarding event ingestion: stores only install UUID, event name, app version/build/platform, coarse onboarding step, coarse auth method/outcome, default-vs-custom save location, coarse error category. Rejects unknown events; never persists IPs, UAs, repo URLs, paths, identities, tokens. 90-day retention via daily cron (`RETENTION_DAYS` 1–365). Secrets: `INGEST_TOKEN`, `DELETION_TOKEN` (operator installation-deletion endpoint).
 
-Plus **site-router** (section 3) — five workers total across the repo.
+Plus **site-router** (section 3) and the independently opted-in **push-worker** — four active Workers total across the repo (receipt verifier, onboarding analytics, site router, and push relay).
 
 ---
 

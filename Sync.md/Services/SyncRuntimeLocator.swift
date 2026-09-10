@@ -1,31 +1,33 @@
 import Foundation
 
 /// MainActor locator that lets code running *in the app process* — App
-/// Intents forwarded from widget/Control Center taps, deep links — reach the
-/// live `PremiumRuntime` owned by `Sync_mdApp`.
+/// Intents forwarded from widget/Control Center taps, deep links, and push
+/// notification taps — reach the live `AppState` owned by `Sync_mdApp`.
 ///
 /// `PullAllControlIntent` compiles into both the app and the widget
 /// extension, but with `openAppWhenRun` the system only ever executes it
-/// in the app process, where these references are populated.
+/// in the app process, where this reference is populated.
 @MainActor
 enum SyncRuntimeLocator {
-    private static weak var runtime: PremiumRuntime?
     private static weak var state: AppState?
 
-    static func configure(runtime: PremiumRuntime, state: AppState) {
-        self.runtime = runtime
+    static func configure(state: AppState) {
         self.state = state
     }
 
-    /// Runs an immediate, cooldown-bypassing reconciliation pass over all
-    /// repositories — the same path as the in-app "Sync now" button.
+    /// Runs an explicit pull-only pass over all cloned repositories. Widget,
+    /// Control Center, and notification taps are user actions, so they remain
+    /// available even when automatic Background Sync is disabled and can never
+    /// inherit automatic-push consent.
     static func requestPullAll() {
-        guard let runtime else {
-            DebugLogger.shared.warning("pull-all", "PremiumRuntime unavailable; app locator was never configured")
+        guard let state else {
+            DebugLogger.shared.warning("pull-all", "AppState unavailable; app locator was never configured")
             return
         }
         Task { @MainActor in
-            await runtime.reconcileNow()
+            for repo in state.repos where repo.isCloned {
+                _ = await state.pullOnly(repoID: repo.id, showsProgressDelay: false)
+            }
         }
     }
 
@@ -39,16 +41,28 @@ enum SyncRuntimeLocator {
         state?.repos ?? []
     }
 
-    /// Navigates to the repo whose remote URL matches a GitHub `owner/name`,
-    /// then runs an immediate pull-all — the response to a push-notification tap.
+    /// Navigates to and explicitly pulls the repository named by a Push Sync
+    /// alert. If an older payload has no routable repository, fall back to the
+    /// existing pull-all action.
     static func handlePushNotificationTap(fullName: String?) {
-        if let fullName,
-           let repo = currentRepos().first(where: { repo in
-               guard let remote = GitRemoteURL.parse(repo.repoURL), let owner = remote.ownerName else { return false }
-               return "\(owner)/\(remote.repoName)".lowercased() == fullName.lowercased()
-           }) {
-            reveal(repoID: repo.id)
+        guard let fullName,
+              let repo = matchingRepository(fullName: fullName) else {
+            requestPullAll()
+            return
         }
-        requestPullAll()
+        reveal(repoID: repo.id)
+        guard let state else { return }
+        Task { @MainActor in
+            _ = await state.pullOnly(repoID: repo.id, showsProgressDelay: false)
+        }
+    }
+
+    private static func matchingRepository(fullName: String) -> RepoConfig? {
+        currentRepos().first { repo in
+            guard let canonical = GitRemoteURL.parse(repo.repoURL)?.canonicalGitHubFullName else {
+                return false
+            }
+            return canonical.caseInsensitiveCompare(fullName) == .orderedSame
+        }
     }
 }

@@ -59,7 +59,7 @@ struct PremiumSettingsView: View {
                 if automaticSyncConfirmation {
                     AssistConfirmationModal(
                         title: "Enable Background Sync for all repositories?",
-                        message: "Background Sync runs best-effort automatic syncing for current and future cloned or managed repositories whenever iOS grants the app background time, unless you exclude one in Repository Settings. It runs entirely on this device: no server, no relay, no push notifications. Automatic pull starts on and automatic publishing starts off; you can then control each action independently. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. iOS may delay or suppress every attempt.",
+                        message: "Background Sync runs best-effort automatic syncing for current and future cloned or managed repositories whenever iOS grants the app background time, unless you exclude one in Repository Settings. Its scheduled reconciliation runs entirely on this device. Automatic pull starts on and automatic publishing starts off; you can then control each action independently. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. If you separately enable Push Sync, its relay can also ask iOS for a targeted reconciliation after a GitHub push; iOS may delay or suppress every attempt.",
                         confirmTitle: "Enable Background Sync",
                         systemImage: "arrow.triangle.2.circlepath",
                         onConfirm: {
@@ -241,7 +241,7 @@ struct PremiumSettingsView: View {
                         Text("Enable Background Sync")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundStyle(Color.brutalText)
-                        Text("Runs best-effort sync for every included repository whenever iOS grants background time; choose pull and push separately below. Entirely on-device — no server or push relay.")
+                        Text("Runs best-effort sync for every included repository whenever iOS grants background time; choose pull and push separately below. Scheduled reconciliation runs on-device; optional Push Sync can additionally request APNs-triggered reconciliation.")
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(Color.brutalTextMid)
                     }
@@ -361,7 +361,7 @@ struct PremiumSettingsView: View {
                 )
                 AssistStatRow(
                     key: String(localized: "Server component"),
-                    value: String(localized: "None")
+                    value: String(localized: "None required; Push Sync optional")
                 )
             }
             .padding(16)
@@ -369,7 +369,7 @@ struct PremiumSettingsView: View {
             .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
 
             AssistFinePrint(
-                "Background Sync runs entirely within the app using your existing Git credentials on this device. Repository names, URLs, contents, local paths, and credentials are never sent anywhere except directly to your Git host (for example, github.com) during a normal Git fetch or push. There is no relay server, no push notification registration, and no separate data store."
+                "Background Sync runs within the app using your existing Git credentials on this device. Repository URLs, contents, local paths, and credentials go only to your Git host during a normal fetch or push. Scheduled Background Sync has no server or separate data store. If you independently enable Push Sync and connect the GitSync.md GitHub App, its relay stores repository names, verified GitHub installation/account identifiers, and APNs registration data and transiently routes branch and commit hints; it never receives local file contents, credentials, or paths."
             )
             .padding(.bottom, 2)
 

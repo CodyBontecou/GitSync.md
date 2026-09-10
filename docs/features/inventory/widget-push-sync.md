@@ -1,169 +1,151 @@
-# Feature Inventory: Widget / Control Center / Push-Initiated Sync — Sync.md / GitSync.md
+# Feature Inventory: Widget / Control Center / Push-Initiated Sync
 
-Scope added by `b911f13` ("feat(sync): widget + Control Center pull buttons and push-initiated sync"); behavior verified against current HEAD (`b218661`). All paths relative to repo root.
+Current scope covers the original widget/Control Center/visible Push Sync work from `b911f13` plus the alert-and-background-wake APNs path. All Git operations still execute inside the app process through the existing on-device Git engine; neither the widget extension nor the relay touches a checkout.
 
-Sources read in full:
-- `SyncWidget/SyncWidgetBundle.swift`, `SyncWidget/PullAllWidget.swift`, `SyncWidget/PullAllControl.swift`, `SyncWidget/Info.plist`, `SyncWidget/SyncWidget.entitlements`
-- `SharedSources/PullAllControlIntent.swift`
-- `Sync.md/Sync_mdApp.swift`, `Sync.md/SyncAppDelegate.swift`, `Sync.md/Sync_md.entitlements`, `Sync.md/Info.plist` (background modes)
-- `Sync.md/Services/PushSyncManager.swift`, `Sync.md/Services/SyncRuntimeLocator.swift`
-- `Sync.md/Services/PremiumRuntime.swift` (the `reconcileNow` integration point; full file owned by the premium-assist inventory)
-- `Sync.md/Views/SettingsView.swift` (Push Sync section only — read-only surface audit)
-- `push-worker/src/index.ts`, `push-worker/src/apns.ts`, `push-worker/src/webhook.test.ts`, `push-worker/README.md`, `push-worker/wrangler.toml`, `push-worker/package.json`
-- `Sync.md.xcodeproj/project.pbxproj` (widget target membership + `WIDGET_EXTENSION` compilation conditions)
-- `SyncMDTests/SyncMDTests.swift` (push-sync unit tests + intentional-config invariants; read-only)
+## 1. SyncWidget extension
 
-These features are **deterministic sync triggers layered on top of the existing on-device reconciliation**: a widget tap, a Control Center tap, or a push-notification tap all end in the same foreground `PremiumRuntime` pass used by the in-app "Sync now" button. No git operation ever runs in the widget extension process or on the relay.
+- Target: `SyncWidget` (`bontecou.Sync-md.widget`).
+- `SyncWidgetBundle` exposes a Home Screen `PullAllWidget` and, on iOS 18+, a `PullAllControl` Control Center control.
+- The extension has no App Group and an empty entitlement dictionary. Repositories stay in the app's Documents/custom granted locations.
+- `PullAllControlIntent` is compiled into both targets with `openAppWhenRun = true`; the extension build only references the type, while execution is forwarded to the app process.
+- Sources: `SyncWidget/`, `SharedSources/PullAllControlIntent.swift`, `Sync.md.xcodeproj/project.pbxproj`.
 
----
+## 2. Explicit pull triggers
 
-## 1. SyncWidget extension target
+- The Home Screen widget opens `syncmd://pull-all`; `Sync_mdApp.onOpenURL` routes that URL before the x-callback handler.
+- The Control Center control invokes `PullAllControlIntent`.
+- `SyncRuntimeLocator.requestPullAll()` serially calls `AppState.pullOnly` for every cloned repository.
+- These are explicit pull-only operations: they work when automatic Background Sync is disabled and never inherit automatic-push consent.
+- A notification tap case-insensitively matches canonical GitHub `owner/name`, reveals that repository, and explicitly pulls only it. An older/unroutable payload falls back to pull-all.
+- Sources: `Sync.md/Services/SyncRuntimeLocator.swift`, `Sync.md/Sync_mdApp.swift`, `SharedSources/PullAllControlIntent.swift`.
 
-1. **Name**: `SyncWidget` (WidgetKit app extension, bundle id `bontecou.Sync-md.widget`, display name "Sync Widget")
-2. **Mechanics**: `@main struct SyncWidgetBundle` declares `PullAllWidget()` unconditionally and `PullAllControl()` behind `if #available(iOS 18.0, *)` (`SyncWidget/SyncWidgetBundle.swift:5-11`). Extension point `com.apple.widgetkit-extension` (`SyncWidget/Info.plist` `NSExtension`). The extension entitlements file is an **empty dict** — no App Group — because repositories live in the app's Documents directory (Obsidian-visible) and the extension never touches repo data (`SyncWidget/SyncWidget.entitlements`). `PullAllControlIntent.swift` is compiled into **both** the app and the extension targets (two `PBXBuildFile` entries), with `WIDGET_EXTENSION` added to the extension's `SWIFT_ACTIVE_COMPILATION_CONDITIONS` (`project.pbxproj:485,514`); the app is configured to embed `SyncWidget.appex` ("Embed App Extensions").
-3. **Entry points**: Home Screen widget gallery ("Pull All Repositories"), iOS 18+ Control Center widget gallery ("Pull All").
-4. **User-visible**: a small Home Screen widget and a Control Center control, both styled as an `arrow.down.circle.fill` pull button.
-5. **Source**: `SyncWidget/SyncWidgetBundle.swift:5-11`, `SyncWidget/Info.plist`, `SyncWidget/SyncWidget.entitlements`, `project.pbxproj:473-514`.
+## 3. Push Sync opt-in, registration, and GitHub connection
 
-## 2. Home Screen "Pull All Repositories" widget
+- `PushSyncManager` is an installation-global `@MainActor` singleton. State is persisted under `pushSyncEnabled`.
+- Enable requests alert/badge/sound permission, then APNs registration. Denial reverts the toggle and surfaces an error.
+- After registration, the user connects the GitSync.md GitHub App once per personal account or organization and chooses all or selected repositories. No per-repository webhook URL or shared secret is exposed.
+- `GitHubAppLinkService` runs the install and OAuth redirects in one ephemeral `ASWebAuthenticationSession`, accepts only an exact state-bound `github.com` start URL and `syncmd://github-app` result, and never receives a GitHub token.
+- Linked account status is fetched from the relay. The client validates bounded fields and an HTTPS `github.com` management URL before displaying it; relay-internal numeric owner IDs are not returned.
+- Disable performs a best-effort `POST /v1/unregister`, unregisters APNs, clears linked status locally, and removes the registration timestamp. Removing one connection affects only that device; GitHub manages repository selection and App uninstall.
+- The APNs token is hex encoded and cached so foreground/repository-inventory changes can refresh registration and repair route indexes.
+- Device deletion uses a random Keychain UUID (`push_sync_device_secret`).
+- Default relay: `https://syncmd-push.costream.workers.dev`, overridable by `pushSyncWorkerURL` for development/self-hosting.
 
-1. **Name**: `PullAllWidget`
-2. **Mechanics**: `StaticConfiguration(kind: "PullAllWidget")` with a static `PullAllProvider` timeline (single entry, `.never` refresh policy — it is a button, not a data widget). The view renders the pull icon, "Pull All / Repositories" text, and sets `.widgetURL(URL(string: "syncmd://pull-all"))`, so tapping opens the app via the `syncmd://pull-all` deep link (§6). Configuration name "Pull All Repositories", description "One tap to fetch and fast-forward every repository.", family `.systemSmall` only.
-3. **Entry points**: Home Screen widget gallery → tap.
-4. **User-visible**: one-tap "pull everything" without finding/launching the app normally; the app opens and immediately reconciles.
-5. **Source**: `SyncWidget/PullAllWidget.swift:7-46` (provider 21-33, view + `widgetURL` 36-46).
+### Registration privacy boundary
 
-## 3. Control Center "Pull All" control (iOS 18+)
+`makeRegistrationBody(tokenHex:repos:deviceSecret:)` produces:
 
-1. **Name**: `PullAllControl` (`ControlWidget`, kind `com.bontecou.Sync-md.pull-all`)
-2. **Mechanics**: `StaticControlConfiguration` wrapping a `ControlWidgetButton(action: PullAllControlIntent())` labeled "Pull All" with the same pull icon. Available iOS 18.0+ only (also gated in the bundle, §1). Tapping runs the shared App Intent rather than a URL deep link.
-3. **Entry points**: Settings → Control Center (or long-press Control Center → add control) → tap.
-4. **User-visible**: a Control Center button that launches the app straight into a full reconciliation pass.
-5. **Source**: `SyncWidget/PullAllControl.swift:7-19`.
+```json
+{
+  "token": "<64-char APNs hex>",
+  "environment": "development|production",
+  "repos": ["owner/name"],
+  "deviceSecret": "<opaque UUID>"
+}
+```
 
-## 4. Shared `PullAllControlIntent` (App Intent)
+Only cloned GitHub remotes are included. Non-GitHub and uncloned records are excluded. The registration contains no remote URL, branch, local path, file content, or Git credential. The string-array shape matches `push-worker`'s parser.
 
-1. **Name**: `PullAllControlIntent` (`SharedSources/PullAllControlIntent.swift`)
-2. **Mechanics**: `AppIntent` titled "Pull All Repositories" ("Fetch and fast-forward every cloned repository now.") with **`static var openAppWhenRun = true`**. Because repos are not in an App Group, the intent cannot do git work in the extension process: the system launches GitSync.md and performs the intent **in the app process**. The widget-target compile of the file (`WIDGET_EXTENSION` defined) exists only so the extension can reference the type — its `perform()` body compiles the `SyncRuntimeLocator.requestPullAll()` call only under `#if !WIDGET_EXTENSION` (line 22), and execution is always forwarded to the app before `perform()` runs.
-3. **Entry points**: Control Center control (§3); any future widget button (doc comment).
-4. **User-visible**: app comes to foreground and pulls; no Shortcuts result dialog beyond the default.
-5. **Source**: `SharedSources/PullAllControlIntent.swift:8-27`.
+Sources: `Sync.md/Services/PushSyncManager.swift`, `Sync.md/Services/GitHubAppLinkService.swift`, `Sync.md/Views/PushSyncSettingsContent.swift`, `Sync.md/Views/AppSettingsView.swift`, `Sync.md/Views/SettingsView.swift`.
 
-## 5. `SyncRuntimeLocator` (app-process bridge)
+## 4. GitHub App webhook relay
 
-1. **Name**: `SyncRuntimeLocator` (`@MainActor enum`)
-2. **Mechanics**: Weak-reference locator configured once at app init (`Sync_mdApp.swift:58` → `configure(runtime:state:)`) so app-process code — forwarded App Intents, deep links, notification taps — can reach the live `PremiumRuntime`/`AppState`. `requestPullAll()` spawns `runtime.reconcileNow()`, the **immediate, cooldown-bypassing** foreground pass (guarded only on the Background Sync feature flag and coalescing with an already-running pass; `PremiumRuntime.swift:289-293`) — the same path as the in-app "Sync now" button (`PremiumSettingsView.swift:466`, `SettingsView.swift:282`). `reveal(repoID:)` sets `AppState.callbackNavigateToRepoID` (consumed by `RepoListView.swift:205` to push the repo onto the navigation path; `VaultView.swift:145-146` suppresses back/dismiss while set). `currentRepos()` feeds push registration. `handlePushNotificationTap(fullName:)` matches the notification's `owner/name` (case-insensitive) against cloned repos, reveals the match if any, and always runs `requestPullAll()`.
-3. **Entry points**: `PullAllControlIntent.perform()`, `syncmd://pull-all` deep link, APNs notification tap.
-4. **User-visible**: single code path for every deterministic trigger; notification taps land on the affected repository.
-5. **Source**: `Sync.md/Services/SyncRuntimeLocator.swift:11-56`.
+`push-worker/` exposes device register/unregister, a one-time GitHub App link flow, linked-installation status/unlink, one shared GitHub webhook, and health endpoints. The link flow treats GitHub's setup `installation_id` as untrusted: a 15-minute device-bound state proceeds through OAuth with PKCE, verifies the authenticated user's immutable ID, requires personal ownership or active organization-owner (`admin`) membership, and then immediately requests user-token revocation. Tokens are never stored or returned to the app. App JWTs are RS256, expire within ten minutes, and use a PKCS#8 private key supplied only as a Worker secret.
 
-## 6. `syncmd://pull-all` deep link
+Linked records retain immutable installation, account, and authorizing-user IDs plus bounded display metadata. Before a later App push is routed, owner authority is revalidated at most once per five minutes. Organization revalidation creates an installation token scoped to read-only Members, verifies the user and owner membership, and immediately revokes the token. Definitively invalid links are removed; transient GitHub failures fail closed for that delivery without deleting the link. A signed installation deletion writes a bounded tombstone before indexed cleanup; callbacks check it before and after linking, and registration/status repair removes stale links, preventing an uninstall race from resurrecting routing.
 
-1. **Name**: widget deep link routing
-2. **Mechanics**: `Sync_mdApp`'s `.onOpenURL` checks `url.scheme == "syncmd" && url.host == "pull-all"` **before** the x-callback-url handler and routes to `SyncRuntimeLocator.requestPullAll()`; all other `syncmd://` URLs fall through to `CallbackURLHandler` as before.
-3. **Entry points**: Home Screen widget tap (§2); any manually opened `syncmd://pull-all` link.
-4. **User-visible**: app opens and pulls all repositories immediately.
-5. **Source**: `Sync.md/Sync_mdApp.swift:87-96`.
+The shared webhook accepts only the GitHub App's HMAC-SHA256 secret. Real push payloads carry a lightweight `installation` object without account metadata, so the relay requires the exact linked installation ID and separately binds GitHub's immutable `repository.owner.id` to the linked installation account ID. Delivery routes only through `route:github-app:<installation>:<device>` indexes. Every indexed result is rechecked against its device record and normalized repository inventory. Indexes eliminate the prior global device scan and are repaired on registration; registration/unlink also delete stale repository-route keys from pre-App relay versions.
 
-## 7. Push Sync enable/disable lifecycle (`PushSyncManager`)
+A valid branch push is reduced to repository name, branch, target SHA, commit count, and an opaque hint (`x-github-delivery`, target SHA fallback, or random UUID). A bounded per-repository/branch/device throttle coalesces accepted sends for `NOTIFY_COLLAPSE_SECONDS` (default 120 seconds) without letting an unrelated branch suppress the configured branch's wake. Only APNs responses that prove a token unusable (410, `BadDeviceToken`, or `DeviceTokenNotForTopic`) prune the device plus indexes. Rejected or thrown deliveries remain retryable. Privacy-safe aggregate logs contain counts and coarse bounded mechanics only; arbitrary provider or KV error text is never retained.
 
-1. **Name**: `PushSyncManager` (`@MainActor` singleton)
-2. **Mechanics**: Opt-in flag persisted in UserDefaults (`pushSyncEnabled`). Enabling: requests notification authorization (`.alert, .badge, .sound`) — denial surfaces "Notifications were denied in Settings." and reverts the toggle — then `registerForRemoteNotifications()`. Disabling: POSTs `/v1/unregister` with the Keychain device secret, calls `unregisterForRemoteNotifications()`, and clears the last-registration stamp. APNs token delivery (`handleDeviceToken`) and failures (`handleRegistrationFailure` → `lastError` + debug-log warning) arrive via the app delegate (§9). Worker base URL defaults to `https://syncmd-push.codybontecou.workers.dev` and is overridable via UserDefaults `pushSyncWorkerURL` (used for development deployments). The token hex is cached in UserDefaults so registration can be refreshed without waiting for a new APNs delivery.
-3. **Entry points**: Settings → Push Sync toggle (§10); launch/foreground activation (`Sync_mdApp.swift:121-125` refreshes registration whenever the scene becomes active); APNs token callbacks.
-4. **User-visible**: one toggle; inline error text and "Registered \<relative date\>" status.
-5. **Source**: `Sync.md/Services/PushSyncManager.swift:14-132` (`setEnabled` 51-70, `handleDeviceToken` 72-75, `register` 92-120, `unregister` 122-132, worker URL 36-45).
+KV stores the APNs routing record; normalized repository names; verified GitHub installation/account/owner identifiers and bounded display/status metadata; installation route indexes; and expiring state, owner-proof, throttle, and HMAC-pseudonymized rate-limit keys. Device records and indexes expire 90 days after the last app registration; link state lasts 15 minutes, owner proof five minutes, and rate buckets one hour. The Worker necessarily receives the signed webhook body, but it does not persist or forward commit messages, changed-file metadata, or sender data. APNs receives repository, branch, target SHA, opaque hint, and alert text only.
 
-## 8. Registration payload & privacy filter
+Production relay host and KV are live at `https://syncmd-push.costream.workers.dev`. The public GitHub App is registered, configured, deployed, installed with all-repository access, owner-verified, and linked to the physical development device. Natural App pushes have produced accepted sandbox APNs sends and on-device background reconciliation. The four migration hooks, retired acceptance gate, and retired Worker secret/delivery path have been removed.
 
-1. **Name**: `makeRegistrationBody(tokenHex:repos:deviceSecret:)` (pure, unit-tested)
-2. **Mechanics**: Builds the `/v1/register` JSON: `{token (APNs hex), environment ("development" in DEBUG else "production"), repos: [{name}], deviceSecret}` with sorted keys. The repo list **filters to cloned repositories with GitHub HTTPS remotes** and sends only `owner/repoName` strings parsed by `GitRemoteURL` — non-GitHub remotes and uncloned repos are excluded; no URLs, branches, paths, contents, or credentials are included. The device secret is a random UUID stored in the Keychain (`push_sync_device_secret`) and doubles as the unregister handle. Covered by `testPushSyncRegistrationBodyOnlyIncludesClonedGitHubRepos` and `hexString` tests (`SyncMDTests.swift:2204-2244`).
-3. **Entry points**: `register` (§7); `refreshRegistration(repos:)` on foreground/repo-set change.
-4. **User-visible**: none beyond the "Registered" stamp; this is the privacy boundary of the feature (see §15).
-5. **Source**: `Sync.md/Services/PushSyncManager.swift:134-187`.
+Sources: `push-worker/src/index.ts`, `push-worker/src/github-app.ts`, `push-worker/src/apns.ts`, `push-worker/wrangler.toml`, `push-worker/README.md`.
 
-## 9. APNs entitlement, background modes & notification handling
+## 5. APNs delivery
 
-1. **Name**: `SyncAppDelegate` + entitlement/Info.plist config
-2. **Mechanics**: `Sync.md/Sync_md.entitlements` adds `aps-environment = development` (Xcode rewrites per provisioning profile at export; the committed value is pinned as intentional by `SyncMDTests.swift:989-994`). `Sync.md/Info.plist` `UIBackgroundModes = [fetch, processing]` (`fetch` added by `b26eb3a` for BGAppRefreshTask scheduling; both pinned intentional by `SyncMDTests.swift:951`). `SyncAppDelegate` (installed via `@UIApplicationDelegateAdaptor`, `Sync_mdApp.swift:32`) is the `UNUserNotificationCenterDelegate`: token delivery → `PushSyncManager.handleDeviceToken`; failure → `handleRegistrationFailure`; `willPresent` returns `[.banner, .list]` so "new commits" alerts show even in foreground; `didReceive` (tap) reads `userInfo["repo"]` and calls `SyncRuntimeLocator.handlePushNotificationTap`. Everything else stays SwiftUI-lifecycle.
-3. **Entry points**: APNs registration callbacks; notification arrival/tap.
-4. **User-visible**: visible banner alerts ("\<owner/repo\> — N new commits — tap to sync"); tapping opens the app on the affected repo and pulls.
-5. **Source**: `Sync.md/SyncAppDelegate.swift:7-46`, `Sync.md/Sync_md.entitlements`, `Sync.md/Info.plist:14-18`.
+- Provider authentication is an ES256 JWT using the configured `.p8`, key ID, and team ID; the token is cached for 30 minutes.
+- Development devices use the sandbox host; TestFlight/App Store devices use production.
+- The request remains `apns-push-type: alert`, priority 10, because it contains a visible alert.
+- The alert is passive and also carries `content-available: 1`:
 
-## 10. Settings surface
+```json
+{
+  "aps": {
+    "alert": { "title": "owner/repo", "body": "N new commits — sync requested; tap to check" },
+    "content-available": 1,
+    "interruption-level": "passive"
+  },
+  "repo": "owner/repo",
+  "branch": "main",
+  "head": "<target SHA>",
+  "hint": "<opaque delivery ID>"
+}
+```
 
-1. **Name**: Settings → "Push Sync" section
-2. **Mechanics**: Toggle "Notify when GitHub changes" bound to `PushSyncManager.isEnabled` via `setEnabled`; conditional inline `lastError` (red monospaced caption) and "Registered \<date\>" caption; fixed disclosure: "When someone pushes to a repository you've cloned, GitSync.md shows a notification. Tapping it opens the app and pulls. Uses a relay that sees repository names only — never file contents."
-3. **Entry points**: App Settings sheet.
-4. **User-visible**: the opt-in control and its privacy disclosure (the only in-app documentation of the relay's data exposure).
-5. **Source**: `Sync.md/Views/SettingsView.swift:303-330`.
+- Collapse IDs are SHA-256-derived ASCII values no longer than APNs' 64-byte limit and are stable per repository/branch.
+- This is intentionally not silent-only: iOS may suppress remote-notification execution, while the visible notification remains a user-driven fallback.
 
-## 11. push-worker endpoints & registration validation (`syncmd-push`)
+Sources: `push-worker/src/apns.ts`, `push-worker/src/apns.test.ts`.
 
-1. **Name**: `push-worker/` — Cloudflare Worker "syncmd-push", separately deployed and opt-in (the app's default URL points at the maintainer's deployment; self-hosting documented in `push-worker/README.md`)
-2. **Mechanics**: KV namespace `REGISTRY` maps `device:<deviceSecret>` → `{token, environment: development|production, repos[], updatedAt}`. Routes (`src/index.ts:233-251`):
-   - `GET /healthz` → `{ok:true}`.
-   - `POST /v1/register` — per-IP rate limit (`REGISTER_RATE_LIMIT_PER_HOUR`, default 20, KV `rl:<ip>` 1 h TTL), 16 KiB body cap, then strict validation: token must be 64-char hex, environment dev/prod, deviceSecret 8-64 chars of `[A-Za-z0-9-]`, ≤ 200 repos, each `owner/name` matching `[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}`, deduplicated and lowercased. Returns `{ok, repos: count}`.
-   - `POST /v1/unregister` — validates the deviceSecret shape and deletes the KV record.
-   - `POST /v1/github-webhook` — see §12.
-3. **Entry points**: the app (register/unregister), GitHub webhooks.
-4. **User-visible**: none directly (infrastructure); bad registrations are rejected with 4xx JSON.
-5. **Source**: `push-worker/src/index.ts:26-64` (helpers), `114-152` (rate limit + register/unregister), `233-251` (router); `push-worker/wrangler.toml` (binding, `APNS_TOPIC = bontecou.Sync-md`, collapse/rate-limit vars, secret list).
+## 6. Headless APNs reconciliation
 
-## 12. GitHub webhook processing
+Configuration:
 
-1. **Name**: `handleGithubWebhook`
-2. **Mechanics**: Verifies `x-hub-signature-256` as timing-safe HMAC-SHA256 over the raw body against `GITHUB_WEBHOOK_SECRET` (401 on mismatch; `verifyGithubSignature` + `timingSafeEqualHex`). `ping` events are acked; any non-`push` event is acked-and-ignored. Push payloads are summarized to `{repository.full_name (lowercased), commits.length, deleted}` — deletions are skipped. Delivery then runs in `ctx.waitUntil` **after** the webhook has been acked: the worker pages through all `device:` KV keys (personal-scale by design), and for each device subscribed to the repo sends one notification (§13).
-3. **Entry points**: GitHub repo/organization webhook configured for the `push` event with the shared secret.
-4. **User-visible**: subscribers get "N new commits — tap to sync".
-5. **Source**: `push-worker/src/index.ts:155-231` (signature verify 38-53, summary 87-101).
+- `Sync.md/Sync_md.entitlements`: `aps-environment` (development in source; effective distribution value comes from provisioning).
+- `Sync.md/Info.plist`: `UIBackgroundModes = [fetch, processing, remote-notification]`. `fetch` and `processing` serve scheduled Background Sync; `remote-notification` serves this optional acceleration path.
 
-## 13. Notification delivery, collapse & stale-token cleanup
+Execution:
 
-1. **Name**: per-device delivery loop
-2. **Mechanics**: For each subscribed device: a KV throttle key `notif:<repo>:<token>` with TTL `NOTIFY_COLLAPSE_SECONDS` (default 120 s) skips repeated notifications for the same repo+device inside the window; the alert text is `notificationText` ("<repo>", "1 new commit — tap to sync" / "N new commits — tap to sync"); delivery uses `sendApns` with `collapseId: repo:<name>` and `userInfo: {repo}`. APNs 410/400 responses trigger `REGISTRY.delete` of the stale registration; per-device failures are swallowed (the webhook was already acked).
-3. **Entry points**: webhook delivery loop (§12).
-4. **User-visible**: at most one notification per repo per ~2 minutes per device.
-5. **Source**: `push-worker/src/index.ts:103-111` (text), `186-222` (loop, throttle, cleanup).
-6. **Honest gap**: the stale-token cleanup deletes the key `device:<repoFullName>:<token>` (`index.ts:217`), but records are stored under `device:<deviceSecret>` and throttle keys under `notif:<repo>:<token>` — the deleted key is never written, so invalid tokens are **not actually removed** from the registry. The commit message's "stale-token cleanup" does not hold at current HEAD; flagged for a follow-up fix rather than documented as working.
+1. `SyncAppDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)` forwards to `PushSyncNotificationBridge`.
+2. `PushSyncEvent.parse` requires `content-available = 1` and validates repository, exact branch, optional SHA, and opaque hint. Alert fields may coexist.
+3. `PremiumRuntime.processPush` requires the feature flag, global Background Sync opt-in, automatic-pull consent, a cloned/non-excluded locally included GitHub repository, case-insensitive canonical repository match, and exact configured branch match.
+4. The payload is only a routing hint. `BackgroundSyncCoordinator.reconcilePush` performs the normal authenticated fetch and fail-closed reconciliation; it never trusts the supplied SHA as content.
+5. The bridge has a 25-second deadline and an actor-backed one-shot completion gate. Transfer maps to `UIBackgroundFetchResult.newData`; verified current state maps to `.noData`; timeout/deferred/blocked/failure maps to `.failed`.
+6. Timeout cancellation is generation-scoped. It cancels only flights actually started by that APNs hint and cannot cancel foreground/BGTask work into which the push merely coalesced.
 
-## 14. APNs provider (token-based JWT)
+Automatic APNs work may pull and, if independently consented, continue through the existing safe composed reconciliation. Remote-ahead dirty work, divergence, wrong branch, auth/trust, and other unsafe states stop for attention. No merge, rebase, branch switch, conflict resolution, overwrite, or force push is introduced.
 
-1. **Name**: `sendApns` / `providerJwt` (`src/apns.ts`)
-2. **Mechanics**: Provider token is a JWS ES256 JWT signed with the `.p8` key via WebCrypto (whose raw IEEE P1363 r||s signature is exactly JWS ES256 encoding); header `{alg, kid}`, claims `{iss: teamId, iat}`, cached 30 min (Apple allows 1 h). Hosts: `api.sandbox.push.apple.com` for `environment: development`, `api.push.apple.com` for production — both supported per device record. Request: `apns-push-type: alert`, `apns-priority: 10`, `apns-collapse-id`, `apns-topic` = app bundle id, and `interruption-level: passive` in the payload (quiet notification delivery).
-3. **Entry points**: delivery loop (§13).
-4. **User-visible**: dependable **visible** alerts — silent pushes are deliberately avoided (Apple throttles them to a few per hour and drops them in Low Power Mode; rationale in `PushSyncManager.swift:8-12` and `push-worker/README.md`).
-5. **Source**: `push-worker/src/apns.ts:24-85`.
+Sources: `Sync.md/SyncAppDelegate.swift`, `Sync.md/Services/PushSyncManager.swift`, `Sync.md/Services/PremiumRuntime.swift`, `Sync.md/Services/BackgroundSyncCoordinator.swift`.
 
-## 15. Privacy posture (vs. the removed premium relay / FEATURESET 8.11)
+## 7. User-visible behavior
 
-1. **Name**: push-worker data exposure
-2. **Mechanics**: The KV registry persists **only** `{APNs token, environment, repo owner/name list, updatedAt}` keyed by a random device secret. The signed GitHub webhook body is processed transiently to extract `repository.full_name` and the commit count; nothing else from the payload is persisted. No repository contents, credentials, branches, file paths, or user identity reach the worker. This is a **different, opt-in posture** from FEATURESET 8.11: 8.11 describes the premium relay (removed in `d8c6e98`; `docs/premium-v1-app-privacy.md` now carries a "historical record only" banner), which persisted only numeric repository IDs and opaque identifiers. Push Sync *does* persist repo names + APNs tokens — by design, disclosed in the Settings Push Sync section ("Uses a relay that sees repository names only — never file contents") and in `push-worker/README.md`. Reconciliation never runs server-side: the notification only asks the user to tap, and the pull executes on-device through the app's own libgit2 engine.
-3. **Entry points**: n/a (posture statement).
-4. **User-visible**: the Settings disclosure quoted above.
-5. **Source**: `push-worker/src/index.ts:26-29, 60-84` (record shape/validation), `Sync.md/Views/SettingsView.swift:326`, `push-worker/README.md` (Privacy paragraph).
+Push Sync appears globally in App Settings and in repository settings:
 
-## 16. Test coverage
+- Toggle: **Notify when GitHub changes**.
+- Connection UI: one GitHub App install per personal account or organization, all/selected-repository explanation, owner requirement, active/suspended status, per-link Manage and confirmation-backed device-only Remove actions, an always-available installed-Apps management link, and a clear incomplete-setup warning when no account is linked. Copy explains that device unlink/Push disable does not uninstall the GitHub App or stop GitHub webhook delivery; uninstall is controlled on GitHub.
+- Disclosure: read-only Contents exists so GitHub can send push events and is never used to fetch files; organization Members read is used only for owner verification; short-lived tokens are revoked and never stored; the alert/background/tap behavior and relay data boundary remain explicit.
+- Foreground arrivals still show banner/list presentation.
+- Push Sync remains independently opt-in and GitHub-only. Scheduled Background Sync works without it.
 
-1. **Name**: worker + app tests
-2. **Mechanics**: `push-worker/src/webhook.test.ts` — 17 vitest cases across `timingSafeEqualHex` (4), `verifyGithubSignature` (3), `parseRegisterRequest` (5, incl. normalization and rejection cases), `summarizePushEvent` (3), `notificationText` (2). Swift side: registration-body privacy filter + hex formatting (`SyncMDTests.swift:2204-2244`, added in `b911f13`) and the intentional-config invariants (`UIBackgroundModes = [fetch, processing]`, `aps-environment = development`) pinned with rationale in `b218661` (`SyncMDTests.swift:951, 989-994`).
-3. **Entry points**: `npm test` in `push-worker/`; the XCTest gate.
-4. **User-visible**: none.
-5. **Source**: `push-worker/src/webhook.test.ts:10-105`, `push-worker/package.json` (vitest), `SyncMDTests/SyncMDTests.swift`.
+## 8. Test and validation coverage
 
----
+Worker:
 
-## Cross-cutting guarantees
+- `push-worker/src/github-app.test.ts`: configuration validation, strict linked metadata, RS256 JWT signature verification, PKCE OAuth exchange, and ID parsing.
+- `push-worker/src/webhook.test.ts`: device/index registration and repair, App webhook authentication, exact installation/repository-owner routing, state/PKCE/owner linking, user-token revocation, cached and live owner revalidation, suspension/deletion/unlink, retired-secret rejection, tag/deletion filtering, stale-token pruning/index cleanup, throttling, pagination, rate limiting, redacted logs, and all endpoints.
+- `push-worker/src/apns.test.ts`: combined visible/background payload and optional content flag.
+- Current Worker suite: 81 Vitest tests plus `tsc --noEmit`, including generated-key RS256 GitHub App and ES256 APNs signature verification.
 
-- **One reconciliation path**: widget, Control Center, deep link, and notification tap all funnel through `SyncRuntimeLocator.requestPullAll()` → `PremiumRuntime.reconcileNow()` — the same immediate, cooldown-bypassing foreground pass as the in-app "Sync now" button, coalescing with any in-flight pass. All git work stays on-device, in the app process.
-- **No git in the extension**: the widget extension holds no entitlements (no App Group) and cannot read repository data; `openAppWhenRun` guarantees the intent executes in the app process.
-- **Opt-in push, visible-only**: Push Sync is off by default, registers only cloned GitHub repos by `owner/name`, and deliberately uses visible alerts rather than silent pushes (Apple throttles silent pushes and drops them in Low Power Mode).
-- **Fail-soft registration**: registration/unregister failures surface as inline Settings errors and debug-log warnings; they never block sync operations.
+App (259-unit-test suite passing on the current simulator gate):
 
-## Gaps / uncertainties
+- Registration payload privacy, deterministic inventory fingerprint, and wire shape.
+- `PushSyncEvent` combined-alert parsing and unsafe-routing rejection.
+- Exactly-once successful and timeout bridge completion.
+- Matching repository/branch targeting.
+- No Git work when automatic-pull consent is off.
+- Exact Info.plist modes and APNs entitlement assertions.
+- `scripts/background-sync/inspect-configuration.sh` statically pins bridge composition, timeout/consent gates, payload routing, and scheduler configuration.
 
-- **Stale-token cleanup is ineffective** (§13): the KV delete targets a key that is never written. Registrations for dead tokens accumulate until the device re-registers or unregisters.
-- The "Pull All" surfaces are labeled "fetch and fast-forward every repository", but mechanically they run the Background Sync foreground reconciliation pass (`reconcileNow` → automatic-inventory reconciliation + coordinator foreground pass), which honors per-repo Background Sync inclusion/exclusion and each repo's independent automatic pull/push choices — a repo excluded from Background Sync is not reconciled by a widget tap. The feature flag gating this (`FeatureFlags.gitSyncAssistEnabled`) is a compile-time constant currently `true`.
-- Committed entitlements pin `aps-environment = development`; production distribution relies on Xcode/export rewriting the value per provisioning profile.
-- Widget/Control Center/notification surfaces have no UI tests and no in-app release-notes entry (release notes stop at 2.6.0 Background Sync copy, `Sync.md/ReleaseNotes.swift:9-12`); `site/` and `app-store-input/` do not mention them (verified by grep at `b218661`).
-- `push-worker/wrangler.toml` ships a placeholder KV id (`REPLACE_WITH_KV_NAMESPACE_ID`); deployment is manual per `push-worker/README.md`. The app's default worker URL points at the maintainer's personal deployment — self-hosters must override `pushSyncWorkerURL` in UserDefaults.
-- Worker delivery scans all device keys per webhook (paged 1000/page) — documented as personal/family scale in `push-worker/README.md`.
+## 9. Honest limits
+
+- APNs background execution is best effort. It can be delayed or suppressed, including after force-quit, with Background App Refresh disabled, in Low Power Mode, or under system pressure.
+- The visible alert is the fallback; scheduled BGAppRefresh/BGProcessing and foreground reconciliation remain repair paths.
+- The current per-branch 120-second Worker throttle can suppress a second wake for the same branch in that window. A delivered wake fetches authoritative latest state, but a push racing after that fetch may wait for another repair opportunity.
+- Push Sync currently requires visible-notification authorization; there is no separate silent-only consent surface.
+- Installation route indexes avoid a global device scan, but KV is eventually consistent. A just-added/removed route can be briefly missed or stale; every stale hit is revalidated and later APNs/BGTask/foreground opportunities remain repair paths.
+- Production distribution still requires a TestFlight/App Store token pass; the completed physical checks use a signed Debug build and sandbox APNs.
+- APNs provider authentication and the app topic were accepted by both sandbox and production endpoints (each returned the expected `BadDeviceToken` for a synthetic token).
+- Signed-device sandbox validation registered one real development token. Manual-hook migration first proved a locked/backgrounded authoritative no-update pass. Production GitHub App validation then proved visible fallback delivery and transferred two natural remote commits while the Debug app was backgrounded. A post-migration event remained App-only and reached the target commit even though its 25-second APNs completion deadline won the final race. A live signed suspend event changed both relay and app UI state, a push redelivery while suspended reported zero matched/accepted routes, and signed unsuspend restored active all-repositories status. These checks prove real GitHub App → relay → sandbox APNs → headless app execution and reversible suspension handling, but not production-token/TestFlight delivery, deletion/demotion, long-term cadence, force-quit behavior, or reliability under adverse conditions.

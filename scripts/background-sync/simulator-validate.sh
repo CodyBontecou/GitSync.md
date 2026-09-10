@@ -283,7 +283,7 @@ if info.get("DTPlatformName") != "iphonesimulator":
     raise SystemExit("app is not an iOS Simulator artifact")
 if info.get("BGTaskSchedulerPermittedIdentifiers") != expected_ids:
     raise SystemExit("built permitted BGTask identifiers do not match")
-if info.get("UIBackgroundModes") != ["fetch", "processing"]:
+if info.get("UIBackgroundModes") != ["fetch", "processing", "remote-notification"]:
     raise SystemExit("built background modes do not match")
 PY
 plutil -convert xml1 -o "$BS_RUN_DIR/installed-app-info.plist.xml" "$APP_PATH/Info.plist"

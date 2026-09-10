@@ -1,24 +1,45 @@
 name = "syncmd-push"
 main = "src/index.ts"
-compatibility_date = "2025-01-01"
+compatibility_date = "2026-09-08"
 
-# KV registry: device:<secret> → { token, environment, repos[], updatedAt }
-# Create with: wrangler kv namespace create REGISTRY
+# OAuth callbacks contain one-time query credentials. Persist only explicit,
+# identifier-free console aggregates; suppress request invocation logs and
+# redact query strings if platform metadata is emitted.
+[observability]
+enabled = true
+redact_query_string = true
+
+[observability.logs]
+enabled = true
+invocation_logs = false
+persist = true
+
+[observability.traces]
+enabled = false
+
+# KV registry: expiring device routing, GitHub links/indexes, and throttles.
 [[kv_namespaces]]
 binding = "REGISTRY"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "0f3b0268178244919760b90aa86f4cad"
 
 [vars]
+# Public GitHub App registration metadata. Secrets remain in Worker secret bindings.
+GITHUB_APP_ID = "4897662"
+GITHUB_APP_CLIENT_ID = "Iv23liu3U70xTgwBPZUK"
+GITHUB_APP_SLUG = "gitsync-md-push-sync"
+GITHUB_APP_CALLBACK_URL = "https://syncmd-push.costream.workers.dev/v1/github-app/oauth/callback"
 # APNs topic = the app's bundle id.
 APNS_TOPIC = "bontecou.Sync-md"
-# Collapse window per (repo, device): skip sending if we notified within N seconds.
+# Collapse window per (repo, branch, device): skip if we notified within N seconds.
 NOTIFY_COLLAPSE_SECONDS = "120"
-# Webhook sends acknowledged before per-device APNs delivery finishes.
+# Webhook requests are acknowledged before per-device APNs delivery finishes.
 # Rate limit for /v1/register per IP.
 REGISTER_RATE_LIMIT_PER_HOUR = "20"
 
 # Secrets (set via `wrangler secret put`, never committed):
-#   GITHUB_WEBHOOK_SECRET — GitHub webhook "Secret" field
-#   APNS_KEY_P8           — Apple .p8 key contents (raw PEM, including header/footer)
-#   APNS_KEY_ID           — 10-char key id from developer.apple.com
-#   APNS_TEAM_ID          — 10-char team id
+#   GITHUB_APP_CLIENT_SECRET       — GitHub App OAuth client secret
+#   GITHUB_APP_PRIVATE_KEY_PKCS8   — converted GitHub App RSA key
+#   GITHUB_APP_WEBHOOK_SECRET      — shared GitHub App webhook HMAC secret
+#   APNS_KEY_P8                    — Apple .p8 key contents (raw PEM)
+#   APNS_KEY_ID                    — 10-char key id from developer.apple.com
+#   APNS_TEAM_ID                   — 10-char team id

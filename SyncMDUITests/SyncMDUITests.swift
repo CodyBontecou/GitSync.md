@@ -1157,8 +1157,8 @@ final class SyncMDUITests: XCTestCase {
     /// disclosure — all discoverable by label, with the toggle off by default
     /// (the unset `pushSyncEnabled` UserDefaults key reads false). The Push
     /// Sync surface lives in SettingsView (the per-repo sheet opened from a
-    /// vault's Settings gear — AppSettingsView has no Push Sync surface), so
-    /// this launches signed-out with the local conflict fixture, which seeds
+    /// vault's Settings gear; the installation-global surface is covered by a
+    /// separate test below. This launches signed-out with the local conflict fixture, which seeds
     /// `isSignedIn == false` plus one credential-free local repository — no
     /// network, no sign-in, no APNs. The toggle is NEVER tapped: enabling it
     /// drives APNs registration (an external-service path).
@@ -1244,7 +1244,7 @@ final class SyncMDUITests: XCTestCase {
         // The relay privacy disclosure is present as static text (CONTAINS
         // query for the long multi-sentence copy, pinned-copy rule).
         let disclosure = app.staticTexts.matching(
-            NSPredicate(format: "label CONTAINS 'Uses a relay that sees repository names only'")
+            NSPredicate(format: "label CONTAINS 'The relay stores repository names, GitHub installation and account identifiers'")
         ).firstMatch
         var disclosureFound = disclosure.exists
         for _ in 0..<6 where !disclosureFound {
@@ -1278,9 +1278,9 @@ final class SyncMDUITests: XCTestCase {
 
     // MARK: - Push Sync Global Settings Surface
 
-    /// The Push Sync toggle is installation-global (`PushSyncManager.shared`)
-    /// and registers every cloned GitHub repository; App Settings exposes it
-    /// so users can enable notifications for all repos — including signed-out
+    /// The Push Sync toggle is installation-global (`PushSyncManager.shared`),
+    /// while a GitHub App installation authorizes push events once per account
+    /// or organization. App Settings exposes it even for signed-out
     /// users with no repositories yet. Assert-only: the toggle is NEVER tapped
     /// (enabling drives APNs registration, an external-service path).
     func testPushSyncGlobalSurfaceInAppSettings() {
@@ -1335,17 +1335,17 @@ final class SyncMDUITests: XCTestCase {
         )
 
         let disclosure = app.staticTexts.matching(
-            NSPredicate(format: "label CONTAINS %@", "Uses a relay that sees repository names only")
+            NSPredicate(format: "label CONTAINS %@", "The relay stores repository names, GitHub installation and account identifiers")
         ).firstMatch
         XCTAssertTrue(
-            disclosure.exists,
+            reveal(disclosure, in: app),
             "Relay disclosure copy should be present on the global surface"
         )
         let scopeDisclosure = app.staticTexts.matching(
-            NSPredicate(format: "label CONTAINS %@", "Covers all of your cloned GitHub repositories")
+            NSPredicate(format: "label CONTAINS %@", "Choose all repositories to include future repositories automatically")
         ).firstMatch
         XCTAssertTrue(
-            scopeDisclosure.exists,
+            reveal(scopeDisclosure, in: app),
             "Global surface should state it covers all cloned GitHub repositories"
         )
 

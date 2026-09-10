@@ -1,0 +1,51 @@
+name: Push Relay
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "push-worker/**"
+      - ".github/workflows/push-worker.yml"
+  pull_request:
+    paths:
+      - "push-worker/**"
+      - ".github/workflows/push-worker.yml"
+
+concurrency:
+  group: push-relay-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: push-worker
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: push-worker/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run Workers-runtime tests
+        run: npm test
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Validate deploy bundle without publishing
+        run: npm run dry-run

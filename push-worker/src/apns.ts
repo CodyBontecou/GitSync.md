@@ -18,6 +18,10 @@ export interface ApnsNotification {
   title: string;
   body: string;
   collapseId: string;
+  /** Adds an opportunistic background wake while retaining the alert as a
+   * dependable tap-to-sync fallback. Because this payload also has an alert,
+   * APNs requires the `alert` push type and priority 10 below. */
+  contentAvailable: boolean;
   userInfo: Record<string, unknown>;
 }
 
@@ -39,7 +43,7 @@ function pemToDer(pem: string): Uint8Array {
   return bytes;
 }
 
-async function providerJwt(config: ApnsConfig): Promise<string> {
+export async function providerJwt(config: ApnsConfig): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   if (cachedJwt && cachedJwt.expiresAt > now + 60) return cachedJwt.value;
 
@@ -54,11 +58,26 @@ async function providerJwt(config: ApnsConfig): Promise<string> {
   const header = base64url(encoder.encode(JSON.stringify({ alg: "ES256", kid: config.keyId })));
   const claims = base64url(encoder.encode(JSON.stringify({ iss: config.teamId, iat: now })));
   const data = new Uint8Array(await new Blob([`${header}.${claims}`]).arrayBuffer());
-  const sig = new Uint8Array(await crypto.subtle.sign("ES256", key, data));
+  const sig = new Uint8Array(await crypto.subtle.sign(
+    { name: "ECDSA", hash: "SHA-256" },
+    key,
+    data,
+  ));
 
   const jwt = `${header}.${claims}.${base64url(sig)}`;
   cachedJwt = { value: jwt, expiresAt: now + 30 * 60 }; // Apple allows up to 1h; refresh at 30min.
   return jwt;
+}
+
+export function apnsPayload(n: ApnsNotification): string {
+  return JSON.stringify({
+    aps: {
+      alert: { title: n.title, body: n.body },
+      ...(n.contentAvailable ? { "content-available": 1 } : {}),
+      "interruption-level": "passive",
+    },
+    ...n.userInfo,
+  });
 }
 
 export async function sendApns(config: ApnsConfig, n: ApnsNotification): Promise<Response> {
@@ -74,12 +93,6 @@ export async function sendApns(config: ApnsConfig, n: ApnsNotification): Promise
       "apns-priority": "10",
       "apns-collapse-id": n.collapseId,
     },
-    body: JSON.stringify({
-      aps: {
-        alert: { title: n.title, body: n.body },
-        "interruption-level": "passive",
-      },
-      ...n.userInfo,
-    }),
+    body: apnsPayload(n),
   });
 }

@@ -205,8 +205,8 @@ check(
     repr(info.get("BGTaskSchedulerPermittedIdentifiers")),
 )
 check(
-    "Built Info.plist has fetch + processing modes",
-    info.get("UIBackgroundModes") == ["fetch", "processing"],
+    "Built Info.plist has fetch + processing + remote-notification modes",
+    info.get("UIBackgroundModes") == ["fetch", "processing", "remote-notification"],
     repr(info.get("UIBackgroundModes")),
 )
 check(

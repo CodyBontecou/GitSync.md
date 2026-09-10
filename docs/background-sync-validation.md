@@ -17,7 +17,7 @@ Fifteen minutes is an earliest eligible time, **not an interval or cadence promi
 
 Foreground reconciliation is serialized at one repository at a time to protect UI responsiveness. A processing pass may run batches of up to three. Automatic pull and automatic push remain independent; publishing is default-off and requires separate consent.
 
-There is no Background Sync StoreKit entitlement check. The app's StoreKit review-request API is unrelated. The committed `aps-environment` entitlement belongs to the separately opt-in Push Sync notification feature; it does not gate Background Sync. Background Sync itself requires the two Info.plist modes and task identifiers, not an APNs entitlement.
+There is no Background Sync StoreKit entitlement check. The app's StoreKit review-request API is unrelated. Scheduled Background Sync still requires only its `fetch`/`processing` modes and two task identifiers. The committed `aps-environment` entitlement and additional `remote-notification` mode belong to separately opted-in Push Sync acceleration: its visible APNs alert carries a best-effort background wake that may run a targeted reconciliation when automatic pull is enabled. They do not gate scheduled Background Sync, which continues to work without the relay.
 
 ## Tool map
 
@@ -199,7 +199,7 @@ The audit requires:
 - the Release `.app` and executable;
 - `iphonesimulator` platform and bundle ID `bontecou.Sync-md`;
 - both exact permitted identifiers;
-- exact `fetch` and `processing` modes;
+- exact `fetch`, `processing`, and `remote-notification` modes;
 - a lintable root privacy manifest semantically matching source with tracking disabled;
 - no `.storekit` anywhere in the bundle;
 - source entitlement/project configuration inspection;
@@ -223,8 +223,20 @@ Never describe a simulator/debugger trigger as “iOS ran Background Sync natura
 
 This section is a human/operator gate. The local scripts do not sign, install on hardware, contact a provider, or perform any item below.
 
-- [ ] Inspect the signed candidate/archive's built Info.plist for both identifiers and `fetch` + `processing`.
-- [ ] Inspect signed entitlements/provisioning separately. Treat APNs as Push Sync configuration, not a Background Sync entitlement or StoreKit gate.
+A signed Debug-device exercise on 2026-09-09 separately validated Push Sync acceleration: the sandbox APNs provider accepted the registered physical-device token, the production relay reported one matched and accepted delivery, and the locked/backgrounded app logged remote-notification receipt plus completion of its authoritative reconciliation. That is evidence for the APNs path on one development installation, not a substitute for inspecting and exercising the release candidate, production APNs token, discretionary BGTask grants, force-quit behavior, or the adverse-condition matrix below.
+
+The broad-release Push Sync setup uses the live one-time GitHub App path; manual repository-hook migration is complete:
+
+- [x] Confirm the production public App ID/client ID/slug and exact setup, OAuth callback, and webhook URLs without recording secrets or callback query strings.
+- [x] Confirm Contents read-only, Organization members read-only, Push events, expiring user tokens, all/selected repository choices, and installation availability for any account.
+- [ ] Verify a setup-only/spoofed installation ID cannot link; an exact personal owner and organization owner can link; a normal organization member cannot; OAuth and installation tokens are never persisted and receive immediate revocation requests.
+- [ ] Confirm invocation logs/traces are disabled, query strings are redacted, route indexes avoid a global device scan, owner authority is revalidated, and deletion/demotion fail closed. Live signed suspend/unsuspend and suspended-delivery suppression are complete.
+- [x] On signed hardware, connect through the in-app session and validate natural GitHub App pushes through the production relay. The relay's identifier-free aggregates showed App acceptance and legacy-route suppression during overlap; the app performed authoritative background transfers.
+- [x] Remove all four migrated repository hooks, reject a correctly signed retired-secret probe, prove App delivery continues, and remove the retired gate, secret, and delivery path.
+- [ ] Separately validate all-repositories future-repo coverage and selected-repository access updates.
+
+- [ ] Inspect the signed candidate/archive's built Info.plist for both identifiers and `fetch` + `processing` + `remote-notification`.
+- [ ] Inspect signed entitlements/provisioning separately. Treat APNs as optional Push Sync acceleration, not a scheduled Background Sync entitlement or StoreKit gate.
 - [ ] On a signed physical device after first unlock, verify registration, submission, handler entry, rescheduling, completion, and expiration for both task types with redacted timestamps.
 - [ ] Record at least one **unforced** discretionary grant if iOS provides one. This is best-effort and user/OS-gated; absence in a test window is not proof of failure, and a forced debugger launch is not a substitute.
 - [ ] Verify foreground work is one repository at a time and processing never exceeds three concurrent repositories.
@@ -235,4 +247,4 @@ This section is a human/operator gate. The local scripts do not sign, install on
 - [ ] Confirm no merge, rebase, branch switch/recreation, conflict resolution, overwrite, or force-push path is reached.
 - [ ] Keep receipts private and redact device IDs, repository identity/content/path, credentials, tokens, and user identity before sharing.
 
-A release remains blocked on the signed-device/configuration/safety checks relevant to its candidate. Historical relay, subscription, StoreKit-verifier, GitHub App, and silent-APNs gates in the `premium-v1-*` documents are retained only as provenance and are not current Background Sync requirements.
+A release remains blocked on the signed-device/configuration/safety checks relevant to its candidate. The subscription-era GitHub App/D1/outbox, StoreKit-verifier, and premium-relay gates in the `premium-v1-*` documents are provenance, not the current architecture. The current optional `push-worker/` has its own narrower GitHub App activation gates above and remains independent of scheduled Background Sync.

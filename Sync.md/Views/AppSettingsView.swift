@@ -163,37 +163,13 @@ struct AppSettingsView: View {
                             }
                         }
 
-                        // Push Sync — installation-global, opt-in notification
-                        // relay. The toggle registers every cloned GitHub
-                        // repository (new clones re-register automatically), so
-                        // it is surfaced here, not only inside per-repo settings.
+                        // Push Sync — installation-global APNs registration plus a
+                        // one-time GitHub App installation per account/organization.
                         settingsSection(title: String(localized: "Push Sync")) {
-                            VStack(spacing: 0) {
-                                Toggle("Notify when GitHub changes", isOn: Binding(
-                                    get: { pushSyncStatusObject.isEnabled },
-                                    set: { newValue in
-                                        Task { await pushSyncStatusObject.setEnabled(newValue) }
-                                    }
-                                ))
-                                .frame(minHeight: 44)
-                                .padding(.horizontal, 16)
-
-                                if let error = pushSyncStatusObject.lastError {
-                                    Text(error)
-                                        .bType(.monoCaption, weight: .regular)
-                                        .foregroundStyle(.red)
-                                        .padding(.horizontal, 16)
-                                }
-                                if let date = pushSyncStatusObject.lastRegistrationDate {
-                                    Text("Registered \(relativeDate(date))")
-                                        .bType(.monoCaption, weight: .regular)
-                                        .padding(.horizontal, 16)
-                                }
-                                Text("When someone pushes to a repository you've cloned from GitHub, GitSync.md shows a notification. Tapping it opens the app and pulls. Covers all of your cloned GitHub repositories, including ones you add later. Uses a relay that sees repository names only — never file contents.")
-                                    .bType(.monoCaption, weight: .regular)
-                                    .foregroundStyle(Color.brutalText)
-                                    .padding(16)
-                            }
+                            PushSyncSettingsContent(
+                                manager: pushSyncStatusObject,
+                                scope: .global
+                            )
                         }
 
                         // Shortcuts

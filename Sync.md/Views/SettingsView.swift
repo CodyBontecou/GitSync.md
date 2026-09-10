@@ -309,34 +309,13 @@ struct SettingsView: View {
                             }
                         }
 
-                        // Push Sync
+                        // Push Sync is installation-global; this repository
+                        // surface exposes the same GitHub App connection state.
                         settingsSection(title: String(localized: "Push Sync")) {
-                            VStack(spacing: 0) {
-                                Toggle("Notify when GitHub changes", isOn: Binding(
-                                    get: { pushSyncStatusObject.isEnabled },
-                                    set: { newValue in
-                                        Task { await pushSyncStatusObject.setEnabled(newValue) }
-                                    }
-                                ))
-                                .frame(minHeight: 44)
-                                .padding(.horizontal, 16)
-
-                                if let error = pushSyncStatusObject.lastError {
-                                    Text(error)
-                                        .bType(.monoCaption, weight: .regular)
-                                        .foregroundStyle(.red)
-                                        .padding(.horizontal, 16)
-                                }
-                                if let date = pushSyncStatusObject.lastRegistrationDate {
-                                    Text("Registered \(relativeDate(date))")
-                                        .bType(.monoCaption, weight: .regular)
-                                        .padding(.horizontal, 16)
-                                }
-                                Text("When someone pushes to a repository you've cloned, GitSync.md shows a notification. Tapping it opens the app and pulls. Uses a relay that sees repository names only — never file contents.")
-                                    .bType(.monoCaption, weight: .regular)
-                                    .foregroundStyle(Color.brutalText)
-                                    .padding(16)
-                            }
+                            PushSyncSettingsContent(
+                                manager: pushSyncStatusObject,
+                                scope: .repository
+                            )
                         }
 
                         // Debug Log

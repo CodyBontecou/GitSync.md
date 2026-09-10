@@ -41,8 +41,8 @@ final class PremiumBackgroundProcessingExecution {
 
 /// Local Background Sync runtime. Background Sync is part of the paid-up-front
 /// app — there is no subscription, entitlement, or server component. Every
-/// sync trigger (foreground activation and iOS-granted background time) runs
-/// entirely within the app.
+/// sync trigger (foreground activation, scheduled background time, and an
+/// optional APNs wake) runs entirely within the app.
 @MainActor
 @Observable
 final class PremiumRuntime {
@@ -240,6 +240,50 @@ final class PremiumRuntime {
 
     func cancelForegroundReconciliation() {
         coordinator.cancelForegroundReconciliation()
+    }
+
+    /// Handles an APNs wake as a targeted, consent-gated reconciliation. The
+    /// payload selects work but is never treated as authoritative Git state;
+    /// the normal authenticated fetch and fail-closed reconciliation policy
+    /// still decide whether any files may change.
+    func processPush(_ event: PushSyncEvent) async -> BackgroundSyncDisposition {
+        guard automaticPushWakeIsAllowed else { return .ignored }
+        await reconcileAutomaticRepositories()
+        guard automaticPushWakeIsAllowed else { return .ignored }
+        let repoIDs = repositoryIDs(matching: event)
+        guard !repoIDs.isEmpty else { return .ignored }
+        return await coordinator.reconcilePush(repoIDs: repoIDs, hintID: event.hintID)
+    }
+
+    /// Called when Apple's remote-notification execution budget expires.
+    /// Generation ownership in the coordinator prevents this from cancelling
+    /// foreground or BGTask work into which the APNs request merely coalesced.
+    func cancelPush(_ event: PushSyncEvent) {
+        // Cancel by the ownership hint captured when work began. Recomputing
+        // repository matches here could miss a flight if its branch or local
+        // inclusion changed while the notification was running.
+        coordinator.cancelPush(hintID: event.hintID)
+    }
+
+    private var automaticPushWakeIsAllowed: Bool {
+        automaticOperationsAllowed && automaticallyPullRemoteChanges
+    }
+
+    private func repositoryIDs(matching event: PushSyncEvent) -> [UUID] {
+        guard let provider = repositoryProvider else { return [] }
+        return provider.assistRepositories().compactMap { repo in
+            guard repo.isCloned,
+                  repo.assist.enabled,
+                  !repo.assist.excludedFromAutomaticSync,
+                  let fullName = GitRemoteURL.parse(repo.repoURL)?.canonicalGitHubFullName,
+                  fullName.caseInsensitiveCompare(event.repositoryFullName) == .orderedSame else {
+                return nil
+            }
+            let selected = repo.assist.selectedBranch?.trimmingCharacters(in: .whitespacesAndNewlines)
+            let configuredBranch = selected?.isEmpty == false ? selected! : repo.branch
+            guard configuredBranch == event.branch else { return nil }
+            return repo.id
+        }
     }
 
     private func handleBackgroundProcessing(_ task: any PremiumBackgroundProcessingTask) {

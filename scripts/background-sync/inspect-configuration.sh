@@ -109,6 +109,13 @@ privacy = plist("Sync.md/PrivacyInfo.xcprivacy")
 scheduler = text("Sync.md/Services/BackgroundProcessingScheduler.swift")
 runtime = text("Sync.md/Services/PremiumRuntime.swift")
 app = text("Sync.md/Sync_mdApp.swift")
+app_delegate = text("Sync.md/SyncAppDelegate.swift")
+push_manager = text("Sync.md/Services/PushSyncManager.swift")
+github_app_link = text("Sync.md/Services/GitHubAppLinkService.swift")
+push_worker = text("push-worker/src/index.ts")
+push_worker_github = text("push-worker/src/github-app.ts")
+push_worker_apns = text("push-worker/src/apns.ts")
+push_worker_config = text("push-worker/wrangler.toml")
 coordinator = text("Sync.md/Services/BackgroundSyncCoordinator.swift")
 workflow = text(".github/workflows/xctest.yml")
 project = text("Sync.md.xcodeproj/project.pbxproj")
@@ -137,8 +144,8 @@ check(
 )
 check(
     "Info.plist exact background modes",
-    modes == ["fetch", "processing"],
-    f"expected ['fetch', 'processing'], found {modes!r}",
+    modes == ["fetch", "processing", "remote-notification"],
+    f"expected ['fetch', 'processing', 'remote-notification'], found {modes!r}",
 )
 check(
     "Scheduler refresh identifier constant",
@@ -265,6 +272,85 @@ check(
     "SystemPremiumBackgroundProcessingScheduler()" in app
     and re.search(r'PremiumRuntime\s*\(.*?backgroundScheduler\s*:', app, re.S) is not None,
     "Sync_mdApp.init must inject SystemPremiumBackgroundProcessingScheduler; the runtime has no scheduler default",
+)
+check(
+    "Production app connects the remote-notification bridge",
+    "PushSyncNotificationBridge.shared.connect(runtime: runtime)" in app
+    and "didReceiveRemoteNotification userInfo" in app_delegate
+    and "PushSyncNotificationBridge.shared.didReceive" in app_delegate,
+    "validated APNs callbacks reach the app-owned PremiumRuntime",
+)
+check(
+    "APNs wake is bounded and consent-gated",
+    "timeoutNanoseconds: UInt64 = 25_000_000_000" in app_delegate
+    and "automaticOperationsAllowed && automaticallyPullRemoteChanges" in runtime
+    and "coordinator.reconcilePush(repoIDs: repoIDs, hintID: event.hintID)" in runtime
+    and "case push(hintID: String)" in coordinator,
+    "25-second exactly-once bridge; global Background Sync and automatic pull must remain enabled",
+)
+check(
+    "Push payload is branch-targeted and requests background content",
+    'aps["content-available"]' in push_manager
+    and 'userInfo["branch"]' in push_manager
+    and '"content-available": 1' in push_worker_apns,
+    "combined visible APNs fallback plus validated repository/branch wake hint",
+)
+check(
+    "Push Sync uses a state-bound GitHub App connection",
+    "ASWebAuthenticationSession" in github_app_link
+    and "expectedState: start.state" in github_app_link
+    and 'appendingPathComponent("v1/github-app/link/start")' in push_manager
+    and 'appendingPathComponent("v1/github-app/status")' in push_manager
+    and 'code_challenge_method", "S256"' in push_worker,
+    "device-bound install state, PKCE, strict app callback, and linked-status refresh",
+)
+check(
+    "Foreground activation refreshes GitHub App status independently of APNs registration",
+    re.search(
+        r'if newPhase == \.active.*?PushSyncManager\.shared\.refreshRegistration\(repos: appState\.repos\)'
+        r'.*?PushSyncManager\.shared\.refreshGitHubAppStatus\(\)',
+        app,
+        re.S,
+    ) is not None
+    and re.search(
+        r'func resumeRegistration\(repos: \[RepoConfig\]\) async.*?'
+        r'_ = await refreshRegistration\(repos: repos\).*?await refreshGitHubAppStatus\(\)',
+        push_manager,
+        re.S,
+    ) is not None,
+    "scene activation and launch refresh linked status even when another APNs callback owns registration",
+)
+check(
+    "GitHub App owner authority and token disposal fail closed",
+    "proveInstallationAdministrator" in push_worker_github
+    and 'membership.role !== "admin"' in push_worker_github
+    and "revokeGitHubUserToken" in push_worker
+    and "revalidateInstallationAdministrator" in push_worker
+    and "GITHUB_ADMIN_CACHE_TTL_SECONDS = 5 * 60" in push_worker,
+    "personal/org owner proof, immediate token revocation, and cached ongoing revalidation",
+)
+check(
+    "GitHub App pushes bind the lightweight installation payload to its immutable repository owner",
+    "repositoryOwnerID" in push_worker
+    and "installation.accountID === repositoryOwnerID" in push_worker
+    and "GITHUB_WEBHOOK_SECRET" not in push_worker
+    and "LEGACY_WEBHOOKS_ENABLED" not in push_worker_config,
+    "App-secret-only delivery requires installation id plus repository.owner.id; retired hook acceptance is absent",
+)
+check(
+    "Push routing is indexed and retained only for a bounded period",
+    "scanRoutedDevices(env, deliveryRoutePrefix" in push_worker
+    and 'prefix: "device:"' not in push_worker
+    and "DEVICE_RETENTION_SECONDS = 90 * 24 * 60 * 60" in push_worker
+    and "reconcileDeviceIndexes" in push_worker,
+    "installation indexes replace global device scans and expire with registration",
+)
+check(
+    "OAuth callback request metadata is not retained",
+    "redact_query_string = true" in push_worker_config
+    and "invocation_logs = false" in push_worker_config
+    and "[observability.traces]\nenabled = false" in push_worker_config,
+    "query redaction plus disabled invocation logs/traces",
 )
 check(
     "Foreground reconciliation is serialized",
