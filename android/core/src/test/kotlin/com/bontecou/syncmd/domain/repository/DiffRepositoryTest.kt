@@ -119,7 +119,7 @@ class DiffRepositoryTest {
         repo.stageFile(repoPath, "file1.txt")
         
         // Commit
-        val commitResult = repo.commit(repoPath, "test commit")
+        val commitResult = repo.commit(repoPath, "test commit", "Test Author", "test@example.com")
         assertThat(commitResult.isSuccess).isTrue()
         
         // After commit, file2 changes should still be in working tree

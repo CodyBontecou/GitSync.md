@@ -1,5 +1,18 @@
 # Gitsync.md Android — Release Notes
 
+## Version 1.0.3 (paid relaunch)
+
+### Move to `md.gitsync.md` — new paid listing
+
+The original listing (`com.bontecou.syncmd`) shipped as a free app, and Google Play does not permit converting a free listing to paid. Gitsync.md therefore relaunches under a new package name:
+
+- **New applicationId:** `md.gitsync.md` (code namespace stays `com.bontecou.syncmd`)
+- **Model:** paid up-front, **USD $9.99 one-time**, matching the iOS app
+- **No free tier, no subscriptions, no in-app purchases** — all features included
+- versionCode 7 / versionName 1.0.3
+- The `syncmd://` OAuth deep link carries over unchanged
+- The old free listing is unpublished once this listing is live (existing installs keep working)
+
 ## Version 1.0.0 (2026-03-31)
 
 ### Release Overview

@@ -107,7 +107,7 @@ class DiffServiceTest {
         File(repoPath, "README.md").writeText("Modified\n")
         
         service.stageFile(repoPath, "README.md")
-        val commitResult = service.commit(repoPath, "test commit")
+        val commitResult = service.commit(repoPath, "test commit", "Test Author", "test@example.com")
         
         assertThat(commitResult.isSuccess).isTrue()
     }

@@ -225,7 +225,7 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
 - Default price: USD $9.99
 - No subscriptions, ads, or in-app purchases
 
-> Note: Google Play lets paid apps become free, but apps that have already been offered free cannot later become paid under the same package name. If this package has already been offered free, create a new paid app/package instead.
+> Note: The original listing (`com.bontecou.syncmd`) shipped free, and Google Play does not allow a free listing to become paid under the same package name. This release therefore moves to a **new paid listing** under `md.gitsync.md`. The old free listing should be unpublished (see Step 8).
 
 ## Step 5: Set Up Play Store Console
 
@@ -236,13 +236,14 @@ Visit the GitHub repository for bug reports, feature requests, and documentation
 3. Accept Google Play terms and pay $25 one-time developer fee
 4. Create app listing
 
-### 5.2 Create New App
+### 5.2 Create New App (new paid listing)
 
 1. Click "Create app"
 2. Enter app name: "Gitsync.md - Git Client for Android"
 3. Select "Apps" as app type
-4. Choose **Paid** when asked whether the app is free or paid
+4. Choose **Paid** when asked whether the app is free or paid — **this is irreversible, and the new package name is `md.gitsync.md`**
 5. Confirm you'll follow Google Play policies
+6. Invite the Play service account (`play-publisher-crested-drive-492000-u7.json`) to the new app so `./gradlew publishReleaseBundle` targets it
 
 ### 5.3 Complete App Listing
 
@@ -367,6 +368,16 @@ If Google rejects the app:
 5. Resubmit
 
 ## Step 8: Go Live! 🚀
+
+### 8.1 Unpublish the Old Free Listing (`com.bontecou.syncmd`)
+
+1. Open Play Console → select the old **Gitsync.md** app (`com.bontecou.syncmd`)
+2. Go to **Release → Setup → Advanced settings**
+3. Select **App availability** → choose **Unpublished** → Save
+4. Existing installs keep working; new users can no longer find or install it
+5. Optionally update the old listing's description to point buyers to the new paid app
+
+> Do **not** unpublish before the new paid listing (`md.gitsync.md`) is live in production, so there is no availability gap.
 
 Once approved:
 1. Google Play will automatically roll out the release

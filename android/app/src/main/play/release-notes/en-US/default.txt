@@ -1,2 +1,2 @@
-Gitsync.md is now a paid-up-front app with all features included.
-Removed repository limits and in-app unlock flows.
+Gitsync.md moves to a new paid listing: a $9.99 one-time purchase matching the iOS app.
+All features included — no free tier, no subscriptions, no in-app purchases.
