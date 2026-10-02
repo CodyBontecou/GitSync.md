@@ -3533,6 +3533,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.pull(repoID: fixture.repoConfig.id)
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, newCommit)
         XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .fastForwarded)
@@ -3960,6 +3961,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.pullWithRebase(repoID: fixture.repoConfig.id)
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, rebasedCommit)
         XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .rebased)
@@ -4303,6 +4305,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.mergeBranch(repoID: fixture.repoConfig.id, from: "feature")
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, mergedSHA)
     }
@@ -4326,6 +4329,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.revertCommit(repoID: fixture.repoConfig.id, oid: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", message: "Revert")
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, revertedSHA)
     }
@@ -4345,6 +4349,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.completeMerge(repoID: fixture.repoConfig.id, message: "Resolve merge")
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, finalizedSHA)
     }
@@ -9411,6 +9416,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func switchBranch(name: String) async throws {
         switchedBranches.append(name)
+        adoptHEAD(repoInfoResult.commitSHA, branch: name)
     }
 
     func deleteBranch(name: String) async throws {
@@ -9447,11 +9453,13 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     func fetchRemote(pat: String) async throws {}
 
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult {
-        revertResult
+        if let sha = revertResult.newCommitSHA { adoptHEAD(sha) }
+        return revertResult
     }
 
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult {
         completeMergeCallCount += 1
+        adoptHEAD(mergeFinalizeResult.newCommitSHA)
         return mergeFinalizeResult
     }
 
@@ -9463,6 +9471,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         continueRebaseCallCount += 1
         switch continueRebaseResult ?? rebaseResult ?? pullResult {
         case .success(let result):
+            adoptHEAD(result.newCommitSHA)
             return result
         case .failure(let error):
             throw error
