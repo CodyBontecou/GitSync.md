@@ -208,11 +208,12 @@ enum GitShortcutRunner {
     }
 }
 
-private struct GitShortcutPullResult {
+struct GitShortcutPullResult {
     enum Status {
         case updated
         case upToDate
         case blocked
+        case cancelled
         case failed
 
         init(result: RepositoryPullResult) {
@@ -225,6 +226,8 @@ private struct GitShortcutPullResult {
                 self = .upToDate
             case .blockedByLocalChanges, .diverged, .remoteBranchMissing:
                 self = .blocked
+            case .cancelled:
+                self = .cancelled
             case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
                 self = .failed
             }
@@ -240,11 +243,11 @@ private struct GitShortcutPullResult {
     }
 
     var needsAttention: Bool {
-        status == .blocked || status == .failed
+        status == .blocked || status == .cancelled || status == .failed
     }
 }
 
-private struct GitShortcutPullSummary {
+struct GitShortcutPullSummary {
     let results: [GitShortcutPullResult]
 
     var dialog: String {
@@ -267,6 +270,12 @@ private struct GitShortcutPullSummary {
             for: .blocked,
             singular: String(localized: "needs attention"),
             plural: String(localized: "need attention"),
+            into: &parts
+        )
+        appendCount(
+            for: .cancelled,
+            singular: String(localized: "interrupted"),
+            plural: String(localized: "interrupted"),
             into: &parts
         )
         appendCount(

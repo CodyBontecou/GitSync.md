@@ -101,6 +101,7 @@ enum PullOutcomeKind: String, Codable, Sendable {
     case lfsHydrationBlocked
     case diverged
     case remoteBranchMissing
+    case cancelled
     case failed
 }
 

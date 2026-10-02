@@ -101,6 +101,7 @@ struct RepositoryReconciliationResult: Sendable, Equatable {
         case .remoteBranchMissing: outcome = .blocked; message = String(localized: "Remote branch is missing.")
         case .wrongBranch: outcome = .blocked; message = String(localized: "Selected branch is not currently checked out.")
         case .unavailable(let value): outcome = .blocked; message = value
+        case .cancelled: outcome = .blocked; message = RepositoryPullResult.cancellationMessage
         }
         return .init(outcome: outcome, pull: pull, push: nil, finalLocalCommitSHA: pull.newCommitSHA, message: message)
     }
@@ -429,6 +430,10 @@ struct RepositoryReconciliationRunner: Sendable {
                 return .init(outcome: .failed, pull: pull, push: push, finalLocalCommitSHA: finalSHA, message: message)
             }
             }
+        } catch is CancellationError where allowsPull {
+            // Cancellation while queued for the composite lease happened before
+            // any pull/push work. Preserve the same typed pull interruption.
+            return .pullOnly(.cancelled)
         } catch {
             return .init(
                 outcome: .failed,

@@ -447,6 +447,7 @@ struct VaultView: View {
         case .lfsHydrationBlocked:   return "externaldrive.badge.exclamationmark"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark.circle.fill"
+        case .cancelled:             return "pause.circle.fill"
         case .failed:                return "xmark.circle.fill"
         }
     }
@@ -461,6 +462,7 @@ struct VaultView: View {
         case .lfsHydrationBlocked:   return .brutalWarning
         case .diverged:              return .brutalError
         case .remoteBranchMissing:   return .brutalWarning
+        case .cancelled:             return .brutalWarning
         case .failed:                return .brutalError
         }
     }
