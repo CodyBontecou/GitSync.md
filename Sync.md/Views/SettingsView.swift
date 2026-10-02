@@ -26,6 +26,9 @@ struct SettingsView: View {
     @State private var showFolderPicker = false
     @State private var showCopiedToast = false
     @State private var showMoveLocationPicker = false
+    @State private var showReauthorizePicker = false
+    @State private var reauthorizeError: String?
+    @State private var showReauthorizeError = false
     @State private var moveError: String? = nil
     @State private var showMoveError = false
     @State private var validationMessage: String? = nil
@@ -42,7 +45,7 @@ struct SettingsView: View {
     private var canUseGitHubPAT: Bool { parsedRemote?.isGitHub == true && parsedRemote?.isSSH == false }
     private var repoPathForConfirmation: String {
         let displayPath = state.vaultDisplayPath(for: repoID)
-        return displayPath.isEmpty ? state.vaultURL(for: repoID).path : displayPath
+        return displayPath.isEmpty ? (state.vaultURL(for: repoID)?.path ?? "") : displayPath
     }
 
     var body: some View {
@@ -150,7 +153,7 @@ struct SettingsView: View {
                             VStack(spacing: 0) {
                                 if state.isUsingCustomLocation(for: repoID) {
                                     settingsFieldRow(label: String(localized: "Location")) {
-                                        Text(state.vaultURL(for: repoID).lastPathComponent)
+                                        Text(state.vaultURL(for: repoID)?.lastPathComponent ?? vaultName)
                                             .bType(.mono, weight: .regular)
                                             .foregroundStyle(Color.brutalText)
                                     }
@@ -183,6 +186,24 @@ struct SettingsView: View {
 
                                 BDivider().padding(.horizontal, 16)
 
+                                if state.isUsingCustomLocation(for: repoID) {
+                                    if let error = state.vaultAccessErrors[repoID] {
+                                        Text(error.localizedDescription)
+                                            .bType(.monoSm, weight: .regular)
+                                            .foregroundStyle(Color.brutalError)
+                                            .padding(16)
+                                    }
+                                    Button("Reauthorize Folder") { showReauthorizePicker = true }
+                                        .buttonStyle(.plain)
+                                        .foregroundStyle(Color.brutalAccent)
+                                        .frame(minHeight: 44)
+                                        .padding(.horizontal, 16)
+                                        .accessibilityHint("Select the original folder, or the original parent folder used for cloning or discovery. No files will be moved or cloned.")
+                                    Text("Select the original folder (or the original parent used for cloning or discovery). This only renews access; it does not move, delete, or clone files.")
+                                        .bType(.monoSm, weight: .regular)
+                                        .padding(16)
+                                }
+
                                 Button {
                                     showMoveLocationPicker = true
                                 } label: {
@@ -203,6 +224,7 @@ struct SettingsView: View {
                                     .contentShape(Rectangle())
                                 }
                                 .buttonStyle(.plain)
+                                .disabled(state.vaultURL(for: repoID) == nil)
                             }
                         }
 
@@ -457,6 +479,20 @@ struct SettingsView: View {
                 if case .success(let urls) = result, let url = urls.first {
                     moveVault(to: url)
                 }
+            }
+            .fileImporter(isPresented: $showReauthorizePicker, allowedContentTypes: [.folder]) { result in
+                do {
+                    let url = try result.get()
+                    try state.reauthorizeVaultLocation(url, for: repoID)
+                } catch {
+                    reauthorizeError = error.localizedDescription
+                    showReauthorizeError = true
+                }
+            }
+            .alert("Reauthorization Failed", isPresented: $showReauthorizeError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(reauthorizeError ?? String(localized: "Unknown error"))
             }
             .alert("Move Failed", isPresented: $showMoveError) {
                 Button("OK", role: .cancel) {}

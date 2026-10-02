@@ -190,7 +190,7 @@ struct FileEditorView: View {
         let expected = loadedBytes
         let savedContent = content
         let destination = liveURL
-        let repositoryURL = state.vaultURL(for: repoID)
+        guard let repositoryURL = state.vaultURLForOperation(for: repoID) else { return }
         isSaving = true
 
         Task {
@@ -224,7 +224,7 @@ struct FileEditorView: View {
         showDeleteConfirm = false
         let expected = loadedBytes
         let destination = liveURL
-        let repositoryURL = state.vaultURL(for: repoID)
+        guard let repositoryURL = state.vaultURLForOperation(for: repoID) else { return }
         Task {
             do {
                 try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {
@@ -242,7 +242,8 @@ struct FileEditorView: View {
         let trimmed = renameText.trimmingCharacters(in: .whitespacesAndNewlines)
         showRenameModal = false
         renameText = ""
-        guard !trimmed.isEmpty, trimmed != liveURL.lastPathComponent else { return }
+        guard state.vaultURLForOperation(for: repoID) != nil,
+              !trimmed.isEmpty, trimmed != liveURL.lastPathComponent else { return }
         let dest = liveURL.deletingLastPathComponent().appendingPathComponent(trimmed)
         guard !FileManager.default.fileExists(atPath: dest.path) else { return }
         do {
