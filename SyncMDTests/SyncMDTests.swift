@@ -9287,11 +9287,23 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         hasGitDirectoryValue
     }
 
+    // Successful mutations must agree with subsequent status observations.
+    // Preserve each test's explicit count/entry/sync-state fixtures.
+    private func adoptHEAD(_ sha: String, branch: String? = nil) {
+        guard !sha.isEmpty else { return }
+        repoInfoResult = LocalRepoInfo(
+            branch: branch ?? repoInfoResult.branch, commitSHA: sha,
+            changeCount: repoInfoResult.changeCount, syncState: repoInfoResult.syncState,
+            statusEntries: repoInfoResult.statusEntries
+        )
+    }
+
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
         cloneRemoteURLs.append(remoteURL)
         if !cloneResults.isEmpty {
             switch cloneResults.removeFirst() {
             case .success(let result):
+                adoptHEAD(result.commitSHA, branch: result.branch)
                 return result
             case .failure(let error):
                 throw error
@@ -9337,7 +9349,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         case .remoteBranchMissing:
             throw LocalGitError.pullRemoteBranchMissing(plan.branch)
         case .fastForward:
-            return try pullResult.get()
+            let result = try pullResult.get()
+            adoptHEAD(result.newCommitSHA, branch: plan.branch)
+            return result
         }
     }
 
@@ -9345,7 +9359,11 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         executePullOnlyCallCount += 1
         executePullOnlyStarted?()
         if let executePullOnlyGate { await executePullOnlyGate.wait() }
-        if let executePullOnlyResult { return try executePullOnlyResult.get() }
+        if let executePullOnlyResult {
+            let execution = try executePullOnlyResult.get()
+            if let result = execution.pullResult { adoptHEAD(result.newCommitSHA, branch: execution.plan.branch) }
+            return execution
+        }
         let plan = try await pullPlan(pat: pat)
         if let expectedBranch, expectedBranch != plan.branch {
             throw LocalGitError.wrongBranch(expected: expectedBranch, actual: plan.branch)
@@ -9353,7 +9371,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         switch plan.action {
         case .fastForward:
             pullFastForwardCallCount += 1
-            return PullExecutionResult(plan: plan, pullResult: try pullResult.get())
+            let result = try pullResult.get()
+            adoptHEAD(result.newCommitSHA, branch: plan.branch)
+            return PullExecutionResult(plan: plan, pullResult: result)
         case .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return PullExecutionResult(plan: plan, pullResult: nil)
         }
@@ -9361,13 +9381,16 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult {
         pullFastForwardCallCount += 1
-        return try pullResult.get()
+        let result = try pullResult.get()
+        adoptHEAD(result.newCommitSHA, branch: branch)
+        return result
     }
 
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
         pullRebaseCallCount += 1
         switch rebaseResult ?? pullResult {
         case .success(let result):
+            adoptHEAD(result.newCommitSHA, branch: branch)
             return result
         case .failure(let error):
             throw error
@@ -9396,6 +9419,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult {
         mergeBranchCallCount += 1
+        adoptHEAD(mergeResult.newCommitSHA)
         return mergeResult
     }
 
@@ -9531,6 +9555,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         if let commitAndPushResult {
             switch commitAndPushResult {
             case .success(let result):
+                adoptHEAD(result.commitSHA)
                 return result
             case .failure(let error):
                 if let sha = commitAndPushPostFailureSHA {
