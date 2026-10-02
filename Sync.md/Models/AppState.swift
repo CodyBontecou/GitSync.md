@@ -2385,7 +2385,7 @@ final class AppState {
         switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay) {
         case .updated, .updatedWithAttention, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return true
-        case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
+        case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .cancelled, .failed:
             return false
         }
     }
@@ -2409,8 +2409,11 @@ final class AppState {
             syncingRepoID = nil
         }
 
+        if Task.isCancelled { return presentPullCancellation(repoID: repoID) }
+
         if isDemoMode {
             if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+            if Task.isCancelled { return presentPullCancellation(repoID: repoID) }
             syncProgress = String(localized: "Already up to date!")
             guard let currentIndex = repoIndex(id: repoID) else {
                 return .unavailable(message: String(localized: "Repository not found"))
@@ -2495,6 +2498,9 @@ final class AppState {
             setPullOutcome(repoID: repoID, kind: .failed, message: message)
             if trustError == nil { showError(message: message, category: "pull") }
 
+        case .cancelled:
+            _ = presentPullCancellation(repoID: repoID)
+
         case .unavailable(let message), .failed(let message):
             setPullOutcome(repoID: repoID, kind: .failed, message: message)
             showError(message: message, category: "pull")
@@ -2506,6 +2512,12 @@ final class AppState {
         detectChanges(repoID: repoID)
         if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
         return result
+    }
+
+    private func presentPullCancellation(repoID: UUID) -> RepositoryPullResult {
+        syncProgress = String(localized: "Pull interrupted")
+        setPullOutcome(repoID: repoID, kind: .cancelled, message: RepositoryPullResult.cancellationMessage)
+        return .cancelled
     }
 
     /// UI-independent, typed push-only execution seam for foreground, App

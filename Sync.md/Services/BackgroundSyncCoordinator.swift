@@ -331,6 +331,9 @@ final class BackgroundSyncCoordinator {
         if cancelledAfterRun, !result.retainsCompletedWorkOnCancellation {
             return .deferred(String(localized: "Cancelled"))
         }
+        if case .cancelled = result.pull {
+            return recordDeferred(repoID: repoID, message: RepositoryPullResult.cancellationMessage)
+        }
         let timestamp = now(); let prior = provider.assistRepository(id: repoID)?.assist.health ?? .never
         let health: RepoAssistHealth
         if case .updatedWithAttention(_, let commitSHA, let attention) = result.pull {
