@@ -1004,7 +1004,19 @@ final class AppState {
             do {
                 let info = try await gitService.repoInfo()
                 let isStale = startedGeneration != (repoMutationGeneration[repoID] ?? 0)
-                if !isStale {
+                if !isStale, let idx = repoIndex(id: repoID) {
+                    // A shared working copy can be committed or switched by another
+                    // Git client. Adopt its observed HEAD, not the configured sync
+                    // branch, and leave last-sync/file metadata untouched.
+                    let headChanged = repos[idx].gitState.commitSHA != info.commitSHA
+                    let branchChanged = repos[idx].gitState.branch != info.branch
+                    if headChanged || branchChanged {
+                        repos[idx].gitState.commitSHA = info.commitSHA
+                        repos[idx].gitState.branch = info.branch
+                        if headChanged { clearCommitHistoryCache(for: repoID) }
+                        if branchChanged { branchesByRepo[repoID] = .empty }
+                        saveRepos()
+                    }
                     changeCounts[repoID] = info.changeCount
                     statusEntriesByRepo[repoID] = info.statusEntries
                     syncStateByRepo[repoID] = info.syncState
