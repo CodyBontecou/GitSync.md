@@ -2456,10 +2456,19 @@ final class AppState {
                 saveRepos()
             }
             clearCommitHistoryCache(for: repoID)
-            syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
+            let outcomeKind: PullOutcomeKind
+            switch attention {
+            case .checkoutIncomplete:
+                syncProgress = String(localized: "Pull updated Git, but working tree checkout needs attention")
+                outcomeKind = .checkoutIncomplete
+            case .lfsHydrationBlockedByLocalChanges, .lfsHydrationFailed,
+                 .lfsAuthenticationOrTrustRequired, .cancelledAfterUpdate:
+                syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
+                outcomeKind = .lfsHydrationBlocked
+            }
             setPullOutcome(
                 repoID: repoID,
-                kind: .lfsHydrationBlocked,
+                kind: outcomeKind,
                 message: attention.localizedDescription
             )
 
