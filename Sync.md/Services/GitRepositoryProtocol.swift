@@ -9,19 +9,23 @@ struct PullExecutionResult: Sendable {
 /// push server's live advertisement. Manual foreground pushes may omit it.
 struct PushSafetyExpectation: Sendable, Equatable {
     let branch: String
+    /// Validated HEAD before publication; the parent when creating a commit.
+    let localCommitSHA: String
     let remoteCommitSHA: String
     let remoteIdentity: GitRemoteIdentity
 
-    init(branch: String, remoteCommitSHA: String, remoteIdentity: GitRemoteIdentity) {
+    init(branch: String, localCommitSHA: String, remoteCommitSHA: String, remoteIdentity: GitRemoteIdentity) {
         self.branch = branch
+        self.localCommitSHA = localCommitSHA
         self.remoteCommitSHA = remoteCommitSHA
         self.remoteIdentity = remoteIdentity
     }
 
     /// Convenience for remotes without a distinct pushurl.
-    init(branch: String, remoteCommitSHA: String, remoteURL: String) {
+    init(branch: String, localCommitSHA: String, remoteCommitSHA: String, remoteURL: String) {
         self.init(
             branch: branch,
+            localCommitSHA: localCommitSHA,
             remoteCommitSHA: remoteCommitSHA,
             remoteIdentity: GitRemoteIdentity(fetchURL: remoteURL, pushURL: remoteURL)
         )

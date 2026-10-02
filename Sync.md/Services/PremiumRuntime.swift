@@ -299,6 +299,10 @@ final class PremiumRuntime {
         guard !Task.isCancelled,
               automaticallyPullRemoteChanges || automaticallyPushLocalChanges else { return !Task.isCancelled }
         guard automaticOperationsAllowed else { return false }
+        // BGTask can cold-launch before any scene or settings refresh. Restore
+        // current inclusion and configured branches before selecting Git work.
+        await reconcileAutomaticRepositories()
+        guard automaticOperationsAllowed else { return false }
         let results = await coordinator.reconcileProcessing()
         guard !Task.isCancelled else { return false }
         return !results.values.contains(where: \.isFailure)

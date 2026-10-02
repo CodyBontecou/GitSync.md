@@ -41,7 +41,7 @@ struct Sync_mdApp: App {
     @UIApplicationDelegateAdaptor(SyncAppDelegate.self) private var appDelegate
     @State private var appState: AppState
     @State private var premiumRuntime: PremiumRuntime
-    @State private var assistForegroundReconciliationTask: Task<Void, Never>? = nil
+    @State private var foregroundSyncLifecycle: ForegroundSyncLifecycle
     @State private var pushRegistrationTask: Task<Void, Never>? = nil
     @Environment(\.scenePhase) private var scenePhase
 
@@ -66,6 +66,7 @@ struct Sync_mdApp: App {
             backgroundScheduler: backgroundScheduler
         )
         _premiumRuntime = State(initialValue: runtime)
+        _foregroundSyncLifecycle = State(initialValue: ForegroundSyncLifecycle(runtime: runtime))
         SyncRuntimeLocator.configure(state: appState)
         PushSyncNotificationBridge.shared.connect(runtime: runtime)
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
@@ -93,9 +94,7 @@ struct Sync_mdApp: App {
                             // in the background. Do not start an all-repository
                             // foreground pass in that case; the APNs bridge runs
                             // a bounded targeted reconciliation instead.
-                            assistForegroundReconciliationTask = Task { @MainActor in
-                                await premiumRuntime.reconcileForeground()
-                            }
+                            foregroundSyncLifecycle.scenePhaseChanged(to: .active)
                         }
                         pushRegistrationTask = Task { @MainActor in
                             await PushSyncManager.shared.resumeRegistration(repos: appState.repos)
@@ -132,7 +131,7 @@ struct Sync_mdApp: App {
                     }
                 }
         }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
+        .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 #if DEBUG
                 guard !MarketingCapture.usesSeededData else { return }
@@ -147,11 +146,7 @@ struct Sync_mdApp: App {
                 // bounces through inactive/active (Control Center, app switcher).
                 appState.refreshClonedRepos(deferredBy: 0.5, skipIfRecentlyStartedWithin: 15)
                 if FeatureFlags.gitSyncAssistEnabled {
-                    // Never cancel-and-restart here: the runtime coalesces a
-                    // running pass and applies a short bounce cooldown.
-                    assistForegroundReconciliationTask = Task { @MainActor in
-                        await premiumRuntime.reconcileForeground()
-                    }
+                    foregroundSyncLifecycle.scenePhaseChanged(to: .active)
                 }
                 // Keep push-sync registration in sync with the current repo set.
                 pushRegistrationTask?.cancel()
@@ -160,9 +155,7 @@ struct Sync_mdApp: App {
                     await PushSyncManager.shared.refreshGitHubAppStatus()
                 }
             } else {
-                assistForegroundReconciliationTask?.cancel()
-                assistForegroundReconciliationTask = nil
-                premiumRuntime.cancelForegroundReconciliation()
+                foregroundSyncLifecycle.scenePhaseChanged(to: newPhase)
             }
         }
     }

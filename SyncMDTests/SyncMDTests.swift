@@ -1722,6 +1722,64 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testPremiumRuntimeColdProcessingIncludesClonedRepositoriesOnConfiguredBranches() async {
+        let defaultsSuite = "premium-runtime-cold-inventory-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(false, forKey: "premium.automatic-push.v1")
+        var cloned = RepoConfig(
+            repoURL: "owner/new", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "new"
+        )
+        cloned.gitState.commitSHA = String(repeating: "1", count: 40)
+        cloned.assist = RepoAssistSettings(networkPolicy: .wifiOnly, powerPolicy: .externalPowerOnly)
+        var stale = RepoConfig(
+            repoURL: "owner/stale", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "stale"
+        )
+        stale.gitState.commitSHA = cloned.gitState.commitSHA
+        stale.assist = RepoAssistSettings(enabled: true, selectedBranch: "old-branch", enrollmentStatus: .enrolled)
+        var excluded = RepoConfig(
+            repoURL: "owner/excluded", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "excluded"
+        )
+        excluded.gitState.commitSHA = cloned.gitState.commitSHA
+        excluded.assist = RepoAssistSettings(excludedFromAutomaticSync: true)
+        let uncloned = RepoConfig(
+            repoURL: "owner/uncloned", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "uncloned"
+        )
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite, repo: cloned, backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+        harness.provider.repos = [cloned, stale, excluded, uncloned]
+        let completed = expectation(description: "cold processing completed")
+        let recorder = BackgroundTaskCompletionRecorder()
+        recorder.onComplete = { _ in completed.fulfill() }
+
+        // No scene activation, settings refresh, or global-mode setter occurs.
+        scheduler.invoke(RecordingBackgroundProcessingTask(recorder: recorder))
+        await fulfillment(of: [completed], timeout: 3)
+
+        XCTAssertEqual(recorder.values, [true])
+        for id in [cloned.id, stale.id] {
+            let saved = harness.provider.assistRepository(id: id)
+            XCTAssertEqual(saved?.assist.health.kind, .upToDate)
+            XCTAssertEqual(saved?.assist.selectedBranch, "main")
+        }
+        XCTAssertEqual(harness.provider.assistRepository(id: cloned.id)?.assist.networkPolicy, .wifiOnly)
+        XCTAssertEqual(harness.provider.assistRepository(id: cloned.id)?.assist.powerPolicy, .externalPowerOnly)
+        for id in [excluded.id, uncloned.id] {
+            let saved = harness.provider.assistRepository(id: id)
+            XCTAssertEqual(saved?.assist.enabled, false)
+            XCTAssertEqual(saved?.assist.health, .never)
+        }
+    }
+
+    @MainActor
     func testPremiumRuntimeColdLaunchRestoredEnabledNeitherRegistersOnceAndCancels() async {
         let defaultsSuite = "premium-runtime-cold-neither-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: defaultsSuite)!
@@ -2169,6 +2227,95 @@ final class SyncMDTests: XCTestCase {
         }
         XCTAssertEqual(pushResult, foregroundResult)
         XCTAssertEqual(repository.executePullOnlyCallCount, 1)
+    }
+
+    @MainActor
+    func testForegroundSceneLifecyclePreservesReconciliationThroughInactiveBounce() async {
+        var repo = RepoConfig(
+            repoURL: "owner/repo", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "scene-bounce"
+        )
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo, backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        let lifecycle = ForegroundSyncLifecycle(runtime: harness.runtime)
+        defer { lifecycle.scenePhaseChanged(to: .background); harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        let gate = AsyncGate()
+        harness.repository.executePullOnlyGate = gate
+
+        // Drive the same scene interface used by Sync_mdApp, not just the
+        // runtime entry point that previously bypassed production cancellation.
+        lifecycle.scenePhaseChanged(to: .active)
+        await waitUntil { harness.repository.executePullOnlyCallCount == 1 }
+        lifecycle.scenePhaseChanged(to: .inactive)
+        lifecycle.scenePhaseChanged(to: .active)
+        await gate.open()
+        await waitUntil { harness.provider.repo.assist.health.kind == .upToDate }
+
+        XCTAssertEqual(harness.provider.repo.assist.health.kind, .upToDate)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 1,
+                       "A transient inactive bounce must finish the original pass, not cancel and refetch")
+        lifecycle.scenePhaseChanged(to: .active)
+        for _ in 0..<10 { await Task.yield() }
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 1, "A completed bounce still respects the runtime cooldown")
+    }
+
+    @MainActor
+    func testForegroundSceneLifecycleBackgroundCancelsAndImmediateActivationRetries() async {
+        var repo = RepoConfig(
+            repoURL: "owner/repo", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "scene-background"
+        )
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo, backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        let lifecycle = ForegroundSyncLifecycle(runtime: harness.runtime)
+        defer { lifecycle.scenePhaseChanged(to: .background); harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        let gate = AsyncGate()
+        harness.repository.executePullOnlyGate = gate
+
+        lifecycle.scenePhaseChanged(to: .active)
+        await waitUntil { harness.repository.executePullOnlyCallCount == 1 }
+        lifecycle.scenePhaseChanged(to: .background)
+        lifecycle.scenePhaseChanged(to: .active)
+        // Bounce again while the successor still waits for the cancelled pass.
+        lifecycle.scenePhaseChanged(to: .background)
+        lifecycle.scenePhaseChanged(to: .active)
+        await gate.open()
+        await waitUntil { harness.provider.repo.assist.health.kind == .upToDate }
+
+        XCTAssertEqual(harness.provider.repo.assist.health.kind, .upToDate)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 2,
+                       "Background cancels the old flight; only the latest activation retries after it unwinds")
+    }
+
+    @MainActor
+    func testForegroundSceneLifecycleInactiveAndBackgroundLaunchDoNotStartForegroundGit() async {
+        var repo = RepoConfig(
+            repoURL: "owner/repo", branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: "scene-cold-launch"
+        )
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let harness = await PremiumRuntimeTestHarness.make(
+            repo: repo, backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        let lifecycle = ForegroundSyncLifecycle(runtime: harness.runtime)
+        defer { lifecycle.scenePhaseChanged(to: .background); harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+
+        lifecycle.scenePhaseChanged(to: .inactive)
+        lifecycle.scenePhaseChanged(to: .background)
+        for _ in 0..<10 { await Task.yield() }
+
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 0)
+        XCTAssertEqual(harness.provider.repo.assist.health, .never)
+        lifecycle.scenePhaseChanged(to: .active)
+        await waitUntil { harness.provider.repo.assist.health.kind == .upToDate }
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 1)
     }
 
     @MainActor
@@ -7509,7 +7656,7 @@ final class SyncMDTests: XCTestCase {
                 pat: "",
                 expectedBranch: "main",
                 safetyExpectation: PushSafetyExpectation(
-                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                    branch: "main", localCommitSHA: baseSHA, remoteCommitSHA: baseSHA, remoteURL: remoteURL
                 )
             )
             XCTFail("A deleted destination branch must never be recreated automatically")
@@ -7518,6 +7665,99 @@ final class SyncMDTests: XCTestCase {
         }
 
         XCTAssertNil(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"))
+    }
+
+    func testAutomaticCommitDoesNotAdoptBranchAdvancedAfterPlanning() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PlannedCommitAdvance")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-PlannedCommitAdvance-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let service = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: repoURL.appendingPathComponent("Note.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let baseSHA = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "concurrent\n".write(to: repoURL.appendingPathComponent("Concurrent.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "Concurrent.md")
+        let concurrentSHA = try await service.commitLocal(message: "Concurrent", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let remoteURL = "file://localhost\(originURL.path)"
+        try await service.setRemoteURL(name: "origin", url: remoteURL)
+        let automaticURL = repoURL.appendingPathComponent("Automatic.md")
+        try "automatic\n".write(to: automaticURL, atomically: true, encoding: .utf8)
+        let repo = RepoConfig(
+            repoURL: remoteURL, branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: repoURL.lastPathComponent
+        )
+        let serialized = SerializedGitRepository(base: service, localURL: repoURL)
+
+        let result = try await serialized.withLease { repository in
+            await RepositoryPushRunner().runUnserialized(
+                repository: repository, repo: repo, credentials: "", message: nil
+            ) { plan in
+                XCTAssertEqual(plan.localCommitSHA, baseSHA)
+                try setLocalBranchRef(repoURL: repoURL, branch: "main", sha: concurrentSHA)
+                try checkoutHeadTree(repoURL: repoURL)
+                // Keep the automatic edit fully staged while the other client's
+                // commit becomes HEAD, exposing the planning-to-parent window.
+                try "automatic\n".write(to: automaticURL, atomically: true, encoding: .utf8)
+                try await repository.stage(path: "Automatic.md", oldPath: nil)
+            }
+        }
+
+        XCTAssertFalse(result.didPush, "A commit must not adopt an unvalidated parent")
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: repoURL, name: "refs/heads/main"), concurrentSHA)
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"), baseSHA)
+    }
+
+    func testAutomaticCleanRetryDoesNotPublishBranchAdvancedAfterPlanning() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PlannedRetryAdvance")
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-PlannedRetryAdvance-Origin-\(UUID().uuidString)", isDirectory: true
+        )
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let fileURL = repoURL.appendingPathComponent("Note.md")
+        let service = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let baseSHA = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "planned\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let plannedSHA = try await service.commitLocal(message: "Planned", authorName: "Tests", authorEmail: "tests@example.com")
+        try "concurrent\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let concurrentSHA = try await service.commitLocal(message: "Concurrent", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: baseSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: plannedSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let remoteURL = "file://localhost\(originURL.path)"
+        try await service.setRemoteURL(name: "origin", url: remoteURL)
+        let repo = RepoConfig(
+            repoURL: remoteURL, branch: "main", authorName: "Tests",
+            authorEmail: "tests@example.com", vaultFolderName: repoURL.lastPathComponent
+        )
+        let serialized = SerializedGitRepository(base: service, localURL: repoURL)
+
+        let result = try await serialized.withLease { repository in
+            await RepositoryPushRunner().runUnserialized(
+                repository: repository, repo: repo, credentials: "", message: nil
+            ) { plan in
+                XCTAssertEqual(plan.localCommitSHA, plannedSHA)
+                XCTAssertEqual(plan.remoteCommitSHA, baseSHA)
+                // Model a different Git client committing after validation,
+                // including its clean index/worktree, before publication starts.
+                try setLocalBranchRef(repoURL: repoURL, branch: "main", sha: concurrentSHA)
+                try checkoutHeadTree(repoURL: repoURL)
+            }
+        }
+
+        XCTAssertFalse(result.didPush, "Publication must retain the validated local OID, not adopt a later HEAD")
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: originURL, name: "refs/heads/main"), baseSHA)
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: repoURL, name: "refs/heads/main"), concurrentSHA)
     }
 
     func testLocalGitPushCurrentBranchRejectsOriginChangeAtTransportBoundary() async throws {
@@ -7553,7 +7793,7 @@ final class SyncMDTests: XCTestCase {
                 pat: "",
                 expectedBranch: "main",
                 safetyExpectation: PushSafetyExpectation(
-                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                    branch: "main", localCommitSHA: aheadSHA, remoteCommitSHA: baseSHA, remoteURL: remoteURL
                 )
             )
         )
@@ -7635,7 +7875,7 @@ final class SyncMDTests: XCTestCase {
                 pat: "",
                 expectedBranch: "main",
                 safetyExpectation: PushSafetyExpectation(
-                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                    branch: "main", localCommitSHA: baseSHA, remoteCommitSHA: baseSHA, remoteURL: remoteURL
                 )
             )
             XCTFail("A concurrent same-branch advance must stop publication")
@@ -7680,7 +7920,7 @@ final class SyncMDTests: XCTestCase {
                 pat: "",
                 expectedBranch: "main",
                 safetyExpectation: PushSafetyExpectation(
-                    branch: "main", remoteCommitSHA: baseSHA, remoteURL: remoteURL
+                    branch: "main", localCommitSHA: aheadSHA, remoteCommitSHA: baseSHA, remoteURL: remoteURL
                 )
             )
         )
@@ -8431,6 +8671,7 @@ final class SyncMDTests: XCTestCase {
             fixture.repository.commitAndPushSafetyExpectations,
             [PushSafetyExpectation(
                 branch: "main",
+                localCommitSHA: fixture.repoInfo.commitSHA,
                 remoteCommitSHA: fixture.repoInfo.commitSHA,
                 remoteIdentity: plannedIdentity
             )]

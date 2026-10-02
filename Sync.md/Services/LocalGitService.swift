@@ -3970,6 +3970,18 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             if let safetyExpectation, safetyExpectation.branch != branchName {
                 throw LocalGitError.wrongBranch(expected: safetyExpectation.branch, actual: branchName)
             }
+            if let safetyExpectation {
+                var plannedLocalOID = try Self.oid(
+                    hex: safetyExpectation.localCommitSHA,
+                    context: "Read expected commit parent"
+                )
+                guard var parentOID = expectedParentOID,
+                      git_oid_equal(&parentOID, &plannedLocalOID) != 0 else {
+                    throw LocalGitError.commitFailed(
+                        String(localized: "The local branch changed before commit. Publication was stopped.")
+                    )
+                }
+            }
 
             // Create author/committer signature.
             var sig: UnsafeMutablePointer<git_signature>?
@@ -4252,6 +4264,15 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
             if let safetyExpectation, safetyExpectation.branch != branchName {
                 throw LocalGitError.wrongBranch(expected: safetyExpectation.branch, actual: branchName)
+            }
+            if let safetyExpectation {
+                // Do not adopt a HEAD advanced by another Git client after the
+                // runner's plan. Retain this OID through transport negotiation.
+                expectedLocalOID = try Self.oid(
+                    hex: safetyExpectation.localCommitSHA,
+                    context: "Read expected local branch target"
+                )
+                try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &expectedLocalOID)
             }
 
             let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)

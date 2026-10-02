@@ -175,6 +175,7 @@ struct RepositoryPushRunner: Sendable {
                 expectedBranch = plan.branch
                 safetyExpectation = PushSafetyExpectation(
                     branch: plan.branch,
+                    localCommitSHA: plan.localCommitSHA,
                     remoteCommitSHA: plan.remoteCommitSHA,
                     remoteIdentity: plan.remoteIdentity ?? GitRemoteIdentity(
                         fetchURL: repo.repoURL,
@@ -243,6 +244,7 @@ struct RepositoryPushRunner: Sendable {
                 }
                 safetyExpectation = PushSafetyExpectation(
                     branch: plan.branch,
+                    localCommitSHA: plan.localCommitSHA,
                     remoteCommitSHA: plan.remoteCommitSHA,
                     remoteIdentity: plan.remoteIdentity ?? GitRemoteIdentity(
                         fetchURL: configuredRemoteURL,
