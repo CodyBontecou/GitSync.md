@@ -767,20 +767,7 @@ final class AppState {
     func vaultURL(for repoID: UUID) -> URL? {
         guard let repo = repo(id: repoID), vaultAccessErrors[repoID] == nil else { return nil }
         if let customURL = resolvedCustomURLs[repoID] {
-            if let repo = repo(id: repoID), let relativePath = repo.customVaultRelativePath,
-               !relativePath.isEmpty {
-                // Repository discovered by scanning a user-granted folder: one
-                // bookmark anchors the grant root and the relative path
-                // locates the working copy beneath it. An empty relative path
-                // means the grant root is itself the working copy.
-                return customURL.appendingPathComponent(relativePath, isDirectory: true)
-            }
-            // When the bookmark points to a parent directory (clone to custom
-            // location), append the repo folder name — just like `git clone`.
-            if let repo = repo(id: repoID), repo.customLocationIsParent {
-                return customURL.appendingPathComponent(repo.vaultFolderName, isDirectory: true)
-            }
-            return customURL
+            return workingCopyURL(root: customURL, repo: repo)
         }
         guard repo.customVaultBookmarkData == nil else { return nil }
         if let relativePath = repo.customVaultRelativePath {
@@ -846,12 +833,9 @@ final class AppState {
         guard contents.contains(".git"), target.lastPathComponent == original.vaultFolderName else {
             throw VaultAccessError.wrongFolder
         }
-        if !original.repoURL.isEmpty {
-            guard let remote = Self.readGitRemoteURL(at: target),
-                  GitRemoteURL.cloneURLString(from: remote) == GitRemoteURL.cloneURLString(from: original.repoURL) else {
-                throw VaultAccessError.wrongFolder
-            }
-        }
+        // Accept either a .git directory or a worktree/submodule .git file.
+        // The user explicitly selects the original folder; reauthorization
+        // must not require a remote (local-only repos are supported) or rewrite it.
         let bookmark = try vaultBookmarkAccess.create(url)
         repos[idx].customVaultBookmarkData = bookmark
         guard saveRepos() else {
@@ -965,12 +949,12 @@ final class AppState {
         if resolved.isStale, let bookmark = try? vaultBookmarkAccess.create(resolved.url),
            let idx = repoIndex(id: repoID) {
             repos[idx].customVaultBookmarkData = bookmark
-            saveRepos()
+            if !saveRepos() { repos[idx].customVaultBookmarkData = data }
         }
     }
 
     /// A false hasGitDirectory is not proof of deletion in a File Provider folder.
-    private func preserveUnavailableExternalRepo(_ repo: RepoConfig, at url: URL) -> Bool {
+    private func preserveUnavailableExternalRepo(_ repo: RepoConfig) -> Bool {
         guard repo.customVaultBookmarkData != nil else { return false }
         vaultAccessErrors[repo.id] = .unavailableFolder
         return true
@@ -978,8 +962,8 @@ final class AppState {
 
     // MARK: - Filesystem Validation
 
-    /// Check all repos marked as cloned and reset any whose `.git` directory
-    /// has been deleted from the filesystem (e.g. via Files app).
+    /// Reset missing app-managed clones only. For external providers, a failed
+    /// existence check cannot distinguish deletion from access loss/offline state.
     func validateClonedRepos() {
         if isDemoMode { return }
         var didChange = false
@@ -988,7 +972,7 @@ final class AppState {
             let gitService = gitRepositoryFactory(vaultDir)
 
             if !gitService.hasGitDirectory {
-                if preserveUnavailableExternalRepo(repo, at: vaultDir) { continue }
+                if preserveUnavailableExternalRepo(repo) { continue }
                 repos[index].gitState = .empty
                 changeCounts[repo.id] = 0
                 statusEntriesByRepo[repo.id] = []
@@ -1037,7 +1021,7 @@ final class AppState {
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
-            if preserveUnavailableExternalRepo(repo, at: vaultDir) { return }
+            if preserveUnavailableExternalRepo(repo) { return }
             // .git directory was removed — reset cloned state
             if let idx = repoIndex(id: repoID) {
                 repos[idx].gitState = .empty
