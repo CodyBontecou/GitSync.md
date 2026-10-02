@@ -29,6 +29,204 @@ final class SyncMDUITests: XCTestCase {
         )
     }
 
+    // MARK: - Git Tools Discoverability
+
+    /// The fixture has a real clean index, a second branch, and a saved stash.
+    /// Opening and closing the sheet must not change any repository bytes.
+    func testGitToolsCleanRepositoryExposesBranchesAndExistingStashesWithoutMutation() throws {
+        let app = launchGitToolsFixture("clean")
+        XCTAssertFalse(syncAction("Commit & Push", in: app).isEnabled)
+        let before = try gitToolsSnapshot()
+
+        openGitTools(in: app)
+        XCTAssertTrue(app.staticTexts["No local changes"].exists)
+        let savedStash = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS %@", "Saved Git Tools note")
+        ).firstMatch
+        XCTAssertTrue(reveal(savedStash, in: app), "Saved stashes should be reachable with no local changes")
+        XCTAssertTrue(app.buttons["APPLY"].isEnabled)
+        XCTAssertTrue(app.buttons["POP"].isEnabled)
+        XCTAssertFalse(app.buttons["SAVE"].isEnabled, "Saving a new stash still requires changes")
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Opening must not stage, commit, push, or alter the stash")
+
+        tapFirstHittableButton(labeled: "Close", in: app)
+        XCTAssertTrue(app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 5))
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Closing must also leave Git state untouched")
+    }
+
+    func testGitToolsDirtyRepositoryAndCommitActionOpenSameSheetWithoutStaging() throws {
+        let app = launchGitToolsFixture("dirty")
+        let before = try gitToolsSnapshot()
+        openGitTools(in: app)
+        XCTAssertTrue(reveal(app.buttons["STAGE ALL"], in: app))
+        XCTAssertTrue(app.buttons["STAGE ALL"].isEnabled)
+        XCTAssertTrue(reveal(app.buttons["PUSH 0 FILES"], in: app))
+        XCTAssertFalse(app.buttons["PUSH 0 FILES"].isEnabled, "Opening must not auto-stage unstaged edits")
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Opening dirty Git Tools must not stage or publish")
+
+        tapFirstHittableButton(labeled: "Close", in: app)
+        tapWhenHittable(syncAction("Commit & Push", in: app), in: app, message: "Dirty Commit & Push should still open the sheet")
+        assertGitToolsSheet(in: app)
+        XCTAssertTrue(reveal(app.buttons["STAGE ALL"], in: app), "Commit & Push should retain staging controls")
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Commit & Push's navigation must not commit or push by itself")
+    }
+
+    func testGitToolsAheadRepositoryOpensWithoutPushingAndExistingPushRemainsDirect() throws {
+        let app = launchGitToolsFixture("ahead")
+        let localHead = try gitToolsHead()
+        XCTAssertNotEqual(try gitToolsHead(remote: true), localHead, "Fixture must start ahead")
+        let before = try gitToolsSnapshot()
+
+        openGitTools(in: app)
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Opening ahead Git Tools must not push committed changes")
+        tapFirstHittableButton(labeled: "Close", in: app)
+
+        // The explicit sync action still pushes directly, only to the local
+        // file:// bare remote — no provider credentials or live writes.
+        tapWhenHittable(syncAction("Push Current Branch", in: app), in: app, message: "Ahead branch should remain directly pushable")
+        XCTAssertTrue(waitUntil(timeout: 15) { (try? self.gitToolsHead(remote: true)) == localHead })
+        XCTAssertEqual(try gitToolsHead(), localHead, "Direct push must not create another commit")
+        XCTAssertFalse(app.buttons["Close"].exists, "Direct push must not present the Git sheet")
+        XCTAssertTrue(app.staticTexts["REPO HEALTH"].exists)
+    }
+
+    func testGitToolsRemainsAvailableDuringSynchronizationWhileOperationsStayDisabled() throws {
+        let app = launchGitToolsFixture("syncing")
+        for title in ["Pull", "Pull with Rebase", "Commit & Push"] {
+            XCTAssertFalse(syncAction(title, in: app).isEnabled, "\(title) should stay disabled during sync")
+        }
+        let before = try gitToolsSnapshot()
+        openGitTools(in: app)
+        XCTAssertFalse(app.buttons["SWITCH"].isEnabled, "Branch mutation must stay disabled")
+        XCTAssertTrue(reveal(app.buttons["STAGE ALL"], in: app))
+        XCTAssertFalse(app.buttons["STAGE ALL"].isEnabled, "Staging must stay disabled")
+        XCTAssertTrue(reveal(app.buttons["APPLY"], in: app))
+        XCTAssertFalse(app.buttons["APPLY"].isEnabled, "Stash mutation must stay disabled")
+        XCTAssertTrue(reveal(app.buttons["PUSH 0 FILES"], in: app))
+        XCTAssertFalse(app.buttons["PUSH 0 FILES"].isEnabled, "Publication must stay disabled")
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Busy-state navigation must not mutate Git")
+        tapFirstHittableButton(labeled: "Close", in: app)
+        XCTAssertTrue(app.buttons["Git Tools"].isEnabled, "Tools navigation must remain available after dismissing")
+    }
+
+    func testGitToolsBehindRepositoryAndExistingPullFastForward() throws {
+        let app = launchGitToolsFixture("behind")
+        let remoteHead = try gitToolsHead(remote: true)
+        XCTAssertNotEqual(try gitToolsHead(), remoteHead)
+        let before = try gitToolsSnapshot()
+        openGitTools(in: app)
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Opening must not pull behind commits")
+        tapFirstHittableButton(labeled: "Close", in: app)
+
+        tapWhenHittable(syncAction("Pull", in: app), in: app, message: "Pull should still execute from the vault")
+        XCTAssertTrue(app.staticTexts["Pulled latest changes (fast-forward)"].waitForExistence(timeout: 15))
+        XCTAssertEqual(try gitToolsHead(), remoteHead)
+        XCTAssertEqual(try gitToolsHead(remote: true), remoteHead, "Pull must not write to the remote")
+        XCTAssertFalse(app.buttons["Close"].exists, "Pull must not open the Git sheet")
+    }
+
+    func testGitToolsExistingPullWithRebaseReplaysDivergedLocalCommit() throws {
+        let app = launchGitToolsFixture("diverged")
+        let localHead = try gitToolsHead()
+        let remoteHead = try gitToolsHead(remote: true)
+        tapWhenHittable(syncAction("Pull with Rebase", in: app), in: app, message: "Pull with Rebase should still execute from the vault")
+        XCTAssertTrue(app.staticTexts["Rebased local commits onto origin/main"].waitForExistence(timeout: 15))
+        XCTAssertNotEqual(try gitToolsHead(), localHead, "Rebase should replay the local commit")
+        XCTAssertNotEqual(try gitToolsHead(), remoteHead, "Rebase must preserve the local commit, not just reset to remote")
+        XCTAssertEqual(try gitToolsHead(remote: true), remoteHead, "Rebase must not publish")
+        let worktree = try gitToolsWorktreeURL()
+        XCTAssertTrue(try String(contentsOf: worktree.appendingPathComponent("README.md"), encoding: .utf8).contains("Committed local note"))
+        XCTAssertTrue(try String(contentsOf: worktree.appendingPathComponent("notes/hello.md"), encoding: .utf8).contains("Updated remote note"))
+        XCTAssertFalse(app.buttons["Close"].exists, "Rebase must not open the Git sheet")
+    }
+
+    private func launchGitToolsFixture(_ scenario: String) -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestGitToolsFixture", scenario])
+        app.launch()
+        tap("git-tools-fixture", in: app)
+        XCTAssertTrue(app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10))
+        return app
+    }
+
+    private func syncAction(_ title: String, in app: XCUIApplication) -> XCUIElement {
+        // Action-row labels combine icon, title, subtitle, and arrow. The
+        // comma boundary keeps Pull distinct from Pull with Rebase.
+        app.buttons.matching(NSPredicate(format: "label CONTAINS %@", ", \(title),")).firstMatch
+    }
+
+    private func openGitTools(in app: XCUIApplication) {
+        let tools = app.buttons["Git Tools"]
+        XCTAssertTrue(reveal(tools, in: app), "Git Tools should always be discoverable as a labelled button")
+        XCTAssertTrue(tools.isEnabled, "Git Tools is navigation, not a gated Git operation")
+        XCTAssertGreaterThanOrEqual(tools.frame.width, 44)
+        XCTAssertGreaterThanOrEqual(tools.frame.height, 44)
+        attachScreenshot("Git Tools entry", in: app)
+        tools.tap()
+        assertGitToolsSheet(in: app)
+    }
+
+    private func assertGitToolsSheet(in app: XCUIApplication) {
+        XCTAssertTrue(app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 5), "Sheet should expose its renamed heading")
+        XCTAssertTrue(app.buttons["Close"].exists)
+        XCTAssertTrue(app.staticTexts["BRANCHES"].exists)
+        XCTAssertTrue(reveal(app.staticTexts["feature"], in: app), "The sheet must load real branch controls")
+        XCTAssertTrue(app.buttons["SWITCH"].exists)
+        XCTAssertTrue(app.textFields["new-branch-name"].exists)
+        attachScreenshot("Git Tools sheet", in: app)
+    }
+
+    private func attachScreenshot(_ name: String, in app: XCUIApplication) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    // Same shared /tmp convention as UITestGitFixtures in the app's DEBUG
+    // seeder. Snapshots include the index, refs, objects, stash, and worktree;
+    // any staging, commit creation, or push changes this byte-level oracle.
+    private let gitToolsFixtureRoot = URL(fileURLWithPath: "/tmp/syncmd-uitest-fixtures", isDirectory: true)
+
+    private func gitToolsWorktreeURL() throws -> URL {
+        let path = try String(contentsOf: gitToolsFixtureRoot.appendingPathComponent("git-tools-worktree-path"), encoding: .utf8)
+        return URL(fileURLWithPath: path, isDirectory: true)
+    }
+
+    private func gitToolsHead(remote: Bool = false) throws -> Data {
+        let root = remote ? gitToolsFixtureRoot.appendingPathComponent("git-tools-fixture.git") : try gitToolsWorktreeURL().appendingPathComponent(".git")
+        return try Data(contentsOf: root.appendingPathComponent("refs/heads/main"))
+    }
+
+    private func gitToolsSnapshot() throws -> [String: Data] {
+        var snapshot: [String: Data] = [:]
+        let roots = [
+            "worktree": try gitToolsWorktreeURL(),
+            "remote": gitToolsFixtureRoot.appendingPathComponent("git-tools-fixture.git"),
+        ]
+        func captureFiles(at directory: URL, prefix: String) throws {
+            // Build relative keys from components: simulator Foundation may
+            // spell the same shared directory as /tmp or /private/tmp.
+            let keys: Set<URLResourceKey> = [.isDirectoryKey, .isRegularFileKey]
+            for file in try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: Array(keys)) {
+                let key = prefix + "/" + file.lastPathComponent
+                let values = try file.resourceValues(forKeys: keys)
+                if values.isDirectory == true {
+                    try captureFiles(at: file, prefix: key)
+                } else if values.isRegularFile == true {
+                    snapshot[key] = try Data(contentsOf: file)
+                }
+            }
+        }
+        for (prefix, root) in roots {
+            try captureFiles(at: root, prefix: prefix)
+        }
+        XCTAssertNotNil(snapshot["worktree/.git/index"], "Snapshot must include the real staging index")
+        XCTAssertNotNil(snapshot["worktree/.git/refs/heads/main"], "Snapshot must include the local commit ref")
+        XCTAssertNotNil(snapshot["remote/refs/heads/main"], "Snapshot must include the publication destination")
+        return snapshot
+    }
+
     private func tap(_ label: String, in app: XCUIApplication) {
         let element = app.staticTexts[label]
         guard element.waitForExistence(timeout: 5) else {
@@ -838,7 +1036,7 @@ final class SyncMDUITests: XCTestCase {
         for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
         commitPush.tap()
         XCTAssertTrue(
-            app.staticTexts["GIT"].waitForExistence(timeout: 10) || app.buttons["Close"].waitForExistence(timeout: 10),
+            app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 10),
             "Commit & Push should open the Git control sheet"
         )
 
@@ -1019,7 +1217,7 @@ final class SyncMDUITests: XCTestCase {
         for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
         commitPush.tap()
         XCTAssertTrue(
-            app.staticTexts["GIT"].waitForExistence(timeout: 10) || app.buttons["Close"].waitForExistence(timeout: 10),
+            app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 10),
             "Commit & Push row should open the Git control sheet"
         )
 

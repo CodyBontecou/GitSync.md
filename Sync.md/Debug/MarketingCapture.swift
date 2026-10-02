@@ -35,9 +35,15 @@ enum MarketingCapture {
         ProcessInfo.processInfo.arguments.contains("-UITestConflictFixture")
     }
 
+    /// Local-only Git Tools regression scenarios, rebuilt on each launch.
+    static var gitToolsUITestScenario: String? {
+        value(for: "-UITestGitToolsFixture")
+    }
+
     static var usesSeededData: Bool {
         isActive || isFileBrowserUITestActive
             || isUITestCloneFixtureActive || isUITestConflictFixtureActive
+            || gitToolsUITestScenario != nil
     }
 
     private static func value(for key: String) -> String? {
@@ -187,6 +193,11 @@ enum MarketingDemoSeeder {
         }
         if MarketingCapture.isUITestConflictFixtureActive {
             seedUITestConflictFixture(into: state)
+            return
+        }
+
+        if let scenario = MarketingCapture.gitToolsUITestScenario {
+            seedUITestGitToolsFixture(into: state, scenario: scenario)
             return
         }
 
@@ -460,6 +471,90 @@ enum MarketingDemoSeeder {
         state.repos = []
     }
 
+    /// Real repository and stash with a credential-free file remote. The
+    /// syncing scenario holds only the UI's busy state (no transport in flight),
+    /// making operation-disable assertions deterministic without timing races.
+    private static func seedUITestGitToolsFixture(into state: AppState, scenario: String) {
+        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let vaultURL = documents.appendingPathComponent("git-tools-fixture", isDirectory: true)
+        let remotePath = UITestGitFixtures.gitToolsBareRemotePath
+        let isDirty = scenario == "dirty" || scenario == "syncing"
+        var files = [
+            "README.md": Data("# Git Tools Fixture\n\nBase note.\n".utf8),
+            "notes/hello.md": Data("# Hello\n\nBase remote note.\n".utf8),
+        ]
+
+        do {
+            try UITestGitFixtures.resetFixtureArea()
+            try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Base state")
+            try UITestGitFixtures.clone(fromBareAtPath: remotePath, toWorktreeAtPath: vaultURL.path)
+            try UITestGitFixtures.seedBranchAndStash(atPath: vaultURL.path)
+
+            if scenario == "ahead" || scenario == "diverged" {
+                try UITestGitFixtures.commitWorktreeFiles(
+                    atPath: vaultURL.path,
+                    files: ["README.md": Data("# Git Tools Fixture\n\nCommitted local note.\n".utf8)],
+                    message: "Local note"
+                )
+            }
+            if scenario == "behind" || scenario == "diverged" {
+                files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
+                try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
+                try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
+            }
+            if isDirty {
+                try Data("# Git Tools Fixture\n\nUnstaged local note.\n".utf8)
+                    .write(to: vaultURL.appendingPathComponent("README.md"))
+            }
+
+            let headSHA = try UITestGitFixtures.headHexSHA(atPath: vaultURL.path)
+            // The simulator test runner can inspect the actual index, refs,
+            // objects, and working files, rather than trusting UI counters.
+            try vaultURL.path.write(
+                toFile: UITestGitFixtures.rootPath + "/git-tools-worktree-path",
+                atomically: true,
+                encoding: .utf8
+            )
+
+            state.isSignedIn = false
+            state.hasCompletedOnboarding = true
+            state.hasSeenOnboarding = true
+            state.isDemoMode = false
+            let repo = RepoConfig(
+                repoURL: "file://" + remotePath,
+                branch: "main",
+                authorName: "Sample Developer",
+                authorEmail: "developer@example.com",
+                vaultFolderName: "git-tools-fixture",
+                authMethod: .none,
+                gitState: GitState(
+                    commitSHA: headSHA, treeSHA: "", branch: "main", blobSHAs: [:],
+                    lastSyncDate: .distantPast
+                )
+            )
+            state.repos = [repo]
+            state.changeCounts = [repo.id: isDirty ? 1 : 0]
+            state.statusEntriesByRepo = [repo.id: isDirty ? [
+                GitStatusEntry(path: "README.md", indexStatus: nil, workTreeStatus: .modified)
+            ] : []]
+            let syncState: RepoSyncState
+            switch scenario {
+            case "ahead": syncState = .ahead
+            case "behind": syncState = .behind
+            case "diverged": syncState = .diverged
+            default: syncState = .upToDate
+            }
+            state.syncStateByRepo = [repo.id: syncState]
+            if scenario == "syncing" {
+                state.isSyncing = true
+                state.syncingRepoID = repo.id
+                state.syncProgress = "UI test synchronization in progress"
+            }
+        } catch {
+            assertionFailure("UITest Git Tools fixture seeding failed: \(error)")
+        }
+    }
+
     /// One seeded repo whose vault is a real git working copy with a local
     /// commit ("ours") diverged from its local bare remote ("theirs"). A pull
     /// classifies as diverged; merging produces a genuine conflict session in
@@ -556,6 +651,7 @@ enum UITestGitFixtures {
 
     static var cloneBareRemotePath: String { rootPath + "/bare-remote.git" }
     static var conflictBareRemotePath: String { rootPath + "/conflict-fixture.git" }
+    static var gitToolsBareRemotePath: String { rootPath + "/git-tools-fixture.git" }
 
     /// The `file://` URL the UI test types into AddRepoView's manual entry.
     static let cloneRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/bare-remote.git"
@@ -736,6 +832,27 @@ enum UITestGitFixtures {
             )
         }
         return hex(commitID)
+    }
+
+    /// A second branch and a saved stash, leaving HEAD and the worktree clean.
+    static func seedBranchAndStash(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open Git Tools worktree")
+
+        var head = git_oid()
+        try check(git_reference_name_to_id(&head, repo, "HEAD"), "read HEAD")
+        var branch: OpaquePointer?
+        defer { if let branch { git_reference_free(branch) } }
+        try check(git_reference_create(&branch, repo, "refs/heads/feature", &head, 0, nil), "create feature branch")
+
+        try Data("# Git Tools Fixture\n\nSaved stash note.\n".utf8)
+            .write(to: URL(fileURLWithPath: path).appendingPathComponent("README.md"))
+        var signature: UnsafeMutablePointer<git_signature>?
+        defer { if let signature { git_signature_free(signature) } }
+        try check(git_signature_now(&signature, "UITest Seeder", "uitest@syncmd.example"), "stash signature")
+        var stashOID = git_oid()
+        try check(git_stash_save(&stashOID, repo, signature, "Saved Git Tools note", 0), "save fixture stash")
     }
 
     /// Fetches `origin` (local file transport — no credentials involved) so

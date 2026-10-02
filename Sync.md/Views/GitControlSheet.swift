@@ -62,7 +62,7 @@ struct GitControlSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("GIT")
+                    Text(String(localized: "Git Tools"))
                         .font(.system(size: 14, weight: .black, design: .monospaced))
                         .foregroundStyle(Color.brutalText)
                         .tracking(4)

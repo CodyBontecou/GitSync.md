@@ -631,6 +631,23 @@ struct VaultView: View {
 
     private var syncActionsSection: some View {
         VStack(spacing: 10) {
+            // Navigation stays available even while Git operations are disabled.
+            Button {
+                showCommitSheet = true
+            } label: {
+                BCard(padding: 0) {
+                    BActionRow(
+                        icon: "🛠",
+                        title: String(localized: "Git Tools"),
+                        subtitle: String(localized: "Branches") + " · " + String(localized: "Stash") + " · " + String(localized: "Tags")
+                    )
+                }
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Git Tools"))
+
             // Pull
             Button {
                 Task { await state.pull(repoID: repoID) }
