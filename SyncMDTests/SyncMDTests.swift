@@ -1331,7 +1331,7 @@ final class SyncMDTests: XCTestCase {
         let repo = RepoConfig(
             repoURL: "https://github.com/owner/notes.git", branch: "main", authorName: "Test", authorEmail: "test@example.com",
             vaultFolderName: "notes", customVaultBookmarkData: Data("invalid bookmark".utf8),
-            customVaultRelativePath: "projects/notes", authMethod: .none,
+            customVaultRelativePath: "projects/notes", authMethod: GitAuthMethod.none,
             gitState: GitState(commitSHA: "aaaa", treeSHA: "tree", branch: "main", blobSHAs: ["Note.md": "blob"], lastSyncDate: .distantPast))
         let file = root.appendingPathComponent("repos.json")
         try RepoPersistenceStore().replaceAll([repo], at: file)

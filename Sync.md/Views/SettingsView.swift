@@ -148,85 +148,7 @@ struct SettingsView: View {
                             }
                         }
 
-                        // Storage Section
-                        settingsSection(title: String(localized: "Storage")) {
-                            VStack(spacing: 0) {
-                                if state.isUsingCustomLocation(for: repoID) {
-                                    settingsFieldRow(label: String(localized: "Location")) {
-                                        Text(state.vaultURL(for: repoID)?.lastPathComponent ?? vaultName)
-                                            .bType(.mono, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(state.vaultDisplayPath(for: repoID))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
-                                            .truncationMode(.middle)
-                                    }
-                                } else {
-                                    settingsFieldRow(label: String(localized: "Folder")) {
-                                        Text(vaultName)
-                                            .bType(.mono, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
-                                    }
-                                }
-
-                                BDivider().padding(.horizontal, 16)
-
-                                if state.isUsingCustomLocation(for: repoID) {
-                                    if let error = state.vaultAccessErrors[repoID] {
-                                        Text(error.localizedDescription)
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalError)
-                                            .padding(16)
-                                    }
-                                    Button("Reauthorize Folder") { showReauthorizePicker = true }
-                                        .buttonStyle(.plain)
-                                        .foregroundStyle(Color.brutalAccent)
-                                        .frame(minHeight: 44)
-                                        .padding(.horizontal, 16)
-                                        .accessibilityHint("Select the original folder, or the original parent folder used for cloning or discovery. No files will be moved or cloned.")
-                                    Text("Select the original folder (or the original parent used for cloning or discovery). This only renews access; it does not move, delete, or clone files.")
-                                        .bType(.monoSm, weight: .regular)
-                                        .padding(16)
-                                }
-
-                                Button {
-                                    showMoveLocationPicker = true
-                                } label: {
-                                    HStack {
-                                        Text(String(localized: "Move Vault").uppercased())
-                                            .bType(.monoCaption)
-                                            .foregroundStyle(Color.brutalAccent)
-                                            .tracking(1)
-                                        Spacer()
-                                        Image(systemName: "folder.badge.plus")
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalAccent)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 13)
-                                    // Full-row action, ≥44pt-tall hit target.
-                                    .frame(minHeight: 44)
-                                    .contentShape(Rectangle())
-                                }
-                                .buttonStyle(.plain)
-                                .disabled(state.vaultURL(for: repoID) == nil)
-                            }
-                        }
+                        storageSection
 
                         // Sync Info Section
                         if let repo = repo, repo.isCloned {
@@ -505,6 +427,68 @@ struct SettingsView: View {
                 Text(validationMessage ?? String(localized: "Please set Author Name and Author Email."))
             }
         }
+    }
+
+    // MARK: - Storage
+
+    private var storageSection: some View {
+        settingsSection(title: String(localized: "Storage")) {
+            VStack(spacing: 0) {
+                settingsFieldRow(label: state.isUsingCustomLocation(for: repoID)
+                                 ? String(localized: "Location") : String(localized: "Folder")) {
+                    Text(state.vaultURL(for: repoID)?.lastPathComponent ?? vaultName)
+                        .bType(.mono, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                }
+                BDivider().padding(.horizontal, 16)
+                settingsFieldRow(label: String(localized: "Path")) {
+                    Text(state.vaultDisplayPath(for: repoID))
+                        .bType(.monoSm, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                }
+                BDivider().padding(.horizontal, 16)
+                if state.isUsingCustomLocation(for: repoID) {
+                    reauthorizationControls
+                }
+                Button { showMoveLocationPicker = true } label: {
+                    HStack {
+                        Text(String(localized: "Move Vault").uppercased())
+                            .bType(.monoCaption)
+                            .tracking(1)
+                        Spacer()
+                        Image(systemName: "folder.badge.plus")
+                            .bType(.monoSm, weight: .regular)
+                    }
+                    .foregroundStyle(Color.brutalAccent)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 13)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(state.vaultURL(for: repoID) == nil)
+            }
+        }
+    }
+
+    private var reauthorizationControls: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let error = state.vaultAccessErrors[repoID] {
+                Text(error.localizedDescription)
+                    .bType(.monoSm, weight: .regular)
+                    .foregroundStyle(Color.brutalError)
+            }
+            Button("Reauthorize Folder") { showReauthorizePicker = true }
+                .buttonStyle(.plain)
+                .foregroundStyle(Color.brutalAccent)
+                .frame(minHeight: 44)
+                .accessibilityHint("Select the original folder, or the original parent folder used for cloning or discovery. No files will be moved or cloned.")
+            Text("Select the original folder (or the original parent used for cloning or discovery). This only renews access; it does not move, delete, or clone files.")
+                .bType(.monoSm, weight: .regular)
+        }
+        .padding(16)
     }
 
     // MARK: - Authentication
