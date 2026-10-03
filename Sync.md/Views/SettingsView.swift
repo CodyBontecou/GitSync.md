@@ -165,7 +165,7 @@ struct SettingsView: View {
                                     BDivider().padding(.horizontal, 16)
 
                                     settingsFieldRow(label: String(localized: "Commit SHA")) {
-                                        Text(String(repo.gitState.commitSHA.prefix(7)))
+                                        Text(verbatim: Self.shortCommitSHA(repo.gitState.commitSHA))
                                             .bType(.monoSm)
                                             .foregroundStyle(Color.brutalText)
                                     }
@@ -427,6 +427,12 @@ struct SettingsView: View {
                 Text(validationMessage ?? String(localized: "Please set Author Name and Author Email."))
             }
         }
+    }
+
+    /// Keep String/Substring overload resolution outside the large ViewBuilder.
+    private static func shortCommitSHA(_ commitSHA: String) -> String {
+        let prefix: Substring = commitSHA.prefix(7)
+        return String(prefix)
     }
 
     // MARK: - Storage
