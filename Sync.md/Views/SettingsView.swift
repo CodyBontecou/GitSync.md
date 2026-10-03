@@ -150,35 +150,8 @@ struct SettingsView: View {
 
                         storageSection
 
-                        // Sync Info Section
-                        if let repo = repo, repo.isCloned {
-                            settingsSection(title: String(localized: "Sync Info")) {
-                                VStack(spacing: 0) {
-                                    settingsFieldRow(label: String(localized: "Last Sync")) {
-                                        Text(repo.gitState.lastSyncDate == .distantPast
-                                             ? String(localized: "Never")
-                                             : relativeDate(repo.gitState.lastSyncDate))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Commit SHA")) {
-                                        Text(verbatim: Self.shortCommitSHA(repo.gitState.commitSHA))
-                                            .bType(.monoSm)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Files")) {
-                                        Text("\(repo.gitState.blobSHAs.count)")
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-                                }
-                            }
+                        if let repo, repo.isCloned {
+                            syncInfoSection(repo)
                         }
 
                         // Background Sync remains optional and never changes
@@ -402,7 +375,7 @@ struct SettingsView: View {
                     moveVault(to: url)
                 }
             }
-            .fileImporter(isPresented: $showReauthorizePicker, allowedContentTypes: [.folder]) { result in
+            .fileImporter(isPresented: $showReauthorizePicker, allowedContentTypes: [.folder]) { (result: Result<URL, Error>) in
                 do {
                     let url = try result.get()
                     try state.reauthorizeVaultLocation(url, for: repoID)
@@ -433,6 +406,34 @@ struct SettingsView: View {
     private static func shortCommitSHA(_ commitSHA: String) -> String {
         let prefix: Substring = commitSHA.prefix(7)
         return String(prefix)
+    }
+
+    private func syncInfoSection(_ repo: RepoConfig) -> some View {
+        let lastSync: String = repo.gitState.lastSyncDate == Date.distantPast
+            ? String(localized: "Never") : relativeDate(repo.gitState.lastSyncDate)
+        let shortSHA: String = Self.shortCommitSHA(repo.gitState.commitSHA)
+        let fileCount: String = String(repo.gitState.blobSHAs.count)
+        return settingsSection(title: String(localized: "Sync Info")) {
+            VStack(spacing: 0) {
+                settingsFieldRow(label: String(localized: "Last Sync")) {
+                    Text(verbatim: lastSync)
+                        .bType(.monoSm, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                }
+                BDivider().padding(.horizontal, 16)
+                settingsFieldRow(label: String(localized: "Commit SHA")) {
+                    Text(verbatim: shortSHA)
+                        .bType(.monoSm)
+                        .foregroundStyle(Color.brutalText)
+                }
+                BDivider().padding(.horizontal, 16)
+                settingsFieldRow(label: String(localized: "Files")) {
+                    Text(verbatim: fileCount)
+                        .bType(.monoSm, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                }
+            }
+        }
     }
 
     // MARK: - Storage
