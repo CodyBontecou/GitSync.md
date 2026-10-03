@@ -153,7 +153,7 @@ struct VaultView: View {
         .onChange(of: state.repos) {
             if state.repo(id: repoID) == nil { dismiss() }
         }
-        .refreshable { await state.pull(repoID: repoID) }
+        .refreshable { await state.pull(repoID: repoID, trigger: .refresh) }
     }
 
     // MARK: - Cloned Content
@@ -650,7 +650,7 @@ struct VaultView: View {
 
             // Pull
             Button {
-                Task { await state.pull(repoID: repoID) }
+                Task { await state.pull(repoID: repoID, trigger: .button) }
             } label: {
                 BCard(padding: 0) {
                     BActionRow(

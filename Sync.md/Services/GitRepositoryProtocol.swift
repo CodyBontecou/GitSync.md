@@ -40,6 +40,8 @@ protocol GitRepositoryProtocol: Sendable {
     func pull(pat: String) async throws -> LocalPullResult
     /// Fetch, classify, and conditionally fast-forward under one repository operation.
     func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult
+    /// Optional diagnostics preserve existing conformers and cancellation semantics.
+    func executePullOnly(pat: String, expectedBranch: String?, diagnostics: PullDiagnostics?) async throws -> PullExecutionResult
     /// Apply a fast-forward after `pullPlan` has already fetched origin.
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult
     /// Rebase local commits onto origin/<branch> after `pullPlan` has already fetched origin.
@@ -101,6 +103,10 @@ protocol GitRepositoryProtocol: Sendable {
 }
 
 extension GitRepositoryProtocol {
+    func executePullOnly(pat: String, expectedBranch: String?, diagnostics: PullDiagnostics?) async throws -> PullExecutionResult {
+        try await executePullOnly(pat: pat, expectedBranch: expectedBranch)
+    }
+
     func pushCurrentBranch(pat: String) async throws {
         try await pushCurrentBranch(pat: pat, expectedBranch: nil, safetyExpectation: nil)
     }

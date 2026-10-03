@@ -194,7 +194,7 @@ enum GitShortcutRunner {
     }
 
     private static func pull(repo: RepoConfig, in state: AppState) async -> GitShortcutPullResult {
-        let pullResult = await state.pullOnly(repoID: repo.id, showsProgressDelay: false)
+        let pullResult = await state.pullOnly(repoID: repo.id, showsProgressDelay: false, trigger: .shortcut)
         let outcome = state.pullOutcomeByRepo[repo.id]
         let message = outcome?.message
             ?? (pullResult.completedWithoutAttention ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))

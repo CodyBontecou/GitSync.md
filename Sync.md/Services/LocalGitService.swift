@@ -1198,6 +1198,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     // MARK: - Pull (Fetch + Planning + Safe Fast-Forward)
 
     func pullPlan(pat: String) async throws -> PullPlan {
+        try await pullPlan(pat: pat, diagnostics: nil)
+    }
+
+    private func pullPlan(pat: String, diagnostics: PullDiagnostics?) async throws -> PullPlan {
         let path = self.localURL.path
         let cancellationSignal = LocalGitCancellationSignal()
 
@@ -1206,7 +1210,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 try cancellationSignal.checkCancellation()
                 var repo: OpaquePointer?
                 defer { if let repo { git_repository_free(repo) } }
+                diagnostics?.record(.repositoryOpenAttempt)
                 try git2Check(git_repository_open(&repo, path), context: "Open repo")
+                diagnostics?.record(.repositoryOpened)
 
             try cancellationSignal.checkCancellation()
             // Mirror repoInfo(): persist core.precomposeunicode before any
@@ -1232,7 +1238,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
 
             try cancellationSignal.checkCancellation()
+            diagnostics?.record(.fetchStarted)
             try Self.fetchOrigin(repo: repo, pat: pat, cancellationSignal: cancellationSignal)
+            diagnostics?.record(.fetchReturned)
             try cancellationSignal.checkCancellation()
 
             let remoteRefName = "refs/remotes/origin/\(branch)"
@@ -1303,8 +1311,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 )
             }.value
             try cancellationSignal.checkCancellation()
+            diagnostics?.record(.planReturned)
             return plan
         } onCancel: {
+            diagnostics?.record(.planningCancellationSignalled, taskCancelled: true)
             cancellationSignal.cancel()
         }
     }
@@ -1327,8 +1337,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func executePullOnly(pat: String, expectedBranch: String? = nil) async throws -> PullExecutionResult {
+        try await executePullOnly(pat: pat, expectedBranch: expectedBranch, diagnostics: nil)
+    }
+
+    func executePullOnly(pat: String, expectedBranch: String?, diagnostics: PullDiagnostics?) async throws -> PullExecutionResult {
         try Task.checkCancellation()
-        let plan = try await pullPlan(pat: pat)
+        let plan = try await pullPlan(pat: pat, diagnostics: diagnostics)
         try Task.checkCancellation()
         if let expectedBranch, plan.branch != expectedBranch {
             throw LocalGitError.wrongBranch(expected: expectedBranch, actual: plan.branch)
@@ -1339,7 +1353,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 try Task.checkCancellation()
                 return PullExecutionResult(
                     plan: plan,
-                    pullResult: try await performSafeFastForward(branch: plan.branch, pat: pat, refetch: false, isPullOnly: true)
+                    pullResult: try await performSafeFastForward(branch: plan.branch, pat: pat, refetch: false, isPullOnly: true, diagnostics: diagnostics)
                 )
             } catch LocalGitError.pullBlockedByLocalChanges,
                     LocalGitError.lfsHydrationBlockedByLocalChanges(_) {
@@ -1378,7 +1392,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         )
     }
 
-    private func performSafeFastForward(branch: String, pat: String, refetch: Bool, isPullOnly: Bool) async throws -> LocalPullResult {
+    private func performSafeFastForward(branch: String, pat: String, refetch: Bool, isPullOnly: Bool, diagnostics: PullDiagnostics? = nil) async throws -> LocalPullResult {
+        diagnostics?.record(.updateStarted)
         let path = self.localURL.path
         let localURL = self.localURL
         let pullOnlyBeforeCheckout = self.pullOnlyBeforeCheckout
@@ -1593,6 +1608,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // form one short noninterruptible coherence window. The index swap
             // retains the old index at `.git/index.lock` until checkout ends.
             try cancellationSignal.checkCancellation()
+            diagnostics?.record(.mutationWindowStarted)
             var lfsNormalizations: [GitLFSCheckoutNormalization] = []
             do {
                 lfsNormalizations = try GitLFSService.normalizeHydratedFilesForSafeCheckout(
@@ -1648,8 +1664,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 return (result: LocalPullResult(updated: true, newCommitSHA: oidToHex(&remoteOidCopy)), changedPaths: changedPaths)
             }.value
         } onCancel: {
+            diagnostics?.record(.updateCancellationSignalled, taskCancelled: true)
             cancellationSignal.cancel()
         }
+        diagnostics?.record(.updateReturned)
 
         // The ref transaction has committed before this point. Preserve an
         // explicit checkout attention outcome and do not attempt LFS hydration
