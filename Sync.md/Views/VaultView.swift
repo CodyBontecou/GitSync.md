@@ -33,7 +33,15 @@ struct VaultView: View {
             Color.brutalBg.ignoresSafeArea()
 
             if let repo = repo {
-                if repo.isCloned {
+                if let error = state.vaultAccessErrors[repoID] {
+                    VStack(spacing: 16) {
+                        Text(error.localizedDescription)
+                            .multilineTextAlignment(.center)
+                        Button("Reauthorize Folder") { showSettings = true }
+                            .frame(minHeight: 44)
+                    }
+                    .padding(24)
+                } else if repo.isCloned {
                     clonedContent(repo)
                 } else if isThisRepoSyncing {
                     cloningContent
@@ -783,7 +791,7 @@ struct VaultView: View {
     }
 
     private func openInFilesApp() {
-        let vaultDir = state.vaultURL(for: repoID)
+        guard let vaultDir = state.vaultURLForOperation(for: repoID) else { return }
         let filesURL = URL(string: "shareddocuments://\(vaultDir.path)")
         if let filesURL, UIApplication.shared.canOpenURL(filesURL) {
             UIApplication.shared.open(filesURL)

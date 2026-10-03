@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 concurrency:
   group: xctest-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -76,6 +79,19 @@ jobs:
             -only-testing:"$TEST_TARGET" \
             -parallel-testing-enabled NO \
             -derivedDataPath "$RUNNER_TEMP/DerivedData"
+
+  # A cold simulator test build plus a separate optimized Release build can
+  # exceed one 30-minute budget on public hosted runners. Keep both checks,
+  # but give each its own bounded job instead of timing out after tests pass.
+  release-resources:
+    name: Release resource audit
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      XCODE_PROJECT: Sync.md.xcodeproj
+      XCODE_SCHEME: Sync.md
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Audit Release app resources
         shell: bash

@@ -26,6 +26,9 @@ struct SettingsView: View {
     @State private var showFolderPicker = false
     @State private var showCopiedToast = false
     @State private var showMoveLocationPicker = false
+    @State private var showReauthorizePicker = false
+    @State private var reauthorizeError: String?
+    @State private var showReauthorizeError = false
     @State private var moveError: String? = nil
     @State private var showMoveError = false
     @State private var validationMessage: String? = nil
@@ -42,7 +45,7 @@ struct SettingsView: View {
     private var canUseGitHubPAT: Bool { parsedRemote?.isGitHub == true && parsedRemote?.isSSH == false }
     private var repoPathForConfirmation: String {
         let displayPath = state.vaultDisplayPath(for: repoID)
-        return displayPath.isEmpty ? state.vaultURL(for: repoID).path : displayPath
+        return displayPath.isEmpty ? (state.vaultURL(for: repoID)?.path ?? "") : displayPath
     }
 
     var body: some View {
@@ -145,96 +148,10 @@ struct SettingsView: View {
                             }
                         }
 
-                        // Storage Section
-                        settingsSection(title: String(localized: "Storage")) {
-                            VStack(spacing: 0) {
-                                if state.isUsingCustomLocation(for: repoID) {
-                                    settingsFieldRow(label: String(localized: "Location")) {
-                                        Text(state.vaultURL(for: repoID).lastPathComponent)
-                                            .bType(.mono, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
+                        storageSection
 
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(state.vaultDisplayPath(for: repoID))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
-                                            .truncationMode(.middle)
-                                    }
-                                } else {
-                                    settingsFieldRow(label: String(localized: "Folder")) {
-                                        Text(vaultName)
-                                            .bType(.mono, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
-                                    }
-                                }
-
-                                BDivider().padding(.horizontal, 16)
-
-                                Button {
-                                    showMoveLocationPicker = true
-                                } label: {
-                                    HStack {
-                                        Text(String(localized: "Move Vault").uppercased())
-                                            .bType(.monoCaption)
-                                            .foregroundStyle(Color.brutalAccent)
-                                            .tracking(1)
-                                        Spacer()
-                                        Image(systemName: "folder.badge.plus")
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalAccent)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 13)
-                                    // Full-row action, ≥44pt-tall hit target.
-                                    .frame(minHeight: 44)
-                                    .contentShape(Rectangle())
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-
-                        // Sync Info Section
-                        if let repo = repo, repo.isCloned {
-                            settingsSection(title: String(localized: "Sync Info")) {
-                                VStack(spacing: 0) {
-                                    settingsFieldRow(label: String(localized: "Last Sync")) {
-                                        Text(repo.gitState.lastSyncDate == .distantPast
-                                             ? String(localized: "Never")
-                                             : relativeDate(repo.gitState.lastSyncDate))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Commit SHA")) {
-                                        Text(String(repo.gitState.commitSHA.prefix(7)))
-                                            .bType(.monoSm)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Files")) {
-                                        Text("\(repo.gitState.blobSHAs.count)")
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-                                }
-                            }
+                        if let repo, repo.isCloned {
+                            syncInfoSection(repo)
                         }
 
                         // Background Sync remains optional and never changes
@@ -458,6 +375,20 @@ struct SettingsView: View {
                     moveVault(to: url)
                 }
             }
+            .fileImporter(isPresented: $showReauthorizePicker, allowedContentTypes: [.folder]) { (result: Result<URL, Error>) in
+                do {
+                    let url = try result.get()
+                    try state.reauthorizeVaultLocation(url, for: repoID)
+                } catch {
+                    reauthorizeError = error.localizedDescription
+                    showReauthorizeError = true
+                }
+            }
+            .alert("Reauthorization Failed", isPresented: $showReauthorizeError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(reauthorizeError ?? String(localized: "Unknown error"))
+            }
             .alert("Move Failed", isPresented: $showMoveError) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -469,6 +400,102 @@ struct SettingsView: View {
                 Text(validationMessage ?? String(localized: "Please set Author Name and Author Email."))
             }
         }
+    }
+
+    /// Keep String/Substring overload resolution outside the large ViewBuilder.
+    private static func shortCommitSHA(_ commitSHA: String) -> String {
+        let prefix: Substring = commitSHA.prefix(7)
+        return String(prefix)
+    }
+
+    private func syncInfoSection(_ repo: RepoConfig) -> some View {
+        let lastSync: String = repo.gitState.lastSyncDate == Date.distantPast
+            ? String(localized: "Never") : relativeDate(repo.gitState.lastSyncDate)
+        let shortSHA: String = Self.shortCommitSHA(repo.gitState.commitSHA)
+        let fileCount: String = String(repo.gitState.blobSHAs.count)
+        return settingsSection(title: String(localized: "Sync Info")) {
+            VStack(spacing: 0) {
+                settingsFieldRow(label: String(localized: "Last Sync")) {
+                    Text(verbatim: lastSync)
+                        .bType(.monoSm, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                }
+                BDivider().padding(.horizontal, 16)
+                settingsFieldRow(label: String(localized: "Commit SHA")) {
+                    Text(verbatim: shortSHA)
+                        .bType(.monoSm)
+                        .foregroundStyle(Color.brutalText)
+                }
+                BDivider().padding(.horizontal, 16)
+                settingsFieldRow(label: String(localized: "Files")) {
+                    Text(verbatim: fileCount)
+                        .bType(.monoSm, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                }
+            }
+        }
+    }
+
+    // MARK: - Storage
+
+    private var storageSection: some View {
+        settingsSection(title: String(localized: "Storage")) {
+            VStack(spacing: 0) {
+                settingsFieldRow(label: state.isUsingCustomLocation(for: repoID)
+                                 ? String(localized: "Location") : String(localized: "Folder")) {
+                    Text(state.vaultURL(for: repoID)?.lastPathComponent ?? vaultName)
+                        .bType(.mono, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                }
+                BDivider().padding(.horizontal, 16)
+                settingsFieldRow(label: String(localized: "Path")) {
+                    Text(state.vaultDisplayPath(for: repoID))
+                        .bType(.monoSm, weight: .regular)
+                        .foregroundStyle(Color.brutalText)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                }
+                BDivider().padding(.horizontal, 16)
+                if state.isUsingCustomLocation(for: repoID) {
+                    reauthorizationControls
+                }
+                Button { showMoveLocationPicker = true } label: {
+                    HStack {
+                        Text(String(localized: "Move Vault").uppercased())
+                            .bType(.monoCaption)
+                            .tracking(1)
+                        Spacer()
+                        Image(systemName: "folder.badge.plus")
+                            .bType(.monoSm, weight: .regular)
+                    }
+                    .foregroundStyle(Color.brutalAccent)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 13)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(state.vaultURL(for: repoID) == nil)
+            }
+        }
+    }
+
+    private var reauthorizationControls: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let error = state.vaultAccessErrors[repoID] {
+                Text(error.localizedDescription)
+                    .bType(.monoSm, weight: .regular)
+                    .foregroundStyle(Color.brutalError)
+            }
+            Button("Reauthorize Folder") { showReauthorizePicker = true }
+                .buttonStyle(.plain)
+                .foregroundStyle(Color.brutalAccent)
+                .frame(minHeight: 44)
+                .accessibilityHint("Select the original folder, or the original parent folder used for cloning or discovery. No files will be moved or cloned.")
+            Text("Select the original folder (or the original parent used for cloning or discovery). This only renews access; it does not move, delete, or clone files.")
+                .bType(.monoSm, weight: .regular)
+        }
+        .padding(16)
     }
 
     // MARK: - Authentication
