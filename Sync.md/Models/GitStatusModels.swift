@@ -98,6 +98,8 @@ enum PullOutcomeKind: String, Codable, Sendable {
     case rebased
     case rebaseConflicts
     case blockedByLocalChanges
+    /// References advanced, but SAFE checkout could not finish the working tree.
+    case checkoutIncomplete
     case lfsHydrationBlocked
     case diverged
     case remoteBranchMissing
