@@ -4082,6 +4082,215 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testExternalHEADInvalidatesSuspendedFirstPageAndDetailSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: false, fails: false)
+    }
+
+    @MainActor
+    func testExternalHEADInvalidatesSuspendedPaginationAndDetailSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testExternalHEADSuppressesSuspendedFirstPageAndDetailErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: false, fails: true)
+    }
+
+    @MainActor
+    func testExternalHEADSuppressesSuspendedPaginationAndDetailErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: true, fails: true)
+    }
+
+    @MainActor
+    func testHistoryResetInvalidatesSuspendedHistoryAndDetailSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .reset, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testHistoryResetSuppressesSuspendedHistoryAndDetailErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .reset, pagination: true, fails: true)
+    }
+
+    @MainActor
+    func testRepositoryRemovalAndReaddRejectSuspendedCommitCacheSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .removal, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testRepositoryRemovalAndReaddSuppressSuspendedCommitCacheErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .removal, pagination: true, fails: true)
+    }
+
+    @MainActor
+    func testWorkingCopyReplacementRejectsSuspendedCommitCacheSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .workingCopy, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testReplacementRequestsRetainOwnershipAfterObsoleteCompletion() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .requestsOnly, pagination: false, fails: true)
+    }
+
+    @MainActor
+    func testMissingGitResetRejectsSuspendedCommitCacheSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .missingGit, pagination: true, fails: false)
+    }
+
+    private enum CommitCacheBoundary { case externalHEAD, reset, removal, workingCopy, requestsOnly, missingGit }
+
+    private func cacheSummary(_ oid: String) -> GitCommitSummary {
+        GitCommitSummary(oid: oid, shortOID: String(oid.prefix(7)), message: oid,
+                         authorName: "Tests", authorEmail: "tests@example.com",
+                         authoredDate: Date(timeIntervalSince1970: 100))
+    }
+
+    private func cacheDetail(_ oid: String, message: String) -> GitCommitDetail {
+        GitCommitDetail(oid: oid, message: message, authorName: "Tests", authorEmail: "tests@example.com",
+                        authoredDate: Date(timeIntervalSince1970: 100), committerName: "Tests",
+                        committerEmail: "tests@example.com", committedDate: Date(timeIntervalSince1970: 100),
+                        parentOIDs: [], changedFiles: [])
+    }
+
+    @MainActor
+    private func verifySuspendedCommitCacheLoads(boundary: CommitCacheBoundary, pagination: Bool, fails: Bool) async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        var repo = fixture.repoConfig
+        repo.branch = "automatic-sync"
+        state.repos = [repo]
+        let id = repo.id
+        let oldOID = String(repeating: "a", count: 40)
+        let currentOID = String(repeating: "f", count: 40)
+        if pagination {
+            state.commitHistoryByRepo[id] = [cacheSummary(oldOID)]
+            state.commitHistoryHasMoreByRepo[id] = true
+        }
+        let oldHistoryGate = AsyncGate(), oldDetailGate = AsyncGate()
+        let currentHistoryGate = AsyncGate(), currentDetailGate = AsyncGate()
+        let oldHistoryStarted = expectation(description: "old history captured")
+        let oldDetailStarted = expectation(description: "old detail captured")
+        let currentHistoryStarted = expectation(description: "replacement history captured")
+        let currentDetailStarted = expectation(description: "replacement detail captured")
+        fixture.repository.gatedHistoryResults = [
+            (fails ? .failure(LocalGitError.libgit2("obsolete history error")) : .success([cacheSummary(oldOID)]),
+             oldHistoryGate, oldHistoryStarted),
+            (.success([cacheSummary(currentOID)]), currentHistoryGate, currentHistoryStarted)
+        ]
+        // Use the SAME detail OID in old and replacement requests to verify
+        // per-OID ownership as well as the repository epoch.
+        fixture.repository.gatedDetailResults = [
+            (fails ? .failure(LocalGitError.libgit2("obsolete detail error")) : .success(cacheDetail(oldOID, message: "obsolete")),
+             oldDetailGate, oldDetailStarted),
+            (.success(cacheDetail(oldOID, message: "current")), currentDetailGate, currentDetailStarted)
+        ]
+        let oldHistory = Task { await state.loadCommitHistory(repoID: id, pageSize: 1, reset: !pagination) }
+        await fulfillment(of: [oldHistoryStarted], timeout: 2)
+        let oldDetail = Task { await state.loadCommitDetail(repoID: id, oid: oldOID) }
+        await fulfillment(of: [oldDetailStarted], timeout: 2)
+        XCTAssertEqual(fixture.repository.historyRequests.first?.skip, pagination ? 1 : 0)
+
+        switch boundary {
+        case .externalHEAD:
+            fixture.repository.repoInfoResult = LocalRepoInfo(branch: "external", commitSHA: currentOID, changeCount: 0)
+            state.detectChanges(repoID: id)
+            await waitUntil { state.repo(id: id)?.gitState.commitSHA == currentOID }
+            XCTAssertEqual(state.repo(id: id)?.gitState.branch, "external")
+        case .reset, .requestsOnly:
+            break // The replacement history invocation below is the boundary.
+        case .removal:
+            let beforeRemoval = fixture.snapshot()
+            await state.removeRepo(id: id)
+            XCTAssertNil(state.repo(id: id))
+            XCTAssertNil(state.commitHistoryByRepo[id])
+            XCTAssertNil(state.commitDetailByRepo[id])
+            // Default removal keeps user bytes; exclude our settings JSON.
+            XCTAssertEqual(fixture.snapshot().filter { $0.key != "repos.json" },
+                           beforeRemoval.filter { $0.key != "repos.json" })
+            state.repos = [repo] // Same UUID and HEAD: the tombstone must survive.
+        case .workingCopy:
+            state.updateRepo(id: id) { $0.vaultFolderName += "-replacement" }
+        case .missingGit:
+            fixture.repository.hasGitDirectoryValue = false
+            state.validateClonedRepos()
+            XCTAssertEqual(state.repo(id: id)?.isCloned, false)
+            fixture.repository.hasGitDirectoryValue = true
+            state.repos = [repo]
+        }
+        let currentHistory = Task {
+            await state.loadCommitHistory(repoID: id, pageSize: 1, reset: boundary == .reset)
+        }
+        await fulfillment(of: [currentHistoryStarted], timeout: 2)
+        let currentDetail = Task { await state.loadCommitDetail(repoID: id, oid: oldOID) }
+        await fulfillment(of: [currentDetailStarted], timeout: 2)
+        XCTAssertEqual(fixture.repository.historyRequests.last?.skip, 0)
+        // Old tasks finish while replacements remain suspended. They must not
+        // publish, overwrite an unrelated UI error, or release new ownership.
+        state.lastError = "current UI error"
+        state.showError = false
+        await oldHistoryGate.open()
+        await oldDetailGate.open()
+        await oldHistory.value
+        await oldDetail.value
+        XCTAssertNil(state.commitHistoryByRepo[id])
+        XCTAssertNil(state.commitHistoryHasMoreByRepo[id])
+        XCTAssertNil(state.commitDetailByRepo[id])
+        XCTAssertEqual(state.lastError, "current UI error")
+        XCTAssertFalse(state.showError)
+
+        // Current detail completes BEFORE current reset/history: history success
+        // must not wipe a detail loaded in the new epoch.
+        await currentDetailGate.open()
+        await currentDetail.value
+        XCTAssertEqual(state.commitDetailByRepo[id]?[oldOID]?.message, "current")
+        await currentHistoryGate.open()
+        await currentHistory.value
+        XCTAssertEqual(state.commitHistoryByRepo[id]?.map(\.oid), [currentOID])
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[id], true)
+        XCTAssertEqual(state.commitDetailByRepo[id]?[oldOID]?.message, "current")
+        XCTAssertEqual(state.lastError, "current UI error")
+        XCTAssertFalse(state.showError)
+        XCTAssertEqual(state.repo(id: id)?.branch, "automatic-sync")
+        XCTAssertEqual(state.repo(id: id)?.assist, repo.assist)
+        // Ordinary next-page and different-OID loads remain functional.
+        await state.loadCommitHistory(repoID: id, pageSize: 1)
+        XCTAssertEqual(fixture.repository.historyRequests.last?.skip, 1)
+        XCTAssertEqual(state.commitHistoryByRepo[id]?.map(\.oid), [currentOID])
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[id], false)
+        fixture.repository.commitDetailResultByOID[currentOID] = cacheDetail(currentOID, message: "another detail")
+        await state.loadCommitDetail(repoID: id, oid: currentOID)
+        XCTAssertEqual(state.commitDetailByRepo[id]?[currentOID]?.message, "another detail")
+        XCTAssertEqual(state.commitDetailByRepo[id]?[oldOID]?.message, "current")
+    }
+
+    @MainActor
+    func testCurrentCommitCacheErrorsStillPublish() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let gate = AsyncGate()
+        await gate.open()
+        let started = expectation(description: "current history error captured")
+        fixture.repository.gatedHistoryResults = [(.failure(LocalGitError.libgit2("current history error")), gate, started)]
+        await state.loadCommitHistory(repoID: fixture.repoConfig.id, reset: true)
+        await fulfillment(of: [started], timeout: 2)
+        XCTAssertTrue(state.showError)
+        XCTAssertTrue(state.lastError?.contains("current history error") == true)
+        XCTAssertEqual(state.commitHistoryByRepo[fixture.repoConfig.id]?.count, 0)
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[fixture.repoConfig.id], false)
+        state.showError = false
+        let detailStarted = expectation(description: "current detail error captured")
+        fixture.repository.gatedDetailResults = [(.failure(LocalGitError.libgit2("current detail error")), gate, detailStarted)]
+        await state.loadCommitDetail(repoID: fixture.repoConfig.id, oid: "missing")
+        await fulfillment(of: [detailStarted], timeout: 2)
+        XCTAssertTrue(state.showError)
+        XCTAssertTrue(state.lastError?.contains("current detail error") == true)
+    }
+
+    @MainActor
     func testAppStateSaveApplyPopStashDelegatesToGitRepository() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -9220,6 +9429,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var diffResult: UnifiedDiffResult = .empty
     var commitHistoryResult: [GitCommitSummary] = []
     var commitDetailResultByOID: [String: GitCommitDetail] = [:]
+    var gatedHistoryResults: [(Result<[GitCommitSummary], Error>, AsyncGate, XCTestExpectation)] = []
+    var gatedDetailResults: [(Result<GitCommitDetail, Error>, AsyncGate, XCTestExpectation)] = []
+    var historyRequests: [(limit: Int, skip: Int)] = []
     var stashEntriesResult: [GitStashEntry] = []
     var savedStashes: [(message: String, includeUntracked: Bool)] = []
     var appliedStashIndices: [Int] = []
@@ -9631,6 +9843,15 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func commitHistory(limit: Int, skip: Int) async throws -> [GitCommitSummary] {
+        historyRequests.append((limit, skip))
+        if !gatedHistoryResults.isEmpty {
+            // Capture before suspension: changing the fixture cannot change the
+            // old operation's eventual result, just like a completed Git read.
+            let (result, gate, started) = gatedHistoryResults.removeFirst()
+            started.fulfill()
+            await gate.wait()
+            return try result.get()
+        }
         guard limit > 0 else { return [] }
         guard skip < commitHistoryResult.count else { return [] }
         let upperBound = min(commitHistoryResult.count, skip + limit)
@@ -9638,6 +9859,12 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func commitDetail(oid: String) async throws -> GitCommitDetail {
+        if !gatedDetailResults.isEmpty {
+            let (result, gate, started) = gatedDetailResults.removeFirst()
+            started.fulfill()
+            await gate.wait()
+            return try result.get()
+        }
         if let detail = commitDetailResultByOID[oid] {
             return detail
         }

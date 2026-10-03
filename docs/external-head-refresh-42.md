@@ -22,6 +22,31 @@ All tests below are in the existing `SyncMDTests/SyncMDTests.swift` Sources buil
 | Preserve mutation-generation/stale-scan guards | `testStatusRefreshDiscardsStaleHEADAndRunsQueuedScanAfterMutation` gates two scans, advances generation through configuration save, asserts no stale metadata/status/cache publication, and verifies the queued fresh result is adopted. |
 | Preserve local data on failure | `testStatusRefreshFailurePreservesPersistedHEADAndBranch` verifies a failed scan leaves persisted metadata bytes untouched. |
 
+## Corrective follow-up: suspended cache loads
+
+The original five tests primed completed caches; they did not establish safety across suspended history/detail reads. The supervisor found a source-established publication race, not a physical-device reproduction. `loadCommitHistory` captured pages/skip before awaiting Git and could append them after external HEAD invalidation; detail loads and obsolete errors had the same exposure.
+
+Private, non-persisted per-repository UUID epochs now invalidate publication on cache clear, history reset (at invocation, not completion), HEAD/working-copy identity changes, missing Git/reset, removal and persisted inventory replacement. Epoch tombstones survive same-ID re-add. Per-history and per-detail-OID request identities reject superseded responses within the same epoch. Success and error publication are guarded; deferred ownership cleanup is conditional on identity, so an obsolete completion cannot release a replacement. No shared Git work is cancelled and replacement requests are not blocked. History completion no longer clears detail data loaded in its current epoch.
+
+Consumer inspection on this branch found no view callers or loading indicators for these two methods; their callers are the registered tests. The app-wide error alert uses `showError`/`lastError`. The regressions verify those fields remain unchanged on obsolete errors rather than claiming an unimplemented UI spinner was exercised. No new loading indicator or persistent schema is introduced. Background Sync's existing cache replacement now also uses the invalidating helper; its policies and mutation-generation scan guards are unchanged.
+
+Additional named tests in the same registered XCTest class execute production `AppState` methods:
+
+- `testExternalHEADInvalidatesSuspendedFirstPageAndDetailSuccess`
+- `testExternalHEADInvalidatesSuspendedPaginationAndDetailSuccess`
+- `testExternalHEADSuppressesSuspendedFirstPageAndDetailErrors`
+- `testExternalHEADSuppressesSuspendedPaginationAndDetailErrors`
+- `testHistoryResetInvalidatesSuspendedHistoryAndDetailSuccess`
+- `testHistoryResetSuppressesSuspendedHistoryAndDetailErrors`
+- `testRepositoryRemovalAndReaddRejectSuspendedCommitCacheSuccess`
+- `testRepositoryRemovalAndReaddSuppressSuspendedCommitCacheErrors`
+- `testWorkingCopyReplacementRejectsSuspendedCommitCacheSuccess`
+- `testReplacementRequestsRetainOwnershipAfterObsoleteCompletion`
+- `testMissingGitResetRejectsSuspendedCommitCacheSuccess`
+- `testCurrentCommitCacheErrorsStillPublish`
+
+The shared test body captures old history/detail results before gating them, waits for bounded XCTest start expectations, applies the boundary through production methods, starts valid replacement loads while the old loads remain held, then releases obsolete responses while replacements are still held. It asserts no stale data/pages/pagination/error publication, releases current detail before current history, verifies both publish without wiping each other, and checks ordinary subsequent pagination and another detail OID. The external-HEAD cases call `detectChanges` and await observed adoption with a bounded condition wait. Removal asserts local fixture bytes survive and reuses the same UUID/HEAD. Current-error coverage ensures valid errors are not globally suppressed. There is no arbitrary-sleep-only synchronization, unbounded polling, local test execution, removed test or weakened hosted gate. Exact-head hosted execution evidence belongs in the additive follow-up report and draft PR body, not a source-only claim of passing tests.
+
 ## Reproduction limits / device follow-up
 
 These regressions simulate another Git client using libgit2 directly outside AppState, not the Obsidian plugin on physical hardware. The audited installed binary/version mapping and actual iOS external-provider behavior remain unverified. Do not close the issue on source evidence alone.
