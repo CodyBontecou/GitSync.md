@@ -382,6 +382,10 @@ final class AppState {
     private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
     private let repoPersistenceStore: RepoPersistenceStore
     private let persistedReposURL: URL
+    // Deterministic scheduling seam for tests. Production leaves this nil:
+    // hold a completed read AFTER its shared Git lease has been released,
+    // but BEFORE AppState can publish either its value or its error.
+    private let commitCachePublicationHook: (@MainActor @Sendable (UUID, String?) async -> Void)?
     private var persistedRepoSnapshot: [UUID: RepoConfig] = [:]
     var assistConfigurationChangeHandler: (@MainActor @Sendable () -> Void)?
     var assistInventoryChangeHandler: (@MainActor @Sendable () -> Void)?
@@ -394,7 +398,8 @@ final class AppState {
         sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default,
         repoPersistenceStore: RepoPersistenceStore = .shared,
         reposFileURL: URL? = nil,
-        loadPersistedState: Bool = true
+        loadPersistedState: Bool = true,
+        commitCachePublicationHook: (@MainActor @Sendable (UUID, String?) async -> Void)? = nil
     ) {
         self.gitRepositoryFactory = { url in
             SerializedGitRepository(base: gitRepositoryFactory(url), localURL: url)
@@ -402,6 +407,7 @@ final class AppState {
         self.sshHostKeyTrustStore = sshHostKeyTrustStore
         self.repoPersistenceStore = repoPersistenceStore
         self.persistedReposURL = reposFileURL ?? Self.reposFileURL
+        self.commitCachePublicationHook = commitCachePublicationHook
         if loadPersistedState {
             loadState()
             migrateKnownGitCredentialAccessibilityIfNeeded()
@@ -1723,10 +1729,12 @@ final class AppState {
 
         do {
             let page = try await gitService.commitHistory(limit: pageSize, skip: skip)
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, nil) }
             guard isCurrent() else { return }
             commitHistoryByRepo[repoID] = existing + page
             commitHistoryHasMoreByRepo[repoID] = page.count == pageSize
         } catch {
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, nil) }
             guard isCurrent() else { return }
             if reset {
                 commitHistoryByRepo[repoID] = []
@@ -1764,11 +1772,13 @@ final class AppState {
         }
         do {
             let detail = try await gitService.commitDetail(oid: trimmedOID)
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, trimmedOID) }
             guard isCurrent() else { return }
             var existing = commitDetailByRepo[repoID] ?? [:]
             existing[trimmedOID] = detail
             commitDetailByRepo[repoID] = existing
         } catch {
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, trimmedOID) }
             guard isCurrent() else { return }
             showError(message: error.localizedDescription)
         }

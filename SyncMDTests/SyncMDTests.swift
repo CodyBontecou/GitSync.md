@@ -4155,8 +4155,12 @@ final class SyncMDTests: XCTestCase {
     private func verifySuspendedCommitCacheLoads(boundary: CommitCacheBoundary, pagination: Bool, fails: Bool) async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
+        let publicationGates = CommitCachePublicationGates()
         let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
-                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false,
+                             commitCachePublicationHook: { _, oid in
+                                 await publicationGates.wait(isDetail: oid != nil)
+                             })
         var repo = fixture.repoConfig
         repo.branch = "automatic-sync"
         state.repos = [repo]
@@ -4173,18 +4177,22 @@ final class SyncMDTests: XCTestCase {
         let oldDetailStarted = expectation(description: "old detail captured")
         let currentHistoryStarted = expectation(description: "replacement history captured")
         let currentDetailStarted = expectation(description: "replacement detail captured")
-        fixture.repository.gatedHistoryResults = [
-            (fails ? .failure(LocalGitError.libgit2("obsolete history error")) : .success([cacheSummary(oldOID)]),
-             oldHistoryGate, oldHistoryStarted),
-            (.success([cacheSummary(currentOID)]), currentHistoryGate, currentHistoryStarted)
+        fixture.repository.scriptedHistoryResults = [
+            fails ? .failure(LocalGitError.libgit2("obsolete history error")) : .success([cacheSummary(oldOID)]),
+            .success([cacheSummary(currentOID)])
         ]
         // Use the SAME detail OID in old and replacement requests to verify
         // per-OID ownership as well as the repository epoch.
-        fixture.repository.gatedDetailResults = [
-            (fails ? .failure(LocalGitError.libgit2("obsolete detail error")) : .success(cacheDetail(oldOID, message: "obsolete")),
-             oldDetailGate, oldDetailStarted),
-            (.success(cacheDetail(oldOID, message: "current")), currentDetailGate, currentDetailStarted)
+        fixture.repository.scriptedDetailResults = [
+            fails ? .failure(LocalGitError.libgit2("obsolete detail error")) : .success(cacheDetail(oldOID, message: "obsolete")),
+            .success(cacheDetail(oldOID, message: "current"))
         ]
+        // Gate publication, NOT the fake Git operation: AppState's production
+        // wrapper releases the shared repository lease before this seam.
+        await publicationGates.configure(
+            history: [(oldHistoryGate, oldHistoryStarted), (currentHistoryGate, currentHistoryStarted)],
+            detail: [(oldDetailGate, oldDetailStarted), (currentDetailGate, currentDetailStarted)]
+        )
         let oldHistory = Task { await state.loadCommitHistory(repoID: id, pageSize: 1, reset: !pagination) }
         await fulfillment(of: [oldHistoryStarted], timeout: 2)
         let oldDetail = Task { await state.loadCommitDetail(repoID: id, oid: oldOID) }
@@ -4271,21 +4279,15 @@ final class SyncMDTests: XCTestCase {
         let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
                              reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
         state.repos = [fixture.repoConfig]
-        let gate = AsyncGate()
-        await gate.open()
-        let started = expectation(description: "current history error captured")
-        fixture.repository.gatedHistoryResults = [(.failure(LocalGitError.libgit2("current history error")), gate, started)]
+        fixture.repository.scriptedHistoryResults = [.failure(LocalGitError.libgit2("current history error"))]
         await state.loadCommitHistory(repoID: fixture.repoConfig.id, reset: true)
-        await fulfillment(of: [started], timeout: 2)
         XCTAssertTrue(state.showError)
         XCTAssertTrue(state.lastError?.contains("current history error") == true)
         XCTAssertEqual(state.commitHistoryByRepo[fixture.repoConfig.id]?.count, 0)
         XCTAssertEqual(state.commitHistoryHasMoreByRepo[fixture.repoConfig.id], false)
         state.showError = false
-        let detailStarted = expectation(description: "current detail error captured")
-        fixture.repository.gatedDetailResults = [(.failure(LocalGitError.libgit2("current detail error")), gate, detailStarted)]
+        fixture.repository.scriptedDetailResults = [.failure(LocalGitError.libgit2("current detail error"))]
         await state.loadCommitDetail(repoID: fixture.repoConfig.id, oid: "missing")
-        await fulfillment(of: [detailStarted], timeout: 2)
         XCTAssertTrue(state.showError)
         XCTAssertTrue(state.lastError?.contains("current detail error") == true)
     }
@@ -9429,8 +9431,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var diffResult: UnifiedDiffResult = .empty
     var commitHistoryResult: [GitCommitSummary] = []
     var commitDetailResultByOID: [String: GitCommitDetail] = [:]
-    var gatedHistoryResults: [(Result<[GitCommitSummary], Error>, AsyncGate, XCTestExpectation)] = []
-    var gatedDetailResults: [(Result<GitCommitDetail, Error>, AsyncGate, XCTestExpectation)] = []
+    var scriptedHistoryResults: [Result<[GitCommitSummary], Error>] = []
+    var scriptedDetailResults: [Result<GitCommitDetail, Error>] = []
     var historyRequests: [(limit: Int, skip: Int)] = []
     var stashEntriesResult: [GitStashEntry] = []
     var savedStashes: [(message: String, includeUntracked: Bool)] = []
@@ -9844,13 +9846,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func commitHistory(limit: Int, skip: Int) async throws -> [GitCommitSummary] {
         historyRequests.append((limit, skip))
-        if !gatedHistoryResults.isEmpty {
-            // Capture before suspension: changing the fixture cannot change the
-            // old operation's eventual result, just like a completed Git read.
-            let (result, gate, started) = gatedHistoryResults.removeFirst()
-            started.fulfill()
-            await gate.wait()
-            return try result.get()
+        if !scriptedHistoryResults.isEmpty {
+            return try scriptedHistoryResults.removeFirst().get()
         }
         guard limit > 0 else { return [] }
         guard skip < commitHistoryResult.count else { return [] }
@@ -9859,11 +9856,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func commitDetail(oid: String) async throws -> GitCommitDetail {
-        if !gatedDetailResults.isEmpty {
-            let (result, gate, started) = gatedDetailResults.removeFirst()
-            started.fulfill()
-            await gate.wait()
-            return try result.get()
+        if !scriptedDetailResults.isEmpty {
+            return try scriptedDetailResults.removeFirst().get()
         }
         if let detail = commitDetailResultByOID[oid] {
             return detail
@@ -10135,6 +10129,29 @@ private actor EventRecorder {
     private var events: [String] = []
     func append(_ event: String) { events.append(event) }
     func values() -> [String] { events }
+}
+
+private actor CommitCachePublicationGates {
+    private var history: [(AsyncGate, XCTestExpectation)] = []
+    private var detail: [(AsyncGate, XCTestExpectation)] = []
+
+    func configure(history: [(AsyncGate, XCTestExpectation)], detail: [(AsyncGate, XCTestExpectation)]) {
+        self.history = history
+        self.detail = detail
+    }
+
+    func wait(isDetail: Bool) async {
+        let item: (AsyncGate, XCTestExpectation)
+        if isDetail {
+            guard !detail.isEmpty else { return }
+            item = detail.removeFirst()
+        } else {
+            guard !history.isEmpty else { return }
+            item = history.removeFirst()
+        }
+        item.1.fulfill()
+        await item.0.wait()
+    }
 }
 
 private actor AsyncGate {
