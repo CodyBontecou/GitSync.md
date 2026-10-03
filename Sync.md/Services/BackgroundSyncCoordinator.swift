@@ -61,6 +61,7 @@ extension AppState: AssistRepositoryProviding {
         guard let index = repoIndex(id: repoID) else { return }
         if let sha = result?.finalLocalCommitSHA, !sha.isEmpty {
             repos[index].gitState.commitSHA = sha
+            clearCommitHistoryCache(for: repoID)
             commitHistoryByRepo[repoID] = []; commitHistoryHasMoreByRepo[repoID] = true; commitDetailByRepo[repoID] = [:]
         }
         // Only a pass that moved data (pulled/pushed commits) advances the
