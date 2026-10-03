@@ -452,6 +452,86 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(unlink.count, 2)
     }
 
+    func testPullDiagnosticsUsesBoundedFixedVocabularyAndFreshAttemptIDs() {
+        for trigger in PullTrigger.allCases {
+            let trace = PullDiagnostics(trigger: trigger, storage: .bookmarkResolved)
+            trace.record(.runnerEntered, taskCancelled: true)
+            XCTAssertTrue(trace.summary.contains("trigger=\(trigger.rawValue)"))
+            XCTAssertTrue(trace.summary.contains("ownership=\(trigger.ownership)"))
+            XCTAssertTrue(trace.summary.contains("storage=bookmarkResolved"))
+            XCTAssertTrue(trace.summary.contains("runnerEntered(cancelled=true)"))
+            XCTAssertNotEqual(trace.attemptID, PullDiagnostics().attemptID)
+            for _ in 0..<100 { trace.record(.leaseRequested) }
+            XCTAssertEqual(trace.events.count, 32)
+        }
+    }
+
+    func testPullDiagnosticsQueuedCancellationDoesNotOpenRepositoryAndRetryReleasesLease() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("diagnostic-lease-\(UUID())")
+        let coordinator = RepositoryOperationCoordinator()
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: root, coordinator: coordinator)
+        let gate = AsyncGate()
+        let entered = expectation(description: "holder owns lease")
+        let holder = Task {
+            try await coordinator.withRepository(at: root) {
+                entered.fulfill()
+                await gate.wait()
+            }
+        }
+        await fulfillment(of: [entered], timeout: 2)
+        let trace = PullDiagnostics(trigger: .refresh)
+        let pull = Task {
+            await RepositoryPullRunner().run(repository: serialized, credentials: "", diagnostics: trace)
+        }
+        let deadline = ContinuousClock.now.advanced(by: .seconds(2))
+        while await coordinator.queuedOperationCount(at: root) == 0 && ContinuousClock.now < deadline {
+            await Task.yield()
+        }
+        let queued = await coordinator.queuedOperationCount(at: root)
+        XCTAssertEqual(queued, 1)
+        pull.cancel()
+        _ = await pull.value
+        await gate.open()
+        try await holder.value
+        XCTAssertEqual(trace.events.map(\.boundary), [.runnerEntered, .leaseRequested, .cancellationThrown])
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+
+        let retryTrace = PullDiagnostics(trigger: .button)
+        let retry = await RepositoryPullRunner().run(repository: serialized, credentials: "", diagnostics: retryTrace)
+        XCTAssertTrue(retry.completedWithoutAttention)
+        XCTAssertEqual(retryTrace.events.map(\.boundary), [.runnerEntered, .leaseRequested, .leaseAcquired, .leaseReleased, .executionReturned])
+        XCTAssertNotEqual(trace.attemptID, retryTrace.attemptID)
+    }
+
+    func testPullDiagnosticsMissingRepositoryRecordsOpenFailureNotCancellation() async {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("missing-private-vault-\(UUID())")
+        let trace = PullDiagnostics(trigger: .button, storage: .bookmarkUnresolved)
+        let repository = SerializedGitRepository(base: LocalGitService(localURL: root), localURL: root, coordinator: RepositoryOperationCoordinator())
+        _ = await RepositoryPullRunner().run(repository: repository, credentials: "private-token", diagnostics: trace)
+        XCTAssertEqual(trace.events.map(\.boundary), [.runnerEntered, .leaseRequested, .leaseAcquired, .repositoryOpenAttempt, .leaseReleased, .repositoryError])
+        XCTAssertFalse(trace.summary.contains(root.path))
+        XCTAssertFalse(trace.summary.contains("private-token"))
+        XCTAssertFalse(trace.summary.contains("missing-private-vault"))
+    }
+
+    @MainActor
+    func testAppStatePullDiagnosticsCapturesTriggerWithoutRepositoryIdentity() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        for trigger in [PullTrigger.button, .refresh, .shortcut, .callback] {
+            _ = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false, trigger: trigger)
+            let detail = try XCTUnwrap(DebugLogger.shared.entries.last { $0.message == "Pull boundary diagnostics" }?.detail)
+            XCTAssertTrue(detail.contains("trigger=\(trigger.rawValue)"))
+            XCTAssertTrue(detail.contains("leaseReleased"))
+            XCTAssertFalse(detail.contains(fixture.repoConfig.repoURL))
+            XCTAssertFalse(detail.contains(fixture.repoConfig.id.uuidString))
+        }
+    }
+
     func testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo() async throws {
         let fixture = try GitFixtureFactory.make(state: .dirty)
         defer { fixture.cleanup() }
@@ -3237,6 +3317,78 @@ final class SyncMDTests: XCTestCase {
         let postCancellationInfo = try await serialized.repoInfo()
         XCTAssertEqual(postCancellationInfo.commitSHA, baseSHA)
         XCTAssertEqual(postCancellationInfo.changeCount, 0)
+    }
+
+    func testPullDiagnosticsNestedCloneCancellationPreservesEditsAndExplicitRetry() async throws {
+        let fm = FileManager.default
+        let source = try makeTemporaryGitRepository(prefix: "SyncMD-DiagnosticSource")
+        let parent = fm.temporaryDirectory.appendingPathComponent("SyncMD-DiagnosticVault-\(UUID())")
+        let origin = parent.appendingPathComponent("origin.git")
+        let nested = parent.appendingPathComponent("Obsidian/Vault/repository")
+        defer {
+            try? fm.removeItem(at: source)
+            try? fm.removeItem(at: parent)
+        }
+        try fm.createDirectory(at: nested.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let setup = LocalGitService(localURL: source)
+        let sourceNote = source.appendingPathComponent("README.md")
+        try Data("base\n".utf8).write(to: sourceNote)
+        try await setup.stage(path: "README.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try Data("remote\n".utf8).write(to: sourceNote)
+        try await setup.stage(path: "README.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: origin, copyingObjectsFrom: source, headSHA: baseSHA)
+        let remoteURL = "file://localhost\(origin.path)"
+        let clone = LocalGitService(localURL: nested)
+        _ = try await clone.clone(remoteURL: remoteURL, pat: "")
+        let coordinator = RepositoryOperationCoordinator()
+        let initialTrace = PullDiagnostics(trigger: .button)
+        let initial = await RepositoryPullRunner().run(
+            repository: SerializedGitRepository(base: clone, localURL: nested, coordinator: coordinator),
+            credentials: "", diagnostics: initialTrace
+        )
+        XCTAssertEqual(initial, .upToDate(branch: "main", commitSHA: baseSHA))
+        XCTAssertTrue(initialTrace.events.map(\.boundary).contains(.repositoryOpened))
+        XCTAssertTrue(initialTrace.events.map(\.boundary).contains(.fetchReturned))
+        try setLocalBranchRef(repoURL: origin, branch: "main", sha: remoteSHA)
+
+        let reached = expectation(description: "nested checkout before mutation")
+        let release = DispatchSemaphore(value: 0)
+        let service = LocalGitService(localURL: nested, pullOnlyBeforeCheckout: {
+            reached.fulfill()
+            release.wait()
+        })
+        let serialized = SerializedGitRepository(base: service, localURL: nested, coordinator: coordinator)
+        let trace = PullDiagnostics(trigger: .refresh)
+        let pull = Task {
+            await RepositoryPullRunner().run(repository: serialized, credentials: "", diagnostics: trace)
+        }
+        await fulfillment(of: [reached], timeout: 5)
+        let localEdit = nested.appendingPathComponent("Local.md")
+        let editBytes = Data("unsaved local work\n".utf8)
+        try editBytes.write(to: localEdit)
+        pull.cancel()
+        release.signal()
+        _ = await pull.value
+        let boundaries = trace.events.map(\.boundary)
+        XCTAssertTrue(boundaries.contains(.updateCancellationSignalled))
+        XCTAssertTrue(boundaries.contains(.cancellationThrown))
+        XCTAssertTrue(boundaries.contains(.leaseReleased))
+        XCTAssertFalse(boundaries.contains(.mutationWindowStarted))
+        let afterCancellation = try await clone.repoInfo()
+        XCTAssertEqual(afterCancellation.commitSHA, baseSHA)
+        XCTAssertEqual(try Data(contentsOf: nested.appendingPathComponent("README.md")), Data("base\n".utf8))
+        XCTAssertEqual(try Data(contentsOf: localEdit), editBytes)
+
+        // A fresh caller, not an automatic retry, gets a safety classification.
+        let retryTrace = PullDiagnostics(trigger: .button)
+        let retry = await RepositoryPullRunner().run(repository: serialized, credentials: "", diagnostics: retryTrace)
+        XCTAssertEqual(retry, .blockedByLocalChanges(branch: "main"))
+        XCTAssertTrue(retryTrace.events.map(\.boundary).contains(.leaseReleased))
+        XCTAssertEqual(try Data(contentsOf: localEdit), editBytes)
+        XCTAssertFalse(trace.summary.contains(nested.path))
+        XCTAssertFalse(trace.summary.contains(remoteURL))
     }
 
     func testPullPlanClassifierDistinguishesFastForwardBlockedAndDiverged() {

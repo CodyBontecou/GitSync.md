@@ -2378,11 +2378,11 @@ final class AppState {
     }
 
     @discardableResult
-    func pull(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
+    func pull(repoID: UUID, showsProgressDelay: Bool = true, trigger: PullTrigger = .unspecified) async -> Bool {
         // Preserve the legacy foreground contract: a completed classification
         // (including a safe attention state) returns true so existing sheets can
         // dismiss. Headless callers consume the precise `pullOnly` result.
-        switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay) {
+        switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay, trigger: trigger) {
         case .updated, .updatedWithAttention, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return true
         case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
@@ -2393,7 +2393,7 @@ final class AppState {
     /// UI-independent, typed, pull-only execution seam for foreground, App
     /// Intents, and future Premium triggers.
     @discardableResult
-    func pullOnly(repoID: UUID, showsProgressDelay: Bool = true) async -> RepositoryPullResult {
+    func pullOnly(repoID: UUID, showsProgressDelay: Bool = true, trigger: PullTrigger = .unspecified) async -> RepositoryPullResult {
         guard let idx = repoIndex(id: repoID) else {
             let message = String(localized: "Repository not found")
             showError(message: message)
@@ -2426,15 +2426,22 @@ final class AppState {
         let repo = repos[idx]
         let vaultDir = vaultURL(for: repoID)
         let gitService = gitRepositoryFactory(vaultDir)
-        DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)")
+        let diagnostics = PullDiagnostics(
+            trigger: trigger,
+            storage: repo.customVaultBookmarkData == nil ? .appManaged
+                : (resolvedCustomURLs[repoID] == nil ? .bookmarkUnresolved : .bookmarkResolved)
+        )
+        DebugLogger.shared.info("pull", "Starting pull", detail: diagnostics.summary)
         // The runner may fast-forward the checkout. Invalidate any status scan
         // that began before fetch/checkout starts; successful updates advance it
         // again below after the working copy is coherent.
         markRepositoryMutated(repoID: repoID)
         let result = await RepositoryPullRunner().run(
             repository: gitService,
-            credentials: authPayload(for: repo)
+            credentials: authPayload(for: repo),
+            diagnostics: diagnostics
         )
+        DebugLogger.shared.info("pull", "Pull boundary diagnostics", detail: diagnostics.summary)
 
         switch result {
         case .updated(_, let commitSHA):

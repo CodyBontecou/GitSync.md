@@ -147,17 +147,22 @@ actor RepositoryOperationCoordinator {
 
     func withRepository<T: Sendable>(
         at url: URL,
+        diagnostics: PullDiagnostics? = nil,
         operation: @Sendable () async throws -> T
     ) async throws -> T {
         let key = Self.canonicalKey(for: url)
+        diagnostics?.record(.leaseRequested)
         try await acquire(key)
+        diagnostics?.record(.leaseAcquired)
         do {
             try Task.checkCancellation()
             let result = try await operation()
             release(key)
+            diagnostics?.record(.leaseReleased)
             return result
         } catch {
             release(key)
+            diagnostics?.record(.leaseReleased)
             throw error
         }
     }
@@ -265,7 +270,13 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
     }
 
     func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult {
-        try await run { try await $0.executePullOnly(pat: pat, expectedBranch: expectedBranch) }
+        try await executePullOnly(pat: pat, expectedBranch: expectedBranch, diagnostics: nil)
+    }
+
+    func executePullOnly(pat: String, expectedBranch: String?, diagnostics: PullDiagnostics?) async throws -> PullExecutionResult {
+        try await coordinator.withRepository(at: localURL, diagnostics: diagnostics) { [base] in
+            try await base.executePullOnly(pat: pat, expectedBranch: expectedBranch, diagnostics: diagnostics)
+        }
     }
 
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult {

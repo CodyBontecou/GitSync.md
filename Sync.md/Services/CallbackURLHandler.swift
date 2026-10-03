@@ -116,7 +116,7 @@ final class CallbackURLHandler {
             case .pull:
                 appState.syncProgress = "Pulling from remote…"
                 let mapping = Self.mapPullResult(
-                    await appState.pullOnly(repoID: repoID, showsProgressDelay: false)
+                    await appState.pullOnly(repoID: repoID, showsProgressDelay: false, trigger: .callback)
                 )
                 result.merge(mapping.params, uniquingKeysWith: { _, latest in latest })
                 if let message = mapping.errorMessage {

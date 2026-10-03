@@ -37,12 +37,15 @@ struct RepositoryPullRunner: Sendable {
     func run(
         repository: any GitRepositoryProtocol,
         credentials: String,
-        expectedBranch: String? = nil
+        expectedBranch: String? = nil,
+        diagnostics: PullDiagnostics? = nil
     ) async -> RepositoryPullResult {
+        diagnostics?.record(.runnerEntered)
         do {
             // Fetch, classification, and optional fast-forward are returned as
             // one typed result from one serialized repository operation.
-            let execution = try await repository.executePullOnly(pat: credentials, expectedBranch: expectedBranch)
+            let execution = try await repository.executePullOnly(pat: credentials, expectedBranch: expectedBranch, diagnostics: diagnostics)
+            diagnostics?.record(.executionReturned)
             let plan = execution.plan
             switch plan.action {
             case .fastForward:
@@ -69,8 +72,10 @@ struct RepositoryPullRunner: Sendable {
                 return .remoteBranchMissing(branch: plan.branch)
             }
         } catch LocalGitError.sshHostKeyTrustRequired(let error) {
+            diagnostics?.record(.repositoryError)
             return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: error)
         } catch let error as LocalGitError {
+            diagnostics?.record(.repositoryError)
             switch error {
             case .authenticationFailed:
                 return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: nil)
@@ -92,6 +97,7 @@ struct RepositoryPullRunner: Sendable {
                 return .failed(message: error.localizedDescription)
             }
         } catch {
+            diagnostics?.record(error is CancellationError ? .cancellationThrown : .otherError)
             return .failed(message: error.localizedDescription)
         }
     }
