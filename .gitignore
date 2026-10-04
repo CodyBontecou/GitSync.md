@@ -10,6 +10,7 @@ fastlane/AuthKey_*.p8
 xcuserdata/
 *.xcuserstate
 DerivedData/
+.derived/
 build/
 buildServer.json
 

@@ -196,8 +196,10 @@ enum GitShortcutRunner {
     private static func pull(repo: RepoConfig, in state: AppState) async -> GitShortcutPullResult {
         let pullResult = await state.pullOnly(repoID: repo.id, showsProgressDelay: false)
         let outcome = state.pullOutcomeByRepo[repo.id]
-        let message = outcome?.message
-            ?? (pullResult.completedWithoutAttention ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))
+        let message = pullResult == .cancelled
+            ? String(localized: "Cancelled")
+            : outcome?.message
+                ?? (pullResult.completedWithoutAttention ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))
         let status = GitShortcutPullResult.Status(result: pullResult)
 
         return GitShortcutPullResult(
@@ -225,7 +227,7 @@ private struct GitShortcutPullResult {
                 self = .upToDate
             case .blockedByLocalChanges, .diverged, .remoteBranchMissing:
                 self = .blocked
-            case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
+            case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .cancelled, .failed:
                 self = .failed
             }
         }

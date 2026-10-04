@@ -2385,7 +2385,7 @@ final class AppState {
         switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay) {
         case .updated, .updatedWithAttention, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return true
-        case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
+        case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .cancelled, .failed:
             return false
         }
     }
@@ -2394,6 +2394,9 @@ final class AppState {
     /// Intents, and future Premium triggers.
     @discardableResult
     func pullOnly(repoID: UUID, showsProgressDelay: Bool = true) async -> RepositoryPullResult {
+        // SwiftUI owns refresh tasks and may cancel them before they begin.
+        // Do not clear existing outcomes or start Git work for a stale refresh.
+        guard !Task.isCancelled else { return .cancelled }
         guard let idx = repoIndex(id: repoID) else {
             let message = String(localized: "Repository not found")
             showError(message: message)
@@ -2411,6 +2414,7 @@ final class AppState {
 
         if isDemoMode {
             if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+            guard !Task.isCancelled else { return .cancelled }
             syncProgress = String(localized: "Already up to date!")
             guard let currentIndex = repoIndex(id: repoID) else {
                 return .unavailable(message: String(localized: "Repository not found"))
@@ -2495,6 +2499,11 @@ final class AppState {
             setPullOutcome(repoID: repoID, kind: .failed, message: message)
             if trustError == nil { showError(message: message, category: "pull") }
 
+        case .cancelled:
+            // A refresh interrupted by SwiftUI or cancelled while queued behind
+            // a revert must not become an error alert or a failed pull banner.
+            syncProgress = String(localized: "Cancelled")
+
         case .unavailable(let message), .failed(let message):
             setPullOutcome(repoID: repoID, kind: .failed, message: message)
             showError(message: message, category: "pull")
@@ -2504,7 +2513,7 @@ final class AppState {
         // schedule a fresh scan so blocked, failed, and no-op results cannot
         // leave an older in-flight scan as the last published status.
         detectChanges(repoID: repoID)
-        if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
+        if showsProgressDelay && result != .cancelled { try? await Task.sleep(for: .seconds(1)) }
         return result
     }
 

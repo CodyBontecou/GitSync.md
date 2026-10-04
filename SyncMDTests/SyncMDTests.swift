@@ -45,6 +45,7 @@ final class SyncMDTests: XCTestCase {
             .wrongBranch(expected: "main", actual: "notes"),
             .authenticationOrTrustRequired(message: "authenticate", trustError: nil),
             .unavailable(message: "unavailable"),
+            .cancelled,
             .failed(message: "failed")
         ]
         for outcome in softStops {
@@ -52,6 +53,10 @@ final class SyncMDTests: XCTestCase {
             XCTAssertEqual(mapping.params["updated"], "false", "\(outcome)")
             XCTAssertNotNil(mapping.errorMessage, "\(outcome)")
         }
+        XCTAssertEqual(
+            CallbackURLHandler.mapPullResult(.cancelled).errorMessage,
+            String(localized: "Cancelled")
+        )
     }
 
     @MainActor
@@ -501,6 +506,26 @@ final class SyncMDTests: XCTestCase {
         fixture.repository.pullResult = .success(LocalPullResult(updated: false, newCommitSHA: newCommit))
         let current = await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
         XCTAssertEqual(current, .upToDate(branch: "main", commitSHA: newCommit))
+    }
+
+    func testRepositoryPullRunnerTreatsCancellationAsANonSuccessOutcome() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+
+        let errors: [Error] = [CancellationError(), URLError(.cancelled)]
+        for error in errors {
+            fixture.repository.executePullOnlyResult = .failure(error)
+            let result = await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
+            XCTAssertEqual(result, .cancelled)
+            XCTAssertFalse(result.completedWithoutAttention)
+            XCTAssertNil(result.newCommitSHA)
+        }
+
+        let reconciliation = RepositoryReconciliationResult.pullOnly(.cancelled)
+        XCTAssertEqual(reconciliation.outcome, .failed, "Automation must not continue to push after a cancelled pull")
+        XCTAssertNil(reconciliation.push)
+        XCTAssertFalse(reconciliation.retainsCompletedWorkOnCancellation)
+        XCTAssertEqual(reconciliation.message, String(localized: "Cancelled"))
     }
 
     func testRepositoryPullRunnerReturnsNewSHAWithPostUpdateAttention() async throws {
@@ -3471,6 +3496,145 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testAppStateCancelledRefreshDuringFileRevertDoesNotShowError() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        let gate = AsyncGate()
+        let revertStarted = expectation(description: "File revert holds repository lease")
+        fixture.repository.discardChangesGate = gate
+        fixture.repository.discardChangesStarted = { revertStarted.fulfill() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+        let vaultURL = state.vaultURL(for: repoID)
+
+        let revert = Task { await state.discardFileChanges(repoID: repoID, path: "Inbox.md") }
+        await fulfillment(of: [revertStarted], timeout: 2)
+        let refresh = Task { await state.pull(repoID: repoID, showsProgressDelay: false) }
+        let deadline = Date().addingTimeInterval(2)
+        while await RepositoryOperationCoordinator.shared.queuedOperationCount(at: vaultURL) == 0,
+              Date() < deadline {
+            await Task.yield()
+        }
+        let queuedCount = await RepositoryOperationCoordinator.shared.queuedOperationCount(at: vaultURL)
+        XCTAssertGreaterThan(queuedCount, 0, "Refresh must wait behind the in-progress revert")
+
+        refresh.cancel()
+        let completed = await refresh.value
+        await gate.open()
+        await revert.value
+
+        XCTAssertFalse(completed, "A cancelled refresh is not a completed pull")
+        XCTAssertEqual(fixture.repository.discardedPaths, ["Inbox.md"])
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0, "Cancelled refresh must not start Git work")
+        XCTAssertFalse(state.showError, "Cancellation must not open the Error alert: \(state.lastError ?? "nil")")
+        XCTAssertNil(state.lastError)
+        XCTAssertNil(state.pullOutcomeByRepo[repoID], "Cancellation must not leave a failed pull banner")
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+
+        let retryCompleted = await state.pull(repoID: repoID, showsProgressDelay: false)
+        XCTAssertTrue(retryCompleted, "The repository lease must remain usable after cancellation")
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID]?.kind, .upToDate)
+    }
+
+    @MainActor
+    func testAppStatePullCancelledBeforeStartingPreservesExistingOutcome() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+        let previous = PullOutcomeState(kind: .upToDate, message: "Previous pull completed", date: Date())
+        state.pullOutcomeByRepo[repoID] = previous
+
+        let refresh = Task { await state.pullOnly(repoID: repoID, showsProgressDelay: false) }
+        refresh.cancel()
+        let result = await refresh.value
+
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID], previous)
+        XCTAssertFalse(state.showError)
+        XCTAssertNil(state.lastError)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+    }
+
+    @MainActor
+    func testAppStatePullCancellationFromGitDoesNotShowErrorOrChangeCommit() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        fixture.repository.executePullOnlyResult = .failure(CancellationError())
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+
+        let result = await state.pullOnly(repoID: repoID, showsProgressDelay: false)
+
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertFalse(state.showError)
+        XCTAssertNil(state.lastError)
+        XCTAssertNil(state.pullOutcomeByRepo[repoID])
+        XCTAssertEqual(state.repo(id: repoID)?.gitState, fixture.repoConfig.gitState)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+    }
+
+    @MainActor
+    func testAppStatePullStillShowsGenuineFetchFailures() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let error = URLError(.notConnectedToInternet)
+        fixture.repository.executePullOnlyResult = .failure(error)
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+
+        let result = await state.pullOnly(repoID: repoID, showsProgressDelay: false)
+
+        XCTAssertEqual(result, .failed(message: error.localizedDescription))
+        XCTAssertTrue(state.showError)
+        XCTAssertEqual(state.lastError, error.localizedDescription)
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID]?.kind, .failed)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+    }
+
+    @MainActor
+    func testAppStatePullPreservesCompletedUpdateWhenRefreshIsCancelled() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let gate = AsyncGate()
+        let started = expectation(description: "Pull started")
+        let newSHA = "abababababababababababababababababababab"
+        fixture.repository.executePullOnlyStarted = { started.fulfill() }
+        fixture.repository.executePullOnlyGate = gate
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .fastForward, branch: "main", localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: newSHA, hasLocalChanges: false, aheadBy: 0, behindBy: 1
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(
+            updated: true, newCommitSHA: newSHA, attention: .cancelledAfterUpdate
+        ))
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+        let refresh = Task { await state.pullOnly(repoID: repoID, showsProgressDelay: false) }
+        await fulfillment(of: [started], timeout: 2)
+        refresh.cancel()
+        await gate.open()
+        let result = await refresh.value
+
+        XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: newSHA, attention: .cancelledAfterUpdate))
+        XCTAssertEqual(state.repo(id: repoID)?.gitState.commitSHA, newSHA)
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID]?.kind, .lfsHydrationBlocked)
+        XCTAssertFalse(state.showError, "Completed-work attention must not display a raw cancellation error")
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+    }
+
+    @MainActor
     func testAppStatePullFastForwardUpdatesCommitAndOutcome() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -4366,6 +4530,301 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(fixture.repository.resolvedConflicts.count, 1)
         XCTAssertEqual(fixture.repository.resolvedConflicts.first?.path, "README.md")
         XCTAssertEqual(fixture.repository.resolvedConflicts.first?.strategy, .ours)
+    }
+
+    func testLocalGitServiceDiscardAllChangesRestoresStagedAndWorkingTreeEdits() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardAll")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let deletedURL = repoURL.appendingPathComponent("Deleted.md")
+        try "committed\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "deleted original\n".write(to: deletedURL, atomically: true, encoding: .utf8)
+        try await service.stageAll()
+        let originalSHA = try await service.commitLocal(
+            message: "Initial", authorName: "Tests", authorEmail: "tests@example.com"
+        )
+        try "staged\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        try "unstaged\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try fm.removeItem(at: deletedURL)
+        try await service.stage(path: "Deleted.md")
+        let addedURL = repoURL.appendingPathComponent("Added.md")
+        try "added\n".write(to: addedURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Added.md")
+        let untrackedURL = repoURL.appendingPathComponent("Untracked.md")
+        try "untracked\n".write(to: untrackedURL, atomically: true, encoding: .utf8)
+        let ignoredURL = repoURL.appendingPathComponent("Ignored.md")
+        try "Ignored.md\n".write(to: repoURL.appendingPathComponent(".git/info/exclude"), atomically: true, encoding: .utf8)
+        try "ignored\n".write(to: ignoredURL, atomically: true, encoding: .utf8)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+
+        try await service.discardAllChanges()
+
+        XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "committed\n")
+        XCTAssertEqual(try String(contentsOf: deletedURL, encoding: .utf8), "deleted original\n")
+        XCTAssertFalse(fm.fileExists(atPath: addedURL.path))
+        XCTAssertFalse(fm.fileExists(atPath: untrackedURL.path))
+        XCTAssertEqual(try String(contentsOf: ignoredURL, encoding: .utf8), "ignored\n")
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.commitSHA, originalSHA)
+        XCTAssertTrue(info.statusEntries.isEmpty, "Discard must restore both the index and the working tree")
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    func testLocalGitServiceDiscardAllChangesWaitsForConcurrentIndexWriter() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardIndexLock")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        try "committed\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        let originalSHA = try await service.commitLocal(
+            message: "Initial", authorName: "Tests", authorEmail: "tests@example.com"
+        )
+        try "local edit\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        let lockHeld = expectation(description: "Concurrent index writer holds index.lock")
+        let releaseLock = DispatchSemaphore(value: 0)
+        defer { releaseLock.signal() }
+        let writer = LocalGitService(localURL: repoURL, stageAllAfterIndexLock: {
+            lockHeld.fulfill()
+            releaseLock.wait()
+        })
+        let writeTask = Task { try await writer.stageAll() }
+        await fulfillment(of: [lockHeld], timeout: 5)
+        let unlockTask = Task.detached {
+            try? await Task.sleep(for: .milliseconds(500))
+            releaseLock.signal()
+        }
+
+        do {
+            try await service.discardAllChanges()
+        } catch {
+            XCTFail("Discard should wait for a short-lived index lock, not fail: \(error.localizedDescription)")
+        }
+        await unlockTask.value
+        try await writeTask.value
+
+        XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "committed\n")
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.commitSHA, originalSHA)
+        XCTAssertTrue(info.statusEntries.isEmpty)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    func testLocalGitServiceDiscardChangesPreservesFilesAndExistingIndexLock() async throws {
+        let fm = FileManager.default
+        for discardAll in [false, true] {
+            let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardPersistentLock")
+            defer { try? fm.removeItem(at: repoURL) }
+            let service = LocalGitService(localURL: repoURL)
+            let noteURL = repoURL.appendingPathComponent("Note.md")
+            try "committed\n".write(to: noteURL, atomically: true, encoding: .utf8)
+            try await service.stage(path: "Note.md")
+            let originalSHA = try await service.commitLocal(
+                message: "Initial", authorName: "Tests", authorEmail: "tests@example.com"
+            )
+            try "staged\n".write(to: noteURL, atomically: true, encoding: .utf8)
+            try await service.stage(path: "Note.md")
+            try "unstaged\n".write(to: noteURL, atomically: true, encoding: .utf8)
+            let indexURL = repoURL.appendingPathComponent(".git/index")
+            let originalIndex = try Data(contentsOf: indexURL)
+            let lockURL = repoURL.appendingPathComponent(".git/index.lock")
+            let lockBytes = Data("another Git writer's lock\n".utf8)
+            try lockBytes.write(to: lockURL, options: .withoutOverwriting)
+
+            do {
+                if discardAll {
+                    try await service.discardAllChanges()
+                } else {
+                    try await service.discardChanges(path: "Note.md")
+                }
+                XCTFail("Discard must not bypass another Git writer's lock")
+            } catch LocalGitError.indexLocked {
+                XCTAssertEqual(try Data(contentsOf: lockURL), lockBytes, "Never delete an unknown or active lock")
+            } catch {
+                XCTFail("Expected an actionable index-lock error, got \(error)")
+            }
+
+            XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "unstaged\n", "Lock failure must not change file contents")
+            XCTAssertEqual(try Data(contentsOf: indexURL), originalIndex)
+            let info = try await service.repoInfo()
+            XCTAssertEqual(info.commitSHA, originalSHA)
+        }
+    }
+
+    func testLocalGitServiceDiscardChangesRefreshesIndexAfterWaitingForWriter() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardFileIndexLock")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let otherURL = repoURL.appendingPathComponent("Other.md")
+        try "committed\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "other committed\n".write(to: otherURL, atomically: true, encoding: .utf8)
+        try await service.stageAll()
+        _ = try await service.commitLocal(message: "Initial", authorName: "Tests", authorEmail: "tests@example.com")
+        try "local edit\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "other staged\n".write(to: otherURL, atomically: true, encoding: .utf8)
+        let lockHeld = expectation(description: "Other file is staged by a concurrent writer")
+        let releaseLock = DispatchSemaphore(value: 0)
+        defer { releaseLock.signal() }
+        let writer = LocalGitService(localURL: repoURL, stageAllAfterIndexLock: {
+            lockHeld.fulfill()
+            releaseLock.wait()
+        })
+        let writeTask = Task { try await writer.stageAll() }
+        await fulfillment(of: [lockHeld], timeout: 5)
+        let unlockTask = Task.detached {
+            try? await Task.sleep(for: .milliseconds(500))
+            releaseLock.signal()
+        }
+
+        let discardTask = Task { try await service.discardChanges(path: "Note.md") }
+        await unlockTask.value
+        try await writeTask.value
+        try await discardTask.value
+
+        XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "committed\n")
+        XCTAssertEqual(try String(contentsOf: otherURL, encoding: .utf8), "other staged\n")
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.statusEntries.map(\.path), ["Other.md"])
+        XCTAssertEqual(info.statusEntries.first?.indexStatus, .modified, "Keep the other writer's newly staged changes")
+        XCTAssertNil(info.statusEntries.first?.workTreeStatus)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    func testLocalGitServiceDiscardChangesCancelledWhileWaitingPreservesFilesAndLock() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardCancellation")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        try "committed\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+        _ = try await service.commitLocal(message: "Initial", authorName: "Tests", authorEmail: "tests@example.com")
+        try "local edit\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        let indexURL = repoURL.appendingPathComponent(".git/index")
+        let originalIndex = try Data(contentsOf: indexURL)
+        let lockURL = repoURL.appendingPathComponent(".git/index.lock")
+        let lockBytes = Data("another Git writer's lock\n".utf8)
+        try lockBytes.write(to: lockURL, options: .withoutOverwriting)
+        let discard = Task { try await service.discardAllChanges() }
+        try await Task.sleep(for: .milliseconds(100))
+        discard.cancel()
+
+        do {
+            try await discard.value
+            XCTFail("Cancelled discard must stop before modifying files")
+        } catch is CancellationError {
+            // Expected: cancellation interrupts lock waiting, not a checkout.
+        } catch {
+            XCTFail("Expected cancellation, got \(error)")
+        }
+
+        XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "local edit\n")
+        XCTAssertEqual(try Data(contentsOf: indexURL), originalIndex)
+        XCTAssertEqual(try Data(contentsOf: lockURL), lockBytes)
+    }
+
+    func testLocalGitServiceDiscardChangesHandlesDeletedNewAndLiteralPaths() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardFileKinds")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let literalURL = repoURL.appendingPathComponent("Note[1].md")
+        let otherURL = repoURL.appendingPathComponent("Note1.md")
+        let deletedURL = repoURL.appendingPathComponent("Deleted.md")
+        for fileURL in [literalURL, otherURL, deletedURL] {
+            try "committed\n".write(to: fileURL, atomically: true, encoding: .utf8)
+        }
+        try await service.stageAll()
+        _ = try await service.commitLocal(message: "Initial", authorName: "Tests", authorEmail: "tests@example.com")
+        try "literal edit\n".write(to: literalURL, atomically: true, encoding: .utf8)
+        try "other edit\n".write(to: otherURL, atomically: true, encoding: .utf8)
+        try fm.removeItem(at: deletedURL)
+        try await service.stageAll()
+        for path in ["Added.md", "Untracked.md"] {
+            let fileURL = repoURL.appendingPathComponent(path)
+            try "new\n".write(to: fileURL, atomically: true, encoding: .utf8)
+            if path == "Added.md" { try await service.stage(path: path) }
+            try await service.discardChanges(path: path)
+            XCTAssertFalse(fm.fileExists(atPath: fileURL.path))
+        }
+
+        try await service.discardChanges(path: "Note[1].md")
+        try await service.discardChanges(path: "Deleted.md")
+
+        XCTAssertEqual(try String(contentsOf: literalURL, encoding: .utf8), "committed\n")
+        XCTAssertEqual(try String(contentsOf: deletedURL, encoding: .utf8), "committed\n")
+        XCTAssertEqual(try String(contentsOf: otherURL, encoding: .utf8), "other edit\n")
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.statusEntries.map(\.path), ["Note1.md"])
+        XCTAssertEqual(info.statusEntries.first?.indexStatus, .modified)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    func testLocalGitServiceDiscardChangesHandlesUnbornIndex() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardUnborn")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let otherURL = repoURL.appendingPathComponent("Other.md")
+        try "new\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "other new\n".write(to: otherURL, atomically: true, encoding: .utf8)
+        try await service.stageAll()
+
+        try await service.discardChanges(path: "Note.md")
+        XCTAssertFalse(fm.fileExists(atPath: noteURL.path))
+        XCTAssertEqual(try String(contentsOf: otherURL, encoding: .utf8), "other new\n")
+        try await service.discardAllChanges()
+        XCTAssertEqual(try String(contentsOf: otherURL, encoding: .utf8), "other new\n", "Unborn discard-all only clears staging")
+
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+        var index: OpaquePointer?
+        defer { if let index { git_index_free(index) } }
+        XCTAssertEqual(git_repository_index(&index, repo), 0)
+        XCTAssertEqual(git_index_entrycount(index), 0)
+        var head: OpaquePointer?
+        defer { if let head { git_reference_free(head) } }
+        XCTAssertEqual(git_repository_head(&head, repo), GIT_EUNBORNBRANCH.rawValue)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    func testLocalGitServiceDiscardChangesRestoresOnlySelectedFile() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DiscardFile")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let otherURL = repoURL.appendingPathComponent("Other.md")
+        try "committed\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "other committed\n".write(to: otherURL, atomically: true, encoding: .utf8)
+        try await service.stageAll()
+        let originalSHA = try await service.commitLocal(
+            message: "Initial", authorName: "Tests", authorEmail: "tests@example.com"
+        )
+        try "staged\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "other staged\n".write(to: otherURL, atomically: true, encoding: .utf8)
+        try await service.stageAll()
+        try "unstaged\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        try "other unstaged\n".write(to: otherURL, atomically: true, encoding: .utf8)
+
+        try await service.discardChanges(path: "Note.md")
+
+        XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "committed\n")
+        XCTAssertEqual(try String(contentsOf: otherURL, encoding: .utf8), "other unstaged\n")
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.commitSHA, originalSHA)
+        XCTAssertEqual(info.statusEntries.map(\.path), ["Other.md"])
+        XCTAssertEqual(info.statusEntries.first?.indexStatus, .modified)
+        XCTAssertEqual(info.statusEntries.first?.workTreeStatus, .modified)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
     }
 
     func testLocalGitServiceListBranchesReportsCurrentLocalBranch() async throws {
@@ -9276,6 +9735,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var droppedStashIndices: [Int] = []
     var discardedPaths: [String] = []
     var didDiscardAllChanges = false
+    var discardChangesGate: AsyncGate?
+    var discardChangesStarted: (@Sendable () -> Void)?
     var tagsResult: [GitTag] = []
     var createdTags: [(name: String, message: String?)] = []
     var deletedTagNames: [String] = []
@@ -9559,6 +10020,8 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func discardChanges(path: String) async throws {
+        discardChangesStarted?()
+        if let discardChangesGate { await discardChangesGate.wait() }
         discardedPaths.append(path)
     }
 

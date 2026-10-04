@@ -95,6 +95,7 @@ struct RepositoryReconciliationResult: Sendable, Equatable {
         case .upToDate: outcome = .upToDate; message = nil
         case .authenticationOrTrustRequired(let value, _): outcome = .authenticationOrTrustRequired; message = value
         case .failed(let value): outcome = .failed; message = value
+        case .cancelled: outcome = .failed; message = String(localized: "Cancelled")
         case .updatedWithAttention(_, _, let attention): outcome = .blocked; message = attention.localizedDescription
         case .blockedByLocalChanges: outcome = .blocked; message = String(localized: "Local changes need attention.")
         case .diverged: outcome = .blocked; message = String(localized: "Local and remote history diverged.")

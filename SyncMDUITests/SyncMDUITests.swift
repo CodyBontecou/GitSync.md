@@ -71,6 +71,36 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(try gitToolsSnapshot() == before, "Commit & Push's navigation must not commit or push by itself")
     }
 
+    func testFileRevertThenPullToRefreshCompletesWithoutCancellationAlert() throws {
+        let app = launchGitToolsFixture("dirty")
+        let localHead = try gitToolsHead()
+        let remoteHead = try gitToolsHead(remote: true)
+        let worktree = try gitToolsWorktreeURL()
+        let readme = worktree.appendingPathComponent("README.md")
+        XCTAssertTrue(try String(contentsOf: readme, encoding: .utf8).contains("Unstaged local note"))
+
+        let revert = app.buttons["Revert Changes"].firstMatch
+        XCTAssertTrue(reveal(revert, in: app))
+        revert.tap()
+        XCTAssertTrue(app.staticTexts["REVERT CHANGES"].waitForExistence(timeout: 5))
+        app.buttons["REVERT"].tap()
+        XCTAssertTrue(waitUntil(timeout: 5) {
+            (try? String(contentsOf: readme, encoding: .utf8)) == "# Git Tools Fixture\n\nBase note.\n"
+        }, "Revert must actually restore the file before refreshing")
+        XCTAssertFalse(app.alerts["Error"].exists)
+
+        let scrollView = app.scrollViews.firstMatch
+        let start = scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+        let end = scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+        start.press(forDuration: 0.1, thenDragTo: end)
+        XCTAssertTrue(app.staticTexts["Already up to date"].waitForExistence(timeout: 10), "Pull-to-refresh must complete after reverting")
+        XCTAssertFalse(app.alerts["Error"].exists, "Revert then refresh must not display Swift.CancellationError")
+        XCTAssertEqual(try gitToolsHead(), localHead, "Revert and a no-op pull must not create a commit")
+        XCTAssertEqual(try gitToolsHead(remote: true), remoteHead, "Refresh must not publish changes")
+        XCTAssertEqual(try String(contentsOf: readme, encoding: .utf8), "# Git Tools Fixture\n\nBase note.\n")
+        attachScreenshot("Revert then pull-to-refresh", in: app)
+    }
+
     func testGitToolsAheadRepositoryOpensWithoutPushingAndExistingPushRemainsDirect() throws {
         let app = launchGitToolsFixture("ahead")
         let localHead = try gitToolsHead()

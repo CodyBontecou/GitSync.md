@@ -35,6 +35,7 @@ enum LocalGitError: LocalizedError {
     case tagAlreadyExists(String)
     case tagNotFound(String)
     case repositoryCorrupted(String)
+    case indexLocked
     case lfsFailed(String)
     case lfsHydrationBlockedByLocalChanges(String)
     case invalidAuthorIdentity(String)
@@ -100,6 +101,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Tag '\(name)' was not found.")
         case .repositoryCorrupted(let msg):
             return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
+        case .indexLocked:
+            return String(localized: "The Git index is locked. Wait for other Git operations to finish, then try again. If no Git operation is running, remove the stale index.lock file from the repository's Git directory.")
         case .lfsFailed(let msg):
             return String(localized: "Git LFS failed: \(msg)")
         case .lfsHydrationBlockedByLocalChanges:
@@ -385,21 +388,38 @@ nonisolated private final class GitIndexFileLock {
     private var prepared = false
     private var publishedRetainingLock = false
 
-    init(index: OpaquePointer?) throws {
+    init(
+        index: OpaquePointer?,
+        waitTimeout: TimeInterval = 0,
+        cancellationSignal: LocalGitCancellationSignal? = nil
+    ) throws {
         guard let rawPath = git_index_path(index) else {
             throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
         }
         indexPath = String(cString: rawPath)
         lockPath = indexPath + ".lock"
-        descriptor = lockPath.withCString {
-            Darwin.open($0, O_WRONLY | O_CREAT | O_EXCL, mode_t(0o666))
+        descriptor = -1
+        let deadline = ProcessInfo.processInfo.systemUptime + waitTimeout
+        while true {
+            try cancellationSignal?.checkCancellation()
+            descriptor = lockPath.withCString {
+                Darwin.open($0, O_WRONLY | O_CREAT | O_EXCL, mode_t(0o666))
+            }
+            if descriptor >= 0 {
+                ownsLock = true
+                return
+            }
+            // Only explicit discard operations wait. Never remove an existing
+            // lock: it may belong to another app, even if it looks abandoned.
+            guard errno == EEXIST, waitTimeout > 0 else {
+                throw LocalGitError.commitFailed(
+                    String(localized: "Could not stage all local file changes before push.")
+                )
+            }
+            let remaining = deadline - ProcessInfo.processInfo.systemUptime
+            guard remaining > 0 else { throw LocalGitError.indexLocked }
+            Thread.sleep(forTimeInterval: min(0.05, remaining))
         }
-        guard descriptor >= 0 else {
-            throw LocalGitError.commitFailed(
-                String(localized: "Could not stage all local file changes before push.")
-            )
-        }
-        ownsLock = true
     }
 
     deinit { release() }
@@ -3344,154 +3364,132 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func discardChanges(path: String) async throws {
-        let repoPath = self.localURL.path
-        let fullPath = self.localURL.appendingPathComponent(path).path
-
-        try await Task.detached {
-            var repo: OpaquePointer?
-            defer { if let repo { git_repository_free(repo) } }
-            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
-
-            var index: OpaquePointer?
-            defer { if let index { git_index_free(index) } }
-            try git2Check(git_repository_index(&index, repo), context: "Get index")
-
-            // Check whether the file is tracked (has an index entry or exists in HEAD)
-            let existsInIndex = path.withCString { cPath in
-                git_index_get_bypath(index, cPath, 0) != nil
-            }
-
-            // Also check if file exists in HEAD tree (covers staged-new files)
-            var headRef: OpaquePointer?
-            defer { if let headRef { git_reference_free(headRef) } }
-            let hasHead = git_repository_head(&headRef, repo) == 0
-
-            var existsInHead = false
-            if hasHead, let oid = git_reference_target(headRef) {
-                var commit: OpaquePointer?
-                defer { if let commit { git_commit_free(commit) } }
-                var oidCopy = oid.pointee
-                if git_commit_lookup(&commit, repo, &oidCopy) == 0 {
-                    var tree: OpaquePointer?
-                    defer { if let tree { git_tree_free(tree) } }
-                    if git_commit_tree(&tree, commit) == 0 {
-                        var entry: OpaquePointer?
-                        existsInHead = path.withCString { cPath in
-                            git_tree_entry_bypath(&entry, tree, cPath) == 0
-                        }
-                        if let entry { git_tree_entry_free(entry) }
-                    }
-                }
-            }
-
-            if !existsInIndex && !existsInHead {
-                // Purely untracked file — remove from disk
-                try FileManager.default.removeItem(atPath: fullPath)
-                return
-            }
-
-            let cString = strdup(path)!
-            let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
-            defer {
-                free(cString)
-                storage.deallocate()
-            }
-
-            var pathspec = git_strarray()
-            makeStrarray(cString, into: &pathspec, storage: storage)
-
-            // Unstage: reset index entry to HEAD so staged changes are cleared
-            if hasHead {
-                var headObject: OpaquePointer?
-                defer { if let headObject { git_object_free(headObject) } }
-                if let headOID = git_reference_target(headRef) {
-                    try git2Check(
-                        git_object_lookup(&headObject, repo, headOID, GIT_OBJECT_ANY),
-                        context: "Lookup HEAD for reset"
-                    )
-                }
-                try git2Check(
-                    git_reset_default(repo, headObject, &pathspec),
-                    context: "Unstage \(path)"
-                )
-            } else {
-                // No HEAD (unborn branch) — remove from index directly
-                try git2Check(
-                    git_index_remove_bypath(index, cString),
-                    context: "Remove from index \(path)"
-                )
-                try git2Check(git_index_write(index), context: "Write index")
-            }
-
-            // Restore working tree to HEAD
-            if existsInHead {
-                var opts = git_checkout_options()
-                git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
-                opts.checkout_strategy = UInt32(GIT_CHECKOUT_FORCE.rawValue)
-                opts.paths = pathspec
-
-                try git2Check(
-                    git_checkout_head(repo, &opts),
-                    context: "Discard changes in \(path)"
-                )
-            } else {
-                // File doesn't exist in HEAD (was newly added) — remove from disk
-                try? FileManager.default.removeItem(atPath: fullPath)
-            }
-        }.value
+        try await performDiscardChanges(path: path)
     }
 
     func discardAllChanges() async throws {
-        let repoPath = self.localURL.path
+        try await performDiscardChanges(path: nil)
+    }
 
-        try await Task.detached {
-            var repo: OpaquePointer?
-            defer { if let repo { git_repository_free(repo) } }
-            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+    private func performDiscardChanges(path: String?) async throws {
+        let localURL = self.localURL
+        let cancellationSignal = LocalGitCancellationSignal()
+        try await withTaskCancellationHandler {
+            try await Task.detached {
+                try cancellationSignal.checkCancellation()
+                var repo: OpaquePointer?
+                defer { if let repo { git_repository_free(repo) } }
+                try git2Check(git_repository_open(&repo, localURL.path), context: "Open repo")
 
-            var headRef: OpaquePointer?
-            defer { if let headRef { git_reference_free(headRef) } }
-            let headCode = git_repository_head(&headRef, repo)
-
-            // Unborn branch (no HEAD yet): nothing to revert to. Clear the
-            // index and remove any remaining untracked files.
-            if headCode == GIT_EUNBORNBRANCH.rawValue || headCode == GIT_ENOTFOUND.rawValue {
                 var index: OpaquePointer?
                 defer { if let index { git_index_free(index) } }
                 try git2Check(git_repository_index(&index, repo), context: "Get index")
-                try git2Check(git_index_clear(index), context: "Clear index")
-                try git2Check(git_index_write(index), context: "Write index")
-                return
-            }
-            try git2Check(headCode, context: "Read HEAD for discard all")
 
-            guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for discard all"))
-            }
+                // git_reset(HARD) checks the index lock only after touching the
+                // worktree. Acquire it first and wait briefly for another Git
+                // client, without ever deleting that client's lock.
+                let indexLock = try GitIndexFileLock(
+                    index: index, waitTimeout: 2, cancellationSignal: cancellationSignal
+                )
+                defer { indexLock.release() }
+                try cancellationSignal.checkCancellation()
+                try git2Check(git_index_read(index, 1), context: "Refresh index for discard")
 
-            var headCommit: OpaquePointer?
-            defer { if let headCommit { git_commit_free(headCommit) } }
-            var headOidCopy = headOid.pointee
-            try git2Check(
-                git_commit_lookup(&headCommit, repo, &headOidCopy),
-                context: "Lookup HEAD commit for discard all"
-            )
+                var headRef: OpaquePointer?
+                defer { if let headRef { git_reference_free(headRef) } }
+                var headCommit: OpaquePointer?
+                defer { if let headCommit { git_commit_free(headCommit) } }
+                var headTree: OpaquePointer?
+                defer { if let headTree { git_tree_free(headTree) } }
+                let headCode = git_repository_head(&headRef, repo)
+                if headCode == 0 {
+                    guard let headOID = git_reference_target(headRef) else {
+                        throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for discard all"))
+                    }
+                    var oid = headOID.pointee
+                    try git2Check(git_commit_lookup(&headCommit, repo, &oid), context: "Lookup HEAD for discard")
+                    try git2Check(git_commit_tree(&headTree, headCommit), context: "Read HEAD tree for discard")
+                } else if headCode != GIT_EUNBORNBRANCH.rawValue && headCode != GIT_ENOTFOUND.rawValue {
+                    try git2Check(headCode, context: "Read HEAD for discard")
+                }
 
-            var opts = git_checkout_options()
-            git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
-            opts.checkout_strategy = UInt32(GIT_CHECKOUT_FORCE.rawValue) |
-                                     UInt32(GIT_CHECKOUT_REMOVE_UNTRACKED.rawValue)
+                var opts = git_checkout_options()
+                git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
+                // The guarded index is refreshed above. Checkout may update its
+                // in-memory entries, but must not re-lock/write the shared index.
+                opts.checkout_strategy = GIT_CHECKOUT_FORCE.rawValue |
+                    GIT_CHECKOUT_NO_REFRESH.rawValue | GIT_CHECKOUT_DONT_WRITE_INDEX.rawValue |
+                    GIT_CHECKOUT_DISABLE_PATHSPEC_MATCH.rawValue
 
-            // HARD reset resets the index to HEAD's tree in addition to
-            // overwriting the working tree. `git_checkout_head` alone leaves
-            // stale index state behind when both the index and the worktree
-            // are dirty, so the file-level revert path already works around
-            // this by unstaging explicitly before the checkout.
-            try git2Check(
-                git_reset(repo, headCommit, GIT_RESET_HARD, &opts),
-                context: "Hard reset to HEAD"
-            )
-        }.value
+                if let path {
+                    var headEntry: OpaquePointer?
+                    defer { if let headEntry { git_tree_entry_free(headEntry) } }
+                    if let headTree {
+                        let code = path.withCString { git_tree_entry_bypath(&headEntry, headTree, $0) }
+                        if code != GIT_ENOTFOUND.rawValue {
+                            try git2Check(code, context: "Find HEAD entry for \(path)")
+                        }
+                    }
+                    try path.withCString { cPath in
+                        if let headEntry, let oid = git_tree_entry_id(headEntry) {
+                            var entry = git_index_entry()
+                            entry.path = cPath
+                            entry.id = oid.pointee
+                            entry.mode = git_tree_entry_filemode(headEntry).rawValue
+                            try git2Check(git_index_add(index, &entry), context: "Restore index entry for \(path)")
+                        } else {
+                            let code = git_index_remove_bypath(index, cPath)
+                            if code != GIT_ENOTFOUND.rawValue {
+                                try git2Check(code, context: "Remove index entry for \(path)")
+                            }
+                        }
+                    }
+                    // Serialize before touching files so a preparation failure
+                    // leaves both the shared index and the worktree unchanged.
+                    try indexLock.prepare(index: index)
+                    try cancellationSignal.checkCancellation()
+                    if headEntry != nil {
+                        let cString = strdup(path)!
+                        let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
+                        defer { free(cString); storage.deallocate() }
+                        makeStrarray(cString, into: &opts.paths, storage: storage)
+                        try git2Check(git_checkout_tree(repo, headTree, &opts), context: "Discard changes in \(path)")
+                    } else {
+                        let fileURL = localURL.appendingPathComponent(path)
+                        if FileManager.default.fileExists(atPath: fileURL.path) {
+                            try FileManager.default.removeItem(at: fileURL)
+                        }
+                    }
+                    try indexLock.commitPreparedIndex()
+                } else {
+                    var targetIndex: OpaquePointer?
+                    defer { if let targetIndex { git_index_free(targetIndex) } }
+                    try git2Check(git_index_new(&targetIndex), context: "Create discard index")
+                    try git2Check(git_index_set_version(targetIndex, git_index_version(index)), context: "Preserve index version")
+                    let capabilities = git_index_caps(index)
+                    if capabilities >= 0 {
+                        try git2Check(git_index_set_caps(targetIndex, capabilities), context: "Preserve index capabilities")
+                    }
+                    if let headTree {
+                        try git2Check(git_index_read_tree(targetIndex, headTree), context: "Restore index to HEAD")
+                    }
+                    try indexLock.prepare(index: targetIndex)
+                    try cancellationSignal.checkCancellation()
+                    if let headTree {
+                        opts.checkout_strategy |= GIT_CHECKOUT_REMOVE_UNTRACKED.rawValue
+                        try git2Check(git_checkout_tree(repo, headTree, &opts), context: "Discard all changes")
+                    }
+                    // On an unborn branch, preserve the existing behavior:
+                    // clear staging, since there is no committed tree to restore.
+                    try indexLock.commitPreparedIndex()
+                    if headTree != nil {
+                        try git2Check(git_repository_state_cleanup(repo), context: "Clean up discarded Git operation")
+                    }
+                }
+            }.value
+        } onCancel: {
+            cancellationSignal.cancel()
+        }
     }
 
     // MARK: - Stash
