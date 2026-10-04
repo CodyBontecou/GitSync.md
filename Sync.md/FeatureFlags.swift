@@ -14,5 +14,5 @@ enum FeatureFlags {
     /// Background Sync is part of the paid-up-front app — there is no
     /// subscription tier. Because this is a compile-time constant, Swift
     /// dead-code eliminates the disabled branches from Release builds.
-    static let gitSyncAssistEnabled = true
+    static let gitSyncAssistEnabled = false
 }
