@@ -843,7 +843,7 @@ final class SyncMDTests: XCTestCase {
         state.repos = [repo]
         var cancellationRequested = false
         state.assistRepositoryRemovalHandler = { _ in cancellationRequested = true }
-        let vaultURL = state.vaultURL(for: repo.id)
+        let vaultURL = try XCTUnwrap(state.vaultURL(for: repo.id))
         try FileManager.default.createDirectory(at: vaultURL, withIntermediateDirectories: true)
         try Data("keep until lease releases".utf8).write(to: vaultURL.appendingPathComponent("Note.md"))
         let gate = AsyncGate()
@@ -1344,6 +1344,173 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(subtitle.contains("Optional"))
     }
 
+    @MainActor
+    private func bookmarkRecoveryFixture() throws -> (root: URL, grant: URL, file: URL, repo: RepoConfig, git: FakeGitRepository) {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("bookmark-recovery-\(UUID())", isDirectory: true)
+        let grant = root.appendingPathComponent("grant", isDirectory: true)
+        let workingCopy = grant.appendingPathComponent("projects/notes", isDirectory: true)
+        try FileManager.default.createDirectory(at: workingCopy.appendingPathComponent(".git"), withIntermediateDirectories: true)
+        try "[remote \"origin\"]\n\turl = https://github.com/owner/notes.git\n".write(
+            to: workingCopy.appendingPathComponent(".git/config"), atomically: true, encoding: .utf8)
+        try Data("local edits must survive".utf8).write(to: workingCopy.appendingPathComponent("Note.md"))
+        let repo = RepoConfig(
+            repoURL: "https://github.com/owner/notes.git", branch: "main", authorName: "Test", authorEmail: "test@example.com",
+            vaultFolderName: "notes", customVaultBookmarkData: Data("invalid bookmark".utf8),
+            customVaultRelativePath: "projects/notes", authMethod: GitAuthMethod.none,
+            gitState: GitState(commitSHA: "aaaa", treeSHA: "tree", branch: "main", blobSHAs: ["Note.md": "blob"], lastSyncDate: .distantPast))
+        let file = root.appendingPathComponent("repos.json")
+        try RepoPersistenceStore().replaceAll([repo], at: file)
+        return (root, grant, file, repo, FakeGitRepository(repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: "aaaa", changeCount: 0)))
+    }
+
+    @MainActor
+    func testInvalidExternalBookmarkRelaunchDoesNotFallbackOrClearClone() async throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        var factoryCalls = 0
+        let state = AppState(gitRepositoryFactory: { _ in factoryCalls += 1; return f.git }, reposFileURL: f.file)
+        XCTAssertEqual(state.vaultAccessErrors[f.repo.id], .unresolvedBookmark)
+        XCTAssertNil(state.vaultURL(for: f.repo.id))
+        XCTAssertTrue(state.isUsingCustomLocation(for: f.repo.id))
+        state.validateClonedRepos()
+        state.detectChanges(repoID: f.repo.id)
+        guard case .unavailable = await state.pullOnly(repoID: f.repo.id, showsProgressDelay: false) else {
+            return XCTFail("Pull must report unavailable access, not a deleted clone")
+        }
+        XCTAssertThrowsError(try state.serializedRepository(repoID: f.repo.id))
+        XCTAssertEqual(factoryCalls, 0)
+        XCTAssertEqual(state.repo(id: f.repo.id)?.gitState, f.repo.gitState)
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: f.file).first, f.repo)
+    }
+
+    @MainActor
+    func testDeniedExternalBookmarkDoesNotCacheURLOrRenewStaleData() async throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        var renewals = 0
+        let access = AppState.VaultBookmarkAccess(resolve: { _ in (f.grant, true) }, start: { _ in false }, stop: { _ in XCTFail("Denied scope must not be stopped") }, create: { _ in renewals += 1; return Data() })
+        let state = AppState(gitRepositoryFactory: { _ in XCTFail("Denied access must not construct Git service"); return f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        XCTAssertEqual(state.vaultAccessErrors[f.repo.id], .deniedScope)
+        XCTAssertNil(state.vaultURL(for: f.repo.id))
+        guard case .unavailable = await state.pullOnly(repoID: f.repo.id, showsProgressDelay: false) else { return XCTFail("Expected unavailable") }
+        XCTAssertEqual(renewals, 0)
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: f.file).first, f.repo)
+    }
+
+    @MainActor
+    func testStaleExternalBookmarkRenewsOnlyAfterScopeAcquisition() throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        var started = false
+        let refreshed = Data("refreshed".utf8)
+        let access = AppState.VaultBookmarkAccess(resolve: { _ in (f.grant, true) }, start: { _ in started = true; return true }, stop: { _ in }, create: { _ in XCTAssertTrue(started); return refreshed })
+        let state = AppState(gitRepositoryFactory: { _ in f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        XCTAssertEqual(state.vaultURL(for: f.repo.id), f.grant.appendingPathComponent("projects/notes", isDirectory: true))
+        XCTAssertNil(state.vaultAccessErrors[f.repo.id])
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: f.file).first?.customVaultBookmarkData, refreshed)
+        XCTAssertEqual(state.repo(id: f.repo.id)?.gitState, f.repo.gitState)
+    }
+
+    @MainActor
+    func testStaleBookmarkRenewalFailurePreservesOriginalAndAllowsPull() async throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        let access = AppState.VaultBookmarkAccess(resolve: { _ in (f.grant, true) }, start: { _ in true }, stop: { _ in }, create: { _ in throw AppState.VaultAccessError.deniedScope })
+        let state = AppState(gitRepositoryFactory: { _ in f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        guard case .upToDate = await state.pullOnly(repoID: f.repo.id, showsProgressDelay: false) else { return XCTFail("Resolved stale bookmark still grants access") }
+        XCTAssertEqual(f.git.executePullOnlyCallCount, 1)
+        XCTAssertEqual(state.repo(id: f.repo.id)?.customVaultBookmarkData, f.repo.customVaultBookmarkData)
+    }
+
+    @MainActor
+    func testExternalMissingGitMarkerPreservesClonedMetadata() throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        f.git.hasGitDirectoryValue = false
+        let access = AppState.VaultBookmarkAccess(resolve: { _ in (f.grant, false) }, start: { _ in true }, stop: { _ in })
+        let state = AppState(gitRepositoryFactory: { _ in f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        XCTAssertEqual(state.vaultAccessErrors[f.repo.id], .unavailableFolder)
+        XCTAssertNil(state.vaultURL(for: f.repo.id))
+        state.detectChanges(repoID: f.repo.id)
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: f.file).first, f.repo)
+    }
+
+    @MainActor
+    func testReauthorizationThenRelaunchPullPreservesFilesAndGrantRelativePath() async throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        let workingCopy = f.grant.appendingPathComponent("projects/notes", isDirectory: true)
+        let note = workingCopy.appendingPathComponent("Note.md")
+        let bytes = try Data(contentsOf: note)
+        let renewed = Data("renewed".utf8)
+        var stops = 0
+        let access = AppState.VaultBookmarkAccess(resolve: { data in
+            guard data == renewed else { throw AppState.VaultAccessError.unresolvedBookmark }
+            return (f.grant, false)
+        }, start: { _ in true }, stop: { _ in stops += 1 }, create: { _ in renewed })
+        let state = AppState(gitRepositoryFactory: { url in XCTAssertEqual(url, workingCopy); return f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        // Picking the working copy instead of the original grant root is rejected.
+        XCTAssertThrowsError(try state.reauthorizeVaultLocation(workingCopy, for: f.repo.id))
+        XCTAssertEqual(stops, 1)
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: f.file).first, f.repo)
+        try state.reauthorizeVaultLocation(f.grant, for: f.repo.id)
+        XCTAssertNil(state.vaultAccessErrors[f.repo.id])
+        XCTAssertEqual(state.repo(id: f.repo.id)?.gitState, f.repo.gitState)
+        XCTAssertEqual(state.repo(id: f.repo.id)?.customVaultRelativePath, "projects/notes")
+        let relaunched = AppState(gitRepositoryFactory: { url in XCTAssertEqual(url, workingCopy); return f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        guard case .upToDate = await relaunched.pullOnly(repoID: f.repo.id, showsProgressDelay: false) else { return XCTFail("Expected successful pull after relaunch") }
+        XCTAssertEqual(f.git.executePullOnlyCallCount, 1)
+        XCTAssertTrue(f.git.cloneRemoteURLs.isEmpty)
+        XCTAssertEqual(try Data(contentsOf: note), bytes)
+        XCTAssertEqual(relaunched.repo(id: f.repo.id)?.gitState, f.repo.gitState)
+    }
+
+    @MainActor
+    func testReauthorizationSupportsDirectParentAndEmptyRelativePathBookmarks() throws {
+        for mode in 0..<3 {
+            let f = try bookmarkRecoveryFixture()
+            defer { try? FileManager.default.removeItem(at: f.root) }
+            let workingCopy = f.grant.appendingPathComponent("projects/notes", isDirectory: true)
+            var config = f.repo
+            config.customVaultRelativePath = mode == 2 ? "" : nil
+            config.customLocationIsParent = mode == 1
+            try RepoPersistenceStore().replaceAll([config], at: f.file)
+            let selected = mode == 1 ? workingCopy.deletingLastPathComponent() : workingCopy
+            let access = AppState.VaultBookmarkAccess(resolve: { _ in throw AppState.VaultAccessError.unresolvedBookmark }, start: { _ in true }, stop: { _ in }, create: { _ in Data("new".utf8) })
+            let state = AppState(gitRepositoryFactory: { url in XCTAssertEqual(url, workingCopy); return f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+            // A .git file is also a valid marker; no remote lookup or rewrite is needed.
+            if mode == 2 {
+                try FileManager.default.removeItem(at: workingCopy.appendingPathComponent(".git"))
+                try Data("gitdir: ../metadata".utf8).write(to: workingCopy.appendingPathComponent(".git"))
+            }
+            try state.reauthorizeVaultLocation(selected, for: config.id)
+            XCTAssertEqual(state.vaultURL(for: config.id), workingCopy)
+            XCTAssertEqual(state.repo(id: config.id)?.customLocationIsParent, config.customLocationIsParent)
+            XCTAssertEqual(state.repo(id: config.id)?.customVaultRelativePath, config.customVaultRelativePath)
+            XCTAssertEqual(state.repo(id: config.id)?.gitState, config.gitState)
+        }
+    }
+
+    @MainActor
+    func testFailedReauthorizationPreservesOldScopeBookmarkAndFiles() throws {
+        let f = try bookmarkRecoveryFixture()
+        defer { try? FileManager.default.removeItem(at: f.root) }
+        var grantAllowed = true
+        var stops = 0
+        let access = AppState.VaultBookmarkAccess(resolve: { _ in (f.grant, false) }, start: { _ in grantAllowed }, stop: { _ in stops += 1 }, create: { _ in throw AppState.VaultAccessError.deniedScope })
+        let state = AppState(gitRepositoryFactory: { _ in f.git }, reposFileURL: f.file, vaultBookmarkAccess: access)
+        let originalURL = state.vaultURL(for: f.repo.id)
+        grantAllowed = false
+        XCTAssertThrowsError(try state.reauthorizeVaultLocation(f.grant, for: f.repo.id))
+        XCTAssertEqual(stops, 0, "Never stop a scope that was denied")
+        grantAllowed = true
+        XCTAssertThrowsError(try state.reauthorizeVaultLocation(f.grant, for: f.repo.id))
+        XCTAssertEqual(stops, 1, "Only the newly acquired scope should be released")
+        XCTAssertEqual(state.vaultURL(for: f.repo.id), originalURL)
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: f.file).first, f.repo)
+        XCTAssertEqual(try Data(contentsOf: f.grant.appendingPathComponent("projects/notes/Note.md")), Data("local edits must survive".utf8))
+    }
+
     func testRepoConfigLegacyDecodeDefaultsRelativePathNil() throws {
         let repo = RepoConfig(repoURL: "one/repo", branch: "main", authorName: "One", authorEmail: "one@example.com", vaultFolderName: "one")
         var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(repo)) as? [String: Any])
@@ -1433,7 +1600,7 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(added.isExternalLocalRepository)
         XCTAssertFalse(added.isGitSyncManagedStorage)
         XCTAssertEqual(
-            appState.vaultURL(for: added.id).standardizedFileURL.path,
+            appState.vaultURL(for: added.id)?.standardizedFileURL.path,
             repoURL.standardizedFileURL.path
         )
         XCTAssertTrue(appState.isRepoAlreadyTracked(atPath: repoURL.path))
@@ -1480,7 +1647,7 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(added.isGitSyncManagedStorage)
         XCTAssertFalse(added.isExternalLocalRepository)
         XCTAssertEqual(
-            appState.vaultURL(for: added.id).standardizedFileURL.path,
+            appState.vaultURL(for: added.id)?.standardizedFileURL.path,
             repoURL.standardizedFileURL.path
         )
     }
@@ -1528,7 +1695,7 @@ final class SyncMDTests: XCTestCase {
         let added = try XCTUnwrap(appState.repos.first)
         XCTAssertEqual(added.customVaultRelativePath, repoName)
         XCTAssertEqual(
-            AppState.canonicalFilePath(for: appState.vaultURL(for: added.id)),
+            AppState.canonicalFilePath(for: try XCTUnwrap(appState.vaultURL(for: added.id))),
             AppState.canonicalFilePath(for: repoURL)
         )
         XCTAssertTrue(appState.isRepoAlreadyTracked(atPath: aliasedRepoURL.path))

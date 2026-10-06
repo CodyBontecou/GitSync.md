@@ -35,11 +35,9 @@ struct FileBrowserView: View {
     @State private var showCreateFileAlert = false
     @State private var newFileName: String = ""
 
-    private var vaultURL: URL { state.vaultURL(for: repoID) }
-    private var currentURL: URL {
-        relativePath.isEmpty
-            ? vaultURL
-            : vaultURL.appendingPathComponent(relativePath)
+    private var currentURL: URL? {
+        guard let vaultURL = state.vaultURL(for: repoID) else { return nil }
+        return relativePath.isEmpty ? vaultURL : vaultURL.appendingPathComponent(relativePath)
     }
     private var statusEntries: [GitStatusEntry] {
         state.statusEntriesByRepo[repoID] ?? []
@@ -104,7 +102,7 @@ struct FileBrowserView: View {
         } message: {
             Text("Enter a name for the new file in \"\(navTitle)\"")
         }
-        .task(id: currentURL.standardizedFileURL.path) {
+        .task(id: currentURL?.standardizedFileURL.path) {
             loadItems()
         }
     }
@@ -269,6 +267,11 @@ struct FileBrowserView: View {
     }
 
     private func loadItems() {
+        guard let currentURL else {
+            items = []
+            loadErrorMessage = AppState.VaultAccessError.unavailableFolder.localizedDescription
+            return
+        }
         do {
             items = try Self.listContents(of: currentURL, parentRelativePath: relativePath)
             loadErrorMessage = nil
@@ -359,7 +362,8 @@ struct FileBrowserView: View {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         renameItem = nil
         newName = ""
-        guard !trimmed.isEmpty, trimmed != item.name else { return }
+        guard state.vaultURLForOperation(for: repoID) != nil,
+              !trimmed.isEmpty, trimmed != item.name else { return }
         let dest = item.url.deletingLastPathComponent().appendingPathComponent(trimmed)
         try? FileManager.default.moveItem(at: item.url, to: dest)
         loadItems()
@@ -370,7 +374,8 @@ struct FileBrowserView: View {
     private func performCreateFile() {
         let trimmed = newFileName.trimmingCharacters(in: .whitespacesAndNewlines)
         newFileName = ""
-        guard !trimmed.isEmpty else { return }
+        guard !trimmed.isEmpty, let currentURL,
+              state.vaultURLForOperation(for: repoID) != nil else { return }
         let dest = currentURL.appendingPathComponent(trimmed)
         guard !FileManager.default.fileExists(atPath: dest.path) else { return }
         FileManager.default.createFile(atPath: dest.path, contents: nil)
