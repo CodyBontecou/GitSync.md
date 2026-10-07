@@ -558,6 +558,7 @@ final class SyncMDTests: XCTestCase {
 
         for additionalAttention in [
             PullPostUpdateAttention.lfsHydrationFailed(message: "quota"),
+            .checkoutIncomplete(message: "Note.md changed during checkout"),
             .lfsAuthenticationOrTrustRequired(message: "trust required"),
             .cancelledAfterUpdate,
         ] {
@@ -605,7 +606,71 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(persistedSHA, newCommit)
         XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, newCommit)
         XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .lfsHydrationBlocked)
+        XCTAssertEqual(state.syncProgress, String(localized: "Pull updated Git, but Git LFS needs attention"))
+        XCTAssertEqual(
+            state.pullOutcomeByRepo[fixture.repoConfig.id]?.message,
+            PullPostUpdateAttention.lfsHydrationBlockedByLocalChanges(path: "Manual.pdf").localizedDescription
+        )
         XCTAssertFalse(result.completedWithoutAttention)
+    }
+
+    @MainActor
+    func testAppStateIncompleteMarkdownCheckoutUsesCheckoutAttentionAndRetainsCompletedWork() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let newCommit = "efefefefefefefefefefefefefefefefefefefef"
+        let attention = PullPostUpdateAttention.checkoutIncomplete(message: "Inbox.md changed during checkout")
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .fastForward,
+            branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+            remoteCommitSHA: newCommit,
+            hasLocalChanges: false,
+            aheadBy: 0,
+            behindBy: 1
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(
+            updated: true,
+            newCommitSHA: newCommit,
+            attention: attention
+        ))
+        // This fixture contains ordinary Markdown and no LFS attributes. The
+        // native final-checkout-write test covers the underlying SAFE checkout;
+        // here we inject its result to exercise the foreground presentation seam.
+        let noteURL = fixture.rootURL.appendingPathComponent("Inbox.md")
+        try "concurrent local edit\n".write(to: noteURL, atomically: true, encoding: .utf8)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.rootURL.appendingPathComponent(".gitattributes").path))
+        let reposURL = fixture.rootURL.appendingPathComponent("repos.json")
+        let state = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: reposURL,
+            loadPersistedState: false
+        )
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+
+        XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: newCommit, attention: attention))
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, newCommit)
+        let persistedRepo = try XCTUnwrap(RepoPersistenceStore.shared.loadStrict(from: reposURL).first)
+        XCTAssertEqual(persistedRepo.gitState.commitSHA, newCommit)
+        XCTAssertEqual(persistedRepo.gitState.lastSyncDate, fixture.repoConfig.gitState.lastSyncDate)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .checkoutIncomplete)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.message, attention.localizedDescription)
+        XCTAssertEqual(state.syncProgress, String(localized: "Pull updated Git, but working tree checkout needs attention"))
+        XCTAssertFalse(result.completedWithoutAttention)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+        XCTAssertEqual(try String(contentsOf: noteURL, encoding: .utf8), "concurrent local edit\n")
+        let callback = CallbackURLHandler.mapPullResult(result)
+        XCTAssertEqual(callback.params, ["sha": newCommit, "updated": "true"])
+        XCTAssertEqual(callback.errorMessage, attention.localizedDescription)
+
+        // Legacy foreground callers still treat post-update attention as a
+        // completed classification, rather than losing the advanced SHA.
+        let completed = await state.pull(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        XCTAssertTrue(completed)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .checkoutIncomplete)
     }
 
     @MainActor
