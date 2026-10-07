@@ -10,6 +10,7 @@ struct AppSettingsView: View {
     @State private var showMailCompose = false
     @State private var showOnboarding = false
     @State private var showPremiumSettings = false
+    @State private var showRemoveGitTracking = false
     @ObservedObject private var pushSyncStatusObject = PushSyncManager.shared
 
     var body: some View {
@@ -153,6 +154,17 @@ struct AppSettingsView: View {
                             }
                         }
 
+                        settingsSection(title: String(localized: "Folder Tools")) {
+                            actionRow(
+                                icon: "📁",
+                                title: String(localized: "Remove Git Tracking"),
+                                subtitle: String(localized: "Keep your files, with an optional history backup")
+                            ) {
+                                showRemoveGitTracking = true
+                            }
+                            .accessibilityIdentifier("appSettings.removeGitTracking")
+                        }
+
                         // Optional subscription. Existing manual Git, Shortcuts,
                         // callbacks, and local repository features remain available.
                         // Hidden behind the legacy gitSyncAssistEnabled feature flag until the
@@ -274,6 +286,7 @@ struct AppSettingsView: View {
             }
             .sheet(isPresented: $showMailCompose) { MailComposeView() }
             .sheet(isPresented: $showPremiumSettings) { PremiumSettingsView() }
+            .sheet(isPresented: $showRemoveGitTracking) { RemoveGitTrackingView() }
             .fullScreenCover(isPresented: $showOnboarding) { OnboardingView(isReplay: true) }
             .fileImporter(
                 isPresented: $showFolderPicker,

@@ -10490,3 +10490,515 @@ private final class SerializationProbeRepository: GitRepositoryProtocol, @unchec
     func commitDetail(oid: String) async throws -> GitCommitDetail { fatalError() }
     func repoInfo() async throws -> LocalRepoInfo { fatalError() }
 }
+
+
+final class GitTrackingRemovalAppStateTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        _ = git_libgit2_init()
+    }
+
+    @MainActor
+    func testDetachingUnregistersOnlySelectedRootAndPreservesNestedRepository() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        state.changeCounts[fixture.rootConfig.id] = 7
+        state.changeCounts[fixture.nestedConfig.id] = 3
+        let staleState = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let result = try await state.removeGitTracking(plan, backupDirectory: fixture.backups)
+
+        XCTAssertEqual(state.repos.map(\.id), [fixture.nestedConfig.id])
+        XCTAssertEqual(try fixture.store.loadStrict(from: fixture.settings).map(\.id), [fixture.nestedConfig.id])
+        XCTAssertNil(state.changeCounts[fixture.rootConfig.id])
+        XCTAssertEqual(state.changeCounts[fixture.nestedConfig.id], 3)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent("nested/.git").path))
+        let backupURL = try XCTUnwrap(result.backupURL)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: backupURL.appendingPathComponent("original-git-metadata").path))
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+
+        // A second AppState retaining the deleted config cannot clone over notes.
+        await staleState.clone(repoID: fixture.rootConfig.id)
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+    }
+
+    @MainActor
+    func testBackupFailureRestoresRegistrationAndRetainsSource() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        do {
+            _ = try await state.removeGitTracking(plan, backupDirectory: fixture.source)
+            XCTFail("A backup inside the source must fail")
+        } catch GitTrackingRemovalError.backupInsideRepository {}
+        XCTAssertEqual(Set(state.repos.map(\.id)), [fixture.rootConfig.id, fixture.nestedConfig.id])
+        XCTAssertEqual(Set(try fixture.store.loadStrict(from: fixture.settings).map(\.id)), [fixture.rootConfig.id, fixture.nestedConfig.id])
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+    }
+
+    @MainActor
+    func testUnreadableRepositorySettingsPreventAnyMetadataMove() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        try Data("malformed settings".utf8).write(to: fixture.settings)
+        do {
+            _ = try await state.removeGitTracking(plan, backupDirectory: fixture.backups)
+            XCTFail("Settings errors must fail before metadata moves")
+        } catch is RepoPersistenceStore.StoreError {}
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: fixture.backups.path), [])
+        XCTAssertEqual(state.repos.map(\.id), [fixture.rootConfig.id, fixture.nestedConfig.id])
+    }
+
+    @MainActor
+    func testDemoAndActiveSyncCannotRemoveTracking() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        state.isDemoMode = true
+        do { _ = try await state.inspectGitTrackingRemoval(at: fixture.source); XCTFail("Demo must not inspect mutable folders") }
+        catch is GitTrackingRemovalError {}
+        state.isDemoMode = false
+        state.isSyncing = true
+        do { _ = try await state.inspectGitTrackingRemoval(at: fixture.source); XCTFail("Sync must finish first") }
+        catch is GitTrackingRemovalError {}
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+    }
+
+    @MainActor
+    func testWaitingRemovalProtectsOtherAppStatesCloneAndReleasesOnCancellation() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let otherState = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let gate = GitTrackingRemovalTestGate()
+        let lease = Task {
+            try await RepositoryOperationCoordinator.shared.withRepository(at: fixture.source) {
+                await gate.enterAndWait()
+            }
+        }
+        await gate.waitUntilEntered()
+        let removal = Task { try await state.removeGitTracking(plan, backupDirectory: fixture.backups) }
+        while !state.isRemovingGitTracking { await Task.yield() }
+        XCTAssertTrue(AppState.isGitTrackingRemovalInProgress(at: fixture.source.deletingLastPathComponent()))
+        XCTAssertTrue(AppState.isGitTrackingRemovalInProgress(at: fixture.source.appendingPathComponent("nested")))
+        await otherState.clone(repoID: fixture.rootConfig.id)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+        removal.cancel()
+        await gate.release()
+        _ = try await lease.value
+        do { _ = try await removal.value; XCTFail("Cancellation must stop a waiting removal") }
+        catch is CancellationError {}
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+        XCTAssertEqual(try fixture.store.loadStrict(from: fixture.settings).count, 2)
+    }
+
+    @MainActor
+    func testBackupDestinationResistsCloneAndQueuedDeletionUntilCancellationFinishes() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let backupConfig = RepoConfig(repoURL: "https://github.com/example/backups.git", branch: "main",
+            authorName: "Test", authorEmail: "test@example.com", vaultFolderName: "backups",
+            customVaultRelativePath: "\(fixture.base.lastPathComponent)/backups", authMethod: .none)
+        let backupNote = fixture.backups.appendingPathComponent("keep.txt")
+        try Data("Keep the backup folder\n".utf8).write(to: backupNote)
+        let copied = expectation(description: "Git metadata copied into backup destination")
+        let copyGate = DispatchSemaphore(value: 0)
+        let service = GitTrackingRemovalService(enforceLocalStorage: false, copyMetadata: { source, destination in
+            try FileManager.default.copyItem(at: source, to: destination)
+            copied.fulfill()
+            guard copyGate.wait(timeout: .now() + 10) == .success else {
+                throw GitTrackingRemovalError.operation("Timed out waiting for the backup test")
+            }
+        })
+        let state = AppState(repoPersistenceStore: fixture.store, reposFileURL: fixture.settings,
+            loadPersistedState: false, gitTrackingRemovalService: service)
+        state.repos = [fixture.rootConfig, fixture.nestedConfig]
+        let fake = FakeGitRepository(repoInfoResult: LocalRepoInfo(branch: "main", commitSHA: "existing", changeCount: 0))
+        let otherState = AppState(gitRepositoryFactory: { _ in fake }, repoPersistenceStore: fixture.store,
+            reposFileURL: fixture.settings, loadPersistedState: false)
+        // Simulate a second instance retaining a connection that was removed
+        // from the shared settings file. The destination is currently plain.
+        otherState.repos = [backupConfig]
+        var removalCallbackCount = 0
+        otherState.assistRepositoryRemovalHandler = { _ in removalCallbackCount += 1 }
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+
+        // A deletion that was queued before backup protection began must also
+        // recheck after acquiring its own working-copy lease.
+        let leaseGate = GitTrackingRemovalTestGate()
+        let backupLease = Task {
+            try await RepositoryOperationCoordinator.shared.withRepository(at: fixture.backups) {
+                await leaseGate.enterAndWait()
+            }
+        }
+        await leaseGate.waitUntilEntered()
+        let queuedDeletion = Task { await otherState.removeRepo(id: backupConfig.id, deleteLocalFiles: true) }
+        let deadline = Date().addingTimeInterval(2)
+        while await RepositoryOperationCoordinator.shared.queuedOperationCount(at: fixture.backups) == 0,
+              Date() < deadline { await Task.yield() }
+        let queuedCount = await RepositoryOperationCoordinator.shared.queuedOperationCount(at: fixture.backups)
+        XCTAssertGreaterThan(queuedCount, 0)
+        let removal = Task { try await state.removeGitTracking(plan, backupDirectory: fixture.backups) }
+        defer {
+            removal.cancel()
+            copyGate.signal()
+            Task { await leaseGate.release() }
+        }
+        await fulfillment(of: [copied], timeout: 2)
+        XCTAssertTrue(AppState.isGitTrackingRemovalInProgress(at: fixture.backups))
+        XCTAssertTrue(AppState.isGitTrackingRemovalInProgress(at: fixture.backups.appendingPathComponent("nested")))
+        await leaseGate.release()
+        try await backupLease.value
+        await queuedDeletion.value
+        XCTAssertNotNil(otherState.repo(id: backupConfig.id))
+
+        await otherState.clone(repoID: backupConfig.id)
+        let callbacksBeforeBlockedDeletion = removalCallbackCount
+        await otherState.removeRepo(id: backupConfig.id, deleteLocalFiles: true)
+        XCTAssertEqual(removalCallbackCount, callbacksBeforeBlockedDeletion,
+            "A newly blocked deletion must not mutate repository settings or cancellation state")
+        XCTAssertTrue(fake.cloneRemoteURLs.isEmpty)
+        XCTAssertNotNil(otherState.repo(id: backupConfig.id))
+        XCTAssertEqual(try Data(contentsOf: backupNote), Data("Keep the backup folder\n".utf8))
+        let backup = try XCTUnwrap(FileManager.default.contentsOfDirectory(at: fixture.backups,
+            includingPropertiesForKeys: nil).first { $0.lastPathComponent.hasPrefix("Git Backup ") })
+        XCTAssertTrue(FileManager.default.fileExists(atPath: backup.appendingPathComponent("git-metadata/HEAD").path))
+        XCTAssertFalse(try fixture.store.loadStrict(from: fixture.settings).contains { $0.id == backupConfig.id })
+
+        removal.cancel()
+        copyGate.signal()
+        do { _ = try await removal.value; XCTFail("Cancellation before moving must preserve original metadata") }
+        catch is CancellationError {}
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.backups))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertEqual(Set(try fixture.store.loadStrict(from: fixture.settings).map(\.id)),
+            [fixture.rootConfig.id, fixture.nestedConfig.id])
+    }
+
+    @MainActor
+    func testBackupCannotOverlapFreshPersistedWorkingCopiesBeforeAnyMutation() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        // Write after AppState creation to require its fresh strict-load check.
+        // These configs need not have a readable .git; their registered folder
+        // is enough to exclude a destination that GitSync may later mutate.
+        let registered = fixture.backups.appendingPathComponent("registered", isDirectory: true)
+        let ancestor = fixture.backups
+        let descendant = registered.appendingPathComponent("backups", isDirectory: true)
+        try FileManager.default.createDirectory(at: descendant, withIntermediateDirectories: true)
+        let otherConfig = RepoConfig(repoURL: "https://github.com/example/registered.git", branch: "main",
+            authorName: "Test", authorEmail: "test@example.com", vaultFolderName: "registered",
+            customVaultRelativePath: "\(fixture.base.lastPathComponent)/backups/registered", authMethod: .none)
+        try fixture.store.replaceAll([fixture.rootConfig, fixture.nestedConfig, otherConfig], at: fixture.settings)
+        let originalSettings = try Data(contentsOf: fixture.settings)
+        var cancellationCallbackCount = 0
+        state.assistRepositoryRemovalHandler = { _ in cancellationCallbackCount += 1 }
+        for destination in [registered, ancestor, descendant] {
+            do {
+                _ = try await state.removeGitTracking(plan, backupDirectory: destination)
+                XCTFail("A backup must not overlap another persisted working copy")
+            } catch GitTrackingRemovalError.backupInRepository {}
+            XCTAssertEqual(try Data(contentsOf: fixture.settings), originalSettings)
+            XCTAssertEqual(cancellationCallbackCount, 0)
+            XCTAssertFalse(state.isRemovingGitTracking)
+            XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: destination))
+            XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        }
+        let entries = try FileManager.default.subpathsOfDirectory(atPath: fixture.backups.path)
+        XCTAssertFalse(entries.contains { $0.contains("Git Backup ") })
+    }
+
+    @MainActor
+    func testFreshPersistedParentPreventsDetachingChildBeforeAnyMutation() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let parentConfig = RepoConfig(repoURL: "https://github.com/example/parent.git", branch: "main",
+            authorName: "Test", authorEmail: "test@example.com", vaultFolderName: fixture.base.lastPathComponent,
+            customVaultRelativePath: fixture.base.lastPathComponent, authMethod: .none)
+        try fixture.store.replaceAll([fixture.rootConfig, fixture.nestedConfig, parentConfig], at: fixture.settings)
+        let originalSettings = try Data(contentsOf: fixture.settings)
+        var cancellationCallbackCount = 0
+        state.assistRepositoryRemovalHandler = { _ in cancellationCallbackCount += 1 }
+        do {
+            _ = try await state.removeGitTracking(plan, backupDirectory: fixture.backups)
+            XCTFail("A newly registered parent must be handled before detaching its child")
+        } catch GitTrackingRemovalError.sourceInsideRepository {}
+        XCTAssertEqual(try Data(contentsOf: fixture.settings), originalSettings)
+        XCTAssertEqual(cancellationCallbackCount, 0)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: fixture.backups.path), [])
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.backups))
+    }
+
+    @MainActor
+    func testRemovalWithoutBackupUnregistersOnlySelectedRootAndItsAutomaticSyncEnrollment() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        var rootConfig = fixture.rootConfig
+        var nestedConfig = fixture.nestedConfig
+        rootConfig.assist.enabled = true
+        nestedConfig.assist.enabled = true
+        try fixture.store.replaceAll([rootConfig, nestedConfig], at: fixture.settings)
+        let state = fixture.makeState()
+        state.repos = [rootConfig, nestedConfig]
+        state.changeCounts[rootConfig.id] = 7
+        state.changeCounts[nestedConfig.id] = 3
+        var removedEnrollmentIDs: [UUID] = []
+        state.assistRepositoryRemovalHandler = { config in
+            if config.assist.enabled { removedEnrollmentIDs.append(config.id) }
+        }
+        let staleState = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+
+        let result = try await state.removeGitTrackingWithoutBackup(plan)
+
+        XCTAssertNil(result.backupURL)
+        XCTAssertEqual(state.repos.map(\.id), [nestedConfig.id])
+        XCTAssertEqual(try fixture.store.loadStrict(from: fixture.settings).map(\.id), [nestedConfig.id])
+        XCTAssertEqual(removedEnrollmentIDs, [rootConfig.id])
+        XCTAssertTrue(try XCTUnwrap(state.repo(id: nestedConfig.id)).assist.enabled)
+        XCTAssertNil(state.changeCounts[rootConfig.id])
+        XCTAssertEqual(state.changeCounts[nestedConfig.id], 3)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent("nested/.git").path))
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: fixture.backups.path), [])
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+
+        await staleState.clone(repoID: rootConfig.id)
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+    }
+
+    @MainActor
+    func testRemovalWithoutBackupCannotRunInDemoModeOrDuringSync() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let originalSettings = try Data(contentsOf: fixture.settings)
+        state.isDemoMode = true
+        do {
+            _ = try await state.removeGitTrackingWithoutBackup(plan)
+            XCTFail("Demo mode must reject removal without a backup")
+        } catch GitTrackingRemovalError.operation {}
+        state.isDemoMode = false
+        state.isSyncing = true
+        do {
+            _ = try await state.removeGitTrackingWithoutBackup(plan)
+            XCTFail("An active foreground sync must reject removal without a backup")
+        } catch GitTrackingRemovalError.operation {}
+        state.isSyncing = false
+        state.backgroundSyncDidBegin(repoID: fixture.rootConfig.id)
+        defer { state.backgroundSyncDidFinish(repoID: fixture.rootConfig.id) }
+        do {
+            _ = try await state.removeGitTrackingWithoutBackup(plan)
+            XCTFail("An active background sync must reject removal without a backup")
+        } catch GitTrackingRemovalError.operation {}
+        XCTAssertEqual(try Data(contentsOf: fixture.settings), originalSettings)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertFalse(state.isRemovingGitTracking)
+    }
+
+    @MainActor
+    func testRemovalWithoutBackupRechecksFreshPendingPublicationBeforeMutation() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let originalSettings = try Data(contentsOf: fixture.settings)
+        // The record appears after AppState and its review were created. A
+        // descendant workflow must protect the entire selected source too.
+        let pendingFolder = fixture.source.appendingPathComponent("nested", isDirectory: true)
+        let record = FolderPublicationRecord(bookmarkData: Data(), folderName: "nested",
+            folderPath: AppState.canonicalFilePath(for: pendingFolder), files: [])
+        let publicationStore = FolderPublicationStore(url: fixture.settings.deletingLastPathComponent()
+            .appendingPathComponent("folder-publications.json"))
+        try publicationStore.save(record)
+        var removalCallbacks = 0
+        state.assistRepositoryRemovalHandler = { _ in removalCallbacks += 1 }
+
+        do {
+            _ = try await state.removeGitTrackingWithoutBackup(plan)
+            XCTFail("Unfinished publication must prevent removing its parent Git tracking")
+        } catch FolderPublicationError.unavailable {}
+
+        XCTAssertEqual(try Data(contentsOf: fixture.settings), originalSettings)
+        XCTAssertEqual(removalCallbacks, 0)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+    }
+
+    @MainActor
+    func testRemovalWithoutBackupWaitsForSourceLeaseAndCancellationPreservesRegistration() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let otherState = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let gate = GitTrackingRemovalTestGate()
+        let lease = Task {
+            try await RepositoryOperationCoordinator.shared.withRepository(at: fixture.source) {
+                await gate.enterAndWait()
+            }
+        }
+        await gate.waitUntilEntered()
+        let removal = Task { try await state.removeGitTrackingWithoutBackup(plan) }
+        let deadline = Date().addingTimeInterval(2)
+        while !state.isRemovingGitTracking, Date() < deadline { await Task.yield() }
+        XCTAssertTrue(state.isRemovingGitTracking)
+        XCTAssertTrue(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+        await otherState.clone(repoID: fixture.rootConfig.id)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+
+        removal.cancel()
+        await gate.release()
+        try await lease.value
+        do {
+            _ = try await removal.value
+            XCTFail("Cancellation before acquiring the source lease must preserve tracking")
+        } catch is CancellationError {}
+        XCTAssertEqual(Set(try fixture.store.loadStrict(from: fixture.settings).map(\.id)),
+            [fixture.rootConfig.id, fixture.nestedConfig.id])
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+    }
+
+    @MainActor
+    func testRemovalWithoutBackupRestoresRegistrationWhenReviewedMetadataChanged() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let state = fixture.makeState()
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+        let changedFile = fixture.source.appendingPathComponent(".git/unreviewed")
+        try Data("Changed after review".utf8).write(to: changedFile)
+
+        do {
+            _ = try await state.removeGitTrackingWithoutBackup(plan)
+            XCTFail("Stale review must prevent irreversible deletion")
+        } catch GitTrackingRemovalError.sourceChanged {}
+
+        XCTAssertEqual(Set(state.repos.map(\.id)), [fixture.rootConfig.id, fixture.nestedConfig.id])
+        XCTAssertEqual(Set(try fixture.store.loadStrict(from: fixture.settings).map(\.id)),
+            [fixture.rootConfig.id, fixture.nestedConfig.id])
+        XCTAssertEqual(try Data(contentsOf: changedFile), Data("Changed after review".utf8))
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+    }
+
+    @MainActor
+    func testIncompleteMetadataDeletionKeepsDetachedRootUnregistered() async throws {
+        let fixture = try Fixture()
+        defer { fixture.cleanUp() }
+        let service = GitTrackingRemovalService(enforceLocalStorage: false, deleteMetadata: { _ in
+            throw GitTrackingRemovalError.operation("Injected cleanup failure")
+        })
+        let state = AppState(repoPersistenceStore: fixture.store, reposFileURL: fixture.settings,
+            loadPersistedState: false, gitTrackingRemovalService: service)
+        state.repos = [fixture.rootConfig, fixture.nestedConfig]
+        state.changeCounts[fixture.rootConfig.id] = 7
+        state.changeCounts[fixture.nestedConfig.id] = 3
+        var removalIDs: [UUID] = []
+        state.assistRepositoryRemovalHandler = { removalIDs.append($0.id) }
+        let plan = try await state.inspectGitTrackingRemoval(at: fixture.source)
+
+        do {
+            _ = try await state.removeGitTrackingWithoutBackup(plan)
+            XCTFail("Cleanup failure must be reported while leaving this root disconnected")
+        } catch GitTrackingRemovalError.metadataDeletionIncomplete(let metadataURL) {
+            XCTAssertTrue(FileManager.default.fileExists(atPath: metadataURL.appendingPathComponent("HEAD").path))
+        }
+
+        XCTAssertEqual(state.repos.map(\.id), [fixture.nestedConfig.id])
+        XCTAssertEqual(try fixture.store.loadStrict(from: fixture.settings).map(\.id), [fixture.nestedConfig.id])
+        XCTAssertEqual(removalIDs, [fixture.rootConfig.id])
+        XCTAssertNil(state.changeCounts[fixture.rootConfig.id])
+        XCTAssertEqual(state.changeCounts[fixture.nestedConfig.id], 3)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent(".git").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: fixture.source.appendingPathComponent("nested/.git").path))
+        XCTAssertEqual(try Data(contentsOf: fixture.source.appendingPathComponent("Note.md")), Data("Keep my note\n".utf8))
+        XCTAssertFalse(state.isRemovingGitTracking)
+        XCTAssertFalse(AppState.isGitTrackingRemovalInProgress(at: fixture.source))
+    }
+
+    @MainActor
+    private struct Fixture {
+        let base: URL
+        let source: URL
+        let backups: URL
+        let settings: URL
+        let rootConfig: RepoConfig
+        let nestedConfig: RepoConfig
+        let store = RepoPersistenceStore()
+
+        init() throws {
+            let documents = AppState.appDocumentsDirectory
+            let name = "git-tracking-state-tests-\(UUID().uuidString)"
+            base = documents.appendingPathComponent(name, isDirectory: true)
+            source = base.appendingPathComponent("source", isDirectory: true)
+            backups = base.appendingPathComponent("backups", isDirectory: true)
+            settings = base.appendingPathComponent("repos.json")
+            let nested = source.appendingPathComponent("nested", isDirectory: true)
+            for folder in [nested, backups] {
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            }
+            for root in [source, nested] {
+                var repository: OpaquePointer?
+                guard git_repository_init(&repository, root.path, 0) == 0 else { throw NSError(domain: "TestGit", code: 1) }
+                git_repository_free(repository)
+            }
+            try Data("Keep my note\n".utf8).write(to: source.appendingPathComponent("Note.md"))
+            rootConfig = RepoConfig(repoURL: "https://github.com/example/root.git", branch: "main", authorName: "Test", authorEmail: "test@example.com", vaultFolderName: "source", customVaultRelativePath: "\(name)/source", authMethod: .none)
+            nestedConfig = RepoConfig(repoURL: "https://github.com/example/nested.git", branch: "main", authorName: "Test", authorEmail: "test@example.com", vaultFolderName: "nested", customVaultRelativePath: "\(name)/source/nested", authMethod: .none)
+            try store.replaceAll([rootConfig, nestedConfig], at: settings)
+        }
+
+        func makeState() -> AppState {
+            let state = AppState(repoPersistenceStore: store, reposFileURL: settings, loadPersistedState: false)
+            state.repos = [rootConfig, nestedConfig]
+            return state
+        }
+
+        func cleanUp() { try? FileManager.default.removeItem(at: base) }
+    }
+}
+
+private actor GitTrackingRemovalTestGate {
+    private var entered = false
+    private var entryWaiters: [CheckedContinuation<Void, Never>] = []
+    private var blocked: CheckedContinuation<Void, Never>?
+
+    func enterAndWait() async {
+        entered = true
+        for waiter in entryWaiters { waiter.resume() }
+        entryWaiters.removeAll()
+        await withCheckedContinuation { blocked = $0 }
+    }
+    func waitUntilEntered() async {
+        if entered { return }
+        await withCheckedContinuation { entryWaiters.append($0) }
+    }
+    func release() { blocked?.resume(); blocked = nil }
+}

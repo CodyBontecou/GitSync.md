@@ -43,10 +43,60 @@ final class FolderPublicationCoordinator {
     /// Other import/discovery paths must not register intermediate metadata
     /// and make it eligible for ordinary automatic synchronization.
     func validateImportAvailability(at url: URL) throws {
+        guard !AppState.isGitTrackingRemovalInProgress(at: url) else { throw FolderPublicationError.busy }
         let path = Self.canonicalPath(url)
         let latest = try store.load()
         guard !latest.contains(where: { $0.folderPath == path && $0.phase != .completed }) else {
             throw FolderPublicationError.unavailable(String(localized: "This folder has unfinished publication progress. Resume it from Publish a Folder before adding it as a repository."))
+        }
+    }
+
+    /// Read the durable journal again: another coordinator may have started a
+    /// publication after this instance loaded its own cached records.
+    func validateGitTrackingRemovalAvailability(at url: URL) throws {
+        let path = Self.canonicalPath(url)
+        let latest = try store.load()
+        guard !latest.contains(where: { record in
+            guard record.phase != .completed else { return false }
+            var paths = [Self.canonicalPath(URL(fileURLWithPath: record.folderPath))]
+            // A bookmark can follow a moved folder even when the journal still
+            // has its earlier absolute path. Protect that saved workflow too.
+            var stale = false
+            if let resolved = try? URL(resolvingBookmarkData: record.bookmarkData,
+                options: [], relativeTo: nil, bookmarkDataIsStale: &stale) {
+                paths.append(Self.canonicalPath(resolved))
+            }
+            return paths.contains { savedPath in
+                savedPath == path || savedPath.hasPrefix(path + "/") || path.hasPrefix(savedPath + "/")
+            }
+        }) else {
+            throw FolderPublicationError.unavailable(String(localized: "This folder overlaps unfinished publication progress. Finish that publication before removing Git tracking."))
+        }
+    }
+
+    /// Hold the same guard used by preparation, publication, and registration
+    /// until the caller has finished its local metadata and settings mutation.
+    /// Unlike publication recovery, this does not normalize interrupted phases.
+    func withGitTrackingRemovalAvailability<T>(
+        at url: URL,
+        operation: @escaping @MainActor () async throws -> T
+    ) async throws -> T {
+        guard loadError == nil else { throw FolderPublicationError.unavailable(loadError!) }
+        guard !isBusy else { throw FolderPublicationError.busy }
+        try Task.checkCancellation()
+        let key = store.url.standardizedFileURL.path
+        try await FolderPublicationOperationGuard.shared.acquire(key)
+        isBusy = true
+        defer { isBusy = false }
+        do {
+            try Task.checkCancellation()
+            try validateGitTrackingRemovalAvailability(at: url)
+            let result = try await operation()
+            await FolderPublicationOperationGuard.shared.release(key)
+            return result
+        } catch {
+            await FolderPublicationOperationGuard.shared.release(key)
+            throw error
         }
     }
 
@@ -72,14 +122,36 @@ final class FolderPublicationCoordinator {
         }
     }
 
+    /// Save each review choice before updating the UI so refresh and relaunch
+    /// cannot silently restore a file the user excluded.
+    func updateReviewSelection(id: UUID, selectedPaths: Set<String>) throws {
+        guard !isBusy else { throw FolderPublicationError.busy }
+        var record = try requireRecord(id)
+        guard record.phase == .review else {
+            throw FolderPublicationError.unavailable(String(localized: "The prepared snapshot is locked. Resume the saved publication."))
+        }
+        let available = Set(record.files.filter { !$0.isIgnored }.map(\.path))
+        guard selectedPaths.isSubset(of: available) else { throw FolderPublicationError.emptySelection }
+        record.selectedPaths = selectedPaths.sorted()
+        record.lastError = nil
+        try save(record)
+    }
+
     func refreshReview(id: UUID) async throws {
         try await run {
             var record = try self.requireRecord(id)
             guard record.phase == .review else { throw FolderPublicationError.unavailable(String(localized: "The prepared snapshot is locked. Resume the saved publication.")) }
             let inspection = try await self.withFolder(record) { try await self.git.inspect(at: $0) }
+            let reviewedPaths = Set(record.files.map(\.path))
+            let selectedPaths = Set(record.selectedPaths)
+            record.selectedPaths = inspection.files.filter { file in
+                guard !file.isIgnored, file.size <= 10 * 1024 * 1024 else { return false }
+                return reviewedPaths.contains(file.path)
+                    ? selectedPaths.contains(file.path)
+                    : !file.isSensitive
+            }.map(\.path).sorted()
             record.files = inspection.files
             record.warnings = inspection.warnings
-            record.selectedPaths = inspection.files.filter { !$0.isIgnored && !$0.isSensitive && $0.size <= 10 * 1024 * 1024 }.map(\.path)
             record.lastError = nil
             try self.save(record)
         }

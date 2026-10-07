@@ -4641,9 +4641,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
-            // Ensure core.precomposeunicode is set for repos cloned before
-            // this fix was in place (no-op if already configured).
-            Self.setPrecomposeUnicode(repo: repo)
+            // Normalize filenames for status without changing on-disk metadata.
+            // Foreground refresh must not invalidate another workflow's review.
+            try git2Check(clibgit2_repository_use_readonly_unicode_config(repo), context: "Configure Unicode status reads")
 
             // Read HEAD
             var head: OpaquePointer?

@@ -42,6 +42,48 @@ final class FolderGitServiceTests: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: imitation.appendingPathComponent(".git").path))
     }
 
+    func testLocalDocumentsLocationAcceptsBothDeviceVarAliases() {
+        let container = UUID().uuidString
+        for prefix in ["/var/mobile", "/private/var/mobile"] {
+            for suffix in ["Documents", "Documents/ElCamino"] {
+                let folder = URL(fileURLWithPath: "\(prefix)/Containers/Data/Application/\(container)/\(suffix)", isDirectory: true)
+                XCTAssertTrue(FolderGitService.isLocalDocumentsLocation(folder), "Local app Documents must accept \(prefix)")
+            }
+        }
+    }
+
+    func testLocalDocumentsLocationKeepsCloudAndProviderStorageExcluded() {
+        let container = UUID().uuidString
+        for path in [
+            "/var/mobile/Library/Mobile Documents/iCloud~md~obsidian/Documents/ElCamino",
+            "/var/mobile/Containers/Shared/AppGroup/\(container)/File Provider Storage/ElCamino",
+            "/var/mobile/Containers/Data/Application/\(container)/Library/ElCamino",
+            "/var/mobile/Containers/Data/Application/\(container)/DocumentsBackup/ElCamino",
+            "/var/mobile/Containers/Data/Application/not-a-container/Documents/ElCamino",
+            "/tmp/Containers/Data/Application/\(container)/Documents/ElCamino",
+            "/tmp/CoreSimulator/Devices/\(container)/data/Containers/Data/Application/\(container)/Library/ElCamino"
+        ] {
+            XCTAssertFalse(FolderGitService.isLocalDocumentsLocation(URL(fileURLWithPath: path, isDirectory: true)), "Unsupported location: \(path)")
+        }
+    }
+
+    func testLocalDocumentsFolderCanBeInspectedPreparedAndReopenedWithLocationEnforcement() async throws {
+        let documents = try XCTUnwrap(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first)
+        let root = documents.appendingPathComponent("folder-publication-test-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        try write("# Local vault\n", to: "Note.md", root: root)
+        let localService = FolderGitService()
+        let inspection = try await localService.inspect(at: root)
+        XCTAssertEqual(inspection.files.map(\.path), ["Note.md"])
+        let workflowID = UUID()
+        let prepared = try await localService.prepare(at: root, workflowID: workflowID, files: inspection.files,
+            selectedPaths: ["Note.md"], authorName: "Tests", authorEmail: "tests@example.com", message: "Initial commit")
+        try await localService.validatePrepared(at: root, workflowID: workflowID, commitOID: prepared.commitOID)
+        XCTAssertEqual(try blob(root: root, oid: prepared.commitOID, path: "Note.md"), Data("# Local vault\n".utf8))
+        XCTAssertEqual(try String(contentsOf: root.appendingPathComponent("Note.md"), encoding: .utf8), "# Local vault\n")
+    }
+
     func testPreparationPreservesBytesAndRetainsLiteralExclusions() async throws {
         let root = try temporaryFolder()
         defer { try? FileManager.default.removeItem(at: root) }
@@ -255,7 +297,9 @@ final class FolderGitServiceTests: XCTestCase {
         do {
             _ = try await service.inspect(at: child)
             XCTFail("An enclosing repository must be preserved")
-        } catch FolderGitServiceError.existingMetadata {}
+        } catch FolderGitServiceError.enclosingRepository(let path) {
+            XCTAssertEqual(path, ancestor.standardizedFileURL.resolvingSymlinksInPath().path)
+        }
 
         let nestedRoot = try temporaryFolder()
         defer { try? FileManager.default.removeItem(at: nestedRoot) }
@@ -266,6 +310,117 @@ final class FolderGitServiceTests: XCTestCase {
             _ = try await service.inspect(at: nestedRoot)
             XCTFail("A .git file also marks nested metadata")
         } catch FolderGitServiceError.existingMetadata {}
+    }
+
+    func testBareLookingAncestorIsNotAnEnclosingRepository() async throws {
+        let ancestor = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: ancestor) }
+        try write("ordinary heading", to: "HEAD", root: ancestor)
+        try write("ordinary settings", to: "config", root: ancestor)
+        for name in ["objects", "refs"] {
+            try FileManager.default.createDirectory(at: ancestor.appendingPathComponent(name), withIntermediateDirectories: true)
+        }
+        let child = ancestor.appendingPathComponent("ElCamino", isDirectory: true)
+        try FileManager.default.createDirectory(at: child, withIntermediateDirectories: true)
+        try write("# Reviewed note\n", to: "Note.md", root: child)
+
+        let inspection = try await service.inspect(at: child)
+        XCTAssertEqual(inspection.files.map(\.path), ["Note.md"])
+        let prepared = try await prepare(child, id: UUID(), inspection: inspection, paths: ["Note.md"])
+        XCTAssertEqual(try blob(root: child, oid: prepared.commitOID, path: "Note.md"), Data("# Reviewed note\n".utf8))
+        XCTAssertEqual(try String(contentsOf: ancestor.appendingPathComponent("HEAD"), encoding: .utf8), "ordinary heading")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: ancestor.appendingPathComponent(".git").path))
+    }
+
+    func testRealBareAncestorRemainsProtected() async throws {
+        let ancestor = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: ancestor) }
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, ancestor.path, 1), 0)
+        if let repo { git_repository_free(repo) }
+        let originalHead = try Data(contentsOf: ancestor.appendingPathComponent("HEAD"))
+        let child = ancestor.appendingPathComponent("ElCamino", isDirectory: true)
+        try FileManager.default.createDirectory(at: child, withIntermediateDirectories: true)
+        try write("# Note", to: "Note.md", root: child)
+        do {
+            _ = try await service.inspect(at: child)
+            XCTFail("A real bare repository must remain protected")
+        } catch FolderGitServiceError.enclosingRepository(let path) {
+            XCTAssertEqual(path, ancestor.standardizedFileURL.resolvingSymlinksInPath().path)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: child.appendingPathComponent(".git").path))
+        XCTAssertEqual(try Data(contentsOf: ancestor.appendingPathComponent("HEAD")), originalHead)
+    }
+
+    func testOrdinaryBareLookingNamesInsideSelectionRemainPublishable() async throws {
+        let root = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: root) }
+        for prefix in ["", "Nested/"] {
+            try write("ordinary heading", to: "\(prefix)HEAD", root: root)
+            try write("ordinary settings", to: "\(prefix)config", root: root)
+            for name in ["objects", "refs"] {
+                try FileManager.default.createDirectory(at: root.appendingPathComponent("\(prefix)\(name)"), withIntermediateDirectories: true)
+            }
+        }
+        let inspection = try await service.inspect(at: root)
+        XCTAssertEqual(Set(inspection.files.map(\.path)), ["HEAD", "config", "Nested/HEAD", "Nested/config"])
+    }
+
+    func testCorruptBareMetadataInsideSelectionRemainsProtected() async throws {
+        for nested in [false, true] {
+            let root = try temporaryFolder()
+            defer { try? FileManager.default.removeItem(at: root) }
+            let metadata = nested ? root.appendingPathComponent("Nested", isDirectory: true) : root
+            try FileManager.default.createDirectory(at: metadata, withIntermediateDirectories: true)
+            var repo: OpaquePointer?
+            XCTAssertEqual(git_repository_init(&repo, metadata.path, 1), 0)
+            if let repo { git_repository_free(repo) }
+            try write("invalid git config", to: "config", root: metadata)
+            do {
+                _ = try await service.inspect(at: root)
+                XCTFail("Corrupt bare Git configuration must not be published as ordinary content")
+            } catch FolderGitServiceError.metadataNeedsAttention(let path) {
+                XCTAssertEqual(path, metadata.path)
+            }
+            XCTAssertFalse(FileManager.default.fileExists(atPath: root.appendingPathComponent(".git").path))
+            XCTAssertEqual(try String(contentsOf: metadata.appendingPathComponent("config"), encoding: .utf8), "invalid git config")
+        }
+    }
+
+    func testBareMetadataWithMalformedObjectStorageRemainsProtected() async throws {
+        let root = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: root) }
+        try write("ref: refs/heads/main\n", to: "HEAD", root: root)
+        try write("[core]\n bare = true\n", to: "config", root: root)
+        try write("broken object storage", to: "objects", root: root)
+        try FileManager.default.createDirectory(at: root.appendingPathComponent("refs"), withIntermediateDirectories: true)
+        do {
+            _ = try await service.inspect(at: root)
+            XCTFail("Malformed Git object storage cannot be treated as ordinary content")
+        } catch FolderGitServiceError.metadataNeedsAttention(let path) {
+            XCTAssertEqual(path, root.appendingPathComponent("objects").path)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: root.appendingPathComponent(".git").path))
+        XCTAssertEqual(try String(contentsOf: root.appendingPathComponent("objects"), encoding: .utf8), "broken object storage")
+    }
+
+    func testIncompleteAncestorGitMetadataNeedsAttentionWithoutBeingReplaced() async throws {
+        let ancestor = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: ancestor) }
+        let gitdir = ancestor.appendingPathComponent(".git", isDirectory: true)
+        try FileManager.default.createDirectory(at: gitdir, withIntermediateDirectories: true)
+        try write("preserve this", to: ".git/partial", root: ancestor)
+        let child = ancestor.appendingPathComponent("ElCamino", isDirectory: true)
+        try FileManager.default.createDirectory(at: child, withIntermediateDirectories: true)
+        try write("# Note", to: "Note.md", root: child)
+        do {
+            _ = try await service.inspect(at: child)
+            XCTFail("Incomplete ancestor metadata cannot be silently bypassed")
+        } catch FolderGitServiceError.metadataNeedsAttention(let path) {
+            XCTAssertEqual(path, gitdir.standardizedFileURL.resolvingSymlinksInPath().path)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: child.appendingPathComponent(".git").path))
+        XCTAssertEqual(try String(contentsOf: gitdir.appendingPathComponent("partial"), encoding: .utf8), "preserve this")
     }
 
     func testPreparedValidationReadsSavedTreeInsteadOfMutableIndex() async throws {

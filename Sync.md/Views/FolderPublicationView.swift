@@ -268,8 +268,16 @@ struct FolderPublicationView: View {
                             isSelected: Binding(
                                 get: { selectedPaths.contains(file.path) },
                                 set: { included in
-                                    if included { selectedPaths.insert(file.path) }
-                                    else { selectedPaths.remove(file.path) }
+                                    var updated = selectedPaths
+                                    if included { updated.insert(file.path) }
+                                    else { updated.remove(file.path) }
+                                    do {
+                                        try coordinator.updateReviewSelection(id: record.id, selectedPaths: updated)
+                                        selectedPaths = updated
+                                        errorMessage = nil
+                                    } catch {
+                                        errorMessage = error.localizedDescription
+                                    }
                                 }
                             )
                         )
@@ -284,7 +292,9 @@ struct FolderPublicationView: View {
                 Button("Refresh File Review") {
                     perform {
                         try await coordinator.refreshReview(id: record.id)
-                        if let updated = coordinator.record(id: record.id) { openRecord(updated) }
+                        if let updated = coordinator.record(id: record.id) {
+                            selectedPaths = Set(updated.selectedPaths)
+                        }
                     }
                 }
                 .bType(.monoSm, color: .brutalAccent)
@@ -576,6 +586,13 @@ struct FolderPublicationView: View {
                 // Saved phases remain in the coordinator for explicit resumption.
             } catch {
                 errorMessage = error.localizedDescription
+                if let gitError = error as? FolderGitServiceError {
+                    switch gitError {
+                    case .existingMetadata, .enclosingRepository, .metadataNeedsAttention:
+                        DebugLogger.shared.warning("folder-publication", error.localizedDescription)
+                    default: break
+                    }
+                }
             }
         }
     }

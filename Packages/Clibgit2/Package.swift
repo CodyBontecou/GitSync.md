@@ -14,11 +14,14 @@ let package = Package(
             dependencies: ["libgit2"],
             publicHeadersPath: "include"
         ),
-        // Narrow C wrapper for the system-level index substitution API.
+        // Narrow C wrappers for system APIs omitted from the binary's umbrella.
         .target(
             name: "Clibgit2Sys",
             dependencies: ["libgit2"],
-            publicHeadersPath: "include"
+            publicHeadersPath: "include",
+            // Compile the real sys headers textually; the prebuilt Clang module
+            // exports the public API but hides these system declarations.
+            cSettings: [.unsafeFlags(["-fno-modules"])]
         ),
         // Pre-built libgit2 xcframework (iOS arm64 + simulator)
         .binaryTarget(

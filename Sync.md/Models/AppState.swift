@@ -157,6 +157,11 @@ final class AppState {
     // MARK: - Sync State
 
     var isSyncing: Bool = false
+    var isRemovingGitTracking = false
+    /// Shared across AppState instances used by the UI and App Intents.
+    /// Clone must not remove a working folder while its metadata is backed up.
+    private static var gitTrackingRemovalRoots = Set<String>()
+    private static var detachedGitTrackingRoots = Set<String>()
     var syncingRepoID: UUID? = nil
     var syncProgress: String = ""
 
@@ -362,6 +367,7 @@ final class AppState {
     private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
     private let repoPersistenceStore: RepoPersistenceStore
     private let persistedReposURL: URL
+    private let gitTrackingRemovalService: GitTrackingRemovalService
     let folderPublication: FolderPublicationCoordinator
     private var persistedRepoSnapshot: [UUID: RepoConfig] = [:]
     var assistConfigurationChangeHandler: (@MainActor @Sendable () -> Void)?
@@ -376,7 +382,8 @@ final class AppState {
         repoPersistenceStore: RepoPersistenceStore = .shared,
         reposFileURL: URL? = nil,
         loadPersistedState: Bool = true,
-        folderPublicationCoordinator: FolderPublicationCoordinator? = nil
+        folderPublicationCoordinator: FolderPublicationCoordinator? = nil,
+        gitTrackingRemovalService: GitTrackingRemovalService = GitTrackingRemovalService()
     ) {
         self.gitRepositoryFactory = { url in
             SerializedGitRepository(base: gitRepositoryFactory(url), localURL: url)
@@ -384,6 +391,7 @@ final class AppState {
         self.sshHostKeyTrustStore = sshHostKeyTrustStore
         self.repoPersistenceStore = repoPersistenceStore
         self.persistedReposURL = reposFileURL ?? Self.reposFileURL
+        self.gitTrackingRemovalService = gitTrackingRemovalService
         let publicationStoreURL: URL
         if let reposFileURL {
             publicationStoreURL = reposFileURL.deletingLastPathComponent().appendingPathComponent("folder-publications.json")
@@ -2310,6 +2318,29 @@ final class AppState {
             return
         }
 
+        let possibleCloneURLs = [vaultURL(for: repoID)] + (
+            repos[idx].customVaultBookmarkData == nil
+                ? resolvedDefaultSaveURL.map { [$0.appendingPathComponent(repos[idx].vaultFolderName, isDirectory: true)] } ?? []
+                : []
+        )
+        guard !isRemovingGitTracking,
+              !possibleCloneURLs.contains(where: Self.isGitTrackingRemovalInProgress(at:)) else {
+            showError(message: String(localized: "Git tracking is being removed. Wait for the backup to finish before cloning."))
+            return
+        }
+        if possibleCloneURLs.contains(where: { Self.detachedGitTrackingRoots.contains(Self.canonicalFilePath(for: $0)) }) {
+            do {
+                let latest = try repoPersistenceStore.loadStrict(from: persistedReposURL)
+                guard latest.contains(where: { $0.id == repoID }) else {
+                    showError(message: String(localized: "This repository connection was removed. Add it again before cloning. Your files have been preserved."))
+                    return
+                }
+            } catch {
+                showError(message: String(localized: "Repository settings could not be checked. Your files have been preserved."))
+                return
+            }
+        }
+
         guard !repos[idx].isExternalLocalRepository else {
             showError(message: String(localized: "This is a user-owned folder. Reconnect it or restore its Git metadata instead of cloning over its files."))
             return
@@ -3380,14 +3411,199 @@ final class AppState {
         return nil
     }
 
+    // MARK: - Local Git tracking removal
+
+    static func isGitTrackingRemovalInProgress(at url: URL) -> Bool {
+        let path = canonicalFilePath(for: url)
+        return gitTrackingRemovalRoots.contains { root in
+            root == path || root.hasPrefix(path + "/") || path.hasPrefix(root + "/")
+        }
+    }
+
+    func inspectGitTrackingRemoval(at url: URL) async throws -> GitTrackingRemovalPlan {
+        try validateGitTrackingRemovalState()
+        guard !Self.isGitTrackingRemovalInProgress(at: url) else { throw FolderPublicationError.busy }
+        return try await folderPublication.withGitTrackingRemovalAvailability(at: url) {
+            try await self.gitTrackingRemovalService.inspect(at: url)
+        }
+    }
+
+    func validateGitTrackingBackupDirectory(_ url: URL, for plan: GitTrackingRemovalPlan) async throws {
+        try validateGitTrackingRemovalState()
+        try await gitTrackingRemovalService.validateBackupDirectory(url, for: plan)
+    }
+
+    func prepareGitTrackingBackupDirectory(for plan: GitTrackingRemovalPlan) async throws -> URL {
+        try validateGitTrackingRemovalState()
+        let destination = try await gitTrackingRemovalService.prepareAppBackupDirectory(in: Self.appDocumentsDirectory)
+        try await gitTrackingRemovalService.validateBackupDirectory(destination, for: plan)
+        return destination
+    }
+
+    func removeGitTracking(
+        _ plan: GitTrackingRemovalPlan,
+        backupDirectory: URL
+    ) async throws -> GitTrackingRemovalResult {
+        try await performGitTrackingRemoval(plan, backupDirectory: backupDirectory)
+    }
+
+    func removeGitTrackingWithoutBackup(_ plan: GitTrackingRemovalPlan) async throws -> GitTrackingRemovalResult {
+        try await performGitTrackingRemoval(plan, backupDirectory: nil)
+    }
+
+    private func performGitTrackingRemoval(
+        _ plan: GitTrackingRemovalPlan,
+        backupDirectory: URL?
+    ) async throws -> GitTrackingRemovalResult {
+        try validateGitTrackingRemovalState()
+        let protectedURLs = [plan.rootURL] + (backupDirectory.map { [$0] } ?? [])
+        let protectedPaths = Set(protectedURLs.map(Self.canonicalFilePath(for:)))
+        guard !protectedURLs.contains(where: Self.isGitTrackingRemovalInProgress(at:)) else {
+            throw FolderPublicationError.busy
+        }
+        // The destination must be protected as long as the source. A clone or
+        // local deletion there could erase both the verified copy and original.
+        // Check the existing registry first so source/destination overlap within
+        // this request still receives the service's specific backup error.
+        Self.gitTrackingRemovalRoots.formUnion(protectedPaths)
+        isRemovingGitTracking = true
+        defer {
+            Self.gitTrackingRemovalRoots.subtract(protectedPaths)
+            isRemovingGitTracking = false
+        }
+        return try await folderPublication.withGitTrackingRemovalAvailability(at: plan.rootURL) {
+            try await RepositoryOperationCoordinator.shared.withRepository(at: plan.rootURL) {
+                try await self.removeGitTrackingWithLease(plan, backupDirectory: backupDirectory)
+            }
+        }
+    }
+
+    private func validateGitTrackingRemovalState() throws {
+        guard !isDemoMode else {
+            throw GitTrackingRemovalError.operation(String(localized: "Leave demo mode before changing a local folder."))
+        }
+        guard !isSyncing, !isBackgroundSyncing, !isRemovingGitTracking else {
+            throw GitTrackingRemovalError.operation(String(localized: "Wait for the current Git operation to finish before removing tracking."))
+        }
+    }
+
+    private func removeGitTrackingWithLease(
+        _ plan: GitTrackingRemovalPlan,
+        backupDirectory: URL?
+    ) async throws -> GitTrackingRemovalResult {
+        try Task.checkCancellation()
+        let rootKey = Self.canonicalFilePath(for: plan.rootURL)
+        let latest = try repoPersistenceStore.loadStrict(from: persistedReposURL)
+        let removed = latest.filter { persistedWorkingCopyURL($0).map(Self.canonicalFilePath(for:)) == rootKey }
+        let otherWorkingCopies = latest.compactMap { config -> String? in
+            guard let url = persistedWorkingCopyURL(config) else { return nil }
+            let path = Self.canonicalFilePath(for: url)
+            return path == rootKey ? nil : path
+        }
+        guard !otherWorkingCopies.contains(where: { rootKey.hasPrefix($0 + "/") }) else {
+            throw GitTrackingRemovalError.sourceInsideRepository
+        }
+        if let backupDirectory {
+            let backupKey = Self.canonicalFilePath(for: backupDirectory)
+            guard backupKey != rootKey, !backupKey.hasPrefix(rootKey + "/") else {
+                throw GitTrackingRemovalError.backupInsideRepository
+            }
+            guard !otherWorkingCopies.contains(where: { path in
+                path == backupKey || path.hasPrefix(backupKey + "/") || backupKey.hasPrefix(path + "/")
+            }) else { throw GitTrackingRemovalError.backupInRepository }
+        }
+        // Persist before touching metadata. A write failure leaves .git in place.
+        let remaining = try repoPersistenceStore.apply(removed.map { .remove(original: $0) }, to: persistedReposURL)
+        repos = remaining
+        persistedRepoSnapshot = Dictionary(uniqueKeysWithValues: remaining.map { ($0.id, $0) })
+        for repo in removed { assistRepositoryRemovalHandler?(repo) }
+        do {
+            let result: GitTrackingRemovalResult
+            if let backupDirectory {
+                result = try await gitTrackingRemovalService.removeTrackingWithLease(plan, backupDirectory: backupDirectory)
+            } else {
+                result = try await gitTrackingRemovalService.removeTrackingWithoutBackupWithLease(plan)
+            }
+            finishGitTrackingRemoval(removed, rootKey: rootKey)
+            return result
+        } catch {
+            if let removalError = error as? GitTrackingRemovalError,
+               removalError.leavesRootDetached {
+                // Reconnecting a new or missing .git here would expose the
+                // wrong repository to sync, including after partial deletion.
+                finishGitTrackingRemoval(removed, rootKey: rootKey)
+                throw error
+            }
+            // Failures that leave the original in place restore its connection.
+            // Restore only the removed records, preserving concurrent additions.
+            do {
+                let current = try repoPersistenceStore.loadStrict(from: persistedReposURL)
+                let currentIDs = Set(current.map(\.id))
+                let restored = try repoPersistenceStore.apply(
+                    removed.filter { !currentIDs.contains($0.id) }.map { .add($0) },
+                    to: persistedReposURL
+                )
+                repos = restored
+                persistedRepoSnapshot = Dictionary(uniqueKeysWithValues: restored.map { ($0.id, $0) })
+                assistInventoryChangeHandler?()
+            } catch let restorationError {
+                throw GitTrackingRemovalError.operation(String(localized: "Git metadata was preserved, but the repository connection could not be restored: \(restorationError.localizedDescription)"))
+            }
+            throw error
+        }
+    }
+
+    private func finishGitTrackingRemoval(_ removed: [RepoConfig], rootKey: String) {
+        Self.detachedGitTrackingRoots.insert(rootKey)
+        for repo in removed {
+            repoMutationGeneration[repo.id, default: 0] += 1
+            if accessingSecurityScope.remove(repo.id) != nil, let url = resolvedCustomURLs[repo.id] {
+                url.stopAccessingSecurityScopedResource()
+            }
+            resolvedCustomURLs.removeValue(forKey: repo.id)
+            clearRemoteCredentials(for: repo.id)
+            clearCachedRepoState(for: repo.id)
+        }
+        assistInventoryChangeHandler?()
+    }
+
+    /// Resolve the fresh persisted configuration, rather than a stale UI copy.
+    /// Descendant repositories retain their own bookmarks and configuration.
+    private func persistedWorkingCopyURL(_ repo: RepoConfig) -> URL? {
+        if let bookmark = repo.customVaultBookmarkData {
+            var stale = false
+            let grant: URL?
+            if self.repo(id: repo.id)?.customVaultBookmarkData == bookmark, let cached = resolvedCustomURLs[repo.id] {
+                grant = cached
+            } else {
+                grant = try? URL(resolvingBookmarkData: bookmark, options: [], relativeTo: nil, bookmarkDataIsStale: &stale)
+            }
+            guard let grant else { return nil }
+            if let relative = repo.customVaultRelativePath, !relative.isEmpty {
+                return grant.appendingPathComponent(relative, isDirectory: true)
+            }
+            return repo.customLocationIsParent
+                ? grant.appendingPathComponent(repo.vaultFolderName, isDirectory: true)
+                : grant
+        }
+        if let relative = repo.customVaultRelativePath {
+            return Self.appDocumentsDirectory.appendingPathComponent(relative, isDirectory: true)
+        }
+        return repo.defaultVaultURL
+    }
+
     func removeRepo(
         id: UUID,
         deleteLocalFiles: Bool = false,
         operationCoordinator: RepositoryOperationCoordinator = .shared
     ) async {
         guard let repo = repo(id: id) else { return }
-        assistRepositoryRemovalHandler?(repo)
         let vaultDir = vaultURL(for: id)
+        if deleteLocalFiles && repo.isGitSyncManagedStorage && Self.isGitTrackingRemovalInProgress(at: vaultDir) {
+            showError(message: String(localized: "A Git history backup is in progress in this folder. Wait for it to finish before deleting local files."))
+            return
+        }
+        assistRepositoryRemovalHandler?(repo)
 
         // Existing local repositories are user-owned folders that may also be
         // managed by another app. Removing GitSync.md's bookmark must never
@@ -3395,8 +3611,18 @@ final class AppState {
         if deleteLocalFiles && repo.isGitSyncManagedStorage {
             // Cancellation above is synchronous, but detached libgit2 work may
             // still be unwinding. Delete only after the repository lease is ours.
-            try? await operationCoordinator.withRepository(at: vaultDir) {
-                try FileManager.default.removeItem(at: vaultDir)
+            let deletionBlocked = (try? await operationCoordinator.withRepository(at: vaultDir) {
+                try await MainActor.run {
+                    // Removal may have begun while this deletion waited for its
+                    // lease. Recheck before either files or settings disappear.
+                    guard !Self.isGitTrackingRemovalInProgress(at: vaultDir) else { return true }
+                    try FileManager.default.removeItem(at: vaultDir)
+                    return false
+                }
+            }) ?? false
+            if deletionBlocked {
+                showError(message: String(localized: "A Git history backup is in progress in this folder. Wait for it to finish before deleting local files."))
+                return
             }
         }
 

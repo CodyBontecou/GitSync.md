@@ -22,6 +22,100 @@ final class FolderPublicationCoordinatorTests: XCTestCase {
         XCTAssertEqual(observedCount2, 0)
     }
 
+    func testRefreshAfterChangedFileAndRestartKeepsUserExclusions() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let notesFolder = fixture.folder.appendingPathComponent("notes")
+        try FileManager.default.createDirectory(at: notesFolder, withIntermediateDirectories: true)
+        let readme = fixture.folder.appendingPathComponent("README.md")
+        try Data("Reviewed README".utf8).write(to: readme)
+        try Data("Unselected note".utf8).write(to: notesFolder.appendingPathComponent("sample.md"))
+        try Data("TOKEN=secret".utf8).write(to: fixture.folder.appendingPathComponent(".env"))
+        let native = FolderGitService(enforceLocalStorage: false)
+        let coordinator = FolderPublicationCoordinator(store: fixture.store, git: native,
+            github: fixture.github, allowUnscopedAccess: true)
+        let id = try await coordinator.selectFolder(url: fixture.folder)
+        XCTAssertEqual(Set(try XCTUnwrap(coordinator.record(id: id)).selectedPaths), ["README.md", "notes/sample.md"])
+
+        // A stale review asks the user to refresh, but that must not revoke an
+        // explicit exclusion made before attempting the local commit.
+        try Data("Changed README".utf8).write(to: readme)
+        do {
+            try await coordinator.prepare(id: id, selectedPaths: ["README.md"],
+                authorName: "Alice", authorEmail: "alice@example.com", message: "Initial notes",
+                accountLogin: "alice", repositoryName: "notes", token: "alice-token")
+            XCTFail("Preparing changed contents should require a new review")
+        } catch FolderGitServiceError.reviewChanged(let path) {
+            XCTAssertEqual(path, "README.md")
+        }
+        let saved = try XCTUnwrap(coordinator.record(id: id))
+        XCTAssertEqual(saved.phase, .review)
+        XCTAssertEqual(saved.selectedPaths, ["README.md"])
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.folder.appendingPathComponent(".git").path))
+
+        let resumed = FolderPublicationCoordinator(store: fixture.store, git: native,
+            github: fixture.github, allowUnscopedAccess: true)
+        XCTAssertEqual(resumed.record(id: id)?.selectedPaths, ["README.md"])
+        try await resumed.refreshReview(id: id)
+        let refreshed = try XCTUnwrap(resumed.record(id: id))
+        XCTAssertEqual(refreshed.selectedPaths, ["README.md"], "Refreshing must keep the unselected note excluded")
+        XCTAssertNotEqual(refreshed.files.first { $0.path == "README.md" }?.digest,
+            saved.files.first { $0.path == "README.md" }?.digest)
+        XCTAssertEqual(try fixture.store.load().first { $0.id == id }?.selectedPaths, ["README.md"])
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.folder.appendingPathComponent(".git").path))
+        let remoteCreationCount = await fixture.github.creationCount()
+        XCTAssertEqual(remoteCreationCount, 0)
+    }
+
+    func testReviewChoicesSurviveRestartAndRefreshOnlyDefaultsNewEligibleFiles() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        for (path, contents) in ["README.md": "Readme", "sample.md": "Note", "obsolete.md": "Old",
+                                 ".env": "TOKEN=secret", ".gitignore": "ignored.txt\n", "ignored.txt": "Ignored"] {
+            try Data(contents.utf8).write(to: fixture.folder.appendingPathComponent(path))
+        }
+        let native = FolderGitService(enforceLocalStorage: false)
+        func reload() -> FolderPublicationCoordinator {
+            FolderPublicationCoordinator(store: fixture.store, git: native,
+                github: fixture.github, allowUnscopedAccess: true)
+        }
+        let coordinator = reload()
+        let id = try await coordinator.selectFolder(url: fixture.folder)
+        try coordinator.updateReviewSelection(id: id, selectedPaths: [])
+        let resumed = reload()
+        try await resumed.refreshReview(id: id)
+        XCTAssertEqual(resumed.record(id: id)?.selectedPaths, [], "An intentionally empty review must remain empty")
+
+        try resumed.updateReviewSelection(id: id, selectedPaths: ["README.md", ".env", "obsolete.md"])
+        XCTAssertEqual(Set(try XCTUnwrap(reload().record(id: id)).selectedPaths), ["README.md", ".env", "obsolete.md"])
+        try FileManager.default.removeItem(at: fixture.folder.appendingPathComponent("obsolete.md"))
+        try Data("New note".utf8).write(to: fixture.folder.appendingPathComponent("new.md"))
+        try Data("NEW_TOKEN=secret".utf8).write(to: fixture.folder.appendingPathComponent(".env.new"))
+        let refreshed = reload()
+        try await refreshed.refreshReview(id: id)
+        let saved = try XCTUnwrap(refreshed.record(id: id))
+        XCTAssertEqual(Set(saved.selectedPaths), ["README.md", ".env", "new.md"],
+            "Keep explicit sensitive-file opt-in and ordinary-file exclusions; default only new eligible paths")
+        XCTAssertFalse(saved.files.contains { $0.path == "obsolete.md" })
+        XCTAssertTrue(saved.files.first { $0.path == "ignored.txt" }?.isIgnored == true)
+        XCTAssertThrowsError(try refreshed.updateReviewSelection(id: id, selectedPaths: ["ignored.txt"]))
+        XCTAssertEqual(try fixture.store.load().first { $0.id == id }, saved)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.folder.appendingPathComponent(".git").path))
+        let remoteCreationCount = await fixture.github.creationCount()
+        XCTAssertEqual(remoteCreationCount, 0)
+    }
+
+    func testReviewSelectionCannotChangePreparedSnapshot() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        try await fixture.prepare(id)
+        let prepared = try XCTUnwrap(fixture.coordinator.record(id: id))
+        XCTAssertThrowsError(try fixture.coordinator.updateReviewSelection(id: id, selectedPaths: []))
+        XCTAssertEqual(fixture.coordinator.record(id: id), prepared)
+        XCTAssertEqual(try fixture.store.load().first { $0.id == id }, prepared)
+    }
+
     func testLostCreationResponseSurvivesRestartAndRequiresExplicitAdoption() async throws {
         let fixture = try Fixture(loseCreationResponse: true)
         defer { fixture.remove() }
@@ -122,6 +216,137 @@ final class FolderPublicationCoordinatorTests: XCTestCase {
         XCTAssertThrowsError(try separateCoordinator.validateImportAvailability(at: fixture.folder))
         try await fixture.coordinator.completeRegistration(id: id) { _, _ in }
         XCTAssertNoThrow(try separateCoordinator.validateImportAvailability(at: fixture.folder))
+    }
+
+    func testGitTrackingRemovalRejectsEveryUnfinishedOverlappingPublication() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let path = fixture.folder.standardizedFileURL.resolvingSymlinksInPath().path
+        var record = FolderPublicationRecord(bookmarkData: Data(), folderName: "notes", folderPath: path, files: [])
+        let unfinished: [FolderPublicationPhase] = [.review, .preparing, .prepared, .creatingRemote,
+            .creationUnknown, .remoteCreated, .pushing, .pushUnknown, .published]
+        for phase in unfinished {
+            record.phase = phase
+            try fixture.store.save(record)
+            for selected in [fixture.folder, fixture.folder.appendingPathComponent("ElCamino"), fixture.root] {
+                var ran = false
+                await assertFailure {
+                    try await fixture.coordinator.withGitTrackingRemovalAvailability(at: selected) { ran = true }
+                }
+                XCTAssertFalse(ran, "\(phase) must block removal of an overlapping repository")
+                XCTAssertEqual(try fixture.store.load().first, record, "Checking removal must not normalize publication intent")
+            }
+        }
+        // Prefixes are compared at path-component boundaries.
+        let sibling = URL(fileURLWithPath: path + "-other")
+        let value = try await fixture.coordinator.withGitTrackingRemovalAvailability(at: sibling) { 17 }
+        XCTAssertEqual(value, 17)
+        record.phase = .completed
+        try fixture.store.save(record)
+        let completedValue = try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) { 23 }
+        XCTAssertEqual(completedValue, 23)
+        XCTAssertEqual(try fixture.store.load().first, record)
+    }
+
+    func testGitTrackingRemovalChecksFreshJournalAndResolvedBookmark() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        XCTAssertTrue(fixture.coordinator.records.isEmpty)
+        let record = FolderPublicationRecord(bookmarkData: try fixture.folder.bookmarkData(), folderName: "notes",
+            folderPath: fixture.root.appendingPathComponent("earlier-location").path, files: [])
+        try fixture.store.save(record)
+        XCTAssertThrowsError(try fixture.coordinator.validateGitTrackingRemovalAvailability(at: fixture.folder))
+        var ran = false
+        await assertFailure {
+            try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) { ran = true }
+        }
+        XCTAssertFalse(ran, "A stale cached journal and an old recorded path cannot bypass the current bookmark")
+        XCTAssertEqual(try fixture.store.load().first, record)
+    }
+
+    func testGitTrackingRemovalPreservesMalformedJournalAndDoesNotRunMutation() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        _ = try fixture.store.load() // Establish its parent directory.
+        let invalid = Data("{unfinished".utf8)
+        try invalid.write(to: fixture.store.url)
+        XCTAssertThrowsError(try fixture.coordinator.validateGitTrackingRemovalAvailability(at: fixture.folder))
+        var ran = false
+        await assertFailure {
+            try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) { ran = true }
+        }
+        XCTAssertFalse(ran)
+        XCTAssertFalse(fixture.coordinator.isBusy)
+        XCTAssertEqual(try Data(contentsOf: fixture.store.url), invalid)
+        // A failed validation must release the guard rather than strand it.
+        try Data("[]".utf8).write(to: fixture.store.url)
+        try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) { ran = true }
+        XCTAssertTrue(ran)
+    }
+
+    func testGitTrackingRemovalHoldsSharedPublicationGuardAcrossAwait() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let other = fixture.reload()
+        let entered = expectation(description: "Git tracking removal entered")
+        let gate = FolderRegistrationGate()
+        let removal = Task {
+            try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) {
+                entered.fulfill()
+                await gate.wait()
+            }
+        }
+        defer {
+            removal.cancel()
+            Task { await gate.release() }
+        }
+        await fulfillment(of: [entered], timeout: 2)
+        XCTAssertTrue(fixture.coordinator.isBusy)
+        do {
+            _ = try await other.selectFolder(url: fixture.folder)
+            XCTFail("A second coordinator cannot start a publication during Git tracking removal")
+        } catch FolderPublicationError.busy {} catch { XCTFail("Expected busy, got \(error)") }
+        do {
+            try await other.withGitTrackingRemovalAvailability(at: fixture.folder) {}
+            XCTFail("A second removal must share the publication guard")
+        } catch FolderPublicationError.busy {} catch { XCTFail("Expected busy, got \(error)") }
+        XCTAssertTrue(try fixture.store.load().isEmpty)
+        await gate.release()
+        try await removal.value
+        XCTAssertFalse(fixture.coordinator.isBusy)
+        _ = try await other.selectFolder(url: fixture.folder)
+    }
+
+    func testGitTrackingRemovalReleasesGuardWhenMutationFailsOrIsCancelled() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        await assertFailure {
+            try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) {
+                throw FolderPublicationError.changedHistory
+            }
+        }
+        let other = fixture.reload()
+        let entered = expectation(description: "Cancelled removal entered")
+        let gate = FolderRegistrationGate()
+        let removal = Task {
+            try await fixture.coordinator.withGitTrackingRemovalAvailability(at: fixture.folder) {
+                entered.fulfill()
+                await gate.wait()
+                try Task.checkCancellation()
+            }
+        }
+        defer { Task { await gate.release() } }
+        await fulfillment(of: [entered], timeout: 2)
+        removal.cancel()
+        await gate.release()
+        do {
+            try await removal.value
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {} catch { XCTFail("Expected cancellation, got \(error)") }
+        XCTAssertFalse(fixture.coordinator.isBusy)
+        let value = try await other.withGitTrackingRemovalAvailability(at: fixture.folder) { "released" }
+        XCTAssertEqual(value, "released")
+        XCTAssertTrue(try fixture.store.load().isEmpty)
     }
 
     func testStaleCoordinatorCannotRenameAConfirmedDestination() async throws {

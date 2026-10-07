@@ -7,6 +7,8 @@ import libgit2
 enum FolderGitServiceError: LocalizedError, Sendable {
     case unsupportedLocation
     case existingMetadata(String)
+    case enclosingRepository(String)
+    case metadataNeedsAttention(String)
     case unsupportedFile(String)
     case reviewChanged(String)
     case invalidSelection
@@ -22,6 +24,10 @@ enum FolderGitServiceError: LocalizedError, Sendable {
             return "Choose a local On My iPhone folder. Cloud and file-provider folders are not supported for publication yet."
         case .existingMetadata(let path):
             return "This folder contains or belongs to an existing Git repository (\(path)). Use the existing repository instead."
+        case .enclosingRepository(let path):
+            return "This folder is inside an existing Git repository at \(path). To publish it separately, copy the folder outside that repository and choose the copy. To sync the existing repository, use Add Repository → Open Existing Repository."
+        case .metadataNeedsAttention(let path):
+            return "Git metadata exists at \(path), but it could not be opened as a repository. Check that metadata before publishing. No existing Git metadata was changed."
         case .unsupportedFile(let path):
             return "\(path) is unsupported for folder publication. This version supports regular files up to 10 MiB without Git LFS, custom filters, or content-conversion attributes."
         case .reviewChanged(let path):
@@ -228,18 +234,26 @@ struct FolderGitService: FolderGitHandling {
         guard values.isDirectory == true, values.isSymbolicLink != true, values.isPackage != true,
               values.isUbiquitousItem != true else { throw FolderGitServiceError.unsupportedLocation }
         guard enforceLocalStorage else { return }
+        guard Self.isLocalDocumentsLocation(root) else { throw FolderGitServiceError.unsupportedLocation }
+    }
+
+    static func isLocalDocumentsLocation(_ root: URL) -> Bool {
         let components = root.standardizedFileURL.resolvingSymlinksInPath().pathComponents
         let documentRoot = components.indices.contains { index in
             guard index + 4 < components.count, components[index] == "Containers", components[index + 1] == "Data",
                   components[index + 2] == "Application", UUID(uuidString: components[index + 3]) != nil,
                   components[index + 4] == "Documents" else { return false }
-            let deviceContainer = Array(components[..<index]) == ["/", "private", "var", "mobile"]
+            // Foundation may remove /private when resolving an existing path.
+            // Both forms name the same local iOS app Documents container.
+            let prefix = Array(components[..<index])
+            let deviceContainer = prefix == ["/", "var", "mobile"]
+                || prefix == ["/", "private", "var", "mobile"]
             let simulatorContainer = index >= 4 && components[index - 4] == "CoreSimulator"
                 && components[index - 3] == "Devices" && UUID(uuidString: components[index - 2]) != nil
                 && components[index - 1] == "data"
             return deviceContainer || simulatorContainer
         }
-        guard documentRoot else { throw FolderGitServiceError.unsupportedLocation }
+        return documentRoot
     }
 
     /// A temporary Git directory lets libgit2 evaluate actual nested ignore and
@@ -268,7 +282,7 @@ struct FolderGitService: FolderGitHandling {
             guard let ownedWorkflow else { throw FolderGitServiceError.existingMetadata(rootGit.path) }
             _ = try readMarker(root: root, workflowID: ownedWorkflow)
         }
-        if looksBare(root) { throw FolderGitServiceError.existingMetadata(root.path) }
+        if try looksBare(root) { throw FolderGitServiceError.existingMetadata(root.path) }
         var enumerationError: Error?
         guard let enumerator = FileManager.default.enumerator(
             at: root,
@@ -293,7 +307,7 @@ struct FolderGitService: FolderGitHandling {
                 throw FolderGitServiceError.unsupportedFile(relative)
             }
             if values.isDirectory == true {
-                if looksBare(fileURL) { throw FolderGitServiceError.existingMetadata(fileURL.path) }
+                if try looksBare(fileURL) { throw FolderGitServiceError.existingMetadata(fileURL.path) }
                 continue
             }
             guard values.isRegularFile == true, normalizedPaths.insert(relative).inserted else {
@@ -644,8 +658,21 @@ struct FolderGitService: FolderGitHandling {
             // Security scopes may hide ancestors. Inspect only readable ones;
             // the location allowlist still prevents unsupported provider paths.
             if FileManager.default.isReadableFile(atPath: parentPath) {
-                if exists(parent.appendingPathComponent(".git")) || looksBare(parent) {
-                    throw FolderGitServiceError.existingMetadata(parentPath)
+                let gitdir = parent.appendingPathComponent(".git")
+                let hasGitEntry = exists(gitdir)
+                let bareCandidate = hasGitEntry ? false : try hasBareMetadataSignature(parent)
+                if hasGitEntry || bareCandidate {
+                    var repo: OpaquePointer?
+                    let code = git_repository_open_ext(&repo, parent.path, UInt32(GIT_REPOSITORY_OPEN_NO_SEARCH.rawValue), nil)
+                    defer { if let repo { git_repository_free(repo) } }
+                    if code == 0 {
+                        throw FolderGitServiceError.enclosingRepository(parentPath)
+                    }
+                    // A .git entry is never silently bypassed, including partial
+                    // initialization, broken gitdir files, and access failures.
+                    if hasGitEntry || code != GIT_ENOTFOUND.rawValue {
+                        throw FolderGitServiceError.metadataNeedsAttention(hasGitEntry ? gitdir.path : parentPath)
+                    }
                 }
             }
             let next = (parentPath as NSString).deletingLastPathComponent
@@ -654,9 +681,47 @@ struct FolderGitService: FolderGitHandling {
         }
     }
 
-    private static func looksBare(_ url: URL) -> Bool {
-        exists(url.appendingPathComponent("HEAD")) && exists(url.appendingPathComponent("objects"))
-            && exists(url.appendingPathComponent("refs")) && exists(url.appendingPathComponent("config"))
+    private static func looksBare(_ url: URL) throws -> Bool {
+        guard try hasBareMetadataSignature(url) else { return false }
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        // Open this metadata directory itself; never discover a parent's repo.
+        let flags = UInt32(GIT_REPOSITORY_OPEN_NO_SEARCH.rawValue | GIT_REPOSITORY_OPEN_NO_DOTGIT.rawValue)
+        let code = git_repository_open_ext(&repo, url.path, flags, nil)
+        if code == 0 { return true }
+        guard code == GIT_ENOTFOUND.rawValue else { throw FolderGitServiceError.metadataNeedsAttention(url.path) }
+        return false
+    }
+
+    private static func hasBareMetadataSignature(_ url: URL) throws -> Bool {
+        let head = url.appendingPathComponent("HEAD")
+        let objects = url.appendingPathComponent("objects")
+        let refs = url.appendingPathComponent("refs")
+        let config = url.appendingPathComponent("config")
+        guard [head, objects, refs, config].allSatisfy({ exists($0) }) else { return false }
+        let headValues = try head.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+        guard headValues.isRegularFile == true, headValues.isSymbolicLink != true else {
+            throw FolderGitServiceError.metadataNeedsAttention(head.path)
+        }
+        // Names alone are ordinary user content. A Git HEAD signature makes
+        // this a candidate for libgit2 validation without parsing arbitrary config.
+        let handle = try FileHandle(forReadingFrom: head)
+        defer { try? handle.close() }
+        let data = try handle.read(upToCount: 4097) ?? Data()
+        guard data.count <= 4096, let text = String(data: data, encoding: .utf8) else { return false }
+        let value = text.trimmingCharacters(in: .newlines)
+        let detachedHead = [40, 64].contains(value.utf8.count) && value.utf8.allSatisfy {
+            (48...57).contains($0) || (65...70).contains($0) || (97...102).contains($0)
+        }
+        guard value.hasPrefix("ref: ") || detachedHead else { return false }
+        for (item, directory) in [(objects, true), (refs, true), (config, false)] {
+            let values = try item.resourceValues(forKeys: [.isDirectoryKey, .isRegularFileKey, .isSymbolicLinkKey])
+            guard values.isSymbolicLink != true,
+                  directory ? values.isDirectory == true : values.isRegularFile == true else {
+                throw FolderGitServiceError.metadataNeedsAttention(item.path)
+            }
+        }
+        return true
     }
 
     private static func exists(_ url: URL) -> Bool {
