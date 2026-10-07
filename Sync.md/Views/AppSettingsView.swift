@@ -38,7 +38,11 @@ struct AppSettingsView: View {
                                     Task { await state.signInWithGitHub() }
                                 } label: {
                                     HStack(spacing: 12) {
-                                        Image(systemName: "person.crop.circle.badge.plus")
+                                        Image("GitHubLogo")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20, height: 20)
+                                            .foregroundStyle(Color.brutalText)
                                             .accessibilityHidden(true)
                                         Text("Sign in with GitHub")
                                             .bType(.mono, weight: .semibold)

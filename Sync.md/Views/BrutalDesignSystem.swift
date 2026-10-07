@@ -263,6 +263,7 @@ struct BPrimaryButton: View {
     var isLoading: Bool = false
     var isDisabled: Bool = false
     var icon: String? = nil
+    var imageName: String? = nil
     let action: () -> Void
 
     var body: some View {
@@ -278,7 +279,14 @@ struct BPrimaryButton: View {
                         .scaleEffect(0.85)
                 } else {
                     HStack(spacing: 8) {
-                        if let icon {
+                        if let imageName {
+                            Image(imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundStyle(Color(.systemBackground))
+                                .accessibilityHidden(true)
+                        } else if let icon {
                             Image(systemName: icon)
                                 .bType(.body, weight: .bold, color: Color(.systemBackground))
                         }
@@ -301,6 +309,7 @@ struct BSecondaryButton: View {
     var isLoading: Bool = false
     var isDisabled: Bool = false
     var icon: String? = nil
+    var imageName: String? = nil
     let action: () -> Void
 
     var body: some View {
@@ -320,7 +329,14 @@ struct BSecondaryButton: View {
                         .scaleEffect(0.85)
                 } else {
                     HStack(spacing: 8) {
-                        if let icon {
+                        if let imageName {
+                            Image(imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundStyle(Color.brutalText)
+                                .accessibilityHidden(true)
+                        } else if let icon {
                             Image(systemName: icon)
                                 .bType(.body, weight: .semibold)
                                 .foregroundStyle(isDisabled ? Color.brutalText : Color.brutalText)

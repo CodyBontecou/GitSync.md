@@ -137,7 +137,7 @@ struct SetupView: View {
     private var signInOptions: some View {
         VStack(spacing: 0) {
             // Primary: OAuth
-            BPrimaryButton(title: String(localized: "Sign in with GitHub"), icon: "person.fill") {
+            BPrimaryButton(title: String(localized: "Sign in with GitHub"), imageName: "GitHubLogo") {
                 analytics.trackOnboardingAuthStarted(method: .githubOAuth)
                 trackSetupStep(.githubSignIn)
                 Task {

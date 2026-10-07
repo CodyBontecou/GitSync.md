@@ -152,13 +152,16 @@ struct RepoListView: View {
                             Button {
                                 Task { await state.signInWithGitHub() }
                             } label: {
-                                Image(systemName: "person.crop.circle.badge.plus")
-                                    .bType(.mono, weight: .semibold, color: .brutalAccent)
+                                Image("GitHubLogo")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundStyle(Color.brutalText)
                                     .frame(width: 44, height: 44)
                                     .accessibilityHidden(true)
                             }
                             .buttonStyle(.plain)
-                            .accessibilityLabel(String(localized: "Sign In"))
+                            .accessibilityLabel(String(localized: "Sign in with GitHub"))
 
                             Button {
                                 showAppSettings = true

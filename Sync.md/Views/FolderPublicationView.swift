@@ -345,7 +345,7 @@ struct FolderPublicationView: View {
     }
 
     private var signInButton: some View {
-        BSecondaryButton(title: String(localized: "Sign in with GitHub"), isDisabled: isBusy) {
+        BSecondaryButton(title: String(localized: "Sign in with GitHub"), isDisabled: isBusy, imageName: "GitHubLogo") {
             perform {
                 await state.signInWithGitHub()
                 if record?.phase == .review {
