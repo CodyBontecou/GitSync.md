@@ -3035,6 +3035,129 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(provider.repo.assist.health.attention, .authenticationOrTrust)
     }
 
+    // Native control for #41, not an execution of Obsidian Git's mobile engine.
+    // Verify disk bytes and the persisted index, not just the returned commit SHA.
+    func testLocalGitPullOnlyMaterializesNotesAndCleanIndexAcrossSuccessivePulls() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-NotePullControl")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-NotePullControl-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let setup = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        let deletedURL = repoURL.appendingPathComponent("Deleted.md")
+        let oldNameURL = repoURL.appendingPathComponent("Old name.md")
+        let movedURL = repoURL.appendingPathComponent("Notes/Renamed café.md")
+        let addedURL = repoURL.appendingPathComponent("Notes/Added.md")
+        try fm.createDirectory(at: movedURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data("base\r\n".utf8).write(to: noteURL)
+        try Data("delete me\n".utf8).write(to: deletedURL)
+        try Data("keep these bytes\n".utf8).write(to: oldNameURL)
+        try await setup.stageAll()
+        let baseSHA = try await setup.commitLocal(message: "Base notes", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let incoming = Data("desktop edit: café 📝\r\nsecond line\r\n".utf8)
+        let added = Data("new desktop note\n".utf8)
+        try incoming.write(to: noteURL)
+        try added.write(to: addedURL)
+        try fm.removeItem(at: deletedURL)
+        try fm.moveItem(at: oldNameURL, to: movedURL)
+        try await setup.stageAll()
+        let remoteSHA = try await setup.commitLocal(message: "Desktop notes", authorName: "Tests", authorEmail: "tests@example.com")
+        let remoteIndexTree = try persistedIndexTreeSHA(repoURL: repoURL)
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL) // FORCE is fixture reset only; the pull below uses SAFE.
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        let before = try await setup.repoInfo()
+        XCTAssertEqual(before.changeCount, 0)
+        XCTAssertEqual(try Data(contentsOf: noteURL), Data("base\r\n".utf8))
+
+        let execution = try await setup.executePullOnly(pat: "", expectedBranch: "main")
+
+        XCTAssertEqual(execution.plan.action, .fastForward)
+        XCTAssertEqual(execution.pullResult?.updated, true)
+        XCTAssertEqual(execution.pullResult?.newCommitSHA, remoteSHA)
+        XCTAssertNil(execution.pullResult?.attention)
+        XCTAssertEqual(try Data(contentsOf: noteURL), incoming)
+        XCTAssertEqual(try Data(contentsOf: addedURL), added)
+        XCTAssertEqual(try Data(contentsOf: movedURL), Data("keep these bytes\n".utf8))
+        XCTAssertFalse(fm.fileExists(atPath: deletedURL.path))
+        XCTAssertFalse(fm.fileExists(atPath: oldNameURL.path))
+        XCTAssertEqual(try persistedIndexTreeSHA(repoURL: repoURL), remoteIndexTree)
+        let after = try await LocalGitService(localURL: repoURL).repoInfo()
+        XCTAssertEqual(after.commitSHA, remoteSHA)
+        XCTAssertEqual(after.changeCount, 0, "No inverse staged changes or dirty worktree after pull")
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+
+        // A second desktop change catches a stale index that only works on the first pull.
+        let nextIncoming = Data("second desktop edit\n".utf8)
+        try nextIncoming.write(to: noteURL)
+        try await setup.stage(path: "Note.md")
+        let nextSHA = try await setup.commitLocal(message: "Next desktop edit", authorName: "Tests", authorEmail: "tests@example.com")
+        let nextIndexTree = try persistedIndexTreeSHA(repoURL: repoURL)
+        // The bare origin needs the new commit's objects, just as a desktop push would supply them.
+        try fm.removeItem(at: originURL.appendingPathComponent("objects"))
+        try fm.copyItem(at: repoURL.appendingPathComponent(".git/objects"), to: originURL.appendingPathComponent("objects"))
+        try setLocalBranchRef(repoURL: originURL, branch: "main", sha: nextSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: remoteSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        let second = try await setup.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(second.plan.action, .fastForward)
+        XCTAssertEqual(second.pullResult?.newCommitSHA, nextSHA)
+        XCTAssertNil(second.pullResult?.attention)
+        XCTAssertEqual(try Data(contentsOf: noteURL), nextIncoming)
+        XCTAssertEqual(try Data(contentsOf: addedURL), added)
+        XCTAssertEqual(try persistedIndexTreeSHA(repoURL: repoURL), nextIndexTree)
+        let secondInfo = try await LocalGitService(localURL: repoURL).repoInfo()
+        XCTAssertEqual(secondInfo.commitSHA, nextSHA)
+        XCTAssertEqual(secondInfo.changeCount, 0)
+
+        let repeated = try await setup.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(repeated.plan.action, .upToDate)
+        XCTAssertEqual(try Data(contentsOf: noteURL), nextIncoming)
+        XCTAssertEqual(try persistedIndexTreeSHA(repoURL: repoURL), nextIndexTree)
+        let repeatedInfo = try await setup.repoInfo()
+        XCTAssertEqual(repeatedInfo.changeCount, 0)
+    }
+
+    func testLocalGitPullOnlyPreservesDistinctStagedAndUnstagedNoteBytes() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-NotePullDirtyControl")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-NotePullDirtyControl-Origin-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: repoURL); try? fm.removeItem(at: originURL) }
+        let setup = LocalGitService(localURL: repoURL)
+        let noteURL = repoURL.appendingPathComponent("Note.md")
+        try Data("base\n".utf8).write(to: noteURL)
+        try await setup.stage(path: "Note.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try Data("desktop\n".utf8).write(to: noteURL)
+        try await setup.stage(path: "Note.md")
+        let remoteSHA = try await setup.commitLocal(message: "Desktop", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: remoteSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        try Data("staged local edit\n".utf8).write(to: noteURL)
+        try await setup.stage(path: "Note.md")
+        let indexURL = repoURL.appendingPathComponent(".git/index")
+        let stagedIndexBytes = try Data(contentsOf: indexURL)
+        let stagedTree = try persistedIndexTreeSHA(repoURL: repoURL)
+        let localBytes = Data("unstaged editor edit\n".utf8)
+        try localBytes.write(to: noteURL)
+
+        let execution = try await setup.executePullOnly(pat: "", expectedBranch: "main")
+
+        XCTAssertEqual(execution.plan.action, .blockedByLocalChanges)
+        XCTAssertNil(execution.pullResult)
+        XCTAssertEqual(try Data(contentsOf: noteURL), localBytes)
+        XCTAssertEqual(try Data(contentsOf: indexURL), stagedIndexBytes, "Must not stage, discard, or replace local index")
+        XCTAssertEqual(try persistedIndexTreeSHA(repoURL: repoURL), stagedTree)
+        let after = try await setup.repoInfo()
+        XCTAssertEqual(after.commitSHA, baseSHA)
+        XCTAssertGreaterThan(after.changeCount, 0)
+        XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
     func testLocalGitPullOnlySafeCheckoutPreservesWriteArrivingAfterFinalStatusRead() async throws {
         let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-PullOnlyCheckoutRace")
         defer { try? FileManager.default.removeItem(at: repoURL) }
@@ -9501,6 +9624,27 @@ private func checkoutHeadTree(repoURL: URL) throws {
     XCTAssertEqual(git_repository_index(&index, repo), 0)
     XCTAssertEqual(git_index_read_tree(index, tree), 0)
     XCTAssertEqual(git_index_write(index), 0)
+}
+
+// Reopen the disk index, so the assertion cannot pass on a stale in-memory index.
+// git_index_write_tree serializes its entries into fixture-only tree objects; it
+// neither stages the worktree nor rewrites the index file.
+private func persistedIndexTreeSHA(repoURL: URL) throws -> String {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repoURL.path) == 0 else {
+        throw LocalGitError.repositoryCorrupted("Test could not open repository")
+    }
+    var index: OpaquePointer?
+    defer { if let index { git_index_free(index) } }
+    var treeOID = git_oid()
+    guard git_repository_index(&index, repo) == 0,
+          git_index_read(index, 1) == 0,
+          git_index_write_tree(&treeOID, index) == 0,
+          let raw = git_oid_tostr_s(&treeOID) else {
+        throw LocalGitError.repositoryCorrupted("Test could not read persisted index tree")
+    }
+    return String(cString: raw)
 }
 
 private func stagePathBypassingLocalGitService(repoURL: URL, path: String) throws {
