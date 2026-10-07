@@ -362,6 +362,7 @@ final class AppState {
     private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
     private let repoPersistenceStore: RepoPersistenceStore
     private let persistedReposURL: URL
+    let folderPublication: FolderPublicationCoordinator
     private var persistedRepoSnapshot: [UUID: RepoConfig] = [:]
     var assistConfigurationChangeHandler: (@MainActor @Sendable () -> Void)?
     var assistInventoryChangeHandler: (@MainActor @Sendable () -> Void)?
@@ -374,7 +375,8 @@ final class AppState {
         sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore = GitLFSSSHHostKeyFileTrustStore.default,
         repoPersistenceStore: RepoPersistenceStore = .shared,
         reposFileURL: URL? = nil,
-        loadPersistedState: Bool = true
+        loadPersistedState: Bool = true,
+        folderPublicationCoordinator: FolderPublicationCoordinator? = nil
     ) {
         self.gitRepositoryFactory = { url in
             SerializedGitRepository(base: gitRepositoryFactory(url), localURL: url)
@@ -382,6 +384,17 @@ final class AppState {
         self.sshHostKeyTrustStore = sshHostKeyTrustStore
         self.repoPersistenceStore = repoPersistenceStore
         self.persistedReposURL = reposFileURL ?? Self.reposFileURL
+        let publicationStoreURL: URL
+        if let reposFileURL {
+            publicationStoreURL = reposFileURL.deletingLastPathComponent().appendingPathComponent("folder-publications.json")
+        } else if loadPersistedState {
+            publicationStoreURL = FolderPublicationStore.defaultURL
+        } else {
+            publicationStoreURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent("folder-publication-tests-\(UUID().uuidString)/progress.json")
+        }
+        self.folderPublication = folderPublicationCoordinator
+            ?? FolderPublicationCoordinator(store: FolderPublicationStore(url: publicationStoreURL))
         if loadPersistedState {
             loadState()
             migrateKnownGitCredentialAccessibilityIfNeeded()
@@ -730,6 +743,14 @@ final class AppState {
         repos.firstIndex { $0.id == id }
     }
 
+    func hasLocalRepositoryAccess(repoID: UUID) -> Bool {
+        guard let repo = repo(id: repoID), repo.customVaultBookmarkData != nil else { return true }
+        guard let url = resolvedCustomURLs[repoID] else { return false }
+        let homePath = Self.canonicalFilePath(for: URL(fileURLWithPath: NSHomeDirectory()))
+        return accessingSecurityScope.contains(repoID)
+            || Self.canonicalFilePath(for: url).hasPrefix(homePath + "/")
+    }
+
     func vaultURL(for repoID: UUID) -> URL {
         if let customURL = resolvedCustomURLs[repoID] {
             if let repo = repo(id: repoID), let relativePath = repo.customVaultRelativePath,
@@ -749,6 +770,12 @@ final class AppState {
         }
         guard let repo = repo(id: repoID) else {
             return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        }
+        if repo.customVaultBookmarkData != nil {
+            // Preserve the legacy nonoptional interface without returning a
+            // writable fallback working copy when the grant is unavailable.
+            // /dev/null is a file: its descendants cannot be opened or created.
+            return URL(fileURLWithPath: "/dev/null").appendingPathComponent(repoID.uuidString)
         }
         if let relativePath = repo.customVaultRelativePath {
             // Rediscovered working copy inside the app's own container,
@@ -770,6 +797,7 @@ final class AppState {
             return customURL.path
         }
         guard let repo = repo(id: repoID) else { return "" }
+        if repo.customVaultBookmarkData != nil { return String(localized: "Folder access unavailable — reconnect the original folder") }
         if let relativePath = repo.customVaultRelativePath {
             return String(localized: "On My iPhone › GitSync.md › \(relativePath)")
         }
@@ -913,7 +941,9 @@ final class AppState {
         if isDemoMode { return }
         var didChange = false
         for (index, repo) in repos.enumerated() where repo.isCloned {
+            guard hasLocalRepositoryAccess(repoID: repo.id) else { continue }
             let vaultDir = vaultURL(for: repo.id)
+            if repo.customVaultBookmarkData != nil && !FileManager.default.isReadableFile(atPath: vaultDir.path) { continue }
             let gitService = gitRepositoryFactory(vaultDir)
 
             if !gitService.hasGitDirectory {
@@ -2280,6 +2310,15 @@ final class AppState {
             return
         }
 
+        guard !repos[idx].isExternalLocalRepository else {
+            showError(message: String(localized: "This is a user-owned folder. Reconnect it or restore its Git metadata instead of cloning over its files."))
+            return
+        }
+        guard hasLocalRepositoryAccess(repoID: repoID) else {
+            showError(message: String(localized: "Access to the chosen clone location is unavailable. Reconnect it before cloning."))
+            return
+        }
+
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Preparing to clone...")
@@ -2302,18 +2341,31 @@ final class AppState {
             // chosen folder instead of the in-app Documents directory.
             if repos[idx].customVaultBookmarkData == nil,
                let defaultBookmark = defaultSaveLocationBookmarkData {
+                let previousConfig = repos[idx]
                 let staleVaultDir = repos[idx].defaultVaultURL
                 repos[idx].customVaultBookmarkData = defaultBookmark
                 repos[idx].customLocationIsParent = true
-                saveRepos()
                 resolveVaultBookmark(for: repoID)
+                guard hasLocalRepositoryAccess(repoID: repoID) else {
+                    repos[idx] = previousConfig
+                    clearCustomLocation(for: repoID)
+                    throw FolderPublicationError.bookmarkUnavailable
+                }
+                guard saveRepos() else {
+                    repos[idx] = previousConfig
+                    clearCustomLocation(for: repoID)
+                    throw FolderPublicationError.unavailable(String(localized: "The chosen clone location could not be saved. Existing files have been preserved."))
+                }
                 if fm.fileExists(atPath: staleVaultDir.path) {
+                    try folderPublication.validateImportAvailability(at: staleVaultDir)
                     try? fm.removeItem(at: staleVaultDir)
                 }
             }
 
             let repo = repos[idx]
+            guard hasLocalRepositoryAccess(repoID: repoID) else { throw FolderPublicationError.bookmarkUnavailable }
             let vaultDir = vaultURL(for: repoID)
+            try folderPublication.validateImportAvailability(at: vaultDir)
 
             // Remove existing vault directory — git clone needs a clean target
             if fm.fileExists(atPath: vaultDir.path) {
@@ -3018,6 +3070,125 @@ final class AppState {
         assistInventoryChangeHandler?()
     }
 
+    // MARK: - Publish a Local Folder
+
+    func reconnectExternalRepository(repoID: UUID, url: URL) async throws {
+        guard let existing = repo(id: repoID), existing.isExternalLocalRepository else { throw FolderPublicationError.bookmarkUnavailable }
+        let scoped = url.startAccessingSecurityScopedResource()
+        var transferredScope = false
+        defer { if scoped && !transferredScope { url.stopAccessingSecurityScopedResource() } }
+        let homePath = Self.canonicalFilePath(for: URL(fileURLWithPath: NSHomeDirectory()))
+        guard scoped || Self.canonicalFilePath(for: url).hasPrefix(homePath + "/") else { throw FolderPublicationError.bookmarkUnavailable }
+        let info = try await gitRepositoryFactory(url).repoInfo()
+        guard Self.readGitRemoteURL(at: url) == existing.repoURL,
+              let index = repoIndex(id: repoID), repos[index] == existing else { throw FolderPublicationError.changedHistory }
+        let bookmark = try url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
+        repos[index].customVaultBookmarkData = bookmark
+        repos[index].customVaultRelativePath = nil
+        repos[index].customLocationIsParent = false
+        repos[index].vaultFolderName = url.lastPathComponent
+        repos[index].gitState.commitSHA = info.commitSHA
+        repos[index].gitState.branch = info.branch
+        guard saveRepos() else { repos[index] = existing; throw FolderPublicationError.unavailable(String(localized: "The folder was found, but its access settings could not be saved.")) }
+        clearCustomLocation(for: repoID)
+        resolvedCustomURLs[repoID] = url
+        if scoped { accessingSecurityScope.insert(repoID); transferredScope = true }
+        detectChanges(repoID: repoID)
+    }
+
+    private func folderPublicationToken(id: UUID) throws -> String {
+        guard !isDemoMode, let record = folderPublication.record(id: id),
+              let token = gitHubToken(for: record.accountLogin), !token.isEmpty else {
+            throw FolderPublicationError.accountMismatch
+        }
+        return token
+    }
+
+    func prepareFolderPublication(id: UUID, selectedPaths: Set<String>, authorName: String,
+                                  authorEmail: String, message: String, accountLogin: String,
+                                  repositoryName: String) async throws {
+        guard !isDemoMode, let token = gitHubToken(for: accountLogin), !token.isEmpty else {
+            throw FolderPublicationError.accountMismatch
+        }
+        try await folderPublication.prepare(id: id, selectedPaths: selectedPaths, authorName: authorName,
+            authorEmail: authorEmail, message: message, accountLogin: accountLogin,
+            repositoryName: repositoryName, token: token)
+    }
+
+    func publishFolderPublication(id: UUID) async throws {
+        try await folderPublication.publish(id: id, token: folderPublicationToken(id: id))
+        try await registerFolderPublication(id: id)
+    }
+
+    func reconcileFolderPublicationRemote(id: UUID) async throws -> PublishedGitHubRepository {
+        try await folderPublication.reconcileCreation(id: id, token: folderPublicationToken(id: id))
+    }
+
+    func adoptFolderPublicationRemote(id: UUID, remote: PublishedGitHubRepository) async throws {
+        try await folderPublication.adoptRecoveredRepository(id: id, remote: remote, token: folderPublicationToken(id: id))
+    }
+
+    /// The workflow UUID is also the RepoConfig UUID, making registration after
+    /// a crash idempotent. A picked folder always retains deletion protection.
+    func registerFolderPublication(id: UUID) async throws {
+        try await folderPublication.completeRegistration(id: id) { record, url in
+            try await self.registerPublishedFolder(record, at: url)
+        }
+    }
+
+    private func registerPublishedFolder(_ record: FolderPublicationRecord, at url: URL) async throws {
+        let id = record.id
+        guard let remote = record.remote, let commit = record.commitOID else {
+            throw FolderPublicationError.changedHistory
+        }
+        if let existing = repo(id: id) {
+            guard existing.repoURL == remote.cloneURL,
+                  Self.canonicalFilePath(for: vaultURL(for: id)) == Self.canonicalFilePath(for: url) else {
+                throw FolderPublicationError.changedHistory
+            }
+            return
+        }
+        let scoped = url.startAccessingSecurityScopedResource()
+        var transferredScope = false
+        defer { if scoped && !transferredScope { url.stopAccessingSecurityScopedResource() } }
+        let homePath = Self.canonicalFilePath(for: URL(fileURLWithPath: NSHomeDirectory()))
+        guard scoped || Self.canonicalFilePath(for: url).hasPrefix(homePath + "/") else {
+            throw FolderPublicationError.bookmarkUnavailable
+        }
+        let info = try await gitRepositoryFactory(url).repoInfo()
+        guard info.branch == "main", info.commitSHA == commit,
+              Self.readGitRemoteURL(at: url) == remote.cloneURL else { throw FolderPublicationError.changedHistory }
+        // Recheck after the asynchronous read: another registration may have
+        // completed while this one waited for its repository lease.
+        if let existing = repo(id: id) {
+            guard existing.repoURL == remote.cloneURL,
+                  Self.canonicalFilePath(for: vaultURL(for: id)) == Self.canonicalFilePath(for: url) else {
+                throw FolderPublicationError.changedHistory
+            }
+            return
+        }
+        guard !isRepoAlreadyTracked(atPath: url.path) else {
+            throw FolderPublicationError.unavailable(String(localized: "This folder is already registered. Its existing settings have been preserved."))
+        }
+        var assist = RepoAssistSettings.disabled
+        assist.excludedFromAutomaticSync = true
+        let config = RepoConfig(id: id, repoURL: remote.cloneURL, branch: "main",
+            authorName: record.authorName, authorEmail: record.authorEmail,
+            vaultFolderName: record.folderName, customVaultBookmarkData: record.bookmarkData,
+            customLocationIsParent: false, authMethod: .gitHubPAT, gitHubAccountLogin: record.accountLogin,
+            gitState: GitState(commitSHA: commit, treeSHA: record.treeOID ?? "", branch: "main",
+                blobSHAs: [:], lastSyncDate: Date()), assist: assist)
+        repos.append(config)
+        guard saveRepos() else {
+            repos.removeAll { $0.id == id }
+            throw FolderPublicationError.unavailable(String(localized: "The repository was published, but local settings could not be saved. Resume to finish adding it."))
+        }
+        resolvedCustomURLs[id] = url
+        if scoped { accessingSecurityScope.insert(id); transferredScope = true }
+        detectChanges(repoID: id)
+        assistInventoryChangeHandler?()
+    }
+
     /// Add a repository that already exists on the local filesystem.
     /// Reads git metadata from the `.git` directory and creates a RepoConfig
     /// that's immediately in "cloned" state — no network clone needed.
@@ -3069,7 +3240,9 @@ final class AppState {
         }
 
         do {
+            try folderPublication.validateImportAvailability(at: repoURL)
             let info = try await gitService.repoInfo()
+            try folderPublication.validateImportAvailability(at: repoURL)
 
             // Try to read the remote URL from the git config
             let remoteURL = Self.readGitRemoteURL(at: repoURL) ?? ""
@@ -3142,7 +3315,9 @@ final class AppState {
         }
 
         do {
+            try folderPublication.validateImportAvailability(at: url)
             let info = try await gitService.repoInfo()
+            try folderPublication.validateImportAvailability(at: url)
             let remoteURL = Self.readGitRemoteURL(at: url) ?? ""
             let remoteInfo = GitRemoteURL.parse(remoteURL)
             let relativePath = repoPath == documentsPath

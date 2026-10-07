@@ -43,6 +43,7 @@ struct AddRepoView: View {
     @State private var folderPickerPurpose: FolderPickerPurpose = .cloneLocation
     @State private var showFolderPicker = false
     @State private var showDiscovery = false
+    @State private var showFolderPublication = false
     @State private var validationMessage: String? = nil
     @State private var showValidationAlert = false
 
@@ -99,6 +100,9 @@ struct AddRepoView: View {
             }
             .sheet(isPresented: $showDiscovery) {
                 RepoDiscoveryView(onComplete: { dismiss() })
+            }
+            .sheet(isPresented: $showFolderPublication) {
+                FolderPublicationView(onComplete: { dismiss() })
             }
             .fileImporter(
                 isPresented: $showFolderPicker,
@@ -267,6 +271,42 @@ struct AddRepoView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
                 }
+
+                BDivider(label: String(localized: "or")).padding(.horizontal, 16).padding(.vertical, 10)
+
+                Button {
+                    showFolderPublication = true
+                } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: "folder.badge.plus")
+                            .font(.system(size: 18))
+                            .frame(width: 32)
+                            .accessibilityHidden(true)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Publish a Folder")
+                                .font(.system(size: 15, weight: .semibold))
+                            Text("Create a private GitHub repository from your files")
+                                .font(.system(size: 13, design: .monospaced))
+                            if state.folderPublication.records.contains(where: { $0.phase != .completed }) {
+                                Text("Saved progress available")
+                                    .font(.system(size: 13, design: .monospaced))
+                                    .foregroundStyle(Color.brutalAccent)
+                            }
+                        }
+                        .foregroundStyle(Color.brutalText)
+
+                        Spacer()
+                        Text("→")
+                            .font(.system(size: 13, design: .monospaced))
+                            .foregroundStyle(Color.brutalText)
+                            .accessibilityHidden(true)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("addRepository.publishFolder")
 
                 BDivider(label: String(localized: "or")).padding(.horizontal, 16).padding(.vertical, 10)
 

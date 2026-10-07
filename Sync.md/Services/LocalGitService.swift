@@ -1090,6 +1090,23 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     // MARK: - Clone / Remote Configuration
 
+    static func validateFolderPublicationAuthor(name: String, email: String) throws {
+        _ = try validatedGitSignatureIdentity(authorName: name, authorEmail: email)
+    }
+
+    /// Initial folder publication uses the same cross-process index safeguards
+    /// as ordinary staging, while supplying its own reviewed entry set.
+    static func folderPublicationIndexChecksum(_ index: OpaquePointer?) throws -> String {
+        try indexChecksumHex(index)
+    }
+
+    static func writeFolderPublicationIndex(repo: OpaquePointer?, index: OpaquePointer?, baselineChecksum: String) throws {
+        let lock = try lockUnchangedIndex(repo: repo, index: index, baselineChecksum: baselineChecksum)
+        defer { lock.release() }
+        try lock.prepare(index: index)
+        try lock.commitPreparedIndex()
+    }
+
     func setRemoteURL(name: String = "origin", url: String) async throws {
         let repoPath = self.localURL.path
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -3212,6 +3229,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try GitLFSService.cleanAndStageLFSFiles(
                 repo: repo,
                 index: index,
+                // Git's add/update passes already chose legitimate tracked or
+                // non-ignored paths. LFS must not enumerate and re-add ignored
+                // files that those passes deliberately omitted.
+                candidatePaths: Self.indexPaths(index: index),
                 autoTrackingPolicy: lfsAutoTrack ? .default : .disabled
             )
 
@@ -4238,6 +4259,22 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         expectedBranch: String? = nil,
         safetyExpectation: PushSafetyExpectation? = nil
     ) async throws {
+        try await pushBranch(pat: pat, expectedBranch: expectedBranch, safetyExpectation: safetyExpectation, processLFS: true)
+    }
+
+    /// The caller must validate the immutable reviewed commit tree as regular,
+    /// bounded, non-LFS content before using this first-publication transport.
+    /// Its mutable index must never select extra LFS objects for upload.
+    func pushReviewedNonLFSBranch(pat: String, safetyExpectation: PushSafetyExpectation) async throws {
+        try await pushBranch(
+            pat: pat, expectedBranch: safetyExpectation.branch,
+            safetyExpectation: safetyExpectation, processLFS: false
+        )
+    }
+
+    private func pushBranch(
+        pat: String, expectedBranch: String?, safetyExpectation: PushSafetyExpectation?, processLFS: Bool
+    ) async throws {
         let path = self.localURL.path
         let cancellationSignal = LocalGitCancellationSignal()
 
@@ -4273,41 +4310,33 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &expectedLocalOID)
             }
 
-            let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)
-
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Open index before push")
             try Self.ensureNoActiveConflict(repo: repo, index: index)
             let baselineIndexChecksum = try Self.indexChecksumHex(index)
-            try GitLFSService.validateNoLargeNonLFSBlobs(
-                repo: repo,
-                index: index,
-                candidatePaths: pushedPaths.isEmpty ? nil : pushedPaths
-            )
-
-            try await GitLFSService(
-                localURL: URL(fileURLWithPath: path, isDirectory: true),
-                credentials: GitRemoteCredentials.fromTransportPayload(pat)
-            ).verifyPushAllowed(changedPaths: pushedPaths, refName: "refs/heads/\(branchName)")
-            try cancellationSignal.checkCancellation()
-
-            let lfsPointers: [GitLFSPointer]
-            if pushedPaths.isEmpty {
-                lfsPointers = []
-            } else {
-                lfsPointers = try GitLFSService.pointersInIndex(
+            if processLFS {
+                let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)
+                try GitLFSService.validateNoLargeNonLFSBlobs(
                     repo: repo,
                     index: index,
-                    candidatePaths: pushedPaths
+                    candidatePaths: pushedPaths.isEmpty ? nil : pushedPaths
                 )
-            }
-            if !lfsPointers.isEmpty {
-                let uploaded = try await GitLFSService(
+                try await GitLFSService(
                     localURL: URL(fileURLWithPath: path, isDirectory: true),
                     credentials: GitRemoteCredentials.fromTransportPayload(pat)
-                ).uploadObjects(lfsPointers)
-                await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+                ).verifyPushAllowed(changedPaths: pushedPaths, refName: "refs/heads/\(branchName)")
+                try cancellationSignal.checkCancellation()
+                let lfsPointers = pushedPaths.isEmpty ? [] : try GitLFSService.pointersInIndex(
+                    repo: repo, index: index, candidatePaths: pushedPaths
+                )
+                if !lfsPointers.isEmpty {
+                    let uploaded = try await GitLFSService(
+                        localURL: URL(fileURLWithPath: path, isDirectory: true),
+                        credentials: GitRemoteCredentials.fromTransportPayload(pat)
+                    ).uploadObjects(lfsPointers)
+                    await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+                }
             }
             try cancellationSignal.checkCancellation()
             do {

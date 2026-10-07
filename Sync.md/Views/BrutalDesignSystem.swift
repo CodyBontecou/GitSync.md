@@ -280,12 +280,10 @@ struct BPrimaryButton: View {
                     HStack(spacing: 8) {
                         if let icon {
                             Image(systemName: icon)
-                                .bType(.body, weight: .bold)
-                                .foregroundStyle(Color(.systemBackground))
+                                .bType(.body, weight: .bold, color: Color(.systemBackground))
                         }
                         Text(title.uppercased())
-                            .bType(.mono, weight: .bold)
-                            .foregroundStyle(Color(.systemBackground))
+                            .bType(.mono, weight: .bold, color: Color(.systemBackground))
                             .tracking(2)
                     }
                 }

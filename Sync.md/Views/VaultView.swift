@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct VaultView: View {
     @Environment(AppState.self) private var state
@@ -13,6 +14,9 @@ struct VaultView: View {
     @State private var showRevertFileModal = false
     @State private var showResolveLocalSheet = false
     @State private var resolveLocalMessage = ""
+    @State private var showReconnectFolder = false
+    @State private var reconnectError: String?
+    @State private var isReconnectingFolder = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
@@ -33,7 +37,25 @@ struct VaultView: View {
             Color.brutalBg.ignoresSafeArea()
 
             if let repo = repo {
-                if repo.isCloned {
+                if !state.hasLocalRepositoryAccess(repoID: repoID) {
+                    ContentUnavailableView {
+                        Label(String(localized: "Folder Access Unavailable"), systemImage: "folder.badge.questionmark")
+                    } description: {
+                        Text(reconnectError ?? (isReconnectingFolder
+                            ? String(localized: "Checking the folder and restoring access…")
+                            : String(localized: "Reconnect the original folder to use this repository. Its saved commit and settings have been preserved.")))
+                    } actions: {
+                        if repo.isExternalLocalRepository {
+                            Button("Reconnect Folder") {
+                                reconnectError = nil
+                                showReconnectFolder = true
+                            }
+                                .disabled(isReconnectingFolder)
+                                .accessibilityIdentifier("repository.reconnectFolder")
+                            if isReconnectingFolder { ProgressView() }
+                        }
+                    }
+                } else if repo.isCloned {
                     clonedContent(repo)
                 } else if isThisRepoSyncing {
                     cloningContent
@@ -73,6 +95,26 @@ struct VaultView: View {
         }
         .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
         .sheet(isPresented: $showSettings) { SettingsView(repoID: repoID) }
+        .fileImporter(isPresented: $showReconnectFolder, allowedContentTypes: [.folder]) { result in
+            switch result {
+            case .success(let url):
+                guard !isReconnectingFolder else { return }
+                isReconnectingFolder = true
+                Task {
+                    defer { isReconnectingFolder = false }
+                    do {
+                        try await state.reconnectExternalRepository(repoID: repoID, url: url)
+                        reconnectError = nil
+                    } catch is CancellationError {
+                        // Cancellation leaves the saved repository untouched.
+                    } catch { reconnectError = error.localizedDescription }
+                }
+            case .failure(let error):
+                let cocoaError = error as NSError
+                guard cocoaError.domain != NSCocoaErrorDomain || cocoaError.code != NSUserCancelledError else { return }
+                reconnectError = error.localizedDescription
+            }
+        }
         .sheet(isPresented: $showResolveLocalSheet) {
             ResolveLocalChangesSheet(
                 message: $resolveLocalMessage,

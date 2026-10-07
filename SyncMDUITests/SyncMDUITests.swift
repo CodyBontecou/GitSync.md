@@ -741,6 +741,46 @@ final class SyncMDUITests: XCTestCase {
 
     // MARK: - Repo Clone Flow (Issue #19)
 
+    /// Navigation alone exposes the publication scope and separate consent
+    /// flow. The signed-out local fixture makes no GitHub requests, and this
+    /// test intentionally never opens Files or starts a publication operation.
+    func testPublishFolderEntryExplainsPrivateScopeBeforeFolderSelection() {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launch()
+        finishSignedOutEmptyLaunch(in: app)
+
+        let addRepository = app.buttons.matching(
+            NSPredicate(format: "label CONTAINS 'ADD' AND label CONTAINS 'REPOSITORY'")
+        ).firstMatch
+        tapWhenHittable(addRepository, in: app, message: "Add Repository should open the folder publication entry")
+        XCTAssertTrue(app.staticTexts["ADD REPOSITORY"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Open Existing Repository"].exists, "Existing Git repositories retain their separate entry")
+
+        let publication = app.buttons["addRepository.publishFolder"]
+        tapWhenHittable(publication, in: app, message: "Publish a Folder should be discoverable separately from opening a repository")
+        XCTAssertTrue(app.staticTexts["PUBLISH A FOLDER"].waitForExistence(timeout: 5))
+
+        let chooseFolder = app.buttons["folderPublication.chooseFolder"]
+        XCTAssertTrue(chooseFolder.waitForExistence(timeout: 5))
+        XCTAssertTrue(chooseFolder.isEnabled, "Folder selection should be available before signing in")
+        let scope = app.staticTexts["folderPublication.scope"]
+        XCTAssertTrue(scope.exists)
+        XCTAssertTrue(scope.label.contains("private repository"))
+        XCTAssertTrue(scope.label.contains("personal GitHub account"))
+        XCTAssertTrue(scope.label.contains("A separate publish step"), "Opening this screen must not imply upload consent")
+        XCTAssertTrue(app.staticTexts["folderPublication.localFiles"].label.contains("original folder"))
+        XCTAssertFalse(app.buttons["folderPublication.prepare"].exists)
+        XCTAssertFalse(app.buttons["folderPublication.publish"].exists, "No upload action is available before reviewing and preparing a folder")
+        XCTAssertFalse(app.alerts["Error"].exists)
+        attachScreenshot("Publish a Folder introduction", in: app)
+
+        app.buttons["folderPublication.close"].tap()
+        XCTAssertTrue(app.staticTexts["ADD REPOSITORY"].waitForExistence(timeout: 5))
+        tapFirstHittableButton(labeled: "Cancel", in: app)
+        XCTAssertTrue(app.staticTexts["NO REPOSITORIES"].waitForExistence(timeout: 5), "Closing the publication entry must not register a repository")
+    }
+
     /// Issue #19 clone-flow slice: from the signed-out repo list, add a
     /// repository by manual `file://` URL pointing at the `-UITestCloneFixture`
     /// bare remote (a REAL git repository seeded under /tmp), with `none`
