@@ -286,7 +286,7 @@ struct AddRepoView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Publish a Folder")
                                 .font(.system(size: 15, weight: .semibold))
-                            Text("Create a private GitHub repository from your files")
+                            Text("Create a public or private GitHub repository from your files")
                                 .font(.system(size: 13, design: .monospaced))
                             if state.folderPublication.records.contains(where: { $0.phase != .completed }) {
                                 Text("Saved progress available")

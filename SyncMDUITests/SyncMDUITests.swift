@@ -744,7 +744,7 @@ final class SyncMDUITests: XCTestCase {
     /// Navigation alone exposes the publication scope and separate consent
     /// flow. The signed-out local fixture makes no GitHub requests, and this
     /// test intentionally never opens Files or starts a publication operation.
-    func testPublishFolderEntryExplainsPrivateScopeBeforeFolderSelection() {
+    func testPublishFolderEntryExplainsVisibilityChoiceBeforeFolderSelection() {
         let app = XCUIApplication()
         app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
         app.launch()
@@ -766,7 +766,7 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(chooseFolder.isEnabled, "Folder selection should be available before signing in")
         let scope = app.staticTexts["folderPublication.scope"]
         XCTAssertTrue(scope.exists)
-        XCTAssertTrue(scope.label.contains("private repository"))
+        XCTAssertTrue(scope.label.contains("public or private repository"))
         XCTAssertTrue(scope.label.contains("personal GitHub account"))
         XCTAssertTrue(scope.label.contains("A separate publish step"), "Opening this screen must not imply upload consent")
         XCTAssertTrue(app.staticTexts["folderPublication.localFiles"].label.contains("original folder"))

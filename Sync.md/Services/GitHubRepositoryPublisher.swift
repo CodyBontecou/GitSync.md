@@ -63,23 +63,23 @@ final class GitHubRepositoryPublisher: GitHubRepositoryPublishing, Sendable {
         return GitHubPublicationAccount(id: user.id, login: user.login)
     }
 
-    func createPrivateRepository(name: String, token: String) async throws -> PublishedGitHubRepository {
+    func createRepository(name: String, isPrivate: Bool, token: String) async throws -> PublishedGitHubRepository {
         try Self.validateSegment(name, label: "Repository name")
         let owner = try await authenticatedLogin(token: token)
         struct Creation: Encodable {
             let name: String
-            let `private` = true
+            let `private`: Bool
             let auto_init = false
         }
-        let body = try JSONEncoder().encode(Creation(name: name))
+        let body = try JSONEncoder().encode(Creation(name: name, private: isPrivate))
         let response = try await request(["user", "repos"], token: token, method: "POST", body: body)
         do {
             guard response.status == 201 else {
                 throw GitHubRepositoryPublicationError.remoteMismatch("GitHub did not return a repository-creation confirmation.")
             }
             let repository = try decodeRepository(response.data, owner: owner, name: name)
-            guard repository.isPrivate else {
-                throw GitHubRepositoryPublicationError.remoteMismatch("GitHub did not confirm the requested private visibility.")
+            guard repository.isPrivate == isPrivate else {
+                throw GitHubRepositoryPublicationError.remoteMismatch("GitHub did not confirm the requested repository visibility.")
             }
             return repository
         } catch {

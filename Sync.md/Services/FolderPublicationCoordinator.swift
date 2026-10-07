@@ -158,7 +158,8 @@ final class FolderPublicationCoordinator {
     }
 
     func prepare(id: UUID, selectedPaths: Set<String>, authorName: String, authorEmail: String,
-                 message: String, accountLogin: String, repositoryName: String, token: String) async throws {
+                 message: String, accountLogin: String, repositoryName: String,
+                 repositoryIsPrivate: Bool? = nil, token: String) async throws {
         try await run {
             var record = try self.requireRecord(id)
             guard record.phase == .review || record.phase == .preparing else {
@@ -185,6 +186,9 @@ final class FolderPublicationCoordinator {
                 record.accountLogin = accountLogin
                 record.accountUserID = account.id
                 record.repositoryName = repositoryName
+                if let repositoryIsPrivate {
+                    record.repositoryIsPrivate = repositoryIsPrivate
+                }
                 record.phase = .preparing
                 record.lastError = nil
                 try self.save(record)
@@ -226,6 +230,19 @@ final class FolderPublicationCoordinator {
         }
     }
 
+    /// Destination choices remain editable until repository creation begins.
+    /// Save visibility immediately so review refresh and relaunch retain it.
+    func updateRepositoryVisibility(id: UUID, isPrivate: Bool) throws {
+        guard !isBusy else { throw FolderPublicationError.busy }
+        var record = try requireRecord(id)
+        guard (record.phase == .review || record.phase == .prepared), record.remote == nil else {
+            throw FolderPublicationError.creationNeedsReconciliation
+        }
+        record.repositoryIsPrivate = isPrivate
+        record.lastError = nil
+        try save(record)
+    }
+
     func publish(id: UUID, token: String) async throws {
         try await run {
             var record = try self.requireRecord(id)
@@ -243,9 +260,12 @@ final class FolderPublicationCoordinator {
                     record.phase = .creatingRemote
                     record.lastError = nil
                     try self.save(record)
-                    self.progressMessage = String(localized: "Creating a private repository on GitHub…")
+                    self.progressMessage = record.repositoryIsPrivate
+                        ? String(localized: "Creating a private repository on GitHub…")
+                        : String(localized: "Creating a public repository on GitHub…")
                     do {
-                        let remote = try await self.github.createPrivateRepository(name: record.repositoryName, token: token)
+                        let remote = try await self.github.createRepository(name: record.repositoryName,
+                            isPrivate: record.repositoryIsPrivate, token: token)
                         try self.validateRemote(remote, record: record)
                         record.remote = remote
                         record.phase = .remoteCreated
@@ -257,6 +277,7 @@ final class FolderPublicationCoordinator {
                     }
                 }
                 guard let remote = record.remote else { throw FolderPublicationError.creationNeedsReconciliation }
+                try self.validateRemote(remote, record: record)
                 let confirmed = try await self.github.repository(owner: remote.owner, name: remote.name, token: token)
                 guard confirmed == remote else { throw FolderPublicationError.changedHistory }
                 let oid = try await self.github.branchOID(owner: remote.owner, name: remote.name, branch: "main", token: token)
@@ -385,7 +406,8 @@ final class FolderPublicationCoordinator {
     }
 
     private func validateRemote(_ remote: PublishedGitHubRepository, record: FolderPublicationRecord) throws {
-        guard remote.isPrivate, remote.owner.caseInsensitiveCompare(record.accountLogin) == .orderedSame,
+        guard remote.isPrivate == record.repositoryIsPrivate,
+              remote.owner.caseInsensitiveCompare(record.accountLogin) == .orderedSame,
               remote.name.caseInsensitiveCompare(record.repositoryName) == .orderedSame else {
             throw FolderPublicationError.unavailable(String(localized: "GitHub returned a different account, name, or visibility. Check the destination before continuing."))
         }

@@ -62,6 +62,13 @@ struct FolderPublicationRecord: Codable, Sendable, Equatable, Identifiable {
     var accountLogin: String
     var accountUserID: Int64?
     var repositoryName: String
+    // Optional storage keeps journals created before visibility selection
+    // compatible with their original private-repository intent.
+    var requestedIsPrivate: Bool?
+    var repositoryIsPrivate: Bool {
+        get { requestedIsPrivate ?? true }
+        set { requestedIsPrivate = newValue }
+    }
     var commitOID: String?
     var treeOID: String?
     var remote: PublishedGitHubRepository?
@@ -83,6 +90,7 @@ struct FolderPublicationRecord: Codable, Sendable, Equatable, Identifiable {
         commitMessage = "Initial commit"
         accountLogin = ""
         repositoryName = folderName
+        requestedIsPrivate = true
         phase = .review
         createdAt = Date()
     }
@@ -100,7 +108,7 @@ protocol FolderGitHandling: Sendable {
 protocol GitHubRepositoryPublishing: Sendable {
     func authenticatedAccount(token: String) async throws -> GitHubPublicationAccount
     func authenticatedLogin(token: String) async throws -> String
-    func createPrivateRepository(name: String, token: String) async throws -> PublishedGitHubRepository
+    func createRepository(name: String, isPrivate: Bool, token: String) async throws -> PublishedGitHubRepository
     func repository(owner: String, name: String, token: String) async throws -> PublishedGitHubRepository?
     func branchOID(owner: String, name: String, branch: String, token: String) async throws -> String?
     func hasAnyReferences(owner: String, name: String, token: String) async throws -> Bool

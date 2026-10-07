@@ -3137,13 +3137,13 @@ final class AppState {
 
     func prepareFolderPublication(id: UUID, selectedPaths: Set<String>, authorName: String,
                                   authorEmail: String, message: String, accountLogin: String,
-                                  repositoryName: String) async throws {
+                                  repositoryName: String, repositoryIsPrivate: Bool? = nil) async throws {
         guard !isDemoMode, let token = gitHubToken(for: accountLogin), !token.isEmpty else {
             throw FolderPublicationError.accountMismatch
         }
         try await folderPublication.prepare(id: id, selectedPaths: selectedPaths, authorName: authorName,
             authorEmail: authorEmail, message: message, accountLogin: accountLogin,
-            repositoryName: repositoryName, token: token)
+            repositoryName: repositoryName, repositoryIsPrivate: repositoryIsPrivate, token: token)
     }
 
     func publishFolderPublication(id: UUID) async throws {

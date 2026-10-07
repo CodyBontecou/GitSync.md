@@ -100,7 +100,7 @@ struct FolderPublicationView: View {
                 Button("Cancel", role: .cancel) { adoptionCandidate = nil }
             } message: {
                 if let candidate = adoptionCandidate {
-                    Text("GitHub has \(candidate.owner)/\(candidate.name) (private). Its name does not prove it was created by this attempt. Use this repository as the destination for your saved commit?\n\n\(candidate.htmlURL)")
+                    Text("GitHub has \(candidate.owner)/\(candidate.name) (\(candidate.isPrivate ? String(localized: "Private") : String(localized: "Public"))). Its name does not prove it was created by this attempt. Use this repository as the destination for your saved commit?\n\n\(candidate.htmlURL)")
                 }
             }
             .onChange(of: scenePhase) { _, phase in
@@ -121,7 +121,7 @@ struct FolderPublicationView: View {
                         .accessibilityHidden(true)
                     Text("Your folder, on GitHub")
                         .bType(.titleLg)
-                    Text("Choose a folder on this device, review the files, and prepare a local commit. A separate publish step creates a private repository in your personal GitHub account.")
+                    Text("Choose a folder on this device, review the files, and prepare a local commit. A separate publish step creates a public or private repository in your personal GitHub account.")
                         .bType(.bodySm)
                         .accessibilityIdentifier("folderPublication.scope")
                     Text("Your files stay in their original folder. Keep the app open during the first upload.")
@@ -197,7 +197,7 @@ struct FolderPublicationView: View {
                 HStack(alignment: .top) {
                     Text(record.folderName).bType(.titleLg)
                     Spacer()
-                    BBadge(text: String(localized: "PRIVATE"), style: .accent)
+                    BBadge(text: record.repositoryIsPrivate ? String(localized: "PRIVATE") : String(localized: "PUBLIC"), style: .accent)
                 }
                 Text(record.folderPath)
                     .bType(.monoSm, weight: .regular, color: .brutalTextMid)
@@ -349,8 +349,38 @@ struct FolderPublicationView: View {
             BTextField(label: String(localized: "Repository Name"), text: $repositoryName, placeholder: record.folderName, autocapitalization: .never)
                 .disabled(isBusy || (!editable && record.phase != .prepared))
                 .accessibilityIdentifier("folderPublication.repositoryName")
-            Text("Personal account · private · main branch. The account is saved with this publication and stays the same if you switch accounts elsewhere.")
+            visibilityPicker(record)
+            Text("Personal account · main branch. The account is saved with this publication and stays the same if you switch accounts elsewhere.")
                 .bType(.monoSm, weight: .regular, color: .brutalTextMid)
+        }
+    }
+
+    private func visibilityPicker(_ record: FolderPublicationRecord) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("VISIBILITY").bType(.monoCaption).tracking(2)
+            Picker("Repository Visibility", selection: Binding(
+                get: { record.repositoryIsPrivate },
+                set: { isPrivate in
+                    do {
+                        try coordinator.updateRepositoryVisibility(id: record.id, isPrivate: isPrivate)
+                        errorMessage = nil
+                    } catch {
+                        errorMessage = error.localizedDescription
+                    }
+                }
+            )) {
+                Text("Private").tag(true)
+                Text("Public").tag(false)
+            }
+            .pickerStyle(.segmented)
+            .tint(.brutalAccent)
+            .disabled(isBusy || record.remote != nil || (record.phase != .review && record.phase != .prepared))
+            .accessibilityIdentifier("folderPublication.visibility")
+            Text(record.repositoryIsPrivate
+                 ? "Only you and people you grant access can see this repository."
+                 : "Anyone can see this repository and its files on GitHub.")
+                .bType(.monoSm, weight: .regular, color: .brutalTextMid)
+                .accessibilityIdentifier("folderPublication.visibilityDescription")
         }
     }
 
@@ -428,11 +458,15 @@ struct FolderPublicationView: View {
             .accessibilityIdentifier("folderPublication.register")
         case .prepared, .remoteCreated, .pushing, .pushUnknown:
             Text(record.remote == nil
-                 ? "This uploads the saved commit to a new private GitHub repository. Later edits to your files are not included in this upload."
+                 ? (record.repositoryIsPrivate
+                    ? "This uploads the saved commit to a new private GitHub repository. Later edits to your files are not included in this upload."
+                    : "This uploads the saved commit to a new public GitHub repository. Anyone can see its files. Later edits to your files are not included in this upload.")
                  : "Continue with the saved commit and the repository shown above. A retry checks the destination before uploading.")
                 .bType(.monoSm, weight: .regular, color: .brutalTextMid)
             FolderPublicationActionButton(
-                title: record.remote == nil ? String(localized: "Create Private Repository & Publish") : String(localized: "Publish Saved Commit"),
+                title: record.remote == nil
+                    ? (record.repositoryIsPrivate ? String(localized: "Create Private Repository & Publish") : String(localized: "Create Public Repository & Publish"))
+                    : String(localized: "Publish Saved Commit"),
                 isDisabled: isBusy || !hasPinnedToken(record) || repositoryName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             ) {
                 perform {
@@ -553,7 +587,8 @@ struct FolderPublicationView: View {
                 authorEmail: authorEmail,
                 message: commitMessage,
                 accountLogin: accountLogin,
-                repositoryName: repositoryName
+                repositoryName: repositoryName,
+                repositoryIsPrivate: record.repositoryIsPrivate
             )
         }
     }

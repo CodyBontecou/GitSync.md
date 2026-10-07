@@ -8,6 +8,7 @@ final class FolderPublicationCoordinatorTests: XCTestCase {
         let fixture = try Fixture()
         defer { fixture.remove() }
         let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        XCTAssertTrue(try XCTUnwrap(fixture.coordinator.record(id: id)).repositoryIsPrivate)
         let observedCount1 = await fixture.git.preparationCount()
         XCTAssertEqual(observedCount1, 0)
         XCTAssertEqual(fixture.coordinator.record(id: id)?.selectedPaths, ["notes.md"])
@@ -16,10 +17,114 @@ final class FolderPublicationCoordinatorTests: XCTestCase {
         XCTAssertEqual(saved.phase, .prepared)
         XCTAssertEqual(saved.commitOID, Fixture.commit)
         XCTAssertEqual(saved.selectedPaths, ["notes.md"])
+        XCTAssertTrue(saved.repositoryIsPrivate)
         let reloaded = fixture.reload()
         XCTAssertEqual(reloaded.record(id: id), saved)
         let observedCount2 = await fixture.github.creationCount()
         XCTAssertEqual(observedCount2, 0)
+    }
+
+    func testLegacyJournalWithoutVisibilityResumesAsPrivate() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        try await fixture.prepare(id)
+        let original = try XCTUnwrap(fixture.coordinator.record(id: id))
+        var journal = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(contentsOf: fixture.store.url)) as? [[String: Any]])
+        journal[0].removeValue(forKey: "requestedIsPrivate")
+        try JSONSerialization.data(withJSONObject: journal).write(to: fixture.store.url)
+
+        let resumed = fixture.reload()
+        XCTAssertNil(resumed.loadError)
+        let recovered = try XCTUnwrap(resumed.record(id: id))
+        XCTAssertEqual(recovered.id, original.id)
+        XCTAssertEqual(recovered.phase, .prepared)
+        XCTAssertEqual(recovered.selectedPaths, original.selectedPaths)
+        XCTAssertEqual(recovered.commitOID, original.commitOID)
+        XCTAssertEqual(recovered.accountUserID, original.accountUserID)
+        XCTAssertTrue(recovered.repositoryIsPrivate)
+        try await resumed.publish(id: id, token: "alice-token")
+        let requestedVisibilities = await fixture.github.createdVisibilities()
+        XCTAssertEqual(requestedVisibilities, [true])
+    }
+
+    func testPublicReviewChoiceSurvivesRefreshPreparationAndPublicationAfterRestart() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        try fixture.coordinator.updateRepositoryVisibility(id: id, isPrivate: false)
+        let resumedReview = fixture.reload()
+        XCTAssertFalse(try XCTUnwrap(resumedReview.record(id: id)).repositoryIsPrivate)
+        try await resumedReview.refreshReview(id: id)
+        XCTAssertFalse(try XCTUnwrap(resumedReview.record(id: id)).repositoryIsPrivate)
+        try await fixture.prepare(id, repositoryIsPrivate: false)
+
+        let resumedPublication = fixture.reload()
+        XCTAssertFalse(try XCTUnwrap(resumedPublication.record(id: id)).repositoryIsPrivate)
+        try await resumedPublication.publish(id: id, token: "alice-token")
+        let saved = try XCTUnwrap(fixture.store.load().first { $0.id == id })
+        XCTAssertEqual(saved.phase, .published)
+        XCTAssertFalse(saved.repositoryIsPrivate)
+        XCTAssertFalse(try XCTUnwrap(saved.remote).isPrivate)
+        let requestedVisibilities = await fixture.github.createdVisibilities()
+        XCTAssertEqual(requestedVisibilities, [false])
+        let pushCount = await fixture.git.publicationCount()
+        XCTAssertEqual(pushCount, 1)
+    }
+
+    func testPreparationWithoutVisibilityArgumentPreservesSavedPublicChoice() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        try fixture.coordinator.updateRepositoryVisibility(id: id, isPrivate: false)
+
+        let resumed = fixture.reload()
+        try await resumed.prepare(id: id, selectedPaths: ["notes.md"], authorName: "Alice", authorEmail: "alice@users.noreply.github.com",
+            message: "Initial notes", accountLogin: "alice", repositoryName: "notes", token: "alice-token")
+        XCTAssertFalse(try XCTUnwrap(resumed.record(id: id)).repositoryIsPrivate)
+        try await resumed.publish(id: id, token: "alice-token")
+        let requestedVisibilities = await fixture.github.createdVisibilities()
+        XCTAssertEqual(requestedVisibilities, [false])
+        XCTAssertEqual(resumed.record(id: id)?.phase, .published)
+        XCTAssertFalse(try XCTUnwrap(resumed.record(id: id)?.remote).isPrivate)
+    }
+
+    func testResumingInterruptedPreparationKeepsSavedPublicVisibility() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        try await fixture.prepare(id, repositoryIsPrivate: false)
+        var interrupted = try XCTUnwrap(fixture.coordinator.record(id: id))
+        interrupted.phase = .preparing
+        interrupted.commitOID = nil
+        interrupted.treeOID = nil
+        try fixture.store.save(interrupted)
+
+        let resumed = fixture.reload()
+        try await resumed.prepare(id: id, selectedPaths: ["notes.md"], authorName: "Alice", authorEmail: "alice@users.noreply.github.com",
+            message: "Initial notes", accountLogin: "alice", repositoryName: "notes", token: "alice-token")
+        XCTAssertEqual(resumed.record(id: id)?.phase, .prepared)
+        XCTAssertFalse(try XCTUnwrap(resumed.record(id: id)).repositoryIsPrivate)
+        try await resumed.publish(id: id, token: "alice-token")
+        let requestedVisibilities = await fixture.github.createdVisibilities()
+        XCTAssertEqual(requestedVisibilities, [false])
+    }
+
+    func testPreparedVisibilityCanChangeBeforeRemoteCreation() async throws {
+        let fixture = try Fixture()
+        defer { fixture.remove() }
+        let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+        try await fixture.prepare(id)
+        try fixture.coordinator.updateRepositoryVisibility(id: id, isPrivate: false)
+        let changed = try XCTUnwrap(fixture.reload().record(id: id))
+        XCTAssertEqual(changed.phase, .prepared)
+        XCTAssertFalse(changed.repositoryIsPrivate)
+        XCTAssertEqual(changed.commitOID, Fixture.commit)
+        try await fixture.coordinator.publish(id: id, token: "alice-token")
+        let requestedVisibilities = await fixture.github.createdVisibilities()
+        XCTAssertEqual(requestedVisibilities, [false])
+        let preparationCount = await fixture.git.preparationCount()
+        XCTAssertEqual(preparationCount, 1)
     }
 
     func testRefreshAfterChangedFileAndRestartKeepsUserExclusions() async throws {
@@ -117,26 +222,114 @@ final class FolderPublicationCoordinatorTests: XCTestCase {
     }
 
     func testLostCreationResponseSurvivesRestartAndRequiresExplicitAdoption() async throws {
-        let fixture = try Fixture(loseCreationResponse: true)
+        for isPrivate in [true, false] {
+            let fixture = try Fixture(loseCreationResponse: true)
+            defer { fixture.remove() }
+            let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+            try await fixture.prepare(id, repositoryIsPrivate: isPrivate)
+            await assertFailure { try await fixture.coordinator.publish(id: id, token: "alice-token") }
+            XCTAssertEqual(fixture.coordinator.record(id: id)?.phase, .creationUnknown)
+            let resumed = fixture.reload()
+            await assertFailure { try await resumed.publish(id: id, token: "alice-token") }
+            let observedCount3 = await fixture.github.creationCount()
+            XCTAssertEqual(observedCount3, 1)
+            let remote = try await resumed.reconcileCreation(id: id, token: "alice-token")
+            XCTAssertEqual(remote.isPrivate, isPrivate)
+            XCTAssertNil(resumed.record(id: id)?.remote)
+            XCTAssertEqual(resumed.record(id: id)?.phase, .creationUnknown)
+            try await resumed.adoptRecoveredRepository(id: id, remote: remote, token: "alice-token")
+            try await resumed.publish(id: id, token: "alice-token")
+            XCTAssertEqual(resumed.record(id: id)?.phase, .published)
+            XCTAssertEqual(resumed.record(id: id)?.repositoryIsPrivate, isPrivate)
+            let observedCount4 = await fixture.github.creationCount()
+            XCTAssertEqual(observedCount4, 1)
+            let observedCount5 = await fixture.git.publicationCount()
+            XCTAssertEqual(observedCount5, 1)
+        }
+    }
+
+    func testReconciliationAndAdoptionRejectChangedVisibilityInEitherDirection() async throws {
+        for isPrivate in [true, false] {
+            let fixture = try Fixture(loseCreationResponse: true)
+            defer { fixture.remove() }
+            let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+            try await fixture.prepare(id, repositoryIsPrivate: isPrivate)
+            await assertFailure { try await fixture.coordinator.publish(id: id, token: "alice-token") }
+            let saved = try XCTUnwrap(fixture.coordinator.record(id: id))
+            XCTAssertThrowsError(try fixture.coordinator.updateRepositoryVisibility(id: id, isPrivate: !isPrivate))
+            let updatedRemote = await fixture.github.changeRemoteVisibility(isPrivate: !isPrivate)
+            let changedRemote = try XCTUnwrap(updatedRemote)
+            let resumed = fixture.reload()
+
+            await assertFailure { _ = try await resumed.reconcileCreation(id: id, token: "alice-token") }
+            await assertFailure { try await resumed.adoptRecoveredRepository(id: id, remote: changedRemote, token: "alice-token") }
+            XCTAssertEqual(resumed.record(id: id), saved)
+            XCTAssertEqual(try fixture.store.load().first { $0.id == id }, saved)
+            let pushCount = await fixture.git.publicationCount()
+            XCTAssertEqual(pushCount, 0)
+            let creationCount = await fixture.github.creationCount()
+            XCTAssertEqual(creationCount, 1)
+        }
+    }
+
+    func testRetryRejectsRemoteVisibilityChangeEvenWhenPublishedCommitMatches() async throws {
+        for isPrivate in [true, false] {
+            let fixture = try Fixture(losePushResponse: true)
+            defer { fixture.remove() }
+            let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+            try await fixture.prepare(id, repositoryIsPrivate: isPrivate)
+            await assertFailure { try await fixture.coordinator.publish(id: id, token: "alice-token") }
+            XCTAssertEqual(fixture.coordinator.record(id: id)?.phase, .pushUnknown)
+            _ = await fixture.github.changeRemoteVisibility(isPrivate: !isPrivate)
+            let resumed = fixture.reload()
+            await assertFailure { try await resumed.publish(id: id, token: "alice-token") }
+
+            XCTAssertEqual(resumed.record(id: id)?.phase, .pushUnknown)
+            XCTAssertEqual(resumed.record(id: id)?.repositoryIsPrivate, isPrivate)
+            XCTAssertEqual(resumed.record(id: id)?.remote?.isPrivate, isPrivate)
+            let pushCount = await fixture.git.publicationCount()
+            XCTAssertEqual(pushCount, 1)
+            let creationCount = await fixture.github.creationCount()
+            XCTAssertEqual(creationCount, 1)
+        }
+    }
+
+    func testVisibilityChangesAreLockedAfterCreationStarts() async throws {
+        let fixture = try Fixture()
         defer { fixture.remove() }
         let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
         try await fixture.prepare(id)
-        await assertFailure { try await fixture.coordinator.publish(id: id, token: "alice-token") }
-        XCTAssertEqual(fixture.coordinator.record(id: id)?.phase, .creationUnknown)
-        let resumed = fixture.reload()
-        await assertFailure { try await resumed.publish(id: id, token: "alice-token") }
-        let observedCount3 = await fixture.github.creationCount()
-        XCTAssertEqual(observedCount3, 1)
-        let remote = try await resumed.reconcileCreation(id: id, token: "alice-token")
-        XCTAssertNil(resumed.record(id: id)?.remote)
-        XCTAssertEqual(resumed.record(id: id)?.phase, .creationUnknown)
-        try await resumed.adoptRecoveredRepository(id: id, remote: remote, token: "alice-token")
-        try await resumed.publish(id: id, token: "alice-token")
-        XCTAssertEqual(resumed.record(id: id)?.phase, .published)
-        let observedCount4 = await fixture.github.creationCount()
-        XCTAssertEqual(observedCount4, 1)
-        let observedCount5 = await fixture.git.publicationCount()
-        XCTAssertEqual(observedCount5, 1)
+        var record = try XCTUnwrap(fixture.coordinator.record(id: id))
+        for phase: FolderPublicationPhase in [.preparing, .creatingRemote, .creationUnknown, .remoteCreated,
+                                              .pushing, .pushUnknown, .published, .completed] {
+            record.phase = phase
+            try fixture.store.save(record)
+            let resumed = fixture.reload()
+            XCTAssertThrowsError(try resumed.updateRepositoryVisibility(id: id, isPrivate: false), "Visibility must be locked in \(phase)")
+            XCTAssertEqual(try fixture.store.load().first { $0.id == id }, record)
+        }
+    }
+
+    func testSavedRemoteCannotContradictRequestedVisibilityDuringRecovery() async throws {
+        for isPrivate in [true, false] {
+            let fixture = try Fixture(losePushResponse: true)
+            defer { fixture.remove() }
+            let id = try await fixture.coordinator.selectFolder(url: fixture.folder)
+            try await fixture.prepare(id, repositoryIsPrivate: isPrivate)
+            await assertFailure { try await fixture.coordinator.publish(id: id, token: "alice-token") }
+            var contradictory = try XCTUnwrap(fixture.coordinator.record(id: id))
+            contradictory.repositoryIsPrivate = !isPrivate
+            try fixture.store.save(contradictory)
+
+            let resumed = fixture.reload()
+            await assertFailure { try await resumed.publish(id: id, token: "alice-token") }
+            XCTAssertEqual(resumed.record(id: id)?.phase, .pushUnknown)
+            XCTAssertEqual(resumed.record(id: id)?.remote, contradictory.remote)
+            let pushCount = await fixture.git.publicationCount()
+            XCTAssertEqual(pushCount, 1)
+            let creationCount = await fixture.github.creationCount()
+            XCTAssertEqual(creationCount, 1)
+        }
     }
 
     func testLostPushResponseReconcilesSavedOIDWithoutPushingAgain() async throws {
@@ -585,9 +778,9 @@ final class FolderPublicationCoordinatorTests: XCTestCase {
             coordinator = FolderPublicationCoordinator(store: store, git: git, github: github, allowUnscopedAccess: true)
         }
 
-        func prepare(_ id: UUID) async throws {
+        func prepare(_ id: UUID, repositoryIsPrivate: Bool = true) async throws {
             try await coordinator.prepare(id: id, selectedPaths: ["notes.md"], authorName: "Alice", authorEmail: "alice@users.noreply.github.com",
-                message: "Initial notes", accountLogin: "alice", repositoryName: "notes", token: "alice-token")
+                message: "Initial notes", accountLogin: "alice", repositoryName: "notes", repositoryIsPrivate: repositoryIsPrivate, token: "alice-token")
         }
         func reload() -> FolderPublicationCoordinator {
             FolderPublicationCoordinator(store: store, git: git, github: github, allowUnscopedAccess: true)
@@ -646,6 +839,7 @@ private actor FolderGitHubStub: GitHubRepositoryPublishing {
     let rejectName: String?
     let hasHistory: Bool
     var creations = 0
+    var creationVisibilities: [Bool] = []
     var remote: PublishedGitHubRepository?
     var oid: String?
     init(loseCreationResponse: Bool, rejectName: String?, hasHistory: Bool) {
@@ -655,11 +849,12 @@ private actor FolderGitHubStub: GitHubRepositoryPublishing {
         GitHubPublicationAccount(id: token == "bob-token" ? 2 : (token == "reused-alice-token" ? 99 : 1), login: token == "bob-token" ? "bob" : "alice")
     }
     func authenticatedLogin(token: String) async throws -> String { token == "bob-token" ? "bob" : "alice" }
-    func createPrivateRepository(name: String, token: String) async throws -> PublishedGitHubRepository {
+    func createRepository(name: String, isPrivate: Bool, token: String) async throws -> PublishedGitHubRepository {
         creations += 1
+        creationVisibilities.append(isPrivate)
         if name == rejectName { throw GitHubRepositoryPublicationError.validationFailed("name already exists") }
         let created = PublishedGitHubRepository(id: 42, owner: "alice", name: name,
-            htmlURL: "https://github.com/alice/\(name)", cloneURL: "https://github.com/alice/\(name).git", isPrivate: true)
+            htmlURL: "https://github.com/alice/\(name)", cloneURL: "https://github.com/alice/\(name).git", isPrivate: isPrivate)
         remote = created
         if loseCreationResponse { throw GitHubRepositoryPublicationError.creationOutcomeUnknown("Response lost") }
         return created
@@ -669,4 +864,12 @@ private actor FolderGitHubStub: GitHubRepositoryPublishing {
     func hasAnyReferences(owner: String, name: String, token: String) async throws -> Bool { hasHistory || oid != nil }
     func markPublished(_ oid: String) { self.oid = oid }
     func creationCount() -> Int { creations }
+    func createdVisibilities() -> [Bool] { creationVisibilities }
+    func changeRemoteVisibility(isPrivate: Bool) -> PublishedGitHubRepository? {
+        guard let current = remote else { return nil }
+        let updated = PublishedGitHubRepository(id: current.id, owner: current.owner, name: current.name,
+            htmlURL: current.htmlURL, cloneURL: current.cloneURL, isPrivate: isPrivate)
+        remote = updated
+        return updated
+    }
 }

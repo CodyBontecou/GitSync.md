@@ -7,7 +7,7 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
         let fixture = fixture([.json(200, ["id": 7, "login": "cody"]), .json(201, repositoryJSON())])
         defer { fixture.close() }
 
-        let repository = try await fixture.publisher.createPrivateRepository(name: "notes", token: "test-token")
+        let repository = try await fixture.publisher.createRepository(name: "notes", isPrivate: true, token: "test-token")
         XCTAssertEqual(repository.id, 42)
         XCTAssertEqual(repository.owner, "cody")
         XCTAssertTrue(repository.isPrivate)
@@ -22,6 +22,25 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
         XCTAssertEqual(Set(body.keys), ["name", "private", "auto_init"])
         XCTAssertEqual(body["name"] as? String, "notes")
         XCTAssertEqual(body["private"] as? Bool, true)
+        XCTAssertEqual(body["auto_init"] as? Bool, false)
+    }
+
+    func testCreatesOnlyAnEmptyPublicPersonalRepositoryWhenSelected() async throws {
+        let fixture = fixture([.json(200, ["id": 7, "login": "cody"]), .json(201, repositoryJSON(isPrivate: false))])
+        defer { fixture.close() }
+
+        let repository = try await fixture.publisher.createRepository(name: "notes", isPrivate: false, token: "test-token")
+        XCTAssertFalse(repository.isPrivate)
+        XCTAssertEqual(repository.owner, "cody")
+        XCTAssertEqual(repository.cloneURL, "https://github.com/cody/notes.git")
+        let requests = fixture.stub.requests
+        XCTAssertEqual(requests.count, 2)
+        XCTAssertEqual(requests[1].url?.absoluteString, "https://api.github.com/user/repos")
+        XCTAssertEqual(requests[1].httpMethod, "POST")
+        let body = try XCTUnwrap(try JSONSerialization.jsonObject(with: bodyData(requests[1])) as? [String: Any])
+        XCTAssertEqual(Set(body.keys), ["name", "private", "auto_init"])
+        XCTAssertEqual(body["name"] as? String, "notes")
+        XCTAssertEqual(body["private"] as? Bool, false)
         XCTAssertEqual(body["auto_init"] as? Bool, false)
     }
 
@@ -62,10 +81,9 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
         }
     }
 
-    func testCreationRejectsWrongOwnerVisibilityAndNoncanonicalDestinationAsUnknown() async throws {
+    func testCreationRejectsWrongOwnerAndNoncanonicalDestinationAsUnknown() async throws {
         let changes: [(String, Any)] = [
             ("owner", ["login": "someone-else"]),
-            ("private", false),
             ("name", "different-name"),
             ("html_url", "http://github.com/cody/notes"),
             ("html_url", "https://github.com/cody/notes?unexpected=1"),
@@ -81,12 +99,29 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
             let fixture = fixture([.json(200, ["id": 7, "login": "cody"]), .json(201, repository)])
             defer { fixture.close() }
             do {
-                _ = try await fixture.publisher.createPrivateRepository(name: "notes", token: "test-token")
+                _ = try await fixture.publisher.createRepository(name: "notes", isPrivate: true, token: "test-token")
                 XCTFail("Expected rejection of \(key): \(value)")
             } catch let error as GitHubRepositoryPublicationError {
                 XCTAssertTrue(error.creationOutcomeIsUnknown, "Creation succeeded but its destination was not usable: \(error)")
             }
             XCTAssertEqual(fixture.stub.requests.count, 2, "Returned URLs must never receive an authenticated request")
+        }
+    }
+
+    func testCreationRejectsVisibilityMismatchInEitherDirectionAsUnknown() async throws {
+        for requestedIsPrivate in [true, false] {
+            let fixture = fixture([
+                .json(200, ["id": 7, "login": "cody"]),
+                .json(201, repositoryJSON(isPrivate: !requestedIsPrivate))
+            ])
+            defer { fixture.close() }
+            do {
+                _ = try await fixture.publisher.createRepository(name: "notes", isPrivate: requestedIsPrivate, token: "test-token")
+                XCTFail("Expected the returned visibility to match the requested visibility")
+            } catch let error as GitHubRepositoryPublicationError {
+                XCTAssertTrue(error.creationOutcomeIsUnknown)
+            }
+            XCTAssertEqual(fixture.stub.requests.count, 2)
         }
     }
 
@@ -102,7 +137,7 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
             let fixture = fixture([.json(200, ["id": 7, "login": "cody"]), response])
             defer { fixture.close() }
             do {
-                _ = try await fixture.publisher.createPrivateRepository(name: "notes", token: "test-token")
+                _ = try await fixture.publisher.createRepository(name: "notes", isPrivate: true, token: "test-token")
                 XCTFail("Expected an unknown creation outcome")
             } catch let error as GitHubRepositoryPublicationError {
                 XCTAssertTrue(error.creationOutcomeIsUnknown)
@@ -117,7 +152,7 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
         ])
         defer { fixture.close() }
         do {
-            _ = try await fixture.publisher.createPrivateRepository(name: "notes", token: "test-token")
+            _ = try await fixture.publisher.createRepository(name: "notes", isPrivate: true, token: "test-token")
             XCTFail("Expected a name collision")
         } catch let error as GitHubRepositoryPublicationError {
             XCTAssertEqual(error, .validationFailed("name already exists on this account"))
@@ -252,9 +287,9 @@ final class GitHubRepositoryPublisherTests: XCTestCase {
         XCTAssertTrue(fixture.stub.requests.isEmpty)
     }
 
-    private func repositoryJSON() -> [String: Any] {
+    private func repositoryJSON(isPrivate: Bool = true) -> [String: Any] {
         [
-            "id": 42, "owner": ["login": "cody"], "name": "notes", "private": true,
+            "id": 42, "owner": ["login": "cody"], "name": "notes", "private": isPrivate,
             "html_url": "https://github.com/cody/notes", "clone_url": "https://github.com/cody/notes.git"
         ]
     }
