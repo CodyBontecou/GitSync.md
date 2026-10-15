@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Sign in once: connect GitSync.md to Obsidian Git — GitSync.md</title>
+<meta name="description" content="Meet GitSync.md Connect: clone a GitHub vault on your iPhone, install the companion from Obsidian’s community directory, and connect Git without another sign-in.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/gitsync-connect-obsidian-git.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Sign in once: connect GitSync.md to Obsidian Git">
+<meta property="og:description" content="Meet GitSync.md Connect: clone a GitHub vault on your iPhone, install the companion from Obsidian’s community directory, and connect Git without another sign-in.">
+<meta property="og:url" content="https://gitsync.md/blog/gitsync-connect-obsidian-git.html">
+<meta property="og:image" content="https://gitsync.md/assets/gitsync-app-icon.png">
+<meta property="article:published_time" content="2026-10-15">
+<meta property="article:modified_time" content="2026-10-15">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sign in once: connect GitSync.md to Obsidian Git">
+<meta name="twitter:description" content="Meet GitSync.md Connect: clone a GitHub vault on your iPhone, install the companion from Obsidian’s community directory, and connect Git without another sign-in.">
+<meta name="twitter:image" content="https://gitsync.md/assets/gitsync-app-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sign in once: connect GitSync.md to Obsidian Git",
+  "description": "Meet GitSync.md Connect: clone a GitHub vault on your iPhone, install the companion from Obsidian\u2019s community directory, and connect Git without another sign-in.",
+  "datePublished": "2026-10-15",
+  "dateModified": "2026-10-15",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/gitsync-connect-obsidian-git.html"
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="./gitsync-connect-obsidian-git/media.css">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<!-- ─── NAV ─── -->
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="../index.html" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="../index.html#features">The app</a><a href="../index.html#workflow">How it works</a><a href="../blog/index.html">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="../index.html#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="container hero-grid">
+      <div class="article-title">
+        <div class="eyebrow">New feature / Obsidian on iPhone</div>
+        <h1>Sign in once. Keep writing<span class="accent">.</span></h1>
+        <p class="subtitle">GitSync.md Connect brings your existing GitHub sign-in to Obsidian Git. Clone your vault, enable the companion, and get back to your notes.</p>
+        <div class="meta-line"><time datetime="2026-10-15">October 15, 2026</time><span>By Cody Bontecou</span><span>2.8.0 preview</span></div>
+      </div>
+      <aside class="toc-card" aria-label="Article outline">
+        <div class="toc-title">In this post</div>
+        <ol>
+          <li><a href="#one-sign-in">One GitHub sign-in</a></li>
+          <li><a href="#setup">Connect your vault</a></li>
+          <li><a href="#visual-walkthrough">Follow the screens</a></li>
+          <li><a href="#tested">Tested on a real iPhone</a></li>
+          <li><a href="#credentials">How the handoff works</a></li>
+          <li><a href="#questions">A few useful details</a></li>
+        </ol>
+      </aside>
+    </div>
+  </header>
+  <div class="container">
+    <div class="article-shell article-shell-single">
+      <article class="article-body">
+        <div class="callout">
+          <span class="callout-label">Availability · October 15, 2026</span>
+          <p>The companion is available in <a href="https://community.obsidian.md/plugins/gitsync-connect">Obsidian’s community directory</a>. Connecting requires <strong>GitSync.md 2.8.0 or later</strong>. The compatible app update has been submitted for App Review; the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">public App Store version</a> is currently 2.7.0. The steps below preview the upcoming flow.</p>
+        </div>
+
+        <h2 id="one-sign-in">Your vault is cloned. Why sign in again?</h2>
+        <p>You’ve signed into GitHub in GitSync.md and cloned your notes onto your iPhone. You open the folder in Obsidian, install Git, and you’re ready to write. Then you reach another authentication setup.</p>
+        <p>I built <strong>GitSync.md Connect</strong> to take care of that last step. It’s a small companion plugin that connects Obsidian Git using the GitHub account you already authenticated in GitSync.md. You don’t need to copy a personal access token between apps or sign into GitHub a second time.</p>
+        <p>GitSync.md handles the clone. Obsidian is where you write. Once connected, Obsidian Git handles your pulls, commits, and pushes from inside the vault.</p>
+
+        <div class="flow-diagram" role="img" aria-label="Sign into GitHub in GitSync.md, clone your vault, enable GitSync.md Connect, then pull and push with Obsidian Git.">
+          <div class="flow-node">Sign into GitSync.md</div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-node">Clone your vault</div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-node highlight">Enable Connect</div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-node">Pull &amp; push in Obsidian</div>
+        </div>
+
+        <h2 id="setup">Connect your vault</h2>
+        <p>You’ll need the compatible GitSync.md app, a GitHub account with access to your repository, and Obsidian. This first release supports <strong>GitHub HTTPS repositories cloned with GitSync.md’s GitHub Account authentication</strong>.</p>
+        <ol>
+          <li><strong>Sign into GitHub in GitSync.md.</strong> If you’re already signed in, use that account.</li>
+          <li><strong>Clone your repository into Obsidian’s local folder.</strong> Choose a destination under <strong>On My iPhone → Obsidian</strong>, then open the cloned folder as a vault in Obsidian.</li>
+          <li><strong>Install Git.</strong> In that vault, open <strong>Settings → Community plugins</strong>, allow community plugins, and browse for <strong>Git</strong> by Vinzent. Install and enable it.</li>
+          <li><strong>Install GitSync.md Connect.</strong> Open the <a href="https://community.obsidian.md/plugins/gitsync-connect">community directory listing</a>, select <strong>Add to Obsidian</strong>, and confirm you’re in the cloned vault. Select <strong>Install</strong>, then <strong>Enable</strong>. You can also search for GitSync.md Connect in Obsidian’s community browser.</li>
+          <li><strong>Let the apps connect.</strong> With both plugins enabled, the companion opens GitSync.md and returns to Obsidian. Look for <strong>“Obsidian Git is connected to GitSync.md.”</strong></li>
+        </ol>
+        <p>The companion fills missing Git author name and email from GitSync.md, too. Existing Git credentials are preserved during automatic connection. Install and enable both plugins separately in each vault you want to connect.</p>
+        <p>Now run <strong>Git: Pull</strong> from Obsidian’s command palette to bring in remote changes. After editing a note, run <strong>Git: Commit-and-sync with specific message</strong> to save and push your work. Those are the commands used in our iPhone test with Git 2.41.1.</p>
+
+        <section id="visual-walkthrough" aria-labelledby="walkthrough-heading">
+          <h2 id="walkthrough-heading">Follow the screens</h2>
+          <p>Blue outlines mark the controls or results to look for. Tap any screenshot to enlarge it. Start with the compatible GitSync.md app, then work through the steps in your cloned vault.</p>
+          <p class="capture-note">The sign-in screen was captured in an iPhone simulator. The remaining screens show our physical-iPhone walkthrough with the upcoming GitSync.md handoff support, Git 2.41.1, and Connect 0.1.2.</p>
+          <div class="walkthrough-grid">
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">01</span><h3>Sign into GitSync.md</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/01-sign-in.webp" aria-label="Enlarge screenshot: Sign into GitSync.md">
+              <img src="./gitsync-connect-obsidian-git/01-sign-in.webp" width="840" height="1826" loading="lazy" decoding="async" alt="GitSync.md sign-in screen with Sign in with GitHub highlighted.">
+              <span class="shot-highlight" style="left:5.5%;top:49.0%;width:89.0%;height:6.8%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">simulator</span>Choose Sign in with GitHub. If you already have an authenticated account, keep using it.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">02</span><h3>Clone into Obsidian’s folder</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/02-clone.webp" aria-label="Enlarge screenshot: Clone into Obsidian’s folder">
+              <img src="./gitsync-connect-obsidian-git/02-clone.webp" width="840" height="1826" loading="lazy" decoding="async" alt="GitSync.md clone form showing GitHub Account selected, the destination controls, and Add and Clone Repository.">
+              <span class="shot-highlight" style="left:5.0%;top:20.0%;width:90.0%;height:9.5%" aria-hidden="true"></span><span class="shot-highlight" style="left:5.0%;top:78.2%;width:90.0%;height:13.7%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Use GitHub Account authentication. Choose a destination under On My iPhone → Obsidian, then Add &amp; Clone Repository. The local path is redacted.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">03</span><h3>Open the cloned vault</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/03-open-vault.webp" aria-label="Enlarge screenshot: Open the cloned vault">
+              <img src="./gitsync-connect-obsidian-git/03-open-vault.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Welcome note in the cloned Obsidian vault, headed Your notes. Your GitHub.">
+              <span class="shot-highlight" style="left:3.5%;top:18.0%;width:92.0%;height:10.5%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Open the folder as a vault in Obsidian. The Welcome note shown here belongs to our disposable demo repository.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">04</span><h3>Allow community plugins</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/04-community-plugins.webp" aria-label="Enlarge screenshot: Allow community plugins">
+              <img src="./gitsync-connect-obsidian-git/04-community-plugins.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Obsidian Community plugins screen with Exit Restricted mode highlighted.">
+              <span class="shot-highlight" style="left:8.5%;top:80.8%;width:83.0%;height:6.0%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Go to Settings → Community plugins. Review the notice and choose Exit Restricted mode if community plugins are disabled.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">05</span><h3>Install and enable Git</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/05-install-git.webp" aria-label="Enlarge screenshot: Install and enable Git">
+              <img src="./gitsync-connect-obsidian-git/05-install-git.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Git by Vinzent in the Obsidian community directory with Install highlighted.">
+              <span class="shot-highlight" style="left:8.5%;top:45.2%;width:83.0%;height:6.0%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>In Community plugins → Browse, search for Git by Vinzent. Tap Install, then Enable once installation finishes.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">06</span><h3>Install GitSync.md Connect</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/06-install-connect.webp" aria-label="Enlarge screenshot: Install GitSync.md Connect">
+              <img src="./gitsync-connect-obsidian-git/06-install-connect.webp" width="840" height="1826" loading="lazy" decoding="async" alt="GitSync.md Connect version 0.1.2 in the community directory with Install highlighted.">
+              <span class="shot-highlight" style="left:8.5%;top:46.7%;width:83.0%;height:6.2%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Use Add to Obsidian from the public companion listing, or find GitSync.md Connect in Browse. Tap Install in the cloned vault.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">07</span><h3>Enable the companion</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/07-enable-connect.webp" aria-label="Enlarge screenshot: Enable the companion">
+              <img src="./gitsync-connect-obsidian-git/07-enable-connect.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Installed GitSync.md Connect with the Enable button highlighted.">
+              <span class="shot-highlight" style="left:8.5%;top:46.7%;width:83.0%;height:6.2%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>When installation finishes, tap Enable. Keep Git enabled in the same vault so Connect can configure it.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">08</span><h3>Let the apps connect</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/08-connected.webp" aria-label="Enlarge screenshot: Let the apps connect">
+              <img src="./gitsync-connect-obsidian-git/08-connected.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Obsidian notification reading Obsidian Git is connected to GitSync.md.">
+              <span class="shot-highlight" style="left:2.5%;top:6.4%;width:95.0%;height:6.0%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>The companion opens GitSync.md and returns to Obsidian. This notice confirms the handoff: no second GitHub sign-in or token copy.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">09</span><h3>Pull through Obsidian Git</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/09-pull.webp" aria-label="Enlarge screenshot: Pull through Obsidian Git">
+              <img src="./gitsync-connect-obsidian-git/09-pull.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Obsidian command palette with Git: Pull selected.">
+              <span class="shot-highlight" style="left:2.5%;top:14.0%;width:95.0%;height:4.5%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Open the command palette and run Git: Pull to fetch changes from GitHub.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">10</span><h3>Check the incoming note</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/10-pulled-note.webp" aria-label="Enlarge screenshot: Check the incoming note">
+              <img src="./gitsync-connect-obsidian-git/10-pulled-note.webp" width="840" height="1826" loading="lazy" decoding="async" alt="FromGitHub note in Obsidian reading Your notes, wherever you work.">
+              <span class="shot-highlight" style="left:3.5%;top:18.0%;width:92.0%;height:10.5%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Our note was created on GitHub after cloning. It appeared in the vault after the pull, with its contents intact.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">11</span><h3>Write, then commit and sync</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/11-commit.webp" aria-label="Enlarge screenshot: Write, then commit and sync">
+              <img src="./gitsync-connect-obsidian-git/11-commit.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Obsidian command palette showing Git: Commit-and-sync with specific message.">
+              <span class="shot-highlight" style="left:2.5%;top:14.0%;width:95.0%;height:4.5%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>Create or edit a note. Run Git: Commit-and-sync with specific message, then enter a commit message to commit and push.</figcaption>
+          </figure>
+          <figure class="walkthrough-step">
+            <div class="walkthrough-step-title"><span class="step-number">12</span><h3>Confirm your changes arrived</h3></div>
+            <a class="shot-frame" href="./gitsync-connect-obsidian-git/12-push.webp" aria-label="Enlarge screenshot: Confirm your changes arrived">
+              <img src="./gitsync-connect-obsidian-git/12-push.webp" width="840" height="1826" loading="lazy" decoding="async" alt="Obsidian Git notices showing Committed 1 file and Initializing push above the phone-created note.">
+              <span class="shot-highlight" style="left:2.5%;top:6.4%;width:95.0%;height:15.7%" aria-hidden="true"></span>
+            </a>
+            <figcaption><span class="shot-source">physical iPhone</span>The phone recorded the commit and started pushing. We separately verified the new commit and exact note contents on GitHub.</figcaption>
+          </figure>
+          </div>
+        </section>
+
+        <h2 id="tested">From GitHub to iPhone, and back</h2>
+        <p>We tested the complete flow on a physical iPhone with a fresh private GitHub repository. The vault started without plugins or saved Obsidian Git credentials. Both plugins were installed from Obsidian’s community directory, and enabling Connect completed the handoff without another GitHub sign-in.</p>
+        <p>Then we added a new note on GitHub <em>after</em> cloning. Obsidian Git pulled it into the vault, where we opened and checked its contents. In the other direction, we wrote a new note on the iPhone, committed it through Obsidian Git, and pushed it. We independently checked GitHub to confirm the new commit and the exact note contents arrived.</p>
+        <p>The test used Obsidian 1.14.5, Git 2.41.1, and GitSync.md Connect 0.1.2. We repeated the happy path in a second fresh vault. The native app was a development build with the upcoming handoff support; this was a preview test, before the compatible App Store update’s release.</p>
+
+        <h2 id="credentials">What happens to your sign-in?</h2>
+        <p>GitSync.md keeps its original GitHub token in Keychain. During connection, the apps exchange a short-lived encrypted response inside the selected repository’s <code>.git</code> folder. The token never appears in the app-switch callback URL, and temporary handoff files are removed after a successful import.</p>
+        <p>Obsidian Git receives a copy of that token for repository operations. In the tested Git 2.41.1 release, it lives in device-local browser storage, not the operating system’s Keychain. It has the same permissions as the token in GitSync.md. Signing out of GitSync.md doesn’t clear Obsidian Git’s copy; you can clear it in Obsidian Git or revoke the token on GitHub.</p>
+        <p>The companion makes no direct HTTP requests. GitSync.md talks to GitHub for sign-in and cloning; Obsidian Git talks to GitHub for pulls and pushes. You can read the <a href="https://github.com/CodyBontecou/gitsync-obsidian-connect#credential-handling">credential handling details and source code</a> in the public repository.</p>
+
+        <h2 id="questions">A few useful details</h2>
+        <h3>Does this turn on automatic sync?</h3>
+        <p>Connect configures authentication. You choose when to pull and push, or configure Obsidian Git’s own automatic sync settings. The companion is free and MIT licensed; GitSync.md is a separate app with its own pricing.</p>
+        <h3>What if the connection doesn’t start?</h3>
+        <p>Check that you have GitSync.md 2.8.0 or later and that both plugins are enabled in the cloned vault. Reopen the vault or run <strong>GitSync.md Connect: Connect this vault</strong>. If you need to replace credentials already saved in Obsidian Git, use <strong>Reconnect this vault (replace existing Git credentials)</strong>.</p>
+        <h3>What if my token expires or I change accounts?</h3>
+        <p>Authenticate the appropriate account in GitSync.md, then run the reconnect command in Obsidian. This release doesn’t refresh imported tokens in the background, and you don’t need to clone your vault again to reconnect.</p>
+        <h3>Will it work with SSH or another Git host?</h3>
+        <p>This connection flow supports GitHub HTTPS clones using GitSync.md’s GitHub Account authentication. SSH, other hosts, unauthenticated public clones, and separate per-repository HTTPS tokens aren’t supported by the companion. The vault needs a regular <code>.git</code> directory at its root, with no custom Git directory, base path, or alternate push destination.</p>
+
+        <div class="related-card">
+          <h2>Less setup between you and your notes</h2>
+          <p>The next time you bring a GitHub vault to your iPhone, your existing sign-in can come with it. Clone in GitSync.md, enable the companion, and keep working in Obsidian.</p>
+          <p><a href="https://community.obsidian.md/plugins/gitsync-connect">Find GitSync.md Connect in the community directory →</a></p>
+          <p>Requires the upcoming GitSync.md 2.8.0 update. For the existing vault setup workflow, see our <a href="./obsidian-git-iphone-ipad.html">Obsidian Git guide for iPhone and iPad</a>.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="../index.html" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="../blog/index.html">Guides</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

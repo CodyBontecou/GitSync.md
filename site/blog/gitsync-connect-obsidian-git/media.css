@@ -1,0 +1,17 @@
+.walkthrough-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; margin-block: 32px 48px; }
+.walkthrough-step { margin: 0; min-width: 0; }
+.walkthrough-step-title { display: flex; align-items: center; gap: 12px; min-height: 62px; margin-bottom: 16px; }
+.walkthrough-step-title h3 { font-size: 18px; line-height: 1.3; margin: 0; letter-spacing: -.02em; }
+.step-number { display: grid; place-items: center; flex: 0 0 34px; height: 34px; background: var(--ink); color: var(--paper); font: 500 11px/1 var(--mono); }
+.shot-frame { position: relative; display: block; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #fff; }
+.shot-frame img { display: block; width: 100%; height: auto; }
+.shot-highlight { position: absolute; border: 2px solid #005bc2; border-radius: 7px; box-shadow: 0 0 0 2px #fff; pointer-events: none; }
+.shot-frame:focus-visible { outline: 3px solid var(--blue); outline-offset: 5px; }
+.walkthrough-step figcaption { font-size: 13px; line-height: 1.65; margin-top: 16px; color: var(--muted); }
+.shot-source { display: block; color: #005bc2; font: 500 9px/1.6 var(--mono); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 7px; }
+.capture-note { padding: 18px 20px; border-left: 3px solid var(--blue); background: var(--surface); font-size: 13px; line-height: 1.7; color: var(--muted); }
+@media (max-width: 600px) {
+  .walkthrough-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .walkthrough-step { max-width: 380px; width: 100%; margin-inline: auto; }
+  .walkthrough-step-title { min-height: 0; }
+}
