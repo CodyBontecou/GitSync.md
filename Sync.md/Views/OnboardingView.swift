@@ -33,7 +33,7 @@ struct OnboardingView: View {
 
     private let slides: [OnboardingSlide] = [
         OnboardingSlide(
-            title: [String(localized: "SYNC"), ".MD"],
+            title: ["GITSYNC", ".MD"],
             accentIndex: 1,
             subtitle: String(localized: "YOUR REPOS, ON YOUR IPHONE"),
             description: String(localized: "Clone any Git repository to your device — GitHub, self-hosted, SSH, or public remotes — and keep it in sync from your pocket.")

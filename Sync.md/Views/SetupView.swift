@@ -100,8 +100,10 @@ struct SetupView: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Big monospaced title
-            Text("SYNC")
+            Text(verbatim: "GITSYNC")
                 .bType(.hero)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 .foregroundStyle(Color.brutalText)
                 .tracking(-2)
                 .padding(.bottom, 0)
