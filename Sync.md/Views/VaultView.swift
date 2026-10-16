@@ -485,7 +485,7 @@ struct VaultView: View {
         case .fastForwarded:         return "arrow.down.circle.fill"
         case .rebased:               return "arrow.triangle.2.circlepath.circle.fill"
         case .rebaseConflicts:       return "exclamationmark.triangle.fill"
-        case .blockedByLocalChanges: return "exclamationmark.triangle.fill"
+        case .blockedByLocalChanges, .checkoutIncomplete: return "exclamationmark.triangle.fill"
         case .lfsHydrationBlocked:   return "externaldrive.badge.exclamationmark"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark.circle.fill"
@@ -499,7 +499,7 @@ struct VaultView: View {
         case .fastForwarded:         return .brutalAccent
         case .rebased:               return .brutalSuccess
         case .rebaseConflicts:       return .brutalWarning
-        case .blockedByLocalChanges: return .brutalWarning
+        case .blockedByLocalChanges, .checkoutIncomplete: return .brutalWarning
         case .lfsHydrationBlocked:   return .brutalWarning
         case .diverged:              return .brutalError
         case .remoteBranchMissing:   return .brutalWarning

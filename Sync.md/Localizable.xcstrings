@@ -94992,6 +94992,16 @@
         }
       }
     },
+    "Pull updated Git, but working tree checkout needs attention": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull updated Git, but working tree checkout needs attention"
+          }
+        }
+      }
+    },
     "Pull updated Git, but Git LFS needs attention": {
       "localizations": {
         "ar": {
