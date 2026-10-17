@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>How to Create a Git Repository from Your iPhone — GitSync.md</title>
+<meta name="description" content="Turn a local iPhone folder into a new public or private GitHub repository with GitSync.md. Review files, prepare the first commit, and publish from your phone.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/create-git-repository-iphone.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="How to Create a Git Repository from Your iPhone — GitSync.md">
+<meta property="og:description" content="Turn a local iPhone folder into a new public or private GitHub repository with GitSync.md. Review files, prepare the first commit, and publish from your phone.">
+<meta property="og:url" content="https://gitsync.md/blog/create-git-repository-iphone.html">
+<meta property="og:image" content="https://gitsync.md/blog/create-git-repository-iphone/cover.png">
+<meta property="article:published_time" content="2026-10-08">
+<meta property="article:modified_time" content="2026-10-17">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Create a Git Repository from Your iPhone — GitSync.md">
+<meta name="twitter:description" content="Turn a local iPhone folder into a new public or private GitHub repository with GitSync.md. Review files, prepare the first commit, and publish from your phone.">
+<meta name="twitter:image" content="https://gitsync.md/blog/create-git-repository-iphone/cover.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Create a Git Repository from Your iPhone",
+  "description": "Turn a local iPhone folder into a new public or private GitHub repository with GitSync.md. Review files, prepare the first commit, and publish from your phone.",
+  "image": [
+    "https://gitsync.md/blog/create-git-repository-iphone/cover.png"
+  ],
+  "datePublished": "2026-10-08",
+  "dateModified": "2026-10-17",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/create-git-repository-iphone.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Publish an Obsidian Vault to GitHub from Your iPhone | GitSync.md",
+  "description": "Create a local Obsidian vault on iPhone, publish it to a new GitHub repository with GitSync.md, and verify the first commit in the GitHub mobile app.",
+  "thumbnailUrl": "https://i.ytimg.com/vi/7V30badrnpg/hqdefault.jpg",
+  "uploadDate": "2026-10-17T13:58:26Z",
+  "duration": "PT2M33S",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/7V30badrnpg",
+  "url": "https://www.youtube.com/watch?v=7V30badrnpg"
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="./create-git-repository-iphone/media.css">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<!-- ─── NAV ─── -->
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="../index.html" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="../index.html#features">The app</a><a href="../index.html#workflow">How it works</a><a href="../blog/index.html">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="../index.html#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<!-- ─── ARTICLE ─── -->
+<main id="main">
+<header class="article-hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="article-title">
+        <div class="eyebrow">New feature / iPhone Git Guide</div>
+        <h1>Create a Git repository from your iPhone<span class="accent">.</span></h1>
+        <p class="subtitle">Turn a folder of notes, drafts, or project files into a new GitHub repository with GitSync.md’s Publish a Folder feature. Choose what to include, save your first commit, and publish as Private or Public.</p>
+        <div class="meta-line"><span>October 8, 2026</span><span>Guide</span><span>iPhone</span></div>
+      </div>
+      <aside class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#video-tutorial">Watch the Obsidian tutorial</a></li>
+          <li><a href="#start-with-your-files">Start with your files</a></li>
+          <li><a href="#what-youll-need">What you’ll need</a></li>
+          <li><a href="#create-the-repository">Create the repository</a></li>
+          <li><a href="#keep-working">Keep working</a></li>
+          <li><a href="#resume-publication">Resume an interrupted upload</a></li>
+          <li><a href="#common-questions">Common questions</a></li>
+        </ol>
+      </aside>
+    </div>
+  </div>
+</header>
+
+  <div class="container">
+    <div class="article-shell article-shell-single">
+      <article class="article-body">
+
+    <section class="video-tutorial" id="video-tutorial" aria-labelledby="video-tutorial-heading">
+      <h2 id="video-tutorial-heading">Publish an Obsidian vault to GitHub from your iPhone</h2>
+      <p>Watch the full walkthrough: create a local Obsidian vault, choose it in GitSync.md’s <strong>Publish a Folder</strong> flow, publish a GitHub repository, and check the first commit in the GitHub mobile app.</p>
+      <div class="tutorial-player">
+        <iframe src="https://www.youtube-nocookie.com/embed/7V30badrnpg" title="Publish an Obsidian Vault to GitHub from Your iPhone with GitSync.md" width="1280" height="720" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <p class="walkthrough-caption">2 minutes 33 seconds · English captions available. <a href="https://www.youtube.com/watch?v=7V30badrnpg" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
+      <p>The video uses a vault with a Hello World note and publishes it as a private repository. It covers the initial publication; pulling and pushing later edits is a separate workflow.</p>
+    </section>
+
+    <div class="tldr">
+      <div class="tldr-title">From folder to GitHub</div>
+      <ol>
+        <li>Open <strong>Add Repository → Publish a Folder</strong> in GitSync.md.</li>
+        <li>Choose a local folder under <strong>On My iPhone</strong> and review which files to include.</li>
+        <li>Set your commit author, repository name, and <strong>Private</strong> or <strong>Public</strong> visibility.</li>
+        <li>Tap <strong>Prepare Local Commit</strong>, then <strong>Create Private Repository &amp; Publish</strong> or its public equivalent.</li>
+        <li>Open the new repository on GitHub to verify the files and first commit.</li>
+      </ol>
+    </div>
+
+    <h2 id="start-with-your-files">Start with the files already on your phone</h2>
+    <p>A new project can start on your iPhone: an Obsidian vault, a folder of Markdown drafts, or a few files you want to share. Once you want version history and a copy on GitHub, you can turn that folder into a repository from GitSync.md.</p>
+    <p>The new <strong>Publish a Folder</strong> feature lets you choose the folder, review its contents, save your first commit, and create a GitHub repository. Your files stay in their original location, so you can keep editing them with the app you already use.</p>
+    <p>For this walkthrough, we’ll publish a local folder called <code>MyNotes</code> to a new repository named <code>my-notes</code>. You don’t need to create an empty repository on GitHub first or run Git commands in a terminal.</p>
+
+    <div class="flow-diagram" aria-label="Choose a local folder, review its files, prepare a local commit, and publish to GitHub">
+      <div class="flow-node">Choose folder</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Review files</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight">Prepare commit</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Publish to GitHub</div>
+    </div>
+
+    <section class="feature-walkthrough" aria-labelledby="walkthrough-heading">
+      <div class="walkthrough-layout">
+        <video controls playsinline preload="none" poster="./create-git-repository-iphone/choose-folder.png" aria-label="Publish a Folder setup and file review walkthrough">
+          <source src="./create-git-repository-iphone/folder-review-walkthrough.mp4" type="video/mp4">
+          <track kind="captions" src="./create-git-repository-iphone/walkthrough.vtt" srclang="en" label="English" default>
+          <a href="./create-git-repository-iphone/folder-review-walkthrough.mp4">Download the walkthrough video</a>.
+        </video>
+        <div>
+          <div class="eyebrow">Watch the setup</div>
+          <h3 id="walkthrough-heading">Choose what goes into Git.</h3>
+          <p>This 45-second walkthrough shows choosing MyNotes in Files, excluding a personal journal, entering commit details, and switching between Private and Public.</p>
+          <p class="walkthrough-caption">Recorded in the iPhone simulator with sample files. This clip covers setup and review before GitHub sign-in. Follow steps 5 and 6 below to prepare your commit and publish.</p>
+          <p><a href="./create-git-repository-iphone/folder-review-walkthrough.mp4">Download video →</a></p>
+        </div>
+      </div>
+    </section>
+
+    <h2 id="what-youll-need">What you’ll need</h2>
+    <ul>
+      <li><strong>GitSync.md</strong> with the Publish a Folder feature (<a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank" rel="noopener">get the app or check for updates</a>).</li>
+      <li>A <strong>GitHub account</strong> signed in to GitSync.md.</li>
+      <li>A <strong>local folder containing at least one file</strong>, accessible through the Files picker under On My iPhone.</li>
+      <li>An internet connection for creating the GitHub repository and uploading the commit.</li>
+    </ul>
+    <p>Choose a folder in an app’s local storage, such as GitSync.md’s own folder or a local Obsidian vault. For example:</p>
+    <pre tabindex="0" role="region" aria-label="Example local notes folder"><code>On My iPhone → Obsidian → MyNotes</code></pre>
+    <p>If you’re starting from scratch, create a folder and save a file such as <code>README.md</code> into it with your editor. Git doesn’t store empty folders.</p>
+    <p>This flow creates a repository in your <strong>personal GitHub account</strong>. It currently supports local folders rather than iCloud Drive or other cloud file providers. A folder that already belongs to a Git repository should use <strong>Open Existing Repository</strong> instead.</p>
+
+    <h2 id="create-the-repository">Create your repository from iPhone</h2>
+
+    <div class="screenshot-band" aria-label="Publish a Folder screens captured in the iPhone simulator">
+      <div class="screenshot-grid">
+        <figure class="shot-card">
+          <div class="phone-frame"><a href="./create-git-repository-iphone/add-repository.png"><img src="./create-git-repository-iphone/add-repository.png" width="1206" height="2622" alt="Add Repository menu with Publish a Folder alongside the existing repository options." loading="lazy" decoding="async"></a></div>
+          <figcaption class="shot-caption"><strong>1. Publish a Folder</strong>Start from Add Repository.</figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="phone-frame"><a href="./create-git-repository-iphone/review-files.png"><img src="./create-git-repository-iphone/review-files.png" width="1206" height="2622" alt="File review with .env.example and Journal.md unchecked, and Ideas.md, README.md and .gitignore selected." loading="lazy" decoding="async"></a></div>
+          <figcaption class="shot-caption"><strong>2. Review your files</strong>Choose what belongs in the first commit.</figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="phone-frame"><a href="./create-git-repository-iphone/visibility.png"><img src="./create-git-repository-iphone/visibility.png" width="1206" height="2622" alt="Local commit details, GitHub sign-in, repository name my-notes, and Private or Public visibility controls." loading="lazy" decoding="async"></a></div>
+          <figcaption class="shot-caption"><strong>3. Choose your destination</strong>Name the repository and set its visibility.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step-card" data-step="Step 1">
+      <h3>Open Publish a Folder</h3>
+      <p>In GitSync.md, open <strong>Add Repository</strong> and tap <strong>Publish a Folder</strong>. On the next screen, tap <strong>Choose a Folder</strong>.</p>
+      <p>Navigate to your local folder in Files and select it. Choose the project folder itself, such as <code>MyNotes</code>, rather than the parent folder containing all your projects.</p>
+    </div>
+
+    <div class="step-card" data-step="Step 2">
+      <h3>Review the files you want to publish</h3>
+      <p>The <strong>Review Files</strong> section shows the files in your folder and the size of your selection. Check the files you want in the first commit and uncheck anything you want to keep only on your device.</p>
+      <p>Files covered by existing ignore rules stay excluded. Recognizable sensitive filenames, such as <code>.env</code> and private key files, start unchecked. Read the list yourself before continuing: a filename alone can’t identify every private document or credential.</p>
+      <p>Unchecked existing files stay in your folder and are also excluded from later staging on this device. New files you add afterward still need their own review or ignore rules.</p>
+      <p>If you change a file during setup, tap <strong>Refresh File Review</strong> before preparing the commit.</p>
+    </div>
+
+    <div class="step-card" data-step="Step 3">
+      <h3>Set the commit author and GitHub destination</h3>
+      <p>Under <strong>Local Commit</strong>, fill in <strong>Author Name</strong>, <strong>Author Email</strong>, and <strong>Commit Message</strong>. The default message is <code>Initial commit</code>; you can use something more specific, such as <code>Add my notes</code>.</p>
+      <p>Your author email becomes part of Git history. To keep your personal email private, use your GitHub-provided noreply address. See <a href="https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address" target="_blank" rel="noopener">GitHub’s commit email guide</a>.</p>
+      <p>Under <strong>GitHub Destination</strong>, choose your account and enter a <strong>Repository Name</strong>. For our example, use <code>my-notes</code>. Use letters, numbers, hyphens, underscores, or periods, and choose a name that isn’t already in use in that account.</p>
+    </div>
+
+    <div class="step-card" data-step="Step 4">
+      <h3>Choose Private or Public</h3>
+      <p>The repository starts with <strong>Private</strong> selected. Keep that choice for personal notes, or choose <strong>Public</strong> for files you want anyone to be able to see.</p>
+      <p>A private repository still uploads your selected files to GitHub. Public repositories make those files available to everyone. Check your selection and visibility together before publishing.</p>
+      <p>You can adjust visibility during review and after preparing the local commit, until GitHub repository creation begins.</p>
+    </div>
+
+    <div class="step-card" data-step="Step 5">
+      <h3>Prepare the first commit locally</h3>
+      <p>Tap <strong>Prepare Local Commit</strong>. GitSync.md adds a <code>.git</code> directory to your folder and saves the selected files in an initial commit on <strong>main</strong>.</p>
+      <p>This step uploads nothing. Your existing working files stay in place. When it finishes, the <strong>Saved Local Commit</strong> section shows the message, author, file count, and commit ID for the snapshot you’re about to publish.</p>
+      <p>Edits made after preparation aren’t included in this first upload. You can commit and push them after publication finishes.</p>
+    </div>
+
+    <div class="step-card" data-step="Step 6">
+      <h3>Create the GitHub repository and publish</h3>
+      <p>Check the destination account, repository name, and visibility. Then tap <strong>Create Private Repository &amp; Publish</strong>, or <strong>Create Public Repository &amp; Publish</strong> if you chose Public.</p>
+      <p>GitSync.md creates the new repository on GitHub, uploads your saved commit, and adds the local folder to your repository list. <strong>Keep the app open during this first upload.</strong></p>
+      <p>When you see <strong>Folder published</strong>, use the <strong>Open … on GitHub</strong> link to view your repository. Check that the visibility is what you chose and that <strong>main</strong> contains your selected files and first commit. Tap <strong>Done</strong> to return to GitSync.md.</p>
+    </div>
+
+    <h2 id="keep-working">Keep working in the same folder</h2>
+    <p>Your original folder is now a Git working copy connected to GitHub. Keep writing in your editor, then open the repository in GitSync.md to review your changes and commit and push them. Pull before editing if you’ve changed the repository on another device.</p>
+    <p>For an Obsidian vault, keep using that same local vault. If you want to run Git commands from Obsidian’s interface, follow the <a href="./obsidian-git-ios-setup.html">Obsidian Git setup guide</a> for the plugin’s author and authentication settings.</p>
+    <p><strong>Background Sync starts off</strong> for a newly published folder. You can keep syncing manually, or enable <strong>Include in Background Sync</strong> in the repository’s Settings when you’re ready.</p>
+
+    <h2 id="resume-publication">If publication gets interrupted</h2>
+    <p>Open <strong>Add Repository → Publish a Folder</strong> again and choose your project under <strong>Saved Progress</strong>. Resume that attempt to continue with the saved commit and destination.</p>
+    <p>The next action depends on where it stopped. You may see <strong>Resume Local Preparation</strong>, <strong>Publish Saved Commit</strong>, or <strong>Finish Adding Repository</strong> if the upload succeeded but local registration still needs to finish.</p>
+    <p>If GitHub may have created the repository before the connection was lost, tap <strong>Check GitHub</strong>. The app may ask you to confirm the matching destination before using it. If access to the original folder was lost, use <strong>Reconnect Folder Access</strong> to select it again.</p>
+
+    <h2 id="common-questions">Common questions</h2>
+
+    <h3>Can I publish an empty folder?</h3>
+    <p>Add at least one eligible file first, such as <code>README.md</code>. Git tracks files, so an empty folder has nothing to commit.</p>
+
+    <h3>Can I publish an iCloud Drive folder?</h3>
+    <p>This first publication flow supports local app folders under <strong>On My iPhone</strong>. Put the files in a supported local folder and select that folder.</p>
+
+    <h3>What if the folder is already a Git repository?</h3>
+    <p>Use <strong>Add Repository → Open Existing Repository</strong> to work with it. Publish a Folder is for starting new history from a folder of files; it also checks for enclosing and nested Git repositories.</p>
+
+    <h3>How big can the first upload be?</h3>
+    <p>You can select up to <strong>10,000 regular files</strong>, totaling <strong>256 MiB</strong>, with each selected file no larger than <strong>10 MiB</strong>. This flow doesn’t publish Git LFS files, symbolic links, packages, or files requiring content-conversion filters. Follow the review notes if the app identifies unsupported files.</p>
+
+    <h3>Can I create an organization repository or publish to another Git host?</h3>
+    <p>Publish a Folder currently creates repositories in personal GitHub accounts. GitSync.md’s existing clone and sync workflows support other remotes; see the <a href="./self-hosted-git-ssh-ios.html">self-hosted Git guide</a>.</p>
+
+    <div class="related-card">
+      <h2>Your next project can start on your phone</h2>
+      <p>Choose your folder, review what belongs in Git, prepare the first commit, and publish when you’re ready. From there, you have a repository you can keep working with on your iPhone or clone onto another device.</p>
+      <p><a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank" rel="noopener">Get GitSync.md on the App Store →</a></p>
+    </div>
+
+      </article>
+    </div>
+  </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="button" href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank" rel="noopener">Get GitSync.md on the App Store</a>
+          <a class="button" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get GitSync.md on Google Play</a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="../index.html" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="../blog/index.html">Guides</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
