@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://gitsyncmd.app/blog/obsidian-git-ios-setup.html">
 <meta property="og:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
 <meta property="article:published_time" content="2026-02-15">
-<meta property="article:modified_time" content="2026-06-13">
+<meta property="article:modified_time" content="2026-10-25">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md">
 <meta name="twitter:description" content="Set up real Git-backed Obsidian vault syncing on iPhone with GitSync.md and the Obsidian Git community plugin.">
@@ -577,6 +577,16 @@
       <p>This post now recommends keeping the plugin's automatic timers off on iPhone and giving GitSync.md each explicit sync attempt via the <code>syncmd://x-callback-url/sync</code> URL. For the fuller walkthrough, see <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad</a>.</p>
     </div>
 
+    <h2 id="choose-sync">GitSync.md, Obsidian Sync, or Working Copy?</h2>
+    <p>Choose the workflow you want to maintain. These tools overlap, but they have different setup and recovery models.</p>
+    <ul>
+      <li><strong>GitSync.md:</strong> choose it when you want your vault in a standard Git repository, control over commits and remotes, and a Files-based workflow on iPhone or iPad. This guide uses GitHub over HTTPS with the Obsidian Git plugin; the plugin's mobile limits are separate from GitSync.md's own Git capabilities.</li>
+      <li><strong>Obsidian Sync:</strong> consider the official service when you want syncing integrated into Obsidian rather than managing Git commits. It offers end-to-end encryption and version history. Read <a href="https://obsidian.md/sync">Obsidian's current plan details</a> and <a href="https://obsidian.md/help/sync/security">security documentation</a>.</li>
+      <li><strong>Working Copy:</strong> another iPhone/iPad Git client with external-directory workflows. Compare its repository and folder-linking model in the <a href="https://workingcopyapp.com/manual/version-control/">Working Copy manual</a> before choosing the tool that fits your vault.</li>
+    </ul>
+    <p>GitSync.md's iPhone/iPad listing uses a one-time purchase; Android has a different free-download and Full Access model. Check your store for current terms. Competitor features and plans can change; this comparison was reviewed October 25, 2026. GitSync.md is independently developed and is not Obsidian's official sync service.</p>
+    <p>Start with one sync workflow for a vault. Avoid overlapping Git automation timers or multiple sync services writing the same folder until you understand how they interact. Keep an independent backup before migrating.</p>
+
     <h2>The problem</h2>
 
     <p>If you use Obsidian on your desktop with the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank">Obsidian Git</a> plugin, you already have a great workflow: your vault is a Git repo, every edit is version-controlled, and your notes push to GitHub automatically.</p>
@@ -732,6 +742,11 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
 
     <h3>Changes made in Obsidian don't appear in GitSync.md</h3>
     <p>That's normal — both apps share the same filesystem. When you edit a file in Obsidian and then open GitSync.md, it will detect the changes automatically. They're reading and writing the same files.</p>
+
+    <h3>A pull reports conflicts</h3>
+    <p>Stop automatic sync attempts and keep a copy of local uncommitted work. Review the conflicting files in GitSync.md, choose the intended content, and commit the resolution before pushing. For a complex conflict, preserve the working copy and resolve it on desktop. Do not delete and re-clone a vault until local changes are backed up or safely pushed.</p>
+    <h3>Background syncing did not run</h3>
+    <p>Open GitSync.md and verify a manual pull or push first. Background work is scheduled by iOS and is best effort, so a configured schedule does not prove that an operation completed. Check the remote before switching devices. The <a href="./shortcuts-automation-ios.html">automation guide</a> explains explicit Shortcuts actions.</p>
 
     <h2>Recap</h2>
 
