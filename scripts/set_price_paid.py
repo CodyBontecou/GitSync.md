@@ -3,10 +3,12 @@
 Set the GitSync.md app price via the App Store Connect REST API.
 
 Usage:
-    python3 scripts/set_price_paid.py              # defaults to 9.99 USD
+    python3 scripts/set_price_paid.py              # defaults to 19.99 USD
     PRICE=14.99 python3 scripts/set_price_paid.py
 
 Credentials are read from the same .p8 key used by fastlane.
+Existing regional overrides are preserved by refusing this global reset unless
+RESET_REGIONAL_PRICING=1 is explicitly supplied.
 """
 
 import base64
@@ -28,7 +30,7 @@ ISSUER_ID = "6c3b3640-c6bf-40a9-b6e5-57cda2c7776e"
 KEY_PATH = Path("/Users/codybontecou/.private_keys/AuthKey_T7KGDK4Y4V.p8")
 BASE_URL = "https://api.appstoreconnect.apple.com"
 BASE_TERRITORY = "USA"
-TARGET_PRICE = Decimal(os.environ.get("PRICE", "9.99"))
+TARGET_PRICE = Decimal(os.environ.get("PRICE", "19.99"))
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -78,6 +80,14 @@ def main():
     app_id = apps[0]["id"]
     app_name = apps[0]["attributes"]["name"]
     print(f"  → {app_name}  (id={app_id})")
+
+    manual = api("GET", f"/v1/appPriceSchedules/{app_id}/manualPrices?limit=200")
+    if len(manual.get("data", [])) > 1 and os.environ.get("RESET_REGIONAL_PRICING") != "1":
+        sys.exit(
+            "Regional prices are configured. This script replaces the entire schedule. "
+            "Use the regional pricing plan, or explicitly set RESET_REGIONAL_PRICING=1 "
+            "to discard all regional overrides."
+        )
 
     # 2. Find the target price point for this app in the base territory.
     print(f"Looking up {TARGET_PRICE} price point ({BASE_TERRITORY}) …")
