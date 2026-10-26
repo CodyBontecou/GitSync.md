@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian Git Background Sync on iPhone: What Works</title>
+<meta name="description" content="Understand automatic Obsidian Git sync on iPhone: native Background Sync, plugin automation, Connect, Shortcuts, Push Sync, and iOS scheduling limits.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-git-background-sync-iphone">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian Git Background Sync on iPhone: What Works">
+<meta property="og:description" content="Understand automatic Obsidian Git sync on iPhone: native Background Sync, plugin automation, Connect, Shortcuts, Push Sync, and iOS scheduling limits.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-git-background-sync-iphone">
+<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="article:published_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-10-26">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian Git Background Sync on iPhone: What Works">
+<meta name="twitter:description" content="Understand automatic Obsidian Git sync on iPhone: native Background Sync, plugin automation, Connect, Shortcuts, Push Sync, and iOS scheduling limits.">
+<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Obsidian Git background sync on iPhone",
+  "description": "Understand automatic Obsidian Git sync on iPhone: native Background Sync, plugin automation, Connect, Shortcuts, Push Sync, and iOS scheduling limits.",
+  "datePublished": "2026-10-26",
+  "dateModified": "2026-10-26",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "image": "https://gitsync.md/screenshots/hero-repo-list.png",
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-background-sync-iphone"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian Git background sync on iPhone",
+      "item": "https://gitsync.md/blog/obsidian-git-background-sync-iphone"
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<main id="main">
+  <header class="article-hero"><div class="container hero-grid">
+    <div class="article-title"><div class="eyebrow">Obsidian Git / Automation</div>
+      <h1>Obsidian Git background sync on iPhone<span class="accent">.</span></h1>
+      <p class="subtitle">GitSync.md can attempt automatic pulls and separately enabled publication, but iOS controls when background work runs. Set up the right Git client, choose its controls, and verify the result instead of relying on an interval.</p>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>iPhone + iPad</span></div>
+    </div>
+    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#choose">Choose a Git client</a></li><li><a href="#enable">Enable native automation</a></li><li><a href="#timing">Understand iOS timing</a></li><li><a href="#stops">States that stop work</a></li><li><a href="#push-sync">Push Sync notifications</a></li><li><a href="#shortcuts">Explicit Shortcuts</a></li><li><a href="#verify">Verify the result</a></li></ol></aside>
+  </div></header>
+  <div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+        <div class="tldr"><div class="tldr-title">Three separate controls</div><ul>
+          <li><strong>GitSync.md Background Sync</strong> attempts native Git work when the app opens and when iOS grants background processing time.</li>
+          <li><strong>Obsidian Git automation</strong> runs through the plugin’s own mobile Git implementation. Its settings are separate from GitSync.md.</li>
+          <li><strong>GitSync.md Connect</strong> configures credentials. It does not enable either app’s automatic syncing.</li>
+        </ul></div>
+        <p>Establish a successful manual pull and push before enabling automation. GitSync.md’s iPhone and iPad purchase includes optional Background Sync; there is no extra subscription for that feature. Regional store prices vary.</p>
+
+        <h2 id="choose">Choose which app performs Git operations</h2>
+        <p>You can write in Obsidian and use GitSync.md for Git, or configure the Obsidian Git plugin to perform Git inside Obsidian. The apps can use the same local notes, but they have different credentials, implementations, and automation settings.</p>
+        <p>Start with one automation path on that working copy. Overlapping timers make it harder to tell which client changed the repository or reported an error. The <a href="/blog/obsidian-git-iphone-ipad">main setup guide</a> explains both routes. The plugin’s <a href="https://publish.obsidian.md/git-doc/Getting%20Started">mobile documentation</a> describes its own limits; Connect does not remove them.</p>
+
+        <h2 id="enable">Enable native Background Sync deliberately</h2>
+        <p>Before enabling publication, review <a href="/blog/obsidian-gitignore">which Obsidian files Git should track</a>.</p>
+        <ol>
+          <li>In GitSync.md, verify a manual pull and a reviewed commit and push for the repository.</li>
+          <li>Open the app’s Background Sync settings and enable <strong>Enable Background Sync</strong>. Review the opt-in explanation.</li>
+          <li>Choose <strong>Pull remote changes</strong> if you want incoming updates. Automatic pulls accept clean fast-forwards only.</li>
+          <li>Enable <strong>Commit and push local changes</strong> only if you want automatic publication. This control has separate consent and starts off.</li>
+          <li>Check repository inclusion and any network or power requirements. A newly published folder starts excluded; change its inclusion in Repository Settings if you want it included.</li>
+        </ol>
+        <p>The global opt-in applies to current and future managed repositories unless excluded. Inspect the inclusion settings instead of assuming a newly added vault is covered. When both automatic actions are off, enabling the global setting alone does not run a Git action.</p>
+        <p>Automatic publication can stage all non-ignored edits, create a commit using the configured author and default message, and push it to the remote. Review ignore rules and the files you intend to share before enabling it. Keep publication manual if you want to inspect every diff first.</p>
+
+        <h2 id="timing">Why “every few minutes” is not a guarantee</h2>
+        <p>A configured schedule is a request for execution, not proof that Git ran. iOS decides when to grant background time. Force-quitting, power conditions, networking, repository access, and the operating system’s scheduling can delay or prevent work.</p>
+        <p>Opening GitSync.md gives it a foreground opportunity to reconcile included repositories. Check its status and the remote commit before switching devices. Neither Connect nor an Obsidian plugin timer guarantees that a suspended app keeps running.</p>
+        <p>Apple’s <a href="https://developer.apple.com/documentation/backgroundtasks/choosing-background-strategies-for-your-app">background task documentation</a> describes the available execution strategies. GitSync.md’s <a href="/terms">Background Sync terms</a> explain its specific limits.</p>
+
+        <h2 id="stops">What stops automatic work?</h2>
+        <ul>
+          <li><strong>Local changes or divergent history:</strong> an automatic pull does not merge or rebase those edits.</li>
+          <li><strong>Wrong or missing branch:</strong> automatic work does not switch or recreate the branch.</li>
+          <li><strong>Authentication or host trust:</strong> open the app and handle the required sign-in or trust decision.</li>
+          <li><strong>Network or power policy:</strong> a Wi-Fi-only or external-power-only repository waits for those conditions.</li>
+          <li><strong>Unavailable files or failed push:</strong> review the reported state. A failed publication can leave a local commit that still needs pushing.</li>
+        </ul>
+        <p>Automatic work does not force-push, resolve conflicts, merge, or rebase. If you turn automatic pull off but leave publication on, the app still checks remote state and stops when incoming changes require attention. Use <a href="/blog/obsidian-git-merge-conflicts-iphone">the conflict recovery guide</a> for a manual resolution.</p>
+
+        <h2 id="push-sync">Push Sync is an optional wake-up route</h2>
+        <p>GitSync.md’s separately enabled <strong>Push Sync</strong> connects a GitHub App and delivers a push alert with a best-effort request for targeted background reconciliation. iOS can delay or suppress that attempt. An alert does not prove the notes have arrived.</p>
+        <p>The name refers to a notification route; it does not itself enable automatic publication of your local notes. Automatic commit and push remains a separate setting. Push Sync’s relay handles the repository and registration metadata described in the <a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">privacy policy</a>, not local file contents or Git credentials.</p>
+
+        <h2 id="shortcuts">Use an explicit trigger when you need one</h2>
+        <p>Apple Shortcuts can request Pull, Push, or Sync actions from GitSync.md. They provide an explicit workflow but still need the operation to succeed. A Home Screen or Control Center pull button only pulls; it does not publish local edits.</p>
+        <p>Follow the <a href="/blog/shortcuts-automation-ios">Shortcuts tutorial</a> and read the result rather than assuming a tap transferred every change. If automatic syncing is delayed, open GitSync.md and verify the manual operation first.</p>
+
+        <h2 id="verify">Check automation with a disposable note</h2>
+        <ol>
+          <li>Push a test note from another device. Check whether it arrives during an allowed attempt, then open GitSync.md if it has not.</li>
+          <li>If you separately enabled publication, edit that test note on the phone. Inspect the app’s result and verify the new commit on your Git server.</li>
+          <li>Repeat with the power and network policy you actually use. A successful foreground run does not establish a guaranteed background interval.</li>
+        </ol>
+        <p>For errors, use the <a href="/blog/obsidian-git-not-working-iphone">troubleshooting checklist</a>. If managing Git and its execution timing is not the workflow you want, compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync with Git</a>.</p>
+        <div class="related-card"><h2>Next steps</h2><ul>
+          <li><a href="/blog/gitsync-connect-obsidian-git">Connect Obsidian Git credentials</a></li>
+          <li><a href="/blog/shortcuts-automation-ios">Set up Apple Shortcuts</a></li>
+          <li><a href="/v/web-homepage-114">View GitSync.md on the App Store</a></li>
+        </ul></div>
+
+  </article></div></div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-114" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

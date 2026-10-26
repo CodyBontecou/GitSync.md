@@ -1,0 +1,34 @@
+# GitSync.md
+
+> GitSync.md is an independently developed Git client for iPhone, iPad, and Android. The guides on this website focus on iPhone and iPad. Git operations run on the device and use the user's configured Git remote.
+
+## When to use GitSync.md
+
+Use GitSync.md when a user needs to clone a private Git repository on iPhone or iPad, sync an Obsidian vault through Git, publish reviewed local files to GitHub, or review and commit changes away from a desktop. The iPhone and iPad app supports HTTPS and SSH remotes, including self-hosted Git providers.
+
+For automation on a user's device, consult the Shortcuts guide and agent instructions. The website provides public documentation rather than a hosted repository-management API. Opening a link does not authorize publishing files or changing a repository.
+
+## Product and trust
+
+- [Product overview](https://gitsync.md/): Features, screenshots, supported workflows, and store links.
+- [About](https://gitsync.md/about): Developer identity, product scope, and platforms.
+- [Contact](https://gitsync.md/contact): Support and private data requests.
+- [Privacy](https://gitsync.md/privacy): Credentials, optional background services, and data handling.
+- [Pricing](https://gitsync.md/pricing.md): Platform-specific purchase models and limitations.
+- [Agent instructions](https://gitsync.md/agent-instructions.md): When to use the product and how to guide a user safely.
+
+## iPhone and iPad workflows
+
+- [Guide index](https://gitsync.md/blog/): All setup and troubleshooting articles.
+- [Obsidian setup](https://gitsync.md/blog/obsidian-git-iphone-ipad): Choose the appropriate Git vault workflow.
+- [Obsidian Connect](https://gitsync.md/blog/gitsync-connect-obsidian-git): Companion plugin and credential handoff.
+- [Publish a local folder](https://gitsync.md/blog/create-git-repository-iphone): Review local files and create a private GitHub repository.
+- [Clone a GitHub repository](https://gitsync.md/blog/clone-github-repository-iphone): Clone and verify the working copy.
+- [Shortcuts automation](https://gitsync.md/blog/shortcuts-automation-ios): Native pull, push, and sync actions and their safety stops.
+- [Background sync](https://gitsync.md/blog/obsidian-git-background-sync-iphone): iOS scheduling limits and supported alternatives.
+- [Troubleshooting](https://gitsync.md/blog/obsidian-git-not-working-iphone): Authentication, folder selection, and sync problems.
+- [Conflict recovery](https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone): Preserve work and resolve divergent edits.
+
+## Reading this site
+
+Canonical HTML pages support Accept: text/markdown and return Vary: Accept. The same documents are available at .md paths, with /index.md for the homepage and /blog/index.md for the guide index. Missing pages return HTTP 404, including when Markdown is requested. Use the [sitemap](https://gitsync.md/sitemap.xml) for the complete public page list.

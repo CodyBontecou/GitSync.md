@@ -8,761 +8,332 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-<title>How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md</title>
-<meta name="description" content="A step-by-step guide to syncing your Obsidian vault with Git on iOS using GitSync.md and the Obsidian Git plugin. Real version control on your iPhone.">
+<title>Set Up an Obsidian Git Token on iPhone — GitSync.md</title>
+<meta name="description" content="Configure a GitHub Personal Access Token manually in Obsidian Git on iPhone. Set commit author details, check authentication, and verify your first push.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
-<meta name="theme-color" content="#0a0a0a">
-<link rel="canonical" href="https://gitsyncmd.app/blog/obsidian-git-ios-setup.html">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-git-ios-setup">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GitSync.md">
-<meta property="og:title" content="How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md">
-<meta property="og:description" content="A step-by-step guide to syncing your Obsidian vault with Git on iOS using GitSync.md and the Obsidian Git plugin.">
-<meta property="og:url" content="https://gitsyncmd.app/blog/obsidian-git-ios-setup.html">
-<meta property="og:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
+<meta property="og:title" content="Set Up an Obsidian Git Token on iPhone — GitSync.md">
+<meta property="og:description" content="Configure a GitHub Personal Access Token manually in Obsidian Git on iPhone. Set commit author details, check authentication, and verify your first push.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-git-ios-setup">
+<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
 <meta property="article:published_time" content="2026-02-15">
-<meta property="article:modified_time" content="2026-06-13">
+<meta property="article:modified_time" content="2026-10-26">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="How to Set Up GitSync.md with Obsidian Git on iOS — GitSync.md">
-<meta name="twitter:description" content="Set up real Git-backed Obsidian vault syncing on iPhone with GitSync.md and the Obsidian Git community plugin.">
-<meta name="twitter:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<meta name="twitter:title" content="Set Up an Obsidian Git Token on iPhone — GitSync.md">
+<meta name="twitter:description" content="Configure a GitHub Personal Access Token manually in Obsidian Git on iPhone. Set commit author details, check authentication, and verify your first push.">
+<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
 <style>
-  :root {
-    --white: #f5f5f7;
-    --black: #0a0a0a;
-    --grey-1: #1a1a1a;
-    --grey-2: #2a2a2a;
-    --grey-3: #3a3a3a;
-    --grey-4: #6a6a6a;
-    --grey-5: #8a8a8a;
-    --grey-6: #b0b0b0;
-    --blue: #007AFF;
-    --blue-dim: rgba(0, 122, 255, 0.12);
-    --green: #30D158;
-    --green-dim: rgba(48, 209, 88, 0.12);
-    --purple: #BF5AF2;
-    --purple-dim: rgba(191, 90, 242, 0.12);
-    --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  ::selection { background: var(--blue); color: var(--black); }
-
-  html {
-    font-size: 16px;
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  body {
-    font-family: var(--mono);
-    background: var(--black);
-    color: var(--white);
-    line-height: 1.6;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(10, 10, 10, 0.7);
-    border-bottom: 1px solid var(--grey-2);
-  }
-
-  .nav-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--white);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .logo-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--blue);
-    display: inline-block;
-    animation: pulse-dot 3s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-  }
-
-  .nav-links a {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--grey-5);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .nav-links a:hover { color: var(--white); }
-
-  .nav-cta {
-    font-size: 11px !important;
-    font-weight: 500 !important;
-    color: var(--blue) !important;
-    border: 1px solid rgba(0, 122, 255, 0.3);
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease !important;
-  }
-
-  .nav-cta:hover {
-    background: var(--blue) !important;
-    color: var(--black) !important;
-    border-color: var(--blue) !important;
-  }
-
-  /* ─── ARTICLE ─── */
-  .article-container {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 120px 24px 80px;
-  }
-
-  .article-meta {
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.2s forwards;
-  }
-
-  .article-meta .date {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--grey-4);
-    margin-bottom: 16px;
-  }
-
-  .article-meta h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-  }
-
-  .article-meta h1 .accent { color: var(--blue); }
-
-  .article-meta .subtitle {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-  }
-
-  .article-body {
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.4s forwards;
-  }
-
-  .article-body h2 {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-top: 56px;
-    margin-bottom: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--grey-2);
-  }
-
-  .article-body h3 {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin-top: 36px;
-    margin-bottom: 12px;
-    color: var(--grey-6);
-  }
-
-  .article-body p {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.85;
-    margin-bottom: 20px;
-  }
-
-  .article-body p strong {
-    color: var(--white);
-    font-weight: 500;
-  }
-
-  .article-body a {
-    color: var(--blue);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0, 122, 255, 0.3);
-    transition: border-color 0.2s ease;
-  }
-
-  .article-body a:hover {
-    border-color: var(--blue);
-  }
-
-  .article-body ul, .article-body ol {
-    margin-bottom: 20px;
-    padding-left: 20px;
-  }
-
-  .article-body li {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.85;
-    margin-bottom: 8px;
-  }
-
-  .article-body li strong {
-    color: var(--white);
-    font-weight: 500;
-  }
-
-  /* Code blocks */
-  code {
-    font-family: var(--mono);
-    font-size: 13px;
-    background: var(--grey-1);
-    border: 1px solid var(--grey-2);
-    padding: 2px 7px;
-    border-radius: 4px;
-    color: var(--blue);
-  }
-
-  pre {
-    background: var(--grey-1);
-    border: 1px solid var(--grey-2);
-    border-radius: 8px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    overflow-x: auto;
-    position: relative;
-  }
-
-  pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    border-radius: 0;
-    font-size: 13px;
-    line-height: 1.7;
-    color: var(--grey-6);
-  }
-
-  pre .prompt { color: var(--blue); user-select: none; }
-  pre .comment { color: var(--grey-4); font-style: italic; }
-
-  /* Step cards */
-  .step-card {
-    border: 1px solid var(--grey-2);
-    border-radius: 12px;
-    padding: 28px;
-    margin-bottom: 24px;
-    position: relative;
-    transition: border-color 0.3s ease;
-  }
-
-  .step-card:hover {
-    border-color: var(--grey-3);
-  }
-
-  .step-card::before {
-    content: attr(data-step);
-    position: absolute;
-    top: -12px;
-    left: 20px;
-    background: var(--black);
-    padding: 2px 12px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--blue);
-    border: 1px solid var(--grey-2);
-    border-radius: 20px;
-  }
-
-  .step-card h3 {
-    margin-top: 4px;
-    margin-bottom: 12px;
-    font-size: 17px;
-  }
-
-  .step-card p {
-    margin-bottom: 12px;
-  }
-
-  .step-card p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Info / tip callouts */
-  .callout {
-    border-left: 3px solid var(--blue);
-    background: var(--blue-dim);
-    padding: 16px 20px;
-    border-radius: 0 8px 8px 0;
-    margin-bottom: 24px;
-  }
-
-  .callout p {
-    color: var(--grey-6) !important;
-    margin-bottom: 0 !important;
-    font-size: 13px !important;
-  }
-
-  .callout.tip {
-    border-left-color: var(--green);
-    background: var(--green-dim);
-  }
-
-  .callout.note {
-    border-left-color: var(--purple);
-    background: var(--purple-dim);
-  }
-
-  .callout .callout-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .callout.tip .callout-label { color: var(--green); }
-  .callout.note .callout-label { color: var(--purple); }
-
-  /* TLDR box */
-  .tldr {
-    border: 1px solid var(--grey-2);
-    background: var(--grey-1);
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin-bottom: 32px;
-  }
-
-  .tldr-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 12px;
-  }
-
-  .tldr ol {
-    padding-left: 16px;
-    margin-bottom: 0;
-  }
-
-  .tldr li {
-    font-size: 13px;
-    margin-bottom: 4px;
-  }
-
-  /* Diagram / flow */
-  .flow-diagram {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 28px 20px;
-    border: 1px solid var(--grey-2);
-    border-radius: 12px;
-    margin-bottom: 24px;
-    background: var(--grey-1);
-  }
-
-  .flow-node {
-    background: var(--black);
-    border: 1px solid var(--grey-3);
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 12px;
-    font-weight: 500;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .flow-node.highlight {
-    border-color: var(--blue);
-    color: var(--blue);
-    background: var(--blue-dim);
-  }
-
-  .flow-arrow {
-    font-size: 14px;
-    color: var(--grey-4);
-  }
-
-  /* Settings table */
-  .settings-table {
-    width: 100%;
-    border: 1px solid var(--grey-2);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-
-  .settings-table .row {
-    display: flex;
-    border-bottom: 1px solid var(--grey-2);
-  }
-
-  .settings-table .row:last-child {
-    border-bottom: none;
-  }
-
-  .settings-table .key {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--grey-5);
-    padding: 12px 16px;
-    width: 200px;
-    flex-shrink: 0;
-    background: var(--grey-1);
-    border-right: 1px solid var(--grey-2);
-  }
-
-  .settings-table .val {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--white);
-    padding: 12px 16px;
-    flex: 1;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid var(--grey-2);
-    padding: 40px 24px;
-  }
-
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-left {
-    font-size: 11px;
-    color: var(--grey-4);
-    letter-spacing: 0.02em;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 24px;
-  }
-
-  .footer-links a {
-    font-size: 11px;
-    color: var(--grey-5);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.3s ease;
-  }
-
-  .footer-links a:hover { color: var(--white); }
-
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 600px) {
-    .article-container { padding: 100px 16px 60px; }
-    .article-meta h1 { font-size: 26px; }
-    .step-card { padding: 20px; }
-    .flow-diagram { flex-direction: column; }
-    .flow-arrow { transform: rotate(90deg); }
-    .settings-table .row { flex-direction: column; }
-    .settings-table .key {
-      width: 100%;
-      border-right: none;
-      border-bottom: 1px solid var(--grey-2);
-    }
-    .nav-links a:not(.nav-cta) { display: none; }
-  }
+  .setup-video { margin: 28px 0; }
+  .setup-video iframe { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border: 0; }
+  .setup-video figcaption { margin-top: 12px; font-size: 13px; line-height: 1.7; color: var(--muted); }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Set up a GitHub token in Obsidian Git on iPhone",
+  "description": "Configure a GitHub Personal Access Token manually in Obsidian Git on iPhone.",
+  "datePublished": "2026-02-15",
+  "dateModified": "2026-10-26",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-ios-setup",
+  "image": "https://gitsync.md/screenshots/hero-repo-list.png"
+}
+</script>
 </head>
-<body>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
 
 <!-- ─── NAV ─── -->
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html" class="logo">
-      <span class="logo-dot"></span>
-      GitSync.md
-    </a>
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a href="./">Blog</a>
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
-    </div>
-  </div>
-</nav>
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
 
 <!-- ─── ARTICLE ─── -->
-<article class="article-container">
+<main id="main">
+<header class="article-hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="article-title">
+        <div class="eyebrow">Obsidian Git Guide</div>
+        <h1>Set up a GitHub token in Obsidian Git on iPhone</h1>
+        <p class="subtitle">Use this manual setup when you want to configure GitHub credentials directly in Obsidian Git. Set the commit author and token separately, then verify a pull and push from your iPhone.</p>
+        <div class="meta-line"><span>Published February 15, 2026</span><span>Updated October 26, 2026 — Guide</span></div>
+      </div>
+      <aside class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#choose-sync">Choose a sync workflow</a></li>
+          <li><a href="#watch-the-walkthroughs">Watch the walkthroughs</a></li>
+          <li><a href="#the-problem">How the setup works</a></li>
+          <li><a href="#what-youll-need">What you'll need</a></li>
+          <li><a href="#step-by-step-setup">Clone and open your vault</a></li>
+          <li><a href="#configure-obsidian-git">Configure Obsidian Git</a></li>
+          <li><a href="#github-token">Add your GitHub token</a></li>
+          <li><a href="#verify-your-first-sync">Verify your first sync</a></li>
+          <li><a href="#daily-workflow">Daily workflow</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ol>
+      </aside>
+    </div>
+  </div>
+</header>
 
-  <header class="article-meta">
-    <div class="date">February 15, 2026 — Guide</div>
-    <h1>Using GitSync<span class="accent">.md</span> with Obsidian Git on iOS</h1>
-    <p class="subtitle">How to set up real Git-backed vault syncing on your iPhone using GitSync.md and the Obsidian Git community plugin — no Obsidian Sync subscription, no iCloud conflicts, no compromises.</p>
-  </header>
+  <div class="container">
+    <div class="article-shell article-shell-single">
+      <article class="article-body">
+    <div class="callout">
+      <span class="callout-label">Already signed into GitSync.md?</span>
+      <p>For a supported GitHub HTTPS vault, <a href="/blog/gitsync-connect-obsidian-git">GitSync.md Connect can configure Obsidian Git using your existing sign-in</a>. Use this guide if you prefer to create and paste a token manually. For the complete clone or publish workflow, start with <a href="/blog/obsidian-git-iphone-ipad">syncing Obsidian with Git on iPhone and iPad</a>.</p>
+    </div>
 
-  <div class="article-body">
-
-    <!-- TLDR -->
     <div class="tldr">
-      <div class="tldr-title">TL;DR</div>
+      <div class="tldr-title">The setup at a glance</div>
       <ol>
-        <li>In <strong>GitSync.md</strong>, set the default save location to Obsidian's iOS file system</li>
-        <li>Clone your vault's Git repo into that directory</li>
-        <li>Install the <strong>Obsidian Git</strong> community plugin</li>
-        <li>Set your <strong>GitHub username</strong>, <strong>author name</strong>, and <strong>author email</strong></li>
-        <li>Done — pull, commit, and push from Obsidian, or hand sync off to GitSync.md with the <code>syncmd://</code> sync URL</li>
+        <li>Sign in to <strong>GitSync.md</strong> and set the save location to <strong>On My iPhone → Obsidian</strong>.</li>
+        <li>Clone your vault’s GitHub repository, then fully close and reopen Obsidian.</li>
+        <li>Install and enable the <strong>Git</strong> community plugin in Obsidian.</li>
+        <li>Set your GitHub username, commit author name, and commit author email.</li>
+        <li>Paste a <strong>GitHub Personal Access Token</strong> into the plugin’s authentication settings.</li>
+        <li>Run <strong>Git: Commit-and-sync</strong> and verify your test edit on GitHub.</li>
       </ol>
     </div>
 
-    <div class="callout note">
-      <span class="callout-label">Update — June 2026</span>
-      <p>This post now recommends keeping the plugin's automatic timers off on iPhone and giving GitSync.md each explicit sync attempt via the <code>syncmd://x-callback-url/sync</code> URL. For the fuller walkthrough, see <a href="./obsidian-git-iphone-ipad.html">How to Use Obsidian Git on iPhone and iPad</a>.</p>
-    </div>
-
-    <h2>The problem</h2>
-
-    <p>If you use Obsidian on your desktop with the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank">Obsidian Git</a> plugin, you already have a great workflow: your vault is a Git repo, every edit is version-controlled, and your notes push to GitHub automatically.</p>
-
-    <p>Then you open Obsidian on your iPhone and realize — <strong>there's no Git on iOS</strong>. The mobile app doesn't ship with git, and the Obsidian Git plugin can't clone or push on its own without a real <code>.git</code> directory already in place.</p>
-
-    <p>That's what GitSync.md solves. It uses <strong>libgit2</strong> to perform real Git operations natively on iOS — clone, pull, commit, push — and writes an actual <code>.git</code> directory to the filesystem. Once that directory exists inside Obsidian's file system, the Obsidian Git plugin can detect and use it.</p>
-
-    <!-- Architecture diagram -->
-    <div class="flow-diagram">
-      <div class="flow-node">GitHub</div>
-      <div class="flow-arrow">←→</div>
-      <div class="flow-node highlight">GitSync.md</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">Obsidian filesystem</div>
-      <div class="flow-arrow">←→</div>
-      <div class="flow-node">Obsidian Git plugin</div>
-    </div>
-
-    <h2>What you'll need</h2>
-
+    <h2 id="choose-sync">GitSync.md, Obsidian Sync, or Working Copy?</h2>
+    <p>For encryption, cost, and history tradeoffs, read <a href="/compare/obsidian-sync-vs-git">Obsidian Sync vs Git</a>.</p>
+    <p>Choose the workflow you want to maintain. These tools overlap, but they have different setup and recovery models.</p>
     <ul>
-      <li><strong>GitSync.md</strong> installed on your iPhone (<a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank">App Store — $9.99 one-time</a>)</li>
-      <li><strong>Obsidian</strong> installed on your iPhone (<a href="https://apps.apple.com/app/obsidian-connected-notes/id1557175442" target="_blank">App Store</a>)</li>
-      <li>A <strong>GitHub account</strong> with a repository containing your Obsidian vault</li>
+      <li><strong>GitSync.md:</strong> choose it when you want your vault in a standard Git repository, control over commits and remotes, and a Files-based workflow on iPhone or iPad. This guide uses GitHub over HTTPS with the Obsidian Git plugin; the plugin's mobile limits are separate from GitSync.md's own Git capabilities.</li>
+      <li><strong>Obsidian Sync:</strong> consider the official service when you want syncing integrated into Obsidian rather than managing Git commits. It offers end-to-end encryption and version history. Read <a href="https://obsidian.md/sync">Obsidian's current plan details</a> and <a href="https://obsidian.md/help/sync/security">security documentation</a>.</li>
+      <li><strong>Working Copy:</strong> another iPhone/iPad Git client with external-directory workflows. Compare its repository and folder-linking model in the <a href="https://workingcopyapp.com/manual/version-control/">Working Copy manual</a> before choosing the tool that fits your vault. Read our <a href="/compare/gitsync-vs-working-copy">GitSync.md vs Working Copy comparison</a> for setup and purchase details.</li>
     </ul>
+    <p>GitSync.md's iPhone/iPad listing uses a one-time purchase; Android has a different free-download and Full Access model. Check your store for current terms. Competitor features and plans can change; this comparison was reviewed October 25, 2026. GitSync.md is independently developed and is not Obsidian's official sync service.</p>
+    <p>Start with one sync workflow for a vault. Avoid overlapping Git automation timers or multiple sync services writing the same folder until you understand how they interact. Keep an independent backup before migrating.</p>
 
-    <p>If you haven't pushed your vault to GitHub yet, you can do that from your desktop first — just <code>git init</code> inside your vault folder, commit everything, and push to a new repo.</p>
+    <h2 id="watch-the-walkthroughs">Watch the walkthroughs</h2>
+    <p>The first video shows the clone and vault setup. The follow-up fills in the authentication step: you also need to enter a Personal Access Token in Obsidian Git. Follow both parts below for the complete setup. Earlier videos call the app <strong>Sync.md</strong>; it’s now named <strong>GitSync.md</strong>.</p>
 
-    <!-- STEP 1 -->
-    <h2>Step-by-step setup</h2>
+    <figure class="setup-video">
+      <div class="tutorial-player"><a class="tutorial-launch" href="https://www.youtube.com/watch?v=jx7DOUGNCEs" data-video-id="jx7DOUGNCEs" data-video-title="Git-Backed Obsidian Sync on iPhone — Sync.md and Obsidian Git Setup"><span class="tutorial-play-icon" aria-hidden="true">▶</span><span>Play video<span class="tutorial-play-title">Git-Backed Obsidian Sync on iPhone — Sync.md and Obsidian Git Setup</span></span></a></div>
+      <figcaption><a href="https://www.youtube.com/watch?v=jx7DOUGNCEs" target="_blank" rel="noopener">Part 1: Git-Backed Obsidian Sync on iPhone</a> — sign in, choose the Obsidian folder, clone, and set your commit author details.</figcaption>
+    </figure>
+    <figure class="setup-video">
+      <div class="tutorial-player"><a class="tutorial-launch" href="https://www.youtube.com/watch?v=AdCvAzmgGQE&amp;t=6s" data-video-id="AdCvAzmgGQE" data-video-title="Setup Obsidian Git Plugin on iPhone with GitSync.md — Step-by-Step" data-video-start="6"><span class="tutorial-play-icon" aria-hidden="true">▶</span><span>Play video<span class="tutorial-play-title">Setup Obsidian Git Plugin on iPhone with GitSync.md — Step-by-Step</span></span></a></div>
+      <figcaption><a href="https://www.youtube.com/watch?v=AdCvAzmgGQE&amp;t=6s" target="_blank" rel="noopener">Part 2: Setup Obsidian Git Plugin on iPhone with GitSync.md</a> — add the GitHub token and verify a successful commit and push.</figcaption>
+    </figure>
+
+    <div class="callout note">
+      <span class="callout-label">The missing step from the first video</span>
+      <p>In this manual workflow, signing in to GitSync.md does not configure the Obsidian Git plugin’s credentials. Connect is the separate companion that can perform that handoff. Your author name and email identify your commits; the <strong>Personal Access Token</strong> lets the plugin authenticate when it pulls or pushes. You need to configure both.</p>
+    </div>
+
+    <h2 id="the-problem">How the setup works</h2>
+    <p>On desktop, Obsidian Git can use your installed Git tools. On iPhone, it uses a separate mobile implementation. In this workflow, <strong>GitSync.md handles the initial clone</strong>: it writes your notes and a real <code>.git</code> directory into Obsidian’s local folder. You then open that working copy in Obsidian and use the Git plugin to pull, commit, and push.</p>
+    <p>Both apps work with the same files. GitSync.md can also perform Git operations on that repository whenever you want to sync directly in the app.</p>
+
+    <div class="flow-diagram" aria-label="GitHub and the local vault shared by GitSync.md and Obsidian Git">
+      <div class="flow-node">GitHub repository</div>
+      <div class="flow-arrow">↔</div>
+      <div class="flow-node highlight">Local vault + .git</div>
+      <div class="flow-arrow">↔</div>
+      <div class="flow-node">GitSync.md / Obsidian Git</div>
+    </div>
+
+    <h2 id="what-youll-need">What you’ll need</h2>
+    <ul>
+      <li><strong>GitSync.md</strong> on your iPhone (<a href="/v/web-homepage-103" target="_blank" rel="noopener">App Store</a>).</li>
+      <li><strong>Obsidian</strong> on the same phone (<a href="https://apps.apple.com/app/obsidian-connected-notes/id1557175442" target="_blank" rel="noopener">App Store</a>).</li>
+      <li>A <strong>GitHub repository containing your vault</strong>, with your notes at the repository root.</li>
+      <li>Access to your GitHub account to create a Personal Access Token.</li>
+    </ul>
+    <p>If your vault is only on your desktop, commit and push it to GitHub first. Push any outstanding desktop edits before cloning it on your phone. This guide uses a local vault under <strong>On My iPhone</strong>; on iPad, use <strong>On My iPad</strong>.</p>
+
+    <h2 id="step-by-step-setup">Clone and open your vault</h2>
 
     <div class="step-card" data-step="Step 1">
       <h3>Sign in to GitSync.md</h3>
-      <p>Open GitSync.md and sign in with your <strong>GitHub account</strong>. You can use OAuth (tap "Sign in with GitHub") or paste a <a href="https://github.com/settings/tokens/new?scopes=repo&description=GitSync.md" target="_blank">Personal Access Token</a> — either works.</p>
+      <p>Open GitSync.md and tap <strong>Sign in with GitHub</strong>. Complete the GitHub OAuth sign-in so the app can show your repositories.</p>
+      <p><a href="https://www.youtube.com/watch?v=jx7DOUGNCEs&amp;t=62s" target="_blank" rel="noopener">Watch the sign-in and save-location setup →</a></p>
     </div>
 
-    <!-- STEP 2 -->
     <div class="step-card" data-step="Step 2">
-      <h3>Set the save location to Obsidian's filesystem</h3>
-      <p>This is the key step. During onboarding (or later in <strong>App Settings</strong>), GitSync.md asks you where to save cloned repos. Tap <strong>"Choose Location"</strong> and navigate to:</p>
-      <pre><code>On My iPhone → Obsidian</code></pre>
-      <p>This is the root of Obsidian's iOS file system. By cloning directly into this directory, your repo will appear as an Obsidian vault automatically.</p>
+      <h3>Choose Obsidian’s local folder as the save location</h3>
+      <p>When GitSync.md asks for your <strong>default save location</strong>, open the folder picker and select:</p>
+      <pre tabindex="0" role="region" aria-label="Vault save location"><code>On My iPhone → Obsidian</code></pre>
+      <p>Choose the <strong>Obsidian folder itself</strong>. GitSync.md will create your repository’s folder inside it. You can change this location later in GitSync.md’s <strong>App Settings</strong>.</p>
+      <p>If Obsidian’s folder is missing, open Obsidian and create a local vault with <strong>Store in iCloud</strong> turned off, then return to the folder picker.</p>
     </div>
 
-    <div class="callout">
-      <span class="callout-label">Why this works</span>
-      <p>On iOS, each app has its own sandboxed directory in the Files app. When GitSync.md clones a repo into Obsidian's directory, it creates a real folder with a real <code>.git</code> directory inside it — exactly what Obsidian Git needs to function. Obsidian sees the folder as a vault, and the plugin sees the <code>.git</code> directory and treats it as a working repository.</p>
-    </div>
-
-    <!-- STEP 3 -->
     <div class="step-card" data-step="Step 3">
-      <h3>Clone your vault repo</h3>
-      <p>Back in GitSync.md, tap <strong>"Add Repository"</strong> and browse your GitHub repos. Find your Obsidian vault repo and tap to add it, then hit <strong>"Clone Repository"</strong>.</p>
-      <p>GitSync.md will clone the full repo — including the <code>.git</code> directory with your complete commit history — straight into Obsidian's file system.</p>
+      <h3>Add and clone your vault repository</h3>
+      <p>In GitSync.md, add a repository and select your vault from the GitHub repository list. Tap <strong>Add and Clone Repository</strong>, or add it first and then tap <strong>Clone Repository</strong>, depending on the app version.</p>
+      <p>Wait for the clone to finish. In the Files app, check that your notes are inside a folder such as:</p>
+      <pre tabindex="0" role="region" aria-label="Example cloned vault folder"><code>On My iPhone → Obsidian → MyVault</code></pre>
+      <p>The clone includes the <code>.git</code> directory the plugin needs. You don’t need to initialize another repository in Obsidian.</p>
     </div>
 
-    <!-- STEP 4 -->
     <div class="step-card" data-step="Step 4">
-      <h3>Open the vault in Obsidian</h3>
-      <p>Open Obsidian on your iPhone. If this is your first time, you'll see the vault picker. Your cloned repo should appear as an available vault — tap it to open.</p>
-      <p>If you already have other vaults, tap <strong>"Open folder as vault"</strong> and select the cloned repo from Obsidian's file system.</p>
-      <p>You should see all your notes, just like on your desktop.</p>
+      <h3>Fully close and reopen Obsidian</h3>
+      <p>Open the iOS app switcher and swipe Obsidian away to close it completely. Reopen Obsidian, choose the cloned vault from the vault list, and tap <strong>Open vault</strong>.</p>
+      <p>This refresh matters: in both videos, the newly cloned folder appears after Obsidian restarts. You should now see the notes from your GitHub repository.</p>
+      <p><a href="https://www.youtube.com/watch?v=AdCvAzmgGQE&amp;t=68s" target="_blank" rel="noopener">Watch the close-and-reopen step →</a></p>
     </div>
 
-    <!-- STEP 5 -->
+    <h2 id="configure-obsidian-git">Configure Obsidian Git</h2>
+
     <div class="step-card" data-step="Step 5">
-      <h3>Install the Obsidian Git plugin</h3>
-      <p>Inside Obsidian, go to <strong>Settings → Community Plugins → Browse</strong> and search for <strong>"Obsidian Git"</strong>. Install it and enable it.</p>
-
-      <div class="callout tip">
-        <span class="callout-label">Tip</span>
-        <p>If you already have the Obsidian Git plugin configured in your vault on your desktop, its settings file (<code>.obsidian/plugins/obsidian-git/data.json</code>) may already be in the repo. In that case, the plugin will be installed automatically when Obsidian opens the vault — you just need to enable it.</p>
-      </div>
+      <h3>Install and enable the Git community plugin</h3>
+      <p>In your cloned vault, open <strong>Settings → Community plugins</strong>. Enable community plugins if prompted, tap <strong>Browse</strong>, and search for <strong>Git</strong>. Install the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Git plugin by Vinzent</a>, then tap <strong>Enable</strong>.</p>
+      <p>If the plugin is already present in your cloned vault, check that it’s enabled on your phone.</p>
     </div>
 
-    <!-- STEP 6 -->
     <div class="step-card" data-step="Step 6">
-      <h3>Configure Obsidian Git</h3>
-      <p>Open the Obsidian Git plugin settings (<strong>Settings → Obsidian Git</strong>) and fill in three fields:</p>
-
+      <h3>Set your username and commit author details</h3>
+      <p>Open the <strong>Git</strong> plugin’s settings and find <strong>Authentication/Commit Author</strong>. Fill in these fields:</p>
       <div class="settings-table">
         <div class="row">
           <div class="key">Username on your git server</div>
-          <div class="val">Your GitHub username (e.g. <code>CodyBontecou</code>)</div>
+          <div class="val">Your GitHub username, such as <code>CodyBontecou</code>.</div>
         </div>
         <div class="row">
           <div class="key">Author name for commit</div>
-          <div class="val">Your name (e.g. <code>Cody Bontecou</code>)</div>
+          <div class="val">The name you want in commit history, such as <code>Cody Bontecou</code>.</div>
         </div>
         <div class="row">
           <div class="key">Author email for commit</div>
-          <div class="val">Your email (e.g. <code>cody@example.com</code>)</div>
+          <div class="val">The email you use for Git commits.</div>
         </div>
       </div>
-
-      <p>That's it. No tokens to paste, no SSH keys to generate, no authentication configuration. The plugin uses the existing <code>.git</code> directory and remote configuration that GitSync.md already set up when it cloned the repo.</p>
+      <p>If you’ve tried to sync already, you may have seen <strong>“Git author name and email are not set.”</strong> These author fields fix that error. Authentication is the next step.</p>
     </div>
 
-    <!-- STEP 7 -->
+    <h2 id="github-token">Add your GitHub Personal Access Token</h2>
+
     <div class="step-card" data-step="Step 7">
-      <h3>Automate it with the sync URL (recommended)</h3>
-      <p>To give GitSync.md one explicit attempt instead of running competing plugin timers, trigger this URL when you want a pull-then-push round trip. This example includes an encoded <code>x-success</code> URL so a successful attempt can return to the named Obsidian vault:</p>
-      <pre><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian&amp;x-success=obsidian%3A%2F%2Fopen%3Fvault%3DMyVault</code></pre>
-      <p>The <code>sync</code> action attempts a clean fast-forward pull first, then stages local changes, commits them with the message you pass, and pushes only if the safety checks still pass. The <code>repo</code> value must match the <strong>vault folder name</strong> shown in GitSync.md, not the GitHub repository title. A return occurs only when you supply a callback URL, and blocked, authentication, or network outcomes may require attention instead of returning success.</p>
-      <p>You can fire it from a tapped link in a note, an iOS Shortcut, or an automation you build. Treat it as one sync attempt and inspect the result rather than assuming publication. Separate actions are also available if you want distinct pull and push buttons:</p>
-      <pre><code>syncmd://x-callback-url/pull?repo=MyVault
-syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
+      <h3>Create a token and paste it into Obsidian Git</h3>
+      <p>The follow-up video demonstrates a <strong>classic</strong> token. To follow that path:</p>
+      <ol>
+        <li>Open <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">GitHub’s Personal Access Tokens page</a> in your browser.</li>
+        <li>Choose <strong>Tokens (classic) → Generate new token → Generate new token (classic)</strong>.</li>
+        <li>Give it a descriptive name, such as <strong>Obsidian iPhone</strong>, and choose an expiration date.</li>
+        <li>Select the <strong>repo</strong> scope for repository access. Add <strong>workflow</strong> only if you will change GitHub Actions workflow files. Ordinary note syncing doesn’t require the extra project, user, or repository-deletion scopes selected in the demo.</li>
+        <li>Tap <strong>Generate token</strong>, then copy the token while GitHub displays it.</li>
+        <li>Return to Obsidian’s <strong>Git</strong> settings and paste it into <strong>Password/Personal access token</strong> under <strong>Authentication/Commit Author</strong>.</li>
+      </ol>
+      <p>You won’t be able to reveal the saved token again in the plugin’s settings. A hidden value doesn’t mean the field is empty. If you lose the token or it expires, generate a replacement and enter it again.</p>
+      <p><a href="https://www.youtube.com/watch?v=AdCvAzmgGQE&amp;t=139s" target="_blank" rel="noopener">Watch token creation →</a> · <a href="https://www.youtube.com/watch?v=AdCvAzmgGQE&amp;t=239s" target="_blank" rel="noopener">Watch where to paste it →</a></p>
     </div>
 
-    <h2>You're ready to use it</h2>
-
-    <p>Once those three fields are set, Obsidian Git can pull, commit, and push your vault. You can use the command palette (<strong>Ctrl+P</strong> or swipe down) and run commands like:</p>
-
-    <ul>
-      <li><strong>Obsidian Git: Pull</strong> — fetch the latest changes from GitHub</li>
-      <li><strong>Obsidian Git: Commit all changes</strong> — stage and commit your edits</li>
-      <li><strong>Obsidian Git: Push</strong> — push commits to GitHub</li>
-    </ul>
-
-    <h3>What about automatic syncing?</h3>
-
-    <p>The plugin does have automatic settings — auto commit-and-sync interval, auto push interval, auto pull interval — and they work, but <strong>we recommend leaving them off on iPhone</strong>. The plugin's mobile Git engine is experimental and memory-limited on iOS, its timers only fire while Obsidian is open in the foreground, and two apps driving the same <code>.git</code> on independent schedules is far less predictable than one owner.</p>
-
-    <p>Instead, let <strong>GitSync.md be the single Git engine</strong>. Trigger the <code>syncmd://x-callback-url/sync</code> URL from Step 7 for an explicit one-tap round trip that can pull, commit, and push. Optional <strong>Background Sync</strong> lets you independently enable clean fast-forward pulls, separately consented commit-and-push attempts, or both whenever iOS grants background time. Push-only mode checks remote state without updating the worktree and stops if incoming changes need attention. GitHub events and discretionary iOS processing provide best-effort wakes, but iOS controls delivery and timing, so background updates are not guaranteed or real time. Automatic work never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
-
-    <div class="callout tip">
-      <span class="callout-label">Tip</span>
-      <p>You can also use GitSync.md itself to pull and push at any time — tap the repo in GitSync.md and use the Pull or Commit & Push buttons. Both apps work with the same <code>.git</code> directory, so they stay in sync with each other.</p>
+    <div class="callout note">
+      <span class="callout-label">Token permissions</span>
+      <p>GitHub recommends fine-grained tokens where possible because you can limit them to specific repositories. If you choose that option, select your vault repository and follow the plugin’s <a href="https://publish.obsidian.md/git-doc/Getting%20Started" target="_blank" rel="noopener">mobile setup permissions</a>. The classic-token steps above match the video. See <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">GitHub’s token documentation</a> for expiration and organization restrictions.</p>
     </div>
 
-    <h2>Why this works so well</h2>
+    <div class="callout warning">
+      <span class="callout-label">Keep the token private</span>
+      <p>A token grants access to your repositories. Don’t paste it into a note, publish it in a screenshot, or commit it to Git. Before entering the token, check that plugin configuration containing credentials is excluded from version control. The plugin’s <a href="https://publish.obsidian.md/git-doc/Tips-and-Tricks" target="_blank" rel="noopener">.gitignore guide</a> explains how to exclude <code>.obsidian/plugins/</code>. If those files are already tracked, adding an ignore rule alone won’t stop Git tracking them; remove them from tracking first while keeping your local copies. If you expose a token, revoke it on GitHub and create a replacement.</p>
+    </div>
 
-    <p>Most iOS Git solutions use REST APIs or custom sync layers that don't leave a <code>.git</code> directory on disk. GitSync.md is different — it's built on <strong>libgit2</strong>, the portable open-source C implementation of Git used by countless clients, and it creates real Git repositories on the iOS filesystem. That means:</p>
+    <h2 id="verify-your-first-sync">Verify your first commit and push</h2>
 
-    <ul>
-      <li><strong>Full compatibility</strong> — any tool that reads <code>.git</code> directories works out of the box</li>
-      <li><strong>Complete history</strong> — your entire commit log is on your device</li>
-      <li><strong>No content middleman</strong> — manual and Background Sync Git traffic goes directly to your Git provider; optional Push Sync uses a one-time GitHub App connection and routes only verified installation/repository/APNs event metadata, never repository contents or Git credentials</li>
-      <li><strong>Everything is included</strong> — the app is a one-time purchase, including Background Sync; there is no subscription</li>
-    </ul>
+    <div class="step-card" data-step="Step 8">
+      <h3>Make a small edit and run Commit-and-sync</h3>
+      <ol>
+        <li>Create a note named <code>Hello GitSync.md</code>, or add a short test line to an existing note.</li>
+        <li>Open Obsidian’s command palette and run <strong>Git: Commit-and-sync</strong> (search for <strong>commit</strong> if the wording differs in your plugin version).</li>
+        <li>Wait for the operation to finish, then open the same repository and branch on GitHub.</li>
+        <li>Check the latest commit and confirm that your new note or edit is there.</li>
+        <li>On your desktop, pull the repository and confirm that the edit appears in your vault there too.</li>
+      </ol>
+      <p>This is the verification shown in the videos: an edit made in Obsidian on iPhone appears in a GitHub commit and can be pulled onto another device.</p>
+      <p><a href="https://www.youtube.com/watch?v=AdCvAzmgGQE&amp;t=273s" target="_blank" rel="noopener">Watch the successful commit and push →</a></p>
+    </div>
 
-    <h2>Troubleshooting</h2>
+    <h2 id="daily-workflow">Daily workflow</h2>
+    <p>Pull before you start editing on a device, write your notes, then commit and push before switching to another device. In Obsidian’s command palette, use <strong>Git: Pull</strong>, <strong>Git: Commit-and-sync</strong>, or the separate commit and push commands.</p>
+    <p>You can also open the repository in GitSync.md to pull or commit and push the same files. Wait for an operation to finish before starting another in either app.</p>
+    <p>Get manual syncing working before adding automation. If you later want GitSync.md to handle sync operations through Shortcuts, follow the <a href="/blog/shortcuts-automation-ios">Shortcuts automation guide</a> and turn off overlapping plugin timers.</p>
 
-    <h3>Obsidian doesn't see the vault</h3>
-    <p>Make sure you set GitSync.md's save location to <code>On My iPhone → Obsidian</code> <em>before</em> cloning. If you cloned to the wrong location, you can remove the repo in GitSync.md, update the save location in App Settings, and clone again.</p>
+    <h2 id="why-this-works">Why this works</h2>
+    <p>GitSync.md uses libgit2 to create a standard Git working copy on your phone. Obsidian edits the Markdown files in that folder, and the Git plugin uses the repository’s history and remote configuration with the credentials you supply in its settings. Your vault stays a folder of files you can also work with on your desktop.</p>
+    <p>The plugin’s <a href="https://publish.obsidian.md/git-doc/Getting%20Started" target="_blank" rel="noopener">mobile documentation</a> describes memory and feature limitations, including no SSH authentication. This walkthrough uses a <strong>GitHub HTTPS remote</strong>. If plugin operations fail on a large vault, use GitSync.md to sync that shared folder directly.</p>
 
-    <h3>Obsidian Git says "no git repository found"</h3>
-    <p>This usually means the <code>.git</code> directory wasn't cloned properly. Open GitSync.md, check that the repo shows as "Cloned" with a branch and commit SHA visible. If it looks right, try closing and reopening Obsidian.</p>
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <p>For errors outside token setup, follow the <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git troubleshooting checklist</a>.</p>
 
-    <h3>Push fails from Obsidian Git</h3>
-    <p>Obsidian Git on iOS relies on the credentials already configured in the <code>.git/config</code> remote URL. If the remote was set up via GitSync.md with OAuth or a PAT, the credentials are embedded. Make sure your GitHub username in the plugin settings matches the one you signed in with in GitSync.md.</p>
+    <h3>Obsidian doesn’t show the cloned vault</h3>
+    <p>In Files, check that the repository folder is under <code>On My iPhone → Obsidian</code>. Fully close Obsidian from the app switcher and reopen it. If you cloned elsewhere, save any unpushed edits before cloning a fresh copy into the correct location.</p>
 
-    <h3>Changes made in Obsidian don't appear in GitSync.md</h3>
-    <p>That's normal — both apps share the same filesystem. When you edit a file in Obsidian and then open GitSync.md, it will detect the changes automatically. They're reading and writing the same files.</p>
+    <h3>“Git author name and email are not set”</h3>
+    <p>Open the Git plugin’s settings and fill in <strong>Author name for commit</strong> and <strong>Author email for commit</strong>. Your GitHub username alone doesn’t fill in those fields.</p>
 
-    <h2>Recap</h2>
+    <h3>Pull or push fails even though GitSync.md is signed in</h3>
+    <p>Enter a valid token in the plugin’s <strong>Password/Personal access token</strong> field. Check its expiration, repository permissions, and your account’s write access. For an organization repository, also check whether the token needs SSO authorization or organization approval. Use an HTTPS remote such as <code>https://github.com/USERNAME/REPO.git</code>.</p>
 
-    <p>The whole setup takes about two minutes:</p>
+    <h3>The token field looks empty after saving</h3>
+    <p>The plugin hides the saved token. Try a pull or your test commit to check authentication. If it fails and you can’t recover the original token, replace it with a newly generated one.</p>
 
-    <ol>
-      <li>Point GitSync.md's save directory at Obsidian's iOS file system</li>
-      <li>Clone your vault repo</li>
-      <li>Set up Obsidian Git with your username, name, and email</li>
-      <li>Keep the plugin's auto-sync timers off and use <code>syncmd://x-callback-url/sync</code> for an explicit one-tap sync attempt</li>
-    </ol>
+    <h3>The plugin can’t find a Git repository</h3>
+    <p>Confirm that GitSync.md completed the clone and that you opened the cloned folder as your vault. Creating a new empty vault beside the clone won’t give it the clone’s <code>.git</code> directory.</p>
 
-    <p>No complex configuration and no cloud service in the path of your repository content. Just real Git on your iPhone, working seamlessly with the app you already use for your notes.</p>
+    <h3>The plugin crashes or hangs</h3>
+    <p>Use GitSync.md to perform the Git operation on the same local vault. Keep the plugin’s automatic timers off while using GitSync.md for syncing.</p>
 
-    <p style="margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--grey-2);">
-      <strong>GitSync.md</strong> is available on the <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270">App Store for a $9.99 one-time base-app purchase</a> and is <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">open source on GitHub</a>. Background Sync is included in that one-time purchase; there is no auto-renewable subscription.
-    </p>
+    <h3>A pull reports conflicts</h3>
+    <p>Stop automatic sync attempts and keep a copy of local uncommitted work. Review the conflicting files in GitSync.md, choose the intended content, and commit the resolution before pushing. For a complex conflict, preserve the working copy and resolve it on desktop. Do not delete and re-clone a vault until local changes are backed up or safely pushed.</p>
+    <h3>Background syncing did not run</h3>
+    <p>Open GitSync.md and verify a manual pull or push first. Background work is scheduled by iOS and is best effort, so a configured schedule does not prove that an operation completed. Check the remote before switching devices. The <a href="/blog/shortcuts-automation-ios">automation guide</a> explains explicit Shortcuts actions.</p>
 
+    <h2 id="recap">Recap</h2>
+    <p>Clone with GitSync.md into Obsidian’s local folder, restart Obsidian, enable the Git plugin, and configure both your commit identity and your GitHub token. Verify a small edit on GitHub before relying on the setup for your daily notes.</p>
+    <p><a href="/v/web-homepage-103" target="_blank" rel="noopener">Get GitSync.md on the App Store</a> or explore the <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">source on GitHub</a>.</p>
+
+      </article>
+    </div>
   </div>
-</article>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-103" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
 
 <!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
-    <div class="footer-links">
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">GitHub</a>
-      <a href="./">Blog</a>
-      <a href="../privacy.html">Privacy</a>
-      <a href="../terms.html">Terms</a>
-    </div>
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>
 <!-- Cloudflare Web Analytics -->
@@ -774,6 +345,7 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
     'healthmd.isolated.tech': true,
     'isome.isolated.tech': true,
     'gitsyncmd.app': true,
+    'gitsync.md': true,
     'timemd.isolated.tech': true,
     'imghost.isolated.tech': true
   };
@@ -813,5 +385,6 @@ syncmd://x-callback-url/push?repo=MyVault&amp;message=Update%20from%20Obsidian</
 })();
 </script>
 <!-- End Cloudflare Web Analytics -->
+<script src="/video-player.js" defer></script>
 </body>
 </html>

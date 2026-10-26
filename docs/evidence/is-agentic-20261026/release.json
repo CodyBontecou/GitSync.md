@@ -1,0 +1,48 @@
+{
+  "production": "https://gitsync.md",
+  "pagesDeployment": "https://8a34ec07.syncmd.pages.dev",
+  "previewDeployment": "https://d67c78cd.syncmd.pages.dev",
+  "routerVersion": "55ddc01c-d766-4b9f-895b-89b5a91a56f8",
+  "previousRouterVersion": "442e2bdb-3b08-4e82-b8f0-4e4c33b6f4a1",
+  "previousPagesDeployment": "https://9c04b0f6.syncmd.pages.dev",
+  "baselineScore": 75,
+  "changes": [
+    "Generate Markdown from HTML main content at build time",
+    "Negotiate Markdown on canonical URLs with Vary: Accept",
+    "Preserve missing-page HTTP 404 with Markdown recovery guidance",
+    "Add public agent instructions, llms.txt and platform-specific pricing",
+    "Add About and Contact pages with navigation and sitemap entries",
+    "Link product structured data to source, App Store and developer identity"
+  ],
+  "checks": {
+    "htmlPages": 22,
+    "sitemapURLs": 21,
+    "pythonTests": 12,
+    "routerTests": 7,
+    "testimonialTests": 2,
+    "typecheck": "Passed against @cloudflare/workers-types 5.20261026.1",
+    "liveHTML": "All pages match generated build",
+    "liveNegotiation": "9 HTML/Markdown, 404 and preference checks passed",
+    "lighthouse": "Homepage, About and Contact: all four categories 100"
+  },
+  "notes": [
+    "Existing unrelated source changes preserved; no commit made.",
+    "An independent scan can still flag brand-search visibility; search rankings were not claimed to be fixed.",
+    "Provider raw score is a different scoring model from the displayed Is Agentic score; retain provider JSON without altering its raw score."
+  ],
+  "freshScan": {
+    "displayedIsAgenticScore": 100,
+    "scannedAt": "2026-10-26T13:33:23.746+00:00",
+    "siteType": "business",
+    "essentialChecks": "6/6 passed, 80/80",
+    "recommended": "17.8/20",
+    "bonus": 3,
+    "proof": "score-100.png",
+    "providerEvidence": "after-provider-result.json"
+  },
+  "reportPersistence": {
+    "publicReportAndApiScore": 75,
+    "publicReportAndApiTimestamp": "2026-10-26T13:15:57.691Z",
+    "status": "Stale: scan UI shows 100 and stream emits scan_archived, but a new visitor and public API still receive the old baseline. No claim that the shared persisted report has updated."
+  }
+}

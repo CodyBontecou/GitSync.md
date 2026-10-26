@@ -8,51 +8,57 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<title>GitSync.md — Real Git for Obsidian and code on iPhone/iPad</title>
-<meta name="description" content="A full iOS Git client for Obsidian, Markdown, and code. Work manually—or add optional Background Sync with independent automatic pull and push controls, a one-tap pull-all widget, and opt-in GitHub push notifications.">
+<title>Git Client for iPhone &amp; iPad — GitSync.md</title>
+<meta name="description" content="A Git client for iPhone and iPad. Sync Obsidian vaults, publish local folders to GitHub, and review, commit, and push code. $19.99 once on the US App Store.">
 <meta name="robots" content="index, follow">
+<meta name="is-agentic-site-type" content="business">
 <meta name="author" content="Cody Bontecou">
-<meta name="theme-color" content="#0a0a0a">
-<link rel="canonical" href="https://gitsyncmd.app/">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GitSync.md">
-<meta property="og:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta property="og:description" content="Real Git on iPhone and iPad for $9.99 once. Manual Git stays included; optional Background Sync adds independent automatic pull and push controls. Pull all your repos from a Home Screen widget or Control Center, with opt-in GitHub push notifications.">
-<meta property="og:url" content="https://gitsyncmd.app/">
-<meta property="og:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
+<meta property="og:title" content="Git Client for iPhone &amp; iPad — GitSync.md">
+<meta property="og:description" content="A Git client for iPhone and iPad. Sync Obsidian vaults, publish local folders to GitHub, and review, commit, and push code. $19.99 once on the US App Store.">
+<meta property="og:url" content="https://gitsync.md/">
+<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GitSync.md — Real Git for Obsidian and code on iPhone/iPad">
-<meta name="twitter:description" content="Real Git for Obsidian, Markdown, and code on iOS. $9.99 once, with optional Background Sync and independent automatic pull and push controls. Plus a one-tap pull-all widget and opt-in GitHub push alerts.">
-<meta name="twitter:image" content="https://gitsyncmd.app/screenshots/hero-repo-list.png">
+<meta name="twitter:title" content="Git Client for iPhone &amp; iPad — GitSync.md">
+<meta name="twitter:description" content="A Git client for iPhone and iPad. Sync Obsidian vaults, publish local folders to GitHub, and review, commit, and push code. $19.99 once on the US App Store.">
+<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "GitSync.md",
   "alternateName": "Sync.md",
+  "@id": "https://gitsync.md/#app",
+  "sameAs": ["https://github.com/CodyBontecou/GitSync.md", "https://apps.apple.com/us/app/gitsync-md/id6758960270"],
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "iOS 17+, iPadOS 17+",
-  "description": "GitSync.md is a paid iOS Git client for Obsidian vaults, Markdown folders, and code repositories. All Git traffic — manual and optional Background Sync — goes directly from your device to your remote; there is no sync server.",
-  "url": "https://gitsyncmd.app/",
+  "description": "GitSync.md is an iPhone and iPad Git client for Obsidian vaults, local folders, and code. Create a Git repository in place from reviewed local files, publish it to a new private repository in your personal GitHub account, or clone an existing remote. Git traffic goes directly from your device to your remote.",
+  "url": "https://gitsync.md/",
   "downloadUrl": "https://apps.apple.com/us/app/gitsync-md/id6758960270",
   "author": {
     "@type": "Person",
-    "name": "Cody Bontecou"
+    "name": "Cody Bontecou",
+    "url": "https://codybontecou.com"
   },
   "offers": {
     "@type": "Offer",
-    "price": "9.99",
+    "price": "19.99",
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
     "url": "https://apps.apple.com/us/app/gitsync-md/id6758960270"
   },
   "featureList": [
+    "Create a Git repository in place from a reviewed local folder",
+    "Publish local files to a new private repository in your personal GitHub account",
     "Clone private Git repositories on iPhone and iPad",
     "Self-hosted Git remotes over HTTPS or SSH (GitLab, Bitbucket, Gitea, Forgejo)",
     "Branch, merge, rebase, stash, tags, and commit history",
     "Three-way conflict resolution with side-by-side editor",
     "Git LFS: automatic downloads, tracking prompts, file locking",
-    "Built-in syntax-highlighted editor (11 languages)",
+    "Built-in syntax-highlighted editor",
     "Diff review, staging, commit, pull, and push",
     "Obsidian x-callback-url and Apple Shortcuts automation",
     "Multiple GitHub accounts and per-repo credentials",
@@ -65,2157 +71,234 @@
 }
 </script>
 
-<style>
-  :root {
-    --white: #f5f5f7;
-    --black: #0a0a0a;
-    --grey-1: #1a1a1a;
-    --grey-2: #2a2a2a;
-    --grey-3: #3a3a3a;
-    --grey-4: #7d7d7d;
-    --grey-5: #8a8a8a;
-    --grey-6: #b0b0b0;
-    --blue: #007AFF;
-    --blue-dim: rgba(0, 122, 255, 0.12);
-    --green: #30D158;
-    --green-dim: rgba(48, 209, 88, 0.12);
-    --amber: #FFD60A;
-    --amber-dim: rgba(255, 214, 10, 0.12);
-    --line: rgba(255, 255, 255, 0.08);
-    --mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, 'Fira Code', monospace;
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  ::selection {
-    background: var(--blue);
-    color: var(--black);
-  }
-
-  html {
-    font-size: 16px;
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    scrollbar-gutter: stable both-edges;
-  }
-
-  body {
-    font-family: var(--mono);
-    background: var(--black);
-    color: var(--white);
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
-
-  /* ─── UTILITY ─── */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  .accent {
-    color: var(--blue);
-  }
-
-  .eyebrow-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.2s forwards;
-  }
-
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--grey-2);
-    background: rgba(255,255,255,0.02);
-    border-radius: 999px;
-    padding: 7px 12px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--grey-5);
-  }
-
-  .pill.price {
-    color: var(--white);
-    border-color: rgba(0, 122, 255, 0.38);
-    background: var(--blue-dim);
-  }
-
-  .price-note {
-    margin-top: 14px;
-    font-size: 11px;
-    color: var(--grey-5);
-    letter-spacing: 0.02em;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.78s forwards;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(10, 10, 10, 0.7);
-    border-bottom: 1px solid var(--grey-2);
-  }
-
-  .nav-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--white);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .logo-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--blue);
-    display: inline-block;
-    animation: pulse-dot 3s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-  }
-
-  .nav-links a {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--grey-5);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .nav-links a:hover {
-    color: var(--white);
-  }
-
-  .nav-cta {
-    font-size: 11px !important;
-    font-weight: 500 !important;
-    color: var(--blue) !important;
-    border: 1px solid rgba(0, 122, 255, 0.3);
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease !important;
-  }
-
-  .nav-cta:hover {
-    background: var(--blue) !important;
-    color: var(--black) !important;
-    border-color: var(--blue) !important;
-  }
-
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-top: 80px;
-    position: relative;
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .hero-text {
-    padding: 40px 0;
-  }
-
-  .hero-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--grey-5);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.2s forwards;
-  }
-
-  .hero-title {
-    font-size: clamp(48px, 6vw, 80px);
-    font-weight: 700;
-    line-height: 1.0;
-    letter-spacing: -0.03em;
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.35s forwards;
-  }
-
-  .hero-title .accent {
-    color: var(--blue);
-  }
-
-  .hero-desc {
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--grey-5);
-    max-width: 560px;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.5s forwards;
-  }
-
-  .hero-desc code,
-  .segment-card code {
-    background: var(--grey-1);
-    border: 1px solid var(--grey-3);
-    border-radius: 4px;
-    padding: 1px 5px;
-    color: var(--white);
-    font-size: 0.92em;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: center;
-    opacity: 0;
-    animation: fade-up 0.8s var(--ease) 0.65s forwards;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--black);
-    background: var(--blue);
-    border: none;
-    padding: 14px 28px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s var(--ease);
-    letter-spacing: 0.02em;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3);
-  }
-
-  .btn-primary svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--grey-5);
-    background: none;
-    border: 1px solid var(--grey-3);
-    padding: 13px 24px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    letter-spacing: 0.02em;
-  }
-
-  .btn-ghost:hover {
-    color: var(--white);
-    border-color: var(--grey-4);
-  }
-
-  /* Phone mockup */
-  .hero-phone {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    animation: fade-up 1s var(--ease) 0.5s forwards;
-  }
-
-  .phone-frame {
-    position: relative;
-    width: 320px;
-    margin: 0 auto;
-    background: linear-gradient(180deg, #2a2a2e, #1a1a1e 50%, #2a2a2e);
-    border-radius: 40px;
-    padding: 8px;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,0.06),
-      0 40px 80px rgba(0,0,0,0.6),
-      0 0 120px rgba(0, 122, 255, 0.06);
-  }
-
-  .phone-screen {
-    border-radius: 32px;
-    overflow: hidden;
-    background: #000;
-    aspect-ratio: 9/19.5;
-  }
-
-  .phone-screen picture,
-  .phone-screen img {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  .phone-screen img {
-    object-fit: cover;
-    filter: contrast(1.04) saturate(1.02);
-  }
-
-  .phone-notch {
-    display: none;
-  }
-
-  /* ─── TICKER / SPECS BAR ─── */
-  .specs-bar {
-    border-top: 1px solid var(--grey-2);
-    border-bottom: 1px solid var(--grey-2);
-    padding: 20px 0;
-    overflow: hidden;
-    max-width: 100vw;
-    position: relative;
-  }
-
-  .specs-track {
-    display: flex;
-    gap: 64px;
-    animation: scroll-left 34s linear infinite;
-    width: max-content;
-    padding-right: 64px;
-    will-change: transform;
-  }
-
-  .specs-track span {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--grey-4);
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .specs-track span::before {
-    content: '';
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--grey-4);
-  }
-
-  @keyframes scroll-left {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ─── TRUST STRIP ─── */
-  .trust-strip {
-    border-top: 1px solid var(--grey-2);
-    border-bottom: 1px solid var(--grey-2);
-    background:
-      linear-gradient(90deg, rgba(0,122,255,0.08), transparent 18%, transparent 82%, rgba(0,122,255,0.06)),
-      rgba(255,255,255,0.015);
-  }
-
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1px;
-    background: var(--grey-2);
-  }
-
-  .trust-item {
-    background: var(--black);
-    min-height: 120px;
-    padding: 24px 22px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .trust-kicker {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--grey-4);
-  }
-
-  .trust-value {
-    font-size: 15px;
-    line-height: 1.35;
-    font-weight: 600;
-    color: var(--white);
-  }
-
-  .trust-value small {
-    display: block;
-    margin-top: 6px;
-    color: var(--grey-5);
-    font-size: 11px;
-    font-weight: 300;
-    line-height: 1.55;
-  }
-
-  /* ─── DEMO / SCREENSHOTS ─── */
-  .demo-section {
-    border-top: 1px solid var(--grey-2);
-  }
-
-  .demo-intro {
-    max-width: 760px;
-  }
-
-  .demo-lede {
-    max-width: 620px;
-    margin-top: -42px;
-    margin-bottom: 48px;
-    color: var(--grey-5);
-    font-size: 13px;
-    line-height: 1.8;
-    font-weight: 300;
-  }
-
-  .demo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    align-items: start;
-  }
-
-  .demo-card {
-    border: 1px solid var(--grey-2);
-    border-radius: 12px;
-    background:
-      radial-gradient(circle at top, rgba(0,122,255,0.08), transparent 38%),
-      var(--grey-1);
-    padding: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .demo-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent 26%);
-  }
-
-  .screenshot-shell {
-    border-radius: 9px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: #f5f5f7;
-    overflow: hidden;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.38);
-    position: relative;
-    z-index: 1;
-  }
-
-  .screenshot-shell picture,
-  .screenshot-shell img {
-    width: 100%;
-    display: block;
-  }
-
-  .screenshot-shell img {
-    height: auto;
-    filter: contrast(1.05) saturate(1.02);
-  }
-
-  .demo-caption {
-    position: relative;
-    z-index: 1;
-    margin-top: 14px;
-  }
-
-  .demo-caption strong {
-    display: block;
-    font-size: 12px;
-    color: var(--white);
-    margin-bottom: 5px;
-  }
-
-  .demo-caption span {
-    display: block;
-    font-size: 11px;
-    line-height: 1.6;
-    color: var(--grey-5);
-    font-weight: 300;
-  }
-
-  /* ─── USE CASES ─── */
-  .segment-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--grey-2);
-    border: 1px solid var(--grey-2);
-  }
-
-  .segment-card {
-    background: var(--black);
-    padding: 34px;
-    min-height: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .segment-card h3 {
-    font-size: 20px;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-  }
-
-  .segment-card p {
-    color: var(--grey-5);
-    font-size: 12px;
-    line-height: 1.75;
-    font-weight: 300;
-  }
-
-  .segment-list {
-    margin-top: auto;
-    padding-top: 18px;
-    border-top: 1px solid var(--grey-2);
-    display: grid;
-    gap: 10px;
-  }
-
-  .segment-list span {
-    font-size: 11px;
-    color: var(--grey-6);
-    line-height: 1.5;
-  }
-
-  .segment-list span::before {
-    content: '→';
-    color: var(--blue);
-    margin-right: 8px;
-  }
-
-  /* ─── FAQ ─── */
-  .faq-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .faq-item {
-    border: 1px solid var(--grey-2);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.015);
-    overflow: hidden;
-  }
-
-  .faq-item[open] {
-    background: var(--grey-1);
-    border-color: var(--grey-3);
-  }
-
-  .faq-item summary {
-    cursor: pointer;
-    list-style: none;
-    padding: 20px 22px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .faq-item summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-item summary::after {
-    content: '+';
-    color: var(--blue);
-    font-size: 18px;
-    font-weight: 400;
-  }
-
-  .faq-item[open] summary::after {
-    content: '−';
-  }
-
-  .faq-item p {
-    padding: 0 22px 22px;
-    color: var(--grey-5);
-    font-size: 12px;
-    line-height: 1.75;
-    font-weight: 300;
-  }
-
-  .faq-item code {
-    background: var(--black);
-    border: 1px solid var(--grey-3);
-    border-radius: 4px;
-    padding: 2px 5px;
-    color: var(--white);
-    font-size: 11px;
-  }
-
-  .source-callout {
-    margin-top: 28px;
-    border: 1px solid var(--grey-2);
-    border-radius: 10px;
-    padding: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    background: linear-gradient(90deg, rgba(0,122,255,0.08), rgba(255,255,255,0.015));
-  }
-
-  .source-callout p {
-    color: var(--grey-5);
-    font-size: 12px;
-    line-height: 1.7;
-    max-width: 720px;
-  }
-
-  /* ─── FEATURES GRID ─── */
-  .section {
-    padding: 120px 0;
-  }
-
-  .section-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--grey-4);
-    margin-bottom: 12px;
-  }
-
-  .section-title {
-    font-size: clamp(28px, 3.5vw, 42px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 64px;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--grey-2);
-    border: 1px solid var(--grey-2);
-  }
-
-  .feature-cell {
-    background: var(--black);
-    padding: 40px 32px;
-    position: relative;
-    transition: background 0.4s ease;
-  }
-
-  .feature-cell:hover {
-    background: var(--grey-1);
-  }
-
-  .feature-index {
-    font-size: 10px;
-    font-weight: 400;
-    color: var(--grey-4);
-    margin-bottom: 20px;
-    letter-spacing: 0.1em;
-  }
-
-  .feature-name {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-  }
-
-  .feature-desc {
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-  }
-
-  .feature-desc code {
-    background: var(--grey-1);
-    border: 1px solid var(--grey-3);
-    border-radius: 4px;
-    padding: 1px 5px;
-    color: var(--white);
-    font-size: 11px;
-  }
-
-  .feature-icon {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--grey-3);
-    border-radius: 6px;
-    color: var(--blue);
-  }
-
-  .feature-icon svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  /* ─── WORKFLOW SECTION ─── */
-  .workflow-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .workflow-phone {
-    display: flex;
-    justify-content: center;
-  }
-
-  .workflow-phone .phone-frame {
-    width: 300px;
-  }
-
-  .workflow-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .step {
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 20px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--grey-2);
-    align-items: start;
-  }
-
-  .step:first-child {
-    border-top: 1px solid var(--grey-2);
-  }
-
-  .step-num {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--grey-3);
-    line-height: 1;
-  }
-
-  .step-content h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .step-content p {
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-  }
-
-  /* ─── INTEGRATIONS ─── */
-  .integrations-row {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .integration-card {
-    flex: 1;
-    min-width: 240px;
-    border: 1px solid var(--grey-2);
-    padding: 32px;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .integration-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: var(--blue);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s var(--ease);
-  }
-
-  .integration-card:hover::after {
-    transform: scaleX(1);
-  }
-
-  .integration-card:hover {
-    border-color: var(--grey-3);
-    background: var(--grey-1);
-  }
-
-  .integration-name {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .integration-desc {
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-  }
-
-  .integration-tag {
-    display: inline-block;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--blue);
-    background: var(--blue-dim);
-    padding: 4px 10px;
-    border-radius: 2px;
-    margin-bottom: 16px;
-  }
-
-  .integration-desc code {
-    background: var(--grey-1);
-    border: 1px solid var(--grey-3);
-    border-radius: 4px;
-    padding: 2px 6px;
-    color: var(--white);
-    font-size: 11px;
-  }
-
-  .integration-desc a {
-    color: var(--blue);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0, 122, 255, 0.3);
-  }
-
-  .integration-desc a:hover {
-    border-bottom-color: var(--blue);
-  }
-
-  /* ─── AUTOMATION DOCS ─── */
-  .docs-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-  }
-
-  .doc-card {
-    border: 1px solid var(--grey-2);
-    background: var(--grey-1);
-    border-radius: 8px;
-    padding: 24px;
-  }
-
-  .doc-card h3 {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
-  }
-
-  .doc-card p {
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-    margin-bottom: 12px;
-  }
-
-  .doc-card ul {
-    margin: 0;
-    padding-left: 18px;
-  }
-
-  .doc-card li {
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-    margin-bottom: 6px;
-  }
-
-  .doc-card code {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--white);
-    background: var(--black);
-    border: 1px solid var(--grey-3);
-    border-radius: 4px;
-    padding: 2px 6px;
-  }
-
-  .doc-card a {
-    color: var(--blue);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0, 122, 255, 0.3);
-  }
-
-  .doc-card a:hover {
-    border-bottom-color: var(--blue);
-  }
-
-  .doc-url {
-    display: block;
-    width: 100%;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--grey-6);
-    background: var(--black);
-    border: 1px solid var(--grey-2);
-    border-radius: 6px;
-    padding: 12px;
-    line-height: 1.8;
-    overflow-wrap: anywhere;
-    margin-top: 8px;
-  }
-
-  /* ─── SPECS TABLE ─── */
-  .specs-section {
-    border-top: 1px solid var(--grey-2);
-    padding: 120px 0;
-  }
-
-  .specs-table {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-  }
-
-  .spec-row {
-    display: contents;
-  }
-
-  .spec-key {
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--grey-4);
-    padding: 16px 0;
-    border-bottom: 1px solid var(--grey-2);
-    letter-spacing: 0.02em;
-  }
-
-  .spec-val {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--white);
-    padding: 16px 0;
-    border-bottom: 1px solid var(--grey-2);
-    text-align: right;
-    letter-spacing: 0.01em;
-  }
-
-  /* ─── CTA SECTION ─── */
-  .cta-section {
-    padding: 120px 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(0, 122, 255, 0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-title {
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    margin-bottom: 20px;
-  }
-
-  .cta-sub {
-    font-size: 13px;
-    font-weight: 300;
-    color: var(--grey-5);
-    margin-bottom: 40px;
-    line-height: 1.7;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid var(--grey-2);
-    padding: 40px 24px;
-  }
-
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-left {
-    font-size: 11px;
-    color: var(--grey-4);
-    letter-spacing: 0.02em;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 24px;
-  }
-
-  .footer-links a {
-    font-size: 11px;
-    color: var(--grey-5);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.3s ease;
-  }
-
-  .footer-links a:hover {
-    color: var(--white);
-  }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* stagger children */
-  .reveal-stagger > * {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
-  }
-
-  .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(7) { transition-delay: 0.48s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(8) { transition-delay: 0.56s; opacity: 1; transform: translateY(0); }
-  .reveal-stagger.visible > *:nth-child(9) { transition-delay: 0.64s; opacity: 1; transform: translateY(0); }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    .hero-grid {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-
-    .hero-phone {
-      order: -1;
-    }
-
-    .phone-frame {
-      width: 220px !important;
-    }
-
-    .features-grid,
-    .trust-grid,
-    .segment-grid,
-    .faq-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .demo-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .workflow-grid {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-
-    .workflow-phone {
-      order: -1;
-    }
-
-    .specs-table {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .nav-links a:not(.nav-cta) {
-      display: none;
-    }
-
-    .hero {
-      text-align: center;
-      min-height: auto;
-      padding-top: 80px;
-      padding-bottom: 40px;
-    }
-
-    .hero-desc {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-actions {
-      justify-content: center;
-    }
-
-    .integrations-row {
-      flex-direction: column;
-    }
-
-    .docs-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .source-callout {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .hero-title {
-      font-size: 36px;
-    }
-
-    .hero-grid {
-      gap: 24px;
-    }
-
-    .phone-frame {
-      width: 190px !important;
-    }
-
-    .hero-text {
-      padding: 0;
-    }
-
-    .hero-desc {
-      margin-bottom: 24px;
-    }
-
-    .hero-actions .btn-primary,
-    .hero-actions .btn-ghost {
-      width: 100%;
-      max-width: 360px;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .hero-label {
-      margin-bottom: 16px;
-    }
-
-    .section {
-      padding: 80px 0;
-    }
-
-    .feature-cell,
-    .segment-card {
-      padding: 28px 20px;
-    }
-
-    .trust-item {
-      min-height: auto;
-      gap: 16px;
-    }
-
-    .demo-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .demo-lede {
-      margin-top: -34px;
-      margin-bottom: 32px;
-    }
-
-    .specs-bar {
-      padding: 16px 0;
-    }
-
-    .specs-track {
-      animation: none;
-      width: 100%;
-      padding-right: 0;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px 16px;
-    }
-
-    .specs-track span:nth-child(n+15) {
-      display: none;
-    }
-
-    .specs-track span {
-      font-size: 9px;
-      white-space: normal;
-      gap: 7px;
-    }
-  }
-
-  /* ─── CURSOR GLOW ─── */
-  .glow {
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 122, 255, 0.04) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease;
-    opacity: 0;
-  }
-
-  body:hover .glow {
-    opacity: 1;
-  }
-
-  /* ─── BLOG SECTION ─── */
-  .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 24px;
-  }
-
-  .blog-card {
-    border: 1px solid var(--grey-2);
-    border-radius: 8px;
-    padding: 32px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s var(--ease);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .blog-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: var(--blue);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s var(--ease);
-  }
-
-  .blog-card:hover::after {
-    transform: scaleX(1);
-  }
-
-  .blog-card:hover {
-    border-color: var(--grey-3);
-    background: var(--grey-1);
-    transform: translateY(-2px);
-  }
-
-  .blog-card-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .blog-card-tag {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--blue);
-    background: var(--blue-dim);
-    padding: 4px 10px;
-    border-radius: 2px;
-  }
-
-  .blog-card-date {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--grey-4);
-    letter-spacing: 0.04em;
-  }
-
-  .blog-card-title {
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.3;
-    color: var(--white);
-  }
-
-  .blog-card-excerpt {
-    font-size: 12px;
-    font-weight: 300;
-    color: var(--grey-5);
-    line-height: 1.7;
-    flex: 1;
-  }
-
-  .blog-card-link {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--blue);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: gap 0.3s var(--ease);
-  }
-
-  .blog-card:hover .blog-card-link {
-    gap: 10px;
-  }
-
-  .blog-card-link svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  @media (max-width: 600px) {
-    .blog-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .blog-card {
-      padding: 24px 20px;
-    }
-  }
-
-  /* ─── COMMAND LINE ELEMENT ─── */
-  .cli-block {
-    background: var(--grey-1);
-    border: 1px solid var(--grey-2);
-    border-radius: 6px;
-    padding: 20px 24px;
-    margin-top: 32px;
-    font-size: 13px;
-    color: var(--grey-5);
-    display: inline-block;
-  }
-
-  .cli-block .prompt {
-    color: var(--blue);
-    user-select: none;
-  }
-
-  .cli-block .cmd {
-    color: var(--white);
-  }
-</style>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="landing.css">
+<link rel="stylesheet" href="reviews.css">
 </head>
-<body>
-
-<div class="glow" id="glow"></div>
-
-<!-- ─── NAV ─── -->
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="logo">
-      <span class="logo-dot"></span>
-      GitSync.md
-    </a>
-    <div class="nav-links">
-      <a href="#screenshots">Demo</a>
-      <a href="#features">Features</a>
-      <a href="#use-cases">Use cases</a>
-      <a href="#faq">FAQ</a>
-      <a href="blog/">Blog</a>
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a>
-      <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="nav-cta">Buy $9.99</a>
-    </div>
-  </div>
-</nav>
-
-<main>
-<!-- ─── HERO ─── -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <div class="eyebrow-stack">
-          <span class="pill">GitSync.md for iOS/iPadOS</span>
-          <span class="pill">Updated June 2026</span>
-          <span class="pill price">$9.99 once</span>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+</svg>
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="#top" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="#features">The app</a><a href="#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+<main id="main">
+  <section class="hero shell" aria-labelledby="hero-heading">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Independent files. Anywhere.</p>
+      <h1 id="hero-heading">REAL GIT.<br>IN YOUR<br><span class="blue-text">POCKET.</span></h1>
+      <p class="hero-description">A real Git client for iPhone and iPad.<br class="desktop-break"> Sync your Obsidian vault, create a repo from local files, or edit, commit, and push code wherever you are.</p>
+      <div class="hero-actions">
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-100" target="_blank" rel="noopener"><img src="assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
         </div>
-        <h1 class="hero-title">Real Git for Obsidian and code on iPhone/iPad<span class="accent">.</span></h1>
-        <p class="hero-desc">Clone private GitHub repos, edit Markdown or code, review diffs, commit, pull, and push from iOS. GitSync.md creates real <code>.git</code> working copies for Obsidian vaults, code projects, and Files-based workflows — no Mac, shell, or sync server required.</p>
-        <div class="hero-actions">
-          <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="btn-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Buy on the App Store — $9.99
-          </a>
-          <a href="#screenshots" class="btn-ghost">See the workflow</a>
-        </div>
-        <div class="price-note">One purchase. Everything included — manual Git and Background Sync. No subscriptions.</div>
+        <a class="text-link" href="#create-repo">Create a repo <span aria-hidden="true">↓</span></a>
       </div>
-      <div class="hero-phone">
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <img src="screenshots/hero-repo-list.png" alt="GitSync.md repository list showing cloned Git repos on iPhone" width="1320" height="2868" loading="eager" fetchpriority="high" decoding="async">
+      <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+    </div>
+    <div class="hero-product" id="screenshots">
+      <div class="iphone-stage">
+        <div class="iphone-bezel">
+          <span class="iphone-side-button iphone-silent" aria-hidden="true"></span>
+          <span class="iphone-side-button iphone-volume-up" aria-hidden="true"></span>
+          <span class="iphone-side-button iphone-volume-down" aria-hidden="true"></span>
+          <span class="iphone-side-button iphone-power" aria-hidden="true"></span>
+          <div class="iphone-screen">
+            <img id="app-preview" src="screenshots/hero-repo-list-660.webp" width="1320" height="2868" alt="GitSync.md repository list with three example repositories and their branch and commit details" fetchpriority="high" decoding="async">
+            <div class="iphone-status-bar" aria-hidden="true">
+              <span>9:41</span>
+              <svg viewBox="0 0 44 12" fill="currentColor"><path d="M0 8h2v4H0zm3-2h2v6H3zm3-3h2v9H6zm3-3h2v12H9z"/><path d="M15 3a9 9 0 0 1 12 0l-1.4 1.6a7 7 0 0 0-9.2 0zm2.4 2.6a5.5 5.5 0 0 1 7.2 0l-1.5 1.6a3.2 3.2 0 0 0-4.2 0zm2.3 2.7a1.9 1.9 0 0 1 2.6 0L21 10z"/><rect x="30" y="2" width="11" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1"/><rect x="31.5" y="3.5" width="8" height="5" rx=".6"/><path d="M42 4h1v4h-1z"/></svg>
+            </div>
+            <span class="iphone-island" aria-hidden="true"></span>
+            <span class="iphone-home-indicator" aria-hidden="true"></span>
           </div>
         </div>
       </div>
+      <div class="preview-tabs" role="group" aria-label="Choose an app screenshot">
+        <button type="button" class="preview-tab active" data-preview="repositories" aria-pressed="true"><span>01</span> Repositories</button>
+        <button type="button" class="preview-tab" data-preview="changes" aria-pressed="false"><span>02</span> Changes</button>
+        <button type="button" class="preview-tab" data-preview="diff" aria-pressed="false"><span>03</span> Diff</button>
+      </div>
+      <p class="preview-caption" id="preview-caption" aria-live="polite">Your vaults and codebases. One place. Real Git.</p>
+    </div>
+  </section>
+  <div class="fact-strip">
+    <div class="shell fact-grid">
+      <div><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-branch"/></svg><span>Real .git directories</span></div>
+      <div><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Your files. Your remote.</span></div>
+      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener"><span>Open source. Open by design.</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
     </div>
   </div>
-</section>
 
-<!-- ─── TRUST STRIP ─── -->
-<section class="trust-strip" aria-label="Buyer trust facts">
-  <div class="container">
-    <div class="trust-grid reveal-stagger reveal">
-      <div class="trust-item">
-        <span class="trust-kicker">Price</span>
-        <span class="trust-value">$9.99 one-time<small>All manual Git is included. Background Sync is optional.</small></span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-kicker">Repos</span>
-        <span class="trust-value">Unlimited<small>Clone notes, code, docs, dotfiles, and client work.</small></span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-kicker">Trust</span>
-        <span class="trust-value">Open source<small>Audit the app and file issues on GitHub.</small></span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-kicker">Credentials</span>
-        <span class="trust-value">Keychain tokens<small>OAuth/PAT credentials stay in the iOS Keychain.</small></span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-kicker">Architecture</span>
-        <span class="trust-value">Direct Git traffic<small>All Git traffic — manual and Background Sync — goes device-to-remote; there is no sync server.</small></span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── SPECS TICKER ─── -->
-<div class="specs-bar">
-  <div class="specs-track" aria-label="GitSync.md technical highlights">
-    <span>$9.99 one-time</span>
-    <span>Background Sync optional</span>
-    <span>Unlimited repositories</span>
-    <span>Private GitHub repos</span>
-    <span>Tokens in iOS Keychain</span>
-    <span>Direct Git traffic</span>
-    <span>Real .git directories</span>
-    <span>libgit2 engine</span>
-    <span>Syntax highlighting — 11 languages</span>
-    <span>Diff viewer</span>
-    <span>iOS Files integration</span>
-    <span>Obsidian syncmd:// automation</span>
-    <span>Branch, stash, tag, merge</span>
-    <span>Self-hosted + SSH remotes</span>
-    <span>Git LFS support</span>
-    <span>iPhone + iPad</span>
-    <span>$9.99 one-time</span>
-    <span>Background Sync optional</span>
-    <span>Unlimited repositories</span>
-    <span>Private GitHub repos</span>
-    <span>Tokens in iOS Keychain</span>
-    <span>Direct Git traffic</span>
-    <span>Real .git directories</span>
-    <span>libgit2 engine</span>
-    <span>Syntax highlighting — 11 languages</span>
-    <span>Diff viewer</span>
-    <span>iOS Files integration</span>
-    <span>Obsidian syncmd:// automation</span>
-    <span>Branch, stash, tag, merge</span>
-    <span>Self-hosted + SSH remotes</span>
-    <span>Git LFS support</span>
-    <span>iPhone + iPad</span>
-  </div>
-</div>
-
-<!-- ─── DEMO / SCREENSHOTS ─── -->
-<section class="section demo-section" id="screenshots">
-  <div class="container">
-    <div class="reveal demo-intro">
-      <div class="section-label">001 — Demo</div>
-      <h2 class="section-title">A Git workflow you can actually finish on iOS.</h2>
-      <p class="demo-lede">The app is built around the repeatable path buyers care about: clone a repo, edit the working copy, inspect status, pull, commit, push, and hand the same files to Obsidian or any app that uses iOS Files.</p>
-    </div>
-    <div class="demo-grid reveal-stagger reveal">
-      <figure class="demo-card">
-        <div class="screenshot-shell"><img src="screenshots/hero-repo-list.png" alt="Multiple cloned repositories listed in GitSync.md with an Add Repository button" width="1320" height="2868" loading="lazy" decoding="async"></div>
-        <figcaption class="demo-caption"><strong>Clone once.</strong><span>Keep multiple vaults and codebases on device, ready to reopen or re-clone without hunting through URLs.</span></figcaption>
-      </figure>
-      <figure class="demo-card">
-        <div class="screenshot-shell"><img src="screenshots/workflow-vault-view.png" alt="Repository detail screen with repo health, changed files, pull, commit and push actions" width="1320" height="2868" loading="lazy" decoding="async"></div>
-        <figcaption class="demo-caption"><strong>Review before you push.</strong><span>See branch, short SHA, changed-file counts, conflicts, and the exact actions available for that repo.</span></figcaption>
-      </figure>
-      <figure class="demo-card">
-        <div class="screenshot-shell"><img src="screenshots/03-blog-cloned.png" alt="Git control sheet with repository status, branches, staged changes, and sync controls" width="1320" height="2868" loading="lazy" decoding="async"></div>
-        <figcaption class="demo-caption"><strong>Control Git state.</strong><span>Review branches, staged files, stash, tags, and repository status before you sync.</span></figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<!-- ─── FEATURES ─── -->
-<section class="section" id="features">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">002 — Capabilities</div>
-      <h2 class="section-title">Real Git, a full editor, and optional background syncing.</h2>
-    </div>
-    <div class="features-grid reveal-stagger reveal">
-      <div class="feature-cell">
-        <div class="feature-index">01</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3m-2.636-6.364l-2.121 2.121M7.757 16.243l-2.121 2.121m0-12.728l2.121 2.121m8.486 8.486l2.121 2.121"/></svg>
-        </div>
-        <div class="feature-name">Real Git</div>
-        <div class="feature-desc">Powered by libgit2. Actual <code>.git</code> directories, real commit history, real branches. Your working copy stays standard Git on disk.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">02</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        </div>
-        <div class="feature-name">Private Repo Ready</div>
-        <div class="feature-desc">Sign in with GitHub OAuth or paste a Personal Access Token — and connect multiple GitHub accounts, switching between them while each repo stays scoped to its owner. Credentials are stored in Keychain and used from your device to the remote.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">03</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        </div>
-        <div class="feature-name">Code Editor</div>
-        <div class="feature-desc">A full syntax-highlighted editor built into the app. Swift, Python, JavaScript, TypeScript, Markdown, JSON, YAML, Bash, HTML, and CSS — with VSCode-style Dark+ and Light+ themes.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">04</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <div class="feature-name">File Manager</div>
-        <div class="feature-desc">A hierarchical file browser with git-status badges on every file. Create, rename, and delete files directly inside the app without leaving your workflow.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">05</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="18" y2="18"/></svg>
-        </div>
-        <div class="feature-name">Diff Viewer</div>
-        <div class="feature-desc">Line-by-line unified diffs with color-coded additions and deletions, hunk headers, added/removed counts, and one-tap revert for any changed file — plus a paginated commit-history browser with per-commit file changes.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">06</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-        </div>
-        <div class="feature-name">Branch Controls</div>
-        <div class="feature-desc">Create, switch, merge, and delete local branches. Full stash management with messages, and annotated tag support — all from a single Git control sheet.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">07</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-        </div>
-        <div class="feature-name">Push & Pull</div>
-        <div class="feature-desc">Full upstream workflow. Pull remote changes — fast-forward, or rebase your local commits when histories diverge — stage individual files, write a commit message, and push with the result verified against the remote.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">08</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <div class="feature-name">Multi-Repo</div>
-        <div class="feature-desc">Projects, dotfiles, notes, configs — manage them all. Each repo has its own branch, author identity, custom storage location, and sync state.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">09</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        </div>
-        <div class="feature-name">x-callback-url</div>
-        <div class="feature-desc">Obsidian and Shortcuts can call <code>syncmd://x-callback-url/sync</code> to pull and push. The scheme stays <code>syncmd://</code> for compatibility.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">10</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
-        </div>
-        <div class="feature-name">Self-Hosted &amp; SSH</div>
-        <div class="feature-desc">GitLab, Bitbucket, Gitea, Forgejo, or your own server. Add any remote by URL and authenticate with an SSH key (Ed25519/ECDSA/RSA) — host keys verified by SHA-256 fingerprint on first connect.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">11</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-        </div>
-        <div class="feature-name">Git LFS</div>
-        <div class="feature-desc">Media and big binaries just work: LFS files download automatically after clone and pull, you're prompted before large files get LFS-tracked, and file locking plus push guards keep teams safe.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">12</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.5 5.5 21l2-7.5L2 9h7z"/></svg>
-        </div>
-        <div class="feature-name">Conflict Resolution</div>
-        <div class="feature-desc">When histories diverge, choose merge or rebase explicitly. Resolve conflicts per file — ours, theirs, or edit in the side-by-side three-way view — then complete or abort cleanly.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">13</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
-        </div>
-        <div class="feature-name">Background Sync</div>
-        <div class="feature-desc">Best-effort reconciliation when iOS grants background time, included with the app. Automatic pull and automatic push are independent controls; publishing stays default-off. Push-only mode checks remote state without updating the worktree. Concurrent changes stop safely. It never merges, rebases, switches branches, or force-pushes, and it is not guaranteed or real time.</div>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-index">14</div>
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        </div>
-        <div class="feature-name">Widget &amp; Push Alerts</div>
-        <div class="feature-desc">Put Pull All Repositories on your Home Screen or in Control Center (iOS 18+) for an explicit pull-only pass that never publishes local changes. Optional Push Sync connects a GitHub App once per account or organization—choose all or selected repositories, with no per-repository webhook setup. A GitHub push shows an alert and asks iOS for best-effort reconciliation of the matching included branch; separately enabled publishing keeps its safety gates, and tapping remains pull-only. The relay stores repository names, verified GitHub installation/account identifiers, and APNs registration data—not file contents, paths, or Git credentials.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── WORKFLOW ─── -->
-<section class="section" id="workflow" style="border-top: 1px solid var(--grey-2);">
-  <div class="container">
+  <section class="workflow-section shell section" id="workflow" aria-labelledby="workflow-heading">
+    <div class="section-topline"><p class="eyebrow">01 / The workflow</p><p class="small-meta">From remote to right here.</p></div>
+    <div class="section-intro"><h2 id="workflow-heading">DESKTOP HABITS.<br>POCKET SIZE.</h2><p>Keep the workflow you know.<br>Leave the laptop behind.</p></div>
     <div class="workflow-grid">
-      <div class="workflow-phone reveal">
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <img src="screenshots/diff-view.png" alt="Line-by-line diff with color-coded additions and deletions and added/removed counts" width="1320" height="2868" loading="lazy" decoding="async">
-          </div>
+      <article class="workflow-step"><div class="step-head"><span class="step-number">01</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></div><h3>Create or clone.</h3><p>Turn a local folder into a repo and publish to GitHub, or clone an existing repository from your Git server.</p><span class="code-label">git init / git clone</span></article>
+      <article class="workflow-step"><div class="step-head"><span class="step-number">02</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></div><h3>Make it yours.</h3><p>Write in Obsidian, your favorite Files-compatible editor, or GitSync.md. Your files stay ordinary files.</p><span class="code-label">notes / code / whatever</span></article>
+      <article class="workflow-step"><div class="step-head"><span class="step-number">03</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></div><h3>Push it.</h3><p>Review the diff, stage your changes, and make a commit. Send your work straight to your remote.</p><span class="code-label">git commit → git push</span></article>
+    </div>
+  </section>
+
+  <section class="create-repo-section section" id="create-repo" aria-labelledby="create-repo-heading">
+    <div class="shell">
+      <div class="section-topline">
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Create on device</p>
+        <p class="small-meta">Your files already have a head start.</p>
+      </div>
+      <div class="create-repo-layout">
+        <div class="create-repo-copy">
+          <h2 id="create-repo-heading">LOCAL FILES.<br>FIRST COMMIT.<br><span class="blue-text">YOUR NEW REPO.</span></h2>
+          <p>A folder of notes, a small project, your next idea. Turn it into a real Git repository on your iPhone or iPad, then publish it to a new GitHub repo. Visibility starts private. Your files stay in their original folder.</p>
+          <div class="feature-tags create-repo-tags"><span>ON DEVICE</span><span>REVIEWED FILES</span><span>PRIVATE GITHUB REPO</span></div>
+          <a class="text-link" href="#download">Start with your files <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <p><a class="text-link" href="/blog/create-git-repository-iphone#video-tutorial">Watch: Obsidian to GitHub from iPhone <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a></p>
+        </div>
+        <ol class="create-repo-steps">
+          <li>
+            <span class="create-step-number" aria-hidden="true">01 /</span>
+            <div><h3>Pick your folder.</h3><p>Choose <strong>Add Repository → Publish a Folder</strong>, select a supported local folder in Files, and sign in with GitHub.</p></div>
+          </li>
+          <li>
+            <span class="create-step-number" aria-hidden="true">02 /</span>
+            <div><h3>Choose what goes in.</h3><p>Review and select your files, set your author details, and save the first commit on-device. Nothing is uploaded in this step.</p></div>
+          </li>
+          <li>
+            <span class="create-step-number" aria-hidden="true">03 /</span>
+            <div><h3>Make it a private GitHub repo.</h3><p>A separate publish action creates a private repository in your personal GitHub account and pushes your saved commit. Keep the app open for the first upload.</p></div>
+          </li>
+        </ol>
+      </div>
+      <p class="create-repo-scope">First publication supports local app folders under On My iPhone or On My iPad and regular files up to 10 MiB each. Cloud-provider folders and Git LFS publication are outside this flow.</p>
+    </div>
+  </section>
+
+  <section class="features-section inverse section" id="features" aria-labelledby="features-heading">
+    <div class="shell">
+      <div class="section-topline"><p class="eyebrow">02 / Full control</p><p class="small-meta">Small screen. Serious tools.</p></div>
+      <div class="features-layout">
+        <div class="features-intro"><h2 id="features-heading">EVERY CHANGE.<br>IN PLAIN<br><span class="blue-text">SIGHT.</span></h2><p>Actual Git, powered by libgit2. See what changed, choose what to stage, and keep your history in your hands.</p><a class="text-link" href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">See the source <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a><div class="feature-capture"><div class="capture-label"><span>DIFF / projects/app-launch.md</span><span class="diff-count">+ / −</span></div><div class="diff-viewport"><img src="screenshots/diff-view-660.webp" alt="GitSync.md diff viewer showing added lines in green and removed lines in red" width="1320" height="2868" loading="lazy" decoding="async"></div></div></div>
+        <div class="feature-list">
+          <article><span class="feature-number">01 /</span><div><h3>All the Git. None of the guesswork.</h3><p>Branches, commit history, diffs, stash, tags, merge, and rebase. Resolve conflicts with a three-way view.</p><div class="feature-tags"><span>BRANCH</span><span>STAGE</span><span>COMMIT</span><span>PUSH</span></div></div></article>
+          <article><span class="feature-number">02 /</span><div><h3>Any repo. Your rules.</h3><p>GitHub, GitLab, Bitbucket, Gitea, Forgejo, or a self-hosted remote. Connect over HTTPS or SSH. Git LFS included.</p><div class="feature-tags"><span>PRIVATE REPOS</span><span>SSH + HTTPS</span></div></div></article>
+          <article><span class="feature-number">03 /</span><div><h3>Your editor is already invited.</h3><p>Files live in iOS Files. Work in Obsidian, iA Writer, or the built-in syntax-highlighted editor. GitSync.md handles the Git.</p><div class="feature-tags"><span>OBSIDIAN</span><span>IOS FILES</span></div></div></article>
+          <article><span class="feature-number">04 /</span><div><h3>A little less tapping.</h3><p>Run Pull, Push, or Sync from Apple Shortcuts. Pull from your Home Screen or Control Center. Enable Background Sync when it suits your workflow.</p><p class="feature-note">Background work is best effort and scheduled by iOS. Automatic publishing is off by default.</p></div></article>
         </div>
       </div>
-      <div class="reveal">
-        <div class="section-label">003 — Workflow</div>
-        <h2 class="section-title" style="margin-bottom: 40px;">Clone to push<br>in five steps.</h2>
-        <div class="workflow-steps">
-          <div class="step">
-            <div class="step-num">01</div>
-            <div class="step-content">
-              <h3>Authenticate</h3>
-              <p>Sign in with GitHub OAuth or paste a Personal Access Token. Keychain-stored, encrypted at rest.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">02</div>
-            <div class="step-content">
-              <h3>Clone</h3>
-              <p>Browse your accessible repos, tap to clone. The repository downloads to your device with its Git history and working tree.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">03</div>
-            <div class="step-content">
-              <h3>Browse</h3>
-              <p>Navigate your repository with the built-in file browser. Git-status badges on every file — see exactly what's changed at a glance.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">04</div>
-            <div class="step-content">
-              <h3>Edit</h3>
-              <p>Open any file in the built-in syntax-highlighted editor. Or use the iOS Files provider to open files in your preferred external app.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">05</div>
-            <div class="step-content">
-              <h3>Sync</h3>
-              <p>Pull changes, review diffs, commit your edits, push upstream. Full version control from your pocket.</p>
-            </div>
-          </div>
+    </div>
+  </section>
+
+  <section class="use-cases-section shell section" id="use-cases" aria-labelledby="use-cases-heading">
+    <div class="section-topline"><p class="eyebrow">03 / Built for your files</p><p class="small-meta">One app. Plenty of possibilities.</p></div>
+    <div class="section-intro"><h2 id="use-cases-heading">NOTES. CODE.<br>WHATEVER'S NEXT.</h2><p>If it belongs in a Git repository,<br>it belongs in your pocket.</p></div>
+    <div class="use-case-grid">
+      <a class="use-case" href="/blog/obsidian-git-iphone-ipad"><span class="case-symbol" aria-hidden="true">[ md ]</span><div><span class="eyebrow">For the note takers</span><h3>Your second brain.<br>First-class Git.</h3><p>Keep your Obsidian vault versioned and ready wherever an idea finds you.</p><span class="case-link">Set up your vault <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></span></div></a>
+      <a class="use-case" href="/blog/self-hosted-git-ssh-ios"><span class="case-symbol" aria-hidden="true">&lt; / &gt;</span><div><span class="eyebrow">For the builders</span><h3>The quick fix.<br>Without the laptop.</h3><p>Edit a config, update your docs, or commit a change to your own Git server.</p><span class="case-link">Connect your remote <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></span></div></a>
+    </div>
+    <div class="ownership-note"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-branch"/></svg><p><strong>Standard Git. Ordinary files. Always yours.</strong> Git traffic goes directly from your device to your remote. Git credentials are stored in the iOS Keychain.</p><a class="text-link" href="/privacy">Privacy <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a></div>
+  </section>
+
+  <section class="faq-section section" id="faq" aria-labelledby="faq-heading">
+    <div class="shell faq-layout"><div><p class="eyebrow">04 / Good questions</p><h2 id="faq-heading">BEFORE<br>YOU COMMIT.</h2><p class="faq-intro">A few things to know.<br>For everything else, <a href="https://github.com/CodyBontecou/GitSync.md/issues" target="_blank" rel="noopener">get in touch ↗</a></p></div>
+      <div class="faq-list">
+        <details><summary>How does pricing work?<span class="faq-plus" aria-hidden="true"></span></summary><p>On iPhone and iPad, GitSync.md is $19.99 on the US App Store, paid once. Unlimited repositories, the editor, all manual Git tools, and optional Background Sync are included. On Android, the app is free to download from Google Play, with a one-time Full Access in-app purchase. Neither version has a subscription. Local store prices may vary.</p></details>
+        <details><summary>Can I create a repository on my device?<span class="faq-plus" aria-hidden="true"></span></summary><p>Yes. On iPhone and iPad, choose <strong>Add Repository → Publish a Folder</strong> and sign in with GitHub. Select an existing local folder, review the files, and prepare the initial commit in place. Uploading is a separate action that creates a new private repository in your personal GitHub account. This flow supports local app folders under On My iPhone or On My iPad, with regular files up to 10 MiB each; cloud-provider folders, empty repositories, and Git LFS publication are outside this flow. <a href="#create-repo">See how it works →</a></p></details>
+        <details><summary>Does it work with my Obsidian vault?<span class="faq-plus" aria-hidden="true"></span></summary><p>Yes. Clone your vault into a Files location Obsidian can access, then use GitSync.md to pull and push. Shortcuts and <code>syncmd://</code> links can trigger repository actions. <a href="/blog/obsidian-git-iphone-ipad">Follow the setup guide →</a></p></details>
+        <details><summary>Can I use private or self-hosted repos?<span class="faq-plus" aria-hidden="true"></span></summary><p>Yes. Use GitHub OAuth or a Personal Access Token for GitHub, or connect another Git remote over HTTPS or SSH with its own credentials. GitLab, Bitbucket, Gitea, and Forgejo are supported.</p></details>
+        <details><summary>What happens when there's a conflict?<span class="faq-plus" aria-hidden="true"></span></summary><p>Review conflicts in the Conflict Center. Choose ours or theirs, or edit a merged result in the three-way view. Continue or abort a merge or rebase explicitly. It's a real Git working copy, so you can also finish on desktop.</p></details>
+        <details><summary>How automatic is Background Sync?<span class="faq-plus" aria-hidden="true"></span></summary><p>You choose automatic pulls, automatic commit and push, or both. Publishing starts off. Sync attempts happen when the app opens and when iOS allows background processing; they aren't guaranteed or real time. Concurrent edits and unsafe Git states stop for your attention.</p></details>
+        <details><summary>Where do my files and data go?<span class="faq-plus" aria-hidden="true"></span></summary><p>Files live on your device, and Git operations talk directly to your remote. Credentials stay in Keychain. Separately opted-in Push Sync uses a relay for repository names, GitHub installation/account identifiers, and APNs registration data, but never file contents, local paths, or Git credentials. The app also collects coarse onboarding analytics. <a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Read the privacy policy →</a></p></details>
+        <details><summary>Which platforms can I install it on?<span class="faq-plus" aria-hidden="true"></span></summary><p>GitSync.md is available for iPhone and iPad on the App Store, and for Android on <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Google Play</a>. The iPhone and iPad app requires iOS 17 or iPadOS 17 or later; its Control Center pull button requires iOS 18 or later. The Files, Apple Shortcuts, and on-device folder publication workflows shown here describe the iPhone and iPad app.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section shell" id="blog" aria-label="GitSync.md setup guides"><p class="eyebrow">Read the field notes</p><a href="/blog/obsidian-git-iphone-ipad">Obsidian + Git on iPhone &amp; iPad <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a><a href="/blog/obsidian-git-not-working-iphone">Fix Obsidian Git on iPhone <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a><a class="all-guides" href="/blog/">All guides →</a></section>
+
+  <section class="reviews-section section" id="reviews" aria-labelledby="reviews-heading">
+    <div class="shell">
+      <header class="reviews-heading">
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>From the App Store</p>
+        <h2 id="reviews-heading">REAL GIT.<br>REAL GOOD WORDS.</h2>
+        <p>For the vaults, repos, and ideas you take everywhere.</p>
+      </header>
+      <div class="reviews-wall" data-reviews-wall>
+        <div class="reviews-row"><div class="reviews-track"><div class="reviews-group">
+          <figure class="review-card" data-review-id="00000192-dd8c-8e03-624a-536e00000000">
+            <span class="review-quote-mark" aria-hidden="true">“</span>
+            <blockquote><p>“This is a great app and exactly what I was looking for to sync my git repos from my phone. Works perfectly!”</p></blockquote>
+            <figcaption><span class="review-author">impiyushag</span><span class="review-source">App Store review · <time datetime="2026-09-10">Sep 10, 2026</time></span></figcaption>
+            <p class="review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+          </figure>
+          <figure class="review-card" data-review-id="00000192-dd8c-8e03-51c1-b1e400000000">
+            <span class="review-quote-mark" aria-hidden="true">“</span>
+            <blockquote><p>“For a simple minded diy vibe coder this worked amazingly well. All vaults syncing with this platform 10/10”</p></blockquote>
+            <figcaption><span class="review-author">Poodleboy1995</span><span class="review-source">App Store review · <time datetime="2026-07-02">Jul 2, 2026</time></span></figcaption>
+            <p class="review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+          </figure>
+          <figure class="review-card" data-review-id="00000192-dd8c-8e03-4907-47f000000000">
+            <span class="review-quote-mark" aria-hidden="true">“</span>
+            <blockquote><p>“This was so simple a caveman could do it.”</p></blockquote>
+            <figcaption><span class="review-author">CavemanGP</span><span class="review-source">App Store review · <time datetime="2026-05-26">May 26, 2026</time></span></figcaption>
+            <p class="review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+          </figure>
+        </div></div></div>
+        <div class="reviews-row reviews-row-reverse"><div class="reviews-track"><div class="reviews-group">
+          <figure class="review-card" data-review-id="00000192-dd8c-8e03-46be-823200000000">
+            <span class="review-quote-mark" aria-hidden="true">“</span>
+            <blockquote><p>“Five stars! This app just simply works. Amazing job, thanks!”</p></blockquote>
+            <figcaption><span class="review-author">alanliowh</span><span class="review-source">App Store review · <time datetime="2026-05-16">May 16, 2026</time></span></figcaption>
+            <p class="review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+          </figure>
+          <figure class="review-card" data-review-id="00000192-dd8c-8e03-4b43-547800000000">
+            <span class="review-quote-mark" aria-hidden="true">“</span>
+            <blockquote><p>“I really love it, it’s easy to use.”</p></blockquote>
+            <figcaption><span class="review-author">fefeZRD</span><span class="review-source">App Store review · <time datetime="2026-06-05">Jun 5, 2026</time></span></figcaption>
+            <p class="review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+          </figure>
+          <figure class="review-card" data-review-id="00000192-dd8c-8e03-4743-34df00000000">
+            <span class="review-quote-mark" aria-hidden="true">“</span>
+            <blockquote><p>“It’s sample and effective, follow the YouTube instruction video, and get it work perfectly!”</p></blockquote>
+            <figcaption><span class="review-author">Alexwhyeverynamehasbeentaken</span><span class="review-source">App Store review · <time datetime="2026-05-18">May 18, 2026</time></span></figcaption>
+            <p class="review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+          </figure>
+        </div></div></div>
+      </div>
+      <div class="reviews-footer">
+        <button class="reviews-pause" type="button" aria-pressed="false" hidden>Pause scrolling</button>
+        <p class="reviews-note">Selected App Store reviews. Some quotes are excerpts; wording is unchanged.</p>
+        <a class="text-link" href="https://apps.apple.com/us/app/gitsync-md/id6758960270?see-all=reviews" target="_blank" rel="noopener">Read App Store reviews <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="download-section inverse" id="download" aria-labelledby="download-heading">
+    <div class="shell download-layout">
+      <div><p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>GitSync.md / iOS + Android</p><h2 id="download-heading">GOOD WORK<br>TRAVELS.</h2></div>
+      <div class="download-action">
+        <p>Take your repositories with you.</p>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-100" target="_blank" rel="noopener"><img src="assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" loading="lazy" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" loading="lazy" decoding="async"></a>
         </div>
+        <p class="purchase-note"><span>iPhone + iPad: $19.99 once.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ─── USE CASES ─── -->
-<section class="section" id="use-cases" style="border-top: 1px solid var(--grey-2);">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">004 — Use cases</div>
-      <h2 class="section-title">Built for the people who already live in text files.</h2>
-    </div>
-    <div class="segment-grid reveal-stagger reveal">
-      <article class="segment-card">
-        <div class="integration-tag">Obsidian users</div>
-        <h3>Keep your vault in Git, not another subscription silo.</h3>
-        <p>Clone the vault repo into the location Obsidian can see, then use Obsidian Git or GitSync.md's own actions to pull, commit, and push changes from iPhone or iPad.</p>
-        <div class="segment-list">
-          <span>Works with real <code>.git</code> directories</span>
-          <span><code>syncmd://</code> automation for mobile sync buttons</span>
-          <span>No Obsidian Sync server required</span>
-        </div>
-      </article>
-      <article class="segment-card">
-        <div class="integration-tag">Developers</div>
-        <h3>Make the one-line fix without opening a laptop.</h3>
-        <p>Review a repo, edit source or config files with syntax highlighting, inspect diffs, write a commit message, and push the same Git history your desktop would create.</p>
-        <div class="segment-list">
-          <span>Swift, Python, JavaScript, TypeScript, Markdown, JSON, YAML</span>
-          <span>Branch, stash, tag, merge, pull, push</span>
-          <span>Useful for docs, hotfixes, dotfiles, and static sites</span>
-        </div>
-      </article>
-      <article class="segment-card">
-        <div class="integration-tag">Markdown + Files</div>
-        <h3>Let iOS apps edit the files; let GitSync.md handle Git.</h3>
-        <p>Repos can live in Files-visible locations so writing apps, Markdown editors, and document workflows can touch the same folder. GitSync.md remains the version-control layer.</p>
-        <div class="segment-list">
-          <span>Open repo folders from the iOS Files app</span>
-          <span>Use one source folder to avoid duplicate cloud copies</span>
-          <span>Repository content stays device-to-remote with no middleman</span>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ─── INTEGRATIONS ─── -->
-<section class="section" style="border-top: 1px solid var(--grey-2);">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">005 — Integrations</div>
-      <h2 class="section-title">Works with the iOS tools around your repo.</h2>
-    </div>
-    <div class="integrations-row reveal-stagger reveal">
-      <div class="integration-card">
-        <div class="integration-tag">x-callback-url</div>
-        <div class="integration-name">Obsidian</div>
-        <div class="integration-desc">Tap a <code>syncmd://x-callback-url/sync</code> link in any note, or run it from an iOS Shortcut, to attempt a safe pull-then-push. Add an <code>x-success</code> URL if you want a successful attempt to return to your vault. <a href="blog/obsidian-git-ios-setup.html">Implementation guide →</a></div>
-      </div>
-      <div class="integration-card">
-        <div class="integration-tag">Files App</div>
-        <div class="integration-name">iOS Files</div>
-        <div class="integration-desc">Every cloned repo appears in the iOS file provider. Browse, edit, and manage with any app that reads Files.</div>
-      </div>
-      <div class="integration-card">
-        <div class="integration-tag">Git remotes</div>
-        <div class="integration-name">GitHub first-class, any Git remote works</div>
-        <div class="integration-desc">GitHub is the smoothest path (OAuth or PAT, browse and clone). Self-hosted and other hosts — GitLab, Bitbucket, Gitea, Forgejo — work via manual URL with HTTPS token or SSH key (Ed25519/ECDSA/RSA) and verified host keys.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── AUTOMATION ─── -->
-<section class="section" id="automation" style="border-top: 1px solid var(--grey-2);">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">006 — Automation</div>
-      <h2 class="section-title">Wire Obsidian, Shortcuts, or your launcher to real Git.</h2>
-    </div>
-    <div class="docs-grid reveal-stagger reveal">
-      <div class="doc-card">
-        <h3>Quick start URL</h3>
-        <p>Any app that can open URLs can request one safe pull-then-push attempt by opening this URL:</p>
-        <span class="doc-url">syncmd://x-callback-url/sync?repo=MyVault</span>
-        <p>The <code>repo</code> value must match the vault or repo folder name shown in GitSync.md.</p>
-      </div>
-      <div class="doc-card">
-        <h3>Supported actions</h3>
-        <ul>
-          <li><code>/pull</code> — fetch + fast-forward from remote</li>
-          <li><code>/push</code> — stage all, commit, and push</li>
-          <li><code>/sync</code> — pull then push (recommended)</li>
-          <li><code>/status</code> — read branch/SHA/change count</li>
-        </ul>
-      </div>
-      <div class="doc-card">
-        <h3>Optional callback parameters</h3>
-        <p>Add these for full x-callback-url flow control:</p>
-        <ul>
-          <li><code>message</code> — commit message for <code>push</code>/<code>sync</code></li>
-          <li><code>x-success</code> — URL opened after success</li>
-          <li><code>x-error</code> — URL opened after failure</li>
-        </ul>
-      </div>
-      <div class="doc-card">
-        <h3>Apple Shortcuts</h3>
-        <p>Native App Intents, no URL building required:</p>
-        <ul>
-          <li><strong>Pull All Repositories</strong> — attempts each cloned repo and returns a summary</li>
-          <li><strong>Pull Repository</strong> — pick one repo for a pull attempt</li>
-          <li><strong>Push Repository</strong> — stage, commit, and push one repo</li>
-          <li><strong>Sync Repository</strong> — pull first, then publish only when safe</li>
-        </ul>
-        <p>These actions work with Siri phrases and Personal Automations. Push and Sync publish directly to your configured remote, stop on active conflicts or unsafe remote state, and never merge, rebase, switch branches, resolve conflicts, or force-push.</p>
-      </div>
-      <div class="doc-card">
-        <h3>Obsidian implementation</h3>
-        <p>Obsidian Git has no URL setting. Instead, paste this link into any note and tap it for one explicit sync attempt:</p>
-        <span class="doc-url">[Sync vault](syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian)</span>
-        <p>The <code>repo</code> value must match the vault folder name shown in GitSync.md — or fire the same URL from an iOS Shortcut. <a href="blog/obsidian-git-ios-setup.html">See the complete iOS setup guide →</a></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── SPECS ─── -->
-<section class="specs-section" id="specs">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">007 — Technical</div>
-      <h2 class="section-title">Under the hood, without a hidden sync layer.</h2>
-    </div>
-    <div class="specs-table reveal">
-      <div class="spec-row">
-        <div class="spec-key">Listing status</div>
-        <div class="spec-val">Updated June 2026</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Git Engine</div>
-        <div class="spec-val">libgit2 (native C, no shell)</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Framework</div>
-        <div class="spec-val">SwiftUI</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Code Editor</div>
-        <div class="spec-val">Built-in, syntax-highlighted</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Syntax Languages</div>
-        <div class="spec-val">11 (Swift, Python, JS, TS, Markdown, JSON, YAML, Bash, HTML, CSS)</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Editor Themes</div>
-        <div class="spec-val">VSCode Dark+ · VSCode Light+</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">File Operations</div>
-        <div class="spec-val">Create · Rename · Delete</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Git Operations</div>
-        <div class="spec-val">Stage · Commit · Push · Pull · Branch · Stash · Tag · Revert · Merge</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Authentication</div>
-        <div class="spec-val">GitHub OAuth + PAT · SSH keys · HTTPS tokens · self-hosted</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Token Storage</div>
-        <div class="spec-val">iOS Keychain (encrypted)</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">File Access</div>
-        <div class="spec-val">Built-in browser + iOS File Provider</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Storage Locations</div>
-        <div class="spec-val">App Documents (On My iPhone › GitSync.md) · any Files-app location</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Automation</div>
-        <div class="spec-val">x-callback-url (syncmd://) · Apple Shortcuts · optional Background Sync</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Cloud Dependency</div>
-        <div class="spec-val">Device-to-remote for everything — manual Git and optional Background Sync; no sync server, ever</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Data Collection</div>
-        <div class="spec-val">Git author name/email · coarse onboarding analytics · optional Background Sync metadata (see <a href="privacy.html" style="text-decoration:underline">privacy policy</a>)</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Platforms</div>
-        <div class="spec-val">iPhone · iPad · requires iOS 17+</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">App Languages</div>
-        <div class="spec-val">26 localized languages</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Price</div>
-        <div class="spec-val">$9.99 one-time — manual Git and Background Sync included, no subscriptions</div>
-      </div>
-      <div class="spec-row">
-        <div class="spec-key">Source</div>
-        <div class="spec-val">Open source on GitHub</div>
-      </div>
-    </div>
-    <div class="source-callout reveal">
-      <p><strong>Source code is trust, not the main checkout path.</strong> Buy the App Store build for the signed iPhone/iPad app. Use the GitHub repo to audit implementation details, follow issues, or contribute fixes.</p>
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener" class="btn-ghost">Audit source</a>
-    </div>
-  </div>
-</section>
-
-<!-- ─── FAQ ─── -->
-<section class="section" id="faq" style="border-top: 1px solid var(--grey-2);">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">008 — FAQ</div>
-      <h2 class="section-title">Before you buy.</h2>
-    </div>
-    <div class="faq-grid reveal-stagger reveal">
-      <details class="faq-item" open>
-        <summary>Does it work with private repositories?</summary>
-        <p>Yes for GitHub repos you can access with OAuth or a Personal Access Token. Use the scopes required by your repo, usually <code>repo</code> for private GitHub repositories.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Where are tokens stored?</summary>
-        <p>GitSync.md stores OAuth/PAT credentials in the iOS Keychain. The site and app do not operate a sync server for your tokens or repository contents.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is there a GitSync.md server in the middle?</summary>
-        <p>Git operations run on device through the app's native Git engine and talk directly to the configured remote. Your repos are not mirrored through a Cody-operated sync service. Background Sync runs entirely on your device too — it reuses the same Git engine and your existing credentials, with no relay, no push server, and no repository metadata leaving your device.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How do I use it with Obsidian?</summary>
-        <p>Clone the vault repo into a Files location Obsidian can access, then use Obsidian Git or <code>syncmd://x-callback-url/sync</code> automation to trigger pull/push from your mobile vault. The guide below walks through the setup.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Why is the URL scheme <code>syncmd://</code>?</summary>
-        <p>The App Store/product name is GitSync.md. Some on-device labels and the automation scheme still use the shorter Sync.md / <code>syncmd://</code> naming so existing Shortcuts and Obsidian Git configurations continue to work.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Does it support GitLab or Bitbucket?</summary>
-        <p>Yes. GitHub gets the smoothest setup (sign in, browse, tap to clone), but any Git remote works: GitLab, Bitbucket, Gitea, Forgejo, or your own server. Add the repository by URL (<code>https://</code>, <code>git://</code>, or SSH like <code>git@example.com:team/notes.git</code>) and pick the matching auth — HTTPS token, or an SSH key (Ed25519/ECDSA/RSA) with per-host key verification.</p>
-      </details>
-      <details class="faq-item">
-        <summary>What happens with merge conflicts?</summary>
-        <p>Conflicts get a dedicated Conflict Center: pick ours, theirs, or edit a merged result in the side-by-side three-way view (it even handles rename-vs-rename and delete-vs-modify cases), then complete the merge or rebase — or abort cleanly. When local and remote history has diverged, you choose merge or pull-with-rebase explicitly. Exotic conflicts can still be finished on desktop: it's a real Git working copy.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Can repos live in iCloud Drive or Files?</summary>
-        <p>The app supports Files-visible repo locations. For reliability, keep one canonical repo folder and avoid editing duplicate cloud copies of the same repository at the same time.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Can I add a repository that's already on my device?</summary>
-        <p>Yes. Choose <strong>Open Existing Repository</strong> when adding, point it at any Files folder that contains a <code>.git</code> directory, and GitSync.md manages it in place — the folder is never moved or copied.</p>
-      </details>
-      <details class="faq-item">
-        <summary>What happens to my files if I remove a repository?</summary>
-        <p>Removing a repo from GitSync.md never touches your files by default — the working copy stays right where it is. If GitSync.md created the folder itself, an explicit <strong>Delete Local Files</strong> action is available separately. Removed repos can also be re-added in one tap from the "previously cloned" list.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Does it support Git LFS?</summary>
-        <p>Yes. LFS files download automatically after clone and pull, large binaries are offered LFS tracking (with your confirmation — and <code>.gitattributes</code> is updated for you), objects upload before each push, and file locking with push guards works on servers that support it. Self-hosted LFS endpoints work too, including over SSH.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How does Background Sync work?</summary>
-        <p>Background Sync is included with the app and provides best-effort repository reconciliation while the app is closed. You can independently enable automatic fast-forward pulls, automatic commit and push, or both; publishing remains default-off. Push-only mode checks remote state without updating the worktree, and concurrent local and remote edits stop for attention. Sync attempts run when the app opens and when iOS grants background processing time, so work is not guaranteed or real time. It never merges, rebases, switches branches, resolves conflicts, or force-pushes.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is it iPhone only? Are there any subscriptions?</summary>
-        <p>GitSync.md is for iPhone and iPad. It is $9.99 once with unlimited repositories and no subscriptions of any kind — Background Sync, manual Git, Shortcuts, and callbacks are all included.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ─── BLOG ─── -->
-<section class="section" id="blog" style="border-top: 1px solid var(--grey-2);">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">009 — Guide</div>
-      <h2 class="section-title">Use Obsidian Git on iPhone and iPad.</h2>
-    </div>
-    <div class="blog-grid reveal-stagger reveal">
-      <a href="blog/create-git-repository-iphone.html#video-tutorial" class="blog-card">
-        <div class="blog-card-meta"><span class="blog-card-tag">Video tutorial</span><span class="blog-card-date">October 17, 2026</span></div>
-        <div class="blog-card-title">Publish an Obsidian vault to GitHub from your iPhone</div>
-        <div class="blog-card-excerpt">Watch the full GitSync.md walkthrough, from a local vault to the first commit on GitHub.</div>
-        <div class="blog-card-link">Watch tutorial →</div>
-      </a>
-      <a href="blog/obsidian-git-iphone-ipad.html" class="blog-card">
-        <div class="blog-card-meta">
-          <span class="blog-card-tag">Guide</span>
-          <span class="blog-card-date">June 13, 2026</span>
-        </div>
-        <div class="blog-card-title">How to Use Obsidian Git on iPhone and iPad</div>
-        <div class="blog-card-excerpt">Clone your Obsidian vault into iOS Files with GitSync.md, open it on iPhone or iPad, and sync with GitHub or self-hosted Git remotes using Obsidian Git automation.</div>
-        <div class="blog-card-link">
-          Read article
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ─── CTA ─── -->
-<section class="cta-section" id="download">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label" style="text-align: center;">010 — Get Started</div>
-      <h2 class="cta-title">Buy manual Git once<span class="accent">.</span><br>Clone unlimited<span class="accent">.</span> Sync optionally<span class="accent">.</span></h2>
-      <p class="cta-sub">A full Git client and code editor for Obsidian vaults, Markdown folders, and code repositories. $9.99 one-time for every manual Git feature, with optional Background Sync and independent automatic pull and push controls.</p>
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a href="https://apps.apple.com/us/app/gitsync-md/id6758960270" class="btn-primary" style="font-size: 14px; padding: 16px 32px;">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          Buy on the App Store — $9.99
-        </a>
-        <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener" class="btn-ghost" style="font-size: 14px; padding: 15px 32px;">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          Audit Source
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
+  </section>
 </main>
-
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-left">© 2026 GitSync.md — Cody Bontecou</div>
-    <div class="footer-links">
-      <a href="https://github.com/CodyBontecou/GitSync.md" target="_blank">GitHub</a>
-      <a href="blog/">Blog</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="https://github.com/CodyBontecou/GitSync.md/issues" target="_blank">Support</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-  // ─── Scroll Reveal ───
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // ─── Cursor glow ───
-  const glow = document.getElementById('glow');
-  let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  function animateGlow() {
-    glowX += (mouseX - glowX) * 0.08;
-    glowY += (mouseY - glowY) * 0.08;
-    glow.style.left = glowX + 'px';
-    glow.style.top = glowY + 'px';
-    requestAnimationFrame(animateGlow);
-  }
-  animateGlow();
-
-  // ─── Smooth scroll for anchor links ───
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-</script>
+<footer class="site-footer"><div class="shell footer-layout"><a class="brand" href="#top" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC.MD</a><p>Built independently by <a href="https://github.com/CodyBontecou" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p><div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source ↗</a><a href="/blog/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div><a class="back-top" href="#top" aria-label="Back to top">↑</a></div></footer>
+<script src="landing.js" defer></script>
+<script src="reviews.js" defer></script>
 <!-- Cloudflare Web Analytics -->
 <script>
 (function () {
@@ -2225,6 +308,7 @@
     'healthmd.isolated.tech': true,
     'isome.isolated.tech': true,
     'gitsyncmd.app': true,
+    'gitsync.md': true,
     'timemd.isolated.tech': true,
     'imghost.isolated.tech': true
   };

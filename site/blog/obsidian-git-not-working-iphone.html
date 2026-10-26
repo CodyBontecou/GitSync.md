@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian Git Not Working on iPhone? Fix Setup &amp; Sync — GitSync.md</title>
+<meta name="description" content="Fix Obsidian Git on iPhone: missing vaults, no Git repository, token errors, missing author details, Connect failures, conflicts, and delayed automatic sync.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-git-not-working-iphone">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian Git Not Working on iPhone? Fix Setup &amp; Sync — GitSync.md">
+<meta property="og:description" content="Fix Obsidian Git on iPhone: missing vaults, no Git repository, token errors, missing author details, Connect failures, conflicts, and delayed automatic sync.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-git-not-working-iphone">
+<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="article:published_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-10-26">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian Git Not Working on iPhone? Fix Setup &amp; Sync — GitSync.md">
+<meta name="twitter:description" content="Fix Obsidian Git on iPhone: missing vaults, no Git repository, token errors, missing author details, Connect failures, conflicts, and delayed automatic sync.">
+<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Obsidian Git not working on iPhone? Start here",
+  "description": "Fix Obsidian Git on iPhone: missing vaults, no Git repository, token errors, missing author details, Connect failures, conflicts, and delayed automatic sync.",
+  "image": [
+    "https://gitsync.md/screenshots/hero-repo-list.png"
+  ],
+  "datePublished": "2026-10-26",
+  "dateModified": "2026-10-26",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-not-working-iphone"
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="container hero-grid">
+      <div class="article-title">
+        <div class="eyebrow">Obsidian Git troubleshooting</div>
+        <h1>Obsidian Git not working on iPhone? Start here<span class="accent">.</span></h1>
+        <p class="subtitle">Check the local vault folder first, then test authentication in the app that reported the error. GitSync.md and Obsidian Git share files, but each runs its own Git operations. A successful sign-in in one app does not prove the other can push.</p>
+        <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>iPhone + iPad</span></div>
+      </div>
+      <aside class="toc-card" aria-label="Article outline">
+        <div class="toc-title">Find your symptom</div>
+        <ol>
+          <li><a href="#missing-vault">The vault is missing</a></li>
+          <li><a href="#no-repository">No Git repository found</a></li>
+          <li><a href="#authentication">Pull or push cannot authenticate</a></li>
+          <li><a href="#author">Commit author is missing</a></li>
+          <li><a href="#connect">Connect does not start</a></li>
+          <li><a href="#conflicts">Changes conflict or push is rejected</a></li>
+          <li><a href="#background">Automatic sync did not run</a></li>
+        </ol>
+      </aside>
+    </div>
+  </header>
+  <div class="container">
+    <div class="article-shell article-shell-single">
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">The quick check</div>
+          <ol>
+            <li>Open the repository in GitSync.md and confirm it is cloned.</li>
+            <li>Open that exact folder as the vault in Obsidian. A parent folder or a second copy of the notes is a different working copy.</li>
+            <li>Read the error in the app performing the operation. Check folder access, credentials, author identity, and branch state separately.</li>
+            <li>Test a manual pull and push before enabling automation.</li>
+          </ol>
+        </div>
+        <p>This guide covers the GitSync.md workflow on iOS 17 or iPadOS 17 and later. Connect requires GitSync.md 2.8.0 or later; use 2.8.1 or later for a vault created with Publish a Folder. The companion and Obsidian Git are separate community plugins.</p>
+        <p>Starting from scratch? Follow <a href="/blog/obsidian-git-iphone-ipad">how to sync Obsidian with Git on iPhone and iPad</a>. GitSync.md costs $19.99 once on the US App Store; regional prices vary. If you already own it, work through the matching symptom below.</p>
+
+        <h2 id="missing-vault">Obsidian does not show the cloned vault</h2>
+        <p>Confirm the clone destination in GitSync.md. For the documented local setup, the repository belongs under <strong>On My iPhone → Obsidian</strong> or <strong>On My iPad → Obsidian</strong>. Check that the clone completed and the folder contains your notes.</p>
+        <ol>
+          <li>Fully close and reopen Obsidian after cloning.</li>
+          <li>Use the vault picker to open the cloned folder.</li>
+          <li>Check that you did not open a parent folder containing the real vault one level deeper.</li>
+        </ol>
+        <p>If Obsidian’s local folder is missing in Files, create a local vault in Obsidian first with Store in iCloud turned off. Then return to the folder picker in GitSync.md. See the <a href="/blog/obsidian-git-ios-setup#step-by-step-setup">folder setup walkthrough</a>.</p>
+
+        <h2 id="no-repository">Obsidian Git says no Git repository was found</h2>
+        <p>The notes and the Git working copy must be in the same folder. Copying Markdown files into a new vault does not necessarily copy the hidden <code>.git</code> directory containing Git history and configuration.</p>
+        <ul>
+          <li>Check that GitSync.md recognizes the same folder as a cloned or managed repository.</li>
+          <li>Open the repository root as your Obsidian vault, rather than a subfolder or its parent.</li>
+          <li>For Connect, use a regular <code>.git</code> directory at the vault root. Custom Git directory paths, base paths, and alternate push destinations are outside that connection flow.</li>
+        </ul>
+        <p>If your notes have never been in Git, <a href="/blog/create-git-repository-iphone">publish the local vault with GitSync.md</a> or create and push the repository on desktop first. Preserve unsynced edits before replacing a working copy. Deleting <code>.git</code> is not a setup repair.</p>
+
+        <h2 id="authentication">Pull or push fails even though GitSync.md is signed in</h2>
+        <p>First identify which app failed. GitSync.md stores its native credentials in Keychain. Obsidian Git needs its own configured credentials when it performs operations inside Obsidian.</p>
+        <ul>
+          <li><strong>GitSync.md fails too:</strong> check the selected account, remote URL, repository access, and authentication method there. For SSH, check the key, passphrase, host, and port. Follow the <a href="/blog/self-hosted-git-ssh-ios#troubleshooting">SSH and HTTPS troubleshooting steps</a>.</li>
+          <li><strong>Only Obsidian Git fails:</strong> for a supported GitHub HTTPS vault, use <a href="/blog/gitsync-connect-obsidian-git">GitSync.md Connect</a> or <a href="/blog/obsidian-git-ios-setup#github-token">configure a GitHub Personal Access Token manually</a>.</li>
+          <li><strong>Connect worked before a token expired or account changed:</strong> authenticate the intended account in GitSync.md, then run <strong>GitSync.md Connect: Reconnect this vault (replace existing Git credentials)</strong> in Obsidian. Automatic connection preserves existing credentials; imported tokens do not refresh in the background.</li>
+        </ul>
+        <p>Connect supports GitHub HTTPS repositories using GitSync.md’s GitHub Account authentication. It does not add support for SSH, other Git hosts, or separate per-repository HTTPS tokens to Obsidian Git. You can use GitSync.md itself for those Git operations while editing the local notes in Obsidian.</p>
+
+        <h2 id="author">“Git author name and email are not set”</h2>
+        <p>A Git author identifies a commit; a token authenticates a network request. Setting one does not replace the other.</p>
+        <p>In Obsidian Git’s settings, fill in <strong>Author name</strong> and <strong>Author email</strong>, then retry the commit. Connect can fill missing author fields from GitSync.md, but you should still verify the values you want on your commits. See the <a href="/blog/obsidian-git-ios-setup#configure-obsidian-git">manual author setup</a>.</p>
+
+        <h2 id="connect">GitSync.md Connect does not start or cannot finish</h2>
+        <ol>
+          <li>Update GitSync.md. Version 2.8.1 fixes connecting vaults created with Publish a Folder.</li>
+          <li>Install and enable both <strong>Git</strong> by Vinzent and <strong>GitSync.md Connect</strong> inside this vault. Repeat plugin installation in each vault you connect.</li>
+          <li>Open the repository in GitSync.md once, return to Obsidian, then run <strong>GitSync.md Connect: Connect this vault</strong>. Reopen the vault if Git is still initializing.</li>
+          <li>If saved credentials need replacing, choose the explicit <strong>Reconnect this vault (replace existing Git credentials)</strong> command.</li>
+        </ol>
+        <p>A connection response expires after five minutes. If app switching was interrupted, run Connect this vault again rather than copying temporary files. The <a href="/blog/gitsync-connect-obsidian-git#setup">Connect tutorial</a> shows the complete sequence and the expected confirmation.</p>
+
+        <h2 id="conflicts">Pull reports local changes, or push is rejected</h2>
+        <p>For a file-by-file example, follow <a href="/blog/obsidian-git-merge-conflicts-iphone">the iPhone merge-conflict recovery guide</a>.</p>
+        <p>These messages are not always credential failures. A pull can stop because local files changed. A push can be rejected because the remote has commits your phone does not have, or because the server enforces a repository policy. Read the reported reason before retrying.</p>
+        <ol>
+          <li>Keep a separate copy of unsynced notes and review the local diff.</li>
+          <li>Open the repository in GitSync.md and inspect the current branch and remote state.</li>
+          <li>If histories diverged or conflicts exist, use the manual merge or rebase workflow. The Conflict Center lets you choose ours, theirs, or an edited result. Review each affected file before completing the operation.</li>
+          <li>Retry the push only after the working copy is in a state you understand. For unfamiliar history, finish on desktop using the same repository.</li>
+        </ol>
+        <p>GitSync.md’s automatic pulls only accept clean fast-forwards. They stop for local edits or divergence instead of resolving conflicts. Repeated authentication changes or deleting and recloning the vault will not reconcile different edits.</p>
+
+        <h2 id="background">Automatic sync did not run</h2>
+        <p>The <a href="/blog/obsidian-git-background-sync-iphone">background-sync guide</a> explains each automation path and the settings that control it.</p>
+        <p>Connect configures authentication. It does not turn on sync intervals. Obsidian Git’s timers, GitSync.md Background Sync, and Apple Shortcuts are separate automation paths.</p>
+        <p>Test a manual operation first. Then check the settings for the automation you chose, including repository exclusions, automatic pull, separately enabled publishing, and network or power policies. iOS decides when background execution is allowed; timing is not guaranteed. A newly published folder starts excluded from Background Sync.</p>
+        <p>For an explicit trigger, follow <a href="/blog/shortcuts-automation-ios">the Apple Shortcuts guide</a>. Avoid overlapping timers from multiple Git clients on the same folder while diagnosing the problem.</p>
+
+        <h2 id="verify">Confirm the repair in both directions</h2>
+        <ol>
+          <li>Create a disposable test note on another device and push it. Pull on the phone and open the note in Obsidian.</li>
+          <li>Edit the note on the phone, commit, and push using your chosen Git client.</li>
+          <li>Check the exact contents and the new commit on GitHub or your Git server.</li>
+        </ol>
+        <p>If you need help, <a href="https://github.com/CodyBontecou/GitSync.md/issues">report the app and plugin versions, the failing step, and a redacted error message</a>. Do not include tokens, private repository URLs, or personal notes.</p>
+        <div class="related-card">
+          <h2>Continue your setup</h2>
+          <ul>
+            <li><a href="/blog/obsidian-git-iphone-ipad">Full Obsidian Git workflow for iPhone and iPad</a></li>
+            <li><a href="/blog/gitsync-connect-obsidian-git">Connect your existing GitHub sign-in</a></li>
+            <li><a href="/blog/obsidian-git-ios-setup">Set a GitHub token manually</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-109" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

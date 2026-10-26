@@ -1,0 +1,363 @@
+[
+  {
+    "path": "/",
+    "url": "https://gitsync.md/",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:42:35.555Z",
+    "metrics": {
+      "first-contentful-paint": "1.0\u00a0s",
+      "largest-contentful-paint": "1.0\u00a0s",
+      "speed-index": "1.0\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/",
+    "url": "https://gitsync.md/blog/",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:42:41.868Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/gitsync-connect-obsidian-git",
+    "url": "https://gitsync.md/blog/gitsync-connect-obsidian-git",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:42:47.588Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/create-git-repository-iphone",
+    "url": "https://gitsync.md/blog/create-git-repository-iphone",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:42:53.665Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/git-lfs-ios",
+    "url": "https://gitsync.md/blog/git-lfs-ios",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:42:59.631Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/shortcuts-automation-ios",
+    "url": "https://gitsync.md/blog/shortcuts-automation-ios",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:05.185Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/self-hosted-git-ssh-ios",
+    "url": "https://gitsync.md/blog/self-hosted-git-ssh-ios",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:10.950Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/obsidian-git-iphone-ipad",
+    "url": "https://gitsync.md/blog/obsidian-git-iphone-ipad",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:16.647Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/obsidian-git-ios-setup",
+    "url": "https://gitsync.md/blog/obsidian-git-ios-setup",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:22.592Z",
+    "metrics": {
+      "first-contentful-paint": "1.1\u00a0s",
+      "largest-contentful-paint": "1.1\u00a0s",
+      "speed-index": "1.1\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/privacy",
+    "url": "https://gitsync.md/privacy",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:28.402Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/terms",
+    "url": "https://gitsync.md/terms",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:34.089Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/obsidian-git-not-working-iphone",
+    "url": "https://gitsync.md/blog/obsidian-git-not-working-iphone",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:39.867Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/sync-obsidian-windows-iphone-github",
+    "url": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:45.576Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/compare/gitsync-vs-working-copy",
+    "url": "https://gitsync.md/compare/gitsync-vs-working-copy",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:51.351Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/compare/obsidian-sync-vs-git",
+    "url": "https://gitsync.md/compare/obsidian-sync-vs-git",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:43:57.009Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/obsidian-git-merge-conflicts-iphone",
+    "url": "https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:44:02.475Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/obsidian-git-background-sync-iphone",
+    "url": "https://gitsync.md/blog/obsidian-git-background-sync-iphone",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:44:08.082Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/clone-github-repository-iphone",
+    "url": "https://gitsync.md/blog/clone-github-repository-iphone",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:44:13.869Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  },
+  {
+    "path": "/blog/obsidian-gitignore",
+    "url": "https://gitsync.md/blog/obsidian-gitignore",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": [],
+    "fetchTime": "2026-10-26T12:44:19.343Z",
+    "metrics": {
+      "first-contentful-paint": "0.9\u00a0s",
+      "largest-contentful-paint": "0.9\u00a0s",
+      "speed-index": "0.9\u00a0s",
+      "total-blocking-time": "0\u00a0ms",
+      "cumulative-layout-shift": "0"
+    }
+  }
+]

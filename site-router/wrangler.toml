@@ -4,6 +4,16 @@ compatibility_date = "2026-05-07"
 account_id = "e4265f322e6380ee832b83ad45e3e8c0"
 workers_dev = false
 
+# Deploy with SERVE_DOMAIN_ALIASES:true and verify these domains before enabling
+# permanent redirects. See the domain cutover section in ATTRIBUTION.md.
+[[routes]]
+pattern = "gitsync.md"
+custom_domain = true
+
+[[routes]]
+pattern = "www.gitsync.md"
+custom_domain = true
+
 [[routes]]
 pattern = "gitsyncmd.app"
 custom_domain = true
@@ -21,6 +31,7 @@ pattern = "syncmd.isolated.tech"
 custom_domain = true
 
 [vars]
+SERVE_DOMAIN_ALIASES = "false"
 APP_STORE_BASE_URL = "https://apps.apple.com/us/app/gitsync-md/id6758960270"
 CPP_OBSIDIAN_PPID = "6d42eefc-9fd5-4f7a-8a0d-b7332e0eea7f"
 CPP_GITCLIENT_PPID = "76f9ef64-2400-44f5-8e81-74b1728fc606"

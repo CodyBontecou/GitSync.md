@@ -1,0 +1,13 @@
+{
+  "appId": "6758960270",
+  "source": "App Store Connect customerReviews API",
+  "retrievedOn": "2026-10-19",
+  "reviews": [
+    {"id":"00000192-dd8c-8e03-624a-536e00000000","rating":5,"author":"impiyushag","date":"2026-09-10","body":"This is a great app and exactly what I was looking for to sync my git repos from my phone. Works perfectly!"},
+    {"id":"00000192-dd8c-8e03-51c1-b1e400000000","rating":5,"author":"Poodleboy1995","date":"2026-07-02","body":"For a simple minded diy vibe coder this worked amazingly well. All vaults syncing with this platform 10/10"},
+    {"id":"00000192-dd8c-8e03-4907-47f000000000","rating":5,"author":"CavemanGP","date":"2026-05-26","body":"This was so simple a caveman could do it."},
+    {"id":"00000192-dd8c-8e03-46be-823200000000","rating":5,"author":"alanliowh","date":"2026-05-16","body":"Five stars! This app just simply works. Amazing job, thanks!"},
+    {"id":"00000192-dd8c-8e03-4b43-547800000000","rating":5,"author":"fefeZRD","date":"2026-06-05","body":"I really love it, it’s easy to use.\nI would really love to see some shortcuts, so users can setup auto pull on opening or something like that."},
+    {"id":"00000192-dd8c-8e03-4743-34df00000000","rating":5,"author":"Alexwhyeverynamehasbeentaken","date":"2026-05-18","body":"It’s sample and effective, follow the YouTube instruction video, and get it work perfectly!"}
+  ]
+}

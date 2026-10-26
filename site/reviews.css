@@ -1,0 +1,41 @@
+/* App Store review wall. Static content is the no-JS and reduced-motion default. */
+.reviews-section { border-top: 2px solid var(--line); }
+.reviews-heading { max-width: 760px; margin: 0 auto 42px; text-align: center; }
+.reviews-heading .eyebrow { justify-content: center; margin-bottom: 24px; }
+.reviews-heading > p:last-child { color: var(--muted); margin-top: 22px; font-size: 15px; line-height: 1.7; }
+.reviews-wall { display: grid; gap: 16px; }
+.reviews-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.review-card { display: flex; flex-direction: column; min-width: 0; margin: 0; padding: 28px; border: 1px solid #dededb; background: var(--surface); overflow-wrap: anywhere; }
+.review-quote-mark { height: 42px; color: #005bc2; font: 64px/1 Georgia, serif; }
+.review-card blockquote { margin: 0 0 32px; font-size: 18px; line-height: 1.6; letter-spacing: -.3px; }
+.review-card blockquote p { margin: 0; }
+.review-card figcaption { display: grid; gap: 8px; margin-top: auto; }
+.review-author { font-size: 13px; font-weight: 700; }
+.review-source { color: #626262; font: 400 10px/1.7 var(--mono); }
+.review-stars { color: #005bc2; font-size: 12px; letter-spacing: .14em; margin: 14px 0 0; }
+.reviews-footer { display: grid; justify-items: center; gap: 16px; margin-top: 28px; text-align: center; }
+.reviews-note { color: var(--muted); font: 400 10px/1.8 var(--mono); margin: 0; }
+.reviews-pause { min-height: 44px; padding: 10px 18px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; font: 500 11px/1.5 var(--mono); }
+.reviews-pause:hover { background: var(--surface); }
+.reviews-pause[hidden] { display: none; }
+.reviews-wall.is-animated { overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+.is-animated .reviews-track { display: flex; width: max-content; animation: review-scroll 55s linear infinite; animation-play-state: paused; }
+.is-animated.is-in-view .reviews-track { animation-play-state: running; }
+.is-animated .reviews-row-reverse .reviews-track { animation-direction: reverse; }
+.is-animated .reviews-group { display: flex; flex-shrink: 0; padding-right: 16px; }
+.is-animated .review-card { width: clamp(280px, 28vw, 360px); min-height: 300px; }
+.reviews-wall.is-paused .reviews-track,
+.reviews-wall:hover .reviews-track,
+.reviews-section:focus-within .reviews-track { animation-play-state: paused; }
+@keyframes review-scroll { to { transform: translateX(-50%); } }
+@media (max-width: 800px) {
+  .reviews-group { grid-template-columns: 1fr; }
+  .reviews-heading { margin-bottom: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reviews-wall.is-animated { overflow: visible; mask-image: none; }
+  .is-animated .reviews-track { display: block; width: auto; animation: none; }
+  .is-animated .reviews-group { display: grid; padding-right: 0; }
+  .is-animated .review-card { width: auto; min-height: 0; }
+  .reviews-group[aria-hidden="true"], .reviews-pause { display: none; }
+}

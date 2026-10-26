@@ -1,0 +1,3 @@
+# Preserve generated Lighthouse HTML and scan-event formatting in audit evidence.
+docs/evidence/lighthouse-20261026/** -whitespace
+docs/evidence/is-agentic-20261026/** -whitespace

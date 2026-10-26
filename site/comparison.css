@@ -1,0 +1,10 @@
+/* Keep the feature matrix readable on small screens without widening the page. */
+.comparison-scroll { max-width: 100%; overflow-x: auto; margin-block: 24px; }
+.comparison-scroll:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+.comparison-table { width: 100%; min-width: 720px; table-layout: fixed; border-collapse: collapse; font-size: 16px; line-height: 24px; }
+.comparison-table caption { text-align: left; font-size: 14px; line-height: 20px; padding-block: 16px; color: var(--muted); }
+.comparison-table th, .comparison-table td { padding: 16px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.comparison-table thead { background: var(--surface); }
+.comparison-table th { font-weight: 600; }
+
+.comparison-table th:first-child { width: 160px; }

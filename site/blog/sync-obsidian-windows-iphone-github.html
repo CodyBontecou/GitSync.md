@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Sync Obsidian Between Windows &amp; iPhone with GitHub — GitSync.md</title>
+<meta name="description" content="Sync an Obsidian vault between Windows and iPhone using a private GitHub repository. Set up Git, clone with GitSync.md, and verify edits in both directions.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/sync-obsidian-windows-iphone-github">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Sync Obsidian Between Windows &amp; iPhone with GitHub — GitSync.md">
+<meta property="og:description" content="Sync an Obsidian vault between Windows and iPhone using a private GitHub repository. Set up Git, clone with GitSync.md, and verify edits in both directions.">
+<meta property="og:url" content="https://gitsync.md/blog/sync-obsidian-windows-iphone-github">
+<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="article:published_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-10-26">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sync Obsidian Between Windows &amp; iPhone with GitHub — GitSync.md">
+<meta name="twitter:description" content="Sync an Obsidian vault between Windows and iPhone using a private GitHub repository. Set up Git, clone with GitSync.md, and verify edits in both directions.">
+<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sync Obsidian between Windows and iPhone with GitHub",
+  "description": "Sync an Obsidian vault between Windows and iPhone using a private GitHub repository. Set up Git, clone with GitSync.md, and verify edits in both directions.",
+  "datePublished": "2026-10-26",
+  "dateModified": "2026-10-26",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "image": "https://gitsync.md/screenshots/hero-repo-list.png",
+  "mainEntityOfPage": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sync Obsidian between Windows and iPhone with GitHub",
+      "item": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github"
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<main id="main">
+  <header class="article-hero"><div class="container hero-grid">
+    <div class="article-title"><div class="eyebrow">Obsidian / Windows + iPhone</div>
+      <h1>Sync Obsidian between Windows and iPhone with GitHub<span class="accent">.</span></h1>
+      <p class="subtitle">Use a private GitHub repository to move Obsidian notes between a local Windows vault and a local iPhone vault. Git for Windows handles the desktop copy; GitSync.md handles Git on the phone. Pull before editing and push before switching devices.</p>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>Windows + iPhone</span></div>
+    </div>
+    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#requirements">What you need</a></li><li><a href="#windows">Prepare the Windows vault</a></li><li><a href="#github">Push to GitHub</a></li><li><a href="#iphone">Clone on iPhone</a></li><li><a href="#verify">Verify both directions</a></li><li><a href="#daily">Daily workflow</a></li><li><a href="#questions">Common questions</a></li></ol></aside>
+  </div></header>
+  <div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+        <div class="tldr"><div class="tldr-title">The route</div><ol>
+          <li>Keep a local vault on Windows, outside folders managed by another sync service.</li>
+          <li>Commit the notes and push to a private GitHub repository.</li>
+          <li>Clone that repository into Obsidian’s local folder on your iPhone with GitSync.md.</li>
+          <li>Pull before writing and commit and push before switching devices.</li>
+        </ol></div>
+        <p>This guide starts with a vault on Windows that is not already a Git repository. If your vault is already on GitHub, skip to <a href="#iphone">the iPhone steps</a>. If your only copy is on your phone, <a href="/blog/create-git-repository-iphone">publish it from iPhone first</a>, then clone it on Windows.</p>
+
+        <h2 id="requirements">What you need</h2>
+        <ul>
+          <li>Obsidian on Windows and iPhone, plus a GitHub account.</li>
+          <li><a href="https://git-scm.com/install/windows">Git for Windows</a>, including Git Bash and Git Credential Manager.</li>
+          <li>GitSync.md on iOS 17 or later. It costs $19.99 once on the US App Store; local prices vary.</li>
+          <li>A separate backup of your notes before moving folders or changing sync methods.</li>
+        </ul>
+        <p>The desktop examples below run in <strong>Git Bash</strong>, not PowerShell. GitSync.md runs on the phone; Windows uses Git for Windows. You do not need the Obsidian Git plugin for the manual workflow in this guide.</p>
+        <p>Use a local Windows folder such as <code>C:\Users\YOUR_NAME\Documents\MyVault</code>, provided Documents is not redirected to OneDrive. Pick a folder outside OneDrive, Dropbox, or iCloud if those services manage your current location. Open that folder as your vault in Obsidian. Keep one sync method responsible for the working copy.</p>
+
+        <h2 id="windows">1. Put your Windows vault in Git</h2>
+        <p>Open Git Bash in the vault folder. Replace the example path and author details with your own. These commands are for a folder that is not already a Git repository; use <code>git status</code> to check first.</p>
+        <pre tabindex="0" role="region" aria-label="Initialize a local Windows vault in Git Bash"><code>cd "/c/Users/YOUR_NAME/Documents/MyVault"
+git init -b main
+git config user.name "YOUR_NAME"
+git config user.email "YOUR_COMMIT_EMAIL"</code></pre>
+        <p>The two <code>git config</code> commands set your identity for this repository. Use the commit email you intend to publish with your history, including a GitHub no-reply address if that is your preference.</p>
+        <h3>Keep device settings out of the first commit</h3>
+        <p>For the tradeoff between notes-only and shared configuration, read <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>.</p>
+        <p>Create a file named <code>.gitignore</code> at the vault root. For a notes-first setup, start with:</p>
+        <pre tabindex="0" role="region" aria-label="Starter ignore rules for an Obsidian vault"><code>.obsidian/
+.trash/
+.DS_Store
+Thumbs.db</code></pre>
+        <p>Ignoring <code>.obsidian/</code> keeps this setup’s plugin settings and device configuration out of Git. You will configure plugins and preferences separately on each device. You can later choose specific portable settings to version. Ignore rules do not remove files that are already tracked, and they do not detect secrets in ordinary notes or attachments.</p>
+        <p>Stage and inspect the files before committing. Check for private documents, tokens, large attachments, and files you did not intend to upload.</p>
+        <pre tabindex="0" role="region" aria-label="Review staged vault changes"><code>git add .
+git status
+git diff --cached --stat
+git diff --cached</code></pre>
+        <p>When the review is complete, save the first commit:</p>
+        <pre tabindex="0" role="region" aria-label="Create the initial vault commit"><code>git commit -m "Add vault notes"</code></pre>
+
+        <h2 id="github">2. Push to a private GitHub repository</h2>
+        <p>On GitHub, create a new <strong>private</strong> repository. Leave README, license, and .gitignore initialization off because you already have a local first commit. See <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository">GitHub’s repository creation instructions</a>.</p>
+        <p>Replace <code>YOUR_ACCOUNT</code> and <code>YOUR_REPOSITORY</code> with the new destination:</p>
+        <pre tabindex="0" role="region" aria-label="Connect the Windows vault to GitHub"><code>git remote add origin https://github.com/YOUR_ACCOUNT/YOUR_REPOSITORY.git
+git push -u origin main</code></pre>
+        <p>Git Credential Manager can open a browser for GitHub sign-in when required. Do not use your GitHub account password as a Git HTTPS password. Follow <a href="https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git">GitHub’s credential setup instructions</a> if authentication fails.</p>
+        <p>Open the repository on GitHub and confirm your notes and first commit arrived. Private visibility restricts access to the repository; it is not encryption with a key held only by you. Git history also retains earlier versions after an ordinary deletion commit.</p>
+
+        <h2 id="iphone">3. Clone the vault onto your iPhone</h2>
+        <ol>
+          <li>Install and open Obsidian. Create a local vault first if needed to make its folder appear under On My iPhone. Leave Store in iCloud off for this route.</li>
+          <li>Open GitSync.md, sign into GitHub, and choose <strong>On My iPhone → Obsidian</strong> as the save location.</li>
+          <li>Add your private vault repository and clone it. Open the cloned repository folder as a vault in Obsidian; fully close and reopen Obsidian if the vault does not appear.</li>
+          <li>In GitSync.md, check that the selected branch is <code>main</code>, matching the Windows branch.</li>
+        </ol>
+        <p>The <a href="/blog/obsidian-git-iphone-ipad#clone-into-files">main iPhone setup guide</a> covers folder selection in more detail. The same local-folder workflow applies to iPad under On My iPad.</p>
+        <p>You can now edit in Obsidian and perform Git operations in GitSync.md. If you prefer commands inside Obsidian, install and configure its Git plugin separately: <a href="/blog/gitsync-connect-obsidian-git">Connect</a> can reuse supported GitHub account credentials. It requires GitSync.md 2.8.0 or later, or 2.8.1 for a published vault.</p>
+        <p><a href="/v/web-homepage-110">Get GitSync.md for iPhone and iPad →</a></p>
+
+        <h2 id="verify">4. Verify one edit in each direction</h2>
+        <ol>
+          <li>On Windows, create a test note in Obsidian. In Git Bash, review, commit, and push it using the daily commands below.</li>
+          <li>On iPhone, open the repository in GitSync.md and pull. Open the test note in Obsidian and confirm the contents.</li>
+          <li>Edit that note on iPhone. In GitSync.md, review the diff, stage the intended edit, commit, and push.</li>
+          <li>Back on Windows, pull and verify the iPhone edit in Obsidian. Check the new commit on GitHub too.</li>
+        </ol>
+        <p>These checks establish that your own setup can transfer changes in both directions. Do them before relying on automatic syncing.</p>
+
+        <h2 id="daily">Daily Windows and iPhone workflow</h2>
+        <p>Before editing on Windows, run this from the vault folder:</p>
+        <pre tabindex="0" role="region" aria-label="Pull vault updates on Windows"><code>git status
+git pull --ff-only</code></pre>
+        <p>After editing, review and publish the changes you intend to share:</p>
+        <pre tabindex="0" role="region" aria-label="Review and publish Windows note edits"><code>git add .
+git diff --cached --stat
+git diff --cached
+git commit -m "Update notes from Windows"
+git push</code></pre>
+        <p>If Git reports nothing to commit, skip the commit step. On iPhone, use the same rhythm: pull in GitSync.md, write in Obsidian, then review, commit, and push in GitSync.md before changing devices. Wait for one app’s Git operation to finish before starting another.</p>
+        <p>Writing offline is fine, but editing the same note independently on two devices can produce conflicts. <code>git pull --ff-only</code> stops when histories diverge. Preserve your local work and resolve the histories deliberately instead of force-pushing or deleting the vault. See the <a href="/blog/obsidian-git-merge-conflicts-iphone">conflict checklist</a>.</p>
+
+        <h2 id="questions">Common questions</h2>
+        <h3>Can I use iCloud instead?</h3>
+        <p>Obsidian lists iCloud as an option for Apple devices but warns that iCloud Drive on Windows can cause duplication or corruption. This guide uses a Git remote between two local working copies. See <a href="https://obsidian.md/help/sync-notes">Obsidian’s sync documentation</a> for alternatives, including its official Sync service.</p>
+        <h3>Will plugins and settings follow my notes?</h3>
+        <p>Not with the starter ignore rules above. Install and configure plugins on each device. This avoids treating desktop and mobile plugin settings as interchangeable.</p>
+        <h3>What about large images, audio, or PDFs?</h3>
+        <p>Start with a small vault and check attachment sizes before importing a large library. Git LFS needs a compatible workflow on every Git client you use; review <a href="/blog/git-lfs-ios">GitSync.md’s LFS guide</a> before assuming the Obsidian Git plugin has the same capabilities.</p>
+        <h3>Does this sync automatically in the background?</h3>
+        <p>The instructions here are manual. GitSync.md offers optional Background Sync, but iOS controls execution and timing. Connect configures credentials, not sync intervals. Establish reliable manual transfers first, then consider <a href="/blog/shortcuts-automation-ios">Apple Shortcuts</a>.</p>
+        <div class="related-card"><h2>Continue your setup</h2><ul>
+          <li><a href="/blog/obsidian-git-iphone-ipad">The full Obsidian Git setup on iPhone and iPad</a></li>
+          <li><a href="/blog/obsidian-git-not-working-iphone">Fix a missing vault or failed mobile sync</a></li>
+          <li><a href="/compare/gitsync-vs-working-copy">Compare GitSync.md and Working Copy</a></li>
+        </ul></div>
+
+  </article></div></div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-110" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

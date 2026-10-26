@@ -45,6 +45,9 @@ Config/
 
 # Screenshots
 screenshots/
+!site/screenshots/
+site/screenshots/*
+!site/screenshots/*-660.webp
 
 # App Store metadata
 metadata/

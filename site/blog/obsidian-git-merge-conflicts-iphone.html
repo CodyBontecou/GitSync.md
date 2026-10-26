@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Fix Obsidian Git Merge Conflicts on iPhone — GitSync.md</title>
+<meta name="description" content="Resolve Obsidian vault conflicts on iPhone with GitSync.md. Identify the Git state, review each file, finish the merge or rebase, and verify your notes.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Fix Obsidian Git Merge Conflicts on iPhone — GitSync.md">
+<meta property="og:description" content="Resolve Obsidian vault conflicts on iPhone with GitSync.md. Identify the Git state, review each file, finish the merge or rebase, and verify your notes.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone">
+<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="article:published_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-10-26">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fix Obsidian Git Merge Conflicts on iPhone — GitSync.md">
+<meta name="twitter:description" content="Resolve Obsidian vault conflicts on iPhone with GitSync.md. Identify the Git state, review each file, finish the merge or rebase, and verify your notes.">
+<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Fix Obsidian Git merge conflicts on iPhone",
+  "description": "Resolve Obsidian vault conflicts on iPhone with GitSync.md. Identify the Git state, review each file, finish the merge or rebase, and verify your notes.",
+  "datePublished": "2026-10-26",
+  "dateModified": "2026-10-26",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "image": "https://gitsync.md/screenshots/hero-repo-list.png",
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Fix Obsidian Git merge conflicts on iPhone",
+      "item": "https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone"
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<main id="main">
+  <header class="article-hero"><div class="container hero-grid">
+    <div class="article-title"><div class="eyebrow">Obsidian Git / Conflict recovery</div>
+      <h1>Fix Obsidian Git merge conflicts on iPhone<span class="accent">.</span></h1>
+      <p class="subtitle">Preserve your notes, identify the active Git operation, and review each file before completing a merge or rebase. GitSync.md’s Conflict Center provides the native controls for that workflow.</p>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>iPhone + iPad</span></div>
+    </div>
+    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#state">Identify the Git state</a></li><li><a href="#preserve">Preserve unsynced notes</a></li><li><a href="#resolve">Resolve text files</a></li><li><a href="#special-files">Attachments and renames</a></li><li><a href="#finish">Finish and verify</a></li><li><a href="#prevent">Reduce repeat conflicts</a></li></ol></aside>
+  </div></header>
+  <div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+        <div class="tldr"><div class="tldr-title">Start here</div><ol>
+          <li>Pause automatic Git actions in both apps and preserve unsynced notes.</li>
+          <li>Check whether Git has actually started a merge or rebase. A stopped fast-forward pull is a different state.</li>
+          <li>Review each conflicting file in GitSync.md’s Conflict Center and save the intended result.</li>
+          <li>Finish the merge or continue the rebase, then verify the commit before pushing.</li>
+        </ol></div>
+        <p>This guide describes GitSync.md’s native conflict tools on iPhone and iPad. Obsidian Git has its own mobile Git implementation and commands. Do not run both clients against the same working copy at once. For a stuck or unfamiliar state, preserve the files and finish recovery on desktop.</p>
+
+        <h2 id="state">Is it a conflict, or did the pull stop before merging?</h2>
+        <p>GitSync.md’s automatic pull only accepts a clean fast-forward. It stops when local edits need attention or local and remote history have diverged. That message does not necessarily mean a merge has started or that conflict markers have been written.</p>
+        <p>Open the repository in GitSync.md and review its status. If no merge or rebase is active, first decide how to preserve local edits and reconcile the commits using the manual Git workflow. If a merge or rebase is already active, use that operation’s conflict controls rather than starting another pull.</p>
+        <p>If the error is authentication, a missing branch, or a missing repository, use the <a href="/blog/obsidian-git-not-working-iphone">general troubleshooting guide</a> instead.</p>
+
+        <h2 id="preserve">Preserve the versions before choosing one</h2>
+        <p>Pause Obsidian Git timers and GitSync.md’s automatic actions. Keep a separate copy of unsynced notes before resolving or aborting. Do not delete the vault, remove <code>.git</code>, or force-push to make the warning disappear.</p>
+        <p>A conflict usually means Git needs your decision about competing edits. For example, both devices might have changed the same line in <code>Plan.md</code>. Choosing a complete side can discard useful content from the other side.</p>
+        <p><a href="https://git-scm.com/docs/git-merge">Git’s merge documentation</a> explains conflict states and the difference between resolving files and completing the operation. The steps below use GitSync.md’s interface.</p>
+
+        <h2 id="resolve">Resolve the files in Conflict Center</h2>
+        <ol>
+          <li>Open the repository’s Git controls and find <strong>Conflict Center</strong>. Check whether it identifies a merge or a rebase.</li>
+          <li>Open an unresolved text file and inspect both sides. Compare the actual text before selecting Ours or Theirs.</li>
+          <li>For a combined result, edit the <strong>Result</strong> content. <strong>Use Ours</strong> and <strong>Use Theirs</strong> copy a side into that result; they are not a substitute for reviewing it.</li>
+          <li>Choose <strong>Resolve</strong> and confirm saving the result. Repeat for every unresolved path.</li>
+        </ol>
+        <p>In a normal merge, Ours refers to the current branch’s side and Theirs to the incoming side. Rebase changes the context of these labels. Do not assume Ours always means the newest phone note; read the contents.</p>
+        <h3>A small text example</h3>
+        <p>This is an illustrative note, not a recorded app test. Suppose one side says:</p>
+        <pre tabindex="0" role="region" aria-label="First version of an example note"><code>## Planning call
+Start: 10:00
+Bring the budget draft.</code></pre>
+        <p>The other says:</p>
+        <pre tabindex="0" role="region" aria-label="Second version of an example note"><code>## Planning call
+Start: 11:00
+Bring the agenda.</code></pre>
+        <p>If 11:00 is the correct time and both documents are needed, write the combined result explicitly:</p>
+        <pre tabindex="0" role="region" aria-label="Resolved example note"><code>## Planning call
+Start: 11:00
+Bring the budget draft and the agenda.</code></pre>
+        <p>Review the entire note, including lines outside the edited paragraph. If you manually edited conflict markers, confirm that marker lines are gone and that the intended text remains.</p>
+
+        <h2 id="special-files">Attachments, renamed files, and deletions</h2>
+        <p>Binary attachments cannot be merged as text in GitSync.md’s editor. Conflict Center lets you select Ours or Theirs at the file level. If you need both versions, preserve independent copies before picking one.</p>
+        <p>For a rename/rename conflict, the editor asks which path to keep. Review both names and contents. A delete/modify conflict requires a deliberate choice about whether the file should remain. Do not apply one blanket choice to the whole vault just because most conflicts look similar.</p>
+
+        <h2 id="finish">Finish the operation, then verify</h2>
+        <ul>
+          <li><strong>Merge:</strong> after every conflict is resolved, enter the merge commit message and use the completion control. GitSync.md labels this Complete or Complete Merge depending on the surface.</li>
+          <li><strong>Rebase:</strong> use <strong>Continue Rebase</strong>. Another commit may produce another conflict; repeat the review until the operation finishes.</li>
+        </ul>
+        <p>Resolving one file does not itself push a commit. Check repository status, read the resulting note in Obsidian, and inspect the history before pushing. Verify the exact note and commit on the remote, then pull on the other device.</p>
+        <p>GitSync.md also exposes <strong>Abort Merge</strong> and <strong>Abort Rebase</strong>. These cancel the active operation; they are not a replacement for keeping a separate copy of local work first. Move recovery to desktop if you are unsure which edits would remain.</p>
+
+        <h2 id="prevent">Reduce the next conflict</h2>
+        <p>For repeated workspace-setting conflicts, review <a href="/blog/obsidian-gitignore">your Obsidian .gitignore policy</a> after resolving the current operation.</p>
+        <ol>
+          <li>Pull before starting to write on a device.</li>
+          <li>Commit and push before switching devices, and verify that the push finished.</li>
+          <li>Use one Git automation path for a working copy while you establish a reliable routine.</li>
+          <li>Keep device-specific settings out of shared commits when they create repeated noise.</li>
+        </ol>
+        <p>Automatic syncing cannot infer the meaning of conflicting sentences. Read <a href="/blog/obsidian-git-background-sync-iphone">the background-sync guide</a> for the states that stop automatic work. If you prefer integrated syncing instead of managing Git history, compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync and Git</a>.</p>
+        <div class="related-card"><h2>Continue your workflow</h2><ul>
+          <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git setup for iPhone and iPad</a></li>
+          <li><a href="/blog/sync-obsidian-windows-iphone-github">Windows and iPhone workflow</a></li>
+          <li><a href="/v/web-homepage-113">GitSync.md on the App Store</a></li>
+        </ul></div>
+
+  </article></div></div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-113" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: free download, one-time Full Access purchase.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

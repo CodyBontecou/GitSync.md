@@ -1,0 +1,58 @@
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "scripts/check_site_seo.py"
+      - "scripts/build_site.py"
+      - "scripts/site_markdown.py"
+      - "scripts/tests/test_site_markdown.py"
+      - "site-router/src/**"
+      - "site-router/scripts/markdown.test.mjs"
+      - "scripts/tests/test_site_seo.py"
+      - "scripts/tests/site-testimonials.test.mjs"
+      - "scripts/tests/fixtures/app-store-reviews.json"
+      - ".github/workflows/site.yml"
+  pull_request:
+    paths:
+      - "site/**"
+      - "scripts/check_site_seo.py"
+      - "scripts/build_site.py"
+      - "scripts/site_markdown.py"
+      - "scripts/tests/test_site_markdown.py"
+      - "site-router/src/**"
+      - "site-router/scripts/markdown.test.mjs"
+      - "scripts/tests/test_site_seo.py"
+      - "scripts/tests/site-testimonials.test.mjs"
+      - "scripts/tests/fixtures/app-store-reviews.json"
+      - ".github/workflows/site.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate SEO, sitemap, local assets, and navigation
+        run: python3 scripts/check_site_seo.py
+      - name: Build and validate the deployment artifact
+        run: |
+          python3 scripts/build_site.py "$RUNNER_TEMP/gitsync-site"
+          python3 scripts/check_site_seo.py --site "$RUNNER_TEMP/gitsync-site"
+      - name: Test the checker against broken-site fixtures
+        run: python3 -m unittest discover -s scripts/tests -p 'test_site_*.py'
+      - name: Check review attribution and accessible fallbacks
+        run: node --test scripts/tests/site-testimonials.test.mjs
+      - name: Check representation negotiation and redirect regressions
+        run: node --test site-router/scripts/markdown.test.mjs
