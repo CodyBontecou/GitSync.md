@@ -1,0 +1,594 @@
+{
+  "checked_at": "2026-10-26T15:28:36.418034+00:00",
+  "method": "HEAD",
+  "links": [
+    {
+      "url": "https://apps.apple.com/app/obsidian-connected-notes/id1557175442",
+      "status": 200,
+      "final_url": "https://apps.apple.com/us/app/obsidian-connected-notes/id1557175442",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://apps.apple.com/us/app/git-client-working-copy/id896694807",
+      "status": 200,
+      "final_url": "https://apps.apple.com/us/app/git-client-working-copy/id896694807",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/gitsync-vs-working-copy.html"
+      ]
+    },
+    {
+      "url": "https://apps.apple.com/us/app/gitsync-md/id6758960270?see-all=reviews",
+      "status": 200,
+      "final_url": "https://apps.apple.com/us/app/gitsync-md/id6758960270?see-all=reviews",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "index.html"
+      ]
+    },
+    {
+      "url": "https://codybontecou.com",
+      "status": 200,
+      "final_url": "https://codybontecou.com/",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "404.html",
+        "about.html",
+        "blog/clone-github-repository-iphone.html",
+        "blog/create-git-repository-iphone.html",
+        "blog/git-lfs-ios.html",
+        "blog/gitsync-connect-obsidian-git.html",
+        "blog/index.html",
+        "blog/obsidian-git-background-sync-iphone.html",
+        "blog/obsidian-git-ios-setup.html",
+        "blog/obsidian-git-iphone-ipad.html",
+        "blog/obsidian-git-merge-conflicts-iphone.html",
+        "blog/obsidian-git-not-working-iphone.html",
+        "blog/obsidian-gitignore.html",
+        "blog/self-hosted-git-ssh-ios.html",
+        "blog/shortcuts-automation-ios.html",
+        "blog/sync-obsidian-windows-iphone-github.html",
+        "compare/gitsync-vs-working-copy.html",
+        "compare/icloud-vs-git-obsidian.html",
+        "compare/obsidian-sync-vs-git.html",
+        "contact.html",
+        "privacy.html",
+        "terms.html"
+      ]
+    },
+    {
+      "url": "https://community.obsidian.md/plugins/gitsync-connect",
+      "status": 200,
+      "final_url": "https://community.obsidian.md/plugins/gitsync-connect",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/gitsync-connect-obsidian-git.html"
+      ]
+    },
+    {
+      "url": "https://developer.apple.com/documentation/backgroundtasks/choosing-background-strategies-for-your-app",
+      "status": 200,
+      "final_url": "https://developer.apple.com/documentation/backgroundtasks/choosing-background-strategies-for-your-app",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-background-sync-iphone.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/create-git-repository-iphone.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-gitignore.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/sync-obsidian-windows-iphone-github.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/get-started/git-basics/ignoring-files",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/get-started/git-basics/ignoring-files",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-gitignore.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/clone-github-repository-iphone.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/sync-obsidian-windows-iphone-github.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "terms.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "terms.html"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "privacy.html"
+      ]
+    },
+    {
+      "url": "https://git-lfs.com",
+      "status": 200,
+      "final_url": "https://git-lfs.com/",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/git-lfs-ios.html"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control",
+      "status": 200,
+      "final_url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/icloud-vs-git-obsidian.html"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-check-ignore",
+      "status": 200,
+      "final_url": "https://git-scm.com/docs/git-check-ignore",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-gitignore.html"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-merge",
+      "status": 200,
+      "final_url": "https://git-scm.com/docs/git-merge",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-merge-conflicts-iphone.html"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/gitignore",
+      "status": 200,
+      "final_url": "https://git-scm.com/docs/gitignore",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-gitignore.html"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/install/windows",
+      "status": 200,
+      "final_url": "https://git-scm.com/install/windows",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/sync-obsidian-windows-iphone-github.html"
+      ]
+    },
+    {
+      "url": "https://github.com/CodyBontecou",
+      "status": 200,
+      "final_url": "https://github.com/CodyBontecou",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "index.html"
+      ]
+    },
+    {
+      "url": "https://github.com/CodyBontecou/GitSync.md",
+      "status": 200,
+      "final_url": "https://github.com/CodyBontecou/GitSync.md",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "404.html",
+        "about.html",
+        "blog/clone-github-repository-iphone.html",
+        "blog/create-git-repository-iphone.html",
+        "blog/git-lfs-ios.html",
+        "blog/gitsync-connect-obsidian-git.html",
+        "blog/index.html",
+        "blog/obsidian-git-background-sync-iphone.html",
+        "blog/obsidian-git-ios-setup.html",
+        "blog/obsidian-git-iphone-ipad.html",
+        "blog/obsidian-git-merge-conflicts-iphone.html",
+        "blog/obsidian-git-not-working-iphone.html",
+        "blog/obsidian-gitignore.html",
+        "blog/self-hosted-git-ssh-ios.html",
+        "blog/shortcuts-automation-ios.html",
+        "blog/sync-obsidian-windows-iphone-github.html",
+        "compare/gitsync-vs-working-copy.html",
+        "compare/icloud-vs-git-obsidian.html",
+        "compare/obsidian-sync-vs-git.html",
+        "contact.html",
+        "index.html",
+        "privacy.html",
+        "terms.html"
+      ]
+    },
+    {
+      "url": "https://github.com/CodyBontecou/GitSync.md/issues",
+      "status": 200,
+      "final_url": "https://github.com/CodyBontecou/GitSync.md/issues",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/index.html",
+        "blog/obsidian-git-not-working-iphone.html",
+        "contact.html",
+        "index.html",
+        "terms.html"
+      ]
+    },
+    {
+      "url": "https://github.com/CodyBontecou/gitsync-obsidian-connect",
+      "status": 200,
+      "final_url": "https://github.com/CodyBontecou/gitsync-obsidian-connect",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/gitsync-connect-obsidian-git.html"
+      ]
+    },
+    {
+      "url": "https://github.com/Vinzent03/obsidian-git",
+      "status": 200,
+      "final_url": "https://github.com/Vinzent03/obsidian-git",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://github.com/settings/tokens",
+      "status": 200,
+      "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsettings%2Ftokens",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://obsidian.md/help/backup",
+      "status": 200,
+      "final_url": "https://obsidian.md/help/backup",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/icloud-vs-git-obsidian.html"
+      ]
+    },
+    {
+      "url": "https://obsidian.md/help/sync-notes",
+      "status": 200,
+      "final_url": "https://obsidian.md/help/sync-notes",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/sync-obsidian-windows-iphone-github.html",
+        "compare/icloud-vs-git-obsidian.html",
+        "compare/obsidian-sync-vs-git.html"
+      ]
+    },
+    {
+      "url": "https://obsidian.md/help/sync/security",
+      "status": 200,
+      "final_url": "https://obsidian.md/help/sync/security",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html",
+        "compare/obsidian-sync-vs-git.html"
+      ]
+    },
+    {
+      "url": "https://obsidian.md/pricing",
+      "status": 200,
+      "final_url": "https://obsidian.md/pricing",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/obsidian-sync-vs-git.html"
+      ]
+    },
+    {
+      "url": "https://obsidian.md/sync",
+      "status": 200,
+      "final_url": "https://obsidian.md/sync",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html",
+        "compare/obsidian-sync-vs-git.html"
+      ]
+    },
+    {
+      "url": "https://play.google.com/store/apps/details?id=com.bontecou.syncmd",
+      "status": 200,
+      "final_url": "https://play.google.com/store/apps/details?id=com.bontecou.syncmd",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/clone-github-repository-iphone.html",
+        "blog/create-git-repository-iphone.html",
+        "blog/git-lfs-ios.html",
+        "blog/index.html",
+        "blog/obsidian-git-background-sync-iphone.html",
+        "blog/obsidian-git-ios-setup.html",
+        "blog/obsidian-git-iphone-ipad.html",
+        "blog/obsidian-git-merge-conflicts-iphone.html",
+        "blog/obsidian-git-not-working-iphone.html",
+        "blog/obsidian-gitignore.html",
+        "blog/self-hosted-git-ssh-ios.html",
+        "blog/shortcuts-automation-ios.html",
+        "blog/sync-obsidian-windows-iphone-github.html",
+        "compare/gitsync-vs-working-copy.html",
+        "compare/icloud-vs-git-obsidian.html",
+        "compare/obsidian-sync-vs-git.html",
+        "index.html"
+      ]
+    },
+    {
+      "url": "https://publish.obsidian.md/git-doc/Getting%20Started",
+      "status": 200,
+      "final_url": "https://publish.obsidian.md/git-doc/Getting%20Started",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-background-sync-iphone.html",
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://publish.obsidian.md/git-doc/Tips-and-Tricks",
+      "status": 200,
+      "final_url": "https://publish.obsidian.md/git-doc/Tips-and-Tricks",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://support.apple.com/en-us/102651",
+      "status": 200,
+      "final_url": "https://support.apple.com/en-us/102651",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/icloud-vs-git-obsidian.html"
+      ]
+    },
+    {
+      "url": "https://workingcopy.app/",
+      "status": 200,
+      "final_url": "https://workingcopy.app/",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/gitsync-vs-working-copy.html"
+      ]
+    },
+    {
+      "url": "https://workingcopy.app/manual.html",
+      "status": 200,
+      "final_url": "https://workingcopy.app/manual.html",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/gitsync-vs-working-copy.html"
+      ]
+    },
+    {
+      "url": "https://workingcopy.app/manual/external-repos/",
+      "status": 200,
+      "final_url": "https://workingcopy.app/manual/external-repos/",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "compare/gitsync-vs-working-copy.html"
+      ]
+    },
+    {
+      "url": "https://workingcopyapp.com/manual/version-control/",
+      "status": 200,
+      "final_url": "https://workingcopyapp.com/manual/version-control/",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/shorts/NzF32vy-qdI",
+      "status": 200,
+      "final_url": "https://www.youtube.com/shorts/NzF32vy-qdI",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/gitsync-connect-obsidian-git.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=7V30badrnpg",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=7V30badrnpg",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/create-git-repository-iphone.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=139s",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=139s",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=239s",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=239s",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=273s",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=273s",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=68s",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=68s",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=6s",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=AdCvAzmgGQE&t=6s",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=GkyZ_gfxjk0",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=GkyZ_gfxjk0",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/gitsync-connect-obsidian-git.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=NzF32vy-qdI",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=NzF32vy-qdI",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/gitsync-connect-obsidian-git.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=jx7DOUGNCEs",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=jx7DOUGNCEs",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=jx7DOUGNCEs&t=62s",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=jx7DOUGNCEs&t=62s",
+      "result": "reachable",
+      "error": null,
+      "pages": [
+        "blog/obsidian-git-ios-setup.html"
+      ]
+    }
+  ]
+}

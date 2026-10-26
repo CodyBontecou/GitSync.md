@@ -19,13 +19,18 @@
 <meta property="og:title" content="Sync Obsidian Between Windows &amp; iPhone with GitHub — GitSync.md">
 <meta property="og:description" content="Sync an Obsidian vault between Windows and iPhone using a private GitHub repository. Set up Git, clone with GitSync.md, and verify edits in both directions.">
 <meta property="og:url" content="https://gitsync.md/blog/sync-obsidian-windows-iphone-github">
-<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="og:image" content="https://gitsync.md/social/blog/sync-obsidian-windows-iphone-github.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Sync Obsidian Between Windows &amp; iPhone with GitHub">
 <meta property="article:published_time" content="2026-10-26">
 <meta property="article:modified_time" content="2026-10-26">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sync Obsidian Between Windows &amp; iPhone with GitHub — GitSync.md">
 <meta name="twitter:description" content="Sync an Obsidian vault between Windows and iPhone using a private GitHub repository. Set up Git, clone with GitSync.md, and verify edits in both directions.">
-<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/sync-obsidian-windows-iphone-github.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Sync Obsidian Between Windows &amp; iPhone with GitHub">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +41,8 @@
   "dateModified": "2026-10-26",
   "author": {
     "@type": "Person",
-    "name": "Cody Bontecou"
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
   },
   "publisher": {
     "@type": "Person",
@@ -46,6 +52,8 @@
   "mainEntityOfPage": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github"
 }
 </script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -66,14 +74,12 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Sync Obsidian between Windows and iPhone with GitHub",
+      "name": "Windows and iPhone",
       "item": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github"
     }
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.css">
-<link rel="stylesheet" href="../content.css">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -93,10 +99,10 @@
 
 <main id="main">
   <header class="article-hero"><div class="container hero-grid">
-    <div class="article-title"><div class="eyebrow">Obsidian / Windows + iPhone</div>
+    <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Windows and iPhone</li></ol></nav>
       <h1>Sync Obsidian between Windows and iPhone with GitHub<span class="accent">.</span></h1>
       <p class="subtitle">Use a private GitHub repository to move Obsidian notes between a local Windows vault and a local iPhone vault. Git for Windows handles the desktop copy; GitSync.md handles Git on the phone. Pull before editing and push before switching devices.</p>
-      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>Windows + iPhone</span></div>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Windows + iPhone</span></div>
     </div>
     <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#requirements">What you need</a></li><li><a href="#windows">Prepare the Windows vault</a></li><li><a href="#github">Push to GitHub</a></li><li><a href="#iphone">Clone on iPhone</a></li><li><a href="#verify">Verify both directions</a></li><li><a href="#daily">Daily workflow</a></li><li><a href="#questions">Common questions</a></li></ol></aside>
   </div></header>
@@ -185,7 +191,7 @@ git push</code></pre>
 
         <h2 id="questions">Common questions</h2>
         <h3>Can I use iCloud instead?</h3>
-        <p>Obsidian lists iCloud as an option for Apple devices but warns that iCloud Drive on Windows can cause duplication or corruption. This guide uses a Git remote between two local working copies. See <a href="https://obsidian.md/help/sync-notes">Obsidian’s sync documentation</a> for alternatives, including its official Sync service.</p>
+        <p>Obsidian lists iCloud as an option for Apple devices but warns that iCloud Drive on Windows can cause duplication or corruption. This guide uses a Git remote between two local working copies. Compare the tradeoffs in <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>. See <a href="https://obsidian.md/help/sync-notes">Obsidian’s sync documentation</a> for alternatives, including its official Sync service.</p>
         <h3>Will plugins and settings follow my notes?</h3>
         <p>Not with the starter ignore rules above. Install and configure plugins on each device. This avoids treating desktop and mobile plugin settings as interchangeable.</p>
         <h3>What about large images, audio, or PDFs?</h3>

@@ -1,0 +1,184 @@
+[
+  {
+    "url": "https://gitsync.md/index.html?seo_check=canonical",
+    "status": 308,
+    "location": "/?seo_check=canonical",
+    "expected": "https://gitsync.md/?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/about.html?seo_check=canonical",
+    "status": 308,
+    "location": "/about?seo_check=canonical",
+    "expected": "https://gitsync.md/about?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/contact.html?seo_check=canonical",
+    "status": 308,
+    "location": "/contact?seo_check=canonical",
+    "expected": "https://gitsync.md/contact?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/terms.html?seo_check=canonical",
+    "status": 308,
+    "location": "/terms?seo_check=canonical",
+    "expected": "https://gitsync.md/terms?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/privacy.html?seo_check=canonical",
+    "status": 308,
+    "location": "/privacy?seo_check=canonical",
+    "expected": "https://gitsync.md/privacy?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/obsidian-gitignore.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/obsidian-gitignore?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/obsidian-gitignore?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/shortcuts-automation-ios.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/shortcuts-automation-ios?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/shortcuts-automation-ios?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/obsidian-git-ios-setup.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/obsidian-git-ios-setup?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/obsidian-git-ios-setup?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/obsidian-git-iphone-ipad.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/obsidian-git-iphone-ipad?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/index.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/git-lfs-ios.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/git-lfs-ios?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/git-lfs-ios?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/obsidian-git-merge-conflicts-iphone?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/sync-obsidian-windows-iphone-github?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/sync-obsidian-windows-iphone-github?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/create-git-repository-iphone.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/create-git-repository-iphone?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/create-git-repository-iphone?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/obsidian-git-background-sync-iphone.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/obsidian-git-background-sync-iphone?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/obsidian-git-background-sync-iphone?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/self-hosted-git-ssh-ios.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/self-hosted-git-ssh-ios?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/self-hosted-git-ssh-ios?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/gitsync-connect-obsidian-git.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/gitsync-connect-obsidian-git?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/gitsync-connect-obsidian-git?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/obsidian-git-not-working-iphone.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/obsidian-git-not-working-iphone?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/obsidian-git-not-working-iphone?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/blog/clone-github-repository-iphone.html?seo_check=canonical",
+    "status": 308,
+    "location": "/blog/clone-github-repository-iphone?seo_check=canonical",
+    "expected": "https://gitsync.md/blog/clone-github-repository-iphone?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/compare/obsidian-sync-vs-git.html?seo_check=canonical",
+    "status": 308,
+    "location": "/compare/obsidian-sync-vs-git?seo_check=canonical",
+    "expected": "https://gitsync.md/compare/obsidian-sync-vs-git?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://gitsync.md/compare/gitsync-vs-working-copy.html?seo_check=canonical",
+    "status": 308,
+    "location": "/compare/gitsync-vs-working-copy?seo_check=canonical",
+    "expected": "https://gitsync.md/compare/gitsync-vs-working-copy?seo_check=canonical",
+    "passed": true
+  },
+  {
+    "url": "https://www.gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "status": 301,
+    "location": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "expected": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "passed": true
+  },
+  {
+    "url": "https://gitsyncmd.app/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "status": 301,
+    "location": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "expected": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "passed": true
+  },
+  {
+    "url": "https://www.gitsyncmd.app/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "status": 301,
+    "location": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "expected": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "passed": true
+  },
+  {
+    "url": "https://gitsyncmd.isolated.tech/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "status": 301,
+    "location": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "expected": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "passed": true
+  },
+  {
+    "url": "https://syncmd.isolated.tech/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "status": 301,
+    "location": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "expected": "https://gitsync.md/blog/obsidian-git-iphone-ipad?seo_check=migration",
+    "passed": true
+  }
+]

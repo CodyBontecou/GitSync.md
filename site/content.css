@@ -33,6 +33,10 @@
 .article-hero h1 { font-size: clamp(42px, 5vw, 70px); line-height: 1.02; font-weight: 900; letter-spacing: -.055em; margin-block: 26px 24px; text-wrap: balance; }
 .subtitle { max-width: 710px; font-size: 16px; line-height: 1.75; color: var(--muted); }
 .meta-line { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 27px; font: 400 10px/1.6 var(--mono); color: var(--muted); }
+.article-breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.article-breadcrumbs li + li::before { content: "/"; margin-right: 8px; color: var(--muted); }
+.article-breadcrumbs a, .meta-line a { text-decoration: underline; text-underline-offset: 4px; }
+.article-breadcrumbs a:hover, .meta-line a:hover { color: var(--blue); }
 .toc-card { align-self: end; background: var(--surface); }
 .toc-title { margin-bottom: 17px; }
 .toc-card ol { margin: 0; padding-left: 20px; }

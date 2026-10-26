@@ -4,6 +4,8 @@ import subprocess
 import sys
 import tempfile
 import importlib.util
+import json
+import struct
 import unittest
 
 CHECKER = Path(__file__).resolve().parents[1] / 'check_site_seo.py'
@@ -22,7 +24,13 @@ def page(path, title, body='', robots='index, follow'):
 <meta property="og:description" content="A descriptive page.">
 <meta property="og:url" content="{ORIGIN}{path}">
 <meta property="og:image" content="{ORIGIN}/icon.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="{ORIGIN}/icon.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card">
 </head><body><h1>{title}</h1>{body}</body></html>'''
 
 
@@ -32,7 +40,8 @@ class SiteChecks(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.site = Path(self.temp.name)
         (self.site / 'blog' / 'guide').mkdir(parents=True)
-        (self.site / 'icon.png').write_bytes(b'fixture image')
+        # Only the PNG signature/IHDR dimensions are inspected by this checker.
+        (self.site / 'icon.png').write_bytes(b'\x89PNG\r\n\x1a\n' + struct.pack('>I', 13) + b'IHDR' + struct.pack('>II', 1200, 630))
         (self.site / 'index.html').write_text(page('/', 'Home', '<a href="/blog/guide#steps">Read guide</a>'))
         (self.site / 'blog' / 'guide.html').write_text(page('/blog/guide', 'Guide', '<h2 id="steps">Steps</h2>'))
         (self.site / '404.html').write_text(page('/404', 'Missing page', '<a href="/">Home</a>', 'noindex, follow'))
@@ -84,6 +93,48 @@ class SiteChecks(unittest.TestCase):
     def test_missing_local_asset_fails(self):
         self.replace('blog/guide.html', '</body>', '<img src="/missing.png" alt="Missing"></body>')
         self.assertIn('missing local reference', self.check().stderr)
+
+    def test_portrait_sharing_image_fails_even_with_landscape_metadata(self):
+        image = self.site / 'icon.png'
+        image.write_bytes(image.read_bytes()[:16] + struct.pack('>II', 1320, 2868))
+        self.assertIn('PNG dimensions 1200x630', self.check().stderr)
+
+    def test_mismatched_sharing_images_and_missing_alt_fail(self):
+        self.replace('blog/guide.html', f'name="twitter:image" content="{ORIGIN}/icon.png"',
+                     f'name="twitter:image" content="{ORIGIN}/other.png"')
+        self.replace('blog/guide.html', '<meta property="og:image:alt" content="GitSync.md guide card">', '')
+        result = self.check()
+        self.assertIn('images must match', result.stderr)
+        self.assertIn('missing/duplicate og:image:alt', result.stderr)
+
+    def test_article_breadcrumbs_and_author_identity(self):
+        canonical = ORIGIN + '/blog/guide'
+        article = {'@type': 'BlogPosting', 'author': {'@type': 'Person', 'url': ORIGIN + '/about'}}
+        breadcrumb = {'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': position, 'name': name, 'item': url}
+            for position, name, url in [(1, 'Home', ORIGIN + '/'), (2, 'Guides', ORIGIN + '/blog/'), (3, 'Guide', canonical)]
+        ]}
+        def parsed():
+            return checker.Page('<nav aria-label="Breadcrumb"><a href="/">Home</a></nav>'
+                                '<a href="/about" rel="author">Cody Bontecou</a>'
+                                + ''.join('<script type="application/ld+json">' + json.dumps(obj) + '</script>'
+                                          for obj in (article, breadcrumb)))
+        self.assertEqual(checker.article_metadata_errors(parsed(), canonical), [])
+        breadcrumb['itemListElement'][-1]['item'] += '.html'
+        self.assertIn('canonical hierarchy', ' '.join(checker.article_metadata_errors(parsed(), canonical)))
+        breadcrumb['itemListElement'][-1]['item'] = canonical
+        breadcrumb['itemListElement'][1]['position'] = 3
+        self.assertIn('positions', ' '.join(checker.article_metadata_errors(parsed(), canonical)))
+        article['author']['url'] = ORIGIN + '/'
+        self.assertIn('author URL', ' '.join(checker.article_metadata_errors(parsed(), canonical)))
+
+    def test_article_requires_visible_navigation_and_author(self):
+        parsed = checker.Page('<script type="application/ld+json">'
+                              '{"@type":"Article","author":{"url":"https://gitsync.md/about"}}'
+                              '</script>')
+        errors = checker.article_metadata_errors(parsed, ORIGIN + '/blog/guide')
+        self.assertIn('visible author', ' '.join(errors))
+        self.assertIn('visible breadcrumbs', ' '.join(errors))
 
 
 if __name__ == '__main__':

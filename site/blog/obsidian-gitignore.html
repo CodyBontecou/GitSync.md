@@ -19,13 +19,18 @@
 <meta property="og:title" content="Obsidian Gitignore: What to Sync and Keep Local — GitSync.md">
 <meta property="og:description" content="Choose .gitignore rules for an Obsidian vault. Keep device settings local, share reviewed configuration, diagnose tracked files, and avoid committing credentials.">
 <meta property="og:url" content="https://gitsync.md/blog/obsidian-gitignore">
-<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-gitignore.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Obsidian Gitignore: What to Sync and Keep Local">
 <meta property="article:published_time" content="2026-10-26">
 <meta property="article:modified_time" content="2026-10-26">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Obsidian Gitignore: What to Sync and Keep Local — GitSync.md">
 <meta name="twitter:description" content="Choose .gitignore rules for an Obsidian vault. Keep device settings local, share reviewed configuration, diagnose tracked files, and avoid committing credentials.">
-<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-gitignore.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Obsidian Gitignore: What to Sync and Keep Local">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +41,8 @@
   "dateModified": "2026-10-26",
   "author": {
     "@type": "Person",
-    "name": "Cody Bontecou"
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
   },
   "publisher": {
     "@type": "Person",
@@ -46,6 +52,8 @@
   "mainEntityOfPage": "https://gitsync.md/blog/obsidian-gitignore"
 }
 </script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -66,14 +74,12 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Obsidian .gitignore: choose what to sync",
+      "name": "Obsidian Gitignore",
       "item": "https://gitsync.md/blog/obsidian-gitignore"
     }
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.css">
-<link rel="stylesheet" href="../content.css">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -93,10 +99,10 @@
 
 <main id="main">
   <header class="article-hero"><div class="container hero-grid">
-    <div class="article-title"><div class="eyebrow">Obsidian Git / Configuration</div>
+    <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Gitignore</li></ol></nav>
       <h1>Obsidian .gitignore: choose what to sync<span class="accent">.</span></h1>
       <p class="subtitle">Start with the files you want in version control. Keep device-specific workspace state and private configuration out of new commits, then verify the rules before enabling automatic publication.</p>
-      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>iPhone + iPad</span></div>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
     </div>
     <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#notes-only">Notes-only policy</a></li><li><a href="#selected-settings">Share selected settings</a></li><li><a href="#rules">Rule locations</a></li><li><a href="#check">Verify the rules</a></li><li><a href="#tracked">Already tracked files</a></li><li><a href="#secrets">Previously committed secrets</a></li></ol></aside>
   </div></header>
@@ -149,7 +155,7 @@ git ls-files -- .obsidian</code></pre>
 
         <h2 id="tracked">Why ignored files still appear</h2>
         <p>Gitignore rules apply to untracked files. If a settings file was committed earlier, adding its path to <code>.gitignore</code> does not stop tracking it. Plan any tracking removal with copies of the local settings on each device; a committed deletion can remove that tracked file from another working copy when pulled.</p>
-        <p>Do not delete your configuration or run a broad index-reset command just to quiet the change list. Decide which exact files should remain versioned, then review the resulting commit. <a href="https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files">GitHub’s ignore guide</a> explains the tracked-file distinction.</p>
+        <p>Do not delete your configuration or run a broad index-reset command just to quiet the change list. Decide which exact files should remain versioned, then review the resulting commit. <a href="https://docs.github.com/en/get-started/git-basics/ignoring-files">GitHub’s ignore guide</a> explains the tracked-file distinction.</p>
 
         <h2 id="secrets">If a token or private file was committed</h2>
         <p>Adding an ignore rule or making a later deletion commit does not erase earlier revisions. Revoke or rotate an exposed credential first. Then assess repository history, other clones, and remote copies using <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">GitHub’s sensitive-data removal guidance</a>.</p>

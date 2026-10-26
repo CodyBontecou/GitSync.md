@@ -19,13 +19,18 @@
 <meta property="og:title" content="Obsidian Git Background Sync on iPhone: What Works">
 <meta property="og:description" content="Understand automatic Obsidian Git sync on iPhone: native Background Sync, plugin automation, Connect, Shortcuts, Push Sync, and iOS scheduling limits.">
 <meta property="og:url" content="https://gitsync.md/blog/obsidian-git-background-sync-iphone">
-<meta property="og:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-git-background-sync-iphone.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Obsidian Git Background Sync on iPhone: What Works">
 <meta property="article:published_time" content="2026-10-26">
 <meta property="article:modified_time" content="2026-10-26">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Obsidian Git Background Sync on iPhone: What Works">
 <meta name="twitter:description" content="Understand automatic Obsidian Git sync on iPhone: native Background Sync, plugin automation, Connect, Shortcuts, Push Sync, and iOS scheduling limits.">
-<meta name="twitter:image" content="https://gitsync.md/screenshots/hero-repo-list.png">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-git-background-sync-iphone.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Obsidian Git Background Sync on iPhone: What Works">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +41,8 @@
   "dateModified": "2026-10-26",
   "author": {
     "@type": "Person",
-    "name": "Cody Bontecou"
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
   },
   "publisher": {
     "@type": "Person",
@@ -46,6 +52,8 @@
   "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-background-sync-iphone"
 }
 </script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -66,14 +74,12 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Obsidian Git background sync on iPhone",
+      "name": "Background sync",
       "item": "https://gitsync.md/blog/obsidian-git-background-sync-iphone"
     }
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.css">
-<link rel="stylesheet" href="../content.css">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -93,10 +99,10 @@
 
 <main id="main">
   <header class="article-hero"><div class="container hero-grid">
-    <div class="article-title"><div class="eyebrow">Obsidian Git / Automation</div>
+    <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Background sync</li></ol></nav>
       <h1>Obsidian Git background sync on iPhone<span class="accent">.</span></h1>
       <p class="subtitle">GitSync.md can attempt automatic pulls and separately enabled publication, but iOS controls when background work runs. Set up the right Git client, choose its controls, and verify the result instead of relying on an interval.</p>
-      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By Cody Bontecou</span><span>iPhone + iPad</span></div>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
     </div>
     <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#choose">Choose a Git client</a></li><li><a href="#enable">Enable native automation</a></li><li><a href="#timing">Understand iOS timing</a></li><li><a href="#stops">States that stop work</a></li><li><a href="#push-sync">Push Sync notifications</a></li><li><a href="#shortcuts">Explicit Shortcuts</a></li><li><a href="#verify">Verify the result</a></li></ol></aside>
   </div></header>
@@ -141,7 +147,7 @@
 
         <h2 id="push-sync">Push Sync is an optional wake-up route</h2>
         <p>GitSync.md’s separately enabled <strong>Push Sync</strong> connects a GitHub App and delivers a push alert with a best-effort request for targeted background reconciliation. iOS can delay or suppress that attempt. An alert does not prove the notes have arrived.</p>
-        <p>The name refers to a notification route; it does not itself enable automatic publication of your local notes. Automatic commit and push remains a separate setting. Push Sync’s relay handles the repository and registration metadata described in the <a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">privacy policy</a>, not local file contents or Git credentials.</p>
+        <p>The name refers to a notification route; it does not itself enable automatic publication of your local notes. Automatic commit and push remains a separate setting. Push Sync’s relay handles the repository and registration metadata described in the <a href="/privacy">privacy policy</a>, not local file contents or Git credentials.</p>
 
         <h2 id="shortcuts">Use an explicit trigger when you need one</h2>
         <p>Apple Shortcuts can request Pull, Push, or Sync actions from GitSync.md. They provide an explicit workflow but still need the operation to succeed. A Home Screen or Control Center pull button only pulls; it does not publish local edits.</p>
@@ -183,7 +189,7 @@
   <div class="shell footer-layout">
     <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
     <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
-    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
     <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>

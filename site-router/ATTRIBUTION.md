@@ -233,6 +233,7 @@ The same page token covers its inline and bottom download links; review links st
 | `/blog/obsidian-git-background-sync-iphone` | `web_homepage_114` |
 | `/blog/clone-github-repository-iphone` | `web_homepage_115` |
 | `/blog/obsidian-gitignore` | `web_homepage_116` |
+| `/compare/icloud-vs-git-obsidian` | `web_homepage_117` |
 
 A HEAD request to `/v/web-homepage-108` on October 26 returned 302 with `pt`, `ct`,
 and `mt=8`, without a custom product page. HEAD does not create a D1 click row.

@@ -12,7 +12,7 @@ python3 -m unittest discover -s scripts/tests -p 'test_site_seo.py'
 node --test scripts/tests/site-testimonials.test.mjs
 ```
 
-The checker verifies canonical URLs, social metadata, article JSON-LD identities, unique titles and IDs, local links, anchors, image and CSS assets, sitemap coverage, robots declaration, and navigation reachability. The non-indexed `404.html` is deliberately excluded from the sitemap. `.github/workflows/site.yml` runs these checks for relevant pushes and pull requests; it does not publish the website.
+The checker verifies canonical URLs, social metadata and actual sharing-image dimensions, article JSON-LD identities, article author links, breadcrumb hierarchy, unique titles and IDs, local links, anchors, image and CSS assets, sitemap coverage, robots declaration, and navigation reachability. The non-indexed `404.html` is deliberately excluded from the sitemap. `.github/workflows/site.yml` runs these checks for relevant pushes and pull requests; it does not publish the website.
 
 Cloudflare serves `blog/topic.html` at `/blog/topic`, while `blog/index.html` uses `/blog/`. Use those public paths for links, canonical tags, social URLs, JSON-LD, and sitemap entries. Some articles have a same-named image directory beside their HTML file; the checker accounts for Pages routing in that case.
 
@@ -25,6 +25,14 @@ Cloudflare serves `blog/topic.html` at `/blog/topic`, while `blog/index.html` us
 5. Add the canonical URL to `site/sitemap.xml`. Use a truthful publication/modification date.
 6. Reserve a unique page campaign token in `site-router/ATTRIBUTION.md`, using the existing website redirect route. Do not treat store clicks as installs.
 7. Run the checks and inspect the page at desktop and phone widths. Tables and code blocks may scroll within their container; the page should not overflow.
+
+Each article includes a visible Home → Guides → current page breadcrumb and exactly one matching `BreadcrumbList` with canonical URLs and positions 1–3. Keep its author byline linked to `/about` with `rel="author"`, and use `https://gitsync.md/about` as the article schema author's URL. These follow Google's [breadcrumb guidance](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb) and [article author guidance](https://developers.google.com/search/docs/appearance/structured-data/article). Structured data does not guarantee a search presentation or ranking change.
+
+## Refresh sharing cards
+
+Run `python3 scripts/build_social_cards.py --update-metadata` after changing a title or adding a page. This authoring command requires Pillow; the generated PNG files are committed, so normal site builds and SEO checks need only the Python standard library. The bundled Manrope font and its OFL license are in `scripts/assets/manrope/`; the font is not shipped to visitors.
+
+Each page uses its own 1200×630 card in `site/social/`, with matching Open Graph/Twitter image URLs, dimensions, PNG type, and image descriptions. These follow the [Open Graph image properties](https://ogp.me/#structured). The generator fails if a title cannot fit without truncation. Inspect changed cards before deploying; the checker verifies PNG header dimensions, not the visual layout. The article's content images and Article schema image remain product screenshots. Sharing cards improve link presentation; they are not evidence of a ranking improvement.
 
 ## Verify a deployment
 
@@ -45,11 +53,19 @@ python3 scripts/check_site_seo.py --site /path/to/release-snapshot --live-base-u
 
 Use a fresh output directory for each build. The build copies public assets and inlines each page's small local stylesheets to remove render-blocking network requests. Keep editing the shared CSS in `site/`; deploy the generated snapshot rather than the source directory. The build rejects CSS with relative asset URLs or imports until URL rebasing is supported. Tutorial players load YouTube only after a visitor activates Play; without JavaScript, the same control links directly to the video. The build also generates Markdown from each HTML page’s main content. The site router serves that representation when a client explicitly prefers `Accept: text/markdown`, keeps `Vary: Accept` on negotiated responses, and preserves HTTP 404 for missing URLs. Publish the generated Pages assets before a router release that depends on them. Public agent guidance lives in `site/llms.txt` and `site/agent-instructions.md`; keep product scope and platform limits aligned with the guides.
 
-Live mode checks every indexable page's response and HTML content (allowing only Cloudflare's managed analytics-beacon injection), plus robots, sitemap, and an unknown URL that must return HTTP 404 with `noindex`. It does not click campaign links, prove indexing, or test app installation.
+Live mode checks every indexable page's response and HTML content (allowing only Cloudflare's managed analytics-beacon injection), all sharing-image responses and bytes, robots, sitemap, and an unknown URL that must return HTTP 404 with `noindex`. It does not click campaign links, prove indexing, or test app installation.
 
 Publish the same snapshot to the project's production branch and repeat live verification against `https://gitsync.md`. Keep the prior Pages deployment ID as the rollback target. A static-site release does not require deploying the router, relay, or iOS app.
 
 ## Review search performance weekly
+
+Audit public source and support links when reviewing a guide:
+
+```bash
+python3 scripts/check_site_external_links.py --output /tmp/gitsync-external-links.json
+```
+
+This optional network check requires curl, follows up to five redirects, and uses HEAD requests without browser credentials or cookies. Exit status 1 means a destination returned 404/410; status 2 means a check was blocked, failed, or needs review. A successful HTTP response does not verify source contents, fragments, video availability, or signed-in access. Keep this out of required CI so third-party outages do not block a release. Review redirected destinations before changing source links.
 
 Use authorized Google Search Console access or an exported report. No Search Console credentials are stored in this repository.
 
