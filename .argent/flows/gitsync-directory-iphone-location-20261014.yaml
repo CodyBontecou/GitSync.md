@@ -1,0 +1,12 @@
+steps:
+  - tap:
+      role: AXButton
+  - tap:
+      text: App Settings
+  - tap:
+      text: CHANGE
+  - tap:
+      id: DOCPicker.actionButton
+executionPrerequisite: GitSync.md repository list; clone location defaults to
+  its Documents folder. Temporarily select Obsidian for disposable QA, then
+  restore the initial default.

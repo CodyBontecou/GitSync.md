@@ -61,7 +61,7 @@ Positioning: "Under the hood, without a hidden sync layer." / "Buy once. Clone u
 - "How to Use Obsidian Git on iPhone and iPad" (priority 0.9, with repo-list/vault-workflow/sync-actions images)
 - "How to Set Up GitSync.md with Obsidian Git on iOS" (priority 0.8)
 
-`sitemap.xml` lists `/`, `/blog/`, both posts, `/privacy.html` under `https://gitsyncmd.app/`.
+`sitemap.xml` lists `/`, `/blog/`, both posts, `/privacy.html` under `https://gitsync.md/`.
 
 ---
 
@@ -69,10 +69,10 @@ Positioning: "Under the hood, without a hidden sync layer." / "Buy once. Clone u
 
 **Files:** `site-router/src/index.ts` (301 lines), `wrangler.toml`, `campaign-links.mjs` (shared slug config), `ATTRIBUTION.md`, `migrations/0001_campaign_clicks.sql`, `scripts/list-campaign-links.mjs`
 
-Worker `gitsyncmd-site-router`, routes (custom domains): `gitsyncmd.app`, `www.gitsyncmd.app`, `gitsyncmd.isolated.tech`, `syncmd.isolated.tech`.
+Worker `gitsyncmd-site-router`, attached custom domains: `gitsync.md`, `www.gitsync.md`, `gitsyncmd.app`, `www.gitsyncmd.app`, `gitsyncmd.isolated.tech`, `syncmd.isolated.tech`. The cutover is live as of October 8, 2026 at 04:42 UTC: `gitsync.md` is primary and every alias permanently redirects to it. The Cloudflare Free zone is Active, with `bill.ns.cloudflare.com` and `naya.ns.cloudflare.com` delegated through nic.md. See [the domain cutover evidence and rollback checkpoint](../../../site-router/ATTRIBUTION.md#domain-cutover).
 
 ### Routing logic (src/index.ts)
-- Non-canonical hostname → 301 redirect to `gitsyncmd.app`.
+- Routing: `SERVE_DOMAIN_ALIASES=true` serves every attached hostname during staging or rollback; production uses `false`, redirecting non-canonical hostnames to `gitsync.md` with 301, preserving paths and queries. Enable permanent redirects only after the zone is Active and apex/www HTTPS checks pass.
 - `GET /health` → `{ok:true, service:"gitsyncmd-site-router"}`.
 - `GET|HEAD /v/<slug>` → **campaign redirect**:
   - Slug grammar: `<platform>-<angle>-<sequence(3 digits)>` (regex `^([a-z]{1,4})-([a-z0-9]+)-([0-9]{3})$`) plus explicit alias `web-home`.
@@ -82,11 +82,11 @@ Worker `gitsyncmd-site-router`, routes (custom domains): `gitsyncmd.app`, `www.g
   - Click telemetry: `console.log` structured JSON event (`gitsyncmd_campaign_click` with slug, tokens, referrer host, UA-derived client signal, `cf.country`, hasProviderToken/hasCustomProductPage) and, for GET, async D1 insert into `campaign_clicks` (D1 `gitsyncmd-campaigns`, id `0b2b8ac9-…`) via `ctx.waitUntil`.
   - If `APPLE_PROVIDER_TOKEN` missing, response header `x-gitsyncmd-attribution-warning` is set.
   - Unknown slug → 404 text "Unknown GitSync.md campaign link."
-- Everything else → **reverse proxy to `syncmd.pages.dev`** with `X-Forwarded-Host: gitsyncmd.app` (this is how the static site is served from the canonical domain).
+- Everything else → **reverse proxy to `syncmd.pages.dev`** with `X-Forwarded-Host: gitsync.md` (this is how the static site is served from the canonical domain).
 
 `scripts/list-campaign-links.mjs` enumerates valid slugs. ATTRIBUTION.md documents the whole shortlink/CPP matrix.
 
-**User-visible:** short links like `gitsyncmd.app/v/yt-obsidian-001` open the matching App Store custom product page with Apple campaign analytics attached; the marketing site loads at `gitsyncmd.app`.
+**User-visible:** short links like `gitsync.md/v/yt-obsidian-001` open the matching App Store custom product page with Apple campaign analytics attached; the marketing site loads at `gitsync.md`.
 
 ---
 

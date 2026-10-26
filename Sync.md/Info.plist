@@ -42,5 +42,12 @@
 			<string>com.bontecou.Sync-md</string>
 		</dict>
 	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Send Scrawl development recordings to your paired Mac.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

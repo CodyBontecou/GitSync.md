@@ -1,0 +1,26 @@
+steps:
+  - tool: launch-app
+    args:
+      bundleId: md.obsidian
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.25
+      toX: 0.5
+      toY: 0.65
+      momentum: false
+  - tool: keyboard
+    args:
+      text: "Git: Fetch"
+  - await:
+      visible: { text: Fetch }
+      timeout: 3000
+  - await: { idle: true }
+  - tap:
+      text: Fetch
+  - await:
+      visible: { text: Fetched from remote }
+      timeout: 15000
+executionPrerequisite: "Physical iPhone with the existing Showcase vault open at
+  Hello, sidebars and settings closed; Git enabled and credentials imported by
+  GitSync.md Connect. Fetch only: no edits or commits."

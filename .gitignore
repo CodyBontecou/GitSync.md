@@ -64,3 +64,9 @@ scripts/app-store-images/node_modules/
 # Pi subagent artifacts
 .pi-subagents/
 .wrangler/
+
+# Local captures and private release/analytics evidence
+.argent/recordings/
+docs/evidence/obsidian-*/
+docs/evidence/*pricing-*/
+docs/evidence/local-only-*/

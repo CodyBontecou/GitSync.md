@@ -1,0 +1,35 @@
+steps:
+  - tap:
+      text: Expand
+  - tap:
+      text: New note
+  - tap:
+      on:
+        text: Untitled
+      times: 2
+  - tool: keyboard
+    args:
+      text: FromiPhone
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      x: 0.5
+      y: 0.27
+  - tool: keyboard
+    args:
+      text: "Marker: gitsync-iphone-push-20261014
+
+
+        Created on the iPhone in Obsidian and pushed using the imported
+        GitSync.md credentials.\n"
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: gitsync-iphone-push-20261014
+      timeoutMs: 5000
+executionPrerequisite: The fresh disposable gitsync-obsidian-qa-fixed-20261014
+  vault is open in Obsidian on iPhone. Git credentials and missing author
+  identity were imported automatically. FromGitHub.md is visible after a
+  successful Obsidian Git pull.

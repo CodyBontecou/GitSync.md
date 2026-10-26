@@ -1,0 +1,9 @@
+steps:
+  - launch: bontecou.Sync-md
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GITSYNC.MD
+  - tap:
+      text: +, ADD REPOSITORY

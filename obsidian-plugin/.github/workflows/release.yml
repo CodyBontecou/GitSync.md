@@ -1,0 +1,65 @@
+name: Validate and prepare plugin release
+on:
+  push:
+    branches: [main]
+    tags: ['[0-9]*.[0-9]*.[0-9]*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run release:prepare
+      - name: Match release tag to manifest
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: node -e 'if (process.env.RELEASE_TAG !== require("./manifest.json").version) throw Error("Tag must match manifest version exactly")'
+      - name: Attest installer assets built from the release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            dist/main.js
+            dist/manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gitsync-connect-release
+          path: |
+            dist/main.js
+            dist/manifest.json
+            dist/gitsync-connect.zip
+            dist/gitsync-connect-source.zip
+            dist/SHA256SUMS
+          if-no-files-found: error
+  draft:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: gitsync-connect-release
+          path: dist
+      - name: Create draft release for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" dist/main.js dist/manifest.json --verify-tag --draft --title "GitSync.md Connect $RELEASE_TAG" --notes-file CHANGELOG.md

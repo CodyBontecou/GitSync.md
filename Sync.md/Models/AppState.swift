@@ -364,6 +364,7 @@ final class AppState {
     // MARK: - Dependencies
 
     private let gitRepositoryFactory: (URL) -> any GitRepositoryProtocol
+    private let obsidianCredentialHandoff = ObsidianCredentialHandoff()
     private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
     private let repoPersistenceStore: RepoPersistenceStore
     private let persistedReposURL: URL
@@ -967,6 +968,10 @@ final class AppState {
                 commitDetailByRepo[repo.id] = [:]
                 stashesByRepo[repo.id] = []
                 didChange = true
+            } else {
+                // Older published/imported folders have no companion metadata.
+                // Repair only missing metadata; preserve in-flight handoffs.
+                try? prepareMissingObsidianConnection(for: repo)
             }
         }
         if didChange {
@@ -2312,6 +2317,72 @@ final class AppState {
 
     // MARK: - Git Operations (libgit2)
 
+    private func prepareMissingObsidianConnection(for repo: RepoConfig) throws {
+        guard repo.isCloned, repo.authMethod == .gitHubPAT,
+              hasLocalRepositoryAccess(repoID: repo.id) else { return }
+        let remote = GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL
+        guard ObsidianCredentialHandoff.isGitHubHTTPS(remote) else { return }
+        let vault = vaultURL(for: repo.id)
+        let metadata = vault.appendingPathComponent(ObsidianCredentialHandoff.directory + "/connection.json")
+        guard !FileManager.default.fileExists(atPath: metadata.path) else { return }
+        try obsidianCredentialHandoff.prepare(vaultURL: vault, repoID: repo.id, remoteURL: remote)
+    }
+
+    /// Handles only the companion's fixed protocol. Callback URLs contain no
+    /// credentials or caller-selected destination; results stay in the vault.
+    func handleObsidianConnection(_ url: URL) {
+        guard url.scheme == "syncmd", url.host == "obsidian", ["/connect", "/prepare"].contains(url.path),
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
+        let items = components.queryItems ?? []
+        guard Set(items.map(\.name)).count == items.count else { return }
+        let params = Dictionary(uniqueKeysWithValues: items.map { ($0.name, $0.value ?? "") })
+        guard let id = params["repoID"].flatMap(UUID.init(uuidString:)),
+              let vaultName = params["vault"], !vaultName.isEmpty, vaultName.count <= 255 else { return }
+        var requestID = params["requestID"] ?? ""
+        guard url.path == "/prepare" || UUID(uuidString: requestID) != nil else { return }
+        var status = "error"
+        do {
+            guard let repo = repo(id: id), repo.isCloned, repo.authMethod == .gitHubPAT,
+                  hasLocalRepositoryAccess(repoID: id) else {
+                throw ObsidianCredentialHandoff.HandoffError.invalidRequest
+            }
+            // A repo tied to another account must never fall back to the active
+            // account's token when its own account has been signed out.
+            let token: String
+            if let login = repo.gitHubAccountLogin, !login.isEmpty {
+                guard let saved = gitHubToken(for: login), !saved.isEmpty else {
+                    throw ObsidianCredentialHandoff.HandoffError.invalidRequest
+                }
+                token = saved
+            } else {
+                guard isSignedIn, !pat.isEmpty else { throw ObsidianCredentialHandoff.HandoffError.invalidRequest }
+                token = pat
+            }
+            let remote = GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL
+            if url.path == "/prepare" {
+                let request = try obsidianCredentialHandoff.prepare(vaultURL: vaultURL(for: id), repoID: id, remoteURL: remote)
+                requestID = request.requestID
+                status = "prepared"
+            } else {
+                try obsidianCredentialHandoff.respond(vaultURL: vaultURL(for: id), repoID: id,
+                                                  requestID: requestID, remoteURL: remote,
+                                                  username: "x-access-token", token: token,
+                                                  authorName: repo.authorName, authorEmail: repo.authorEmail)
+                status = "ready"
+            }
+        } catch {
+            // Keep raw transport/key/JSON errors out of persisted logs and URLs.
+            showError(message: String(localized: "Obsidian could not connect. Check that this repository is signed in and its connection request has not expired."), category: "obsidian")
+        }
+        var callback = URLComponents()
+        callback.scheme = "obsidian"
+        callback.host = "gitsync-connect"
+        callback.queryItems = [URLQueryItem(name: "vault", value: vaultName),
+                               URLQueryItem(name: "requestID", value: requestID),
+                               URLQueryItem(name: "status", value: status)]
+        if let callbackURL = callback.url { UIApplication.shared.open(callbackURL) }
+    }
+
     func clone(repoID: UUID) async {
         guard let idx = repoIndex(id: repoID) else {
             showError(message: String(localized: "Repository not found"))
@@ -2398,6 +2469,8 @@ final class AppState {
             let vaultDir = vaultURL(for: repoID)
             try folderPublication.validateImportAvailability(at: vaultDir)
 
+            obsidianCredentialHandoff.invalidate(repoID: repoID)
+
             // Remove existing vault directory — git clone needs a clean target
             if fm.fileExists(atPath: vaultDir.path) {
                 try fm.removeItem(at: vaultDir)
@@ -2416,6 +2489,18 @@ final class AppState {
             syncProgress = String(localized: "Cloning repository...")
             DebugLogger.shared.info("clone", "Starting clone", detail: cloneURL)
             let result = try await gitService.clone(remoteURL: cloneURL, pat: authPayload(for: repo))
+
+            // No credential is written here. The companion can request an
+            // encrypted, one-time import when this folder is opened as a vault.
+            if let current = self.repo(id: repoID), current.repoURL == repo.repoURL,
+               current.authMethod == .gitHubPAT,
+               ObsidianCredentialHandoff.isGitHubHTTPS(cloneURL) {
+                do {
+                    try obsidianCredentialHandoff.prepare(vaultURL: vaultDir, repoID: repoID, remoteURL: cloneURL)
+                } catch {
+                    showError(message: String(localized: "Clone completed, but the Obsidian connection could not be prepared."), category: "obsidian")
+                }
+            }
 
             // Update only the still-present repository. The main actor may
             // process a deletion or settings edit while clone is suspended.
@@ -3164,6 +3249,13 @@ final class AppState {
     func registerFolderPublication(id: UUID) async throws {
         try await folderPublication.completeRegistration(id: id) { record, url in
             try await self.registerPublishedFolder(record, at: url)
+        }
+        if let repo = repo(id: id) {
+            do {
+                try prepareMissingObsidianConnection(for: repo)
+            } catch {
+                showError(message: String(localized: "Folder published, but the Obsidian connection could not be prepared. Reopen GitSync.md to retry."), category: "obsidian")
+            }
         }
     }
 

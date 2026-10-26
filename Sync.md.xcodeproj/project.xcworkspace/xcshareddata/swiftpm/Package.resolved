@@ -1,5 +1,5 @@
 {
-  "originHash" : "25b32fe7c41b4c9232085d32033260c57b214f6fff0ff91088c50fe9086b2480",
+  "originHash" : "eae7ae7b264fc0eebaffbba3662bbb4524349b1905fb1a8d10aeb87833cde837",
   "pins" : [
     {
       "identity" : "bigint",
@@ -26,6 +26,14 @@
       "state" : {
         "branch" : "main",
         "revision" : "02986909abddf547b0b3cd0e2170544acd0aaa01"
+      }
+    },
+    {
+      "identity" : "scrawl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kitlangton/scrawl",
+      "state" : {
+        "revision" : "6d4fa333475ef5170c4df683e306480f8618b95a"
       }
     },
     {

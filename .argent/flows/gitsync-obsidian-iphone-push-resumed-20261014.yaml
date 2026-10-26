@@ -1,0 +1,17 @@
+steps:
+  - tap:
+      text: FromiPhone - Obsidian
+  - tap:
+      text: Open command palette
+  - tool: keyboard
+    args:
+      text: "Git: Commit-and-sync with specific message"
+  - tap:
+      text: Commit-and-sync with specific message
+  - tool: keyboard
+    args:
+      text: "QA: verify Obsidian Git push from iPhone"
+  - tap:
+      text: "QA: verify Obsidian Git push from iPhone"
+executionPrerequisite: Physical iPhone with fixed QA vault open in Obsidian,
+  FromiPhone.md created, companion authentication imported.

@@ -1,0 +1,98 @@
+steps:
+  - launch: bontecou.Sync-md
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GITSYNC.MD
+  - tap:
+      text: +, ADD REPOSITORY
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pick from GitHub
+  - tap:
+      text: ENTER URL MANUALLY
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: REPOSITORY URL
+  - tap:
+      role: AXTextField
+  - tool: keyboard
+    args:
+      text: https://github.com/CodyBontecou/gitsync-obsidian-iphone-qa-20261014.git
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        role: AXTextField
+      expectedText: gitsync-obsidian-iphone-qa-20261014.git
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.82
+      toX: 0.5
+      toY: 0.3
+      momentum: false
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.83
+      toX: 0.5
+      toY: 0.25
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: ADD & CLONE REPOSITORY
+  - tap:
+      text: CHANGE LOCATION
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOCPicker.actionButton
+  - tap:
+      id: DOC.navBarButton.backInHistory
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.header.Locations
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: On My iPhone
+        role: AXStaticText
+  - tap:
+      x: 0.5
+      y: 0.187
+  - tool: keyboard
+    args:
+      text: Obsidian
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      text: ADD & CLONE REPOSITORY
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Cloning repository...
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Cloning repository...
+      timeoutMs: 45000

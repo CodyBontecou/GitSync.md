@@ -379,7 +379,7 @@ struct PremiumSettingsView: View {
                 .padding(.vertical, 6)
 
             HStack(spacing: 24) {
-                Link(destination: URL(string: "https://gitsyncmd.app/privacy.html")!) {
+                Link(destination: URL(string: "https://gitsync.md/privacy.html")!) {
                     Text("Privacy Policy")
                         .font(.system(size: 13, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Color.brutalAccent)
@@ -387,7 +387,7 @@ struct PremiumSettingsView: View {
                         .frame(minHeight: 44)
                         .contentShape(Rectangle())
                 }
-                Link(destination: URL(string: "https://gitsyncmd.app/terms.html")!) {
+                Link(destination: URL(string: "https://gitsync.md/terms.html")!) {
                     Text("Terms of Use")
                         .font(.system(size: 13, weight: .semibold, design: .monospaced))
                         .foregroundStyle(Color.brutalAccent)

@@ -51,7 +51,7 @@ The iOS client independently accepts only an HTTPS `github.com` installation URL
 Create one **public** GitHub App owned by the production operator with these settings:
 
 - **GitHub App name:** `GitSync.md Push Sync` (or the configured production name)
-- **Homepage URL:** `https://gitsyncmd.app/`
+- **Homepage URL:** `https://gitsync.md/`
 - **Setup URL:** `https://syncmd-push.costream.workers.dev/v1/github-app/setup`
 - **Redirect on update:** enabled, so an existing installation can complete a device-bound connection
 - **Callback URL:** `https://syncmd-push.costream.workers.dev/v1/github-app/oauth/callback`

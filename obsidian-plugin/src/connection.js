@@ -1,0 +1,186 @@
+"use strict";
+const DIRECTORY = ".git/gitsync-obsidian";
+const CONTEXT = "gitsync-obsidian-v1";
+const PENDING_KEY = "gitsync-connect:pending";
+const RENEW_KEY = "gitsync-connect:renew-replace";
+class ConnectionError extends Error {}
+const encoder = new TextEncoder();
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function bytes(base64) {
+    if (typeof base64 !== "string" || base64.length > 65536 || !/^[A-Za-z0-9+/]*={0,2}$/.test(base64)) throw new Error("Invalid connection data.");
+    return Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+}
+function base64(data) { return btoa(String.fromCharCode(...new Uint8Array(data))); }
+function isGitHubHTTPS(value) {
+    try {
+        const url = new URL(value);
+        return url.protocol === "https:" && url.hostname === "github.com" && !url.port && !url.username && !url.password && !url.search && !url.hash &&
+            /^\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(url.pathname) && !url.pathname.split("/").some(p => p === "." || p === "..");
+    } catch { return false; }
+}
+function originURL(config) {
+    let section = "", urls = [];
+    for (const raw of config.split(/\r?\n/)) {
+        const line = raw.trim();
+        if (!line || /^[#;]/.test(line)) continue;
+        if (line.startsWith("[")) {
+            section = line.toLowerCase();
+            if (section.startsWith("[include") || section.startsWith("[url ")) return null;
+        } else if (section === '[remote "origin"]') {
+            const index = line.indexOf("=");
+            if (index < 0) return null;
+            const name = line.slice(0, index).trim().toLowerCase(), value = line.slice(index + 1).trim();
+            if (name === "pushurl") return null;
+            if (name === "url") urls.push(value);
+        }
+    }
+    return urls.length === 1 ? urls[0] : null;
+}
+async function readJSON(adapter, name) {
+    const text = await adapter.read(`${DIRECTORY}/${name}.json`);
+    if (text.length > 65536) throw new Error("Invalid connection data.");
+    return JSON.parse(text);
+}
+function validateRequest(request, now = Date.now()) {
+    if (request?.version !== 1 || !uuid.test(request.requestID) || !uuid.test(request.repoID) || !isGitHubHTTPS(request.remoteURL) ||
+        !Number.isFinite(request.expiresAt) || request.expiresAt * 1000 <= now) throw new Error("Connection request expired or is invalid. Create a new connection in GitSync.md.");
+}
+async function createRecipient(request, cryptoAPI = globalThis.crypto) {
+    const keys = await cryptoAPI.subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveBits"]);
+    return {
+        recipient: { version: 1, requestID: request.requestID, publicKey: base64(await cryptoAPI.subtle.exportKey("raw", keys.publicKey)) },
+        privateKey: await cryptoAPI.subtle.exportKey("jwk", keys.privateKey)
+    };
+}
+async function decrypt(envelope, pending, cryptoAPI = globalThis.crypto, now = Date.now()) {
+    const request = pending.request;
+    validateRequest(request, now);
+    if (envelope?.version !== 1 || envelope.requestID !== request.requestID) throw new Error("Connection response does not match this vault.");
+    const privateKey = await cryptoAPI.subtle.importKey("jwk", pending.privateKey, { name: "ECDH", namedCurve: "P-256" }, false, ["deriveBits"]);
+    const publicKey = await cryptoAPI.subtle.importKey("raw", bytes(envelope.publicKey), { name: "ECDH", namedCurve: "P-256" }, false, []);
+    const shared = await cryptoAPI.subtle.deriveBits({ name: "ECDH", public: publicKey }, privateKey, 256);
+    const material = await cryptoAPI.subtle.importKey("raw", shared, "HKDF", false, ["deriveKey"]);
+    const key = await cryptoAPI.subtle.deriveKey({ name: "HKDF", hash: "SHA-256", salt: encoder.encode(request.requestID), info: encoder.encode(CONTEXT) },
+        material, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    const nonce = bytes(envelope.nonce);
+    if (nonce.length !== 12) throw new Error("Invalid connection data.");
+    const plaintext = await cryptoAPI.subtle.decrypt({ name: "AES-GCM", iv: nonce, additionalData: encoder.encode(request.requestID) }, key, bytes(envelope.ciphertext));
+    const credential = JSON.parse(new TextDecoder().decode(plaintext));
+    if (credential.version !== 1 || credential.requestID !== request.requestID || credential.remoteURL !== request.remoteURL ||
+        typeof credential.username !== "string" || !credential.username || typeof credential.password !== "string" || !credential.password ||
+        !Number.isFinite(credential.expiresAt) || credential.expiresAt * 1000 <= now || credential.expiresAt > request.expiresAt) throw new Error("Connection credentials expired or do not match this vault.");
+    return credential;
+}
+function passwordStore(git) {
+    if (typeof git?.gitServerPassword?.get === "function" && typeof git.gitServerPassword.set === "function") {
+        return { get: () => git.gitServerPassword.get(), set: value => git.gitServerPassword.set(value) };
+    }
+    if (typeof git?.localStorage?.getPassword === "function" && typeof git.localStorage.setPassword === "function") {
+        return { get: () => git.localStorage.getPassword(), set: value => git.localStorage.setPassword(value) };
+    }
+    throw new Error("This version of Obsidian Git is not supported. Update the Git plugin.");
+}
+function validateGit(git) {
+    if (!git || typeof git.localStorage?.getUsername !== "function" || typeof git.localStorage.setUsername !== "function") throw new Error("Install and enable the Git community plugin, then run GitSync.md Connect: Connect this vault.");
+    if (!git.settings) throw new Error("Obsidian Git is still loading. Try connecting again.");
+    if ((git.settings.basePath && git.settings.basePath !== "/") || git.settings.gitDir) throw new Error("Connection requires Obsidian Git to use this vault's root repository.");
+    return passwordStore(git);
+}
+async function installCredentials(git, credential, replace = false) {
+    const store = validateGit(git);
+    const previous = { username: git.localStorage.getUsername(), password: store.get() };
+    if (previous.password && !replace && (previous.password !== credential.password || previous.username !== credential.username)) {
+        throw new Error("Obsidian Git already has credentials. Use Reconnect this vault to replace them.");
+    }
+    // Mobile Git requires these even for a fast-forward pull. GitSync.md already
+    // asks for an author when cloning; import missing fields without replacing
+    // a repository's existing identity. Fail before changing authentication if
+    // the Git backend cannot save the required configuration.
+    if (credential.authorName && credential.authorEmail) {
+        if (typeof git.gitManager?.getConfig !== "function" || typeof git.gitManager.setConfig !== "function") {
+            throw new Error("Obsidian Git is still loading. Try connecting again.");
+        }
+        for (const [key, value] of [["user.name", credential.authorName], ["user.email", credential.authorEmail]]) {
+            if (!(await git.gitManager.getConfig(key))) await git.gitManager.setConfig(key, value);
+        }
+    }
+    // Set the password first. Do not change the username if secret storage fails.
+    await store.set(credential.password);
+    git.localStorage.setUsername(credential.username);
+}
+
+class Connection {
+    constructor(app, getGit, cryptoAPI = globalThis.crypto) {
+        this.app = app; this.adapter = app.vault.adapter; this.getGit = getGit; this.crypto = cryptoAPI;
+        this.busy = false;
+    }
+    async checkOrigin(request) {
+        if (originURL(await this.adapter.read(".git/config")) !== request.remoteURL) throw new Error("The vault remote changed. Reconnect using GitSync.md.");
+    }
+    async begin(replace = false) {
+        if (this.busy) return null;
+        this.busy = true;
+        try {
+            const git = this.getGit();
+            validateGit(git);
+            if (!(await this.adapter.exists(`${DIRECTORY}/request.json`))) return null;
+            const request = await readJSON(this.adapter, "request");
+            validateRequest(request);
+            await this.checkOrigin(request);
+            let pending = this.app.loadLocalStorage(PENDING_KEY);
+            if (pending?.request?.requestID !== request.requestID) {
+                const generated = await createRecipient(request, this.crypto);
+                pending = { request, privateKey: generated.privateKey, recipient: generated.recipient, replace };
+                this.app.saveLocalStorage(PENDING_KEY, pending);
+            } else if (replace) {
+                pending.replace = true;
+                this.app.saveLocalStorage(PENDING_KEY, pending);
+            }
+            if (await this.adapter.exists(`${DIRECTORY}/response.json`)) {
+                await this.finish(request.requestID);
+                return "connected";
+            }
+            if (passwordStore(git).get() && !replace) throw new Error("Obsidian Git already has credentials. Use Reconnect this vault to replace them.");
+            // Retry safely if the app closed between saving the private key and
+            // writing its public counterpart, or if a file-provider write failed.
+            await this.adapter.write(`${DIRECTORY}/recipient.json`, JSON.stringify(pending.recipient));
+            const params = new URLSearchParams({ repoID: request.repoID, requestID: request.requestID, vault: this.app.vault.getName() });
+            return `syncmd://obsidian/connect?${params}`;
+        } finally { this.busy = false; }
+    }
+    async renew(replace = false) {
+        validateGit(this.getGit());
+        if (!(await this.adapter.exists(`${DIRECTORY}/connection.json`))) {
+            throw new ConnectionError("This vault has no GitSync.md connection metadata. Open GitSync.md with this folder added and signed into GitHub, then retry Connect this vault.");
+        }
+        const descriptor = await readJSON(this.adapter, "connection");
+        // Descriptor is public routing metadata; native GitSync.md independently
+        // validates the repository, granted folder and GitHub authentication.
+        validateRequest({ ...descriptor, expiresAt: Date.now() / 1000 + 60 });
+        await this.checkOrigin(descriptor);
+        this.app.saveLocalStorage(RENEW_KEY, replace);
+        const params = new URLSearchParams({ repoID: descriptor.repoID, vault: this.app.vault.getName() });
+        return `syncmd://obsidian/prepare?${params}`;
+    }
+    async finish(requestID) {
+        if (this.finishing) return this.finishing;
+        this.finishing = this.complete(requestID);
+        try { return await this.finishing; } finally { this.finishing = null; }
+    }
+    async complete(requestID) {
+        const pending = this.app.loadLocalStorage(PENDING_KEY);
+        if (!pending || pending.request.requestID !== requestID) throw new Error("No matching connection is pending in this vault.");
+        const credential = await decrypt(await readJSON(this.adapter, "response"), pending, this.crypto);
+        await this.checkOrigin(pending.request);
+        await installCredentials(this.getGit(), credential, pending.replace === true);
+        // Keep the key until all files are removed, so a failed cleanup can be
+        // retried without losing the ability to decrypt the response.
+        for (const name of ["recipient", "response", "request"]) {
+            const path = `${DIRECTORY}/${name}.json`;
+            if (await this.adapter.exists(path)) await this.adapter.remove(path);
+        }
+        this.app.saveLocalStorage(PENDING_KEY, null);
+    }
+}
+module.exports = { Connection, ConnectionError, DIRECTORY, CONTEXT, PENDING_KEY, RENEW_KEY, createRecipient, decrypt, installCredentials, validateRequest, originURL, isGitHubHTTPS };

@@ -1,0 +1,51 @@
+steps:
+  - launch: md.obsidian
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Expand
+        role: AXButton
+      timeoutMs: 15000
+  - tap:
+      text: Expand
+  - tap:
+      x: 0.375
+      y: 0.933
+  - tool: gesture-swipe
+    args:
+      fromX: 0.36
+      fromY: 0.85
+      toX: 0.36
+      toY: 0.4
+      momentum: false
+  - tap:
+      text: Manage vaults...
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Create new vault
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.85
+      toX: 0.5
+      toY: 0.23
+      momentum: false
+  - tap:
+      text: gitsync-obsidian-iphone-qa-20261014
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Open vault
+  - tap:
+      text: Open vault
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Trust author and enable plugins
+  - tap:
+      text: Browse vault in Restricted Mode

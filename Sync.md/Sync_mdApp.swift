@@ -1,3 +1,6 @@
+#if DEBUG
+import ScrawlKit
+#endif
 import AppIntents
 import SwiftUI
 import UIKit
@@ -83,6 +86,9 @@ struct Sync_mdApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                #if DEBUG
+                .scrawl()
+                #endif
                 .environment(appState)
                 .environment(premiumRuntime)
                 .task {
@@ -118,6 +124,13 @@ struct Sync_mdApp: App {
                     }
                 }
                 .onOpenURL { url in
+                    #if DEBUG
+                    if url.host == "scrawl" || url.host == "tether" { return }
+                    #endif
+                    if url.scheme == "syncmd", url.host == "obsidian", ["/connect", "/prepare"].contains(url.path) {
+                        appState.handleObsidianConnection(url)
+                        return
+                    }
                     // Widget deep link: one-tap full pull from the Home Screen.
                     if url.scheme == "syncmd", url.host == "pull-all" {
                         SyncRuntimeLocator.requestPullAll()

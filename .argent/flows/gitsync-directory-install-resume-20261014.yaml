@@ -1,0 +1,11 @@
+steps:
+  - tap:
+      text: Expand
+  - tap:
+      x: 0.747
+      y: 0.92
+  - tap:
+      text: New folder
+executionPrerequisite: Physical iPhone with Obsidian open in the fresh
+  gitsync-directory-qa-20261014 vault; Git 2.41.1 installed and enabled,
+  companion not installed.
