@@ -48,12 +48,14 @@ h1, h2, h3, p { margin: 0; }
 .purchase-note { font: 400 10px/1.6 var(--mono); color: var(--muted); margin-top: 14px; }
 .purchase-note > span { display: block; }
 .store-links { --badge-height: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.store-badge { display: block; position: relative; flex-shrink: 0; height: var(--badge-height); border-radius: 8px; overflow: hidden; transition: opacity .15s; }
-.store-badge:hover { opacity: .8; }
-.store-badge-apple { width: calc(var(--badge-height) * 2.9916); }
+.store-badge { display: block; position: relative; flex-shrink: 0; height: var(--badge-height); border-radius: 6px; overflow: hidden; line-height: 0; transition: opacity 160ms ease, transform 180ms cubic-bezier(.32,.72,0,1); }
+.store-badge:hover { opacity: .83; transform: translateY(-2px); }
+.store-badge:active { transform: translateY(1px); }
+@media (prefers-reduced-motion: reduce) { .store-badge { transition: none; } .store-badge:hover, .store-badge:active { transform: none; } }
+.store-badge-apple { width: calc(var(--badge-height) * 3.01818); }
 .store-badge-apple img { width: 100%; height: 100%; }
-.store-badge-google { width: calc(var(--badge-height) * 3.375); }
-.store-badge-google img { position: absolute; width: calc(var(--badge-height) * 3.875); max-width: none; height: auto; top: calc(var(--badge-height) * -.25); left: calc(var(--badge-height) * -.25); }
+.store-badge-google { width: calc(var(--badge-height) * 3.36364); }
+.store-badge-google img { position: absolute; width: calc(var(--badge-height) * 3.85455); max-width: none; height: auto; top: calc(var(--badge-height) * -.24545); left: calc(var(--badge-height) * -.24545); }
 
 .site-footer { padding-block: 35px; }
 .footer-layout { display: flex; justify-content: space-between; align-items: center; gap: 30px; }

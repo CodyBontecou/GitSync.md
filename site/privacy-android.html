@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<title>Android Privacy Policy — GitSync.md</title>
+<link rel="canonical" href="https://gitsync.md/privacy-android">
+<meta name="description" content="How GitSync.md for Android handles GitHub sign-in, repository files, local storage, and privacy choices.">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="content.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Android Privacy Policy — GitSync.md">
+<meta property="og:description" content="How GitSync.md for Android handles GitHub sign-in, repository files, local storage, and privacy choices.">
+<meta property="og:url" content="https://gitsync.md/privacy-android">
+<meta property="og:image" content="https://gitsync.md/social/privacy.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md privacy card: Privacy Policy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Privacy Policy — GitSync.md">
+<meta name="twitter:description" content="How GitSync.md for Android handles GitHub sign-in, repository files, local storage, and privacy choices.">
+<meta name="twitter:image" content="https://gitsync.md/social/privacy.png">
+<meta name="twitter:image:alt" content="GitSync.md privacy card: Privacy Policy">
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<!-- ─── NAV ─── -->
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<!-- ─── PRIVACY POLICY ─── -->
+<main class="legal shell" id="main">
+  <header class="legal-header">
+    <div class="legal-label">Legal · Android</div>
+    <h1>Android Privacy Policy</h1>
+    <p class="effective">Effective date: October 26, 2026</p>
+  </header>
+  <div class="legal-body">
+    <h2>Scope and contact</h2>
+    <p>This policy covers the GitSync.md Android app developed by Cody Bontecou, including the paid Google Play package <code>md.gitsync.md</code>. The <a href="/privacy">iPhone and iPad privacy policy</a> covers the iOS app separately. For Android privacy questions or data requests, email <a href="mailto:cody@isolated.tech">cody@isolated.tech</a>.</p>
+
+    <h2>Data used by the app</h2>
+    <p>GitSync.md uses your GitHub account information, authentication credentials, and Git repository data to let you select, clone, review, commit, pull, and push repositories. It caches your GitHub username, display name, avatar URL, email address when available, and repository metadata on your device. It also stores local repository paths and app preferences.</p>
+    <p>Cloned files, Git history, branches, diffs, and commit author names and email addresses are processed on your device. When you perform network operations, the app sends the credentials and repository data needed for that operation to GitHub or the remote server configured for that repository. Pushing commits can publish file contents and commit metadata, including author identity, to that remote. The remote repository's access settings determine who can see that data.</p>
+
+    <h2>GitHub sign-in and the OAuth helper</h2>
+    <p>If you choose browser-based GitHub sign-in, the app opens our OAuth helper at <code>oauth-server-beige.vercel.app</code>, hosted by Vercel. The helper redirects you to GitHub with the <code>repo</code> and <code>user:email</code> scopes. You review and authorize access on GitHub; your GitHub password is entered on GitHub, not in GitSync.md.</p>
+    <p>After authorization, the helper receives a temporary authorization code and a state value, exchanges the code with GitHub for an access token, and returns the token to the Android app through its <code>syncmd://auth</code> callback. The token passes through this helper during sign-in. The helper implementation does not save the token to an application database. Vercel and GitHub may process request metadata, such as IP addresses, request URLs, timestamps, and error information, under their own service policies.</p>
+    <p>Alternatively, you can enter a GitHub Personal Access Token in the app. The app validates that token directly with GitHub and stores it on your device; this route does not use our OAuth helper.</p>
+
+    <h2>Local storage, file access, and security</h2>
+    <p>The Android app stores its access token and cached account information in app-private Android SharedPreferences. These preferences are not encrypted by the app. The app's backup rules exclude its main preferences file from Android cloud backup and, where supported by Android's data-extraction rules, device-to-device transfer.</p>
+    <p>The default clone location is a user-visible folder under <code>Android/media</code> when available, with app-specific external or internal storage as fallbacks. Files in user-visible storage can be accessed by file managers or other apps that have the necessary Android permissions. When you open files in another app, that app's privacy practices apply. Android storage permissions support these local file operations.</p>
+    <p>GitHub API requests and the browser OAuth exchange use HTTPS. Protect your device and credentials, choose appropriate token scopes, and share repository folders only with apps you trust.</p>
+
+    <h2>Ads, analytics, and purchases</h2>
+    <p>The Android app does not include advertising or an in-app analytics SDK, and does not sell personal data or use it for advertising or cross-app tracking. The paid app includes its features with a one-time Google Play purchase. Google handles payment processing and purchase administration; the app does not receive your payment-card details.</p>
+    <p>Google Play and Android may separately process purchase, installation, diagnostic, or service information under your Google account and device settings. These platform services are governed by <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
+
+    <h2>Retention, deletion, and your choices</h2>
+    <p>Signing out removes the locally stored GitHub token, cached profile, and cached repository list. Signing out does not delete cloned files, remote repositories, or commit history, and does not revoke a token at GitHub. You can revoke OAuth access or Personal Access Tokens in your GitHub account settings.</p>
+    <p>You can remove local repositories through the app or your file manager. Uninstalling or clearing the app's storage removes app-private data, but you should also check user-visible folders and any copies made by other apps or backups. Deleting a local copy does not remove data already pushed to a remote. Remote data and Git commit history must be managed with the relevant repository provider.</p>
+    <p>For information you send to support, we use it to handle your request. Email us to request access, correction, or deletion of support correspondence we hold; some records may need to be retained to meet legal obligations. Do not send passwords, access tokens, or private repository contents with a support request. Our OAuth helper has no application account or token database to delete; infrastructure providers manage their own operational records under their policies.</p>
+
+    <h2>Service providers</h2>
+    <p>The app uses <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a> for GitHub authentication, account information, and repository operations, <a href="https://vercel.com/legal/privacy-policy">Vercel</a> for the browser sign-in helper, and Google Play for distribution and payments. Any other Git remote or editor you choose receives the data needed for the actions you request.</p>
+
+    <h2>This website</h2>
+    <p>This policy page is hosted through Cloudflare. Like other pages on this site, it conditionally loads Cloudflare Web Analytics after a first-party analytics gate allows it. The gate and hosting services receive ordinary network request metadata. Cloudflare Web Analytics provides aggregate page-view and performance measurements; it is separate from the Android app. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's Privacy Policy</a> for its practices.</p>
+
+    <h2>Children and policy changes</h2>
+    <p>GitSync.md is a developer and productivity tool and is not designed for children under 13. Contact us if you believe a child has provided personal information to us. Changes to this policy will be posted on this page with an updated effective date.</p>
+  </div>
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">iOS Privacy</a><a href="/privacy-android" aria-current="page">Android Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
