@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Git on iPad: local files or browser editing — GitSync.md</title>
+<meta name="description" content="Choose a Git workflow on iPad: local repositories with GitSync.md, GitHub reviews, or browser edits. Check offline commits, Files access and runtime limits.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/git-on-ipad">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Git on iPad: local files or browser editing">
+<meta property="og:description" content="Choose a Git workflow on iPad: local repositories with GitSync.md, GitHub reviews, or browser edits. Check offline commits, Files access and runtime limits.">
+<meta property="og:url" content="https://gitsync.md/blog/git-on-ipad">
+<meta property="og:image" content="https://gitsync.md/social/blog/git-on-ipad.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Git on iPad: local files or browser editing">
+<meta property="article:published_time" content="2026-10-30">
+<meta property="article:modified_time" content="2026-10-30">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Git on iPad: local files or browser editing">
+<meta name="twitter:description" content="Choose a Git workflow on iPad: local repositories with GitSync.md, GitHub reviews, or browser edits. Check offline commits, Files access and runtime limits.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/git-on-ipad.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Git on iPad: local files or browser editing">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Git on iPad: local files or browser editing",
+  "description": "Choose a Git workflow on iPad: local repositories with GitSync.md, GitHub reviews, or browser edits. Check offline commits, Files access and runtime limits.",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "image": "https://gitsync.md/screenshots/hero-repo-list.png",
+  "mainEntityOfPage": "https://gitsync.md/blog/git-on-ipad"
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Git on iPad",
+      "item": "https://gitsync.md/blog/git-on-ipad"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
+    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+  </nav>
+</header>
+
+<main id="main">
+<header class="article-hero"><div class="container"><div class="hero-grid"><div class="article-title">
+<nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Git on iPad</li></ol></nav>
+<h1>Use Git on iPad<span class="accent">.</span></h1>
+<p class="subtitle">Choose between a local working copy, GitHub collaboration and browser editing before moving a project onto your tablet.</p>
+<div class="meta-line"><span>October 30, 2026</span><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPad workflow guide</span></div></div>
+<aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#choose">Choose a workflow</a></li><li><a href="#local">Work with local files</a></li><li><a href="#verify">Verify one edit</a></li><li><a href="#runtime">Keep execution separate</a></li><li><a href="#recover">Handle rejected pushes</a></li></ol></aside></div></div></header>
+<div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+<div class="tldr"><div class="tldr-title">Quick answer</div><p>Yes, you can use Git on iPad. Choose a native Git client when you need a local repository that other Files-compatible apps can edit. Use GitHub Mobile for collaboration or a browser editor for a small online change. Cloning a project does not give the iPad its desktop build tools.</p></div>
+<h2 id="choose">Choose the workflow before the app</h2>
+<div class="comparison-scroll" role="region" aria-label="Compare iPad Git workflows" tabindex="0"><table class="comparison-table"><thead><tr><th>You need</th><th>Starting point</th><th>What to check</th></tr></thead><tbody>
+<tr><td>Local files, Git history and commits while disconnected</td><td>GitSync.md or another native Git client</td><td>Storage, editor access, credentials and the branch you will publish</td></tr>
+<tr><td>Notifications, issue triage and pull-request review</td><td>GitHub Mobile</td><td>Its supported collaboration and pull-request editing actions</td></tr>
+<tr><td>A quick browser-based file edit</td><td>GitHub's github.dev editor</td><td>Sign-in, browser storage and committing the change</td></tr>
+<tr><td>A terminal, dependencies or running a web application</td><td>A separately configured development environment</td><td>Project requirements, connection, account access and any service costs</td></tr>
+</tbody></table></div>
+<p>GitHub's <a href="https://docs.github.com/en/get-started/using-github/github-mobile" target="_blank" rel="noopener">Mobile documentation</a> includes browsing repositories, reviewing issues and pull requests, and editing files in pull requests. Those tasks differ from keeping a working copy in an iPad folder.</p>
+<p>The <a href="https://docs.github.com/en/codespaces/the-githubdev-web-based-editor" target="_blank" rel="noopener">github.dev documentation</a> describes browser editing and commits without cloning the repository. Uncommitted work is stored in the browser. It is not the same storage model as a local folder you open in another iPad app.</p>
+<h2 id="local">Set up local Git when Files access matters</h2>
+<p>GitSync.md creates a real Git working copy, including its hidden <code>.git</code> directory. You can edit text in GitSync.md or use an editor that opens the same Files location, then review and publish changes from GitSync.md. The iPad workflow requires iPadOS 17 or later.</p>
+<p>Start with a disposable repository you own. Follow the <a href="/blog/clone-github-repository-iphone">clone guide</a> for account selection, remote URL, destination and authentication. It covers both iPhone and iPad. For an existing local folder with no Git history, use <a href="/blog/create-git-repository-iphone">Publish a Folder</a> instead of cloning over it.</p>
+<p><a class="button" href="/v/web-homepage-118" target="_blank" rel="noopener">Get GitSync.md for iPad →</a></p>
+<p>For an Obsidian vault, use its local folder under <strong>On My iPad → Obsidian</strong> and open the repository root as the vault. Follow the <a href="/blog/obsidian-git-iphone-ipad">Obsidian setup guide</a>. For other files, choose a locally available destination your editor can access.</p>
+<p>Opening a file in another app can create a copy instead of editing the original. Save a harmless test change, return to GitSync.md and confirm that its diff contains that exact change. A matching filename in two apps is not proof that they share a working copy.</p>
+<h2 id="verify">Verify one edit, commit and remote update</h2>
+<ol><li>Check the repository and branch. Pull incoming work before editing when you are connected.</li><li>Edit a small text file you own. Return to GitSync.md and inspect the diff.</li><li>Stage only intended changes and review them before committing. A local commit saves Git history on the iPad.</li><li>Push to a remote you are permitted to update. Open that remote's branch in a browser and verify the commit and file contents.</li></ol>
+<p>You can edit available local files and create local commits offline. A push needs connectivity and authorization. A successful local commit is not proof that another device or GitHub has received it.</p>
+<p>Keep private notes, credentials and unrelated files out of a commit. For Obsidian configuration, choose a reviewed <a href="/blog/obsidian-gitignore">ignore policy</a>; ignoring a file does not remove an already tracked copy or erase past commits.</p>
+<h2 id="runtime">Git is one part of an iPad development workflow</h2>
+<p>GitSync.md is a Git client and text editor. It does not provide a general-purpose terminal, compiler, package manager or desktop application runtime. A repository containing a JavaScript or Swift project does not establish that the project can build on iPad.</p>
+<p>Check how you will run and test the project before choosing a storage layout. A separately hosted development environment can have its own network, access and billing requirements. Browser editing through github.dev also does not supply compute for running or debugging a project; GitHub distinguishes it from Codespaces in the documentation above.</p>
+<p>If you are comparing native clients, use the <a href="/compare/gitsync-vs-working-copy">GitSync.md and Working Copy comparison</a>. Check the capabilities needed for your project rather than assuming every client is a complete desktop replacement.</p>
+<h2 id="recover">When a push or sync needs attention</h2>
+<ul><li><strong>Authentication fails:</strong> confirm the selected account, remote and write permission. SSH remotes also need the right key and trusted host; use the <a href="/blog/self-hosted-git-ssh-ios">SSH guide</a>.</li><li><strong>Incoming commits or divergence:</strong> inspect the error and preserve local work. Use the <a href="/blog/obsidian-git-merge-conflicts-iphone">conflict guide</a>; do not force-push simply to clear a rejection.</li><li><strong>A file is missing:</strong> check the exact working-copy path and editor behavior before making another clone or deleting a folder.</li><li><strong>Background work did not run:</strong> iPadOS controls background opportunities. Verify the manual workflow first; <a href="/blog/obsidian-git-background-sync-iphone">background attempts are best effort</a>.</li></ul>
+<p>This guide is based on documented product behavior and source review. It is not a new device test or a claim that every editor, repository or runtime combination has been qualified.</p>
+</article></div></div></main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
