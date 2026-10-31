@@ -25,7 +25,7 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="GitSync.md guide card: Obsidian Git Not Working on iPhone? Fix Setup &amp; Sync">
 <meta property="article:published_time" content="2026-10-26">
-<meta property="article:modified_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-10-31">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Obsidian Git Not Working on iPhone? Fix Setup &amp; Sync — GitSync.md">
 <meta name="twitter:description" content="Fix Obsidian Git on iPhone: missing vaults, no Git repository, token errors, missing author details, Connect failures, conflicts, and delayed automatic sync.">
@@ -41,7 +41,7 @@
     "https://gitsync.md/screenshots/hero-repo-list.png"
   ],
   "datePublished": "2026-10-26",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-10-31",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -106,7 +106,7 @@
         <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Git troubleshooting</li></ol></nav>
         <h1>Obsidian Git not working on iPhone? Start here<span class="accent">.</span></h1>
         <p class="subtitle">Check the local vault folder first, then test authentication in the app that reported the error. GitSync.md and Obsidian Git share files, but each runs its own Git operations. A successful sign-in in one app does not prove the other can push.</p>
-        <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
+        <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>Updated <time datetime="2026-10-31">October 31, 2026</time></span><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
       </div>
       <aside class="toc-card" aria-label="Article outline">
         <div class="toc-title">Find your symptom</div>
@@ -118,6 +118,7 @@
           <li><a href="#connect">Connect does not start</a></li>
           <li><a href="#conflicts">Changes conflict or push is rejected</a></li>
           <li><a href="#background">Automatic sync did not run</a></li>
+          <li><a href="#missing-note">Sync finished, but a note is missing</a></li>
         </ol>
       </aside>
     </div>
@@ -193,6 +194,18 @@
         <p>Connect configures authentication. It does not turn on sync intervals. Obsidian Git’s timers, GitSync.md Background Sync, and Apple Shortcuts are separate automation paths.</p>
         <p>Test a manual operation first. Then check the settings for the automation you chose, including repository exclusions, automatic pull, separately enabled publishing, and network or power policies. iOS decides when background execution is allowed; timing is not guaranteed. A newly published folder starts excluded from Background Sync.</p>
         <p>For an explicit trigger, follow <a href="/blog/shortcuts-automation-ios">the Apple Shortcuts guide</a>. Avoid overlapping timers from multiple Git clients on the same folder while diagnosing the problem.</p>
+
+        <h2 id="missing-note">Sync finished, but a note is missing on the other device</h2>
+        <p>Trace one note from its local folder to the remote repository, then to the receiving device. A saved note, a local commit, and a published commit are different checkpoints. A clean working copy alone does not prove the other device has your edit.</p>
+        <p>Use a disposable note such as <code>sync-check.md</code> containing <code>Test from phone, October 31</code>. These are synthetic examples; do not put private notes or credentials into a support report. Keep separate copies of unsynced work before changing folders or branches.</p>
+        <ol>
+          <li><strong>Find the saved file.</strong> In Obsidian, confirm which vault contains the note. In GitSync.md, inspect that same repository folder and the note’s relative path. Two folders with the same vault name can contain different files.</li>
+          <li><strong>Find the edit in a commit.</strong> Review the changed-file list and diff in the Git client you use. If the note is absent from that list, check whether the intended edit is already in commit history. If it is not, check its location and <a href="/blog/obsidian-gitignore#check">ignore rules</a>. If it is still an uncommitted change, review and commit it. Do not stage unrelated private files just to make the list empty.</li>
+          <li><strong>Verify the remote copy.</strong> Push with your chosen client, then open the intended repository on GitHub or your Git server. Select the branch you pushed and open the exact note path. Check both the commit and its contents. If the edit is missing there, investigate the sending device’s commit, push result, remote and branch before troubleshooting the receiving device.</li>
+          <li><strong>Verify the receiving copy.</strong> Once the remote has the edit, confirm the other device uses that repository and branch, then pull manually. If the pull stops, follow <a href="#conflicts">the local-changes and conflict checklist</a>. Open the exact note in that working copy, then confirm Obsidian has that folder open.</li>
+        </ol>
+        <p>For example, an edit pushed to <code>notes-test</code> will not appear just because another device pulls <code>main</code>. Compare branch names before changing anything; do not force-push, delete <code>.git</code>, or replace your only local copy to make them match. If the intended branch history is unclear, reconcile it on desktop after preserving your edits.</p>
+        <p>Git’s <a href="https://git-scm.com/docs/git-status">status documentation</a> explains local file state, while <a href="https://git-scm.com/docs/git-push">push updates branches on the Git server</a>. GitHub’s <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-and-understanding-files">file-viewing guide</a> shows how to inspect remote file contents. Once this manual round trip works, return to <a href="#background">your chosen automation settings</a>.</p>
 
         <h2 id="verify">Confirm the repair in both directions</h2>
         <ol>
