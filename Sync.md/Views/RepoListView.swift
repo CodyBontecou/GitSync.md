@@ -57,6 +57,10 @@ struct RepoListView: View {
                             .padding(.vertical, 12)
                     }
                 }
+                // The offline / sign-in-expired layer covers this list; keep
+                // VoiceOver on the layer instead of the list beneath it.
+                .accessibilityHidden(!state.visibleRepos.isEmpty
+                    && (state.isOffline || state.isSyncPausedForSignIn))
 
                 HomeSyncStateLayer()
 

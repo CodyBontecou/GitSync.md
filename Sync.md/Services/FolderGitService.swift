@@ -272,7 +272,27 @@ struct FolderGitService: FolderGitHandling {
             try check(git_config_set_string(config, "core.attributesfile", emptyRules.path), "Set inspection attribute rules")
             try check(git_config_set_bool(config, "core.precomposeunicode", 1), "Set inspection Unicode paths")
         }
+        try check(git_ignore_add_rule(repo, defaultIgnoreRules), "Add default ignore rules")
         return try body(repo)
+    }
+
+    /// OS and editor litter that never belongs in a notes repository. Applied
+    /// in memory during review and written to `.git/info/exclude` (inside Git
+    /// metadata, so the user's folder isn't changed) when the repo is created.
+    static let defaultIgnoreRules = ".DS_Store\n.trash/\n.Trash/\nThumbs.db\n"
+
+    private static func writeDefaultExcludes(_ repo: OpaquePointer?) throws {
+        guard let gitdir = git_repository_path(repo).map({ String(cString: $0) }) else { return }
+        let info = URL(fileURLWithPath: gitdir).appendingPathComponent("info", isDirectory: true)
+        try FileManager.default.createDirectory(at: info, withIntermediateDirectories: true)
+        let exclude = info.appendingPathComponent("exclude")
+        let existing = (try? String(contentsOf: exclude, encoding: .utf8)) ?? ""
+        let missing = defaultIgnoreRules.split(separator: "\n").map(String.init).filter { rule in
+            !existing.split(separator: "\n").contains { $0 == rule }
+        }
+        guard !missing.isEmpty else { return }
+        let prefix = existing.isEmpty || existing.hasSuffix("\n") ? existing : existing + "\n"
+        try (prefix + missing.joined(separator: "\n") + "\n").write(to: exclude, atomically: true, encoding: .utf8)
     }
 
     private static func inspectFiles(_ root: URL, ownedWorkflow: UUID?) throws -> [FolderPublicationFile] {
@@ -397,6 +417,8 @@ struct FolderGitService: FolderGitHandling {
                 try check(git_repository_init_ext(&repo, root.path, &options), "Initialize local repository")
             }
         } else { try check(openCode, "Open owned repository") }
+        try writeDefaultExcludes(repo)
+        try check(git_ignore_add_rule(repo, defaultIgnoreRules), "Add default ignore rules")
         try withConfig(repo) { config in
             try check(git_config_set_bool(config, "core.precomposeunicode", 1), "Configure Unicode paths")
             try check(git_config_set_bool(config, "core.autocrlf", 0), "Preserve reviewed bytes")
