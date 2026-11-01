@@ -17,6 +17,7 @@ struct VaultView: View {
     @State private var showReconnectFolder = false
     @State private var reconnectError: String?
     @State private var isReconnectingFolder = false
+    @State private var selectedCommit: GitCommitSummary?
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
@@ -115,6 +116,9 @@ struct VaultView: View {
         }
         .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
         .sheet(isPresented: $showSettings) { SettingsView(repoID: repoID) }
+        .sheet(item: $selectedCommit) { commit in
+            CommitDetailSheet(repoID: repoID, commit: commit)
+        }
         .fileImporter(isPresented: $showReconnectFolder, allowedContentTypes: [.folder]) { result in
             switch result {
             case .success(let url):
@@ -284,6 +288,22 @@ struct VaultView: View {
             #endif
             await state.loadCommitHistory(repoID: repoID, pageSize: 30, reset: true)
             await state.loadBranches(repoID: repoID)
+            await state.refreshVaultMeta(repoID: repoID)
+            await state.loadHistoryDecorations(repoID: repoID)
+        }
+        .task(id: statusEntries) {
+            #if DEBUG
+            guard !MarketingCapture.isActive else { return }
+            #endif
+            await state.loadWorkingLineStats(repoID: repoID)
+        }
+        .task(id: state.lastStatusCheckDate) {
+            #if DEBUG
+            guard !MarketingCapture.isActive else { return }
+            #endif
+            await state.refreshVaultMeta(repoID: repoID)
+            // Edits to an already-changed file keep the same status entries.
+            if !statusEntries.isEmpty { await state.loadWorkingLineStats(repoID: repoID) }
         }
     }
 
@@ -292,7 +312,7 @@ struct VaultView: View {
     private func titleBlock(_ repo: RepoConfig) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             if let owner = repo.ownerName {
-                Text("\(owner)/\(repo.displayName)")
+                Text("\(owner)/\(repo.repoName)")
                     .font(TideFont.meta)
                     .foregroundStyle(Tide.inkFaint)
                     .lineLimit(1)
@@ -467,11 +487,13 @@ struct VaultView: View {
         }
     }
 
+    private var remoteHost: String { repo?.remoteHostLabel ?? String(localized: "Remote") }
+
     private var remoteSummary: String {
         switch syncState {
-        case .upToDate, .ahead: String(localized: "Remote is current")
-        case .behind, .diverged: String(localized: "Remote has new commits")
-        case .unknown: String(localized: "Remote not checked")
+        case .upToDate, .ahead: String(localized: "\(remoteHost) is current")
+        case .behind, .diverged: String(localized: "\(remoteHost) has new commits")
+        case .unknown: String(localized: "\(remoteHost) not checked")
         }
     }
 
@@ -541,6 +563,9 @@ struct VaultView: View {
     }
 
     private var syncedText: String {
+        if let fetched = state.vaultMetaByRepo[repoID]?.lastFetchDate {
+            return String(localized: "fetched \(relativeText(fetched))")
+        }
         guard let date = repo?.gitState.lastSyncDate, date != .distantPast else {
             return String(localized: "not synced yet")
         }
@@ -787,7 +812,11 @@ struct VaultView: View {
                 TideSectionLabel(title: syncState == .upToDate
                                  ? String(localized: "Last pushed")
                                  : String(localized: "Latest commit"))
-                commitRow(head)
+                Button { selectedCommit = head } label: {
+                    commitRow(head)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 4)
             .padding(.top, 16)
@@ -855,10 +884,15 @@ struct VaultView: View {
                 Text(String(localized: "Resolve"))
                     .font(TideFont.metaStrong)
                     .foregroundStyle(Tide.danger)
-            } else if entry.indexStatus != nil {
-                Text(String(localized: "staged"))
-                    .font(TideFont.meta)
-                    .foregroundStyle(Tide.inkFaint)
+            } else {
+                if let stats = state.lineStats(repoID: repoID, path: entry.path) {
+                    lineStatsLabel(stats)
+                }
+                if entry.indexStatus != nil {
+                    Text(String(localized: "staged"))
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkFaint)
+                }
             }
         }
         .padding(.vertical, 13)
@@ -867,7 +901,26 @@ struct VaultView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(entry.path + ", " + (entry.isConflicted
             ? String(localized: "conflict")
-            : kind.map(fileStatusLabel) ?? ""))
+            : kind.map(fileStatusLabel) ?? "")
+            + (state.lineStats(repoID: repoID, path: entry.path).map {
+                ", " + String(localized: "\($0.added) lines added, \($0.deleted) removed")
+            } ?? ""))
+    }
+
+    /// "+8 −3" — deleted files show only the removed lines.
+    @ViewBuilder
+    private func lineStatsLabel(_ stats: GitLineStats) -> some View {
+        HStack(spacing: 6) {
+            if stats.added > 0 {
+                Text("+\(stats.added)").foregroundStyle(Tide.synced)
+            }
+            if stats.deleted > 0 {
+                Text("−\(stats.deleted)").foregroundStyle(Tide.danger)
+            }
+        }
+        .font(TideFont.mono(12, .semibold))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String(localized: "\(stats.added) lines added, \(stats.deleted) removed"))
     }
 
     /// The working-tree change wins; fall back to what's staged.
@@ -918,19 +971,94 @@ struct VaultView: View {
                 .frame(width: 10, height: 10)
                 .padding(.top, 4)
                 .accessibilityHidden(true)
-            commitText(commit)
+            commitText(commit, meta: lastPushedMeta(commit))
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
     }
 
-    private func commitText(_ commit: GitCommitSummary) -> some View {
+    /// "a41c9e2 · from Obsidian · 6h ago"
+    private func lastPushedMeta(_ commit: GitCommitSummary) -> String {
+        let source = state.commitSource(commit, repoID: repoID, isLocalOnly: commitsAhead > 0)
+        return "\(commit.shortOID) · \(source.fromLabel) · \(relativeText(commit.authoredDate))"
+    }
+
+    /// "e93b1f0 · iPhone · 20m · 1 file" / "51fe803 · iPhone · 9h · merge"
+    private func historyMeta(_ commit: GitCommitSummary, isLocalOnly: Bool) -> String {
+        let source = state.commitSource(commit, repoID: repoID, isLocalOnly: isLocalOnly)
+        var parts = [commit.shortOID]
+        if case .obsidianGit = source {
+            parts.append(String(localized: "Mac"))
+        }
+        parts.append(source.label)
+        parts.append(historyTime(commit.authoredDate))
+        if let extras = state.commitExtrasByRepo[repoID]?[commit.oid] {
+            if extras.isMerge {
+                parts.append(String(localized: "merge"))
+            } else {
+                parts.append(extras.fileCount == 1
+                             ? String(localized: "1 file")
+                             : String(localized: "\(extras.fileCount) files"))
+            }
+        }
+        return parts.joined(separator: " · ")
+    }
+
+    /// Relative within a day ("20m", "6h"), clock time for older commits.
+    private func historyTime(_ date: Date) -> String {
+        let elapsed = Date().timeIntervalSince(date)
+        if elapsed < 60 { return String(localized: "now") }
+        if elapsed < 3600 { return String(localized: "\(Int(elapsed / 60))m") }
+        if Calendar.current.isDateInToday(date) { return String(localized: "\(Int(elapsed / 3600))h") }
+        return date.formatted(date: .omitted, time: .shortened).lowercased()
+    }
+
+    /// Branch and tag chips for a commit, minus the current branch and its
+    /// upstream (the rail already shows those).
+    private func refLabels(for commit: GitCommitSummary) -> [GitRefLabel] {
+        let hidden = Set([repo?.gitState.branch, currentBranch?.upstreamShortName].compactMap { $0 })
+        return (state.commitRefLabelsByRepo[repoID]?[commit.oid] ?? []).filter { !hidden.contains($0.name) }
+    }
+
+    private func historyRow(_ commit: GitCommitSummary, isLocalOnly: Bool) -> some View {
+        Button { selectedCommit = commit } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                commitText(commit, meta: historyMeta(commit, isLocalOnly: isLocalOnly))
+                let labels = refLabels(for: commit)
+                if !labels.isEmpty {
+                    HStack(spacing: 6) {
+                        ForEach(labels, id: \.self) { label in
+                            HStack(spacing: 4) {
+                                if label.kind == .tag {
+                                    Image(systemName: "tag")
+                                        .font(.system(size: 9, weight: .semibold))
+                                        .accessibilityHidden(true)
+                                }
+                                Text(label.name).lineLimit(1)
+                            }
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(Tide.inkMid)
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 3)
+                            .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(Tide.line, lineWidth: 1))
+                        }
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(String(localized: "Shows the commit's changed files"))
+    }
+
+    private func commitText(_ commit: GitCommitSummary, meta: String? = nil) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(commit.message.components(separatedBy: .newlines).first ?? commit.message)
                 .font(TideFont.sans(15, .semibold))
                 .foregroundStyle(Tide.ink)
                 .lineLimit(2)
-            Text("\(commit.shortOID) · \(commit.authorName) · \(relativeText(commit.authoredDate))")
+            Text(meta ?? "\(commit.shortOID) · \(commit.authorName) · \(relativeText(commit.authoredDate))")
                 .font(TideFont.mono(11))
                 .foregroundStyle(Tide.inkFaint)
                 .lineLimit(1)
@@ -972,7 +1100,7 @@ struct VaultView: View {
             content()
             Spacer(minLength: 0)
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 
     private func railLabel(_ title: String, tint: Color = Tide.inkFaint) -> some View {
@@ -1002,7 +1130,7 @@ struct VaultView: View {
                         railRow {
                             Circle().fill(Tide.ahead)
                         } content: {
-                            commitText(commit)
+                            historyRow(commit, isLocalOnly: true)
                         }
                     }
                 }
@@ -1018,7 +1146,7 @@ struct VaultView: View {
                             Text(currentBranch?.upstreamShortName ?? "")
                                 .font(TideFont.mono(12, .semibold))
                             Spacer()
-                            Text(String(localized: "Remote is here"))
+                            Text(String(localized: "\(remoteHost) is here"))
                                 .font(TideFont.mono(11))
                                 .foregroundStyle(Tide.heroMeta)
                         }
@@ -1034,13 +1162,16 @@ struct VaultView: View {
                         railRow {
                             Circle().strokeBorder(Tide.ink, lineWidth: 2)
                         } content: {
-                            commitText(commit)
+                            historyRow(commit, isLocalOnly: false)
                         }
                     }
                 }
                 if state.commitHistoryHasMoreByRepo[repoID] == true {
                     Button {
-                        Task { await state.loadCommitHistory(repoID: repoID, pageSize: 30) }
+                        Task {
+                            await state.loadCommitHistory(repoID: repoID, pageSize: 30)
+                            await state.loadHistoryDecorations(repoID: repoID)
+                        }
                     } label: {
                         Text(String(localized: "Load older commits"))
                             .font(TideFont.sans(14, .medium))
@@ -1089,46 +1220,11 @@ struct VaultView: View {
     // MARK: Git
 
     private var gitTab: some View {
-        VStack(spacing: 0) {
-            // Navigation stays available even while Git operations are disabled.
-            Button { showCommitSheet = true } label: {
-                tideActionRow(icon: "wrench.and.screwdriver",
-                              title: String(localized: "Git Tools"),
-                              subtitle: String(localized: "Branches") + " · " + String(localized: "Stash") + " · " + String(localized: "Tags"))
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(String(localized: "Git Tools"))
-
-            Rectangle().fill(Tide.line).frame(height: 1)
-
-            Button {
-                Task { await state.pullWithRebase(repoID: repoID) }
-            } label: {
-                tideActionRow(icon: "arrow.down.to.line",
-                              title: String(localized: "Pull with Rebase"),
-                              subtitle: String(localized: "Replay local commits on top of remote"))
-            }
-            .buttonStyle(.plain)
-            .disabled(state.isSyncing)
-            .opacity(state.isSyncing ? 0.5 : 1)
-
-            if changeCount == 0 && syncState == .ahead {
-                Rectangle().fill(Tide.line).frame(height: 1)
-                Button {
-                    Task { await state.pushCurrentBranch(repoID: repoID) }
-                } label: {
-                    tideActionRow(icon: "arrow.up",
-                                  title: String(localized: "Push Current Branch"),
-                                  subtitle: String(localized: "Push committed local changes"))
-                }
-                .buttonStyle(.plain)
-                .disabled(state.isSyncing)
-                .opacity(state.isSyncing ? 0.5 : 1)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 4)
-        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        VaultGitTab(
+            repoID: repoID,
+            onDiscardChanges: { showRevertAllConfirm = true },
+            onOpenSettings: { showSettings = true }
+        )
     }
 
     private func tideActionRow(icon: String, title: String, subtitle: String) -> some View {

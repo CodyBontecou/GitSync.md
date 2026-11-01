@@ -24,6 +24,7 @@ struct RepoListView: View {
     /// Regular width (iPad, iPhone Duo open): vault picked in the sidebar.
     @State private var selectedRepoID: UUID?
     @State private var detailPath = NavigationPath()
+    @State private var homeFilter: HomeFilter = .all
 
     private var isSplit: Bool { horizontalSizeClass == .regular }
 
@@ -47,7 +48,7 @@ struct RepoListView: View {
                                 .padding(.bottom, 4)
                         }
                         repoList
-                        addRepoButton
+                        homeBottomBar
                             .padding(.horizontal, Tide.gutter)
                             .padding(.vertical, 12)
                     }
@@ -164,7 +165,7 @@ struct RepoListView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 20, height: 20)
-                                    .foregroundStyle(Color.brutalText)
+                                    .foregroundStyle(Tide.ink)
                                     .frame(width: 44, height: 44)
                                     .accessibilityHidden(true)
                             }
@@ -214,6 +215,9 @@ struct RepoListView: View {
                 onDismiss: AppReleaseNotes.markCurrentVersionAsSeen,
                 configuration: AppReleaseNotes.configuration
             )
+            .task(id: state.lastStatusCheckDate) {
+                await state.refreshAllVaultMeta()
+            }
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
                 if let repoID = newValue, isSplit {
                     selectedRepoID = repoID
@@ -383,7 +387,7 @@ struct RepoListView: View {
                         Rectangle().fill(Tide.line).frame(height: 1)
                         emptyStartRow(
                             title: String(localized: "Publish an existing folder"),
-                            detail: String(localized: "creates a GitHub repository"),
+                            detail: String(localized: "creates a private repo"),
                             action: { showEmptyFolderPublication = true }
                         )
                     }
@@ -398,11 +402,7 @@ struct RepoListView: View {
                             .padding(.top, 24)
                             .padding(.bottom, 8)
 
-                        VStack(spacing: 10) {
-                            ForEach(ghosts, id: \.self) { id in
-                                ghostRepoCard(id)
-                            }
-                        }
+                        ghostList(ghosts)
                     }
                 }
                 .padding(.horizontal, Tide.gutter)
@@ -444,7 +444,7 @@ struct RepoListView: View {
             HStack {
                 Text("iPhone")
                 Spacer()
-                Text("Remote")
+                Text(state.isSignedIn ? "GitHub" : String(localized: "Remote"))
             }
             .padding(.horizontal, 24)
             .offset(y: -26)
@@ -493,16 +493,40 @@ struct RepoListView: View {
 
     // MARK: - Repo List
 
+    enum HomeFilter: Hashable {
+        case all, attention, pinned
+    }
+
+    /// Pinned vaults first, otherwise keep the saved order.
+    private func pinnedFirst(_ repos: [RepoConfig]) -> [RepoConfig] {
+        repos.filter(\.isPinned) + repos.filter { !$0.isPinned }
+    }
+
     private var repoList: some View {
         let ghosts = ghostRepoIdentifiers
-        let repos = state.visibleRepos
-        let attention = repos.filter { needsAttention($0) }
-        let quiet = repos.filter { !needsAttention($0) }
+        let repos = pinnedFirst(state.visibleRepos)
+        let attentionAll = repos.filter { needsAttention($0) }
+        let quietAll = repos.filter { !needsAttention($0) }
+        let pinnedCount = repos.filter(\.isPinned).count
+        let attention: [RepoConfig]
+        let quiet: [RepoConfig]
+        switch homeFilter {
+        case .all: attention = attentionAll; quiet = quietAll
+        case .attention: attention = attentionAll; quiet = []
+        case .pinned: attention = attentionAll.filter(\.isPinned); quiet = quietAll.filter(\.isPinned)
+        }
         return ScrollView {
             VStack(alignment: .leading, spacing: 10) {
-                homeHeader(attentionCount: attention.count, quietCount: quiet.count)
+                homeHeader(attentionCount: attentionAll.count, quietCount: quietAll.count)
                     .padding(.horizontal, 4)
-                    .padding(.bottom, 10)
+
+                filterChips(all: repos.count, attention: attentionAll.count, pinned: pinnedCount)
+                    .padding(.top, 10)
+                    .padding(.bottom, 6)
+
+                if attention.isEmpty && quiet.isEmpty {
+                    emptyFilterCard
+                }
 
                 ForEach(attention) { repo in
                     repoLink(repo) {
@@ -530,14 +554,12 @@ struct RepoListView: View {
                     .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
                 }
 
-                if !ghosts.isEmpty {
+                if !ghosts.isEmpty && homeFilter == .all {
                     TideSectionLabel(title: String(localized: "Previously Cloned"))
                         .padding(.top, 12)
                         .padding(.horizontal, 4)
 
-                    ForEach(ghosts, id: \.self) { id in
-                        ghostRepoCard(id)
-                    }
+                    ghostList(ghosts)
                 }
             }
             .padding(.horizontal, Tide.gutter)
@@ -545,10 +567,76 @@ struct RepoListView: View {
             .padding(.bottom, 4)
         }
         .scrollIndicators(.hidden)
+        .animation(.easeOut(duration: 0.15), value: homeFilter)
+    }
+
+    private var emptyFilterCard: some View {
+        TideCard {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(homeFilter == .pinned
+                     ? String(localized: "Nothing pinned yet")
+                     : String(localized: "Nothing needs you"))
+                    .font(TideFont.sans(15, .semibold))
+                    .foregroundStyle(Tide.ink)
+                Text(homeFilter == .pinned
+                     ? String(localized: "Long-press a vault and choose Pin to top.")
+                     : String(localized: "Every vault is in sync."))
+                    .font(TideFont.meta)
+                    .foregroundStyle(Tide.inkFaint)
+            }
+        }
+    }
+
+    /// "All 5 · Attention 1 · Pinned" filter chips.
+    private func filterChips(all: Int, attention: Int, pinned: Int) -> some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 8) {
+                filterChip(.all, title: String(localized: "All \(all)"))
+                filterChip(.attention, title: String(localized: "Attention \(attention)"), dot: attention > 0 ? Tide.ahead : nil)
+                filterChip(.pinned, title: pinned > 0 ? String(localized: "Pinned \(pinned)") : String(localized: "Pinned"))
+            }
+            .padding(.horizontal, 4)
+        }
+        .scrollIndicators(.hidden)
+    }
+
+    private static let chipLine = Color(light: Color(hex: 0xD9D7CF), dark: Color(hex: 0x3A3A40))
+
+    private func filterChip(_ filter: HomeFilter, title: String, dot: Color? = nil) -> some View {
+        let selected = homeFilter == filter
+        return Button {
+            homeFilter = filter
+        } label: {
+            HStack(spacing: 6) {
+                if let dot {
+                    Circle().fill(dot).frame(width: 7, height: 7).accessibilityHidden(true)
+                }
+                Text(title)
+                    .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
+            }
+            .foregroundStyle(selected ? Tide.paper : Tide.ink)
+            .padding(.horizontal, 14)
+            .frame(height: 34)
+            .background(Capsule().fill(selected ? Tide.ink : Color.clear))
+            .overlay(Capsule().strokeBorder(selected ? Color.clear : Self.chipLine, lineWidth: 1))
+            .frame(minHeight: 44)
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
     @ViewBuilder
     private func repoContextMenu(_ repo: RepoConfig) -> some View {
+        Button {
+            state.setPinned(!repo.isPinned, repoID: repo.id)
+        } label: {
+            if repo.isPinned {
+                Label(String(localized: "Unpin"), systemImage: "pin.slash")
+            } else {
+                Label(String(localized: "Pin to top"), systemImage: "pin")
+            }
+        }
         Button {
             settingsRepoID = repo.id
         } label: {
@@ -571,12 +659,73 @@ struct RepoListView: View {
             .tideDisplay()
             .fixedSize(horizontal: false, vertical: true)
 
-            Text(String(localized: "\(quietCount) in sync"))
-                .font(TideFont.meta)
-                .foregroundStyle(Tide.inkMid)
+            TimelineView(.periodic(from: .now, by: 30)) { _ in
+                Text(headerMeta(quietCount: quietCount))
+                    .font(TideFont.mono(12))
+                    .foregroundStyle(Tide.inkMid)
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
+    }
+
+    private func headerMeta(quietCount: Int) -> String {
+        var meta = String(localized: "\(quietCount) in sync")
+        if let checked = state.lastCheckedDate {
+            meta += " · " + String(localized: "checked \(relativeDate(checked))")
+        }
+        return meta
+    }
+
+    // MARK: - Bottom bar
+
+    private var syncAllCounts: (down: Int, up: Int) {
+        state.syncAllTargets.reduce(into: (down: 0, up: 0)) { totals, repo in
+            let meta = state.vaultMetaByRepo[repo.id]
+            let changes = state.changeCounts[repo.id] ?? 0
+            let ahead = meta?.ahead ?? 0
+            totals.down += meta?.behind ?? 0
+            totals.up += ahead > 0 ? ahead : changes
+        }
+    }
+
+    /// "Sync all ↓0 ↑3" plus the round Add button.
+    private var homeBottomBar: some View {
+        let counts = syncAllCounts
+        let running = state.isSyncingAllVaults
+        let disabled = running || state.isSyncing || state.syncAllTargets.isEmpty
+        return HStack(spacing: 10) {
+            TidePrimaryButton(
+                title: running
+                    ? (state.syncAllProgressText ?? String(localized: "Syncing…"))
+                    : String(localized: "Sync all"),
+                badge: running ? nil : "↓\(counts.down) ↑\(counts.up)"
+            ) {
+                Task { await state.syncAllVaults() }
+            }
+            .lineLimit(1)
+            .disabled(disabled)
+            .opacity(disabled && !running ? 0.55 : 1)
+            .accessibilityIdentifier("home.syncAll")
+            .accessibilityLabel(running
+                ? String(localized: "Syncing all vaults")
+                : String(localized: "Sync all vaults, \(counts.down) to pull, \(counts.up) to push"))
+
+            Button {
+                handleAddRepoTapped()
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Tide.ink)
+                    .frame(width: 60, height: 60)
+                    .background(Circle().fill(Tide.card))
+                    .overlay(Circle().strokeBorder(Self.chipLine, lineWidth: 1))
+                    .contentShape(Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Add vault"))
+            .accessibilityIdentifier("home.addRepository")
+        }
     }
 
     // MARK: - Ghost Repo Card
@@ -594,7 +743,22 @@ struct RepoListView: View {
             .sorted()
     }
 
-    private func ghostRepoCard(_ identifier: String) -> some View {
+    /// Previously cloned remotes as one grouped Tide card.
+    private func ghostList(_ identifiers: [String]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(Array(identifiers.enumerated()), id: \.element) { index, identifier in
+                ghostRepoRow(identifier)
+                if index < identifiers.count - 1 {
+                    Rectangle().fill(Tide.line).frame(height: 1)
+                }
+            }
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 2)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+    }
+
+    private func ghostRepoRow(_ identifier: String) -> some View {
         let repoName: String
         let ownerName: String?
         if let parsed = GitRemoteURL.parse(identifier) {
@@ -605,60 +769,38 @@ struct RepoListView: View {
             ownerName = nil
         }
 
-        return BCard(padding: 0, bg: .brutalSurface) {
-            VStack(spacing: 0) {
-                Button {
-                    cloneGhostRepo(identifier)
-                } label: {
-                    HStack(spacing: 12) {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(repoName)
-                                .bType(.titleMd, weight: .black)
-                                .foregroundStyle(Color.brutalText)
-                                .lineLimit(1)
-                            if let owner = ownerName {
-                                Text(owner.uppercased())
-                                    .bType(.monoCaption, weight: .medium)
-                                    .foregroundStyle(Color.brutalText)
-                                    .tracking(1)
-                            }
-                        }
-                        Spacer()
-                        // Decorative arrow ornament (a11y-hidden) — fixed
-                        // size per Issue #16's decorative allowance.
-                        Text("→")
-                            .font(.system(size: 14, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                            .accessibilityHidden(true)
+        return HStack(spacing: 8) {
+            Button {
+                cloneGhostRepo(identifier)
+            } label: {
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(repoName)
+                            .font(TideFont.sans(16, .semibold, relativeTo: .headline))
+                            .tracking(-0.25)
+                            .foregroundStyle(Tide.ink)
+                            .lineLimit(1)
+                        Text([ownerName, String(localized: "previously cloned")]
+                            .compactMap { $0 }
+                            .joined(separator: " · "))
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(Tide.inkFaint)
+                            .lineLimit(1)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                    .padding(.bottom, 12)
-                    .contentShape(Rectangle())
+                    Spacer(minLength: 8)
+                    Label(String(localized: "Clone"), systemImage: "arrow.down")
+                        .labelStyle(.titleAndIcon)
+                        .font(TideFont.metaStrong)
+                        .foregroundStyle(Tide.behind)
                 }
-                .buttonStyle(.plain)
-
-                BDivider().padding(.horizontal, 16)
-
-                HStack(spacing: 8) {
-                    Button {
-                        cloneGhostRepo(identifier)
-                    } label: {
-                        HStack(spacing: 8) {
-                            BBadge(text: String(localized: "previously cloned"), style: .default)
-                            Spacer(minLength: 8)
-                        }
-                        // Flexible-width clone affordance, ≥44pt-tall target.
-                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-
-                    ghostRemoveButton(identifier)
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+                .padding(.vertical, 14)
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Clone \(repoName)"))
+
+            ghostRemoveButton(identifier)
         }
         .contextMenu {
             Button(role: .destructive) {
@@ -673,11 +815,10 @@ struct RepoListView: View {
         Button {
             requestGhostRepoRemoval(identifier)
         } label: {
-            Text(String(localized: "Remove").uppercased())
-                .bType(.monoCaption)
-                .foregroundStyle(Color.brutalError)
-                .tracking(1)
-                // Compact text link, 44x44pt hit target.
+            Image(systemName: "xmark")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(Tide.inkFaint)
+                // Compact glyph, 44x44pt hit target.
                 .frame(minWidth: 44, minHeight: 44)
                 .contentShape(Rectangle())
         }
@@ -689,12 +830,16 @@ struct RepoListView: View {
 
     /// Tide state for a repo: uncommitted changes count as "to push".
     private func tideState(for repo: RepoConfig) -> TideSyncState {
-        let local = state.changeCounts[repo.id] ?? 0
+        let changes = state.changeCounts[repo.id] ?? 0
+        let meta = state.vaultMetaByRepo[repo.id]
+        let ahead = meta?.ahead ?? 0
+        let behind = meta?.behind ?? 0
+        let local = ahead > 0 ? ahead : changes
         switch state.syncStateByRepo[repo.id] ?? .unknown {
-        case .diverged: return .diverged(local: max(local, 1), remote: 0)
-        case .behind: return local > 0 ? .diverged(local: local, remote: 0) : .behind(0)
+        case .diverged: return .diverged(local: max(local, 1), remote: behind)
+        case .behind: return local > 0 ? .diverged(local: local, remote: behind) : .behind(behind)
         case .ahead: return .ahead(max(local, 1))
-        case .upToDate, .unknown: return local > 0 ? .ahead(local) : .inSync
+        case .upToDate, .unknown: return changes > 0 ? .ahead(changes) : .inSync
         }
     }
 
@@ -714,7 +859,7 @@ struct RepoListView: View {
 
     private func metaLine(_ repo: RepoConfig) -> String {
         var parts = [repo.gitState.branch]
-        if let owner = repo.ownerName { parts.append("\(owner)/\(repo.displayName)") }
+        if let owner = repo.ownerName { parts.append("\(owner)/\(repo.repoName)") }
         else { parts.append(relativeDate(repo.gitState.lastSyncDate)) }
         return parts.joined(separator: " · ")
     }
@@ -728,11 +873,14 @@ struct RepoListView: View {
             VStack(alignment: .leading, spacing: 14) {
                 HStack(alignment: .top, spacing: 12) {
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(repo.displayName)
-                            .font(TideFont.title)
-                            .tracking(-0.4)
-                            .foregroundStyle(Tide.ink)
-                            .lineLimit(1)
+                        HStack(spacing: 6) {
+                            Text(repo.displayName)
+                                .font(TideFont.title)
+                                .tracking(-0.4)
+                                .foregroundStyle(Tide.ink)
+                                .lineLimit(1)
+                            pinGlyph(repo)
+                        }
                         Text(metaLine(repo))
                             .font(TideFont.meta)
                             .foregroundStyle(Tide.inkFaint)
@@ -766,7 +914,11 @@ struct RepoListView: View {
                     HStack(spacing: 6) {
                         Text("iPhone").frame(width: 44, alignment: .leading)
                         SyncRail(state: syncState)
-                        Text("Remote").frame(width: 44, alignment: .trailing)
+                        Text(repo.remoteHostLabel)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                            .frame(minWidth: 44, alignment: .trailing)
+                            .fixedSize()
                     }
                     .font(TideFont.mono(10.5, relativeTo: .caption2))
                     .foregroundStyle(Tide.inkFaint)
@@ -782,16 +934,28 @@ struct RepoListView: View {
         .contentShape(Rectangle())
     }
 
+    /// "main · 1h ago · 2 MB LFS"
+    private func quietMeta(_ repo: RepoConfig) -> String {
+        var parts = [repo.gitState.branch, relativeDate(repo.gitState.lastSyncDate)]
+        if let bytes = state.vaultMetaByRepo[repo.id]?.lfsBytes, bytes > 0 {
+            parts.append(ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file) + " LFS")
+        }
+        return parts.joined(separator: " · ")
+    }
+
     /// Quiet in-sync row inside the grouped list.
     private func quietRow(_ repo: RepoConfig) -> some View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(repo.displayName)
-                    .font(TideFont.sans(16, .semibold, relativeTo: .headline))
-                    .tracking(-0.25)
-                    .foregroundStyle(Tide.ink)
-                    .lineLimit(1)
-                Text("\(repo.gitState.branch) · \(relativeDate(repo.gitState.lastSyncDate))")
+                HStack(spacing: 5) {
+                    Text(repo.displayName)
+                        .font(TideFont.sans(16, .semibold, relativeTo: .headline))
+                        .tracking(-0.25)
+                        .foregroundStyle(Tide.ink)
+                        .lineLimit(1)
+                    pinGlyph(repo)
+                }
+                Text(quietMeta(repo))
                     .font(TideFont.mono(11))
                     .foregroundStyle(Tide.inkFaint)
                     .lineLimit(1)
@@ -807,26 +971,15 @@ struct RepoListView: View {
         .contentShape(Rectangle())
     }
 
-    // MARK: - Add Repo Button
-
-    private var addRepoButton: some View {
-        Button {
-            handleAddRepoTapped()
-        } label: {
-            HStack(spacing: 10) {
-                Image(systemName: "plus")
-                    .font(.system(size: 17, weight: .semibold))
-                    .accessibilityHidden(true)
-                Text(String(localized: "Add Repository"))
-                    .font(TideFont.button)
-            }
-            .foregroundStyle(Tide.paper)
-            .frame(maxWidth: .infinity, minHeight: 60)
-            .background(Capsule().fill(Tide.ink))
-            .contentShape(Capsule())
+    @ViewBuilder
+    private func pinGlyph(_ repo: RepoConfig) -> some View {
+        if repo.isPinned {
+            Image(systemName: "pin.fill")
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(Tide.inkFaint)
+                .rotationEffect(.degrees(45))
+                .accessibilityLabel(String(localized: "Pinned"))
         }
-        .buttonStyle(.plain)
-        .accessibilityIdentifier("home.addRepository")
     }
 
     // MARK: - Demo Banner
@@ -867,18 +1020,6 @@ struct RepoListView: View {
     }
 
     // MARK: - Helpers
-
-    private func metaChip(icon: String, text: String, mono: Bool = false) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: icon)
-                .bType(.monoCaption, weight: .semibold)
-                .foregroundStyle(Color.brutalText)
-                .accessibilityHidden(true)
-            Text(text)
-                .bType(mono ? .monoSm : .bodySm, weight: .medium)
-                .foregroundStyle(Color.brutalText)
-        }
-    }
 
     private func relativeDate(_ date: Date) -> String {
         if date == .distantPast { return String(localized: "Never") }
