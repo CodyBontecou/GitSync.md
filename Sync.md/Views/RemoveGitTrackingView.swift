@@ -184,7 +184,7 @@ struct RemoveGitTrackingView: View {
             .padding(.top, 12)
 
             if target == nil {
-                Text("Only .git directly inside the selected folder is removed. Local On My iPhone folders only.")
+                Text(String(localized: "Only .git directly inside the selected folder is removed. Local On My iPhone folders only.").forThisDevice)
                     .font(TideFont.sans(13, relativeTo: .footnote))
                     .foregroundStyle(Tide.inkFaint)
                     .fixedSize(horizontal: false, vertical: true)
@@ -371,7 +371,7 @@ struct RemoveGitTrackingView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.well))
                         .accessibilityIdentifier("removeGitTracking.backupLocation")
-                        Text(String(localized: "Also kept in Files › On My iPhone › GitSync.md › Git Backups."))
+                        Text(String(localized: "Also kept in Files › On My iPhone › GitSync.md › Git Backups.").forThisDevice)
                             .font(TideFont.sans(12, relativeTo: .caption))
                             .foregroundStyle(Tide.inkFaint)
                             .fixedSize(horizontal: false, vertical: true)

@@ -360,10 +360,10 @@ struct SetupView: View {
                         HStack(spacing: 14) {
                             AddVaultIconTile(systemImage: "iphone", size: 40)
                             VStack(alignment: .leading, spacing: 3) {
-                                Text(String(localized: "On My iPhone"))
+                                Text(String(localized: "On My iPhone").forThisDevice)
                                     .font(TideFont.sans(16, .semibold, relativeTo: .body))
                                     .foregroundStyle(Tide.ink)
-                                Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
+                                Text(String(localized: "Without a default, repos save to Files › On My iPhone › GitSync.md").forThisDevice)
                                     .font(TideFont.sans(13, relativeTo: .footnote))
                                     .foregroundStyle(Tide.inkFaint)
                                     .fixedSize(horizontal: false, vertical: true)

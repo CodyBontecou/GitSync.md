@@ -60,7 +60,7 @@ struct RevertConfirmModal: View {
             : String(localized: "These files go back to how they were in")
         let tail = stashFirst
             ? String(localized: "A copy of your edits is saved to the stash first.")
-            : String(localized: "Edits made on this iPhone since then are gone for good.")
+            : String(localized: "Edits made on this iPhone since then are gone for good.").forThisDevice
         guard let headSHA else {
             return Text(lead + " " + String(localized: "the last commit") + ". " + tail)
         }

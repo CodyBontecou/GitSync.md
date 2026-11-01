@@ -604,8 +604,8 @@ struct VaultView: View {
                     // Design sets line-height 0.9; trim the font's built-in leading.
                     .padding(.vertical, -7)
                 Text(changeCount == 1
-                     ? String(localized: "change on this iPhone")
-                     : String(localized: "changes on this iPhone"))
+                     ? String(localized: "change on this iPhone").forThisDevice
+                     : String(localized: "changes on this iPhone").forThisDevice)
                     .font(TideFont.body)
                     .foregroundStyle(Tide.heroText)
             } else {
@@ -633,9 +633,9 @@ struct VaultView: View {
 
     private var heroSubline: String {
         switch tideState {
-        case .inSync: String(localized: "Nothing waiting on this iPhone")
+        case .inSync: String(localized: "Nothing waiting on this iPhone").forThisDevice
         case .ahead: String(localized: "Committed, not pushed yet")
-        case .behind: String(localized: "Pull to bring this iPhone up to date")
+        case .behind: String(localized: "Pull to bring this iPhone up to date").forThisDevice
         case .diverged: String(localized: "Both sides have new commits")
         }
     }
@@ -951,7 +951,7 @@ struct VaultView: View {
     private var changesTab: some View {
         if statusEntries.isEmpty {
             emptyCard(
-                String(localized: "No changes on this iPhone"),
+                String(localized: "No changes on this iPhone").forThisDevice,
                 String(localized: "Edits you make in Obsidian show up here.")
             )
         } else {
@@ -1295,7 +1295,7 @@ struct VaultView: View {
             let shared = Array(commits.dropFirst(localOnly.count))
             VStack(alignment: .leading, spacing: 16) {
                 if !localOnly.isEmpty {
-                    railLabel(String(localized: "Only on this iPhone"), tint: Tide.ahead)
+                    railLabel(String(localized: "Only on this iPhone").forThisDevice, tint: Tide.ahead)
                     ForEach(localOnly) { commit in
                         railRow {
                             Circle().fill(Tide.ahead)

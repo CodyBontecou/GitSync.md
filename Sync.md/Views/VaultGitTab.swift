@@ -484,7 +484,7 @@ struct VaultBranchesScreen: View {
                 Task { await state.createBranch(repoID: repoID, name: name) }
             }
 
-            TideSectionLabel(title: String(localized: "On this iPhone"))
+            TideSectionLabel(title: String(localized: "On this iPhone").forThisDevice)
                 .padding(.horizontal, 4)
                 .padding(.top, 18)
                 .padding(.bottom, 8)
@@ -614,7 +614,7 @@ struct VaultStashesScreen: View {
             }
 
             if !hasChanges {
-                Text(String(localized: "Nothing to stash — no changes on this iPhone."))
+                Text(String(localized: "Nothing to stash — no changes on this iPhone.").forThisDevice)
                     .font(TideFont.meta)
                     .foregroundStyle(Tide.inkFaint)
                     .padding(.horizontal, 4)
@@ -734,7 +734,7 @@ struct VaultTagsScreen: View {
                 Task { await state.deleteTag(repoID: repoID, name: tag.shortName) }
             }
         } message: { _ in
-            Text(String(localized: "Deletes the tag on this iPhone only."))
+            Text(String(localized: "Deletes the tag on this iPhone only.").forThisDevice)
         }
     }
 

@@ -21,7 +21,7 @@ enum FolderGitServiceError: LocalizedError, Sendable {
     var errorDescription: String? {
         switch self {
         case .unsupportedLocation:
-            return "Choose a local On My iPhone folder. Cloud and file-provider folders are not supported for publication yet."
+            return "Choose a local On My iPhone folder. Cloud and file-provider folders are not supported for publication yet.".forThisDevice
         case .existingMetadata(let path):
             return "This folder contains or belongs to an existing Git repository (\(path)). Use the existing repository instead."
         case .enclosingRepository(let path):

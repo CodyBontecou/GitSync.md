@@ -491,7 +491,7 @@ struct FileDiffView: View {
             .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
         } else {
             unavailableCard(fileURL == nil
-                ? String(localized: "This file was deleted on this iPhone.")
+                ? String(localized: "This file was deleted on this iPhone.").forThisDevice
                 : String(localized: "This file isn't text, so it can't be shown here."))
         }
     }
@@ -504,7 +504,7 @@ struct FileDiffView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
         } else {
-            unavailableCard(String(localized: "This file was deleted on this iPhone."))
+            unavailableCard(String(localized: "This file was deleted on this iPhone.").forThisDevice)
         }
     }
 

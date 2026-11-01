@@ -850,9 +850,9 @@ final class AppState {
         guard let repo = repo(id: repoID) else { return "" }
         if repo.customVaultBookmarkData != nil { return String(localized: "Folder access unavailable — reconnect the original folder") }
         if let relativePath = repo.customVaultRelativePath {
-            return String(localized: "On My iPhone › GitSync.md › \(relativePath)")
+            return String(localized: "On My iPhone › GitSync.md › \(relativePath)").forThisDevice
         }
-        return String(localized: "On My iPhone › GitSync.md › \(repo.vaultFolderName)")
+        return String(localized: "On My iPhone › GitSync.md › \(repo.vaultFolderName)").forThisDevice
     }
 
     func isUsingCustomLocation(for repoID: UUID) -> Bool {

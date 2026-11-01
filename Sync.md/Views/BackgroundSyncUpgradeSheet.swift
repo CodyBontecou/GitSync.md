@@ -178,7 +178,7 @@ struct BackgroundSyncUpgradeSheet: View {
 
 /// Locked phone ← sync point → GitHub, with a last-run stamp underneath.
 struct BackgroundSyncRailIllustration: View {
-    var leadingLabel = String(localized: "locked iPhone")
+    var leadingLabel = String(localized: "locked iPhone").forThisDevice
     var trailingLabel = "GitHub"
     let stamp: String?
 
@@ -268,7 +268,7 @@ struct BackgroundSyncHowItWorksSheet: View {
                     section(String(localized: "Committing and pushing"),
                             String(localized: "Off unless you choose it. When on, GitSync.md stages all non-ignored changes, commits with the vault's author and the default message, and pushes directly. If GitHub moved first, it stops instead of merging. It never force-pushes, rebases, merges, switches branches, or resolves conflicts."))
                     section(String(localized: "Which vaults"),
-                            String(localized: "One switch covers every current and future cloned vault on this iPhone. Exclude a vault in its settings to keep it manual."))
+                            String(localized: "One switch covers every current and future cloned vault on this iPhone. Exclude a vault in its settings to keep it manual.").forThisDevice)
                     section(String(localized: "Your data"),
                             String(localized: "Sync runs entirely on this device with the credentials you already use. Repository contents go only to your Git host. Optional Push Sync routes repository names and commit hints through its relay, never file contents, paths, or credentials."))
                 }

@@ -299,7 +299,7 @@ private struct OnboardingSyncIllustration: View {
             Rectangle().fill(Tide.heroLine).frame(height: 1)
 
             HStack {
-                Text(String(localized: "this iPhone"))
+                Text(String(localized: "this iPhone").forThisDevice)
                 Spacer()
                 Text(verbatim: "GitHub")
             }

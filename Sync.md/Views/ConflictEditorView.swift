@@ -319,7 +319,7 @@ struct ConflictEditorView: View {
                 .frame(width: 9, height: 9)
                 .accessibilityHidden(true)
 
-                Text(isOurs ? String(localized: "This iPhone") : remoteLabel)
+                Text(isOurs ? String(localized: "This iPhone").forThisDevice : remoteLabel)
                     .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
                     .foregroundStyle(Tide.ink)
                 Spacer(minLength: 8)
@@ -372,7 +372,7 @@ struct ConflictEditorView: View {
             .buttonStyle(.plain)
             .disabled(state.isSyncing)
             .accessibilityLabel(isOurs
-                ? String(localized: "Keep this iPhone's version")
+                ? String(localized: "Keep this iPhone's version").forThisDevice
                 : String(localized: "Keep the remote version"))
         }
         .padding(16)
@@ -472,7 +472,7 @@ struct ConflictEditorView: View {
                 }
                 .frame(width: 9, height: 9)
                 .accessibilityHidden(true)
-                Text(isOurs ? String(localized: "This iPhone") : remoteLabel)
+                Text(isOurs ? String(localized: "This iPhone").forThisDevice : remoteLabel)
                     .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
                     .foregroundStyle(Tide.ink)
                 Spacer(minLength: 8)
@@ -485,7 +485,7 @@ struct ConflictEditorView: View {
 
             Group {
                 if lines.isEmpty {
-                    Text(isOurs ? String(localized: "(removed on this iPhone)") : String(localized: "(removed on \(remoteLabel))"))
+                    Text(isOurs ? String(localized: "(removed on this iPhone)").forThisDevice : String(localized: "(removed on \(remoteLabel))"))
                         .foregroundStyle(Tide.inkFaint)
                 } else {
                     (context.map { Text($0 + "\n").foregroundColor(Tide.inkMid) } ?? Text(""))
@@ -521,7 +521,7 @@ struct ConflictEditorView: View {
             .buttonStyle(.plain)
             .disabled(state.isSyncing)
             .accessibilityLabel(isOurs
-                ? String(localized: "Keep this iPhone's version")
+                ? String(localized: "Keep this iPhone's version").forThisDevice
                 : String(localized: "Keep the remote version"))
             .accessibilityAddTraits(selected ? .isSelected : [])
         }
@@ -623,7 +623,7 @@ struct ConflictEditorView: View {
                 .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Tide.well))
 
             HStack(spacing: 8) {
-                smallPill(String(localized: "Start from this iPhone"), tint: Tide.ahead) { resultText = oursText }
+                smallPill(String(localized: "Start from this iPhone").forThisDevice, tint: Tide.ahead) { resultText = oursText }
                 smallPill(String(localized: "Start from remote"), tint: Tide.behind) { resultText = theirsText }
             }
 
@@ -668,7 +668,7 @@ struct ConflictEditorView: View {
 
             VStack(spacing: 0) {
                 if let ours = detail.ours {
-                    pathOption(label: String(localized: "This iPhone"), candidate: ours.path)
+                    pathOption(label: String(localized: "This iPhone").forThisDevice, candidate: ours.path)
                 }
                 if detail.ours != nil, detail.theirs != nil {
                     Rectangle().fill(Tide.line).frame(height: 1)

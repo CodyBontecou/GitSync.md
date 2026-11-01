@@ -41,9 +41,9 @@ enum GitTrackingRemovalError: LocalizedError, Sendable, Equatable {
     var errorDescription: String? {
         switch self {
         case .unsupportedLocation:
-            return "Choose a local On My iPhone folder. Cloud and file-provider folders cannot be used for removing Git tracking."
+            return "Choose a local On My iPhone folder. Cloud and file-provider folders cannot be used for removing Git tracking.".forThisDevice
         case .unsupportedBackupLocation:
-            return "This backup location is not supported yet, including Downloads under On My iPhone. Select a local folder in GitSync.md or another app, outside any Git repository."
+            return "This backup location is not supported yet, including Downloads under On My iPhone. Select a local folder in GitSync.md or another app, outside any Git repository.".forThisDevice
         case .noGitDirectory:
             return "The selected folder does not contain its own .git directory. Choose the repository's top-level folder."
         case .unsupportedMetadata(let detail):

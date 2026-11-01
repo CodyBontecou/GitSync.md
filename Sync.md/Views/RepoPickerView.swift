@@ -497,7 +497,7 @@ struct RepoPickerView: View {
         state.addRepo(config)
 
         let destinationParent = state.resolvedDefaultSaveURL.map { "Files › \(RepoDiscoveryView.friendlyLocation(for: $0))" }
-            ?? String(localized: "Files › On My iPhone › GitSync.md")
+            ?? String(localized: "Files › On My iPhone › GitSync.md").forThisDevice
         cloning = InlineClone(
             repoID: config.id,
             name: repo.name,

@@ -178,7 +178,7 @@ struct OfflineHomeView: View {
                             .background(RoundedRectangle(cornerRadius: 10).fill(Tide.well))
                     }
                     HStack(spacing: 6) {
-                        Text("iPhone").frame(width: 44, alignment: .leading)
+                        Text(String(localized: "iPhone").forThisDevice).frame(width: 44, alignment: .leading)
                         SyncRail(state: count > 0 ? .ahead(count) : .inSync)
                             .opacity(0.9)
                         Text(state.remoteHostName(for: repo)).frame(width: 52, alignment: .trailing)
@@ -320,8 +320,8 @@ struct SignInExpiredHomeView: View {
                         .tracking(-0.25)
                         .foregroundStyle(Tide.ink)
                     Text(waiting.count == 1
-                         ? String(localized: "Your notes are safe on this iPhone. Nothing was lost. 1 vault is waiting.")
-                         : String(localized: "Your notes are safe on this iPhone. Nothing was lost. \(waiting.count) vaults are waiting."))
+                         ? String(localized: "Your notes are safe on this iPhone. Nothing was lost. 1 vault is waiting.").forThisDevice
+                         : String(localized: "Your notes are safe on this iPhone. Nothing was lost. \(waiting.count) vaults are waiting.").forThisDevice)
                         .font(TideFont.sans(14))
                         .foregroundStyle(Tide.inkMid)
                         .lineSpacing(2)

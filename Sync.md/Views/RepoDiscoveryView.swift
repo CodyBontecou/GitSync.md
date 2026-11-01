@@ -159,12 +159,12 @@ struct RepoDiscoveryView: View {
         } else if isScanning {
             AddVaultHeadline(
                 title: String(localized: "Looking for repos"),
-                muted: String(localized: "on this iPhone.")
+                muted: String(localized: "on this iPhone.").forThisDevice
             )
         } else {
             AddVaultHeadline(
                 title: String(localized: "Find clones"),
-                muted: String(localized: "on this iPhone.")
+                muted: String(localized: "on this iPhone.").forThisDevice
             )
         }
     }
@@ -207,7 +207,7 @@ struct RepoDiscoveryView: View {
         }
         return VStack(alignment: .leading, spacing: 8) {
             AddVaultSectionLabel(
-                title: String(localized: "On this iPhone"),
+                title: String(localized: "On this iPhone").forThisDevice,
                 trailing: isScanning ? nil : "\(rows.count)"
             )
 
@@ -422,7 +422,7 @@ struct RepoDiscoveryView: View {
         let components: [String]
         let prefix: String
         if let range = path.range(of: "/File Provider Storage/") {
-            prefix = String(localized: "On My iPhone")
+            prefix = String(localized: "On My iPhone").forThisDevice
             components = path[range.upperBound...].split(separator: "/").map(String.init)
         } else if let range = path.range(of: "/Mobile Documents/com~apple~CloudDocs/") {
             prefix = String(localized: "iCloud Drive")
@@ -488,7 +488,7 @@ struct RepoDiscoveryView: View {
             kind: .container,
             url: documents,
             bookmark: nil,
-            label: String(localized: "On My iPhone › GitSync.md")
+            label: String(localized: "On My iPhone › GitSync.md").forThisDevice
         ))
 
         if let defaultURL = state.resolvedDefaultSaveURL,

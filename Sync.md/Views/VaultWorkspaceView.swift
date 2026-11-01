@@ -521,7 +521,7 @@ private struct WorkspaceFileDetail: View {
         } else {
             note(fileExists
                  ? String(localized: "This file isn't text, so it can't be shown here.")
-                 : String(localized: "This file was deleted on this iPhone."))
+                 : String(localized: "This file was deleted on this iPhone.").forThisDevice)
         }
     }
 

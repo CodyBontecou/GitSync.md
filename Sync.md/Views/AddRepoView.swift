@@ -266,7 +266,7 @@ struct AddRepoView: View {
                         systemImage: "magnifyingglass",
                         tint: Tide.behind,
                         tileBackground: Tide.behind.opacity(0.12),
-                        title: String(localized: "Find clones on this iPhone"),
+                        title: String(localized: "Find clones on this iPhone").forThisDevice,
                         subtitle: String(localized: "Scan Files for existing .git folders")
                     )
                 }
@@ -672,7 +672,7 @@ struct AddRepoView: View {
                 switch sshKeySource {
                 case .device:
                     deviceKeyCard
-                    Text("Add the public key to your host once. Private keys never leave this iPhone's Keychain.")
+                    Text(String(localized: "Add the public key to your host once. Private keys never leave this iPhone's Keychain.").forThisDevice)
                         .font(TideFont.sans(13, relativeTo: .footnote))
                         .foregroundStyle(Tide.inkFaint)
                         .fixedSize(horizontal: false, vertical: true)
@@ -694,8 +694,8 @@ struct AddRepoView: View {
                         sshKeySource = .device
                     } label: {
                         Text(deviceKey == nil
-                             ? String(localized: "Create a key on this iPhone instead")
-                             : String(localized: "Use this iPhone's key instead"))
+                             ? String(localized: "Create a key on this iPhone instead").forThisDevice
+                             : String(localized: "Use this iPhone's key instead").forThisDevice)
                             .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
                             .foregroundStyle(Tide.behind)
                             .frame(minHeight: 44)
@@ -724,7 +724,7 @@ struct AddRepoView: View {
                 HStack(spacing: 14) {
                     AddVaultIconTile(systemImage: "key.fill", size: 40)
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(String(localized: "iPhone key"))
+                        Text(String(localized: "iPhone key").forThisDevice)
                             .font(TideFont.sans(16, .semibold, relativeTo: .body))
                             .foregroundStyle(Tide.ink)
                         Text(verbatim: "ed25519 · \(key.shortFingerprint)")
@@ -774,7 +774,7 @@ struct AddRepoView: View {
                 HStack(spacing: 14) {
                     AddVaultIconTile(systemImage: "key", size: 40)
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(String(localized: "No iPhone key yet"))
+                        Text(String(localized: "No iPhone key yet").forThisDevice)
                             .font(TideFont.sans(16, .semibold, relativeTo: .body))
                             .foregroundStyle(Tide.ink)
                         Text(String(localized: "Create an ed25519 key here, then add its public half to your host."))
@@ -793,7 +793,7 @@ struct AddRepoView: View {
                 }
 
                 HStack(spacing: 8) {
-                    AddVaultPill(title: String(localized: "Create iPhone key"), filled: true, systemImage: "plus") {
+                    AddVaultPill(title: String(localized: "Create iPhone key").forThisDevice, filled: true, systemImage: "plus") {
                         generateDeviceKey()
                     }
                     .accessibilityIdentifier("addRepository.createDeviceKey")
@@ -904,7 +904,7 @@ struct AddRepoView: View {
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                                 .accessibilityLabel(String(localized: "Folder name"))
-                            Text("Files › On My iPhone › GitSync.md › \(vaultName)")
+                            Text(String(localized: "Files › On My iPhone › GitSync.md › \(vaultName)").forThisDevice)
                                 .font(TideFont.mono(11))
                                 .foregroundStyle(Tide.inkFaint)
                                 .lineLimit(1)
@@ -1094,7 +1094,7 @@ struct AddRepoView: View {
                 : []
         case .sshKey:
             return effectiveSSHPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? [sshKeySource == .device ? String(localized: "iPhone SSH key") : String(localized: "SSH Private Key")]
+                ? [sshKeySource == .device ? String(localized: "iPhone SSH key").forThisDevice : String(localized: "SSH Private Key")]
                 : []
         }
     }

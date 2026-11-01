@@ -398,7 +398,7 @@ struct RepoListView: View {
                         )
                         Rectangle().fill(Tide.line).frame(height: 1)
                         emptyStartRow(
-                            title: String(localized: "Find clones on this iPhone"),
+                            title: String(localized: "Find clones on this iPhone").forThisDevice,
                             detail: String(localized: "Obsidian, Working Copy…"),
                             action: { showEmptyDiscovery = true }
                         )
@@ -460,7 +460,7 @@ struct RepoListView: View {
         return ZStack {
             Rectangle().fill(dashed).frame(height: 1).padding(.horizontal, 24)
             HStack {
-                Text("iPhone")
+                Text(String(localized: "iPhone").forThisDevice)
                 Spacer()
                 Text(state.isSignedIn ? "GitHub" : String(localized: "Remote"))
             }
@@ -929,7 +929,7 @@ struct RepoListView: View {
                         .lineLimit(1)
                 } else if repo.isCloned {
                     HStack(spacing: 6) {
-                        Text("iPhone").frame(width: 44, alignment: .leading)
+                        Text(String(localized: "iPhone").forThisDevice).frame(width: 44, alignment: .leading)
                         SyncRail(state: syncState)
                         Text(repo.remoteHostLabel)
                             .lineLimit(1)

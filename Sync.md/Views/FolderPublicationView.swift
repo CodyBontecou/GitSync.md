@@ -294,7 +294,7 @@ struct FolderPublicationView: View {
                     .foregroundStyle(Tide.inkFaint)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("folderPublication.localFiles")
-                Text("Local On My iPhone folders and regular files up to 10 MiB.")
+                Text(String(localized: "Local On My iPhone folders and regular files up to 10 MiB.").forThisDevice)
                     .font(TideFont.mono(11))
                     .foregroundStyle(Tide.inkFaint)
                     .fixedSize(horizontal: false, vertical: true)

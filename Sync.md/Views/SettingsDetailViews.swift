@@ -70,7 +70,7 @@ struct AppearanceSettingsView: View {
                 }
             }
 
-            SettingsDetailFootnote(String(localized: "System follows your iPhone's Light or Dark setting."))
+            SettingsDetailFootnote(String(localized: "System follows your iPhone's Light or Dark setting.").forThisDevice)
         }
     }
 }

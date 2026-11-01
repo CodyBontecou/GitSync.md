@@ -186,7 +186,7 @@ extension AppState {
             ?? parent.lastPathComponent
         let friendlyParent: String
         switch parentName {
-        case "File Provider Storage", "Documents", "": friendlyParent = String(localized: "On My iPhone")
+        case "File Provider Storage", "Documents", "": friendlyParent = String(localized: "On My iPhone").forThisDevice
         default: friendlyParent = parentName
         }
         return [friendlyParent, url.lastPathComponent]

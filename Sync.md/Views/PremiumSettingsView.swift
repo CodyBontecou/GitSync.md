@@ -102,7 +102,7 @@ struct PremiumSettingsView: View {
             }
 
             BackgroundSyncRailIllustration(
-                leadingLabel: String(localized: "this iPhone"),
+                leadingLabel: String(localized: "this iPhone").forThisDevice,
                 trailingLabel: String(localized: "remote"),
                 stamp: nil
             )
