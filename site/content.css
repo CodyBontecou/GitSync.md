@@ -292,3 +292,12 @@
   .guide-layout .article-body { font-size: 17px; }
   .guide-layout .article-body h2 { font-size: 26px; }
 }
+
+/* ---- Tide: guide rail card ---- */
+.rail-card { background: var(--surface); border-radius: var(--radius-card); padding: 24px; }
+.rail-card .toc-title { margin: 0; }
+.rail-states { list-style: none; margin: 14px 0 0; padding: 0; font: 400 12px/1.65 var(--mono); }
+.rail-states li { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.rail-dot { width: 9px; height: 9px; flex: none; border-radius: 50%; background: var(--blue); }
+.rail-dot-diverged { background: #986400; }
+.rail-dot-behind { background: #217342; }
