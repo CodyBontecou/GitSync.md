@@ -8,12 +8,10 @@ import UIKit
 // Screens still use BrutalDesignSystem; migrate them to Tide one at a time.
 // Depends on Color(light:dark:) (BrutalDesignSystem.swift) and Color(hex:) (Theme.swift).
 //
-// Fonts: designed with Geist + Geist Mono (SIL OFL 1.1). TideFont uses them when
-// they are registered with the app and falls back to SF Pro / SF Mono otherwise,
-// so nothing breaks before the font files land. To bundle them:
-//   1. Put the static TTFs in Sync.md/Resources/Fonts/ (Geist-Regular/Medium/SemiBold/Bold,
-//      GeistMono-Regular/Medium/SemiBold) plus OFL.txt.
-//   2. List each file under UIAppFonts in Sync.md/Info.plist.
+// Fonts: Geist + Geist Mono (SIL OFL 1.1, Sync.md/Resources/Fonts/, registered via
+// UIAppFonts in Info.plist). Static weight instances of the Latin subset; characters
+// outside it fall back to the system font. TideFont falls back to SF Pro / SF Mono
+// entirely if the files ever fail to register.
 
 // MARK: Color
 
@@ -42,26 +40,32 @@ enum Tide {
 // MARK: Type
 
 enum TideFont {
-    static let sansFamily = "Geist"
-    static let monoFamily = "Geist Mono"
-
-    /// True once Geist is bundled and registered via UIAppFonts.
-    static let hasGeist = !UIFont.fontNames(forFamilyName: sansFamily).isEmpty
-    static let hasGeistMono = !UIFont.fontNames(forFamilyName: monoFamily).isEmpty
+    /// True when the bundled Geist files registered at launch.
+    static let hasGeist = UIFont(name: "Geist-Regular", size: 12) != nil
+    static let hasGeistMono = UIFont(name: "GeistMono-Regular", size: 12) != nil
 
     /// Geist at `size`, scaled with Dynamic Type relative to `style`.
-    /// Falls back to SF Pro at the text style's size.
     static func sans(_ size: CGFloat, _ weight: Font.Weight = .regular,
                      relativeTo style: Font.TextStyle = .body) -> Font {
         guard hasGeist else { return .system(style, design: .default, weight: weight) }
-        return .custom(sansFamily, size: size, relativeTo: style).weight(weight)
+        return .custom("Geist-" + styleName(weight, hasBold: true), size: size, relativeTo: style)
     }
 
     /// Geist Mono — git facts only: branches, paths, hashes, counts, times.
     static func mono(_ size: CGFloat, _ weight: Font.Weight = .regular,
                      relativeTo style: Font.TextStyle = .caption) -> Font {
         guard hasGeistMono else { return .system(style, design: .monospaced, weight: weight) }
-        return .custom(monoFamily, size: size, relativeTo: style).weight(weight)
+        return .custom("GeistMono-" + styleName(weight, hasBold: false), size: size, relativeTo: style)
+    }
+
+    /// PostScript style suffix of the bundled instance closest to `weight`.
+    private static func styleName(_ weight: Font.Weight, hasBold: Bool) -> String {
+        switch weight {
+        case .medium: return "Medium"
+        case .semibold: return "SemiBold"
+        case .bold, .heavy, .black: return hasBold ? "Bold" : "SemiBold"
+        default: return "Regular"
+        }
     }
 
     /// Big state headline ("1 vault needs you.") — 38/600, tight tracking.
@@ -97,7 +101,7 @@ enum TideSyncState: Equatable {
         switch self {
         case .inSync: return String(localized: "In sync")
         case .ahead(let n): return String(localized: "\(n) to push")
-        case .behind(let n): return String(localized: "\(n) to pull")
+        case .behind(let n): return n > 0 ? String(localized: "\(n) to pull") : String(localized: "New on remote")
         case .diverged: return String(localized: "Needs a decision")
         }
     }
@@ -174,8 +178,8 @@ struct SyncRail: View {
         switch state {
         case .inSync: return (0, 0)
         case .ahead(let n): return (n, 0)
-        case .behind(let n): return (0, n)
-        case .diverged(let l, let r): return (l, r)
+        case .behind(let n): return (0, max(n, 1))
+        case .diverged(let l, let r): return (l, max(r, 1))
         }
     }
 }
@@ -217,6 +221,31 @@ struct TideStatePill: View {
             .foregroundStyle(state.tint)
             .padding(.horizontal, 9).padding(.vertical, 5)
             .background(RoundedRectangle(cornerRadius: 10).fill(state.tint.opacity(0.12)))
+    }
+}
+
+/// White rounded card on paper — Tide's basic container.
+struct TideCard<Content: View>: View {
+    var padding: CGFloat = 18
+    var radius: CGFloat = Tide.radiusCard
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        content
+            .padding(padding)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: radius, style: .continuous).fill(Tide.card))
+    }
+}
+
+/// Mono caps section label ("LAST PUSHED").
+struct TideSectionLabel: View {
+    let title: String
+    var body: some View {
+        Text(title.uppercased())
+            .font(TideFont.section)
+            .tracking(0.66)
+            .foregroundStyle(Tide.inkFaint)
     }
 }
 
