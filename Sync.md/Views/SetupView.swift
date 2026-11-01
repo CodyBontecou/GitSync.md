@@ -31,44 +31,38 @@ struct SetupView: View {
     @State private var trackedSteps: Set<OnboardingAnalyticsStep> = []
     @State private var completedAuthMethod: OnboardingAnalyticsAuthMethod? = nil
 
+    @FocusState private var patFocused: Bool
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     if showSaveLocationStep {
                         saveLocationStepView
                             .transition(.asymmetric(
                                 insertion: .move(edge: .trailing).combined(with: .opacity),
                                 removal: .move(edge: .leading).combined(with: .opacity)
                             ))
+                    } else if showPATFlow {
+                        patFlowView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing).combined(with: .opacity),
+                                removal: .move(edge: .leading).combined(with: .opacity)
+                            ))
                     } else {
-                        if let onBack, !showPATFlow {
-                            onboardingBackButton(onBack)
-                        }
-
-                        hero
-                            .padding(.bottom, 40)
-
-                        if showPATFlow {
-                            patFlowView
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                                    removal: .move(edge: .leading).combined(with: .opacity)
-                                ))
-                        } else {
-                            signInOptions
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .leading).combined(with: .opacity),
-                                    removal: .move(edge: .trailing).combined(with: .opacity)
-                                ))
-                        }
+                        accountChoiceView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .leading).combined(with: .opacity),
+                                removal: .move(edge: .trailing).combined(with: .opacity)
+                            ))
                     }
                 }
-                .padding(.bottom, 60)
+                .padding(.bottom, 40)
             }
             .scrollIndicators(.hidden)
-            .background(Color.brutalBg)
-            .navigationBarTitleDisplayMode(.inline)
+            .scrollDismissesKeyboard(.interactively)
+            .background(Tide.paper.ignoresSafeArea())
+            .toolbar(.hidden, for: .navigationBar)
             .alert("Error", isPresented: Binding(
                 get: { state.showError },
                 set: { state.showError = $0 }
@@ -95,51 +89,47 @@ struct SetupView: View {
         }
     }
 
-    // MARK: - Hero
+    // MARK: - Account choice
 
-    private var hero: some View {
+    private var accountChoiceView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Big monospaced title
-            Text(verbatim: "GITSYNC")
-                .bType(.hero)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-                .foregroundStyle(Color.brutalText)
-                .tracking(-2)
-                .padding(.bottom, 0)
-
-            Text(".MD")
-                .bType(.hero)
-                .foregroundStyle(Color.brutalAccent)
-                .tracking(-2)
-                .padding(.bottom, 16)
-
-            Rectangle()
-                .fill(Color.brutalBorder)
-                .frame(height: 2)
-                .padding(.bottom, 10)
-
-            HStack(spacing: 10) {
-                Rectangle()
-                    .fill(Color.brutalBorder)
-                    .frame(width: 20, height: 1)
-                Text("ANY GIT REPO, SYNCED TO YOUR IPHONE")
-                    .bType(.monoCaption, weight: .medium)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(1.5)
+            if let onBack {
+                AddVaultTopBar(onBack: onBack)
+                    .padding(.top, 8)
+            } else {
+                Color.clear.frame(height: 52)
             }
+
+            wordmark
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+
+            AddVaultHeadline(
+                title: String(localized: "Connect"),
+                muted: String(localized: "your repos."),
+                subtitle: String(localized: "Sign in to GitHub to clone and publish, or bring SSH, a token or another host."),
+                size: 38
+            )
+            .padding(.top, 18)
+
+            signInOptions
+                .padding(.top, 32)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 24)
-        .padding(.top, 60)
+    }
+
+    private var wordmark: some View {
+        (Text(verbatim: "gitsync").foregroundStyle(Tide.ink)
+            + Text(verbatim: ".md").foregroundStyle(Tide.behind))
+            .font(TideFont.mono(13, .semibold, relativeTo: .headline))
+            .accessibilityLabel("GitSync.md")
     }
 
     // MARK: - Sign In Options
 
     private var signInOptions: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 10) {
             // Primary: OAuth
-            BPrimaryButton(title: String(localized: "Sign in with GitHub"), imageName: "GitHubLogo") {
+            BPrimaryButton(title: String(localized: "Continue with GitHub"), imageName: "GitHubLogo") {
                 analytics.trackOnboardingAuthStarted(method: .githubOAuth)
                 trackSetupStep(.githubSignIn)
                 Task {
@@ -157,22 +147,14 @@ struct SetupView: View {
                     }
                 }
             }
-            .padding(.horizontal, 24)
-
-            // Divider
-            BDivider(label: String(localized: "or"))
-                .padding(.horizontal, 24)
-                .padding(.vertical, 20)
 
             // Secondary: PAT
-            BSecondaryButton(title: String(localized: "Personal Access Token"), icon: "key.fill") {
+            BSecondaryButton(title: String(localized: "Personal Access Token"), icon: "key") {
                 trackSetupStep(.personalAccessToken)
                 withAnimation(.easeInOut(duration: 0.25)) {
                     showPATFlow = true
                 }
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 16)
 
             // Continue without GitHub for self-hosted, SSH, public, or local repos.
             BSecondaryButton(title: String(localized: "Continue without GitHub"), icon: "network") {
@@ -180,14 +162,20 @@ struct SetupView: View {
                 analytics.trackOnboardingAuthCompleted(method: .none, outcome: .skipped)
                 presentSaveLocationStep()
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 16)
+
+            Text(String(localized: "Without GitHub: SSH, HTTPS tokens, any host, or local folders."))
+                .font(TideFont.sans(13, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkFaint)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 2)
 
             // Demo Mode — first-run only. Existing users replaying onboarding
             // from App Settings keep their real data and must not be offered a
             // demo-mode takeover.
             if showsDemoMode {
-                BGhostButton(title: String(localized: "Try Demo"), icon: "play.fill") {
+                Button {
                     completedAuthMethod = .demo
                     analytics.trackOnboardingAuthCompleted(method: .demo, outcome: .succeeded)
                     analytics.trackOnboardingCompleted(
@@ -199,11 +187,26 @@ struct SetupView: View {
                     state.hasCompletedOnboarding = true
                     state.saveGlobalSettings()
                     dismiss()
+                } label: {
+                    HStack(spacing: 6) {
+                        Text(String(localized: "Try Demo"))
+                            .font(TideFont.sans(15, .medium, relativeTo: .body))
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 13, weight: .semibold))
+                            .accessibilityHidden(true)
+                    }
+                    .foregroundStyle(Tide.behind)
+                    .padding(.horizontal, 12)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
                 }
+                .buttonStyle(.plain)
+                .accessibilityHint(String(localized: "Look around with a demo vault"))
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
+                .padding(.top, 6)
             }
         }
+        .padding(.horizontal, Tide.gutter)
     }
 
     /// Demo mode is a first-run affordance; it swaps in a seeded demo
@@ -212,97 +215,70 @@ struct SetupView: View {
         !state.hasCompletedOnboarding && state.repos.isEmpty
     }
 
-    // MARK: - Onboarding Back
-
-    /// Monospaced "← BACK" affordance mirroring the PAT flow's back button so
-    /// the sign-in step reads as just another onboarding page.
-    private func onboardingBackButton(_ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 6) {
-                Text("←")
-                    .bType(.mono, weight: .regular)
-                Text("BACK")
-                    .bType(.monoSm)
-                    .tracking(1)
-            }
-            .foregroundStyle(Color.brutalText)
-            // 44x44pt hit target, text stays compact.
-            .frame(minWidth: 44, minHeight: 44)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 24)
-        .padding(.top, 12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
     // MARK: - PAT Flow
 
     private var patFlowView: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // Back button
-            Button {
+        VStack(alignment: .leading, spacing: 0) {
+            AddVaultTopBar {
                 withAnimation(.easeInOut(duration: 0.25)) { showPATFlow = false }
-            } label: {
-                HStack(spacing: 6) {
-                    Text("←")
-                        .bType(.mono, weight: .regular)
-                    Text("BACK")
-                        .bType(.monoSm)
-                        .tracking(1)
-                }
-                .foregroundStyle(Color.brutalText)
-                // 44x44pt hit target, text stays compact.
-                .frame(minWidth: 44, minHeight: 44)
-                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 24)
+            .padding(.top, 8)
 
-            // Token field
+            AddVaultHeadline(
+                title: String(localized: "Personal access token"),
+                subtitle: String(localized: "Paste a GitHub token with repo access. It is stored in the Keychain.")
+            )
+            .padding(.top, 6)
+
             VStack(alignment: .leading, spacing: 8) {
+                AddVaultSectionLabel(title: String(localized: "Token"))
+
                 HStack(spacing: 0) {
-                    if showPAT {
-                        TextField("ghp_...", text: $patToken)
-                            .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                            .bType(.mono, weight: .regular)
-                    } else {
-                        SecureField("ghp_...", text: $patToken)
-                            .bType(.mono, weight: .regular)
+                    Group {
+                        if showPAT {
+                            TextField("ghp_...", text: $patToken)
+                                .autocorrectionDisabled()
+                                .textInputAutocapitalization(.never)
+                        } else {
+                            SecureField("ghp_...", text: $patToken)
+                        }
                     }
-                    Spacer()
+                    .focused($patFocused)
+                    .font(TideFont.mono(15, .medium, relativeTo: .body))
+                    .foregroundStyle(Tide.ink)
+                    .accessibilityLabel(String(localized: "Personal access token"))
+
                     Button { showPAT.toggle() } label: {
                         Image(systemName: showPAT ? "eye.slash" : "eye")
-                            .bType(.mono, weight: .regular)
-                            .foregroundStyle(Color.brutalText)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(Tide.inkMid)
                             // Icon-only toggle: 44x44pt hit target.
                             .frame(width: 44, height: 44)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(showPAT ? String(localized: "Hide Token") : String(localized: "Show Token"))
-                    .padding(.leading, 8)
                 }
-                .padding(13)
-                .background(Color.brutalSurface)
-
-                Text("PERSONAL ACCESS TOKEN")
-                    .bType(.monoCaption, weight: .semibold)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(2)
+                .padding(.trailing, -10)
+                .addVaultFieldChrome(focused: patFocused)
+                .padding(.horizontal, Tide.gutter)
 
                 Link(destination: URL(string: "https://github.com/settings/tokens/new?scopes=repo,user:email&description=GitSync.md")!) {
-                    Text("CREATE A PAT ON GITHUB →")
-                        .bType(.monoCaption, weight: .semibold)
-                        .foregroundStyle(Color.brutalAccent)
-                        .tracking(1)
-                        // 44x44pt hit target, text stays compact.
-                        .frame(minWidth: 44, minHeight: 44)
-                        .contentShape(Rectangle())
+                    HStack(spacing: 5) {
+                        Text(String(localized: "Create a PAT on GitHub"))
+                            .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 11, weight: .semibold))
+                            .accessibilityHidden(true)
+                    }
+                    .foregroundStyle(Tide.behind)
+                    // 44x44pt hit target, text stays compact.
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 24)
+            .padding(.top, 22)
 
             // Sign in button
             BPrimaryButton(
@@ -330,7 +306,8 @@ struct SetupView: View {
                     }
                 }
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, Tide.gutter)
+            .padding(.top, 18)
         }
     }
 
@@ -371,108 +348,102 @@ struct SetupView: View {
 
     private var saveLocationStepView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Hero
-            VStack(alignment: .leading, spacing: 0) {
-                Text("DEFAULT")
-                    .bType(.displayLg)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(-1)
-
-                Text("SAVE")
-                    .bType(.displayLg)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(-1)
-
-                Text("LOCATION")
-                    .bType(.displayLg)
-                    .foregroundStyle(Color.brutalAccent)
-                    .tracking(-1)
-                    .padding(.bottom, 12)
-
-                Rectangle()
-                    .fill(Color.brutalBorder)
-                    .frame(height: 2)
-                    .padding(.bottom, 8)
-
-                Text("CHOOSE WHERE NEW REPOSITORIES ARE SAVED")
-                    .bType(.monoCaption, weight: .medium)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(1)
+            HStack {
+                wordmark
+                Spacer()
+                if state.isSignedIn && !state.gitHubUsername.isEmpty {
+                    Text(verbatim: "@\(state.gitHubUsername)")
+                        .font(TideFont.mono(12, relativeTo: .caption))
+                        .foregroundStyle(Tide.inkMid)
+                        .lineLimit(1)
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             .padding(.top, 60)
-            .padding(.bottom, 32)
+
+            AddVaultHeadline(
+                title: String(localized: "Default save"),
+                muted: String(localized: "location."),
+                subtitle: String(localized: "Choose where new repositories are saved."),
+                size: 38
+            )
+            .padding(.top, 18)
 
             // Selected location
-            if let url = selectedFolderURL {
-                BCard(padding: 14, bg: .brutalSurface) {
-                    HStack(spacing: 12) {
-                        // Decorative emoji glyph (folder ornament, carries no
-                        // information) - fixed size per Issue #16's decorative
-                        // allowance; the adjacent filename/path do scale.
-                        Text("📁")
-                            .font(.system(size: 22))
-
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(url.lastPathComponent)
-                                .bType(.mono, weight: .semibold)
-                                .foregroundStyle(Color.brutalText)
-                            Text(url.path)
-                                .bType(.monoSm, weight: .regular)
-                                .foregroundStyle(Color.brutalText)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
+            Group {
+                if let url = selectedFolderURL {
+                    AddVaultCard {
+                        HStack(spacing: 14) {
+                            AddVaultIconTile(systemImage: "folder", size: 40)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(url.lastPathComponent)
+                                    .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                                    .foregroundStyle(Tide.ink)
+                                    .lineLimit(1)
+                                Text(url.path)
+                                    .font(TideFont.mono(11))
+                                    .foregroundStyle(Tide.inkFaint)
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                            }
+                            Spacer(minLength: 8)
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.2)) { selectedFolderURL = nil }
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundStyle(Tide.inkMid)
+                                    // Icon-only clear affordance: 44x44pt hit target.
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(String(localized: "Use Default Location"))
                         }
-
-                        Spacer()
-
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.2)) { selectedFolderURL = nil }
-                        } label: {
-                            Image(systemName: "xmark")
-                                .bType(.mono, weight: .bold)
-                                .foregroundStyle(Color.brutalText)
-                                .padding(6)
-                                // Icon-only clear affordance: 44x44pt hit target.
-                                .frame(width: 44, height: 44)
-                                .contentShape(Rectangle())
+                        .padding(.vertical, 12)
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                } else {
+                    AddVaultCard {
+                        HStack(spacing: 14) {
+                            AddVaultIconTile(systemImage: "iphone", size: 40)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(String(localized: "On My iPhone"))
+                                    .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                                    .foregroundStyle(Tide.ink)
+                                Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
+                                    .font(TideFont.sans(13, relativeTo: .footnote))
+                                    .foregroundStyle(Tide.inkFaint)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            Spacer(minLength: 0)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(String(localized: "Use Default Location"))
+                        .padding(.vertical, 14)
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 16)
-                .transition(.scale.combined(with: .opacity))
-            } else {
-                // Info
-                HStack(spacing: 8) {
-                    Image(systemName: "info.circle")
-                        .bType(.monoCaption, weight: .regular)
-                        .foregroundStyle(Color.brutalText)
-                        .accessibilityHidden(true)
-                    Text("Without a default, repos save to Files › On My iPhone › GitSync.md")
-                        .bType(.mono, weight: .regular)
-                        .foregroundStyle(Color.brutalText)
-                }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 16)
             }
+            .padding(.top, 24)
 
-            VStack(spacing: 12) {
+            VStack(spacing: 10) {
                 BPrimaryButton(
                     title: selectedFolderURL != nil ? String(localized: "Change Location") : String(localized: "Choose Location"),
                     icon: "folder.badge.plus"
                 ) { showFolderPicker = true }
-                .padding(.horizontal, 24)
 
-                BGhostButton(
-                    title: selectedFolderURL != nil ? String(localized: "Continue →") : String(localized: "Skip for Now")
-                ) { finishOnboarding() }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
+                Button {
+                    finishOnboarding()
+                } label: {
+                    Text(selectedFolderURL != nil ? String(localized: "Continue") : String(localized: "Skip for Now"))
+                        .font(TideFont.sans(15, .medium, relativeTo: .body))
+                        .foregroundStyle(Tide.ink)
+                        .frame(maxWidth: .infinity, minHeight: 54)
+                        .background(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
             }
+            .padding(.horizontal, Tide.gutter)
+            .padding(.top, 24)
         }
     }
 }

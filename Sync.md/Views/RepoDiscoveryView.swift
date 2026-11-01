@@ -70,40 +70,44 @@ struct RepoDiscoveryView: View {
         selectedRepoIDs.count
     }
 
+    private var isScanning: Bool { containerScan.isScanning || grantScan.isScanning }
+
+    private var foundCount: Int { containerResults.count + visibleGrantResults.count }
+
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color.brutalBg.ignoresSafeArea()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    AddVaultTopBar(backLabel: String(localized: "Cancel")) { dismiss() }
+                        .padding(.top, 8)
 
-                ScrollView {
-                    VStack(spacing: 12) {
-                        introCard
+                    headline
+                        .padding(.top, 6)
 
-                        containerSection
+                    scanStatusLine
+                        .padding(.top, 10)
 
-                        grantSection
+                    containerSection
+                        .padding(.top, 20)
 
-                        authorSection
+                    grantSection
+                        .padding(.top, 22)
 
-                        addButton
-                    }
-                    .padding(.top, 12)
-                    .padding(.bottom, 40)
+                    infoNote
+                        .padding(.top, 14)
+
+                    authorSection
+                        .padding(.top, 22)
                 }
-                .scrollIndicators(.hidden)
+                .padding(.bottom, 24)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("DISCOVER REPOSITORIES")
-                        .bType(.monoCaption, weight: .black)
-                        .foregroundStyle(Color.brutalText)
-                        .tracking(2)
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
+            .scrollIndicators(.hidden)
+            .scrollDismissesKeyboard(.interactively)
+            .background(Tide.paper.ignoresSafeArea())
+            .safeAreaInset(edge: .bottom) {
+                AddVaultBottomBar { addButton }
             }
+            .toolbar(.hidden, for: .navigationBar)
             .fileImporter(
                 isPresented: $showFolderPicker,
                 allowedContentTypes: [.folder],
@@ -129,84 +133,89 @@ struct RepoDiscoveryView: View {
         }
     }
 
-    // MARK: - Intro
+    // MARK: - Headline
 
-    private var introCard: some View {
-        BCard(padding: 14) {
-            HStack(alignment: .top, spacing: 10) {
-                // Decorative emoji glyph (magnifier ornament, carries no
-                // information) - fixed per Issue #16's decorative allowance.
-                Text("🔍")
-                    .font(.system(size: 18))
-                Text("Scan GitSync.md storage or any folder you grant access to. Every git working copy inside is listed for one-tap reconnect.")
-                    .bType(.monoSm, weight: .regular)
-                    .foregroundStyle(Color.brutalText)
-            }
+    @ViewBuilder
+    private var headline: some View {
+        if foundCount > 0 {
+            AddVaultHeadline(
+                title: foundCount == 1
+                    ? String(localized: "Found 1 repo")
+                    : String(localized: "Found \(foundCount) repos"),
+                muted: String(localized: "already here.")
+            )
+        } else if isScanning {
+            AddVaultHeadline(
+                title: String(localized: "Looking for repos"),
+                muted: String(localized: "on this iPhone.")
+            )
+        } else {
+            AddVaultHeadline(
+                title: String(localized: "Find clones"),
+                muted: String(localized: "on this iPhone.")
+            )
+        }
+    }
+
+    /// Mono status line: blue dot while scanning, plain text after.
+    private var scanStatusLine: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(isScanning ? Tide.behind : Tide.synced)
+                .frame(width: 8, height: 8)
+                .accessibilityHidden(true)
+            Text(verbatim: scanStatusText)
+                .font(TideFont.mono(12))
+                .foregroundStyle(Tide.inkMid)
+                .lineLimit(1)
+                .truncationMode(.middle)
         }
         .padding(.horizontal, 20)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var scanStatusText: String {
+        if grantScan.isScanning, let grantURL = grantRootURL {
+            return String(localized: "scanning \(grantURL.lastPathComponent)…")
+        }
+        if containerScan.isScanning {
+            return String(localized: "scanning On My iPhone › GitSync.md…")
+        }
+        return String(localized: "Scan GitSync.md storage or any folder you grant access to.")
     }
 
     // MARK: - GitSync.md storage section
 
     private var containerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(
+            AddVaultSectionLabel(
                 title: String(localized: "GitSync.md Storage"),
-                subtitle: containerScan == .done && containerResults.isEmpty
-                    ? String(localized: "No repositories found")
-                    : nil
+                trailing: containerScan == .done ? "\(containerResults.count)" : nil
             )
-            .padding(.horizontal, 20)
 
-            BCard(padding: 0) {
-                VStack(spacing: 0) {
-                    HStack(spacing: 8) {
-                        // Decorative emoji glyph (box ornament, carries no
-                        // information) - fixed per Issue #16's decorative allowance.
-                        Text("📦").font(.system(size: 16))
-                        Text("On My iPhone › GitSync.md")
-                            .bType(.monoSm, weight: .regular)
-                            .foregroundStyle(Color.brutalText)
-                        Spacer()
-                        if containerScan.isScanning {
-                            ProgressView().controlSize(.small)
-                        } else if !containerResults.isEmpty {
-                            BBadge(text: String(localized: "\(containerResults.count) found"), style: .accent)
-                        }
+            AddVaultCard {
+                if containerScan.isScanning {
+                    statusRow {
+                        ProgressView().controlSize(.small)
+                        Text(String(localized: "Scanning…"))
+                            .font(TideFont.meta)
+                            .foregroundStyle(Tide.inkMid)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-
-                    if containerScan.isScanning {
-                        BDivider().padding(.horizontal, 16)
-                        HStack(spacing: 8) {
-                            Image(systemName: "magnifyingglass")
-                                .accessibilityHidden(true)
-                            Text("Scanning…")
-                                .bType(.monoSm, weight: .regular)
-                        }
-                        .foregroundStyle(Color.brutalText)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                    } else if case .failed(let message) = containerScan {
-                        BDivider().padding(.horizontal, 16)
-                        HStack(spacing: 6) {
-                            BBadge(text: String(localized: "ERROR"), style: .error)
-                            Text(message)
-                                .bType(.monoSm, weight: .regular)
-                                .foregroundStyle(Color.brutalError)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                    } else {
-                        ForEach(Array(containerResults.enumerated()), id: \.element.id) { index, repo in
-                            if index > 0 { BDivider().padding(.horizontal, 16) }
-                            repoRow(repo)
-                        }
+                } else if case .failed(let message) = containerScan {
+                    errorRow(message)
+                } else if containerResults.isEmpty {
+                    statusRow {
+                        Text(String(localized: "No repositories found"))
+                            .font(TideFont.sans(14, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.inkMid)
+                    }
+                } else {
+                    ForEach(Array(containerResults.enumerated()), id: \.element.id) { index, repo in
+                        if index > 0 { AddVaultHairline() }
+                        repoRow(repo)
                     }
                 }
             }
-            .padding(.horizontal, 20)
         }
     }
 
@@ -214,98 +223,124 @@ struct RepoDiscoveryView: View {
 
     private var grantSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(
+            AddVaultSectionLabel(
                 title: String(localized: "Other Folders"),
-                subtitle: grantRootURL == nil
-                    ? String(localized: "iCloud Drive, other apps' folders, or anywhere in Files")
-                    : nil
+                trailing: grantScan == .done ? "\(visibleGrantResults.count)" : nil
             )
-            .padding(.horizontal, 20)
 
-            BCard(padding: 0) {
-                VStack(spacing: 0) {
-                    if let grantURL = grantRootURL {
-                        HStack(spacing: 12) {
-                            // Decorative emoji glyph (folder ornament, carries no
-                            // information) - fixed per Issue #16's decorative allowance.
-                            Text("📁").font(.system(size: 18))
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(grantURL.lastPathComponent)
-                                    .bType(.mono, weight: .semibold)
-                                    .foregroundStyle(Color.brutalText)
-                                Text(grantURL.path)
-                                    .bType(.monoSm, weight: .regular)
-                                    .foregroundStyle(Color.brutalText)
-                                    .lineLimit(1)
-                                    .truncationMode(.middle)
-                            }
-                            Spacer()
-                            if grantScan.isScanning {
-                                ProgressView().controlSize(.small)
-                            } else if !visibleGrantResults.isEmpty {
-                                BBadge(text: String(localized: "\(visibleGrantResults.count) found"), style: .accent)
-                            }
+            if let grantURL = grantRootURL {
+                AddVaultCard {
+                    HStack(spacing: 14) {
+                        AddVaultIconTile(systemImage: "folder", size: 40)
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(grantURL.lastPathComponent)
+                                .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                                .foregroundStyle(Tide.ink)
+                                .lineLimit(1)
+                            Text(grantURL.path)
+                                .font(TideFont.mono(11))
+                                .foregroundStyle(Tide.inkFaint)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
+                        Spacer(minLength: 8)
+                        if grantScan.isScanning {
+                            ProgressView().controlSize(.small)
+                        }
+                    }
+                    .padding(.vertical, 14)
 
-                        if case .failed(let message) = grantScan {
-                            BDivider().padding(.horizontal, 16)
-                            HStack(spacing: 6) {
-                                BBadge(text: String(localized: "ERROR"), style: .error)
-                                Text(message)
-                                    .bType(.monoSm, weight: .regular)
-                                    .foregroundStyle(Color.brutalError)
-                            }
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 12)
-                        } else if grantScan == .done && visibleGrantResults.isEmpty {
-                            BDivider().padding(.horizontal, 16)
+                    if case .failed(let message) = grantScan {
+                        AddVaultHairline()
+                        errorRow(message)
+                    } else if grantScan == .done && visibleGrantResults.isEmpty {
+                        AddVaultHairline()
+                        statusRow {
                             Text(
                                 grantResults.isEmpty
                                     ? String(localized: "No git repositories found inside this folder.")
                                     : String(localized: "Repositories from this folder are already listed above.")
                             )
-                                .bType(.monoSm, weight: .regular)
-                                .foregroundStyle(Color.brutalText)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 12)
-                        } else {
-                            ForEach(Array(visibleGrantResults.enumerated()), id: \.element.id) { index, repo in
-                                if index > 0 { BDivider().padding(.horizontal, 16) }
-                                repoRow(repo)
-                            }
+                            .font(TideFont.sans(14, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.inkMid)
+                            .fixedSize(horizontal: false, vertical: true)
+                        }
+                    } else {
+                        ForEach(visibleGrantResults) { repo in
+                            AddVaultHairline()
+                            repoRow(repo)
                         }
                     }
-
-                    BDivider().padding(.horizontal, 16)
-
-                    Button {
-                        showFolderPicker = true
-                    } label: {
-                        HStack(spacing: 6) {
-                            Text("📂")
-                            Text(
-                                grantRootURL == nil
-                                    ? String(localized: "CHOOSE FOLDER TO SCAN")
-                                    : String(localized: "SCAN DIFFERENT FOLDER")
-                            )
-                                .bType(.monoCaption)
-                                .foregroundStyle(Color.brutalAccent)
-                                .tracking(1)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                        // 44x44pt hit target, text stays compact.
-                        .frame(minWidth: 44, minHeight: 44)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
                 }
+            } else if case .failed(let message) = grantScan {
+                AddVaultStatusLine(text: message, tint: Tide.danger, systemImage: "exclamationmark.triangle")
+            } else {
+                AddVaultFootnote(text: String(localized: "iCloud Drive, other apps' folders, or anywhere in Files"))
             }
-            .padding(.horizontal, 20)
+
+            Button {
+                showFolderPicker = true
+            } label: {
+                Text(grantRootURL == nil
+                     ? String(localized: "Choose folder to scan…")
+                     : String(localized: "Scan another folder…"))
+                    .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.ink)
+                    .frame(maxWidth: .infinity, minHeight: 46)
+                    .background(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                    .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(grantScan.isScanning)
+            .padding(.horizontal, Tide.gutter)
+            .padding(.top, 4)
         }
+    }
+
+    private var infoNote: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "info.circle")
+                .font(.system(size: 16))
+                .foregroundStyle(Tide.inkMid)
+                .accessibilityHidden(true)
+            Text(String(localized: "Repos stay where they are. GitSync.md only remembers the folder, so Obsidian keeps working as before."))
+                .font(TideFont.sans(13.5, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+                .lineSpacing(2)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .strokeBorder(Color.brutalBorderSoft, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
+        )
+        .padding(.horizontal, Tide.gutter)
+    }
+
+    private func statusRow<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        HStack(spacing: 10) {
+            content()
+            Spacer(minLength: 0)
+        }
+        .padding(.vertical, 15)
+        .frame(minHeight: 44)
+    }
+
+    private func errorRow(_ message: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 12, weight: .semibold))
+                .accessibilityHidden(true)
+            Text(message)
+                .font(TideFont.sans(14, relativeTo: .subheadline))
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(Tide.danger)
+        .padding(.vertical, 15)
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Repo row
@@ -319,32 +354,34 @@ struct RepoDiscoveryView: View {
             toggleSelection(repo)
         } label: {
             HStack(spacing: 12) {
-                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
-                    .bType(.monoLg, weight: .semibold)
-                    .foregroundStyle(isSelected ? Color.brutalAccent : Color.brutalText)
-                    .accessibilityHidden(true)
+                AddVaultCheckbox(isOn: isSelected || isTracked, isEnabled: !isTracked)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 6) {
-                        Text(repo.name)
-                            .bType(.mono, weight: .semibold)
-                            .foregroundStyle(isTracked ? Color.brutalText.opacity(0.5) : Color.brutalText)
-                            .lineLimit(1)
-                        if isTracked {
-                            BBadge(text: String(localized: "added"), style: .success)
-                        }
-                    }
-                    Text(Self.repositorySubtitle(for: repo))
-                        .bType(.monoCaption, weight: .regular)
-                        .foregroundStyle(Color.brutalText)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(repo.name)
+                        .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                        .tracking(-0.24)
+                        .foregroundStyle(isTracked ? Tide.inkFaint : Tide.ink)
                         .lineLimit(1)
+                    Text(verbatim: Self.locationLine(for: repo))
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                        .lineLimit(2)
                         .truncationMode(.middle)
                 }
 
-                Spacer()
+                Spacer(minLength: 8)
+
+                if isTracked {
+                    Text(String(localized: "added"))
+                        .font(TideFont.metaStrong)
+                        .foregroundStyle(Tide.synced)
+                } else if repo.remoteURL == nil {
+                    Text(String(localized: "local only"))
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkFaint)
+                }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .padding(.vertical, 14)
             // Defensive 44pt row minimum — content already exceeds it (Issue #17).
             .frame(minHeight: 44)
             .contentShape(Rectangle())
@@ -364,12 +401,21 @@ struct RepoDiscoveryView: View {
         return String(localized: "No remote")
     }
 
+    /// "Obsidian/journal · owner/journal · github.com" — where it lives, then its remote.
+    static func locationLine(for repo: DiscoveredRepo) -> String {
+        let path = repo.relativePath.isEmpty ? repo.name : repo.relativePath
+        var parts = [path, repositorySubtitle(for: repo)]
+        if let remote = repo.remoteURL, let host = GitRemoteURL.parse(remote)?.host, !host.isEmpty {
+            parts.append(host)
+        }
+        return parts.joined(separator: " · ")
+    }
+
     // MARK: - Author
 
     private var authorSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(title: String(localized: "Commit Author"))
-                .padding(.horizontal, 20)
+            AddVaultSectionLabel(title: String(localized: "Commit Author"))
 
             VStack(spacing: 12) {
                 BTextField(
@@ -386,7 +432,7 @@ struct RepoDiscoveryView: View {
                     autocapitalization: .never
                 )
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, Tide.gutter)
         }
     }
 
@@ -395,16 +441,15 @@ struct RepoDiscoveryView: View {
     private var addButton: some View {
         BPrimaryButton(
             title: selectedCount == 0
-                ? String(localized: "Add Repositories")
-                : String(localized: "Add \(selectedCount) Repositor\(selectedCount == 1 ? "y" : "ies")"),
+                ? String(localized: "Add vaults")
+                : (selectedCount == 1
+                    ? String(localized: "Add 1 vault")
+                    : String(localized: "Add \(selectedCount) vaults")),
             isLoading: isAdding,
-            isDisabled: selectedCount == 0 || isAdding,
-            icon: "square.stack.3d.up.badge.automatic"
+            isDisabled: selectedCount == 0 || isAdding
         ) {
             addSelected()
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 8)
     }
 
     // MARK: - Actions
