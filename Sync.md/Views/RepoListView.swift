@@ -17,6 +17,8 @@ struct RepoListView: View {
     @State private var pendingGhostRemovalIdentifier: String? = nil
     @State private var showGhostRemovalConfirm = false
     @State private var showGhostRemovedToast = false
+    @State private var showEmptyDiscovery = false
+    @State private var showEmptyFolderPublication = false
     @State private var navigationPath = NavigationPath()
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     /// Regular width (iPad, iPhone Duo open): vault picked in the sidebar.
@@ -40,7 +42,7 @@ struct RepoListView: View {
                     } else {
                         if state.isDemoMode {
                             demoBanner
-                                .padding(.horizontal, 20)
+                                .padding(.horizontal, Tide.gutter)
                                 .padding(.top, 8)
                                 .padding(.bottom, 4)
                         }
@@ -338,47 +340,153 @@ struct RepoListView: View {
 
     private var emptyState: some View {
         let ghosts = ghostRepoIdentifiers
-        return VStack {
-            if ghosts.isEmpty {
-                Spacer()
-                BEmptyState(
-                    title: String(localized: "No Repositories"),
-                    subtitle: String(localized: "Add a Git remote or open an existing\nlocal repository to start syncing."),
-                    actionTitle: String(localized: "Add Repository"),
-                    action: { handleAddRepoTapped() }
-                )
-                Spacer()
-                Spacer()
-            } else {
-                Spacer()
-                VStack(alignment: .leading, spacing: 12) {
-                    BSectionHeader(title: String(localized: "Previously Cloned"))
-                        .padding(.horizontal, 20)
-
-                    ForEach(ghosts, id: \.self) { id in
-                        ghostRepoCard(id)
-                            .padding(.horizontal, 20)
+        return VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(String(localized: "No vaults yet."))
+                            .tideDisplay(38)
+                            .fixedSize(horizontal: false, vertical: true)
+                        if state.isSignedIn, !state.gitHubUsername.isEmpty {
+                            Text(String(localized: "signed in as @\(state.gitHubUsername)"))
+                                .font(TideFont.mono(12))
+                                .foregroundStyle(Tide.inkMid)
+                        }
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(.isHeader)
+                    .padding(.horizontal, 4)
+                    .padding(.top, 14)
 
-                    Button { handleAddRepoTapped() } label: {
-                        Text("+ " + String(localized: "Add Different Repository").uppercased())
-                            .bType(.monoCaption)
-                            .foregroundStyle(Color.brutalText.opacity(0.45))
-                            .tracking(2)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            // Full-width link, ≥44pt-tall hit target.
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
+                    emptyRail
+                        .padding(.top, 30)
+
+                    TideSectionLabel(title: String(localized: "Start with"))
+                        .padding(.horizontal, 4)
+                        .padding(.top, 24)
+
+                    VStack(spacing: 0) {
+                        emptyStartRow(
+                            title: String(localized: "Clone from GitHub"),
+                            detail: state.isSignedIn && !state.gitHubRepos.isEmpty
+                                ? String(localized: "\(state.gitHubRepos.count) repos available")
+                                : String(localized: "or any Git remote URL"),
+                            action: handleAddRepoTapped
+                        )
+                        Rectangle().fill(Tide.line).frame(height: 1)
+                        emptyStartRow(
+                            title: String(localized: "Find clones on this iPhone"),
+                            detail: String(localized: "Obsidian, Working Copy…"),
+                            action: { showEmptyDiscovery = true }
+                        )
+                        Rectangle().fill(Tide.line).frame(height: 1)
+                        emptyStartRow(
+                            title: String(localized: "Publish an existing folder"),
+                            detail: String(localized: "creates a GitHub repository"),
+                            action: { showEmptyFolderPublication = true }
+                        )
                     }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 4)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 2)
+                    .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+                    .padding(.top, 8)
+
+                    if !ghosts.isEmpty {
+                        TideSectionLabel(title: String(localized: "Previously Cloned"))
+                            .padding(.horizontal, 4)
+                            .padding(.top, 24)
+                            .padding(.bottom, 8)
+
+                        VStack(spacing: 10) {
+                            ForEach(ghosts, id: \.self) { id in
+                                ghostRepoCard(id)
+                            }
+                        }
+                    }
                 }
-                Spacer()
-                Spacer()
+                .padding(.horizontal, Tide.gutter)
+                .padding(.bottom, 16)
             }
+            .scrollIndicators(.hidden)
+
+            Button { handleAddRepoTapped() } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 17, weight: .semibold))
+                        .accessibilityHidden(true)
+                    Text(String(localized: "Add your first vault"))
+                        .font(TideFont.sans(17, .semibold, relativeTo: .body))
+                }
+                .foregroundStyle(Tide.paper)
+                .frame(maxWidth: .infinity, minHeight: 60)
+                .background(Capsule().fill(Tide.ink))
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, Tide.gutter)
+            .padding(.vertical, 12)
         }
+        .sheet(isPresented: $showEmptyDiscovery) {
+            RepoDiscoveryView(onComplete: { showEmptyDiscovery = false })
+        }
+        .sheet(isPresented: $showEmptyFolderPublication) {
+            FolderPublicationView(onComplete: { showEmptyFolderPublication = false })
+        }
+    }
+
+    /// Dashed, empty sync rail: nothing on either side, a dashed sync point.
+    private var emptyRail: some View {
+        let dashed = Color(light: Color(hex: 0xD9D7CF), dark: Color(hex: 0x3A3A40))
+        return ZStack {
+            Rectangle().fill(dashed).frame(height: 1).padding(.horizontal, 24)
+            HStack {
+                Text("iPhone")
+                Spacer()
+                Text("Remote")
+            }
+            .padding(.horizontal, 24)
+            .offset(y: -26)
+            Circle()
+                .strokeBorder(Tide.inkFaint, style: StrokeStyle(lineWidth: 2, dash: [4, 3]))
+                .background(Circle().fill(Tide.paper))
+                .frame(width: 28, height: 28)
+            Text(String(localized: "nothing to sync"))
+                .offset(y: 34)
+        }
+        .font(TideFont.mono(11))
+        .foregroundStyle(Tide.inkFaint)
+        .frame(maxWidth: .infinity)
+        .frame(height: 150)
+        .background(
+            RoundedRectangle(cornerRadius: Tide.radiusHero, style: .continuous)
+                .strokeBorder(dashed, style: StrokeStyle(lineWidth: 1.5, dash: [6, 4]))
+        )
+        .accessibilityElement()
+        .accessibilityLabel(String(localized: "An empty sync rail waiting for its first vault"))
+    }
+
+    private func emptyStartRow(title: String, detail: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(TideFont.sans(16, .semibold, relativeTo: .headline))
+                        .foregroundStyle(Tide.ink)
+                    Text(detail)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                }
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(Tide.inkFaint)
+                    .accessibilityHidden(true)
+            }
+            .padding(.vertical, 15)
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Repo List
@@ -721,29 +829,38 @@ struct RepoListView: View {
     // MARK: - Demo Banner
 
     private var demoBanner: some View {
-        BCard(padding: 12, bg: .brutalSurface) {
-            HStack(spacing: 10) {
-                BBadge(text: String(localized: "Demo Mode"), style: .warning)
+        HStack(alignment: .center, spacing: 12) {
+            Circle()
+                .fill(Tide.ahead)
+                .frame(width: 8, height: 8)
+                .accessibilityHidden(true)
 
-                Spacer()
+            Text(String(localized: "Demo mode"))
+                .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                .foregroundStyle(Tide.ink)
 
-                Button {
-                    state.deactivateDemoMode()
-                } label: {
-                    Text(String(localized: "Exit").uppercased())
-                        .bType(.monoCaption)
-                        .foregroundStyle(Color.brutalText)
-                        .tracking(1)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
-                        // Compact chip, 44pt hit target.
-                        .frame(minWidth: 44, minHeight: 44)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
+            Spacer(minLength: 8)
+
+            Button {
+                state.deactivateDemoMode()
+            } label: {
+                Text(String(localized: "Exit"))
+                    .font(TideFont.sans(13, .semibold, relativeTo: .footnote))
+                    .foregroundStyle(Tide.ink)
+                    .padding(.horizontal, 14)
+                    .frame(height: 32)
+                    .overlay(Capsule().strokeBorder(Tide.line, lineWidth: 1))
+                    // 32pt pill, 44pt hit target.
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Exit demo mode"))
         }
+        .padding(.leading, 16)
+        .padding(.trailing, 8)
+        .padding(.vertical, 4)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Tide.card))
     }
 
     // MARK: - Helpers
