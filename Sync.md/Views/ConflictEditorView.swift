@@ -12,6 +12,7 @@ struct ConflictEditorDestination: Hashable {
 struct ConflictEditorView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     let repoID: UUID
     let path: String
@@ -158,8 +159,14 @@ struct ConflictEditorView: View {
                     if oursIsBinary || theirsIsBinary {
                         binaryNotice
                     } else {
-                        versionCard(.ours, detail: detail)
-                        versionCard(.theirs, detail: detail)
+                        // Side by side when there's room (iPad, iPhone Duo open).
+                        let cards = horizontalSizeClass == .regular
+                            ? AnyLayout(HStackLayout(alignment: .top, spacing: 12))
+                            : AnyLayout(VStackLayout(spacing: 10))
+                        cards {
+                            versionCard(.ours, detail: detail)
+                            versionCard(.theirs, detail: detail)
+                        }
                         secondaryActions(detail: detail)
                             .padding(.top, 4)
                         if showManualEditor {
@@ -370,8 +377,8 @@ struct ConflictEditorView: View {
                 .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Tide.well))
 
             HStack(spacing: 8) {
-                smallPill(String(localized: "Use this iPhone's"), tint: Tide.ahead) { resultText = oursText }
-                smallPill(String(localized: "Use remote"), tint: Tide.behind) { resultText = theirsText }
+                smallPill(String(localized: "Start from this iPhone"), tint: Tide.ahead) { resultText = oursText }
+                smallPill(String(localized: "Start from remote"), tint: Tide.behind) { resultText = theirsText }
             }
 
             BPrimaryButton(

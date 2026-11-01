@@ -175,14 +175,15 @@ struct RepoListView: View {
                                 showAppSettings = true
                             } label: {
                                 Image(systemName: "gearshape")
-                                    .bType(.mono, weight: .semibold, color: .brutalAccent)
+                                    .font(.system(size: 17, weight: .semibold))
+                                    .foregroundStyle(Tide.ink)
                                     .frame(width: 44, height: 44)
                                     .accessibilityHidden(true)
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(String(localized: "App Settings"))
                         }
-                        .foregroundStyle(Color.brutalAccent)
+                        .foregroundStyle(Tide.ink)
                     }
                 }
             }

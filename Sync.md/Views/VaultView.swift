@@ -302,6 +302,7 @@ struct VaultView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.6)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("vault.title")
         }
     }
 
@@ -863,6 +864,10 @@ struct VaultView: View {
         .padding(.vertical, 13)
         .frame(minHeight: 44)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(entry.path + ", " + (entry.isConflicted
+            ? String(localized: "conflict")
+            : kind.map(fileStatusLabel) ?? ""))
     }
 
     /// The working-tree change wins; fall back to what's staged.
