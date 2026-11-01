@@ -1,10 +1,9 @@
 import SwiftUI
 
-/// Background Sync management surface, styled after the onboarding
-/// slides: giant black-weight hero with an accent word, hairline dividers,
-/// monospaced micro-labels, and hard-bordered cards. Background Sync is part
-/// of the app — there is no subscription or paywall, so this screen manages
-/// the opt-in, pull/push consent, status, and privacy posture.
+/// Background Sync management surface (Tide). Off: a dark "Sync while you
+/// sleep." pitch around the real opt-in toggle. On: grouped cards for the
+/// global switch, independent pull/push consent, status, and privacy.
+/// Background Sync is part of the app — there is no subscription or paywall.
 struct PremiumSettingsView: View {
     @Environment(PremiumRuntime.self) private var runtime
     @Environment(\.dismiss) private var dismiss
@@ -14,17 +13,27 @@ struct PremiumSettingsView: View {
     @State private var automaticPushConfirmation = false
     @State private var appeared = false
 
+    private var isOn: Bool { runtime.automaticallySyncAllRepositories }
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 36) {
-                    hero
+                VStack(alignment: .leading, spacing: 0) {
+                    if isOn {
+                        enabledHeader
+                        actionsCard
+                            .padding(.top, 18)
+                        actionsFinePrint
+                    } else {
+                        pitchHero
+                        AssistFinePrint(
+                            "Background Sync provides best-effort automatic syncing for current and future managed repositories, running entirely on-device. Automatic pull and automatic push are separate controls; publishing remains default-off. iOS controls when background work runs, so it is not guaranteed or real time."
+                        )
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                    }
 
-                    whatYouGetSection
-
-                    rulesSection
-
-                    activationSection
+                    neverCard
 
                     if showStatusSection {
                         statusSection
@@ -34,23 +43,17 @@ struct PremiumSettingsView: View {
 
                     footer
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 8)
-                .padding(.bottom, 56)
+                .padding(.top, 4)
+                .padding(.bottom, 40)
             }
             .scrollIndicators(.hidden)
-            .background(Color.brutalBg)
+            .background(Tide.paper.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(String(localized: "Background Sync").uppercased())
-                        .font(.system(size: 12, weight: .black, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .tracking(2)
-                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "Done")) { dismiss() }
                         .fontWeight(.semibold)
+                        .tint(Tide.ink)
                 }
             }
             .task { await runtime.prepareForSettings() }
@@ -62,6 +65,7 @@ struct PremiumSettingsView: View {
                         message: "Background Sync runs best-effort automatic syncing for current and future cloned or managed repositories whenever iOS grants the app background time, unless you exclude one in Repository Settings. Its scheduled reconciliation runs entirely on this device. Automatic pull starts on and automatic publishing starts off; you can then control each action independently. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. If you separately enable Push Sync, its relay can also ask iOS for a targeted reconciliation after a GitHub push; iOS may delay or suppress every attempt.",
                         confirmTitle: "Enable Background Sync",
                         systemImage: "arrow.triangle.2.circlepath",
+                        tint: Tide.synced,
                         onConfirm: {
                             automaticSyncConfirmation = false
                             Task { await setAutomaticSyncEnabled() }
@@ -73,7 +77,8 @@ struct PremiumSettingsView: View {
                         title: "Automatically commit and push local changes?",
                         message: "When iOS grants background time, GitSync.md may stage all non-ignored changes, create a commit using this repository's configured author and the default commit message, and push directly to its remote. It never force-pushes, rebases, merges, switches branches, or resolves conflicts. Concurrent local and remote changes stop for your attention. iOS may delay or suppress this work, so it is not guaranteed or real time.",
                         confirmTitle: "Enable automatic push",
-                        systemImage: "arrow.up.circle",
+                        systemImage: "arrow.up",
+                        tint: Tide.ahead,
                         onConfirm: {
                             automaticPushConfirmation = false
                             runtime.setAutomaticallyPushLocalChanges(true)
@@ -88,226 +93,257 @@ struct PremiumSettingsView: View {
         }
     }
 
-    // MARK: - Hero
+    // MARK: - Off: dark pitch
 
-    private var hero: some View {
+    private var pitchHero: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("BACKGROUND")
-                .font(.system(size: 48, weight: .black))
-                .foregroundStyle(Color.brutalText)
-                .tracking(-1.5)
-                .accessibilityHidden(true)
-
-            Text("SYNC")
-                .font(.system(size: 48, weight: .black))
-                .foregroundStyle(Color.brutalAccent)
-                .tracking(-1.5)
-                .padding(.bottom, 14)
-                .accessibilityHidden(true)
-
-            Rectangle()
-                .fill(Color.brutalBorder)
-                .frame(height: 2)
-                .padding(.bottom, 10)
-
-            HStack(spacing: 10) {
-                Rectangle()
-                    .fill(Color.brutalBorder)
-                    .frame(width: 20, height: 1)
-                Text("BEST-EFFORT TWO-WAY SYNC")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(1.5)
+            HStack {
+                Text(String(localized: "Background Sync").uppercased())
+                    .font(TideFont.section)
+                    .tracking(0.66)
+                    .foregroundStyle(Tide.heroMeta)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                Text(String(localized: "Included with GitSync.md"))
+                    .font(TideFont.metaStrong)
+                    .foregroundStyle(Tide.heroSynced)
+                    .padding(.horizontal, 9).padding(.vertical, 5)
+                    .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(Tide.heroSynced.opacity(0.14)))
             }
-            .padding(.bottom, 20)
-            .accessibilityElement(children: .combine)
 
-            // Pipeline strip — the whole feature in one line.
-            Text("BACKGROUND TIME → OPTIONAL PULL / OPTIONAL PUSH")
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Color.brutalTextMid)
-                .tracking(1)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(Color.brutalSurface)
-                .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
-                .padding(.bottom, 18)
+            BackgroundSyncRail()
+                .padding(.top, 26)
 
-            syncStateBadge
-        }
-        .accessibilityElement(children: .contain)
-    }
+            Text(String(localized: "Sync while\nyou sleep."))
+                .font(TideFont.display(40))
+                .tracking(-40 * 0.045)
+                .foregroundStyle(Tide.heroText)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 22)
+                .accessibilityAddTraits(.isHeader)
 
-    @ViewBuilder
-    private var syncStateBadge: some View {
-        if runtime.automaticallySyncAllRepositories {
-            HStack(spacing: 8) {
-                BBadge(text: String(localized: "Included with GitSync.md"), style: .success)
-                BBadge(text: String(localized: "Background Sync"), style: .accent)
-            }
-        } else {
-            BBadge(text: String(localized: "Included with GitSync.md"), style: .success)
-        }
-    }
+            Text(String(localized: "When iOS gives GitSync.md background time, your vaults catch up on their own."))
+                .font(TideFont.sans(16, relativeTo: .body))
+                .foregroundStyle(Tide.heroMeta)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 12)
 
-    // MARK: - What you get
-
-    private var whatYouGetSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "What you get"))
-
-            VStack(spacing: 0) {
-                AssistFeatureRow(
-                    icon: "bolt.badge.clock.fill",
-                    title: String(localized: "Best-effort background reconciliation"),
-                    description: String(localized: "Choose automatic fast-forward pulls, automatic commit and push, or both whenever iOS grants background time.")
+            VStack(alignment: .leading, spacing: 14) {
+                PitchPoint(
+                    title: String(localized: "Pull in the background"),
+                    detail: String(localized: "Clean fast-forwards only. Anything unusual stops for you.")
                 )
-                AssistRowDivider()
-                AssistFeatureRow(
-                    icon: "square.stack.3d.up.fill",
+                PitchPoint(
+                    title: String(localized: "Commit & push edits"),
+                    detail: String(localized: "Off by default, with its own consent.")
+                )
+                PitchPoint(
                     title: String(localized: "Every repository covered"),
-                    description: String(localized: "One opt-in covers all current and future cloned or managed repositories on this installation.")
-                )
-                AssistRowDivider()
-                AssistFeatureRow(
-                    icon: "slider.horizontal.3",
-                    title: String(localized: "You stay in control"),
-                    description: String(localized: "Exclude any repository in its settings, with per-repository network and power policies.")
+                    detail: String(localized: "One opt-in covers all current and future cloned or managed repositories on this installation.")
                 )
             }
-            .background(Color.brutalBg)
-            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+            .padding(.top, 22)
 
+            VStack(alignment: .leading, spacing: 0) {
+                Toggle(isOn: automaticSyncBinding) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Enable Background Sync")
+                            .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.heroText)
+                        Text("Runs best-effort sync for every included repository whenever iOS grants background time; choose pull and push separately below. Scheduled reconciliation runs on-device; optional Push Sync can additionally request APNs-triggered reconciliation.")
+                            .font(TideFont.sans(12.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.heroMeta)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .toggleStyle(.switch)
+                .tint(Tide.heroSynced)
+                .disabled(automaticSyncToggleIsDisabled)
+                .padding(.vertical, 14)
+
+                Rectangle().fill(Tide.heroLine).frame(height: 1)
+
+                Text("Background Sync is off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged.")
+                    .font(TideFont.sans(12.5, relativeTo: .footnote))
+                    .foregroundStyle(Tide.heroMeta)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 14)
+            }
+            .padding(.horizontal, 16)
+            .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color.white.opacity(0.06)))
+            .padding(.top, 26)
+
+            Text(String(localized: "iOS decides when background work runs; it's best effort."))
+                .font(TideFont.sans(12.5, relativeTo: .footnote))
+                .foregroundStyle(Tide.heroMeta)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 4)
+                .padding(.top, 10)
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+        .padding(.bottom, 20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusHero, style: .continuous).fill(Tide.heroBg))
+        .overlay(RoundedRectangle(cornerRadius: Tide.radiusHero, style: .continuous)
+            .strokeBorder(Tide.heroBorder, lineWidth: 1))
+        .padding(.horizontal, Tide.gutter)
+    }
+
+    // MARK: - On: header & actions
+
+    private var enabledHeader: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(String(localized: "Background\nSync"))
+                .tideDisplay(34)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+            Text(String(localized: "Runs whenever iOS gives GitSync.md time. Best effort, never real time."))
+                .font(TideFont.sans(14, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.horizontal, 20)
+    }
+
+    private var actionsCard: some View {
+        VStack(spacing: 0) {
+            ActionToggleRow(systemImage: "arrow.triangle.2.circlepath", tint: Tide.synced) {
+                Toggle(isOn: automaticSyncBinding) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Enable Background Sync")
+                            .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ink)
+                        Text("Runs best-effort sync for every included repository whenever iOS grants background time; choose pull and push separately below. Scheduled reconciliation runs on-device; optional Push Sync can additionally request APNs-triggered reconciliation.")
+                            .font(TideFont.sans(12.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkMid)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .toggleStyle(.switch)
+                .tint(Tide.synced)
+                .disabled(automaticSyncToggleIsDisabled)
+            }
+
+            CardSeparator()
+
+            ActionToggleRow(systemImage: "arrow.down", tint: Tide.behind) {
+                Toggle(isOn: automaticPullBinding) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Pull remote changes")
+                            .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ink)
+                        Text("Clean fast-forward only; unsafe state stops for attention.")
+                            .font(TideFont.sans(12.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkMid)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .toggleStyle(.switch)
+                .tint(Tide.synced)
+                .disabled(isWorking)
+            }
+
+            CardSeparator()
+
+            ActionToggleRow(systemImage: "arrow.up", tint: Tide.ahead) {
+                Toggle(isOn: automaticPushBinding) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Commit and push local changes")
+                            .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ink)
+                        Text("Independent, default-off publishing consent.")
+                            .font(TideFont.sans(12.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkMid)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .toggleStyle(.switch)
+                .tint(Tide.synced)
+                .disabled(isWorking)
+            }
+
+            if !runtime.automaticallyPullRemoteChanges && !runtime.automaticallyPushLocalChanges {
+                CardSeparator()
+                HStack(alignment: .top, spacing: 10) {
+                    Image(systemName: "exclamationmark.circle")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(Tide.ahead)
+                        .accessibilityHidden(true)
+                    Text("Both automatic actions are off. No background Git operation will run.")
+                        .font(TideFont.sans(13, .medium, relativeTo: .footnote))
+                        .foregroundStyle(Tide.ahead)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 14)
+            }
+        }
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
+        .padding(.horizontal, Tide.gutter)
+    }
+
+    private var actionsFinePrint: some View {
+        VStack(alignment: .leading, spacing: 10) {
             AssistFinePrint(
-                "Background Sync provides best-effort automatic syncing for current and future managed repositories, running entirely on-device. Automatic pull and automatic push are separate controls; publishing remains default-off. iOS controls when background work runs, so it is not guaranteed or real time."
+                "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. If automatic pull is off, it checks remote state without updating the worktree and stops when remote changes must be pulled. It never recreates a missing branch, force-pushes, merges, rebases, switches branches, or resolves conflicts."
+            )
+            AssistFinePrint(
+                "Turning off Enable Background Sync prevents new automatic work and requests cancellation of work already in flight. Turning off either action requests cancellation before that action can continue; a Git update or publication already completed cannot be recalled."
             )
         }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
     }
 
-    // MARK: - Safety rules
+    // MARK: - It will never
 
-    private var rulesSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "How it stays safe"))
+    private var neverCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            TideSectionLabel(title: String(localized: "It will never"))
+                .accessibilityAddTraits(.isHeader)
+                .padding(.horizontal, 20)
 
-            VStack(spacing: 0) {
-                HStack(alignment: .top, spacing: 0) {
-                    AssistRuleColumn(
-                        heading: String(localized: "Always"),
-                        rules: [
-                            String(localized: "Clean fast-forward pulls when enabled"),
-                            String(localized: "Commit and push only when enabled"),
-                            String(localized: "Stops safely when attention is needed"),
-                        ],
-                        markerSystemImage: "checkmark",
-                        markerColor: .brutalSuccess
-                    )
-
-                    Rectangle()
-                        .fill(Color.brutalBorderSoft)
-                        .frame(width: 1)
-                        .padding(.vertical, 14)
-
-                    AssistRuleColumn(
-                        heading: String(localized: "Never"),
-                        rules: [
-                            String(localized: "Force-pushes or overwrites remote work"),
-                            String(localized: "Rebases, merges, or resolves conflicts"),
-                            String(localized: "Switches branches or creates missing branches"),
-                        ],
-                        markerSystemImage: "xmark",
-                        markerColor: .brutalError
-                    )
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach([
+                    String(localized: "Force-pushes or overwrites remote work"),
+                    String(localized: "Rebases, merges, or resolves conflicts"),
+                    String(localized: "Switches branches or creates missing branches"),
+                ], id: \.self) { rule in
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(Tide.heroDanger)
+                            .accessibilityHidden(true)
+                        Text(rule)
+                            .font(TideFont.sans(14, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.heroText)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .accessibilityElement(children: .combine)
                 }
             }
-            .background(Color.brutalBg)
-            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+            .padding(.horizontal, 18)
+            .padding(.vertical, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.heroBg))
+            .overlay(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous)
+                .strokeBorder(Tide.heroBorder, lineWidth: 1))
+            .padding(.horizontal, Tide.gutter)
 
             AssistFinePrint(
                 "Automatic pulls remain clean fast-forwards. Automatic push stages non-ignored edits, commits with the configured author and default message, and pushes directly to the remote. With pull off, push still fetches remote metadata to fail closed but never updates the worktree. Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention."
             )
+            .padding(.horizontal, 20)
+            .padding(.top, 4)
         }
-    }
-
-    // MARK: - Background Sync activation
-
-    private var activationSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "Background Sync"))
-
-            VStack(alignment: .leading, spacing: 14) {
-                Toggle(isOn: automaticSyncBinding) {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Enable Background Sync")
-                            .font(.system(size: 17, weight: .semibold))
-                            .foregroundStyle(Color.brutalText)
-                        Text("Runs best-effort sync for every included repository whenever iOS grants background time; choose pull and push separately below. Scheduled reconciliation runs on-device; optional Push Sync can additionally request APNs-triggered reconciliation.")
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(Color.brutalTextMid)
-                    }
-                }
-                .toggleStyle(.switch)
-                .tint(Color.brutalText)
-                .disabled(automaticSyncToggleIsDisabled)
-
-                Rectangle()
-                    .fill(Color.brutalBorderSoft)
-                    .frame(height: 1)
-
-                if runtime.automaticallySyncAllRepositories {
-                    Toggle(isOn: automaticPullBinding) {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text("Pull remote changes")
-                                .font(.system(size: 17, weight: .semibold))
-                            Text("Clean fast-forward only; unsafe state stops for attention.")
-                                .font(.system(size: 12, design: .monospaced))
-                                .foregroundStyle(Color.brutalTextMid)
-                        }
-                    }
-                    .toggleStyle(.switch)
-                    .tint(Color.brutalText)
-                    .disabled(isWorking)
-
-                    Rectangle()
-                        .fill(Color.brutalBorderSoft)
-                        .frame(height: 1)
-
-                    Toggle(isOn: automaticPushBinding) {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text("Commit and push local changes")
-                                .font(.system(size: 17, weight: .semibold))
-                            Text("Independent, default-off publishing consent.")
-                                .font(.system(size: 12, design: .monospaced))
-                                .foregroundStyle(Color.brutalTextMid)
-                        }
-                    }
-                    .toggleStyle(.switch)
-                    .tint(Color.brutalText)
-                    .disabled(isWorking)
-
-                    AssistFinePrint(
-                        "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. If automatic pull is off, it checks remote state without updating the worktree and stops when remote changes must be pulled. It never recreates a missing branch, force-pushes, merges, rebases, switches branches, or resolves conflicts."
-                    )
-
-                    if !runtime.automaticallyPullRemoteChanges && !runtime.automaticallyPushLocalChanges {
-                        AssistFinePrint(
-                            "Both automatic actions are off. No background Git operation will run."
-                        )
-                    }
-
-                    AssistFinePrint(
-                        "Turning off Enable Background Sync prevents new automatic work and requests cancellation of work already in flight. Turning off either action requests cancellation before that action can continue; a Git update or publication already completed cannot be recalled."
-                    )
-                } else {
-                    Text("Background Sync is off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged.")
-                        .font(.system(size: 13, design: .monospaced))
-                        .foregroundStyle(Color.brutalTextMid)
-                }
-            }
-            .padding(16)
-            .background(Color.brutalBg)
-            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
-        }
+        .padding(.top, 24)
     }
 
     // MARK: - Status
@@ -317,27 +353,38 @@ struct PremiumSettingsView: View {
     }
 
     private var statusSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "Background Sync status"))
+        VStack(alignment: .leading, spacing: 8) {
+            TideSectionLabel(title: String(localized: "Background Sync status"))
+                .accessibilityAddTraits(.isHeader)
+                .padding(.horizontal, 20)
 
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
                 if runtime.isReconcilingAutomaticSync {
                     BLoading(text: String(localized: "Reconciling repositories…"))
-                        .padding(.vertical, 12)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    AssistRowDivider()
+                        .padding(.horizontal, 18)
+                        .padding(.vertical, 14)
+                    CardSeparator()
                 }
 
                 let summary = runtime.automaticSyncSummary
                 AssistStatRow(key: String(localized: "Repositories"), value: "\(summary.total)")
+                CardSeparator()
                 AssistStatRow(key: String(localized: "Included in Background Sync"), value: "\(summary.included)")
+                CardSeparator()
                 AssistStatRow(key: String(localized: "Excluded"), value: "\(summary.excluded)")
+                CardSeparator()
                 AssistStatRow(key: String(localized: "Not included / disabled"), value: "\(summary.disabled)")
-                AssistStatRow(key: String(localized: "Attention required"), value: "\(summary.failed)")
+                CardSeparator()
+                AssistStatRow(
+                    key: String(localized: "Attention required"),
+                    value: "\(summary.failed)",
+                    valueTint: summary.failed > 0 ? Tide.ahead : Tide.inkMid
+                )
             }
-            .padding(16)
-            .background(Color.brutalBg)
-            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+            .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
+            .padding(.horizontal, Tide.gutter)
 
             BSecondaryButton(
                 title: String(localized: "Retry"),
@@ -345,84 +392,97 @@ struct PremiumSettingsView: View {
             ) {
                 Task { await prepareAndReconcile() }
             }
+            .padding(.horizontal, Tide.gutter)
+            .padding(.top, 4)
         }
+        .padding(.top, 24)
     }
 
     // MARK: - Data & privacy
 
     private var dataSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            BSectionHeader(title: String(localized: "Data & privacy"))
+        VStack(alignment: .leading, spacing: 8) {
+            TideSectionLabel(title: String(localized: "Data & privacy"))
+                .accessibilityAddTraits(.isHeader)
+                .padding(.horizontal, 20)
 
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
                 AssistStatRow(
                     key: String(localized: "Where sync runs"),
-                    value: String(localized: "Entirely on this device")
+                    value: String(localized: "Entirely on this device"),
+                    valueIsMono: false
                 )
+                CardSeparator()
                 AssistStatRow(
                     key: String(localized: "Server component"),
-                    value: String(localized: "None required; Push Sync optional")
+                    value: String(localized: "None required; Push Sync optional"),
+                    valueIsMono: false
                 )
-            }
-            .padding(16)
-            .background(Color.brutalBg)
-            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
-
-            AssistFinePrint(
-                "Background Sync runs within the app using your existing Git credentials on this device. Repository URLs, contents, local paths, and credentials go only to your Git host during a normal fetch or push. Scheduled Background Sync has no server or separate data store. If you independently enable Push Sync and connect the GitSync.md GitHub App, its relay stores repository names, verified GitHub installation/account identifiers, and APNs registration data and transiently routes branch and commit hints; it never receives local file contents, credentials, or paths."
-            )
-            .padding(.bottom, 2)
-
-            Rectangle()
-                .fill(Color.brutalBorderSoft)
-                .frame(height: 1)
-                .padding(.vertical, 6)
-
-            HStack(spacing: 24) {
-                Link(destination: URL(string: "https://gitsync.md/privacy.html")!) {
-                    Text("Privacy Policy")
-                        .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                        .foregroundStyle(Color.brutalAccent)
-                        // Text link, 44pt hit target.
-                        .frame(minHeight: 44)
-                        .contentShape(Rectangle())
+                CardSeparator()
+                Button {
+                    FeedbackHelper.openPrivacyRequestMailClient()
+                } label: {
+                    HStack(spacing: 12) {
+                        Text(String(localized: "Request data access or deletion"))
+                            .font(TideFont.body)
+                            .foregroundStyle(Tide.ink)
+                        Spacer(minLength: 8)
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(Tide.inkFaint)
+                            .accessibilityHidden(true)
+                    }
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 14)
+                    .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
-                Link(destination: URL(string: "https://gitsync.md/terms.html")!) {
-                    Text("Terms of Use")
-                        .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                        .foregroundStyle(Color.brutalAccent)
-                        // Text link, 44pt hit target.
-                        .frame(minHeight: 44)
-                        .contentShape(Rectangle())
-                }
+                .buttonStyle(.plain)
             }
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+            .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
+            .padding(.horizontal, Tide.gutter)
 
-            BGhostButton(title: String(localized: "Request data access or deletion")) {
-                FeedbackHelper.openPrivacyRequestMailClient()
+            VStack(alignment: .leading, spacing: 10) {
+                AssistFinePrint(
+                    "Opens a private email draft with this installation's opaque identifier. Review it before sending; never post these identifiers publicly."
+                )
+                AssistFinePrint(
+                    "Background Sync runs within the app using your existing Git credentials on this device. Repository URLs, contents, local paths, and credentials go only to your Git host during a normal fetch or push. Scheduled Background Sync has no server or separate data store. If you independently enable Push Sync and connect the GitSync.md GitHub App, its relay stores repository names, verified GitHub installation/account identifiers, and APNs registration data and transiently routes branch and commit hints; it never receives local file contents, credentials, or paths."
+                )
+
+                HStack(spacing: 20) {
+                    Link(destination: URL(string: "https://gitsync.md/privacy.html")!) {
+                        Text("Privacy Policy")
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    Link(destination: URL(string: "https://gitsync.md/terms.html")!) {
+                        Text("Terms of Use")
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                }
+                .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                .foregroundStyle(Tide.behind)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 20)
             .padding(.top, 4)
-
-            AssistFinePrint(
-                "Opens a private email draft with this installation's opaque identifier. Review it before sending; never post these identifiers publicly."
-            )
         }
+        .padding(.top, 24)
     }
 
     // MARK: - Footer
 
     private var footer: some View {
-        VStack(spacing: 8) {
-            Rectangle()
-                .fill(Color.brutalBorderSoft)
-                .frame(height: 1)
-            Text("Manual Git, Shortcuts, callbacks, and local repository features stay included — Background Sync is entirely optional.")
-                .font(.system(size: 12, design: .monospaced))
-                .foregroundStyle(Color.brutalTextFaint)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-        }
-        .padding(.top, 4)
+        Text("Manual Git, Shortcuts, callbacks, and local repository features stay included — Background Sync is entirely optional.")
+            .font(TideFont.sans(12.5, relativeTo: .footnote))
+            .foregroundStyle(Tide.inkFaint)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 28)
+            .padding(.top, 18)
     }
 
     // MARK: - Logic
@@ -478,93 +538,120 @@ struct PremiumSettingsView: View {
     }
 }
 
-// MARK: - Feature Row
+// MARK: - Pitch pieces
 
-private struct AssistFeatureRow: View {
-    let icon: String
+/// Phone ← sync point → remote, drawn on the dark hero: a local commit
+/// heading out, a remote commit heading in, a clock at the sync point.
+private struct BackgroundSyncRail: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text(String(localized: "this iPhone"))
+                Spacer()
+                Text(String(localized: "remote"))
+            }
+            .font(TideFont.mono(11))
+            .foregroundStyle(Tide.heroMeta)
+
+            HStack(spacing: 10) {
+                Circle().fill(Tide.heroAhead).frame(width: 10, height: 10)
+                Text(verbatim: "→").font(TideFont.mono(12)).foregroundStyle(Tide.heroAhead)
+                Image(systemName: "clock")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(Tide.heroText)
+                    .frame(width: 28, height: 28)
+                    .background(Circle().fill(Tide.heroBg))
+                    .overlay(Circle().strokeBorder(Tide.heroText, lineWidth: 2))
+                Text(verbatim: "←").font(TideFont.mono(12)).foregroundStyle(Tide.heroBehind)
+                Circle().strokeBorder(Tide.heroBehind, lineWidth: 2).frame(width: 10, height: 10)
+            }
+            .frame(maxWidth: .infinity)
+            .background(Rectangle().fill(Tide.heroLine).frame(height: 1))
+        }
+        .accessibilityElement()
+        .accessibilityLabel(String(localized: "Changes flowing both ways while the phone is locked"))
+    }
+}
+
+private struct PitchPoint: View {
     let title: String
-    let description: String
+    let detail: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 14) {
-            Image(systemName: icon)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Color.brutalText)
-                .frame(width: 40, height: 40)
-                .background(Color.brutalSurface)
-                .overlay(Rectangle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "checkmark")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(Tide.heroSynced)
+                .padding(.top, 3)
                 .accessibilityHidden(true)
-
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color.brutalText)
-                Text(description)
-                    .font(.system(size: 13, design: .monospaced))
-                    .foregroundStyle(Color.brutalTextMid)
+                    .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.heroText)
+                Text(detail)
+                    .font(TideFont.sans(13.5, relativeTo: .footnote))
+                    .foregroundStyle(Tide.heroMeta)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Spacer(minLength: 0)
         }
-        .padding(16)
         .accessibilityElement(children: .combine)
     }
 }
 
-private struct AssistRowDivider: View {
-    var body: some View {
-        Rectangle()
-            .fill(Color.brutalBorderSoft)
-            .frame(height: 1)
-            .padding(.leading, 70)
-    }
-}
+// MARK: - Card rows
 
-// MARK: - Rule Columns
-
-private struct AssistRuleColumn: View {
-    let heading: String
-    let rules: [String]
-    let markerSystemImage: String
-    let markerColor: Color
+/// Tinted 36pt icon tile + a `Toggle`, as one row of a grouped Tide card.
+private struct ActionToggleRow<ToggleContent: View>: View {
+    let systemImage: String
+    let tint: Color
+    @ViewBuilder let toggle: ToggleContent
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(heading.uppercased())
-                .font(.system(size: 12, weight: .black, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-                .tracking(2)
-                .padding(.top, 14)
-
-            ForEach(rules, id: \.self) { rule in
-                HStack(alignment: .top, spacing: 8) {
-                    Image(systemName: markerSystemImage)
-                        .font(.system(size: 10, weight: .black))
-                        .foregroundStyle(markerColor)
-                        .padding(.top, 2)
-                        .accessibilityHidden(true)
-                    Text(rule)
-                        .font(.system(size: 13, design: .monospaced))
-                        .foregroundStyle(Color.brutalTextMid)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
+        HStack(alignment: .center, spacing: 14) {
+            Image(systemName: systemImage)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(tint)
+                .frame(width: 36, height: 36)
+                .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(tint.opacity(0.12)))
+                .accessibilityHidden(true)
+            toggle
         }
-        .padding(.horizontal, 14)
-        .padding(.bottom, 14)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .frame(minHeight: 56)
     }
 }
 
-// MARK: - Stat Row
+/// Hairline between rows inside a grouped Tide card.
+private struct CardSeparator: View {
+    var body: some View {
+        Rectangle().fill(Tide.line).frame(height: 1).padding(.horizontal, 18)
+    }
+}
 
 private struct AssistStatRow: View {
     let key: String
     let value: String
+    /// Mono for counts (git facts); sans for prose values.
+    var valueIsMono = true
+    var valueTint: Color = Tide.inkMid
 
     var body: some View {
-        BMonoRow(key: key, value: value)
-            .padding(.vertical, 10)
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text(key)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.ink)
+            Spacer(minLength: 8)
+            Text(value)
+                .font(valueIsMono ? TideFont.mono(13, relativeTo: .footnote)
+                                  : TideFont.sans(13.5, relativeTo: .footnote))
+                .foregroundStyle(valueTint)
+                .multilineTextAlignment(.trailing)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .frame(minHeight: 52)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -580,96 +667,63 @@ struct AssistFinePrint: View {
 
     var body: some View {
         Text(text)
-            .font(.system(size: 11, design: .monospaced))
-            .foregroundStyle(Color.brutalTextFaint)
+            .font(TideFont.sans(12.5, relativeTo: .footnote))
+            .foregroundStyle(Tide.inkFaint)
+            .lineSpacing(2)
             .fixedSize(horizontal: false, vertical: true)
     }
 }
 
 // MARK: - Confirmation Modal
 
-/// A compact, branded replacement for the system confirmation dialog. The
-/// message is scrollable so long safety copy never dictates the card height.
+/// Tide bottom-sheet confirmation. The message scrolls so long safety copy
+/// never dictates the sheet height.
 private struct AssistConfirmationModal: View {
     let title: LocalizedStringKey
     let message: LocalizedStringKey
     let confirmTitle: LocalizedStringKey
     let systemImage: String
-    var isDestructive = false
+    var tint: Color = Tide.synced
     let onConfirm: () -> Void
     let onCancel: () -> Void
 
     var body: some View {
-        ZStack {
-            Color.black.opacity(0.34)
-                .ignoresSafeArea()
-                .accessibilityHidden(true)
+        TideModalSheet(onDismiss: onCancel) {
+            TideModalIcon(systemImage: systemImage, tint: tint)
+                .padding(.bottom, 16)
 
-            VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .top, spacing: 14) {
-                    Image(systemName: systemImage)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(isDestructive ? Color.brutalError : Color.brutalAccent)
-                        .frame(width: 24, height: 24)
-                        .accessibilityHidden(true)
+            Text(title)
+                .tideDisplay(26)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
 
-                    Text(title)
-                        .font(.system(size: 24, weight: .black))
-                        .foregroundStyle(Color.brutalText)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+            ScrollView {
+                Text(message)
+                    .font(TideFont.sans(15, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.inkMid)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxHeight: 260)
+            .padding(.top, 8)
 
-                Rectangle()
-                    .fill(isDestructive ? Color.brutalError : Color.brutalAccent)
-                    .frame(height: 3)
-                    .padding(.top, 18)
-                    .padding(.bottom, 16)
-
-                ScrollView {
-                    Text(message)
-                        .font(.system(size: 15, design: .monospaced))
-                        .foregroundStyle(Color.brutalTextMid)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(maxHeight: 260)
-
-                Rectangle()
-                    .fill(Color.brutalBorderSoft)
-                    .frame(height: 1)
-                    .padding(.top, 20)
-                    .padding(.bottom, 14)
-
+            VStack(spacing: 8) {
                 Button(action: onConfirm) {
                     Text(confirmTitle)
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
-                        .tracking(1.2)
-                        .foregroundStyle(Color(.systemBackground))
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight: 52)
-                        .background(isDestructive ? Color.brutalError : Color.brutalText)
+                        .font(TideFont.button)
+                        .foregroundStyle(Tide.paper)
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .background(Capsule().fill(Tide.ink))
+                        .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
 
-                Button(action: onCancel) {
-                    Text(String(localized: "Cancel"))
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
-                        .tracking(1.2)
-                        .foregroundStyle(Color.brutalText)
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight: 44)
-                }
-                .buttonStyle(.plain)
+                BGhostButton(title: String(localized: "Cancel"), role: .cancel, action: onCancel)
+                    .frame(maxWidth: .infinity)
             }
-            .padding(22)
-            .frame(maxWidth: 390)
-            .background(Color.brutalBg)
-            .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 2))
-            .shadow(color: .black.opacity(0.22), radius: 24, y: 12)
-            .padding(.horizontal, 22)
-            .accessibilityElement(children: .contain)
-            .accessibilityAddTraits(.isModal)
+            .padding(.top, 20)
         }
-        .transition(.opacity.combined(with: .scale(scale: 0.96)))
+        .transition(.opacity)
     }
 }

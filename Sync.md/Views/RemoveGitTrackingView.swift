@@ -60,36 +60,40 @@ struct RemoveGitTrackingView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.brutalBg.ignoresSafeArea()
+                Tide.paper.ignoresSafeArea()
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 18) {
+                    VStack(alignment: .leading, spacing: 0) {
                         if let removalResult {
                             successContent(removalResult)
                         } else {
                             introduction
-                            if state.isDemoMode { demoNotice }
-                            chooseSourceButton
-                            if let plan { reviewContent(plan) }
+                            staysAndGoes(plan)
+                                .padding(.top, 20)
+                            if state.isDemoMode {
+                                demoNotice.padding(.top, 12)
+                            }
+                            if let plan {
+                                reviewContent(plan)
+                            } else {
+                                chooseSourceButton
+                                    .padding(.horizontal, Tide.gutter)
+                                    .padding(.top, 20)
+                            }
                         }
 
-                        if isBusy { progressCard }
-                        if let errorMessage { errorCard(errorMessage) }
+                        if isBusy { progressCard.padding(.top, 16) }
+                        if let errorMessage { errorCard(errorMessage).padding(.top, 16) }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                    .padding(.bottom, 40)
+                    .padding(.top, 4)
+                    .padding(.bottom, 30)
                 }
                 .scrollIndicators(.hidden)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("REMOVE GIT TRACKING")
-                        .bType(.monoCaption, weight: .black)
-                        .tracking(2)
-                }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
+                        .tint(Tide.ink)
                         .disabled(isBusy || showFolderPicker || showRemovalConfirmation)
                         .accessibilityIdentifier("removeGitTracking.close")
                 }
@@ -124,106 +128,146 @@ struct RemoveGitTrackingView: View {
         }
     }
 
+    // MARK: - Introduction
+
     private var introduction: some View {
-        BCard {
-            VStack(alignment: .leading, spacing: 10) {
-                Image(systemName: "folder.badge.minus")
-                    .bType(.displaySm)
-                    .accessibilityHidden(true)
-                Text("Keep your files. Remove Git tracking.")
-                    .bType(.titleLg)
-                Text("Choose the folder containing the .git folder you want to remove. For a vault inside a larger repository, choose the parent repository folder.")
-                    .bType(.bodySm)
+        VStack(alignment: .leading, spacing: 0) {
+            (Text(String(localized: "Keep the notes.")) + Text(verbatim: "\n")
+                + Text(String(localized: "Drop the git.")).foregroundColor(Tide.inkFaint))
+                .tideDisplay(34)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+
+            Text("Choose the folder containing the .git folder you want to remove. For a vault inside a larger repository, choose the parent repository folder.")
+                .font(TideFont.sans(15, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 12)
+
+            VStack(alignment: .leading, spacing: 6) {
                 Text("Only .git directly inside the selected folder is removed. Git folders inside other vaults stay in place.")
-                    .bType(.monoSm, color: .brutalTextMid)
                     .accessibilityIdentifier("removeGitTracking.scope")
                 Text("You can preserve your local history with a verified backup, or remove tracking without one. Local On My iPhone folders only.")
-                    .bType(.monoSm, color: .brutalTextMid)
             }
+            .font(TideFont.sans(13, relativeTo: .footnote))
+            .foregroundStyle(Tide.inkFaint)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.top, 10)
         }
+        .padding(.horizontal, 20)
+    }
+
+    /// What stays and what goes — two cards side by side. Only real facts
+    /// from the reviewed plan (the .git size) are shown; nothing is counted.
+    private func staysAndGoes(_ plan: GitTrackingRemovalPlan?) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            OutcomeCard(
+                title: String(localized: "Stays"),
+                tint: Tide.synced,
+                items: [
+                    .init(String(localized: "Your notes and files")),
+                    .init(String(localized: "The GitHub repository")),
+                ]
+            )
+            OutcomeCard(
+                title: String(localized: "Goes"),
+                tint: Tide.danger,
+                items: [
+                    .init(plan.map { ".git/ · " + ByteCountFormatter.string(fromByteCount: $0.metadataByteCount, countStyle: .file) } ?? ".git/",
+                          isMono: true),
+                    .init(String(localized: "Local Git history")),
+                    .init(String(localized: "GitSync.md's link to it")),
+                ]
+            )
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, Tide.gutter)
     }
 
     private var demoNotice: some View {
-        BCard {
+        TideCard {
             Text("Folder changes are unavailable in demo mode. Leave the demo to use this local tool.")
-                .bType(.monoSm, color: .brutalTextMid)
+                .font(TideFont.sans(13.5, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+                .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("removeGitTracking.demoNotice")
         }
+        .padding(.horizontal, Tide.gutter)
     }
 
+    @ViewBuilder
     private var chooseSourceButton: some View {
-        BPrimaryButton(
-            title: plan == nil ? String(localized: "Choose Repository Folder") : String(localized: "Choose Different Folder"),
-            isDisabled: actionsDisabled,
-            icon: "folder"
-        ) {
-            pickerPurpose = .source
-            showFolderPicker = true
+        if plan == nil {
+            BPrimaryButton(
+                title: String(localized: "Choose Repository Folder"),
+                isDisabled: actionsDisabled,
+                icon: "folder"
+            ) {
+                pickerPurpose = .source
+                showFolderPicker = true
+            }
+            .accessibilityIdentifier("removeGitTracking.chooseSource")
+        } else {
+            BGhostButton(
+                title: String(localized: "Choose Different Folder"),
+                color: Tide.inkMid,
+                icon: "folder"
+            ) {
+                pickerPurpose = .source
+                showFolderPicker = true
+            }
+            .disabled(actionsDisabled)
+            .accessibilityIdentifier("removeGitTracking.chooseSource")
         }
-        .accessibilityIdentifier("removeGitTracking.chooseSource")
     }
+
+    // MARK: - Review
 
     private func reviewContent(_ plan: GitTrackingRemovalPlan) -> some View {
-        VStack(alignment: .leading, spacing: 18) {
-            BSectionHeader(title: String(localized: "Review Repository"))
-            BCard {
-                VStack(alignment: .leading, spacing: 12) {
-                    reviewValue(String(localized: "Selected Folder"), value: plan.rootURL.lastPathComponent)
+        VStack(alignment: .leading, spacing: 0) {
+            TideSectionLabel(title: String(localized: "Review Repository"))
+                .accessibilityAddTraits(.isHeader)
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(plan.rootURL.lastPathComponent)
+                        .font(TideFont.sans(17, .semibold, relativeTo: .headline))
+                        .foregroundStyle(Tide.ink)
+                        .textSelection(.enabled)
                     Text(plan.rootURL.path)
-                        .bType(.monoSm, color: .brutalTextMid)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
                         .textSelection(.enabled)
                         .accessibilityIdentifier("removeGitTracking.sourcePath")
-                    BDivider()
-                    reviewValue(String(localized: "Remote"), value: safeRemoteLabel(plan.remoteURL))
-                    reviewValue(String(localized: "Branch"), value: plan.branch ?? String(localized: "No current branch"))
-                    reviewValue(
-                        String(localized: "Git History Size"),
-                        value: ByteCountFormatter.string(fromByteCount: plan.metadataByteCount, countStyle: .file)
-                    )
                 }
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(String(localized: "Selected Folder"))
+                .padding(.horizontal, 18)
+                .padding(.vertical, 14)
+                rowSeparator
+                reviewValue(String(localized: "Remote"), value: safeRemoteLabel(plan.remoteURL))
+                rowSeparator
+                reviewValue(String(localized: "Branch"), value: plan.branch ?? String(localized: "No current branch"))
+                rowSeparator
+                reviewValue(
+                    String(localized: "Git History Size"),
+                    value: ByteCountFormatter.string(fromByteCount: plan.metadataByteCount, countStyle: .file)
+                )
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+            .padding(.horizontal, Tide.gutter)
+            .padding(.top, 8)
 
-            BCard {
-                VStack(alignment: .leading, spacing: 10) {
-                    Toggle(isOn: $backUpHistory) {
-                        Text("Back up Git history").bType(.body, weight: .semibold)
-                    }
-                    .toggleStyle(.switch)
-                    .tint(.brutalAccent)
-                    .disabled(actionsDisabled)
-                    .accessibilityIdentifier("removeGitTracking.backupEnabled")
-                    if !backUpHistory {
-                        Text("Removing without a backup permanently deletes this folder’s local Git history. You can only restore it from another copy.")
-                            .bType(.monoSm, color: .brutalError)
-                    }
-                }
-            }
+            chooseSourceButton
+                .padding(.horizontal, 20)
+                .padding(.top, 4)
 
-            if backUpHistory {
-                BSectionHeader(title: String(localized: "Backup Location"))
-                Text("Select a local folder under On My iPhone, outside any Git repository. Downloads and cloud locations are not supported yet.")
-                    .bType(.monoSm, color: .brutalTextMid)
-                if let backupFolder {
-                    BCard {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(backupFolder.url.lastPathComponent).bType(.body, weight: .semibold)
-                            Text(backupFolder.url.path)
-                                .bType(.monoSm, color: .brutalTextMid)
-                                .textSelection(.enabled)
-                        }
-                    }
-                    .accessibilityIdentifier("removeGitTracking.backupLocation")
-                }
-                BSecondaryButton(
-                    title: backupFolder == nil ? String(localized: "Select Backup Folder") : String(localized: "Change Backup Folder"),
-                    isDisabled: actionsDisabled,
-                    icon: "folder.badge.plus"
-                ) {
-                    pickerPurpose = .backup
-                    showFolderPicker = true
-                }
-                .accessibilityIdentifier("removeGitTracking.chooseBackup")
-            }
+            backupStep
+                .padding(.top, 12)
 
             BDestructiveButton(title: backUpHistory ? String(localized: "Back Up and Remove") : String(localized: "Remove Without Backup")) {
                 guard !actionsDisabled, !needsReview, !backUpHistory || backupFolder != nil else { return }
@@ -231,64 +275,197 @@ struct RemoveGitTrackingView: View {
                 showRemovalConfirmation = true
             }
             .disabled(actionsDisabled || (backUpHistory && backupFolder == nil) || needsReview)
+            .opacity(actionsDisabled || (backUpHistory && backupFolder == nil) || needsReview ? 0.4 : 1)
             .accessibilityLabel(backUpHistory ? String(localized: "Back up Git history and remove Git tracking") : String(localized: "Remove Git tracking without a backup"))
             .accessibilityIdentifier("removeGitTracking.confirmRemoval")
+            .padding(.horizontal, Tide.gutter)
+            .padding(.top, 24)
+
+            Text(String(localized: "The GitHub repository is not touched."))
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkFaint)
+                .frame(maxWidth: .infinity)
+                .multilineTextAlignment(.center)
+                .padding(.top, 10)
         }
     }
 
-    private func successContent(_ result: GitTrackingRemovalResult) -> some View {
-        VStack(alignment: .leading, spacing: 18) {
-            BCard {
-                VStack(alignment: .leading, spacing: 10) {
-                    BBadge(text: String(localized: "GIT TRACKING REMOVED"), style: .success)
-                    Text("Your files are still in place.").bType(.titleLg)
-                    if result.backupURL != nil {
-                        Text("The selected folder is no longer a Git repository. Its local Git history is preserved in the verified backup below.")
-                            .bType(.bodySm)
-                    } else {
-                        Text("The selected folder is no longer a Git repository. Its local Git history was deleted without a backup. The GitHub repository stays on GitHub.")
-                            .bType(.bodySm)
+    /// Step 1: back up the history first (or explicitly opt out).
+    private var backupStep: some View {
+        HStack(alignment: .top, spacing: 14) {
+            Text(verbatim: "1")
+                .font(TideFont.fixed(12, .semibold, mono: true))
+                .foregroundStyle(Tide.paper)
+                .frame(width: 22, height: 22)
+                .background(Circle().fill(Tide.ink))
+                .padding(.top, 2)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 10) {
+                Toggle(isOn: $backUpHistory) {
+                    Text("Back up Git history")
+                        .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                        .foregroundStyle(Tide.ink)
+                }
+                .toggleStyle(.switch)
+                .tint(Tide.synced)
+                .disabled(actionsDisabled)
+                .accessibilityIdentifier("removeGitTracking.backupEnabled")
+
+                if backUpHistory {
+                    Text("Select a local folder under On My iPhone, outside any Git repository. Downloads and cloud locations are not supported yet.")
+                        .font(TideFont.sans(13.5, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkMid)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    if let backupFolder {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(backupFolder.url.lastPathComponent)
+                                .font(TideFont.body)
+                                .foregroundStyle(Tide.ink)
+                            Text(backupFolder.url.path)
+                                .font(TideFont.mono(11))
+                                .foregroundStyle(Tide.inkFaint)
+                                .textSelection(.enabled)
+                        }
+                        .padding(12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.well))
+                        .accessibilityElement(children: .combine)
+                        .accessibilityIdentifier("removeGitTracking.backupLocation")
                     }
-                    Text("Return to Add Repository → Publish a Folder to review your vault for its own repository.")
-                        .bType(.monoSm, color: .brutalTextMid)
+
+                    Button {
+                        pickerPurpose = .backup
+                        showFolderPicker = true
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "folder.badge.plus")
+                                .font(.system(size: 14, weight: .semibold))
+                                .accessibilityHidden(true)
+                            Text(backupFolder == nil ? String(localized: "Select Backup Folder") : String(localized: "Change Backup Folder"))
+                                .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                        }
+                        .foregroundStyle(Tide.ink)
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: 44)
+                        .background(Capsule().strokeBorder(Tide.line, lineWidth: 1))
+                        .contentShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(actionsDisabled)
+                    .opacity(actionsDisabled ? 0.4 : 1)
+                    .accessibilityIdentifier("removeGitTracking.chooseBackup")
+                } else {
+                    Text("Removing without a backup permanently deletes this folder’s local Git history. You can only restore it from another copy.")
+                        .font(TideFont.sans(13.5, .medium, relativeTo: .footnote))
+                        .foregroundStyle(Tide.danger)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        .padding(.horizontal, Tide.gutter)
+    }
+
+    // MARK: - Success
+
+    private func successContent(_ result: GitTrackingRemovalResult) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                BBadge(text: String(localized: "GIT TRACKING REMOVED"), style: .success)
+                Text("Your files are still in place.")
+                    .tideDisplay(34)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+                    .padding(.top, 14)
+                Group {
+                    if result.backupURL != nil {
+                        Text("The selected folder is no longer a Git repository. Its local Git history is preserved in the verified backup below.")
+                    } else {
+                        Text("The selected folder is no longer a Git repository. Its local Git history was deleted without a backup. The GitHub repository stays on GitHub.")
+                    }
+                }
+                .font(TideFont.sans(15, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 12)
+                Text("Return to Add Repository → Publish a Folder to review your vault for its own repository.")
+                    .font(TideFont.sans(13, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkFaint)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+            }
+            .padding(.horizontal, 20)
+            .accessibilityElement(children: .contain)
             .accessibilityIdentifier("removeGitTracking.success")
+
             if let backupURL = result.backupURL {
-                BSectionHeader(title: String(localized: "Verified Backup"))
-                BCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(backupURL.lastPathComponent).bType(.body, weight: .semibold)
+                TideSectionLabel(title: String(localized: "Verified Backup"))
+                    .accessibilityAddTraits(.isHeader)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 24)
+                TideCard {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(backupURL.lastPathComponent)
+                            .font(TideFont.body)
+                            .foregroundStyle(Tide.ink)
                         Text(backupURL.path)
-                            .bType(.monoSm, color: .brutalTextMid)
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(Tide.inkFaint)
                             .textSelection(.enabled)
                         ShareLink(item: backupURL) {
-                            Label("Share Backup", systemImage: "square.and.arrow.up")
-                                .bType(.monoSm, color: .brutalAccent)
-                                .frame(minHeight: 44)
+                            HStack(spacing: 8) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .accessibilityHidden(true)
+                                Text("Share Backup")
+                                    .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                            }
+                            .foregroundStyle(Tide.ink)
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 44)
+                            .background(Capsule().strokeBorder(Tide.line, lineWidth: 1))
+                            .contentShape(Capsule())
                         }
+                        .buttonStyle(.plain)
+                        .padding(.top, 8)
                         .accessibilityIdentifier("removeGitTracking.shareBackup")
                     }
                 }
+                .padding(.horizontal, Tide.gutter)
+                .padding(.top, 8)
             }
         }
     }
 
+    // MARK: - Progress & errors
+
     private var progressCard: some View {
-        BCard {
+        TideCard {
             HStack(spacing: 12) {
-                ProgressView()
-                Text(progressMessage).bType(.monoSm)
+                ProgressView().tint(Tide.ink)
+                Text(progressMessage)
+                    .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.inkMid)
             }
         }
+        .padding(.horizontal, Tide.gutter)
         .accessibilityIdentifier("removeGitTracking.progress")
     }
 
     private func errorCard(_ message: String) -> some View {
-        BCard {
+        TideCard {
             VStack(alignment: .leading, spacing: 10) {
                 BBadge(text: String(localized: "NEEDS ATTENTION"), style: .error)
-                Text(message).bType(.monoSm, color: .brutalError)
+                Text(message)
+                    .font(TideFont.sans(14, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.danger)
+                    .fixedSize(horizontal: false, vertical: true)
                 if needsReview, sourceFolder != nil {
                     BSecondaryButton(
                         title: String(localized: "Review Folder Again"),
@@ -301,14 +478,32 @@ struct RemoveGitTrackingView: View {
                 }
             }
         }
+        .padding(.horizontal, Tide.gutter)
         .accessibilityIdentifier("removeGitTracking.error")
     }
 
+    private var rowSeparator: some View {
+        Rectangle().fill(Tide.line).frame(height: 1).padding(.horizontal, 18)
+    }
+
     private func reviewValue(_ label: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label.uppercased()).bType(.monoCaption, weight: .semibold, color: .brutalTextMid)
-            Text(value).bType(.monoSm).textSelection(.enabled)
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text(label)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.ink)
+            Spacer(minLength: 8)
+            Text(value)
+                .font(TideFont.mono(12.5, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+                .multilineTextAlignment(.trailing)
+                .lineLimit(2)
+                .truncationMode(.middle)
+                .textSelection(.enabled)
         }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .frame(minHeight: 52)
+        .accessibilityElement(children: .combine)
     }
 
     /// Do not expose embedded credentials or token-like URL parameters in review.
@@ -438,5 +633,43 @@ struct RemoveGitTrackingView: View {
         backupFolder?.release()
         sourceFolder = nil
         backupFolder = nil
+    }
+}
+
+/// One half of the "stays / goes" pair: a mono caps label and a short list.
+private struct OutcomeCard: View {
+    struct Item: Hashable {
+        let text: String
+        var isMono = false
+        init(_ text: String, isMono: Bool = false) {
+            self.text = text
+            self.isMono = isMono
+        }
+    }
+
+    let title: String
+    let tint: Color
+    let items: [Item]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(title.uppercased())
+                .font(TideFont.mono(10.5, .semibold, relativeTo: .caption2))
+                .tracking(0.63)
+                .foregroundStyle(tint)
+            VStack(alignment: .leading, spacing: 6) {
+                ForEach(items, id: \.self) { item in
+                    Text(item.text)
+                        .font(item.isMono ? TideFont.mono(12.5, relativeTo: .footnote)
+                                          : TideFont.sans(14, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Tide.card))
+        .accessibilityElement(children: .combine)
     }
 }
