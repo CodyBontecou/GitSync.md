@@ -40,6 +40,7 @@ enum Tide {
     static let heroAhead  = Color(hex: 0xFF8A4C)
     static let heroBehind = Color(hex: 0x7C95FF)
     static let heroSynced = Color(hex: 0x5BC489)
+    static let heroDanger = Color(hex: 0xFF7A6B)
 
     // Radii & spacing
     static let radiusCard: CGFloat = 22

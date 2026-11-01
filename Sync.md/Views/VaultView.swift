@@ -279,9 +279,11 @@ struct VaultView: View {
         .scrollIndicators(.hidden)
         .task(id: repo.gitState.commitSHA) {
             #if DEBUG
-            guard !MarketingCapture.usesSeededData else { return }
+            // Marketing capture seeds fake repos; fixtures are real working copies.
+            guard !MarketingCapture.isActive else { return }
             #endif
-            await state.loadCommitHistory(repoID: repoID, pageSize: 20, reset: true)
+            await state.loadCommitHistory(repoID: repoID, pageSize: 30, reset: true)
+            await state.loadBranches(repoID: repoID)
         }
     }
 
@@ -308,43 +310,67 @@ struct VaultView: View {
     // State first: how much is waiting on this iPhone, what the remote looks
     // like, and the one right action for it.
 
-    /// Same mapping as Home: uncommitted changes count as "to push".
+    /// Upstream ahead/behind for the checked-out branch, once branches load.
+    private var currentBranch: GitBranchInfo? {
+        state.branchesByRepo[repoID]?.local.first(where: \.isCurrent)
+    }
+    private var commitsAhead: Int { currentBranch?.aheadBy ?? 0 }
+    private var commitsBehind: Int { currentBranch?.behindBy ?? 0 }
+
+    /// Same mapping as Home (uncommitted changes count as "to push"), with
+    /// real commit counts on the rail when the branch inventory has them.
     private var tideState: TideSyncState {
+        let local = commitsAhead > 0 ? commitsAhead : changeCount
         switch syncState {
-        case .diverged: return .diverged(local: max(changeCount, 1), remote: 0)
-        case .behind: return changeCount > 0 ? .diverged(local: changeCount, remote: 0) : .behind(0)
-        case .ahead: return .ahead(max(changeCount, 1))
+        case .diverged: return .diverged(local: max(local, 1), remote: commitsBehind)
+        case .behind: return local > 0 ? .diverged(local: local, remote: commitsBehind) : .behind(commitsBehind)
+        case .ahead: return .ahead(max(local, 1))
         case .upToDate, .unknown: return changeCount > 0 ? .ahead(changeCount) : .inSync
         }
     }
 
+    /// Remote moved while this iPhone has commits of its own (push would be rejected).
+    private var remoteMovedOn: Bool {
+        if case .diverged = tideState { return changeCount == 0 }
+        return false
+    }
+
     private func stateHero(_ repo: RepoConfig) -> some View {
         VStack(alignment: .leading, spacing: 18) {
-            HStack(alignment: .bottom, spacing: 12) {
-                heroHeadline
-                Spacer(minLength: 8)
-                Text(remoteSummary + "\n" + syncedText)
-                    .font(TideFont.mono(11))
-                    .lineSpacing(3)
-                    .multilineTextAlignment(.trailing)
-                    .foregroundStyle(Tide.heroMeta)
-            }
-
             if isThisRepoSyncing {
-                HStack(spacing: 10) {
-                    ProgressView().controlSize(.small).tint(Tide.heroText)
-                    Text(state.syncProgress)
-                        .font(TideFont.meta)
-                        .foregroundStyle(Tide.heroMeta)
-                        .lineLimit(1)
+                syncingHeadline
+                ProgressView()
+                    .progressViewStyle(.linear)
+                    .tint(Tide.heroAhead)
+                    .accessibilityLabel(state.syncProgress)
+            } else if remoteMovedOn {
+                movedOnHeadline
+                SyncRail(state: tideState, dot: 10, onHero: true)
+                HStack {
+                    Text(String(localized: "↑\(max(commitsAhead, 1)) yours"))
+                    Spacer()
+                    Text(commitsBehind > 0
+                         ? String(localized: "↓\(commitsBehind) from remote")
+                         : String(localized: "new on remote"))
                 }
-                .frame(height: 16)
-                .transition(.opacity)
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.heroMeta)
             } else {
+                HStack(alignment: .bottom, spacing: 12) {
+                    heroHeadline
+                    Spacer(minLength: 8)
+                    Text(remoteSummary + "\n" + syncedText)
+                        .font(TideFont.mono(11))
+                        .lineSpacing(3)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(Tide.heroMeta)
+                }
                 SyncRail(state: tideState, dot: 10, onHero: true)
             }
 
-            heroActions
+            if !isThisRepoSyncing {
+                heroActions
+            }
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)
@@ -358,6 +384,39 @@ struct VaultView: View {
             RoundedRectangle(cornerRadius: Tide.radiusHero, style: .continuous)
                 .strokeBorder(Tide.heroBorder, lineWidth: 1)
         )
+    }
+
+    private var syncingHeadline: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(String(localized: "Syncing…"))
+                .font(TideFont.sans(30, .semibold, relativeTo: .largeTitle))
+                .tracking(-1.2)
+                .foregroundStyle(Tide.heroText)
+            Text(state.syncProgress)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.heroMeta)
+                .lineLimit(2)
+            Text(String(localized: "You can leave this screen. It keeps going in the background."))
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.heroMeta)
+                .padding(.top, 4)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private var movedOnHeadline: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(String(localized: "Both sides moved").uppercased())
+                .font(TideFont.mono(11, .semibold))
+                .tracking(0.66)
+                .foregroundStyle(Tide.heroDanger)
+            Text(String(localized: "The remote moved on while you were writing."))
+                .font(TideFont.sans(24, .semibold, relativeTo: .title))
+                .tracking(-0.7)
+                .foregroundStyle(Tide.heroText)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .accessibilityElement(children: .combine)
     }
 
     @ViewBuilder
@@ -437,7 +496,7 @@ struct VaultView: View {
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
                 heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID) } }
             case .diverged:
-                heroPrimary(String(localized: "Merge"), icon: "arrow.triangle.merge") {
+                heroPrimary(String(localized: "Bring theirs in"), icon: "arrow.triangle.merge") {
                     Task { await state.mergeWithRemote(repoID: repoID) }
                 }
                 heroSecondary(String(localized: "Rebase")) { Task { await state.pullWithRebase(repoID: repoID) } }
@@ -854,19 +913,70 @@ struct VaultView: View {
                 .frame(width: 10, height: 10)
                 .padding(.top, 4)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(commit.message.components(separatedBy: .newlines).first ?? commit.message)
-                    .font(TideFont.sans(14, .medium))
-                    .foregroundStyle(Tide.ink)
-                    .lineLimit(2)
-                Text("\(commit.shortOID) · \(commit.authorName) · \(relativeText(commit.authoredDate))")
-                    .font(TideFont.mono(11))
-                    .foregroundStyle(Tide.inkFaint)
-                    .lineLimit(1)
-            }
+            commitText(commit)
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private func commitText(_ commit: GitCommitSummary) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(commit.message.components(separatedBy: .newlines).first ?? commit.message)
+                .font(TideFont.sans(15, .semibold))
+                .foregroundStyle(Tide.ink)
+                .lineLimit(2)
+            Text("\(commit.shortOID) · \(commit.authorName) · \(relativeText(commit.authoredDate))")
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkFaint)
+                .lineLimit(1)
+        }
+    }
+
+    // The rail, vertical: commits only on this iPhone sit above the remote
+    // marker as filled dots; everything the remote has is a ring, by day.
+
+    private struct HistoryDay: Identifiable {
+        let id: String
+        let title: String
+        let commits: [GitCommitSummary]
+    }
+
+    private func historyDays(_ commits: [GitCommitSummary]) -> [HistoryDay] {
+        let calendar = Calendar.current
+        let grouped = Dictionary(grouping: commits) { calendar.startOfDay(for: $0.authoredDate) }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.doesRelativeDateFormatting = true
+        return grouped.keys.sorted(by: >).map { day in
+            HistoryDay(id: day.ISO8601Format(),
+                       title: formatter.string(from: day),
+                       commits: grouped[day] ?? [])
+        }
+    }
+
+    private func railRow<Dot: View, Content: View>(
+        @ViewBuilder dot: () -> Dot,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            dot()
+                .frame(width: 16, height: 16)
+                .background(Circle().fill(Tide.paper).padding(-4))
+                .padding(.top, 2)
+                .accessibilityHidden(true)
+            content()
+            Spacer(minLength: 0)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private func railLabel(_ title: String, tint: Color = Tide.inkFaint) -> some View {
+        Text(title.uppercased())
+            .font(TideFont.section)
+            .tracking(0.66)
+            .foregroundStyle(tint)
+            .padding(.leading, 30)
+            .accessibilityAddTraits(.isHeader)
     }
 
     @ViewBuilder
@@ -878,8 +988,72 @@ struct VaultView: View {
                 String(localized: "Commits on \(repo?.gitState.branch ?? "main") appear here.")
             )
         } else {
-            groupedCard(commits) { commit in
-                commitRow(commit).padding(.vertical, 12)
+            let localOnly = Array(commits.prefix(currentBranch?.aheadBy ?? 0))
+            let shared = Array(commits.dropFirst(localOnly.count))
+            VStack(alignment: .leading, spacing: 16) {
+                if !localOnly.isEmpty {
+                    railLabel(String(localized: "Only on this iPhone"), tint: Tide.ahead)
+                    ForEach(localOnly) { commit in
+                        railRow {
+                            Circle().fill(Tide.ahead)
+                        } content: {
+                            commitText(commit)
+                        }
+                    }
+                }
+                if currentBranch?.upstreamShortName != nil {
+                    railRow {
+                        RoundedRectangle(cornerRadius: 4)
+                            .strokeBorder(Tide.ink, lineWidth: 2)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(Tide.card))
+                            .frame(width: 13, height: 13)
+                            .rotationEffect(.degrees(45))
+                    } content: {
+                        HStack {
+                            Text(currentBranch?.upstreamShortName ?? "")
+                                .font(TideFont.mono(12, .semibold))
+                            Spacer()
+                            Text(String(localized: "Remote is here"))
+                                .font(TideFont.mono(11))
+                                .foregroundStyle(Tide.heroMeta)
+                        }
+                        .foregroundStyle(Tide.heroText)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Tide.heroBg))
+                    }
+                }
+                ForEach(historyDays(shared)) { day in
+                    railLabel(day.title).padding(.top, 4)
+                    ForEach(day.commits) { commit in
+                        railRow {
+                            Circle().strokeBorder(Tide.ink, lineWidth: 2)
+                        } content: {
+                            commitText(commit)
+                        }
+                    }
+                }
+                if state.commitHistoryHasMoreByRepo[repoID] == true {
+                    Button {
+                        Task { await state.loadCommitHistory(repoID: repoID, pageSize: 30) }
+                    } label: {
+                        Text(String(localized: "Load older commits"))
+                            .font(TideFont.sans(14, .medium))
+                            .foregroundStyle(Tide.ink)
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .background(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 4)
+            .background(alignment: .leading) {
+                Rectangle()
+                    .fill(Color(light: Color(hex: 0xDAD8D0), dark: Color(hex: 0x34343A)))
+                    .frame(width: 2)
+                    .padding(.leading, 11)
+                    .padding(.vertical, 8)
+                    .accessibilityHidden(true)
             }
         }
     }
