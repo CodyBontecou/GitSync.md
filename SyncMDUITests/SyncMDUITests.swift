@@ -307,39 +307,28 @@ final class SyncMDUITests: XCTestCase {
         ]
         app.launch()
 
-        // First slide: hero copy and both bottom controls must be exposed as
-        // labelled accessibility elements.
-        let continueButton = button(app, labels: ["Continue", "CONTINUE"])
+        // Welcome screen: GitHub sign-in, the other-ways entry and the demo
+        // link are all labelled buttons on the first screen.
         XCTAssertTrue(
-            continueButton.waitForExistence(timeout: 10),
-            "Onboarding forward action should be discoverable as a labelled button"
+            button(app, labels: ["Continue with GitHub"]).waitForExistence(timeout: 10),
+            "Welcome should offer GitHub sign-in directly"
         )
+        let otherWays = button(app, labels: ["SSH, token or another host"])
+        XCTAssertTrue(otherWays.exists, "Welcome should offer SSH, token or another host")
         XCTAssertTrue(
-            button(app, labels: ["Skip", "SKIP"]).exists,
-            "Onboarding Skip escape hatch should be discoverable as a labelled button"
+            button(app, labels: ["Look around with a demo vault →"]).exists,
+            "First-run demo affordance should be discoverable as a labelled button"
         )
-        XCTAssertTrue(
-            app.staticTexts["YOUR REPOS, ON YOUR IPHONE"].exists,
-            "First onboarding slide subtitle should be exposed to accessibility"
-        )
+        otherWays.tap()
 
-        advanceOnboardingToSignIn(
-            in: app,
-            expectingSlideSubtitles: ["MARKDOWN-FIRST WORKFLOW", "BRANCHES, DIFFS, HISTORY"]
-        )
-
-        // The final sign-in step exposes each auth choice as a labelled button.
+        // The other-ways step exposes each auth choice as a labelled button.
         XCTAssertTrue(
-            button(app, labels: ["Personal Access Token", "PERSONAL ACCESS TOKEN"]).exists,
+            button(app, labels: ["Personal Access Token", "PERSONAL ACCESS TOKEN"]).waitForExistence(timeout: 8),
             "PAT sign-in option should be discoverable as a labelled button"
         )
         XCTAssertTrue(
             button(app, labels: ["Continue without GitHub", "CONTINUE WITHOUT GITHUB"]).exists,
             "Continue-without-GitHub option should be discoverable as a labelled button"
-        )
-        XCTAssertTrue(
-            button(app, labels: ["Try Demo", "TRY DEMO"]).exists,
-            "First-run Try Demo affordance should be discoverable as a labelled button"
         )
 
         let continueWithout = button(app, labels: ["Continue without GitHub", "CONTINUE WITHOUT GITHUB"])
@@ -784,7 +773,7 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(scope.exists)
         XCTAssertTrue(scope.label.contains("public or private repository"))
         XCTAssertTrue(scope.label.contains("personal GitHub account"))
-        XCTAssertTrue(scope.label.contains("A separate publish step"), "Opening this screen must not imply upload consent")
+        XCTAssertTrue(scope.label.contains("Nothing is uploaded until you tap"), "Opening this screen must not imply upload consent")
         XCTAssertTrue(app.staticTexts["folderPublication.localFiles"].label.contains("original folder"))
         XCTAssertFalse(app.buttons["folderPublication.prepare"].exists)
         XCTAssertFalse(app.buttons["folderPublication.publish"].exists, "No upload action is available before reviewing and preparing a folder")
@@ -815,7 +804,7 @@ final class SyncMDUITests: XCTestCase {
 
         // Seeding completes in ContentView.onAppear, which may briefly flash
         // onboarding before the seeded (onboarded) state lands.
-        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+        if button(app, labels: ["SSH, token or another host"]).waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
         }
@@ -1382,7 +1371,7 @@ final class SyncMDUITests: XCTestCase {
         // Seeding completes in ContentView.onAppear, which may briefly flash
         // onboarding before the seeded (onboarded) state lands (clone-test
         // rule for the same launch-arg composition).
-        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+        if button(app, labels: ["SSH, token or another host"]).waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
         }
@@ -1589,7 +1578,7 @@ final class SyncMDUITests: XCTestCase {
     }
 
     private func finishConflictFixtureLaunch(in app: XCUIApplication) {
-        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+        if button(app, labels: ["SSH, token or another host"]).waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
         }
@@ -1828,7 +1817,7 @@ final class SyncMDUITests: XCTestCase {
     }
 
     private func completeOnboardingIfPresent(in app: XCUIApplication) {
-        let skip = button(app, labels: ["Skip", "SKIP"])
+        let skip = button(app, labels: ["SSH, token or another host"])
         guard skip.waitForExistence(timeout: 8) else { return }
         for _ in 0..<4 where !skip.isHittable { app.swipeUp() }
         skip.tap()
@@ -1861,46 +1850,6 @@ final class SyncMDUITests: XCTestCase {
             NSPredicate(format: "label IN %@", labels)
         )
         return query.firstMatch
-    }
-
-    /// Taps Continue / Get Started until the embedded sign-in step of the
-    /// onboarding paged flow is showing, asserting each informational slide's
-    /// subtitle while that page is current (TabView materializes only nearby
-    /// pages, so offscreen slides are not queryable afterwards). Works with or
-    /// without the optional Background Sync feature slide.
-    private func advanceOnboardingToSignIn(
-        in app: XCUIApplication,
-        expectingSlideSubtitles subtitles: [String]
-    ) {
-        let signInStep = button(app, labels: ["Continue with GitHub", "Sign in with GitHub", "SIGN IN WITH GITHUB"])
-        var pendingSubtitles = subtitles
-        var taps = 0
-        while !signInStep.exists, taps < 6 {
-            let advance = button(app, labels: ["Continue", "CONTINUE", "Get Started", "GET STARTED"])
-            XCTAssertTrue(
-                advance.exists,
-                "Onboarding slides should always expose a labelled forward control"
-            )
-            for _ in 0..<4 where !advance.isHittable { app.swipeUp() }
-            advance.tap()
-            taps += 1
-            if !pendingSubtitles.isEmpty {
-                let subtitle = pendingSubtitles.removeFirst()
-                XCTAssertTrue(
-                    app.staticTexts[subtitle].waitForExistence(timeout: 5),
-                    "Onboarding slide copy \(subtitle) should be exposed to accessibility while shown"
-                )
-            }
-            _ = signInStep.waitForExistence(timeout: 2)
-        }
-        XCTAssertTrue(
-            pendingSubtitles.isEmpty,
-            "Every informational onboarding slide should have been walked"
-        )
-        XCTAssertTrue(
-            signInStep.waitForExistence(timeout: 5),
-            "Walking onboarding slides should reach the sign-in step"
-        )
     }
 
     /// Taps the first hittable button with the given label — used when a

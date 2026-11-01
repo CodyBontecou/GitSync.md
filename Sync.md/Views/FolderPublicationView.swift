@@ -24,6 +24,14 @@ struct FolderPublicationView: View {
     @State private var adoptionCandidate: PublishedGitHubRepository?
     @State private var showAdoptionConfirmation = false
     @FocusState private var repositoryNameFocused: Bool
+    @State private var nameAvailability: NameAvailability = .unknown
+    @State private var showsAllFiles = false
+
+    /// GitHub check of `account/name`, debounced while typing.
+    private enum NameAvailability: Equatable {
+        case unknown, checking, free, taken
+        case unavailable(String)
+    }
 
     private enum FolderPickerPurpose {
         case select
@@ -183,14 +191,24 @@ struct FolderPublicationView: View {
                 }
                 .accessibilityIdentifier("folderPublication.done")
             case .review, .preparing:
-                BPrimaryButton(
-                    title: record.phase == .preparing ? String(localized: "Resume Local Preparation") : String(localized: "Prepare Local Commit"),
-                    isDisabled: isBusy || !canPrepare,
-                    icon: "checkmark"
-                ) {
-                    prepare(record)
+                VStack(spacing: 8) {
+                    Text(verbatim: draftCommitFooter)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                    FolderPublicationActionButton(
+                        title: record.phase == .preparing
+                            ? String(localized: "Resume & push")
+                            : (record.repositoryIsPrivate
+                                ? String(localized: "Create private repo & push")
+                                : String(localized: "Create public repo & push")),
+                        isDisabled: isBusy || !canPrepare || nameAvailability == .taken
+                    ) {
+                        prepareAndPublish(record)
+                    }
+                    .accessibilityIdentifier("folderPublication.prepare")
                 }
-                .accessibilityIdentifier("folderPublication.prepare")
             case .creationUnknown, .creatingRemote:
                 BPrimaryButton(title: String(localized: "Check GitHub"), isDisabled: isBusy || !hasPinnedToken(record), icon: "arrow.clockwise") {
                     checkRemote(record)
@@ -212,7 +230,9 @@ struct FolderPublicationView: View {
                         title: record.remote == nil
                             ? (record.repositoryIsPrivate ? String(localized: "Create Private Repository & Publish") : String(localized: "Create Public Repository & Publish"))
                             : String(localized: "Publish Saved Commit"),
-                        isDisabled: isBusy || !hasPinnedToken(record) || repositoryName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                        isDisabled: isBusy || !hasPinnedToken(record)
+                            || repositoryName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                            || (record.remote == nil && nameAvailability == .taken)
                     ) {
                         perform {
                             if record.phase == .prepared {
@@ -233,6 +253,14 @@ struct FolderPublicationView: View {
         }
     }
 
+    /// Footer for the not-yet-saved commit, from the editable author field.
+    private var draftCommitFooter: String {
+        let name = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty
+            ? String(localized: "first commit · main")
+            : String(localized: "first commit as \(name) · main")
+    }
+
     /// "first commit as Cody · main"
     private func commitFooter(_ record: FolderPublicationRecord) -> String {
         record.authorName.isEmpty
@@ -245,7 +273,7 @@ struct FolderPublicationView: View {
     private var startContent: some View {
         VStack(alignment: .leading, spacing: 22) {
             VStack(alignment: .leading, spacing: 10) {
-                Text("Choose a folder on this device, review the files, and prepare a local commit. A separate publish step creates a public or private repository in your personal GitHub account.")
+                Text("Choose a folder on this device and review the files. Nothing is uploaded until you tap Create & push, which makes a public or private repository in your personal GitHub account.")
                     .font(TideFont.sans(15, relativeTo: .subheadline))
                     .foregroundStyle(Tide.inkMid)
                     .lineSpacing(2)
@@ -333,7 +361,7 @@ struct FolderPublicationView: View {
                             .font(TideFont.sans(16, .semibold, relativeTo: .body))
                             .foregroundStyle(Tide.ink)
                             .lineLimit(1)
-                        Text(verbatim: "\(record.folderPath) · \(record.files.count) files")
+                        Text(verbatim: "\(RepoDiscoveryView.friendlyLocation(for: URL(fileURLWithPath: record.folderPath))) · \(record.files.count) files")
                             .font(TideFont.mono(11))
                             .foregroundStyle(Tide.inkFaint)
                             .lineLimit(2)
@@ -341,13 +369,24 @@ struct FolderPublicationView: View {
                             .textSelection(.enabled)
                     }
                     Spacer(minLength: 8)
-                    AddVaultPill(title: String(localized: "Reconnect")) {
-                        folderPickerPurpose = .reconnect(record.id)
-                        showFolderPicker = true
+                    if record.phase == .review {
+                        // Nothing is committed yet: pick a different folder.
+                        AddVaultPill(title: String(localized: "Change")) {
+                            folderPickerPurpose = .select
+                            showFolderPicker = true
+                        }
+                        .disabled(isBusy)
+                        .accessibilityLabel(String(localized: "Choose a different folder"))
+                        .accessibilityIdentifier("folderPublication.changeFolder")
+                    } else {
+                        AddVaultPill(title: String(localized: "Reconnect")) {
+                            folderPickerPurpose = .reconnect(record.id)
+                            showFolderPicker = true
+                        }
+                        .disabled(isBusy)
+                        .accessibilityLabel(String(localized: "Reconnect Folder Access"))
+                        .accessibilityIdentifier("folderPublication.reconnect")
                     }
-                    .disabled(isBusy)
-                    .accessibilityLabel(String(localized: "Reconnect Folder Access"))
-                    .accessibilityIdentifier("folderPublication.reconnect")
                 }
                 .padding(.vertical, 14)
             }
@@ -368,7 +407,7 @@ struct FolderPublicationView: View {
             identityFields
                 .disabled(isBusy || record.phase == .preparing)
 
-            AddVaultFootnote(text: String(localized: "Prepare adds Git metadata and saves your selected files in a local commit. Unchecked files remain on this device and are excluded from later sync. No files are uploaded in this step."))
+            AddVaultFootnote(text: String(localized: "Create & push saves the included files in a local commit, creates the GitHub repository, and uploads that commit. Excluded files stay on this device and out of later sync. If anything stops midway, your progress is saved and resumes from here."))
         }
     }
 
@@ -401,6 +440,30 @@ struct FolderPublicationView: View {
             if record.files.isEmpty {
                 AddVaultFootnote(text: String(localized: "No files to commit. Git does not preserve empty folders."))
             } else {
+                reviewSummary(record)
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { showsAllFiles.toggle() }
+                } label: {
+                    HStack(spacing: 6) {
+                        Text(showsAllFiles
+                             ? String(localized: "Hide file details")
+                             : String(localized: "Show all \(record.files.count) files"))
+                            .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                        Image(systemName: showsAllFiles ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 11, weight: .semibold))
+                            .accessibilityHidden(true)
+                    }
+                    .foregroundStyle(Tide.behind)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 20)
+                .accessibilityIdentifier("folderPublication.toggleFileDetails")
+            }
+
+            if !record.files.isEmpty && showsAllFiles {
                 AddVaultCard {
                     LazyVStack(spacing: 0) {
                         ForEach(record.files) { file in
@@ -443,6 +506,83 @@ struct FolderPublicationView: View {
                 .padding(.horizontal, Tide.gutter)
             }
         }
+    }
+
+    /// Grouped review: what goes in, what Git ignores, what is too large,
+    /// and what stays excluded. Per-file detail sits behind a disclosure.
+    private func reviewSummary(_ record: FolderPublicationRecord) -> some View {
+        let summary = FolderReviewSummary(files: record.files, selectedPaths: selectedPaths)
+        return AddVaultCard {
+            VStack(spacing: 0) {
+                summaryRow(
+                    title: summary.includedTitle,
+                    detail: ByteCountFormatter.string(fromByteCount: summary.includedBytes, countStyle: .file),
+                    status: String(localized: "included"),
+                    tint: Tide.synced
+                )
+                if !summary.ignoredNames.isEmpty {
+                    AddVaultHairline()
+                    summaryRow(
+                        title: summary.ignoredTitle,
+                        detail: nil,
+                        status: String(localized: "ignored"),
+                        tint: Tide.inkFaint
+                    )
+                }
+                ForEach(summary.oversized) { file in
+                    AddVaultHairline()
+                    summaryRow(
+                        title: URL(fileURLWithPath: file.path).lastPathComponent,
+                        detail: ByteCountFormatter.string(fromByteCount: file.size, countStyle: .file),
+                        status: String(localized: "over 10 MiB"),
+                        tint: Tide.ahead
+                    )
+                }
+                if summary.sensitiveExcludedCount > 0 {
+                    AddVaultHairline()
+                    summaryRow(
+                        title: String(localized: "\(summary.sensitiveExcludedCount) sensitive files"),
+                        detail: nil,
+                        status: String(localized: "excluded"),
+                        tint: Tide.danger
+                    )
+                }
+                if summary.otherExcludedCount > 0 {
+                    AddVaultHairline()
+                    summaryRow(
+                        title: String(localized: "\(summary.otherExcludedCount) unchecked files"),
+                        detail: nil,
+                        status: String(localized: "excluded"),
+                        tint: Tide.inkFaint
+                    )
+                }
+            }
+        }
+        .accessibilityIdentifier("folderPublication.reviewSummary")
+    }
+
+    private func summaryRow(title: String, detail: String?, status: String, tint: Color) -> some View {
+        HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(verbatim: title)
+                    .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.ink)
+                    .lineLimit(2)
+                    .truncationMode(.middle)
+                if let detail {
+                    Text(verbatim: detail)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                }
+            }
+            Spacer(minLength: 8)
+            Text(status)
+                .font(TideFont.metaStrong)
+                .foregroundStyle(tint)
+        }
+        .padding(.vertical, 13)
+        .frame(minHeight: 44)
+        .accessibilityElement(children: .combine)
     }
 
     private var identityFields: some View {
@@ -508,9 +648,10 @@ struct FolderPublicationView: View {
         }
     }
 
+    @ViewBuilder
     private func repositoryNameField(_ record: FolderPublicationRecord, editable: Bool) -> some View {
         let isDisabled = isBusy || (!editable && record.phase != .prepared)
-        return HStack(spacing: 0) {
+        HStack(spacing: 0) {
             if !accountLogin.isEmpty {
                 Text(verbatim: "\(accountLogin)/")
                     .font(TideFont.mono(14, relativeTo: .subheadline))
@@ -532,6 +673,70 @@ struct FolderPublicationView: View {
         .opacity(isDisabled ? 0.6 : 1)
         .disabled(isDisabled)
         .padding(.horizontal, Tide.gutter)
+        .task(id: nameCheckKey(record)) {
+            await checkNameAvailability(record)
+        }
+
+        if record.remote == nil {
+            nameAvailabilityLine
+        }
+    }
+
+    @ViewBuilder
+    private var nameAvailabilityLine: some View {
+        switch nameAvailability {
+        case .unknown:
+            EmptyView()
+        case .checking:
+            AddVaultStatusLine(text: String(localized: "checking name…"), tint: Tide.inkFaint, systemImage: "ellipsis")
+        case .free:
+            AddVaultStatusLine(text: String(localized: "name is free"))
+                .accessibilityIdentifier("folderPublication.nameFree")
+        case .taken:
+            AddVaultStatusLine(text: String(localized: "already taken"), tint: Tide.danger, systemImage: "xmark")
+                .accessibilityIdentifier("folderPublication.nameTaken")
+        case .unavailable(let message):
+            AddVaultStatusLine(text: message, tint: Tide.inkFaint, systemImage: "questionmark")
+        }
+    }
+
+    /// Changes whenever the account or the name being checked changes.
+    private func nameCheckKey(_ record: FolderPublicationRecord) -> String {
+        "\(accountLogin)/\(repositoryName.trimmingCharacters(in: .whitespacesAndNewlines))|\(record.remote == nil)|\(record.phase.rawValue)"
+    }
+
+    /// Debounced GitHub lookup of `account/name`. Only meaningful before the
+    /// repository is created; afterwards the saved remote is authoritative.
+    private func checkNameAvailability(_ record: FolderPublicationRecord) async {
+        let name = repositoryName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard record.remote == nil,
+              record.phase == .review || record.phase == .preparing || record.phase == .prepared,
+              !accountLogin.isEmpty, !name.isEmpty,
+              let token = state.gitHubToken(for: accountLogin), !token.isEmpty else {
+            nameAvailability = .unknown
+            return
+        }
+        guard name.range(of: #"^[A-Za-z0-9._-]{1,100}$"#, options: .regularExpression) != nil,
+              name != ".", name != ".." else {
+            nameAvailability = .unavailable(String(localized: "Use letters, numbers, hyphens, underscores, or periods."))
+            return
+        }
+        nameAvailability = .checking
+        do {
+            try await Task.sleep(for: .milliseconds(450))
+        } catch {
+            return
+        }
+        do {
+            let exists = try await GitHubService.repositoryExists(owner: accountLogin, name: name, token: token)
+            guard !Task.isCancelled else { return }
+            nameAvailability = exists ? .taken : .free
+        } catch is CancellationError {
+            return
+        } catch {
+            guard !Task.isCancelled else { return }
+            nameAvailability = .unavailable(String(localized: "Could not check the name right now."))
+        }
     }
 
     private func visibilityPicker(_ record: FolderPublicationRecord) -> some View {
@@ -778,18 +983,25 @@ struct FolderPublicationView: View {
         errorMessage = nil
     }
 
-    private func prepare(_ record: FolderPublicationRecord) {
+    /// One tap: save the reviewed commit, create the repository, push, and
+    /// register the folder. Every phase is journaled by the coordinator, so a
+    /// stop or failure resumes from the saved phase instead of starting over.
+    private func prepareAndPublish(_ record: FolderPublicationRecord) {
+        let id = record.id
         perform {
             try await state.prepareFolderPublication(
-                id: record.id,
+                id: id,
                 selectedPaths: selectedPaths,
                 authorName: authorName,
                 authorEmail: authorEmail,
                 message: commitMessage,
                 accountLogin: accountLogin,
-                repositoryName: repositoryName,
+                repositoryName: repositoryName.trimmingCharacters(in: .whitespacesAndNewlines),
                 repositoryIsPrivate: record.repositoryIsPrivate
             )
+            try Task.checkCancellation()
+            guard coordinator.record(id: id)?.phase == .prepared else { return }
+            try await state.publishFolderPublication(id: id)
         }
     }
 

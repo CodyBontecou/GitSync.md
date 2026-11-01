@@ -29,6 +29,22 @@ struct AddRepoView: View {
     @State private var sshPublicKey: String = ""
     @State private var sshPassphrase: String = ""
 
+    // SSH key source: this iPhone's generated key, or a pasted one.
+    private enum SSHKeySource: Equatable { case device, pasted }
+    @State private var sshKeySource: SSHKeySource = .device
+    @State private var deviceKey: DeviceSSHKeyPair? = nil
+    @State private var deviceKeyError: String? = nil
+    @State private var didCopyPublicKey = false
+
+    // Connection pre-flight before cloning.
+    private enum Preflight: Equatable {
+        case idle
+        case testing
+        case passed(String)
+        case failed(String)
+    }
+    @State private var preflight: Preflight = .idle
+
     // Local repo selection
     @State private var localRepoURL: URL? = nil
     @State private var localRepoBookmarkData: Data? = nil
@@ -81,16 +97,20 @@ struct AddRepoView: View {
             .toolbar(.hidden, for: .navigationBar)
             .animation(.easeInOut(duration: 0.2), value: step)
             .sheet(isPresented: $showRepoPicker) {
-                RepoPickerView(repos: state.gitHubRepos) { repo in
-                    selectedRepoURL = repo.htmlURL
-                    selectedBranch = repo.defaultBranch
-                    vaultName = repo.name
-                    showManualEntry = false
-                    localRepoURL = nil
-                    localRepoBookmarkData = nil
-                    localRepoError = nil
-                    configureAuthDefaults(for: repo.htmlURL)
-                }
+                RepoPickerView(
+                    repos: state.gitHubRepos,
+                    onSelect: { repo in
+                        selectedRepoURL = repo.htmlURL
+                        selectedBranch = repo.defaultBranch
+                        vaultName = repo.name
+                        showManualEntry = false
+                        localRepoURL = nil
+                        localRepoBookmarkData = nil
+                        localRepoError = nil
+                        configureAuthDefaults(for: repo.htmlURL)
+                    },
+                    onCloned: { dismiss() }
+                )
             }
             .sheet(isPresented: $showDiscovery) {
                 RepoDiscoveryView(onComplete: { dismiss() })
@@ -111,6 +131,7 @@ struct AddRepoView: View {
                 }
             }
             .onAppear {
+                if deviceKey == nil { deviceKey = DeviceSSHKeyService.load() }
                 if authorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     authorName = state.defaultAuthorName
                 }
@@ -141,6 +162,9 @@ struct AddRepoView: View {
                     Task { await state.refreshRepos() }
                 }
             }
+            .onChange(of: selectedRepoURL) { _, _ in preflight = .idle }
+            .onChange(of: authMethod) { _, _ in preflight = .idle }
+            .onChange(of: sshKeySource) { _, _ in preflight = .idle }
             .onChange(of: state.defaultAuthorName) { _, newValue in
                 if authorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { authorName = newValue }
             }
@@ -645,27 +669,156 @@ struct AddRepoView: View {
 
         case .sshKey:
             VStack(alignment: .leading, spacing: 12) {
+                switch sshKeySource {
+                case .device:
+                    deviceKeyCard
+                    Text("Add the public key to your host once. Private keys never leave this iPhone's Keychain.")
+                        .font(TideFont.sans(13, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkFaint)
+                        .fixedSize(horizontal: false, vertical: true)
+                case .pasted:
+                    AddVaultKeyEditor(label: String(localized: "Private key"), text: $sshPrivateKey, minHeight: 130)
+                    BTextField(
+                        label: String(localized: "Passphrase (Optional)"),
+                        text: $sshPassphrase,
+                        placeholder: String(localized: "leave blank if none"),
+                        isSecure: true,
+                        autocapitalization: .never
+                    )
+                    AddVaultKeyEditor(label: String(localized: "Public key (optional)"), text: $sshPublicKey, minHeight: 72)
+                    Text("Stored in Keychain. Paste an OpenSSH private key; passphrase is optional.")
+                        .font(TideFont.sans(13, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkFaint)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button {
+                        sshKeySource = .device
+                    } label: {
+                        Text(deviceKey == nil
+                             ? String(localized: "Create a key on this iPhone instead")
+                             : String(localized: "Use this iPhone's key instead"))
+                            .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.behind)
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 BTextField(
                     label: String(localized: "SSH Username"),
                     text: $authUsername,
                     placeholder: GitRemoteURL.parse(selectedRepoURL)?.username ?? "git",
                     autocapitalization: .never
                 )
-                AddVaultKeyEditor(label: String(localized: "Private key"), text: $sshPrivateKey, minHeight: 130)
-                BTextField(
-                    label: String(localized: "Passphrase (Optional)"),
-                    text: $sshPassphrase,
-                    placeholder: String(localized: "leave blank if none"),
-                    isSecure: true,
-                    autocapitalization: .never
-                )
-                AddVaultKeyEditor(label: String(localized: "Public key (optional)"), text: $sshPublicKey, minHeight: 72)
-                Text("Stored in Keychain. Paste an OpenSSH private key; passphrase is optional.")
-                    .font(TideFont.sans(13, relativeTo: .footnote))
-                    .foregroundStyle(Tide.inkFaint)
-                    .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.horizontal, Tide.gutter)
+        }
+    }
+
+    // MARK: - iPhone SSH key
+
+    @ViewBuilder
+    private var deviceKeyCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if let key = deviceKey {
+                HStack(spacing: 14) {
+                    AddVaultIconTile(systemImage: "key.fill", size: 40)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(String(localized: "iPhone key"))
+                            .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                            .foregroundStyle(Tide.ink)
+                        Text(verbatim: "ed25519 · \(key.shortFingerprint)")
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(Tide.inkFaint)
+                            .lineLimit(1)
+                            .accessibilityLabel(String(localized: "ed25519 key, fingerprint \(key.fingerprint)"))
+                    }
+                    Spacer(minLength: 8)
+                    BBadge(text: String(localized: "Keychain"), style: .success)
+                }
+                .padding(.vertical, 14)
+
+                Text(verbatim: key.publicKeyLine)
+                    .font(TideFont.mono(11.5, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkMid)
+                    .lineLimit(3)
+                    .truncationMode(.middle)
+                    .textSelection(.enabled)
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Tide.well))
+                    .accessibilityLabel(String(localized: "Public key"))
+
+                HStack(spacing: 8) {
+                    AddVaultPill(
+                        title: didCopyPublicKey ? String(localized: "Copied") : String(localized: "Copy public key"),
+                        filled: true,
+                        systemImage: didCopyPublicKey ? "checkmark" : "doc.on.doc"
+                    ) {
+                        UIPasteboard.general.string = key.publicKeyLine
+                        didCopyPublicKey = true
+                        Task {
+                            try? await Task.sleep(for: .seconds(2))
+                            didCopyPublicKey = false
+                        }
+                    }
+                    .accessibilityIdentifier("addRepository.copyPublicKey")
+                    AddVaultPill(title: String(localized: "Use another…")) {
+                        sshKeySource = .pasted
+                    }
+                    .accessibilityIdentifier("addRepository.useAnotherKey")
+                    Spacer(minLength: 0)
+                }
+                .padding(.vertical, 10)
+            } else {
+                HStack(spacing: 14) {
+                    AddVaultIconTile(systemImage: "key", size: 40)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(String(localized: "No iPhone key yet"))
+                            .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                            .foregroundStyle(Tide.ink)
+                        Text(String(localized: "Create an ed25519 key here, then add its public half to your host."))
+                            .font(TideFont.sans(13, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkFaint)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(.vertical, 14)
+
+                if let deviceKeyError {
+                    AddVaultStatusLine(text: deviceKeyError, tint: Tide.danger, systemImage: "exclamationmark.triangle")
+                        .padding(.horizontal, -20)
+                        .padding(.bottom, 8)
+                }
+
+                HStack(spacing: 8) {
+                    AddVaultPill(title: String(localized: "Create iPhone key"), filled: true, systemImage: "plus") {
+                        generateDeviceKey()
+                    }
+                    .accessibilityIdentifier("addRepository.createDeviceKey")
+                    AddVaultPill(title: String(localized: "Use another…")) {
+                        sshKeySource = .pasted
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(.bottom, 10)
+            }
+        }
+        .padding(.horizontal, 18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+    }
+
+    private func generateDeviceKey() {
+        let username = state.gitHubUsername.isEmpty
+            ? (state.defaultAuthorName.split(separator: " ").first.map(String.init) ?? "")
+            : state.gitHubUsername
+        do {
+            deviceKey = try DeviceSSHKeyService.generate(comment: DeviceSSHKeyService.defaultComment(username: username))
+            deviceKeyError = nil
+        } catch {
+            deviceKeyError = error.localizedDescription
         }
     }
 
@@ -860,11 +1013,33 @@ struct AddRepoView: View {
         .accessibilityIdentifier("addRepository.addLocal")
     }
 
+    @ViewBuilder
     private var addButton: some View {
-        BPrimaryButton(title: String(localized: "Add & clone"), isDisabled: !canSubmitRemoteRepo) {
+        switch preflight {
+        case .idle:
+            EmptyView()
+        case .testing:
+            AddVaultStatusLine(text: String(localized: "connecting to \(preflightHost)…"), tint: Tide.behind, systemImage: "network")
+                .padding(.horizontal, -20)
+        case .passed(let summary):
+            AddVaultStatusLine(text: summary)
+                .padding(.horizontal, -20)
+        case .failed(let message):
+            AddVaultStatusLine(text: message, tint: Tide.danger, systemImage: "exclamationmark.triangle")
+                .padding(.horizontal, -20)
+        }
+        BPrimaryButton(
+            title: String(localized: "Test & clone"),
+            isLoading: preflight == .testing,
+            isDisabled: !canSubmitRemoteRepo || preflight == .testing
+        ) {
             addAndClone()
         }
         .accessibilityIdentifier("addRepository.addAndClone")
+    }
+
+    private var preflightHost: String {
+        GitRemoteURL.parse(selectedRepoURL)?.host ?? String(localized: "remote")
     }
 
     // MARK: - Validation
@@ -889,8 +1064,13 @@ struct AddRepoView: View {
         case .httpsToken:
             return !authPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         case .sshKey:
-            return !sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            return !effectiveSSHPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
+    }
+
+    /// The private key the SSH method will use: this iPhone's key or the pasted one.
+    private var effectiveSSHPrivateKey: String {
+        sshKeySource == .device ? (deviceKey?.privateKeyPEM ?? "") : sshPrivateKey
     }
 
     private var missingAuthorFields: [String] {
@@ -913,8 +1093,8 @@ struct AddRepoView: View {
                 ? [String(localized: "Token / Password")]
                 : []
         case .sshKey:
-            return sshPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? [String(localized: "SSH Private Key")]
+            return effectiveSSHPrivateKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                ? [sshKeySource == .device ? String(localized: "iPhone SSH key") : String(localized: "SSH Private Key")]
                 : []
         }
     }
@@ -962,8 +1142,17 @@ struct AddRepoView: View {
         case .httpsToken:
             return .httpsToken(username: username, password: authPassword)
         case .sshKey:
+            let sshUsername = username.isEmpty ? (GitRemoteURL.parse(selectedRepoURL)?.username ?? "git") : username
+            if sshKeySource == .device, let key = deviceKey {
+                return .sshKey(
+                    username: sshUsername,
+                    privateKey: key.privateKeyPEM,
+                    publicKey: key.publicKeyLine,
+                    passphrase: ""
+                )
+            }
             return .sshKey(
-                username: username.isEmpty ? (GitRemoteURL.parse(selectedRepoURL)?.username ?? "git") : username,
+                username: sshUsername,
                 privateKey: sshPrivateKey,
                 publicKey: sshPublicKey,
                 passphrase: sshPassphrase
@@ -1000,7 +1189,39 @@ struct AddRepoView: View {
         }
 
         let identifier = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        performAddAndClone(identifier: identifier)
+        testConnectionThenClone(identifier: identifier)
+    }
+
+    /// `ls-remote`-style pre-flight: connect with the chosen credentials and
+    /// list refs before any folder or configuration is created. An SSH host
+    /// key that still needs the user's trust is not a failure — the clone
+    /// itself shows the trust prompt.
+    private func testConnectionThenClone(identifier: String) {
+        guard preflight != .testing else { return }
+        let trimmedURL = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        let remoteURL = GitRemoteURL.cloneURLString(from: trimmedURL) ?? trimmedURL
+        let payload = remoteCredentials().transportPayload
+        preflight = .testing
+        Task {
+            do {
+                let check = try await LocalGitService.checkRemoteConnection(remoteURL: remoteURL, pat: payload)
+                var summary = String(localized: "Connected · \(check.refCount) refs")
+                if let branch = check.defaultBranch, !branch.isEmpty {
+                    summary += " · HEAD → \(branch)"
+                }
+                preflight = .passed(summary)
+            } catch LocalGitError.sshHostKeyTrustRequired(_) {
+                preflight = .passed(String(localized: "Reachable · confirm the host key when cloning"))
+            } catch is CancellationError {
+                preflight = .idle
+                return
+            } catch {
+                preflight = .failed(error.localizedDescription)
+                return
+            }
+            try? await Task.sleep(for: .milliseconds(400))
+            performAddAndClone(identifier: identifier)
+        }
     }
 
     private func performAddAndClone(identifier: String) {

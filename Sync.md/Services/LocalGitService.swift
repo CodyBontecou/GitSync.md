@@ -5276,3 +5276,60 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         return count
     }
 }
+
+// MARK: - Remote Connection Pre-flight
+
+/// Result of an `ls-remote`-style connection check.
+struct RemoteConnectionCheck: Sendable, Equatable {
+    /// Number of refs the remote advertised.
+    let refCount: Int
+    /// Branch the remote's HEAD points to, when advertised.
+    let defaultBranch: String?
+}
+
+extension LocalGitService {
+    /// Connects to `remoteURL` with the same credential and host-key callbacks
+    /// as clone, lists the advertised refs, and disconnects. Nothing is written
+    /// to disk. Throws `LocalGitError.sshHostKeyTrustRequired` for an untrusted
+    /// SSH host key and `authenticationFailed` when credentials are rejected.
+    static func checkRemoteConnection(remoteURL: String, pat: String) async throws -> RemoteConnectionCheck {
+        _ = initOnce
+        return try await Task.detached {
+            let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
+            let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
+            defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
+
+            var remote: OpaquePointer?
+            defer { if let remote { git_remote_free(remote) } }
+            try git2Check(git_remote_create_anonymous(&remote, nil, remoteURL), context: "Open remote")
+
+            var callbacks = git_remote_callbacks()
+            git_remote_init_callbacks(&callbacks, UInt32(GIT_REMOTE_CALLBACKS_VERSION))
+            callbacks.credentials = credentialCallback
+            callbacks.certificate_check = certificateCheckCallback
+            callbacks.payload = ctxPtr
+
+            try git2TransportCheck(
+                git_remote_connect(remote, GIT_DIRECTION_FETCH, &callbacks, nil, nil),
+                context: "Connect to remote",
+                credentialContext: ctx,
+                wrapping: LocalGitError.cloneFailed
+            )
+            defer { git_remote_disconnect(remote) }
+
+            var heads: UnsafeMutablePointer<UnsafePointer<git_remote_head>?>?
+            var headCount: Int = 0
+            try git2Check(git_remote_ls(&heads, &headCount, remote), context: "List remote refs")
+
+            var defaultBranch: String?
+            var buf = git_buf()
+            if git_remote_default_branch(&buf, remote) == 0, let ptr = buf.ptr {
+                let ref = String(cString: ptr)
+                defaultBranch = ref.hasPrefix("refs/heads/") ? String(ref.dropFirst("refs/heads/".count)) : ref
+            }
+            git_buf_dispose(&buf)
+
+            return RemoteConnectionCheck(refCount: headCount, defaultBranch: defaultBranch)
+        }.value
+    }
+}

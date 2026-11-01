@@ -570,19 +570,45 @@ struct GitHubRepo: Codable, Identifiable {
     let defaultBranch: String
     let updatedAt: String?
     let owner: Owner
+    /// Repository size reported by GitHub, in kilobytes (approximate; it
+    /// counts packed history, not the checked-out working tree).
+    var size: Int? = nil
+    /// Primary linguist language. Markdown-only note vaults usually report
+    /// `nil` because linguist does not count prose as a language.
+    var language: String? = nil
 
     struct Owner: Codable {
         let login: String
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, description, owner
+        case id, name, description, owner, size, language
         case fullName = "full_name"
         case isPrivate = "private"
         case htmlURL = "html_url"
         case defaultBranch = "default_branch"
         case updatedAt = "updated_at"
     }
+
+    /// Approximate size in bytes, when GitHub reported one.
+    var sizeInBytes: Int64? {
+        guard let size, size > 0 else { return nil }
+        return Int64(size) * 1024
+    }
+
+    /// Name-based hint that this repository holds notes rather than code.
+    var hasNotesLikeName: Bool {
+        let lowered = name.lowercased()
+        return Self.notesNameHints.contains { lowered.contains($0) }
+    }
+
+    /// Prose-only repositories report no language, or Markdown.
+    var hasProseLanguage: Bool {
+        guard let language else { return true }
+        return language.caseInsensitiveCompare("Markdown") == .orderedSame
+    }
+
+    static let notesNameHints = ["vault", "notes", "obsidian", "journal", "zettel", "wiki", "brain", "garden", "notebook", "diary"]
 }
 
 extension GitHubService {
@@ -624,6 +650,89 @@ extension GitHubService {
             guard repositories.count == 100 else { return result }
             currentPage += 1
         }
+    }
+
+    /// Fetch the repositories the authenticated user has starred (up to 1,000).
+    static func fetchStarredRepos(token: String) async throws -> [GitHubRepo] {
+        var currentPage = 1
+        var result: [GitHubRepo] = []
+        while currentPage <= 10 {
+            var components = URLComponents(string: "https://api.github.com/user/starred")!
+            components.queryItems = [
+                URLQueryItem(name: "sort", value: "updated"),
+                URLQueryItem(name: "direction", value: "desc"),
+                URLQueryItem(name: "per_page", value: "100"),
+                URLQueryItem(name: "page", value: "\(currentPage)"),
+            ]
+            var req = URLRequest(url: components.url!)
+            req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            let (data, response) = try await URLSession.shared.data(for: req)
+            guard let http = response as? HTTPURLResponse else {
+                throw GitHubError.apiError(0, String(localized: "Invalid response"))
+            }
+            guard http.statusCode == 200 else {
+                throw repositoryLookupError(
+                    statusCode: http.statusCode,
+                    headers: http.allHeaderFields.reduce(into: [String: String]()) { $0["\($1.key)"] = "\($1.value)" },
+                    body: data
+                )
+            }
+            let repositories = try JSONDecoder().decode([GitHubRepo].self, from: data)
+            result.append(contentsOf: repositories)
+            guard repositories.count == 100 else { return result }
+            currentPage += 1
+        }
+        return result
+    }
+
+    /// `true` when `owner/name` already exists and is visible to `token`,
+    /// `false` when GitHub answers 404. Other failures throw.
+    static func repositoryExists(owner: String, name: String, token: String) async throws -> Bool {
+        let status = try await statusCode(pathSegments: ["repos", owner, name], token: token)
+        switch status {
+        case 200...299: return true
+        case 404: return false
+        case 401: throw GitHubError.unauthorized
+        case 403, 429: throw GitHubError.rateLimited
+        default: throw GitHubError.apiError(status, String(localized: "Could not check the repository name."))
+        }
+    }
+
+    /// `true` when the repository's default branch has a top-level `.obsidian`
+    /// folder (an Obsidian vault). 404 means no such folder.
+    static func hasObsidianFolder(owner: String, name: String, token: String) async throws -> Bool {
+        let status = try await statusCode(pathSegments: ["repos", owner, name, "contents", ".obsidian"], token: token)
+        switch status {
+        case 200...299: return true
+        case 404: return false
+        case 401: throw GitHubError.unauthorized
+        case 403, 429: throw GitHubError.rateLimited
+        default: throw GitHubError.apiError(status, String(localized: "Could not read the repository contents."))
+        }
+    }
+
+    /// Issues an authenticated GET and returns only the HTTP status code.
+    private static func statusCode(pathSegments: [String], token: String) async throws -> Int {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.github.com"
+        // Percent-encode each segment so names cannot inject path components.
+        let allowed = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
+        components.percentEncodedPath = "/" + pathSegments
+            .map { $0.addingPercentEncoding(withAllowedCharacters: allowed) ?? $0 }
+            .joined(separator: "/")
+        guard let url = components.url else { throw GitHubError.invalidURL }
+        var req = URLRequest(url: url)
+        req.httpMethod = "GET"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        req.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        let (_, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubError.apiError(0, String(localized: "Invalid response"))
+        }
+        return http.statusCode
     }
 
     static func repositoryLookupError(
