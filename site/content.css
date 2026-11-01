@@ -241,3 +241,54 @@
 .legal-label::before { border-radius: 50%; background: var(--synced); }
 .legal + .site-footer { border-top: 1px solid var(--line); }
 .tutorial-launch { background: var(--ink); border-radius: var(--radius-card); }
+
+/* ---- Tide: guide layout (article column + sticky aside) ---- */
+.container { max-width: 1248px; padding-inline: var(--gutter); }
+.content-hero h1 { font-size: clamp(48px, 7vw, 96px); line-height: .95; }
+.guide-layout { display: grid; grid-template-columns: minmax(0, 720px) minmax(0, 300px); grid-template-rows: auto 1fr; column-gap: 48px; justify-content: space-between; padding-block: 40px 80px; }
+.guide-layout > .article-hero { grid-column: 1; grid-row: 1; padding: 0; }
+.guide-layout > .article-body { grid-column: 1; grid-row: 2; max-width: none; padding-top: 28px; }
+.guide-layout > .guide-aside { grid-column: 2; grid-row: 1 / span 2; }
+.guide-layout .article-hero h1 { margin-block: 14px 0; font-size: clamp(36px, 5vw, 58px); line-height: 1.02; letter-spacing: -.045em; }
+.guide-layout .subtitle { margin-top: 18px; max-width: none; font-size: 20px; line-height: 1.5; color: var(--muted); }
+.article-breadcrumbs { font: 400 12.5px/1.5 var(--mono); letter-spacing: 0; text-transform: none; color: var(--faint); }
+.article-breadcrumbs a { color: var(--faint); }
+.article-breadcrumbs a:hover { color: var(--ink); }
+.guide-layout .meta-line { margin-top: 18px; font: 400 12.5px/1.6 var(--mono); color: var(--faint); }
+.guide-layout .article-body { font-size: 18px; line-height: 1.65; }
+.guide-layout .article-body p, .guide-layout .article-body li { color: var(--body); }
+.guide-layout .article-body h2 { margin-top: 44px; margin-bottom: 12px; font-size: 30px; letter-spacing: -.03em; }
+.guide-layout .article-body h3 { letter-spacing: -.02em; }
+.guide-layout .article-body a:not(.tutorial-launch) { color: var(--blue); }
+.guide-layout .article-body a:not(.tutorial-launch):hover { color: var(--blue-deep); }
+.guide-layout .article-body pre { padding: 18px 20px; font-size: 14px; line-height: 1.6; }
+.guide-aside { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.guide-aside-sticky { position: sticky; top: 104px; display: flex; flex-direction: column; gap: 12px; }
+.guide-aside .toc-card { background: var(--surface); border-radius: var(--radius-card); padding: 20px; }
+.guide-aside .toc-title { margin-bottom: 0; }
+.guide-aside .toc-card ol { margin: 12px 0 0; padding-left: 20px; columns: auto; }
+.guide-aside .toc-card li { margin-top: 0; padding-left: 2px; padding-block: 5px; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.guide-aside .toc-card a { color: var(--muted); text-decoration: none; }
+.guide-aside .toc-card a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.guide-aside .side-note { background: var(--surface); border: 0; border-radius: var(--radius-card); padding: 20px; }
+.guide-aside .side-note h2 { margin-bottom: 10px; }
+.guide-aside .side-note p, .guide-aside .side-note li { font-size: 14px; line-height: 1.6; }
+.aside-cta { background: var(--ink); color: var(--paper); border-radius: var(--radius-card); padding: 22px; }
+.aside-cta-title { font-size: 20px; line-height: 1.2; font-weight: 600; letter-spacing: -.02em; }
+.aside-cta-price { margin-top: 8px; font: 400 12px/1.6 var(--mono); color: #a9a9b0; }
+.aside-cta-button { margin-top: 16px; min-height: 48px; border-radius: 24px; background: var(--paper); color: var(--ink); display: flex; align-items: center; justify-content: center; padding: 8px 16px; text-align: center; font-size: 15px; font-weight: 600; text-decoration: none; }
+.aside-cta-button:hover { background: #fff; }
+.aside-cta-button:focus-visible { outline-color: #afc0ff; }
+@media (max-width: 960px) {
+  .guide-layout { display: flex; flex-direction: column; padding-block: 24px 56px; }
+  .guide-layout > .article-body { padding-top: 0; }
+  .guide-aside { margin-block: 24px 32px; }
+  .guide-aside-sticky { position: static; }
+  .aside-cta-wide { display: none; }
+}
+@media (max-width: 650px) {
+  .container { padding-inline: var(--gutter); }
+  .guide-layout .subtitle { font-size: 18px; }
+  .guide-layout .article-body { font-size: 17px; }
+  .guide-layout .article-body h2 { font-size: 26px; }
+}
