@@ -31,6 +31,16 @@ enum Tide {
     static let synced  = Color(light: Color(hex: 0x17703F), dark: Color(hex: 0x5BC489))
     static let danger  = Color(light: Color(hex: 0xB42318), dark: Color(hex: 0xFF7A6B))
 
+    // Dark state hero (Vault): stays dark in both appearances.
+    static let heroBg     = Color(light: Color(hex: 0x111113), dark: Color(hex: 0x1E1E22))
+    static let heroBorder = Color(light: .clear,               dark: Color(hex: 0x2E2E33))
+    static let heroText   = Color(hex: 0xF2F1EC)
+    static let heroMeta   = Color(hex: 0xB5B5BB)
+    static let heroLine   = Color(hex: 0x3A3A40)
+    static let heroAhead  = Color(hex: 0xFF8A4C)
+    static let heroBehind = Color(hex: 0x7C95FF)
+    static let heroSynced = Color(hex: 0x5BC489)
+
     // Radii & spacing
     static let radiusCard: CGFloat = 22
     static let radiusHero: CGFloat = 26
@@ -134,6 +144,11 @@ struct SyncRail: View {
     let state: TideSyncState
     var maxDots = 5
     var dot: CGFloat = 9
+    /// Drawn on the dark state hero instead of a card.
+    var onHero = false
+
+    private var aheadTint: Color { onHero ? Tide.heroAhead : Tide.ahead }
+    private var behindTint: Color { onHero ? Tide.heroBehind : Tide.behind }
 
     var body: some View {
         let (local, remote) = counts
@@ -141,21 +156,21 @@ struct SyncRail: View {
             Spacer(minLength: 0)
             HStack(spacing: 5) {
                 ForEach(0..<min(local, maxDots), id: \.self) { _ in
-                    Circle().fill(Tide.ahead).frame(width: dot, height: dot)
+                    Circle().fill(aheadTint).frame(width: dot, height: dot)
                 }
             }
             .padding(.trailing, local > 0 ? 6 : 0)
             node
             HStack(spacing: 5) {
                 ForEach(0..<min(remote, maxDots), id: \.self) { _ in
-                    Circle().strokeBorder(Tide.behind, lineWidth: 2).frame(width: dot, height: dot)
+                    Circle().strokeBorder(behindTint, lineWidth: 2).frame(width: dot, height: dot)
                 }
             }
             .padding(.leading, remote > 0 ? 6 : 0)
             Spacer(minLength: 0)
         }
         .frame(height: 18)
-        .background(Rectangle().fill(Tide.line).frame(height: 1))
+        .background(Rectangle().fill(onHero ? Tide.heroLine : Tide.line).frame(height: 1))
         .accessibilityElement()
         .accessibilityLabel(state.headline)
     }
@@ -163,14 +178,14 @@ struct SyncRail: View {
     @ViewBuilder private var node: some View {
         switch state {
         case .inSync:
-            Circle().fill(Tide.synced).frame(width: 18, height: 18)
+            Circle().fill(onHero ? Tide.heroSynced : Tide.synced).frame(width: 18, height: 18)
         case .diverged:
-            RoundedRectangle(cornerRadius: 3).fill(Tide.ink)
+            RoundedRectangle(cornerRadius: 3).fill(onHero ? Tide.heroText : Tide.ink)
                 .frame(width: 13, height: 13).rotationEffect(.degrees(45))
         default:
-            Circle().strokeBorder(Tide.ink, lineWidth: 2)
-                .background(Circle().fill(Tide.card))
-                .frame(width: 14, height: 14)
+            Circle().strokeBorder(onHero ? Tide.heroText : Tide.ink, lineWidth: 2)
+                .background(Circle().fill(onHero ? Tide.heroBg : Tide.card))
+                .frame(width: onHero ? 16 : 14, height: onHero ? 16 : 14)
         }
     }
 
