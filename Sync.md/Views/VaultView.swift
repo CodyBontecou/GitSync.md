@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct VaultView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let repoID: UUID
 
     @State private var showSettings = false
@@ -19,6 +20,10 @@ struct VaultView: View {
     @State private var reconnectError: String?
     @State private var isReconnectingFolder = false
     @State private var selectedCommit: GitCommitSummary?
+    // Two-pane layout (iPhone Duo open, wide detail columns) and watch mode.
+    @State private var paneWidth: CGFloat = 0
+    @State private var selectedDiffPath: String?
+    @State private var watchOverride: Bool?
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
@@ -71,6 +76,7 @@ struct VaultView: View {
                 )
             }
         }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { paneWidth = $0 }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -97,6 +103,16 @@ struct VaultView: View {
                     Button { openInFilesApp() } label: {
                         Label(String(localized: "Open in Files"), systemImage: "folder")
                     }
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) { watchOverride = !isWatching }
+                    } label: {
+                        if isWatching {
+                            Label(String(localized: "Show Full Vault"), systemImage: "rectangle.stack")
+                        } else {
+                            Label(String(localized: "Watch Changes"), systemImage: "eye")
+                        }
+                    }
+                    .accessibilityIdentifier("vault.watchToggle")
                     if !statusEntries.isEmpty {
                         Divider()
                         Button(role: .destructive) {
@@ -242,7 +258,72 @@ struct VaultView: View {
         }
     }
 
+    /// Watching: the compact live panel for Split View / Slide Over beside a
+    /// notes editor. On by default for a narrow iPad column; the toolbar menu
+    /// toggles it anywhere.
+    private var isWatching: Bool {
+        watchOverride ?? (UIDevice.current.userInterfaceIdiom == .pad && horizontalSizeClass == .compact)
+    }
+
+    /// Changes on the left, the selected file's diff on the right, when the
+    /// vault has a regular-width pane of its own (iPhone Duo open, iPad).
+    private var showsDiffPane: Bool {
+        horizontalSizeClass == .regular && paneWidth >= VaultLayout.diffPaneMinWidth
+    }
+
+    private enum VaultLayout {
+        static let diffPaneMinWidth: CGFloat = 700
+    }
+
+    /// The change shown in the diff pane: the one picked, else the first.
+    private var activeDiffPath: String? {
+        let candidates = sortedStatusEntries.filter { !$0.isConflicted }.map(\.path)
+        if let selectedDiffPath, candidates.contains(selectedDiffPath) { return selectedDiffPath }
+        return candidates.first
+    }
+
+    @ViewBuilder
     private func clonedContent(_ repo: RepoConfig) -> some View {
+        if isWatching {
+            VaultWatchView(repoID: repoID)
+                .transition(.opacity)
+        } else if showsDiffPane {
+            HStack(spacing: 0) {
+                vaultScroll(repo)
+                    .frame(width: min(420, max(340, paneWidth * 0.43)))
+                Rectangle().fill(Tide.line).frame(width: 1).ignoresSafeArea()
+                diffPane
+                    .frame(maxWidth: .infinity)
+            }
+        } else {
+            vaultScroll(repo)
+        }
+    }
+
+    @ViewBuilder
+    private var diffPane: some View {
+        if let path = activeDiffPath {
+            FileDiffView(repoID: repoID, path: path, embedded: true) { selectedDiffPath = nil }
+                .id(path)
+        } else {
+            ZStack {
+                Tide.paper.ignoresSafeArea()
+                VStack(spacing: 8) {
+                    Text(String(localized: "Nothing to diff."))
+                        .tideDisplay(26)
+                    Text(statusEntries.isEmpty
+                         ? String(localized: "Edits you make in Obsidian show up here.")
+                         : String(localized: "Resolve conflicts from the Changes list."))
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkMid)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(24)
+            }
+        }
+    }
+
+    private func vaultScroll(_ repo: RepoConfig) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 titleBlock(repo)
@@ -835,6 +916,23 @@ struct VaultView: View {
                 NavigationLink(value: ConflictEditorDestination(repoID: repoID, path: entry.path)) {
                     changedFileRowContent(entry)
                 }
+            } else if showsDiffPane {
+                let selected = activeDiffPath == entry.path
+                Button {
+                    selectedDiffPath = entry.path
+                } label: {
+                    changedFileRowContent(entry)
+                        .overlay(alignment: .leading) {
+                            if selected {
+                                Capsule().fill(Tide.ink)
+                                    .frame(width: 3)
+                                    .padding(.vertical, 12)
+                                    .offset(x: -11)
+                                    .accessibilityHidden(true)
+                            }
+                        }
+                }
+                .accessibilityAddTraits(selected ? .isSelected : [])
             } else {
                 NavigationLink(value: DiffDestination(repoID: repoID, path: entry.path)) {
                     changedFileRowContent(entry)

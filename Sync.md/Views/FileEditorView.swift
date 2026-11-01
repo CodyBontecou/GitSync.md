@@ -15,6 +15,7 @@ struct FileEditorView: View {
     let fileURL: URL
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var liveURL: URL
     @State private var content: String = ""
@@ -33,6 +34,9 @@ struct FileEditorView: View {
     /// Lines that differ from HEAD, and which ones (for the gutter bar).
     @State private var linesChanged: Int?
     @State private var changedLines: Set<Int> = []
+    /// Width this screen gets; at regular width with room for two panes
+    /// (iPhone Duo open, iPad) the commit panel sits beside the editor.
+    @State private var screenWidth: CGFloat = 0
 
     private static let autosaveDelay: Duration = .seconds(2)
 
@@ -70,10 +74,56 @@ struct FileEditorView: View {
     }
 
     private var showsSyncPill: Bool {
-        !isBinary && !isDirty && (showSaveToast || hasUncommittedChanges)
+        !showsCommitPanel && !isBinary && !isDirty && (showSaveToast || hasUncommittedChanges)
+    }
+
+    private var showsCommitPanel: Bool {
+        horizontalSizeClass == .regular && screenWidth >= EditorLayout.commitPanelMinWidth
+    }
+
+    private enum EditorLayout {
+        static let commitPanelMinWidth: CGFloat = 700
     }
 
     var body: some View {
+        HStack(spacing: 0) {
+            editorPane
+            if showsCommitPanel {
+                Rectangle().fill(Tide.line).frame(width: 1).ignoresSafeArea()
+                CommitSheetView(repoID: repoID, embedded: true)
+                    .frame(width: min(440, screenWidth * 0.46))
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+            }
+        }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { screenWidth = $0 }
+        .animation(.easeInOut(duration: 0.2), value: showsCommitPanel)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { editorToolbar }
+        .sheet(isPresented: $showCommitSheet) { CommitSheetView(repoID: repoID) }
+        .onAppear { loadContent() }
+        .task { await refreshChangeSummary() }
+        .onChange(of: content) { scheduleAutosave() }
+        .onChange(of: state.statusEntriesByRepo[repoID] ?? []) {
+            Task { await refreshChangeSummary() }
+        }
+        .onDisappear {
+            autosaveTask?.cancel()
+            if isDirty { performSave(dismissKeyboard: false) }
+        }
+        .alert(
+            String(localized: "Unable to Update File"),
+            isPresented: Binding(
+                get: { operationError != nil },
+                set: { if !$0 { operationError = nil } }
+            )
+        ) {
+            Button(String(localized: "OK"), role: .cancel) { operationError = nil }
+        } message: {
+            Text(operationError ?? "")
+        }
+    }
+
+    private var editorPane: some View {
         ZStack {
             Tide.card.ignoresSafeArea()
 
@@ -129,110 +179,89 @@ struct FileEditorView: View {
         }
         .animation(.easeOut(duration: 0.15), value: showDeleteConfirm)
         .animation(.easeOut(duration: 0.15), value: showRenameModal)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                VStack(spacing: 1) {
-                    Text(fileName)
-                        .font(TideFont.sans(15, .semibold, relativeTo: .headline))
-                        .foregroundStyle(Tide.ink)
+    }
+
+    @ToolbarContentBuilder
+    private var editorToolbar: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            VStack(spacing: 1) {
+                Text(fileName)
+                    .font(TideFont.sans(15, .semibold, relativeTo: .headline))
+                    .foregroundStyle(Tide.ink)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                if !locationLine.isEmpty {
+                    Text(locationLine)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
                         .lineLimit(1)
-                        .truncationMode(.middle)
-                    if !locationLine.isEmpty {
-                        Text(locationLine)
-                            .font(TideFont.mono(11))
-                            .foregroundStyle(Tide.inkFaint)
-                            .lineLimit(1)
-                            .truncationMode(.head)
-                    }
+                        .truncationMode(.head)
                 }
-                .accessibilityElement(children: .combine)
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 4) {
-                    if !isBinary && language == .markdown {
-                        Button {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            showPreview.toggle()
-                        } label: {
-                            Text(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
-                                .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
-                                .foregroundStyle(Tide.ink)
-                                .padding(.horizontal, 14)
-                                .frame(height: 34)
-                                .overlay(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
-                                .frame(minWidth: 44, minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
-                    }
-                    if !isBinary {
-                        Button {
-                            performSave()
-                        } label: {
-                            Text("Save")
-                                .font(TideFont.sans(13, .semibold, relativeTo: .subheadline))
-                                .foregroundStyle(isDirty ? Tide.paper : Tide.inkFaint)
-                                .padding(.horizontal, 14)
-                                .frame(height: 34)
-                                .background(Capsule().fill(isDirty ? Tide.ink : Color.clear))
-                                .overlay(
-                                    Capsule().strokeBorder(isDirty ? Color.clear : Color.brutalBorderSoft, lineWidth: 1)
-                                )
-                                // 44x44pt hit target, pill stays compact.
-                                .frame(minWidth: 44, minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(!isDirty || isSaving)
-                    }
-                    Menu {
-                        Button {
-                            renameText = fileName
-                            showRenameModal = true
-                        } label: {
-                            Label(String(localized: "Rename File"), systemImage: "pencil")
-                        }
-                        Button(role: .destructive) {
-                            showDeleteConfirm = true
-                        } label: {
-                            Label(String(localized: "Delete File"), systemImage: "trash")
-                        }
+            .accessibilityElement(children: .combine)
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            HStack(spacing: 4) {
+                if !isBinary && language == .markdown {
+                    Button {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        showPreview.toggle()
                     } label: {
-                        Image(systemName: "ellipsis")
-                            .font(.system(size: 17, weight: .semibold))
+                        Text(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
+                            .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
                             .foregroundStyle(Tide.ink)
-                            // Icon-only toolbar action: 44x44pt hit target.
-                            .frame(width: 44, height: 44)
+                            .padding(.horizontal, 14)
+                            .frame(height: 34)
+                            .overlay(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                            .frame(minWidth: 44, minHeight: 44)
                             .contentShape(Rectangle())
-                            .accessibilityHidden(true)
                     }
-                    .accessibilityLabel(String(localized: "More file options"))
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
                 }
+                if !isBinary {
+                    Button {
+                        performSave()
+                    } label: {
+                        Text("Save")
+                            .font(TideFont.sans(13, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(isDirty ? Tide.paper : Tide.inkFaint)
+                            .padding(.horizontal, 14)
+                            .frame(height: 34)
+                            .background(Capsule().fill(isDirty ? Tide.ink : Color.clear))
+                            .overlay(
+                                Capsule().strokeBorder(isDirty ? Color.clear : Color.brutalBorderSoft, lineWidth: 1)
+                            )
+                            // 44x44pt hit target, pill stays compact.
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!isDirty || isSaving)
+                }
+                Menu {
+                    Button {
+                        renameText = fileName
+                        showRenameModal = true
+                    } label: {
+                        Label(String(localized: "Rename File"), systemImage: "pencil")
+                    }
+                    Button(role: .destructive) {
+                        showDeleteConfirm = true
+                    } label: {
+                        Label(String(localized: "Delete File"), systemImage: "trash")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(Tide.ink)
+                        // Icon-only toolbar action: 44x44pt hit target.
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                        .accessibilityHidden(true)
+                }
+                .accessibilityLabel(String(localized: "More file options"))
             }
-        }
-        .sheet(isPresented: $showCommitSheet) { CommitSheetView(repoID: repoID) }
-        .onAppear { loadContent() }
-        .task { await refreshChangeSummary() }
-        .onChange(of: content) { scheduleAutosave() }
-        .onChange(of: state.statusEntriesByRepo[repoID] ?? []) {
-            Task { await refreshChangeSummary() }
-        }
-        .onDisappear {
-            autosaveTask?.cancel()
-            if isDirty { performSave(dismissKeyboard: false) }
-        }
-        .alert(
-            String(localized: "Unable to Update File"),
-            isPresented: Binding(
-                get: { operationError != nil },
-                set: { if !$0 { operationError = nil } }
-            )
-        ) {
-            Button(String(localized: "OK"), role: .cancel) { operationError = nil }
-        } message: {
-            Text(operationError ?? "")
         }
     }
 

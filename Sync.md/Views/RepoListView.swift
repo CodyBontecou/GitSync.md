@@ -24,6 +24,9 @@ struct RepoListView: View {
     /// Regular width (iPad, iPhone Duo open): vault picked in the sidebar.
     @State private var selectedRepoID: UUID?
     @State private var detailPath = NavigationPath()
+    /// Width of the detail column; wide enough (iPad landscape) it becomes
+    /// the three-column workspace: vaults, files, file.
+    @State private var detailWidth: CGFloat = 0
     @State private var homeFilter: HomeFilter = .all
 
     private var isSplit: Bool { horizontalSizeClass == .regular }
@@ -266,6 +269,7 @@ struct RepoListView: View {
             } detail: {
                 NavigationStack(path: $detailPath) {
                     splitDetail
+                        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { detailWidth = $0 }
                         .navigationDestination(for: FileBrowserDestination.self) { destination in
                             FileBrowserView(repoID: destination.repoID, relativePath: destination.relativePath)
                                 .id(destination)
@@ -289,8 +293,14 @@ struct RepoListView: View {
     @ViewBuilder
     private var splitDetail: some View {
         if let repoID = selectedRepoID, state.repo(id: repoID) != nil {
-            VaultView(repoID: repoID)
-                .id(repoID)
+            if detailWidth >= Self.workspaceMinWidth, state.repo(id: repoID)?.isCloned == true,
+               state.hasLocalRepositoryAccess(repoID: repoID) {
+                VaultWorkspaceView(repoID: repoID)
+                    .id(repoID)
+            } else {
+                VaultView(repoID: repoID)
+                    .id(repoID)
+            }
         } else {
             ZStack {
                 Tide.paper.ignoresSafeArea()
@@ -304,6 +314,9 @@ struct RepoListView: View {
             }
         }
     }
+
+    /// Detail-column width from which the files tree gets its own column.
+    private static let workspaceMinWidth: CGFloat = 800
 
     /// Keeps the detail column pointed at a vault that still exists,
     /// preferring one that needs attention.
