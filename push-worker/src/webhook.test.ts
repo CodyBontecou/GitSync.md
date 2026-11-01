@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { FcmSender } from "./fcm";
 import worker, {
   collapseID,
   notificationText,
@@ -1443,5 +1444,58 @@ describe("router fallthrough and healthz", () => {
       ok: true,
       githubAppConfigured: true,
     });
+  });
+});
+
+
+describe("Android FCM device routing", () => {
+  let registry: FakeRegistry; let env: Env; let restore: () => void;
+  const token = "synthetic_FCM-token:" + "a".repeat(1000);
+  const send = vi.fn();
+  beforeEach(() => {
+    registry = new FakeRegistry(); env = makeEnv(registry);
+    send.mockReset().mockResolvedValue({ ok: true, status: 200, unregistered: false });
+    const spy = vi.spyOn(FcmSender.prototype, "send").mockImplementation(send); restore = () => spy.mockRestore();
+    sendApnsMock.mockReset().mockImplementation(apnsOk);
+  });
+  afterEach(() => restore());
+  it("accepts explicit Android tokens without weakening legacy APNs validation", () => {
+    const base = { environment: "production", deviceSecret: "synthetic-device-secret", repos: ["Acme/Notes"] };
+    expect(parseRegisterRequest({ ...base, platform: "android", token })?.platform).toBe("android");
+    expect(parseRegisterRequest({ ...base, token })).toBeNull();
+    expect(parseRegisterRequest({ ...base, platform: "unknown", token: "a".repeat(64) })).toBeNull();
+  });
+  it("reports unavailable registration before storing a device when FCM is unconfigured", async () => {
+    const response = await worker.fetch(registerRequest({ token, platform: "android", environment: "production", deviceSecret: "synthetic-device-secret", repos: ["acme/notes"] }), env, {} as ExecutionContext);
+    expect(response.status).toBe(503); expect(registry.store.has("device:synthetic-device-secret")).toBe(false);
+  });
+  it("routes authorized GitHub App events only through FCM with bounded opaque branch-specific throttle keys", async () => {
+    registry.store.set("device:synthetic-android", JSON.stringify({ ...JSON.parse(deviceRecord(token, ["acme/notes"])), platform: "android" }));
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes")));
+    expect(send).toHaveBeenCalledTimes(1); expect(sendApnsMock).not.toHaveBeenCalled();
+    expect(send.mock.calls[0][0]).toMatchObject({ token, repo: "acme/notes", branch: "main", environment: "development" });
+    const keys = [...registry.store.keys()].filter(key => key.startsWith("notif:fcm:"));
+    expect(keys).toHaveLength(1); expect(keys[0].length).toBeLessThan(512); expect(keys[0]).not.toContain(token);
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes")));
+    expect(send).toHaveBeenCalledTimes(1);
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes", 2, "topic")));
+    expect(send).toHaveBeenCalledTimes(2);
+  });
+  it("keeps Android opt-in on provider failures and prunes a definitively unregistered token", async () => {
+    registry.store.set("device:synthetic-android", JSON.stringify({ ...JSON.parse(deviceRecord(token, ["acme/notes"])), platform: "android" }));
+    send.mockResolvedValueOnce({ ok: false, status: 403, unregistered: false });
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes")));
+    expect(registry.store.has("device:synthetic-android")).toBe(true);
+    send.mockResolvedValueOnce({ ok: false, status: 404, unregistered: true });
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes")));
+    expect(registry.store.has("device:synthetic-android")).toBe(false);
+  });
+  it("does not route unlinked installations or a mismatched immutable repository owner", async () => {
+    registry.store.set("device:synthetic-android", JSON.stringify({ ...JSON.parse(deviceRecord(token, ["acme/notes"], [])), platform: "android" }));
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes")));
+    expect(send).not.toHaveBeenCalled();
+    registry.store.set("device:synthetic-android", JSON.stringify({ ...JSON.parse(deviceRecord(token, ["acme/notes"])), platform: "android" }));
+    await runWebhook(env, await signedWebhookRequest("push", pushEvent("acme/notes", 2, "main", 9002)));
+    expect(send).not.toHaveBeenCalled();
   });
 });
