@@ -405,9 +405,7 @@ struct GitControlSheet: View {
             }
             .buttonStyle(.plain)
             .disabled(buttonDisabled)
-            .accessibilityElement(children: .ignore)
             .accessibilityLabel(accessibilityTitle)
-            .accessibilityAddTraits(.isButton)
         }
         .padding(.horizontal, Tide.gutter)
         .padding(.top, 10)

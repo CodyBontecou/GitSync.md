@@ -424,6 +424,7 @@ struct RepoListView: View {
                 .contentShape(Capsule())
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("home.addRepository")
             .padding(.horizontal, Tide.gutter)
             .padding(.vertical, 12)
         }
@@ -825,6 +826,7 @@ struct RepoListView: View {
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("home.addRepository")
     }
 
     // MARK: - Demo Banner

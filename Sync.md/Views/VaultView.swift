@@ -245,7 +245,7 @@ struct VaultView: View {
                     .padding(.top, 18)
 
                 VStack(spacing: 12) {
-                    if let outcome = pullOutcome, outcome.kind != .upToDate {
+                    if let outcome = pullOutcome {
                         pullOutcomeBanner(outcome)
                     }
                     if FeatureFlags.gitSyncAssistEnabled, repo.assist.enabled || repo.assist.health.kind != .never {
@@ -1097,6 +1097,7 @@ struct VaultView: View {
                               subtitle: String(localized: "Branches") + " · " + String(localized: "Stash") + " · " + String(localized: "Tags"))
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Git Tools"))
 
             Rectangle().fill(Tide.line).frame(height: 1)
 
