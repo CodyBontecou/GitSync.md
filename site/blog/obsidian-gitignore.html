@@ -25,7 +25,7 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="GitSync.md guide card: Obsidian Gitignore: What to Sync and Keep Local">
 <meta property="article:published_time" content="2026-10-26">
-<meta property="article:modified_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-11-01">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Obsidian Gitignore: What to Sync and Keep Local — GitSync.md">
 <meta name="twitter:description" content="Choose .gitignore rules for an Obsidian vault. Keep device settings local, share reviewed configuration, diagnose tracked files, and avoid committing credentials.">
@@ -38,7 +38,7 @@
   "headline": "Obsidian .gitignore: choose what to sync",
   "description": "Choose .gitignore rules for an Obsidian vault. Keep device settings local, share reviewed configuration, diagnose tracked files, and avoid committing credentials.",
   "datePublished": "2026-10-26",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-01",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -102,9 +102,9 @@
     <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Gitignore</li></ol></nav>
       <h1>Obsidian .gitignore: choose what to sync<span class="accent">.</span></h1>
       <p class="subtitle">Start with the files you want in version control. Keep device-specific workspace state and private configuration out of new commits, then verify the rules before enabling automatic publication.</p>
-      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>Updated November 1, 2026</span><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
     </div>
-    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#notes-only">Notes-only policy</a></li><li><a href="#selected-settings">Share selected settings</a></li><li><a href="#rules">Rule locations</a></li><li><a href="#check">Verify the rules</a></li><li><a href="#tracked">Already tracked files</a></li><li><a href="#secrets">Previously committed secrets</a></li></ol></aside>
+    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#notes-only">Notes-only policy</a></li><li><a href="#selected-settings">Share selected settings</a></li><li><a href="#rules">Rule locations</a></li><li><a href="#check">Verify the rules</a></li><li><a href="#diagnose">When rules seem wrong</a></li><li><a href="#tracked">Already tracked files</a></li><li><a href="#secrets">Previously committed secrets</a></li></ol></aside>
   </div></header>
   <div class="container"><div class="article-shell article-shell-single"><article class="article-body">
         <div class="tldr"><div class="tldr-title">Pick a policy first</div><ul>
@@ -150,8 +150,24 @@ Thumbs.db</code></pre>
         <pre tabindex="0" role="region" aria-label="Inspect ignore rules from desktop Git"><code>git status --short
 git check-ignore -v .obsidian/workspace.json
 git ls-files -- .obsidian</code></pre>
-        <p><code>git check-ignore -v</code> reports the matching rule for an ignored, untracked path. No match is not proof a file is safe. <code>git ls-files</code> shows settings already tracked in the index. See the <a href="https://git-scm.com/docs/git-check-ignore">check-ignore reference</a> for diagnostic behavior.</p>
+        <p><code>git check-ignore -v</code> reports a matching rule for an untracked path; a rule beginning with <code>!</code> means the path is included again. No match is not proof a file is safe. <code>git ls-files</code> shows settings already tracked in the index. See the <a href="https://git-scm.com/docs/git-check-ignore">check-ignore reference</a> for diagnostic behavior.</p>
         <p>Commit the policy, push, and pull on the other device. Then check both devices’ staged changes. Confirm that a normal note still appears in Git while unwanted workspace state does not.</p>
+
+        <h2 id="diagnose">When .gitignore seems not to work</h2>
+        <p>Start with one exact path. These read-only commands run in desktop Git, not an iPhone terminal. From the repository root, substitute the file you are investigating:</p>
+        <pre tabindex="0" role="region" aria-label="Diagnose one Obsidian file without changing it"><code>git ls-files -- .obsidian/workspace.json
+git check-ignore -v -- .obsidian/workspace.json</code></pre>
+        <ul>
+          <li><strong>The first command prints the path:</strong> it is already tracked. A blank ignore check is expected; use the <a href="#tracked">tracked-file guidance below</a>.</li>
+          <li><strong>The second prints a rule:</strong> read its source file, line number, and pattern. A leading <code>!</code> means an exception, not an exclusion.</li>
+          <li><strong>Neither prints anything:</strong> check the spelling and location of the file and <code>.gitignore</code>. No matching rule does not prove the file exists or is safe to publish.</li>
+        </ul>
+        <p>For a synthetic, untracked workspace file, this output means line 2 of the root ignore file excludes it:</p>
+        <pre tabindex="0" role="region" aria-label="Illustrative matching ignore rule"><code>.gitignore:2:.obsidian/    .obsidian/workspace.json</code></pre>
+        <p>To inspect rules for an already tracked path without changing tracking, use <code>git check-ignore -v --no-index -- .obsidian/workspace.json</code>. This is diagnostic only; it does not remove the file from Git.</p>
+        <h3>Why desktop and iPhone can disagree</h3>
+        <p>If the reported source is <code>.git/info/exclude</code> or a global ignore file, that rule is local to that working copy or Git configuration. Compare the committed <code>.gitignore</code> on both devices before expecting the same result.</p>
+        <p>Paths containing a middle slash are relative to the ignore file. For a vault inside <code>Notes/</code>, a root rule for its workspace is <code>Notes/.obsidian/workspace.json</code>; inside <code>Notes/.gitignore</code>, use <code>.obsidian/workspace.json</code>. A <code>!</code> exception cannot rescue a file while its parent directory remains excluded. See <a href="https://git-scm.com/docs/gitignore">Git’s pattern rules</a> and <a href="https://git-scm.com/docs/git-check-ignore">diagnostic reference</a>.</p>
 
         <h2 id="tracked">Why ignored files still appear</h2>
         <p>Gitignore rules apply to untracked files. If a settings file was committed earlier, adding its path to <code>.gitignore</code> does not stop tracking it. Plan any tracking removal with copies of the local settings on each device; a committed deletion can remove that tracked file from another working copy when pulled.</p>
