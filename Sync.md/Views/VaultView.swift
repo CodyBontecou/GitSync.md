@@ -1309,7 +1309,8 @@ struct VaultView: View {
         VaultGitTab(
             repoID: repoID,
             onDiscardChanges: { showRevertAllConfirm = true },
-            onOpenSettings: { showSettings = true }
+            onOpenSettings: { showSettings = true },
+            onOpenGitTools: { showGitTools = true }
         )
     }
 

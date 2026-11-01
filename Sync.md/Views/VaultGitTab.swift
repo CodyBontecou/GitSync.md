@@ -12,6 +12,8 @@ struct VaultGitTab: View {
     let onDiscardChanges: () -> Void
     /// Opens per-vault settings (remote, author, folder).
     let onOpenSettings: () -> Void
+    /// Opens the Git Tools sheet (staging, conflicts, merge, rebase).
+    let onOpenGitTools: () -> Void
 
     @State private var showBranchPicker = false
     @State private var showStopTracking = false
@@ -68,6 +70,40 @@ struct VaultGitTab: View {
                         title: String(localized: "Saved in"),
                         value: state.vaultFolderBreadcrumb(repoID: repoID).joined(separator: " › ")
                     )
+                }
+            }
+            .buttonStyle(.plain)
+
+            TideSectionLabel(title: String(localized: "Advanced"))
+                .padding(.horizontal, 4)
+                .padding(.top, 18)
+                .padding(.bottom, 8)
+            TideGroupedCard {
+                // Navigation stays available even while Git operations are disabled.
+                Button(action: onOpenGitTools) {
+                    TideValueRow(title: String(localized: "Git Tools"),
+                                 value: String(localized: "stage · merge · rebase"), mono: true)
+                }
+                .accessibilityLabel(String(localized: "Git Tools"))
+                TideRowDivider()
+                Button {
+                    Task { await state.pullWithRebase(repoID: repoID) }
+                } label: {
+                    TideValueRow(title: String(localized: "Pull with Rebase"),
+                                 value: String(localized: "replay mine on top"), mono: true)
+                }
+                .disabled(state.isSyncing)
+                .opacity(state.isSyncing ? 0.5 : 1)
+                if !hasChanges && state.syncStateByRepo[repoID] == .ahead {
+                    TideRowDivider()
+                    Button {
+                        Task { await state.pushCurrentBranch(repoID: repoID) }
+                    } label: {
+                        TideValueRow(title: String(localized: "Push Current Branch"),
+                                     value: String(localized: "committed work"), mono: true)
+                    }
+                    .disabled(state.isSyncing)
+                    .opacity(state.isSyncing ? 0.5 : 1)
                 }
             }
             .buttonStyle(.plain)
