@@ -30,7 +30,17 @@ struct FolderPublicationView: View {
     /// GitHub check of `account/name`, debounced while typing.
     private enum NameAvailability: Equatable {
         case unknown, checking, free, taken
+        /// The name GitHub would reject; publishing is blocked.
+        case invalid(String)
+        /// The check itself failed (offline etc.); publishing stays allowed.
         case unavailable(String)
+
+        var blocksPublishing: Bool {
+            switch self {
+            case .taken, .invalid: return true
+            default: return false
+            }
+        }
     }
 
     private enum FolderPickerPurpose {
@@ -203,7 +213,7 @@ struct FolderPublicationView: View {
                             : (record.repositoryIsPrivate
                                 ? String(localized: "Create private repo & push")
                                 : String(localized: "Create public repo & push")),
-                        isDisabled: isBusy || !canPrepare || nameAvailability == .taken
+                        isDisabled: isBusy || !canPrepare || nameAvailability.blocksPublishing
                     ) {
                         prepareAndPublish(record)
                     }
@@ -232,7 +242,7 @@ struct FolderPublicationView: View {
                             : String(localized: "Publish Saved Commit"),
                         isDisabled: isBusy || !hasPinnedToken(record)
                             || repositoryName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                            || (record.remote == nil && nameAvailability == .taken)
+                            || (record.remote == nil && nameAvailability.blocksPublishing)
                     ) {
                         perform {
                             if record.phase == .prepared {
@@ -695,6 +705,8 @@ struct FolderPublicationView: View {
         case .taken:
             AddVaultStatusLine(text: String(localized: "already taken"), tint: Tide.danger, systemImage: "xmark")
                 .accessibilityIdentifier("folderPublication.nameTaken")
+        case .invalid(let message):
+            AddVaultStatusLine(text: message, tint: Tide.danger, systemImage: "xmark")
         case .unavailable(let message):
             AddVaultStatusLine(text: message, tint: Tide.inkFaint, systemImage: "questionmark")
         }
@@ -718,7 +730,7 @@ struct FolderPublicationView: View {
         }
         guard name.range(of: #"^[A-Za-z0-9._-]{1,100}$"#, options: .regularExpression) != nil,
               name != ".", name != ".." else {
-            nameAvailability = .unavailable(String(localized: "Use letters, numbers, hyphens, underscores, or periods."))
+            nameAvailability = .invalid(String(localized: "Use letters, numbers, hyphens, underscores, or periods."))
             return
         }
         nameAvailability = .checking

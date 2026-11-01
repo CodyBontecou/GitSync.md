@@ -4148,13 +4148,19 @@ final class AppState {
     // MARK: - Error Handling
 
     func showError(message: String, category: String = "general") {
+        // Count every sync failure toward the vault's "errors · 7d", even the
+        // ones that become dedicated states below.
+        let failingRepo = syncingRepoID.flatMap { repo(id: $0) }
+        if let failingRepo { RepoErrorJournal.record(repoID: failingRepo.id) }
         // Sign-in expiry, push rejection, offline and unreachable-host errors
         // during a sync become dedicated states/toasts instead of an alert.
-        if interceptSyncError(message: message, category: category) { return }
+        if interceptSyncError(message: message, category: category) {
+            DebugLogger.shared.warning(category, message, repo: failingRepo?.displayName)
+            return
+        }
         lastError = message
         showError = true
-        DebugLogger.shared.error(category, message)
-        if let syncingRepoID { RepoErrorJournal.record(repoID: syncingRepoID) }
+        DebugLogger.shared.error(category, message, repo: failingRepo?.displayName)
     }
 
     // MARK: - Demo Mode

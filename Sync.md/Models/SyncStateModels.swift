@@ -300,6 +300,9 @@ struct TideToastItem: Identifiable, Equatable {
     enum Action: Equatable {
         /// Soft-reset an unpushed commit, keeping its changes.
         case undoCommit(repoID: UUID, sha: String)
+        /// Undo a published commit by pushing a revert commit on top of it
+        /// (history is never rewritten).
+        case undoPush(repoID: UUID, sha: String)
         /// Navigate to the vault.
         case view(repoID: UUID)
         /// Show the full error message.
@@ -314,7 +317,7 @@ struct TideToastItem: Identifiable, Equatable {
 
     var actionTitle: String? {
         switch action {
-        case .undoCommit: return String(localized: "Undo")
+        case .undoCommit, .undoPush: return String(localized: "Undo")
         case .view: return String(localized: "View")
         case .details: return String(localized: "Details")
         case nil: return nil

@@ -156,6 +156,9 @@ extension AppState {
         }
 
         if push {
+            if isOffline {
+                return await commitOfflineAndQueue(repoID: repoID, message: message, stageEverything: false)
+            }
             return await self.push(repoID: repoID, message: message)
         }
         return await commitOnly(repoID: repoID, message: message)

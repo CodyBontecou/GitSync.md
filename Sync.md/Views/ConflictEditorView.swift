@@ -434,8 +434,16 @@ struct ConflictEditorView: View {
                 .padding(.horizontal, 4)
                 .padding(.top, hunk.id == 0 ? 0 : 8)
             }
-            hunkCard(.ours, hunk: hunk, runs: runs.new, selected: choice == .ours)
-            hunkCard(.theirs, hunk: hunk, runs: runs.old, selected: choice == .theirs)
+            // Regular width (iPad, iPhone Duo open): the two versions sit side by side.
+            let cards = horizontalSizeClass == .regular
+                ? AnyLayout(HStackLayout(alignment: .top, spacing: 12))
+                : AnyLayout(VStackLayout(spacing: 10))
+            cards {
+                hunkCard(.ours, hunk: hunk, runs: runs.new, selected: choice == .ours)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                hunkCard(.theirs, hunk: hunk, runs: runs.old, selected: choice == .theirs)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            }
             outlinePill(choice == .both ? String(localized: "✓ Keeping both") : String(localized: "Keep both")) {
                 choose(.both, for: hunk)
             }

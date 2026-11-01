@@ -542,14 +542,16 @@ extension AppState {
     }
 
     /// Offline "Commit & push": commit locally now, push when back online.
-    func commitOfflineAndQueue(repoID: UUID, message: String) async -> Bool {
+    /// `stageEverything: false` commits only what is already staged (the
+    /// commit sheet stages exactly the files the user kept ticked).
+    func commitOfflineAndQueue(repoID: UUID, message: String, stageEverything: Bool = true) async -> Bool {
         guard let repo = repo(id: repoID) else { return false }
         let commitMessage = message.isEmpty ? String(localized: "Update from GitSync.md") : message
         do {
             let serialized = try serializedRepository(repoID: repoID)
             let sha = try await withCheckoutMutation(repoID: repoID) {
                 try await serialized.withLease { repository in
-                    try await repository.stageAll()
+                    if stageEverything { try await repository.stageAll() }
                     return try await repository.commitLocal(
                         message: commitMessage,
                         authorName: repo.authorName,
@@ -634,9 +636,9 @@ extension AppState {
         currentToast = nil
     }
 
-    /// Undo is offered only for commits that never left this iPhone (soft
-    /// reset, changes kept). Published pushes are never rewritten from a toast:
-    /// a force-push could discard someone else's work, so pushes get "View".
+    /// Undo on an unpushed commit is a soft reset (changes kept). Undo on a
+    /// single pushed commit pushes a revert commit instead — published history
+    /// is never rewritten, since a force-push could discard someone else's work.
     func performToastAction(_ action: TideToastItem.Action) async {
         dismissToast()
         switch action {
@@ -665,6 +667,16 @@ extension AppState {
             } catch {
                 lastError = error.localizedDescription
                 showError = true
+            }
+        case .undoPush(let repoID, let sha):
+            let before = repo(id: repoID)?.gitState.commitSHA
+            await revertCommit(repoID: repoID, oid: sha)
+            // revertCommit reports its own errors and conflicts; push only a clean revert.
+            guard let after = repo(id: repoID)?.gitState.commitSHA, after != before,
+                  conflictSessionByRepo[repoID]?.isActive != true else { return }
+            if await pushCurrentBranch(repoID: repoID) {
+                showToast(TideToastItem(kind: .info, title: String(localized: "Push undone"),
+                                        detail: String(localized: "A revert commit was pushed."), action: nil))
             }
         case .view(let repoID):
             vaultNavigationRequest = repoID
@@ -707,7 +719,7 @@ extension AppState {
             kind: .pushed,
             title: count == 1 ? String(localized: "Pushed 1 commit") : String(localized: "Pushed \(count) commits"),
             detail: "\(repo.displayName) · \(String(commitSHA.prefix(7)))",
-            action: .view(repoID: repoID)
+            action: count == 1 ? .undoPush(repoID: repoID, sha: commitSHA) : .view(repoID: repoID)
         ))
     }
 
@@ -816,11 +828,15 @@ extension AppState {
     private func applyPendingBackgroundSyncToggle() {
         guard let pending = SyncStatusSnapshotStore.pendingBackgroundSyncToggle else { return }
         SyncStatusSnapshotStore.pendingBackgroundSyncToggle = nil
+        guard FeatureFlags.gitSyncAssistEnabled else { return }
         Task { await setBackgroundSync(enabled: pending) }
     }
 
     func setBackgroundSync(enabled: Bool) async {
-        guard let runtime = syncStateRuntime.premiumRuntime else { return }
+        // The Control Center control exists in every build; it must not
+        // switch Background Sync on in builds where the feature is off.
+        guard FeatureFlags.gitSyncAssistEnabled,
+              let runtime = syncStateRuntime.premiumRuntime else { return }
         await runtime.setAutomaticallySyncAllRepositories(enabled)
         if enabled { requestNotificationAuthorizationIfNeeded() }
         scheduleWidgetSnapshot()
