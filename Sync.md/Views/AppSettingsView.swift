@@ -5,6 +5,7 @@ struct AppSettingsView: View {
     @Environment(AppState.self) private var state
     @Environment(PremiumRuntime.self) private var premiumRuntime
     @Environment(\.dismiss) private var dismiss
+    @AppStorage(AppAppearance.storageKey) private var appearanceRaw = AppAppearance.system.rawValue
 
     @State private var showFolderPicker = false
     @State private var showClearConfirm = false
@@ -12,10 +13,43 @@ struct AppSettingsView: View {
     @State private var showOnboarding = false
     @State private var showPremiumSettings = false
     @State private var showRemoveGitTracking = false
+    @State private var showSignOutConfirm = false
     @ObservedObject private var pushSyncStatusObject = PushSyncManager.shared
 
     private var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    }
+
+    private var buildNumber: String? {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+    }
+
+    /// "GitSync.md 3.4 (412)"
+    private var versionLine: String {
+        if let buildNumber, !buildNumber.isEmpty, buildNumber != appVersion {
+            return "GitSync.md \(appVersion) (\(buildNumber))"
+        }
+        return "GitSync.md \(appVersion)"
+    }
+
+    private var appearance: AppAppearance { AppAppearance(rawValue: appearanceRaw) ?? .system }
+
+    /// "on · 4 vaults" / "off"
+    private var backgroundSyncValue: String {
+        guard premiumRuntime.automaticallySyncAllRepositories else { return String(localized: "off") }
+        let included = premiumRuntime.automaticSyncSummary.included
+        return included == 1
+            ? String(localized: "on · 1 vault")
+            : String(localized: "on · \(included) vaults")
+    }
+
+    private var pushNotificationsOn: Bool { pushSyncStatusObject.isEnabled }
+
+    private var commitAuthorValue: String {
+        let name = state.defaultAuthorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !name.isEmpty { return name }
+        let email = state.defaultAuthorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        return email.isEmpty ? String(localized: "Not set") : email
     }
 
     var body: some View {
@@ -35,63 +69,143 @@ struct AppSettingsView: View {
                             .padding(.horizontal, Tide.gutter)
                             .padding(.top, 18)
 
-                        // Sync — Background Sync (optional; hidden behind the legacy
-                        // gitSyncAssistEnabled flag until the tier ships) and the
-                        // Shortcuts actions. Manual Git, Shortcuts, callbacks, and
-                        // local repository features remain available either way.
                         settingsSection(title: String(localized: "Sync")) {
+                            // Background Sync stays behind the gitSyncAssistEnabled
+                            // flag until the tier ships. Manual Git, Shortcuts,
+                            // callbacks, and local features remain available.
                             if FeatureFlags.gitSyncAssistEnabled {
                                 Button { showPremiumSettings = true } label: {
-                                    SettingsRow(
+                                    AppSettingsRow(
                                         title: String(localized: "Background Sync"),
-                                        value: premiumRuntime.automaticallySyncAllRepositories
-                                            ? String(localized: "on")
-                                            : String(localized: "off"),
+                                        value: backgroundSyncValue,
                                         valueTint: premiumRuntime.automaticallySyncAllRepositories ? Tide.synced : Tide.inkMid,
                                         accessory: .chevron
                                     )
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityLabel(String(localized: "Background Sync"))
-                                .accessibilityValue(premiumRuntime.automaticallySyncAllRepositories
-                                                    ? String(localized: "on")
-                                                    : String(localized: "off"))
+                                .accessibilityValue(backgroundSyncValue)
                                 .accessibilityHint(String(localized: "Independent automatic pull and push controls"))
-                                SettingsSeparator()
+                                AppSettingsSeparator()
                             }
 
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Git actions from Shortcuts")
-                                    .font(TideFont.body)
-                                    .foregroundStyle(Tide.ink)
-                                Text("Use Pull All, Pull Repository, Push Repository, or Sync Repository in Apple Shortcuts. Push and Sync stage all non-ignored changes, stop on conflicts or unsafe remote state, and publish directly to your configured remote.")
-                                    .font(TideFont.sans(12.5, relativeTo: .footnote))
-                                    .foregroundStyle(Tide.inkMid)
-                                    .lineSpacing(2)
-                                    .fixedSize(horizontal: false, vertical: true)
+                            NavigationLink {
+                                PushNotificationsSettingsView()
+                            } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Push notifications from GitHub"),
+                                    value: pushNotificationsOn ? String(localized: "on") : String(localized: "off"),
+                                    valueTint: pushNotificationsOn ? Tide.synced : Tide.inkMid,
+                                    accessory: .chevron
+                                )
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 18)
-                            .padding(.vertical, 14)
-                            .accessibilityElement(children: .combine)
-                        }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("appSettings.pushNotifications")
 
-                        // Push Sync — installation-global APNs registration plus a
-                        // one-time GitHub App installation per account/organization.
-                        settingsSection(title: String(localized: "Push Sync")) {
-                            PushSyncSettingsContent(
-                                manager: pushSyncStatusObject,
-                                scope: .global
-                            )
+                            AppSettingsSeparator()
+
+                            NavigationLink {
+                                ShortcutsSettingsView()
+                            } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Shortcuts & Siri actions"),
+                                    value: "\(ShortcutActionCatalog.actions.count)",
+                                    accessory: .chevron
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("appSettings.shortcuts")
                         }
 
                         settingsSection(title: String(localized: "New vaults")) {
                             saveLocationRows
+
+                            AppSettingsSeparator()
+
+                            NavigationLink {
+                                CommitAuthorSettingsView()
+                            } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Commit as"),
+                                    value: commitAuthorValue,
+                                    valueIsMono: false,
+                                    accessory: .chevron
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("appSettings.commitAs")
+                        }
+
+                        settingsSection(title: String(localized: "App")) {
+                            NavigationLink {
+                                AppearanceSettingsView()
+                            } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Appearance"),
+                                    value: appearance.title,
+                                    valueIsMono: false,
+                                    accessory: .chevron
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("appSettings.appearance")
+
+                            AppSettingsSeparator()
+
+                            NavigationLink {
+                                DebugLogView()
+                            } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Debug log"),
+                                    value: String(localized: "\(DebugLogger.shared.entries.count) entries"),
+                                    accessory: .chevron
+                                )
+                            }
+                            .buttonStyle(.plain)
+
+                            AppSettingsSeparator()
+
+                            Button {
+                                if let url = URL(string: "https://discord.gg/RaQYS4t6gn") {
+                                    UIApplication.shared.open(url)
+                                }
+                            } label: {
+                                AppSettingsRow(title: String(localized: "Join the Discord"), accessory: .external)
+                            }
+                            .buttonStyle(.plain)
+
+                            AppSettingsSeparator()
+
+                            Button {
+                                if FeedbackHelper.canSendMail {
+                                    showMailCompose = true
+                                } else {
+                                    FeedbackHelper.openMailClient()
+                                }
+                            } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Send feedback"),
+                                    subtitle: String(localized: "Questions, ideas, or issues"),
+                                    accessory: .chevron
+                                )
+                            }
+                            .buttonStyle(.plain)
+
+                            AppSettingsSeparator()
+
+                            Button { showOnboarding = true } label: {
+                                AppSettingsRow(
+                                    title: String(localized: "Show app tour"),
+                                    subtitle: String(localized: "Re-experience the onboarding flow"),
+                                    accessory: .chevron
+                                )
+                            }
+                            .buttonStyle(.plain)
                         }
 
                         settingsSection(title: String(localized: "Folder tools")) {
                             Button { showRemoveGitTracking = true } label: {
-                                SettingsRow(
+                                AppSettingsRow(
                                     title: String(localized: "Remove Git tracking"),
                                     subtitle: String(localized: "Keep your files, with an optional history backup"),
                                     accessory: .chevron
@@ -101,62 +215,6 @@ struct AppSettingsView: View {
                             .accessibilityLabel(String(localized: "Remove Git tracking"))
                             .accessibilityHint(String(localized: "Keep your files, with an optional history backup"))
                             .accessibilityIdentifier("appSettings.removeGitTracking")
-                        }
-
-                        settingsSection(title: String(localized: "Help & feedback")) {
-                            Button {
-                                if FeedbackHelper.canSendMail {
-                                    showMailCompose = true
-                                } else {
-                                    FeedbackHelper.openMailClient()
-                                }
-                            } label: {
-                                SettingsRow(
-                                    title: String(localized: "Send feedback"),
-                                    subtitle: String(localized: "Questions, ideas, or issues"),
-                                    accessory: .chevron
-                                )
-                            }
-                            .buttonStyle(.plain)
-
-                            SettingsSeparator()
-
-                            Button {
-                                if let url = URL(string: "https://discord.gg/RaQYS4t6gn") {
-                                    UIApplication.shared.open(url)
-                                }
-                            } label: {
-                                SettingsRow(
-                                    title: String(localized: "Join the Discord"),
-                                    subtitle: String(localized: "Chat with us on Discord"),
-                                    accessory: .external
-                                )
-                            }
-                            .buttonStyle(.plain)
-
-                            SettingsSeparator()
-
-                            NavigationLink {
-                                DebugLogView()
-                            } label: {
-                                SettingsRow(
-                                    title: String(localized: "Debug log"),
-                                    value: String(localized: "\(DebugLogger.shared.entries.count) entries"),
-                                    accessory: .chevron
-                                )
-                            }
-                            .buttonStyle(.plain)
-
-                            SettingsSeparator()
-
-                            Button { showOnboarding = true } label: {
-                                SettingsRow(
-                                    title: String(localized: "Show app tour"),
-                                    subtitle: String(localized: "Re-experience the onboarding flow"),
-                                    accessory: .chevron
-                                )
-                            }
-                            .buttonStyle(.plain)
                         }
 
                         footer
@@ -196,7 +254,23 @@ struct AppSettingsView: View {
             } message: {
                 Text("New repositories will be saved to the app's default location instead.")
             }
+            .confirmationDialog(
+                String(localized: "Sign out of GitHub?"),
+                isPresented: $showSignOutConfirm,
+                titleVisibility: .visible
+            ) {
+                Button(String(localized: "Sign out"), role: .destructive) { state.signOut() }
+                Button(String(localized: "Cancel"), role: .cancel) {}
+            } message: {
+                Text(signOutMessage)
+            }
         }
+    }
+
+    private var signOutMessage: String {
+        let login = state.gitHubUsername
+        let account = login.isEmpty ? String(localized: "this GitHub account") : "@\(login)"
+        return String(localized: "GitSync.md forgets the token for \(account) on this device. Your vaults and their files stay where they are.")
     }
 
     // MARK: - Account
@@ -214,17 +288,10 @@ struct AppSettingsView: View {
                         .tracking(-0.25)
                         .foregroundStyle(Tide.ink)
                         .lineLimit(1)
-                    Text("@\(state.gitHubUsername) · GitHub")
+                    Text("@\(state.gitHubUsername) · GitHub OAuth")
                         .font(TideFont.mono(11))
                         .foregroundStyle(Tide.inkFaint)
                         .lineLimit(1)
-                    if !state.defaultAuthorEmail.isEmpty {
-                        Text(state.defaultAuthorEmail)
-                            .font(TideFont.mono(11))
-                            .foregroundStyle(Tide.inkFaint)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                    }
                 }
 
                 Spacer(minLength: 8)
@@ -288,7 +355,7 @@ struct AppSettingsView: View {
     private var saveLocationRows: some View {
         if let url = state.resolvedDefaultSaveURL {
             Button { showFolderPicker = true } label: {
-                SettingsRow(
+                AppSettingsRow(
                     title: String(localized: "Save new clones in"),
                     subtitle: url.path,
                     subtitleIsPath: true,
@@ -299,10 +366,10 @@ struct AppSettingsView: View {
             .buttonStyle(.plain)
             .accessibilityHint(String(localized: "Choose a different default location"))
 
-            SettingsSeparator()
+            AppSettingsSeparator()
 
             Button { showClearConfirm = true } label: {
-                SettingsRow(
+                AppSettingsRow(
                     title: String(localized: "Use the app's default location"),
                     titleTint: Tide.danger
                 )
@@ -310,9 +377,8 @@ struct AppSettingsView: View {
             .buttonStyle(.plain)
         } else {
             Button { showFolderPicker = true } label: {
-                SettingsRow(
+                AppSettingsRow(
                     title: String(localized: "Save new clones in"),
-                    subtitle: String(localized: "New repositories will be saved to the app's default location."),
                     value: String(localized: "App default"),
                     valueIsMono: false,
                     accessory: .chevron
@@ -326,31 +392,46 @@ struct AppSettingsView: View {
     // MARK: - Footer
 
     private var footer: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("GitSync.md \(appVersion)")
-                Text(String(localized: "\(state.visibleRepos.count) repositories"))
-            }
-            .font(TideFont.mono(11))
-            .foregroundStyle(Tide.inkFaint)
-            .accessibilityElement(children: .combine)
-
-            Spacer(minLength: 8)
-
-            HStack(spacing: 14) {
-                Link(destination: URL(string: "https://gitsync.md/privacy.html")!) {
-                    Text("Privacy")
-                        .frame(minWidth: 44, minHeight: 44)
-                        .contentShape(Rectangle())
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(verbatim: versionLine)
+                    Text(String(localized: "\(state.visibleRepos.count) repositories"))
                 }
-                Link(destination: URL(string: "https://gitsync.md/terms.html")!) {
-                    Text("Terms")
-                        .frame(minWidth: 44, minHeight: 44)
-                        .contentShape(Rectangle())
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkFaint)
+                .accessibilityElement(children: .combine)
+
+                Spacer(minLength: 8)
+
+                HStack(spacing: 14) {
+                    Link(destination: URL(string: "https://gitsync.md/privacy.html")!) {
+                        Text("Privacy")
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    Link(destination: URL(string: "https://gitsync.md/terms.html")!) {
+                        Text("Terms")
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
                 }
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkMid)
             }
-            .font(TideFont.mono(11))
-            .foregroundStyle(Tide.inkMid)
+
+            if state.isSignedIn || state.isDemoMode {
+                Button { showSignOutConfirm = true } label: {
+                    Text(String(localized: "Sign out"))
+                        .font(TideFont.sans(15, .medium, relativeTo: .body))
+                        .foregroundStyle(Tide.danger)
+                        .frame(maxWidth: .infinity, minHeight: 52)
+                        .overlay(Capsule().strokeBorder(Tide.line, lineWidth: 1))
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("appSettings.signOut")
+            }
         }
     }
 
@@ -377,7 +458,7 @@ struct AppSettingsView: View {
 // MARK: - Rows
 
 /// Hairline between rows inside a grouped Tide card.
-private struct SettingsSeparator: View {
+struct AppSettingsSeparator: View {
     var body: some View {
         Rectangle().fill(Tide.line).frame(height: 1).padding(.horizontal, 18)
     }
@@ -385,8 +466,8 @@ private struct SettingsSeparator: View {
 
 /// Label/value row in a grouped Tide card: sentence-case title, optional
 /// subtitle, mono value (git facts) and a trailing accessory.
-private struct SettingsRow: View {
-    enum Accessory { case none, chevron, external }
+struct AppSettingsRow: View {
+    enum Accessory { case none, chevron, external, checkmark }
 
     let title: String
     var titleTint: Color = Tide.ink
@@ -435,6 +516,11 @@ private struct SettingsRow: View {
                 Image(systemName: "arrow.up.right")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(Tide.inkFaint)
+                    .accessibilityHidden(true)
+            case .checkmark:
+                Image(systemName: "checkmark")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(Tide.synced)
                     .accessibilityHidden(true)
             }
         }

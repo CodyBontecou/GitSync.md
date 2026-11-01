@@ -81,8 +81,38 @@ struct GitTrackingRemovalPlan: Sendable, Equatable {
     let remoteURL: String?
     let branch: String?
     let metadataByteCount: Int64
+    /// What stays and what goes, counted during review.
+    let statistics: GitTrackingStatistics
     fileprivate let rootIdentity: GitTrackingRemovalService.Identity
     fileprivate let snapshot: GitTrackingRemovalService.Snapshot
+}
+
+/// Counts shown on the Stop tracking screen. Everything is read-only and
+/// computed inside the same consistency window as the reviewed snapshot.
+struct GitTrackingStatistics: Sendable, Equatable {
+    /// Markdown notes in the working folder (hidden folders excluded).
+    var noteCount = 0
+    /// Every other visible file in the working folder.
+    var attachmentCount = 0
+    var hasObsidianFolder = false
+    /// Commits reachable from HEAD.
+    var commitCount = 0
+    var branchCount = 0
+    var stashCount = 0
+    /// `.git/lfs` holds downloaded Git LFS objects.
+    var hasLFSCache = false
+    /// Local commits on the current branch that origin does not have.
+    var unpushedCommitCount = 0
+    /// Staged, modified, deleted, and untracked paths (ignored files excluded).
+    var uncommittedChangeCount = 0
+
+    var unpushedChangeCount: Int { unpushedCommitCount + uncommittedChangeCount }
+}
+
+/// A zip of the reviewed `.git` directory, made before removal.
+struct GitHistoryArchive: Sendable, Equatable {
+    let url: URL
+    let byteCount: Int64
 }
 
 struct GitTrackingRemovalResult: Sendable {
@@ -181,6 +211,55 @@ final class GitTrackingRemovalService: @unchecked Sendable {
             try self.validateBackupLocation(destination)
             try Self.assertGitFreeAncestors(of: destination, includeSelectedFolder: true, error: .backupInRepository)
             return destination
+        }
+    }
+
+    /// Zips the reviewed `.git` directory to `<name>-history.zip` in `directory`
+    /// (never replacing an existing file). The metadata is re-verified against
+    /// the plan after zipping, so the archive matches what removal will detach.
+    func archiveHistory(_ plan: GitTrackingRemovalPlan, into directory: URL) async throws -> GitHistoryArchive {
+        guard !Self.isWithin(directory, root: plan.rootURL) else {
+            throw GitTrackingRemovalError.backupInsideRepository
+        }
+        return try await RepositoryOperationCoordinator.shared.withRepository(at: plan.rootURL) {
+            try await Self.runLocal {
+                let root = plan.rootURL
+                let metadata = root.appendingPathComponent(".git", isDirectory: true)
+                try Self.assertMatches(plan, root: root)
+                try Task.checkCancellation()
+                let fileManager = FileManager.default
+                try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+                let base = "\(root.lastPathComponent)-history"
+                var destination = directory.appendingPathComponent("\(base).zip")
+                var suffix = 2
+                while fileManager.fileExists(atPath: destination.path) {
+                    destination = directory.appendingPathComponent("\(base) \(suffix).zip")
+                    suffix += 1
+                }
+                // A coordinated read "for uploading" hands back a zip of a
+                // directory; copy it out before the coordinator deletes it.
+                var coordinationError: NSError?
+                var copyError: Error?
+                NSFileCoordinator(filePresenter: nil).coordinate(
+                    readingItemAt: metadata, options: .forUploading, error: &coordinationError
+                ) { zipURL in
+                    do { try fileManager.copyItem(at: zipURL, to: destination) } catch { copyError = error }
+                }
+                if let coordinationError { throw coordinationError }
+                if let copyError { throw copyError }
+                do {
+                    try Self.assertMatches(plan, root: root)
+                } catch {
+                    try? fileManager.removeItem(at: destination)
+                    throw error
+                }
+                let size = (try? fileManager.attributesOfItem(atPath: destination.path)[.size] as? NSNumber)?.int64Value ?? 0
+                guard size > 0 else {
+                    try? fileManager.removeItem(at: destination)
+                    throw GitTrackingRemovalError.backupVerificationFailed
+                }
+                return GitHistoryArchive(url: destination, byteCount: size)
+            }
         }
     }
 
@@ -448,12 +527,20 @@ final class GitTrackingRemovalService: @unchecked Sendable {
             throw GitTrackingRemovalError.unsupportedMetadata(".git is a link or a gitdir pointer")
         }
         try assertGitFreeAncestors(of: root, includeSelectedFolder: false, error: .sourceInsideRepository)
+        // Validate the layout first, then count (revwalk, refs, status). libgit2
+        // can touch bookkeeping files while counting, so the counts are taken
+        // before the reviewed snapshot rather than inside its window; removal
+        // still verifies the exact snapshot captured below.
+        let preliminary = try repositoryDetails(root, metadata: metadata)
+        let statistics = try collectStatistics(root, metadata: metadata, branch: preliminary.branch,
+                                               hasRemote: preliminary.remote != nil)
         let initial = try snapshot(at: metadata)
         let details = try repositoryDetails(root, metadata: metadata)
         let afterOpen = try snapshot(at: metadata)
         guard initial == afterOpen else { throw GitTrackingRemovalError.sourceChanged }
         return GitTrackingRemovalPlan(rootURL: root.standardizedFileURL, remoteURL: details.remote,
                                       branch: details.branch, metadataByteCount: initial.bytes,
+                                      statistics: statistics,
                                       rootIdentity: rootIdentity, snapshot: initial)
     }
 
@@ -789,5 +876,104 @@ final class GitTrackingRemovalService: @unchecked Sendable {
         if let coordinationError { throw coordinationError }
         guard let result else { throw GitTrackingRemovalError.operation("The selected folder could not be coordinated.") }
         return try result.get()
+    }
+}
+
+// MARK: - Statistics
+
+extension GitTrackingRemovalService {
+    fileprivate static func collectStatistics(
+        _ root: URL, metadata: URL, branch: String?, hasRemote: Bool
+    ) throws -> GitTrackingStatistics {
+        var stats = GitTrackingStatistics()
+        let fileManager = FileManager.default
+        stats.hasObsidianFolder = fileManager.fileExists(atPath: root.appendingPathComponent(".obsidian").path)
+        var isDirectory: ObjCBool = false
+        stats.hasLFSCache = fileManager.fileExists(atPath: metadata.appendingPathComponent("lfs").path, isDirectory: &isDirectory)
+            && isDirectory.boolValue
+
+        // Working folder: notes vs. attachments, hidden folders skipped.
+        if let enumerator = fileManager.enumerator(
+            at: root,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles, .skipsPackageDescendants]
+        ) {
+            var visited = 0
+            for case let url as URL in enumerator {
+                visited += 1
+                if visited % 512 == 0 { try Task.checkCancellation() }
+                guard visited < 500_000 else { break }
+                guard (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true else { continue }
+                let ext = url.pathExtension.lowercased()
+                if ext == "md" || ext == "markdown" { stats.noteCount += 1 } else { stats.attachmentCount += 1 }
+            }
+        }
+
+        var repository: OpaquePointer?
+        defer { if let repository { git_repository_free(repository) } }
+        try check(git_repository_open_ext(&repository, root.path, UInt32(GIT_REPOSITORY_OPEN_NO_SEARCH.rawValue), nil),
+                  "Open the selected repository")
+
+        // Commits reachable from HEAD (zero for an unborn branch).
+        var walk: OpaquePointer?
+        defer { if let walk { git_revwalk_free(walk) } }
+        if git_revwalk_new(&walk, repository) == 0, git_revwalk_push_head(walk) == 0 {
+            var oid = git_oid()
+            while git_revwalk_next(&oid, walk) == 0 {
+                stats.commitCount += 1
+                if stats.commitCount % 1024 == 0 { try Task.checkCancellation() }
+            }
+        }
+
+        var iterator: OpaquePointer?
+        defer { if let iterator { git_branch_iterator_free(iterator) } }
+        if git_branch_iterator_new(&iterator, repository, GIT_BRANCH_LOCAL) == 0 {
+            var reference: OpaquePointer?
+            var type = GIT_BRANCH_LOCAL
+            while git_branch_next(&reference, &type, iterator) == 0 {
+                stats.branchCount += 1
+                git_reference_free(reference)
+                reference = nil
+            }
+        }
+
+        // Read the stash reflog file directly: git_reflog_read creates an empty
+        // logs/refs/stash when none exists, which would alter the metadata.
+        if let stashLog = try? String(contentsOf: metadata.appendingPathComponent("logs/refs/stash"), encoding: .utf8) {
+            stats.stashCount = stashLog.split(whereSeparator: \.isNewline).filter { !$0.isEmpty }.count
+        }
+
+        // Unpushed commits on the current branch. Without a remote there is
+        // nowhere to push; without a remote-tracking ref nothing was pushed.
+        if hasRemote, let branch {
+            var head: OpaquePointer?
+            defer { if let head { git_reference_free(head) } }
+            var upstream: OpaquePointer?
+            defer { if let upstream { git_reference_free(upstream) } }
+            if git_repository_head(&head, repository) == 0, let local = git_reference_target(head) {
+                if git_reference_lookup(&upstream, repository, "refs/remotes/origin/\(branch)") == 0,
+                   let remote = git_reference_target(upstream) {
+                    var ahead = 0
+                    var behind = 0
+                    if git_graph_ahead_behind(&ahead, &behind, repository, local, remote) == 0 {
+                        stats.unpushedCommitCount = ahead
+                    }
+                } else {
+                    stats.unpushedCommitCount = stats.commitCount
+                }
+            }
+        }
+
+        // Uncommitted changes; no index refresh, so .git is not written.
+        var options = git_status_options()
+        git_status_options_init(&options, UInt32(GIT_STATUS_OPTIONS_VERSION))
+        options.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR
+        options.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED.rawValue | GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS.rawValue
+        var statusList: OpaquePointer?
+        defer { if let statusList { git_status_list_free(statusList) } }
+        if git_status_list_new(&statusList, repository, &options) == 0 {
+            stats.uncommittedChangeCount = Int(git_status_list_entrycount(statusList))
+        }
+        return stats
     }
 }

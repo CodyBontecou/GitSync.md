@@ -47,6 +47,7 @@ struct Sync_mdApp: App {
     @State private var foregroundSyncLifecycle: ForegroundSyncLifecycle
     @State private var pushRegistrationTask: Task<Void, Never>? = nil
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(AppAppearance.storageKey) private var appearanceRaw = AppAppearance.system.rawValue
 
     init() {
         #if DEBUG
@@ -94,6 +95,12 @@ struct Sync_mdApp: App {
                 #endif
                 .environment(appState)
                 .environment(premiumRuntime)
+                .preferredColorScheme(AppAppearance(rawValue: appearanceRaw)?.colorScheme)
+                .onChange(of: appearanceRaw, initial: true) { _, raw in
+                    // preferredColorScheme(nil) does not always hand control back
+                    // to the system; the window override does, sheets included.
+                    (AppAppearance(rawValue: raw) ?? .system).applyToWindows()
+                }
                 .task {
                     let isTestProcess = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
                     let isActiveLaunch = UIApplication.shared.applicationState == .active
