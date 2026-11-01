@@ -24,6 +24,8 @@ struct DiffLine: Identifiable {
     let raw: String
     let oldLineNo: Int?
     let newLineNo: Int?
+    /// Word runs (text, changed) when this line pairs with an opposite line.
+    var wordRuns: [(String, Bool)]? = nil
 
     var body: String {
         switch kind {
@@ -73,6 +75,32 @@ private func parsePatch(_ patch: String) -> [DiffLine] {
             newLine += 1
         }
     }
+    return attachWordRuns(lines)
+}
+
+/// Pairs each run of removed lines with the added run that follows it and
+/// marks the words that actually changed on both sides.
+private func attachWordRuns(_ input: [DiffLine]) -> [DiffLine] {
+    var lines = input
+    var i = 0
+    while i < lines.count {
+        guard lines[i].kind == .removed else { i += 1; continue }
+        let removedStart = i
+        while i < lines.count, lines[i].kind == .removed { i += 1 }
+        let addedStart = i
+        while i < lines.count, lines[i].kind == .added { i += 1 }
+        let removedCount = addedStart - removedStart
+        let addedCount = i - addedStart
+        for k in 0..<min(removedCount, addedCount) {
+            let old = lines[removedStart + k], new = lines[addedStart + k]
+            let runs = TideTextDiff.wordRuns(old: old.body, new: new.body)
+            // Only highlight when the lines are recognisably related.
+            let unchanged = runs.new.filter { !$0.1 }.map(\.0.count).reduce(0, +)
+            guard unchanged * 3 >= new.body.count else { continue }
+            lines[removedStart + k].wordRuns = runs.old
+            lines[addedStart + k].wordRuns = runs.new
+        }
+    }
     return lines
 }
 
@@ -82,13 +110,31 @@ struct FileDiffView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
     let repoID: UUID
-    let path: String
 
+    private enum Mode: String, CaseIterable, Identifiable {
+        case changes, wholeFile, preview
+        var id: Self { self }
+        var title: String {
+            switch self {
+            case .changes: String(localized: "Changes")
+            case .wholeFile: String(localized: "Whole file")
+            case .preview: String(localized: "Preview")
+            }
+        }
+    }
+
+    @State private var path: String
+    @State private var mode: Mode = .changes
     @State private var isLoading = true
-    @State private var showRevertConfirm = false
     @State private var isReverting = false
     @State private var showRevertModal = false
     @State private var editorDestination: FileEditorDestination?
+    @State private var fileText: String?
+
+    init(repoID: UUID, path: String) {
+        self.repoID = repoID
+        self._path = State(initialValue: path)
+    }
 
     // MARK: Derived
 
@@ -99,8 +145,23 @@ struct FileDiffView: View {
         let dir = URL(fileURLWithPath: path).deletingLastPathComponent().path
         return (dir == "." || dir == "/") ? "" : dir
     }
+    private var isMarkdown: Bool {
+        ["md", "markdown", "mdown"].contains(URL(fileURLWithPath: path).pathExtension.lowercased())
+    }
     private var entry: GitStatusEntry? {
         state.statusEntriesByRepo[repoID]?.first { $0.path == path }
+    }
+    /// The vault's changed files in the Changes-tab order (conflicts open
+    /// their own editor, so they're skipped).
+    private var changedPaths: [String] {
+        (state.statusEntriesByRepo[repoID] ?? [])
+            .filter { !$0.isConflicted }
+            .map(\.path)
+            .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+    }
+    private var position: (index: Int, total: Int)? {
+        guard let i = changedPaths.firstIndex(of: path) else { return nil }
+        return (i + 1, changedPaths.count)
     }
     private var patch: String {
         guard let result = state.diffByRepo[repoID] else { return "" }
@@ -139,12 +200,6 @@ struct FileDiffView: View {
                     BLoading(text: String(localized: "Loading diff"))
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if patch.isEmpty {
-                ContentUnavailableView(
-                    String(localized: "No Diff Available"),
-                    systemImage: "doc.text",
-                    description: Text(String(localized: "This file may be binary or has no staged content."))
-                )
             } else {
                 content
             }
@@ -153,11 +208,17 @@ struct FileDiffView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(directory.isEmpty ? "/" : directory + "/")
+                Text(positionCaption)
                     .font(TideFont.mono(12, relativeTo: .headline))
                     .foregroundStyle(Tide.inkMid)
                     .lineLimit(1)
                     .truncationMode(.head)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack(spacing: 0) {
+                    navButton(systemImage: "chevron.up", label: String(localized: "Previous changed file"), offset: -1)
+                    navButton(systemImage: "chevron.down", label: String(localized: "Next changed file"), offset: 1)
+                }
             }
         }
         .navigationDestination(item: $editorDestination) { dest in
@@ -166,15 +227,17 @@ struct FileDiffView: View {
         .overlay {
             if showRevertModal {
                 RevertConfirmModal(
+                    repoID: repoID,
                     title: String(localized: "Revert Changes"),
                     filename: filename,
                     files: [path],
                     confirmLabel: String(localized: "Revert"),
-                    onConfirm: {
+                    onConfirm: { stashFirst in
                         showRevertModal = false
+                        let target = path
                         Task {
                             isReverting = true
-                            await state.discardFileChanges(repoID: repoID, path: path)
+                            await state.discardChanges(repoID: repoID, paths: [target], stashFirst: stashFirst)
                             isReverting = false
                             dismiss()
                         }
@@ -185,16 +248,46 @@ struct FileDiffView: View {
             }
         }
         .animation(.easeOut(duration: 0.18), value: showRevertModal)
-        .task {
-            #if DEBUG
-            if MarketingCapture.isActive {
-                isLoading = false
-                return
-            }
-            #endif
-            await state.loadUnifiedDiff(repoID: repoID, path: path)
-            isLoading = false
+        .task(id: path) { await load() }
+    }
+
+    /// "ideas/ · 2 of 3"
+    private var positionCaption: String {
+        let dir = directory.isEmpty ? "/" : directory + "/"
+        guard let position else { return dir }
+        return dir + " · " + String(localized: "\(position.index) of \(position.total)")
+    }
+
+    private func navButton(systemImage: String, label: String, offset: Int) -> some View {
+        let target: String? = position.flatMap { pos in
+            let next = pos.index - 1 + offset
+            return changedPaths.indices.contains(next) ? changedPaths[next] : nil
         }
+        return Button {
+            if let target { path = target }
+        } label: {
+            Image(systemName: systemImage)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(target == nil ? Tide.inkFaint : Tide.ink)
+                .frame(width: 40, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(target == nil)
+        .accessibilityLabel(label)
+    }
+
+    private func load() async {
+        #if DEBUG
+        if MarketingCapture.isActive {
+            isLoading = false
+            return
+        }
+        #endif
+        await state.loadUnifiedDiff(repoID: repoID, path: path)
+        fileText = fileURL.flatMap { try? Data(contentsOf: $0) }.flatMap { String(data: $0, encoding: .utf8) }
+        if mode == .preview && !isMarkdown { mode = .changes }
+        isLoading = false
     }
 
     // MARK: - Content
@@ -206,13 +299,63 @@ struct FileDiffView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 4)
 
-                diffCard
+                modePicker
                     .padding(.horizontal, Tide.gutter)
-                    .padding(.top, 16)
-                    .padding(.bottom, 24)
+                    .padding(.top, 14)
+
+                Group {
+                    switch mode {
+                    case .changes:
+                        if patch.isEmpty { emptyDiff } else { diffCard }
+                    case .wholeFile:
+                        wholeFileCard
+                    case .preview:
+                        previewCard
+                    }
+                }
+                .padding(.horizontal, Tide.gutter)
+                .padding(.top, 12)
+                .padding(.bottom, 24)
             }
         }
         .scrollIndicators(.hidden)
+    }
+
+    private var emptyDiff: some View {
+        TideCard {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(String(localized: "No Diff Available"))
+                    .font(TideFont.sans(15, .semibold))
+                    .foregroundStyle(Tide.ink)
+                Text(String(localized: "This file may be binary or has no staged content."))
+                    .font(TideFont.meta)
+                    .foregroundStyle(Tide.inkFaint)
+            }
+        }
+    }
+
+    private var modePicker: some View {
+        HStack(spacing: 4) {
+            ForEach(Mode.allCases) { option in
+                let selected = mode == option
+                let enabled = option != .preview || isMarkdown
+                Button {
+                    mode = option
+                } label: {
+                    Text(option.title)
+                        .font(TideFont.sans(13, selected ? .semibold : .medium, relativeTo: .footnote))
+                        .foregroundStyle(selected ? Tide.ink : (enabled ? Tide.inkMid : Tide.inkFaint))
+                        .frame(maxWidth: .infinity, minHeight: 32)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(selected ? Tide.card : Color.clear))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(!enabled)
+                .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
+            }
+        }
+        .padding(4)
+        .background(RoundedRectangle(cornerRadius: 14).fill(Tide.well))
     }
 
     // MARK: - Header
@@ -313,10 +456,9 @@ struct FileDiffView: View {
                     .frame(width: 30, alignment: .leading)
                     .accessibilityHidden(true)
 
-                Text(line.kind == .noNewline ? line.raw : line.body)
+                lineText(line, cfg: cfg)
                     .font(TideFont.mono(12.5, relativeTo: .footnote))
                     .italic(line.kind == .noNewline)
-                    .foregroundStyle(cfg.textFg)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
             }
@@ -326,6 +468,22 @@ struct FileDiffView: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(accessibilityPrefix(line.kind) + line.body)
         }
+    }
+
+    /// Line body; paired add/remove lines tint just the words that changed.
+    private func lineText(_ line: DiffLine, cfg: LineStyle) -> Text {
+        guard let runs = line.wordRuns else {
+            return Text(line.kind == .noNewline ? line.raw : line.body).foregroundColor(cfg.textFg)
+        }
+        var attributed = AttributedString()
+        let highlight = line.kind == .added ? DiffPalette.addedWord : DiffPalette.removedWord
+        for (text, changed) in runs {
+            var run = AttributedString(text)
+            run.foregroundColor = cfg.textFg
+            if changed { run.backgroundColor = highlight }
+            attributed += run
+        }
+        return Text(attributed)
     }
 
     /// "@@ ## Steps · line 12" — the hunk's section context and new-side start.
@@ -357,6 +515,70 @@ struct FileDiffView: View {
         }
     }
 
+    // MARK: - Whole file / Preview
+
+    /// New-side line numbers this change added or edited.
+    private var addedLineNumbers: Set<Int> {
+        Set(parsedLines.filter { $0.kind == .added }.compactMap(\.newLineNo))
+    }
+
+    @ViewBuilder
+    private var wholeFileCard: some View {
+        if let fileText {
+            let lines = TideTextDiff.lines(fileText)
+            let added = addedLineNumbers
+            LazyVStack(alignment: .leading, spacing: 0) {
+                ForEach(Array(lines.enumerated()), id: \.offset) { index, text in
+                    let isAdded = added.contains(index + 1)
+                    HStack(alignment: .firstTextBaseline, spacing: 0) {
+                        Text("\(index + 1)")
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(isAdded ? DiffPalette.addedSign : DiffPalette.lineNumber)
+                            .minimumScaleFactor(0.6)
+                            .lineLimit(1)
+                            .frame(width: 30, alignment: .leading)
+                            .accessibilityHidden(true)
+                        Text(text.isEmpty ? " " : text)
+                            .font(TideFont.mono(12.5, relativeTo: .footnote))
+                            .foregroundStyle(isAdded ? DiffPalette.addedText : Tide.ink)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .textSelection(.enabled)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 2)
+                    .background(isAdded ? DiffPalette.addedBg : Color.clear)
+                }
+            }
+            .padding(.vertical, 10)
+            .background(Tide.card)
+            .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
+        } else {
+            unavailableCard(fileURL == nil
+                ? String(localized: "This file was deleted on this iPhone.")
+                : String(localized: "This file isn't text, so it can't be shown here."))
+        }
+    }
+
+    @ViewBuilder
+    private var previewCard: some View {
+        if let fileText {
+            TideMarkdownView(text: fileText)
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        } else {
+            unavailableCard(String(localized: "This file was deleted on this iPhone."))
+        }
+    }
+
+    private func unavailableCard(_ text: String) -> some View {
+        TideCard {
+            Text(text)
+                .font(TideFont.sans(14, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+        }
+    }
+
     // MARK: - Bottom Bar
 
     private var bottomBar: some View {
@@ -379,7 +601,7 @@ struct FileDiffView: View {
                 .contentShape(Capsule())
             }
             .buttonStyle(.plain)
-            .disabled(isLoading || isReverting)
+            .disabled(isLoading || isReverting || entry == nil)
             .accessibilityLabel(String(localized: "Revert Changes"))
             .accessibilityHint(String(localized: "Discard local edits to this file"))
 
@@ -422,14 +644,17 @@ struct FileDiffView: View {
 // MARK: - Diff palette
 
 /// Tide diff tints: green rows for additions, red for removals, a paper-grey
-/// band for hunk headers. Light values from the Diff artboard.
-private enum DiffPalette {
+/// band for hunk headers, and stronger word tints for the exact edits.
+/// Light values from the Diff artboard.
+enum DiffPalette {
     static let hunkBg      = Color(light: Color(hex: 0xEEEDE7), dark: Color(hex: 0x232327))
     static let lineNumber  = Color(light: Color(hex: 0xB5B5BB), dark: Color(hex: 0x5C5C63))
     static let addedBg     = Color(light: Color(hex: 0xE5F1EA), dark: Color(hex: 0x15291E))
     static let addedText   = Color(light: Color(hex: 0x0F4F2C), dark: Color(hex: 0xA6E3BF))
     static let addedSign   = Color(light: Color(hex: 0x6FA987), dark: Color(hex: 0x5BC489))
+    static let addedWord   = Color(light: Color(hex: 0xC6E3D1), dark: Color(hex: 0x245A3A))
     static let removedBg   = Color(light: Color(hex: 0xFBE9E7), dark: Color(hex: 0x33191A))
     static let removedText = Color(light: Color(hex: 0x8A1C12), dark: Color(hex: 0xFFB4A9))
     static let removedSign = Color(light: Color(hex: 0xC9837B), dark: Color(hex: 0xFF7A6B))
+    static let removedWord = Color(light: Color(hex: 0xF5C9C3), dark: Color(hex: 0x5C2522))
 }

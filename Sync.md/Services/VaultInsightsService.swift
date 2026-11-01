@@ -5,12 +5,6 @@ import libgit2
 
 // MARK: - Models
 
-/// `git diff --numstat` for one path.
-struct GitLineStats: Equatable, Sendable {
-    var added: Int
-    var deleted: Int
-}
-
 /// A branch or tag pointing at a commit (History rail labels).
 struct GitRefLabel: Hashable, Sendable {
     enum Kind: Int, Sendable { case localBranch, remoteBranch, tag }
