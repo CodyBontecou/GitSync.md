@@ -25,7 +25,6 @@ struct SettingsView: View {
     @State private var showDeleteFilesConfirm = false
     @State private var showFolderPicker = false
     @State private var showCopiedToast = false
-    @State private var showMoveLocationPicker = false
     @State private var moveError: String? = nil
     @State private var showMoveError = false
     @State private var validationMessage: String? = nil
@@ -35,6 +34,9 @@ struct SettingsView: View {
     @State private var assistNetworkPolicy: RepoAssistNetworkPolicy = .any
     @State private var assistPowerPolicy: RepoAssistPowerPolicy = .any
     @State private var isManagingAssist = false
+    @State private var isPinned = false
+    @State private var displayName = ""
+    @State private var showStopTracking = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var canDeleteLocalFiles: Bool { repo?.isGitSyncManagedStorage == true }
@@ -74,6 +76,8 @@ struct SettingsView: View {
                         if FeatureFlags.gitSyncAssistEnabled {
                             backgroundSyncSection
                         }
+
+                        thisVaultSection
 
                         // Repository Section
                         settingsSection(title: String(localized: "Repository")) {
@@ -165,67 +169,6 @@ struct SettingsView: View {
                             }
                         }
 
-                        // Storage Section
-                        settingsSection(title: String(localized: "Storage")) {
-                            if state.isUsingCustomLocation(for: repoID) {
-                                settingsFieldRow(label: String(localized: "Location")) {
-                                    Text(state.vaultURL(for: repoID).lastPathComponent)
-                                        .font(TideFont.mono(13, relativeTo: .footnote))
-                                        .foregroundStyle(Tide.inkMid)
-                                        .lineLimit(1)
-                                }
-
-                                rowSeparator
-
-                                settingsFieldRow(label: String(localized: "Path")) {
-                                    Text(state.vaultDisplayPath(for: repoID))
-                                        .font(TideFont.mono(11.5))
-                                        .foregroundStyle(Tide.inkFaint)
-                                        .lineLimit(1)
-                                        .truncationMode(.middle)
-                                }
-                            } else {
-                                settingsFieldRow(label: String(localized: "Folder")) {
-                                    Text(vaultName)
-                                        .font(TideFont.mono(13, relativeTo: .footnote))
-                                        .foregroundStyle(Tide.inkMid)
-                                        .lineLimit(1)
-                                }
-
-                                rowSeparator
-
-                                settingsFieldRow(label: String(localized: "Path")) {
-                                    Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
-                                        .font(TideFont.mono(11.5))
-                                        .foregroundStyle(Tide.inkFaint)
-                                        .lineLimit(1)
-                                        .truncationMode(.middle)
-                                }
-                            }
-
-                            rowSeparator
-
-                            Button {
-                                showMoveLocationPicker = true
-                            } label: {
-                                HStack(spacing: 12) {
-                                    Text("Move vault")
-                                        .font(TideFont.body)
-                                        .foregroundStyle(Tide.ink)
-                                    Spacer()
-                                    Image(systemName: "folder.badge.plus")
-                                        .font(.system(size: 14, weight: .semibold))
-                                        .foregroundStyle(Tide.inkFaint)
-                                        .accessibilityHidden(true)
-                                }
-                                .padding(.horizontal, 18)
-                                // Full-row action, ≥44pt-tall hit target.
-                                .frame(maxWidth: .infinity, minHeight: 52)
-                                .contentShape(Rectangle())
-                            }
-                            .buttonStyle(.plain)
-                        }
-
                         // Push Sync is installation-global; this repository
                         // surface exposes the same GitHub App connection state.
                         settingsSection(title: String(localized: "Push Sync")) {
@@ -259,8 +202,23 @@ struct SettingsView: View {
                             .buttonStyle(.plain)
                         }
 
-                        // Remove / Delete
+                        // Stop tracking / Remove / Delete
                         VStack(spacing: 8) {
+                            if repo?.isCloned == true {
+                                Button {
+                                    showStopTracking = true
+                                } label: {
+                                    Text(String(localized: "Stop tracking — keep files"))
+                                        .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                                        .foregroundStyle(Tide.ink)
+                                        .frame(maxWidth: .infinity, minHeight: 50)
+                                        .background(Capsule().fill(Tide.card))
+                                        .contentShape(Capsule())
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityHint(String(localized: "Removes Git from the folder and keeps your notes"))
+                            }
+
                             BSecondaryButton(title: String(localized: "Remove from GitSync.md — keep files")) {
                                 showRemoveConfirm = true
                             }
@@ -279,7 +237,7 @@ struct SettingsView: View {
                                 .buttonStyle(.plain)
                             }
 
-                            Text(String(localized: "Removing from GitSync.md keeps the files on this device."))
+                            Text(String(localized: "Stop tracking removes the .git folder. Removing from GitSync.md only forgets the vault; both keep your files."))
                                 .font(TideFont.mono(11))
                                 .foregroundStyle(Tide.inkFaint)
                                 .multilineTextAlignment(.center)
@@ -345,7 +303,10 @@ struct SettingsView: View {
                     includeInAutomaticSync = !repo.assist.excludedFromAutomaticSync
                     assistNetworkPolicy = repo.assist.networkPolicy
                     assistPowerPolicy = repo.assist.powerPolicy
+                    isPinned = repo.isPinned
+                    displayName = repo.displayName
                 }
+                Task { await state.refreshVaultMeta(repoID: repoID, forceLFS: true) }
                 if FeatureFlags.gitSyncAssistEnabled {
                     Task { await premiumRuntime.prepareForSettings() }
                 }
@@ -355,6 +316,7 @@ struct SettingsView: View {
                 dismiss()
             }
             #endif
+            .sheet(isPresented: $showStopTracking) { RemoveGitTrackingView() }
             .alert("Remove from GitSync.md?", isPresented: $showRemoveConfirm) {
                 Button("Cancel", role: .cancel) {}
                 Button("Remove", role: .destructive) {
@@ -370,15 +332,6 @@ struct SettingsView: View {
                 }
             } message: {
                 Text("This will permanently delete:\n\(repoPathForConfirmation)\n\nThis cannot be undone.")
-            }
-            .fileImporter(
-                isPresented: $showMoveLocationPicker,
-                allowedContentTypes: [.folder],
-                allowsMultipleSelection: false
-            ) { result in
-                if case .success(let urls) = result, let url = urls.first {
-                    moveVault(to: url)
-                }
             }
             .alert("Move Failed", isPresented: $showMoveError) {
                 Button("OK", role: .cancel) {}
@@ -426,16 +379,25 @@ struct SettingsView: View {
 
             HStack(spacing: 8) {
                 statTile(value: "\(repo.gitState.blobSHAs.count)", label: String(localized: "files"))
-                statTile(value: String(repo.gitState.commitSHA.prefix(7)), label: String(localized: "commit"), mono: true)
-                statTile(value: shortRelativeDate(repo.gitState.lastSyncDate), label: String(localized: "last sync"))
+                statTile(
+                    value: ByteCountFormatter.string(fromByteCount: state.vaultMetaByRepo[repoID]?.lfsBytes ?? 0, countStyle: .file),
+                    label: String(localized: "LFS")
+                )
+                let errors = RepoErrorJournal.count(repoID: repoID)
+                statTile(value: "\(errors)", label: String(localized: "errors · 7d"), tint: errors > 0 ? Tide.danger : Tide.ink)
             }
             .padding(.top, 14)
+
+            Text(String(localized: "commit \(String(repo.gitState.commitSHA.prefix(7))) · synced \(shortRelativeDate(repo.gitState.lastSyncDate))"))
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkFaint)
+                .padding(.top, 12)
 
             if FeatureFlags.gitSyncAssistEnabled, let date = repo.assist.health.lastAttemptDate {
                 Text("Last sync attempt \(relativeDate(date))")
                     .font(TideFont.mono(11))
                     .foregroundStyle(Tide.inkFaint)
-                    .padding(.top, 12)
+                    .padding(.top, 4)
             }
         }
         .padding(.horizontal, 18)
@@ -444,13 +406,13 @@ struct SettingsView: View {
         .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
     }
 
-    private func statTile(value: String, label: String, mono: Bool = false) -> some View {
+    private func statTile(value: String, label: String, mono: Bool = false, tint: Color = Tide.ink) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value)
                 .font(mono ? TideFont.mono(16, .semibold, relativeTo: .title3)
                            : TideFont.sans(20, .semibold, relativeTo: .title3))
                 .tracking(mono ? 0 : -0.6)
-                .foregroundStyle(Tide.ink)
+                .foregroundStyle(tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
                 .frame(minHeight: 26, alignment: .leading)
@@ -486,6 +448,58 @@ struct SettingsView: View {
         }
         .foregroundStyle(tint)
         .accessibilityElement(children: .combine)
+    }
+
+    // MARK: - This vault
+
+    private var thisVaultSection: some View {
+        settingsSection(title: String(localized: "This vault")) {
+            Toggle(isOn: $isPinned) {
+                Text("Pin to top of Home")
+                    .font(TideFont.body)
+                    .foregroundStyle(Tide.ink)
+            }
+            .tint(Tide.synced)
+            .padding(.horizontal, 18)
+            .frame(minHeight: 56)
+
+            rowSeparator
+
+            settingsInputRow(label: String(localized: "Display name")) {
+                TextField(repo?.repoName ?? "", text: $displayName)
+                    .font(TideFont.sans(15, relativeTo: .subheadline))
+                    .multilineTextAlignment(.trailing)
+                    .autocorrectionDisabled()
+                    .foregroundStyle(Tide.ink)
+                    .submitLabel(.done)
+            }
+
+            rowSeparator
+
+            NavigationLink {
+                VaultFolderScreen(repoID: repoID, onMove: moveVault(to:))
+            } label: {
+                HStack(spacing: 12) {
+                    Text("Folder")
+                        .font(TideFont.body)
+                        .foregroundStyle(Tide.ink)
+                    Spacer(minLength: 8)
+                    Text(state.vaultFolderBreadcrumb(repoID: repoID).joined(separator: " › "))
+                        .font(TideFont.sans(14, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.inkMid)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Tide.inkFaint)
+                        .accessibilityHidden(true)
+                }
+                .padding(.horizontal, 18)
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     // MARK: - Background Sync
@@ -1085,7 +1099,9 @@ struct SettingsView: View {
         }
         // Persist repository configuration and local policy first. Relay
         // reconciliation observes only the completed local state.
+        state.setCustomDisplayName(displayName, repoID: repoID)
         state.updateRepo(id: repoID) { repo in
+            repo.isPinned = isPinned
             repo.assist.selectedBranch = trimmedBranch.isEmpty ? "main" : trimmedBranch
             repo.assist.networkPolicy = assistNetworkPolicy
             repo.assist.powerPolicy = assistPowerPolicy

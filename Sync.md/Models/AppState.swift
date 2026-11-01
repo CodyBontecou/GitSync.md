@@ -361,6 +361,24 @@ final class AppState {
         remoteCredentials(for: repo).transportPayload
     }
 
+    // MARK: - Home & Vault insights
+
+    /// When change detection last completed for any vault ("checked 2 min ago").
+    var lastStatusCheckDate: Date? = nil
+    /// Fetch time, LFS size and upstream ahead/behind per vault.
+    var vaultMetaByRepo: [UUID: VaultRepositoryMeta] = [:]
+    /// When `vaultMetaByRepo[id].lfsBytes` was last measured (it walks a directory).
+    var vaultLFSMeasuredAt: [UUID: Date] = [:]
+    /// `+added / −deleted` per changed path (NFC keys) for the Changes tab.
+    var workingLineStatsByRepo: [UUID: [String: GitLineStats]] = [:]
+    /// Commit OID → branch/tag labels for the History rail.
+    var commitRefLabelsByRepo: [UUID: [String: [GitRefLabel]]] = [:]
+    /// Commit OID → parent and file counts for the History rail.
+    var commitExtrasByRepo: [UUID: [String: GitCommitExtras]] = [:]
+    /// Home "Sync all" run in progress.
+    var isSyncingAllVaults = false
+    var syncAllProgressText: String? = nil
+
     // MARK: - Dependencies
 
     private let gitRepositoryFactory: (URL) -> any GitRepositoryProtocol
@@ -1053,6 +1071,7 @@ final class AppState {
                     syncStateByRepo[repoID] = info.syncState
                     diffByRepo[repoID] = .empty
                 }
+                lastStatusCheckDate = Date()
 
                 let elapsed = Date().timeIntervalSince(startedAt)
                 if elapsed > 2 {
@@ -3999,6 +4018,7 @@ final class AppState {
         lastError = message
         showError = true
         DebugLogger.shared.error(category, message)
+        if let syncingRepoID { RepoErrorJournal.record(repoID: syncingRepoID) }
     }
 
     // MARK: - Demo Mode
