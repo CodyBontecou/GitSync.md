@@ -1,0 +1,123 @@
+name: Website publishing
+
+on:
+  pull_request:
+    paths:
+      - "site/**"
+      - "scripts/*site*.py"
+      - "scripts/site_markdown.py"
+      - "scripts/tests/test_site_*.py"
+      - "scripts/tests/site-testimonials.test.mjs"
+      - "site-router/scripts/markdown.test.mjs"
+      - ".github/workflows/website-publish.yml"
+      - ".github/scripts/**"
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "scripts/*site*.py"
+      - "scripts/site_markdown.py"
+      - "scripts/tests/test_site_*.py"
+      - "scripts/tests/site-testimonials.test.mjs"
+      - "site-router/scripts/markdown.test.mjs"
+      - ".github/workflows/website-publish.yml"
+      - ".github/scripts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-publishing
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test the release verifier
+        run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
+      - name: Build and verify website
+        run: |
+          python3 scripts/check_site_seo.py
+          python3 -m unittest discover -s scripts/tests -p 'test_site_*.py'
+          node --test scripts/tests/site-testimonials.test.mjs site-router/scripts/markdown.test.mjs
+          python3 scripts/build_site.py "$RUNNER_TEMP/site"
+          python3 scripts/check_site_seo.py --site "$RUNNER_TEMP/site"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-${{ github.sha }}
+          path: ${{ runner.temp }}/site
+          include-hidden-files: true
+          retention-days: 7
+
+  publish:
+    # Never expose publishing credentials to pull requests or non-main dispatches.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: website-${{ github.sha }}
+          path: ${{ runner.temp }}/site
+      - name: Refuse to publish a superseded main revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$GITHUB_SHA"
+      - name: Deploy the tested artifact to preview
+        id: preview
+        working-directory: ${{ runner.temp }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npx --yes wrangler@4.156.0 pages deploy "$RUNNER_TEMP/site" --project-name syncmd --branch "ci-${GITHUB_SHA:0:12}" --commit-hash "$GITHUB_SHA" --commit-dirty=false | tee "$RUNNER_TEMP/pages-preview.log"
+          python3 - <<'PYCODE' >> "$GITHUB_OUTPUT"
+          import os, pathlib, re
+          text = pathlib.Path(os.environ['RUNNER_TEMP'], 'pages-preview.log').read_text()
+          matches = re.findall(r'https://[0-9a-f]+\.[a-z0-9-]+\.pages\.dev', text)
+          if not matches:
+              raise SystemExit('No immutable preview deployment URL returned')
+          print('url=' + matches[-1])
+          PYCODE
+      - name: Verify preview before production
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url "$PREVIEW_URL" --canonical-origin https://gitsync.md --preview
+      - name: Recheck main before production promotion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$GITHUB_SHA"
+      - name: Publish the same tested artifact
+        working-directory: ${{ runner.temp }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4.156.0 pages deploy "$RUNNER_TEMP/site" --project-name syncmd --branch main --commit-hash "$GITHUB_SHA" --commit-dirty=false
+      - name: Verify production
+        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url https://gitsync.md
+      - name: Record verified release
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+        run: |
+          printf 'Verified website revision `%s` at https://gitsync.md\n\nPreview: %s\n' "$GITHUB_SHA" "$PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"

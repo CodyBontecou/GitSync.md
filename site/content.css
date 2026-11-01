@@ -264,7 +264,7 @@
 .guide-layout .article-body pre { padding: 18px 20px; font-size: 14px; line-height: 1.6; }
 .guide-aside { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .guide-aside-sticky { position: sticky; top: 104px; display: flex; flex-direction: column; gap: 12px; }
-.guide-aside .toc-card { background: var(--surface); border-radius: var(--radius-card); padding: 20px; }
+.guide-aside .toc-card { align-self: stretch; background: var(--surface); border-radius: var(--radius-card); padding: 20px; }
 .guide-aside .toc-title { margin-bottom: 0; }
 .guide-aside .toc-card ol { margin: 12px 0 0; padding-left: 20px; columns: auto; }
 .guide-aside .toc-card li { margin-top: 0; padding-left: 2px; padding-block: 5px; font-size: 15px; line-height: 1.5; color: var(--muted); }

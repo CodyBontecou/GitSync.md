@@ -37,3 +37,5 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 ## Reading this site
 
 Canonical HTML pages support Accept: text/markdown and return Vary: Accept. The same documents are available at .md paths, with /index.md for the homepage and /blog/index.md for the guide index. Missing pages return HTTP 404, including when Markdown is requested. Use the [sitemap](https://gitsync.md/sitemap.xml) for the complete public page list.
+
+- [Git on iPad](https://gitsync.md/blog/git-on-ipad): choose local files, GitHub collaboration or browser editing; verify a commit and remote update.
