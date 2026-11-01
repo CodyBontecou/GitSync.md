@@ -383,9 +383,11 @@ struct SettingsView: View {
             }
 
             HStack(spacing: 8) {
-                statTile(value: "\(repo.gitState.blobSHAs.count)", label: String(localized: "files"))
+                let meta = state.vaultMetaByRepo[repoID]
+                statTile(value: meta?.trackedFileCount.map(String.init) ?? "—", label: String(localized: "files"))
+                let lfsBytes = meta?.lfsBytes ?? 0
                 statTile(
-                    value: ByteCountFormatter.string(fromByteCount: state.vaultMetaByRepo[repoID]?.lfsBytes ?? 0, countStyle: .file),
+                    value: lfsBytes > 0 ? ByteCountFormatter.string(fromByteCount: lfsBytes, countStyle: .file) : "—",
                     label: String(localized: "LFS")
                 )
                 let errors = RepoErrorJournal.count(repoID: repoID)
@@ -393,7 +395,9 @@ struct SettingsView: View {
             }
             .padding(.top, 14)
 
-            Text(String(localized: "commit \(String(repo.gitState.commitSHA.prefix(7))) · synced \(shortRelativeDate(repo.gitState.lastSyncDate))"))
+            // A fetch counts as contact with the remote even before the first full sync.
+            let lastContact = max(repo.gitState.lastSyncDate, state.vaultMetaByRepo[repoID]?.lastFetchDate ?? .distantPast)
+            Text(String(localized: "commit \(String(repo.gitState.commitSHA.prefix(7))) · synced \(shortRelativeDate(lastContact))"))
                 .font(TideFont.mono(11))
                 .foregroundStyle(Tide.inkFaint)
                 .padding(.top, 12)

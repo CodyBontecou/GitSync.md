@@ -93,11 +93,18 @@ final class SyncMDUITests: XCTestCase {
             (try? String(contentsOf: readme, encoding: .utf8)) == "# Git Tools Fixture\n\nBase note.\n"
         }, "Revert must actually restore the file before refreshing")
         XCTAssertFalse(app.alerts["Error"].exists)
+        // Discard stashes a safety copy first; refresh once the vault shows
+        // the clean state so the pull isn't racing that work.
+        XCTAssertTrue(
+            app.staticTexts["No changes on this iPhone"].waitForExistence(timeout: 10),
+            "The vault should settle on the clean state after the revert"
+        )
 
         let scrollView = app.scrollViews.firstMatch
         let start = scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
         let end = scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
-        start.press(forDuration: 0.1, thenDragTo: end)
+        // Pull the way a person does: drag down and hold briefly past the threshold.
+        start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
         XCTAssertTrue(app.staticTexts["Already up to date"].waitForExistence(timeout: 10), "Pull-to-refresh must complete after reverting")
         XCTAssertFalse(app.alerts["Error"].exists, "Revert then refresh must not display Swift.CancellationError")
         XCTAssertEqual(try gitToolsHead(), localHead, "Revert and a no-op pull must not create a commit")
@@ -942,28 +949,19 @@ final class SyncMDUITests: XCTestCase {
             "Seeded repo should open into the vault view"
         )
 
-        // Pull against the local bare remote classifies the fixture as
-        // diverged and surfaces Merge/Rebase controls by label.
-        pullFromVault(in: app)
+        // The vault reads the fixture's ahead/behind on open and shows the
+        // diverged state up front, with "Bring theirs in" (merge) and Rebase.
+        let merge = app.buttons["Bring theirs in"].firstMatch
         XCTAssertTrue(
-            app.staticTexts[
-                "Local and remote have diverged. Merge support is required to continue."
-            ].waitForExistence(timeout: 20),
-            "Pull on the diverged fixture should surface the diverged outcome"
-        )
-        let merge = app.buttons["Merge"].firstMatch
-        XCTAssertTrue(
-            merge.waitForExistence(timeout: 10),
-            "Diverged banner should expose the Merge action as a labelled button"
+            merge.waitForExistence(timeout: 20),
+            "Diverged vault should offer Bring theirs in as a labelled button"
         )
         XCTAssertTrue(
             app.buttons["Rebase"].firstMatch.exists,
-            "Diverged banner should expose the Rebase action as a labelled button"
+            "Diverged vault should offer Rebase as a labelled button"
         )
 
         // Merging the diverged fixture produces a genuine conflict session.
-        // (The banner can appear while the pull's progress delay still holds
-        // isSyncing, so wait for enabled, not merely hittable.)
         let mergeReady = XCTNSPredicateExpectation(
             predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
             object: merge
@@ -971,7 +969,7 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertEqual(
             XCTWaiter().wait(for: [mergeReady], timeout: 10),
             .completed,
-            "Merge action should become enabled and tappable"
+            "Bring theirs in should become enabled and tappable"
         )
         merge.tap()
         XCTAssertTrue(
@@ -1107,23 +1105,15 @@ final class SyncMDUITests: XCTestCase {
             "Seeded repo should open into the vault view"
         )
 
-        // Pull against the local bare remote classifies the fixture as
-        // diverged (same banner the merge test asserts).
-        pullFromVault(in: app)
-        XCTAssertTrue(
-            app.staticTexts[
-                "Local and remote have diverged. Merge support is required to continue."
-            ].waitForExistence(timeout: 20),
-            "Pull on the diverged fixture should surface the diverged outcome"
-        )
+        // The vault reads the fixture's ahead/behind on open and shows the
+        // diverged state up front, with Rebase next to "Bring theirs in".
         let rebase = app.buttons["Rebase"].firstMatch
         XCTAssertTrue(
-            rebase.waitForExistence(timeout: 10),
-            "Diverged banner should expose the Rebase action as a labelled button"
+            rebase.waitForExistence(timeout: 20),
+            "Diverged vault should expose the Rebase action as a labelled button"
         )
 
-        // The banner can appear while the pull's trailing progress delay still
-        // holds isSyncing, so wait for enabled, not merely hittable.
+        // Wait for enabled, not merely hittable, while the open-time refresh runs.
         let rebaseReady = XCTNSPredicateExpectation(
             predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
             object: rebase
@@ -1510,19 +1500,16 @@ final class SyncMDUITests: XCTestCase {
             "App Settings should offer GitHub sign-in when signed out"
         )
 
-        // Scroll to the Push Sync section (below Background Sync).
-        var pushSyncHeaderFound = false
-        for _ in 0..<10 {
-            if app.staticTexts["PUSH SYNC"].exists {
-                pushSyncHeaderFound = true
-                break
-            }
-            app.swipeUp()
-        }
+        // Push Sync lives behind the "Push notifications from GitHub" row.
+        let pushRow = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Push notifications from GitHub")
+        ).firstMatch
+        for _ in 0..<6 where !pushRow.isHittable { app.swipeUp() }
         XCTAssertTrue(
-            pushSyncHeaderFound,
-            "App Settings should expose the global Push Sync section"
+            pushRow.waitForExistence(timeout: 5),
+            "App Settings should expose the Push notifications from GitHub row"
         )
+        pushRow.tap()
 
         let toggle = app.switches.matching(
             NSPredicate(format: "label BEGINSWITH %@", "Notify when GitHub changes")
@@ -1552,7 +1539,10 @@ final class SyncMDUITests: XCTestCase {
             "Global surface should state it covers all cloned GitHub repositories"
         )
 
-        // Close via Done and confirm the stable return to the repo list.
+        // Back out of the Push Sync screen, then close via Done and confirm
+        // the stable return to the repo list.
+        let back = app.buttons["BackButton"].firstMatch
+        if back.waitForExistence(timeout: 3) { back.tap() }
         tapFirstHittableButton(labeled: "Done", in: app)
         XCTAssertTrue(
             app.buttons["App Settings"].waitForExistence(timeout: 10),

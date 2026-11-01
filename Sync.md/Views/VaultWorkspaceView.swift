@@ -377,77 +377,102 @@ private struct WorkspaceFileDetail: View {
         .task(id: entry) { await load() }
     }
 
+    /// One row when it fits (iPad landscape); the controls drop to a second
+    /// row on narrower panes (iPhone Duo open, iPad portrait).
     private var header: some View {
-        HStack(spacing: 12) {
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(Tide.inkMid)
-                    .frame(width: 36, height: 36)
-                    .background(Circle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
-                    .frame(width: 44, height: 44)
-                    .contentShape(Rectangle())
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                headerClose
+                headerTitle
+                headerControls
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel(String(localized: "Close file"))
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(filename)
-                    .font(TideFont.sans(15, .semibold, relativeTo: .headline))
-                    .foregroundStyle(Tide.ink)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                Text(metaLine)
-                    .font(TideFont.mono(11))
-                    .foregroundStyle(Tide.inkFaint)
-                    .lineLimit(1)
-                    .truncationMode(.head)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            modePicker
-
-            if fileExists {
-                NavigationLink(value: FileEditorDestination(repoID: repoID, fileURL: fileURL)) {
-                    Text(String(localized: "Edit"))
-                        .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
-                        .foregroundStyle(Tide.ink)
-                        .padding(.horizontal, 14)
-                        .frame(height: 38)
-                        .overlay(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
-                        .frame(minHeight: 44)
-                        .contentShape(Capsule())
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 12) {
+                    headerClose
+                    headerTitle
                 }
-                .buttonStyle(.plain)
-            }
-
-            Button {
-                showCommitSheet = true
-            } label: {
-                HStack(spacing: 8) {
-                    Text(String(localized: "Commit & push"))
-                        .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
-                    if changeCount > 0 {
-                        Text("↑\(changeCount)")
-                            .font(TideFont.mono(12, .medium))
-                            .foregroundStyle(Tide.heroMeta)
-                    }
+                HStack(spacing: 10) {
+                    headerControls
                 }
-                .foregroundStyle(changeCount == 0 ? Tide.inkMid : Tide.paper)
-                .padding(.horizontal, 16)
-                .frame(height: 38)
-                .background(Capsule().fill(changeCount == 0 ? Color.brutalBorderSoft : Tide.ink))
-                .frame(minHeight: 44)
-                .contentShape(Capsule())
+                .padding(.leading, 56)
             }
-            .buttonStyle(.plain)
-            .disabled(changeCount == 0 || state.isSyncing)
-            .accessibilityIdentifier("workspace.commitPush")
         }
         .padding(.leading, 16)
         .padding(.trailing, 24)
         .padding(.top, 12)
         .padding(.bottom, 12)
+    }
+
+    private var headerClose: some View {
+        Button(action: onClose) {
+            Image(systemName: "xmark")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Tide.inkMid)
+                .frame(width: 36, height: 36)
+                .background(Circle().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(String(localized: "Close file"))
+    }
+
+    private var headerTitle: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(filename)
+                .font(TideFont.sans(15, .semibold, relativeTo: .headline))
+                .foregroundStyle(Tide.ink)
+                .lineLimit(1)
+                .truncationMode(.middle)
+            Text(metaLine)
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkFaint)
+                .lineLimit(1)
+                .truncationMode(.head)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private var headerControls: some View {
+        modePicker
+
+        if fileExists {
+            NavigationLink(value: FileEditorDestination(repoID: repoID, fileURL: fileURL)) {
+                Text(String(localized: "Edit"))
+                    .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.ink)
+                    .padding(.horizontal, 14)
+                    .frame(height: 38)
+                    .overlay(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                    .frame(minHeight: 44)
+                    .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+
+        Button {
+            showCommitSheet = true
+        } label: {
+            HStack(spacing: 8) {
+                Text(String(localized: "Commit & push"))
+                    .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                if changeCount > 0 {
+                    Text("↑\(changeCount)")
+                        .font(TideFont.mono(12, .medium))
+                        .foregroundStyle(Tide.paper.opacity(0.72))
+                }
+            }
+            .foregroundStyle(changeCount == 0 ? Tide.inkMid : Tide.paper)
+            .padding(.horizontal, 16)
+            .frame(height: 38)
+            .background(Capsule().fill(changeCount == 0 ? Color.brutalBorderSoft : Tide.ink))
+            .frame(minHeight: 44)
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .disabled(changeCount == 0 || state.isSyncing)
+        .accessibilityIdentifier("workspace.commitPush")
     }
 
     private var modePicker: some View {
@@ -467,6 +492,7 @@ private struct WorkspaceFileDetail: View {
         } label: {
             Text(title)
                 .font(TideFont.sans(12.5, selected ? .semibold : .medium, relativeTo: .footnote))
+                .fixedSize()
                 .foregroundStyle(selected ? Tide.ink : (enabled ? Tide.inkMid : Tide.inkFaint))
                 .padding(.horizontal, 12)
                 .frame(height: 30)

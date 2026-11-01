@@ -29,6 +29,13 @@ struct GitLineStats: Equatable, Sendable {
 
     var deleted: Int { removed }
 
+    /// VoiceOver phrasing with correct singular/plural: "1 line added, 3 lines removed".
+    static func spokenSummary(added: Int, removed: Int) -> String {
+        let a = added == 1 ? String(localized: "1 line added") : String(localized: "\(added) lines added")
+        let r = removed == 1 ? String(localized: "1 line removed") : String(localized: "\(removed) lines removed")
+        return a + ", " + r
+    }
+
     /// Lines that differ, pairing removals with additions inside each hunk
     /// (an edited line counts once, not twice).
     static func changedLineCount(patch: String) -> Int {

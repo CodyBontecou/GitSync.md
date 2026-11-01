@@ -328,9 +328,8 @@ struct CommitSheetView: View {
         }
         .buttonStyle(.plain)
         .disabled(isBusy)
-        .accessibilityElement(children: .ignore)
         .accessibilityLabel(entry.path + (deleted ? ", " + String(localized: "deleted") : "")
-            + (stat.map { ", " + String(localized: "\($0.added) lines added, \($0.removed) lines removed") } ?? ""))
+            + (stat.map { ", " + GitLineStats.spokenSummary(added: $0.added, removed: $0.removed) } ?? ""))
         .accessibilityValue(isOn ? String(localized: "Included") : String(localized: "Not included"))
         .accessibilityAddTraits(isOn ? [.isButton, .isSelected] : .isButton)
     }
@@ -346,8 +345,8 @@ struct CommitSheetView: View {
                 Text(identityLine)
                     .font(TideFont.mono(11))
                     .foregroundStyle(Tide.inkFaint)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 8)
             Toggle("", isOn: $pushRightAfter)
@@ -415,7 +414,7 @@ struct CommitSheetView: View {
                     if !inConflictOperation, willPush, includedCount > 0 {
                         Text("↑\(includedCount)")
                             .font(TideFont.mono(12, .medium))
-                            .foregroundStyle(Tide.heroMeta)
+                            .foregroundStyle(disabled ? Tide.inkFaint : Tide.paper.opacity(0.72))
                     }
                 }
                 .foregroundStyle(disabled ? Tide.inkMid : Tide.paper)

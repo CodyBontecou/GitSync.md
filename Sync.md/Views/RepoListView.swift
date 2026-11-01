@@ -939,6 +939,8 @@ struct RepoListView: View {
                     }
                     .font(TideFont.mono(10.5, relativeTo: .caption2))
                     .foregroundStyle(Tide.inkFaint)
+                    // The pill above already says the state; the rail is visual.
+                    .accessibilityHidden(true)
                 }
 
                 if assistNeedsAttention(repo) {

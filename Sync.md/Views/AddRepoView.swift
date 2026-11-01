@@ -1215,6 +1215,11 @@ struct AddRepoView: View {
             } catch is CancellationError {
                 preflight = .idle
                 return
+            } catch LocalGitError.cloneFailed(let message) {
+                // Nothing was cloned yet: report the connection, not a clone.
+                let reason = message.replacingOccurrences(of: "Connect to remote: ", with: "")
+                preflight = .failed(String(localized: "Couldn't connect: \(reason)"))
+                return
             } catch {
                 preflight = .failed(error.localizedDescription)
                 return

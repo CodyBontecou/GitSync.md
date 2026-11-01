@@ -106,7 +106,8 @@ struct VaultWatchView: View {
             Spacer(minLength: 0)
         }
         .padding(.horizontal, 4)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String(localized: "watching \(repo?.displayName ?? "")"))
     }
 
     private var hero: some View {
@@ -131,7 +132,9 @@ struct VaultWatchView: View {
         .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Tide.heroBorder, lineWidth: 1))
         .animation(.easeOut(duration: 0.2), value: changeCount)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(String(localized: "\(changeCount) changes, updating live"))
+        .accessibilityLabel(changeCount == 1
+            ? String(localized: "1 change, updating live")
+            : String(localized: "\(changeCount) changes, updating live"))
     }
 
     @ViewBuilder
@@ -227,7 +230,7 @@ struct VaultWatchView: View {
                     if changeCount > 0 {
                         Text("↑\(changeCount)")
                             .font(TideFont.mono(12, .medium))
-                            .foregroundStyle(Tide.heroMeta)
+                            .foregroundStyle(Tide.paper.opacity(0.72))
                     }
                 }
                 .foregroundStyle(changeCount == 0 ? Tide.inkMid : Tide.paper)

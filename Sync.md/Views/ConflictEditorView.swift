@@ -106,35 +106,43 @@ struct ConflictEditorView: View {
                 progressDashes
             }
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 2) {
-                    if sessionKind == .merge || sessionKind == .rebase {
-                        Button {
-                            showAbortConfirm = true
-                        } label: {
-                            Text(String(localized: "Abort"))
-                                .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
-                                .foregroundStyle(Tide.inkMid)
-                                .frame(minWidth: 44, minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(state.isSyncing)
-                        .accessibilityHint(sessionKind == .rebase
-                            ? String(localized: "Stops the rebase and puts your branch back")
-                            : String(localized: "Stops the merge and puts your branch back"))
-                    }
+                if sessionKind == .merge || sessionKind == .rebase {
                     Button {
-                        showResolveConfirm = true
+                        showAbortConfirm = true
                     } label: {
-                        Text(String(localized: "Resolve"))
-                            .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
-                            .foregroundStyle(canResolve ? Tide.ink : Tide.inkFaint)
+                        Text(String(localized: "Abort"))
+                            .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.inkMid)
+                            .padding(.horizontal, 6)
                             .frame(minWidth: 44, minHeight: 44)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .disabled(!canResolve || state.isSyncing)
+                    .disabled(state.isSyncing)
+                    .accessibilityHint(sessionKind == .rebase
+                        ? String(localized: "Stops the rebase and puts your branch back")
+                        : String(localized: "Stops the merge and puts your branch back"))
                 }
+            }
+        }
+        // Finishing the file is the primary action once a version is chosen.
+        .safeAreaInset(edge: .bottom) {
+            if canResolve, !showResolved, !showResolveConfirm, detail != nil {
+                Button {
+                    showResolveConfirm = true
+                } label: {
+                    Text(String(localized: "Resolve"))
+                        .font(TideFont.button)
+                        .foregroundStyle(Tide.paper)
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .background(Capsule().fill(Tide.ink))
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .disabled(state.isSyncing)
+                .padding(.horizontal, Tide.gutter)
+                .padding(.bottom, 8)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .confirmationDialog(

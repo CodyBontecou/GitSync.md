@@ -29,8 +29,10 @@ struct VaultRepositoryMeta: Equatable, Sendable {
     var ahead: Int?
     var behind: Int?
     var upstreamShortName: String?
+    /// Files tracked in the index (the Vault settings "files" tile).
+    var trackedFileCount: Int?
 
-    static let empty = VaultRepositoryMeta(lastFetchDate: nil, lfsBytes: 0, ahead: nil, behind: nil, upstreamShortName: nil)
+    static let empty = VaultRepositoryMeta(lastFetchDate: nil, lfsBytes: 0, ahead: nil, behind: nil, upstreamShortName: nil, trackedFileCount: nil)
 }
 
 /// A file in the index that `.gitattributes` routes through Git LFS.
@@ -70,6 +72,11 @@ enum VaultInsightsService {
         if let gitDir = git_repository_path(repo).map({ String(cString: $0) }) {
             let fetchHead = URL(fileURLWithPath: gitDir).appendingPathComponent("FETCH_HEAD")
             meta.lastFetchDate = (try? fm.attributesOfItem(atPath: fetchHead.path))?[.modificationDate] as? Date
+        }
+        var index: OpaquePointer?
+        if git_repository_index(&index, repo) == 0, let index {
+            meta.trackedFileCount = Int(git_index_entrycount(index))
+            git_index_free(index)
         }
         if includeLFS, let commonDir = git_repository_commondir(repo).map({ String(cString: $0) }) {
             meta.lfsBytes = directorySize(URL(fileURLWithPath: commonDir).appendingPathComponent("lfs/objects", isDirectory: true))

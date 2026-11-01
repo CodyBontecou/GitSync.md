@@ -395,7 +395,7 @@ struct GitControlSheet: View {
                     if showsCount, stagedCount > 0 {
                         Text("↑\(stagedCount)")
                             .font(TideFont.mono(12, .medium))
-                            .foregroundStyle(Tide.heroMeta)
+                            .foregroundStyle(Tide.paper.opacity(0.72))
                     }
                 }
                 .foregroundStyle(buttonDisabled ? Tide.inkMid : Tide.paper)

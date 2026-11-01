@@ -17,7 +17,9 @@ struct CodeEditorView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UITextView {
         // TextKit 1 so the gutter can read line fragments from the layout manager.
-        let tv = GutterTextView(usingTextLayoutManager: false)
+        // Built through the designated initializer: `UITextView(usingTextLayoutManager:)`
+        // skips the subclass's own init, leaving its stored properties uninitialized.
+        let tv = GutterTextView.makeTextKit1()
         tv.showsLineNumbers = showsLineNumbers
         tv.delegate = context.coordinator
         tv.isEditable = true
@@ -166,6 +168,22 @@ final class GutterTextView: UITextView {
 
     private static let baseInset: CGFloat = 12
     private var gutterWidth: CGFloat = 0
+    /// The text view only weakly reaches its storage through the layout manager.
+    private var ownedTextStorage: NSTextStorage?
+
+    /// A TextKit 1 text view (layout manager + container) built via the
+    /// designated initializer so this subclass's stored properties are set up.
+    static func makeTextKit1() -> GutterTextView {
+        let storage = NSTextStorage()
+        let layoutManager = NSLayoutManager()
+        storage.addLayoutManager(layoutManager)
+        let container = NSTextContainer(size: CGSize(width: 0, height: CGFloat.greatestFiniteMagnitude))
+        container.widthTracksTextView = true
+        layoutManager.addTextContainer(container)
+        let view = GutterTextView(frame: .zero, textContainer: container)
+        view.ownedTextStorage = storage
+        return view
+    }
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)

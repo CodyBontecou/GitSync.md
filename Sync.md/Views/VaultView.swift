@@ -239,7 +239,13 @@ struct VaultView: View {
         .onChange(of: state.repos) {
             if state.repo(id: repoID) == nil { dismiss() }
         }
-        .refreshable { await state.pull(repoID: repoID) }
+        // The pull runs in its own task: SwiftUI can cancel the refresh task as
+        // the vault re-renders mid-gesture, which would drop the pull silently.
+        // The spinner still waits for it to finish.
+        .refreshable {
+            let id = repoID
+            await Task { @MainActor in _ = await state.pull(repoID: id) }.value
+        }
     }
 
     // MARK: - Cloned Content
@@ -441,9 +447,17 @@ struct VaultView: View {
         return false
     }
 
+    /// Conflicts left by a merge or rebase that is still in progress.
+    private var activeConflict: ConflictSession? {
+        guard let session = state.conflictSessionByRepo[repoID], session.hasConflicts else { return nil }
+        return session
+    }
+
     private func stateHero(_ repo: RepoConfig) -> some View {
         VStack(alignment: .leading, spacing: 18) {
-            if isThisRepoSyncing {
+            if !isThisRepoSyncing, let conflict = activeConflict {
+                conflictHero(conflict)
+            } else if isThisRepoSyncing {
                 syncingHeadline
                 ProgressView()
                     .progressViewStyle(.linear)
@@ -474,7 +488,7 @@ struct VaultView: View {
                 SyncRail(state: tideState, dot: 10, onHero: true)
             }
 
-            if !isThisRepoSyncing {
+            if !isThisRepoSyncing, activeConflict == nil {
                 heroActions
             }
         }
@@ -490,6 +504,60 @@ struct VaultView: View {
             RoundedRectangle(cornerRadius: Tide.radiusHero, style: .continuous)
                 .strokeBorder(Tide.heroBorder, lineWidth: 1)
         )
+    }
+
+    /// Board "Conflict": a merge or rebase stopped on files both sides edited.
+    @ViewBuilder
+    private func conflictHero(_ conflict: ConflictSession) -> some View {
+        let count = conflict.unmergedPaths.count
+        VStack(alignment: .leading, spacing: 6) {
+            Text("\(count)")
+                .font(TideFont.sans(54, .semibold, relativeTo: .largeTitle))
+                .tracking(-2.7)
+                .foregroundStyle(Tide.heroDanger)
+                .padding(.vertical, -7)
+            Text(count == 1
+                 ? String(localized: "conflict to resolve")
+                 : String(localized: "conflicts to resolve"))
+                .font(TideFont.body)
+                .foregroundStyle(Tide.heroText)
+            Text(conflict.kind == .rebase
+                 ? String(localized: "The rebase stopped. Pick a version for each file to finish it.")
+                 : String(localized: "The merge stopped. Pick a version for each file to finish it."))
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.heroMeta)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 2)
+        }
+        .accessibilityElement(children: .combine)
+        SyncRail(state: tideState, dot: 10, onHero: true)
+        HStack(spacing: 8) {
+            if let first = conflict.unmergedPaths.first {
+                NavigationLink(value: ConflictEditorDestination(repoID: repoID, path: first)) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "arrow.triangle.branch")
+                            .font(.system(size: 14, weight: .bold))
+                            .accessibilityHidden(true)
+                        Text(String(localized: "Resolve")).font(TideFont.sans(15, .semibold))
+                    }
+                    .foregroundStyle(Tide.heroBg)
+                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .background(Capsule().fill(Tide.heroText))
+                    .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+            heroSecondary(String(localized: "Abort")) {
+                Task {
+                    if conflict.kind == .rebase {
+                        await state.abortRebase(repoID: repoID)
+                    } else {
+                        await state.abortMerge(repoID: repoID)
+                    }
+                }
+            }
+        }
+        .disabled(state.isSyncing)
     }
 
     private var syncingHeadline: some View {
@@ -728,7 +796,7 @@ struct VaultView: View {
                     showResolveLocalSheet = true
                 }
                 .padding(.leading, 38)
-            } else if outcome.kind == .diverged {
+            } else if outcome.kind == .diverged, activeConflict == nil {
                 HStack(spacing: 8) {
                     bannerButton(String(localized: "Merge"), tint: Tide.ahead) {
                         Task { await state.mergeWithRemote(repoID: repoID) }
@@ -1004,8 +1072,8 @@ struct VaultView: View {
         .accessibilityLabel(entry.path + ", " + (entry.isConflicted
             ? String(localized: "conflict")
             : kind.map(fileStatusLabel) ?? "")
-            + (state.lineStats(repoID: repoID, path: entry.path).map {
-                ", " + String(localized: "\($0.added) lines added, \($0.deleted) removed")
+            + ((entry.isConflicted ? nil : state.lineStats(repoID: repoID, path: entry.path)).map {
+                ", " + GitLineStats.spokenSummary(added: $0.added, removed: $0.deleted)
             } ?? ""))
     }
 
@@ -1022,7 +1090,7 @@ struct VaultView: View {
         }
         .font(TideFont.mono(12, .semibold))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(String(localized: "\(stats.added) lines added, \(stats.deleted) removed"))
+        .accessibilityLabel(GitLineStats.spokenSummary(added: stats.added, removed: stats.deleted))
     }
 
     /// The working-tree change wins; fall back to what's staged.
