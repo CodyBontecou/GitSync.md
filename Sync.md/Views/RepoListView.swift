@@ -893,10 +893,9 @@ struct RepoListView: View {
                     }
                     Spacer(minLength: 8)
                     if syncing {
-                        ProgressView()
-                            .controlSize(.small)
-                            .tint(Tide.ink)
-                            .accessibilityLabel(String(localized: "Syncing"))
+                        TideStatePill(activity: .syncing)
+                    } else if state.authExpiredRepoIDs.contains(repo.id) {
+                        TideStatePill(activity: .paused)
                     } else if !repo.isCloned {
                         Text(String(localized: "Not cloned"))
                             .font(TideFont.metaStrong)
@@ -966,10 +965,16 @@ struct RepoListView: View {
                     .lineLimit(1)
             }
             Spacer(minLength: 8)
-            Label(String(localized: "in sync"), systemImage: "checkmark")
-                .labelStyle(.titleAndIcon)
-                .font(TideFont.metaStrong)
-                .foregroundStyle(Tide.synced)
+            if state.isSyncing && state.syncingRepoID == repo.id {
+                TideStatePill(activity: .syncing)
+            } else if state.authExpiredRepoIDs.contains(repo.id) {
+                TideStatePill(activity: .paused)
+            } else {
+                Label(String(localized: "in sync"), systemImage: "checkmark")
+                    .labelStyle(.titleAndIcon)
+                    .font(TideFont.metaStrong)
+                    .foregroundStyle(Tide.synced)
+            }
         }
         .padding(.vertical, 14)
         .frame(minHeight: 44)

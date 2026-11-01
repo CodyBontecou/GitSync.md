@@ -100,7 +100,9 @@ struct VaultGitTab: View {
             BranchPickerSheet(repoID: repoID)
                 .presentationDetents([.medium, .large])
         }
-        .sheet(isPresented: $showStopTracking) { RemoveGitTrackingView() }
+        .sheet(isPresented: $showStopTracking) {
+            if let repo { RemoveGitTrackingView(repo: repo) } else { RemoveGitTrackingView() }
+        }
         .task(id: repo?.gitState.commitSHA) {
             #if DEBUG
             guard !MarketingCapture.isActive else { return }

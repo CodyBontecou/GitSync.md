@@ -316,7 +316,12 @@ struct SettingsView: View {
                 dismiss()
             }
             #endif
-            .sheet(isPresented: $showStopTracking) { RemoveGitTrackingView() }
+            .sheet(isPresented: $showStopTracking, onDismiss: {
+                // Stopping tracking unregisters the vault; close its settings too.
+                if repo == nil { dismiss() }
+            }) {
+                if let repo { RemoveGitTrackingView(repo: repo) } else { RemoveGitTrackingView() }
+            }
             .alert("Remove from GitSync.md?", isPresented: $showRemoveConfirm) {
                 Button("Cancel", role: .cancel) {}
                 Button("Remove", role: .destructive) {
