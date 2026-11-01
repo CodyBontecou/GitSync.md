@@ -12,8 +12,19 @@ struct SetupView: View {
     /// screen.
     private let onBack: (() -> Void)?
 
-    init(onBack: (() -> Void)? = nil) {
+    /// - Parameters:
+    ///   - onBack: Returns to the welcome screen from the account choices.
+    ///   - startAtSaveLocation: Opens directly on the default-save-location
+    ///     step (the user already signed in from the welcome screen).
+    ///   - completedAuthMethod: How the user signed in before arriving here.
+    init(
+        onBack: (() -> Void)? = nil,
+        startAtSaveLocation: Bool = false,
+        completedAuthMethod: OnboardingAnalyticsAuthMethod? = nil
+    ) {
         self.onBack = onBack
+        _showSaveLocationStep = State(initialValue: startAtSaveLocation)
+        _completedAuthMethod = State(initialValue: completedAuthMethod)
     }
 
     // PAT flow
@@ -84,7 +95,7 @@ struct SetupView: View {
                 }
             }
             .onAppear {
-                trackSetupStep(.accountChoice)
+                trackSetupStep(showSaveLocationStep ? .saveLocation : .accountChoice)
             }
         }
     }
@@ -105,9 +116,9 @@ struct SetupView: View {
                 .padding(.top, 8)
 
             AddVaultHeadline(
-                title: String(localized: "Connect"),
-                muted: String(localized: "your repos."),
-                subtitle: String(localized: "Sign in to GitHub to clone and publish, or bring SSH, a token or another host."),
+                title: String(localized: "Other ways"),
+                muted: String(localized: "in."),
+                subtitle: String(localized: "Use a GitHub token, or continue without GitHub for SSH keys, HTTPS tokens, GitLab, Gitea, Codeberg or your own server."),
                 size: 38
             )
             .padding(.top, 18)
@@ -127,28 +138,10 @@ struct SetupView: View {
     // MARK: - Sign In Options
 
     private var signInOptions: some View {
+        // GitHub OAuth and the demo vault live on the welcome screen; these
+        // are the remaining ways in.
         VStack(spacing: 10) {
-            // Primary: OAuth
-            BPrimaryButton(title: String(localized: "Continue with GitHub"), imageName: "GitHubLogo") {
-                analytics.trackOnboardingAuthStarted(method: .githubOAuth)
-                trackSetupStep(.githubSignIn)
-                Task {
-                    await state.signInWithGitHub()
-                    if state.isSignedIn {
-                        completedAuthMethod = .githubOAuth
-                        analytics.trackOnboardingAuthCompleted(method: .githubOAuth, outcome: .succeeded)
-                        presentSaveLocationStep()
-                    } else {
-                        analytics.trackOnboardingAuthCompleted(
-                            method: .githubOAuth,
-                            outcome: .failed,
-                            errorCategory: .authFailed
-                        )
-                    }
-                }
-            }
-
-            // Secondary: PAT
+            // GitHub without OAuth: a personal access token.
             BSecondaryButton(title: String(localized: "Personal Access Token"), icon: "key") {
                 trackSetupStep(.personalAccessToken)
                 withAnimation(.easeInOut(duration: 0.25)) {
@@ -158,7 +151,7 @@ struct SetupView: View {
 
             // Continue without GitHub for self-hosted, SSH, public, or local repos.
             BSecondaryButton(title: String(localized: "Continue without GitHub"), icon: "network") {
-                completedAuthMethod = .none
+                completedAuthMethod = OnboardingAnalyticsAuthMethod.none
                 analytics.trackOnboardingAuthCompleted(method: .none, outcome: .skipped)
                 presentSaveLocationStep()
             }
@@ -170,49 +163,8 @@ struct SetupView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity)
                 .padding(.top, 2)
-
-            // Demo Mode — first-run only. Existing users replaying onboarding
-            // from App Settings keep their real data and must not be offered a
-            // demo-mode takeover.
-            if showsDemoMode {
-                Button {
-                    completedAuthMethod = .demo
-                    analytics.trackOnboardingAuthCompleted(method: .demo, outcome: .succeeded)
-                    analytics.trackOnboardingCompleted(
-                        authMethod: .demo,
-                        saveLocationPreference: .defaultAppFolder
-                    )
-                    state.activateDemoMode()
-                    state.hasSeenOnboarding = true
-                    state.hasCompletedOnboarding = true
-                    state.saveGlobalSettings()
-                    dismiss()
-                } label: {
-                    HStack(spacing: 6) {
-                        Text(String(localized: "Try Demo"))
-                            .font(TideFont.sans(15, .medium, relativeTo: .body))
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 13, weight: .semibold))
-                            .accessibilityHidden(true)
-                    }
-                    .foregroundStyle(Tide.behind)
-                    .padding(.horizontal, 12)
-                    .frame(minHeight: 44)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityHint(String(localized: "Look around with a demo vault"))
-                .frame(maxWidth: .infinity)
-                .padding(.top, 6)
-            }
         }
         .padding(.horizontal, Tide.gutter)
-    }
-
-    /// Demo mode is a first-run affordance; it swaps in a seeded demo
-    /// repository and fake credentials.
-    private var showsDemoMode: Bool {
-        !state.hasCompletedOnboarding && state.repos.isEmpty
     }
 
     // MARK: - PAT Flow

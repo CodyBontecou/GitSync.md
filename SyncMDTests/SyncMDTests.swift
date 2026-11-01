@@ -11002,3 +11002,215 @@ private actor GitTrackingRemovalTestGate {
     }
     func release() { blocked?.resume(); blocked = nil }
 }
+
+// MARK: - Add-a-vault flow (Tide gaps)
+
+/// Onboarding / add-a-vault gaps: device SSH keys, remote pre-flight,
+/// GitHub repo metadata, discovery status and the grouped folder review.
+final class AddVaultFlowTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        _ = git_libgit2_init()
+    }
+
+    // MARK: - OpenSSH key format
+
+    /// Vector cross-checked with `ssh-keygen -y -f` and `ssh-keygen -lf`
+    /// (OpenSSH 9) for seed 0x01 × 32, check value 0x01020304.
+    func testEd25519PrivateKeyMatchesOpenSSHVector() throws {
+        let seed = Data(repeating: 0x01, count: 32)
+        let key = try Curve25519.Signing.PrivateKey(rawRepresentation: seed)
+        let publicKey = key.publicKey.rawRepresentation
+        let pem = OpenSSHKeyFormat.ed25519PrivateKeyPEM(
+            seed: seed,
+            publicKey: publicKey,
+            comment: "test@iphone",
+            checkInt: 0x01020304
+        )
+        XCTAssertEqual(pem, """
+        -----BEGIN OPENSSH PRIVATE KEY-----
+        b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+        QyNTUxOQAAACCKiOPddAnxlf1S2y08ul1yymcJvx2UEhvzdIgBtA9vXAAAAJABAgMEAQID
+        BAAAAAtzc2gtZWQyNTUxOQAAACCKiOPddAnxlf1S2y08ul1yymcJvx2UEhvzdIgBtA9vXA
+        AAAEABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYqI4910CfGV/VLbLTy6XXLK
+        Zwm/HZQSG/N0iAG0D29cAAAAC3Rlc3RAaXBob25lAQI=
+        -----END OPENSSH PRIVATE KEY-----
+
+        """)
+
+        let blob = OpenSSHKeyFormat.ed25519PublicKeyBlob(publicKey: publicKey)
+        XCTAssertEqual(
+            OpenSSHKeyFormat.authorizedKeysLine(publicKeyBlob: blob, comment: "test@iphone"),
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIqI4910CfGV/VLbLTy6XXLKZwm/HZQSG/N0iAG0D29c test@iphone"
+        )
+        XCTAssertEqual(
+            OpenSSHKeyFormat.sha256Fingerprint(ofPublicKeyBlob: blob),
+            "SHA256:fe85JkIjo8VPe+XqXJGH5Mau1EMFdK1OdKvJUFicyA8"
+        )
+    }
+
+    /// The Git LFS SSH stack (Citadel) must read the generated key.
+    func testGeneratedKeyParsesWithCitadel() throws {
+        let key = Curve25519.Signing.PrivateKey()
+        let pair = DeviceSSHKeyService.makeKeyPair(privateKey: key, comment: "cody@iphone")
+        XCTAssertTrue(pair.privateKeyPEM.hasPrefix("-----BEGIN OPENSSH PRIVATE KEY-----\n"))
+        XCTAssertTrue(pair.publicKeyLine.hasPrefix("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5"))
+        XCTAssertTrue(pair.publicKeyLine.hasSuffix(" cody@iphone"))
+        XCTAssertTrue(DeviceSSHKeyService.parsesAsOpenSSHEd25519(pair.privateKeyPEM, seed: key.rawRepresentation))
+        XCTAssertFalse(DeviceSSHKeyService.parsesAsOpenSSHEd25519(pair.privateKeyPEM, seed: Data(repeating: 0, count: 32)))
+
+        let blob = try XCTUnwrap(OpenSSHKeyFormat.publicKeyBlob(fromAuthorizedKeysLine: pair.publicKeyLine))
+        XCTAssertEqual(OpenSSHKeyFormat.sha256Fingerprint(ofPublicKeyBlob: blob), pair.fingerprint)
+        XCTAssertTrue(pair.shortFingerprint.hasPrefix("SHA256:"))
+        XCTAssertTrue(pair.shortFingerprint.contains("…"))
+    }
+
+    func testDefaultKeyCommentIsSanitized() {
+        XCTAssertEqual(DeviceSSHKeyService.defaultComment(username: "CodyBontecou"), "codybontecou@iphone")
+        XCTAssertEqual(DeviceSSHKeyService.defaultComment(username: "a b/c"), "abc@iphone")
+        XCTAssertEqual(DeviceSSHKeyService.defaultComment(username: ""), "gitsync@iphone")
+    }
+
+    // MARK: - Remote pre-flight
+
+    func testRemoteConnectionCheckListsLocalBareRepository() async throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("preflight-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let bare = root.appendingPathComponent("remote.git", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, bare.path, 1), 0)
+        git_repository_free(repo)
+
+        let check = try await LocalGitService.checkRemoteConnection(
+            remoteURL: bare.absoluteString,
+            pat: GitRemoteCredentials.none.transportPayload
+        )
+        XCTAssertEqual(check.refCount, 0, "An empty bare repository advertises no refs")
+
+        do {
+            _ = try await LocalGitService.checkRemoteConnection(
+                remoteURL: root.appendingPathComponent("missing.git").absoluteString,
+                pat: GitRemoteCredentials.none.transportPayload
+            )
+            XCTFail("Connecting to a missing repository should fail")
+        } catch {
+            XCTAssertFalse(error.localizedDescription.isEmpty)
+        }
+    }
+
+    // MARK: - GitHub repo metadata
+
+    func testGitHubRepoDecodesSizeAndLanguage() throws {
+        let json = """
+        [{"id": 1, "name": "reading-vault", "full_name": "cody/reading-vault", "description": null,
+          "private": true, "html_url": "https://github.com/cody/reading-vault", "default_branch": "main",
+          "updated_at": "2026-10-30T10:00:00Z", "owner": {"login": "cody"}, "size": 4096, "language": null},
+         {"id": 2, "name": "site", "full_name": "cody/site", "description": "web",
+          "private": false, "html_url": "https://github.com/cody/site", "default_branch": "main",
+          "updated_at": null, "owner": {"login": "cody"}, "language": "Swift"}]
+        """
+        let repos = try JSONDecoder().decode([GitHubRepo].self, from: Data(json.utf8))
+        XCTAssertEqual(repos[0].sizeInBytes, 4096 * 1024)
+        XCTAssertTrue(repos[0].hasNotesLikeName)
+        XCTAssertTrue(repos[0].hasProseLanguage)
+        XCTAssertNil(repos[1].size)
+        XCTAssertNil(repos[1].sizeInBytes)
+        XCTAssertFalse(repos[1].hasNotesLikeName)
+        XCTAssertFalse(repos[1].hasProseLanguage)
+    }
+
+    // MARK: - Discovery
+
+    @MainActor
+    func testDiscoveryLocationLineShowsBranchAndHost() {
+        var repo = DiscoveredRepo(
+            url: URL(fileURLWithPath: "/tmp/Obsidian/journal"),
+            relativePath: "journal",
+            remoteURL: "https://github.com/owner/journal.git",
+            isInsideAppContainer: false
+        )
+        repo.branch = "main"
+        XCTAssertEqual(
+            RepoDiscoveryView.locationLine(for: repo, sourceName: "Obsidian"),
+            "Obsidian/journal · main · github.com"
+        )
+
+        let local = DiscoveredRepo(
+            url: URL(fileURLWithPath: "/tmp/old-site"),
+            relativePath: "old-site",
+            remoteURL: nil,
+            isInsideAppContainer: false
+        )
+        XCTAssertEqual(RepoDiscoveryView.locationLine(for: local), "old-site · no remote")
+    }
+
+    func testWorkingTreeStatusReportsBranchAndChanges() async throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("discover-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let work = root.appendingPathComponent("notes", isDirectory: true)
+        try FileManager.default.createDirectory(at: work, withIntermediateDirectories: true)
+
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, work.path, 0), 0)
+        defer { git_repository_free(repo) }
+        try "hello".write(to: work.appendingPathComponent("a.md"), atomically: true, encoding: .utf8)
+
+        // Commit a.md so HEAD exists.
+        var index: OpaquePointer?
+        XCTAssertEqual(git_repository_index(&index, repo), 0)
+        XCTAssertEqual(git_index_add_bypath(index, "a.md"), 0)
+        XCTAssertEqual(git_index_write(index), 0)
+        var treeOID = git_oid()
+        XCTAssertEqual(git_index_write_tree(&treeOID, index), 0)
+        git_index_free(index)
+        var tree: OpaquePointer?
+        XCTAssertEqual(git_tree_lookup(&tree, repo, &treeOID), 0)
+        var signature: UnsafeMutablePointer<git_signature>?
+        XCTAssertEqual(git_signature_now(&signature, "Test", "test@example.com"), 0)
+        var commitOID = git_oid()
+        XCTAssertEqual(git_commit_create(&commitOID, repo, "HEAD", signature, signature, nil, "init", tree, 0, nil), 0)
+        git_signature_free(signature)
+        git_tree_free(tree)
+
+        let found = GitRepoScanner.discoverRepositories(root: root)
+        XCTAssertEqual(found.count, 1)
+
+        let clean = await GitRepoScanner.withWorkingTreeStatus(found)
+        XCTAssertEqual(clean.first?.changeCount, 0)
+        XCTAssertNotNil(clean.first?.branch)
+
+        try "changed".write(to: work.appendingPathComponent("a.md"), atomically: true, encoding: .utf8)
+        try "new".write(to: work.appendingPathComponent("b.md"), atomically: true, encoding: .utf8)
+        let dirty = await GitRepoScanner.withWorkingTreeStatus(found)
+        XCTAssertEqual(dirty.first?.changeCount, 2)
+    }
+
+    // MARK: - Folder review summary
+
+    func testFolderReviewSummaryGroupsFiles() {
+        let big: Int64 = 48 * 1024 * 1024
+        let files = [
+            FolderPublicationFile(path: "a.md", size: 1_000, digest: "1", isIgnored: false),
+            FolderPublicationFile(path: "img/b.png", size: 2_000, digest: "2", isIgnored: false),
+            FolderPublicationFile(path: "notes/c.md", size: 500, digest: "3", isIgnored: false),
+            FolderPublicationFile(path: ".DS_Store", size: 10, digest: "4", isIgnored: true),
+            FolderPublicationFile(path: ".trash/old.md", size: 10, digest: "5", isIgnored: true),
+            FolderPublicationFile(path: ".trash/older.md", size: 10, digest: "6", isIgnored: true),
+            FolderPublicationFile(path: "trip-video.mov", size: big, digest: "7", isIgnored: false),
+            FolderPublicationFile(path: ".env", size: 20, digest: "8", isIgnored: false),
+        ]
+        let summary = FolderReviewSummary(files: files, selectedPaths: ["a.md", "img/b.png"])
+        XCTAssertEqual(summary.includedCount, 2)
+        XCTAssertEqual(summary.includedBytes, 3_000)
+        XCTAssertTrue(summary.includedAreNotesAndImages)
+        XCTAssertEqual(summary.ignoredNames, [".DS_Store", ".trash/"])
+        XCTAssertEqual(summary.ignoredTitle, ".DS_Store, .trash/")
+        XCTAssertEqual(summary.oversized.map(\.path), ["trip-video.mov"])
+        XCTAssertEqual(summary.sensitiveExcludedCount, 1)
+        XCTAssertEqual(summary.otherExcludedCount, 1, "notes/c.md was unchecked")
+    }
+}
