@@ -71,6 +71,9 @@ struct Sync_mdApp: App {
         _premiumRuntime = State(initialValue: runtime)
         _foregroundSyncLifecycle = State(initialValue: ForegroundSyncLifecycle(runtime: runtime))
         SyncRuntimeLocator.configure(state: appState)
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            appState.startSyncStateServices(premiumRuntime: runtime)
+        }
         PushSyncNotificationBridge.shared.connect(runtime: runtime)
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
             SyncMDAppShortcutsProvider.updateAppShortcutParameters()
@@ -136,6 +139,12 @@ struct Sync_mdApp: App {
                         SyncRuntimeLocator.requestPullAll()
                         return
                     }
+                    // Vault widgets: syncmd://vault/<uuid> opens that vault.
+                    if url.scheme == "syncmd", url.host == "vault" {
+                        if let id = UUID(uuidString: url.lastPathComponent) { appState.vaultNavigationRequest = id }
+                        return
+                    }
+                    if url.scheme == "syncmd", url.host == "open" { return }
                     // x-callback-url from external triggers (e.g. a link tapped in Obsidian, or an iOS Shortcut)
                     // Format: syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>
                     let handler = CallbackURLHandler(appState: appState)

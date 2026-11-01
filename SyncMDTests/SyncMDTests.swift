@@ -1127,14 +1127,20 @@ final class SyncMDTests: XCTestCase {
             from: Data(contentsOf: entitlementsURL),
             options: [],
             format: nil
-        ) as? [String: String])
+        ) as? [String: Any])
         // Intentional since b911f13 (push-initiated sync): the aps-environment
         // entitlement lets push-worker APNs notifications surface "tap to sync"
         // prompts. Background Sync itself remains entirely on-device.
+        // The App Group shares a vault status snapshot with the widgets.
         XCTAssertEqual(
-            entitlements,
-            ["aps-environment": "development"],
-            "Push entitlement is intentional for push-initiated sync; no other entitlements should accumulate"
+            Set(entitlements.keys),
+            ["aps-environment", "com.apple.security.application-groups"],
+            "Only the push and widget App Group entitlements are intentional; no others should accumulate"
+        )
+        XCTAssertEqual(entitlements["aps-environment"] as? String, "development")
+        XCTAssertEqual(
+            entitlements["com.apple.security.application-groups"] as? [String],
+            ["group.bontecou.Sync-md"]
         )
     }
 

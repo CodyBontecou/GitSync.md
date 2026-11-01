@@ -241,7 +241,7 @@ struct VaultView: View {
                     .padding(.horizontal, 4)
                     .padding(.top, 10)
 
-                stateHero(repo)
+                VaultStateHeroSlot(repoID: repoID) { stateHero(repo) }
                     .padding(.top, 18)
 
                 VStack(spacing: 12) {

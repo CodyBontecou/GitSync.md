@@ -31,6 +31,15 @@ enum SyncRuntimeLocator {
         }
     }
 
+    /// Control Center Background Sync toggle, run in the app process.
+    static func setBackgroundSync(enabled: Bool) async {
+        guard let state else {
+            SyncStatusSnapshotStore.pendingBackgroundSyncToggle = enabled
+            return
+        }
+        await state.setBackgroundSync(enabled: enabled)
+    }
+
     /// Navigates the app to a repository (used by push-notification taps).
     static func reveal(repoID: UUID) {
         state?.callbackNavigateToRepoID = repoID

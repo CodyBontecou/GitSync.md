@@ -239,14 +239,128 @@ struct TidePrimaryButton: View {
     }
 }
 
+/// Transient states a vault can be in on top of its git state. Kept apart
+/// from `TideSyncState` so existing exhaustive switches stay valid.
+enum TideActivityState: Equatable {
+    /// Sync is held (e.g. GitHub sign-in expired).
+    case paused
+    /// A pull/push is running right now.
+    case syncing
+
+    var headline: String {
+        switch self {
+        case .paused: return String(localized: "paused")
+        case .syncing: return String(localized: "syncing…")
+        }
+    }
+}
+
 struct TideStatePill: View {
     let state: TideSyncState
+    /// When set, replaces the git-state look ("paused", "syncing…").
+    var activity: TideActivityState? = nil
+
     var body: some View {
-        Text(state.headline)
+        switch activity {
+        case .paused:
+            pill(TideActivityState.paused.headline, fg: Tide.inkMid, bg: Tide.well)
+        case .syncing:
+            pill(TideActivityState.syncing.headline, fg: Tide.paper, bg: Tide.ink)
+        case nil:
+            pill(state.headline, fg: state.tint, bg: state.tint.opacity(0.12))
+        }
+    }
+
+    private func pill(_ text: String, fg: Color, bg: Color) -> some View {
+        Text(text)
             .font(TideFont.metaStrong)
-            .foregroundStyle(state.tint)
+            .foregroundStyle(fg)
             .padding(.horizontal, 9).padding(.vertical, 5)
-            .background(RoundedRectangle(cornerRadius: 10).fill(state.tint.opacity(0.12)))
+            .background(RoundedRectangle(cornerRadius: 10).fill(bg))
+    }
+}
+
+extension TideStatePill {
+    /// "paused" / "syncing…" pill.
+    init(activity: TideActivityState) {
+        self.init(state: .inSync, activity: activity)
+    }
+}
+
+/// Dark floating toast ("Pushed 3 commits · VoxVault · e19c4a0  Undo").
+/// Floats above the primary button; see `TideToastHost`.
+struct TideToast: View {
+    enum Style { case success, behind, danger, neutral }
+
+    let title: String
+    var detail: String? = nil
+    var style: Style = .success
+    var actionTitle: String? = nil
+    var action: (() -> Void)? = nil
+
+    private var badgeFill: Color {
+        switch style {
+        case .success: return Tide.synced
+        case .behind: return Color(hex: 0x2D5BFF)
+        case .danger: return Color(hex: 0xB42318)
+        case .neutral: return Tide.heroLine
+        }
+    }
+
+    @ViewBuilder private var badge: some View {
+        switch style {
+        case .success:
+            Image(systemName: "checkmark").font(.system(size: 12, weight: .bold))
+        case .behind:
+            Text(verbatim: "↓").font(TideFont.fixed(13, .semibold, mono: true))
+        case .danger:
+            Text(verbatim: "!").font(.system(size: 15, weight: .bold))
+        case .neutral:
+            Image(systemName: "info").font(.system(size: 12, weight: .bold))
+        }
+    }
+
+    var body: some View {
+        HStack(spacing: 12) {
+            badge
+                .foregroundStyle(.white)
+                .frame(width: 28, height: 28)
+                .background(Circle().fill(badgeFill))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(TideFont.sans(15, .semibold))
+                    .foregroundStyle(Tide.heroText)
+                    .lineLimit(2)
+                if let detail {
+                    Text(detail)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.heroMeta)
+                        .lineLimit(1)
+                }
+            }
+            Spacer(minLength: 0)
+            if let actionTitle, let action {
+                Button(action: action) {
+                    Text(actionTitle)
+                        .font(TideFont.sans(14, .medium))
+                        .foregroundStyle(style == .danger ? Tide.heroText : Color(hex: 0xAFC0FF))
+                        .padding(.horizontal, 10)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.leading, 14)
+        .padding(.trailing, actionTitle == nil ? 14 : 4)
+        .padding(.vertical, actionTitle == nil ? 12 : 4)
+        .frame(minHeight: 52)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Tide.heroBg))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Tide.heroBorder, lineWidth: 1))
+        .shadow(color: .black.opacity(0.18), radius: 14, y: 8)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(style == .danger ? [] : .updatesFrequently)
     }
 }
 
@@ -283,6 +397,11 @@ struct TideSectionLabel: View {
         SyncRail(state: .behind(2))
         SyncRail(state: .diverged(local: 2, remote: 1))
         TideStatePill(state: .ahead(3))
+        HStack {
+            TideStatePill(activity: .paused)
+            TideStatePill(activity: .syncing)
+        }
+        TideToast(title: "Pushed 3 commits", detail: "VoxVault · e19c4a0", actionTitle: "View") {}
         TidePrimaryButton(title: "Sync all", badge: "↓0 ↑3") {}
     }
     .padding(20)
