@@ -4191,7 +4191,12 @@ final class AppState {
         // Write sample markdown files to the vault directory
         createDemoFiles(for: demoRepo)
 
-        // Set a fake change count so the reviewer can see the push UI
+        // Two pending edits so the reviewer can see the Changes list and
+        // the push UI (the demo vault has no real git history).
+        statusEntriesByRepo[demoRepo.id] = [
+            GitStatusEntry(path: "notes/ideas.md", indexStatus: nil, workTreeStatus: .modified),
+            GitStatusEntry(path: "notes/meeting-2026-02-10.md", indexStatus: nil, workTreeStatus: .untracked),
+        ]
         changeCounts[demoRepo.id] = 2
     }
 
