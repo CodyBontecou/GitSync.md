@@ -9,6 +9,9 @@ struct CommitSheetView: View {
     @Environment(\.dismiss) private var dismiss
 
     let repoID: UUID
+    /// Shown as a side panel (iPhone Duo / iPad editor) rather than a sheet:
+    /// no own navigation stack, no Cancel, and it stays put after committing.
+    var embedded = false
 
     @AppStorage("commitSheet.pushRightAfter") private var pushRightAfter = true
     @State private var message = ""
@@ -38,48 +41,13 @@ struct CommitSheetView: View {
     private var isBusy: Bool { isCommitting || state.isSyncing }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Tide.paper.ignoresSafeArea()
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        header
-                        if inRebase {
-                            rebaseNotice.padding(.top, 20)
-                        } else {
-                            messageSection
-                        }
-                        includedSection
-                        pushToggle.padding(.top, 14)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 24)
+        Group {
+            if embedded {
+                content
+            } else {
+                NavigationStack {
+                    content.toolbar(.hidden, for: .navigationBar)
                 }
-                .scrollIndicators(.hidden)
-                .scrollDismissesKeyboard(.interactively)
-                .safeAreaInset(edge: .bottom, spacing: 0) { commitButton }
-            }
-            .toolbar(.hidden, for: .navigationBar)
-            .sheet(isPresented: $showGitTools) { GitControlSheet(repoID: repoID) }
-            .alert("Use Git LFS?", isPresented: Binding(
-                get: { !pendingLFS.isEmpty },
-                set: { if !$0 { pendingLFS = [] } }
-            )) {
-                Button("Use Git LFS") {
-                    pendingLFS = []
-                    commit(lfsAutoTrack: true)
-                }
-                Button("Not Now", role: .cancel) { pendingLFS = [] }
-            } message: {
-                Text(String(localized: "\(pendingLFS.count) large or binary files should be stored with Git LFS before committing."))
-            }
-            .alert("Error", isPresented: Binding(
-                get: { state.showError },
-                set: { state.showError = $0 }
-            )) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(state.lastError ?? String(localized: "Unknown error"))
             }
         }
         .presentationDragIndicator(.visible)
@@ -92,17 +60,64 @@ struct CommitSheetView: View {
         }
     }
 
+    private var content: some View {
+        ZStack {
+            Tide.paper.ignoresSafeArea()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    header
+                    if inRebase {
+                        rebaseNotice.padding(.top, 20)
+                    } else {
+                        messageSection
+                    }
+                    includedSection
+                    pushToggle.padding(.top, 14)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
+            }
+            .scrollIndicators(.hidden)
+            .scrollDismissesKeyboard(.interactively)
+            .safeAreaInset(edge: .bottom, spacing: 0) { commitButton }
+        }
+        .sheet(isPresented: $showGitTools) { GitControlSheet(repoID: repoID) }
+        .alert("Use Git LFS?", isPresented: Binding(
+            get: { !pendingLFS.isEmpty },
+            set: { if !$0 { pendingLFS = [] } }
+        )) {
+            Button("Use Git LFS") {
+                pendingLFS = []
+                commit(lfsAutoTrack: true)
+            }
+            Button("Not Now", role: .cancel) { pendingLFS = [] }
+        } message: {
+            Text(String(localized: "\(pendingLFS.count) large or binary files should be stored with Git LFS before committing."))
+        }
+        // Embedded, the hosting screen already presents errors.
+        .alert("Error", isPresented: Binding(
+            get: { !embedded && state.showError },
+            set: { state.showError = $0 }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(state.lastError ?? String(localized: "Unknown error"))
+        }
+    }
+
     // MARK: - Header
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Button(String(localized: "Cancel")) { dismiss() }
-                    .font(TideFont.sans(15, relativeTo: .body))
-                    .foregroundStyle(Tide.inkMid)
-                    .frame(minHeight: 44)
-                    .buttonStyle(.plain)
-                Spacer(minLength: 8)
+                if !embedded {
+                    Button(String(localized: "Cancel")) { dismiss() }
+                        .font(TideFont.sans(15, relativeTo: .body))
+                        .foregroundStyle(Tide.inkMid)
+                        .frame(minHeight: 44)
+                        .buttonStyle(.plain)
+                    Spacer(minLength: 8)
+                }
                 if let repo {
                     Text("\(repo.displayName) → \(branch)")
                         .font(TideFont.mono(12))
@@ -440,7 +455,15 @@ struct CommitSheetView: View {
                 push: push,
                 lfsAutoTrack: lfsAutoTrack
             )
-            if ok { dismiss() }
+            if ok {
+                if embedded {
+                    message = ""
+                    messageIsSuggested = false
+                    await refreshStats()
+                } else {
+                    dismiss()
+                }
+            }
         }
     }
 

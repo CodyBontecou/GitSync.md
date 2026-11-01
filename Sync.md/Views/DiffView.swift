@@ -131,9 +131,17 @@ struct FileDiffView: View {
     @State private var editorDestination: FileEditorDestination?
     @State private var fileText: String?
 
-    init(repoID: UUID, path: String) {
+    /// Shown as the right pane of a two-pane vault (iPhone Duo open, iPad):
+    /// no navigation-bar items, and closing hands control back to the host
+    /// instead of popping the vault.
+    private let embedded: Bool
+    private let onClose: (() -> Void)?
+
+    init(repoID: UUID, path: String, embedded: Bool = false, onClose: (() -> Void)? = nil) {
         self.repoID = repoID
         self._path = State(initialValue: path)
+        self.embedded = embedded
+        self.onClose = onClose
     }
 
     // MARK: Derived
@@ -208,16 +216,20 @@ struct FileDiffView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(positionCaption)
-                    .font(TideFont.mono(12, relativeTo: .headline))
-                    .foregroundStyle(Tide.inkMid)
-                    .lineLimit(1)
-                    .truncationMode(.head)
+                if !embedded {
+                    Text(positionCaption)
+                        .font(TideFont.mono(12, relativeTo: .headline))
+                        .foregroundStyle(Tide.inkMid)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 0) {
-                    navButton(systemImage: "chevron.up", label: String(localized: "Previous changed file"), offset: -1)
-                    navButton(systemImage: "chevron.down", label: String(localized: "Next changed file"), offset: 1)
+                if !embedded {
+                    HStack(spacing: 0) {
+                        navButton(systemImage: "chevron.up", label: String(localized: "Previous changed file"), offset: -1)
+                        navButton(systemImage: "chevron.down", label: String(localized: "Next changed file"), offset: 1)
+                    }
                 }
             }
         }
@@ -239,7 +251,7 @@ struct FileDiffView: View {
                             isReverting = true
                             await state.discardChanges(repoID: repoID, paths: [target], stashFirst: stashFirst)
                             isReverting = false
-                            dismiss()
+                            if embedded { onClose?() } else { dismiss() }
                         }
                     },
                     onCancel: { showRevertModal = false }
@@ -249,6 +261,14 @@ struct FileDiffView: View {
         }
         .animation(.easeOut(duration: 0.18), value: showRevertModal)
         .task(id: path) { await load() }
+    }
+
+    /// "ideas/ · 2 of 3 · vs a41c9e2" — the pane's own caption when there's
+    /// no navigation bar to carry it.
+    private var embeddedCaption: String {
+        var caption = positionCaption
+        if let headSHA { caption += " · " + String(localized: "vs \(headSHA)") }
+        return caption
     }
 
     /// "ideas/ · 2 of 3"
@@ -362,6 +382,14 @@ struct FileDiffView: View {
 
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
+            if embedded {
+                Text(embeddedCaption)
+                    .font(TideFont.mono(11))
+                    .foregroundStyle(Tide.inkFaint)
+                    .lineLimit(1)
+                    .truncationMode(.head)
+                    .padding(.top, 12)
+            }
             HStack(alignment: .firstTextBaseline, spacing: 12) {
                 Text(filename)
                     .tideDisplay(26)
@@ -421,8 +449,133 @@ struct FileDiffView: View {
     // MARK: - Diff Card
 
     private var diffCard: some View {
+        DiffLinesView(lines: diffLines)
+    }
+
+    // MARK: - Whole file / Preview
+
+    /// New-side line numbers this change added or edited.
+    private var addedLineNumbers: Set<Int> {
+        Set(parsedLines.filter { $0.kind == .added }.compactMap(\.newLineNo))
+    }
+
+    @ViewBuilder
+    private var wholeFileCard: some View {
+        if let fileText {
+            let lines = TideTextDiff.lines(fileText)
+            let added = addedLineNumbers
+            LazyVStack(alignment: .leading, spacing: 0) {
+                ForEach(Array(lines.enumerated()), id: \.offset) { index, text in
+                    let isAdded = added.contains(index + 1)
+                    HStack(alignment: .firstTextBaseline, spacing: 0) {
+                        Text("\(index + 1)")
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(isAdded ? DiffPalette.addedSign : DiffPalette.lineNumber)
+                            .minimumScaleFactor(0.6)
+                            .lineLimit(1)
+                            .frame(width: 30, alignment: .leading)
+                            .accessibilityHidden(true)
+                        Text(text.isEmpty ? " " : text)
+                            .font(TideFont.mono(12.5, relativeTo: .footnote))
+                            .foregroundStyle(isAdded ? DiffPalette.addedText : Tide.ink)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .textSelection(.enabled)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 2)
+                    .background(isAdded ? DiffPalette.addedBg : Color.clear)
+                }
+            }
+            .padding(.vertical, 10)
+            .background(Tide.card)
+            .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
+        } else {
+            unavailableCard(fileURL == nil
+                ? String(localized: "This file was deleted on this iPhone.")
+                : String(localized: "This file isn't text, so it can't be shown here."))
+        }
+    }
+
+    @ViewBuilder
+    private var previewCard: some View {
+        if let fileText {
+            TideMarkdownView(text: fileText)
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        } else {
+            unavailableCard(String(localized: "This file was deleted on this iPhone."))
+        }
+    }
+
+    private func unavailableCard(_ text: String) -> some View {
+        TideCard {
+            Text(text)
+                .font(TideFont.sans(14, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+        }
+    }
+
+    // MARK: - Bottom Bar
+
+    private var bottomBar: some View {
+        HStack(spacing: 10) {
+            Button {
+                showRevertModal = true
+            } label: {
+                Group {
+                    if isReverting {
+                        ProgressView().controlSize(.small).tint(Tide.danger)
+                    } else {
+                        Text(embedded ? String(localized: "Discard file") : String(localized: "Discard"))
+                            .font(TideFont.sans(15, .medium))
+                    }
+                }
+                .foregroundStyle(Tide.danger)
+                .padding(.horizontal, 20)
+                .frame(minHeight: 56)
+                .background(Capsule().strokeBorder(Tide.danger.opacity(0.3), lineWidth: 1))
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(isLoading || isReverting || entry == nil)
+            .accessibilityLabel(String(localized: "Revert Changes"))
+            .accessibilityHint(String(localized: "Discard local edits to this file"))
+
+            if let fileURL {
+                BPrimaryButton(title: embedded ? String(localized: "Edit") : String(localized: "Open in editor")) {
+                    editorDestination = FileEditorDestination(repoID: repoID, fileURL: fileURL)
+                }
+            } else {
+                Spacer(minLength: 0)
+            }
+        }
+        .padding(.horizontal, Tide.gutter)
+        .padding(.top, 8)
+        .padding(.bottom, 8)
+        .background(Tide.paper.ignoresSafeArea(edges: .bottom))
+    }
+
+}
+
+// MARK: - Diff lines
+
+/// The unified diff as Tide rows: hunk captions, +/− gutters and word-level
+/// highlights. Shared by the diff screen, the Duo diff pane and the iPad
+/// workspace detail.
+struct DiffLinesView: View {
+    let lines: [DiffLine]
+
+    init(lines: [DiffLine]) { self.lines = lines }
+
+    /// Builds the rows straight from a unified patch (file headers dropped).
+    init(patch: String) {
+        self.lines = parsePatch(patch).filter { $0.kind != .fileHeader }
+    }
+
+    var body: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(diffLines) { line in
+            ForEach(lines) { line in
                 lineRow(line)
             }
         }
@@ -513,110 +666,6 @@ struct FileDiffView: View {
         case .removed: return String(localized: "Removed: ")
         default:       return ""
         }
-    }
-
-    // MARK: - Whole file / Preview
-
-    /// New-side line numbers this change added or edited.
-    private var addedLineNumbers: Set<Int> {
-        Set(parsedLines.filter { $0.kind == .added }.compactMap(\.newLineNo))
-    }
-
-    @ViewBuilder
-    private var wholeFileCard: some View {
-        if let fileText {
-            let lines = TideTextDiff.lines(fileText)
-            let added = addedLineNumbers
-            LazyVStack(alignment: .leading, spacing: 0) {
-                ForEach(Array(lines.enumerated()), id: \.offset) { index, text in
-                    let isAdded = added.contains(index + 1)
-                    HStack(alignment: .firstTextBaseline, spacing: 0) {
-                        Text("\(index + 1)")
-                            .font(TideFont.mono(11))
-                            .foregroundStyle(isAdded ? DiffPalette.addedSign : DiffPalette.lineNumber)
-                            .minimumScaleFactor(0.6)
-                            .lineLimit(1)
-                            .frame(width: 30, alignment: .leading)
-                            .accessibilityHidden(true)
-                        Text(text.isEmpty ? " " : text)
-                            .font(TideFont.mono(12.5, relativeTo: .footnote))
-                            .foregroundStyle(isAdded ? DiffPalette.addedText : Tide.ink)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .textSelection(.enabled)
-                    }
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 2)
-                    .background(isAdded ? DiffPalette.addedBg : Color.clear)
-                }
-            }
-            .padding(.vertical, 10)
-            .background(Tide.card)
-            .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
-        } else {
-            unavailableCard(fileURL == nil
-                ? String(localized: "This file was deleted on this iPhone.")
-                : String(localized: "This file isn't text, so it can't be shown here."))
-        }
-    }
-
-    @ViewBuilder
-    private var previewCard: some View {
-        if let fileText {
-            TideMarkdownView(text: fileText)
-                .padding(18)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
-        } else {
-            unavailableCard(String(localized: "This file was deleted on this iPhone."))
-        }
-    }
-
-    private func unavailableCard(_ text: String) -> some View {
-        TideCard {
-            Text(text)
-                .font(TideFont.sans(14, relativeTo: .subheadline))
-                .foregroundStyle(Tide.inkMid)
-        }
-    }
-
-    // MARK: - Bottom Bar
-
-    private var bottomBar: some View {
-        HStack(spacing: 10) {
-            Button {
-                showRevertModal = true
-            } label: {
-                Group {
-                    if isReverting {
-                        ProgressView().controlSize(.small).tint(Tide.danger)
-                    } else {
-                        Text(String(localized: "Discard"))
-                            .font(TideFont.sans(15, .medium))
-                    }
-                }
-                .foregroundStyle(Tide.danger)
-                .padding(.horizontal, 20)
-                .frame(minHeight: 56)
-                .background(Capsule().strokeBorder(Tide.danger.opacity(0.3), lineWidth: 1))
-                .contentShape(Capsule())
-            }
-            .buttonStyle(.plain)
-            .disabled(isLoading || isReverting || entry == nil)
-            .accessibilityLabel(String(localized: "Revert Changes"))
-            .accessibilityHint(String(localized: "Discard local edits to this file"))
-
-            if let fileURL {
-                BPrimaryButton(title: String(localized: "Open in editor")) {
-                    editorDestination = FileEditorDestination(repoID: repoID, fileURL: fileURL)
-                }
-            } else {
-                Spacer(minLength: 0)
-            }
-        }
-        .padding(.horizontal, Tide.gutter)
-        .padding(.top, 8)
-        .padding(.bottom, 8)
-        .background(Tide.paper.ignoresSafeArea(edges: .bottom))
     }
 
     // MARK: - Styling

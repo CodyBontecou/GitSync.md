@@ -11312,3 +11312,54 @@ final class TideGitWorkTests: XCTestCase {
         XCTAssertNil(missing)
     }
 }
+
+// MARK: - Vault watch (Split View "watching" panel)
+
+final class VaultWatchTests: XCTestCase {
+    func testAutoCommitWaitsForTwoMinutePause() {
+        let edit = Date(timeIntervalSince1970: 1_000)
+        XCTAssertFalse(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 3, lastActivity: edit, lastAutoCommittedActivity: nil,
+            now: edit.addingTimeInterval(119)))
+        XCTAssertTrue(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 3, lastActivity: edit, lastAutoCommittedActivity: nil,
+            now: edit.addingTimeInterval(120)))
+    }
+
+    func testAutoCommitNeedsChangesAndFiresOncePerPause() {
+        let edit = Date(timeIntervalSince1970: 1_000)
+        let later = edit.addingTimeInterval(600)
+        XCTAssertFalse(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 0, lastActivity: edit, lastAutoCommittedActivity: nil, now: later))
+        XCTAssertFalse(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 2, lastActivity: nil, lastAutoCommittedActivity: nil, now: later))
+        XCTAssertFalse(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 2, lastActivity: edit, lastAutoCommittedActivity: edit, now: later))
+        XCTAssertTrue(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 2, lastActivity: edit.addingTimeInterval(10),
+            lastAutoCommittedActivity: edit, now: later))
+    }
+
+    func testAutoCommitSettingIsPerVault() {
+        let defaults = UserDefaults(suiteName: "VaultWatchTests-\(UUID().uuidString)")!
+        let a = UUID(), b = UUID()
+        VaultWatchSettings.setAutoCommitEnabled(true, repoID: a, defaults: defaults)
+        XCTAssertTrue(VaultWatchSettings.autoCommitEnabled(repoID: a, defaults: defaults))
+        XCTAssertFalse(VaultWatchSettings.autoCommitEnabled(repoID: b, defaults: defaults))
+    }
+
+    func testWatchedFoldersSkipHiddenFolders() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("vault-watch-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: root) }
+        for folder in ["daily", "ideas/drafts", ".git/objects", ".obsidian"] {
+            try FileManager.default.createDirectory(
+                at: root.appendingPathComponent(folder), withIntermediateDirectories: true)
+        }
+        let rootPath = root.resolvingSymlinksInPath().path
+        let names = Set(VaultFolderWatcher.folders(under: root).map {
+            $0.resolvingSymlinksInPath().path.replacingOccurrences(of: rootPath, with: "")
+        })
+        XCTAssertEqual(names, ["", "/daily", "/ideas", "/ideas/drafts"])
+    }
+}
