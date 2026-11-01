@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		aa5e0001000000000000000f /* PullAllControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e0001000000000000000e /* PullAllControlIntent.swift */; };
 		aa5e00010000000000000010 /* PullAllControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e0001000000000000000e /* PullAllControlIntent.swift */; };
+		aa5e00010000000000000021 /* SyncSharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000020 /* SyncSharedModels.swift */; };
+		aa5e00010000000000000022 /* SyncSharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000020 /* SyncSharedModels.swift */; };
+		aa5e00010000000000000024 /* SyncSharedIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000023 /* SyncSharedIntents.swift */; };
+		aa5e00010000000000000025 /* SyncSharedIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000023 /* SyncSharedIntents.swift */; };
 		aa5e00010000000000000007 /* SyncWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000001 /* SyncWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1273715551CDF043029317F6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
 		336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */; };
@@ -65,6 +69,8 @@
 
 /* Begin PBXFileReference section */
 		aa5e0001000000000000000e /* PullAllControlIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullAllControlIntent.swift; sourceTree = "<group>"; };
+		aa5e00010000000000000020 /* SyncSharedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedModels.swift; sourceTree = "<group>"; };
+		aa5e00010000000000000023 /* SyncSharedIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedIntents.swift; sourceTree = "<group>"; };
 		aa5e00010000000000000001 /* SyncWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SyncWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0443B75C1B0FB847251F8B3F /* SyncMDTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDUITests.swift; sourceTree = "<group>"; };
@@ -190,6 +196,8 @@
 			isa = PBXGroup;
 			children = (
 				aa5e0001000000000000000e /* PullAllControlIntent.swift */,
+				aa5e00010000000000000020 /* SyncSharedModels.swift */,
+				aa5e00010000000000000023 /* SyncSharedIntents.swift */,
 			);
 			path = SharedSources;
 			sourceTree = "<group>";
@@ -450,6 +458,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				aa5e00010000000000000010 /* PullAllControlIntent.swift in Sources */,
+				aa5e00010000000000000022 /* SyncSharedModels.swift in Sources */,
+				aa5e00010000000000000025 /* SyncSharedIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +468,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				aa5e0001000000000000000f /* PullAllControlIntent.swift in Sources */,
+				aa5e00010000000000000021 /* SyncSharedModels.swift in Sources */,
+				aa5e00010000000000000024 /* SyncSharedIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

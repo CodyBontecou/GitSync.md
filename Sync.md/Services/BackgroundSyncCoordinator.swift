@@ -59,6 +59,7 @@ extension AppState: AssistRepositoryProviding {
     }
     func recordAssist(result: RepositoryReconciliationResult?, health: RepoAssistHealth, repoID: UUID) {
         guard let index = repoIndex(id: repoID) else { return }
+        recordBackgroundRun(result: result, health: health, repoID: repoID)
         if let sha = result?.finalLocalCommitSHA, !sha.isEmpty {
             repos[index].gitState.commitSHA = sha
             commitHistoryByRepo[repoID] = []; commitHistoryHasMoreByRepo[repoID] = true; commitDetailByRepo[repoID] = [:]

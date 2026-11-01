@@ -36,6 +36,7 @@ struct RepoListView: View {
                 Tide.paper.ignoresSafeArea()
 
                 VStack(spacing: 0) {
+                    HomeSyncBanners()
                     DiscordPromoBanner()
 
                     if state.visibleRepos.isEmpty {
@@ -53,6 +54,8 @@ struct RepoListView: View {
                             .padding(.vertical, 12)
                     }
                 }
+
+                HomeSyncStateLayer()
 
                 if showGhostRemovedToast {
                     VStack {
@@ -152,6 +155,7 @@ struct RepoListView: View {
                             }
                         } label: {
                             GitHubAvatarView(avatarURL: state.gitHubAvatarURL, size: 28)
+                                .overlay(alignment: .topTrailing) { SignInAlertDot() }
                                 .contentShape(Circle())
                         }
                         .menuStyle(.borderlessButton)
@@ -218,6 +222,7 @@ struct RepoListView: View {
             .task(id: state.lastStatusCheckDate) {
                 await state.refreshAllVaultMeta()
             }
+            .modifier(VaultNavigationRequestHandler(path: $navigationPath, selectedRepoID: $selectedRepoID, detailPath: $detailPath, isSplit: isSplit))
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
                 if let repoID = newValue, isSplit {
                     selectedRepoID = repoID
