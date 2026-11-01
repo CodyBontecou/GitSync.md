@@ -18,11 +18,17 @@ struct RepoListView: View {
     @State private var showGhostRemovalConfirm = false
     @State private var showGhostRemovedToast = false
     @State private var navigationPath = NavigationPath()
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    /// Regular width (iPad, iPhone Duo open): vault picked in the sidebar.
+    @State private var selectedRepoID: UUID?
+    @State private var detailPath = NavigationPath()
+
+    private var isSplit: Bool { horizontalSizeClass == .regular }
 
     var body: some View {
         @Bindable var state = state
 
-        NavigationStack(path: $navigationPath) {
+        adaptiveNavigation {
             ZStack {
                 Tide.paper.ignoresSafeArea()
 
@@ -206,7 +212,10 @@ struct RepoListView: View {
                 configuration: AppReleaseNotes.configuration
             )
             .onChange(of: state.callbackNavigateToRepoID) { _, newValue in
-                if let repoID = newValue {
+                if let repoID = newValue, isSplit {
+                    selectedRepoID = repoID
+                    detailPath = NavigationPath()
+                } else if let repoID = newValue {
                     navigationPath = NavigationPath([repoID])
                 } else if !navigationPath.isEmpty {
                     navigationPath = NavigationPath()
@@ -228,6 +237,96 @@ struct RepoListView: View {
                 }
             }
             #endif
+        }
+    }
+
+    // MARK: - Adaptive navigation
+    //
+    // Compact width keeps the phone stack. Regular width (iPad, iPhone Duo
+    // open) becomes a split view: vaults on the left, the vault on the right.
+
+    @ViewBuilder
+    private func adaptiveNavigation<Home: View>(@ViewBuilder _ home: () -> Home) -> some View {
+        if isSplit {
+            NavigationSplitView {
+                home()
+                    .navigationSplitViewColumnWidth(min: 300, ideal: 360, max: 420)
+            } detail: {
+                NavigationStack(path: $detailPath) {
+                    splitDetail
+                        .navigationDestination(for: FileBrowserDestination.self) { destination in
+                            FileBrowserView(repoID: destination.repoID, relativePath: destination.relativePath)
+                                .id(destination)
+                        }
+                        .navigationDestination(for: FileEditorDestination.self) { destination in
+                            FileEditorView(repoID: destination.repoID, fileURL: destination.fileURL)
+                        }
+                }
+            }
+            .navigationSplitViewStyle(.balanced)
+            .tint(Tide.ink)
+            .onAppear(perform: selectDefaultRepoIfNeeded)
+            .onChange(of: state.visibleRepos.map(\.id)) { selectDefaultRepoIfNeeded() }
+        } else {
+            NavigationStack(path: $navigationPath) {
+                home()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var splitDetail: some View {
+        if let repoID = selectedRepoID, state.repo(id: repoID) != nil {
+            VaultView(repoID: repoID)
+                .id(repoID)
+        } else {
+            ZStack {
+                Tide.paper.ignoresSafeArea()
+                VStack(spacing: 8) {
+                    Text(String(localized: "Pick a vault."))
+                        .tideDisplay(30)
+                    Text(String(localized: "Its changes, files and history open here."))
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkMid)
+                }
+            }
+        }
+    }
+
+    /// Keeps the detail column pointed at a vault that still exists,
+    /// preferring one that needs attention.
+    private func selectDefaultRepoIfNeeded() {
+        let repos = state.visibleRepos
+        if let selected = selectedRepoID, repos.contains(where: { $0.id == selected }) { return }
+        selectedRepoID = (repos.first(where: needsAttention) ?? repos.first)?.id
+        detailPath = NavigationPath()
+    }
+
+    /// Pushes the vault on phones; selects it for the detail column in a split view.
+    @ViewBuilder
+    private func repoLink<Label: View>(_ repo: RepoConfig, @ViewBuilder label: () -> Label) -> some View {
+        if isSplit {
+            let selected = selectedRepoID == repo.id
+            Button {
+                selectedRepoID = repo.id
+                detailPath = NavigationPath()
+            } label: {
+                label()
+                    .overlay(alignment: .leading) {
+                        if selected {
+                            Capsule().fill(Tide.ink)
+                                .frame(width: 3)
+                                .padding(.vertical, 12)
+                                .offset(x: -9)
+                                .accessibilityHidden(true)
+                        }
+                    }
+            }
+            .accessibilityAddTraits(selected ? .isSelected : [])
+        } else {
+            NavigationLink(value: repo.id) {
+                label()
+            }
         }
     }
 
@@ -296,7 +395,7 @@ struct RepoListView: View {
                     .padding(.bottom, 10)
 
                 ForEach(attention) { repo in
-                    NavigationLink(value: repo.id) {
+                    repoLink(repo) {
                         repoCard(repo)
                     }
                     .buttonStyle(.plain)
@@ -306,7 +405,7 @@ struct RepoListView: View {
                 if !quiet.isEmpty {
                     VStack(spacing: 0) {
                         ForEach(Array(quiet.enumerated()), id: \.element.id) { index, repo in
-                            NavigationLink(value: repo.id) {
+                            repoLink(repo) {
                                 quietRow(repo)
                             }
                             .buttonStyle(.plain)
