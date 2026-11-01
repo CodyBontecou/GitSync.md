@@ -68,6 +68,16 @@ enum TideFont {
         return .custom("GeistMono-" + styleName(weight, hasBold: false), size: size, relativeTo: style)
     }
 
+    /// Geist / Geist Mono at an already-scaled size (callers own Dynamic Type).
+    static func fixed(_ size: CGFloat, _ weight: Font.Weight = .regular, mono: Bool = false) -> Font {
+        if mono {
+            guard hasGeistMono else { return .system(size: size, weight: weight, design: .monospaced) }
+            return .custom("GeistMono-" + styleName(weight, hasBold: false), fixedSize: size)
+        }
+        guard hasGeist else { return .system(size: size, weight: weight) }
+        return .custom("Geist-" + styleName(weight, hasBold: true), fixedSize: size)
+    }
+
     /// PostScript style suffix of the bundled instance closest to `weight`.
     private static func styleName(_ weight: Font.Weight, hasBold: Bool) -> String {
         switch weight {
