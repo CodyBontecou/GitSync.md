@@ -2598,7 +2598,7 @@ final class AppState {
         let repo = repos[idx]
         let vaultDir = vaultURL(for: repoID)
         let gitService = gitRepositoryFactory(vaultDir)
-        DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)")
+        DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)", repo: repo.displayName)
         // The runner may fast-forward the checkout. Invalidate any status scan
         // that began before fetch/checkout starts; successful updates advance it
         // again below after the working copy is coherent.
@@ -3129,7 +3129,7 @@ final class AppState {
             let commitMsg = message.isEmpty ? String(localized: "Update from GitSync.md") : message
 
             syncProgress = String(localized: "Committing and pushing...")
-            DebugLogger.shared.info("push", "Starting commit & push", detail: "message: \(commitMsg)")
+            DebugLogger.shared.info("push", "Starting commit & push", detail: "message: \(commitMsg)", repo: repo.displayName)
             let result = try await gitService.commitAndPush(
                 message: commitMsg,
                 authorName: repo.authorName,
@@ -3145,7 +3145,7 @@ final class AppState {
             }
             detectChanges(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
-            DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)")
+            DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)", repo: repo.displayName)
             requestReviewIfNeeded()
 
             try? await Task.sleep(for: .seconds(1))
@@ -3985,6 +3985,10 @@ final class AppState {
 
     private func setPullOutcome(repoID: UUID, kind: PullOutcomeKind, message: String) {
         pullOutcomeByRepo[repoID] = PullOutcomeState(kind: kind, message: message, date: Date())
+        // Failures are already logged by showError; record the rest per vault.
+        if kind != .failed {
+            DebugLogger.shared.info("pull", message, repo: repo(id: repoID)?.displayName)
+        }
     }
 
     private func clearCommitHistoryCache(for repoID: UUID) {

@@ -2,18 +2,34 @@ import SwiftUI
 
 struct DebugLogView: View {
     @State private var entries: [LogEntry] = DebugLogger.shared.entries
-    @State private var filterLevel: LogLevel? = nil
+    @State private var filter: LogFilter = .all
     @State private var showShareSheet = false
     @State private var showClearConfirm = false
     @State private var showCopiedToast = false
 
-    private var filtered: [LogEntry] {
-        let base = filterLevel == nil ? entries : entries.filter { $0.level == filterLevel }
-        return base.reversed()  // newest first
+    private enum LogFilter: Hashable {
+        case all
+        case errors
+        case background
+
+        func includes(_ entry: LogEntry) -> Bool {
+            switch self {
+            case .all: true
+            case .errors: entry.level == .error
+            case .background: entry.isBackground
+            }
+        }
     }
 
-    private func count(of level: LogLevel) -> Int {
-        entries.reduce(0) { $0 + ($1.level == level ? 1 : 0) }
+    /// Oldest first, matching the logger's storage order (used for export).
+    private var matching: [LogEntry] { entries.filter(filter.includes) }
+
+    private var filtered: [LogEntry] {
+        matching.reversed()  // newest first
+    }
+
+    private var errorCount: Int {
+        entries.reduce(0) { $0 + ($1.level == .error ? 1 : 0) }
     }
 
     private var recentErrorCount: Int {
@@ -76,7 +92,7 @@ struct DebugLogView: View {
             }
         }
         .sheet(isPresented: $showShareSheet) {
-            let text = DebugLogger.shared.exportText(filter: filterLevel)
+            let text = DebugLogger.shared.exportText(entries: matching)
             ShareSheet(items: [text])
         }
         .alert("Clear All Logs?", isPresented: $showClearConfirm) {
@@ -118,25 +134,25 @@ struct DebugLogView: View {
     private var filterChips: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
-                filterChip(title: String(localized: "All"), dot: nil, level: nil)
-                ForEach(LogLevel.allCases.reversed(), id: \.self) { level in
-                    let n = count(of: level)
-                    filterChip(
-                        title: n > 0 ? "\(chipLabel(for: level)) \(n)" : chipLabel(for: level),
-                        dot: tint(for: level),
-                        level: level
-                    )
-                }
+                filterChip(title: String(localized: "All"), dot: nil, value: .all)
+                filterChip(
+                    title: errorCount > 0
+                        ? String(localized: "Errors \(errorCount)")
+                        : String(localized: "Errors"),
+                    dot: Tide.danger,
+                    value: .errors
+                )
+                filterChip(title: String(localized: "Background"), dot: Tide.behind, value: .background)
             }
             .padding(.horizontal, Tide.gutter)
         }
         .scrollIndicators(.hidden)
     }
 
-    private func filterChip(title: String, dot: Color?, level: LogLevel?) -> some View {
-        let selected = filterLevel == level
+    private func filterChip(title: String, dot: Color?, value: LogFilter) -> some View {
+        let selected = filter == value
         return Button {
-            filterLevel = level
+            filter = value
         } label: {
             HStack(spacing: 6) {
                 if let dot {
@@ -164,10 +180,10 @@ struct DebugLogView: View {
     private var logCard: some View {
         if filtered.isEmpty {
             VStack(spacing: 6) {
-                Text(String(localized: "No logs yet"))
+                Text(entries.isEmpty ? String(localized: "No logs yet") : String(localized: "Nothing here"))
                     .font(TideFont.sans(16, .semibold, relativeTo: .headline))
                     .foregroundStyle(Tide.ink)
-                Text(String(localized: "Sync activity and errors will show up here."))
+                Text(emptyDetail)
                     .font(TideFont.sans(13.5, relativeTo: .footnote))
                     .foregroundStyle(Tide.inkMid)
                     .multilineTextAlignment(.center)
@@ -194,14 +210,15 @@ struct DebugLogView: View {
 
     private func logRow(_ entry: LogEntry) -> some View {
         let isError = entry.level == .error
-        let levelTint = tint(for: entry.level)
+        let showsBackgroundBadge = entry.isBackground && entry.level == .info
+        let levelTint = showsBackgroundBadge ? Tide.behind : tint(for: entry.level)
         return VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text("\(timestamp(entry.date)) · \(entry.category)")
+                Text("\(timestamp(entry.date)) · \(source(of: entry))")
                     .foregroundStyle(isError ? Tide.danger : Tide.inkFaint)
                     .lineLimit(1)
                 Spacer(minLength: 8)
-                Text(localizedLabel(for: entry.level).uppercased())
+                Text(showsBackgroundBadge ? "BG" : localizedLabel(for: entry.level).uppercased())
                     .font(TideFont.mono(11.5, .semibold))
                     .foregroundStyle(levelTint)
             }
@@ -234,7 +251,7 @@ struct DebugLogView: View {
     private var bottomActions: some View {
         HStack(spacing: 10) {
             Button {
-                UIPasteboard.general.string = DebugLogger.shared.exportText(filter: filterLevel)
+                UIPasteboard.general.string = DebugLogger.shared.exportText(entries: matching)
                 showCopiedToast = true
                 Task { @MainActor in
                     try? await Task.sleep(for: .milliseconds(1600))
@@ -271,6 +288,22 @@ struct DebugLogView: View {
 
     // MARK: - Helpers
 
+    /// Vault name when the entry relates to a repository; "BG task" for
+    /// background work that isn't tied to one; otherwise the category.
+    private func source(of entry: LogEntry) -> String {
+        if let repo = entry.repoName, !repo.isEmpty { return repo }
+        if entry.isBackground { return String(localized: "BG task") }
+        return entry.category
+    }
+
+    private var emptyDetail: String {
+        switch filter {
+        case .all: String(localized: "Sync activity and errors will show up here.")
+        case .errors: String(localized: "No errors logged.")
+        case .background: String(localized: "Background Sync runs will show up here.")
+        }
+    }
+
     private func tint(for level: LogLevel) -> Color {
         switch level {
         case .info: return Tide.synced
@@ -296,14 +329,6 @@ struct DebugLogView: View {
         case .info: return String(localized: "Info")
         case .warning: return String(localized: "Warning")
         case .error: return String(localized: "Error")
-        }
-    }
-
-    private func chipLabel(for level: LogLevel) -> String {
-        switch level {
-        case .info: return String(localized: "Info")
-        case .warning: return String(localized: "Warnings")
-        case .error: return String(localized: "Errors")
         }
     }
 }

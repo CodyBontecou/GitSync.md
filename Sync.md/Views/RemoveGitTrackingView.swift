@@ -1,40 +1,40 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// A local folder tool. Scope grants belong to this view until its operation
-/// finishes; the service owns backup verification and the removal boundary.
+/// Stop tracking: keep the notes, drop the git. Opens either for a specific
+/// vault (`init(repo:)` / `init(rootURL:)`, from Vault settings or the Git
+/// tab) or as a folder tool that asks for the repository folder (`init()`).
+/// Scope grants for picked folders belong to this view until its operation
+/// finishes; the service owns verification and the removal boundary.
 struct RemoveGitTrackingView: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
 
+    /// Set when opened for a known vault or folder; nil shows the folder picker.
+    private let target: Target?
+
     @State private var sourceFolder: ScopedFolder?
-    @State private var backupFolder: ScopedFolder?
     @State private var plan: GitTrackingRemovalPlan?
+    @State private var archive: GitHistoryArchive?
+    /// The plan the archive was made from; a changed plan needs a new zip.
+    @State private var archivedPlan: GitTrackingRemovalPlan?
     @State private var removalResult: GitTrackingRemovalResult?
     @State private var errorMessage: String?
+    @State private var pushMessage: String?
     @State private var needsReview = false
     @State private var operation: Task<Void, Never>?
     @State private var progressMessage = ""
-    @State private var pickerPurpose: PickerPurpose = .source
     @State private var showFolderPicker = false
     @State private var showRemovalConfirmation = false
     @State private var backUpHistory = true
-    @State private var removalConfirmation: RemovalConfirmation?
     @State private var hasDisappeared = false
+    @State private var didStartInitialReview = false
 
-    private enum PickerPurpose {
-        case source
-        case backup
-    }
-
-    private struct RemovalConfirmation {
-        let plan: GitTrackingRemovalPlan
-        let backupDirectory: URL?
-
-        var actionTitle: String {
-            backupDirectory == nil ? String(localized: "Remove Without Backup") : String(localized: "Back Up and Remove")
-        }
+    private struct Target {
+        var repoID: UUID?
+        var rootURL: URL?
+        var name: String
     }
 
     private struct ScopedFolder {
@@ -51,10 +51,35 @@ struct RemoveGitTrackingView: View {
         }
     }
 
+    /// Folder tool: pick the repository folder.
+    init() {
+        target = nil
+    }
+
+    /// Stop tracking a registered vault.
+    init(repo: RepoConfig) {
+        target = Target(repoID: repo.id, rootURL: nil, name: repo.displayName)
+    }
+
+    /// Stop tracking the repository whose working folder is `rootURL`.
+    init(rootURL: URL, displayName: String? = nil) {
+        target = Target(repoID: nil, rootURL: rootURL, name: displayName ?? rootURL.lastPathComponent)
+    }
+
     private var isBusy: Bool { operation != nil }
     private var actionsDisabled: Bool { isBusy || showFolderPicker || showRemovalConfirmation || state.isDemoMode }
-    private var confirmationTitle: String {
-        removalConfirmation?.backupDirectory == nil ? String(localized: "Remove Without a Backup?") : String(localized: "Remove Git Tracking?")
+
+    private var vaultName: String {
+        target?.name ?? plan?.rootURL.lastPathComponent ?? String(localized: "this folder")
+    }
+
+    private var hasCurrentArchive: Bool { archive != nil && archivedPlan == plan && plan != nil }
+
+    /// The registered vault for the reviewed folder, for the push action.
+    private var pushableRepoID: UUID? {
+        if let id = target?.repoID { return id }
+        guard let plan else { return nil }
+        return state.repoID(forTrackingRoot: plan.rootURL)
     }
 
     var body: some View {
@@ -74,7 +99,7 @@ struct RemoveGitTrackingView: View {
                             }
                             if let plan {
                                 reviewContent(plan)
-                            } else {
+                            } else if target == nil {
                                 chooseSourceButton
                                     .padding(.horizontal, Tide.gutter)
                                     .padding(.top, 20)
@@ -92,7 +117,7 @@ struct RemoveGitTrackingView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
+                    Button(removalResult == nil ? String(localized: "Close") : String(localized: "Done")) { dismiss() }
                         .tint(Tide.ink)
                         .disabled(isBusy || showFolderPicker || showRemovalConfirmation)
                         .accessibilityIdentifier("removeGitTracking.close")
@@ -106,17 +131,24 @@ struct RemoveGitTrackingView: View {
             ) { result in
                 handleFolderSelection(result)
             }
-            .alert(confirmationTitle, isPresented: $showRemovalConfirmation, presenting: removalConfirmation) { confirmation in
-                Button("Cancel", role: .cancel) {}
-                Button(confirmation.actionTitle, role: .destructive) { removeTracking(confirmation) }
-            } message: { confirmation in
-                if let backupDirectory = confirmation.backupDirectory {
-                    Text("The .git folder directly inside \(confirmation.plan.rootURL.lastPathComponent) will be backed up to \(backupDirectory.lastPathComponent), verified, then removed.\n\nYour notes and files stay in place. The GitHub repository stays on GitHub. GitSync will remove its connection to this local repository.")
+            .alert(
+                backUpHistory ? String(localized: "Stop tracking \(vaultName)?") : String(localized: "Delete history without a backup?"),
+                isPresented: $showRemovalConfirmation,
+                presenting: plan
+            ) { reviewed in
+                Button(String(localized: "Cancel"), role: .cancel) {}
+                Button(String(localized: "Stop tracking"), role: .destructive) { removeTracking(reviewed) }
+            } message: { reviewed in
+                if backUpHistory, let archive {
+                    Text("The .git folder in \(reviewed.rootURL.lastPathComponent) will be removed. Its history is saved in \(archive.url.lastPathComponent).\n\nYour notes and files stay in place. The GitHub repository is not touched.")
                 } else {
-                    Text("The local Git history in \(confirmation.plan.rootURL.lastPathComponent) will be permanently deleted without a backup. You cannot undo this without another copy of the repository.\n\nYour notes and files stay in place. The GitHub repository stays on GitHub. GitSync will remove its connection to this local repository.")
+                    Text("The local Git history in \(reviewed.rootURL.lastPathComponent) will be permanently deleted without a backup.\n\nYour notes and files stay in place. The GitHub repository is not touched.")
                 }
             }
-            .onAppear { hasDisappeared = false }
+            .onAppear {
+                hasDisappeared = false
+                startInitialReviewIfNeeded()
+            }
             .onChange(of: scenePhase) { _, phase in
                 if phase == .background { operation?.cancel() }
             }
@@ -138,51 +170,59 @@ struct RemoveGitTrackingView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
 
-            Text("Choose the folder containing the .git folder you want to remove. For a vault inside a larger repository, choose the parent repository folder.")
-                .font(TideFont.sans(15, relativeTo: .subheadline))
-                .foregroundStyle(Tide.inkMid)
-                .lineSpacing(3)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 12)
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Only .git directly inside the selected folder is removed. Git folders inside other vaults stay in place.")
-                    .accessibilityIdentifier("removeGitTracking.scope")
-                Text("You can preserve your local history with a verified backup, or remove tracking without one. Local On My iPhone folders only.")
+            Group {
+                if target != nil || plan != nil {
+                    Text("\(vaultName) becomes a plain folder. Obsidian keeps working; GitSync.md stops syncing it.")
+                } else {
+                    Text("Choose the folder containing the .git folder you want to remove. For a vault inside a larger repository, choose the parent repository folder.")
+                }
             }
-            .font(TideFont.sans(13, relativeTo: .footnote))
-            .foregroundStyle(Tide.inkFaint)
+            .font(TideFont.sans(15, relativeTo: .subheadline))
+            .foregroundStyle(Tide.inkMid)
+            .lineSpacing(3)
             .fixedSize(horizontal: false, vertical: true)
-            .padding(.top, 10)
+            .padding(.top, 12)
+
+            if target == nil {
+                Text("Only .git directly inside the selected folder is removed. Local On My iPhone folders only.")
+                    .font(TideFont.sans(13, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkFaint)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+                    .accessibilityIdentifier("removeGitTracking.scope")
+            }
         }
         .padding(.horizontal, 20)
     }
 
-    /// What stays and what goes — two cards side by side. Only real facts
-    /// from the reviewed plan (the .git size) are shown; nothing is counted.
+    /// What stays and what goes, with counts from the reviewed plan.
     private func staysAndGoes(_ plan: GitTrackingRemovalPlan?) -> some View {
-        HStack(alignment: .top, spacing: 8) {
-            OutcomeCard(
-                title: String(localized: "Stays"),
-                tint: Tide.synced,
-                items: [
-                    .init(String(localized: "Your notes and files")),
-                    .init(String(localized: "The GitHub repository")),
-                ]
-            )
-            OutcomeCard(
-                title: String(localized: "Goes"),
-                tint: Tide.danger,
-                items: [
-                    .init(plan.map { ".git/ · " + ByteCountFormatter.string(fromByteCount: $0.metadataByteCount, countStyle: .file) } ?? ".git/",
-                          isMono: true),
-                    .init(String(localized: "Local Git history")),
-                    .init(String(localized: "GitSync.md's link to it")),
-                ]
-            )
+        let stats = plan?.statistics
+        var stays: [OutcomeCard.Item] = []
+        var goes: [OutcomeCard.Item] = []
+        if let stats {
+            stays.append(.init(stats.noteCount == 1
+                               ? String(localized: "1 note")
+                               : String(localized: "\(stats.noteCount.formatted()) notes")))
+            stays.append(.init(String(localized: "attachments")))
+            if stats.hasObsidianFolder { stays.append(.init(".obsidian/", isMono: true)) }
+            goes.append(.init(stats.commitCount == 1
+                              ? ".git/ · " + String(localized: "1 commit")
+                              : ".git/ · " + String(localized: "\(stats.commitCount.formatted()) commits"),
+                              isMono: true))
+            goes.append(.init(String(localized: "branches & stashes")))
+            if stats.hasLFSCache { goes.append(.init(String(localized: "LFS cache"))) }
+        } else {
+            stays = [.init(String(localized: "notes")), .init(String(localized: "attachments"))]
+            goes = [.init(".git/", isMono: true), .init(String(localized: "branches & stashes"))]
+        }
+        return HStack(alignment: .top, spacing: 8) {
+            OutcomeCard(title: String(localized: "Stays"), tint: Tide.synced, items: stays)
+            OutcomeCard(title: String(localized: "Goes"), tint: Tide.danger, items: goes)
         }
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, Tide.gutter)
+        .accessibilityIdentifier("removeGitTracking.staysAndGoes")
     }
 
     private var demoNotice: some View {
@@ -204,7 +244,6 @@ struct RemoveGitTrackingView: View {
                 isDisabled: actionsDisabled,
                 icon: "folder"
             ) {
-                pickerPurpose = .source
                 showFolderPicker = true
             }
             .accessibilityIdentifier("removeGitTracking.chooseSource")
@@ -214,7 +253,6 @@ struct RemoveGitTrackingView: View {
                 color: Tide.inkMid,
                 icon: "folder"
             ) {
-                pickerPurpose = .source
                 showFolderPicker = true
             }
             .disabled(actionsDisabled)
@@ -226,62 +264,59 @@ struct RemoveGitTrackingView: View {
 
     private func reviewContent(_ plan: GitTrackingRemovalPlan) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            TideSectionLabel(title: String(localized: "Review Repository"))
-                .accessibilityAddTraits(.isHeader)
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-
-            VStack(alignment: .leading, spacing: 0) {
+            if target == nil {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(plan.rootURL.lastPathComponent)
-                        .font(TideFont.sans(17, .semibold, relativeTo: .headline))
-                        .foregroundStyle(Tide.ink)
-                        .textSelection(.enabled)
                     Text(plan.rootURL.path)
                         .font(TideFont.mono(11))
                         .foregroundStyle(Tide.inkFaint)
                         .textSelection(.enabled)
                         .accessibilityIdentifier("removeGitTracking.sourcePath")
+                    Text("\(safeRemoteLabel(plan.remoteURL)) · \(plan.branch ?? String(localized: "no branch"))")
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
                 }
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel(String(localized: "Selected Folder"))
-                .padding(.horizontal, 18)
-                .padding(.vertical, 14)
-                rowSeparator
-                reviewValue(String(localized: "Remote"), value: safeRemoteLabel(plan.remoteURL))
-                rowSeparator
-                reviewValue(String(localized: "Branch"), value: plan.branch ?? String(localized: "No current branch"))
-                rowSeparator
-                reviewValue(
-                    String(localized: "Git History Size"),
-                    value: ByteCountFormatter.string(fromByteCount: plan.metadataByteCount, countStyle: .file)
-                )
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
-            .padding(.horizontal, Tide.gutter)
-            .padding(.top, 8)
-
-            chooseSourceButton
                 .padding(.horizontal, 20)
-                .padding(.top, 4)
+                .padding(.top, 14)
 
-            backupStep
-                .padding(.top, 12)
-
-            BDestructiveButton(title: backUpHistory ? String(localized: "Back Up and Remove") : String(localized: "Remove Without Backup")) {
-                guard !actionsDisabled, !needsReview, !backUpHistory || backupFolder != nil else { return }
-                removalConfirmation = RemovalConfirmation(plan: plan, backupDirectory: backUpHistory ? backupFolder?.url : nil)
-                showRemovalConfirmation = true
+                chooseSourceButton
+                    .padding(.horizontal, 20)
             }
-            .disabled(actionsDisabled || (backUpHistory && backupFolder == nil) || needsReview)
-            .opacity(actionsDisabled || (backUpHistory && backupFolder == nil) || needsReview ? 0.4 : 1)
-            .accessibilityLabel(backUpHistory ? String(localized: "Back up Git history and remove Git tracking") : String(localized: "Remove Git tracking without a backup"))
+
+            backupStep(plan)
+                .padding(.top, 16)
+
+            if plan.statistics.unpushedChangeCount > 0 {
+                unpushedStep(plan)
+                    .padding(.top, 10)
+            }
+
+            Button {
+                guard canStopTracking else { return }
+                showRemovalConfirmation = true
+            } label: {
+                Text(String(localized: "Stop tracking \(vaultName)"))
+                    .font(TideFont.button)
+                    .foregroundStyle(Tide.paper)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .padding(.horizontal, 24)
+                    .frame(maxWidth: .infinity, minHeight: 58)
+                    .background(Capsule().fill(backUpHistory ? Tide.ink : Tide.danger))
+                    .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(!canStopTracking)
+            .opacity(canStopTracking ? 1 : 0.4)
+            .accessibilityHint(backUpHistory
+                               ? String(localized: "Removes the .git folder after the history zip is saved")
+                               : String(localized: "Permanently deletes local Git history without a backup"))
             .accessibilityIdentifier("removeGitTracking.confirmRemoval")
             .padding(.horizontal, Tide.gutter)
             .padding(.top, 24)
 
-            Text(String(localized: "The GitHub repository is not touched."))
+            Text(String(localized: "the GitHub repo is not touched"))
                 .font(TideFont.mono(11))
                 .foregroundStyle(Tide.inkFaint)
                 .frame(maxWidth: .infinity)
@@ -290,85 +325,141 @@ struct RemoveGitTrackingView: View {
         }
     }
 
-    /// Step 1: back up the history first (or explicitly opt out).
-    private var backupStep: some View {
-        HStack(alignment: .top, spacing: 14) {
-            Text(verbatim: "1")
-                .font(TideFont.fixed(12, .semibold, mono: true))
-                .foregroundStyle(Tide.paper)
-                .frame(width: 22, height: 22)
-                .background(Circle().fill(Tide.ink))
-                .padding(.top, 2)
-                .accessibilityHidden(true)
+    private var canStopTracking: Bool {
+        !actionsDisabled && !needsReview && plan != nil && (!backUpHistory || hasCurrentArchive)
+    }
 
+    /// Step 1: zip the history first (or explicitly opt out).
+    private func backupStep(_ plan: GitTrackingRemovalPlan) -> some View {
+        StepCard(number: 1) {
             VStack(alignment: .leading, spacing: 10) {
-                Toggle(isOn: $backUpHistory) {
-                    Text("Back up Git history")
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(String(localized: "Back up the history first"))
                         .font(TideFont.sans(16, .semibold, relativeTo: .body))
                         .foregroundStyle(Tide.ink)
-                }
-                .toggleStyle(.switch)
-                .tint(Tide.synced)
-                .disabled(actionsDisabled)
-                .accessibilityIdentifier("removeGitTracking.backupEnabled")
-
-                if backUpHistory {
-                    Text("Select a local folder under On My iPhone, outside any Git repository. Downloads and cloud locations are not supported yet.")
+                    Text(String(localized: "Saves .git as a zip you can share or keep in Files."))
                         .font(TideFont.sans(13.5, relativeTo: .footnote))
                         .foregroundStyle(Tide.inkMid)
                         .fixedSize(horizontal: false, vertical: true)
+                }
 
-                    if let backupFolder {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(backupFolder.url.lastPathComponent)
-                                .font(TideFont.body)
+                if backUpHistory {
+                    if let archive, hasCurrentArchive {
+                        HStack(spacing: 10) {
+                            Image(systemName: "doc.zipper")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(Tide.synced)
+                                .accessibilityHidden(true)
+                            Text(archive.url.lastPathComponent + " · "
+                                 + ByteCountFormatter.string(fromByteCount: archive.byteCount, countStyle: .file))
+                                .font(TideFont.mono(12))
                                 .foregroundStyle(Tide.ink)
-                            Text(backupFolder.url.path)
-                                .font(TideFont.mono(11))
-                                .foregroundStyle(Tide.inkFaint)
-                                .textSelection(.enabled)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            Spacer(minLength: 6)
+                            ShareLink(item: archive.url) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .foregroundStyle(Tide.ink)
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .accessibilityLabel(String(localized: "Share or save to Files"))
+                            .accessibilityIdentifier("removeGitTracking.shareBackup")
                         }
-                        .padding(12)
+                        .padding(.leading, 12)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.well))
-                        .accessibilityElement(children: .combine)
                         .accessibilityIdentifier("removeGitTracking.backupLocation")
-                    }
-
-                    Button {
-                        pickerPurpose = .backup
-                        showFolderPicker = true
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "folder.badge.plus")
-                                .font(.system(size: 14, weight: .semibold))
-                                .accessibilityHidden(true)
-                            Text(backupFolder == nil ? String(localized: "Select Backup Folder") : String(localized: "Change Backup Folder"))
-                                .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                        Text(String(localized: "Also kept in Files › On My iPhone › GitSync.md › Git Backups."))
+                            .font(TideFont.sans(12, relativeTo: .caption))
+                            .foregroundStyle(Tide.inkFaint)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } else {
+                        if archive != nil {
+                            Text(String(localized: "The history changed since the last zip. Make a new one."))
+                                .font(TideFont.sans(12.5, .medium, relativeTo: .footnote))
+                                .foregroundStyle(Tide.ahead)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
-                        .foregroundStyle(Tide.ink)
-                        .padding(.horizontal, 16)
-                        .frame(minHeight: 44)
-                        .background(Capsule().strokeBorder(Tide.line, lineWidth: 1))
-                        .contentShape(Capsule())
+                        Button { createArchive(plan) } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "archivebox")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .accessibilityHidden(true)
+                                Text(String(localized: "Save \(vaultName)-history.zip"))
+                                    .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                            }
+                            .foregroundStyle(Tide.ink)
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 44)
+                            .background(Capsule().strokeBorder(Tide.line, lineWidth: 1))
+                            .contentShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(actionsDisabled || needsReview)
+                        .opacity(actionsDisabled || needsReview ? 0.4 : 1)
+                        .accessibilityIdentifier("removeGitTracking.chooseBackup")
                     }
-                    .buttonStyle(.plain)
-                    .disabled(actionsDisabled)
-                    .opacity(actionsDisabled ? 0.4 : 1)
-                    .accessibilityIdentifier("removeGitTracking.chooseBackup")
                 } else {
                     Text("Removing without a backup permanently deletes this folder’s local Git history. You can only restore it from another copy.")
                         .font(TideFont.sans(13.5, .medium, relativeTo: .footnote))
                         .foregroundStyle(Tide.danger)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+
+                Toggle(isOn: Binding(get: { !backUpHistory }, set: { backUpHistory = !$0 })) {
+                    Text(String(localized: "Skip the backup"))
+                        .font(TideFont.sans(13.5, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkMid)
+                }
+                .toggleStyle(.switch)
+                .tint(Tide.danger)
+                .disabled(actionsDisabled)
+                .accessibilityIdentifier("removeGitTracking.backupEnabled")
             }
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
         .padding(.horizontal, Tide.gutter)
+    }
+
+    /// Step 2: unpushed commits or uncommitted edits never reach GitHub.
+    private func unpushedStep(_ plan: GitTrackingRemovalPlan) -> some View {
+        let count = plan.statistics.unpushedChangeCount
+        return StepCard(number: 2, tint: Tide.ahead) {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(count == 1
+                     ? String(localized: "1 change isn't pushed")
+                     : String(localized: "\(count) changes aren't pushed"))
+                    .font(TideFont.sans(16, .semibold, relativeTo: .body))
+                    .foregroundStyle(Tide.ink)
+                Text(String(localized: "They'll stay in the files, but GitHub won't get them."))
+                    .font(TideFont.sans(13.5, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkMid)
+                    .fixedSize(horizontal: false, vertical: true)
+                if let repoID = pushableRepoID, plan.remoteURL != nil {
+                    Button { pushFirst(repoID: repoID) } label: {
+                        Text(String(localized: "Push them first →"))
+                            .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ahead)
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(actionsDisabled)
+                    .accessibilityIdentifier("removeGitTracking.pushFirst")
+                }
+                if let pushMessage {
+                    Text(pushMessage)
+                        .font(TideFont.sans(12.5, relativeTo: .footnote))
+                        .foregroundStyle(Tide.danger)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .padding(.horizontal, Tide.gutter)
+        .accessibilityIdentifier("removeGitTracking.unpushed")
     }
 
     // MARK: - Success
@@ -383,10 +474,10 @@ struct RemoveGitTrackingView: View {
                     .accessibilityAddTraits(.isHeader)
                     .padding(.top, 14)
                 Group {
-                    if result.backupURL != nil {
-                        Text("The selected folder is no longer a Git repository. Its local Git history is preserved in the verified backup below.")
+                    if archive != nil {
+                        Text("\(vaultName) is a plain folder now. Its Git history is in the zip below. The GitHub repository stays on GitHub.")
                     } else {
-                        Text("The selected folder is no longer a Git repository. Its local Git history was deleted without a backup. The GitHub repository stays on GitHub.")
+                        Text("\(vaultName) is a plain folder now. Its local Git history was deleted without a backup. The GitHub repository stays on GitHub.")
                     }
                 }
                 .font(TideFont.sans(15, relativeTo: .subheadline))
@@ -394,36 +485,32 @@ struct RemoveGitTrackingView: View {
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 12)
-                Text("Return to Add Repository → Publish a Folder to review your vault for its own repository.")
-                    .font(TideFont.sans(13, relativeTo: .footnote))
-                    .foregroundStyle(Tide.inkFaint)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 10)
             }
             .padding(.horizontal, 20)
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier("removeGitTracking.success")
 
-            if let backupURL = result.backupURL {
-                TideSectionLabel(title: String(localized: "Verified Backup"))
+            if let archive {
+                TideSectionLabel(title: String(localized: "History backup"))
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, 20)
                     .padding(.top, 24)
                 TideCard {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(backupURL.lastPathComponent)
-                            .font(TideFont.body)
+                        Text(archive.url.lastPathComponent + " · "
+                             + ByteCountFormatter.string(fromByteCount: archive.byteCount, countStyle: .file))
+                            .font(TideFont.mono(13))
                             .foregroundStyle(Tide.ink)
-                        Text(backupURL.path)
+                        Text(archive.url.path)
                             .font(TideFont.mono(11))
                             .foregroundStyle(Tide.inkFaint)
                             .textSelection(.enabled)
-                        ShareLink(item: backupURL) {
+                        ShareLink(item: archive.url) {
                             HStack(spacing: 8) {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 14, weight: .semibold))
                                     .accessibilityHidden(true)
-                                Text("Share Backup")
+                                Text("Share or Save to Files")
                                     .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
                             }
                             .foregroundStyle(Tide.ink)
@@ -434,11 +521,19 @@ struct RemoveGitTrackingView: View {
                         }
                         .buttonStyle(.plain)
                         .padding(.top, 8)
-                        .accessibilityIdentifier("removeGitTracking.shareBackup")
                     }
                 }
                 .padding(.horizontal, Tide.gutter)
                 .padding(.top, 8)
+            } else if let backupURL = result.backupURL {
+                TideCard {
+                    Text(backupURL.path)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                        .textSelection(.enabled)
+                }
+                .padding(.horizontal, Tide.gutter)
+                .padding(.top, 16)
             }
         }
     }
@@ -466,13 +561,13 @@ struct RemoveGitTrackingView: View {
                     .font(TideFont.sans(14, relativeTo: .subheadline))
                     .foregroundStyle(Tide.danger)
                     .fixedSize(horizontal: false, vertical: true)
-                if needsReview, sourceFolder != nil {
+                if needsReview || (plan == nil && target != nil) {
                     BSecondaryButton(
                         title: String(localized: "Review Folder Again"),
                         isDisabled: actionsDisabled,
                         icon: "arrow.clockwise"
                     ) {
-                        reviewSelectedFolderAgain()
+                        reviewAgain()
                     }
                     .accessibilityIdentifier("removeGitTracking.reviewAgain")
                 }
@@ -482,36 +577,12 @@ struct RemoveGitTrackingView: View {
         .accessibilityIdentifier("removeGitTracking.error")
     }
 
-    private var rowSeparator: some View {
-        Rectangle().fill(Tide.line).frame(height: 1).padding(.horizontal, 18)
-    }
-
-    private func reviewValue(_ label: String, value: String) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
-            Text(label)
-                .font(TideFont.body)
-                .foregroundStyle(Tide.ink)
-            Spacer(minLength: 8)
-            Text(value)
-                .font(TideFont.mono(12.5, relativeTo: .footnote))
-                .foregroundStyle(Tide.inkMid)
-                .multilineTextAlignment(.trailing)
-                .lineLimit(2)
-                .truncationMode(.middle)
-                .textSelection(.enabled)
-        }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 14)
-        .frame(minHeight: 52)
-        .accessibilityElement(children: .combine)
-    }
-
     /// Do not expose embedded credentials or token-like URL parameters in review.
     private func safeRemoteLabel(_ remote: String?) -> String {
         guard let remote, !remote.isEmpty else { return String(localized: "No remote configured") }
         guard var components = URLComponents(string: remote),
               components.host?.isEmpty == false else {
-            return String(localized: "Local or custom remote configured")
+            return String(localized: "Local or custom remote")
         }
         components.user = nil
         components.password = nil
@@ -520,38 +591,51 @@ struct RemoveGitTrackingView: View {
         return components.url?.absoluteString ?? String(localized: "Remote configured")
     }
 
+    // MARK: - Actions
+
+    /// Root of the folder under review: the picked folder, the given URL, or
+    /// the registered vault's working folder (AppState holds its scope).
+    private var reviewRoot: URL? {
+        if let sourceFolder { return sourceFolder.url }
+        if let url = target?.rootURL { return url }
+        if let id = target?.repoID, state.repo(id: id) != nil { return state.vaultURL(for: id) }
+        return nil
+    }
+
+    private func startInitialReviewIfNeeded() {
+        guard !didStartInitialReview, let target, !state.isDemoMode else { return }
+        didStartInitialReview = true
+        if let url = target.rootURL { sourceFolder = ScopedFolder(url) }
+        reviewAgain()
+    }
+
+    private func reviewAgain() {
+        guard let root = reviewRoot else {
+            errorMessage = GitTrackingRemovalError.noGitDirectory.localizedDescription
+            return
+        }
+        perform(String(localized: "Counting notes and history…")) {
+            plan = try await state.inspectGitTrackingRemoval(at: root)
+            needsReview = false
+        }
+    }
+
     private func handleFolderSelection(_ result: Result<[URL], Error>) {
         guard !isBusy, !state.isDemoMode else { return }
         switch result {
         case .success(let urls):
             guard let url = urls.first else { return }
             errorMessage = nil
-            switch pickerPurpose {
-            case .source:
-                releaseFolderAccess()
-                plan = nil
-                removalResult = nil
-                backUpHistory = true
-                removalConfirmation = nil
-                sourceFolder = ScopedFolder(url)
-                perform(String(localized: "Inspecting Git tracking…")) {
-                    plan = try await state.inspectGitTrackingRemoval(at: url)
-                    needsReview = false
-                }
-            case .backup:
-                backupFolder?.release()
-                backupFolder = nil
-                guard let plan else { return }
-                let selected = ScopedFolder(url)
-                perform(String(localized: "Checking backup folder…")) {
-                    do {
-                        try await state.validateGitTrackingBackupDirectory(url, for: plan)
-                        backupFolder = selected
-                    } catch {
-                        selected.release()
-                        throw error
-                    }
-                }
+            releaseFolderAccess()
+            plan = nil
+            archive = nil
+            archivedPlan = nil
+            removalResult = nil
+            backUpHistory = true
+            sourceFolder = ScopedFolder(url)
+            perform(String(localized: "Inspecting Git tracking…")) {
+                plan = try await state.inspectGitTrackingRemoval(at: url)
+                needsReview = false
             }
         case .failure(let error):
             let cocoaError = error as NSError
@@ -561,35 +645,45 @@ struct RemoveGitTrackingView: View {
         }
     }
 
-    private func removeTracking(_ confirmation: RemovalConfirmation) {
-        guard !isBusy, !showFolderPicker, !state.isDemoMode, !needsReview,
-              plan == confirmation.plan else { return }
-        if let backupDirectory = confirmation.backupDirectory {
-            perform(String(localized: "Backing up and verifying Git history…")) {
-                removalResult = try await state.removeGitTracking(confirmation.plan, backupDirectory: backupDirectory)
+    private func createArchive(_ reviewed: GitTrackingRemovalPlan) {
+        perform(String(localized: "Zipping Git history…")) {
+            let made = try await state.archiveGitHistory(for: reviewed)
+            if let previous = archive, previous.url != made.url, archivedPlan != reviewed {
+                // The superseded zip described older history; keep only the current one.
+                try? FileManager.default.removeItem(at: previous.url)
             }
-        } else {
-            perform(String(localized: "Removing Git tracking without a backup…")) {
-                removalResult = try await state.removeGitTrackingWithoutBackup(confirmation.plan)
-            }
+            archive = made
+            archivedPlan = reviewed
         }
     }
 
-    private func reviewSelectedFolderAgain() {
-        guard let sourceFolder else { return }
-        perform(String(localized: "Reviewing Git tracking again…")) {
-            let reviewed = try await state.inspectGitTrackingRemoval(at: sourceFolder.url)
-            plan = reviewed
-            needsReview = false
-            if backUpHistory, let selectedBackup = backupFolder {
-                do {
-                    try await state.validateGitTrackingBackupDirectory(selectedBackup.url, for: reviewed)
-                } catch {
-                    selectedBackup.release()
-                    backupFolder = nil
-                    throw error
-                }
+    private func pushFirst(repoID: UUID) {
+        pushMessage = nil
+        perform(String(localized: "Pushing to GitHub…")) {
+            let result = await state.pushOnly(repoID: repoID)
+            switch result {
+            case .pushed, .noChanges:
+                break
+            case .blocked(let message), .failed(let message):
+                pushMessage = message
+            case .commitSavedNotPushed(_, let message, _), .authenticationOrTrustRequired(let message, _):
+                pushMessage = message
             }
+            guard let root = reviewRoot else { return }
+            plan = try await state.inspectGitTrackingRemoval(at: root)
+            needsReview = false
+        }
+    }
+
+    private func removeTracking(_ reviewed: GitTrackingRemovalPlan) {
+        guard !isBusy, !showFolderPicker, !state.isDemoMode, !needsReview, plan == reviewed else { return }
+        guard !backUpHistory || (archivedPlan == reviewed && archive != nil) else { return }
+        if !backUpHistory { archive = nil }
+        perform(String(localized: "Removing Git tracking…")) {
+            // The zip was verified against this exact plan, and removal
+            // re-verifies the plan before deleting, so the zip holds exactly
+            // the history being removed.
+            removalResult = try await state.removeGitTrackingWithoutBackup(reviewed)
         }
     }
 
@@ -602,18 +696,15 @@ struct RemoveGitTrackingView: View {
             do {
                 try await action()
             } catch is CancellationError {
-                // Services honor cancellation before their removal boundary.
                 if needsReview {
                     errorMessage = GitTrackingRemovalError.sourceChanged.localizedDescription
                 }
             } catch {
                 if let removalError = error as? GitTrackingRemovalError {
                     if removalError.leavesRootDetached {
-                        // The original review no longer describes a live .git.
-                        // Preserve the error's recovery location, and require a
-                        // new folder selection instead of retrying removal.
+                        // The review no longer describes a live .git. Preserve
+                        // the error's recovery location and require a new review.
                         plan = nil
-                        removalConfirmation = nil
                         showRemovalConfirmation = false
                         needsReview = false
                         releaseDetachedFolderAccess = true
@@ -630,9 +721,32 @@ struct RemoveGitTrackingView: View {
 
     private func releaseFolderAccess() {
         sourceFolder?.release()
-        backupFolder?.release()
         sourceFolder = nil
-        backupFolder = nil
+    }
+}
+
+/// Numbered step card ("1  Back up the history first").
+private struct StepCard<Content: View>: View {
+    let number: Int
+    var tint: Color = Tide.ink
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            Text(verbatim: "\(number)")
+                .font(TideFont.fixed(12, .semibold, mono: true))
+                .foregroundStyle(Tide.paper)
+                .frame(width: 22, height: 22)
+                .background(Circle().fill(tint))
+                .padding(.top, 2)
+                .accessibilityHidden(true)
+            content
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
     }
 }
 
