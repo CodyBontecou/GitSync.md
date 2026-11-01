@@ -11002,3 +11002,95 @@ private actor GitTrackingRemovalTestGate {
     }
     func release() { blocked?.resume(); blocked = nil }
 }
+
+// MARK: - Tide git work (commit sheet, diff, conflict, history)
+
+final class TideGitWorkTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        _ = git_libgit2_init()
+    }
+
+    func testCommitMessageSuggestsDailyNoteAndRefine() {
+        let en = Locale(identifier: "en_US")
+        let suggestion = CommitMessageSuggester.suggest(
+            for: [
+                .init(path: "daily/2026-11-01.md", change: .added, added: 42),
+                .init(path: "ideas/voice-memo-pipeline.md", change: .modified, added: 8, removed: 3),
+            ],
+            now: DateComponents(calendar: Calendar(identifier: .gregorian), year: 2026, month: 11, day: 1).date!,
+            locale: en
+        )
+        XCTAssertEqual(suggestion.primary, "Add Nov 1 daily note, refine voice memo pipeline")
+        XCTAssertEqual(suggestion.alternatives.first, "vault backup: Nov 1")
+        XCTAssertEqual(suggestion.alternatives.count, 2)
+    }
+
+    func testCommitMessageVerbsForDeleteRenameAndUpdate() {
+        let message = CommitMessageSuggester.message(for: [
+            .init(path: "old-inbox.md", change: .deleted, removed: 17),
+        ])
+        XCTAssertEqual(message, "Remove old inbox")
+        XCTAssertEqual(
+            CommitMessageSuggester.message(for: [.init(path: "notes/README.md", change: .modified, added: 2)]),
+            "Update README"
+        )
+    }
+
+    func testMergeIsolatesOnlyTheSectionBothSidesEdited() {
+        let base = "# Pipeline\n\n## Step 1\nRecord.\n\n## Step 3\nTranscribe by hand.\n\n## Step 4\nShare.\n"
+        let ours = "# Pipeline\n\n## Step 1\nRecord on iPhone.\n\n## Step 3\nTranscribe with on-device Whisper.\n\n## Step 4\nShare.\n"
+        let theirs = "# Pipeline\n\n## Step 1\nRecord.\n\n## Step 3\nTranscribe with the API.\n\n## Step 4\nShare with Sam.\n"
+
+        let chunks = TideTextDiff.merge(base: base, ours: ours, theirs: theirs)
+        let hunks = chunks.compactMap { chunk -> TideTextDiff.ConflictHunk? in
+            if case .conflict(let hunk) = chunk { return hunk } else { return nil }
+        }
+        XCTAssertEqual(hunks.count, 1, "One-sided edits merge cleanly; only Step 3 conflicts")
+        XCTAssertEqual(hunks.first?.heading, "## Step 3")
+        XCTAssertEqual(hunks.first?.ours, ["Transcribe with on-device Whisper."])
+        XCTAssertEqual(hunks.first?.theirs, ["Transcribe with the API."])
+
+        let merged = TideTextDiff.assemble(chunks, choices: [0: .theirs], trailingNewline: true)
+        XCTAssertEqual(merged, "# Pipeline\n\n## Step 1\nRecord on iPhone.\n\n## Step 3\nTranscribe with the API.\n\n## Step 4\nShare with Sam.\n")
+    }
+
+    func testWordRunsMarkOnlyChangedWords() {
+        let runs = TideTextDiff.wordRuns(old: "Transcribe with the API, then summarize", new: "Transcribe with on-device Whisper, then tag")
+        let changedNew = runs.new.filter(\.1).map(\.0).joined()
+        XCTAssertTrue(changedNew.contains("Whisper"))
+        XCTAssertFalse(changedNew.contains("Transcribe"))
+        XCTAssertEqual(runs.new.map(\.0).joined(), "Transcribe with on-device Whisper, then tag")
+    }
+
+    func testLineStatsAndChangedLineCount() {
+        let patch = "diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1,3 +1,4 @@\n a\n-b\n+B\n+c\n d\n"
+        XCTAssertEqual(GitLineStats(patch: patch), GitLineStats(added: 2, removed: 1))
+        XCTAssertEqual(GitLineStats.changedLineCount(patch: patch), 2)
+    }
+
+    func testFileHistoryListsOnlyCommitsTouchingPath() async throws {
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-FileHistory")
+        defer { try? FileManager.default.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let note = repoURL.appendingPathComponent("note.md")
+        let other = repoURL.appendingPathComponent("other.md")
+
+        try "one\n".write(to: note, atomically: true, encoding: .utf8)
+        try await service.stage(path: "note.md")
+        _ = try await service.commitLocal(message: "Add note", authorName: "Tests", authorEmail: "tests@example.com")
+        try "x\n".write(to: other, atomically: true, encoding: .utf8)
+        try await service.stage(path: "other.md")
+        _ = try await service.commitLocal(message: "Add other", authorName: "Tests", authorEmail: "tests@example.com")
+        try "two\n".write(to: note, atomically: true, encoding: .utf8)
+        try await service.stage(path: "note.md")
+        _ = try await service.commitLocal(message: "Edit note", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let history = try await service.fileHistory(path: "note.md")
+        XCTAssertEqual(history.map(\.message), ["Edit note", "Add note"])
+        let head = try await service.commitSummary(revision: "HEAD")
+        XCTAssertEqual(head?.message, "Edit note")
+        let missing = try await service.commitSummary(revision: "MERGE_HEAD")
+        XCTAssertNil(missing)
+    }
+}

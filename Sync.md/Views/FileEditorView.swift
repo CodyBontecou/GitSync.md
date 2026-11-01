@@ -28,6 +28,13 @@ struct FileEditorView: View {
     @State private var renameText: String = ""
     @State private var showSaveToast = false
     @State private var showCommitSheet = false
+    @State private var showPreview = false
+    @State private var autosaveTask: Task<Void, Never>?
+    /// Lines that differ from HEAD, and which ones (for the gutter bar).
+    @State private var linesChanged: Int?
+    @State private var changedLines: Set<Int> = []
+
+    private static let autosaveDelay: Duration = .seconds(2)
 
     init(repoID: UUID, fileURL: URL) {
         self.repoID = repoID
@@ -73,8 +80,18 @@ struct FileEditorView: View {
             if isBinary {
                 binaryState
             } else {
-                CodeEditorView(text: $content, language: language)
-                    .padding(.horizontal, 4)
+                if showPreview && language == .markdown {
+                    ScrollView {
+                        TideMarkdownView(text: content)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 14)
+                            .padding(.bottom, 96)
+                    }
+                    .scrollIndicators(.hidden)
+                } else {
+                    CodeEditorView(text: $content, language: language, changedLines: changedLines)
+                        .padding(.horizontal, 4)
+                }
             }
 
             if showDeleteConfirm {
@@ -133,6 +150,23 @@ struct FileEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 4) {
+                    if !isBinary && language == .markdown {
+                        Button {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            showPreview.toggle()
+                        } label: {
+                            Text(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
+                                .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
+                                .foregroundStyle(Tide.ink)
+                                .padding(.horizontal, 14)
+                                .frame(height: 34)
+                                .overlay(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                                .frame(minWidth: 44, minHeight: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
+                    }
                     if !isBinary {
                         Button {
                             performSave()
@@ -178,8 +212,17 @@ struct FileEditorView: View {
                 }
             }
         }
-        .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
+        .sheet(isPresented: $showCommitSheet) { CommitSheetView(repoID: repoID) }
         .onAppear { loadContent() }
+        .task { await refreshChangeSummary() }
+        .onChange(of: content) { scheduleAutosave() }
+        .onChange(of: state.statusEntriesByRepo[repoID] ?? []) {
+            Task { await refreshChangeSummary() }
+        }
+        .onDisappear {
+            autosaveTask?.cancel()
+            if isDirty { performSave(dismissKeyboard: false) }
+        }
         .alert(
             String(localized: "Unable to Update File"),
             isPresented: Binding(
@@ -203,9 +246,7 @@ struct FileEditorView: View {
                 .fill(hasUncommittedChanges ? Tide.heroAhead : Tide.heroSynced)
                 .frame(width: 8, height: 8)
                 .accessibilityHidden(true)
-            Text(hasUncommittedChanges
-                 ? String(localized: "Saved · not committed")
-                 : String(localized: "Saved"))
+            Text(savedPillText)
                 .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
                 .foregroundStyle(Tide.heroText)
                 .lineLimit(1)
@@ -273,8 +314,38 @@ struct FileEditorView: View {
         originalContent = text
     }
 
-    private func performSave() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    /// "Saved · 3 lines changed" — the change is measured against HEAD.
+    private var savedPillText: String {
+        guard hasUncommittedChanges else { return String(localized: "Saved") }
+        guard let linesChanged, linesChanged > 0 else { return String(localized: "Saved · not committed") }
+        return linesChanged == 1
+            ? String(localized: "Saved · 1 line changed")
+            : String(localized: "Saved · \(linesChanged) lines changed")
+    }
+
+    /// Debounced autosave: writes once typing pauses.
+    private func scheduleAutosave() {
+        autosaveTask?.cancel()
+        guard isDirty, !isBinary else { return }
+        autosaveTask = Task {
+            try? await Task.sleep(for: Self.autosaveDelay)
+            guard !Task.isCancelled, isDirty else { return }
+            performSave(dismissKeyboard: false)
+        }
+    }
+
+    private func refreshChangeSummary() async {
+        guard !isBinary, let rel = relativePath else { return }
+        let summary = await state.changeSummary(repoID: repoID, path: rel)
+        linesChanged = summary.count
+        changedLines = summary.lines
+    }
+
+    private func performSave(dismissKeyboard: Bool = true) {
+        if dismissKeyboard {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        autosaveTask?.cancel()
         guard !isSaving, let replacement = content.data(using: .utf8) else { return }
         let expected = loadedBytes
         let savedContent = content
@@ -299,6 +370,9 @@ struct FileEditorView: View {
                 originalContent = savedContent
                 state.detectChanges(repoID: repoID)
                 isSaving = false
+                await refreshChangeSummary()
+                // Edits typed while the write was queued still need saving.
+                scheduleAutosave()
                 showSaveToast = true
                 try? await Task.sleep(for: .seconds(1.8))
                 showSaveToast = false

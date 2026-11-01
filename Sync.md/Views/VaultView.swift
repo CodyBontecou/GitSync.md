@@ -8,6 +8,7 @@ struct VaultView: View {
 
     @State private var showSettings = false
     @State private var showCommitSheet = false
+    @State private var showGitTools = false
     @State private var selectedTab: VaultTab = .changes
     @State private var showRevertAllConfirm = false
     @State private var revertFilePath: String? = nil
@@ -88,7 +89,7 @@ struct VaultView: View {
                         Label(String(localized: "Settings"), systemImage: "gearshape")
                     }
                     Button {
-                        showCommitSheet = true
+                        showGitTools = true
                     } label: {
                         Label(String(localized: "Git Tools"), systemImage: "wrench.and.screwdriver")
                     }
@@ -113,7 +114,8 @@ struct VaultView: View {
                 .accessibilityLabel(String(localized: "More vault options"))
             }
         }
-        .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
+        .sheet(isPresented: $showCommitSheet) { CommitSheetView(repoID: repoID) }
+        .sheet(isPresented: $showGitTools) { GitControlSheet(repoID: repoID) }
         .sheet(isPresented: $showSettings) { SettingsView(repoID: repoID) }
         .fileImporter(isPresented: $showReconnectFolder, allowedContentTypes: [.folder]) { result in
             switch result {
@@ -157,13 +159,14 @@ struct VaultView: View {
         .overlay {
             if showRevertAllConfirm {
                 RevertConfirmModal(
+                    repoID: repoID,
                     title: String(localized: "Revert All Changes"),
                     filename: nil,
                     files: sortedStatusEntries.map(\.path),
                     confirmLabel: String(localized: "Revert All"),
-                    onConfirm: {
+                    onConfirm: { stashFirst in
                         showRevertAllConfirm = false
-                        Task { await state.discardAllFileChanges(repoID: repoID) }
+                        Task { await state.discardChanges(repoID: repoID, paths: nil, stashFirst: stashFirst) }
                     },
                     onCancel: { showRevertAllConfirm = false }
                 )
@@ -171,15 +174,16 @@ struct VaultView: View {
             }
             if showRevertFileModal, let path = revertFilePath {
                 RevertConfirmModal(
+                    repoID: repoID,
                     title: String(localized: "Revert Changes"),
                     filename: URL(fileURLWithPath: path).lastPathComponent,
-                    files: [],
+                    files: [path],
                     confirmLabel: String(localized: "Revert"),
-                    onConfirm: {
+                    onConfirm: { stashFirst in
                         showRevertFileModal = false
                         let p = path
                         revertFilePath = nil
-                        Task { await state.discardFileChanges(repoID: repoID, path: p) }
+                        Task { await state.discardChanges(repoID: repoID, paths: [p], stashFirst: stashFirst) }
                     },
                     onCancel: {
                         showRevertFileModal = false
@@ -198,7 +202,7 @@ struct VaultView: View {
         }
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: MarketingCapture.showGitSheetNotification)) { _ in
-            showCommitSheet = true
+            showGitTools = true
         }
         .onReceive(NotificationCenter.default.publisher(for: MarketingCapture.showSettingsNotification)) { _ in
             showSettings = true
@@ -1065,25 +1069,9 @@ struct VaultView: View {
 
     // MARK: Files
 
+    /// The vault root listing, inline; folders push the full browser.
     private var filesTab: some View {
-        VStack(spacing: 0) {
-            NavigationLink(value: FileBrowserDestination(repoID: repoID, relativePath: "")) {
-                tideActionRow(icon: "doc.text",
-                              title: String(localized: "Browse Files"),
-                              subtitle: String(localized: "Create, rename, and delete files"))
-            }
-            .buttonStyle(.plain)
-            Rectangle().fill(Tide.line).frame(height: 1)
-            Button { openInFilesApp() } label: {
-                tideActionRow(icon: "folder",
-                              title: String(localized: "Open in Files"),
-                              subtitle: String(localized: "Open repository in Files app"))
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 4)
-        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        FileBrowserListing(repoID: repoID, relativePath: "")
     }
 
     // MARK: Git
@@ -1091,7 +1079,7 @@ struct VaultView: View {
     private var gitTab: some View {
         VStack(spacing: 0) {
             // Navigation stays available even while Git operations are disabled.
-            Button { showCommitSheet = true } label: {
+            Button { showGitTools = true } label: {
                 tideActionRow(icon: "wrench.and.screwdriver",
                               title: String(localized: "Git Tools"),
                               subtitle: String(localized: "Branches") + " · " + String(localized: "Stash") + " · " + String(localized: "Tags"))

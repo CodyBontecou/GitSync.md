@@ -18,7 +18,6 @@ final class SyncMDUITests: XCTestCase {
 
         tap("second-brain", in: app)
         openFilesTab(in: app)
-        tap("Browse Files", in: app)
         tap("projects", in: app)
         tap("mobile", in: app)
         tap("client", in: app)
@@ -67,10 +66,10 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(try gitToolsSnapshot() == before, "Opening dirty Git Tools must not stage or publish")
 
         tapFirstHittableButton(labeled: "Close", in: app)
-        tapWhenHittable(syncAction("Commit & Push", in: app), in: app, message: "Dirty Commit & Push should still open the sheet")
-        assertGitToolsSheet(in: app)
-        XCTAssertTrue(reveal(app.buttons["Stage all"], in: app), "Commit & Push should retain staging controls")
-        XCTAssertTrue(try gitToolsSnapshot() == before, "Commit & Push's navigation must not commit or push by itself")
+        tapWhenHittable(syncAction("Commit & Push", in: app), in: app, message: "Dirty Commit & Push should open the commit sheet")
+        XCTAssertTrue(app.staticTexts["commitSheet.title"].waitForExistence(timeout: 5), "Commit & Push opens the commit sheet")
+        XCTAssertTrue(app.buttons["Git Tools"].exists, "The commit sheet links back to Git Tools")
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Opening the commit sheet must not stage, commit or push by itself")
     }
 
     func testFileRevertThenPullToRefreshCompletesWithoutCancellationAlert() throws {
@@ -687,7 +686,6 @@ final class SyncMDUITests: XCTestCase {
 
         tap("second-brain", in: app)
         openFilesTab(in: app)
-        tap("Browse Files", in: app)
         tap("projects", in: app)
         tap("app-launch.md", in: app)
 
@@ -919,7 +917,6 @@ final class SyncMDUITests: XCTestCase {
             "Cloned repo should land in the vault view"
         )
         openFilesTab(in: app)
-        tap("Browse Files", in: app)
         XCTAssertTrue(
             app.staticTexts["README.md"].waitForExistence(timeout: 10),
             "File browser should list the cloned README.md"
@@ -1019,9 +1016,9 @@ final class SyncMDUITests: XCTestCase {
             app.staticTexts["This iPhone"].waitForExistence(timeout: 10),
             "This iPhone's version should be discoverable by label"
         )
+        // A file:// remote has no hosting service name, so its side reads "Remote".
         XCTAssertTrue(app.staticTexts["Remote"].exists, "Remote version should be discoverable by label")
-        XCTAssertTrue(app.staticTexts["your version"].exists, "Ours card should expose its subtitle")
-        XCTAssertTrue(app.staticTexts["remote version"].exists, "Theirs card should expose its subtitle")
+        XCTAssertTrue(app.buttons["Keep both"].exists, "Each conflicting section offers Keep both")
         XCTAssertTrue(app.buttons["Keep this iPhone's version"].exists, "Ours picker should be labelled")
         XCTAssertTrue(app.buttons["Edit by hand"].exists, "Manual resolution should stay available")
 
@@ -1065,11 +1062,15 @@ final class SyncMDUITests: XCTestCase {
             .completed,
             "Commit & Push should become enabled once the staged resolution is scanned"
         )
-        for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
-        commitPush.tap()
+        // Commit & push now opens the commit sheet; the Conflict Center
+        // lives in Git Tools.
+        openGitTab(in: app)
+        let tools = app.buttons["Git Tools"]
+        XCTAssertTrue(reveal(tools, in: app), "Git Tools should stay reachable from the Git tab")
+        tools.tap()
         XCTAssertTrue(
             app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 10),
-            "Commit & Push should open the Git control sheet"
+            "Git Tools should open the Git control sheet"
         )
 
         let allResolved = app.staticTexts["All conflicts resolved. Complete or abort the merge."]
@@ -1178,9 +1179,9 @@ final class SyncMDUITests: XCTestCase {
             app.staticTexts["This iPhone"].waitForExistence(timeout: 10),
             "This iPhone's version should be discoverable by label"
         )
+        // A file:// remote has no hosting service name, so its side reads "Remote".
         XCTAssertTrue(app.staticTexts["Remote"].exists, "Remote version should be discoverable by label")
-        XCTAssertTrue(app.staticTexts["your version"].exists, "Ours card should expose its subtitle")
-        XCTAssertTrue(app.staticTexts["remote version"].exists, "Theirs card should expose its subtitle")
+        XCTAssertTrue(app.buttons["Keep both"].exists, "Each conflicting section offers Keep both")
         XCTAssertTrue(app.buttons["Keep this iPhone's version"].exists, "Ours picker should be labelled")
         XCTAssertTrue(app.buttons["Edit by hand"].exists, "Manual resolution should stay available")
 
@@ -1223,11 +1224,14 @@ final class SyncMDUITests: XCTestCase {
             .completed,
             "Commit & Push row should become enabled once the staged resolution is scanned"
         )
-        for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
-        commitPush.tap()
+        // Commit & push opens the commit sheet; the Conflict Center lives in Git Tools.
+        openGitTab(in: app)
+        let tools = app.buttons["Git Tools"]
+        XCTAssertTrue(reveal(tools, in: app), "Git Tools should stay reachable from the Git tab")
+        tools.tap()
         XCTAssertTrue(
             app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 10),
-            "Commit & Push row should open the Git control sheet"
+            "Git Tools should open the Git control sheet"
         )
 
         // Rebase-flavored stable state: the Conflict Center reports all
@@ -1937,7 +1941,7 @@ final class SyncMDUITests: XCTestCase {
             .press(forDuration: 0.1, thenDragTo: scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85)))
     }
 
-    /// Vault screens group Browse Files under the Files tab.
+    /// The vault root listing lives inline under the Files tab.
     private func openFilesTab(in app: XCUIApplication) {
         let files = app.buttons["Files"].firstMatch
         if files.waitForExistence(timeout: 10) { files.tap() }

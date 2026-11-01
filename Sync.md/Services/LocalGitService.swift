@@ -5276,3 +5276,120 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         return count
     }
 }
+
+// MARK: - Tide: file history & commit lookup
+
+extension LocalGitService {
+    /// Commits that changed `path`, newest first. A commit counts when the
+    /// blob at `path` differs from its first parent's (adds and deletes too).
+    func fileHistory(path: String, limit: Int = 50) async throws -> [GitCommitSummary] {
+        let repoPath = self.localURL.path
+        let target = path.precomposedStringWithCanonicalMapping
+        let safeLimit = max(0, limit)
+
+        return try await Task.detached {
+            guard safeLimit > 0 else { return [] }
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var walk: OpaquePointer?
+            defer { if let walk { git_revwalk_free(walk) } }
+            try git2Check(git_revwalk_new(&walk, repo), context: "Create revwalk")
+            git_revwalk_sorting(walk, UInt32(GIT_SORT_TOPOLOGICAL.rawValue | GIT_SORT_TIME.rawValue))
+            git_revwalk_simplify_first_parent(walk)
+
+            let pushHeadCode = git_revwalk_push_head(walk)
+            if pushHeadCode == GIT_EUNBORNBRANCH.rawValue || pushHeadCode == GIT_ENOTFOUND.rawValue {
+                return []
+            }
+            try git2Check(pushHeadCode, context: "Push HEAD to revwalk")
+
+            /// Blob OID of `target` in `commit`'s tree, nil when absent.
+            func blobOID(in commit: OpaquePointer?) -> git_oid? {
+                guard let commit else { return nil }
+                var tree: OpaquePointer?
+                defer { if let tree { git_tree_free(tree) } }
+                guard git_commit_tree(&tree, commit) == 0 else { return nil }
+                var entry: OpaquePointer?
+                defer { if let entry { git_tree_entry_free(entry) } }
+                guard git_tree_entry_bypath(&entry, tree, target) == 0,
+                      let oid = git_tree_entry_id(entry) else { return nil }
+                return oid.pointee
+            }
+
+            var summaries: [GitCommitSummary] = []
+            var oid = git_oid()
+            var scanned = 0
+            while summaries.count < safeLimit, scanned < 5000 {
+                let next = git_revwalk_next(&oid, walk)
+                if next == GIT_ITEROVER.rawValue { break }
+                try git2Check(next, context: "Read next commit from history")
+                scanned += 1
+
+                var commit: OpaquePointer?
+                defer { if let commit { git_commit_free(commit) } }
+                var oidCopy = oid
+                guard git_commit_lookup(&commit, repo, &oidCopy) == 0 else { continue }
+
+                var parent: OpaquePointer?
+                defer { if let parent { git_commit_free(parent) } }
+                if git_commit_parentcount(commit) > 0 { _ = git_commit_parent(&parent, commit, 0) }
+
+                let changed: Bool
+                switch (blobOID(in: commit), blobOID(in: parent)) {
+                case (nil, nil): changed = false
+                case (var a?, var b?): changed = git_oid_equal(&a, &b) == 0
+                default: changed = true
+                }
+                guard changed else { continue }
+
+                let fullMessage = git_commit_message(commit).map { String(cString: $0) } ?? ""
+                let author = git_commit_author(commit)
+                let hex = oidToHex(&oidCopy)
+                summaries.append(GitCommitSummary(
+                    oid: hex,
+                    shortOID: String(hex.prefix(7)),
+                    message: fullMessage.components(separatedBy: .newlines).first ?? fullMessage,
+                    authorName: author?.pointee.name.map { String(cString: $0) } ?? "",
+                    authorEmail: author?.pointee.email.map { String(cString: $0) } ?? "",
+                    authoredDate: Self.dateFromSignature(author)
+                ))
+            }
+            return summaries
+        }.value
+    }
+
+    /// The commit a revision resolves to ("MERGE_HEAD", "@{upstream}", …), or nil.
+    func commitSummary(revision: String) async throws -> GitCommitSummary? {
+        let repoPath = self.localURL.path
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var object: OpaquePointer?
+            defer { if let object { git_object_free(object) } }
+            guard git_revparse_single(&object, repo, revision) == 0 else { return nil }
+            var commitObject: OpaquePointer?
+            defer { if let commitObject { git_object_free(commitObject) } }
+            guard git_object_peel(&commitObject, object, GIT_OBJECT_COMMIT) == 0,
+                  let oidPtr = git_object_id(commitObject) else { return nil }
+            var oid = oidPtr.pointee
+            var commit: OpaquePointer?
+            defer { if let commit { git_commit_free(commit) } }
+            guard git_commit_lookup(&commit, repo, &oid) == 0 else { return nil }
+            let fullMessage = git_commit_message(commit).map { String(cString: $0) } ?? ""
+            let author = git_commit_author(commit)
+            let hex = oidToHex(&oid)
+            return GitCommitSummary(
+                oid: hex,
+                shortOID: String(hex.prefix(7)),
+                message: fullMessage.components(separatedBy: .newlines).first ?? fullMessage,
+                authorName: author?.pointee.name.map { String(cString: $0) } ?? "",
+                authorEmail: author?.pointee.email.map { String(cString: $0) } ?? "",
+                authoredDate: Self.dateFromSignature(author)
+            )
+        }.value
+    }
+}

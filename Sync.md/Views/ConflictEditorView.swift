@@ -25,6 +25,21 @@ struct ConflictEditorView: View {
     @State private var showResolveConfirm = false
     @State private var showResolved = false
     @State private var showManualEditor = false
+    /// diff3 split of the file: stable runs plus the hunks both sides edited.
+    @State private var chunks: [TideTextDiff.Chunk] = []
+    @State private var choices: [Int: TideTextDiff.Choice] = [:]
+    @State private var remoteCommit: GitCommitSummary?
+    @State private var localModified: Date?
+    @State private var showAbortConfirm = false
+
+    private var hunks: [TideTextDiff.ConflictHunk] {
+        chunks.compactMap { if case .conflict(let hunk) = $0 { return hunk } else { return nil } }
+    }
+    /// Section-by-section resolution is available.
+    private var usesHunks: Bool { !hunks.isEmpty }
+    private var allHunksChosen: Bool { hunks.allSatisfy { choices[$0.id] != nil } }
+    private var remoteLabel: String { state.remoteHostLabel(repoID: repoID) }
+    private var sessionKind: ConflictSessionKind { state.conflictSessionByRepo[repoID]?.kind ?? .none }
 
     init(repoID: UUID, path: String) {
         self.repoID = repoID
@@ -42,6 +57,7 @@ struct ConflictEditorView: View {
     private var canResolve: Bool {
         guard let detail else { return false }
         if oursIsBinary || theirsIsBinary { return false }
+        if usesHunks && !showManualEditor && !allHunksChosen { return false }
         if detail.isRenameRename {
             return !keepPath.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
@@ -90,18 +106,48 @@ struct ConflictEditorView: View {
                 progressDashes
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showResolveConfirm = true
-                } label: {
-                    Text(String(localized: "Resolve"))
-                        .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
-                        .foregroundStyle(canResolve ? Tide.ink : Tide.inkFaint)
-                        .frame(minWidth: 44, minHeight: 44)
-                        .contentShape(Rectangle())
+                HStack(spacing: 2) {
+                    if sessionKind == .merge || sessionKind == .rebase {
+                        Button {
+                            showAbortConfirm = true
+                        } label: {
+                            Text(String(localized: "Abort"))
+                                .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                                .foregroundStyle(Tide.inkMid)
+                                .frame(minWidth: 44, minHeight: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(state.isSyncing)
+                        .accessibilityHint(sessionKind == .rebase
+                            ? String(localized: "Stops the rebase and puts your branch back")
+                            : String(localized: "Stops the merge and puts your branch back"))
+                    }
+                    Button {
+                        showResolveConfirm = true
+                    } label: {
+                        Text(String(localized: "Resolve"))
+                            .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(canResolve ? Tide.ink : Tide.inkFaint)
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!canResolve || state.isSyncing)
                 }
-                .buttonStyle(.plain)
-                .disabled(!canResolve || state.isSyncing)
             }
+        }
+        .confirmationDialog(
+            sessionKind == .rebase ? String(localized: "Abort the rebase?") : String(localized: "Abort the merge?"),
+            isPresented: $showAbortConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(sessionKind == .rebase ? String(localized: "Abort rebase") : String(localized: "Abort merge"), role: .destructive) {
+                Task { await performAbort() }
+            }
+            Button(String(localized: "Keep resolving"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "Every file goes back to how it was before the remote changes came in. Nothing is lost on the remote."))
         }
         .task { await loadDetail() }
         .overlay {
@@ -158,6 +204,20 @@ struct ConflictEditorView: View {
 
                     if oursIsBinary || theirsIsBinary {
                         binaryNotice
+                    } else if usesHunks {
+                        ForEach(hunks) { hunk in
+                            hunkSection(hunk, detail: detail)
+                        }
+                        outlinePill(String(localized: "Edit by hand")) {
+                            resultText = assembledText
+                            showManualEditor = true
+                        }
+                        .padding(.top, 4)
+                        if showManualEditor {
+                            resultEditor
+                                .padding(.top, 4)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                        }
                     } else {
                         // Side by side when there's room (iPad, iPhone Duo open).
                         let cards = horizontalSizeClass == .regular
@@ -216,6 +276,15 @@ struct ConflictEditorView: View {
 
     private func headline(for detail: ConflictFileDetail) -> String {
         if detail.isRenameRename { return String(localized: "Renamed two different ways.") }
+        if usesHunks && !oursIsBinary && !theirsIsBinary {
+            if hunks.count == 1 {
+                if let heading = hunks[0].heading {
+                    return String(localized: "Both sides edited “\(TideTextDiff.headingTitle(heading))”.")
+                }
+                return String(localized: "Both sides edited the same lines.")
+            }
+            return String(localized: "Both sides edited \(hunks.count) sections.")
+        }
         if detail.isDeleteModify { return String(localized: "Deleted on one side, edited on the other.") }
         if detail.ancestor == nil { return String(localized: "Added on both sides.") }
         return String(localized: "Both sides edited this file.")
@@ -242,15 +311,13 @@ struct ConflictEditorView: View {
                 .frame(width: 9, height: 9)
                 .accessibilityHidden(true)
 
-                Text(isOurs ? String(localized: "This iPhone") : String(localized: "Remote"))
+                Text(isOurs ? String(localized: "This iPhone") : remoteLabel)
                     .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
                     .foregroundStyle(Tide.ink)
-                Text(isOurs ? String(localized: "your version") : String(localized: "remote version"))
-                    .font(TideFont.sans(13, relativeTo: .footnote))
-                    .foregroundStyle(Tide.inkFaint)
-                    .lineLimit(1)
                 Spacer(minLength: 8)
-                Text(sideMeta(fileSide, text: text, detail: detail))
+                Text(detail.isRenameRename || fileSide == nil
+                     ? sideMeta(fileSide, text: text, detail: detail)
+                     : timeMeta(isOurs ? .ours : .theirs))
                     .font(TideFont.mono(11))
                     .foregroundStyle(Tide.inkFaint)
                     .lineLimit(1)
@@ -320,6 +387,169 @@ struct ConflictEditorView: View {
     private func previewText(_ side: ConflictFileSide?, text: String) -> String {
         if side == nil { return String(localized: "(deleted on this side)") }
         return text.isEmpty ? String(localized: "(empty)") : text
+    }
+
+    /// "edited 40m ago" for this iPhone, "from Cody · 14m ago" for the remote.
+    private func timeMeta(_ side: Side) -> String {
+        switch side {
+        case .ours:
+            guard let localModified else { return String(localized: "your version") }
+            return String(localized: "edited \(relativeTime(localModified))")
+        case .theirs:
+            guard let remoteCommit else { return String(localized: "remote version") }
+            let who = remoteCommit.authorName.isEmpty ? remoteCommit.shortOID : remoteCommit.authorName
+            return String(localized: "from \(who)") + " · " + relativeTime(remoteCommit.authoredDate)
+        }
+    }
+
+    private func relativeTime(_ date: Date) -> String {
+        if date.timeIntervalSinceNow > -60 { return String(localized: "just now") }
+        let fmt = RelativeDateTimeFormatter()
+        fmt.unitsStyle = .abbreviated
+        return fmt.localizedString(for: date, relativeTo: Date())
+    }
+
+    // MARK: - Hunks
+
+    /// One conflicting section: both versions of just those lines, words
+    /// that differ highlighted, and a per-section choice.
+    private func hunkSection(_ hunk: TideTextDiff.ConflictHunk, detail: ConflictFileDetail) -> some View {
+        let runs = TideTextDiff.blockRuns(old: hunk.theirs, new: hunk.ours)
+        let choice = choices[hunk.id]
+        return VStack(alignment: .leading, spacing: 10) {
+            if hunks.count > 1 {
+                HStack(spacing: 6) {
+                    TideSectionLabel(title: String(localized: "Section \(hunk.id + 1) of \(hunks.count)"))
+                    if let heading = hunk.heading {
+                        Text("· " + TideTextDiff.headingTitle(heading))
+                            .font(TideFont.section)
+                            .foregroundStyle(Tide.inkFaint)
+                            .lineLimit(1)
+                    }
+                    Spacer()
+                    Text(String(localized: "line \(hunk.oursStartLine)"))
+                        .font(TideFont.section)
+                        .foregroundStyle(Tide.inkFaint)
+                }
+                .padding(.horizontal, 4)
+                .padding(.top, hunk.id == 0 ? 0 : 8)
+            }
+            hunkCard(.ours, hunk: hunk, runs: runs.new, selected: choice == .ours)
+            hunkCard(.theirs, hunk: hunk, runs: runs.old, selected: choice == .theirs)
+            outlinePill(choice == .both ? String(localized: "✓ Keeping both") : String(localized: "Keep both")) {
+                choose(.both, for: hunk)
+            }
+        }
+    }
+
+    private func hunkCard(_ side: Side, hunk: TideTextDiff.ConflictHunk, runs: [(String, Bool)], selected: Bool) -> some View {
+        let isOurs = side == .ours
+        let tint = isOurs ? Tide.ahead : Tide.behind
+        let lines = isOurs ? hunk.ours : hunk.theirs
+        // Show the section heading above the hunk when it isn't part of it.
+        let context = hunk.heading.flatMap { lines.contains($0) ? nil : $0 }
+
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Group {
+                    if isOurs { Circle().fill(tint) } else { Circle().strokeBorder(tint, lineWidth: 2) }
+                }
+                .frame(width: 9, height: 9)
+                .accessibilityHidden(true)
+                Text(isOurs ? String(localized: "This iPhone") : remoteLabel)
+                    .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.ink)
+                Spacer(minLength: 8)
+                Text(timeMeta(side))
+                    .font(TideFont.mono(11))
+                    .foregroundStyle(Tide.inkFaint)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+
+            Group {
+                if lines.isEmpty {
+                    Text(isOurs ? String(localized: "(removed on this iPhone)") : String(localized: "(removed on \(remoteLabel))"))
+                        .foregroundStyle(Tide.inkFaint)
+                } else {
+                    (context.map { Text($0 + "\n").foregroundColor(Tide.inkMid) } ?? Text(""))
+                        + Text(highlighted(runs, tint: tint))
+                }
+            }
+            .font(TideFont.mono(12.5, relativeTo: .footnote))
+            .lineSpacing(3)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(tint.opacity(0.07)))
+            .textSelection(.enabled)
+
+            Button {
+                choose(isOurs ? .ours : .theirs, for: hunk)
+            } label: {
+                HStack(spacing: 8) {
+                    if selected {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 13, weight: .bold))
+                            .accessibilityHidden(true)
+                    }
+                    Text(String(localized: "Keep this version"))
+                        .font(TideFont.sans(15, .semibold))
+                }
+                .foregroundStyle(selected ? Tide.paper : Tide.ink)
+                .frame(maxWidth: .infinity, minHeight: 46)
+                .background(Capsule().fill(selected ? Tide.ink : Color.clear))
+                .overlay(Capsule().strokeBorder(selected ? Color.clear : Color.brutalBorderSoft, lineWidth: 1))
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(state.isSyncing)
+            .accessibilityLabel(isOurs
+                ? String(localized: "Keep this iPhone's version")
+                : String(localized: "Keep the remote version"))
+            .accessibilityAddTraits(selected ? .isSelected : [])
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        .overlay(
+            RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous)
+                .strokeBorder(selected ? Tide.ink : Color.clear, lineWidth: 2)
+        )
+    }
+
+    private func highlighted(_ runs: [(String, Bool)], tint: Color) -> AttributedString {
+        var result = AttributedString()
+        for (text, changed) in runs {
+            var run = AttributedString(text)
+            run.foregroundColor = Tide.ink
+            if changed, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                run.backgroundColor = tint.opacity(0.22)
+            }
+            result += run
+        }
+        return result
+    }
+
+    private var assembledText: String {
+        TideTextDiff.assemble(chunks, choices: choices, trailingNewline: oursText.hasSuffix("\n") || theirsText.hasSuffix("\n"))
+    }
+
+    private func choose(_ choice: TideTextDiff.Choice, for hunk: TideTextDiff.ConflictHunk) {
+        choices[hunk.id] = choice
+        resultText = assembledText
+        if allHunksChosen && !showManualEditor && canResolve {
+            showResolveConfirm = true
+        }
+    }
+
+    private func performAbort() async {
+        if sessionKind == .rebase {
+            await state.abortRebase(repoID: repoID)
+        } else {
+            await state.abortMerge(repoID: repoID)
+        }
+        if state.conflictSessionByRepo[repoID]?.isActive != true { dismiss() }
     }
 
     // MARK: - Keep both / Edit by hand
@@ -528,6 +758,19 @@ struct ConflictEditorView: View {
             if result.isRenameRename, let ours = result.ours {
                 keepPath = ours.path
             }
+            // Split a text/text conflict into the sections both sides edited.
+            if result.isContentConflict,
+               let ours = result.ours, !ours.isBinary, let oursString = ours.content.flatMap({ String(data: $0, encoding: .utf8) }),
+               let theirs = result.theirs, !theirs.isBinary, let theirsString = theirs.content.flatMap({ String(data: $0, encoding: .utf8) }) {
+                let base = result.ancestor?.content.flatMap { String(data: $0, encoding: .utf8) }
+                chunks = TideTextDiff.merge(base: base, ours: oursString, theirs: theirsString)
+            }
+            let fileURL = state.vaultURL(for: repoID).appendingPathComponent(path)
+            localModified = (try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+            if state.conflictSessionByRepo[repoID] == nil {
+                await state.loadConflictSession(repoID: repoID)
+            }
+            remoteCommit = await state.remoteSideCommit(repoID: repoID)
             isLoading = false
         } else {
             isLoading = false

@@ -2043,7 +2043,7 @@ final class AppState {
         syncingRepoID = nil
     }
 
-    private func markRepositoryMutated(repoID: UUID) {
+    func markRepositoryMutated(repoID: UUID) {
         repoMutationGeneration[repoID, default: 0] += 1
     }
 
@@ -3987,7 +3987,7 @@ final class AppState {
         pullOutcomeByRepo[repoID] = PullOutcomeState(kind: kind, message: message, date: Date())
     }
 
-    private func clearCommitHistoryCache(for repoID: UUID) {
+    func clearCommitHistoryCache(for repoID: UUID) {
         commitHistoryByRepo.removeValue(forKey: repoID)
         commitHistoryHasMoreByRepo.removeValue(forKey: repoID)
         commitDetailByRepo.removeValue(forKey: repoID)
@@ -3995,7 +3995,7 @@ final class AppState {
 
     // MARK: - Error Handling
 
-    private func showError(message: String, category: String = "general") {
+    func showError(message: String, category: String = "general") {
         lastError = message
         showError = true
         DebugLogger.shared.error(category, message)
