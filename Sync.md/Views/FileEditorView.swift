@@ -27,6 +27,7 @@ struct FileEditorView: View {
     @State private var showRenameModal = false
     @State private var renameText: String = ""
     @State private var showSaveToast = false
+    @State private var showCommitSheet = false
 
     init(repoID: UUID, fileURL: URL) {
         self.repoID = repoID
@@ -38,15 +39,42 @@ struct FileEditorView: View {
     private var isDirty: Bool { content != originalContent }
     private var language: SyntaxLanguage { SyntaxLanguage.detect(fileExtension: liveURL.pathExtension) }
 
+    /// Path of the open file relative to the vault root, symlinks resolved on
+    /// both sides (the vault URL comes back through /var -> /private/var).
+    private var relativePath: String? {
+        let base = state.vaultURL(for: repoID).resolvingSymlinksInPath().standardizedFileURL.pathComponents
+        let file = liveURL.resolvingSymlinksInPath().standardizedFileURL.pathComponents
+        guard file.count > base.count, Array(file.prefix(base.count)) == base else { return nil }
+        return file.dropFirst(base.count).joined(separator: "/")
+    }
+
+    /// "VoxVault / daily" — where this file lives.
+    private var locationLine: String {
+        let vault = state.repo(id: repoID)?.displayName ?? ""
+        guard let rel = relativePath else { return vault }
+        let folder = (rel as NSString).deletingLastPathComponent
+        return folder.isEmpty ? vault : "\(vault) / \(folder)"
+    }
+
+    /// True when git sees this file as changed since the last commit.
+    private var hasUncommittedChanges: Bool {
+        guard let rel = relativePath?.precomposedStringWithCanonicalMapping else { return false }
+        return (state.statusEntriesByRepo[repoID] ?? []).contains { $0.path == rel }
+    }
+
+    private var showsSyncPill: Bool {
+        !isBinary && !isDirty && (showSaveToast || hasUncommittedChanges)
+    }
+
     var body: some View {
         ZStack {
-            Color.brutalBg.ignoresSafeArea()
+            Tide.card.ignoresSafeArea()
 
             if isBinary {
                 binaryState
             } else {
                 CodeEditorView(text: $content, language: language)
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal, 4)
             }
 
             if showDeleteConfirm {
@@ -73,67 +101,84 @@ struct FileEditorView: View {
         }
         .overlay(alignment: .bottom) {
             Group {
-                if showSaveToast {
-                    BToast(message: String(localized: "Saved"), systemImage: "checkmark")
+                if showsSyncPill && !showDeleteConfirm && !showRenameModal {
+                    syncPill
+                        .padding(.horizontal, Tide.gutter)
+                        .padding(.bottom, 14)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .allowsHitTesting(false)
                 }
             }
-            .animation(.spring(duration: 0.4, bounce: 0.15), value: showSaveToast)
+            .animation(.spring(duration: 0.4, bounce: 0.15), value: showsSyncPill)
         }
         .animation(.easeOut(duration: 0.15), value: showDeleteConfirm)
         .animation(.easeOut(duration: 0.15), value: showRenameModal)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(fileName.uppercased())
-                    .bType(.monoCaption, weight: .black)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(2)
-                    .lineLimit(1)
+                VStack(spacing: 1) {
+                    Text(fileName)
+                        .font(TideFont.sans(15, .semibold, relativeTo: .headline))
+                        .foregroundStyle(Tide.ink)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                    if !locationLine.isEmpty {
+                        Text(locationLine)
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(Tide.inkFaint)
+                            .lineLimit(1)
+                            .truncationMode(.head)
+                    }
+                }
+                .accessibilityElement(children: .combine)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 16) {
+                HStack(spacing: 4) {
                     if !isBinary {
                         Button {
                             performSave()
                         } label: {
                             Text("Save")
-                                .bType(.monoCaption)
-                                .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
-                                // 44x44pt hit target, glyph stays compact.
+                                .font(TideFont.sans(13, .semibold, relativeTo: .subheadline))
+                                .foregroundStyle(isDirty ? Tide.paper : Tide.inkFaint)
+                                .padding(.horizontal, 14)
+                                .frame(height: 34)
+                                .background(Capsule().fill(isDirty ? Tide.ink : Color.clear))
+                                .overlay(
+                                    Capsule().strokeBorder(isDirty ? Color.clear : Color.brutalBorderSoft, lineWidth: 1)
+                                )
+                                // 44x44pt hit target, pill stays compact.
                                 .frame(minWidth: 44, minHeight: 44)
                                 .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .disabled(!isDirty || isSaving)
                     }
-                    Button {
-                        renameText = fileName
-                        showRenameModal = true
+                    Menu {
+                        Button {
+                            renameText = fileName
+                            showRenameModal = true
+                        } label: {
+                            Label(String(localized: "Rename File"), systemImage: "pencil")
+                        }
+                        Button(role: .destructive) {
+                            showDeleteConfirm = true
+                        } label: {
+                            Label(String(localized: "Delete File"), systemImage: "trash")
+                        }
                     } label: {
-                        Image(systemName: "pencil")
-                            .bType(.mono, weight: .semibold)
-                            .foregroundStyle(Color.brutalText)
+                        Image(systemName: "ellipsis")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundStyle(Tide.ink)
                             // Icon-only toolbar action: 44x44pt hit target.
                             .frame(width: 44, height: 44)
                             .contentShape(Rectangle())
+                            .accessibilityHidden(true)
                     }
-                    .accessibilityLabel(String(localized: "Rename File"))
-                    Button {
-                        showDeleteConfirm = true
-                    } label: {
-                        Image(systemName: "trash")
-                            .bType(.mono, weight: .semibold)
-                            .foregroundStyle(Color.brutalError)
-                            // Icon-only toolbar action: 44x44pt hit target.
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .accessibilityLabel(String(localized: "Delete File"))
+                    .accessibilityLabel(String(localized: "More file options"))
                 }
             }
         }
+        .sheet(isPresented: $showCommitSheet) { GitControlSheet(repoID: repoID) }
         .onAppear { loadContent() }
         .alert(
             String(localized: "Unable to Update File"),
@@ -148,24 +193,68 @@ struct FileEditorView: View {
         }
     }
 
+    // MARK: - Saved pill
+
+    /// Dark floating pill: saved state, plus a Commit shortcut while this
+    /// file has changes git hasn't committed yet.
+    private var syncPill: some View {
+        HStack(spacing: 10) {
+            Circle()
+                .fill(hasUncommittedChanges ? Tide.heroAhead : Tide.heroSynced)
+                .frame(width: 8, height: 8)
+                .accessibilityHidden(true)
+            Text(hasUncommittedChanges
+                 ? String(localized: "Saved · not committed")
+                 : String(localized: "Saved"))
+                .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                .foregroundStyle(Tide.heroText)
+                .lineLimit(1)
+            if hasUncommittedChanges {
+                Button {
+                    showCommitSheet = true
+                } label: {
+                    Text(String(localized: "Commit"))
+                        .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.heroBg)
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: 38)
+                        .background(Capsule().fill(Tide.heroText))
+                        .frame(minHeight: 44)
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.leading, 16)
+        .padding(.trailing, hasUncommittedChanges ? 4 : 16)
+        .frame(minHeight: 50)
+        .background(Capsule().fill(Tide.heroBg))
+        .shadow(color: .black.opacity(0.22), radius: 15, y: 10)
+        .accessibilityElement(children: .contain)
+    }
+
     // MARK: - Binary Fallback
 
     private var binaryState: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
             Spacer()
-            // Decorative emoji glyph (lock ornament, carries no information)
-            // — fixed size per Issue #16's decorative allowance.
-            Text("🔒")
-                .font(.system(size: 44))
+            Image(systemName: "lock")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(Tide.inkMid)
+                .frame(width: 48, height: 48)
+                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Tide.well))
+                .accessibilityHidden(true)
+                .padding(.bottom, 16)
             Text("Binary File")
-                .bType(.mono, weight: .bold)
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
+                .tideDisplay(26)
             Text("This file cannot be edited as text")
-                .bType(.monoCaption, weight: .regular)
-                .foregroundStyle(Color.brutalTextFaint)
+                .font(TideFont.sans(15, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
             Spacer()
         }
+        .padding(.horizontal, 32)
     }
 
     // MARK: - Operations

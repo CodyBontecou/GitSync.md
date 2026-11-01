@@ -12,28 +12,28 @@ struct SyntaxTheme {
     let function_: UIColor
     let property: UIColor
 
-    // VSCode Dark+
+    // Tide dark — ink on the dark card, state hues lifted for contrast.
     static let dark = SyntaxTheme(
-        plain:     .vsHex(0xD4D4D4),
-        keyword:   .vsHex(0x569CD6),
-        string:    .vsHex(0xCE9178),
-        comment:   .vsHex(0x6A9955),
-        number:    .vsHex(0xB5CEA8),
-        type:      .vsHex(0x4EC9B0),
-        function_: .vsHex(0xDCDCAA),
-        property:  .vsHex(0x9CDCFE)
+        plain:     .vsHex(0xF2F1EC),
+        keyword:   .vsHex(0x7C95FF),
+        string:    .vsHex(0x5BC489),
+        comment:   .vsHex(0x8C8C94),
+        number:    .vsHex(0xFF8A4C),
+        type:      .vsHex(0xC6A0F0),
+        function_: .vsHex(0xE8C27A),
+        property:  .vsHex(0xA9B8FF)
     )
 
-    // VSCode Light+
+    // Tide light — ink on white, built from the Tide state colors.
     static let light = SyntaxTheme(
-        plain:     .vsHex(0x000000),
-        keyword:   .vsHex(0x0000FF),
-        string:    .vsHex(0xA31515),
-        comment:   .vsHex(0x008000),
-        number:    .vsHex(0x098658),
-        type:      .vsHex(0x267F99),
-        function_: .vsHex(0x795E26),
-        property:  .vsHex(0x001080)
+        plain:     .vsHex(0x111113),
+        keyword:   .vsHex(0x2D5BFF),
+        string:    .vsHex(0x17703F),
+        comment:   .vsHex(0x6B6B72),
+        number:    .vsHex(0xB4410E),
+        type:      .vsHex(0x7A3EB1),
+        function_: .vsHex(0x8A5A00),
+        property:  .vsHex(0x1C3FCC)
     )
 }
 

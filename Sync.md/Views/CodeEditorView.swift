@@ -22,13 +22,22 @@ struct CodeEditorView: UIViewRepresentable {
         tv.smartQuotesType = .no
         tv.smartInsertDeleteType = .no
         tv.backgroundColor = .clear
-        tv.textContainerInset = UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
+        tv.tintColor = UIColor(Tide.behind)
+        // Bottom inset leaves room for the editor's floating saved pill.
+        tv.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 88, right: 12)
         return tv
     }
 
     func updateUIView(_ uiView: UITextView, context: Context) {
         let coord = context.coordinator
         coord.parent = self
+
+        // A rename can turn a note into (or out of) Markdown.
+        let wantsBar = language == .markdown
+        if wantsBar != (uiView.inputAccessoryView is MarkdownAccessoryBar) {
+            uiView.inputAccessoryView = wantsBar ? MarkdownAccessoryBar(textView: uiView) : nil
+            uiView.reloadInputViews()
+        }
 
         let textChanged = uiView.text != text
         let schemeChanged = coord.lastColorScheme != colorScheme
@@ -126,5 +135,128 @@ struct CodeEditorView: UIViewRepresentable {
             debounce = item
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: item)
         }
+    }
+}
+
+// MARK: - Markdown accessory bar
+
+/// Tide keyboard bar for Markdown files: one-tap heading, checklist, wiki
+/// link, bold, code and indent. Edits go through UITextInput so undo works,
+/// and the delegate is notified so the binding and highlighting follow.
+private final class MarkdownAccessoryBar: UIView {
+    private weak var textView: UITextView?
+
+    private enum Action {
+        case linePrefix(String)
+        case wrap(String, String)
+        case insert(String)
+        case dismiss
+    }
+
+    init(textView: UITextView) {
+        self.textView = textView
+        super.init(frame: CGRect(x: 0, y: 0, width: 320, height: 56))
+        autoresizingMask = .flexibleWidth
+        backgroundColor = UIColor(Tide.well)
+
+        let scroll = UIScrollView()
+        scroll.showsHorizontalScrollIndicator = false
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(scroll)
+
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 6
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        scroll.addSubview(stack)
+
+        let items: [(String, String, Action, Bool)] = [
+            ("#", String(localized: "Heading"), .linePrefix("# "), true),
+            ("[ ]", String(localized: "Checklist item"), .linePrefix("- [ ] "), true),
+            ("[[ ]]", String(localized: "Wiki link"), .wrap("[[", "]]"), true),
+            ("B", String(localized: "Bold"), .wrap("**", "**"), false),
+            ("`", String(localized: "Code"), .wrap("`", "`"), true),
+            ("⇥", String(localized: "Indent"), .insert("\t"), true),
+        ]
+        for (title, label, action, mono) in items {
+            stack.addArrangedSubview(makeButton(title: title, label: label, mono: mono, action: action))
+        }
+
+        let done = makeButton(title: nil, label: String(localized: "Hide keyboard"), mono: false, action: .dismiss)
+        addSubview(done)
+
+        NSLayoutConstraint.activate([
+            scroll.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scroll.topAnchor.constraint(equalTo: topAnchor),
+            scroll.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scroll.trailingAnchor.constraint(equalTo: done.leadingAnchor, constant: -6),
+            done.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            done.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            stack.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 10),
+            stack.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -10),
+            stack.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 8),
+            stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -8),
+            stack.heightAnchor.constraint(equalTo: scroll.frameLayoutGuide.heightAnchor, constant: -16),
+        ])
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    private func makeButton(title: String?, label: String, mono: Bool, action: Action) -> UIButton {
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = UIColor(Tide.card)
+        config.baseForegroundColor = UIColor(Tide.ink)
+        config.background.cornerRadius = 10
+        config.cornerStyle = .fixed
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        if let title {
+            let font: UIFont = mono
+                ? (UIFont(name: "GeistMono-SemiBold", size: 14) ?? .monospacedSystemFont(ofSize: 14, weight: .semibold))
+                : (UIFont(name: "Geist-Bold", size: 15) ?? .systemFont(ofSize: 15, weight: .bold))
+            config.attributedTitle = AttributedString(title, attributes: AttributeContainer([.font: font]))
+        } else {
+            config.image = UIImage(systemName: "keyboard.chevron.compact.down")
+            config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 15, weight: .semibold)
+        }
+
+        let button = UIButton(configuration: config, primaryAction: UIAction { [weak self] _ in
+            self?.perform(action)
+        })
+        button.accessibilityLabel = label
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(greaterThanOrEqualToConstant: 44),
+            button.heightAnchor.constraint(equalToConstant: 40),
+        ])
+        return button
+    }
+
+    private func perform(_ action: Action) {
+        guard let tv = textView else { return }
+        let ns = (tv.text ?? "") as NSString
+        let selection = tv.selectedRange
+
+        switch action {
+        case .dismiss:
+            tv.resignFirstResponder()
+            return
+        case .insert(let text):
+            tv.insertText(text)
+        case .linePrefix(let prefix):
+            let line = ns.lineRange(for: NSRange(location: selection.location, length: 0))
+            guard let start = tv.position(from: tv.beginningOfDocument, offset: line.location),
+                  let range = tv.textRange(from: start, to: start) else { return }
+            tv.replace(range, withText: prefix)
+            tv.selectedRange = NSRange(location: selection.location + (prefix as NSString).length,
+                                       length: selection.length)
+        case .wrap(let open, let close):
+            let selected = ns.substring(with: selection)
+            guard let range = tv.selectedTextRange else { return }
+            tv.replace(range, withText: open + selected + close)
+            tv.selectedRange = NSRange(location: selection.location + (open as NSString).length,
+                                       length: (selected as NSString).length)
+        }
+        tv.delegate?.textViewDidChange?(tv)
     }
 }
