@@ -40,6 +40,11 @@ enum SyncRuntimeLocator {
         await state.setBackgroundSync(enabled: enabled)
     }
 
+    /// Opens a vault the same way Home banners and widgets do.
+    static func openVault(repoID: UUID) {
+        state?.vaultNavigationRequest = repoID
+    }
+
     /// Navigates the app to a repository (used by push-notification taps).
     static func reveal(repoID: UUID) {
         state?.callbackNavigateToRepoID = repoID

@@ -156,6 +156,9 @@
       },
       "shouldTranslate": false
     },
+    "\n": {},
+    " from %@": {},
+    " · ": {},
     "!": {
       "localizations": {
         "ar": {
@@ -309,7 +312,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "%@": {
       "localizations": {
@@ -788,6 +792,12 @@
         }
       }
     },
+    "%@ already exists here. Try another name.": {},
+    "%@ already exists in %@. Try another name.": {},
+    "%@ becomes a plain folder. Obsidian keeps working; GitSync.md stops syncing it.": {},
+    "%@ commits": {},
+    "%@ error: %@": {},
+    "%@ failed": {},
     "%@ failed with HTTP %lld.": {
       "localizations": {
         "ar": {
@@ -948,6 +958,7 @@
         }
       }
     },
+    "%@ has new commits": {},
     "%@ has not been cloned yet. Open GitSync.md and clone it first.": {
       "localizations": {
         "ar": {
@@ -1102,6 +1113,18 @@
         }
       }
     },
+    "%@ is a plain folder now. Its Git history is in the zip below. The GitHub repository stays on GitHub.": {},
+    "%@ is a plain folder now. Its local Git history was deleted without a backup. The GitHub repository stays on GitHub.": {},
+    "%@ is current": {},
+    "%@ is here": {},
+    "%@ moved on while you were writing.": {},
+    "%@ not checked": {},
+    "%@ notes": {},
+    "%@ of %llds budget": {},
+    "%@ skipped": {},
+    "%@ skipped: %@": {},
+    "%@ was updated": {},
+    "%@ · %@": {},
     "%@ · %@ changes": {
       "localizations": {
         "ar": {
@@ -1262,6 +1285,10 @@
         }
       }
     },
+    "%@ · %@ · %@": {},
+    "%@ · pulled %lld, pushed %lld · %@": {},
+    "%@ · syncs when you're back online": {},
+    "%@ → %@": {},
     "%@, %@ %@": {
       "localizations": {
         "ar": {
@@ -1415,7 +1442,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "%@, %@ %@, %@": {
       "localizations": {
@@ -1570,8 +1598,10 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "%@, nothing new": {},
     "%@/%@": {
       "localizations": {
         "ar": {
@@ -2505,6 +2535,13 @@
       },
       "shouldTranslate": false
     },
+    "%lld ahead": {},
+    "%lld behind": {},
+    "%lld changed": {},
+    "%lld changed files": {},
+    "%lld changes aren't pushed": {},
+    "%lld changes, updating live": {},
+    "%lld commits%@ pulled in the background. Tap to see what changed.": {},
     "%lld conflicts to resolve": {
       "localizations": {
         "ar": {
@@ -2659,6 +2696,12 @@
         }
       }
     },
+    "%lld entries": {},
+    "%lld errors": {},
+    "%lld errors in the last 24h": {},
+    "%lld files": {},
+    "%lld files changed": {},
+    "%lld files changed on both sides": {},
     "%lld files staged": {
       "localizations": {
         "ar": {
@@ -2971,7 +3014,8 @@
             "value": "將捨棄 %lld 個檔案中的變更"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "%lld found": {
       "localizations": {
@@ -3125,8 +3169,41 @@
             "value": "找到 %lld 個"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "%lld in sync": {},
+    "%lld items": {},
+    "%lld large or binary files should be stored with Git LFS before committing.": {},
+    "%lld lines": {},
+    "%lld lines added, %lld lines removed": {},
+    "%lld lines added, %lld removed": {},
+    "%lld locked": {},
+    "%lld min ago": {},
+    "%lld notes": {},
+    "%lld notes & images": {},
+    "%lld objects": {},
+    "%lld of %lld": {},
+    "%lld of %lld commits sent": {},
+    "%lld of %lld objects received": {},
+    "%lld of %lld objects sent": {},
+    "%lld of %lld · %@": {},
+    "%lld repos": {},
+    "%lld repos available": {},
+    "%lld repos · private included": {},
+    "%lld repositories": {},
+    "%lld sensitive files": {},
+    "%lld tags": {},
+    "%lld to pull": {},
+    "%lld to push": {},
+    "%lld unchecked files": {},
+    "%lld vaults": {},
+    "%lld vaults\nneed you.": {},
+    "%lld vaults, nothing new": {},
+    "%lld%%": {},
+    "%lld/%lld": {},
+    "%lldd ago": {},
+    "%lldh": {},
     "%lldh ago": {
       "localizations": {
         "ar": {
@@ -3281,6 +3358,7 @@
         }
       }
     },
+    "%lldm": {},
     "%lldm ago": {
       "localizations": {
         "ar": {
@@ -3435,6 +3513,8 @@
         }
       }
     },
+    "(deleted on this side)": {},
+    "(deleted)": {},
     "(empty)": {
       "localizations": {
         "ar": {
@@ -3589,6 +3669,9 @@
         }
       }
     },
+    "(no message)": {},
+    "(removed on %@)": {},
+    "(removed on this iPhone)": {},
     "+": {
       "localizations": {
         "ar": {
@@ -3742,8 +3825,12 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "+ %lld more": {},
+    "+%lld": {},
+    "+%lld more": {},
     ".MD": {
       "localizations": {
         "ar": {
@@ -3897,8 +3984,16 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    ".md": {},
+    "/": {},
+    "1 change isn't pushed": {},
+    "1 commit": {},
+    "1 commit%@ pulled in the background. Tap to see what changed.": {},
+    "1 file": {},
+    "1 file changed": {},
     "1 file staged": {
       "localizations": {
         "ar": {
@@ -4211,8 +4306,14 @@
             "value": "將捨棄 1 個檔案中的變更"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "1 item": {},
+    "1 line": {},
+    "1 note": {},
+    "1 vault": {},
+    "1 vault\nneeds you.": {},
     "@%@": {
       "localizations": {
         "ar": {
@@ -4368,6 +4469,13 @@
       },
       "shouldTranslate": false
     },
+    "@%@ · GitHub OAuth": {},
+    "A Git history backup is in progress in this folder. Wait for it to finish before deleting local files.": {},
+    "A GitHub push wakes the app within seconds.": {},
+    "A commit couldn't be pushed. Open it to finish.": {},
+    "A copy of your edits is saved to the stash first.": {},
+    "A different branch is checked out. Open it to finish.": {},
+    "A folder publication is already running. Wait or cancel it before continuing.": {},
     "A folder with the same name already exists at the chosen location": {
       "localizations": {
         "ar": {
@@ -4674,7 +4782,8 @@
             "value": "添加存儲庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "ADD/ADD": {
       "localizations": {
@@ -4828,7 +4937,8 @@
             "value": "添加/添加"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "ANY GIT REPO, SYNCED TO YOUR IPHONE": {
       "localizations": {
@@ -4982,7 +5092,8 @@
             "value": "任何 Git 倉庫， SYNCED 下載至您的 IPHONE"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "ANYWHERE": {
       "localizations": {
@@ -5136,8 +5247,10 @@
             "value": "任何地方"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Abort": {},
     "Abort Merge": {
       "localizations": {
         "ar": {
@@ -5296,7 +5409,8 @@
             "value": "中止合併"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Abort Rebase": {
       "localizations": {
@@ -5450,8 +5564,13 @@
             "value": "中斷重基線操作"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Abort merge": {},
+    "Abort rebase": {},
+    "Abort the merge?": {},
+    "Abort the rebase?": {},
     "Aborting merge...": {
       "localizations": {
         "ar": {
@@ -5919,8 +6038,13 @@
             "value": "關於"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Access suspended on GitHub": {},
+    "Access to the chosen clone location is unavailable. Reconnect it before cloning.": {},
+    "Access to the original folder is unavailable. Reconnect the folder to continue.": {},
+    "Access to this folder expired. Scan it again.": {},
     "Account": {
       "comment": "Section header for GitHub account information",
       "localizations": {
@@ -6082,6 +6206,7 @@
         }
       }
     },
+    "Account Menu": {},
     "Accounts": {
       "localizations": {
         "ar": {
@@ -6236,6 +6361,7 @@
         }
       }
     },
+    "Actions for %@": {},
     "Active": {
       "localizations": {
         "ar": {
@@ -6388,7 +6514,8 @@
             "value": "啟用"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Add %lld Repositor%@": {
       "localizations": {
@@ -6542,8 +6669,10 @@
             "value": "加入 %lld 個 Repositor%@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Add %lld vaults": {},
     "Add & Clone Repository": {
       "comment": "Button to add a remote repository and immediately start cloning it",
       "localizations": {
@@ -6703,8 +6832,10 @@
             "value": "新增並複製儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Add 1 vault": {},
     "Add Different Repository": {
       "localizations": {
         "ar": {
@@ -6863,7 +6994,8 @@
             "value": "新增其他倉庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Add GitHub Account": {
       "localizations": {
@@ -7171,7 +7303,8 @@
             "value": "加入儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Add Repository": {
       "comment": "Navigation title and button label for adding a new repository",
@@ -7332,7 +7465,8 @@
             "value": "新增儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Add a Git remote or open an existing\nlocal repository to start syncing.": {
       "localizations": {
@@ -7486,8 +7620,16 @@
             "value": "添加 Git ：遠程或打開現有項\n本地倉庫已準備開始衕步。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Add a vault": {},
+    "Add or update GitHub access": {},
+    "Add the public key to your host once. Private keys never leave this iPhone's Keychain.": {},
+    "Add vault": {},
+    "Add vaults": {},
+    "Add your first vault": {},
+    "Add/add": {},
     "Added": {
       "localizations": {
         "ar": {
@@ -7648,6 +7790,8 @@
         }
       }
     },
+    "Added on both sides.": {},
+    "Added: ": {},
     "After a successful rebase, Push Current Branch sends your rewritten local commits to the remote without needing a new commit.": {
       "localizations": {
         "ar": {
@@ -7802,6 +7946,7 @@
         }
       }
     },
+    "Ahead": {},
     "All": {
       "localizations": {
         "ar": {
@@ -7962,6 +8107,7 @@
         }
       }
     },
+    "All %lld": {},
     "All conflicts resolved": {
       "localizations": {
         "ar": {
@@ -8430,6 +8576,7 @@
         }
       }
     },
+    "All conflicts resolved. Continue to replay your commits on top of the remote.": {},
     "All debug log entries will be permanently deleted.": {
       "localizations": {
         "ar": {
@@ -8738,6 +8885,7 @@
         }
       }
     },
+    "All in sync.": {},
     "All local changes to this file will be permanently discarded.": {
       "localizations": {
         "ar": {
@@ -8890,8 +9038,11 @@
             "value": "：對本文件的所有本地修改都將永久丟失。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "All repositories, including future repositories": {},
+    "Already added. Clone again.": {},
     "Already up to date": {
       "localizations": {
         "ar": {
@@ -9207,6 +9358,8 @@
         }
       }
     },
+    "Also commit & push my edits": {},
+    "Also kept in Files › On My iPhone › GitSync.md › Git Backups.": {},
     "Always": {
       "localizations": {
         "ar": {
@@ -9359,8 +9512,10 @@
             "value": "一律"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Always in step.": {},
     "An active Background Sync subscription is required before background syncing can be enabled.": {
       "localizations": {
         "ar": {
@@ -9513,7 +9668,8 @@
             "value": "必須先有有效的 Background Sync 訂閱，才能啟用背景同步。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "An active subscription is required to enable Background Sync.": {
       "localizations": {
@@ -9667,8 +9823,10 @@
             "value": "需要有效訂閱才能啟用 Background Sync。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "An empty sync rail waiting for its first vault": {},
     "An optional subscription that pulls updates while the app is closed whenever iOS grants background time. One installation-level opt-in covers all current and future repositories; exclude any repository anytime.": {
       "localizations": {
         "ar": {
@@ -9821,7 +9979,8 @@
             "value": "一項選用訂閱：App 關閉時，只要 iOS 授予背景執行時間，就會 pull 更新。安裝層級的一次加入選擇會涵蓋目前及未來的所有儲存庫；您可隨時排除任何儲存庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Annotation message (optional)": {
       "localizations": {
@@ -10129,7 +10288,8 @@
             "value": "年度"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Any connection": {
       "localizations": {
@@ -10285,6 +10445,7 @@
         }
       }
     },
+    "Any git host": {},
     "Any power state": {
       "localizations": {
         "ar": {
@@ -10439,6 +10600,8 @@
         }
       }
     },
+    "Anyone can see this repository and its files on GitHub.": {},
+    "App": {},
     "App Settings": {
       "comment": "Navigation title for the application-wide settings screen and menu item label",
       "localizations": {
@@ -10600,6 +10763,8 @@
         }
       }
     },
+    "App default": {},
+    "Appearance": {},
     "Apply": {
       "localizations": {
         "ar": {
@@ -10760,6 +10925,7 @@
         }
       }
     },
+    "Apply (keep stash)": {},
     "Applying stash would overwrite local changes. Commit, stash, or discard local edits first.": {
       "localizations": {
         "ar": {
@@ -10914,6 +11080,7 @@
         }
       }
     },
+    "Attention %lld": {},
     "Attention required": {
       "localizations": {
         "ar": {
@@ -13236,8 +13403,13 @@
             "value": "授權 GitHub 喚醒通知……"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Auto-commit didn't finish. Try Commit & push.": {},
+    "Auto-commit skipped: %@": {},
+    "Auto-commit when I pause 2 min": {},
+    "Auto-committed at %@": {},
     "Auto-pull on app open": {
       "localizations": {
         "ar": {
@@ -13544,8 +13716,10 @@
             "value": "自動註冊失敗，將重新嘗試： %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Automatic publishing stays off until you approve it. Pulls remain clean fast-forwards, and unsafe, conflicting, wrong-branch, or authentication states stop for your attention.": {},
     "Automatic pulls remain clean fast-forwards. Automatic push stages non-ignored edits, commits with the configured author and default message, and pushes directly to the remote. With pull off, push still fetches remote metadata to fail closed but never updates the worktree. Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention.": {
       "localizations": {
         "ar": {
@@ -13698,7 +13872,8 @@
             "value": "自動 pull 始終維持為乾淨的 fast-forward。自動 push 會暫存未忽略的編輯，使用已設定的作者和預設訊息建立 commit，然後直接 push 到遠端儲存庫。關閉 pull 時，push 仍會取得遠端中繼資料以安全停止，但絕不會更新 worktree。發生分歧、遠端領先時有本機編輯、分支錯誤，或需要身分驗證及信任時，作業會安全停止以供處理。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Automatic push stages all non-ignored changes, creates a commit with the repository's configured author and GitSync.md's default message, then pushes directly to its remote. If automatic pull is off, it checks remote state without updating the worktree and stops when remote changes must be pulled. It never recreates a missing branch, force-pushes, merges, rebases, switches branches, or resolves conflicts.": {
       "localizations": {
@@ -14012,7 +14187,8 @@
             "value": "自動目標： %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Automatically commit and push local changes?": {
       "localizations": {
@@ -14320,7 +14496,8 @@
             "value": "返迴"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "BACKGROUND": {
       "localizations": {
@@ -14475,7 +14652,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "BACKGROUND SYNC": {
       "shouldTranslate": false,
@@ -14630,7 +14808,8 @@
             "value": "BACKGROUND SYNC"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "BEST VALUE": {
       "localizations": {
@@ -14784,7 +14963,8 @@
             "value": "最超值"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "BEST-EFFORT TWO-WAY SYNC": {
       "localizations": {
@@ -14938,7 +15118,8 @@
             "value": "盡力而為的雙向同步"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "BEST-EFFORT — INCLUDED": {
       "localizations": {
@@ -15092,7 +15273,8 @@
             "value": "盡力而為 — 已包含"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "BEST-EFFORT — OPTIONAL SUBSCRIPTION": {
       "localizations": {
@@ -15246,8 +15428,10 @@
             "value": "盡力而為 — 選用訂閱"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "BG task": {},
     "BRANCHES, DIFFS, HISTORY": {
       "localizations": {
         "ar": {
@@ -15400,8 +15584,13 @@
             "value": "分支、 DIFFS，歷史"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Back": {},
+    "Back up the history first": {},
+    "Background": {},
+    "Background\nSync": {},
     "Background Sync": {
       "shouldTranslate": false,
       "localizations": {
@@ -15557,6 +15746,7 @@
         }
       }
     },
+    "Background Sync and push alerts": {},
     "Background Sync attempts pull-only updates when iOS grants background time. One installation-level opt-in covers every current and future cloned or managed repository unless you exclude it in Repository Settings. GitHub repositories covered by linked GitHub App installations get best-effort wake hints; non-GitHub or unresolved repositories sync only while the app is open. Pulls remain clean fast-forward only. Local changes, divergence, the wrong branch, or authentication and trust requirements stop the update.": {
       "localizations": {
         "ar": {
@@ -16028,7 +16218,8 @@
             "value": "Background Sync 無法將這次購買綁定至目前的安裝項目。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync could not reach the relay: %@": {
       "localizations": {
@@ -16182,7 +16373,8 @@
             "value": "Background Sync 無法連接中繼服務：%@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync enables best-effort wake delivery for current and future cloned or managed repositories unless you exclude one in Repository Settings. Automatic pull starts on and automatic publishing starts off; you can then control each action independently. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. iOS may delay or suppress every attempt.": {
       "localizations": {
@@ -16336,7 +16528,8 @@
             "value": "Background Sync 會為目前及未來已複製或受管理的儲存庫啟用盡力而為的喚醒傳送，除非你在儲存庫設定中將其排除。自動 pull 預設開啟，自動發佈預設關閉；你可以分別控制這兩項操作。僅 push 模式仍會檢查遠端狀態，並在需要時停止，而不是 pull 或覆寫遠端工作。iOS 可能延遲或抑制每次嘗試。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync enables best-effort wake delivery for current and future cloned or managed repositories unless you exclude one in Repository Settings. You can independently enable automatic fast-forward pulls, automatic commit and push, or both. Push-only mode still checks remote state and stops rather than pulling or overwriting remote work. iOS may delay or suppress every attempt.": {
       "extractionState": "stale"
@@ -16801,7 +16994,8 @@
             "value": "Background Sync 為你提供獨立的自動 pull 和 push 控制。發佈需要另外同意，僅 push 模式絕不會更新 worktree。GitHub 事件和 iOS 處理會盡力提供喚醒機會；時間不保證，也不是即時的。選用訂閱；所有手動功能仍包含在內。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync is available": {
       "localizations": {
@@ -16958,6 +17152,7 @@
       },
       "extractionState": "stale"
     },
+    "Background Sync is included": {},
     "Background Sync is off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged.": {
       "localizations": {
         "ar": {
@@ -17110,7 +17305,8 @@
             "value": "Background Sync 已關閉。手動 Git、Shortcuts、回呼和本機儲存庫功能不受影響。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync is off. This inclusion choice is saved and will apply the next time you enable it in App Settings → Background Sync.": {
       "localizations": {
@@ -17573,7 +17769,8 @@
             "value": "Background Sync 無法使用，因為此建置版本未設定其中繼服務。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync keeps clean fast-forward pulls fail-closed. A separate default-off consent can stage, commit, and push local edits; it never rebases, merges, switches branches, resolves conflicts, or force-pushes, and stops on unsafe remote or conflict state.": {
       "extractionState": "stale"
@@ -18038,7 +18235,8 @@
             "value": "Background Sync 現在允許你分別控制自動 pull 和自動 push。發佈預設關閉；僅 push 模式會在不更新 worktree 的情況下檢查遠端狀態，遇到不安全或衝突狀態時會停止以供處理。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync only applies clean fast-forward pulls on each repository's configured branch. It never stages, commits, rebases, merges, resolves conflicts, force-pushes, or pushes. Local changes, divergence, the wrong branch, and authentication or trust requirements stop the background update.": {
       "localizations": {
@@ -18502,7 +18700,8 @@
             "value": "Background Sync 會盡力為目前及未來受管理的儲存庫提供喚醒機會。自動 pull 和自動 push 是獨立的控制項；發佈仍預設關閉。GitHub 事件和 iOS 處理可能提供機會，但時間由 iOS 控制，因此工作不保證執行，也不是即時的。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync relay data was permanently deleted for this installation. Contact support if you need to use Background Sync again.": {
       "localizations": {
@@ -18656,7 +18855,8 @@
             "value": "此安裝項目的 Background Sync 中繼資料已永久刪除。如需再次使用 Background Sync，請聯絡支援人員。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Background Sync relay is not configured.": {
       "localizations": {
@@ -18810,8 +19010,23 @@
             "value": "未設定 Background Sync 中繼服務。"
           }
         }
+      },
+      "extractionState": "stale"
+    },
+    "Background Sync running": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync running"
+          }
+        }
       }
     },
+    "Background Sync runs will show up here.": {},
+    "Background Sync runs within the app using your existing Git credentials on this device. Repository URLs, contents, local paths, and credentials go only to your Git host during a normal fetch or push. Scheduled Background Sync has no server or separate data store. If you independently enable Push Sync and connect the GitSync.md GitHub App, its relay stores repository names, verified GitHub installation/account identifiers, and APNs registration data and transiently routes branch and commit hints; it never receives local file contents, credentials, or paths.": {},
+    "Background Sync starts off for this folder. Enable Include in Background Sync in repository Settings when you are ready.": {},
+    "Background Sync starts off for this folder. Use its repository controls to commit and push later changes.": {},
     "Background Sync status": {
       "localizations": {
         "ar": {
@@ -18966,6 +19181,7 @@
         }
       }
     },
+    "Background Sync stopped for %@": {},
     "Background Sync, optionally": {
       "localizations": {
         "ar": {
@@ -19118,8 +19334,21 @@
             "value": "選用 Background Sync"
           }
         }
+      },
+      "extractionState": "stale"
+    },
+    "Background Sync: %lld repositories": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync: %lld repositories"
+          }
+        }
       }
     },
+    "Before discard · %@": {},
+    "Behind": {},
     "Behind remote": {
       "localizations": {
         "ar": {
@@ -19278,7 +19507,8 @@
             "value": "落後於遠端"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Best value": {
       "localizations": {
@@ -19432,7 +19662,8 @@
             "value": "最佳價效比"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Best-effort background pulls": {
       "localizations": {
@@ -19741,7 +19972,8 @@
             "value": "盡力而為的背景協調"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Best-effort pulls with separately enabled automatic pushes": {
       "extractionState": "stale"
@@ -20208,6 +20440,9 @@
         }
       }
     },
+    "Blank": {},
+    "Bold": {},
+    "Both automatic actions are off. No background Git operation will run.": {},
     "Both automatic actions are off. Wake delivery may remain enrolled, but no background Git operation will run.": {
       "localizations": {
         "ar": {
@@ -20360,8 +20595,15 @@
             "value": "兩個自動操作均已關閉。喚醒傳送可能仍保持註冊，但背景不會執行任何 Git 操作。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Both sides edited %lld sections.": {},
+    "Both sides edited the same lines.": {},
+    "Both sides edited this file.": {},
+    "Both sides edited “%@”.": {},
+    "Both sides have new commits": {},
+    "Both sides moved": {},
     "Branch": {
       "comment": "Git branch field or row label",
       "localizations": {
@@ -20523,6 +20765,7 @@
         }
       }
     },
+    "Branch %@": {},
     "Branch '%@' already exists.": {
       "localizations": {
         "ar": {
@@ -20991,6 +21234,10 @@
         }
       }
     },
+    "Bring in": {},
+    "Bring in a repo you already have, or turn a folder into one.": {},
+    "Bring theirs in": {},
+    "Bring theirs in, then push": {},
     "Browse Files": {
       "localizations": {
         "ar": {
@@ -21143,7 +21390,8 @@
             "value": "瀏覽文件"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CANCEL": {
       "localizations": {
@@ -21297,7 +21545,8 @@
             "value": "取消"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CHANGE": {
       "localizations": {
@@ -21451,7 +21700,8 @@
             "value": "更改"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CHANGE LOCATION": {
       "localizations": {
@@ -21605,7 +21855,8 @@
             "value": "更改位置"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CHOOSE DEFAULT LOCATION": {
       "localizations": {
@@ -21759,7 +22010,8 @@
             "value": "選擇默認位置"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CHOOSE DIFFERENT LOCATION": {
       "localizations": {
@@ -21913,7 +22165,8 @@
             "value": "選擇不衕位置"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CHOOSE FOLDER TO SCAN": {
       "localizations": {
@@ -22067,7 +22320,8 @@
             "value": "選擇要掃描的檔案夾"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CHOOSE WHERE NEW REPOSITORIES ARE SAVED": {
       "localizations": {
@@ -22221,7 +22475,8 @@
             "value": "選擇新倉庫的保存路徑"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CONFLICT": {
       "localizations": {
@@ -22375,7 +22630,8 @@
             "value": "衝突"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "CREATE A PAT ON GITHUB →": {
       "localizations": {
@@ -22529,7 +22785,8 @@
             "value": "創建 PAT ON GITHUB →"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Cancel": {
       "comment": "Generic cancel button",
@@ -22846,6 +23103,7 @@
         }
       }
     },
+    "Cancelling…": {},
     "Cannot delete the currently checked out branch '%@'.": {
       "localizations": {
         "ar": {
@@ -23154,6 +23412,7 @@
         }
       }
     },
+    "Change": {},
     "Change Location": {
       "comment": "Button to change the currently selected save location",
       "localizations": {
@@ -23315,6 +23574,8 @@
         }
       }
     },
+    "Change location": {},
+    "Change repository": {},
     "Changed": {
       "localizations": {
         "ar": {
@@ -23473,7 +23734,8 @@
             "value": "已更改"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Changed Files": {
       "localizations": {
@@ -23633,8 +23895,10 @@
             "value": "已更改檔案"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Changed files and commits to push or pull, without touching the network.": {},
     "Changes": {
       "localizations": {
         "ar": {
@@ -23947,8 +24211,14 @@
             "value": "– 在Discord上與我們聊天"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Check %@ for new commits": {},
+    "Check GitHub": {},
+    "Check for changes": {},
+    "Check hidden and sensitive files before continuing. Sensitive filenames are excluded by default; private repositories still upload their contents to GitHub.": {},
+    "Check out files": {},
     "Check remote for new commits": {
       "localizations": {
         "ar": {
@@ -24103,6 +24373,8 @@
         }
       }
     },
+    "Check repository creation": {},
+    "Check upload and resume": {},
     "Checking App Store…": {
       "localizations": {
         "ar": {
@@ -24255,8 +24527,10 @@
             "value": "正在檢查 App Store..."
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Checking GitHub connection…": {},
     "Checking for updates...": {
       "comment": "Sync progress message at the start of a pull operation",
       "localizations": {
@@ -24418,6 +24692,9 @@
         }
       }
     },
+    "Checking the folder and restoring access…": {},
+    "Checklist item": {},
+    "Choose Different Folder": {},
     "Choose Location": {
       "comment": "Button to open a folder picker and choose a save location",
       "localizations": {
@@ -24579,6 +24856,16 @@
         }
       }
     },
+    "Choose Repository Folder": {},
+    "Choose a Folder": {},
+    "Choose a GitHub account, author name, author email, and commit message.": {},
+    "Choose a default location": {},
+    "Choose a different default location": {},
+    "Choose a different folder": {},
+    "Choose a different location": {},
+    "Choose a folder on this device and review the files. Nothing is uploaded until you tap Create & push, which makes a public or private repository in your personal GitHub account.": {},
+    "Choose all or selected repositories through the GitSync.md GitHub App—no webhook setup. Push alerts request best-effort background reconciliation, and tapping always performs a pull-only check.": {},
+    "Choose another branch to check out": {},
     "Choose automatic fast-forward pulls, automatic commit and push, or both whenever iOS grants background time.": {
       "localizations": {
         "ar": {
@@ -24731,7 +25018,8 @@
             "value": "iOS 提供背景時間時，可選擇自動 fast-forward pull、自動 commit 和 push，或同時選擇兩者。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Choose automatic pulls, separately consented automatic pushes, or both when iOS allows. Optional subscription.": {
       "localizations": {
@@ -24888,6 +25176,9 @@
       },
       "extractionState": "stale"
     },
+    "Choose how to sign in and where the vault lives.": {},
+    "Choose pull and publish separately": {},
+    "Choose the GitHub accounts, organizations, and repositories that may send Push Sync events.": {},
     "Choose the account you want": {
       "localizations": {
         "ar": {
@@ -25042,6 +25333,10 @@
         }
       }
     },
+    "Choose the folder containing the .git folder you want to remove. For a vault inside a larger repository, choose the parent repository folder.": {},
+    "Choose what to commit": {},
+    "Choose where new repositories are saved.": {},
+    "Choose which vault the widget shows.": {},
     "Clean fast-forward only; unsafe state stops for attention.": {
       "localizations": {
         "ar": {
@@ -25194,7 +25489,8 @@
             "value": "僅限乾淨的 fast-forward；不安全狀態會停止以供處理。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Clean fast-forward pulls on your branch": {
       "localizations": {
@@ -25503,8 +25799,10 @@
             "value": "啟用後執行乾淨的 fast-forward pull"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Clean fast-forwards only": {},
     "Clean pull-only updates — never commits or pushes": {
       "localizations": {
         "ar": {
@@ -26276,6 +26574,9 @@
         }
       }
     },
+    "Clear search": {},
+    "Clone": {},
+    "Clone %@": {},
     "Clone Repository": {
       "comment": "Button to start cloning a repository that has not been downloaded yet",
       "localizations": {
@@ -26904,8 +27205,10 @@
             "value": "剋隆任意\n將 Git 存儲庫複製至您的設備—— GitHub，自托管式 SSH或公共遙控器——可將其保存在您的口袋中，併保持與設備衕步。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Clone any repo into Files, write in Obsidian or anything else, and sync with one tap.": {},
     "Clone complete! (%lld files)": {
       "comment": "Sync progress message after a successful clone. %lld is the number of files.",
       "localizations": {
@@ -27067,6 +27370,8 @@
         }
       }
     },
+    "Clone completed, but the Obsidian connection could not be prepared.": {},
+    "Clone failed": {},
     "Clone failed: %@": {
       "comment": "Error when cloning a repository fails. %@ is the libgit2 error detail.",
       "localizations": {
@@ -27228,6 +27533,8 @@
         }
       }
     },
+    "Clone from GitHub": {},
+    "Clone this repository": {},
     "Clone this repository to include it in Background Sync.": {
       "localizations": {
         "ar": {
@@ -27382,6 +27689,7 @@
         }
       }
     },
+    "Clone uses your GitHub account and the default save location. Long-press a repo to pick a branch, sign-in method or folder first.": {},
     "Cloned": {
       "localizations": {
         "ar": {
@@ -27536,6 +27844,8 @@
         }
       }
     },
+    "Cloned %@": {},
+    "Cloning %@": {},
     "Cloning Repository": {
       "comment": "Title shown while a repository is being cloned",
       "localizations": {
@@ -27858,6 +28168,7 @@
         }
       }
     },
+    "Cloning…": {},
     "Close": {
       "localizations": {
         "ar": {
@@ -28012,6 +28323,8 @@
         }
       }
     },
+    "Close file": {},
+    "Code": {},
     "Commit": {
       "comment": "Git commit SHA row label",
       "localizations": {
@@ -28173,6 +28486,7 @@
         }
       }
     },
+    "Commit %lld files": {},
     "Commit & Push": {
       "comment": "Git commit and push action title",
       "localizations": {
@@ -28332,7 +28646,8 @@
             "value": "提交並推送"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Commit & merge": {
       "localizations": {
@@ -28488,6 +28803,10 @@
         }
       }
     },
+    "Commit & push": {},
+    "Commit & push edits": {},
+    "Commit & push mine": {},
+    "Commit 1 file": {},
     "Commit Author": {
       "localizations": {
         "ar": {
@@ -29109,7 +29428,8 @@
             "value": "Commit 並 push 本機變更"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Commit and push only when enabled": {
       "localizations": {
@@ -29263,8 +29583,11 @@
             "value": "僅在啟用時 commit 並 push"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Commit as": {},
+    "Commit changes": {},
     "Commit failed: %@": {
       "comment": "Error when creating a commit fails. %@ is the libgit2 error detail.",
       "localizations": {
@@ -29741,6 +30064,7 @@
         }
       }
     },
+    "Commit once to create the first branch.": {},
     "Commit setup is clearer": {
       "localizations": {
         "ar": {
@@ -30053,8 +30377,13 @@
             "value": "提交已暫存的更改並推送到遠端"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Commit undone": {},
+    "Commits flowing both ways while the phone is locked": {},
+    "Commits on %@ appear here.": {},
+    "Committed": {},
     "Committed and pushed successfully": {
       "localizations": {
         "ar": {
@@ -30209,6 +30538,8 @@
         }
       }
     },
+    "Committed · syncs when online": {},
+    "Committed, not pushed yet": {},
     "Committing & pushing…": {
       "localizations": {
         "ar": {
@@ -30363,6 +30694,7 @@
         }
       }
     },
+    "Committing and pushing": {},
     "Committing and pushing...": {
       "comment": "Sync progress message while committing and pushing changes",
       "localizations": {
@@ -30678,6 +31010,9 @@
         }
       }
     },
+    "Committing...": {},
+    "Committing…": {},
+    "Comparing your edits with theirs…": {},
     "Complete": {
       "localizations": {
         "ar": {
@@ -30990,8 +31325,10 @@
             "value": "全量閤併"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Complete merge": {},
     "Configuration": {
       "localizations": {
         "ar": {
@@ -31298,7 +31635,8 @@
             "value": "已配置"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Configured Git LFS URL must be HTTP(S) for this build: %@": {
       "localizations": {
@@ -31614,6 +31952,7 @@
         }
       }
     },
+    "Conflict %lld of %lld": {},
     "Conflict Center": {
       "localizations": {
         "ar": {
@@ -32234,7 +32573,8 @@
             "value": "矛盾路徑"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Conflicts": {
       "localizations": {
@@ -32394,8 +32734,17 @@
             "value": "衝突"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Connect": {},
+    "Connect GitHub": {},
+    "Connect GitHub once for Push Sync": {},
+    "Connect GitHub to finish setup. Push events cannot arrive until an account or organization is connected.": {},
+    "Connect the GitSync.md GitHub App once per personal account or organization; an account or organization owner must approve the connection. Choose all repositories to include future repositories automatically, or select specific repositories. GitHub grants read-only Contents permission so it can send push events; the relay does not use that permission to read files. Organization installations also grant read-only Members permission so the relay can verify the connecting user is an owner. When someone pushes to %@, GitSync.md shows a notification and asks iOS to reconcile the configured branch when Background Sync and automatic pull are enabled. iOS may suppress the background attempt; tapping the notification performs an explicit pull. The relay stores repository names, GitHub installation and account identifiers, and APNs registration data for up to 90 days after the last registration; disabling requests immediate deletion. During connection it uses a short-lived GitHub token only for the ownership check, immediately requests token revocation, and never stores it. GitHub's signed event passes transiently through the relay, but commit messages, changed-file details, and sender data are not logged, stored, or sent to APNs. The relay never receives local paths or Git credentials and never stores file contents. Removing a connection or disabling Push Sync removes this device's routing, but the GitHub App remains installed until you uninstall it through Manage on GitHub.": {},
+    "Connect to clone %@.": {},
+    "Connected · %lld refs": {},
+    "Connection": {},
     "Continue": {
       "comment": "Button to proceed after selecting a save location during onboarding",
       "localizations": {
@@ -32709,8 +33058,10 @@
             "value": "繼續重基線"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Continue rebase": {},
     "Continue replaying local commits": {
       "localizations": {
         "ar": {
@@ -32863,8 +33214,11 @@
             "value": "繼續迴放本地提交記録"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Continue with GitHub": {},
+    "Continue with the saved commit and the repository shown above. A retry checks the destination before uploading.": {},
     "Continue without GitHub": {
       "localizations": {
         "ar": {
@@ -33171,7 +33525,8 @@
             "value": "繼續 →"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Continuing rebase...": {
       "localizations": {
@@ -33479,8 +33834,11 @@
             "value": "分別控制自動 pull 和 push"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Copied": {},
+    "Copied to clipboard": {},
     "Copied!": {
       "comment": "Transient confirmation text shown after copying the repository URL",
       "localizations": {
@@ -33642,6 +34000,7 @@
         }
       }
     },
+    "Copies the repository URL to the clipboard": {},
     "Copy": {
       "localizations": {
         "ar": {
@@ -33796,6 +34155,7 @@
         }
       }
     },
+    "Copy public key": {},
     "Copy to Clipboard": {
       "localizations": {
         "ar": {
@@ -34419,6 +34779,8 @@
         }
       }
     },
+    "Could not check the name right now.": {},
+    "Could not check the repository name.": {},
     "Could not create HTTPS credentials.": {
       "localizations": {
         "ar": {
@@ -35350,6 +35712,7 @@
         }
       }
     },
+    "Could not load starred repos": {},
     "Could not load the saved SSH key. Check the key format and passphrase.": {
       "localizations": {
         "ar": {
@@ -36120,6 +36483,8 @@
         }
       }
     },
+    "Could not read the repository contents.": {},
+    "Could not resolve HEAD": {},
     "Could not resolve HEAD after continuing rebase": {
       "localizations": {
         "ar": {
@@ -38899,6 +39264,7 @@
         }
       }
     },
+    "Could not restore your edits after stashing. They are saved in the stash list.": {},
     "Could not save folder access": {
       "localizations": {
         "ar": {
@@ -39359,7 +39725,8 @@
             "value": "無法安全儲存中繼刪除授權。Background Sync 仍處於停用狀態；請再試一次或聯絡支援人員。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Could not stage all local file changes before push.": {
       "localizations": {
@@ -39824,6 +40191,9 @@
         }
       }
     },
+    "Couldn't compare with %@": {},
+    "Couldn't reach %@": {},
+    "Counting notes and history…": {},
     "Create": {
       "localizations": {
         "ar": {
@@ -39984,6 +40354,12 @@
         }
       }
     },
+    "Create & open": {},
+    "Create & push saves the included files in a local commit, creates the GitHub repository, and uploads that commit. Excluded files stay on this device and out of later sync. If anything stops midway, your progress is saved and resumes from here.": {},
+    "Create New File": {},
+    "Create Private Repository & Publish": {},
+    "Create Public Repository & Publish": {},
+    "Create a PAT on GitHub": {},
     "Create a Personal Automation for when GitSync.md opens, then run Pull All Repositories to keep your notes fresh automatically.": {
       "localizations": {
         "ar": {
@@ -40138,6 +40514,12 @@
         }
       }
     },
+    "Create a key on this iPhone instead": {},
+    "Create an ed25519 key here, then add its public half to your host.": {},
+    "Create folder": {},
+    "Create iPhone key": {},
+    "Create private repo & push": {},
+    "Create public repo & push": {},
     "Create, rename, and delete files": {
       "localizations": {
         "ar": {
@@ -40290,8 +40672,11 @@
             "value": "建立、重新命名和刪除檔案"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Creating a private repository on GitHub…": {},
+    "Creating a public repository on GitHub…": {},
     "Current": {
       "localizations": {
         "ar": {
@@ -40452,6 +40837,7 @@
         }
       }
     },
+    "Current branch": {},
     "Current plan": {
       "localizations": {
         "ar": {
@@ -40604,8 +40990,10 @@
             "value": "目前方案"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Customize before cloning": {},
     "DEBUG LOG": {
       "localizations": {
         "ar": {
@@ -40758,7 +41146,8 @@
             "value": "調試日誌"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "DEFAULT": {
       "localizations": {
@@ -40912,7 +41301,8 @@
             "value": "默認值"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "DELETE/MODIFY": {
       "localizations": {
@@ -41066,7 +41456,8 @@
             "value": "刪除/修改"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "DISCOVER REPOSITORIES": {
       "localizations": {
@@ -41220,8 +41611,10 @@
             "value": "探索儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Dark": {},
     "Data & privacy": {
       "localizations": {
         "ar": {
@@ -41376,6 +41769,7 @@
         }
       }
     },
+    "Date": {},
     "Debug": {
       "localizations": {
         "ar": {
@@ -41536,6 +41930,7 @@
         }
       }
     },
+    "Debug log": {},
     "Default Save Location": {
       "comment": "Section title and onboarding step title for setting the default save folder",
       "localizations": {
@@ -41695,8 +42090,10 @@
             "value": "預設儲存位置"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Default save": {},
     "Deferred": {
       "localizations": {
         "ar": {
@@ -42313,6 +42710,7 @@
         }
       }
     },
+    "Delete %@": {},
     "Delete Background Sync relay data?": {
       "localizations": {
         "ar": {
@@ -42465,8 +42863,10 @@
             "value": "刪除 Background Sync 中繼資料?"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Delete File": {},
     "Delete Files": {
       "localizations": {
         "ar": {
@@ -42773,7 +43173,8 @@
             "value": "刪除本地文件"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Delete Local Files?": {
       "localizations": {
@@ -42929,6 +43330,9 @@
         }
       }
     },
+    "Delete branch %@": {},
+    "Delete branch?": {},
+    "Delete history without a backup?": {},
     "Delete only when you choose": {
       "localizations": {
         "ar": {
@@ -43543,8 +43947,11 @@
             "value": "刪除 relay 資料"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Delete tag %@": {},
+    "Delete tag?": {},
     "Delete this device's relay data": {
       "localizations": {
         "ar": {
@@ -43697,8 +44104,10 @@
             "value": "刪除此裝置 relay 資料"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Delete/modify": {},
     "Deleted": {
       "localizations": {
         "ar": {
@@ -43859,6 +44268,8 @@
         }
       }
     },
+    "Deleted on one side, edited on the other.": {},
+    "Deletes the tag on this iPhone only.": {},
     "Deleting relay data…": {
       "localizations": {
         "ar": {
@@ -44011,7 +44422,8 @@
             "value": "刪除 relay 資料 ..."
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Deletion is pending. Background Sync and conflicting relay controls remain disabled until the authenticated removal succeeds.": {
       "localizations": {
@@ -44165,7 +44577,8 @@
             "value": "刪除作業待處理。在通過身分驗證的移除成功前，Background Sync 和有衝突的中繼控制項仍將停用。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Demo Mode": {
       "comment": "Banner label shown when the app is running in demo mode",
@@ -44326,8 +44739,10 @@
             "value": "示範模式"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Demo mode": {},
     "Detached Head": {
       "localizations": {
         "ar": {
@@ -44488,6 +44903,7 @@
         }
       }
     },
+    "Details": {},
     "Device registration": {
       "localizations": {
         "ar": {
@@ -44640,8 +45056,10 @@
             "value": "裝置註冊"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Didn't finish": {},
     "Diff": {
       "localizations": {
         "ar": {
@@ -44954,8 +45372,19 @@
             "value": "喪失能力的"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Discard": {},
+    "Discard %lld changes": {},
+    "Discard %lld changes?": {},
+    "Discard 1 change": {},
+    "Discard 1 change?": {},
+    "Discard changes": {},
+    "Discard changes to this file?": {},
+    "Discard file": {},
+    "Discard local edits to this file": {},
+    "Dismiss": {},
     "Dismiss Background Sync banner": {
       "localizations": {
         "ar": {
@@ -45108,7 +45537,8 @@
             "value": "關閉 Background Sync 橫幅"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Dismiss Discord banner": {
       "localizations": {
@@ -45264,6 +45694,7 @@
         }
       }
     },
+    "Display name": {},
     "Diverged": {
       "localizations": {
         "ar": {
@@ -45424,6 +45855,7 @@
         }
       }
     },
+    "Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention. With pull off, push still fetches remote metadata to fail closed but never updates the worktree.": {},
     "Done": {
       "comment": "Generic done / close button",
       "localizations": {
@@ -45585,6 +46017,7 @@
         }
       }
     },
+    "Download from %@": {},
     "Downloaded LFS object %@ failed SHA-256/size verification.": {
       "localizations": {
         "ar": {
@@ -45739,6 +46172,10 @@
         }
       }
     },
+    "Drop": {},
+    "Drop stash?": {},
+    "Drop stash@{%lld}": {},
+    "Drop the git.": {},
     "EDIT": {
       "localizations": {
         "ar": {
@@ -45891,7 +46328,8 @@
             "value": "編輯"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "ENROLLMENT: %@": {
       "localizations": {
@@ -46045,7 +46483,8 @@
             "value": "報名： %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "ENTER URL MANUALLY": {
       "localizations": {
@@ -46199,7 +46638,8 @@
             "value": "手動輸入網址"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "ERROR": {
       "localizations": {
@@ -46353,8 +46793,10 @@
             "value": "錯誤"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Each included vault fetches its configured branch and fast-forwards only. Local edits, diverged history, a different branch, or missing credentials stop that vault and wait for you.": {},
     "Ed25519, ECDSA, and RSA private keys are supported for clone, pull, and push.": {
       "localizations": {
         "ar": {
@@ -46663,6 +47105,9 @@
         }
       }
     },
+    "Edit by hand": {},
+    "Edits made on this iPhone since then are gone for good.": {},
+    "Edits you make in Obsidian show up here.": {},
     "Email": {
       "comment": "Form field label for an email address",
       "localizations": {
@@ -47284,7 +47729,8 @@
             "value": "為所有儲存庫啟用 Background Sync?"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enable automatic push": {
       "localizations": {
@@ -47592,7 +48038,8 @@
             "value": "已啟用"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enables best-effort wakes for every included repository; choose pull and push separately below.": {
       "localizations": {
@@ -47746,7 +48193,8 @@
             "value": "為每個包含的儲存庫啟用盡力而為的喚醒；請在下方分別選擇 pull 和 push。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enrolled": {
       "localizations": {
@@ -47900,7 +48348,8 @@
             "value": "已註冊"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enrolled branch: %@": {
       "localizations": {
@@ -48054,7 +48503,8 @@
             "value": "已註冊分支機構： %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enrolled for GitHub wakes": {
       "localizations": {
@@ -48208,7 +48658,8 @@
             "value": "已註冊接收 GitHub 喚醒"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enrollment attempt %@": {
       "localizations": {
@@ -48362,7 +48813,8 @@
             "value": "註冊嘗試 %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enter a name for the new file in \"%@\"": {
       "localizations": {
@@ -48516,7 +48968,8 @@
             "value": "：請輸入“”中新文件的名稱%@\""
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Enter a new name for \"%@\"": {
       "localizations": {
@@ -48670,8 +49123,10 @@
             "value": "請輸入“”的新名稱%@\""
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Entirely on this device": {},
     "Error": {
       "comment": "Generic error alert title",
       "localizations": {
@@ -48833,6 +49288,9 @@
         }
       }
     },
+    "Errors": {},
+    "Errors %lld": {},
+    "Every file goes back to how it was before the remote changes came in. Nothing is lost on the remote.": {},
     "Every repository covered": {
       "localizations": {
         "ar": {
@@ -48985,8 +49443,12 @@
             "value": "涵蓋每個儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Every vault is in sync.": {},
+    "Everything else": {},
+    "Everything else matching": {},
     "Exclude any repository in its settings, with per-repository network and power policies.": {
       "localizations": {
         "ar": {
@@ -49139,7 +49601,8 @@
             "value": "可在各儲存庫的設定中排除該儲存庫，並設定各儲存庫的網路與電力政策。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Excluded": {
       "localizations": {
@@ -49610,6 +50073,7 @@
         }
       }
     },
+    "Exit demo mode": {},
     "Expected branch '%@', but '%@' is checked out.": {
       "localizations": {
         "ar": {
@@ -50224,7 +50688,8 @@
             "value": "全部"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Failed": {
       "localizations": {
@@ -50538,7 +51003,8 @@
             "value": "失敗/已禁用"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Failed to create commit: %@": {
       "localizations": {
@@ -51785,6 +52251,7 @@
         }
       }
     },
+    "Fast-forward only. Anything unusual waits for you.": {},
     "Fast-forwarded": {
       "shouldTranslate": false,
       "localizations": {
@@ -52099,7 +52566,8 @@
             "value": "意見回饋"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Fetch": {
       "localizations": {
@@ -52255,6 +52723,7 @@
         }
       }
     },
+    "Fetch %@ from Git LFS": {},
     "Fetch and apply remote changes": {
       "comment": "Subtitle for the pull action in the Git control sheet",
       "localizations": {
@@ -52570,6 +53039,8 @@
         }
       }
     },
+    "Fetch and fast-forward every cloned repository now.": {},
+    "Fetch and fast-forward every cloned vault. Pair it with a Personal Automation to pull when Obsidian opens.": {},
     "Fetch and fast-forward one cloned GitSync.md repository.": {
       "localizations": {
         "ar": {
@@ -52724,6 +53195,7 @@
         }
       }
     },
+    "Fetch and fast-forward one vault you choose.": {},
     "Fetch failed: %@": {
       "comment": "Error when fetching remote changes fails. %@ is the libgit2 error detail.",
       "localizations": {
@@ -52885,6 +53357,7 @@
         }
       }
     },
+    "Fetch from LFS": {},
     "Fetch remote changes": {
       "comment": "Subtitle for the pull action button",
       "localizations": {
@@ -53042,6 +53515,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "擷取遠端變更"
+          }
+        }
+      },
+      "extractionState": "stale"
+    },
+    "Fetching latest changes…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching latest changes…"
           }
         }
       }
@@ -53207,6 +53691,7 @@
         }
       }
     },
+    "File name": {},
     "Files": {
       "comment": "Row label for the number of tracked files in the vault",
       "localizations": {
@@ -53368,6 +53853,8 @@
         }
       }
     },
+    "Files matched by a filter=lfs rule in .gitattributes show up here.": {},
+    "Files › On My iPhone › GitSync.md": {},
     "Files › On My iPhone › GitSync.md › %@": {
       "comment": "Info text showing the default clone destination path. %@ is the folder name.",
       "localizations": {
@@ -53681,7 +54168,8 @@
             "value": "過濾器"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Filter repositories": {
       "comment": "Search bar prompt when filtering the list of GitHub repositories",
@@ -53842,7 +54330,8 @@
             "value": "篩選儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Finalize the merge with a commit and push": {
       "localizations": {
@@ -53996,7 +54485,8 @@
             "value": "：通過提交和推送操作完成閤併"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Finalizing merge...": {
       "localizations": {
@@ -54152,6 +54642,8 @@
         }
       }
     },
+    "Find clones": {},
+    "Find clones on this iPhone": {},
     "Find existing clones on this device": {
       "localizations": {
         "ar": {
@@ -54304,8 +54796,12 @@
             "value": "尋找此裝置上現有的複本"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Finish Adding Repository": {},
+    "Finish the merge first": {},
+    "Finishing repository setup…": {},
     "Flexible billing": {
       "localizations": {
         "ar": {
@@ -54458,7 +54954,8 @@
             "value": "靈活計費"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Folder": {
       "comment": "Row label for a folder name",
@@ -54621,6 +55118,14 @@
         }
       }
     },
+    "Folder Access Unavailable": {},
+    "Folder access unavailable — reconnect the original folder": {},
+    "Folder changes are unavailable in demo mode. Leave the demo to use this local tool.": {},
+    "Folder name": {},
+    "Folder publication progress contains duplicate identifiers. The saved file has been preserved.": {},
+    "Folder published, but the Obsidian connection could not be prepared. Reopen GitSync.md to retry.": {},
+    "Folder published.": {},
+    "Folder tools": {},
     "For git@host:owner/repo.git or ssh:// remotes": {
       "localizations": {
         "ar": {
@@ -54929,6 +55434,7 @@
         }
       }
     },
+    "Force-push": {},
     "Force-pushes or overwrites remote work": {
       "localizations": {
         "ar": {
@@ -55081,7 +55587,8 @@
             "value": "執行 force-push 或覆寫遠端工作"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Foreground-only": {
       "localizations": {
@@ -55390,7 +55897,8 @@
             "value": "僅前景： GitHub 無法解析訪問地址。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Foreground-only: link the GitHub App to enable wake notifications.": {
       "localizations": {
@@ -55544,7 +56052,8 @@
             "value": "僅前臺：連結 GitHub App 啟用喚醒通知。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Foreground-only: no linked GitHub installation can access this repository.": {
       "localizations": {
@@ -55698,7 +56207,8 @@
             "value": "僅前景：無連結 GitHub 安裝程式可訪問此倉庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Foreground-only: the origin is not a GitHub repository.": {
       "localizations": {
@@ -55852,8 +56362,11 @@
             "value": "僅前景： origin 不為 GitHub 倉庫."
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Found %lld repos": {},
+    "Found 1 repo": {},
     "Free up device storage": {
       "localizations": {
         "ar": {
@@ -56008,6 +56521,7 @@
         }
       }
     },
+    "From %@": {},
     "GIT": {
       "localizations": {
         "ar": {
@@ -56161,8 +56675,10 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "GIT TRACKING REMOVED": {},
     "GITSYNC.MD": {
       "localizations": {
         "ar": {
@@ -56316,8 +56832,10 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "Get Repository Status": {},
     "Get Started": {
       "localizations": {
         "ar": {
@@ -56470,8 +56988,10 @@
             "value": "開始使用"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Get a nudge the moment GitHub changes, so the pull can start right away.": {},
     "Get safe pulls and separately opt in to automatic commits and pushes when iOS allows. Optional subscription.": {
       "extractionState": "stale"
     },
@@ -56630,6 +57150,8 @@
       },
       "extractionState": "stale"
     },
+    "Get the status of ${repository}": {},
+    "Git": {},
     "Git Author": {
       "comment": "Section header for git author name and email fields",
       "localizations": {
@@ -56789,8 +57311,10 @@
             "value": "Git 作者"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Git LFS": {},
     "Git LFS SSH authentication could not determine the repository path.": {
       "localizations": {
         "ar": {
@@ -59722,8 +60246,10 @@
             "value": "來自 Shortcuts 的 Git 操作"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Git author": {},
     "Git author identity is missing or invalid. %@ Open repository settings and set Author Name and Author Email.": {
       "localizations": {
         "ar": {
@@ -60039,6 +60565,7 @@
         }
       }
     },
+    "Git metadata was preserved, but the repository connection could not be restored: %@": {},
     "Git references updated, but the working tree checkout needs attention. Concurrent local bytes were preserved: %@": {
       "localizations": {
         "ar": {
@@ -60193,6 +60720,7 @@
         }
       }
     },
+    "Git tracking is being removed. Wait for the backup to finish before cloning.": {},
     "Git updated before cancellation completed. Verify the working tree before the next sync.": {
       "localizations": {
         "ar": {
@@ -60809,6 +61337,8 @@
         }
       }
     },
+    "Git will try to merge them line by line. If the same lines changed, you'll pick which version to keep.": {},
+    "GitHub": {},
     "GitHub API error (%lld): %@": {
       "localizations": {
         "ar": {
@@ -61431,6 +61961,7 @@
         }
       }
     },
+    "GitHub App connection is temporarily unavailable.": {},
     "GitHub access to this repository was denied.": {
       "localizations": {
         "ar": {
@@ -61893,6 +62424,9 @@
         }
       }
     },
+    "GitHub connection could not be verified. Please try again.": {},
+    "GitHub connection was cancelled.": {},
+    "GitHub did not authorize Push Sync. Please try again.": {},
     "GitHub event wakes use only opaque identifiers — never repository names, contents, paths, or credentials. Everything manual stays included with the app you already own.": {
       "localizations": {
         "ar": {
@@ -62045,8 +62579,13 @@
             "value": "GitHub 事件喚醒功能僅支援使用不透明識別符號——絕不使用倉庫名稱、內容、路徑或憑據。所有手動操作均可直接在您已擁有的應用程式中完成。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "GitHub has %@/%@ (%@). Its name does not prove it was created by this attempt. Use this repository as the destination for your saved commit?\n\n%@": {},
+    "GitHub may have created the repository before the response was lost. Check its current state before continuing. A matching repository requires your explicit approval.": {},
+    "GitHub may have created the repository. Check GitHub and confirm the destination before continuing.": {},
+    "GitHub repository access could not be verified. Please try again.": {},
     "GitHub repository: %@": {
       "localizations": {
         "ar": {
@@ -62199,8 +62738,10 @@
             "value": "GitHub 倉庫: %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "GitHub returned a different account, name, or visibility. Check the destination before continuing.": {},
     "GitHub sign-in": {
       "localizations": {
         "ar": {
@@ -62509,6 +63050,7 @@
         }
       }
     },
+    "GitHub sign-in expired · %@": {},
     "GitHub sign-in failed: %@": {
       "localizations": {
         "ar": {
@@ -63125,6 +63667,8 @@
         }
       }
     },
+    "GitLab, Gitea, Codeberg, your own server.": {},
+    "GitSync.md": {},
     "GitSync.md Storage": {
       "localizations": {
         "ar": {
@@ -63277,7 +63821,8 @@
             "value": "GitSync.md 儲存空間"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "GitSync.md can now remember multiple GitHub sign-ins and keep each account’s token separate.": {
       "localizations": {
@@ -63433,6 +63978,9 @@
         }
       }
     },
+    "GitSync.md forgets the token for %@ on this device. Your vaults and their files stay where they are.": {},
+    "GitSync.md lists repositories from your GitHub account. Paste a URL instead to use another host.": {},
+    "GitSync.md may stage all non-ignored changes, commit them with each vault's author and the default message, and push directly to its remote. It never force-pushes, rebases, merges, switches branches, or resolves conflicts. Exclude a vault in its settings to keep it from publishing.": {},
     "GitSync.md now catches missing Author Name or Author Email before Commit & Push tries to create a commit.": {
       "localizations": {
         "ar": {
@@ -64047,7 +64595,8 @@
             "value": "只有在您確認 Background Sync 後，全域同意才會生效。App 絕不會向中繼 API 傳送儲存庫名稱、URL、內容、本機路徑或 Git 憑證。連結 GitHub App 時，瀏覽器會傳送一個暫時的 OAuth 代碼；中繼服務僅使用單一用途的暫時 GitHub App 使用者權杖來驗證個人擁有者或組織擁有者權限，僅儲存授權使用者的數字 ID，絕不永久保存這兩項憑證，也不會將其寫入應用程式記錄，並會盡力撤銷該權杖。已簽署的 GitHub webhook 承載資料可能包含 GitHub 提供的儲存庫、commit、路徑和作者中繼資料；中繼服務僅擷取數字儲存庫 ID、分支和傳送資料，不會永久保存或記錄名稱、URL、commit 訊息、變更的路徑、作者、內容或憑證。APNs 承載資料僅包含不透明 ID。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Global relay consent": {
       "localizations": {
@@ -64201,8 +64750,10 @@
             "value": "全球 relay 同意"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Goes": {},
     "HTTPS Token / Password": {
       "localizations": {
         "ar": {
@@ -64357,6 +64908,7 @@
         }
       }
     },
+    "HTTPS token": {},
     "HTTPS username/token": {
       "localizations": {
         "ar": {
@@ -64511,6 +65063,10 @@
         }
       }
     },
+    "HTTPS, SSH, git:// or owner/repo. Self-hosted? Tap the key.": {},
+    "HTTPS, SSH, git://, file:// or owner/repo.": {},
+    "Heading": {},
+    "Health": {},
     "Health: %@": {
       "localizations": {
         "ar": {
@@ -64817,8 +65373,15 @@
             "value": "幫助"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Hide Token": {},
+    "Hide file details": {},
+    "Hide keyboard": {},
+    "History": {},
+    "History backup": {},
+    "How Background Sync works": {},
     "How it stays safe": {
       "localizations": {
         "ar": {
@@ -64971,8 +65534,10 @@
             "value": "如何確保安全"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "How it works": {},
     "INVALID URL": {
       "localizations": {
         "ar": {
@@ -65435,6 +66000,8 @@
         }
       }
     },
+    "In progress": {},
+    "In sync": {},
     "Include in Background Sync": {
       "localizations": {
         "ar": {
@@ -65743,6 +66310,11 @@
         }
       }
     },
+    "Included": {},
+    "Included in Background Sync": {},
+    "Included with GitSync.md. iOS decides when background work runs; it's best effort.": {},
+    "Incoming commits": {},
+    "Indent": {},
     "Independent automatic pull and push controls": {
       "localizations": {
         "ar": {
@@ -66049,7 +66621,8 @@
             "value": "獨立的、預設關閉的發佈同意。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Info": {
       "localizations": {
@@ -66205,6 +66778,9 @@
         }
       }
     },
+    "Initial commit": {},
+    "Inspecting Git tracking…": {},
+    "Instant pulls on push": {},
     "Internal error: rebase requested for a fast-forward pull": {
       "localizations": {
         "ar": {
@@ -66667,6 +67243,7 @@
         }
       }
     },
+    "Invalid URL. Use HTTPS, SSH, git://, file://, or owner/repo.": {},
     "Invalid login URL": {
       "localizations": {
         "ar": {
@@ -67759,6 +68336,9 @@
         }
       }
     },
+    "It needs a merge. Open it to finish.": {},
+    "It will never": {},
+    "Its changes, files and history open here.": {},
     "JOIN": {
       "localizations": {
         "ar": {
@@ -67911,8 +68491,10 @@
             "value": "加入"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Join": {},
     "Join our Discord": {
       "localizations": {
         "ar": {
@@ -68065,8 +68647,10 @@
             "value": "加入我們的 Discord 頻道"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Join the Discord": {},
     "Join the Discord community.": {
       "localizations": {
         "ar": {
@@ -68221,6 +68805,7 @@
         }
       }
     },
+    "Join the GitSync.md Discord": {},
     "Join the community": {
       "localizations": {
         "ar": {
@@ -68373,8 +68958,20 @@
             "value": "加入社區"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Jump straight to one vault in GitSync.md.": {},
+    "Keep both": {},
+    "Keep resolving": {},
+    "Keep the notes.": {},
+    "Keep the remote version": {},
+    "Keep them": {},
+    "Keep this iPhone's version": {},
+    "Keep this version": {},
+    "Keep writing.": {},
+    "Keep your files, with an optional history backup": {},
+    "Keychain": {},
     "LEARN MORE": {
       "localizations": {
         "ar": {
@@ -68527,8 +69124,12 @@
             "value": "瞭解更多"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "LFS": {},
+    "LFS cache": {},
+    "LFS pointer · %@ on remote": {},
     "LOCATION": {
       "localizations": {
         "ar": {
@@ -68681,8 +69282,13 @@
             "value": "地點"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Large files": {},
+    "Large files (LFS)": {},
+    "Large files couldn't download": {},
+    "Large files need Git LFS — commit by hand": {},
     "Last Sync": {
       "comment": "Row label showing the date and time of the last successful sync",
       "localizations": {
@@ -68842,7 +69448,8 @@
             "value": "上次同步"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Last attempt %@": {
       "localizations": {
@@ -69152,6 +69759,7 @@
         }
       }
     },
+    "Last pushed": {},
     "Last sync attempt %@": {
       "localizations": {
         "ar": {
@@ -69306,6 +69914,7 @@
         }
       }
     },
+    "Latest commit": {},
     "Learn more about Background Sync": {
       "localizations": {
         "ar": {
@@ -69461,6 +70070,8 @@
       },
       "extractionState": "stale"
     },
+    "Leave demo mode before changing a local folder.": {},
+    "Light": {},
     "Link / Manage GitHub App": {
       "localizations": {
         "ar": {
@@ -69613,7 +70224,8 @@
             "value": "連結 / 管理 GitHub App"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Linked GitHub installations": {
       "localizations": {
@@ -69767,7 +70379,8 @@
             "value": "已連結的 GitHub 安裝"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Linked GitHub installations could not be refreshed. Automatic enrollment will retry.": {
       "localizations": {
@@ -69921,7 +70534,8 @@
             "value": "已關聯 GitHub 系統安裝無法更新。系統將自動重新嘗試註冊。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Linking a personal GitHub App installation requires that account's owner. Linking an organization installation requires an active organization owner; ordinary members and repository collaborators cannot authorize installation-wide wakes.": {
       "localizations": {
@@ -70075,8 +70689,11 @@
             "value": "關聯個人賬戶 GitHub App 安裝操作需由賬戶所有者執行；關聯組織安裝需由有效的組織所有者操作；普通成員及儲存庫合作者無法授權全組織範圍的安裝許可權。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Links from Obsidian can also call syncmd://x-callback-url/pull, push, or sync with a repo= name.": {},
+    "Load older commits": {},
     "Loading": {
       "localizations": {
         "ar": {
@@ -70550,8 +71167,11 @@
             "value": "本機變更"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Local Commit": {},
+    "Local On My iPhone folders and regular files up to 10 MiB.": {},
     "Local ahead": {
       "localizations": {
         "ar": {
@@ -70710,7 +71330,8 @@
             "value": "本地領先"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Local and remote have diverged (ahead %lld, behind %lld). Merge support is required to continue.": {
       "localizations": {
@@ -71329,6 +71950,8 @@
         }
       }
     },
+    "Local changes": {},
+    "Local changes are in the way. Open it to finish.": {},
     "Local changes from GitSync.md": {
       "localizations": {
         "ar": {
@@ -71637,6 +72260,7 @@
         }
       }
     },
+    "Local commit prepared": {},
     "Local edits block this pull": {
       "localizations": {
         "ar": {
@@ -72099,6 +72723,8 @@
         }
       }
     },
+    "Local or custom remote": {},
+    "Local preparation interrupted": {},
     "Location": {
       "comment": "Row label showing a file location",
       "localizations": {
@@ -72260,6 +72886,12 @@
         }
       }
     },
+    "Lock": {},
+    "Lock %@": {},
+    "Long-press a vault and choose Pin to top.": {},
+    "Look around with a demo vault →": {},
+    "Looking for repos": {},
+    "Looks like notes · %lld": {},
     "MARKDOWN-FIRST WORKFLOW": {
       "localizations": {
         "ar": {
@@ -72412,7 +73044,8 @@
             "value": "Markdown 首頁工作流"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "MERGE_HEAD is empty": {
       "localizations": {
@@ -72722,6 +73355,10 @@
         }
       }
     },
+    "Mac": {},
+    "Make a new GitHub repo from your notes": {},
+    "Manage": {},
+    "Manage GitHub access for @%@": {},
     "Manage Subscription": {
       "localizations": {
         "ar": {
@@ -72874,7 +73511,8 @@
             "value": "管理訂閱"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Manage billing and background syncing anytime in App Settings → Background Sync.": {
       "localizations": {
@@ -73028,8 +73666,10 @@
             "value": "您可以隨時在「App 設定 → Background Sync」中管理帳單和背景同步。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Manage installed GitHub apps": {},
     "Manual Git, Shortcuts, callbacks, and local repository features stay included — Background Sync is entirely optional.": {
       "localizations": {
         "ar": {
@@ -73498,6 +74138,7 @@
         }
       }
     },
+    "Merge %@": {},
     "Merge analysis did not produce a supported strategy": {
       "localizations": {
         "ar": {
@@ -74268,6 +74909,8 @@
         }
       }
     },
+    "Merge into current": {},
+    "Merge into the current branch?": {},
     "Merge is blocked to protect local edits. Commit, stash, or discard changes first.": {
       "localizations": {
         "ar": {
@@ -74422,6 +75065,8 @@
         }
       }
     },
+    "Merge message": {},
+    "Merge of": {},
     "Merge produced conflicts that require manual resolution.": {
       "localizations": {
         "ar": {
@@ -74576,6 +75221,7 @@
         }
       }
     },
+    "Merge remote changes": {},
     "Merge resolved and pushed successfully": {
       "localizations": {
         "ar": {
@@ -74730,6 +75376,7 @@
         }
       }
     },
+    "Merged and pushed": {},
     "Merged and pushed successfully": {
       "localizations": {
         "ar": {
@@ -76595,8 +77242,11 @@
             "value": "每月"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "More file options": {},
+    "More vault options": {},
     "Move Failed": {
       "localizations": {
         "ar": {
@@ -76915,8 +77565,12 @@
             "value": "移動知識庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Move vault…": {},
+    "Moving keeps history and settings. Pick the folder the vault should live in.": {},
+    "NEEDS ATTENTION": {},
     "NO LOGS YET": {
       "localizations": {
         "ar": {
@@ -77069,7 +77723,8 @@
             "value": "仍無日誌記録"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Name": {
       "comment": "Form field label for a person's name",
@@ -77232,6 +77887,10 @@
         }
       }
     },
+    "Names can't contain “/”.": {},
+    "Names can't start with a dot.": {},
+    "Needs a decision": {},
+    "Needs attention": {},
     "Network": {
       "localizations": {
         "ar": {
@@ -77701,6 +78360,7 @@
         }
       }
     },
+    "Never: %@": {},
     "New File": {
       "localizations": {
         "ar": {
@@ -77853,8 +78513,11 @@
             "value": "新文件"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "New Repository": {},
+    "New folder in": {},
     "New name": {
       "localizations": {
         "ar": {
@@ -78007,8 +78670,11 @@
             "value": "新名稱"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "New note in": {},
+    "New on remote": {},
     "New repositories will be saved to the app's default location instead.": {
       "localizations": {
         "ar": {
@@ -78315,8 +78981,10 @@
             "value": "：新存儲庫將保存至應用的默認路徑。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "New vaults": {},
     "Next": {
       "localizations": {
         "ar": {
@@ -78471,6 +79139,7 @@
         }
       }
     },
+    "Next changed file": {},
     "No .git directory found in %@.": {
       "localizations": {
         "ar": {
@@ -79420,7 +80089,8 @@
             "value": "沒有儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "No access token received from GitHub.": {
       "localizations": {
@@ -79730,6 +80400,8 @@
         }
       }
     },
+    "No branches": {},
+    "No changes on this iPhone": {},
     "No changes to commit.": {
       "comment": "Error when attempting to commit but the working tree is clean",
       "localizations": {
@@ -80045,6 +80717,7 @@
         }
       }
     },
+    "No changes yet. Edits show up here as you write.": {},
     "No cloned repositories to pull yet. Open GitSync.md and clone a repository first.": {
       "localizations": {
         "ar": {
@@ -80199,6 +80872,11 @@
         }
       }
     },
+    "No cloned repositories to sync yet. Open GitSync.md and clone a repository first.": {},
+    "No commits touch this file yet.": {},
+    "No commits yet": {},
+    "No diff for this file. It may be binary.": {},
+    "No errors logged.": {},
     "No event hint": {
       "localizations": {
         "ar": {
@@ -80351,8 +81029,10 @@
             "value": "無事件提示"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "No file changes.": {},
     "No files found": {
       "localizations": {
         "ar": {
@@ -80507,6 +81187,7 @@
         }
       }
     },
+    "No files to commit. Git does not preserve empty folders.": {},
     "No git repositories found inside this folder.": {
       "localizations": {
         "ar": {
@@ -80659,8 +81340,11 @@
             "value": "此檔案夾中找不到 Git 儲存庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "No iPhone key yet": {},
+    "No large files": {},
     "No local changes": {
       "localizations": {
         "ar": {
@@ -81289,6 +81973,8 @@
         }
       }
     },
+    "No logs yet": {},
+    "No matches": {},
     "No merge is currently in progress.": {
       "localizations": {
         "ar": {
@@ -81597,6 +82283,8 @@
         }
       }
     },
+    "No organization repos": {},
+    "No overlap found": {},
     "No rebase is currently in progress.": {
       "localizations": {
         "ar": {
@@ -82059,6 +82747,7 @@
         }
       }
     },
+    "No remote configured": {},
     "No repositories found": {
       "localizations": {
         "ar": {
@@ -82213,6 +82902,11 @@
         }
       }
     },
+    "No repositories yet": {},
+    "No repository matches “%@”.": {},
+    "No runs yet. iOS will give GitSync.md time soon; opening the app also catches up.": {},
+    "No starred repos": {},
+    "No stashes": {},
     "No status": {
       "localizations": {
         "ar": {
@@ -82373,6 +83067,7 @@
         }
       }
     },
+    "No tags": {},
     "No tags in this repository": {
       "localizations": {
         "ar": {
@@ -82533,6 +83228,8 @@
         }
       }
     },
+    "No upstream branch": {},
+    "No vaults yet.": {},
     "None": {
       "comment": "Displayed when there are zero local changes",
       "localizations": {
@@ -82694,6 +83391,7 @@
         }
       }
     },
+    "None required; Push Sync optional": {},
     "Not Cloned": {
       "comment": "State title shown when a repository has been added but not yet cloned",
       "localizations": {
@@ -83009,6 +83707,7 @@
         }
       }
     },
+    "Not checked": {},
     "Not cloned": {
       "localizations": {
         "ar": {
@@ -83321,7 +84020,8 @@
             "value": "未配置"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Not enabled": {
       "localizations": {
@@ -83475,7 +84175,8 @@
             "value": "未啟用"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Not found: %@": {
       "localizations": {
@@ -83631,6 +84332,8 @@
         }
       }
     },
+    "Not included": {},
+    "Not included / disabled": {},
     "Not now": {
       "localizations": {
         "ar": {
@@ -83937,8 +84640,11 @@
             "value": "未註冊"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Not set": {},
+    "Not signed in": {},
     "Not subscribed": {
       "localizations": {
         "ar": {
@@ -84091,8 +84797,24 @@
             "value": "未訂閱"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Note": {},
+    "Notes on your phone and commits on GitHub meeting at one sync point": {},
+    "Nothing here": {},
+    "Nothing needs you": {},
+    "Nothing new to commit": {},
+    "Nothing pinned yet": {},
+    "Nothing to commit": {},
+    "Nothing to diff.": {},
+    "Nothing to preview": {},
+    "Nothing to stash — no changes on this iPhone.": {},
+    "Nothing waiting on this iPhone": {},
+    "Notification device registered %@": {},
+    "Notifications were denied in Settings.": {},
+    "Notify when GitHub changes": {},
+    "OAuth": {},
     "OK": {
       "comment": "Generic OK / dismiss button",
       "localizations": {
@@ -84254,6 +84976,16 @@
         }
       }
     },
+    "ON": {},
+    "OPT-IN": {},
+    "Obsidian Git": {},
+    "Obsidian could not connect. Check that this repository is signed in and its connection request has not expired.": {},
+    "Obsidian, Working Copy…": {},
+    "Off by default. You choose which vaults publish.": {},
+    "Off unless you choose it. When on, GitSync.md stages all non-ignored changes, commits with the vault's author and the default message, and pushes directly. If GitHub moved first, it stops instead of merging. It never force-pushes, rebases, merges, switches branches, or resolves conflicts.": {},
+    "Offline": {},
+    "On GitHub.": {},
+    "On My iPhone": {},
     "On My iPhone › GitSync.md": {
       "localizations": {
         "ar": {
@@ -84569,6 +85301,8 @@
         }
       }
     },
+    "On remote": {},
+    "On this iPhone": {},
     "One opt-in covers all current and future cloned or managed repositories on this installation.": {
       "localizations": {
         "ar": {
@@ -84721,8 +85455,10 @@
             "value": "一次加入選擇即可涵蓋此安裝項目上目前及未來的所有複製或管理的儲存庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "One step left.": {},
     "One switch covers all your repositories": {
       "localizations": {
         "ar": {
@@ -84875,8 +85611,10 @@
             "value": "一個開關涵蓋所有儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "One switch covers every current and future cloned vault on this iPhone. Exclude a vault in its settings to keep it manual.": {},
     "One switch covers every repository whenever iOS allows background work.": {
       "localizations": {
         "ar": {
@@ -85032,6 +85770,8 @@
       },
       "extractionState": "stale"
     },
+    "Only .git directly inside the selected folder is removed. Local On My iPhone folders only.": {},
+    "Only a single-parent commit can be undone.": {},
     "Only folders inside GitSync.md storage can be relinked without granting access.": {
       "localizations": {
         "ar": {
@@ -85186,6 +85926,7 @@
         }
       }
     },
+    "Only on this iPhone": {},
     "Only works for public SSH remotes": {
       "localizations": {
         "ar": {
@@ -85340,6 +86081,9 @@
         }
       }
     },
+    "Only you and people you grant access can see this repository.": {},
+    "Open ${repository}": {},
+    "Open %@/%@ on GitHub": {},
     "Open Existing Repository": {
       "comment": "Button title to open a local git repository from the device",
       "localizations": {
@@ -85499,8 +86243,14 @@
             "value": "開啟現有儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Open Obsidian in the morning and everything is already there.": {},
+    "Open Repo": {},
+    "Open Repository": {},
+    "Open Shortcuts": {},
+    "Open a repo folder": {},
     "Open in Files": {
       "localizations": {
         "ar": {
@@ -85655,6 +86405,9 @@
         }
       }
     },
+    "Open in editor": {},
+    "Open in…": {},
+    "Open one repository in GitSync.md.": {},
     "Open repository in Files app": {
       "localizations": {
         "ar": {
@@ -85807,8 +86560,11 @@
             "value": "：在“文件”應用中打開存儲庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Opens GitHub to change repository access or uninstall the GitSync.md GitHub App.": {},
+    "Opens a private email draft with this installation's opaque identifier. Review it before sending; never post these identifiers publicly.": {},
     "Opens a private email draft with this installation's opaque onboarding and Background Sync identifiers. Review it before sending; never post these identifiers publicly.": {
       "localizations": {
         "ar": {
@@ -85961,8 +86717,10 @@
             "value": "開啟一封私人電子郵件草稿，其中包含此安裝項目的不透明啟用標識符和 Background Sync 標識符。傳送前請檢查；切勿公開發佈這些標識符。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Opt in once to let GitSync.md reconcile current and future repositories whenever iOS grants background time. Exclude any repository in its settings—there is no subscription.": {},
     "Optional": {
       "localizations": {
         "ar": {
@@ -86274,6 +87032,8 @@
         }
       }
     },
+    "Or paste a URL": {},
+    "Orgs": {},
     "Origin did not confirm that the branch was published. Publication status is unknown.": {
       "localizations": {
         "ar": {
@@ -86734,8 +87494,12 @@
             "value": "其他檔案夾"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Other hosts and SSH": {},
+    "Other locks": {},
+    "Other ways": {},
     "Ours": {
       "localizations": {
         "ar": {
@@ -86896,6 +87660,7 @@
         }
       }
     },
+    "Overwrite edits": {},
     "PERSONAL ACCESS TOKEN": {
       "localizations": {
         "ar": {
@@ -87048,7 +87813,8 @@
             "value": "個人訪問令牌"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "PRIVATE KEY": {
       "localizations": {
@@ -87202,7 +87968,8 @@
             "value": "俬鑰"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "PUBLIC KEY (OPTIONAL)": {
       "localizations": {
@@ -87356,7 +88123,8 @@
             "value": "公鑰（可選）"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "PULL-ONLY — INCLUDED": {
       "localizations": {
@@ -88131,6 +88899,7 @@
         }
       }
     },
+    "Paste a GitHub token with repo access. It is stored in the Keychain.": {},
     "Path": {
       "comment": "Row label showing a file system path",
       "localizations": {
@@ -88444,7 +89213,8 @@
             "value": "每月"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Per year": {
       "localizations": {
@@ -88598,7 +89368,8 @@
             "value": "每年"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Per-repository exclusions and policies": {
       "localizations": {
@@ -88755,6 +89526,7 @@
       },
       "extractionState": "stale"
     },
+    "Permanently deletes local Git history without a backup": {},
     "Personal Access Token": {
       "comment": "Label for the GitHub Personal Access Token input field",
       "localizations": {
@@ -88916,6 +89688,8 @@
         }
       }
     },
+    "Personal access token": {},
+    "Personal account · main branch. The account is saved with this publication and stays the same if you switch accounts elsewhere.": {},
     "Pick Filename": {
       "localizations": {
         "ar": {
@@ -89068,8 +89842,13 @@
             "value": "選擇文件名"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Pick a filename": {},
+    "Pick a git repo anywhere in Files": {},
+    "Pick a repo": {},
+    "Pick a vault.": {},
     "Pick from GitHub": {
       "comment": "Button title to pick a repository from the user's GitHub account",
       "localizations": {
@@ -89229,8 +90008,14 @@
             "value": "從 GitHub 挑選"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Pick the version to keep, or keep both and tidy up after.": {},
+    "Pin to top": {},
+    "Pin to top of Home": {},
+    "Pinned": {},
+    "Pinned %lld": {},
     "Plans": {
       "localizations": {
         "ar": {
@@ -89383,7 +90168,8 @@
             "value": "方案"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Please enter a valid Git remote URL.": {
       "localizations": {
@@ -90490,6 +91276,7 @@
         }
       }
     },
+    "Prepare the initial commit first.": {},
     "Preparing changes...": {
       "comment": "Sync progress message at the start of a push operation",
       "localizations": {
@@ -90812,6 +91599,9 @@
         }
       }
     },
+    "Preparing…": {},
+    "Preview": {},
+    "Previous changed file": {},
     "Previously Cloned": {
       "localizations": {
         "ar": {
@@ -91432,8 +92222,10 @@
             "value": "隱私優先 relay"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Private": {},
     "Private Key": {
       "localizations": {
         "ar": {
@@ -91588,6 +92380,9 @@
         }
       }
     },
+    "Private key": {},
+    "Progress": {},
+    "Public": {},
     "Public Key": {
       "localizations": {
         "ar": {
@@ -91742,6 +92537,8 @@
         }
       }
     },
+    "Public key": {},
+    "Public key (optional)": {},
     "Public repositories and file remotes": {
       "localizations": {
         "ar": {
@@ -91896,6 +92693,13 @@
         }
       }
     },
+    "Publication progress changed in another operation. Reopen the saved progress before continuing.": {},
+    "Publish Saved Commit": {},
+    "Publish a folder": {},
+    "Publish an existing folder": {},
+    "Published": {},
+    "Published · finish adding folder": {},
+    "Publishing the saved commit…": {},
     "Pull": {
       "comment": "Git pull action title",
       "localizations": {
@@ -93913,6 +94717,9 @@
         }
       }
     },
+    "Pull down to refresh, or create a repository on GitHub first.": {},
+    "Pull every cloned GitSync.md repository, then commit and push local edits. Stops safely on conflicts.": {},
+    "Pull every vault, then commit and push your edits. Stops on conflicts.": {},
     "Pull failed": {
       "localizations": {
         "ar": {
@@ -94376,6 +95183,7 @@
       },
       "extractionState": "stale"
     },
+    "Pull in the background": {},
     "Pull one cloned GitSync.md repository, then commit and push local changes — without opening the app.": {
       "localizations": {
         "ar": {
@@ -94530,6 +95338,7 @@
         }
       }
     },
+    "Pull one vault, then commit and push your edits. Stops on conflicts.": {},
     "Pull remote changes": {
       "localizations": {
         "ar": {
@@ -94992,6 +95801,7 @@
         }
       }
     },
+    "Pull to bring this iPhone up to date": {},
     "Pull updated Git, but Git LFS needs attention": {
       "localizations": {
         "ar": {
@@ -95609,6 +96419,7 @@
       },
       "extractionState": "stale"
     },
+    "Pulled": {},
     "Pulled %@": {
       "localizations": {
         "ar": {
@@ -95923,6 +96734,8 @@
         }
       }
     },
+    "Pulled %lld changes": {},
+    "Pulled 1 change": {},
     "Pulled latest changes (fast-forward)": {
       "localizations": {
         "ar": {
@@ -96077,6 +96890,7 @@
         }
       }
     },
+    "Pulling": {},
     "Pulling a lot?": {
       "localizations": {
         "ar": {
@@ -96229,7 +97043,8 @@
             "value": "需要頻繁拉貨嗎？"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Pulling from remote…": {
       "localizations": {
@@ -96385,6 +97200,7 @@
         }
       }
     },
+    "Pulling…": {},
     "Pulls remain clean fast-forwards. If you separately enable automatic push, GitSync.md stages non-ignored edits, commits with the configured author and default message, and pushes directly to the remote. Divergence, remote-ahead local edits, the wrong branch, and authentication or trust requirements stop safely for attention.": {
       "extractionState": "stale"
     },
@@ -96540,7 +97356,8 @@
             "value": "購買待處理"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Push": {
       "localizations": {
@@ -97014,8 +97831,10 @@
             "value": "推送 %lld 個檔案"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Push %lld files": {},
     "Push 1 File": {
       "localizations": {
         "ar": {
@@ -97174,8 +97993,10 @@
             "value": "推送 1 個檔案"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Push 1 file": {},
     "Push Current Branch": {
       "localizations": {
         "ar": {
@@ -97328,7 +98149,8 @@
             "value": "推流分支"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Push Repo": {
       "localizations": {
@@ -97638,6 +98460,7 @@
         }
       }
     },
+    "Push Sync": {},
     "Push committed local changes": {
       "localizations": {
         "ar": {
@@ -97790,7 +98613,8 @@
             "value": "已提交本地更改"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Push committed local changes to remote": {
       "localizations": {
@@ -97944,7 +98768,8 @@
             "value": "已將本地更改推送到遠程倉庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Push complete!": {
       "comment": "Sync progress message after a successful push",
@@ -98107,6 +98932,8 @@
         }
       }
     },
+    "Push current branch": {},
+    "Push didn't go through": {},
     "Push failed: %@": {
       "comment": "Error when pushing commits fails. %@ is the libgit2 error detail.",
       "localizations": {
@@ -98427,8 +99254,11 @@
             "value": "將本機變更推送至遠端"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Push notifications": {},
+    "Push notifications from GitHub": {},
     "Push rebased commits": {
       "localizations": {
         "ar": {
@@ -98583,6 +99413,11 @@
         }
       }
     },
+    "Push right after": {},
+    "Push them first →": {},
+    "Push to a branch": {},
+    "Push to remote": {},
+    "Pushed": {},
     "Pushed %@": {
       "localizations": {
         "ar": {
@@ -98737,6 +99572,9 @@
         }
       }
     },
+    "Pushed %lld commits": {},
+    "Pushed 1 commit": {},
+    "Pushed to %@": {},
     "Pushes or force-pushes": {
       "localizations": {
         "ar": {
@@ -99046,6 +99884,9 @@
         }
       }
     },
+    "Pushing to %@…": {},
+    "Pushing to GitHub…": {},
+    "Pushing…": {},
     "Questions, ideas, or issues": {
       "comment": "Subtitle for the Send Feedback action row",
       "localizations": {
@@ -99359,7 +100200,8 @@
             "value": "移除"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "RENAME/RENAME": {
       "localizations": {
@@ -99513,7 +100355,8 @@
             "value": "重命名/RENAME"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "RESOLVE": {
       "localizations": {
@@ -99667,7 +100510,8 @@
             "value": "解決"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "RESOLVE CONFLICT": {
       "localizations": {
@@ -99821,7 +100665,8 @@
             "value": "解決衝突"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "RESULT": {
       "localizations": {
@@ -99975,7 +100820,8 @@
             "value": "結果"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Re-experience the onboarding flow": {
       "localizations": {
@@ -100131,6 +100977,7 @@
         }
       }
     },
+    "Reachable · confirm the host key when cloning": {},
     "Reading status…": {
       "localizations": {
         "ar": {
@@ -100285,6 +101132,9 @@
         }
       }
     },
+    "Ready to publish.": {},
+    "Ready to push": {},
+    "Real git.": {},
     "Rebase": {
       "localizations": {
         "ar": {
@@ -101363,6 +102213,7 @@
         }
       }
     },
+    "Rebase or merge": {},
     "Rebase produced conflicts that require manual resolution.": {
       "localizations": {
         "ar": {
@@ -101517,6 +102368,8 @@
         }
       }
     },
+    "Rebase stopped on conflicts": {},
+    "Rebased": {},
     "Rebased local commits onto origin/%@": {
       "localizations": {
         "ar": {
@@ -101823,8 +102676,10 @@
             "value": "rebase、merge 或解決衝突"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Recent runs": {},
     "Reconciling": {
       "localizations": {
         "ar": {
@@ -101977,7 +102832,8 @@
             "value": "調和"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Reconciling repositories…": {
       "localizations": {
@@ -102133,6 +102989,11 @@
         }
       }
     },
+    "Reconnect": {},
+    "Reconnect Folder": {},
+    "Reconnect Folder Access": {},
+    "Reconnect the original folder to use this repository. Its saved commit and settings have been preserved.": {},
+    "Refresh File Review": {},
     "Registered": {
       "localizations": {
         "ar": {
@@ -102285,7 +103146,8 @@
             "value": "已註冊"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Relay": {
       "localizations": {
@@ -102439,7 +103301,8 @@
             "value": "Relay"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Relay data was permanently deleted for this installation. Contact support before trying to use Background Sync again.": {
       "localizations": {
@@ -102593,7 +103456,8 @@
             "value": "此安裝項目的中繼資料已永久刪除。再次嘗試使用 Background Sync 前，請聯絡支援人員。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Relay deletion completed, but its local receipt could not be saved. Retry to finish securely.": {
       "localizations": {
@@ -102747,7 +103611,8 @@
             "value": "Relay 刪除操作已完成，但本地接收記錄無法儲存。請重試以完成安全操作。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Relay deletion is in progress. Background Sync remains unavailable until deletion finishes.": {
       "localizations": {
@@ -102901,7 +103766,8 @@
             "value": "正在刪除中繼資料。在刪除完成前，Background Sync 仍無法使用。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Relay deletion is pending but its authorization expired. Contact support to verify deletion and reset this installation.": {
       "localizations": {
@@ -103055,7 +103921,8 @@
             "value": "Relay 刪除操作尚待執行，但其授權已過期。請聯絡技術支援以確認刪除操作並重置此安裝。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Relay deletion is pending but its durable state could not be saved. Background Sync remains disabled; retry or contact support.": {
       "localizations": {
@@ -103209,8 +104076,10 @@
             "value": "中繼刪除作業待處理，但無法儲存其持久狀態。Background Sync 仍處於停用狀態；請再試一次或聯絡支援人員。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Remote": {},
     "Remote URL": {
       "localizations": {
         "ar": {
@@ -103981,6 +104850,7 @@
         }
       }
     },
+    "Remote configured": {},
     "Remote updates arrived while local changes were being prepared.": {
       "localizations": {
         "ar": {
@@ -104450,6 +105320,9 @@
         }
       }
     },
+    "Remove & delete local files…": {},
+    "Remove @%@ from this device": {},
+    "Remove Connection": {},
     "Remove Default Location?": {
       "comment": "Alert title when confirming removal of the default save location",
       "localizations": {
@@ -104611,6 +105484,8 @@
         }
       }
     },
+    "Remove Git tracking": {},
+    "Remove GitHub connection from this device?": {},
     "Remove from GitSync.md": {
       "localizations": {
         "ar": {
@@ -104763,8 +105638,10 @@
             "value": "從...中移除 GitSync.md"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Remove from GitSync.md — keep files": {},
     "Remove from GitSync.md?": {
       "localizations": {
         "ar": {
@@ -105847,7 +106724,8 @@
             "value": "刪除"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Removed from list": {
       "localizations": {
@@ -106003,6 +106881,10 @@
         }
       }
     },
+    "Removed: ": {},
+    "Removes Git from the folder and keeps your notes": {},
+    "Removes the .git folder after the history zip is saved": {},
+    "Removing Git tracking…": {},
     "Removing a repository from GitSync.md now keeps the files on your device, so folders shared with other apps stay safe.": {
       "localizations": {
         "ar": {
@@ -106309,8 +107191,10 @@
             "value": "：從...中移除 GitSync.md 會在該設備上保留文件。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Removing without a backup permanently deletes this folder’s local Git history. You can only restore it from another copy.": {},
     "Rename": {
       "localizations": {
         "ar": {
@@ -106619,6 +107503,7 @@
         }
       }
     },
+    "Rename/rename": {},
     "Renamed": {
       "localizations": {
         "ar": {
@@ -106779,6 +107664,7 @@
         }
       }
     },
+    "Renamed two different ways.": {},
     "Replay local commits on top of remote": {
       "localizations": {
         "ar": {
@@ -107091,8 +107977,10 @@
             "value": "倉庫健康"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Repo Status": {},
     "Repo cleanup is here": {
       "localizations": {
         "ar": {
@@ -107247,6 +108135,7 @@
         }
       }
     },
+    "Report how many files changed on this iPhone and how many commits are waiting to push or pull — without touching the network.": {},
     "Repos follow the right account": {
       "localizations": {
         "ar": {
@@ -107401,6 +108290,8 @@
         }
       }
     },
+    "Repos stay where they are. GitSync.md only remembers the folder, so Obsidian keeps working as before.": {},
+    "Repos stay where they are. GitSync.md only remembers the folder.": {},
     "Repositories": {
       "comment": "Row label showing the count of repositories",
       "localizations": {
@@ -107868,7 +108759,8 @@
             "value": "此資料夾中的儲存庫已在上方列出。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Repositories opened from existing Files folders are unlinked from GitSync.md without removing the original folder.": {
       "localizations": {
@@ -108801,6 +109693,7 @@
         }
       }
     },
+    "Repository Name": {},
     "Repository Not Found": {
       "comment": "Error state title when the repository cannot be found in the app state",
       "localizations": {
@@ -109121,7 +110014,8 @@
             "value": "儲存庫狀態"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Repository URL": {
       "comment": "Label for the repository URL input field",
@@ -109438,6 +110332,7 @@
         }
       }
     },
+    "Repository Visibility": {},
     "Repository corrupted: %@. Try removing and re-cloning.": {
       "comment": "Error when the local git repository is in a corrupted state. %@ is the detail.",
       "localizations": {
@@ -109599,6 +110494,7 @@
         }
       }
     },
+    "Repository created · upload pending": {},
     "Repository not cloned yet. Clone it first.": {
       "comment": "Error when a git operation is attempted on a repository that has not been cloned",
       "localizations": {
@@ -110383,6 +111279,7 @@
         }
       }
     },
+    "Repository settings could not be checked. Your files have been preserved.": {},
     "Repository settings could not be read: %@": {
       "localizations": {
         "ar": {
@@ -110845,6 +111742,10 @@
         }
       }
     },
+    "Resolve conflict": {},
+    "Resolve conflicts": {},
+    "Resolve conflicts first": {},
+    "Resolve conflicts from the Changes list.": {},
     "Resolve rebase conflicts in-app": {
       "localizations": {
         "ar": {
@@ -111153,6 +112054,8 @@
         }
       }
     },
+    "Resolve the remaining conflicts, then continue the rebase.": {},
+    "Resolve with this result": {},
     "Restore": {
       "localizations": {
         "ar": {
@@ -111305,7 +112208,8 @@
             "value": "回復"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Restore Purchases": {
       "localizations": {
@@ -111459,8 +112363,10 @@
             "value": "恢復採購"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Result": {},
     "Result text could not be encoded as UTF-8.": {
       "localizations": {
         "ar": {
@@ -111615,6 +112521,9 @@
         }
       }
     },
+    "Resume & push": {},
+    "Resume publishing %@": {},
+    "Resume without creating another commit or repository.": {},
     "Retry": {
       "localizations": {
         "ar": {
@@ -111921,7 +112830,8 @@
             "value": "重試 relay 刪除"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Revert": {
       "localizations": {
@@ -113179,6 +114089,12 @@
         }
       }
     },
+    "Review Folder Again": {},
+    "Review first": {},
+    "Review notes": {},
+    "Review your files": {},
+    "Review · %lld of %lld": {},
+    "Reviewing folder contents…": {},
     "Run Pull All Repositories or Pull Repository from the Shortcuts app to fetch and fast-forward your vaults without opening the Git controls.": {
       "localizations": {
         "ar": {
@@ -113333,6 +114249,10 @@
         }
       }
     },
+    "Run these from the Shortcuts app, an automation, or by asking Siri. Each one runs headless and stops safely on conflicts.": {},
+    "Runs appear here once Background Sync is on.": {},
+    "Runs best-effort sync for every included repository whenever iOS grants background time; choose pull and push separately below. Scheduled reconciliation runs on-device; optional Push Sync can additionally request APNs-triggered reconciliation.": {},
+    "Runs whenever iOS gives GitSync.md time. Best effort, never real time.": {},
     "SAFE PULLS WHILE YOU'RE AWAY": {
       "localizations": {
         "ar": {
@@ -113640,7 +114560,8 @@
             "value": "保存"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "SCAN DIFFERENT FOLDER": {
       "localizations": {
@@ -113794,7 +114715,8 @@
             "value": "掃描其他檔案夾"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "SELECT REPOSITORY": {
       "localizations": {
@@ -113948,7 +114870,8 @@
             "value": "選擇存儲庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "SSH Host Key Changed": {
       "localizations": {
@@ -115182,6 +116105,7 @@
         }
       }
     },
+    "SSH, token or another host": {},
     "SYNC": {
       "localizations": {
         "ar": {
@@ -115335,7 +116259,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "Safe pull-only updates when iOS allows background work": {
       "localizations": {
@@ -115647,7 +116572,8 @@
             "value": "安全的、經過另外同意的發佈"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Safer repository removal": {
       "localizations": {
@@ -115964,6 +116890,8 @@
         }
       }
     },
+    "Save %@-history.zip": {},
+    "Save new clones in": {},
     "Save the result and mark this file resolved?": {
       "localizations": {
         "ar": {
@@ -116432,6 +117360,14 @@
         }
       }
     },
+    "Saved Local Commit": {},
+    "Saved Progress": {},
+    "Saved in": {},
+    "Saved · %lld lines changed": {},
+    "Saved · 1 line changed": {},
+    "Saved · not committed": {},
+    "Saves .git as a zip you can share or keep in Files.": {},
+    "Saving the reviewed initial commit…": {},
     "Saving…": {
       "localizations": {
         "ar": {
@@ -116586,6 +117522,8 @@
         }
       }
     },
+    "Scan Files for existing .git folders": {},
+    "Scan GitSync.md storage or any folder you grant access to.": {},
     "Scan GitSync.md storage or any folder you grant access to. Every git working copy inside is listed for one-tap reconnect.": {
       "localizations": {
         "ar": {
@@ -116738,8 +117676,10 @@
             "value": "掃描 GitSync.md 儲存空間或您授權取用的任何檔案夾。其中的每個 Git 工作複本都會列出，以便點一下即可重新連接。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Scan another folder…": {},
     "Scan for Repositories": {
       "localizations": {
         "ar": {
@@ -116892,7 +117832,8 @@
             "value": "掃描儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Scanning…": {
       "localizations": {
@@ -117048,6 +117989,8 @@
         }
       }
     },
+    "Search repositories": {},
+    "Section %lld of %lld": {},
     "Select a git repo on this device": {
       "comment": "Subtitle for the Open Existing Repository button",
       "localizations": {
@@ -117207,8 +118150,10 @@
             "value": "選取此裝置上的 Git 儲存庫"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Select at least one file for the initial commit. Git does not store empty folders.": {},
     "Select from your repositories": {
       "comment": "Subtitle for the Pick from GitHub button",
       "localizations": {
@@ -117524,6 +118469,7 @@
         }
       }
     },
+    "Selected repositories": {},
     "Self-hosted SSH is ready": {
       "localizations": {
         "ar": {
@@ -117837,11 +118783,15 @@
             "value": "傳送意見回饋"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Send feedback": {},
+    "Send your files to us": {},
     "Separate consent; existing installations stay pull-only until enabled.": {
       "extractionState": "stale"
     },
+    "Server component": {},
     "Server returned an HTML error page.": {
       "localizations": {
         "ar": {
@@ -118465,6 +119415,9 @@
         }
       }
     },
+    "Share or Save to Files": {},
+    "Share or save to Files": {},
+    "Share with support": {},
     "Shortcuts": {
       "localizations": {
         "ar": {
@@ -118617,8 +119570,11 @@
             "value": "快捷鍵"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Shortcuts & Siri": {},
+    "Shortcuts & Siri actions": {},
     "Shortcuts support": {
       "localizations": {
         "ar": {
@@ -118925,8 +119881,16 @@
             "value": "查看應用導覽"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Show Full Vault": {},
+    "Show Token": {},
+    "Show all %lld files": {},
+    "Show app tour": {},
+    "Show saved publications": {},
+    "Shows the commit's changed files": {},
+    "Shows the diff": {},
     "Sign In": {
       "comment": "Toolbar button to sign in",
       "localizations": {
@@ -119564,6 +120528,12 @@
         }
       }
     },
+    "Sign in again to keep syncing": {},
+    "Sign in as @%@ to continue this saved publication.": {},
+    "Sign in as the personal-account owner or an organization owner to connect that installation.": {},
+    "Sign in to see your repos": {},
+    "Sign in to the GitHub account selected for this publication. It will not be sent to a different account.": {},
+    "Sign in with": {},
     "Sign in with GitHub": {
       "comment": "Primary sign-in button using GitHub OAuth",
       "localizations": {
@@ -119725,6 +120695,10 @@
         }
       }
     },
+    "Sign out": {},
+    "Sign out of GitHub?": {},
+    "Sign-in expired": {},
+    "Sign-in or trust needed": {},
     "Sign-in was cancelled.": {
       "localizations": {
         "ar": {
@@ -120192,7 +121166,8 @@
             "value": "跳過"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Skip for Now": {
       "comment": "Button to skip setting a default save location during onboarding",
@@ -120355,6 +121330,7 @@
         }
       }
     },
+    "Skip the backup": {},
     "Stage": {
       "localizations": {
         "ar": {
@@ -120513,8 +121489,10 @@
             "value": "暫存"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Stage %@": {},
     "Stage All": {
       "localizations": {
         "ar": {
@@ -120667,8 +121645,10 @@
             "value": "級彆：全部"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Stage all": {},
     "Stage all changes, commit, and push one cloned GitSync.md repository — without opening the app.": {
       "localizations": {
         "ar": {
@@ -120823,6 +121803,7 @@
         }
       }
     },
+    "Stage everything, commit, and push one vault without opening the app.": {},
     "Staged %@": {
       "localizations": {
         "ar": {
@@ -121138,6 +122119,11 @@
       },
       "extractionState": "stale"
     },
+    "Star a repository on GitHub and pull down to refresh.": {},
+    "Starred": {},
+    "Start from remote": {},
+    "Start from this iPhone": {},
+    "Start with": {},
     "Stash": {
       "localizations": {
         "ar": {
@@ -121298,6 +122284,9 @@
         }
       }
     },
+    "Stash %lld": {},
+    "Stash a copy first, just in case": {},
+    "Stash actions": {},
     "Stash at index %lld was not found.": {
       "localizations": {
         "ar": {
@@ -121452,6 +122441,8 @@
         }
       }
     },
+    "Stash changes to set them aside without committing.": {},
+    "Stash message (optional)": {},
     "Stash message (optional)…": {
       "localizations": {
         "ar": {
@@ -121606,6 +122597,7 @@
         }
       }
     },
+    "Stashes": {},
     "Status": {
       "localizations": {
         "ar": {
@@ -121760,6 +122752,17 @@
         }
       }
     },
+    "Stays": {},
+    "Steps": {},
+    "Stop": {},
+    "Stop preserves your files and saved progress. You can resume from Publish a Folder.": {},
+    "Stop tracking": {},
+    "Stop tracking %@": {},
+    "Stop tracking %@?": {},
+    "Stop tracking removes the .git folder. Removing from GitSync.md only forgets the vault; both keep your files.": {},
+    "Stop tracking — keep files": {},
+    "Stop tracking…": {},
+    "Stops if GitHub moved first": {},
     "Stops safely when attention is needed": {
       "localizations": {
         "ar": {
@@ -121912,8 +122915,11 @@
             "value": "需要處理時安全停止"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Stops the merge and puts your branch back": {},
+    "Stops the rebase and puts your branch back": {},
     "Storage": {
       "comment": "Section header for the vault storage location information",
       "localizations": {
@@ -122073,7 +123079,8 @@
             "value": "儲存空間"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Stored in Keychain. Paste an OpenSSH private key; passphrase is optional.": {
       "localizations": {
@@ -122229,6 +123236,7 @@
         }
       }
     },
+    "Stored with Git LFS": {},
     "Subscribe": {
       "localizations": {
         "ar": {
@@ -122381,7 +123389,8 @@
             "value": "訂閱"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Subscription product is unavailable.": {
       "localizations": {
@@ -122535,7 +123544,8 @@
             "value": "訂閱產品不可用。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Success": {
       "localizations": {
@@ -122695,7 +123705,8 @@
             "value": "成功"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Switch": {
       "localizations": {
@@ -122857,6 +123868,8 @@
         }
       }
     },
+    "Switch branch": {},
+    "Switch branches": {},
     "Switch branches, view diffs, browse commit history, manage tags, and resolve conflicts — real Git, not a watered-down sync.": {
       "localizations": {
         "ar": {
@@ -123009,8 +124022,10 @@
             "value": "：切換分支、查看差異、瀏覽提交歷史、管理標籤及解決衝突——功能齊全 Git，併非水洗版衕步版本。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Switch to branch": {},
     "Switches branches or creates missing branches": {
       "localizations": {
         "ar": {
@@ -123163,7 +124178,8 @@
             "value": "切換分支或建立遺失的分支"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Switching branch...": {
       "localizations": {
@@ -123473,6 +124489,9 @@
         }
       }
     },
+    "Sync": {},
+    "Sync All": {},
+    "Sync All Repositories": {},
     "Sync Info": {
       "comment": "Section header for sync metadata such as last sync date, commit SHA, and file count",
       "localizations": {
@@ -123632,7 +124651,8 @@
             "value": "同步資訊"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Sync Repository": {
       "localizations": {
@@ -123942,6 +124962,8 @@
         }
       }
     },
+    "Sync activity and errors will show up here.": {},
+    "Sync all": {},
     "Sync all repositories in the background": {
       "localizations": {
         "ar": {
@@ -124097,6 +125119,7 @@
       },
       "extractionState": "stale"
     },
+    "Sync all vaults, %lld to pull, %lld to push": {},
     "Sync complete": {
       "localizations": {
         "ar": {
@@ -124405,6 +125428,7 @@
         }
       }
     },
+    "Sync is paused.": {},
     "Sync needs attention": {
       "localizations": {
         "ar": {
@@ -124559,6 +125583,10 @@
         }
       }
     },
+    "Sync now": {},
+    "Sync runs entirely on this device with the credentials you already use. Repository contents go only to your Git host. Optional Push Sync routes repository names and commit hints through its relay, never file contents, paths, or credentials.": {},
+    "Sync while\nyou sleep.": {},
+    "Synced": {},
     "Synced %@": {
       "localizations": {
         "ar": {
@@ -124713,6 +125741,8 @@
         }
       }
     },
+    "Synced in the background": {},
+    "Synced overnight": {},
     "Synced — no local changes": {
       "localizations": {
         "ar": {
@@ -124867,6 +125897,7 @@
         }
       }
     },
+    "Syncing all vaults": {},
     "Syncing repository…": {
       "localizations": {
         "ar": {
@@ -125327,8 +126358,12 @@
             "value": "iOS 允許時在背景同步"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Syncs when online": {},
+    "System": {},
+    "System follows your iPhone's Light or Dark setting.": {},
     "TLS certificate verification failed for %@. Check your network or the remote's certificate.": {
       "localizations": {
         "ar": {
@@ -125791,6 +126826,8 @@
         }
       }
     },
+    "Tag HEAD": {},
+    "Tag a commit to mark a version.": {},
     "Tags": {
       "localizations": {
         "ar": {
@@ -126103,7 +127140,8 @@
             "value": "點一下某個方案以加入 Background Sync。它僅在 iOS 授予背景執行時間時執行，並非即時。訂閱會自動續訂，直到在 App Store 設定中取消為止。手動 Git 仍包含在內。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Tap to change": {
       "comment": "Subtitle shown below a selected item to indicate it is tappable",
@@ -126264,8 +127302,10 @@
             "value": "點按以變更"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Template · idea": {},
     "Terminal action: unlike turning Background Sync off, deletion permanently retires this installation's Background Sync relay identity.": {
       "localizations": {
         "ar": {
@@ -126418,7 +127458,8 @@
             "value": "終止性操作：與關閉 Background Sync 不同，刪除會永久停用此安裝項目的 Background Sync 中繼身分。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Terms": {
       "localizations": {
@@ -126728,6 +127769,10 @@
         }
       }
     },
+    "Test & clone": {},
+    "That commit is already on the remote, so it can't be undone here.": {},
+    "That doesn't look like an email address.": {},
+    "The .git folder in %@ will be removed. Its history is saved in %@.\n\nYour notes and files stay in place. The GitHub repository is not touched.": {},
     "The App Store request failed: %@": {
       "localizations": {
         "ar": {
@@ -126880,7 +127925,8 @@
             "value": "App Store 請求失敗： %@"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "The App Store transaction could not be verified.": {
       "localizations": {
@@ -127034,8 +128080,16 @@
             "value": "App Store 交易無法驗證。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "The Git index is locked. Wait for other Git operations to finish, then try again. If no Git operation is running, remove the stale index.lock file from the repository's Git directory.": {},
+    "The SSH key could not be saved to the Keychain (%lld).": {},
+    "The author email is stored in Git history. Use your GitHub noreply address if you want to keep your personal email private.": {},
+    "The branch moved since that commit, so it can't be undone here.": {},
+    "The chosen clone location could not be saved. Existing files have been preserved.": {},
+    "The destination branch differs from the reviewed commit. Its history has been preserved.": {},
+    "The destination repository already has history. First publication requires an empty repository.": {},
     "The file changed outside GitSync.md. Your edits were not saved.": {
       "localizations": {
         "ar": {
@@ -127344,6 +128398,11 @@
         }
       }
     },
+    "The folder and everything in it will show up in git status as deleted.": {},
+    "The folder was found, but its access settings could not be saved.": {},
+    "The generated SSH key could not be verified. Try again.": {},
+    "The history changed since the last zip. Make a new one.": {},
+    "The local Git history in %@ will be permanently deleted without a backup.\n\nYour notes and files stay in place. The GitHub repository is not touched.": {},
     "The local branch changed before commit. Publication was stopped.": {
       "localizations": {
         "ar": {
@@ -127806,6 +128865,7 @@
         }
       }
     },
+    "The prepared snapshot is locked. Resume the saved publication.": {},
     "The push did not complete. Local commit: %@. %@": {
       "localizations": {
         "ar": {
@@ -128112,7 +129172,8 @@
             "value": "這個 relay 授權無效或已過期。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "The relay rejected the request (HTTP %lld).": {
       "localizations": {
@@ -128266,7 +129327,8 @@
             "value": "這個 relay 拒絕了該請求（HTTP） %lld)."
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "The relay returned an invalid enrollment response. Retry later.": {
       "localizations": {
@@ -128420,7 +129482,8 @@
             "value": "這個 relay 返回了無效的註冊響應。請稍後重試。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "The relay returned an invalid response.": {
       "localizations": {
@@ -128574,7 +129637,8 @@
             "value": "這個 relay 返回了無效響應。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "The remote branch changed before push. Publication was stopped.": {
       "localizations": {
@@ -128730,6 +129794,7 @@
         }
       }
     },
+    "The remote moved on while you were writing.": {},
     "The remote rejected the default system credentials.": {
       "localizations": {
         "ar": {
@@ -130430,6 +131495,9 @@
         }
       }
     },
+    "The repository could not be cloned.": {},
+    "The repository was published, but local settings could not be saved. Resume to finish adding it.": {},
+    "The stashed changes are deleted.": {},
     "The working tree checkout did not complete.": {
       "localizations": {
         "ar": {
@@ -130744,6 +131812,7 @@
         }
       }
     },
+    "These files go back to how they were in": {},
     "These files look binary or large and are safer in Git LFS:\n\n%@%@\n\nUse Git LFS? This will update and stage .gitattributes.": {
       "localizations": {
         "ar": {
@@ -130904,6 +131973,7 @@
         }
       }
     },
+    "They'll stay in the files, but GitHub won't get them.": {},
     "This cannot be undone.": {
       "localizations": {
         "ar": {
@@ -131056,7 +132126,8 @@
             "value": "此操作不可撤銷。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "This file cannot be edited as text": {
       "localizations": {
@@ -131212,6 +132283,8 @@
         }
       }
     },
+    "This file goes back to how it was in": {},
+    "This file isn't text, so it can't be shown here.": {},
     "This file may be binary or has no staged content.": {
       "localizations": {
         "ar": {
@@ -131372,6 +132445,7 @@
         }
       }
     },
+    "This file was deleted on this iPhone.": {},
     "This file was renamed differently on each side. Choose which name to keep — the other will be removed.": {
       "localizations": {
         "ar": {
@@ -131526,6 +132600,11 @@
         }
       }
     },
+    "This folder already has a pending publication. Resume it instead.": {},
+    "This folder has unfinished publication progress. Resume it from Publish a Folder before adding it as a repository.": {},
+    "This folder is already registered. Its existing settings have been preserved.": {},
+    "This folder overlaps unfinished publication progress. Finish that publication before removing Git tracking.": {},
+    "This folder publication could not be found.": {},
     "This hides the repository from the previously cloned list. It won't delete local files or revoke GitHub access.": {
       "localizations": {
         "ar": {
@@ -131680,6 +132759,7 @@
         }
       }
     },
+    "This iPhone": {},
     "This installation's Background Sync relay identity was permanently retired. Contact support to use Background Sync again.": {
       "localizations": {
         "ar": {
@@ -131832,8 +132912,10 @@
             "value": "此安裝項目的 Background Sync 中繼身分已永久停用。如需再次使用 Background Sync，請聯絡支援人員。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "This is a user-owned folder. Reconnect it or restore its Git metadata instead of cloning over its files.": {},
     "This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Enable Background Sync instead.": {
       "localizations": {
         "ar": {
@@ -131986,7 +133068,8 @@
             "value": "此操作會永久停用此安裝的 Background Sync 中繼身分，並移除其裝置註冊和儲存庫登記。沒有支援人員協助，此安裝將無法再次啟用 Background Sync。此操作不會刪除本機儲存庫，也不會取消 Apple 訂閱。若要停止背景同步但不刪除 中繼資料，請改為關閉 Enable Background Sync。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "This permanently retires this installation's Background Sync relay identity and removes its device registration and repository enrollments. Background Sync cannot be enabled again for this installation without support. It does not delete local repositories or cancel the Apple subscription. To stop background syncing without deleting relay data, turn off Sync all repositories in the background instead.": {
       "localizations": {
@@ -132143,6 +133226,9 @@
       },
       "extractionState": "stale"
     },
+    "This publication already has a saved commit.": {},
+    "This remote doesn't support Git LFS locking.": {},
+    "This removes Push Sync routing for @%@ on this device. It does not uninstall the GitHub App. Use Manage on GitHub if you want GitHub to stop sending events.": {},
     "This removes the repository from GitSync.md only. Files will remain at:\n%@": {
       "localizations": {
         "ar": {
@@ -132297,6 +133383,7 @@
         }
       }
     },
+    "This repository connection was removed. Add it again before cloning. Your files have been preserved.": {},
     "This repository hasn't been cloned yet.\nTap below to download it.": {
       "localizations": {
         "ar": {
@@ -132451,6 +133538,9 @@
         }
       }
     },
+    "This uploads the saved commit to a new private GitHub repository. Later edits to your files are not included in this upload.": {},
+    "This uploads the saved commit to a new public GitHub repository. Anyone can see its files. Later edits to your files are not included in this upload.": {},
+    "This vault": {},
     "This will be reflected in git status as a deletion.": {
       "localizations": {
         "ar": {
@@ -132913,6 +134003,8 @@
         }
       }
     },
+    "Tips, beta builds, feature votes.": {},
+    "Today's date": {},
     "Token": {
       "localizations": {
         "ar": {
@@ -133221,6 +134313,7 @@
         }
       }
     },
+    "Tracked files": {},
     "Trust Host": {
       "localizations": {
         "ar": {
@@ -133996,8 +135089,13 @@
             "value": "試用示範"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Try again": {},
+    "Turn Background Sync on or off.": {},
+    "Turn on Background Sync": {},
+    "Turning off Enable Background Sync prevents new automatic work and requests cancellation of work already in flight. Turning off either action requests cancellation before that action can continue; a Git update or publication already completed cannot be recalled.": {},
     "Turning off Enable Background Sync prevents new automatic work, requests cancellation of work already in flight, and makes a best-effort attempt to unregister this device from wake delivery. Turning off either action requests cancellation before that action can continue; a Git update or publication already completed cannot be recalled. Remote device rows or delivery attempts may remain after network failure until later cleanup, entitlement loss, or terminal deletion.": {
       "localizations": {
         "ar": {
@@ -134150,7 +135248,8 @@
             "value": "關閉 Enable Background Sync 會阻止新的自動工作、要求取消正在進行的工作，並盡力將此裝置從喚醒傳送中取消註冊。關閉任一操作都會在其繼續前要求取消；已完成的 Git 更新或發佈無法撤回。網路故障後，遠端裝置記錄或傳送嘗試可能保留到後續清理、資格失效或徹底刪除。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Turning this off immediately stops local automatic processing and makes a best-effort attempt to unregister this device from wake delivery. After a network failure, remote device rows or delivery attempts may remain until later cleanup, entitlement loss, or terminal deletion. It does not delete the installation's other relay records; the terminal deletion control is separate below.": {
       "localizations": {
@@ -134629,7 +135728,8 @@
             "value": "URL"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "USE OURS": {
       "localizations": {
@@ -134783,7 +135883,8 @@
             "value": "使用我們的服務"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "USE THEIRS": {
       "localizations": {
@@ -134937,7 +136038,8 @@
             "value": "使用他們的"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "USE THIS": {
       "localizations": {
@@ -135091,7 +136193,8 @@
             "value": "請使用此功能"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Unable to Update File": {
       "localizations": {
@@ -135247,6 +136350,9 @@
         }
       }
     },
+    "Unaffected": {},
+    "Unavailable while offline": {},
+    "Undo": {},
     "Unexpected blob encoding: %@": {
       "localizations": {
         "ar": {
@@ -135559,7 +136665,8 @@
             "value": "未知"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Unknown SSH hosts show a fingerprint prompt, and changed host keys are blocked until you review them.": {
       "localizations": {
@@ -136184,6 +137291,8 @@
         }
       }
     },
+    "Unlock": {},
+    "Unlock %@": {},
     "Unlock Background Sync": {
       "localizations": {
         "ar": {
@@ -136336,8 +137445,10 @@
             "value": "啟用 Background Sync"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Unpin": {},
     "Unstage": {
       "localizations": {
         "ar": {
@@ -136496,8 +137607,10 @@
             "value": "取消暫存"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Unstage %@": {},
     "Unstaged %@": {
       "localizations": {
         "ar": {
@@ -137132,6 +138245,8 @@
         }
       }
     },
+    "Update %@": {},
+    "Update files": {},
     "Update from GitSync.md": {
       "comment": "Default commit message used when the user does not provide one",
       "localizations": {
@@ -137293,6 +138408,7 @@
         }
       }
     },
+    "Update notes": {},
     "Updated": {
       "localizations": {
         "ar": {
@@ -137447,6 +138563,10 @@
         }
       }
     },
+    "Upload %lld LFS files · %@": {},
+    "Upload 1 LFS file · %@": {},
+    "Upload to origin/%@": {},
+    "Use Default Location": {},
     "Use Git LFS": {
       "localizations": {
         "ar": {
@@ -137907,7 +139027,8 @@
             "value": "使用説明 GitHub 登録、令牌、 SSH 密鑰或公共訪問權限。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Use HTTPS, SSH, git://, file://, or owner/repo.": {
       "localizations": {
@@ -138370,8 +139491,14 @@
             "value": "在 Apple Shortcuts 中使用 Pull All、Pull Repository、Push Repository 或 Sync Repository。Push 和 Sync 會暫存所有未忽略的變更，在發生衝突或遠端狀態不安全時停止，並直接發佈到你設定的遠端儲存庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Use Repository": {},
+    "Use a GitHub token, or continue without GitHub for SSH keys, HTTPS tokens, GitLab, Gitea, Codeberg or your own server.": {},
+    "Use a repository name containing letters, numbers, hyphens, underscores, or periods.": {},
+    "Use another…": {},
+    "Use letters, numbers, hyphens, underscores, or periods.": {},
     "Use personal and work accounts": {
       "localizations": {
         "ar": {
@@ -138678,8 +139805,12 @@
             "value": "：可使用公共訪問方式、HTTPS令牌或 SSH 俬鑰。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Use the app's default location": {},
+    "Use this iPhone's key instead": {},
+    "Use this repository?": {},
     "Use your signed-in GitHub token": {
       "localizations": {
         "ar": {
@@ -138834,6 +139965,7 @@
         }
       }
     },
+    "Used as the author of commits in vaults you add from now on. Existing vaults keep their own author in Vault settings. Use your GitHub noreply address to keep your email private.": {},
     "Username": {
       "comment": "Row label for the GitHub username",
       "localizations": {
@@ -138995,6 +140127,7 @@
         }
       }
     },
+    "Uses this commit message": {},
     "Uses this repository's configured branch and the installation's independent automatic-pull and automatic-push choices. Pulls stay clean fast-forwards. Push-only mode validates remote state without updating the worktree. Publishing may stage, commit, and push local edits only after separate consent. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.": {
       "localizations": {
         "ar": {
@@ -139461,6 +140594,9 @@
         }
       }
     },
+    "Vault": {},
+    "Vault isn't cloned": {},
+    "Vault settings": {},
     "Version": {
       "comment": "Row label for the app version number",
       "localizations": {
@@ -139620,8 +140756,10 @@
             "value": "版本"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "View": {},
     "View Debug Log": {
       "localizations": {
         "ar": {
@@ -139780,7 +140918,8 @@
             "value": "查看除錯記錄"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "WAKE → OPTIONAL PULL / OPTIONAL PUSH": {
       "localizations": {
@@ -139934,11 +141073,15 @@
             "value": "喚醒 → 可選 PULL / 可選 PUSH"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "WAKE → SAFE PULL → OPTIONAL PUSH": {
       "extractionState": "stale"
     },
+    "Wait for the current Git operation to finish before backing up.": {},
+    "Wait for the current Git operation to finish before removing tracking.": {},
+    "Waiting": {},
     "Waiting for Wi-Fi.": {
       "localizations": {
         "ar": {
@@ -140401,6 +141544,9 @@
         }
       }
     },
+    "Waiting for notification registration. Please try again in a moment.": {},
+    "Waiting for the current sync": {},
+    "Waiting on sign-in": {},
     "Warning": {
       "localizations": {
         "ar": {
@@ -140555,6 +141701,7 @@
         }
       }
     },
+    "Watch Changes": {},
     "Watch how to remove local repository copies you no longer need, right from Sync.md.": {
       "localizations": {
         "ar": {
@@ -140709,6 +141856,7 @@
         }
       }
     },
+    "We'll catch up.": {},
     "We'll commit your local changes, then merge with the remote. If there are conflicts, you can resolve them in the next screen.": {
       "localizations": {
         "ar": {
@@ -140863,6 +142011,7 @@
         }
       }
     },
+    "What they changed": {},
     "What you get": {
       "localizations": {
         "ar": {
@@ -141015,8 +142164,10 @@
             "value": "您將獲得"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "When iOS gives GitSync.md background time, your vaults catch up on their own. Manual Git, Shortcuts, and callbacks work either way.": {},
     "When iOS grants background time, GitHub pushes can provide wake hints and GitSync.md attempts a clean pull without opening the app.": {
       "localizations": {
         "ar": {
@@ -141329,6 +142480,7 @@
         }
       }
     },
+    "When it runs": {},
     "When your local commits and remote changes both move forward, GitSync.md can now replay your local commits on top of the latest remote branch.": {
       "localizations": {
         "ar": {
@@ -141483,6 +142635,9 @@
         }
       }
     },
+    "Where sync runs": {},
+    "Which repository should GitSync.md check?": {},
+    "Which repository should GitSync.md open?": {},
     "Which repository should GitSync.md pull?": {
       "localizations": {
         "ar": {
@@ -141945,6 +143100,8 @@
         }
       }
     },
+    "Which vaults": {},
+    "Whole file": {},
     "Wi-Fi only": {
       "localizations": {
         "ar": {
@@ -142099,6 +143256,8 @@
         }
       }
     },
+    "Wiki link": {},
+    "Without GitHub: SSH, HTTPS tokens, any host, or local folders.": {},
     "Without a default, repos save to Files › On My iPhone › GitSync.md": {
       "localizations": {
         "ar": {
@@ -142253,6 +143412,8 @@
         }
       }
     },
+    "Working…": {},
+    "Workspace": {},
     "YOUR REPOS, ON YOUR IPHONE": {
       "localizations": {
         "ar": {
@@ -142405,8 +143566,11 @@
             "value": "您的代碼倉庫，位於您的 IPHONE 上"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "You can leave this screen. It keeps going in the background and shows on the Lock Screen.": {},
+    "You can leave this screen. It keeps going in the background.": {},
     "You stay in control": {
       "localizations": {
         "ar": {
@@ -142559,8 +143723,13 @@
             "value": "一切由您掌控"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "You're offline": {},
+    "You're offline. Changes will push when you're back online.": {},
+    "You're offline. This vault will check for changes when you're back online.": {},
+    "You're offline. This vault will sync when you're back online.": {},
     "Your Background Sync subscription is active on this device.": {
       "localizations": {
         "ar": {
@@ -142713,7 +143882,8 @@
             "value": "此裝置上的 Background Sync 訂閱有效。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "Your Name": {
       "comment": "Placeholder text for author name field",
@@ -142876,6 +144046,11 @@
         }
       }
     },
+    "Your changes are still here.": {},
+    "Your commit is on GitHub. Finish adding this folder to GitSync.md to enable normal repository controls.": {},
+    "Your data": {},
+    "Your edits and theirs touch different files, so this should merge cleanly.": {},
+    "Your files are still in place.": {},
     "Your files live in the Files app. Edit with any text editor, then come back to commit and push your changes upstream.": {
       "localizations": {
         "ar": {
@@ -143028,8 +144203,20 @@
             "value": "：您的文件存儲於“Files”應用中。您可以使用任何文本編輯器進行編輯，然後返迴提交併將更改推送到上遊倉庫。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "Your files stay in their original folder. Keep the app open during the first upload.": {},
+    "Your folder and saved progress are preserved.": {},
+    "Your folder,": {},
+    "Your notes are safe on this iPhone. Nothing was lost. %lld vaults are waiting.": {},
+    "Your notes are safe on this iPhone. Nothing was lost. 1 vault is waiting.": {},
+    "Your notes.": {},
+    "Your saved commit is on GitHub, and this folder has been added to GitSync.md.": {},
+    "Yours": {},
+    "Zipping Git history…": {},
+    "a while ago": {},
+    "add": {},
     "added": {
       "localizations": {
         "ar": {
@@ -143190,6 +144377,8 @@
         }
       }
     },
+    "already here.": {},
+    "already taken": {},
     "already up to date": {
       "localizations": {
         "ar": {
@@ -143344,6 +144533,7 @@
         }
       }
     },
+    "and %lld more": {},
     "and %lld more…": {
       "localizations": {
         "ar": {
@@ -143498,6 +144688,7 @@
         }
       }
     },
+    "and 1 more": {},
     "annotated": {
       "localizations": {
         "ar": {
@@ -143658,6 +144849,36 @@
         }
       }
     },
+    "app open": {},
+    "as %@": {},
+    "attachments": {},
+    "background sync": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "background sync"
+          }
+        }
+      },
+      "extractionState": "stale"
+    },
+    "before retrying.": {},
+    "both": {},
+    "branches & stashes": {},
+    "change on this iPhone": {},
+    "change to push": {},
+    "change · live": {},
+    "changed": {},
+    "changes on this iPhone": {},
+    "changes to push": {},
+    "changes · live": {},
+    "checked %@": {},
+    "checking %@…": {},
+    "checking name…": {},
+    "clean": {},
+    "commit %@ · synced %@": {},
+    "conflict": {},
     "conflicted": {
       "localizations": {
         "ar": {
@@ -143818,6 +145039,9 @@
         }
       }
     },
+    "connecting to %@…": {},
+    "connection refused": {},
+    "creates a private repo": {},
     "credentials": {
       "localizations": {
         "ar": {
@@ -143972,6 +145196,8 @@
         }
       }
     },
+    "current": {},
+    "daily note": {},
     "default system credentials": {
       "localizations": {
         "ar": {
@@ -144126,6 +145352,7 @@
         }
       }
     },
+    "delete new file": {},
     "deleted": {
       "localizations": {
         "ar": {
@@ -144286,6 +145513,11 @@
         }
       }
     },
+    "ed25519 key, fingerprint %@": {},
+    "edited %@": {},
+    "edited just now": {},
+    "errors · 7d": {},
+    "excluded": {},
     "failed": {
       "localizations": {
         "ar": {
@@ -144440,6 +145672,7 @@
         }
       }
     },
+    "fetched %@": {},
     "filename.ext": {
       "localizations": {
         "ar": {
@@ -144748,8 +145981,14 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "files": {},
+    "first commit as %@ · main": {},
+    "first commit · main": {},
+    "folder, collapsed": {},
+    "folder, expanded": {},
     "folder-name": {
       "localizations": {
         "ar": {
@@ -144905,6 +146144,8 @@
       },
       "shouldTranslate": false
     },
+    "from %@": {},
+    "from Obsidian": {},
     "ghp_...": {
       "comment": "Placeholder text for the Personal Access Token input field",
       "localizations": {
@@ -145067,6 +146308,8 @@
       },
       "shouldTranslate": false
     },
+    "gitsync": {},
+    "host not found": {},
     "https://host/user/repo or git@host:user/repo.git": {
       "localizations": {
         "ar": {
@@ -145222,6 +146465,7 @@
       },
       "shouldTranslate": false
     },
+    "iCloud Drive": {},
     "iCloud Drive, other apps' folders, or anywhere in Files": {
       "localizations": {
         "ar": {
@@ -145376,6 +146620,15 @@
         }
       }
     },
+    "iOS grants GitSync.md short background windows, usually a few times a day for apps you use often. GitSync.md also catches up whenever you open it. If you connect Push Sync, a GitHub push can ask iOS to wake the app within seconds. iOS may delay or skip any of these, so it is best effort and never real time.": {},
+    "iPhone": {},
+    "iPhone SSH key": {},
+    "iPhone key": {},
+    "ignored": {},
+    "in %@/": {},
+    "in sync": {},
+    "in.": {},
+    "included": {},
     "just now": {
       "localizations": {
         "ar": {
@@ -145530,6 +146783,8 @@
         }
       }
     },
+    "last known: in sync": {},
+    "last synced %@": {},
     "leave blank if none": {
       "localizations": {
         "ar": {
@@ -145844,6 +147099,14 @@
         }
       }
     },
+    "line %lld": {},
+    "loading repos…": {},
+    "local only": {},
+    "location.": {},
+    "locked": {},
+    "locked by %@": {},
+    "locked iPhone": {},
+    "long-press any file for actions": {},
     "main": {
       "comment": "Placeholder for the branch name text field, showing the default branch name",
       "localizations": {
@@ -146006,6 +147269,8 @@
       },
       "shouldTranslate": false
     },
+    "matching cloned repositories": {},
+    "merge": {},
     "modified": {
       "localizations": {
         "ar": {
@@ -146166,6 +147431,8 @@
         }
       }
     },
+    "monthly note": {},
+    "name is free": {},
     "need attention": {
       "localizations": {
         "ar": {
@@ -146474,6 +147741,10 @@
         }
       }
     },
+    "network unreachable": {},
+    "never": {},
+    "new file": {},
+    "new on remote": {},
     "new-branch-name": {
       "localizations": {
         "ar": {
@@ -146629,6 +147900,9 @@
       },
       "shouldTranslate": false
     },
+    "no branch": {},
+    "no changes": {},
+    "no connection · last checked %@": {},
     "no credentials": {
       "localizations": {
         "ar": {
@@ -146783,6 +148057,25 @@
         }
       }
     },
+    "no local changes": {},
+    "no remote": {},
+    "no sign-in": {},
+    "no vaults included": {},
+    "none": {},
+    "not downloaded": {},
+    "not synced yet": {},
+    "not used": {},
+    "note-name": {},
+    "notes": {},
+    "nothing to sync": {},
+    "now": {},
+    "off": {},
+    "offline": {},
+    "on": {},
+    "on GitHub.": {},
+    "on this iPhone.": {},
+    "on · %lld vaults": {},
+    "on · 1 vault": {},
     "optional": {
       "localizations": {
         "ar": {
@@ -147096,8 +148389,14 @@
             "value": "或"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "or any Git remote URL": {},
+    "over 10 MiB": {},
+    "owner/repo or https://…": {},
+    "paused": {},
+    "personal token": {},
     "previously cloned": {
       "localizations": {
         "ar": {
@@ -147566,6 +148865,16 @@
         }
       }
     },
+    "pulled": {},
+    "pulled %lld": {},
+    "pulled 2": {},
+    "push wake": {},
+    "pushed": {},
+    "pushed %lld": {},
+    "pushed 1": {},
+    "queued": {},
+    "refine": {},
+    "remote": {},
     "remote version": {
       "localizations": {
         "ar": {
@@ -147720,6 +149029,8 @@
         }
       }
     },
+    "remove": {},
+    "rename": {},
     "renamed": {
       "localizations": {
         "ar": {
@@ -148188,6 +149499,13 @@
         }
       }
     },
+    "restore": {},
+    "restore %lld lines": {},
+    "restore 1 line": {},
+    "saved": {},
+    "scanned %@": {},
+    "scanning %@…": {},
+    "scheduled": {},
     "selected": {
       "localizations": {
         "ar": {
@@ -148340,8 +149658,14 @@
             "value": "已選"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "sensitive": {},
+    "signed in": {},
+    "signed in as @%@": {},
+    "skipped: %@": {},
+    "ssh timed out": {},
     "staged": {
       "localizations": {
         "ar": {
@@ -148657,6 +149981,12 @@
       },
       "shouldTranslate": false
     },
+    "stash@{%lld} · %@": {},
+    "step 1 of 3": {},
+    "step 2 of 3": {},
+    "step 3 of 3": {},
+    "stored locally": {},
+    "synced %@": {},
     "syncing": {
       "localizations": {
         "ar": {
@@ -148815,8 +150145,10 @@
             "value": "同步中"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
+    "syncing…": {},
     "tag-name (e.g. v1.0.0)": {
       "localizations": {
         "ar": {
@@ -148972,6 +150304,9 @@
       },
       "shouldTranslate": false
     },
+    "the GitHub repo is not touched": {},
+    "the last commit": {},
+    "the remote": {},
     "the remote host": {
       "localizations": {
         "ar": {
@@ -149126,6 +150461,10 @@
         }
       }
     },
+    "theirs": {},
+    "this GitHub account": {},
+    "this folder": {},
+    "this iPhone": {},
     "this is what gets staged": {
       "localizations": {
         "ar": {
@@ -149280,6 +150619,9 @@
         }
       }
     },
+    "this repository": {},
+    "timed out": {},
+    "token": {},
     "token or password": {
       "localizations": {
         "ar": {
@@ -149434,6 +150776,8 @@
         }
       }
     },
+    "tracked files": {},
+    "tracks %@": {},
     "type changed": {
       "localizations": {
         "ar": {
@@ -149594,6 +150938,9 @@
         }
       }
     },
+    "typing…": {},
+    "unchanged": {},
+    "undo rename": {},
     "untracked": {
       "localizations": {
         "ar": {
@@ -149754,6 +151101,7 @@
         }
       }
     },
+    "update": {},
     "updated": {
       "localizations": {
         "ar": {
@@ -150216,6 +151564,13 @@
         }
       }
     },
+    "v1.0": {},
+    "vault backup: %@": {},
+    "vs %@": {},
+    "vs %@ · ": {},
+    "watching %@": {},
+    "weekly note": {},
+    "yesterday %@": {},
     "you@example.com": {
       "comment": "Placeholder text for email address field",
       "localizations": {
@@ -150532,6 +151887,10 @@
         }
       }
     },
+    "yours": {},
+    "~%lldm left": {},
+    "~%llds left": {},
+    "· vs last commit %@": {},
     "—": {
       "localizations": {
         "ar": {
@@ -150685,8 +152044,17 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "“Check notes in GitSync.md”": {},
+    "“Open notes in GitSync.md”": {},
+    "“Pull all repositories in GitSync.md”": {},
+    "“Pull and push notes in GitSync.md”": {},
+    "“Pull notes in GitSync.md”": {},
+    "“Push notes in GitSync.md”": {},
+    "“Sync everything in GitSync.md”": {},
+    "•": {},
     "←": {
       "localizations": {
         "ar": {
@@ -150840,8 +152208,14 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "↑ %lld queued": {},
+    "↑%lld": {},
+    "↑%lld held": {},
+    "↑%lld to push": {},
+    "↑%lld yours": {},
     "→": {
       "localizations": {
         "ar": {
@@ -150995,8 +152369,12 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "↓%lld from %@ · %@": {},
+    "↓%lld from remote": {},
+    "↓%lld to pull": {},
     "−": {
       "localizations": {
         "ar": {
@@ -151150,8 +152528,12 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "−%lld": {},
+    "−%lld lines": {},
+    "−1 line": {},
     "⚡️": {
       "localizations": {
         "ar": {
@@ -151305,8 +152687,11 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
+    "✓ Keeping both": {},
+    "✦ suggested from diff": {},
     "⬆": {
       "localizations": {
         "ar": {
@@ -151460,7 +152845,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "📁": {
       "localizations": {
@@ -151615,7 +153001,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "📂": {
       "localizations": {
@@ -151770,7 +153157,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "📋": {
       "localizations": {
@@ -151925,7 +153313,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "📦": {
       "localizations": {
@@ -152080,7 +153469,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "🔍": {
       "localizations": {
@@ -152235,7 +153625,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "🔒": {
       "localizations": {
@@ -152390,7 +153781,8 @@
           }
         }
       },
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "extractionState": "stale"
     },
     "🔗": {
       "localizations": {
@@ -152545,47 +153937,8 @@
           }
         }
       },
-      "shouldTranslate": false
-    },
-    "Background Sync running": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Background Sync running"
-          }
-        }
-      }
-    },
-    "Background Sync: %lld repositories": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Background Sync: %lld repositories"
-          }
-        }
-      }
-    },
-    "background sync": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "background sync"
-          }
-        }
-      }
-    },
-    "Fetching latest changes…": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fetching latest changes…"
-          }
-        }
-      }
+      "shouldTranslate": false,
+      "extractionState": "stale"
     }
   },
   "version": "1.0"

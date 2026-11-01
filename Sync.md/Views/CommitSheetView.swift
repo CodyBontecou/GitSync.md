@@ -365,12 +365,18 @@ struct CommitSheetView: View {
     private var identityLine: String {
         guard let repo else { return "" }
         let name = repo.authorName.isEmpty ? repo.authorEmail : repo.authorName
-        return String(localized: "as \(name)") + " · " + authLabel(repo.authMethod)
+        return String(localized: "as \(name)") + " · " + authLabel(repo)
     }
 
-    private func authLabel(_ method: GitAuthMethod) -> String {
-        switch method {
-        case .gitHubPAT: return String(localized: "GitHub sign-in")
+    private func authLabel(_ repo: RepoConfig) -> String {
+        switch repo.authMethod {
+        case .gitHubPAT:
+            // GitHub token prefixes say how it was issued: gho_/ghu_ come from
+            // the OAuth / GitHub App sign-in, ghp_/github_pat_ were pasted.
+            let token = state.gitHubToken(for: repo.gitHubAccountLogin) ?? state.pat
+            if token.hasPrefix("gho_") || token.hasPrefix("ghu_") { return String(localized: "OAuth") }
+            if token.hasPrefix("ghp_") || token.hasPrefix("github_pat_") { return String(localized: "personal token") }
+            return String(localized: "GitHub sign-in")
         case .httpsToken: return String(localized: "HTTPS token")
         case .sshKey: return String(localized: "SSH key")
         case .none: return String(localized: "no credentials")

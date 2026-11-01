@@ -195,6 +195,27 @@ enum ShortcutActionCatalog {
                 phrase: String(localized: "“Pull and push notes in GitSync.md”"),
                 systemImage: "arrow.triangle.2.circlepath.circle.fill"
             ),
+            Action(
+                id: "sync-all",
+                title: String(localized: "Sync All Repositories"),
+                detail: String(localized: "Pull every vault, then commit and push your edits. Stops on conflicts."),
+                phrase: String(localized: "“Sync everything in GitSync.md”"),
+                systemImage: "arrow.triangle.2.circlepath"
+            ),
+            Action(
+                id: "repo-status",
+                title: String(localized: "Get Repository Status"),
+                detail: String(localized: "Changed files and commits to push or pull, without touching the network."),
+                phrase: String(localized: "“Check notes in GitSync.md”"),
+                systemImage: "info.circle"
+            ),
+            Action(
+                id: "open-repo",
+                title: String(localized: "Open Repository"),
+                detail: String(localized: "Jump straight to one vault in GitSync.md."),
+                phrase: String(localized: "“Open notes in GitSync.md”"),
+                systemImage: "folder"
+            ),
         ]
     }
 }
