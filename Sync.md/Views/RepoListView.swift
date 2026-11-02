@@ -466,7 +466,7 @@ struct RepoListView: View {
             HStack {
                 Text(String(localized: "iPhone").forThisDevice)
                 Spacer()
-                Text(state.isSignedIn ? "GitHub" : String(localized: "Remote"))
+                Text(state.isSignedIn ? String(localized: "GitHub") : String(localized: "Remote"))
             }
             .padding(.horizontal, 24)
             .offset(y: -26)

@@ -218,7 +218,7 @@ struct DebugLogView: View {
                     .foregroundStyle(isError ? Tide.danger : Tide.inkFaint)
                     .lineLimit(1)
                 Spacer(minLength: 8)
-                Text(showsBackgroundBadge ? "BG" : localizedLabel(for: entry.level).uppercased())
+                Text(showsBackgroundBadge ? String(localized: "BG") : localizedLabel(for: entry.level).uppercased())
                     .font(TideFont.mono(11.5, .semibold))
                     .foregroundStyle(levelTint)
             }
