@@ -11,6 +11,6 @@ GitSync.md 3.0 is a complete redesign. Every screen is new, built around one ide
 • New Shortcuts: Sync All, check a vault's status, or open a vault
 • Generate an SSH key on your iPhone or iPad to add a vault from any Git server
 • Publishing a folder now skips .DS_Store and other system files
-• Available in all 25 languages
+• The new design is translated into every language GitSync.md supports
 
 Thanks for using GitSync.md. Tell us what you think of the new design.
