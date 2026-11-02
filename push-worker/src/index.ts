@@ -5,6 +5,7 @@ import {
   githubAppConfigurationIsPresent,
   installationIDFrom,
   parseLinkedInstallation,
+  proveAccountAdministrator,
   proveInstallationAdministrator,
   revalidateInstallationAdministrator,
   revokeGitHubUserToken,
@@ -578,6 +579,11 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
     const userToken = await exchangeGitHubOAuthCode(env, code, linkState.codeVerifier);
     let installation: LinkedGitHubInstallation;
     try {
+      if (linkState.accountLogin !== undefined) {
+        // Prove authority first so a lookup result never tells a non-owner whether the app is installed.
+        stage = "account_proof";
+        await proveAccountAdministrator(linkState.accountLogin, userToken);
+      }
       stage = "installation_lookup";
       const installationID = linkState.installationID ?? await findExistingInstallation(env, linkState.accountLogin!);
       if (await env.REGISTRY.get(githubInstallationTombstoneKey(installationID))) throw new Error("GitHubInstallationDeleted");
@@ -634,8 +640,8 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
     const kind = /^(?:GitHub[A-Za-z0-9_]+|PushRegistrationMissing)$/.test(candidate) ? candidate
       : ["Error", "TypeError", "SyntaxError", "AbortError", "TimeoutError", "DataError", "OperationError", "InvalidAccessError"].includes(name) ? name : "UnknownError";
     console.info("GitHub App connection failed", { kind, stage });
-    const reason = kind === "GitHubInstallationAdministratorRequired"
-      ? "account_owner_required"
+    const reason = kind === "GitHubInstallationAdministratorRequired" ? "account_owner_required"
+      : kind === "GitHubInstallationNotFound" ? "installation_required"
       : "verification_failed";
     return noStoreRedirect(appCallbackURL(state, "error", reason));
   }

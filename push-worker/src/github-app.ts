@@ -235,11 +235,36 @@ export async function findExistingInstallation(env: GitHubAppEnv, login: string)
     if (!validInstallationID(value.id) || String(value.app_id) !== env.GITHUB_APP_ID
         || !account || typeof account !== "object" || !validInstallationID(account.id)
         || typeof account.login !== "string" || account.login.toLowerCase() !== login.toLowerCase()
-        || account.type !== (kind === "users" ? "User" : "Organization")
+        // /users/{login} also resolves organizations, so it may return either account type.
+        || !(account.type === "Organization" || (kind === "users" && account.type === "User"))
         || value.suspended_at != null) throw new Error("GitHubInstallationResponseInvalid");
     return value.id;
   }
   throw new Error("GitHubInstallationNotFound");
+}
+
+/**
+ * Proves the signed-in user owns the named personal account or is an active
+ * owner of the named organization before the relay reveals whether this app
+ * is installed there.
+ */
+export async function proveAccountAdministrator(login: string, userToken: string): Promise<void> {
+  if (!LOGIN_RE.test(login)) throw new Error("GitHubInstallationLoginInvalid");
+  const user = await authenticatedUser(userToken);
+  if (user.login.toLowerCase() === login.toLowerCase()) return;
+  const response = await fetch(`https://api.github.com/user/memberships/orgs/${encodeURIComponent(login)}`, {
+    headers: githubHeaders(userToken),
+  });
+  if (response.status === 404) { await response.body?.cancel(); throw new Error("GitHubInstallationAdministratorRequired"); }
+  if (!response.ok) throw new Error(`GitHubMembershipLookup:${response.status}`);
+  const membership = await response.json() as Record<string, unknown>;
+  // Organization simple objects carry no `type`, so compare the login directly.
+  const organization = membership.organization as Record<string, unknown> | null;
+  if (membership.state !== "active" || membership.role !== "admin" || nestedNumericID(organization) === null
+      || typeof organization?.login !== "string" || organization.login.toLowerCase() !== login.toLowerCase()
+      || nestedNumericID(membership.user) !== user.id) {
+    throw new Error("GitHubInstallationAdministratorRequired");
+  }
 }
 
 export async function exchangeGitHubOAuthCode(

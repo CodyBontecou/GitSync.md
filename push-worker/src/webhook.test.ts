@@ -1221,6 +1221,7 @@ describe("GitHub App connection endpoints", () => {
   it("links an existing personal installation only after OAuth proof and consumes the state", async () => {
     const userToken = "existing-installation-user-token-for-tests";
     const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: userToken })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: 42, login: "octocat", type: "User" })))
       .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
       .mockResolvedValueOnce(new Response(JSON.stringify({ id: 42, login: "octocat", type: "User" })))
       .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
@@ -1235,7 +1236,7 @@ describe("GitHub App connection endpoints", () => {
     expect([...registry.store.values()].join(" ")).not.toContain(userToken);
     expect(registry.store.has(`github-link-state:${body.state}`)).toBe(false);
     expect(registry.store.get(`route:github-app:123:${deviceSecret}`)).toBe("1");
-    expect(fetchMock.mock.calls[4][1]?.method).toBe("DELETE");
+    expect(fetchMock.mock.calls[5][1]?.method).toBe("DELETE");
     const calls = fetchMock.mock.calls.length;
     expect((await runWebhook(env, new Request(callbackURL))).status).toBe(400);
     expect(fetchMock).toHaveBeenCalledTimes(calls);
@@ -1243,15 +1244,29 @@ describe("GitHub App connection endpoints", () => {
 
   it("rejects a different signed-in owner on the existing-installation path", async () => {
     const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: "existing-user-token-for-tests" })))
-      .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
       .mockResolvedValueOnce(new Response(JSON.stringify({ id: 99, login: "other", type: "User" })))
-      .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
       .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
     const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
     const body = await start.json() as { state: string };
     const callback = await runWebhook(env, new Request(`https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`));
     expect(callback.headers.get("location")).toContain("error=account_owner_required");
     expect(JSON.parse(registry.store.get(`device:${deviceSecret}`)!).linkedInstallations).toEqual([]);
+    expect(fetchMock.mock.calls.at(-1)?.[1]?.method).toBe("DELETE");
+    // The installation lookup never runs, so the result cannot reveal whether the app is installed.
+    expect(fetchMock.mock.calls.some((call) => String(call[0]).endsWith("/installation"))).toBe(false);
+  });
+
+  it("asks a proven owner to install when the account has no installation", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: "missing-install-user-token-for-tests" })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: 42, login: "octocat", type: "User" })))
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
+    const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
+    const body = await start.json() as { state: string };
+    const callback = await runWebhook(env, new Request(`https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`));
+    expect(callback.headers.get("location")).toContain("error=installation_required");
     expect(fetchMock.mock.calls.at(-1)?.[1]?.method).toBe("DELETE");
   });
 
@@ -1266,6 +1281,7 @@ describe("GitHub App connection endpoints", () => {
   it("revokes the user token and consumes state when existing-installation lookup fails", async () => {
     const userToken = "lookup-failure-user-token-for-tests";
     const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: userToken })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: 42, login: "octocat", type: "User" })))
       .mockResolvedValueOnce(new Response(null, { status: 403 }))
       .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
     const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
@@ -1287,7 +1303,7 @@ describe("GitHub App connection endpoints", () => {
     const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
     const body = await start.json() as { state: string };
     await runWebhook(env, new Request(`https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`));
-    expect(consoleInfoMock).toHaveBeenCalledWith("GitHub App connection failed", { kind: "DataError", stage: "installation_lookup" });
+    expect(consoleInfoMock).toHaveBeenCalledWith("GitHub App connection failed", { kind: "DataError", stage: "account_proof" });
     expect(JSON.stringify(consoleInfoMock.mock.calls)).not.toContain(privateMessage);
     expect(JSON.stringify(consoleInfoMock.mock.calls)).not.toContain("diagnostic-user-token-for-tests");
   });

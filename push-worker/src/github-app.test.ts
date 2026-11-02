@@ -212,6 +212,19 @@ describe("Existing GitHub App installation lookup", () => {
       "https://api.github.com/users/octo-org/installation", "https://api.github.com/orgs/octo-org/installation",
     ]);
   });
+  it("accepts an organization returned by the users endpoint without a second request", async () => {
+    const pair = await testKeyPair();
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(installation({ account: { id: 84, login: "octo-org", type: "Organization" } }))));
+    vi.stubGlobal("fetch", fetchMock);
+    expect(await findExistingInstallation(env(pair.privatePEM), "octo-org")).toBe(123);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+  it("rejects a personal account returned by the organizations endpoint", async () => {
+    const pair = await testKeyPair();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(installation()))));
+    await expect(findExistingInstallation(env(pair.privatePEM), "octocat")).rejects.toThrow("GitHubInstallationResponseInvalid");
+  });
   it("rejects path injection before any network access", async () => {
     const fetchMock = vi.fn(); vi.stubGlobal("fetch", fetchMock);
     for (const login of ["../octocat", "octocat?x=1", "octocat/other", "@octocat", ""]) {
@@ -224,7 +237,7 @@ describe("Existing GitHub App installation lookup", () => {
     for (const change of [
       { app_id: 987 }, { account: { id: 42, login: "other", type: "User" } },
       { account: { id: 0, login: "octocat", type: "User" } },
-      { account: { id: 42, login: "octocat", type: "Organization" } },
+      { account: { id: 42, login: "octocat", type: "Bot" } },
       { suspended_at: "2026-11-02" }, { id: 0 }, { id: "123" },
     ]) {
       vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(installation(change)))));
