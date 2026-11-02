@@ -340,7 +340,10 @@ struct VaultView: View {
                     .padding(.top, 18)
 
                 VStack(spacing: 12) {
-                    if let outcome = pullOutcome {
+                    // Once a stopped merge has no conflicts left, the hero's
+                    // Commit & push finishes it; the old pull banner would mislead.
+                    if let outcome = pullOutcome,
+                       !(state.conflictSessionByRepo[repoID].map { $0.isActive && !$0.hasConflicts } ?? false) {
                         pullOutcomeBanner(outcome)
                     }
                     if FeatureFlags.gitSyncAssistEnabled, repo.assist.enabled || repo.assist.health.kind != .never {

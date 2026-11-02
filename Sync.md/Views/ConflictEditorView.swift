@@ -15,7 +15,8 @@ struct ConflictEditorView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     let repoID: UUID
-    let path: String
+    /// The conflicted file on screen; ↑/↓ step through the others in place.
+    @State private var path: String
 
     @State private var detail: ConflictFileDetail?
     @State private var isLoading = true
@@ -43,7 +44,7 @@ struct ConflictEditorView: View {
 
     init(repoID: UUID, path: String) {
         self.repoID = repoID
-        self.path = path
+        self._path = State(initialValue: path)
         self._keepPath = State(initialValue: path)
     }
 
@@ -72,10 +73,42 @@ struct ConflictEditorView: View {
     }
 
     /// Position of this file among the vault's conflicted paths ("1 of 2").
+    private var conflictedPaths: [String] {
+        (state.statusEntriesByRepo[repoID] ?? []).filter(\.isConflicted).map(\.path)
+    }
+
     private var conflictPosition: (index: Int, total: Int)? {
-        let conflicted = (state.statusEntriesByRepo[repoID] ?? []).filter(\.isConflicted).map(\.path)
+        let conflicted = conflictedPaths
         guard let i = conflicted.firstIndex(of: path) else { return nil }
         return (i + 1, conflicted.count)
+    }
+
+    /// Moves to the previous (-1) or next (+1) conflicted file, wrapping around.
+    private func step(_ offset: Int) {
+        let conflicted = conflictedPaths
+        guard conflicted.count > 1, let i = conflicted.firstIndex(of: path) else { return }
+        open(conflicted[(i + offset + conflicted.count) % conflicted.count])
+    }
+
+    private func open(_ next: String) {
+        detail = nil
+        chunks = []
+        choices = [:]
+        resultText = ""
+        loadError = nil
+        showResolved = false
+        showManualEditor = false
+        showResolveConfirm = false
+        isLoading = true
+        keepPath = next
+        path = next
+    }
+
+    /// Board "DuoConflict": one choice for every section of the file.
+    private func chooseAll(_ choice: TideTextDiff.Choice) {
+        for hunk in hunks { choices[hunk.id] = choice }
+        resultText = assembledText
+        if canResolve { showResolveConfirm = true }
     }
 
     var body: some View {
@@ -103,7 +136,30 @@ struct ConflictEditorView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                progressDashes
+                HStack(spacing: 10) {
+                    if let pos = conflictPosition, pos.total > 1 {
+                        Button { step(-1) } label: {
+                            Image(systemName: "chevron.up")
+                                .font(.system(size: 14, weight: .semibold))
+                                .frame(width: 32, height: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(String(localized: "Previous conflict"))
+                    }
+                    progressDashes
+                    if let pos = conflictPosition, pos.total > 1 {
+                        Button { step(1) } label: {
+                            Image(systemName: "chevron.down")
+                                .font(.system(size: 14, weight: .semibold))
+                                .frame(width: 32, height: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(String(localized: "Next conflict"))
+                    }
+                }
+                .foregroundStyle(Tide.ink)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 if sessionKind == .merge || sessionKind == .rebase {
@@ -127,6 +183,17 @@ struct ConflictEditorView: View {
         }
         // Finishing the file is the primary action once a version is chosen.
         .safeAreaInset(edge: .bottom) {
+            // Wide layouts (iPad, iPhone Duo open): one bar decides the whole file.
+            if horizontalSizeClass == .regular, usesHunks, !showManualEditor, !showResolved,
+               !showResolveConfirm, detail != nil, !canResolve {
+                HStack(spacing: 10) {
+                    outlinePill(String(localized: "Keep mine")) { chooseAll(.ours) }
+                    outlinePill(String(localized: "Keep both")) { chooseAll(.both) }
+                    outlinePill(String(localized: "Keep theirs")) { chooseAll(.theirs) }
+                }
+                .padding(.horizontal, Tide.gutter)
+                .padding(.bottom, 8)
+            }
             if canResolve, !showResolved, !showResolveConfirm, detail != nil {
                 Button {
                     showResolveConfirm = true
@@ -157,7 +224,7 @@ struct ConflictEditorView: View {
         } message: {
             Text(String(localized: "Every file goes back to how it was before the remote changes came in. Nothing is lost on the remote."))
         }
-        .task { await loadDetail() }
+        .task(id: path) { await loadDetail() }
         .overlay {
             if showResolveConfirm, let detail {
                 BConfirmModal(
@@ -479,8 +546,9 @@ struct ConflictEditorView: View {
                 Text(timeMeta(side))
                     .font(TideFont.mono(11))
                     .foregroundStyle(Tide.inkFaint)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                    .multilineTextAlignment(.trailing)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Group {
@@ -815,6 +883,12 @@ struct ConflictEditorView: View {
             additionalPathsToRemove: extras
         )
 
-        dismiss()
+        // Carry on with the next conflicted file; back to the vault when none remain.
+        let resolved = Set([path, keepPath] + extras)
+        if let next = conflictedPaths.first(where: { !resolved.contains($0) }) {
+            open(next)
+        } else {
+            dismiss()
+        }
     }
 }

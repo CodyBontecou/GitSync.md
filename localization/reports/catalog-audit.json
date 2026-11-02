@@ -29,11 +29,11 @@
     "zh-Hant"
   ],
   "counts": {
-    "catalogEntries": 2080,
-    "activeEntries": 1738,
-    "translatableEntries": 1690,
-    "expectedTranslatedCells": 43450,
-    "translatedCells": 43450,
+    "catalogEntries": 2084,
+    "activeEntries": 1742,
+    "translatableEntries": 1694,
+    "expectedTranslatedCells": 43550,
+    "translatedCells": 43550,
     "allowedIdenticalCells": 1200,
     "localizedTechnicalEquivalentCells": 582,
     "failureCount": 0
@@ -8972,7 +8972,7 @@
     "root": "/private/tmp/claude-501/-Users-codybontecou-dev-gitsync-md/8755b7ea-f6c1-4594-8057-b976f155f457/scratchpad/dd/Build/Intermediates.noindex/Sync.md.build/Debug-iphonesimulator/Sync.md.build/Objects-normal/arm64",
     "stringsdataFiles": 123,
     "sourceFiles": 120,
-    "extractedKeys": 1738
+    "extractedKeys": 1742
   },
   "passed": true
 }
