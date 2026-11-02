@@ -1194,6 +1194,104 @@ describe("GitHub App connection endpoints", () => {
     return startBody.state;
   }
 
+  const existingPersonal = () => ({ id: 123, app_id: 123456,
+    account: { id: 42, login: "octocat", type: "User" }, repository_selection: "all",
+    html_url: "https://github.com/settings/installations/123", suspended_at: null });
+
+  it("starts an existing installation with PKCE but leaves it unlinked until owner proof", async () => {
+    const fetchMock = vi.fn(); vi.stubGlobal("fetch", fetchMock);
+    const response = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
+    expect(response.status).toBe(200);
+    const body = await response.json() as { state: string; url: string };
+    const url = new URL(body.url);
+    expect(url.origin).toBe("https://github.com"); expect(url.pathname).toBe("/login/oauth/authorize");
+    expect(url.searchParams.get("state")).toBe(body.state);
+    expect(url.searchParams.get("code_challenge_method")).toBe("S256");
+    expect(url.searchParams.get("code_challenge")).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    expect(url.searchParams.get("redirect_uri")).toBe(env.GITHUB_APP_CALLBACK_URL);
+    const state = JSON.parse(registry.store.get(`github-link-state:${body.state}`)!);
+    expect(state).toMatchObject({ deviceSecret, stage: "oauth", accountLogin: "octocat" });
+    expect(state.codeVerifier).toMatch(/^[A-Za-z0-9_-]{43,128}$/);
+    expect(body.url).not.toContain(deviceSecret); expect(body.url).not.toContain(state.codeVerifier);
+    expect(JSON.parse(registry.store.get(`device:${deviceSecret}`)!).linkedInstallations).toEqual([]);
+    const wrongSetup = await runWebhook(env, new Request(`https://push.example.test/v1/github-app/setup?state=${body.state}&installation_id=999`));
+    expect(wrongSetup.status).toBe(400); expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("links an existing personal installation only after OAuth proof and consumes the state", async () => {
+    const userToken = "existing-installation-user-token-for-tests";
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: userToken })))
+      .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: 42, login: "octocat", type: "User" })))
+      .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
+      .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
+    const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
+    const body = await start.json() as { state: string };
+    const callbackURL = `https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`;
+    const callback = await runWebhook(env, new Request(callbackURL));
+    expect(callback.headers.get("location")).toBe(`syncmd://github-app?state=${body.state}&result=connected`);
+    const device = registry.store.get(`device:${deviceSecret}`)!;
+    expect(JSON.parse(device).linkedInstallations[0]).toMatchObject({ id: 123, accountID: 42, authorizingUserID: 42 });
+    expect([...registry.store.values()].join(" ")).not.toContain(userToken);
+    expect(registry.store.has(`github-link-state:${body.state}`)).toBe(false);
+    expect(registry.store.get(`route:github-app:123:${deviceSecret}`)).toBe("1");
+    expect(fetchMock.mock.calls[4][1]?.method).toBe("DELETE");
+    const calls = fetchMock.mock.calls.length;
+    expect((await runWebhook(env, new Request(callbackURL))).status).toBe(400);
+    expect(fetchMock).toHaveBeenCalledTimes(calls);
+  });
+
+  it("rejects a different signed-in owner on the existing-installation path", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: "existing-user-token-for-tests" })))
+      .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: 99, login: "other", type: "User" })))
+      .mockResolvedValueOnce(new Response(JSON.stringify(existingPersonal())))
+      .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
+    const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
+    const body = await start.json() as { state: string };
+    const callback = await runWebhook(env, new Request(`https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`));
+    expect(callback.headers.get("location")).toContain("error=account_owner_required");
+    expect(JSON.parse(registry.store.get(`device:${deviceSecret}`)!).linkedInstallations).toEqual([]);
+    expect(fetchMock.mock.calls.at(-1)?.[1]?.method).toBe("DELETE");
+  });
+
+  it("rejects invalid names or missing registrations without any GitHub requests", async () => {
+    const fetchMock = vi.fn(); vi.stubGlobal("fetch", fetchMock);
+    expect((await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "../octocat" }))).status).toBe(400);
+    expect((await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret: "missing-device", accountLogin: "octocat" }))).status).toBe(409);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect([...registry.store.keys()].some((key) => key.startsWith("github-link-state:"))).toBe(false);
+  });
+
+  it("revokes the user token and consumes state when existing-installation lookup fails", async () => {
+    const userToken = "lookup-failure-user-token-for-tests";
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: userToken })))
+      .mockResolvedValueOnce(new Response(null, { status: 403 }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
+    const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
+    const body = await start.json() as { state: string };
+    expect(fetchMock).not.toHaveBeenCalled();
+    const result = await runWebhook(env, new Request(`https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`));
+    expect(result.headers.get("location")).toContain("error=verification_failed");
+    expect(fetchMock.mock.calls.at(-1)?.[1]?.method).toBe("DELETE");
+    expect(registry.store.has(`github-link-state:${body.state}`)).toBe(false);
+    expect([...registry.store.values()].join(" ")).not.toContain(userToken);
+    expect(JSON.parse(registry.store.get(`device:${deviceSecret}`)!).linkedInstallations).toEqual([]);
+  });
+
+  it("logs only a bounded error class and stage, including non-Error Web Crypto failures", async () => {
+    const privateMessage = "private-error-detail-must-never-be-logged";
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ access_token: "diagnostic-user-token-for-tests" })))
+      .mockRejectedValueOnce(new DOMException(privateMessage, "DataError"))
+      .mockResolvedValueOnce(new Response(null, { status: 204 })); vi.stubGlobal("fetch", fetchMock);
+    const start = await runWebhook(env, githubAppPost("/v1/github-app/link/start", { deviceSecret, accountLogin: "octocat" }));
+    const body = await start.json() as { state: string };
+    await runWebhook(env, new Request(`https://push.example.test/v1/github-app/oauth/callback?state=${body.state}&code=${"a".repeat(40)}`));
+    expect(consoleInfoMock).toHaveBeenCalledWith("GitHub App connection failed", { kind: "DataError", stage: "installation_lookup" });
+    expect(JSON.stringify(consoleInfoMock.mock.calls)).not.toContain(privateMessage);
+    expect(JSON.stringify(consoleInfoMock.mock.calls)).not.toContain("diagnostic-user-token-for-tests");
+  });
+
   it("acknowledges direct GitHub access updates without trusting or linking a bare installation ID", async () => {
     const response = await runWebhook(
       env,

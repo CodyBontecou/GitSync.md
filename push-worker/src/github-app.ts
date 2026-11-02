@@ -203,6 +203,45 @@ export async function fetchInstallationMetadata(
   return metadata;
 }
 
+/** Resolves only this app's existing installation; OAuth owner proof still runs afterward. */
+export async function findExistingInstallation(env: GitHubAppEnv, login: string): Promise<number> {
+  if (!LOGIN_RE.test(login)) throw new Error("GitHubInstallationLoginInvalid");
+  const jwt = await githubAppJWT(env);
+  for (const kind of ["users", "orgs"] as const) {
+    const response = await fetch(`https://api.github.com/${kind}/${encodeURIComponent(login)}/installation`, {
+      headers: githubHeaders(jwt), redirect: "manual", signal: AbortSignal.timeout(5_000),
+    });
+    if (response.status === 404) { await response.body?.cancel(); continue; }
+    if (!response.ok) { await response.body?.cancel(); throw new Error("GitHubInstallationLookupFailed"); }
+    if (Number(response.headers.get("content-length")) > 65_536 || !response.body) {
+      await response.body?.cancel(); throw new Error("GitHubInstallationResponseInvalid");
+    }
+    const reader = response.body.getReader();
+    const chunks: Uint8Array[] = []; let length = 0;
+    try {
+      while (true) {
+        const chunk = await reader.read(); if (chunk.done) break;
+        length += chunk.value.byteLength;
+        if (length > 65_536) throw new Error("GitHubInstallationResponseInvalid");
+        chunks.push(chunk.value);
+      }
+    } finally { try { await reader.cancel(); } catch { /* best-effort stream cleanup */ } }
+    const bytes = new Uint8Array(length); let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    const body: unknown = JSON.parse(new TextDecoder("utf-8", { fatal: true, ignoreBOM: false }).decode(bytes));
+    if (!body || typeof body !== "object") throw new Error("GitHubInstallationResponseInvalid");
+    const value = body as Record<string, unknown>;
+    const account = value.account as Record<string, unknown> | null;
+    if (!validInstallationID(value.id) || String(value.app_id) !== env.GITHUB_APP_ID
+        || !account || typeof account !== "object" || !validInstallationID(account.id)
+        || typeof account.login !== "string" || account.login.toLowerCase() !== login.toLowerCase()
+        || account.type !== (kind === "users" ? "User" : "Organization")
+        || value.suspended_at != null) throw new Error("GitHubInstallationResponseInvalid");
+    return value.id;
+  }
+  throw new Error("GitHubInstallationNotFound");
+}
+
 export async function exchangeGitHubOAuthCode(
   env: GitHubAppEnv,
   code: string,

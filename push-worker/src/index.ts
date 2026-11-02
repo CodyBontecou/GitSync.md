@@ -1,6 +1,7 @@
 import { sendApns, type ApnsConfig } from "./apns";
 import {
   exchangeGitHubOAuthCode,
+  findExistingInstallation,
   githubAppConfigurationIsPresent,
   installationIDFrom,
   parseLinkedInstallation,
@@ -245,6 +246,7 @@ interface GitHubLinkStateRecord {
   stage: "install" | "oauth";
   expiresAt: number;
   installationID?: number;
+  accountLogin?: string;
   codeVerifier?: string;
 }
 
@@ -276,6 +278,11 @@ function parseLinkState(raw: string): GitHubLinkStateRecord | null {
     const installationID = installationIDFrom(value.installationID);
     if (installationID === null) return null;
     result.installationID = installationID;
+  }
+  if (value.accountLogin !== undefined) {
+    if (typeof value.accountLogin !== "string" || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,98}[A-Za-z0-9])?$/.test(value.accountLogin)
+        || value.installationID !== undefined) return null;
+    result.accountLogin = value.accountLogin;
   }
   if (value.codeVerifier !== undefined) {
     if (typeof value.codeVerifier !== "string" || !/^[A-Za-z0-9_-]{43,128}$/.test(value.codeVerifier)) {
@@ -454,6 +461,17 @@ function githubAppUnavailable(env: Env): Response | null {
     : json(503, { error: "github app unavailable" });
 }
 
+async function githubAuthorizationURL(env: Env, state: string, codeVerifier: string): Promise<string> {
+  const authorizationURL = new URL("https://github.com/login/oauth/authorize");
+  authorizationURL.searchParams.set("client_id", env.GITHUB_APP_CLIENT_ID);
+  authorizationURL.searchParams.set("redirect_uri", env.GITHUB_APP_CALLBACK_URL);
+  authorizationURL.searchParams.set("state", state);
+  authorizationURL.searchParams.set("code_challenge", await codeChallenge(codeVerifier));
+  authorizationURL.searchParams.set("code_challenge_method", "S256");
+  authorizationURL.searchParams.set("prompt", "select_account");
+  return authorizationURL.toString();
+}
+
 async function handleGitHubAppLinkStart(env: Env, request: Request): Promise<Response> {
   const unavailable = githubAppUnavailable(env);
   if (unavailable) return unavailable;
@@ -467,15 +485,23 @@ async function handleGitHubAppLinkStart(env: Env, request: Request): Promise<Res
     return json(409, { error: "push registration required" });
   }
 
+  const accountLogin = (parsed as Record<string, unknown>).accountLogin;
+  if (accountLogin !== undefined && (typeof accountLogin !== "string"
+      || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,98}[A-Za-z0-9])?$/.test(accountLogin))) {
+    return json(400, { error: "invalid accountLogin" });
+  }
   const state = randomURLSafe(32);
+  const codeVerifier = accountLogin === undefined ? undefined : randomURLSafe(64);
   const linkState: GitHubLinkStateRecord = {
     deviceSecret,
-    stage: "install",
+    stage: accountLogin === undefined ? "install" : "oauth",
     expiresAt: Date.now() + GITHUB_LINK_TTL_SECONDS * 1000,
+    ...(accountLogin === undefined ? {} : { accountLogin, codeVerifier }),
   };
   await env.REGISTRY.put(`github-link-state:${state}`, JSON.stringify(linkState), {
     expirationTtl: GITHUB_LINK_TTL_SECONDS,
   });
+  if (codeVerifier) return json(200, { ok: true, state, url: await githubAuthorizationURL(env, state, codeVerifier) });
   const installationURL = new URL(`https://github.com/apps/${env.GITHUB_APP_SLUG}/installations/new`);
   installationURL.searchParams.set("state", state);
   return json(200, { ok: true, state, url: installationURL.toString() });
@@ -516,14 +542,7 @@ async function handleGitHubAppSetup(env: Env, request: Request): Promise<Respons
   await env.REGISTRY.put(`github-link-state:${state}`, JSON.stringify(oauthState), {
     expirationTtl: GITHUB_LINK_TTL_SECONDS,
   });
-  const authorizationURL = new URL("https://github.com/login/oauth/authorize");
-  authorizationURL.searchParams.set("client_id", env.GITHUB_APP_CLIENT_ID);
-  authorizationURL.searchParams.set("redirect_uri", env.GITHUB_APP_CALLBACK_URL);
-  authorizationURL.searchParams.set("state", state);
-  authorizationURL.searchParams.set("code_challenge", await codeChallenge(codeVerifier));
-  authorizationURL.searchParams.set("code_challenge_method", "S256");
-  authorizationURL.searchParams.set("prompt", "select_account");
-  return noStoreRedirect(authorizationURL.toString());
+  return noStoreRedirect(await githubAuthorizationURL(env, state, codeVerifier));
 }
 
 async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise<Response> {
@@ -537,7 +556,7 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
   const stateRaw = await env.REGISTRY.get(`github-link-state:${state}`);
   const linkState = stateRaw ? parseLinkState(stateRaw) : null;
   if (!linkState || linkState.stage !== "oauth" || linkState.expiresAt < Date.now()
-      || linkState.installationID === undefined || !linkState.codeVerifier) {
+      || (linkState.installationID === undefined && linkState.accountLogin === undefined) || !linkState.codeVerifier) {
     return json(400, { error: "expired authorization callback" });
   }
   // Make the state single-use before any external request. OAuth codes are also
@@ -550,14 +569,20 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
     return noStoreRedirect(appCallbackURL(state, "error", oauthError === "access_denied" ? "cancelled" : "authorization_failed"));
   }
 
+  let stage = "installation_status";
   try {
-    if (await env.REGISTRY.get(githubInstallationTombstoneKey(linkState.installationID))) {
+    if (linkState.installationID !== undefined && await env.REGISTRY.get(githubInstallationTombstoneKey(linkState.installationID))) {
       throw new Error("GitHubInstallationDeleted");
     }
+    stage = "token_exchange";
     const userToken = await exchangeGitHubOAuthCode(env, code, linkState.codeVerifier);
     let installation: LinkedGitHubInstallation;
     try {
-      installation = await proveInstallationAdministrator(env, linkState.installationID, userToken);
+      stage = "installation_lookup";
+      const installationID = linkState.installationID ?? await findExistingInstallation(env, linkState.accountLogin!);
+      if (await env.REGISTRY.get(githubInstallationTombstoneKey(installationID))) throw new Error("GitHubInstallationDeleted");
+      stage = "owner_proof";
+      installation = await proveInstallationAdministrator(env, installationID, userToken);
     } finally {
       try {
         await revokeGitHubUserToken(env, userToken);
@@ -566,6 +591,7 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
         console.info("GitHub App user token revocation failed");
       }
     }
+    stage = "device_lookup";
     const deviceRaw = await env.REGISTRY.get(`device:${linkState.deviceSecret}`);
     const device = deviceRaw ? parseStoredDeviceRecord(deviceRaw) : null;
     if (!device) throw new Error("PushRegistrationMissing");
@@ -581,7 +607,9 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
       }
       device.linkedInstallations.push(installation);
     }
+    stage = "device_save";
     await putDeviceRecord(env, linkState.deviceSecret, device);
+    stage = "route_save";
     await env.REGISTRY.put(githubAppRouteKey(installation.id, linkState.deviceSecret), "1", {
       expiration: deviceExpiration(device),
     });
@@ -601,8 +629,11 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
     }
     return noStoreRedirect(appCallbackURL(state, "connected"));
   } catch (error) {
-    const kind = error instanceof Error ? error.message.split(":", 1)[0].slice(0, 80) : "UnknownError";
-    console.info("GitHub App connection failed", { kind });
+    const candidate = error instanceof Error ? error.message.split(":", 1)[0].slice(0, 80) : "";
+    const name = typeof error === "object" && error !== null && "name" in error ? String(error.name) : "";
+    const kind = /^(?:GitHub[A-Za-z0-9_]+|PushRegistrationMissing)$/.test(candidate) ? candidate
+      : ["Error", "TypeError", "SyntaxError", "AbortError", "TimeoutError", "DataError", "OperationError", "InvalidAccessError"].includes(name) ? name : "UnknownError";
+    console.info("GitHub App connection failed", { kind, stage });
     const reason = kind === "GitHubInstallationAdministratorRequired"
       ? "account_owner_required"
       : "verification_failed";
