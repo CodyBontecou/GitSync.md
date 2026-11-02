@@ -1057,7 +1057,7 @@ final class SyncMDTests: XCTestCase {
             return (type, Set(try XCTUnwrap(entry["NSPrivacyAccessedAPITypeReasons"] as? [String])))
         })
         XCTAssertEqual(reasons, [
-            "NSPrivacyAccessedAPICategoryUserDefaults": ["CA92.1"],
+            "NSPrivacyAccessedAPICategoryUserDefaults": ["CA92.1", "1C8F.1"],
             "NSPrivacyAccessedAPICategoryFileTimestamp": ["C617.1", "3B52.1"]
         ])
     }
