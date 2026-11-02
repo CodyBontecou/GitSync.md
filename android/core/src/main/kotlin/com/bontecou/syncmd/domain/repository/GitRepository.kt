@@ -20,6 +20,11 @@ interface GitRepository {
         creds: Credentials
     ): Result<Unit>
 
+    suspend fun clone(url: String, path: String, creds: Credentials, branch: String?): Result<Unit> {
+        if (!branch.isNullOrBlank()) return Result.failure(UnsupportedOperationException("Branch selection is unavailable"))
+        return clone(url, path, creds)
+    }
+
     /**
      * Get status of all files in the repository (modified, staged, untracked)
      */

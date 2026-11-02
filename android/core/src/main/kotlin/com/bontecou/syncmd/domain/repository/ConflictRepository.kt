@@ -36,6 +36,11 @@ interface ConflictRepository {
         customContent: String? = null  // For MANUAL strategy
     ): Result<ConflictResolution>
 
+    /** Manual resolution with an explicitly reviewed filename for a logical rename conflict. */
+    suspend fun resolveConflictWithPath(repoPath: String, filePath: String, keepPath: String, content: String): Result<ConflictResolution> =
+        if (filePath == keepPath) resolveConflict(repoPath, filePath, ConflictResolutionStrategy.MANUAL, content)
+        else Result.failure(IllegalStateException("Filename selection is unavailable for this repository"))
+
     /**
      * Mark all conflicts as resolved (before completing merge)
      */

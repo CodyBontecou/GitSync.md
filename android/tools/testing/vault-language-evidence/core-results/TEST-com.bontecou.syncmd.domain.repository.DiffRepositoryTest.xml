@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:53:21" hostname="MacBook-Pro.local" time="0.596">
+  <properties/>
+  <testcase name="getDiff returns empty list for clean repository" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.093"/>
+  <testcase name="diff hunks contain correct line types" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.081"/>
+  <testcase name="stageFile adds file to index" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.078"/>
+  <testcase name="commit only commits staged files, not unstaged" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.082"/>
+  <testcase name="unstageFile removes file from index" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.085"/>
+  <testcase name="getDiff for single file returns only that file's diff" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.083"/>
+  <testcase name="getDiff returns modified files when working tree has changes" classname="com.bontecou.syncmd.domain.repository.DiffRepositoryTest" time="0.093"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

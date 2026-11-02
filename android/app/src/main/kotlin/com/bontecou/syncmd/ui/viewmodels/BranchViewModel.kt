@@ -3,237 +3,154 @@ package com.bontecou.syncmd.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bontecou.syncmd.data.models.Branch
-import com.bontecou.syncmd.data.models.MergeResult
+import com.bontecou.syncmd.data.models.BranchType
 import com.bontecou.syncmd.data.models.MergeStrategy
 import com.bontecou.syncmd.services.git.BranchService
+import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
+import com.bontecou.syncmd.ui.util.RepositorySelection
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * ViewModel for branch operations and merge management.
- */
+/** Branch reviews and callbacks belong to one repository visit and one loaded Git snapshot. */
 @HiltViewModel
-class BranchViewModel @Inject constructor(
-    private val branchService: BranchService
-) : ViewModel() {
+class BranchViewModel @Inject constructor(private val branchService: BranchService) : ViewModel() {
+    data class State(
+        val repositoryPath: String? = null,
+        val selection: RepositorySelection? = null,
+        val currentBranch: Branch? = null,
+        val branches: List<Branch> = emptyList(),
+        val isLoading: Boolean = false,
+        val isMerging: Boolean = false,
+        val actionsReady: Boolean = false,
+        val errorMessage: String? = null,
+        val operationRevision: Long = 0,
+    ) {
+        val localBranches get() = branches.filter { it.type == BranchType.LOCAL || it.type == BranchType.TRACKING }
+        val remoteBranches get() = branches.filter { it.type == BranchType.REMOTE }
+    }
+    private val _state = MutableStateFlow(State()); val state = _state.asStateFlow()
+    private fun update(change: (State) -> State) { _state.value = change(_state.value) }
+    private data class Snapshot(val current: Branch, val branches: List<Branch>)
+    private var snapshot: Snapshot? = null
+    private var readJob: Job? = null
+    @Volatile private var readId = 0L
+    private var mutationRunning = false
+    private var refreshPending = false
+    private var operationNotice: String? = null
+    private fun current(expected: RepositorySelection?) = expected != null && _state.value.selection === expected
+    private fun available(expected: RepositorySelection) = current(expected) && _state.value.actionsReady && !_state.value.isLoading && !mutationRunning
 
-    // All branches
-    private val _allBranches = MutableStateFlow<List<Branch>>(emptyList())
-    val allBranches: StateFlow<List<Branch>> = _allBranches.asStateFlow()
-
-    // Local branches only
-    private val _localBranches = MutableStateFlow<List<Branch>>(emptyList())
-    val localBranches: StateFlow<List<Branch>> = _localBranches.asStateFlow()
-
-    // Remote branches only
-    private val _remoteBranches = MutableStateFlow<List<Branch>>(emptyList())
-    val remoteBranches: StateFlow<List<Branch>> = _remoteBranches.asStateFlow()
-
-    // Current branch
-    private val _currentBranch = MutableStateFlow<Branch?>(null)
-    val currentBranch: StateFlow<Branch?> = _currentBranch.asStateFlow()
-
-    // Merge in progress
-    private val _mergeInProgress = MutableStateFlow(false)
-    val mergeInProgress: StateFlow<Boolean> = _mergeInProgress.asStateFlow()
-
-    // Loading state
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Error message
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-
-    // Current repository path
-    private val _currentRepoPath = MutableStateFlow<String?>(null)
-    val currentRepoPath: StateFlow<String?> = _currentRepoPath.asStateFlow()
-
-    /**
-     * Set the current repository path and load branches.
-     */
-    fun setRepositoryPath(repoPath: String) {
-        _currentRepoPath.value = repoPath
+    fun setRepositoryPath(path: String) {
+        if (_state.value.repositoryPath != path) {
+            readId++; readJob?.cancel(); snapshot = null; operationNotice = null
+            update { State(repositoryPath = path, selection = path.takeIf { it.isNotBlank() }?.let(::RepositorySelection),
+                isLoading = mutationRunning, operationRevision = it.operationRevision) }
+        }
         loadBranches()
     }
-
-    /**
-     * Load all branches from the repository.
-     */
     fun loadBranches() {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
+        if (mutationRunning) { refreshPending = true; return }
+        val expected = _state.value.selection ?: return
+        val request = ++readId
+        readJob?.cancel(); update { it.copy(isLoading = true, actionsReady = false, errorMessage = operationNotice) }
+        readJob = viewModelScope.launch {
             try {
-                // Load current branch
-                val currentResult = branchService.getCurrentBranch(repoPath)
-                if (currentResult.isSuccess) {
-                    _currentBranch.value = currentResult.getOrNull()
-                } else {
-                    _errorMessage.value = currentResult.exceptionOrNull()?.message ?: "Failed to load current branch"
-                }
-
-                // Load all branches
-                val allResult = branchService.listBranches(repoPath)
-                if (allResult.isSuccess) {
-                    _allBranches.value = allResult.getOrNull() ?: emptyList()
-                    _errorMessage.value = null
-                } else {
-                    _errorMessage.value = allResult.exceptionOrNull()?.message ?: "Failed to load branches"
-                }
-
-                // Load local branches
-                val localResult = branchService.getLocalBranches(repoPath)
-                if (localResult.isSuccess) {
-                    _localBranches.value = localResult.getOrNull() ?: emptyList()
-                } else {
-                    _errorMessage.value = localResult.exceptionOrNull()?.message ?: "Failed to load local branches"
-                }
-
-                // Load remote branches
-                val remoteResult = branchService.getRemoteBranches(repoPath)
-                if (remoteResult.isSuccess) {
-                    _remoteBranches.value = remoteResult.getOrNull() ?: emptyList()
-                } else {
-                    _errorMessage.value = remoteResult.exceptionOrNull()?.message ?: "Failed to load remote branches"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Switch to a different branch.
-     */
-    fun switchBranch(branchName: String) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = branchService.switchBranch(repoPath, branchName)
-                if (result.isSuccess) {
-                    loadBranches() // Reload to update current branch
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to switch branch"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Create a new branch.
-     */
-    fun createBranch(name: String, startPoint: String = "HEAD") {
-        val repoPath = _currentRepoPath.value ?: return
-
-        if (name.isBlank()) {
-            _errorMessage.value = "Branch name cannot be empty"
-            return
-        }
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = branchService.createBranch(repoPath, name, startPoint)
-                if (result.isSuccess) {
-                    loadBranches() // Reload to show new branch
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to create branch"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Delete a branch.
-     */
-    fun deleteBranch(branchName: String, force: Boolean = false) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = branchService.deleteBranch(repoPath, branchName, force)
-                if (result.isSuccess) {
-                    loadBranches() // Reload after deletion
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to delete branch"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Merge a source branch into the current branch.
-     */
-    fun mergeBranch(sourceBranch: String, strategy: MergeStrategy = MergeStrategy.PREFER_FF) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _mergeInProgress.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = branchService.merge(repoPath, sourceBranch, strategy)
-                if (result.isSuccess) {
-                    val mergeResult = result.getOrNull()
-                    if (mergeResult != null) {
-                        if (mergeResult.success) {
-                            _errorMessage.value = "Merge successful: ${mergeResult.message}"
-                            loadBranches()
-                        } else {
-                            _errorMessage.value = "Merge failed: ${mergeResult.message}"
-                            if (mergeResult.conflictCount > 0) {
-                                _errorMessage.value += " (${mergeResult.conflictCount} conflicts)"
-                            }
-                        }
+                val fresh = withContext(Dispatchers.IO) {
+                    RepositoryOperationCoordinator.withRepository(expected.path) {
+                        if (current(expected) && request == readId) readSnapshot(expected.path) else null
                     }
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Merge operation failed"
                 }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error during merge"
+                if (current(expected) && request == readId && fresh != null) publish(fresh)
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) {
+                if (current(expected) && request == readId) update { it.copy(errorMessage = operationNotice ?: failure.message ?: "Could not refresh branches") }
             } finally {
-                _isLoading.value = false
-                _mergeInProgress.value = false
+                if (current(expected) && request == readId && !mutationRunning) update { it.copy(isLoading = false) }
             }
         }
     }
-
-    /**
-     * Clear error message.
-     */
-    fun clearError() {
-        _errorMessage.value = null
+    private suspend fun readSnapshot(path: String): Snapshot {
+        val before = branchService.getCurrentBranch(path).getOrThrow()
+        val branches = branchService.listBranches(path).getOrThrow()
+        check(before == branchService.getCurrentBranch(path).getOrThrow()) { "Current branch changed while loading. Refresh and review again." }
+        return Snapshot(before, branches)
     }
+    private fun publish(fresh: Snapshot) {
+        snapshot = fresh
+        update { it.copy(currentBranch = fresh.current, branches = fresh.branches, actionsReady = true) }
+    }
+    fun createBranch(expected: RepositorySelection, name: String, onSuccess: () -> Unit = {}) {
+        if (!available(expected)) return
+        if (name.isBlank()) { operationNotice = "Branch name cannot be empty"; update { it.copy(errorMessage = operationNotice) }; return }
+        mutate(expected, onSuccess = onSuccess) { path, fresh ->
+            val head = requireNotNull(fresh.current.lastCommit) { "Commit a file before creating a branch." }
+            branchService.createBranch(path, name, head).getOrThrow(); null
+        }
+    }
+    fun switchBranch(expected: RepositorySelection, branch: Branch) = changeBranch(expected, branch) { path ->
+        branchService.switchBranch(path, branch.name).getOrThrow(); null
+    }
+    fun deleteBranch(expected: RepositorySelection, branch: Branch, force: Boolean = false) = changeBranch(expected, branch) { path ->
+        branchService.deleteBranch(path, branch.name, force).getOrThrow(); null
+    }
+    fun mergeBranch(expected: RepositorySelection, branch: Branch, strategy: MergeStrategy = MergeStrategy.PREFER_FF) = changeBranch(expected, branch, merging = true) { path ->
+        val result = branchService.merge(path, branch.name, strategy).getOrThrow()
+        if (result.success) "Merge successful: ${result.message}"
+        else "Merge stopped: ${result.message}" + if (result.conflictCount > 0) " (${result.conflictCount} conflicts)" else ""
+    }
+    private fun changeBranch(expected: RepositorySelection, branch: Branch, merging: Boolean = false, action: suspend (String) -> String?) {
+        if (_state.value.localBranches.none { it === branch } || branch.isHead || branch.name == _state.value.currentBranch?.name) return
+        mutate(expected, merging) { path, fresh ->
+            check(fresh.branches.firstOrNull { it.type != BranchType.REMOTE && it.name == branch.name } == branch) {
+                "Branch changed. Review the current branch before trying again."
+            }
+            action(path)
+        }
+    }
+    private fun mutate(expected: RepositorySelection, merging: Boolean = false, onSuccess: () -> Unit = {}, action: suspend (String, Snapshot) -> String?) {
+        if (!available(expected)) return
+        val reviewed = snapshot ?: return
+        mutationRunning = true; refreshPending = false; readId++; readJob?.cancel(); operationNotice = null
+        update { it.copy(isLoading = true, isMerging = merging, actionsReady = false, errorMessage = null) }
+        viewModelScope.launch {
+            var fresh: Snapshot? = null
+            var failure: Exception? = null
+            var notice: String? = null
+            var completed = false
+            try {
+                withContext(Dispatchers.IO) {
+                    RepositoryOperationCoordinator.withRepository(expected.path) {
+                        if (!current(expected)) return@withRepository
+                        try {
+                            val before = readSnapshot(expected.path)
+                            check(before.current == reviewed.current) { "Current branch or commit changed. Refresh and review again." }
+                            notice = action(expected.path, before); completed = true
+                        } catch (cancelled: CancellationException) { throw cancelled
+                        } catch (error: Exception) { failure = error }
+                        // A checkout/merge may have completed before LFS or refresh failed.
+                        try { fresh = readSnapshot(expected.path) }
+                        catch (cancelled: CancellationException) { throw cancelled
+                        } catch (error: Exception) { if (failure == null) failure = error }
+                    }
+                }
+                if (current(expected)) {
+                    fresh?.let(::publish)
+                    operationNotice = failure?.let { it.message ?: "Branch action could not complete. Refresh repository status." } ?: notice
+                    update { it.copy(errorMessage = operationNotice, operationRevision = it.operationRevision + 1) }
+                    if (completed) onSuccess()
+                }
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (error: Exception) {
+                if (current(expected)) { operationNotice = error.message ?: "Branch action could not complete"; update { it.copy(errorMessage = operationNotice) } }
+            } finally {
+                mutationRunning = false; update { it.copy(isLoading = false, isMerging = false) }
+                val refresh = !current(expected) || refreshPending; refreshPending = false
+                if (refresh) loadBranches()
+            }
+        }
+    }
+    fun clearError(expected: RepositorySelection?) { if (current(expected)) { operationNotice = null; update { it.copy(errorMessage = null) } } }
 }

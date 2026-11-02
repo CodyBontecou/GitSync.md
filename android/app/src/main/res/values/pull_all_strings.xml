@@ -1,0 +1,25 @@
+<resources>
+    <string name="pull_all_title">Pull All</string>
+    <string name="pull_all_back">Back</string>
+    <string name="pull_all_scope">Fetch and fast-forward every added local repository. Pull All never stages, commits or pushes your changes.</string>
+    <string name="pull_all_system_help">For quick access, add the Pull All home-screen widget or add the GitSync.md Pull All tile when editing Quick Settings. Both run once without opening the app. Open Pull All afterward to review the saved summary; choose Pull All Again for another run.</string>
+    <string name="pull_all_again">Pull All Again</string>
+    <string name="pull_all_stop">Stop Pull All</string>
+    <string name="pull_all_stopping">Stopping after the current operation…</string>
+    <string name="pull_all_stopped">Stopped. A repository already being pulled may have finished. Check its Git status before retrying; remaining repositories were not started.</string>
+    <string name="pull_all_failed">Pull All could not start. Check repository settings and retry.</string>
+    <string name="pull_all_empty">No local repositories to pull. Clone or import a repository first.</string>
+    <string name="pull_all_progress">%1$d of %2$d repositories checked</string>
+    <string name="pull_all_updated">Updated from remote</string>
+    <string name="pull_all_current">No incoming changes</string>
+    <string name="pull_all_attention">Pull completed; some LFS contents need download. Open Git LFS to retry.</string>
+    <string name="pull_all_blocked">Kept unchanged. Commit or stash local changes, finish the active Git operation, or configure an upstream branch before retrying.</string>
+    <string name="pull_all_item_failed">Could not pull safely. Check connection and storage access, then inspect Git controls for divergence or other recovery needs.</string>
+    <string name="pull_all_running">Pulling…</string>
+    <string name="pull_all_not_run">Not run</string>
+    <string name="pull_all_widget_description">Fetch and fast-forward all local repositories without opening GitSync.md.</string>
+    <string name="pull_all_widget_button">Pull all repositories</string>
+    <string name="pull_all_widget_subtitle">Fetch and fast-forward only</string>
+    <color name="pull_all_widget_background">#FFFBFE</color>
+    <color name="pull_all_widget_text">#1C1B1F</color>
+</resources>

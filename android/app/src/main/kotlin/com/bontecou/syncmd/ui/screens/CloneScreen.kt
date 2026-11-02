@@ -1,9 +1,6 @@
 package com.bontecou.syncmd.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,32 +9,56 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bontecou.syncmd.ui.theme.BLoading
-import com.bontecou.syncmd.ui.theme.LocalBrutalColors
+import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.components.AddVaultBusyLine
+import com.bontecou.syncmd.ui.components.AddVaultNote
+import com.bontecou.syncmd.ui.components.AddVaultProgress
+import com.bontecou.syncmd.ui.components.CloneCompletion
+import com.bontecou.syncmd.ui.components.FolderLocationField
+import com.bontecou.syncmd.ui.components.WrappingTopBar
+import com.bontecou.syncmd.ui.theme.SyncMdTheme
+import com.bontecou.syncmd.ui.theme.SyncRail
+import com.bontecou.syncmd.ui.theme.Tide
+import com.bontecou.syncmd.ui.theme.TideBannerTone
+import com.bontecou.syncmd.ui.theme.TideCard
+import com.bontecou.syncmd.ui.theme.TideHero
+import com.bontecou.syncmd.ui.theme.TideOutlineButton
+import com.bontecou.syncmd.ui.theme.TidePill
+import com.bontecou.syncmd.ui.theme.TidePrimaryButton
+import com.bontecou.syncmd.ui.theme.TideSyncState
+import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.viewmodels.CloneViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 
 /**
- * Shown while a repository is being cloned at add-time.
+ * Reviews a clone's location, then shows progress and checked repository registration.
  *
  * Matches the iOS loading experience from AppState.clone():
- *  • Starts the clone immediately on composition.
+ *  • Starts only after the user confirms the clone location.
  *  • Navigates to the repo list on success (calling addRepository first).
  *  • Shows the error with a Retry + Cancel option on failure.
  */
@@ -49,231 +70,118 @@ fun CloneScreen(
     onSuccess: () -> Unit,
     onCancel: () -> Unit,
     viewModel: CloneViewModel = hiltViewModel(),
+    onReviewLfs: ((String) -> Unit)? = null,
 ) {
     val state by viewModel.cloneState.collectAsState()
-    val bc    = LocalBrutalColors.current
+    var location by rememberSaveable(repoFullName) { mutableStateOf<String?>(null) }
 
-    // Kick off the clone as soon as we arrive at this screen.
-    LaunchedEffect(repoFullName) {
-        viewModel.startClone(repoFullName)
-    }
-
-    // React to terminal states.
-    LaunchedEffect(state) {
-        if (state is CloneViewModel.CloneState.Success) {
-            val localPath = (state as CloneViewModel.CloneState.Success).localPath
-            val repoName  = repoFullName.substringAfterLast("/")
-            onCloneSuccess(repoFullName)
-            settingsViewModel.addRepository(
-                name  = repoName,
-                path  = localPath,
-                alias = repoFullName,
-            )
-            onSuccess()
-        }
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(bc.bg)
-    ) {
+    Box(Modifier.fillMaxSize().background(Tide.colors.paper)) {
         Column(modifier = Modifier.fillMaxSize()) {
 
-            // ── Top Bar ───────────────────────────────────────────────────
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(bc.bg)
-                    .statusBarsPadding()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = "CLONING",
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 12.sp,
-                            letterSpacing = 3.sp,
-                            color = bc.text,
-                        )
-                    )
-                    // Show Cancel only when not actively cloning.
-                    if (state !is CloneViewModel.CloneState.Cloning) {
-                        Box(
-                            modifier = Modifier
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    onClick = {
-                                        viewModel.reset()
-                                        onCancel()
-                                    },
-                                )
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
-                        ) {
-                            Text(
-                                text = "CANCEL",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 12.sp,
-                                    letterSpacing = 1.sp,
-                                    color = bc.textMid,
-                                )
-                            )
-                        }
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(bc.border)
-                )
-            }
+            WrappingTopBar(
+                title = stringResource(when (state) {
+                    is CloneViewModel.CloneState.Idle -> R.string.ui_clone_repository_e8fa94ab
+                    is CloneViewModel.CloneState.Cloning -> R.string.ui_cloning_repository_c9d2441e
+                    is CloneViewModel.CloneState.Success -> R.string.clone_completed_title
+                    is CloneViewModel.CloneState.Error -> R.string.tide_onboarding_clone_failed
+                }),
+                backLabel = stringResource(R.string.publication_cancel),
+                onBack = if (state is CloneViewModel.CloneState.Cloning) null else ({ if (viewModel.reset()) onCancel() }),
+                titleModifier = Modifier.testTag("clone-title"))
 
-            // ── Body ──────────────────────────────────────────────────────
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
-                contentAlignment = Alignment.Center,
+            Column(
+                Modifier.fillMaxSize().weight(1f).navigationBarsPadding().verticalScroll(rememberScrollState())
+                    .padding(horizontal = Tide.gutter).padding(top = 8.dp, bottom = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 when (val s = state) {
-
-                    is CloneViewModel.CloneState.Idle,
-                    is CloneViewModel.CloneState.Cloning -> {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                        ) {
-                            BLoading(text = "Cloning repository")
-                            Text(
-                                text = repoFullName,
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 13.sp,
-                                    color = bc.textFaint,
-                                )
-                            )
-                        }
+                    is CloneViewModel.CloneState.Idle -> {
+                        CloneHeroCard(repoFullName, ClonePhase.READY)
+                        FolderLocationField(location, { location = it })
+                        TidePrimaryButton(stringResource(R.string.ui_clone_repository_e8fa94ab),
+                            onClick = { viewModel.startClone(repoFullName, location) }, modifier = Modifier.testTag("clone-start"))
                     }
-
+                    is CloneViewModel.CloneState.Cloning -> CloneHeroCard(repoFullName, ClonePhase.CLONING)
                     is CloneViewModel.CloneState.Success -> {
-                        // Handled via LaunchedEffect above — this state is transient.
-                        BLoading(text = "Finishing up")
+                        CloneHeroCard(s.repository, ClonePhase.CLONED)
+                        CloneCompletion(s.completed, s.repository.substringAfterLast('/'), settingsViewModel,
+                            alias = s.repository, onReviewLfs = onReviewLfs, onRegistered = { onCloneSuccess(s.repository); onSuccess() })
                     }
-
                     is CloneViewModel.CloneState.Error -> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(20.dp),
-                        ) {
-                            // Error card
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(bc.error.copy(alpha = 0.08f))
-                                    .border(1.dp, bc.error.copy(alpha = 0.4f))
-                                    .padding(16.dp)
-                            ) {
-                                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text(
-                                        text = "CLONE FAILED",
-                                        style = TextStyle(
-                                            fontFamily = FontFamily.Monospace,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 12.sp,
-                                            letterSpacing = 2.sp,
-                                            color = bc.error,
-                                        )
-                                    )
-                                    Text(
-                                        text = s.message,
-                                        style = TextStyle(
-                                            fontFamily = FontFamily.Monospace,
-                                            fontSize = 13.sp,
-                                            color = bc.error,
-                                        )
-                                    )
-                                }
-                            }
-
-                            // Action buttons
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            ) {
-                                // Cancel
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .border(1.dp, bc.border)
-                                        .clickable(
-                                            indication = null,
-                                            interactionSource = remember { MutableInteractionSource() },
-                                            onClick = {
-                                                viewModel.reset()
-                                                onCancel()
-                                            },
-                                        )
-                                        .padding(vertical = 14.dp),
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    Text(
-                                        text = "CANCEL",
-                                        style = TextStyle(
-                                            fontFamily = FontFamily.Monospace,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 13.sp,
-                                            letterSpacing = 1.sp,
-                                            color = bc.textMid,
-                                        )
-                                    )
-                                }
-
-                                // Retry
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .border(1.dp, bc.accent)
-                                        .clickable(
-                                            indication = null,
-                                            interactionSource = remember { MutableInteractionSource() },
-                                            onClick = { viewModel.startClone(repoFullName) },
-                                        )
-                                        .padding(vertical = 14.dp),
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    Text(
-                                        text = "RETRY",
-                                        style = TextStyle(
-                                            fontFamily = FontFamily.Monospace,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 13.sp,
-                                            letterSpacing = 1.sp,
-                                            color = bc.accent,
-                                        )
-                                    )
-                                }
-                            }
-
-                            Spacer(Modifier.height(4.dp))
+                        CloneFailureCard(repoFullName, s.message)
+                        FolderLocationField(location, { location = it })
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                            TideOutlineButton(stringResource(R.string.publication_cancel), onClick = { if (viewModel.reset()) onCancel() },
+                                height = 60.dp, modifier = Modifier.weight(1f))
+                            TidePrimaryButton(stringResource(R.string.ui_retry_942087cc), onClick = { viewModel.startClone(repoFullName, location) },
+                                modifier = Modifier.weight(1f))
                         }
                     }
                 }
             }
         }
     }
+}
+
+private enum class ClonePhase { READY, CLONING, CLONED }
+
+/** Dark state card: repository facts on top, the rail showing where the commits are. */
+@Composable
+private fun CloneHeroCard(fullName: String, phase: ClonePhase) {
+    val c = Tide.colors
+    val owner = fullName.substringBeforeLast('/', "")
+    val name = fullName.substringAfterLast('/')
+    TideHero(Modifier.semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite }) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                if (owner.isNotEmpty()) Text("$owner/", style = TideType.meta.copy(textDirection = TextDirection.Ltr), color = c.heroMeta)
+                Text(name, style = TideType.display(28.sp).copy(textDirection = TextDirection.Ltr), color = c.heroText,
+                    maxLines = 2, overflow = TextOverflow.Ellipsis)
+            }
+            if (phase == ClonePhase.CLONED) TidePill(stringResource(R.string.clone_completed_title), c.heroSynced, c.heroSynced.copy(alpha = 0.16f))
+        }
+        Spacer(Modifier.height(20.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(R.string.tide_onboarding_rail_device), style = TideType.mono(11.sp), color = c.heroMeta)
+            SyncRail(if (phase == ClonePhase.CLONED) TideSyncState.InSync else TideSyncState.Behind(3),
+                Modifier.weight(1f).padding(horizontal = 10.dp), onHero = true)
+            Text("GitHub", style = TideType.mono(11.sp), color = c.heroMeta)
+        }
+        if (phase == ClonePhase.CLONING) {
+            Spacer(Modifier.height(20.dp))
+            AddVaultProgress(onHero = true)
+            AddVaultBusyLine(stringResource(R.string.ui_cloning_repository_c9d2441e), Modifier.padding(top = 14.dp), onHero = true)
+        }
+    }
+}
+
+@Composable
+private fun CloneFailureCard(fullName: String, message: String) {
+    val c = Tide.colors
+    TideCard {
+        Text(fullName, style = TideType.meta.copy(textDirection = TextDirection.Ltr), color = c.inkFaint)
+        Spacer(Modifier.height(10.dp))
+        AddVaultNote(message, TideBannerTone.DANGER)
+    }
+}
+
+// ─── Previews ───────────────────────────────────────────────────────────────
+
+@Composable
+private fun ClonePreviewFrame(content: @Composable () -> Unit) {
+    Column(Modifier.background(Tide.colors.paper).padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) { content() }
+}
+
+@Preview(name = "Clone · ready") @Composable
+private fun CloneReadyPreview() = SyncMdTheme(darkTheme = false) { ClonePreviewFrame { CloneHeroCard("octocat/notes", ClonePhase.READY) } }
+
+@Preview(name = "Clone · cloning · dark") @Composable
+private fun CloneCloningPreview() = SyncMdTheme(darkTheme = true) { ClonePreviewFrame { CloneHeroCard("octocat/notes", ClonePhase.CLONING) } }
+
+@Preview(name = "Clone · cloned") @Composable
+private fun CloneDonePreview() = SyncMdTheme(darkTheme = false) { ClonePreviewFrame { CloneHeroCard("octocat/notes", ClonePhase.CLONED) } }
+
+@Preview(name = "Clone · failed · dark") @Composable
+private fun CloneFailedPreview() = SyncMdTheme(darkTheme = true) {
+    ClonePreviewFrame { CloneFailureCard("octocat/notes", "Authentication failed. Sign in again and retry.") }
 }

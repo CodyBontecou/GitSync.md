@@ -8,7 +8,7 @@ data class Branch(
     val type: BranchType,       // Local, remote, or tracking
     val isHead: Boolean = false, // Is this the current branch?
     val trackingBranch: String? = null, // If tracking, what remote branch?
-    val lastCommit: String? = null,     // Latest commit hash
+    val lastCommit: String? = null,     // Full commit object ID; null for an unborn HEAD
     val lastCommitMessage: String? = null  // Latest commit message
 )
 

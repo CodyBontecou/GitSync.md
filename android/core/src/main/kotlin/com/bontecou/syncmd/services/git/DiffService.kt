@@ -9,6 +9,10 @@ import com.bontecou.syncmd.domain.repository.DiffRepository
  * Provides a convenient API on top of DiffRepository.
  */
 class DiffService(private val diffRepository: DiffRepository) {
+    suspend fun reviewDiscard(repoPath: String, filePath: String? = null) = diffRepository.reviewDiscard(repoPath, filePath)
+    suspend fun discardReviewed(repoPath: String, review: DiscardReview) = diffRepository.discardReviewed(repoPath, review)
+
+    suspend fun getDiff(repoPath: String): Result<UnifiedDiffResult> = diffRepository.getDiff(repoPath)
 
     /**
      * Get diff for entire repository (working tree changes)
@@ -20,8 +24,15 @@ class DiffService(private val diffRepository: DiffRepository) {
     /**
      * Get diff for a specific file
      */
-    suspend fun getFileDiff(repoPath: String, filePath: String): Result<UnifiedDiffResult> {
-        return diffRepository.getDiff(repoPath, filePath)
+    suspend fun getFileDiff(repoPath: String, filePath: String, staged: Boolean? = null): Result<UnifiedDiffResult> {
+        return diffRepository.getDiff(repoPath, filePath).map { result ->
+            val file = if (staged == null) result.files.firstOrNull { !it.isStaged } ?: result.files.firstOrNull()
+                else result.files.firstOrNull { it.isStaged == staged }
+            val files = listOfNotNull(file)
+            UnifiedDiffResult(files, com.bontecou.syncmd.data.models.DiffSummary(files.size,
+                files.sumOf { f -> f.hunks.sumOf { h -> h.lines.count { it.type == com.bontecou.syncmd.data.models.DiffLineType.ADDITION } } },
+                files.sumOf { f -> f.hunks.sumOf { h -> h.lines.count { it.type == com.bontecou.syncmd.data.models.DiffLineType.DELETION } } }))
+        }
     }
 
     /**
@@ -53,20 +64,7 @@ class DiffService(private val diffRepository: DiffRepository) {
     /**
      * Stage all modified files
      */
-    suspend fun stageAll(repoPath: String): Result<Unit> {
-        return try {
-            val diffResult = diffRepository.getDiff(repoPath)
-            if (!diffResult.isSuccess) return diffResult.map { }
-            
-            val files = diffResult.getOrNull()?.files ?: emptyList()
-            files.forEach { fileDiff ->
-                diffRepository.stageFile(repoPath, fileDiff.filePath)
-            }
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
+    suspend fun stageAll(repoPath: String): Result<Unit> = diffRepository.stageAll(repoPath)
 
     /**
      * Discard all local changes (reset --hard HEAD).
@@ -86,17 +84,17 @@ class DiffService(private val diffRepository: DiffRepository) {
      * Unstage all files
      */
     suspend fun unstageAll(repoPath: String): Result<Unit> {
-        return try {
+        return RepositoryOperationCoordinator.withRepository(repoPath) { try {
             val diffResult = diffRepository.getDiff(repoPath)
-            if (!diffResult.isSuccess) return diffResult.map { }
+            if (!diffResult.isSuccess) return@withRepository diffResult.map { }
             
-            val files = diffResult.getOrNull()?.files ?: emptyList()
+            val files = diffResult.getOrNull()?.files.orEmpty().filter { it.isStaged }.distinctBy { it.filePath }
             files.forEach { fileDiff ->
-                diffRepository.unstageFile(repoPath, fileDiff.filePath)
+                diffRepository.unstageFile(repoPath, fileDiff.filePath).getOrThrow()
             }
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
-        }
+        } }
     }
 }

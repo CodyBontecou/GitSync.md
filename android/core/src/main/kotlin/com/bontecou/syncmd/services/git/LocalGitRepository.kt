@@ -7,8 +7,6 @@ import com.bontecou.syncmd.data.models.MergeType
 import com.bontecou.syncmd.data.models.PullPlan
 import com.bontecou.syncmd.data.models.PushResult
 import com.bontecou.syncmd.domain.repository.GitRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.dircache.DirCacheEntry
@@ -16,7 +14,6 @@ import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.FileMode
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.revwalk.RevWalk
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
 import java.io.FileOutputStream
@@ -37,6 +34,7 @@ import java.util.Locale
  */
 class LocalGitRepository(
     private val tokenProvider: (() -> String?)? = null,
+    private val credentialResolver: ((String, String) -> Credentials?)? = null,
 ) : GitRepository {
 
     companion object {
@@ -49,10 +47,13 @@ class LocalGitRepository(
         url: String,
         path: String,
         creds: Credentials,
-    ): Result<Unit> = withContext(Dispatchers.IO) {
+    ): Result<Unit> = clone(url, path, creds, null)
+
+    override suspend fun clone(url: String, path: String, creds: Credentials, branch: String?): Result<Unit> = RepositoryOperationCoordinator.withRepository(path, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.CLONE) {
         val target = File(path)
         target.parentFile?.mkdirs()
-        val cp = creds.toJGit()
+        val cp = ScopedCredentialsProvider(url, creds)
+        require(branch.isNullOrBlank() || org.eclipse.jgit.lib.Repository.isValidRefName("refs/heads/$branch")) { "Invalid branch name" }
 
         // Always use no-checkout clone on Android. The normal Git.cloneRepository()
         // performs checkout in a single pass with no recovery — Android's MediaProvider
@@ -60,22 +61,17 @@ class LocalGitRepository(
         // unrecoverable "Cannot delete file" errors. The no-checkout path separates
         // fetch from checkout and has per-file conflict recovery with retries.
         log.warning("clone() starting no-checkout clone to $path")
-        cloneWithoutSymlinks(url, target, cp)
+        cloneWithoutSymlinks(url, target, cp, branch)
     }
 
     // ─── Status ───────────────────────────────────────────────────────────────
 
     override suspend fun getStatus(repoPath: String): Result<List<GitStatusEntry>> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val status = git.status().call()
-                    val entries = mutableListOf<GitStatusEntry>()
-
-                    status.modified.forEach  { entries += GitStatusEntry(it, GitFileStatusKind.MODIFIED)  }
-                    status.changed.forEach   { entries += GitStatusEntry(it, GitFileStatusKind.STAGED)    }
-                    status.added.forEach     { entries += GitStatusEntry(it, GitFileStatusKind.STAGED)    }
-                    status.untracked.forEach { entries += GitStatusEntry(it, GitFileStatusKind.UNTRACKED) }
+                    val entries = status.toStatusEntries()
 
                     Result.success(entries)
                 }
@@ -87,9 +83,9 @@ class LocalGitRepository(
     // ─── Pull (analysis — returns a plan, does not fast-forward) ─────────────
 
     override suspend fun pull(repoPath: String): Result<PullPlan> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val status = git.status().call()
                     val isDirty = !status.isClean
 
@@ -116,12 +112,13 @@ class LocalGitRepository(
     override suspend fun push(
         repoPath: String,
         message: String,
-    ): Result<PushResult> = withContext(Dispatchers.IO) {
+    ): Result<PushResult> = RepositoryOperationCoordinator.withRepository(repoPath) {
         try {
-            Git.open(File(repoPath)).use { git ->
-                val pushCommand = git.push()
-                credentialsFromTokenProvider()?.let { pushCommand.setCredentialsProvider(it) }
-                pushCommand.call()
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                val ref = git.repository.fullBranch
+                check(ref.startsWith("refs/heads/")) { "Switch to a local branch before pushing" }
+                val branch = ref.removePrefix("refs/heads/")
+                LocalRemoteRepository(tokenProvider, credentialResolver).push(repoPath, branch, "origin", branch).getOrThrow()
                 Result.success(PushResult(success = true, message = "Pushed successfully"))
             }
         } catch (e: GitAPIException) {
@@ -133,28 +130,20 @@ class LocalGitRepository(
 
     // ─── Helpers ──────────────────────────────────────────────────────────────
 
-    /**
-     * Build a JGit [UsernamePasswordCredentialsProvider] from our sealed [Credentials].
-     *
-     * GitHub accepts a PAT as the password with any non-empty username.
-     * Using "x-access-token" matches GitHub's own documentation for PAT auth.
-     */
-    private fun Credentials.toJGit(): UsernamePasswordCredentialsProvider =
-        when (this) {
-            is Credentials.Pat   -> UsernamePasswordCredentialsProvider("x-access-token", token)
-            is Credentials.Basic -> UsernamePasswordCredentialsProvider(username, password)
-        }
-
+    /** Fetch first, then build an Android-compatible index and working tree. */
     private fun cloneWithoutSymlinks(
         url: String,
         target: File,
-        cp: UsernamePasswordCredentialsProvider,
+        cp: ScopedCredentialsProvider,
+        branch: String?,
     ): Result<Unit> {
         return try {
             Git.cloneRepository()
                 .setURI(url)
+                .setTimeout(60)
                 .setDirectory(target)
                 .setCredentialsProvider(cp)
+                .setTransportConfigCallback(cp)
                 .setNoCheckout(true)
                 .call()
                 .use { /* close */ }
@@ -171,7 +160,7 @@ class LocalGitRepository(
             }
 
             // Re-open repository after writing config so checkout uses fresh options.
-            Git.open(target).use { git ->
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(target).use { git ->
                 val config = git.repository.config
                 config.setBoolean("core", null, "symlinks", false)
                 config.setBoolean("core", null, "filemode", false)
@@ -179,11 +168,20 @@ class LocalGitRepository(
                 config.load()
             }
 
-            Git.open(target).use { git ->
-                checkoutAfterNoCheckoutClone(git)
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(target).use { git ->
+                checkoutAfterNoCheckoutClone(git, branch)
+                try {
+                    com.bontecou.syncmd.services.git.lfs.LfsRepository.hydrate(git.repository, cp)
+                } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled
+                } catch (_: Exception) {
+                    // Git checkout is complete. Keep pointers/local edits and let LFS retry independently.
+                    // Never log server text here; it may include action URLs or credentials.
+                    log.warning("Clone completed; Git LFS file contents need review or download")
+                }
             }
 
             Result.success(Unit)
+        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled
         } catch (e: Exception) {
             Result.failure(Exception(e.message?.sanitize() ?: "Clone failed", e))
         }
@@ -201,11 +199,11 @@ class LocalGitRepository(
      * ObjectReader, and write directly via FileOutputStream (which works fine).
      * Then we build the DirCache (index) manually and set up the local branch.
      */
-    private fun checkoutAfterNoCheckoutClone(git: Git) {
+    private fun checkoutAfterNoCheckoutClone(git: Git, requestedBranch: String?) {
         val repo = git.repository
 
         // Determine default branch
-        val branch = findDefaultBranch(repo)
+        val branch = requestedBranch?.takeIf { it.isNotBlank() } ?: findDefaultBranch(repo)
             ?: throw Exception("No branch found to checkout")
         val remoteRef = repo.findRef("refs/remotes/origin/$branch")
             ?: throw Exception("Remote ref not found: refs/remotes/origin/$branch")
@@ -263,8 +261,10 @@ class LocalGitRepository(
                     val mode = treeWalk.getFileMode(0)
                     val objectId = treeWalk.getObjectId(0)
 
-                    // Skip symlinks and submodules
-                    if (mode == FileMode.SYMLINK || mode == FileMode.GITLINK) {
+                    // core.symlinks=false represents a Git symlink as a regular file
+                    // containing its target. Keep its index mode so clone stays clean.
+                    // Submodules are not supported by this client.
+                    if (mode == FileMode.GITLINK) {
                         log.warning("manualCheckout: skipping $path (mode=$mode)")
                         continue
                     }
@@ -276,7 +276,11 @@ class LocalGitRepository(
                     // Android's FUSE layer on Android/media rejects filenames with
                     // characters like ? * " < > | etc. Catch and skip those files
                     // rather than aborting the entire checkout.
-                    val targetFile = File(repo.workTree, path)
+                    require(!File(path).isAbsolute && path.split('/').none { it == "." || it == ".." || it.equals(".git", ignoreCase = true) }) {
+                        "Unsafe path in the repository tree"
+                    }
+                    val targetFile = File(repo.workTree, path).canonicalFile
+                    require(targetFile.path.startsWith(repo.workTree.canonicalPath + File.separator)) { "Checkout path leaves the working tree" }
                     try {
                         targetFile.parentFile?.mkdirs()
 
@@ -366,11 +370,6 @@ class LocalGitRepository(
         return repo.refDatabase.getRefsByPrefix("refs/remotes/origin/")
             .map { it.name.removePrefix("refs/remotes/origin/") }
             .firstOrNull { it != "HEAD" && it.isNotBlank() }
-    }
-
-    private fun credentialsFromTokenProvider(): UsernamePasswordCredentialsProvider? {
-        val token = tokenProvider?.invoke()?.takeIf { it.isNotBlank() } ?: return null
-        return UsernamePasswordCredentialsProvider("x-access-token", token)
     }
 
     /**

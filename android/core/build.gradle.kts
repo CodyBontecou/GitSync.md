@@ -18,6 +18,8 @@ dependencies {
 
     // JGit — pure-Java git implementation (no system git binary needed on Android)
     implementation(libs.jgit)
+    implementation(libs.jsch)
+    implementation(libs.bouncycastle)
 
     // Testing
     testImplementation(libs.junit)

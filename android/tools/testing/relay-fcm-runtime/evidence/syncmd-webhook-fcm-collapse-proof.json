@@ -1,0 +1,28 @@
+{
+  "created_at": "2026-11-02T16:37:28.815550+00:00",
+  "inputs": {
+    "package-lock.json": "71fb319619cbcb514015eccb2a5f64dd72ad34114167a1e724a44686ff7f0944",
+    "package.json": "71bccc9a3f645e347c6710b5a743f563351b6243d795098a1a166c480dd699e2",
+    "src/apns.test.ts": "fd9f6811a5ec2305d1b9bec67161cf802417c474acf3c22bbfbba92a6109b45a",
+    "src/apns.ts": "3d5f1ccd6bca3d9bcd3bd9d1ed93e96cc8033e034bb8cf3b1ce4995be85fa352",
+    "src/fcm.test.ts": "50d3f4cc9217d1d98cf909816ebcddadb00f690025c83b13a43470a8be6ea341",
+    "src/fcm.ts": "fd7be857780ed491be2bf9a6cf5def3cc6bb5491596875b0798acbb8cc8bea62",
+    "src/github-app.test.ts": "98dd52317d5dc3d6e163d0394dae6908cf1804284507e3299414f1707a765794",
+    "src/github-app.ts": "3e16989d15c2c34f26b87255458aa43b4262e145a1f04b88000a0aa8ee0d45c4",
+    "src/index.ts": "2812cf243b008d839f7df32b7f945e16c90941a7a8e07c26e137d5d1b5c3105f",
+    "src/webhook.test.ts": "cc392a1ca52c45549b5e3cfdbcc7837068ed79ddcaf1bf8a0a9e3024a2d20a3a",
+    "tools/check-existing-lookup-runtime.mjs": "037333265033406ae662ef6b7488c4e15f8fc894cc71a55fac5704d10851757b",
+    "tools/check-fcm-runtime.mjs": "20ba8b070cb87fc6e8943429f3787fbf8cb137b382f3774d34784b75f98f82eb",
+    "wrangler.toml": "f06d5df80f10d5f35871da23cc671b7d007bdd53c8ea342bc720d19e374ef1f7",
+    "tsconfig.json": "27c397dfd4a262e3b0469a130f53ece0319b10b720b39b3eeb6c87c44343deba",
+    "tsconfig.latest.json": "3ad46eee7b7357dd73ac54bedfc37962f3b47b79b5b95a612f8e9c66c14be2f5"
+  },
+  "tests": 106,
+  "runtime_checks": 5,
+  "both_type_checks_passed": true,
+  "dry_run_passed": true,
+  "live_verified": true,
+  "deployed_version": "1eb9d62a-4beb-4440-9f59-8a9ca1d345a6",
+  "fixture_plan": "/tmp/syncmd-live-webhook-test-plan.json",
+  "source_archive_sha256": "795161555a42b37a7061100eb65962531ebccb49d08c6f46827fc8182d257623"
+}

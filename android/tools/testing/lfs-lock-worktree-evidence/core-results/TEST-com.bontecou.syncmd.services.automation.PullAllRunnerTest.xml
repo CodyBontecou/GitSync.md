@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.automation.PullAllRunnerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:20:53" hostname="MacBook-Pro.local" time="0.93">
+  <properties/>
+  <testcase name="pull all updates clean repos preserves dirty and diverged histories and never pushes local commits" classname="com.bontecou.syncmd.services.automation.PullAllRunnerTest" time="0.498"/>
+  <testcase name="LFS attention is not reported as an ordinary success and parent repository discovery is refused" classname="com.bontecou.syncmd.services.automation.PullAllRunnerTest" time="0.054"/>
+  <testcase name="detached no upstream and active merge are blocked without changing Git state" classname="com.bontecou.syncmd.services.automation.PullAllRunnerTest" time="0.109"/>
+  <testcase name="removed registration fails before transport and another repository still completes" classname="com.bontecou.syncmd.services.automation.PullAllRunnerTest" time="0.085"/>
+  <testcase name="configured non origin upstream is used" classname="com.bontecou.syncmd.services.automation.PullAllRunnerTest" time="0.097"/>
+  <testcase name="cancellation stops remaining repos and another instance cannot duplicate an active batch" classname="com.bontecou.syncmd.services.automation.PullAllRunnerTest" time="0.087"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>

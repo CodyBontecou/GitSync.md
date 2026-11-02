@@ -1,314 +1,204 @@
 package com.bontecou.syncmd.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.bontecou.syncmd.ui.theme.BDivider
-import com.bontecou.syncmd.ui.theme.LocalBrutalColors
+import com.bontecou.syncmd.R
+import com.bontecou.syncmd.services.git.DiscardReview
+import com.bontecou.syncmd.ui.theme.SyncMdTheme
+import com.bontecou.syncmd.ui.theme.Tide
+import com.bontecou.syncmd.ui.theme.TideHairline
+import com.bontecou.syncmd.ui.theme.TideModalIcon
+import com.bontecou.syncmd.ui.theme.TideType
 
 /**
- * Destructive-action confirmation dialog matching the iOS RevertConfirmModal.
+ * Tide "Discard changes" sheet (iOS RevertConfirmModal): danger tile, a
+ * plain-language headline, what happens, every affected path on a card, then
+ * a red Discard pill and a quiet Cancel.
  *
- * Two modes:
- *  - Single-file: [filename] non-null, [files] empty.
- *  - Revert-all:  [filename] null, [files] lists all changed paths.
+ * The displayed immutable review is the authority passed to confirmation,
+ * including every full path.
  */
 @Composable
-fun RevertConfirmDialog(
-    title: String,
-    filename: String?,       // null → revert-all mode
-    files: List<String>,     // shown as scrollable file list in revert-all mode
-    confirmLabel: String = "Revert",
+@OptIn(ExperimentalComposeUiApi::class)
+fun RevertConfirmDialog(review: DiscardReview, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+        RevertReviewSheet(
+            keepsWorkingFiles = review.keepsWorkingFiles,
+            singleFile = review.filePath != null,
+            abandonsOperation = review.abandonsOperation,
+            paths = review.paths,
+            onConfirm = onConfirm,
+            onDismiss = onDismiss,
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
+        )
+    }
+}
+
+/** Stateless sheet body, shared by the dialog and its previews. */
+@Composable
+private fun RevertReviewSheet(
+    keepsWorkingFiles: Boolean,
+    singleFile: Boolean,
+    abandonsOperation: Boolean,
+    paths: List<String>,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val bc = LocalBrutalColors.current
-
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
-    ) {
-        // Dim backdrop — Dialog already dims, so just the card sits on top
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onDismiss,
-                ),
-            contentAlignment = Alignment.Center,
+    val c = Tide.colors
+    val cancel = stringResource(R.string.publication_cancel)
+    val title = stringResource(when {
+        keepsWorkingFiles -> R.string.discard_clear_staging
+        !singleFile -> R.string.ui_revert_all_changes_06b0eb3d
+        else -> R.string.ui_revert_changes_5b36e77f
+    })
+    BoxWithConstraints(modifier.fillMaxSize().systemBarsPadding().padding(10.dp), contentAlignment = Alignment.BottomCenter) {
+        // Dimmed backdrop: tapping outside cancels.
+        Box(Modifier.matchParentSize().clickable(indication = null,
+            interactionSource = remember { MutableInteractionSource() }, onClick = onDismiss).clearAndSetSemantics {})
+        // One bounded list keeps every path and both actions reachable, even in landscape at large text.
+        LazyColumn(
+            Modifier.widthIn(max = 560.dp).fillMaxWidth().heightIn(max = maxHeight)
+                .clip(RoundedCornerShape(Tide.radiusSheet)).background(c.paper)
+                .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {}
+                .testTag("discard-review"),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 16.dp),
         ) {
-            // Stop click propagation on the card itself
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .fillMaxWidth()
-                    .background(bc.bg)
-                    .border(1.5.dp, bc.border)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = {},
+            item(key = "title") {
+                Column(Modifier.fillMaxWidth()) {
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                        TideModalIcon(glyph = "↩", tint = if (keepsWorkingFiles) c.ahead else c.danger)
+                        Box(Modifier.weight(1f))
+                        Box(
+                            Modifier.size(48.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onDismiss)
+                                .semantics { contentDescription = cancel }.testTag("discard-review-close"),
+                            contentAlignment = Alignment.Center,
+                        ) { Text("✕", style = TideType.sans(16.sp), color = c.inkMid) }
+                    }
+                    Text(title, Modifier.padding(top = 14.dp).testTag("discard-review-title"),
+                        style = TideType.display(26.sp), color = c.ink)
+                }
+            }
+            item(key = "count") {
+                Text(pluralStringResource(R.plurals.discard_review_files, paths.size, paths.size),
+                    Modifier.padding(top = 10.dp).testTag("discard-review-count"),
+                    style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (keepsWorkingFiles) c.ahead else c.danger)
+            }
+            item(key = "scope") {
+                Text(stringResource(when {
+                    keepsWorkingFiles -> R.string.discard_review_unborn
+                    singleFile -> R.string.ui_all_local_changes_to_this_file_will_be_per_0919f539
+                    else -> R.string.discard_review_all
+                }), Modifier.padding(top = 6.dp).testTag("discard-review-scope"), style = TideType.copy, color = c.inkMid)
+            }
+            if (abandonsOperation) item(key = "operation") {
+                Text(stringResource(R.string.discard_review_operation), Modifier.padding(top = 8.dp).testTag("discard-review-operation"),
+                    style = TideType.sans(14.sp, FontWeight.Medium), color = c.danger)
+            }
+            // Paths read as one white card of hairline-separated mono rows.
+            itemsIndexed(paths, key = { _, path -> "path:$path" }) { index, path ->
+                val r = 18.dp
+                val shape = when {
+                    paths.size == 1 -> RoundedCornerShape(r)
+                    index == 0 -> RoundedCornerShape(topStart = r, topEnd = r)
+                    index == paths.lastIndex -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
+                    else -> RoundedCornerShape(0.dp)
+                }
+                Column(Modifier.padding(top = if (index == 0) 16.dp else 0.dp).fillMaxWidth().clip(shape).background(c.card)
+                    .padding(horizontal = 16.dp)) {
+                    if (index > 0) TideHairline()
+                    Text(path, Modifier.fillMaxWidth().padding(vertical = 11.dp).testTag("discard-review-path:$path"),
+                        style = TideType.mono(12.5.sp).copy(textDirection = TextDirection.Ltr), color = c.ink)
+                }
+            }
+            if (paths.isEmpty()) item(key = "empty") {
+                Text(stringResource(R.string.discard_review_empty), Modifier.padding(top = 16.dp), style = TideType.copy, color = c.inkMid)
+            }
+            if (!keepsWorkingFiles) item(key = "warning") {
+                Text(stringResource(R.string.ui_this_cannot_be_undone_b545dd16), Modifier.padding(top = 12.dp),
+                    style = TideType.meta, color = c.danger)
+            }
+            item(key = "actions") {
+                Column(Modifier.fillMaxWidth().padding(top = 18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    GitWorkPill(
+                        if (keepsWorkingFiles) stringResource(R.string.discard_clear_staging) else title,
+                        onClick = onConfirm,
+                        modifier = Modifier.testTag("discard-review-confirm"),
+                        style = if (keepsWorkingFiles) GitWorkPillStyle.PRIMARY else GitWorkPillStyle.DANGER,
+                        enabled = paths.isNotEmpty(),
+                        height = 56.dp,
                     )
-            ) {
-                Column {
-
-                    // ── Header ──────────────────────────────────────────────
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 18.dp, vertical = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        Text(
-                            text = "⚠",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                color = bc.error,
-                            )
-                        )
-                        Text(
-                            text = title.uppercase(),
-                            modifier = Modifier.weight(1f),
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Black,
-                                fontSize = 13.sp,
-                                letterSpacing = 1.5.sp,
-                                color = bc.text,
-                            )
-                        )
-                        // × close
-                        Box(
-                            modifier = Modifier
-                                .width(28.dp)
-                                .height(28.dp)
-                                .background(bc.surface)
-                                .border(1.dp, bc.borderSoft)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    onClick = onDismiss,
-                                ),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = "✕",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
-                                    color = bc.textMid,
-                                )
-                            )
-                        }
-                    }
-
-                    BDivider()
-
-                    // ── Body ────────────────────────────────────────────────
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 18.dp, vertical = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        if (filename != null) {
-                            // Single-file mode
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    text = "📄",
-                                    style = TextStyle(fontSize = 13.sp, color = bc.textFaint)
-                                )
-                                Text(
-                                    text = filename,
-                                    modifier = Modifier.weight(1f),
-                                    style = TextStyle(
-                                        fontFamily = FontFamily.Monospace,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 15.sp,
-                                        color = bc.text,
-                                    ),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            }
-                            Text(
-                                text = "All local changes to this file will be permanently discarded.",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 13.sp,
-                                    color = bc.textMid,
-                                )
-                            )
-                        } else {
-                            // Revert-all mode
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    text = "🗂",
-                                    style = TextStyle(fontSize = 13.sp, color = bc.textFaint)
-                                )
-                                Text(
-                                    text = "${files.size} file${if (files.size == 1) "" else "s"} will be discarded",
-                                    style = TextStyle(
-                                        fontFamily = FontFamily.Monospace,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 15.sp,
-                                        color = bc.text,
-                                    )
-                                )
-                            }
-
-                            // File list (capped at 6 + "and N more")
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(bc.surface)
-                                    .border(1.dp, bc.borderSoft)
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(4.dp),
-                            ) {
-                                files.take(6).forEach { path ->
-                                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                        Text(
-                                            text = "−",
-                                            style = TextStyle(
-                                                fontFamily = FontFamily.Monospace,
-                                                fontSize = 12.sp,
-                                                color = bc.error.copy(alpha = 0.7f),
-                                            )
-                                        )
-                                        Text(
-                                            text = path.substringAfterLast('/').ifEmpty { path },
-                                            style = TextStyle(
-                                                fontFamily = FontFamily.Monospace,
-                                                fontSize = 12.sp,
-                                                color = bc.textMid,
-                                            ),
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
-                                        )
-                                    }
-                                }
-                                if (files.size > 6) {
-                                    Text(
-                                        text = "and ${files.size - 6} more…",
-                                        modifier = Modifier.padding(start = 16.dp),
-                                        style = TextStyle(
-                                            fontFamily = FontFamily.Monospace,
-                                            fontSize = 12.sp,
-                                            color = bc.textFaint,
-                                        )
-                                    )
-                                }
-                            }
-
-                            Text(
-                                text = "This cannot be undone.",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 13.sp,
-                                    color = bc.textMid,
-                                )
-                            )
-                        }
-                    }
-
-                    BDivider()
-
-                    // ── Action Buttons ──────────────────────────────────────
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        // Cancel
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(bc.surface)
-                                .border(1.dp, bc.border)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    onClick = onDismiss,
-                                )
-                                .padding(vertical = 13.dp),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = "CANCEL",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
-                                    letterSpacing = 1.sp,
-                                    color = bc.text,
-                                )
-                            )
-                        }
-
-                        // Confirm (destructive)
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(bc.error)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    onClick = onConfirm,
-                                )
-                                .padding(vertical = 13.dp),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = confirmLabel.uppercase(),
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
-                                    letterSpacing = 1.sp,
-                                    color = Color.White,
-                                )
-                            )
-                        }
-                    }
+                    Box(
+                        Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(CircleShape)
+                            .clickable(role = Role.Button, onClick = onDismiss).testTag("discard-review-cancel"),
+                        contentAlignment = Alignment.Center,
+                    ) { Text(cancel, style = TideType.sans(15.sp, FontWeight.Medium), color = c.ink) }
                 }
             }
         }
     }
+}
+
+// ─── Previews ───────────────────────────────────────────────────────────────
+
+@Preview(name = "Discard · one file · light", heightDp = 640) @Composable
+private fun DiscardOneLight() = SyncMdTheme(darkTheme = false) {
+    Box(Modifier.background(Tide.colors.ink.copy(alpha = 0.3f))) {
+        RevertReviewSheet(false, true, false, listOf("ideas/launch-plan.md"), {}, {})
+    }
+}
+
+@Preview(name = "Discard · all · dark", heightDp = 720) @Composable
+private fun DiscardAllDark() = SyncMdTheme(darkTheme = true) {
+    RevertReviewSheet(false, false, true, listOf("notes/today.md", "ideas/launch-plan.md", "assets/cover.png"), {}, {})
+}
+
+@Preview(name = "Discard · clear staging", heightDp = 640) @Composable
+private fun DiscardUnborn() = SyncMdTheme(darkTheme = false) {
+    RevertReviewSheet(true, false, false, listOf("new.md"), {}, {})
+}
+
+@Preview(name = "Discard · empty", heightDp = 520) @Composable
+private fun DiscardEmpty() = SyncMdTheme(darkTheme = false) {
+    RevertReviewSheet(false, false, false, emptyList(), {}, {})
 }

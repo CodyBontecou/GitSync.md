@@ -22,6 +22,10 @@ object CloneStorage {
     }
 
     fun defaultCloneBaseDir(context: Context): String {
+        return RepositoryLocations(context).summary().path
+    }
+
+    fun appDefaultCloneBaseDir(context: Context): String {
         val obsidianBase = obsidianCompatibleCloneBaseDir(context)
         if (obsidianBase != null) return obsidianBase
 
@@ -52,11 +56,50 @@ object CloneStorage {
         }
     }
 
+    fun managedCloneRoots(context: Context): List<String> = buildList {
+        context.externalMediaDirs.filterNotNull().forEach { add(File(it, "repos")) }
+        context.getExternalFilesDirs(null).filterNotNull().forEach { add(File(it, "repos")) }
+        add(File(context.filesDir, "repos"))
+    }.map { it.canonicalPath }.distinct()
+
+    fun isManagedClonePath(context: Context, path: String): Boolean {
+        if (path.startsWith("github://")) return false
+        val normalized = File(path).canonicalPath
+        return managedCloneRoots(context).any { normalized.startsWith("$it/") }
+    }
+
+    fun backupRoot(context: Context, repositoryPath: String): String {
+        return File(sourceVolumeRoot(context, repositoryPath), "git-backups").absolutePath
+    }
+
+    fun moveRecoveryRoot(context: Context, repositoryPath: String): String =
+        File(sourceVolumeRoot(context, repositoryPath), "git-move-recoveries").absolutePath
+
+    private fun sourceVolumeRoot(context: Context, repositoryPath: String): File {
+        val repository = File(repositoryPath).canonicalPath
+        val externalRoots = buildList {
+            addAll(context.externalMediaDirs.filterNotNull())
+            addAll(context.getExternalFilesDirs(null).filterNotNull())
+        }
+        val matching = externalRoots.firstOrNull { repository.startsWith(it.canonicalPath + "/") }
+        val volume = android.system.Os.stat(repository).st_dev
+        val root = matching ?: (externalRoots + context.filesDir).firstOrNull { candidate ->
+            runCatching { (candidate.isDirectory || candidate.mkdirs()) && android.system.Os.stat(candidate.path).st_dev == volume }.getOrDefault(false)
+        } ?: error("No app backup folder is available on this repository's storage volume. Your working copy was kept.")
+        return root
+    }
+
+    fun discoveryRoots(context: Context): List<String> =
+        (managedCloneRoots(context) + File(context.filesDir, "sample-workspace").absolutePath).distinct()
+
     private fun appWritableRoots(context: Context): List<String> {
         return buildList {
-            context.externalMediaDirs.firstOrNull()?.let { add(it) }
-            context.getExternalFilesDir(null)?.let { add(it) }
+            addAll(context.externalMediaDirs.filterNotNull())
+            addAll(context.getExternalFilesDirs(null).filterNotNull())
             add(context.filesDir)
+            add(context.cacheDir)
+            add(context.noBackupFilesDir)
+            addAll(context.externalCacheDirs.filterNotNull())
         }
             .map { normalize(it.absolutePath) }
             .distinct()

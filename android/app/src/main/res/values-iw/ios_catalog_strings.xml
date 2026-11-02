@@ -1,0 +1,1259 @@
+<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<resources>
+    <string name="account_removal_subject" formatted="false">"החשבון הזה"</string>
+    <string name="background_active" formatted="false">"תוזמנו בדיקות רקע למאגרים הכלולים."</string>
+    <string name="background_allow_push" formatted="false">"אישור פרסום אוטומטי"</string>
+    <string name="background_attempt">"בדיקה אחרונה: %1$s"</string>
+    <string name="background_attention" formatted="false">"נדרשת בדיקה. יש לפתוח את המאגר כדי לטפל בשינויים מקומיים, בהתפצלות, בענף מעקב חסר או בקומיט שמור הממתין להעלאה."</string>
+    <string name="background_binding">"רק הענף ⁨%1$s⁩, העוקב אחר ⁨%2$s/%3$s⁩. שינוי ענף, תיקייה, חיבור או חשבון מחייב בדיקה חדשה."</string>
+    <string name="background_changed" formatted="false">"התיקייה, הענף או החיבור השתנו. יש לבדוק שוב."</string>
+    <string name="background_current" formatted="false">"מעודכן"</string>
+    <string name="background_empty" formatted="false">"אין מאגרים מקומיים רשומים."</string>
+    <string name="background_error" formatted="false">"לא ניתן להשלים את הפעולה. יש לטעון מחדש ולבדוק את המאגר הנוכחי ואת ההגדרות."</string>
+    <string name="background_exclude" formatted="false">"החרגה מסנכרון ברקע"</string>
+    <string name="background_excluded" formatted="false">"נשלל"</string>
+    <string name="background_failed" formatted="false">"החיבור, האימות, האמון או הגישה לקבצים דורשים טיפול. יש לפתוח את המאגר ולנסות שוב משם."</string>
+    <string name="background_forget" formatted="false">"הסרת מדיניות שמורה"</string>
+    <string name="background_inactive" formatted="false">"בדיקות הרקע כבויות. יש להפעיל מצב ולכלול לפחות מאגר אחד."</string>
+    <string name="background_include" formatted="false">"כלילת המאגר הזה"</string>
+    <string name="background_included" formatted="false">"כלול"</string>
+    <string name="background_never" formatted="false">"טרם נבדק"</string>
+    <string name="background_open" formatted="false">"פתיחת מאגר"</string>
+    <string name="background_power" formatted="false">"חשמל חיצוני בלבד"</string>
+    <string name="background_pull" formatted="false">"משיכת שינויים מרוחקים אוטומטית"</string>
+    <string name="background_push" formatted="false">"יצירת קומיטים ודחיפת שינויים מקומיים אוטומטית"</string>
+    <string name="background_push_confirm" formatted="false">"לאפשר פרסום אוטומטי?"</string>
+    <string name="background_push_detail" formatted="false">"GitSync.md יכול להוסיף שינויים מקומיים לאינדקס, ליצור קומיטים בזהות המחבר של כל מאגר ולהעלות אותם עבור המאגרים הכלולים לענף שנבדק. הוא לעולם אינו מבצע דחיפה כפויה, ממזג היסטוריות שהתפצלו או מחליף ענפים. כיבוי עוצר שלבים עתידיים; קומיטים והעלאות שהושלמו נשארים."</string>
+    <string name="background_queued" formatted="false">"התבקשה בדיקה. ממתין ל־Android ולחיבור."</string>
+    <string name="background_reload" formatted="false">"טעינה מחדש"</string>
+    <string name="background_reset" formatted="false">"איפוס סנכרון ברקע"</string>
+    <string name="background_reset_detail" formatted="false">"הגדרות סנכרון ברקע שאינן ניתנות לקריאה לא יכולות לאשר עבודה. איפוס מסיר רק את המדיניות והמצבים השמורים שלו ומכבה את שני המצבים האוטומטיים. קובצי המאגרים, החשבונות ותכונות סנכרון אחרות נשמרים. יש לבדוק כל מאגר לפני הכללתו מחדש."</string>
+    <string name="background_review" formatted="false">"בדיקה והכללה"</string>
+    <string name="background_review_again" formatted="false">"בדיקת הגדרות"</string>
+    <string name="background_run" formatted="false">"בדיקה עכשיו"</string>
+    <string name="background_running" formatted="false">"בודק מאגרים…"</string>
+    <string name="background_schedule" formatted="false">"Android מתזמן בדיקות בערך כל 15 דקות או מאוחר יותר, בהתאם לחיבור, לסוללה ולהגבלות המערכת. בדיקה עכשיו מבקשת בדיקה מוקדמת יותר. עצירה כפויה של היישום מונעת עבודה ברקע עד לפתיחתו מחדש."</string>
+    <string name="background_scope" formatted="false">"יש לכלול מאגר לאחר בדיקת הענף והחיבור הנוכחיים שלו. משיכה אוטומטית מביאה שינויים ומבצעת fast-forward כשבטוח לעשות זאת. דחיפה אוטומטית יוצרת קומיטים משינויים מקומיים ומעלה אותם. היסטוריות שהתפצלו, שינויים נכנסים לצד עריכות מקומיות וחיבורים שהשתנו מחייבים בדיקה."</string>
+    <string name="background_stop" formatted="false">"עצירת הבדיקה"</string>
+    <string name="background_stopped" formatted="false">"הבדיקה נעצרה"</string>
+    <string name="background_title" formatted="false">"סנכרון ברקע"</string>
+    <string name="background_transfer">"העברה אחרונה: %1$s"</string>
+    <string name="background_unavailable" formatted="false">"עותק העבודה הזה כבר אינו רשום. יש לחבר אותו מחדש ולבדוק שוב את המדיניות שלו."</string>
+    <string name="background_updated" formatted="false">"השינויים סונכרנו"</string>
+    <string name="background_wait_network" formatted="false">"ממתין לחיבור לאינטרנט"</string>
+    <string name="background_wait_power" formatted="false">"ממתין למקור מתח חיצוני"</string>
+    <string name="background_wait_wifi" formatted="false">"ממתין ל-Wi-Fi"</string>
+    <string name="background_wifi" formatted="false">"אינטרנט אלחוטי בלבד"</string>
+    <string name="background_wrong_branch" formatted="false">"עותק העבודה נמצא בענף אחר. יש לחזור לקודם או לבדוק אותו שוב."</string>
+    <string name="branch_screen" formatted="false">"ענפים"</string>
+    <string name="callback_action" formatted="false">"הפעולה המבוקשת"</string>
+    <string name="callback_authorized_scope" formatted="false">"קישורים מורשים מפעילים את הפעולה השמורה ללא בקשת אישור נוספת. קישורים ששונו או בוטלו נעצרים כאן. ניהול ההרשאות נמצא תחת פעולות במאגר ← קישורים מורשים."</string>
+    <string name="callback_auto_return" formatted="false">"חזרה אוטומטית לאחר ההפעלה הזו"</string>
+    <string name="callback_background_attention" formatted="false">"הקריאה החוזרת דורשת תשומת לב. יש לבדוק את התוצאה השמורה בפעולות המאגר. הקשה תחזיר תוצאה זמינה."</string>
+    <string name="callback_background_busy" formatted="false">"פעולה אחרת כבר הייתה פעילה. הקריאה החוזרת הזו לא הופעלה. יש להשתמש בקישור שוב לאחר סיום הפעולה."</string>
+    <string name="callback_background_channel" formatted="false">"פעולות callback מורשות"</string>
+    <string name="callback_background_complete" formatted="false">"פעולת ה־callback הסתיימה. יש להקיש כדי להחזיר את התוצאה ליישום הקורא שאושר."</string>
+    <string name="callback_background_complete_no_return" formatted="false">"פעולת ה־callback הסתיימה. יש לפתוח את פעולות במאגר כדי לבדוק את התוצאה השמורה."</string>
+    <string name="callback_background_consent" formatted="false">"כל שימוש בקישור זה יופעל פעם אחת ללא פתיחת GitSync.md, באמצעות המאגר, הענף והחיבור/החשבון השמור שנבדקו. התוצאות נשמרות תחת פעולות במאגר. כאשר התראות מותרות, יש להקיש על התראת הסיום כדי להחזיר את התוצאה ליישום הקורא שאושר. חזרה אוטומטית אינה זמינה במצב זה. לאחר הפרעה לתהליך, יש לבדוק את המאגר ולהשתמש שוב בקישור; פעולות שנקטעו לעולם אינן מופעלות מחדש אוטומטית."</string>
+    <string name="callback_background_results_unavailable" formatted="false">"לא ניתן לקרוא את תוצאות הקריאות החוזרות השמורות. ההרשאות נשמרות בנפרד. ניקוי התוצאות מנקה גם את תוצאות קיצורי הדרך במסך הבית."</string>
+    <string name="callback_background_return_expired" formatted="false">"תוצאת callback זו אינה זמינה או שההרשאה שלה השתנתה. יש לבדוק את פעולות במאגר לפני שימוש חוזר בקישור."</string>
+    <string name="callback_background_running" formatted="false">"קריאה חוזרת מורשית פועלת"</string>
+    <string name="callback_busy" formatted="false">"בקשה נוספת התקבלה בזמן שבקשה זו הייתה פתוחה. היא לא הוכנסה לתור ולא בוצעה. יש להשלים או לסגור בקשה זו לפני פתיחת בקשה אחרת."</string>
+    <string name="callback_cancel" formatted="false">"ביטול הבקשה"</string>
+    <string name="callback_choose" formatted="false">"ליותר מתיקייה אחת יש שם זה. יש לבחור את עותק העבודה הרצוי."</string>
+    <string name="callback_close" formatted="false">"סגירה"</string>
+    <string name="callback_connection" formatted="false">"נעשה שימוש בהגדרות החיבור, החשבון ומחבר השינויים שנשמרו למאגר הזה. שינוי בענף או בחיבור שנבדקו עוצר את הבקשה הזו."</string>
+    <string name="callback_copy_authorized" formatted="false">"אישור ויצירת עותק של הקישור"</string>
+    <string name="callback_create_link" formatted="false">"יצירת קישור אוטומציה מורשה"</string>
+    <string name="callback_delivery_failed" formatted="false">"אף יישום לא הצליח לפתוח את יעד החזרה. התוצאה נשמרת כאן. אפשר לנסות לחזור שוב בלי לחזור על פעולת Git."</string>
+    <string name="callback_destinations" formatted="false">"יעדי החזרה"</string>
+    <string name="callback_error" formatted="false">"הבקשה דורשת תשומת לב"</string>
+    <string name="callback_error_destination">"בשגיאה: %1$s"</string>
+    <string name="callback_expired" formatted="false">"אין בקשה פעילה. לאחר הפעלה מחדש של GitSync.md, יש לפתוח קישור callback חדש כדי לבדוק אותו שוב."</string>
+    <string name="callback_grant_consent" formatted="false">"כל מי שמחזיק בקישור הזה יכול לבצע במאגר הזה את הפעולה המדויקת עם הודעת הקומיט הזו ללא בקשת אישור נוספת, כולל שינויים מקומיים עתידיים. הענף, החיבור, החשבון ויעדי החזרת התוצאה נשארים קבועים. יש לשמור את הקישור פרטי. ניתן לבטל את ההרשאה שלו דרך פעולות במאגר ואז קישורים מורשים. יצירת קישור אינה מפעילה Git."</string>
+    <string name="callback_grant_disabled" formatted="false">"ההרשאה בוטלה"</string>
+    <string name="callback_grant_enabled" formatted="false">"מורשה להפעלות עתידיות"</string>
+    <string name="callback_grant_forget" formatted="false">"שכחת קישור שהרשאתו בוטלה"</string>
+    <string name="callback_grant_identity">"קישור %1$s · נוצר ב־%2$s"</string>
+    <string name="callback_grant_manage" formatted="false">"קישורים מורשים"</string>
+    <string name="callback_grant_refresh" formatted="false">"רענון קישורים מורשים"</string>
+    <string name="callback_grant_reset" formatted="false">"איפוס הרשאות קישורים"</string>
+    <string name="callback_grant_reset_scope" formatted="false">"להסיר את כל הרשאות הקישורים השמורות, כולל רשומות שאינן ניתנות לקריאה? כל הקישורים המורשים הקיימים יפסיקו לפעול. אפשר ליצור קישורים חדשים מבקשת אוטומציה שנבדקה. המאגרים, הקבצים, החשבונות וקיצורי הדרך במסך הבית יישמרו."</string>
+    <string name="callback_grant_return" formatted="false">"החזרת התוצאות אוטומטית ליעדים שנבדקו"</string>
+    <string name="callback_grant_revoke" formatted="false">"ביטול הרשאת הקישור"</string>
+    <string name="callback_grant_revoke_scope" formatted="false">"כל מי שמשתמש בקישור יאבד את ההרשאה להפעיל פעולה זו או להחזיר תוצאות אוטומטית. עבודה שכבר נשלחה ל־Git עשויה להיות מושלמת."</string>
+    <string name="callback_grant_unreadable" formatted="false">"לא ניתן לקרוא את הקישורים המורשים. הרשומות השמורות נשמרו, ולא ניתן להפעיל אותן עד לתיקונן."</string>
+    <string name="callback_link_copied">"הקישור המורשה %1$s הועתק. יש לשמור אותו פרטי ולהדביק אותו באוטומציה שלך. לא ניתן לשחזר את האסימון שלו בהמשך; יש ליצור קישור אחר לפי הצורך."</string>
+    <string name="callback_link_failed" formatted="false">"לא ניתן היה להעתיק את הקישור המורשה. יש לבדוק שוב את המאגר ולעיין ב־קישורים מורשים לפני ניסיון נוסף."</string>
+    <string name="callback_no_destination" formatted="false">"לא סופקה כתובת URL לחזרה. התוצאה נשארת כאן."</string>
+    <string name="callback_preparing" formatted="false">"בדיקת המאגר המקומי…"</string>
+    <string name="callback_result_branch">"ענף: %1$s"</string>
+    <string name="callback_result_changes">"קבצים שהשתנו: %1$s"</string>
+    <string name="callback_result_commit">"קומיט: %1$s"</string>
+    <string name="callback_result_pulled" formatted="false">"השינויים המרוחקים נמשכו."</string>
+    <string name="callback_result_saved" formatted="false">"הקומיט נשמר מקומית. ההעלאה שלו לא אושרה."</string>
+    <string name="callback_result_skipped" formatted="false">"לא היו שינויים מקומיים שהיה צורך להעלות."</string>
+    <string name="callback_return" formatted="false">"החזרת התוצאה לאפליקציה הקוראת"</string>
+    <string name="callback_return_scope" formatted="false">"החזרת התוצאה פותחת את היעד שלמטה ומשתפת את תוצאת הפעולה ואת מזהי הענף והקומיט. פרטי התחברות ונתיבי תיקיות מקומיות לעולם אינם נכללים. יש לבחור בחזרה אוטומטית לפני אישור ההפעלה, או להחזיר את התוצאה ידנית לאחר מכן."</string>
+    <string name="callback_returned" formatted="false">"התוצאה נמסרה ל־Android. היישום המקבל קובע מה יקרה בהמשך."</string>
+    <string name="callback_run" formatted="false">"אישור והפעלה חד־פעמית"</string>
+    <string name="callback_running" formatted="false">"ביצוע הפעולה שאושרה…"</string>
+    <string name="callback_scope" formatted="false">"אפליקציה אחרת או קישור ביקשו פעולת Git. יש לבדוק את המאגר ואת הפעולה לפני אישור ההפעלה החד־פעמית הזו."</string>
+    <string name="callback_success" formatted="false">"הפעולה הושלמה"</string>
+    <string name="callback_success_destination">"אם הפעולה מצליחה: %1$s"</string>
+    <string name="callback_title" formatted="false">"בקשת אוטומציה"</string>
+    <string name="callback_unknown_action" formatted="false">"פעולה לא מוכרת"</string>
+    <string name="clone_completed_title" formatted="false">"– מותקן"</string>
+    <string name="clone_lfs_attention" formatted="false">"השכפול הושלם. חלק מקובצי Git LFS עדיין דורשים בדיקה או הורדה. העותק המשוכפל והשינויים המקומיים שלך נשמרו."</string>
+    <string name="clone_lfs_review" formatted="false">"בדיקת Git LFS"</string>
+    <string name="clone_location_reconnect" formatted="false">"יש לחבר את התיקייה מחדש"</string>
+    <string name="clone_location_title" formatted="false">"מיקום השכפול"</string>
+    <string name="clone_recovery_added" formatted="false">"המאגר המשוכפל נוסף"</string>
+    <string name="clone_recovery_cancel_failed" formatted="false">"לא ניתן היה לבטל את שחזור השכפול הזה. יש לבדוק את אחסון היישום ולנסות שוב. הקבצים שלו נשמרו."</string>
+    <string name="clone_recovery_cannot_dismiss" formatted="false">"פרטי השחזור האלה השתנו או שלא ניתן להסיר אותם בבטחה. יש לרענן כדי לבדוק אותם שוב."</string>
+    <string name="clone_recovery_confirm_body" formatted="false">"השחזור האוטומטי ייעצר. תיקיות המאגרים והחיבורים השמורים נשארים במכשיר זה. אפשר להוסיף מאגר שהושלם מתוך מאגרים מקומיים."</string>
+    <string name="clone_recovery_confirm_title" formatted="false">"לבטל את שחזור השכפול הזה?"</string>
+    <string name="clone_recovery_damaged" formatted="false">"לא ניתן לקרוא את פרטי השחזור האלה. אפשר לבטל שחזור זה ולחבר מחדש תיקייה שהושלמה באופן ידני."</string>
+    <string name="clone_recovery_dismiss" formatted="false">"ביטול השחזור"</string>
+    <string name="clone_recovery_dismissed" formatted="false">"השחזור בוטל. קובצי המאגר והחיבורים השמורים נשמרו."</string>
+    <string name="clone_recovery_ready" formatted="false">"יש לבדוק את התיקייה והחיבור ולנסות שוב להוסיף שכפול זה. הקבצים הקיימים נשמרים."</string>
+    <string name="clone_recovery_refresh" formatted="false">"רענון שחזורי השכפולים"</string>
+    <string name="clone_recovery_retry" formatted="false">"ניסיון חוזר להוספת השכפול"</string>
+    <string name="clone_recovery_review_needed" formatted="false">"חלק מהשכפולים שנקטעו דורשים בדיקה ב־מאגרים מקומיים. הקבצים שלהם נשמרו."</string>
+    <string name="clone_recovery_staging">"עותק ביניים: ⁦%1$s⁩"</string>
+    <string name="clone_recovery_title" formatted="false">"שכפולים שנקטעו"</string>
+    <string name="clone_recovery_unavailable" formatted="false">"שחזור השכפול אינו זמין. יש לבדוק את אחסון היישום ולנסות שוב."</string>
+    <string name="clone_recovery_unreadable" formatted="false">"פרטי שחזור השכפול אינם קריאים"</string>
+    <string name="clone_registration_failed" formatted="false">"לא ניתן להוסיף את המאגר המשוכפל. הקבצים שלו נשמרו. אפשר לנסות להוסיף אותו שוב או לחבר מחדש את התיקייה שלו דרך מאגרים מקומיים."</string>
+    <string name="commit_screen" formatted="false">"Commit"</string>
+    <string name="conflict_choose_filename" formatted="false">"בחר את שם הקובץ שיישמר"</string>
+    <string name="conflict_current_deleted" formatted="false">"הענף הנוכחי מחק קובץ זה. בחירה ב־״שלנו״ מסירה אותו."</string>
+    <string name="conflict_filename_cleanup" formatted="false">"שמות הקבצים האחרים בהתנגשות זו יוסרו בעת פתרונה והוספת הפתרון לאזור ההכנה."</string>
+    <string name="conflict_incoming_deleted" formatted="false">"הענף הנכנס מחק קובץ זה. בחירה ב־״שלהם״ מסירה אותו."</string>
+    <string name="conflict_renamed_differently" formatted="false">"שונה לשמות שונים"</string>
+    <string name="connection_endpoint_count">"נשמרו %1$d חיבורים הקשורים לנקודות קצה. עריכת origin שומרת על החיבורים האחרים; בחירה בגישה ציבורית מסירה את כל פרטי הכניסה השמורים."</string>
+    <string name="connection_keep_public_recovered" formatted="false">"שמירת הגישה הציבורית · פרטי הכניסה ששוחזרו נשארים לא פעילים"</string>
+    <string name="connection_keep_saved" formatted="false">"שמירת פרטי ההזדהות הקיימים"</string>
+    <string name="connection_migration_fetch" formatted="false">"כתובת משיכה"</string>
+    <string name="connection_migration_push" formatted="false">"כתובת דחיפה"</string>
+    <string name="connection_new_basic" formatted="false">"שם משתמש ואסימון חדשים"</string>
+    <string name="connection_public_access" formatted="false">"גישה ציבורית · ללא פרטי הזדהות"</string>
+    <string name="connection_url_credentials_body" formatted="false">"העבר פרטי כניסה נתמכים של HTTPS לאחסון מוצפן והסר אותם מכתובות URL מרוחקות של Git. כתובות נפרדות למשיכה ולדחיפה נשמרות."</string>
+    <string name="connection_url_credentials_migrate" formatted="false">"העברת פרטי כניסה מכתובות URL לאחסון מאובטח"</string>
+    <string name="connection_url_credentials_preserve" formatted="false">"פרטי כניסה מאובטחים קיימים ובחירות מפורשות של גישה ציבורית מקבלים עדיפות. שמות משתמש ואסימונים מכתובות URL לעולם אינם מוצגים כאן."</string>
+    <string name="connection_url_credentials_title" formatted="false">"פרטי כניסה בכתובות URL מרוחקות"</string>
+    <string name="connection_use_alternative" formatted="false">"שימוש בפרטי כניסה שמורים חלופיים"</string>
+    <string name="diagnostics_action_failed" formatted="false">"לא ניתן היה להשלים פעולת אבחון זו. הרשומות הקיימות נשמרו."</string>
+    <string name="diagnostics_all" formatted="false">"הכול"</string>
+    <string name="diagnostics_clear_entries">"רשומות להסרה: %1$d, כולל רשומות שהמסנן מסתיר. פעולות חדשות יוכלו להוסיף רשומות בהמשך."</string>
+    <string name="diagnostics_clear_recovery" formatted="false">"להסיר את כל נתוני האבחון השמורים, כולל נתונים שלא ניתן לקרוא? פעולות חדשות יוכלו להוסיף רשומות בהמשך."</string>
+    <string name="diagnostics_cleared" formatted="false">"יומן האבחון נוקה"</string>
+    <string name="diagnostics_copied" formatted="false">"הרשומות הגלויות הועתקו"</string>
+    <string name="diagnostics_empty" formatted="false">"אין עדיין רשומות אבחון. פעולות Git יופיעו כאן."</string>
+    <string name="diagnostics_errors" formatted="false">"שגיאות"</string>
+    <string name="diagnostics_filtered_empty" formatted="false">"אין רשומות התואמות למסנן זה."</string>
+    <string name="diagnostics_operation_clone" formatted="false">"שכפול"</string>
+    <string name="diagnostics_operation_conflict" formatted="false">"התנגשות"</string>
+    <string name="diagnostics_operation_fetch" formatted="false">"אחזור"</string>
+    <string name="diagnostics_operation_lfs" formatted="false">"Git LFS"</string>
+    <string name="diagnostics_operation_push" formatted="false">"דחיפה"</string>
+    <string name="diagnostics_operation_rebase" formatted="false">"Rebase"</string>
+    <string name="diagnostics_operation_revert" formatted="false">"ביטול שינוי"</string>
+    <string name="diagnostics_operation_tag" formatted="false">"תג"</string>
+    <string name="diagnostics_outcome_attention" formatted="false">"נדרשת תשומת לב"</string>
+    <string name="diagnostics_outcome_cancelled" formatted="false">"בוטל"</string>
+    <string name="diagnostics_outcome_completed" formatted="false">"הושלם"</string>
+    <string name="diagnostics_outcome_started" formatted="false">"התחיל"</string>
+    <string name="diagnostics_outcome_stopped" formatted="false">"נעצר"</string>
+    <string name="diagnostics_reason_cancelled" formatted="false">"הפעולה בוטלה"</string>
+    <string name="diagnostics_reason_lfs_contents" formatted="false">"Git הסתיים; עדיין נדרשת הורדה של חלק מתוכן LFS"</string>
+    <string name="diagnostics_reason_lfs_lock" formatted="false">"נעילת LFS בשרת חסמה את הפרסום"</string>
+    <string name="diagnostics_reason_local_changes" formatted="false">"יש לבדוק את השינויים המקומיים"</string>
+    <string name="diagnostics_reason_network" formatted="false">"פעולת הרשת לא הושלמה"</string>
+    <string name="diagnostics_reason_review" formatted="false">"יש לבדוק את מצב המאגר"</string>
+    <string name="diagnostics_reason_storage" formatted="false">"הגישה לאחסון אינה זמינה"</string>
+    <string name="diagnostics_reason_trust" formatted="false">"נדרש אישור שרת או בדיקת אמון"</string>
+    <string name="diagnostics_reason_unknown" formatted="false">"הפעולה נעצרה. יש לבדוק את מצב המאגר ואת הגדרות החיבור."</string>
+    <string name="diagnostics_share_title" formatted="false">"שיתוף אבחון"</string>
+    <string name="diagnostics_warnings" formatted="false">"אזהרות"</string>
+    <string name="discard_clear_staging" formatted="false">"ניקוי אזור ההכנה"</string>
+    <string name="discard_review_all" formatted="false">"השינויים בקבצים שבמעקב והקבצים החדשים המפורטים למטה יימחקו לצמיתות. קבצים ש-Git מתעלם מהם יישמרו."</string>
+    <string name="discard_review_empty" formatted="false">"אין שינויים לביטול."</string>
+    <string name="discard_review_operation" formatted="false">"פעולה זו גם מבטלת את פעולת Git הפעילה."</string>
+    <string name="discard_review_unborn" formatted="false">"עדיין אין commit. פעולה זו מסירה את הקבצים המפורטים מאזור ההכנה ושומרת את תוכנם."</string>
+    <string name="file_clone_failure" formatted="false">"לא ניתן לשכפל את המאגר המקומי. יש לבדוק את תיקיית המקור, הרשאת הגישה לאחסון והענף. התיקיות הקיימות נשמרו."</string>
+    <string name="file_clone_guidance" formatted="false">"שכפול מאגר במכשיר באמצעות גישה מקומית. לאחסון משותף, יש להעניק תחילה גישה לתיקייה בהגדרות."</string>
+    <string name="file_delete_body" formatted="false">"הקובץ יוסר מהמכשיר הזה. Git יציג אותו כקובץ שנמחק אם הוא היה במעקב."</string>
+    <string name="file_delete_title" formatted="false">"למחוק את הקובץ?"</string>
+    <string name="file_issue_access_denied" formatted="false">"הגישה לאחסון נדחתה. יש לבדוק את הרשאות התיקייה הזאת."</string>
+    <string name="file_issue_already_exists" formatted="false">"כבר קיימים קובץ או תיקייה בשם זה. יש לבחור שם אחר."</string>
+    <string name="file_issue_binary" formatted="false">"לא ניתן לערוך קובץ בינארי זה כטקסט."</string>
+    <string name="file_issue_external_change" formatted="false">"הקובץ השתנה מחוץ לעורך. יש לטעון מחדש את הגרסה האחרונה לפני השמירה. העריכות שלך עדיין כאן."</string>
+    <string name="file_issue_file_unavailable" formatted="false">"הקובץ אינו זמין עוד. יש לבדוק את הגישה לאחסון."</string>
+    <string name="file_issue_folder_unavailable" formatted="false">"התיקייה אינה זמינה עוד. יש לבדוק את הגישה לאחסון."</string>
+    <string name="file_issue_invalid_name" formatted="false">"יש להזין שם קובץ ללא מפרידי נתיב."</string>
+    <string name="file_issue_not_utf8" formatted="false">"הקובץ אינו טקסט UTF-8. יש לפתוח אותו בעורך חיצוני."</string>
+    <string name="file_issue_operation_failed" formatted="false">"פעולת הקובץ נכשלה. יש לבדוק את הגישה לאחסון ולנסות שוב."</string>
+    <string name="file_issue_protected_path" formatted="false">"יש לבחור קובץ בתוך המאגר הזה, מחוץ למטא־נתונים של Git ולקישורים סמליים."</string>
+    <string name="file_issue_read_failed" formatted="false">"לא ניתן לקרוא קובץ או תיקייה אלה. יש לבדוק את הגישה לאחסון."</string>
+    <string name="file_issue_too_large" formatted="false">"הקובץ גדול מ־2 MB. יש לפתוח אותו בעורך חיצוני."</string>
+    <string name="file_local_access" formatted="false">"גישה מקומית"</string>
+    <string name="file_reload_body" formatted="false">"פעולה זו מחליפה את השינויים שלא נשמרו בקובץ שעל הדיסק."</string>
+    <string name="file_reload_title" formatted="false">"לטעון את הקובץ מחדש?"</string>
+    <string name="file_renamed" formatted="false">"השם שונה"</string>
+    <string name="file_save_title" formatted="false">"לשמור שינויים?"</string>
+    <string name="file_saved" formatted="false">"נשמר"</string>
+    <string name="file_unsaved_changes" formatted="false">"שינויים שלא נשמרו"</string>
+    <string name="files_folder" formatted="false">"תיקייה"</string>
+    <string name="files_hide_hidden" formatted="false">"הסתרת קבצים מוסתרים"</string>
+    <string name="files_show_hidden" formatted="false">"הצגת קבצים מוסתרים"</string>
+    <string name="folder_access_not_enabled" formatted="false">"הגישה לתיקיות לא הופעלה. אפשר להמשיך להשתמש באחסון האפליקציה."</string>
+    <string name="folder_picker_unavailable" formatted="false">"אין בורר תיקיות זמין במכשיר זה"</string>
+    <string name="folder_settings_unavailable" formatted="false">"הגדרות האחסון של Android אינן זמינות. אחסון האפליקציה עדיין זמין."</string>
+    <string name="folder_unusable" formatted="false">"לא ניתן להשתמש בתיקייה הזאת"</string>
+    <string name="git_native_public_only" formatted="false">"פרוטוקול Git המקורי תומך בגישה ציבורית בלבד. יש להשתמש ב־HTTPS או ב־SSH לאימות."</string>
+    <string name="guide_back" formatted="false">"חזרה"</string>
+    <string name="guide_clone_body" formatted="false">"אפשר לשכפל מאגרי GitHub, מאגרים ציבוריים, מאגרים באירוח עצמי או מאגרים דרך SSH. כל עותק עבודה שומר על החיבור והענף שלו."</string>
+    <string name="guide_clone_title" formatted="false">"המאגרים שלך ב-Android"</string>
+    <string name="guide_continue" formatted="false">"המשך"</string>
+    <string name="guide_done" formatted="false">"סיום"</string>
+    <string name="guide_edit_body" formatted="false">"אפשר לעיין בקבצים ולערוך אותם כאן, או לבחור תיקייה במכשיר לעורך אחר כמו Obsidian. לפני השכפול, יש לבדוק בהגדרות את הגישה לתיקייה."</string>
+    <string name="guide_edit_title" formatted="false">"עריכה במקום שבו עובדים"</string>
+    <string name="guide_git_body" formatted="false">"אפשר לבדוק הבדלים, להוסיף שינויים נבחרים לאזור ההכנה וליצור קומיטים מקומיים. דחפו את השינויים כשתהיו מוכנים. ענפים, היסטוריה, תגיות, פתרון התנגשויות ו-Git LFS זמינים ממסך המאגר."</string>
+    <string name="guide_git_title" formatted="false">"בדיקה לפני פרסום"</string>
+    <string name="guide_home" formatted="false">"המשך ללא חשבון"</string>
+    <string name="guide_login" formatted="false">"התחברות עם GitHub"</string>
+    <string name="guide_sample" formatted="false">"ניסיון הדוגמה ללא חיבור"</string>
+    <string name="guide_save_error" formatted="false">"לא ניתן לשמור את ההתקדמות בסיור. אפשר להמשיך; ייתכן שהסיור יופיע שוב בפעם הבאה."</string>
+    <string name="guide_skip" formatted="false">"דילוג על הסיור"</string>
+    <string name="guide_start_body" formatted="false">"אפשר לחבר חשבון, לשכפל מכתובת URL או לנסות את הדוגמה הלא מקוונת. אפשר גם לבחור עכשיו מיקום אחסון."</string>
+    <string name="guide_start_title" formatted="false">"בחירת דרך ההתחלה"</string>
+    <string name="guide_step">"שלב %1$d מתוך 4"</string>
+    <string name="guide_storage" formatted="false">"בחירת אחסון"</string>
+    <string name="guide_title" formatted="false">"סיור באפליקציה"</string>
+    <string name="guide_url" formatted="false">"שכפול מכתובת URL"</string>
+    <string name="help_community" formatted="false">"– הירגע ב-Discord שלנו"</string>
+    <string name="help_copy_email" formatted="false">"העתקת כתובת הדוא״ל לתמיכה"</string>
+    <string name="help_email_copied" formatted="false">"כתובת הדוא״ל לתמיכה הועתקה"</string>
+    <string name="help_feedback" formatted="false">"שליחת משוב"</string>
+    <string name="help_open_failed" formatted="false">"אף אפליקציה לא הצליחה לפתוח את הקישור. אפשר להעתיק במקום זאת את כתובת הדוא״ל לתמיכה."</string>
+    <string name="help_title" formatted="false">"עזרה"</string>
+    <string name="help_tour" formatted="false">"– عرض תקופת ה-App"</string>
+    <string name="history_screen" formatted="false">"היסטוריה"</string>
+    <string name="history_tag_annotation" formatted="false">"– הודעה של תיאור (선택י)"</string>
+    <string name="http_transport_warning" formatted="false">"HTTP אינו מוצפן. ניתן לקרוא את נתוני המאגר ואת שם המשתמש או האסימון שהזנת בזמן ההעברה. יש להשתמש ב־HTTPS כאשר הוא זמין."</string>
+    <string name="language_settings_legacy" formatted="false">"לפני Android 13, האפליקציה משתמשת בשפת המכשיר."</string>
+    <string name="language_settings_title" formatted="false">"שפה"</string>
+    <string name="language_settings_unavailable" formatted="false">"לא ניתן לפתוח את הגדרות השפה."</string>
+    <string name="lfs_action_refresh_required" formatted="false">"הפעולה הושלמה, אך לא ניתן לטעון את מצב ה־LFS המעודכן. יש לטעון מחדש את מצב ה־LFS לפני פעולה נוספת."</string>
+    <string name="lfs_allow_downloads" formatted="false">"אפשר הורדות"</string>
+    <string name="lfs_allow_uploads" formatted="false">"אפשר העלאות"</string>
+    <string name="lfs_cache_missing" formatted="false">"לא במטמון"</string>
+    <string name="lfs_cache_verified" formatted="false">"מטמון מאומת"</string>
+    <string name="lfs_consent_download_body" formatted="false">"מאגר זה מבקש הרשאה להוריד תוכן קבצים משרת LFS נפרד."</string>
+    <string name="lfs_consent_download_title" formatted="false">"לאפשר הורדות LFS?"</string>
+    <string name="lfs_consent_upload_body" formatted="false">"מאגר זה מבקש הרשאה לשלוח תוכן קבצים לשרת LFS נפרד."</string>
+    <string name="lfs_consent_upload_title" formatted="false">"לאפשר העלאות LFS?"</string>
+    <string name="lfs_downloads_authenticated" formatted="false">"הורדות · פרטי הזדהות מוצפנים נפרדים"</string>
+    <string name="lfs_downloads_public" formatted="false">"הורדות · גישה ציבורית"</string>
+    <string name="lfs_error_authentication" formatted="false">"שיטת ההרשאה כבר אינה תואמת לבדיקה זו. יש לבטל ולבדוק שוב את נקודת הקצה."</string>
+    <string name="lfs_error_changed" formatted="false">"אישורי נקודות הקצה LFS השתנו במהלך הבדיקה. יש לטעון אותם מחדש ולבדוק שוב את הפעולה."</string>
+    <string name="lfs_error_credentials" formatted="false">"יש להזין שם משתמש ואסימון או סיסמה נפרדים ותקינים לנקודת קצה LFS."</string>
+    <string name="lfs_error_damaged" formatted="false">"יש לבדוק את אישורי נקודות הקצה LFS השמורים. יש לאפס אותם בהגדרות לפני ניסיון נוסף."</string>
+    <string name="lfs_error_recovery" formatted="false">"לא ניתן לשמור את שחזור אישורי נקודות הקצה LFS. יש לאפס את האישורים בהגדרות לפני ניסיון נוסף."</string>
+    <string name="lfs_error_reset" formatted="false">"לא ניתן לאפס את אישורי נקודות הקצה LFS. יש לבדוק את האישורים השמורים לפני ניסיון נוסף."</string>
+    <string name="lfs_error_revoke" formatted="false">"לא ניתן לבטל את אישור נקודת הקצה LFS. יש לטעון מחדש את האישורים השמורים לפני ניסיון נוסף."</string>
+    <string name="lfs_error_save" formatted="false">"לא ניתן לשמור את אישור נקודת הקצה LFS. יש לבדוק את האישורים השמורים לפני ניסיון נוסף."</string>
+    <string name="lfs_extensions_apply" formatted="false">"החלת כללים"</string>
+    <string name="lfs_extensions_cancel" formatted="false">"ביטול"</string>
+    <string name="lfs_extensions_commit" formatted="false">"החלת הכללים משנה רק את .gitattributes. תוכן הקבצים, האינדקס והקומיטים נשארים כפי שהם. יש להוסיף את הקבצים המושפעים לאינדקס כדי להמיר את תוכנם ב-Git למצביעי LFS."</string>
+    <string name="lfs_extensions_exact_fallback" formatted="false">"קבצים גדולים שנבחרו עם סיומות לא מוכרות שומרים על כללי נתיב מדויק."</string>
+    <string name="lfs_extensions_existing" formatted="false">"כללי מעקב קיימים עשויים להחריג קבצים תואמים. קבצים קיימים עם בחירת מעקב מפורשת שומרים עליה."</string>
+    <string name="lfs_extensions_limits" formatted="false">"קבצים שהוגדרו להתעלמות נשארים כך. מגבלות האחסון ורוחב הפס של LFS תלויות בספק אירוח ה-Git."</string>
+    <string name="lfs_extensions_repository">"מאגר: %1$s · %2$s"</string>
+    <string name="lfs_extensions_review" formatted="false">"בדיקת סיומות תואמות…"</string>
+    <string name="lfs_extensions_scope" formatted="false">"כללים אלה חלים על קבצים תואמים קיימים ועתידיים בתיקיות משנה. ההתאמה מבחינה בין אותיות גדולות לקטנות."</string>
+    <string name="lfs_extensions_title" formatted="false">"לעקוב אחר סיומות תואמות?"</string>
+    <string name="lfs_extensions_updated" formatted="false">"כללי המעקב אחר סיומות עודכנו. יש לבדוק את .gitattributes ואת הקבצים המושפעים ולהוסיף אותם לאינדקס לפני יצירת commit."</string>
+    <string name="lfs_file_available" formatted="false">"תוכן הקובץ זמין"</string>
+    <string name="lfs_file_local_edits" formatted="false">"שינויים מקומיים · נשמרים בזמן ההורדה"</string>
+    <string name="lfs_file_pointer" formatted="false">"מצביע · הורדת תוכן הקובץ"</string>
+    <string name="lfs_local_edits_kept" formatted="false">"העריכות המקומיות נשמרו."</string>
+    <string name="lfs_lock_candidates_empty" formatted="false">"אין קבצים לא נעולים באינדקס שמסומנים כניתנים לנעילה. יש להוסיף כללי lockable ל־.gitattributes ולרענן את הרשימה."</string>
+    <string name="lfs_lock_create_action" formatted="false">"נעילת קובץ"</string>
+    <string name="lfs_lock_create_heading" formatted="false">"יצירת נעילה"</string>
+    <string name="lfs_lock_create_review">"נעילת %1$s…"</string>
+    <string name="lfs_lock_create_title" formatted="false">"לנעול את הקובץ הזה?"</string>
+    <string name="lfs_lock_force_action" formatted="false">"שחרור בכוח"</string>
+    <string name="lfs_lock_force_review" formatted="false">"שחרור בכוח…"</string>
+    <string name="lfs_lock_force_title" formatted="false">"לשחרר בכוח נעילה של בעלים אחר?"</string>
+    <string name="lfs_lock_ours" formatted="false">"בבעלות החיבור הנוכחי שלך"</string>
+    <string name="lfs_lock_owner_missing" formatted="false">"לא נמסר על ידי השרת"</string>
+    <string name="lfs_lock_release_action" formatted="false">"שחרור"</string>
+    <string name="lfs_lock_release_review" formatted="false">"שחרור נעילה…"</string>
+    <string name="lfs_lock_release_title" formatted="false">"לשחרר את הנעילה הזו?"</string>
+    <string name="lfs_lock_theirs" formatted="false">"בבעלות חיבור אחר"</string>
+    <string name="lfs_lock_unverified" formatted="false">"הבעלות לא אומתה"</string>
+    <string name="lfs_locks_check" formatted="false">"בדיקת בעלות על נעילות"</string>
+    <string name="lfs_locks_empty" formatted="false">"אין נעילות שרת בענף הזה."</string>
+    <string name="lfs_locks_intro" formatted="false">"יש לבדוק בעלות בשרת לפני שינוי נעילות. נעילה משנה מטא־נתונים בשרת; קבצים מקומיים, שינויים באינדקס ו־commits נשארים כפי שהם."</string>
+    <string name="lfs_locks_list" formatted="false">"הצגת נעילות עם גישת קריאה"</string>
+    <string name="lfs_locks_read_only" formatted="false">"רשימה לקריאה בלבד · הבעלות לא אומתה"</string>
+    <string name="lfs_locks_refreshed" formatted="false">"נעילות השרת רועננו."</string>
+    <string name="lfs_locks_remote">"מאגר מרוחק: %1$s"</string>
+    <string name="lfs_locks_server">"שרת LFS: %1$s"</string>
+    <string name="lfs_locks_title" formatted="false">"נעילות שרת"</string>
+    <string name="lfs_locks_unsupported" formatted="false">"השרת הזה אינו תומך בנעילות Git LFS."</string>
+    <string name="lfs_locks_verified" formatted="false">"הבעלות אומתה באמצעות החיבור הנוכחי"</string>
+    <string name="lfs_revoke_download_body">"הורדות עתידיות מ־⁦%1$s⁩ יחייבו בדיקה חדשה. האישור ופרטי ההזדהות השמורים להעלאות נשארים בתוקף."</string>
+    <string name="lfs_revoke_download_title" formatted="false">"לבטל את אישור ההורדה?"</string>
+    <string name="lfs_revoke_downloads" formatted="false">"ביטול הרשאת הורדות"</string>
+    <string name="lfs_revoke_upload_body">"העלאות עתידיות אל ⁦%1$s⁩ יחייבו בדיקה חדשה. האישור ופרטי ההזדהות השמורים להורדות נשארים בתוקף."</string>
+    <string name="lfs_revoke_upload_title" formatted="false">"לבטל את אישור ההעלאה?"</string>
+    <string name="lfs_revoke_uploads" formatted="false">"ביטול הרשאת העלאות"</string>
+    <string name="lfs_ssh_authorization" formatted="false">"הרשאה מ־SSH"</string>
+    <string name="lfs_ssh_http_review" formatted="false">"אפשר לנקודת HTTP זו לקבל הרשאה קצרת מועד משרת ה־SSH שאומת. מפתח ה־SSH הפרטי נשאר במכשיר הזה. ניתן לקרוא את ההרשאה בזמן ההעברה והיא לעולם לא נשמרת עם אישור זה."</string>
+    <string name="lfs_tracking_git_body" formatted="false">"הוספת כללים מפורשים לשימוש ב־Git רגיל לקבצים שנבדקו. תוכן הקבצים יישמר ב־commits של Git. קבצים מעל 100 MiB עדיין דורשים LFS."</string>
+    <string name="lfs_tracking_git_title" formatted="false">"להשתמש ב־Git רגיל לקבצים שנבחרו?"</string>
+    <string name="lfs_tracking_lfs_body" formatted="false">"הוספת כללי LFS לנתיבים המדויקים של הקבצים שנבדקו. מגבלות האחסון ורוחב הפס של LFS תלויות בשירות אירוח ה־Git. יש לבדוק את השינויים ולהוסיף אותם לאינדקס לפני יצירת commit."</string>
+    <string name="lfs_tracking_lfs_title" formatted="false">"להשתמש ב־LFS לקבצים שנבחרו?"</string>
+    <string name="lfs_tracking_updated" formatted="false">"כללי המעקב עודכנו. יש לבדוק את .gitattributes ואת הקבצים שנבחרו, להוסיף אותם לאינדקס ואז ליצור commit."</string>
+    <string name="lfs_uploads_authenticated" formatted="false">"העלאות · פרטי הזדהות מוצפנים נפרדים"</string>
+    <string name="lfs_uploads_public" formatted="false">"העלאות · גישה ציבורית"</string>
+    <string name="modified" formatted="false">"שונה"</string>
+    <string name="notes_acknowledge" formatted="false">"הבנתי"</string>
+    <string name="notes_connections_body" formatted="false">"ניהול חשבונות GitHub וזהות מחבר המאגר. חיבור דרך HTTPS או SSH, בחירת אחסון לשכפול, חיבור מחדש של עותקים מקומיים ובדיקת העברה או הסרה של מאגרים."</string>
+    <string name="notes_connections_title" formatted="false">"חיבורים ואחסון"</string>
+    <string name="notes_files_body" formatted="false">"בדיקת מעקב Git LFS, הורדת תוכן חסר ועיון באזהרות נעילה בשרת. האבחון שומר יומן מקומי מוגבל עם העתקה ושיתוף מסוננים."</string>
+    <string name="notes_files_title" formatted="false">"קבצים גדולים ואבחון"</string>
+    <string name="notes_notice_title" formatted="false">"מה חדש"</string>
+    <string name="notes_title" formatted="false">"הערות גרסה"</string>
+    <string name="notes_version">"Android ⁦%1$s⁩ · גרסת בנייה %2$d"</string>
+    <string name="notes_workflow_body" formatted="false">"עיון ועריכה של קבצים, בדיקת הבדלים שהוכנו ושלא הוכנו, יצירת קומיטים מקומיים, דחיפת קומיטים קיימים ועבודה עם ענפים, היסטוריה, תגיות ו־rebase."</string>
+    <string name="notes_workflow_title" formatted="false">"תהליך העבודה במאגר"</string>
+    <string name="obsidian_empty" formatted="false">"יש להוסיף או לשכפל מאגר מקומי לפני הכנת חיבור ל־Obsidian."</string>
+    <string name="obsidian_error" formatted="false">"Obsidian לא הצליח להתחבר. יש לבדוק את הגישה לתיקייה, את כתובת GitHub המרוחקת המקורית ב־HTTPS ואת חשבון GitHub שנבחר למאגר, ואז להכין חיבור חדש."</string>
+    <string name="obsidian_forget" formatted="false">"שכח חיבור"</string>
+    <string name="obsidian_forget_scope" formatted="false">"לחסום מסירות עתידיות של פרטי כניסה לתיקייה זו? פרטי כניסה שכבר יובאו ל־Obsidian נשארים שם. יש להסיר או לבטל אותם בנפרד במידת הצורך. עותק העבודה שלך נשאר במקומו."</string>
+    <string name="obsidian_forgotten" formatted="false">"מסירות עתידיות מושבתות. יש להכין חיבור חדש כדי לחבר תיקייה זו מחדש."</string>
+    <string name="obsidian_interrupted" formatted="false">"החיבור נעצר. אף בקשה לא תופעל מחדש אוטומטית. יש להכין חיבור חדש לפני ניסיון נוסף ב־Obsidian."</string>
+    <string name="obsidian_prepare" formatted="false">"הכנת חיבור ל־Obsidian"</string>
+    <string name="obsidian_prepared" formatted="false">"החיבור הוכן. יש לפתוח תיקייה זו ב־Obsidian ולהפעיל את ⁦GitSync.md Connect: Connect this vault⁩. בקשה חדשה מחליפה כל חיבור קודם שממתין."</string>
+    <string name="obsidian_ready" formatted="false">"פרטי הכניסה המוצפנים מוכנים עבור Obsidian."</string>
+    <string name="obsidian_requirements" formatted="false">"יש להשתמש באותה תיקייה במכשיר המשמשת ככספת Obsidian. יש להפעיל ב־Obsidian את תוספי הקהילה Git ו־⁦GitSync.md Connect⁩. למאגרי GitHub ב־HTTPS דרוש חשבון GitHub מחובר שנבחר תחת חיבור למאגר. הכנת חיבור אינה משנה את הקבצים או את היסטוריית Git."</string>
+    <string name="obsidian_return" formatted="false">"חזרה אל Obsidian"</string>
+    <string name="obsidian_return_failed" formatted="false">"לא ניתן היה לפתוח את Obsidian. יש להפעיל את ⁦GitSync.md Connect⁩ ב־Obsidian ואז לנסות לחזור שוב."</string>
+    <string name="obsidian_scope" formatted="false">"חבר את ⁦Obsidian Git⁩ באמצעות חשבון GitHub שנבחר למאגר זה. פרטי הכניסה מוצפנים עבור התוסף הנלווה ואינם נכללים בקישורי callback."</string>
+    <string name="obsidian_title" formatted="false">"חיבורי Obsidian"</string>
+    <string name="publication_accounts" formatted="false">"GitHub חשבון"</string>
+    <string name="publication_adopt" formatted="false">"שימוש במאגר"</string>
+    <string name="publication_adopt_title" formatted="false">"להשתמש במאגר הזה?"</string>
+    <string name="publication_adopt_warning">"ב־GitHub קיים ⁦%1$s/%2$s⁩ (%3$s), מזהה המאגר %4$d. שם תואם אינו מוכיח שניסיון זה יצר אותו. להשתמש במאגר ריק זה עבור הקומיט השמור?\n\n⁦%5$s⁩"</string>
+    <string name="publication_author" formatted="false">"שם המחבר"</string>
+    <string name="publication_back" formatted="false">"חזרה"</string>
+    <string name="publication_cancel" formatted="false">"ביטול"</string>
+    <string name="publication_check_destination" formatted="false">"בדיקת היעד המקורי"</string>
+    <string name="publication_choose" formatted="false">"בחירת תיקייה"</string>
+    <string name="publication_commit">"קומיט שמור: ⁦%1$s⁩"</string>
+    <string name="publication_destination">"יעד: ⁦%1$s/%2$s⁩"</string>
+    <string name="publication_discard" formatted="false">"ביטול הבדיקה השמורה"</string>
+    <string name="publication_discard_close" formatted="false">"יציאה בלי לשמור עריכות"</string>
+    <string name="publication_discard_title" formatted="false">"לבטל בדיקה זו?"</string>
+    <string name="publication_discard_warning" formatted="false">"להסיר את אפשרויות הבדיקה השמורות האלה ואת העריכות שלא נשמרו? קובצי העבודה אינם משתנים. הכנה ופרסום עדיין לא התחילו עבור בדיקה זו."</string>
+    <string name="publication_email" formatted="false">"אימייל המחבר"</string>
+    <string name="publication_file_ignored" formatted="false">"מוחרג"</string>
+    <string name="publication_file_large" formatted="false">"מעל 10 MiB"</string>
+    <string name="publication_file_regular" formatted="false">"קובץ רגיל"</string>
+    <string name="publication_file_sensitive" formatted="false">"שם קובץ רגיש"</string>
+    <string name="publication_file_size">"%1$s · %2$s"</string>
+    <string name="publication_file_unsupported" formatted="false">"המרת תוכן שאינה נתמכת"</string>
+    <string name="publication_files" formatted="false">"קבצים"</string>
+    <string name="publication_finish" formatted="false">"השלמת ההגדרה"</string>
+    <string name="publication_folder" formatted="false">"התיקייה המקורית"</string>
+    <string name="publication_include" formatted="false">"כלול קובץ"</string>
+    <string name="publication_leave_title" formatted="false">"לשמור את הבדיקה?"</string>
+    <string name="publication_leave_warning" formatted="false">"שינויים בחשבון, במחבר, בהודעה או ביעד לא נשמרו."</string>
+    <string name="publication_limits" formatted="false">"הקבצים נשארים בתיקייה המקורית. הפרסום הראשון תומך בקבצים רגילים עד 10 MiB לקובץ, ב־10,000 קבצים נבחרים וב־256 MiB בסך הכול. Git אינו שומר תיקיות ריקות."</string>
+    <string name="publication_manage_accounts" formatted="false">"ניהול חשבונות"</string>
+    <string name="publication_message" formatted="false">"הודעת הקומיט הראשון"</string>
+    <string name="publication_name" formatted="false">"שם המאגר"</string>
+    <string name="publication_none" formatted="false">"אין עדיין פרסומים שמורים."</string>
+    <string name="publication_open" formatted="false">"פתיחת מאגר"</string>
+    <string name="publication_pending_help" formatted="false">"ההתקדמות שהוכנה נשארת שמורה בעת היציאה. אם Android מסיר את הגישה, יש לחבר מחדש את אותה תיקייה במיקום השמור שלה."</string>
+    <string name="publication_phase_completed" formatted="false">"פורסם"</string>
+    <string name="publication_phase_creation_unknown" formatted="false">"יצירת המאגר דורשת בדיקה"</string>
+    <string name="publication_phase_prepared" formatted="false">"commit מקומי הוכן"</string>
+    <string name="publication_phase_preparing" formatted="false">"המשך ההכנה המקומית"</string>
+    <string name="publication_phase_published" formatted="false">"הקומיט פורסם; ההגדרה ממתינה"</string>
+    <string name="publication_phase_push_unknown" formatted="false">"תוצאת ההעלאה דורשת בדיקת התאמה"</string>
+    <string name="publication_phase_remote" formatted="false">"המאגר נוצר; ההעלאה ממתינה"</string>
+    <string name="publication_phase_review" formatted="false">"בדיקת הקבצים והיעד"</string>
+    <string name="publication_prepare" formatted="false">"הכנת קומיט מקומי"</string>
+    <string name="publication_prepare_title" formatted="false">"להכין תמונת מצב זו?"</string>
+    <string name="publication_prepare_warning" formatted="false">"פעולה זו יוצרת מטא־נתונים של Git וקומיט מקומי עם הקבצים שנבחרו בלבד. קובצי העבודה נשארים במקומם. קבצים שלא נבחרו מקבלים כללי התעלמות מקומיים. עדיין לא נוצר מאגר GitHub. בחירת הקבצים, המחבר והחשבון ננעלים עם תחילת ההכנה. השם והנראות ניתנים לעריכה עד תחילת יצירת המאגר."</string>
+    <string name="publication_private" formatted="false">"מאגר פרטי"</string>
+    <string name="publication_private_detail" formatted="false">"רק אנשים שקיבלו ממך גישה יכולים לקרוא אותו."</string>
+    <string name="publication_private_label" formatted="false">"פרטי"</string>
+    <string name="publication_public_confirm" formatted="false">"בחירה בציבורי"</string>
+    <string name="publication_public_detail" formatted="false">"כל אחד יכול לקרוא את הקבצים שנבחרו ואת ההיסטוריה."</string>
+    <string name="publication_public_label" formatted="false">"– ציבורי"</string>
+    <string name="publication_public_title" formatted="false">"להפוך מאגר זה לציבורי?"</string>
+    <string name="publication_public_warning" formatted="false">"כל אחד יוכל לקרוא את הקבצים שתפרסם. יש לבדוק שאין בבחירה סודות, מידע אישי או קבצים שאסור לך לשתף."</string>
+    <string name="publication_publish" formatted="false">"פרסום ב־GitHub"</string>
+    <string name="publication_publish_title" formatted="false">"לפרסם את הקומיט השמור הזה?"</string>
+    <string name="publication_publish_warning">"ליצור את ⁦%1$s/%2$s⁩ עם הנראות %3$s ולהעלות את הקומיט הראשון השמור? יש להשאיר את היישום פתוח. ניסיון חוזר יבדוק ויתאם את מצב היעד הזה ולא ייצור קומיט נוסף."</string>
+    <string name="publication_reconnect" formatted="false">"חיבור מחדש של התיקייה המקורית"</string>
+    <string name="publication_refresh" formatted="false">"רענון קבצים"</string>
+    <string name="publication_reload" formatted="false">"טעינת ההתקדמות השמורה מחדש"</string>
+    <string name="publication_retry_upload" formatted="false">"בדיקה וניסיון חוזר של ההעלאה השמורה"</string>
+    <string name="publication_save" formatted="false">"שמירת הבדיקה"</string>
+    <string name="publication_save_close" formatted="false">"שמירה ויציאה"</string>
+    <string name="publication_save_destination" formatted="false">"שמירת היעד"</string>
+    <string name="publication_saved" formatted="false">"התקדמות שמורה"</string>
+    <string name="publication_scope" formatted="false">"בחר תיקייה מקומית, בדוק את הקבצים והכן קומיט מקומי. הפרסום ייצור לאחר מכן מאגר בחשבון GitHub האישי שלך ויעלה את הקומיט השמור."</string>
+    <string name="publication_selected">"נבחרו: %1$d · %2$s"</string>
+    <string name="publication_sensitive_title" formatted="false">"לכלול קובץ רגיש?"</string>
+    <string name="publication_sensitive_warning">"ייתכן ש־⁦%1$s⁩ מכיל פרטי כניסה או מידע פרטי. יש לכלול אותו רק לאחר בדיקת תוכנו. היסטוריית Git שפורסמה עשויה לשמור אותו גם לאחר מחיקתו."</string>
+    <string name="publication_sign_in" formatted="false">"יש להיכנס לחשבון GitHub מאומת כדי לבחור תיקייה. ההתקדמות השמורה עדיין זמינה למטה."</string>
+    <string name="publication_stop" formatted="false">"עצירת הפעולה"</string>
+    <string name="publication_stopping" formatted="false">"עצירה בטוחה מתבצעת…"</string>
+    <string name="publication_title" formatted="false">"פרסום תיקייה"</string>
+    <string name="publication_unknown" formatted="false">"ייתכן ש־GitHub יצר את המאגר. יש לבדוק את היעד המקורי. יצירה נוספת חסומה עד שתאשר במפורש שימוש במאגר ריק תואם."</string>
+    <string name="publication_upload" formatted="false">"המשך הפרסום השמור"</string>
+    <string name="publication_work_adopt" formatted="false">"אימות המאגר שנבדק…"</string>
+    <string name="publication_work_check" formatted="false">"בדיקת היעד המקורי…"</string>
+    <string name="publication_work_create" formatted="false">"יצירת מאגר GitHub…"</string>
+    <string name="publication_work_inspect" formatted="false">"בדיקת התיקייה…"</string>
+    <string name="publication_work_load" formatted="false">"קריאת ההתקדמות השמורה…"</string>
+    <string name="publication_work_prepare" formatted="false">"הכנת תמונת המצב המקומית…"</string>
+    <string name="publication_work_reconnect" formatted="false">"בדיקת הגישה לתיקייה…"</string>
+    <string name="publication_work_refresh" formatted="false">"רענון בדיקת הקבצים…"</string>
+    <string name="publication_work_register" formatted="false">"מסיים את הגדרת המאגר…"</string>
+    <string name="publication_work_save" formatted="false">"שמירת הבדיקה…"</string>
+    <string name="publication_work_upload" formatted="false">"העלאת הקומיט השמור…"</string>
+    <string name="pull_all_again" formatted="false">"משיכת הכל שוב"</string>
+    <string name="pull_all_attention" formatted="false">"המשיכה הושלמה; יש להוריד חלק מתוכן LFS. יש לפתוח את Git LFS לניסיון חוזר."</string>
+    <string name="pull_all_back" formatted="false">"חזרה"</string>
+    <string name="pull_all_background_attention" formatted="false">"משיכת הכל דורשת תשומת לב. יש להקיש כדי לבדוק את הסיכום השמור."</string>
+    <string name="pull_all_background_busy" formatted="false">"משיכת הכל כבר פועלת. יש לפתוח את משיכת הכל לעצירה או לבדיקת ההתקדמות."</string>
+    <string name="pull_all_background_clear" formatted="false">"ניקוי סיכום הרקע"</string>
+    <string name="pull_all_background_clear_scope" formatted="false">"מחיקת הסיכום האחרון של משיכת הכל ברקע. תוכן המאגרים והגדרותיהם לא ישתנו. עבודה שהופסקה לא תופעל מחדש אוטומטית."</string>
+    <string name="pull_all_background_complete" formatted="false">"משיכת הכל הסתיימה. יש לבדוק את הסיכום השמור."</string>
+    <string name="pull_all_background_control_failed" formatted="false">"לא ניתן לשנות את הפעולה ברקע. יש לרענן את המסך ולנסות שוב."</string>
+    <string name="pull_all_background_counts">"עודכנו: %1$d · עדכניים: %2$d · LFS לבדיקה: %3$d · חסומים: %4$d · נכשלו: %5$d"</string>
+    <string name="pull_all_background_failed" formatted="false">"משיכת הכל נעצרה עקב שגיאה. ייתכן שחלק מהמשיכות הסתיימו. לפני הפעלה נוספת יש לבדוק את הסיכום ואת מצב המאגרים."</string>
+    <string name="pull_all_background_interrupted" formatted="false">"משיכת הכל הופסקה ולא תופעל מחדש אוטומטית. ייתכן שמשיכה הסתיימה לפני ההפסקה. יש לבדוק את מצב המאגרים לפני הפעלה נוספת."</string>
+    <string name="pull_all_background_running" formatted="false">"משיכת הכל פועלת בלי לפתוח את האפליקציה. יש לבחור עצירה כדי לא להתחיל את המאגרים הנותרים."</string>
+    <string name="pull_all_background_title" formatted="false">"משיכת הכל ברקע"</string>
+    <string name="pull_all_background_unreadable" formatted="false">"לא ניתן לקרוא את סיכום הרקע השמור והוא נשמר. יש לנקות אותו במפורש לפני הפעלה נוספת ברקע."</string>
+    <string name="pull_all_blocked" formatted="false">"נשמר ללא שינוי. לפני ניסיון חוזר יש ליצור קומיט או stash של השינויים המקומיים, לסיים את פעולת Git הפעילה או להגדיר ענף upstream."</string>
+    <string name="pull_all_current" formatted="false">"אין שינויים נכנסים"</string>
+    <string name="pull_all_empty" formatted="false">"אין מאגרים מקומיים למשיכה. תחילה יש לשכפל או לייבא מאגר."</string>
+    <string name="pull_all_failed" formatted="false">"לא ניתן להתחיל את משיכת הכל. יש לבדוק את הגדרות המאגרים ולנסות שוב."</string>
+    <string name="pull_all_item_failed" formatted="false">"לא ניתן למשוך בבטחה. יש לבדוק את החיבור ואת הגישה לאחסון, ואז לבדוק בפקדי Git אם ההיסטוריה התפצלה או נדרש שחזור אחר."</string>
+    <string name="pull_all_not_run" formatted="false">"לא הופעל"</string>
+    <string name="pull_all_progress">"מאגרים שנבדקו: %1$d / %2$d"</string>
+    <string name="pull_all_running" formatted="false">"מתבצעת משיכה…"</string>
+    <string name="pull_all_scope" formatted="false">"משיכת עדכונים וביצוע fast-forward בכל מאגר מקומי שנוסף. משיכת הכל אינה מוסיפה את השינויים שלך לאינדקס, אינה יוצרת קומיטים ואינה מבצעת push לשינויים שלך."</string>
+    <string name="pull_all_stop" formatted="false">"עצירת משיכת הכל"</string>
+    <string name="pull_all_stopped" formatted="false">"נעצר. ייתכן שמשיכה שכבר התחילה הסתיימה. יש לבדוק את מצב Git לפני ניסיון חוזר; המאגרים הנותרים לא הופעלו."</string>
+    <string name="pull_all_stopping" formatted="false">"עצירה לאחר הפעולה הנוכחית…"</string>
+    <string name="pull_all_system_help" formatted="false">"לגישה מהירה, יש להוסיף את הווידג׳ט משיכת הכל למסך הבית או את האריח GitSync.md משיכת הכל להגדרות המהירות. שניהם פועלים פעם אחת בלי לפתוח את האפליקציה. לאחר מכן יש לפתוח את משיכת הכל לבדיקת הסיכום השמור; להפעלה נוספת יש לבחור משיכת הכל שוב."</string>
+    <string name="pull_all_title" formatted="false">"משיכת הכל"</string>
+    <string name="pull_all_updated" formatted="false">"עודכן מהמאגר המרוחק"</string>
+    <string name="pull_all_widget_button" formatted="false">"משיכת כל המאגרים"</string>
+    <string name="pull_all_widget_description" formatted="false">"משיכת עדכונים וביצוע fast-forward בכל המאגרים המקומיים בלי לפתוח את GitSync.md."</string>
+    <string name="pull_all_widget_subtitle" formatted="false">"משיכה ו-fast-forward בלבד"</string>
+    <string name="pull_screen" formatted="false">"משיכה"</string>
+    <string name="push_all_repositories" formatted="false">"כל המאגרים, כולל מאגרים עתידיים"</string>
+    <string name="push_cancelled" formatted="false">"החיבור ל-GitHub בוטל."</string>
+    <string name="push_channel" formatted="false">"עדכוני מאגרים"</string>
+    <string name="push_enable" formatted="false">"שליחת התראה על שינויים ב-GitHub"</string>
+    <string name="push_existing" formatted="false">"יישום GitHub כבר מותקן?"</string>
+    <string name="push_existing_account" formatted="false">"שם משתמש או ארגון ב־GitHub"</string>
+    <string name="push_existing_connect" formatted="false">"חיבור התקנה קיימת"</string>
+    <string name="push_existing_scope" formatted="false">"אפשר לחבר התקנה קיימת באמצעות כניסה כבעלי החשבון או כבעלי הארגון. הגישה שלה למאגרים תישאר ללא שינוי."</string>
+    <string name="push_failed" formatted="false">"הסנכרון באמצעות התראות לא הצליח להשלים פעולה זו. יש לבדוק התראות, חיבור לרשת וגישה ל-GitHub, ואז לרענן את החיבור. הקבצים המקומיים נשמרו."</string>
+    <string name="push_link" formatted="false">"חיבור GitHub"</string>
+    <string name="push_manage_github" formatted="false">"ניהול ב-GitHub"</string>
+    <string name="push_no_connections" formatted="false">"יש לחבר חשבון או ארגון ב-GitHub כדי לבחור אילו מאגרים רשאים לשלוח עדכונים."</string>
+    <string name="push_no_match" formatted="false">"אין עותק עבודה נגיש שתואם למאגר GitHub זה ולענף המרוחק שבמעקב. יש לבדוק את החיבור, הענף והגישה לתיקייה."</string>
+    <string name="push_notification">"הענף ⁨%1$s⁩ ב-GitHub השתנה. אפשר להקיש כדי לבדוק עותק עבודה זה."</string>
+    <string name="push_open_failed" formatted="false">"לא ניתן לפתוח קישור זה. יש לבדוק את הדפדפן או את הגדרות Android ולנסות שוב."</string>
+    <string name="push_open_repository" formatted="false">"פתיחת המאגר"</string>
+    <string name="push_open_settings" formatted="false">"פתיחת הגדרות ההתראות"</string>
+    <string name="push_owner" formatted="false">"יש להיכנס כבעלים של החשבון האישי או כבעלים של הארגון כדי לחבר התקנה זו."</string>
+    <string name="push_permission" formatted="false">"יש לאפשר התראות בהגדרות Android לפני הפעלת סנכרון באמצעות התראות."</string>
+    <string name="push_refresh" formatted="false">"רענון החיבור"</string>
+    <string name="push_registered" formatted="false">"המכשיר נרשם לקבלת התראות."</string>
+    <string name="push_registration_pending" formatted="false">"הרישום להתראות ממתין. יש לרענן את החיבור לאחר ההתחברות לרשת."</string>
+    <string name="push_result">"נבדקו: %1$d · עודכנו: %2$d · לבדיקה: %3$d"</string>
+    <string name="push_result_current" formatted="false">"כבר מעודכן"</string>
+    <string name="push_result_review" formatted="false">"נדרשת בדיקה לפני עדכון"</string>
+    <string name="push_result_updated" formatted="false">"עודכן מהענף המרוחק שהוגדר"</string>
+    <string name="push_scope" formatted="false">"יש לחבר את אפליקציית GitHub של GitSync.md לקבלת עדכונים ממאגרים. עותקי עבודה תואמים ללא שינויים מקומיים יכולים למשוך עדכונים ולהתקדם ב-fast-forward ברקע. אפשר להקיש על התראה לבדיקה חוזרת. סנכרון באמצעות התראות אינו יוצר קומיטים, אינו מעלה שינויים ואינו מחליף ענפים; שינויים מקומיים והיסטוריות שהתפצלו דורשים בדיקה שלך."</string>
+    <string name="push_selected_repositories" formatted="false">"מאגרים נבחרים"</string>
+    <string name="push_stopped" formatted="false">"בדיקה זו הופסקה. פעולות שכבר נשלחו ל-Git עשויות להסתיים; יש לבדוק את המאגר לפני ניסיון חוזר."</string>
+    <string name="push_suspended" formatted="false">"הגישה ל-GitHub מושהית"</string>
+    <string name="push_title" formatted="false">"סנכרון באמצעות התראות"</string>
+    <string name="push_unavailable" formatted="false">"התראות דחיפה אינן זמינות בגרסה זו."</string>
+    <string name="push_unlink" formatted="false">"הסרת החיבור"</string>
+    <string name="push_unlink_scope" formatted="false">"להסיר את ניתוב הסנכרון באמצעות התראות עבור התקנת GitHub זו במכשיר הזה? פעולה זו אינה מסירה את אפליקציית GitHub. ניתן להשתמש בניהול ב-GitHub כדי לשנות את הגישה שלה למאגרים או להסיר אותה."</string>
+    <string name="rebase_abort_body" formatted="false">"משחזר את הענף ואת ה־commit המקוריים. שינויים בקבצים במעקב ופתרונות התנגשויות שנעשו במהלך rebase זה יימחקו."</string>
+    <string name="rebase_abort_title" formatted="false">"לבטל את ה־rebase הזה?"</string>
+    <string name="rebase_accept_local_deletion" formatted="false">"קבל מחיקה מקומית"</string>
+    <string name="rebase_accept_upstream_deletion" formatted="false">"קבל את המחיקה בענף המעקב"</string>
+    <string name="rebase_begin_body" formatted="false">"commits מקומיים יוחלו מחדש על ענף המעקב שנבדק ועשויים לקבל מזהים חדשים. rebase מתבצע מקומית; דחיפה נשארת פעולה נפרדת."</string>
+    <string name="rebase_begin_title" formatted="false">"לשכתב commits מקומיים?"</string>
+    <string name="rebase_checkout_blocked_summary" formatted="false">"פעולת checkout חסומה. העבר את הקבצים שברשימה למקום בטוח, רענן ונסה שוב את ה־commit הזה. ההתקדמות שכבר הוחלה מחדש תישמר."</string>
+    <string name="rebase_checkout_more_paths">"%1$d נתיבים חסומים נוספים אינם מוצגים."</string>
+    <string name="rebase_checkout_retry" formatted="false">"נסה שוב את ה־commit החסום"</string>
+    <string name="rebase_checkout_review_required" formatted="false">"נתוני שחזור ה־checkout השתנו או אינם קריאים. בדוק את העבודה המקומית לפני שימוש בכלי Git או ביטול ה־rebase."</string>
+    <string name="rebase_detached" formatted="false">"rebase עם HEAD מנותק"</string>
+    <string name="rebase_problem_active_operation" formatted="false">"יש לסיים את פעולת Git הפעילה לפני התחלת rebase."</string>
+    <string name="rebase_problem_local_branch" formatted="false">"יש לעבור לענף מקומי לפני rebase."</string>
+    <string name="rebase_problem_local_changes" formatted="false">"יש לבצע קומיט או לשמור ב־stash את כל השינויים המקומיים לפני rebase."</string>
+    <string name="rebase_problem_upstream" formatted="false">"יש להגדיר ענף מעקב מרוחק לפני rebase."</string>
+    <string name="rebase_skip_body" formatted="false">"מוציא את ה־commit הנוכחי מההחלה מחדש. בדוק את השינויים לפני הדילוג; פעולה זו עלולה להסיר עבודה מקומית מההיסטוריה שתתקבל."</string>
+    <string name="rebase_skip_title" formatted="false">"לדלג על ה־commit המקומי הזה?"</string>
+    <string name="rebase_status_aborted" formatted="false">"ה־rebase בוטל"</string>
+    <string name="rebase_status_conflicts" formatted="false">": ה- rebase מציג מתחי – יש לפתור את המתחים, ואז המשיך ב-operation rebase."</string>
+    <string name="rebase_status_format">"rebase: %1$s"</string>
+    <string name="rebase_status_success" formatted="false">": إعادة הבסיס הושלמה בהצלחה"</string>
+    <string name="rebase_use_local" formatted="false">"השתמש ב־commit המקומי"</string>
+    <string name="rebase_use_upstream" formatted="false">"השתמש בענף המעקב"</string>
+    <string name="remote_address_formats" formatted="false">"– השתמשו ב-HTTP/HTTPS SSH, git://, file://, או מנהל/ארכיון."</string>
+    <string name="remote_merge_author">"מחבר המיזוג: ⁦%1$s &lt;%2$s&gt;⁩"</string>
+    <string name="remote_merge_confirm_local" formatted="false">"למזג את הקומיטים שנבדקו?"</string>
+    <string name="remote_merge_confirm_local_body">"מעדכן את ⁦%1$s⁩ באמצעות הקומיט שנבדק מתוך ⁦%2$s⁩. ייתכן שייווצר קומיט מיזוג. דבר לא נדחף."</string>
+    <string name="remote_merge_confirm_push" formatted="false">"למזג ולפרסם לענף המעקב?"</string>
+    <string name="remote_merge_confirm_push_body">"מעדכן את ⁦%1$s⁩ ולאחר מכן דוחף את הקומיטים שלו אל ⁦%2$s⁩ בכתובת הדחיפה שנבדקה. התנגשויות עוצרות את הפרסום. דחיפה שנכשלה או שלא אושרה משאירה את תוצאת Git המקומית לניסיון חוזר מפורש."</string>
+    <string name="remote_merge_counts">"קומיטים מקומיים: %1$d · קומיטים נכנסים: %2$d"</string>
+    <string name="remote_merge_current" formatted="false">"שני הענפים מעודכנים."</string>
+    <string name="remote_merge_destination">"אל הענף המקומי: ⁦%1$s⁩"</string>
+    <string name="remote_merge_fetch_address">"כתובת משיכה: ⁦%1$s⁩"</string>
+    <string name="remote_merge_in_flight" formatted="false">"השלמת פעולת Git…"</string>
+    <string name="remote_merge_incoming_oid">"קומיט נכנס: ⁦%1$s⁩"</string>
+    <string name="remote_merge_local" formatted="false">"מיזוג מקומי"</string>
+    <string name="remote_merge_local_oid">"קומיט מקומי: ⁦%1$s⁩"</string>
+    <string name="remote_merge_local_result" formatted="false">"התוצאה מקומית. דחיפה נשארת פעולה נפרדת."</string>
+    <string name="remote_merge_no_incoming" formatted="false">"אין קומיטים נכנסים. עדיין אפשר לדחוף קומיטים מקומיים במפורש."</string>
+    <string name="remote_merge_open_git" formatted="false">"חזרה אל Git"</string>
+    <string name="remote_merge_publish" formatted="false">"מיזוג ודחיפה"</string>
+    <string name="remote_merge_push_address">"כתובת דחיפה: ⁦%1$s⁩"</string>
+    <string name="remote_merge_push_blocked" formatted="false">"דבר לא נדחף כל עוד נותרו התנגשויות."</string>
+    <string name="remote_merge_push_confirmed" formatted="false">"המאגר המרוחק אישר את הקומיט הזה."</string>
+    <string name="remote_merge_push_unconfirmed" formatted="false">"הדחיפה לא אושרה. תוצאת Git המקומית נשמרה. ניסיון חוזר דוחף את אותו קומיט ללא מיזוג או יצירת קומיט נוסף."</string>
+    <string name="remote_merge_refresh" formatted="false">"רענון מצב המאגר"</string>
+    <string name="remote_merge_result_conflicts" formatted="false">"המיזוג הושהה עקב התנגשויות. יש לפתוח את Git, לפתור ולהכין כל קובץ, ואז להשלים או לבטל את המיזוג."</string>
+    <string name="remote_merge_result_current" formatted="false">"לא היה צורך במיזוג."</string>
+    <string name="remote_merge_result_ff" formatted="false">"הענף המקומי קודם באמצעות fast-forward."</string>
+    <string name="remote_merge_result_merged" formatted="false">"קומיט המיזוג נשמר מקומית."</string>
+    <string name="remote_merge_retry" formatted="false">"ניסיון דחיפה חוזר של הקומיט השמור"</string>
+    <string name="remote_merge_review" formatted="false">"משיכה ובדיקת המיזוג"</string>
+    <string name="remote_merge_scope" formatted="false">"משוך ובדוק את ענף המעקב שהוגדר. קומיטים קיימים שומרים על המזהים שלהם; היסטוריות שהתפצלו יוצרות קומיט מיזוג. ייתכן שיידרש פתרון ידני להתנגשויות."</string>
+    <string name="remote_merge_title" formatted="false">"מיזוג עם המאגר המרוחק"</string>
+    <string name="remote_merge_upstream">"מענף המעקב: ⁦%1$s⁩"</string>
+    <string name="remote_normalized_target">"כתובת המאגר: %1$s"</string>
+    <string name="repository_actions_behind" formatted="false">"משכו קומיטים נכנסים לפני הדחיפה."</string>
+    <string name="repository_actions_blocked" formatted="false">"הפעולה דורשת תשומת לב"</string>
+    <string name="repository_actions_branch">"ענף: ⁨%1$s⁩\nקומיט שנבדק: ⁨%2$s⁩"</string>
+    <string name="repository_actions_cancel" formatted="false">"ביטול"</string>
+    <string name="repository_actions_changes">"נתיבים שהשתנו: %1$d"</string>
+    <string name="repository_actions_confirm" formatted="false">"הפעלה פעם אחת"</string>
+    <string name="repository_actions_destination">"ענף במעקב: ⁨%1$s / %2$s⁩"</string>
+    <string name="repository_actions_dirty" formatted="false">"שינויים מקומיים מונעים משיכה של קומיטים נכנסים. בצעו קומיט או שמרו אותם בסטאש תחילה."</string>
+    <string name="repository_actions_diverged" formatted="false">"ההיסטוריות המקומית והמרוחקת התפצלו. בחרו במפורש מיזוג או rebase בפקדי Git."</string>
+    <string name="repository_actions_failed" formatted="false">"לא ניתן להשלים את הפעולה. בדקו את החיבור, החשבון, האמון והגישה לתיקייה, ולאחר מכן את המצב הנוכחי לפני ניסיון נוסף."</string>
+    <string name="repository_actions_local_saved" formatted="false">"הקומיט המקומי נשמר; ההעלאה לא אושרה. בדקו את המצב הנוכחי ונסו שוב להעלות את הקומיט הזה."</string>
+    <string name="repository_actions_message" formatted="false">"הודעת קומיט"</string>
+    <string name="repository_actions_no_changes" formatted="false">"אין קומיטים להעלאה"</string>
+    <string name="repository_actions_pull" formatted="false">"משיכת מאגר"</string>
+    <string name="repository_actions_pulled" formatted="false">"השינויים הנכנסים נמשכו"</string>
+    <string name="repository_actions_push" formatted="false">"דחיפת מאגר"</string>
+    <string name="repository_actions_pushed" formatted="false">"הקומיט הועלה"</string>
+    <string name="repository_actions_reload" formatted="false">"טעינת מאגרים מחדש"</string>
+    <string name="repository_actions_remote_missing" formatted="false">"ענף המעקב שהוגדר חסר בשרת. בדקו את פקדי Git."</string>
+    <string name="repository_actions_review" formatted="false">"בדיקת המצב הנוכחי"</string>
+    <string name="repository_actions_run" formatted="false">"הפעלת פעולה"</string>
+    <string name="repository_actions_scope" formatted="false">"בחרו מאגר מקומי ובדקו את הענף הנוכחי שלו לפני הפעלת פעולה."</string>
+    <string name="repository_actions_stale" formatted="false">"הבדיקה או האישור האלה כבר אינם עדכניים. בדקו את מצב המאגר הנוכחי ואשרו את הפעולה שוב."</string>
+    <string name="repository_actions_status" formatted="false">"קריאת מצב"</string>
+    <string name="repository_actions_status_ready" formatted="false">"המצב נקרא ללא גישה לרשת"</string>
+    <string name="repository_actions_stop" formatted="false">"עצירת פעולה"</string>
+    <string name="repository_actions_stopped" formatted="false">"נעצר. ייתכן שפעולת Git כבר הסתיימה או ביצעה העלאה. בדקו את המצב הנוכחי לפני ניסיון נוסף; הקומיטים והקבצים השמורים לא נמחקו."</string>
+    <string name="repository_actions_sync" formatted="false">"סנכרון מאגר"</string>
+    <string name="repository_actions_synced" formatted="false">"השינויים נמשכו ונדחפו"</string>
+    <string name="repository_actions_title" formatted="false">"פעולות במאגר"</string>
+    <string name="repository_actions_unconfigured" formatted="false">"הגדירו ענף מעקב מרוחק בפקדי Git לפני הפעלת הפעולה הזאת."</string>
+    <string name="repository_actions_unsafe" formatted="false">"עברו לענף מקומי וסיימו קודם את פעולת Git הפעילה או פתרו את ההתנגשות."</string>
+    <string name="repository_actions_unsettled" formatted="false">"הקבצים המשיכו להשתנות בזמן ההוספה לאינדקס. בדקו את האינדקס ואת הקבצים לפני ניסיון נוסף."</string>
+    <string name="repository_actions_write_scope" formatted="false">"דחיפה וסנכרון מוסיפים לאינדקס את כל השינויים הנוכחיים שאינם מוחרגים, יוצרים קומיט במידת הצורך ואז מעלים קומיטים ממתינים. סנכרון קודם מושך עדכונים ומבצע fast-forward כשזה בטוח. התנגשויות, היסטוריות שהתפצלו ומצב מרוחק לא בטוח עוצרים את הפעולה. אם ההעלאה נכשלת, כל קומיט מקומי חדש נשמר לניסיון נוסף."</string>
+    <string name="repository_discovery_branch_unknown" formatted="false">"HEAD מנותק או ללא commit ראשון"</string>
+    <string name="repository_discovery_clean" formatted="false">"ללא שינויים"</string>
+    <string name="repository_discovery_dirty" formatted="false">"שינויים מקומיים"</string>
+    <string name="repository_history_files_deleted" formatted="false">"קבצים מקומיים נמחקו"</string>
+    <string name="repository_history_files_kept" formatted="false">"קבצים מקומיים נשמרו"</string>
+    <string name="repository_history_tracking_removed" formatted="false">"מעקב Git הוסר · קובצי העבודה נשמרו"</string>
+    <string name="repository_metadata_unavailable" formatted="false">"המטא־נתונים של המאגר אינם זמינים"</string>
+    <string name="repository_no_commits" formatted="false">"אין קומיטים"</string>
+    <string name="repository_shortcut_active" formatted="false">"מורשה ומוצמד"</string>
+    <string name="repository_shortcut_add" formatted="false">"הוספת קיצור למסך הבית"</string>
+    <string name="repository_shortcut_busy" formatted="false">"פעולה כבר מתבצעת. הקיצור הזה לא הוכנס לתור. המתינו ואז הקישו עליו שוב."</string>
+    <string name="repository_shortcut_consent" formatted="false">"כל הקשה פותחת את GitSync.md ומפעילה את הפעולה הזאת פעם אחת בלי לשאול שוב. הקיצור נשאר קשור למאגר הזה, לענף ולחיבור או לחשבון השמור. קומיטים מקומיים חדשים מותרים. שינוי בקישורים עוצר את הקיצור; בדקו אותם וצרו קיצור חדש כדי לאשרם. אפשר לבטל את ההרשאה כאן בכל עת."</string>
+    <string name="repository_shortcut_forget" formatted="false">"שכחת קיצור מושבת"</string>
+    <string name="repository_shortcut_inactive" formatted="false">"לא פעיל. ייתכן שהאישור במסך הבית ממתין או שההרשאה בוטלה."</string>
+    <string name="repository_shortcut_manage" formatted="false">"קיצורים במסך הבית"</string>
+    <string name="repository_shortcut_refresh" formatted="false">"רענון קיצורים"</string>
+    <string name="repository_shortcut_request" formatted="false">"בקשת קיצור"</string>
+    <string name="repository_shortcut_requested" formatted="false">"הקיצור התבקש. אשרו אותו במסך הבית ואז רעננו את הקיצורים לבדיקת מצבו."</string>
+    <string name="repository_shortcut_revoke" formatted="false">"ביטול הרשאה"</string>
+    <string name="repository_shortcut_revoke_scope" formatted="false">"הקיצור הזה יפסיק להפעיל פעולות Git. הסמל שלו במסך הבית עשוי להישאר מושבת עד להסרתו. יצירת קיצור חדש דורשת אישור מחדש."</string>
+    <string name="repository_shortcut_revoked" formatted="false">"הרשאת הקיצור בוטלה"</string>
+    <string name="repository_shortcut_unsupported" formatted="false">"מסך הבית לא הצליח לקבל את בקשת הקיצור הזאת. השתמשו בפעולות שבמסך הזה."</string>
+    <string name="repository_sync_not_recorded" formatted="false">"לא תועד"</string>
+    <string name="settings_folder_unavailable" formatted="false">"הגישה לתיקייה דורשת תשומת לב"</string>
+    <string name="shortcut_background_attention" formatted="false">"הקיצור דורש תשומת לב. פתחו את פעולות המאגר ובדקו את מצבו לפני ניסיון נוסף."</string>
+    <string name="shortcut_background_channel" formatted="false">"פעולות קיצורים"</string>
+    <string name="shortcut_background_complete" formatted="false">"פעולת הקיצור הסתיימה. פתחו את פעולות המאגר כדי לבדוק את התוצאה."</string>
+    <string name="shortcut_background_consent" formatted="false">"כל הקשה מפעילה את הפעולה פעם אחת ברקע עם המאגר הזה, הענף והחיבור או החשבון השמור. התוצאות נשמרות כאן ומוצגות בהתראות כשהדבר מותר. הפעלה שנקטעה דורשת הקשה נוספת. אפשר לבטל את ההרשאה הזאת כאן."</string>
+    <string name="shortcut_background_interrupted" formatted="false">"ההפעלה נקטעה. היא לא תופעל שוב אוטומטית. בדקו את המאגר לפני הקשה נוספת."</string>
+    <string name="shortcut_background_option" formatted="false">"הפעלה בלי לפתוח את GitSync.md"</string>
+    <string name="shortcut_background_running" formatted="false">"פעולת הקיצור מתבצעת"</string>
+    <string name="shortcut_results_clear" formatted="false">"ניקוי תוצאות אוטומציה"</string>
+    <string name="shortcut_results_clear_scope" formatted="false">"מוחק את תוצאות ההפעלה השמורות של קיצורים ושל callbacks. ההרשאות שלהם לא משתנות. פעולות שנקטעו לא יופעלו שוב אוטומטית."</string>
+    <string name="shortcut_results_unavailable" formatted="false">"לא ניתן לקרוא תוצאות קיצורים שמורות. ההרשאה נשמרת בנפרד."</string>
+    <string name="ssh_hide_private_key" formatted="false">"הסתרת מפתח פרטי"</string>
+    <string name="ssh_show_private_key" formatted="false">"הצגת מפתח פרטי"</string>
+    <string name="ssh_trust_changed_title" formatted="false">"מפתח שרת SSH השתנה"</string>
+    <string name="ssh_trust_connect" formatted="false">"מתן אמון והתחברות"</string>
+    <string name="ssh_trust_error_changed" formatted="false">"האמון ב־SSH השתנה במהלך הבדיקה. יש לבדוק את רשומת השרת הנוכחית ולנסות להתחבר שוב."</string>
+    <string name="ssh_trust_error_damaged" formatted="false">"יש לבדוק את האמון השמור ב־SSH. יש לאפס את האמון בשרתי SSH בהגדרות לפני ניסיון נוסף."</string>
+    <string name="ssh_trust_error_recovery" formatted="false">"לא ניתן לשמור את שחזור האמון ב־SSH. יש לבדוק את האמון בשרתי SSH בהגדרות לפני ניסיון נוסף."</string>
+    <string name="ssh_trust_error_remove" formatted="false">"לא ניתן להסיר את האמון בשרת SSH. יש לבדוק את רשומת השרת הנוכחית לפני ניסיון נוסף."</string>
+    <string name="ssh_trust_error_reset" formatted="false">"לא ניתן לנקות את האמון בשרתי SSH. יש לבדוק את הרשומות השמורות לפני ניסיון נוסף."</string>
+    <string name="ssh_trust_error_save" formatted="false">"לא ניתן לשמור את האמון בשרת SSH. יש לאמת שוב את טביעת האצבע לפני ניסיון נוסף."</string>
+    <string name="ssh_trust_replace" formatted="false">"החלפת האמון והתחברות"</string>
+    <string name="ssh_trust_verify_title" formatted="false">"אימות שרת SSH"</string>
+    <string name="staged" formatted="false">"מוכן"</string>
+    <string name="stash_screen" formatted="false">"מחסן"</string>
+    <string name="status_screen" formatted="false">"מצב"</string>
+    <string name="storage_app_saved" formatted="false">"שכפולים חדשים ישתמשו באחסון האפליקציה"</string>
+    <string name="storage_default_saved" formatted="false">"מיקום ברירת המחדל לשכפול נשמר"</string>
+    <string name="tide_git_annotated" formatted="false">"מוער"</string>
+    <string name="tide_git_branch_operation" formatted="false">"פעולת ענף"</string>
+    <string name="tide_git_commit_locally" formatted="false">"יצירת קומיט מקומי"</string>
+    <string name="tide_git_committing" formatted="false">"יצירת קומיט…"</string>
+    <string name="tide_git_detached" formatted="false">"HEAD מנותק"</string>
+    <string name="tide_git_force_delete" formatted="false">"מחיקה כפויה (לא בטוח)"</string>
+    <string name="tide_git_force_delete_detail" formatted="false">"מחיקה כפויה מסירה את הענף גם אם לא מוזג."</string>
+    <string name="tide_git_git_operation" formatted="false">"פעולת Git"</string>
+    <string name="tide_git_headline_choose" formatted="false">"בחירת מה שייכלל בקומיט"</string>
+    <string name="tide_git_headline_complete_merge" formatted="false">"שילוב מלא"</string>
+    <string name="tide_git_headline_nothing" formatted="false">"אין מה להכניס לקומיט"</string>
+    <string name="tide_git_hint_message" formatted="false">"יש להזין הודעת קומיט"</string>
+    <string name="tide_git_hint_stage" formatted="false">"יש להוסיף לפחות קובץ אחד לאינדקס כדי ליצור קומיט"</string>
+    <string name="tide_git_included" formatted="false">"כלול"</string>
+    <string name="tide_git_lightweight" formatted="false">"קל"</string>
+    <string name="tide_git_local_only" formatted="false">"מקומי בלבד"</string>
+    <string name="tide_git_message" formatted="false">"הודעה"</string>
+    <string name="tide_git_normal_delete" formatted="false">"מחיקה רגילה"</string>
+    <string name="tide_git_normal_delete_detail" formatted="false">"מוחק את הענף רק אם מוזג במלואו."</string>
+    <string name="tide_git_push_current" formatted="false">"– רחוב זרם ה-Push"</string>
+    <string name="tide_git_pushing" formatted="false">"דחיפה…"</string>
+    <string name="tide_git_remote" formatted="false">"מאגר מרוחק"</string>
+    <string name="tide_git_resolve_and_stage" formatted="false">"פתרון והוספה לאינדקס"</string>
+    <string name="tide_git_resolving" formatted="false">"פתרון…"</string>
+    <string name="tide_git_status_added" formatted="false">"נוסף"</string>
+    <string name="tide_git_status_changed" formatted="false">"שונה"</string>
+    <string name="tide_git_status_copied" formatted="false">"הועתק"</string>
+    <string name="tide_git_status_deleted" formatted="false">"נמחק"</string>
+    <string name="tide_git_status_modified" formatted="false">"שונה"</string>
+    <string name="tide_git_status_renamed" formatted="false">"שונה שם"</string>
+    <string name="tide_git_status_type_changed" formatted="false">"סוג שונה"</string>
+    <string name="tide_git_strategy_ff" formatted="false">"קידום מהיר בלבד"</string>
+    <string name="tide_git_strategy_prefer_ff" formatted="false">"קידום מהיר אם אפשר"</string>
+    <string name="tide_git_strategy_recursive" formatted="false">"שימוש תמיד בקומיט מיזוג"</string>
+    <string name="tide_git_tools" formatted="false">"כלי Git"</string>
+    <string name="tide_git_unstaged" formatted="false">"לא נוסף לאינדקס"</string>
+    <string name="tide_home_add_first" formatted="false">"הוסף את הכספת הראשונה שלך"</string>
+    <string name="tide_home_empty_filter_detail" formatted="false">"ניתן היה לקרוא את כל הכספות בטלפון הזה."</string>
+    <string name="tide_home_empty_filter_title" formatted="false">"שום דבר לא דורש את תשומת לבך"</string>
+    <string name="tide_home_empty_rail_description" formatted="false">"פס סנכרון ריק הממתין לכספת הראשונה"</string>
+    <string name="tide_home_empty_rail_nothing" formatted="false">"אין מה לסנכרן"</string>
+    <string name="tide_home_empty_title" formatted="false">"עדיין אין כספות."</string>
+    <string name="tide_home_filter_all" formatted="false">"הכל"</string>
+    <string name="tide_home_filter_attention" formatted="false">"לתשומת לבך"</string>
+    <string name="tide_home_meta_checking">"בבדיקה: %1$d"</string>
+    <string name="tide_home_meta_ready">"מוכנים: %1$d"</string>
+    <string name="tide_home_meta_unreadable">"לא ניתנים לקריאה: %1$d"</string>
+    <string name="tide_home_rail_phone" formatted="false">"טלפון"</string>
+    <string name="tide_home_signed_in_as">"מחובר בתור ‎@%1$s‎"</string>
+    <string name="tide_home_start_github" formatted="false">"שכפול מ־GitHub"</string>
+    <string name="tide_home_start_github_signed_in" formatted="false">"בחר אחד מהמאגרים שלך"</string>
+    <string name="tide_home_start_github_signed_out" formatted="false">"התחבר ואז בחר מאגר"</string>
+    <string name="tide_home_start_local_detail" formatted="false">"מצא עותקים משוכפלים שכבר נמצאים בטלפון הזה"</string>
+    <string name="tide_home_start_publish_detail" formatted="false">"הופך תיקייה למאגר חדש"</string>
+    <string name="tide_home_start_url_detail" formatted="false">"כל מאגר Git מרוחק, ציבורי או פרטי"</string>
+    <string name="tide_home_start_with" formatted="false">"מתחילים עם"</string>
+    <string name="tide_home_state_checking" formatted="false">"בבדיקה…"</string>
+    <string name="tide_home_state_never_synced" formatted="false">"טרם סונכרן"</string>
+    <string name="tide_home_state_synced">": מאוזן %1$s"</string>
+    <string name="tide_home_state_unreadable" formatted="false">"נדרשת בדיקה"</string>
+    <string name="tide_merge_conflict_result" formatted="false">"תוצאה"</string>
+    <string name="tide_merge_conflict_result_hint" formatted="false">"– זה מה שמופעל במערכת."</string>
+    <string name="tide_merge_diff_added" formatted="false">"נוסף"</string>
+    <string name="tide_merge_diff_changed" formatted="false">"שונה"</string>
+    <string name="tide_merge_diff_deleted" formatted="false">"נמחק"</string>
+    <string name="tide_merge_diff_modified" formatted="false">"שונה"</string>
+    <string name="tide_merge_diff_renamed" formatted="false">"שונה שם"</string>
+    <string name="tide_merge_diff_staged" formatted="false">"מוכן"</string>
+    <string name="tide_merge_diff_type_changed" formatted="false">"סוג שונה"</string>
+    <string name="tide_merge_merge_kicker" formatted="false">"מזג"</string>
+    <string name="tide_merge_ours_filename" formatted="false">"שלנו"</string>
+    <string name="tide_merge_rebase_kicker" formatted="false">"– إعادة הבסיס"</string>
+    <string name="tide_merge_result_section" formatted="false">"תוצאה"</string>
+    <string name="tide_merge_side_deleted" formatted="false">"נמחק"</string>
+    <string name="tide_merge_theirs" formatted="false">"שלהם"</string>
+    <string name="tide_merge_theirs_filename" formatted="false">"שלהם"</string>
+    <string name="tide_onboarding_clone_failed" formatted="false">"השכפול נכשל"</string>
+    <string name="tide_onboarding_create_pat" formatted="false">"יצירת PAT ב-GitHub ↗"</string>
+    <string name="tide_onboarding_headline_git" formatted="false">"Git אמיתי."</string>
+    <string name="tide_onboarding_headline_notes" formatted="false">"ההערות שלך."</string>
+    <string name="tide_onboarding_headline_step" formatted="false">"תמיד מסונכרנות."</string>
+    <string name="tide_onboarding_hide_token" formatted="false">"הסתרה"</string>
+    <string name="tide_onboarding_illustration" formatted="false">"הערות בטלפון שלך וקומיטים ב-GitHub נפגשים בנקודת סנכרון אחת"</string>
+    <string name="tide_onboarding_pat_subtitle" formatted="false">"יש להדביק אסימון GitHub עם גישה למאגרים."</string>
+    <string name="tide_onboarding_picker_clear" formatted="false">"ניקוי החיפוש"</string>
+    <string name="tide_onboarding_picker_no_matches" formatted="false">"אין התאמות"</string>
+    <string name="tide_onboarding_picker_title" formatted="false">"בחירת מאגר"</string>
+    <string name="tide_onboarding_publication_step">"שלב %1$d מתוך 3"</string>
+    <string name="tide_onboarding_rail_device" formatted="false">"הטלפון הזה"</string>
+    <string name="tide_onboarding_save_muted" formatted="false">"כברירת מחדל."</string>
+    <string name="tide_onboarding_save_subtitle" formatted="false">"אפשר לבחור תיקייה אחרת בעת השכפול, או לקבוע ברירת מחדל בהגדרות."</string>
+    <string name="tide_onboarding_save_title" formatted="false">"מיקום שמירה"</string>
+    <string name="tide_onboarding_show_token" formatted="false">"הצגה"</string>
+    <string name="tide_onboarding_welcome_body" formatted="false">"אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."</string>
+    <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_vault_check_for_changes" formatted="false">"בדיקת שינויים"</string>
+    <string name="tide_vault_conflict_detail" formatted="false">"פעולת Git מושהית. פתור את ההתנגשויות בכל קובץ כדי להמשיך."</string>
+    <string name="tide_vault_eyebrow_both_moved" formatted="false">"שני הצדדים השתנו"</string>
+    <string name="tide_vault_eyebrow_conflict" formatted="false">"התנגשות"</string>
+    <string name="tide_vault_eyebrow_empty" formatted="false">"מאגר ריק"</string>
+    <string name="tide_vault_eyebrow_in_sync" formatted="false">"מסונכרן"</string>
+    <string name="tide_vault_eyebrow_new_on_remote" formatted="false">"חדש במאגר המרוחק"</string>
+    <string name="tide_vault_eyebrow_ready_to_commit" formatted="false">"מוכן ליצירת commit"</string>
+    <string name="tide_vault_eyebrow_ready_to_push" formatted="false">"מוכן ל־push"</string>
+    <string name="tide_vault_eyebrow_unreadable" formatted="false">"הקריאה נכשלה"</string>
+    <string name="tide_vault_files_section" formatted="false">"קבצים"</string>
+    <string name="tide_vault_from_remote">"מהמאגר המרוחק: ⁦↓%1$d⁩"</string>
+    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_headline_ahead">"ל־push: %1$d"</string>
+    <string name="tide_vault_headline_behind">"חדשים במאגר המרוחק: %1$d"</string>
+    <string name="tide_vault_headline_in_sync" formatted="false">"מסונכרן"</string>
+    <string name="tide_vault_headline_unreadable" formatted="false">"לא ניתן לקרוא את הכספת הזאת."</string>
+    <string name="tide_vault_latest_commit" formatted="false">"ה־commit האחרון"</string>
+    <string name="tide_vault_more" formatted="false">"אפשרויות נוספות לכספת"</string>
+    <string name="tide_vault_moved_on" formatted="false">"המאגר המרוחק התקדם בזמן שכתבת."</string>
+    <string name="tide_vault_no_changes_body" formatted="false">"עריכות שביצעת ב־Obsidian יופיעו כאן."</string>
+    <string name="tide_vault_no_changes_title" formatted="false">"אין שינויים בטלפון הזה"</string>
+    <string name="tide_vault_reading" formatted="false">"קורא את הכספת…"</string>
+    <string name="tide_vault_remote_current" formatted="false">"אין קומיטים חדשים במאגר המרוחק"</string>
+    <string name="tide_vault_remote_new" formatted="false">"יש קומיטים חדשים במאגר המרוחק"</string>
+    <string name="tide_vault_remote_not_checked" formatted="false">"המאגר המרוחק לא נבדק"</string>
+    <string name="tide_vault_resolve" formatted="false">"– פתרון"</string>
+    <string name="tide_vault_sub_ahead" formatted="false">"נוצר commit, טרם בוצע push"</string>
+    <string name="tide_vault_sub_behind" formatted="false">"בצע pull כדי לעדכן את הטלפון הזה"</string>
+    <string name="tide_vault_sub_empty" formatted="false">"הוסף הערה ואז צור עבורה commit מכאן."</string>
+    <string name="tide_vault_sub_in_sync" formatted="false">"אין דבר ממתין בטלפון הזה"</string>
+    <string name="tide_vault_syncing" formatted="false">"סינקינג..."</string>
+    <string name="tide_vault_yours">"מקומיים: ⁦↑%1$d⁩"</string>
+    <string name="tracking_metadata_size">"מטא־נתונים של Git: %1$s"</string>
+    <string name="tracking_remove_backup_body" formatted="false">"GitSync.md יאמת עותק וארכיון ZIP, ישמור את המטא־נתונים המקוריים בגיבוי וינתק את התיקייה הזו. קובצי העבודה יישארו במקומם."</string>
+    <string name="tracking_remove_backup_title" formatted="false">"להסיר מעקב ולשמור גיבוי?"</string>
+    <string name="tracking_remove_permanent_body" formatted="false">"רק המטא־נתונים של .git שנבדקו יימחקו. קובצי העבודה יישארו במקומם, אך לא ניתן יהיה לשחזר את היסטוריית Git המקומית ללא עותק נוסף."</string>
+    <string name="tracking_remove_permanent_title" formatted="false">"להסיר את היסטוריית Git לצמיתות?"</string>
+    <string name="tracking_remove_review_changed" formatted="false">"פרטי הבדיקה השתנו. יש לבטל ולבדוק שוב את הסרת המעקב."</string>
+    <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nכל קובצי העבודה והיסטוריית Git המקומית יישארו במכשיר הזה. ניתן לחבר מחדש את התיקייה מאוחר יותר."</string>
+    <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nהפעולה תמחק לצמיתות את העותק המשוכפל שמנוהל באפליקציה, כולל קומיטים שלא נדחפו, שינויים שנשמרו ב־stash וקבצים שלא נשמרו. המאגר המרוחק לא ישתנה."</string>
+    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"יידרש אימות טביעת אצבע עבור ⁦%1$s:%2$s⁩ לפני ההתחברות הבאה."</string>
+    <string name="ui_1_s_files_ddef923b">"%1$s קבצים"</string>
+    <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commits מקומיים · %2$s commits בענף המעקב"</string>
+    <string name="ui_1_s_shown_2_s_stored_c5d98835">"מוצגות: %1$s · שמורות: %2$s"</string>
+    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"רכישה חד־פעמית דרך Google Play"</string>
+    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"מפתח שהשתנה עלול להעיד על התחזות. יש לאמת את טביעת האצבע החדשה עם בעל השרת לפני החלפת האמון."</string>
+    <string name="ui_abort_merge_5af7a9ac" formatted="false">"✕  בטל מיזוג"</string>
+    <string name="ui_abort_merge_8821f613" formatted="false">"בטל מיזוג"</string>
+    <string name="ui_abort_rebase_fd5cfc32" formatted="false">"ביטול rebase…"</string>
+    <string name="ui_about_4efca0d1" formatted="false">"אודות"</string>
+    <string name="ui_add_9fd728c6" formatted="false">"הוספה"</string>
+    <string name="ui_add_cloned_repository_f84b64e8" formatted="false">"הוספת המאגר המשוכפל"</string>
+    <string name="ui_add_github_account_ed4d4d4c" formatted="false">"– הוספת GitHub חשבון"</string>
+    <string name="ui_add_local_repository_b8323c70" formatted="false">"הוספת מאגר מקומי"</string>
+    <string name="ui_add_repository_33da2ac1" formatted="false">"הוספת מאגר"</string>
+    <string name="ui_add_repository_e2be0a30" formatted="false">"– הוספת מאגר"</string>
+    <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"הוספת המאגרים שנבחרו"</string>
+    <string name="ui_added_b4561641" formatted="false">"נוסף"</string>
+    <string name="ui_added_repositories_400f05cb" formatted="false">"מאגרים שנוספו"</string>
+    <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"כל פתרונות ההתנגשויות הוכנו. המשך להחיל מחדש commits. אם Git מציג NOTHING_TO_COMMIT, בדוק אם צריך לדלג על ה־commit הריק."</string>
+    <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"כל ההתנגשויות נפתרו. השלם או בטל את המיזוג."</string>
+    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"כל התכונות כלולות לאחר התקנת האפליקציה בתשלום. ללא מינויים או רכישות בתוך האפליקציה."</string>
+    <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": כל שינויים מקומיים בקובץ זה ייפוצלו באופן קבוע."</string>
+    <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"מתן גישה לתיקיות מקומיות"</string>
+    <string name="ui_already_added_253b22d7" formatted="false">"כבר נוסף"</string>
+    <string name="ui_and_1_s_more_f93ea742">"ו- %1$s – עוד..."</string>
+    <string name="ui_app_0d04bfeb" formatted="false">"אפליקציה"</string>
+    <string name="ui_app_settings_da645334" formatted="false">"הגדרות האפליקציה"</string>
+    <string name="ui_apply_2cbf6555" formatted="false">"החל"</string>
+    <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"החלת בחירת המעקב"</string>
+    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"האישור נשמר במכשיר זה והחיבור הממתין ממשיך. ביטול משאיר את השרת ללא אמון."</string>
+    <string name="ui_authentication_66880d2d" formatted="false">"אימות"</string>
+    <string name="ui_back_639807a2" formatted="false">"חזרה"</string>
+    <string name="ui_back_aceb696a" formatted="false">"→ חזרה"</string>
+    <string name="ui_back_f645ed02" formatted="false">"→  חזרה"</string>
+    <string name="ui_backup_1_s_6ad01ca6">"גיבוי: %1$s"</string>
+    <string name="ui_base_7b47361a" formatted="false">"בסיס"</string>
+    <string name="ui_binary_file_2c7ccf98" formatted="false">"קובץ בינרי"</string>
+    <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"קובץ בינארי, גדול או LFS: בחר צד שלם."</string>
+    <string name="ui_branch_52656e81" formatted="false">"ענף"</string>
+    <string name="ui_branch_name_06f6bb71" formatted="false">"שם הענף"</string>
+    <string name="ui_branch_optional_e9dedf99" formatted="false">"ענף (לא חובה)"</string>
+    <string name="ui_browse_files_c8bb105f" formatted="false">"– חפש קבצים"</string>
+    <string name="ui_browse_repos_e9c9d50c" formatted="false">"עיון במאגרים"</string>
+    <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"גלישה עם החשבון הזה"</string>
+    <string name="ui_cancel_ad8d6985" formatted="false">"ביטול"</string>
+    <string name="ui_changed_2a6141e4" formatted="false">"שונה"</string>
+    <string name="ui_changed_files_cdf024ce" formatted="false">"קבצים ששונו"</string>
+    <string name="ui_changes_bbd4b6a8" formatted="false">"שינויים"</string>
+    <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"בחר חשבון מחובר למאגר הזה."</string>
+    <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"בחירת תיקייה במכשיר"</string>
+    <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"יש לבחור שיטת אימות לפני השכפול."</string>
+    <string name="ui_choose_another_folder_b50df380" formatted="false">"בחירת תיקייה אחרת"</string>
+    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"בחירת אחסון לעותקים משוכפלים"</string>
+    <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"בחרו אחסון מקומי או אחסון המחובר למכשיר. ספקי מסמכים בענן אינם מספקים מערכת קבצים שמנוע Git זה יכול להשתמש בה."</string>
+    <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"יש לבחור את החשבון לגלישה ב-GitHub. כל מאגר שומר על החשבון שהוקצה לו; ניתן לשנות אותו בחיבור למאגר."</string>
+    <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"בחרו תיקיית ברירת מחדל לשכפולים חדשים. המאגרים הקיימים יישארו במיקומם הנוכחי."</string>
+    <string name="ui_clear_all_29a390f9" formatted="false">"ניקוי הכול"</string>
+    <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"לנקות את כל נתוני האבחון?"</string>
+    <string name="ui_clear_log_a8858ac7" formatted="false">"ניקוי היומן"</string>
+    <string name="ui_clone_a_github_repository_or_reconnect_a_l_dd9aa7e0" formatted="false">"שכפול מאגר GitHub או חיבור מחדש של עותק עבודה מקומי."</string>
+    <string name="ui_clone_again_e05eb495" formatted="false">"שכפול מחדש"</string>
+    <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"שכפול מחדש · יש לבדוק את הענף והחיבור הקודמים לפני שמתחילים."</string>
+    <string name="ui_clone_directory_157fc791" formatted="false">"תיקיית שכפול"</string>
+    <string name="ui_clone_failed_958e3f3a" formatted="false">"השכפול נכשל"</string>
+    <string name="ui_clone_repository_e8fa94ab" formatted="false">"שכפול מאגר"</string>
+    <string name="ui_clone_storage_47cafc8a" formatted="false">"אחסון עותקים משוכפלים"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_90548a33" formatted="false">"משכפל ומכין את עותק העבודה…"</string>
+    <string name="ui_cloning_repository_c9d2441e" formatted="false">"משכפל מאגר"</string>
+    <string name="ui_commit_84da95ea" formatted="false">"Commit:"</string>
+    <string name="ui_commit_author_e9376b3a" formatted="false">"מחבר הקומיט"</string>
+    <string name="ui_commit_message_a4b361b7" formatted="false">"הודעת commit…"</string>
+    <string name="ui_commit_push_94e9650a" formatted="false">"שמירה ודחיפה"</string>
+    <string name="ui_commit_sha_d0bc6028" formatted="false">"SHA של Commit"</string>
+    <string name="ui_compare_this_fingerprint_with_the_server_o_69b2eaae" formatted="false">"יש להשוות טביעת אצבע זו למפתח מארח ה־SSH שפרסם בעל השרת לפני מתן אמון."</string>
+    <string name="ui_complete_894981ff" formatted="false">"השלם"</string>
+    <string name="ui_complete_merge_385cc51b" formatted="false">"שילוב מלא"</string>
+    <string name="ui_confirm_eebdd24a" formatted="false">"אישור"</string>
+    <string name="ui_conflict_center_e9f65d36" formatted="false">"מרכז התנגשויות"</string>
+    <string name="ui_conflict_d79910c7" formatted="false">"התנגשות"</string>
+    <string name="ui_connect_a_github_repository_to_start_synci_0e1f2ea6" formatted="false">"יש לחבר מאגר GitHub כדי להתחיל לסנכרן."</string>
+    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"אפשר להתחבר למאגר HTTPS או SSH ציבורי או פרטי ב-GitHub, ב-GitLab, ב-Bitbucket או בשרת Git משלך."</string>
+    <string name="ui_connect_with_github_6f2b4e53" formatted="false">"חיבור עם GitHub"</string>
+    <string name="ui_connect_your_github_account_to_browse_and_b692e428" formatted="false">"חבר את חשבון GitHub שלך כדי לעיין במאגרים ולסנכרן אותם."</string>
+    <string name="ui_continue_rebase_7a14e965" formatted="false">"– המשך ה-\"Rebase\""</string>
+    <string name="ui_copy_visible_29e7587c" formatted="false">"העתקת הגלויות"</string>
+    <string name="ui_create_4759498a" formatted="false">"צור"</string>
+    <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"צרו קובץ או תיקייה באמצעות ״חדש״."</string>
+    <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"– ליצור PAT ב-GitHub →"</string>
+    <string name="ui_create_fde9c501" formatted="false">"צור"</string>
+    <string name="ui_current_default_d914f86e" formatted="false">"ברירת המחדל הנוכחית"</string>
+    <string name="ui_current_e3cc57e1" formatted="false">"נוכחי"</string>
+    <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"כתובת push נפרדת נוכחית: %1$s"</string>
+    <string name="ui_dark_theme_6f2a0915" formatted="false">"ערכת נושא כהה"</string>
+    <string name="ui_debug_0ffd43f5" formatted="false">"ניפוי"</string>
+    <string name="ui_debug_info_697b4941" formatted="false">"מידע ניפוי שגיאות"</string>
+    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"ברירת המחדל לשכפולים חדשים. כל עותק יכול להשתמש בתיקייה אחרת."</string>
+    <string name="ui_delete_1_s_6474596f">"למחוק את ״%1$s״?"</string>
+    <string name="ui_delete_branch_00339d48" formatted="false">"למחוק את הענף?"</string>
+    <string name="ui_delete_branch_1c3f98e5" formatted="false">"מחיקת ענף"</string>
+    <string name="ui_delete_e2d0a549" formatted="false">"– 삭제"</string>
+    <string name="ui_delete_file_28e18dc9" formatted="false">"מחיקת קובץ"</string>
+    <string name="ui_delete_local_files_09697434" formatted="false">"– האם למחוק קבצים מקומיים?"</string>
+    <string name="ui_delete_local_files_20424441" formatted="false">": מחיקת קבצי מקומיים"</string>
+    <string name="ui_delete_tag_365635aa" formatted="false">"מחיקת תג"</string>
+    <string name="ui_diagnostics_268f14bb" formatted="false">"אבחון"</string>
+    <string name="ui_diff_b6aeb797" formatted="false">"הבדל"</string>
+    <string name="ui_discard_draft_cb30147e" formatted="false">"מחק טיוטה"</string>
+    <string name="ui_discard_eb1a70e3" formatted="false">"ביטול השינויים"</string>
+    <string name="ui_discard_resolution_draft_47c16148" formatted="false">"למחוק את טיוטת הפתרון?"</string>
+    <string name="ui_discovered_repositories_059a8e8d" formatted="false">"מאגרים שנמצאו"</string>
+    <string name="ui_dismiss_48845bff" formatted="false">"סגירה"</string>
+    <string name="ui_done_283e91eb" formatted="false">"סיום"</string>
+    <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"הורדת תוכן הקבצים החסר"</string>
+    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"במהלך rebase, ענף המעקב הוא הצד ours של Git; ה־commit המקומי המוחל מחדש הוא theirs."</string>
+    <string name="ui_edit_commit_author_443f376d" formatted="false">"עריכת מחבר ה־commit"</string>
+    <string name="ui_edit_connection_047f9f95" formatted="false">"עריכת החיבור"</string>
+    <string name="ui_edit_resolution_9a6cda88" formatted="false">"ערוך פתרון"</string>
+    <string name="ui_email_969ccbd3" formatted="false">"אימייל"</string>
+    <string name="ui_empty_folder_ca1fd454" formatted="false">"תיקייה ריקה"</string>
+    <string name="ui_enable_access_9d7caf64" formatted="false">"הפעלת גישה"</string>
+    <string name="ui_endpoint_authentication_1841e2be" formatted="false">"אימות בנקודת הקצה"</string>
+    <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"הזן שוב פרטי הזדהות או בחר גישה ציבורית לכתובת החדשה."</string>
+    <string name="ui_error_54a0e8c1" formatted="false">"שגיאה"</string>
+    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"כל שרת SSH יחייב אימות טביעת אצבע לפני ההתחברות הבאה. פעולה זו מסירה גם רשומות אמון פגומות."</string>
+    <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"שלוף והחל שינויים מרחוק"</string>
+    <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"אחזר ובדוק את ה־rebase"</string>
+    <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"קבלת שינויים מהשרת"</string>
+    <string name="ui_file_operation_failed_f78a328b" formatted="false">"הפעולה בקובץ נכשלה"</string>
+    <string name="ui_finishing_up_13f4f85a" formatted="false">"מסיים"</string>
+    <string name="ui_forget_a6bd489d" formatted="false">"שכחה"</string>
+    <string name="ui_forget_server_e43c85d4" formatted="false">"שכחת שרת"</string>
+    <string name="ui_forget_ssh_server_d5c91f0a" formatted="false">"לשכוח שרת SSH?"</string>
+    <string name="ui_from_1_s_40f7d611">" מ-%1$s"</string>
+    <string name="ui_full_version_no_subscription_8fe42d1c" formatted="false">"גרסה מלאה · ללא מינוי"</string>
+    <string name="ui_ghp_ff475c83" formatted="false">"ghp_..."</string>
+    <string name="ui_git_b084246d" formatted="false">"GIT"</string>
+    <string name="ui_git_lfs_keeps_large_file_contents_outside_4b4afd49" formatted="false">"Git LFS שומר תוכן של קבצים גדולים מחוץ להיסטוריית Git. ב־commits נשמרים מצביעים קטנים; שכפול ו־pull מורידים את התוכן, ו־push מעלה אובייקטים לפני פרסום ה־commits."</string>
+    <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS דורש תשומת לב"</string>
+    <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · מעקב והורדות"</string>
+    <string name="ui_git_remote_91593664" formatted="false">"מאגר Git מרוחק"</string>
+    <string name="ui_github_accounts_653cf0c5" formatted="false">"חשבונות GitHub"</string>
+    <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub – כניסה"</string>
+    <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"הגרסה המלאה של Gitsync.md"</string>
+    <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md זקוק לגישה לאחסון המשותף כדי לנהל עותקי עבודה אמיתיים של Git בתיקיות המכשיר. יש לבחור את התיקיות הרצויות לאחר הפעלת הגישה בהגדרות Android."</string>
+    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md לא יספק פרטי הזדהות למאגר הזה."</string>
+    <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"ברור לי שבעלים אחר עדיין עשוי לערוך את הקובץ הזה."</string>
+    <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"יש לכלול את שם משתמש SSH בכתובת: git@host:team/repo.git או ssh://git@host:2222/team/repo.git."</string>
+    <string name="ui_info_170322a3" formatted="false">"מידע"</string>
+    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"שמירת גיבוי מאומת של המטא־נתונים"</string>
+    <string name="ui_keep_editing_e76fd2ad" formatted="false">"המשך לערוך"</string>
+    <string name="ui_keep_selected_files_in_regular_git_7de351fc" formatted="false">"השארת הקבצים שנבחרו ב־Git רגיל"</string>
+    <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"ביטוי סיסמה למפתח (לא חובה)"</string>
+    <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"המפתחות מוצפנים במכשיר זה ומשמשים רק לכתובת המאגר השמורה. יש לאמת את טביעת האצבע של השרת בחיבור הראשון."</string>
+    <string name="ui_last_sync_a0d540dd" formatted="false">"סנכרון אחרון"</string>
+    <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"יש להשאיר ריק כדי להשתמש בענף ברירת המחדל של השרת."</string>
+    <string name="ui_lfs_endpoint_02a55a73" formatted="false">"נקודת קצה LFS"</string>
+    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"אישורי נקודות קצה של LFS"</string>
+    <string name="ui_lfs_endpoint_token_or_password_e069890b" formatted="false">"אסימון או סיסמה לנקודת קצה LFS"</string>
+    <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"שם משתמש לנקודת קצה LFS"</string>
+    <string name="ui_license_c011d609" formatted="false">"רישיון"</string>
+    <string name="ui_loading_dc380888" formatted="false">"טוען"</string>
+    <string name="ui_loading_diff_3944c704" formatted="false">"טוען הבדל"</string>
+    <string name="ui_loading_repos_2f4f4a93" formatted="false">"טעינת המאגרים"</string>
+    <string name="ui_loading_repository_15b79262" formatted="false">"טעינת המאגר"</string>
+    <string name="ui_local_changes_4d25c7d4" formatted="false">"שינויים מקומיים"</string>
+    <string name="ui_local_repositories_ddcf4270" formatted="false">"מאגרים מקומיים"</string>
+    <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"ניהול חשבונות GitHub"</string>
+    <string name="ui_manual_7c8107bd" formatted="false">"ידני"</string>
+    <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"מפתח ציבורי תואם (לא חובה)"</string>
+    <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
+    <string name="ui_merge_8851aaa7" formatted="false">"מזג"</string>
+    <string name="ui_merge_commit_message_2132e189" formatted="false">"– מessaĝה של ה-commit המerging"</string>
+    <string name="ui_merge_fc2b737d" formatted="false">"מזג"</string>
+    <string name="ui_message_f5394f72" formatted="false">"הודעה:"</string>
+    <string name="ui_more_d47d7cb0" formatted="false">"עוד"</string>
+    <string name="ui_move_repository_1c4a6083" formatted="false">"העברת מאגר"</string>
+    <string name="ui_name_dcd1d522" formatted="false">"שם"</string>
+    <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"שם ב-GitSync.md"</string>
+    <string name="ui_new_18fdd549" formatted="false">"חדש"</string>
+    <string name="ui_new_branch_name_3fb60017" formatted="false">"new-branch-name"</string>
+    <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"קומיטים חדשים במאגר הזה ישתמשו בשם ובכתובת הדוא״ל האלה. קומיטים קיימים שומרים על המחבר המקורי שלהם."</string>
+    <string name="ui_new_file_44dedd0f" formatted="false">"קובץ חדש"</string>
+    <string name="ui_new_folder_cf28f49e" formatted="false">"תיקייה חדשה"</string>
+    <string name="ui_new_token_or_password_fc54aafe" formatted="false">"אסימון או סיסמה חדשים"</string>
+    <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"אין נקודות קצה LFS מותאמות שאושרו"</string>
+    <string name="ui_no_commits_found_64ccb533" formatted="false">"לא נמצאו קומיטים"</string>
+    <string name="ui_no_conflicts_found_d356b17b" formatted="false">"לא נמצאו התנגשויות"</string>
+    <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"אין חשבונות מחוברים. המאגרים המקומיים נשארים זמינים."</string>
+    <string name="ui_no_lfs_pointers_in_the_current_index_612c2995" formatted="false">"אין מצביעי LFS באינדקס הנוכחי."</string>
+    <string name="ui_no_local_changes_56319dc5" formatted="false">"אין שינויים מקומיים"</string>
+    <string name="ui_no_local_changes_to_stash_0beb8393" formatted="false">"אין שינויים מקומיים לאחסן"</string>
+    <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"אין קבצים בינאריים או גדולים חדשים שדורשים בחירת מעקב."</string>
+    <string name="ui_no_repositories_a6e9ff91" formatted="false">"אין מאגרים"</string>
+    <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"טרם נוספו מאגרים."</string>
+    <string name="ui_no_repository_aec5972a" formatted="false">"אין מאגר"</string>
+    <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"לא נמצאו שינויים שמורים זמנית"</string>
+    <string name="ui_no_tags_found_8a6dd503" formatted="false">"לא נמצאו תגים"</string>
+    <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"אין תגיות במאגר זה"</string>
+    <string name="ui_no_trusted_ssh_servers_df52a7ed" formatted="false">"אין שרתי SSH מהימנים"</string>
+    <string name="ui_no_working_copies_found_in_the_scanned_fol_904c5b06" formatted="false">"לא נמצאו עותקי עבודה בתיקיות שנסרקו."</string>
+    <string name="ui_none_dc937b59" formatted="false">"אין"</string>
+    <string name="ui_now_ed5eb9a3" formatted="false">"עכשיו"</string>
+    <string name="ui_ok_565339bc" formatted="false">"אישור"</string>
+    <string name="ui_open_ed077f3d" formatted="false">"פתיחה"</string>
+    <string name="ui_open_in_files_e1d250d0" formatted="false">"– פתיחה בקובציים"</string>
+    <string name="ui_opening_file_de0df916" formatted="false">"פותחים קובץ…"</string>
+    <string name="ui_or_7175517a" formatted="false">"או"</string>
+    <string name="ui_ours_ab658c14" formatted="false">"שלנו"</string>
+    <string name="ui_override_system_appearance_2685888c" formatted="false">"עקיפת מראה המערכת"</string>
+    <string name="ui_owner_1_s_599ca9ce">"בעלים: %1$s"</string>
+    <string name="ui_path_62fa5a5b" formatted="false">"נתיב"</string>
+    <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
+    <string name="ui_personal_access_token_702ef4a0" formatted="false">"טוקן גישה אישי"</string>
+    <string name="ui_platform_c78ffe19" formatted="false">"פלטפורמה"</string>
+    <string name="ui_pop_52e740ad" formatted="false">"שלוף"</string>
+    <string name="ui_previously_added_627f4765" formatted="false">"נוספו בעבר"</string>
+    <string name="ui_previously_trusted_1_s_df583fd2">"טביעת אצבע מהימנה קודמת: ⁦%1$s⁩"</string>
+    <string name="ui_privacy_policy_506ff394" formatted="false">"מדיניות פרטיות"</string>
+    <string name="ui_public_access_03e7db61" formatted="false">"גישה ציבורית"</string>
+    <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"– pulling עם إعادة הבסיס"</string>
+    <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Pull עם rebase / המשך rebase"</string>
+    <string name="ui_push_792aac67" formatted="false">"דחוף"</string>
+    <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"דחיפת שינויים מקומיים לשרת"</string>
+    <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"rebase מתבצע"</string>
+    <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"בצע rebase על ענף המעקב שנבדק"</string>
+    <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"תוצאות פעולות אחרונות במכשיר זה. היומן שומר עד 500 רשומות. פרטי הזדהות, כתובות מאגרים, נתיבי קבצים ותוכן קבצים אינם נכללים."</string>
+    <string name="ui_reconnect_bf8a9eab" formatted="false">"התחברות מחדש"</string>
+    <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"חיבור מחדש של עותקי עבודה שכבר שמורים ב־GitSync.md. הסרת רשומה משאירה את הקבצים; מחיקת עותק משוכפל מנוהל והסרת מעקב Git הן פעולות נפרדות."</string>
+    <string name="ui_refresh_0e916101" formatted="false">"רענון"</string>
+    <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"רענן את מצב ה־rebase"</string>
+    <string name="ui_reload_1_s_873e324f">"לטעון מחדש את %1$s?"</string>
+    <string name="ui_reload_author_18a711d8" formatted="false">"טעינה מחדש של המחבר"</string>
+    <string name="ui_reload_connection_ceed2dae" formatted="false">"טעינת החיבור מחדש"</string>
+    <string name="ui_reload_from_disk_d4288839" formatted="false">"טעינה מחדש מהדיסק"</string>
+    <string name="ui_reload_lfs_state_046eb2f5" formatted="false">"טעינה מחדש של מצב LFS"</string>
+    <string name="ui_remove_1_s_e4dd7c24">"להסיר את %1$s?"</string>
+    <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"להסיר את ״%1$s״?\n\nפעולה זו מסירה אותו מ־GitSync.md. כל הקבצים המקומיים והיסטוריית Git יישארו במכשיר הזה, ואפשר לחבר אותו מחדש בהמשך. המאגר המרוחק לא יושפע."</string>
+    <string name="ui_remove_5fdf0b2b" formatted="false">"הסרה"</string>
+    <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"יש להסיר את כל אישורי נקודות הקצה המותאמות ואת פרטי ההזדהות השמורים שלהן במכשיר זה. כל נקודת קצה וכיוון העברה יחייבו בדיקה חדשה."</string>
+    <string name="ui_remove_c3812fc4" formatted="false">"הסרה"</string>
+    <string name="ui_remove_credentials_1b0700a3" formatted="false">"הסרת פרטי הזדהות"</string>
+    <string name="ui_remove_from_app_0d20b3a2" formatted="false">"הסרה מהאפליקציה"</string>
+    <string name="ui_remove_from_gitsync_md_ead6e2d6" formatted="false">"– הסרת מ- GitSync.md?"</string>
+    <string name="ui_remove_git_tracking_1f8255d9" formatted="false">"להסיר מעקב Git?"</string>
+    <string name="ui_remove_git_tracking_d3e1065f" formatted="false">"הסרת מעקב Git"</string>
+    <string name="ui_remove_recovery_copy_b24c79b1" formatted="false">"הסרת עותק השחזור"</string>
+    <string name="ui_remove_repository_fc68168b" formatted="false">"הסרת מאגר"</string>
+    <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"הסרת פרטי ההזדהות השמורים"</string>
+    <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"להסיר את פרטי ההזדהות השמורים?"</string>
+    <string name="ui_remove_sign_in_ae9ee617" formatted="false">"הסרת ההתחברות"</string>
+    <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"להסיר את המקור שנשמר?"</string>
+    <string name="ui_remove_tracking_4b40d72c" formatted="false">"הסרת מעקב"</string>
+    <string name="ui_removed_70fa71f8" formatted="false">"הוסר"</string>
+    <string name="ui_rename_1_s_9b09e088">"שינוי השם של %1$s"</string>
+    <string name="ui_rename_3064d79a" formatted="false">"– שינוי שם"</string>
+    <string name="ui_rename_file_e3526ab6" formatted="false">"– שינוי שם קובץ"</string>
+    <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"commit מקומי שהוחל מחדש"</string>
+    <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"מחיל מחדש commits מקומיים על ענף המעקב שהוגדר. מזהי commits מקומיים עשויים להשתנות. מבנה המיזוג הקיים נשמר. דבר לא נדחף."</string>
+    <string name="ui_repo_health_ed3e070f" formatted="false">"בריאות המאגר"</string>
+    <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"מאגרים שהוקצו לחשבון הזה יחייבו התחברות מחדש או בחירת חשבון אחר בחיבור למאגר. הקבצים והקומיטים המקומיים שלך נשמרים."</string>
+    <string name="ui_repository_13d6ff07" formatted="false">"מאגר"</string>
+    <string name="ui_repository_connection_1188001b" formatted="false">"חיבור למאגר"</string>
+    <string name="ui_repository_path_037711af" formatted="false">"נתיב המאגר"</string>
+    <string name="ui_repository_status_64c67cd2" formatted="false">"מצב המאגר"</string>
+    <string name="ui_repository_url_c83db013" formatted="false">"כתובת URL של המאגר"</string>
+    <string name="ui_reset_all_lfs_endpoint_approvals_d20616d7" formatted="false">"לאפס את כל אישורי נקודות קצה LFS?"</string>
+    <string name="ui_reset_all_lfs_endpoint_approvals_e6d5c6c6" formatted="false">"איפוס כל אישורי נקודות קצה LFS"</string>
+    <string name="ui_reset_all_ssh_server_trust_3b8a05a5" formatted="false">"איפוס כל האמון בשרתי SSH"</string>
+    <string name="ui_reset_all_ssh_server_trust_4917ea5f" formatted="false">"לאפס את כל האמון בשרתי SSH?"</string>
+    <string name="ui_reset_approvals_79eec91d" formatted="false">"איפוס אישורים"</string>
+    <string name="ui_reset_trust_b9be3a3c" formatted="false">"איפוס אמון"</string>
+    <string name="ui_resolve_1_s_94accfee">"פתור את %1$s"</string>
+    <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"פתור והכן"</string>
+    <string name="ui_resolve_conflict_ff598c8a" formatted="false">"– פתרת מחלוקת"</string>
+    <string name="ui_resolved_5be3c2c8" formatted="false">"נפתר"</string>
+    <string name="ui_resolved_contents_55ceff37" formatted="false">"תוכן לאחר פתרון"</string>
+    <string name="ui_resolved_fea6a678" formatted="false">"נפתר"</string>
+    <string name="ui_retry_942087cc" formatted="false">"ניסיון מחדש"</string>
+    <string name="ui_retry_e464c660" formatted="false">"ניסיון מחדש"</string>
+    <string name="ui_return_to_repositories_c97a4463" formatted="false">"חזרה למאגרים"</string>
+    <string name="ui_revert_all_changes_06b0eb3d" formatted="false">"בטל את כל השינויים"</string>
+    <string name="ui_revert_all_changes_416c8713" formatted="false">"↪  בטל את כל השינויים"</string>
+    <string name="ui_revert_c8d62872" formatted="false">"↪  בטל"</string>
+    <string name="ui_revert_changes_5b36e77f" formatted="false">"בטל שינויים"</string>
+    <string name="ui_review_restored_folder_66729a70" formatted="false">"בדיקת התיקייה ששוחזרה"</string>
+    <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"יש לבדוק את שרתי ה־LFS הנפרדים המורשים למאגרים שלך. ביטול אישור עוצר העברות עתידיות בכיוון זה; פעולות שכבר מתבצעות עשויות להסתיים."</string>
+    <string name="ui_revoke_87e6d00b" formatted="false">"ביטול אישור"</string>
+    <string name="ui_save_1509f561" formatted="false">"שמירה"</string>
+    <string name="ui_save_author_1c24b32a" formatted="false">"שמירת המחבר"</string>
+    <string name="ui_save_c210bfdf" formatted="false">"שמירה"</string>
+    <string name="ui_save_changes_to_1_s_4cb0cf65">"לשמור שינויים ב־%1$s?"</string>
+    <string name="ui_save_connection_df24ef12" formatted="false">"שמירת החיבור"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"פרטי ההזדהות השמורים מוצפנים במכשיר זה ומשמשים רק לכתובת HTTPS של המאגר הזה."</string>
+    <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"בשמירה, הכתובת הזאת משמשת גם ל־fetch וגם ל־push. בצע fetch לאחר מכן כדי לרענן את מצב המאגר המרוחק."</string>
+    <string name="ui_scan_a_device_folder_995756f2" formatted="false">"סריקת תיקייה במכשיר"</string>
+    <string name="ui_scan_app_folders_12ed3a77" formatted="false">"סריקת תיקיות האפליקציה"</string>
+    <string name="ui_search_repositories_243865a1" formatted="false">"חיפוש מאגרים…"</string>
+    <string name="ui_select_repository_64bd6444" formatted="false">"– בחירת מאגר"</string>
+    <string name="ui_selected_folder_0cf59bef" formatted="false">"התיקייה שנבחרה"</string>
+    <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"שם משתמש ואסימון נפרדים"</string>
+    <string name="ui_settings_02f6ea12" formatted="false">"הגדרות"</string>
+    <string name="ui_share_backup_archive_ee4ba873" formatted="false">"שיתוף ארכיון הגיבוי"</string>
+    <string name="ui_share_visible_4fcf9b94" formatted="false">"שיתוף הגלויות"</string>
+    <string name="ui_show_debug_information_6e8abf80" formatted="false">"הצגת מידע ניפוי שגיאות"</string>
+    <string name="ui_sign_in_75606a00" formatted="false">"התחברות"</string>
+    <string name="ui_sign_out_0b184bc5" formatted="false">"התנתקות"</string>
+    <string name="ui_skip_current_commit_370b7166" formatted="false">"דלג על ה־commit הנוכחי…"</string>
+    <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"לא ניתן היה לקרוא או לשמור חלק מנתוני האבחון. הנתונים הקיימים נשמרו. יש לנקות את היומן כדי להתחיל לתעד מחדש."</string>
+    <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH מפתח פרטי"</string>
+    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"אמון בשרתי SSH"</string>
+    <string name="ui_stage_all_d1ce47c8" formatted="false">"הכנת כל השינויים לקומיט"</string>
+    <string name="ui_stage_de838855" formatted="false">"הכן"</string>
+    <string name="ui_stash_message_optional_7b463cf6" formatted="false">"– הודעה של Stash (אפשרי)..."</string>
+    <string name="ui_switch_39921a74" formatted="false">"החלף"</string>
+    <string name="ui_switch_to_branch_278b039a" formatted="false">"מעבר לענף"</string>
+    <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
+    <string name="ui_tag_name_e_g_v1_0_0_16aa5a68" formatted="false">"tag-name (e.g. v1.0.0)"</string>
+    <string name="ui_tags_1331275b" formatted="false">"תגיות"</string>
+    <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"תיקיית היעד הפעילה נשארת במקומה. GitSync.md בודק שאין במקור שנשמר עריכות מאוחרות יותר לפני מחיקה לצמיתות של הקבצים והיסטוריית Git שלו."</string>
+    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"החיבור המוצפן משמש שוב רק לכתובת המקורית של המאגר. כדי להשתמש בכתובת אחרת, יש לשנות את האימות במפורש."</string>
+    <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"חשבון GitHub הקודם מנותק. יש לבחור חשבון מחובר או שיטת אימות אחרת."</string>
+    <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"ה־commit המקומי המוחל מחדש מוחק קובץ זה."</string>
+    <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"פרטי הבדיקה השתנו. יש לבטל ולרענן את נעילות השרת."</string>
+    <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"הסריקה הגיעה למגבלת העומק או התיקיות. חלק מהתיקיות לא נסרקו."</string>
+    <string name="ui_theirs_691ef727" formatted="false">"שלהם"</string>
+    <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"– לא ניתן להסיר את ה결ס."</string>
+    <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"פעולה זו משנה את .gitattributes. הקבצים והאינדקס נשארים כפי שהם עד להוספת השינויים לאינדקס."</string>
+    <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"פעולה זו מסירה נעילה של חיבור אחר. יש לתאם עם הבעלים לפני שממשיכים."</string>
+    <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"המאגר הזה ישתמש בגישה ציבורית עד לבחירה מחדש של אמצעי אימות. חשבון GitHub המחובר שלך לא ישמש עבורו. כתובות ה־fetch וה־push יישארו ללא שינוי."</string>
+    <string name="ui_token_or_password_d6e43f8a" formatted="false">"– טוקן או סיסמה"</string>
+    <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"מעקב אחר הקבצים שנבחרו באמצעות LFS"</string>
+    <string name="ui_tracked_objects_a265fdb0" formatted="false">"אובייקטים במעקב"</string>
+    <string name="ui_tracking_review_8d316853" formatted="false">"בדיקת המעקב"</string>
+    <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"טביעות אצבע של שרתים מהימנים נשמרות במכשיר זה. שכחת שרת תחייב אימות בחיבור הבא. המפתחות הפרטיים של המאגרים נשארים שמורים."</string>
+    <string name="ui_unable_to_open_file_2787a028" formatted="false">"לא ניתן לפתוח את הקובץ"</string>
+    <string name="ui_unstage_033f86f9" formatted="false">"בטל הכנה"</string>
+    <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"עדכן את הכתובת או את אמצעי האימות של עותק העבודה הזה. הקבצים המקומיים, הקומיטים והשינויים שהוכנו ל־commit נשארים במקומם."</string>
+    <string name="ui_upstream_94adc696" formatted="false">"ענף המעקב"</string>
+    <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"ענף המעקב מחק קובץ זה."</string>
+    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"יש להשתמש בכתובת HTTPS ב-github.com. השכפול שומר את החשבון שנבחר גם אם מחליפים חשבון לצורך עיון במאגרים."</string>
+    <string name="ui_use_app_storage_d199e8e0" formatted="false">"שימוש באחסון האפליקציה"</string>
+    <string name="ui_use_for_browsing_f4b0d6df" formatted="false">"שימוש לגלישה"</string>
+    <string name="ui_use_for_new_clones_be174c95" formatted="false">"שימוש לשכפולים חדשים"</string>
+    <string name="ui_use_ours_4bec9877" formatted="false">"– נשתמש במערכת שלנו"</string>
+    <string name="ui_use_saved_connection_21052734" formatted="false">"שימוש בחיבור השמור"</string>
+    <string name="ui_use_saved_default_3bb7260d" formatted="false">"שימוש בברירת המחדל השמורה"</string>
+    <string name="ui_use_saved_endpoint_credentials_2f2000f7" formatted="false">"שימוש בפרטי הזדהות שמורים של נקודת הקצה"</string>
+    <string name="ui_use_theirs_352c4272" formatted="false">"– משתמשים ב- theirs"</string>
+    <string name="ui_username_e3b89e9d" formatted="false">"שם משתמש"</string>
+    <string name="ui_username_token_7375b2ff" formatted="false">"שם משתמש + אסימון"</string>
+    <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"יש לאמת כתובת זו עם בעל המאגר. האישור חל רק על מאגר זה, מאגר Git מרוחק, נקודת קצה LFS וכיוון העברה במכשיר זה."</string>
+    <string name="ui_version_dd167905" formatted="false">"גרסה"</string>
+    <string name="ui_warning_e981ddae" formatted="false">"경arme"</string>
+    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"ללא גיבוי, היסטוריית Git המקומית תימחק לצמיתות. לא ניתן לבטל זאת."</string>
+    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"קובצי העבודה נשארים במקומם. ענפים מקומיים, commits, שינויים ב־stash, מאגרים מרוחקים והיסטוריה ינותקו מהתיקייה הזו."</string>
+    <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"השינויים שלכם לא נשמרו."</string>
+    <string name="ui_your_git_sign_in_is_not_shared_with_this_s_8fbab830" formatted="false">"פרטי ההתחברות ל־Git אינם משותפים עם שרת זה. פרטי הזדהות נפרדים לנקודת הקצה מוצפנים במכשיר זה. ניתן לנהל או לבטל אישורים בהגדרות ← אישורי נקודות קצה LFS."</string>
+    <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"הטקסט שלא הוגש יימחק. קובץ העבודה יישאר ללא שינוי."</string>
+    <string name="untracked" formatted="false">"לא מעוקב"</string>
+    <string name="upstream_body" formatted="false">"הגדרת יעד הסנכרון לענף המקומי הזה. הקבצים, הקומיטים והחיבורים השמורים נשארים ללא שינוי."</string>
+    <string name="upstream_branch" formatted="false">"ענף"</string>
+    <string name="upstream_local_branch">"ענף מקומי: %1$s"</string>
+    <string name="upstream_remote" formatted="false">"מאגר מרוחק"</string>
+    <string name="upstream_title" formatted="false">"הענף הנעקב"</string>
+    <string name="upstream_unavailable" formatted="false">"יש לבחור ענף מקומי עם מאגר מרוחק מוגדר ולסיים קודם כל פעולת Git פעילה."</string>
+    <plurals name="discard_review_files">
+        <item quantity="one">"קובץ אחד (%1$d)"</item>
+        <item quantity="two">"שני קבצים (%1$d)"</item>
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="lfs_downloaded_objects">
+        <item quantity="one">"הורד אובייקט אחד (%1$d)."</item>
+        <item quantity="two">"הורדו שני אובייקטים (%1$d)."</item>
+        <item quantity="many">"הורדו %1$d אובייקטים."</item>
+        <item quantity="other">"הורדו %1$d אובייקטים."</item>
+    </plurals>
+    <plurals name="lfs_extensions_affected">
+        <item quantity="one">"קובץ קיים אחד (%1$d) ישתמש ב-LFS לאחר הוספתו לאינדקס"</item>
+        <item quantity="two">"%1$d קבצים קיימים ישתמשו ב-LFS לאחר הוספתם לאינדקס"</item>
+        <item quantity="many">"%1$d קבצים קיימים ישתמשו ב-LFS לאחר הוספתם לאינדקס"</item>
+        <item quantity="other">"%1$d קבצים קיימים ישתמשו ב-LFS לאחר הוספתם לאינדקס"</item>
+    </plurals>
+    <plurals name="lfs_extensions_more">
+        <item quantity="one">"ועוד קובץ קיים אחד (%1$d). יש לבדוק את השינויים ב-Git לפני יצירת קומיט."</item>
+        <item quantity="two">"ועוד %1$d קבצים קיימים. יש לבדוק את השינויים ב-Git לפני יצירת קומיט."</item>
+        <item quantity="many">"ועוד %1$d קבצים קיימים. יש לבדוק את השינויים ב-Git לפני יצירת קומיט."</item>
+        <item quantity="other">"ועוד %1$d קבצים קיימים. יש לבדוק את השינויים ב-Git לפני יצירת קומיט."</item>
+    </plurals>
+    <plurals name="lfs_extensions_retained">
+        <item quantity="one">"קובץ קיים אחד (%1$d) שומר על בחירת המעקב המפורשת שלו."</item>
+        <item quantity="two">"%1$d קבצים קיימים שומרים על בחירות המעקב המפורשות שלהם."</item>
+        <item quantity="many">"%1$d קבצים קיימים שומרים על בחירות המעקב המפורשות שלהם."</item>
+        <item quantity="other">"%1$d קבצים קיימים שומרים על בחירות המעקב המפורשות שלהם."</item>
+    </plurals>
+    <plurals name="lfs_restored_files">
+        <item quantity="one">"שוחזר קובץ אחד (%1$d)."</item>
+        <item quantity="two">"שוחזרו שני קבצים (%1$d)."</item>
+        <item quantity="many">"שוחזרו %1$d קבצים."</item>
+        <item quantity="other">"שוחזרו %1$d קבצים."</item>
+    </plurals>
+    <plurals name="lfs_tracking_files">
+        <item quantity="one">"קובץ אחד (%1$d)"</item>
+        <item quantity="two">"שני קבצים (%1$d)"</item>
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="rebase_additional_blocked_paths">
+        <item quantity="one">"נתיב חסום נוסף אינו מוצג (%1$d)."</item>
+        <item quantity="two">"%1$d נתיבים חסומים נוספים אינם מוצגים."</item>
+        <item quantity="many">"%1$d נתיבים חסומים נוספים אינם מוצגים."</item>
+        <item quantity="other">"%1$d נתיבים חסומים נוספים אינם מוצגים."</item>
+    </plurals>
+    <plurals name="rebase_local_commits">
+        <item quantity="one">"%1$d קומיט מקומי"</item>
+        <item quantity="two">"%1$d קומיטים מקומיים"</item>
+        <item quantity="many">"%1$d קומיטים מקומיים"</item>
+        <item quantity="other">"%1$d קומיטים מקומיים"</item>
+    </plurals>
+    <plurals name="rebase_upstream_commits">
+        <item quantity="one">"%1$d קומיט בענף המעקב"</item>
+        <item quantity="two">"%1$d קומיטים בענף המעקב"</item>
+        <item quantity="many">"%1$d קומיטים בענף המעקב"</item>
+        <item quantity="other">"%1$d קומיטים בענף המעקב"</item>
+    </plurals>
+    <plurals name="repository_picker_count">
+        <item quantity="one">"· מאגר אחד (%1$d)"</item>
+        <item quantity="two">"· שני מאגרים (%1$d)"</item>
+        <item quantity="many">"· %1$d מאגרים"</item>
+        <item quantity="other">"· %1$d מאגרים"</item>
+    </plurals>
+    <plurals name="tide_git_conflicts_to_resolve">
+        <item quantity="one">"התנגשות אחת לפתרון (%1$d)"</item>
+        <item quantity="two">"שתי התנגשויות לפתרון (%1$d)"</item>
+        <item quantity="many">"%1$d התנגשויות לפתרון"</item>
+        <item quantity="other">"%1$d התנגשויות לפתרון"</item>
+    </plurals>
+    <plurals name="tide_git_files_staged">
+        <item quantity="one">"קובץ אחד מוכן ל־commit (%1$d)"</item>
+        <item quantity="two">"שני קבצים מוכנים ל־commit (%1$d)"</item>
+        <item quantity="many">"%1$d קבצים מוכנים ל־commit"</item>
+        <item quantity="other">"%1$d קבצים מוכנים ל־commit"</item>
+    </plurals>
+    <plurals name="tide_git_headline_commit">
+        <item quantity="one">"יצירת commit עבור קובץ אחד (%1$d)"</item>
+        <item quantity="two">"יצירת commit עבור שני קבצים (%1$d)"</item>
+        <item quantity="many">"יצירת commit עבור %1$d קבצים"</item>
+        <item quantity="other">"יצירת commit עבור %1$d קבצים"</item>
+    </plurals>
+    <plurals name="tide_home_headline_attention">
+        <item quantity="one">"כספת אחת (%1$d)\nזקוקה לתשומת לבך."</item>
+        <item quantity="two">"שתי כספות (%1$d)\nזקוקות לתשומת לבך."</item>
+        <item quantity="many">"%1$d כספות\nזקוקות לתשומת לבך."</item>
+        <item quantity="other">"%1$d כספות\nזקוקות לתשומת לבך."</item>
+    </plurals>
+    <plurals name="tide_home_headline_ready">
+        <item quantity="one">"כספת אחת (%1$d)\nבטלפון הזה."</item>
+        <item quantity="two">"שתי כספות (%1$d)\nבטלפון הזה."</item>
+        <item quantity="many">"%1$d כספות\nבטלפון הזה."</item>
+        <item quantity="other">"%1$d כספות\nבטלפון הזה."</item>
+    </plurals>
+    <plurals name="tide_home_start_github_count">
+        <item quantity="one">"מאגר אחד זמין (%1$d)"</item>
+        <item quantity="two">"שני מאגרים זמינים (%1$d)"</item>
+        <item quantity="many">"%1$d מאגרים זמינים"</item>
+        <item quantity="other">"%1$d מאגרים זמינים"</item>
+    </plurals>
+    <plurals name="tide_vault_changes_on_phone">
+        <item quantity="one">"שינוי בטלפון הזה"</item>
+        <item quantity="two">"שני שינויים בטלפון הזה"</item>
+        <item quantity="many">"שינויים בטלפון הזה"</item>
+        <item quantity="other">"שינויים בטלפון הזה"</item>
+    </plurals>
+    <plurals name="tide_vault_conflicts_to_resolve">
+        <item quantity="one">"התנגשות לפתרון"</item>
+        <item quantity="two">"שתי התנגשויות לפתרון"</item>
+        <item quantity="many">"התנגשויות לפתרון"</item>
+        <item quantity="other">"התנגשויות לפתרון"</item>
+    </plurals>
+</resources>

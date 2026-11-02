@@ -1,0 +1,18 @@
+<resources>
+    <string name="clone_recovery_title">Interrupted clones</string>
+    <string name="clone_recovery_unreadable">Unreadable clone recovery</string>
+    <string name="clone_recovery_ready">Retry adding this clone after reviewing its folder and connection. Existing files are kept.</string>
+    <string name="clone_recovery_damaged">These recovery details cannot be read. You can dismiss this recovery and reconnect a completed folder manually.</string>
+    <string name="clone_recovery_staging">Staged copy: %1$s</string>
+    <string name="clone_recovery_retry">Retry adding clone</string>
+    <string name="clone_recovery_dismiss">Dismiss recovery</string>
+    <string name="clone_recovery_confirm_title">Dismiss this clone recovery?</string>
+    <string name="clone_recovery_confirm_body">Automatic recovery will stop. Repository folders and saved connections stay on this device. You can add a completed repository from Local repositories.</string>
+    <string name="clone_recovery_dismissed">Recovery dismissed. Repository files and saved connections were kept.</string>
+    <string name="clone_recovery_added">Cloned repository added</string>
+    <string name="clone_recovery_review_needed">Some interrupted clones need review in Local repositories. Their files were kept.</string>
+    <string name="clone_recovery_unavailable">Clone recovery is unavailable. Check app storage and try again.</string>
+    <string name="clone_recovery_refresh">Refresh clone recoveries</string>
+    <string name="clone_recovery_cannot_dismiss">These recovery details changed or cannot be safely removed. Refresh to review them again.</string>
+    <string name="clone_recovery_cancel_failed">Could not dismiss this clone recovery. Check app storage and try again. Its files were kept.</string>
+</resources>

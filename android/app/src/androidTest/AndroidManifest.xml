@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Test APK only: proves an actual cross-process ACTION_VIEW result delivery. -->
+        <activity android:name="com.bontecou.syncmd.CallbackResultFixtureActivity" android:exported="true"
+            android:launchMode="singleTask"
+            android:label="Callback result fixture" android:theme="@android:style/Theme.Material.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="gitsync-callback-fixture" android:host="result" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

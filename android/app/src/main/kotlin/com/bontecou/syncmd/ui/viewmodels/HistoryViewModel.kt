@@ -2,351 +2,172 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bontecou.syncmd.data.models.Commit
-import com.bontecou.syncmd.data.models.RevertStrategy
-import com.bontecou.syncmd.data.models.Stash
-import com.bontecou.syncmd.data.models.Tag
+import com.bontecou.syncmd.data.models.*
 import com.bontecou.syncmd.services.git.HistoryService
+import com.bontecou.syncmd.services.git.PushService
+import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
+import com.bontecou.syncmd.ui.util.RepositorySelection
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * ViewModel for history operations, stash management, and tag management.
- */
+/** History rows, reviews and callbacks belong to one visit to one repository. */
 @HiltViewModel
-class HistoryViewModel @Inject constructor(
-    private val historyService: HistoryService
-) : ViewModel() {
-
-    // Commit history
-    private val _commits = MutableStateFlow<List<Commit>>(emptyList())
-    val commits: StateFlow<List<Commit>> = _commits.asStateFlow()
-
-    // Stashes
-    private val _stashes = MutableStateFlow<List<Stash>>(emptyList())
-    val stashes: StateFlow<List<Stash>> = _stashes.asStateFlow()
-
-    // Tags
-    private val _tags = MutableStateFlow<List<Tag>>(emptyList())
-    val tags: StateFlow<List<Tag>> = _tags.asStateFlow()
-
-    // Selected commit for detailed view
-    private val _selectedCommit = MutableStateFlow<Commit?>(null)
-    val selectedCommit: StateFlow<Commit?> = _selectedCommit.asStateFlow()
-
-    // Loading state
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Error message
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-
-    // Current repository path
-    private val _currentRepoPath = MutableStateFlow<String?>(null)
-    val currentRepoPath: StateFlow<String?> = _currentRepoPath.asStateFlow()
-
-    /**
-     * Set the current repository path and load all history data.
-     */
-    fun setRepositoryPath(repoPath: String) {
-        _currentRepoPath.value = repoPath
-        loadAll()
+class HistoryViewModel @Inject constructor(private val historyService: HistoryService, private val pushService: PushService) : ViewModel() {
+    data class State(
+        val repositoryPath: String? = null,
+        val selection: RepositorySelection? = null,
+        val commits: List<Commit> = emptyList(),
+        val stashes: List<Stash> = emptyList(),
+        val tags: List<Tag> = emptyList(),
+        val selectedCommit: Commit? = null,
+        val isLoading: Boolean = false,
+        val actionsReady: Boolean = false,
+        val errorMessage: String? = null,
+        val operationRevision: Long = 0,
+    )
+    private val _state = MutableStateFlow(State())
+    val state = _state.asStateFlow()
+    private fun update(change: (State) -> State) { _state.value = change(_state.value) }
+    private data class Snapshot(val commits: List<Commit>, val stashes: List<Stash>, val tags: List<Tag>) {
+        val head get() = commits.firstOrNull()?.hash
     }
+    private var snapshot: Snapshot? = null
+    private var readJob: Job? = null
+    @Volatile private var readId = 0L
+    private var mutationRunning = false
+    private var refreshPending = false
+    private var operationNotice: String? = null
+    private fun current(expected: RepositorySelection?) = expected != null && _state.value.selection === expected
+    private fun available(expected: RepositorySelection) = current(expected) && _state.value.actionsReady && !mutationRunning && !_state.value.isLoading
 
-    /**
-     * Load all history data (commits, stashes, tags).
-     */
-    private fun loadAll() {
+    fun setRepositoryPath(path: String) {
+        if (_state.value.repositoryPath != path) {
+            readId++; readJob?.cancel(); snapshot = null; operationNotice = null
+            update { State(repositoryPath = path, selection = path.takeIf { it.isNotBlank() }?.let(::RepositorySelection),
+                isLoading = mutationRunning, operationRevision = it.operationRevision) }
+        }
         loadHistory()
-        loadStashes()
-        loadTags()
     }
-
-    /**
-     * Load commit history.
-     */
+    // All three inventories form one snapshot; a successful sub-read must not hide another failure.
+    fun loadStashes() = loadHistory()
+    fun loadTags() = loadHistory()
     fun loadHistory() {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
+        if (mutationRunning) { refreshPending = true; return }
+        val expected = _state.value.selection ?: return
+        val request = ++readId
+        readJob?.cancel(); update { it.copy(isLoading = true, actionsReady = false, errorMessage = operationNotice) }
+        readJob = viewModelScope.launch {
             try {
-                val result = historyService.getHistory(repoPath, maxCommits = 100)
-                if (result.isSuccess) {
-                    _commits.value = result.getOrNull() ?: emptyList()
-                    _errorMessage.value = null
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to load history"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Load stashes.
-     */
-    fun loadStashes() {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            try {
-                val result = historyService.listStashes(repoPath)
-                if (result.isSuccess) {
-                    _stashes.value = result.getOrNull() ?: emptyList()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to load stashes"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            }
-        }
-    }
-
-    /**
-     * Load tags.
-     */
-    fun loadTags() {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            try {
-                val result = historyService.listTags(repoPath)
-                if (result.isSuccess) {
-                    _tags.value = result.getOrNull() ?: emptyList()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to load tags"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            }
-        }
-    }
-
-    /**
-     * Select a commit for detailed view.
-     */
-    fun selectCommit(commit: Commit) {
-        _selectedCommit.value = commit
-    }
-
-    /**
-     * Deselect the currently selected commit.
-     */
-    fun deselectCommit() {
-        _selectedCommit.value = null
-    }
-
-    /**
-     * Revert a commit.
-     */
-    fun revertCommit(commitHash: String, strategy: RevertStrategy = RevertStrategy.CREATE_NEW_COMMIT) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = historyService.revertCommit(repoPath, commitHash, strategy)
-                if (result.isSuccess) {
-                    val revertResult = result.getOrNull()
-                    if (revertResult != null && revertResult.success) {
-                        loadHistory() // Reload history after revert
-                        _selectedCommit.value = null
-                    } else {
-                        _errorMessage.value = revertResult?.message ?: "Revert operation failed"
+                val fresh = withContext(Dispatchers.IO) {
+                    RepositoryOperationCoordinator.withRepository(expected.path) {
+                        if (current(expected) && request == readId) readSnapshot(expected.path) else null
                     }
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Revert failed"
                 }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error during revert"
+                if (current(expected) && request == readId && fresh != null) publish(fresh)
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) {
+                if (current(expected) && request == readId) update { it.copy(errorMessage = operationNotice ?: failure.message ?: "Could not refresh history") }
             } finally {
-                _isLoading.value = false
+                if (current(expected) && request == readId && !mutationRunning) update { it.copy(isLoading = false) }
             }
         }
     }
-
-    /**
-     * Save current changes to stash.
-     */
-    fun stashSave(message: String = "") {
-        val repoPath = _currentRepoPath.value ?: return
-
+    private suspend fun readSnapshot(path: String) = Snapshot(
+        historyService.getHistory(path, maxCommits = 100).getOrThrow(),
+        historyService.listStashes(path).getOrThrow(), historyService.listTags(path).getOrThrow()
+    )
+    private fun publish(fresh: Snapshot) {
+        snapshot = fresh
+        update { before -> before.copy(commits = fresh.commits, stashes = fresh.stashes, tags = fresh.tags, actionsReady = true,
+            selectedCommit = before.selectedCommit?.takeIf { selected -> fresh.commits.any { it == selected } }) }
+    }
+    fun selectCommit(expected: RepositorySelection, commit: Commit) {
+        if (available(expected) && _state.value.commits.any { it === commit }) update { it.copy(selectedCommit = commit) }
+    }
+    fun deselectCommit(expected: RepositorySelection) { if (current(expected)) update { it.copy(selectedCommit = null) } }
+    fun revertCommit(expected: RepositorySelection, commit: Commit, strategy: RevertStrategy = RevertStrategy.CREATE_NEW_COMMIT) {
+        if (_state.value.commits.none { it === commit }) return
+        mutate(expected) { path, fresh ->
+            check(fresh.commits.any { it == commit }) { "Commit changed. Refresh history and review again." }
+            val result = historyService.revertCommit(path, commit.hash, strategy).getOrThrow()
+            check(result.success) { result.message }
+        }
+    }
+    fun stashSave(expected: RepositorySelection, message: String = "", onSuccess: () -> Unit = {}) = mutate(expected, onSuccess) { path, _ ->
+        val result = historyService.stash(path, message.ifBlank { null }).getOrThrow()
+        check(result.success) { result.message }
+    }
+    fun stashApply(expected: RepositorySelection, stash: Stash) = changeStash(expected, stash, historyService::stashApply)
+    fun stashPop(expected: RepositorySelection, stash: Stash) = changeStash(expected, stash, historyService::stashPop)
+    fun stashDrop(expected: RepositorySelection, stash: Stash) = changeStash(expected, stash, historyService::stashDrop)
+    private fun changeStash(expected: RepositorySelection, stash: Stash, action: suspend (String, String) -> Result<Unit>) {
+        if (_state.value.stashes.none { it === stash }) return
+        mutate(expected) { path, fresh ->
+            // stash@{n} is positional: a newly added/dropped entry must not retarget an old row.
+            check(fresh.stashes.firstOrNull { it.id == stash.id } == stash) { "Stash list changed. Review the current stash before trying again." }
+            action(path, stash.id).getOrThrow()
+        }
+    }
+    fun createTag(expected: RepositorySelection, name: String, commitHash: String = "HEAD", annotated: Boolean = false, message: String? = null, onSuccess: () -> Unit = {}) {
+        if (!available(expected)) return
+        if (name.isBlank()) { operationNotice = "Tag name cannot be empty"; update { it.copy(errorMessage = operationNotice) }; return }
+        mutate(expected, onSuccess) { path, fresh ->
+            val target = if (commitHash == "HEAD") requireNotNull(fresh.head) { "Commit a file before creating a tag." } else commitHash
+            historyService.createTag(path, name, target, annotated, message).getOrThrow()
+        }
+    }
+    fun pushTag(expected: RepositorySelection, tag: Tag) = changeTag(expected, tag) { path -> pushService.pushTag(path, tag.name) }
+    fun deleteTag(expected: RepositorySelection, tag: Tag) = changeTag(expected, tag) { path -> historyService.deleteTag(path, tag.name) }
+    private fun changeTag(expected: RepositorySelection, tag: Tag, action: suspend (String) -> Result<Unit>) {
+        if (_state.value.tags.none { it === tag }) return
+        mutate(expected) { path, fresh ->
+            check(fresh.tags.firstOrNull { it.name == tag.name } == tag) { "Tag changed. Review the current tag before trying again." }
+            action(path).getOrThrow()
+        }
+    }
+    private fun mutate(expected: RepositorySelection, onSuccess: () -> Unit = {}, action: suspend (String, Snapshot) -> Unit) {
+        if (!available(expected)) return
+        val reviewed = snapshot ?: return
+        mutationRunning = true; refreshPending = false; readId++; readJob?.cancel()
+        operationNotice = null; update { it.copy(isLoading = true, actionsReady = false, errorMessage = null) }
         viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
+            var fresh: Snapshot? = null
+            var failure: Exception? = null
+            var completed = false
             try {
-                val result = historyService.stash(repoPath, message.ifBlank { null })
-                if (result.isSuccess) {
-                    val stashResult = result.getOrNull()
-                    if (stashResult != null && stashResult.success) {
-                        loadStashes()
-                    } else {
-                        _errorMessage.value = stashResult?.message ?: "Stash operation failed"
+                withContext(Dispatchers.IO) {
+                    RepositoryOperationCoordinator.withRepository(expected.path) {
+                        if (!current(expected)) return@withRepository
+                        try {
+                            val before = readSnapshot(expected.path)
+                            check(before.head == reviewed.head) { "Repository history changed. Refresh and review again." }
+                            action(expected.path, before); completed = true
+                        } catch (cancelled: CancellationException) { throw cancelled
+                        } catch (error: Exception) { failure = error }
+                        try { fresh = readSnapshot(expected.path) }
+                        catch (cancelled: CancellationException) { throw cancelled
+                        } catch (error: Exception) { if (failure == null) failure = error }
                     }
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Stash failed"
                 }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error during stash"
+                if (current(expected)) {
+                    fresh?.let(::publish)
+                    operationNotice = failure?.let { it.message ?: "Git could not complete this history action" }
+                    update { it.copy(errorMessage = operationNotice) }
+                    if (completed) { update { it.copy(selectedCommit = null) }; onSuccess() }
+                    update { it.copy(operationRevision = it.operationRevision + 1) }
+                }
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (error: Exception) {
+                if (current(expected)) { operationNotice = error.message ?: "Git could not complete this history action"; update { it.copy(errorMessage = operationNotice) } }
             } finally {
-                _isLoading.value = false
+                mutationRunning = false; update { it.copy(isLoading = false) }
+                val refresh = !current(expected) || refreshPending; refreshPending = false
+                if (refresh) loadHistory()
             }
         }
     }
-
-    /**
-     * Apply a stash without removing it.
-     */
-    fun stashApply(stashId: String) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = historyService.stashApply(repoPath, stashId)
-                if (result.isSuccess) {
-                    loadStashes()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to apply stash"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error applying stash"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Pop a stash (apply and remove).
-     */
-    fun stashPop(stashId: String) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = historyService.stashPop(repoPath, stashId)
-                if (result.isSuccess) {
-                    loadStashes()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to pop stash"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error popping stash"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Drop a stash without applying.
-     */
-    fun stashDrop(stashId: String) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = historyService.stashDrop(repoPath, stashId)
-                if (result.isSuccess) {
-                    loadStashes()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to drop stash"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error dropping stash"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Create a new tag.
-     */
-    fun createTag(
-        name: String,
-        commitHash: String = "HEAD",
-        annotated: Boolean = false,
-        message: String? = null
-    ) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        if (name.isBlank()) {
-            _errorMessage.value = "Tag name cannot be empty"
-            return
-        }
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = historyService.createTag(repoPath, name, commitHash, annotated, message)
-                if (result.isSuccess) {
-                    loadTags()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to create tag"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error creating tag"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Delete a tag.
-     */
-    fun deleteTag(name: String) {
-        val repoPath = _currentRepoPath.value ?: return
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-
-            try {
-                val result = historyService.deleteTag(repoPath, name)
-                if (result.isSuccess) {
-                    loadTags()
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to delete tag"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error deleting tag"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Clear error message.
-     */
-    fun clearError() {
-        _errorMessage.value = null
-    }
+    fun clearError(expected: RepositorySelection?) { if (current(expected)) { operationNotice = null; update { it.copy(errorMessage = null) } } }
 }

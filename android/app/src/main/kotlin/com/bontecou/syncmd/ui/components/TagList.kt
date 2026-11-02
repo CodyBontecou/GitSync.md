@@ -1,31 +1,44 @@
 package com.bontecou.syncmd.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Tag
+import com.bontecou.syncmd.ui.theme.SyncMdTheme
+import com.bontecou.syncmd.ui.theme.Tide
+import com.bontecou.syncmd.ui.theme.TideCard
+import com.bontecou.syncmd.ui.theme.TideHairline
+import com.bontecou.syncmd.ui.theme.TidePill
+import com.bontecou.syncmd.ui.theme.TideType
 
 /**
- * Displays a list of tags with delete action.
+ * Tide tag list: a white card of hairline-separated rows with mono tag
+ * names, an annotated/light pill and the target hash (iOS VaultTagsScreen).
  */
 @Composable
 fun TagList(
@@ -34,27 +47,24 @@ fun TagList(
     modifier: Modifier = Modifier
 ) {
     if (tags.isEmpty()) {
-        Surface(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant
-        ) {
+        TideCard(modifier = modifier.padding(16.dp)) {
             Text(
-                text = "No tags found",
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = stringResource(R.string.ui_no_tags_found_8a6dd503),
+                style = TideType.sans(15.sp, FontWeight.SemiBold),
+                color = Tide.colors.ink,
             )
         }
         return
     }
 
     LazyColumn(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Tide.colors.card, Tide.cardShape)
+            .padding(horizontal = 16.dp),
     ) {
-        items(tags) { tag ->
+        itemsIndexed(tags) { index, tag ->
+            if (index > 0) TideHairline()
             TagItem(
                 tag = tag,
                 onDeleteClick = { onDeleteTag(tag.name) }
@@ -64,7 +74,7 @@ fun TagList(
 }
 
 /**
- * Single tag item in the list.
+ * Single tag row.
  */
 @Composable
 fun TagItem(
@@ -72,133 +82,124 @@ fun TagItem(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
-        shape = MaterialTheme.shapes.small
+    val c = Tide.colors
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
+            .padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(3.dp)
         ) {
-            // Tag info
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                // Tag name and type
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Text(
+                    text = tag.name,
+                    style = TideType.mono(14.sp, FontWeight.SemiBold),
+                    color = c.ink,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false),
+                )
+                if (tag.isAnnotated) TidePill(stringResource(R.string.tide_git_annotated), c.behind, c.behind.copy(alpha = 0.12f))
+                else TidePill(stringResource(R.string.tide_git_lightweight), c.inkMid, c.well)
+            }
+
+            // Commit hash — label + mono hash
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.ui_commit_84da95ea),
+                    style = TideType.sans(12.sp),
+                    color = c.inkFaint,
+                )
+                Text(
+                    text = tag.commitHash.take(7),
+                    style = TideType.mono(11.sp, FontWeight.SemiBold),
+                    color = c.inkMid,
+                )
+            }
+
+            val taggerName = tag.taggerName
+            val tagMsg = tag.message
+            if (tag.createdAt > 0 || taggerName != null) {
+                val parts = buildList {
+                    if (tag.createdAt > 0) add(formatTimestamp(tag.createdAt))
+                    if (!taggerName.isNullOrBlank()) add(taggerName)
+                }
+                if (parts.isNotEmpty()) {
                     Text(
-                        text = tag.name,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Bold,
+                        text = parts.joinToString(" · "),
+                        style = TideType.meta,
+                        color = c.inkFaint,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                    // Tag type badge
-                    Surface(
-                        shape = MaterialTheme.shapes.extraSmall,
-                        color = if (tag.isAnnotated)
-                            MaterialTheme.colorScheme.tertiaryContainer
-                        else
-                            MaterialTheme.colorScheme.secondaryContainer
-                    ) {
-                        Text(
-                            text = if (tag.isAnnotated) "annotated" else "lightweight",
-                            modifier = Modifier.padding(2.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontSize = 9.sp,
-                            color = if (tag.isAnnotated)
-                                MaterialTheme.colorScheme.onTertiaryContainer
-                            else
-                                MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
-
-                // Commit hash
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "Commit:",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Surface(
-                        shape = MaterialTheme.shapes.extraSmall,
-                        color = MaterialTheme.colorScheme.primaryContainer
-                    ) {
-                        Text(
-                            text = tag.commitHash.take(7),
-                            modifier = Modifier.padding(2.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 9.sp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-                }
-
-                // Metadata
-                val taggerName = tag.taggerName
-                val tagMsg = tag.message
-                if (tag.createdAt > 0 || taggerName != null) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        if (tag.createdAt > 0) {
-                            Text(
-                                text = formatTimestamp(tag.createdAt),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-
-                        if (taggerName != null && taggerName.isNotBlank()) {
-                            Text(
-                                text = taggerName,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-
-                // Tag message if annotated
-                if (tag.isAnnotated && tagMsg != null && tagMsg.isNotBlank()) {
-                    Text(
-                        text = tagMsg,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
 
-            // Delete button
-            IconButton(
-                onClick = onDeleteClick,
-                modifier = Modifier.padding(0.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete tag",
-                    tint = MaterialTheme.colorScheme.error
+            if (tag.isAnnotated && tagMsg != null && tagMsg.isNotBlank()) {
+                Text(
+                    text = tagMsg,
+                    style = TideType.sans(14.sp),
+                    color = c.inkMid,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
+
+        val description = stringResource(R.string.ui_delete_tag_365635aa)
+        Box(
+            Modifier
+                .heightIn(min = 48.dp)
+                .widthIn(min = 48.dp)
+                .clickable(role = Role.Button, onClick = onDeleteClick)
+                .semantics { contentDescription = description },
+            contentAlignment = Alignment.Center,
+        ) {
+            Box(
+                Modifier
+                    .heightIn(min = 36.dp)
+                    .border(1.dp, c.danger.copy(alpha = 0.35f), CircleShape)
+                    .padding(horizontal = 14.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text("✕", style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.danger)
+            }
+        }
     }
+}
+
+// ─── Previews ─────────────────────────────────────────────────────────────────
+
+private val previewTags = listOf(
+    Tag("v1.0.0", "e19c4a0d8b7f", isAnnotated = true, message = "First release", taggerName = "Cody", createdAt = 1_793_000_000_000),
+    Tag("checkpoint", "a1b2c3d4e5f6"),
+)
+
+@Preview(name = "Tags · light")
+@Composable
+private fun TagListLightPreview() = SyncMdTheme(darkTheme = false) {
+    Box(Modifier.background(Tide.colors.paper).padding(16.dp)) { TagList(previewTags, {}) }
+}
+
+@Preview(name = "Tags · dark")
+@Composable
+private fun TagListDarkPreview() = SyncMdTheme(darkTheme = true) {
+    Box(Modifier.background(Tide.colors.paper).padding(16.dp)) { TagList(previewTags, {}) }
+}
+
+@Preview(name = "Tags · empty")
+@Composable
+private fun TagListEmptyPreview() = SyncMdTheme(darkTheme = false) {
+    Box(Modifier.background(Tide.colors.paper)) { TagList(emptyList(), {}) }
 }

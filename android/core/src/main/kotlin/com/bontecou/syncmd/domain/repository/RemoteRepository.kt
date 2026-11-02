@@ -53,6 +53,9 @@ interface RemoteRepository {
      */
     suspend fun pushTags(repoPath: String, remote: String): Result<Unit>
 
+    /** Push only the selected tag, without publishing other local tags. */
+    suspend fun pushTag(repoPath: String, name: String, remote: String): Result<Unit>
+
     /**
      * Fetch updates from a specific remote
      */

@@ -10,7 +10,9 @@ data class RepositoryStatus(
     val modifiedFiles: List<GitStatusEntry> = emptyList(),
     val stagedFiles: List<GitStatusEntry> = emptyList(),
     val untrackedFiles: List<GitStatusEntry> = emptyList(),
-    val allChanges: List<GitStatusEntry> = emptyList()
+    val allChanges: List<GitStatusEntry> = emptyList(),
+    val headCommit: String? = null,
+    val lastSyncAt: Long? = null,
 ) {
     /**
      * Total number of files with changes
@@ -63,7 +65,8 @@ data class SafePullResult(
     val commitsApplied: Int = 0,
     val filesChanged: Int = 0,
     val conflictsDetected: Int = 0,
-    val mergeRequired: Boolean = false
+    val mergeRequired: Boolean = false,
+    val attention: String? = null
 )
 
 /**

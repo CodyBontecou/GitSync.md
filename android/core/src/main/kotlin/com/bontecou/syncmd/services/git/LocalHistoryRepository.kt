@@ -2,17 +2,17 @@ package com.bontecou.syncmd.services.git
 
 import com.bontecou.syncmd.data.models.Commit
 import com.bontecou.syncmd.data.models.HistoryException
+import com.bontecou.syncmd.data.models.DirtyRepoException
 import com.bontecou.syncmd.data.models.RevertResult
 import com.bontecou.syncmd.data.models.RevertStrategy
 import com.bontecou.syncmd.data.models.Stash
 import com.bontecou.syncmd.data.models.StashResult
 import com.bontecou.syncmd.data.models.Tag
 import com.bontecou.syncmd.domain.repository.HistoryRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ResetCommand
 import org.eclipse.jgit.revwalk.RevWalk
+import org.eclipse.jgit.lib.RepositoryState
 import java.io.File
 
 /**
@@ -22,12 +22,12 @@ import java.io.File
  * ProcessBuilder("git") fails on Android with "No such file or directory";
  * JGit works everywhere.
  */
-class LocalHistoryRepository : HistoryRepository {
+class LocalHistoryRepository(private val authorResolver: RepositoryAuthorResolver? = null) : HistoryRepository {
 
     override suspend fun getHistory(repoPath: String, maxCommits: Int): Result<List<Commit>> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val commits = git.log().setMaxCount(maxCommits).call()
                         .map { it.toCommit() }
                     Result.success(commits)
@@ -38,11 +38,11 @@ class LocalHistoryRepository : HistoryRepository {
         }
 
     override suspend fun getCommit(repoPath: String, commitHash: String): Result<Commit> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val objectId = git.repository.resolve(commitHash)
-                        ?: return@withContext Result.failure(HistoryException("Commit not found: $commitHash"))
+                        ?: return@withRepository Result.failure(HistoryException("Commit not found: $commitHash"))
                     RevWalk(git.repository).use { walk ->
                         val revCommit = walk.parseCommit(objectId)
                         Result.success(revCommit.toCommit())
@@ -57,14 +57,19 @@ class LocalHistoryRepository : HistoryRepository {
         repoPath: String,
         commitHash: String,
         strategy: RevertStrategy,
-    ): Result<RevertResult> = withContext(Dispatchers.IO) {
+    ): Result<RevertResult> = RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.REVERT) {
         try {
-            Git.open(File(repoPath)).use { git ->
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                 val objectId = git.repository.resolve(commitHash)
-                    ?: return@withContext Result.failure(HistoryException("Commit not found: $commitHash"))
+                    ?: return@withRepository Result.failure(HistoryException("Commit not found: $commitHash"))
 
                 when (strategy) {
                     RevertStrategy.CREATE_NEW_COMMIT -> {
+                        requireRevertReady(git)
+                        val reviewed = CheckoutProtection.snapshot(git)
+                        git.useAuthor(repoPath, authorResolver)
+                        CheckoutProtection.verify(git, reviewed)
+                        requireRevertReady(git)
                         RevWalk(git.repository).use { walk ->
                             val revCommit = walk.parseCommit(objectId)
                             val revertResult = git.revert().include(revCommit).call()
@@ -98,10 +103,19 @@ class LocalHistoryRepository : HistoryRepository {
         }
     }
 
+    private fun requireRevertReady(git: Git) {
+        check(git.repository.repositoryState == RepositoryState.SAFE) {
+            "Finish or abort the current Git operation before reverting a commit."
+        }
+        if (!git.status().call().isClean) throw DirtyRepoException(
+            "Commit or stash local changes before reverting a commit."
+        )
+    }
+
     override suspend fun listStashes(repoPath: String): Result<List<Stash>> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val stashes = git.stashList().call()
                         .mapIndexed { index, revCommit ->
                             Stash(
@@ -120,9 +134,10 @@ class LocalHistoryRepository : HistoryRepository {
         }
 
     override suspend fun stashSave(repoPath: String, message: String?): Result<StashResult> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.STASH) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                    git.useAuthor(repoPath, authorResolver)
                     val cmd = git.stashCreate()
                     if (message != null) cmd.setWorkingDirectoryMessage(message)
                     val stashedCommit = cmd.call()
@@ -146,48 +161,54 @@ class LocalHistoryRepository : HistoryRepository {
         }
 
     override suspend fun stashApply(repoPath: String, stashId: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.STASH) {
             try {
-                Git.open(File(repoPath)).use { git ->
-                    git.stashApply().setStashRef(stashId).call()
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                    val (_, commit) = requireStash(git, stashId)
+                    git.stashApply().setStashRef(commit).call()
                     Result.success(Unit)
                 }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
+            } catch (e: Exception) { Result.failure(e) }
         }
 
     override suspend fun stashPop(repoPath: String, stashId: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.STASH) {
             try {
-                Git.open(File(repoPath)).use { git ->
-                    git.stashApply().setStashRef(stashId).call()
-                    val index = stashId.removePrefix("stash@{").removeSuffix("}").toIntOrNull() ?: 0
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                    val (index, commit) = requireStash(git, stashId)
+                    git.stashApply().setStashRef(commit).call()
+                    check(git.stashList().call().elementAtOrNull(index)?.name == commit) {
+                        "Stash list changed after applying. Changes were applied; the stash was retained. Review before removing it."
+                    }
                     git.stashDrop().setStashRef(index).call()
                     Result.success(Unit)
                 }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
+            } catch (e: Exception) { Result.failure(e) }
         }
 
     override suspend fun stashDrop(repoPath: String, stashId: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.STASH) {
             try {
-                Git.open(File(repoPath)).use { git ->
-                    val index = stashId.removePrefix("stash@{").removeSuffix("}").toIntOrNull() ?: 0
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                    val (index, _) = requireStash(git, stashId)
                     git.stashDrop().setStashRef(index).call()
                     Result.success(Unit)
                 }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
+            } catch (e: Exception) { Result.failure(e) }
         }
 
+    private fun requireStash(git: Git, id: String): Pair<Int, String> {
+        val text = Regex("stash@\\{(0|[1-9][0-9]*)\\}").matchEntire(id)?.groupValues?.get(1)
+            ?: throw HistoryException("Invalid stash identifier")
+        val index = text.toIntOrNull() ?: throw HistoryException("Invalid stash index")
+        val commit = git.stashList().call().elementAtOrNull(index) ?: throw HistoryException("Stash no longer exists")
+        return index to commit.name
+    }
+
     override suspend fun listTags(repoPath: String): Result<List<Tag>> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val tags = git.tagList().call().mapNotNull { ref ->
                         val name = ref.name.removePrefix("refs/tags/")
                         RevWalk(git.repository).use { walk ->
@@ -207,6 +228,7 @@ class LocalHistoryRepository : HistoryRepository {
                                     commitHash  = peeled.name,
                                     isAnnotated = isAnnotated,
                                     message     = message,
+                                    refObjectId = ref.objectId.name,
                                 )
                             } catch (_: Exception) { null }
                         }
@@ -224,14 +246,15 @@ class LocalHistoryRepository : HistoryRepository {
         commitHash: String,
         annotated: Boolean,
         message: String?,
-    ): Result<Unit> = withContext(Dispatchers.IO) {
+    ): Result<Unit> = RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.TAG) {
         try {
-            Git.open(File(repoPath)).use { git ->
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                 val objectId = git.repository.resolve(commitHash.ifBlank { "HEAD" })
-                    ?: return@withContext Result.failure(Exception("Cannot resolve: $commitHash"))
+                    ?: return@withRepository Result.failure(Exception("Cannot resolve: $commitHash"))
 
                 RevWalk(git.repository).use { walk ->
                     val revObject = walk.parseAny(objectId)
+                    if (annotated) git.useAuthor(repoPath, authorResolver)
                     val cmd = git.tag()
                         .setName(name)
                         .setObjectId(revObject)
@@ -247,9 +270,9 @@ class LocalHistoryRepository : HistoryRepository {
     }
 
     override suspend fun deleteTag(repoPath: String, name: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.TAG) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     git.tagDelete().setTags(name).call()
                     Result.success(Unit)
                 }
@@ -259,11 +282,11 @@ class LocalHistoryRepository : HistoryRepository {
         }
 
     override suspend fun getTag(repoPath: String, name: String): Result<Tag> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val ref = git.repository.findRef("refs/tags/$name")
-                        ?: return@withContext Result.failure(HistoryException("Tag not found: $name"))
+                        ?: return@withRepository Result.failure(HistoryException("Tag not found: $name"))
 
                     RevWalk(git.repository).use { walk ->
                         val peeled    = walk.peel(walk.parseAny(ref.objectId))
@@ -278,6 +301,7 @@ class LocalHistoryRepository : HistoryRepository {
                                 commitHash  = peeled.name,
                                 isAnnotated = isAnnotated,
                                 message     = message,
+                                    refObjectId = ref.objectId.name,
                             )
                         )
                     }

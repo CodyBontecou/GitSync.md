@@ -7,14 +7,18 @@ import com.bontecou.syncmd.data.models.UnifiedDiffResult
  * All implementations must provide diff, stage, unstage, and commit operations.
  */
 interface DiffRepository {
+    suspend fun reviewDiscard(repoPath: String, filePath: String? = null): Result<com.bontecou.syncmd.services.git.DiscardReview> =
+        Result.failure(UnsupportedOperationException("Reviewed discard is unavailable"))
+    suspend fun discardReviewed(repoPath: String, review: com.bontecou.syncmd.services.git.DiscardReview): Result<Unit> =
+        Result.failure(UnsupportedOperationException("Reviewed discard is unavailable"))
 
     /**
-     * Get unified diff for the entire repository (working tree vs index)
+     * Get separate staged (HEAD to index) and unstaged (index to working tree) rows
      */
     suspend fun getDiff(repoPath: String): Result<UnifiedDiffResult>
 
     /**
-     * Get unified diff for a specific file (working tree vs index)
+     * Get both staged and unstaged rows for a specific file
      */
     suspend fun getDiff(repoPath: String, filePath: String): Result<UnifiedDiffResult>
 
@@ -22,6 +26,11 @@ interface DiffRepository {
      * Stage a file (add to index)
      */
     suspend fun stageFile(repoPath: String, filePath: String): Result<Unit>
+
+    /** Stage the entire working tree, including additions and deletions. */
+    suspend fun stageAll(repoPath: String): Result<Unit> = runCatching {
+        getDiff(repoPath).getOrThrow().files.forEach { stageFile(repoPath, it.filePath).getOrThrow() }
+    }
 
     /**
      * Unstage a file (remove from index)
@@ -46,8 +55,8 @@ interface DiffRepository {
     suspend fun discardFileChanges(repoPath: String, filePath: String): Result<Unit>
 
     /**
-     * Restore every changed tracked file to HEAD (equivalent to `git reset --hard HEAD`).
-     * Untracked files are left untouched.
+     * Restore tracked files and remove reviewed untracked files, matching iOS Revert All.
+     * Ignored files are protected. On an unborn branch only staging is cleared.
      */
     suspend fun discardAllChanges(repoPath: String): Result<Unit>
 }

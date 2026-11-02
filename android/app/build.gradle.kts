@@ -23,7 +23,7 @@ val secretValue: (String) -> String? = { key ->
 
 android {
     namespace = "com.bontecou.syncmd"
-    compileSdk = 35
+    compileSdk = 36
     
     defaultConfig {
         // Store identity for the paid-upfront listing. The original free listing
@@ -31,8 +31,8 @@ android {
         // unpublished; the code namespace above intentionally stays unchanged.
         applicationId = "md.gitsync.md"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 7
+        targetSdk = 36
+        versionCode = 8
         versionName = "1.0.3"
         
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -58,6 +58,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
         release {
             if (
                 !releaseStoreFilePath.isNullOrBlank() &&
@@ -108,6 +112,7 @@ android {
             excludes += "META-INF/NOTICE"
             excludes += "META-INF/NOTICE.txt"
             excludes += "META-INF/eclipse.inf"
+            excludes += "META-INF/versions/**/OSGI-INF/MANIFEST.MF"
             excludes += "META-INF/DEPENDENCIES"
         }
     }
@@ -132,6 +137,10 @@ play {
 dependencies {
     // Project modules
     implementation(project(":core"))
+    implementation(libs.gson)
+    implementation("com.google.firebase:firebase-messaging:25.0.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+    androidTestImplementation("androidx.work:work-testing:2.9.1")
     
     // Compose
     val composeBom = platform(libs.androidx.compose.bom)
@@ -175,8 +184,11 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.jgit)
+    androidTestImplementation(libs.jgit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
     androidTestImplementation(platform(composeBom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

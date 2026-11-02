@@ -2,162 +2,128 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bontecou.syncmd.data.models.GitStatusEntry
 import com.bontecou.syncmd.data.models.RepositoryStatus
 import com.bontecou.syncmd.data.models.SafePullPlan
 import com.bontecou.syncmd.services.git.PullService
+import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
+import com.bontecou.syncmd.ui.util.RepositorySelection
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * ViewModel for pull operations and repository status management.
- */
+/** Read requests and mutation callbacks belong to one immutable repository selection. */
 @HiltViewModel
-class PullViewModel @Inject constructor(
-    private val pullService: PullService
-) : ViewModel() {
-
-    // Repository status
+class PullViewModel @Inject constructor(private val pullService: PullService) : ViewModel() {
     private val _status = MutableStateFlow<RepositoryStatus?>(null)
-    val status: StateFlow<RepositoryStatus?> = _status.asStateFlow()
-
-    // Pull plan
+    val status = _status.asStateFlow()
     private val _pullPlan = MutableStateFlow<SafePullPlan?>(null)
-    val pullPlan: StateFlow<SafePullPlan?> = _pullPlan.asStateFlow()
-
-    // Loading state
+    val pullPlan = _pullPlan.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Error message
+    val isLoading = _isLoading.asStateFlow()
     private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-
-    // Current repository path
+    val errorMessage = _errorMessage.asStateFlow()
+    private val _attention = MutableStateFlow<String?>(null)
+    val attention = _attention.asStateFlow()
     private val _currentRepoPath = MutableStateFlow<String?>(null)
-    val currentRepoPath: StateFlow<String?> = _currentRepoPath.asStateFlow()
+    val currentRepoPath = _currentRepoPath.asStateFlow()
+    private val _selection = MutableStateFlow<RepositorySelection?>(null)
+    val selection = _selection.asStateFlow()
+    private var readJob: Job? = null
+    @Volatile private var readId = 0L
+    private var mutationRunning = false
+    private var refreshPending = false
+    private var operationNotice: String? = null
 
-    /**
-     * Set the current repository path and load status.
-     */
-    fun setRepositoryPath(repoPath: String) {
-        _currentRepoPath.value = repoPath
+    private fun current(expected: RepositorySelection?) = expected != null && _selection.value === expected
+    fun setRepositoryPath(path: String) {
+        if (_currentRepoPath.value != path) {
+            readId++; readJob?.cancel()
+            _currentRepoPath.value = path
+            _selection.value = path.takeIf { it.isNotBlank() }?.let(::RepositorySelection)
+            _status.value = null; _pullPlan.value = null; _attention.value = null; operationNotice = null; _errorMessage.value = null
+            _isLoading.value = mutationRunning
+        }
         loadStatus()
     }
-
-    /**
-     * Load repository status.
-     */
     fun loadStatus() {
-        val repoPath = _currentRepoPath.value ?: return
-        
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-            
+        if (mutationRunning) { refreshPending = true; return }
+        _pullPlan.value = null
+        read({ pullService.getStatus(it).getOrThrow() }) { _status.value = it }
+    }
+    fun planPull(expected: RepositorySelection) {
+        if (!current(expected) || mutationRunning) return
+        _pullPlan.value = null
+        read({ pullService.planPull(it).getOrThrow() }) { _pullPlan.value = it }
+    }
+    private fun <T : Any> read(action: suspend (String) -> T, publish: (T) -> Unit) {
+        val expected = _selection.value ?: return
+        val request = ++readId
+        readJob?.cancel(); _isLoading.value = true; _errorMessage.value = operationNotice
+        readJob = viewModelScope.launch {
             try {
-                val result = pullService.getStatus(repoPath)
-                if (result.isSuccess) {
-                    _status.value = result.getOrNull()
-                    _errorMessage.value = null
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to load status"
+                val result = withContext(Dispatchers.IO) {
+                    RepositoryOperationCoordinator.withRepository(expected.path) {
+                        if (!current(expected) || request != readId) null else action(expected.path)
+                    }
                 }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
+                if (current(expected) && request == readId && result != null) publish(result)
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) {
+                if (current(expected) && request == readId) _errorMessage.value = operationNotice ?: failure.message ?: "Could not refresh repository status"
             } finally {
-                _isLoading.value = false
+                if (current(expected) && request == readId && !mutationRunning) _isLoading.value = false
             }
         }
     }
-
-    /**
-     * Plan a pull operation.
-     */
-    fun planPull() {
-        val repoPath = _currentRepoPath.value ?: return
-        
+    fun executePull(expected: RepositorySelection) = mutate(expected, pull = true)
+    fun fetch(expected: RepositorySelection) = mutate(expected, pull = false)
+    private fun mutate(expected: RepositorySelection, pull: Boolean) {
+        if (!current(expected) || mutationRunning) return
+        mutationRunning = true; refreshPending = false
+        readId++; readJob?.cancel()
+        _isLoading.value = true; operationNotice = null; _errorMessage.value = null; _pullPlan.value = null
+        if (pull) _attention.value = null
         viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-            
+            var updated: RepositoryStatus? = null
+            var attention: String? = null
+            var failure: Exception? = null
             try {
-                val result = pullService.planPull(repoPath)
-                if (result.isSuccess) {
-                    _pullPlan.value = result.getOrNull()
-                    _errorMessage.value = null
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to plan pull"
+                withContext(Dispatchers.IO) {
+                    RepositoryOperationCoordinator.withRepository(expected.path) {
+                        // A queued operation is no longer authorized after switching away.
+                        if (!current(expected)) return@withRepository
+                        try {
+                            if (pull) {
+                                val result = pullService.pull(expected.path).getOrThrow()
+                                check(result.success) { result.message.ifBlank { "Pull did not complete" } }
+                                attention = result.attention
+                            } else pullService.fetch(expected.path).getOrThrow()
+                        } catch (cancelled: CancellationException) { throw cancelled
+                        } catch (error: Exception) { failure = error }
+                        try { updated = pullService.getStatus(expected.path).getOrThrow() }
+                        catch (cancelled: CancellationException) { throw cancelled
+                        } catch (error: Exception) { if (failure == null) failure = error }
+                    }
                 }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
+                if (current(expected)) {
+                    updated?.let { _status.value = it }
+                    if (pull) _attention.value = attention
+                    operationNotice = failure?.let { it.message ?: "Git could not complete this action" }
+                    _errorMessage.value = operationNotice
+                }
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (error: Exception) {
+                if (current(expected)) { operationNotice = error.message ?: "Git could not complete this action"; _errorMessage.value = operationNotice }
             } finally {
-                _isLoading.value = false
+                mutationRunning = false; _isLoading.value = false
+                val refresh = !current(expected) || refreshPending
+                refreshPending = false
+                if (refresh) loadStatus()
             }
         }
     }
-
-    /**
-     * Execute a pull operation.
-     */
-    fun executePull() {
-        val repoPath = _currentRepoPath.value ?: return
-        
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-            
-            try {
-                val result = pullService.pull(repoPath)
-                if (result.isSuccess) {
-                    _pullPlan.value = null
-                    loadStatus() // Refresh status after pull
-                    _errorMessage.value = null
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Pull failed"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Fetch without merging.
-     */
-    fun fetch() {
-        val repoPath = _currentRepoPath.value ?: return
-        
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-            
-            try {
-                val result = pullService.fetch(repoPath)
-                if (result.isSuccess) {
-                    loadStatus() // Refresh status after fetch
-                    _errorMessage.value = null
-                } else {
-                    _errorMessage.value = result.exceptionOrNull()?.message ?: "Fetch failed"
-                }
-            } catch (e: Exception) {
-                _errorMessage.value = e.message ?: "Unknown error"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Clear error message.
-     */
-    fun clearError() {
-        _errorMessage.value = null
-    }
+    fun clearError(expected: RepositorySelection?) { if (current(expected)) { operationNotice = null; _errorMessage.value = null } }
+    fun clearAttention(expected: RepositorySelection?) { if (current(expected)) _attention.value = null }
 }

@@ -1,0 +1,5 @@
+<resources>
+    <string name="connection_keep_saved">Keep saved credentials</string>
+    <string name="connection_public_access">Public access · no credentials</string>
+    <string name="connection_new_basic">New username and token</string>
+</resources>

@@ -2,20 +2,19 @@ package com.bontecou.syncmd.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
@@ -28,25 +27,34 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.github.GitHubRepo
-import com.bontecou.syncmd.ui.theme.BBadge
-import com.bontecou.syncmd.ui.theme.BBadgeStyle
-import com.bontecou.syncmd.ui.theme.BCard
-import com.bontecou.syncmd.ui.theme.BDivider
+import com.bontecou.syncmd.ui.components.AddVaultBusyLine
 import com.bontecou.syncmd.ui.theme.BEmptyState
-import com.bontecou.syncmd.ui.theme.BLoading
-import com.bontecou.syncmd.ui.theme.BSmallActionButton
-import com.bontecou.syncmd.ui.theme.BSectionHeader
-import com.bontecou.syncmd.ui.theme.LocalBrutalColors
+import com.bontecou.syncmd.ui.theme.SyncMdTheme
+import com.bontecou.syncmd.ui.theme.Tide
+import com.bontecou.syncmd.ui.theme.TideBanner
+import com.bontecou.syncmd.ui.theme.TideBannerTone
+import com.bontecou.syncmd.ui.theme.TideCard
+import com.bontecou.syncmd.ui.theme.TideChevron
+import com.bontecou.syncmd.ui.theme.TideCircleButton
+import com.bontecou.syncmd.ui.theme.TideOutlineButton
+import com.bontecou.syncmd.ui.theme.TidePill
+import com.bontecou.syncmd.ui.theme.TideTopBar
+import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
+import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,9 +62,11 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun RepoPickerScreen(
+    settingsViewModel: SettingsViewModel,
     onRepoSelected: (GitHubRepo) -> Unit,
     onNavigateBack: () -> Unit,
-    viewModel: GitHubViewModel = hiltViewModel()
+    viewModel: GitHubViewModel = hiltViewModel(),
+    onManageAccounts: () -> Unit = {},
 ) {
     val isLoggedIn    by viewModel.isLoggedIn.collectAsState()
     val user          by viewModel.user.collectAsState()
@@ -64,144 +74,97 @@ fun RepoPickerScreen(
     val searchQuery   by viewModel.searchQuery.collectAsState()
     val isLoading     by viewModel.isLoading.collectAsState()
     val error         by viewModel.error.collectAsState()
-    val bc            = LocalBrutalColors.current
 
     if (!isLoggedIn) {
-        LoginScreen(viewModel = viewModel)
+        LoginScreen(
+            viewModel = viewModel,
+            settingsViewModel = settingsViewModel,
+            onContinueAfterLogin = onNavigateBack,
+        )
         return
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(bc.bg)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    RepoPickerContent(
+        login = user?.login,
+        repos = filteredRepos,
+        searchQuery = searchQuery,
+        isLoading = isLoading,
+        error = error,
+        onSearch = viewModel::onSearchQueryChanged,
+        onRefresh = { viewModel.loadUserAndRepos(forceRefresh = true) },
+        onBack = onNavigateBack,
+        onManageAccounts = onManageAccounts,
+        onRepoSelected = onRepoSelected,
+    )
+}
 
-            // ── Header ────────────────────────────────────────────────────
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    BSmallActionButton(title = "← Back", onClick = onNavigateBack)
-                    BSmallActionButton(title = "Refresh", onClick = { viewModel.loadUserAndRepos(forceRefresh = true) })
-                }
-
-                Spacer(Modifier.height(8.dp))
-
-                user?.login?.let { login ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
-                        Text(
-                            text = "@$login",
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
-                                letterSpacing = 1.sp,
-                                color = bc.accent,
-                            )
-                        )
-                        Text(
-                            text = "· ${filteredRepos.size} repos",
-                            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.textMid)
-                        )
+/** Stateless picker: header, search, then loading / error / empty / no-matches / list. */
+@Composable
+private fun RepoPickerContent(
+    login: String?,
+    repos: List<GitHubRepo>,
+    searchQuery: String,
+    isLoading: Boolean,
+    error: String?,
+    onSearch: (String) -> Unit,
+    onRefresh: () -> Unit,
+    onBack: () -> Unit,
+    onManageAccounts: () -> Unit,
+    onRepoSelected: (GitHubRepo) -> Unit,
+) {
+    val c = Tide.colors
+    Box(Modifier.fillMaxSize().background(c.paper)) {
+        Column(Modifier.fillMaxSize()) {
+            TideTopBar(
+                onBack = onBack,
+                backLabel = stringResource(R.string.publication_back),
+                actions = {
+                    TideOutlineButton(stringResource(R.string.ui_github_accounts_653cf0c5), onClick = onManageAccounts, height = 44.dp)
+                    TideCircleButton(stringResource(R.string.ui_refresh_0e916101), onRefresh) {
+                        Text("↻", style = TideType.sans(18.sp, FontWeight.SemiBold), modifier = Modifier.clearAndSetSemantics {})
                     }
-                }
+                },
+            )
+
+            Column(Modifier.fillMaxWidth().padding(horizontal = Tide.gutter), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(R.string.tide_onboarding_picker_title), style = TideType.display(34.sp), color = c.ink,
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp))
+                if (login != null) RepositoryPickerIdentity(login, repos.size, Modifier.padding(start = 4.dp))
+                RepoSearchField(searchQuery, onSearch, Modifier.padding(top = 10.dp))
+                if (error != null) TideBanner(error, tone = TideBannerTone.DANGER)
             }
 
-            BDivider()
-
-            // ── Search ────────────────────────────────────────────────────
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(bc.surface)
-                    .border(1.dp, bc.borderSoft)
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(text = "⌕", style = TextStyle(fontSize = 16.sp, color = bc.textFaint))
-                Box(modifier = Modifier.weight(1f)) {
-                    if (searchQuery.isEmpty()) {
-                        Text(
-                            text = "Search repositories…",
-                            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textFaint)
-                        )
-                    }
-                    BasicTextField(
-                        value = searchQuery,
-                        onValueChange = viewModel::onSearchQueryChanged,
-                        textStyle = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.text),
-                        singleLine = true,
-                        cursorBrush = SolidColor(bc.text),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-                if (searchQuery.isNotEmpty()) {
-                    Text(
-                        text = "✕",
-                        style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textMid),
-                        modifier = Modifier.clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                        ) { viewModel.onSearchQueryChanged("") }
-                    )
-                }
-            }
-
-            BDivider()
-
-            // ── Error ─────────────────────────────────────────────────────
-            if (error != null) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(bc.error.copy(alpha = 0.08f))
-                        .border(1.dp, bc.error.copy(alpha = 0.4f))
-                        .padding(12.dp)
-                ) {
-                    Text(text = error!!, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = bc.error))
-                }
-            }
-
-            // ── Content ───────────────────────────────────────────────────
             when {
                 isLoading -> {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        BLoading(text = "Loading repos")
+                        AddVaultBusyLine(stringResource(R.string.ui_loading_repos_2f4f4a93))
                     }
                 }
 
-                filteredRepos.isEmpty() -> {
+                repos.isEmpty() -> {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        BEmptyState(
-                            title    = "No Repositories",
-                            subtitle = if (searchQuery.isNotBlank())
-                                "No repositories match \"$searchQuery\""
-                            else
-                                "No repositories found for this account.",
+                        if (searchQuery.isNotBlank()) BEmptyState(
+                            title    = stringResource(R.string.tide_onboarding_picker_no_matches),
+                            subtitle = "No repositories match \"$searchQuery\"",
+                        ) else BEmptyState(
+                            title    = stringResource(R.string.ui_no_repositories_a6e9ff91),
+                            subtitle = "No repositories found for this account.",
+                            actionTitle = stringResource(R.string.ui_refresh_0e916101),
+                            onAction = onRefresh,
                         )
                     }
                 }
 
                 else -> {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(filteredRepos, key = { it.id }) { repo ->
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 16.dp, bottom = 24.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        items(repos, key = { it.id }) { repo ->
                             RepoPickerRow(repo = repo, onClick = { onRepoSelected(repo) })
-                            BDivider()
                         }
+                        item { Box(Modifier.navigationBarsPadding()) }
                     }
                 }
             }
@@ -210,75 +173,82 @@ fun RepoPickerScreen(
 }
 
 @Composable
-private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
-    val bc = LocalBrutalColors.current
+private fun RepoSearchField(query: String, onQuery: (String) -> Unit, modifier: Modifier = Modifier) {
+    val c = Tide.colors
+    var focused by remember { mutableStateOf(false) }
     Row(
-        modifier = Modifier
+        modifier
             .fillMaxWidth()
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            )
-            .padding(horizontal = 20.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+            .heightIn(min = 52.dp)
+            .background(c.card, Tide.fieldShape)
+            .border(if (focused) 1.5.dp else 1.dp, if (focused) c.ink else c.lineSoft, Tide.fieldShape)
+            .padding(start = 16.dp, end = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                if (repo.isPrivate) {
-                    Text(text = "🔒", style = TextStyle(fontSize = 12.sp))
-                }
+        Text("⌕", style = TideType.sans(17.sp), color = c.inkFaint, modifier = Modifier.clearAndSetSemantics {})
+        Box(Modifier.weight(1f)) {
+            if (query.isEmpty()) Text(stringResource(R.string.ui_search_repositories_243865a1), style = TideType.sans(15.sp), color = c.inkFaint)
+            BasicTextField(
+                value = query,
+                onValueChange = onQuery,
+                textStyle = TideType.sans(15.sp, FontWeight.Medium).copy(color = c.ink),
+                singleLine = true,
+                cursorBrush = SolidColor(c.ink),
+                modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused },
+            )
+        }
+        if (query.isNotEmpty()) {
+            TideCircleButton(stringResource(R.string.tide_onboarding_picker_clear), { onQuery("") }, size = 40.dp, filled = false) {
+                Text("✕", style = TideType.sans(13.sp), color = c.inkMid, modifier = Modifier.clearAndSetSemantics {})
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
+    val c = Tide.colors
+    TideCard(padding = 16.dp, onClick = onClick) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = repo.fullName,
-                    style = TextStyle(
-                        fontFamily = FontFamily.Default,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
-                        color = bc.text,
-                    ),
+                    text = repo.name,
+                    style = TideType.sans(17.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr),
+                    color = c.ink,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-            }
-            if (!repo.description.isNullOrBlank() && repo.description != "null") {
                 Text(
-                    text = repo.description,
-                    style = TextStyle(fontFamily = FontFamily.Default, fontSize = 13.sp, color = bc.textMid),
-                    maxLines = 2,
+                    text = "${repo.ownerLogin} · ⎇ ${repo.defaultBranch}",
+                    style = TideType.meta.copy(textDirection = TextDirection.Ltr),
+                    color = c.inkFaint,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                repo.language?.let { lang ->
-                    Text(text = lang, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.accent))
+                if (!repo.description.isNullOrBlank() && repo.description != "null") {
+                    Text(
+                        text = repo.description,
+                        style = TideType.sans(13.sp).copy(lineHeight = 18.sp),
+                        color = c.inkMid,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 2.dp),
+                    )
                 }
-                Text(
-                    text = "⎇ ${repo.defaultBranch}",
-                    style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.textFaint)
-                )
-                if (repo.stargazersCount > 0) {
-                    Text(text = "★ ${repo.stargazersCount}", style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.textFaint))
-                }
-                repo.updatedAt?.let { iso ->
-                    formatRelativeDate(iso)?.let { rel ->
-                        Text(text = rel, style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, color = bc.textFaint))
+                FlowRow(Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    if (repo.isPrivate) TidePill(stringResource(R.string.publication_private_label), c.inkMid, c.well)
+                    repo.language?.let { TidePill(it, c.behind, c.behind.copy(alpha = 0.10f)) }
+                    if (repo.stargazersCount > 0) Text("★ ${repo.stargazersCount}", style = TideType.meta, color = c.inkFaint,
+                        modifier = Modifier.padding(vertical = 5.dp))
+                    repo.updatedAt?.let { iso ->
+                        formatRelativeDate(iso)?.let { rel -> Text(rel, style = TideType.meta, color = c.inkFaint, modifier = Modifier.padding(vertical = 5.dp)) }
                     }
                 }
             }
+            TideChevron()
         }
-
-        Text(
-            text = "→",
-            style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, color = bc.textFaint),
-            modifier = Modifier.padding(top = 2.dp),
-        )
     }
 }
 
@@ -297,3 +267,29 @@ private fun formatRelativeDate(iso: String): String? {
         else                                 -> "${TimeUnit.MILLISECONDS.toDays(diff) / 365}y ago"
     }
 }
+
+// ─── Previews ───────────────────────────────────────────────────────────────
+
+private val previewRepos = listOf(
+    GitHubRepo(1, "notes", "octocat/notes", "Daily notes and an Obsidian vault", true, "", "main", "2026-10-30T10:00:00Z", "octocat", "Markdown", 4),
+    GitHubRepo(2, "garden", "octocat/garden", null, false, "", "trunk", null, "octocat", null, 0),
+)
+
+@Composable
+private fun PickerPreview(repos: List<GitHubRepo>, query: String = "", loading: Boolean = false, error: String? = null) =
+    RepoPickerContent("octocat", repos, query, loading, error, {}, {}, {}, {}, {})
+
+@Preview(name = "Picker · list", heightDp = 760) @Composable
+private fun PickerListPreview() = SyncMdTheme(darkTheme = false) { PickerPreview(previewRepos) }
+
+@Preview(name = "Picker · list · dark", heightDp = 760) @Composable
+private fun PickerListDarkPreview() = SyncMdTheme(darkTheme = true) { PickerPreview(previewRepos, query = "no") }
+
+@Preview(name = "Picker · loading", heightDp = 600) @Composable
+private fun PickerLoadingPreview() = SyncMdTheme(darkTheme = false) { PickerPreview(emptyList(), loading = true) }
+
+@Preview(name = "Picker · empty + error", heightDp = 600) @Composable
+private fun PickerEmptyPreview() = SyncMdTheme(darkTheme = false) { PickerPreview(emptyList(), error = "GitHub rate limit reached.") }
+
+@Preview(name = "Picker · no matches · dark", heightDp = 600) @Composable
+private fun PickerNoMatchPreview() = SyncMdTheme(darkTheme = true) { PickerPreview(emptyList(), query = "zzz") }

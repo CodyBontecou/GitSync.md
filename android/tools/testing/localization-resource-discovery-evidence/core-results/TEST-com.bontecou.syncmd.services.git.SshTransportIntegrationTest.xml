@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.SshTransportIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:16" hostname="MacBook-Pro.local" time="6.432">
+  <properties/>
+  <testcase name="clone fetch fast forward and push use the verified repository key" classname="com.bontecou.syncmd.services.git.SshTransportIntegrationTest" time="6.432"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 4:54:17 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit11988190435588088988/clone
+Nov 02, 2026 4:54:17 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=master commit=6ddd913eaf4327147020982fb1a7c0d5e065680d
+Nov 02, 2026 4:54:17 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 1 files, skipped 0
+Nov 02, 2026 4:54:17 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/master (6ddd913)
+Nov 02, 2026 4:54:20 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit11988190435588088988/alias-clone
+Nov 02, 2026 4:54:21 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=master commit=0efb96e57850f3631f646821696212e93a90f6c9
+Nov 02, 2026 4:54:21 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 4:54:21 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/master (0efb96e)
+Nov 02, 2026 4:54:23 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit11988190435588088988/rejected
+]]></system-err>
+</testsuite>

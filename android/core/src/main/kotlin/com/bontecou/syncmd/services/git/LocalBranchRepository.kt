@@ -2,13 +2,10 @@ package com.bontecou.syncmd.services.git
 
 import com.bontecou.syncmd.data.models.Branch
 import com.bontecou.syncmd.data.models.BranchType
-import com.bontecou.syncmd.data.models.DirtyRepoException
 import com.bontecou.syncmd.data.models.MergeResult
 import com.bontecou.syncmd.data.models.MergeStrategy
 import com.bontecou.syncmd.data.models.MergeType
 import com.bontecou.syncmd.domain.repository.BranchRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.api.MergeCommand
@@ -21,12 +18,14 @@ import java.io.File
  * ProcessBuilder("git") fails on Android with "No such file or directory";
  * JGit works everywhere.
  */
-class LocalBranchRepository : BranchRepository {
+class LocalBranchRepository(private val authorResolver: RepositoryAuthorResolver? = null,
+    private val tokenProvider: (() -> String?)? = null,
+    private val credentialResolver: ((String, String) -> com.bontecou.syncmd.data.models.Credentials?)? = null) : BranchRepository {
 
     override suspend fun listBranches(repoPath: String): Result<List<Branch>> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val headBranch = git.repository.branch
 
                     val refs = git.branchList()
@@ -56,7 +55,7 @@ class LocalBranchRepository : BranchRepository {
                             name       = displayName,
                             type       = if (isRemote) BranchType.REMOTE else BranchType.LOCAL,
                             isHead     = isLocal && displayName == headBranch,
-                            lastCommit = ref.objectId?.abbreviate(7)?.name(),
+                            lastCommit = ref.objectId?.name,
                         )
                     }
 
@@ -68,21 +67,21 @@ class LocalBranchRepository : BranchRepository {
         }
 
     override suspend fun getCurrentBranch(repoPath: String): Result<Branch> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
-                Git.open(File(repoPath)).use { git ->
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                     val branchName = git.repository.branch.takeIf { it.isNotEmpty() }
-                        ?: return@withContext Result.failure(Exception("Could not determine current branch"))
+                        ?: return@withRepository Result.failure(Exception("Could not determine current branch"))
 
                     // Look up the ref to get the latest commit hash
-                    val ref = git.repository.findRef("refs/heads/$branchName")
+                    val head = git.repository.resolve("HEAD")
 
                     Result.success(
                         Branch(
                             name       = branchName,
                             type       = BranchType.LOCAL,
                             isHead     = true,
-                            lastCommit = ref?.objectId?.abbreviate(7)?.name(),
+                            lastCommit = head?.name,
                         )
                     )
                 }
@@ -95,9 +94,9 @@ class LocalBranchRepository : BranchRepository {
         repoPath: String,
         name: String,
         startPoint: String,
-    ): Result<Unit> = withContext(Dispatchers.IO) {
+    ): Result<Unit> = RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.BRANCH) {
         try {
-            Git.open(File(repoPath)).use { git ->
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                 val cmd = git.branchCreate().setName(name)
                 if (startPoint != "HEAD") cmd.setStartPoint(startPoint)
                 cmd.call()
@@ -109,16 +108,21 @@ class LocalBranchRepository : BranchRepository {
     }
 
     override suspend fun switchBranch(repoPath: String, name: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.BRANCH) {
             try {
-                Git.open(File(repoPath)).use { git ->
-                    val status = git.status().call()
-                    if (!status.isClean) {
-                        return@withContext Result.failure(
-                            DirtyRepoException("Cannot switch branch with uncommitted changes")
-                        )
-                    }
+                com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                    CheckoutProtection.requireClean(git, "switch branch")
+                    val before = CheckoutProtection.snapshot(git)
+                    val target = git.repository.resolve("refs/heads/$name") ?: git.repository.resolve(name)
+                        ?: error("Cannot resolve branch: $name")
+                    CheckoutProtection.protectTree(git, target)
+                    CheckoutProtection.verify(git, before)
+                    CheckoutProtection.requireClean(git, "switch branch")
+                    check((git.repository.resolve("refs/heads/$name") ?: git.repository.resolve(name)) == target) { "Target branch changed. Refresh and review again." }
                     git.checkout().setName(name).call()
+                    com.bontecou.syncmd.services.git.lfs.LfsCheckout.finish(git.repository, "Branch switched", tokenProvider, credentialResolver)?.let {
+                        throw com.bontecou.syncmd.services.git.lfs.LfsCheckoutIncompleteException(it)
+                    }
                     Result.success(Unit)
                 }
             } catch (e: Exception) {
@@ -130,9 +134,9 @@ class LocalBranchRepository : BranchRepository {
         repoPath: String,
         name: String,
         force: Boolean,
-    ): Result<Unit> = withContext(Dispatchers.IO) {
+    ): Result<Unit> = RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.BRANCH) {
         try {
-            Git.open(File(repoPath)).use { git ->
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
                 git.branchDelete()
                     .setBranchNames(name)
                     .setForce(force)
@@ -148,12 +152,15 @@ class LocalBranchRepository : BranchRepository {
         repoPath: String,
         sourceBranch: String,
         strategy: MergeStrategy,
-    ): Result<MergeResult> = withContext(Dispatchers.IO) {
+    ): Result<MergeResult> = RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.MERGE) {
         try {
-            Git.open(File(repoPath)).use { git ->
+            com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
+                CheckoutProtection.requireClean(git, "merge branches")
+                val before = CheckoutProtection.snapshot(git)
+                val source = git.repository.exactRef("refs/heads/$sourceBranch") ?: git.repository.findRef(sourceBranch)
                 val srcRef = git.repository.resolve("refs/heads/$sourceBranch")
                     ?: git.repository.resolve(sourceBranch)
-                    ?: return@withContext Result.failure(Exception("Cannot resolve branch: $sourceBranch"))
+                    ?: return@withRepository Result.failure(Exception("Cannot resolve branch: $sourceBranch"))
 
                 val ffMode = when (strategy) {
                     MergeStrategy.FAST_FORWARD -> MergeCommand.FastForwardMode.FF_ONLY
@@ -161,7 +168,15 @@ class LocalBranchRepository : BranchRepository {
                     MergeStrategy.PREFER_FF    -> MergeCommand.FastForwardMode.FF
                 }
 
-                val result = git.merge()
+                git.useAuthor(repoPath, authorResolver)
+                CheckoutProtection.verify(git, before)
+                CheckoutProtection.requireClean(git, "merge branches")
+                if (source != null) check(git.repository.exactRef(source.name)?.objectId == source.objectId) { "Source branch changed. Refresh and review again." }
+                CheckoutProtection.protectMerge(git, srcRef, strategy == MergeStrategy.FAST_FORWARD)
+                CheckoutProtection.verify(git, before)
+                CheckoutProtection.requireClean(git, "merge branches")
+                if (source != null) check(git.repository.exactRef(source.name)?.objectId == source.objectId) { "Source branch changed. Refresh and review again." }
+                val result = git.merge().setStrategy(RenameAwareMergeStrategy)
                     .include(srcRef)
                     .setFastForward(ffMode)
                     .call()
@@ -174,11 +189,16 @@ class LocalBranchRepository : BranchRepository {
                     else -> MergeType.MERGE_COMMIT
                 }
 
+                val lfsNotice = if (result.mergeStatus.isSuccessful || result.mergeStatus == org.eclipse.jgit.api.MergeResult.MergeStatus.CONFLICTING)
+                    com.bontecou.syncmd.services.git.lfs.LfsCheckout.finish(git.repository,
+                        if (result.mergeStatus.isSuccessful) "Merge completed" else "Merge stopped for conflicts", tokenProvider, credentialResolver)
+                    else null
+
                 Result.success(
                     MergeResult(
                         success       = result.mergeStatus.isSuccessful,
                         mergeType     = mergeType,
-                        message       = result.mergeStatus.toString(),
+                        message       = lfsNotice ?: result.mergeStatus.toString(),
                         conflictCount = result.conflicts?.size ?: 0,
                     )
                 )

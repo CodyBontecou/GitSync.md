@@ -1,0 +1,67 @@
+--- a/src/fcm.ts
++++ b/src/fcm.ts
+@@ -59,7 +59,8 @@
+ export class FcmSender {
+   // This instance belongs to one webhook delivery, sharing one OAuth exchange across its fan-out.
+   private authorization: Promise<{ account: Account; token: string }> | undefined;
+-  constructor(private readonly raw: string | undefined, private readonly fetcher: typeof fetch = fetch) {}
++  constructor(private readonly raw: string | undefined,
++    private readonly fetcher: typeof fetch = (input, init) => fetch(input, init)) {}
+   private async authorize(): Promise<{ account: Account; token: string }> {
+     const sender = account(this.raw);
+     const pem = sender.privateKey.replace(/-----(BEGIN|END) PRIVATE KEY-----/g, "").replace(/\s+/g, "");
+@@ -75,7 +76,7 @@
+     ].join(".");
+     const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, encoder.encode(unsigned));
+     const response = await this.fetcher(OAUTH_URL, {
+-      method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, redirect: "error",
++      method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, redirect: "manual",
+       body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion: `${unsigned}.${base64url(new Uint8Array(signature))}` }),
+       signal: AbortSignal.timeout(15_000),
+     });
+@@ -86,7 +87,8 @@
+     return { account: sender, token: data.access_token };
+   }
+   async send(notification: FcmNotification): Promise<FcmDelivery> {
+-    if (!FCM_TOKEN_RE.test(notification.token) || !/^[a-f0-9]{64}$/.test(notification.collapseId)
++    if (!FCM_TOKEN_RE.test(notification.token) || notification.collapseId.length !== 64
++        || !/^(?:[a-f0-9]{64}|repo:[a-f0-9]{59})$/.test(notification.collapseId)
+         || !/^[A-Za-z0-9._:-]{1,128}$/.test(notification.hint)
+         || !/^[A-Za-z0-9_.-]{1,100}\/[A-Za-z0-9_.-]{1,100}$/.test(notification.repo)
+         || !notification.branch || new TextEncoder().encode(notification.branch).length > 255
+@@ -96,7 +98,7 @@
+     this.authorization ??= this.authorize();
+     const authorization = await this.authorization;
+     const response = await this.fetcher(`https://fcm.googleapis.com/v1/projects/${authorization.account.project}/messages:send`, {
+-      method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${authorization.token}` }, redirect: "error",
++      method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${authorization.token}` }, redirect: "manual",
+       signal: AbortSignal.timeout(15_000),
+       body: JSON.stringify({ message: {
+         token: notification.token,
+@@ -106,6 +108,10 @@
+           restricted_package_name: notification.environment === "development" ? "md.gitsync.md.debug" : "md.gitsync.md" },
+       } }),
+     });
++    if (response.status >= 300 && response.status < 400) {
++      await response.body?.cancel();
++      throw new Error("FcmRedirectRejected");
++    }
+     const data = object(await boundedJSON(response));
+     if (response.ok) {
+       if (typeof data.name !== "string" || !data.name.startsWith(`projects/${authorization.account.project}/messages/`)) throw new Error("FcmAcknowledgementInvalid");
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -347,6 +347,13 @@
+ 
+ function boundedFailureKind(error: unknown): string {
+   if (!(error instanceof Error)) return "UnknownError";
++  // Exact local codes only. Never include arbitrary provider responses or
++  // credential-bearing fetch errors in the delivery aggregate.
++  if (["FcmNotConfigured", "FcmCredentialInvalid", "FcmAuthorizationFailed",
++    "FcmAuthorizationInvalid", "FcmNotificationInvalid", "FcmRedirectRejected",
++    "FcmResponseInvalid", "FcmResponseTooLarge", "FcmAcknowledgementInvalid"].includes(error.message)) {
++    return error.message;
++  }
+   const name = /^[A-Za-z][A-Za-z0-9]{0,63}$/.test(error.name) ? error.name : "Error";
+   // Never retain arbitrary provider/KV error text: it can echo a URL, token,
+   // route key, repository, or device secret. Coarse mechanics are sufficient.

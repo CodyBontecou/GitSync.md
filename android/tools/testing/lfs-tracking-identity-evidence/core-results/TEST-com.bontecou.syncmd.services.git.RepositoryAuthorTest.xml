@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryAuthorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:50" hostname="MacBook-Pro.local" time="0.123">
+  <properties/>
+  <testcase name="merge revert stash and annotated tag use assigned identity without rewriting config" classname="com.bontecou.syncmd.services.git.RepositoryAuthorTest" time="0.07"/>
+  <testcase name="manual merge completion uses assigned author and preserves stored identity" classname="com.bontecou.syncmd.services.git.RepositoryAuthorTest" time="0.053"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

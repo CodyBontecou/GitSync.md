@@ -15,6 +15,7 @@ import com.bontecou.syncmd.services.git.LocalHistoryRepository
 import com.bontecou.syncmd.services.git.LocalPullRepository
 import com.bontecou.syncmd.services.git.LocalRemoteRepository
 import com.bontecou.syncmd.services.github.GitHubAuthManager
+import com.bontecou.syncmd.security.RepositoryCredentialStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,17 +29,39 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+    @Provides
+    @Singleton
+    fun provideLfs(auth: GitHubAuthManager, credentials: RepositoryCredentialStore) =
+        com.bontecou.syncmd.services.git.lfs.LfsRepository(tokenProvider = { auth.defaultToken() },
+            credentialResolver = { path, url -> auth.repositoryCredentials(path, url, credentials) }, credentialRevision = credentials::recordVersion)
 
     @Provides
     @Singleton
-    fun provideGitRepository(authManager: GitHubAuthManager): GitRepository {
-        return LocalGitRepository(tokenProvider = { authManager.getToken() })
+    fun provideRebase(auth: GitHubAuthManager, credentials: RepositoryCredentialStore, authors: com.bontecou.syncmd.security.RepositoryAuthors) =
+        com.bontecou.syncmd.services.git.RepositoryRebase(tokenProvider = { auth.defaultToken() },
+            credentials = { path, url -> auth.repositoryCredentials(path, url, credentials) }, author = authors::resolve, credentialRevision = credentials::recordVersion)
+
+    @Provides
+    @Singleton
+    fun provideRemoteMerge(auth: GitHubAuthManager, credentials: RepositoryCredentialStore, authors: com.bontecou.syncmd.security.RepositoryAuthors) =
+        com.bontecou.syncmd.services.git.RepositoryRemoteMerge(tokenProvider = { auth.defaultToken() },
+            credentials = { path, url -> auth.repositoryCredentials(path, url, credentials) }, authorResolver = authors::resolve,
+            credentialRevision = { path -> credentials.recordVersion(path).orEmpty() + ":" +
+                com.bontecou.syncmd.automation.RepositoryShortcutService.accountBinding(path, auth, credentials) })
+
+    @Provides
+    @Singleton
+    fun provideGitRepository(authManager: GitHubAuthManager, credentials: RepositoryCredentialStore): GitRepository {
+        return LocalGitRepository(tokenProvider = { authManager.defaultToken() }, credentialResolver = { path, url -> authManager.repositoryCredentials(path, url, credentials) })
     }
 
     @Provides
     @Singleton
-    fun providePullRepository(authManager: GitHubAuthManager): PullRepository {
-        return LocalPullRepository(tokenProvider = { authManager.getToken() })
+    fun providePullRepository(authManager: GitHubAuthManager, credentials: RepositoryCredentialStore): PullRepository {
+        return LocalPullRepository(tokenProvider = { authManager.defaultToken() },
+            credentialResolver = { path, url -> authManager.repositoryCredentials(path, url, credentials) },
+            credentialRevision = { path -> credentials.recordVersion(path).orEmpty() + ":" +
+                com.bontecou.syncmd.automation.RepositoryShortcutService.accountBinding(path, authManager, credentials) })
     }
 
     @Provides
@@ -49,25 +72,27 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideBranchRepository(): BranchRepository {
-        return LocalBranchRepository()
+    fun provideBranchRepository(authors: com.bontecou.syncmd.security.RepositoryAuthors, auth: GitHubAuthManager, credentials: RepositoryCredentialStore): BranchRepository {
+        return LocalBranchRepository(authors::resolve, tokenProvider = { auth.defaultToken() },
+            credentialResolver = { path, url -> auth.repositoryCredentials(path, url, credentials) })
     }
 
     @Provides
     @Singleton
-    fun provideConflictRepository(): ConflictRepository {
-        return LocalConflictRepository()
+    fun provideConflictRepository(authors: com.bontecou.syncmd.security.RepositoryAuthors, auth: GitHubAuthManager, credentials: RepositoryCredentialStore): ConflictRepository {
+        return LocalConflictRepository(authors::resolve, tokenProvider = { auth.defaultToken() },
+            credentialResolver = { path, url -> auth.repositoryCredentials(path, url, credentials) })
     }
 
     @Provides
     @Singleton
-    fun provideHistoryRepository(): HistoryRepository {
-        return LocalHistoryRepository()
+    fun provideHistoryRepository(authors: com.bontecou.syncmd.security.RepositoryAuthors): HistoryRepository {
+        return LocalHistoryRepository(authors::resolve)
     }
 
     @Provides
     @Singleton
-    fun provideRemoteRepository(authManager: GitHubAuthManager): RemoteRepository {
-        return LocalRemoteRepository(tokenProvider = { authManager.getToken() })
+    fun provideRemoteRepository(authManager: GitHubAuthManager, credentials: RepositoryCredentialStore): RemoteRepository {
+        return LocalRemoteRepository(tokenProvider = { authManager.defaultToken() }, credentialResolver = { path, url -> authManager.repositoryCredentials(path, url, credentials) })
     }
 }

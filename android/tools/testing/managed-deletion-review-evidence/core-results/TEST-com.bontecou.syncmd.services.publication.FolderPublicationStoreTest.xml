@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:54" hostname="MacBook-Pro.local" time="0.315">
+  <properties/>
+  <testcase name="failure persisting rename leaves recoverable intent and a stale caller cannot overwrite it" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.012"/>
+  <testcase name="stale concurrent writers cannot lose another screen choice" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.017"/>
+  <testcase name="prepared destination can change before creation while snapshot account and uncertain destination stay pinned" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.045"/>
+  <testcase name="private progress survives new instances and uncertain stages cannot create again" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.054"/>
+  <testcase name="only an unchanged unprepared review can be discarded without touching files or other workflows" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.043"/>
+  <testcase name="only known creation rejection permits another explicit create attempt" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.046"/>
+  <testcase name="malformed duplicate unknown and coerced fields block writes while retaining exact bytes" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.012"/>
+  <testcase name="active ancestors descendants and aliases are protected but siblings remain available" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.011"/>
+  <testcase name="symlink journal and lock never follow another file" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.001"/>
+  <testcase name="incomplete phases mismatched remote and private progress in working folder are rejected" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.035"/>
+  <testcase name="unknown outcome pins snapshot destination account visibility and permission binding" classname="com.bontecou.syncmd.services.publication.FolderPublicationStoreTest" time="0.037"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

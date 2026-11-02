@@ -1,0 +1,7 @@
+<resources>
+    <string name="tracking_remove_backup_title">Remove tracking and keep backup?</string>
+    <string name="tracking_remove_permanent_title">Permanently remove Git history?</string>
+    <string name="tracking_remove_backup_body">GitSync.md will verify a copy and ZIP archive, preserve the original metadata in the backup, and disconnect this folder. Working files stay in place.</string>
+    <string name="tracking_remove_permanent_body">Only the reviewed .git metadata will be deleted. Your working files stay in place, but local Git history cannot be recovered without another copy.</string>
+    <string name="tracking_remove_review_changed">The review changed. Cancel and review tracking removal again.</string>
+</resources>

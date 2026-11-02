@@ -1,499 +1,307 @@
 package com.bontecou.syncmd.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bontecou.syncmd.data.models.DiffHunk
-import com.bontecou.syncmd.data.models.DiffLineType
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.FileDiff
 import com.bontecou.syncmd.data.models.UnifiedDiffResult
+import com.bontecou.syncmd.ui.components.GitWorkDiffLineRow
+import com.bontecou.syncmd.ui.components.GitWorkDiffRow
+import com.bontecou.syncmd.ui.components.GitWorkDiffKind
+import com.bontecou.syncmd.ui.components.GitWorkPill
+import com.bontecou.syncmd.ui.components.GitWorkPillStyle
+import com.bontecou.syncmd.ui.components.GitWorkStatusPill
+import com.bontecou.syncmd.ui.components.GitWorkWorking
 import com.bontecou.syncmd.ui.components.RevertConfirmDialog
-import com.bontecou.syncmd.ui.theme.BBadge
-import com.bontecou.syncmd.ui.theme.BBadgeStyle
-import com.bontecou.syncmd.ui.theme.BCard
-import com.bontecou.syncmd.ui.theme.BDivider
-import com.bontecou.syncmd.ui.theme.BLoading
-import com.bontecou.syncmd.ui.theme.LocalBrutalColors
+import com.bontecou.syncmd.ui.components.gitWorkDiffRows
+import com.bontecou.syncmd.ui.components.gitWorkPreviewDiff
+import com.bontecou.syncmd.ui.theme.BPrimaryButton
+import com.bontecou.syncmd.ui.theme.SyncMdTheme
+import com.bontecou.syncmd.ui.theme.Tide
+import com.bontecou.syncmd.ui.theme.TideCard
+import com.bontecou.syncmd.ui.theme.TideDialog
+import com.bontecou.syncmd.ui.theme.TideDisplay
+import com.bontecou.syncmd.ui.theme.TidePill
+import com.bontecou.syncmd.ui.theme.TideTopBar
+import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.viewmodels.DiffViewModel
-
-// ─── Numbered diff line (adds line-number tracking to the parsed model) ───────
-
-private data class NumberedDiffLine(
-    val type: LineKind,
-    val content: String,
-    val oldLineNo: Int?,
-    val newLineNo: Int?,
-)
-
-private enum class LineKind { ADDED, REMOVED, CONTEXT, HUNK_HEADER }
-
-/** Convert [UnifiedDiffResult] for a single file into numbered display lines. */
-private fun buildNumberedLines(result: UnifiedDiffResult): List<NumberedDiffLine> {
-    val out = mutableListOf<NumberedDiffLine>()
-    val file = result.files.firstOrNull() ?: return out
-    for (hunk in file.hunks) {
-        out += NumberedDiffLine(
-            type      = LineKind.HUNK_HEADER,
-            content   = "@@ -${hunk.oldStart},${hunk.oldCount} +${hunk.newStart},${hunk.newCount} @@",
-            oldLineNo = null,
-            newLineNo = null,
-        )
-        var old = hunk.oldStart
-        var new = hunk.newStart
-        for (dl in hunk.lines) {
-            when (dl.type) {
-                DiffLineType.ADDITION -> { out += NumberedDiffLine(LineKind.ADDED,   dl.content, null, new); new++ }
-                DiffLineType.DELETION -> { out += NumberedDiffLine(LineKind.REMOVED, dl.content, old, null); old++ }
-                DiffLineType.CONTEXT  -> { out += NumberedDiffLine(LineKind.CONTEXT, dl.content, old, new);  old++; new++ }
-            }
-        }
-    }
-    return out
-}
 
 // ─── Screen ──────────────────────────────────────────────────────────────────
 
 /**
- * Full-screen diff viewer for a single file — mirrors iOS FileDiffView.
+ * Full-screen diff for a single file — mirrors iOS Tide FileDiffView.
  *
- * Shows:
- *  - Top bar with filename and a revert (↩) button
- *  - Header card with +additions / −deletions counts and status badge
- *  - Numbered diff lines (hunk headers, additions, deletions, context)
- *  - [RevertConfirmDialog] when the revert button is tapped
+ * Shows a folder caption in the top bar, the filename as the headline with
+ * status / staged pills and "+N −M", then the diff on a white card: hunk
+ * bands, green additions and red removals with changed words tinted. The
+ * Discard pill opens [RevertConfirmDialog].
  */
 @Composable
 fun DiffScreen(
     repositoryPath: String,
     filePath: String,
     onNavigateBack: () -> Unit,
+    staged: Boolean? = null,
     diffVM: DiffViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(repositoryPath) {
-        if (repositoryPath.isNotBlank()) diffVM.setRepositoryPath(repositoryPath)
-    }
-    LaunchedEffect(filePath) {
-        if (filePath.isNotBlank()) diffVM.selectFile(filePath)
+    LaunchedEffect(repositoryPath, filePath, staged) {
+        if (repositoryPath.isNotBlank()) {
+            diffVM.setRepositoryPath(repositoryPath)
+            if (filePath.isNotBlank()) diffVM.selectFile(filePath, staged)
+        }
     }
 
     val isLoading        by diffVM.isLoading.collectAsState()
     val selectedFileDiff by diffVM.selectedFileDiff.collectAsState()
-    val bc               = LocalBrutalColors.current
+    val diffError by diffVM.errorMessage.collectAsState()
 
-    var showRevertConfirm by remember { mutableStateOf(false) }
-    var isReverting       by remember { mutableStateOf(false) }
+    val discardReview by diffVM.discardReview.collectAsState()
+    val reviewingDiscard by diffVM.isReviewingDiscard.collectAsState()
+    val discarding by diffVM.isDiscarding.collectAsState()
+    val isReverting = reviewingDiscard || discarding
+    DisposableEffect(repositoryPath, filePath) { onDispose { diffVM.dismissDiscard() } }
 
-    val filename  = filePath.substringAfterLast('/').ifEmpty { filePath }
-    val directory = filePath.substringBeforeLast('/', "")
-
-    val numberedLines = remember(selectedFileDiff) {
-        selectedFileDiff?.let { buildNumberedLines(it) } ?: emptyList()
-    }
-    val addedCount   = numberedLines.count { it.type == LineKind.ADDED }
-    val removedCount = numberedLines.count { it.type == LineKind.REMOVED }
-    val fileDiff     = selectedFileDiff?.files?.firstOrNull()
-
-    Box(modifier = Modifier.fillMaxSize().background(bc.bg)) {
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            // ── Top bar ───────────────────────────────────────────────────
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(bc.bg)
-                    .statusBarsPadding()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    // ← Back
-                    Box(
-                        modifier = Modifier
-                            .border(1.dp, bc.border)
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = onNavigateBack,
-                            )
-                            .padding(horizontal = 10.dp, vertical = 6.dp)
-                    ) {
-                        Text(
-                            text = "←  BACK",
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
-                                letterSpacing = 1.sp,
-                                color = bc.text,
-                            )
-                        )
-                    }
-
-                    // Filename title (center)
-                    Text(
-                        text = filename.uppercase(),
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 8.dp),
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 12.sp,
-                            letterSpacing = 2.sp,
-                            color = bc.text,
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-
-                    // Revert button  ↩
-                    Box(
-                        modifier = Modifier
-                            .border(1.dp, bc.error.copy(alpha = if (isReverting || isLoading) 0.3f else 0.6f))
-                            .clickable(
-                                enabled = !isReverting && !isLoading,
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = { showRevertConfirm = true },
-                            )
-                            .padding(horizontal = 10.dp, vertical = 6.dp)
-                    ) {
-                        if (isReverting) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(14.dp),
-                                strokeWidth = 2.dp,
-                                color = bc.error,
-                            )
-                        } else {
-                            Text(
-                                text = "↩  REVERT",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
-                                    letterSpacing = 1.sp,
-                                    color = if (isLoading) bc.error.copy(alpha = 0.3f) else bc.error,
-                                )
-                            )
-                        }
-                    }
-                }
-                Box(Modifier.fillMaxWidth().height(1.dp).background(bc.border))
-            }
-
-            // ── Body ──────────────────────────────────────────────────────
-            when {
-                isLoading -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        BLoading(text = "Loading diff…")
-                    }
-                }
-
-                numberedLines.isEmpty() -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            Text(
-                                text = "📄",
-                                style = TextStyle(fontSize = 40.sp)
-                            )
-                            Text(
-                                text = "No diff available",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    color = bc.text,
-                                )
-                            )
-                            Text(
-                                text = "Binary file or no content changes",
-                                style = TextStyle(
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 13.sp,
-                                    color = bc.textFaint,
-                                )
-                            )
-                        }
-                    }
-                }
-
-                else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        // ── Header card ───────────────────────────────────
-                        item {
-                            Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
-                                BCard {
-                                    Column {
-                                        // Filename + badge
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 16.dp, vertical = 16.dp),
-                                            verticalAlignment = Alignment.Top,
-                                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                        ) {
-                                            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                                Text(
-                                                    text = filename,
-                                                    style = TextStyle(
-                                                        fontFamily = FontFamily.Monospace,
-                                                        fontWeight = FontWeight.Black,
-                                                        fontSize = 22.sp,
-                                                        color = bc.text,
-                                                    )
-                                                )
-                                                if (directory.isNotBlank()) {
-                                                    Text(
-                                                        text = directory,
-                                                        style = TextStyle(
-                                                            fontFamily = FontFamily.Monospace,
-                                                            fontSize = 12.sp,
-                                                            color = bc.textFaint,
-                                                        ),
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis,
-                                                    )
-                                                }
-                                            }
-                                            fileDiff?.let { fd ->
-                                                BBadge(
-                                                    text = fd.status.name,
-                                                    style = when (fd.status.name) {
-                                                        "ADDED"   -> BBadgeStyle.SUCCESS
-                                                        "DELETED" -> BBadgeStyle.ERROR
-                                                        else      -> BBadgeStyle.DEFAULT
-                                                    }
-                                                )
-                                            }
-                                        }
-
-                                        BDivider()
-
-                                        // Stats row: +additions / −deletions
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 16.dp, vertical = 14.dp),
-                                        ) {
-                                            StatPill(count = addedCount,   label = "ADDED",   color = Color(0xFF1A7A1A))
-                                            Spacer(Modifier.weight(1f))
-                                            Box(Modifier.width(1.dp).height(32.dp).background(bc.borderSoft))
-                                            Spacer(Modifier.weight(1f))
-                                            StatPill(count = removedCount, label = "REMOVED", color = Color(0xFFD70015))
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // ── Diff lines ────────────────────────────────────
-                        items(numberedLines) { line ->
-                            DiffLineRow(line = line)
-                        }
-
-                        item { Spacer(Modifier.height(40.dp)) }
-                    }
-                }
-            }
+    com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
+        // A periodic read must not close a frozen review. Confirmation revalidates its exact revision.
+        if (!isReverting) {
+            diffVM.refreshRepositoryPath(repositoryPath)
+            if (filePath.isNotBlank()) diffVM.selectFile(filePath, staged)
         }
+    }
 
-        // ── Revert confirm dialog ──────────────────────────────────────────
-        if (showRevertConfirm) {
-            RevertConfirmDialog(
-                title        = "Revert Changes",
-                filename     = filename,
-                files        = emptyList(),
-                confirmLabel = "Revert",
-                onConfirm    = {
-                    showRevertConfirm = false
-                    isReverting = true
-                    diffVM.discardFileChanges(filePath) {
-                        isReverting = false
-                        onNavigateBack()
-                    }
+    Box(modifier = Modifier.fillMaxSize().background(Tide.colors.paper).navigationBarsPadding()) {
+        DiffContent(
+            filePath = filePath,
+            staged = staged,
+            isLoading = isLoading,
+            result = selectedFileDiff,
+            error = diffError,
+            isReverting = isReverting,
+            onBack = onNavigateBack,
+            onDiscard = { diffVM.requestDiscard(filePath) },
+        )
+
+        if (diffError != null && selectedFileDiff != null) {
+            TideDialog(
+                onDismissRequest = diffVM::clearError,
+                title = stringResource(R.string.ui_error_54a0e8c1),
+                text = {
+                    Text(diffError!!, Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()).testTag("diff-operation-error"))
                 },
-                onDismiss    = { showRevertConfirm = false },
+                confirmButton = { BPrimaryButton(stringResource(R.string.ui_ok_565339bc), onClick = diffVM::clearError) },
+            )
+        }
+        // ── Revert confirm dialog ──────────────────────────────────────────
+        discardReview?.takeIf { it.filePath == filePath }?.let { review ->
+            RevertConfirmDialog(
+                review = review,
+                onConfirm = { diffVM.confirmDiscard(review, onComplete = onNavigateBack) },
+                onDismiss = { diffVM.dismissDiscard(review) },
             )
         }
     }
 }
 
-// ─── Sub-composables ──────────────────────────────────────────────────────────
-
+/** Stateless body of the diff screen, one branch per load state. */
 @Composable
-private fun StatPill(count: Int, label: String, color: Color) {
-    val bc = LocalBrutalColors.current
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-    ) {
-        Text(
-            text  = "$count",
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Black,
-                fontSize   = 22.sp,
-                color      = if (count > 0) color else bc.textFaint,
-            )
+private fun DiffContent(
+    filePath: String,
+    staged: Boolean?,
+    isLoading: Boolean,
+    result: UnifiedDiffResult?,
+    error: String?,
+    isReverting: Boolean,
+    onBack: () -> Unit,
+    onDiscard: () -> Unit,
+) {
+    val c = Tide.colors
+    val filename = filePath.substringAfterLast('/').ifEmpty { filePath }
+    val directory = filePath.substringBeforeLast('/', "")
+    val fileDiff = result?.files?.firstOrNull()
+    val rows = remember(result) { fileDiff?.let(::gitWorkDiffRows) ?: emptyList() }
+    val added = rows.count { it.kind == GitWorkDiffKind.ADDED }
+    val removed = rows.count { it.kind == GitWorkDiffKind.REMOVED }
+
+    Column(Modifier.fillMaxSize()) {
+        TideTopBar(
+            onBack = onBack,
+            backLabel = stringResource(R.string.publication_back),
+            center = {
+                Text(
+                    if (directory.isBlank()) "/" else "$directory/",
+                    style = TideType.mono(12.sp),
+                    color = c.inkMid,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            },
         )
-        Text(
-            text  = label,
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize   = 10.sp,
-                letterSpacing = 1.sp,
-                color      = bc.textFaint,
+
+        LazyColumn(Modifier.weight(1f).fillMaxWidth(), contentPadding = PaddingValues(bottom = 24.dp)) {
+            item(key = "header") {
+                DiffHeader(filename, fileDiff, staged, added, removed, showStats = rows.isNotEmpty())
+            }
+            when {
+                isLoading -> item(key = "loading") {
+                    GitWorkWorking(stringResource(R.string.ui_loading_diff_3944c704),
+                        Modifier.padding(horizontal = Tide.gutter, vertical = 20.dp))
+                }
+                rows.isEmpty() -> item(key = "empty") {
+                    val (title, body) = when {
+                        error != null -> stringResource(R.string.tide_merge_diff_error_title) to error
+                        fileDiff?.isBinary == true -> stringResource(R.string.ui_binary_file_2c7ccf98) to
+                            stringResource(R.string.tide_merge_diff_binary_body)
+                        else -> stringResource(R.string.tide_merge_diff_empty_title) to stringResource(R.string.tide_merge_diff_empty_body)
+                    }
+                    DiffStateCard(title, body, danger = error != null)
+                }
+                else -> diffCard(rows)
+            }
+        }
+
+        // ── Bottom bar: one quiet, destructive escape ─────────────────────
+        Row(
+            Modifier.fillMaxWidth().background(c.paper).padding(horizontal = Tide.gutter, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            GitWorkPill(
+                title = stringResource(R.string.tide_merge_diff_discard),
+                onClick = onDiscard,
+                style = GitWorkPillStyle.DANGER_OUTLINE,
+                enabled = !isReverting && !isLoading,
+                loading = isReverting,
+                fill = false,
+                height = 56.dp,
             )
-        )
+            Spacer(Modifier.weight(1f))
+        }
     }
 }
 
 @Composable
-private fun DiffLineRow(line: NumberedDiffLine) {
-    val bc = LocalBrutalColors.current
-
-    // Colours per line kind
-    val rowBg    = when (line.type) {
-        LineKind.ADDED      -> Color(0xFF1A7A1A).copy(alpha = 0.10f)
-        LineKind.REMOVED    -> Color(0xFFD70015).copy(alpha = 0.08f)
-        LineKind.HUNK_HEADER -> Color(0xFF007AFF).copy(alpha = 0.06f)
-        LineKind.CONTEXT    -> Color.Transparent
-    }
-    val prefixFg = when (line.type) {
-        LineKind.ADDED      -> Color(0xFF1A7A1A)
-        LineKind.REMOVED    -> Color(0xFFD70015)
-        LineKind.HUNK_HEADER -> Color(0xFF007AFF)
-        LineKind.CONTEXT    -> bc.textFaint
-    }
-    val textFg = when (line.type) {
-        LineKind.HUNK_HEADER -> Color(0xFF007AFF)
-        else                 -> bc.text
-    }
-    val gutterFg = when (line.type) {
-        LineKind.ADDED      -> Color(0xFF1A7A1A).copy(alpha = 0.55f)
-        LineKind.REMOVED    -> Color(0xFFD70015).copy(alpha = 0.55f)
-        else                -> bc.textFaint
-    }
-    val prefix = when (line.type) {
-        LineKind.ADDED      -> "+"
-        LineKind.REMOVED    -> "−"
-        LineKind.HUNK_HEADER -> "↕"
-        LineKind.CONTEXT    -> " "
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(rowBg),
-        verticalAlignment = Alignment.Top,
-    ) {
-        // Old line number
-        Text(
-            text     = line.oldLineNo?.toString() ?: "",
-            modifier = Modifier
-                .width(40.dp)
-                .padding(vertical = 3.dp),
-            style    = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontSize   = 11.sp,
-                color      = gutterFg,
-            ),
-            textAlign = androidx.compose.ui.text.style.TextAlign.End,
-        )
-
-        // New line number
-        Text(
-            text     = line.newLineNo?.toString() ?: "",
-            modifier = Modifier
-                .width(40.dp)
-                .padding(vertical = 3.dp),
-            style    = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontSize   = 11.sp,
-                color      = gutterFg,
-            ),
-            textAlign = androidx.compose.ui.text.style.TextAlign.End,
-        )
-
-        // Gutter rule
-        Box(Modifier.width(1.dp).height(20.dp).background(bc.borderSoft).padding(vertical = 1.dp))
-
-        // +/−/↕ prefix
-        Text(
-            text     = prefix,
-            modifier = Modifier
-                .width(22.dp)
-                .padding(vertical = 3.dp),
-            style    = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize   = 13.sp,
-                color      = prefixFg,
-            ),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-        )
-
-        // Content (horizontally scrollable so long lines don't wrap)
-        val scrollState = rememberScrollState()
-        Text(
-            text     = line.content,
-            modifier = Modifier
-                .weight(1f)
-                .horizontalScroll(scrollState)
-                .padding(top = 3.dp, bottom = 3.dp, end = 24.dp),
-            style    = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontSize   = 13.sp,
-                color      = textFg,
-            ),
-            maxLines = 1,
-        )
+private fun DiffHeader(filename: String, fileDiff: FileDiff?, staged: Boolean?, added: Int, removed: Int, showStats: Boolean) {
+    val c = Tide.colors
+    Column(Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        TideDisplay(filename, size = 26.sp)
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+            fileDiff?.let { GitWorkStatusPill(it.status) }
+            val isStaged = fileDiff?.isStaged == true || staged == true
+            if (fileDiff != null || staged != null) {
+                TidePill(
+                    stringResource(if (isStaged) R.string.tide_merge_diff_staged else R.string.tide_merge_diff_unstaged),
+                    if (isStaged) c.synced else c.ahead,
+                    (if (isStaged) c.synced else c.ahead).copy(alpha = 0.12f),
+                )
+            }
+        }
+        if (showStats) {
+            val a11y = stringResource(R.string.tide_merge_diff_stats_a11y, added, removed)
+            Row(Modifier.clearAndSetSemantics { contentDescription = a11y }, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("+$added", style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (added > 0) c.synced else c.inkFaint)
+                Text("−$removed", style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (removed > 0) c.danger else c.inkFaint)
+            }
+        }
     }
 }
+
+@Composable
+private fun DiffStateCard(title: String, body: String, danger: Boolean) {
+    val c = Tide.colors
+    TideCard(Modifier.padding(horizontal = Tide.gutter)) {
+        Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = if (danger) c.danger else c.ink)
+        Spacer(Modifier.height(4.dp))
+        Text(body, style = TideType.meta, color = c.inkFaint)
+    }
+}
+
+/** Lines laid out as one rounded white card spread across lazy items. */
+private fun LazyListScope.diffCard(rows: List<GitWorkDiffRow>) {
+    val last = rows.lastIndex
+    itemsIndexed(rows) { index, row ->
+        val r = Tide.radiusCard
+        val shape = when {
+            last == 0 -> RoundedCornerShape(r)
+            index == 0 -> RoundedCornerShape(topStart = r, topEnd = r)
+            index == last -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
+            else -> RoundedCornerShape(0.dp)
+        }
+        Box(
+            Modifier.padding(horizontal = Tide.gutter).fillMaxWidth().clip(shape).background(Tide.colors.card)
+                .padding(top = if (index == 0 && row.kind != GitWorkDiffKind.HUNK) 8.dp else 0.dp,
+                    bottom = if (index == last) 8.dp else 0.dp),
+        ) { GitWorkDiffLineRow(row) }
+    }
+}
+
+// ─── Previews ───────────────────────────────────────────────────────────────
+
+@Composable
+private fun DiffPreview(isLoading: Boolean = false, result: UnifiedDiffResult? = null, error: String? = null, reverting: Boolean = false) {
+    Box(Modifier.fillMaxSize().background(Tide.colors.paper)) {
+        DiffContent("ideas/launch-plan.md", null, isLoading, result, error, reverting, {}, {})
+    }
+}
+
+private val previewSingle = gitWorkPreviewDiff.copy(files = gitWorkPreviewDiff.files.take(1))
+private val previewBinary = gitWorkPreviewDiff.copy(files = gitWorkPreviewDiff.files.drop(1))
+private val previewEmpty = gitWorkPreviewDiff.copy(files = listOf(gitWorkPreviewDiff.files.first().copy(hunks = emptyList())))
+
+@Preview(name = "Diff · lines · light", heightDp = 640) @Composable
+private fun DiffLinesLight() = SyncMdTheme(darkTheme = false) { DiffPreview(result = previewSingle) }
+
+@Preview(name = "Diff · lines · dark", heightDp = 640) @Composable
+private fun DiffLinesDark() = SyncMdTheme(darkTheme = true) { DiffPreview(result = previewSingle) }
+
+@Preview(name = "Diff · loading", heightDp = 400) @Composable
+private fun DiffLoading() = SyncMdTheme(darkTheme = false) { DiffPreview(isLoading = true) }
+
+@Preview(name = "Diff · binary · dark", heightDp = 400) @Composable
+private fun DiffBinaryDark() = SyncMdTheme(darkTheme = true) { DiffPreview(result = previewBinary) }
+
+@Preview(name = "Diff · empty", heightDp = 400) @Composable
+private fun DiffEmpty() = SyncMdTheme(darkTheme = false) { DiffPreview(result = previewEmpty) }
+
+@Preview(name = "Diff · error", heightDp = 400) @Composable
+private fun DiffError() = SyncMdTheme(darkTheme = false) { DiffPreview(error = "Could not read the index.") }
+
+@Preview(name = "Diff · reverting · dark", heightDp = 640) @Composable
+private fun DiffReverting() = SyncMdTheme(darkTheme = true) { DiffPreview(result = previewSingle, reverting = true) }

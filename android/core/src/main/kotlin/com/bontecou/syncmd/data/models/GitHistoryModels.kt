@@ -23,7 +23,8 @@ data class Tag(
     val message: String? = null,        // Annotated tag message
     val taggerEmail: String? = null,
     val taggerName: String? = null,
-    val createdAt: Long = 0
+    val createdAt: Long = 0,
+    val refObjectId: String? = null      // Exact tag object, including annotated tag identity
 )
 
 /**

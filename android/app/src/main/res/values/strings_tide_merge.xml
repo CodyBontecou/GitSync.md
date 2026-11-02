@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tide copy for diff, conflicts, rebase, remote merge and upstream screens. English only. -->
+<resources>
+    <!-- Sync rail captions: local (yours, orange) and remote (theirs, blue). -->
+    <string name="tide_merge_yours_count">↑%1$d yours</string>
+    <string name="tide_merge_theirs_count">↓%1$d from remote</string>
+
+    <!-- Shared side labels. -->
+    <string name="tide_merge_yours">Yours</string>
+    <string name="tide_merge_theirs">Theirs</string>
+    <string name="tide_merge_side_deleted">deleted</string>
+    <string name="tide_merge_ours_filename">Ours</string>
+    <string name="tide_merge_theirs_filename">Theirs</string>
+
+    <!-- Diff screen. -->
+    <string name="tide_merge_diff_staged">Staged</string>
+    <string name="tide_merge_diff_unstaged">Unstaged</string>
+    <string name="tide_merge_diff_added">Added</string>
+    <string name="tide_merge_diff_deleted">Deleted</string>
+    <string name="tide_merge_diff_modified">Modified</string>
+    <string name="tide_merge_diff_renamed">Renamed</string>
+    <string name="tide_merge_diff_copied">Copied</string>
+    <string name="tide_merge_diff_type_changed">Type changed</string>
+    <string name="tide_merge_diff_changed">Changed</string>
+    <string name="tide_merge_diff_error_title">Couldn\'t load this diff</string>
+    <string name="tide_merge_diff_binary_body">Binary content can\'t be shown as text.</string>
+    <string name="tide_merge_diff_empty_title">No text changes</string>
+    <string name="tide_merge_diff_empty_body">This change has no line-by-line diff.</string>
+    <string name="tide_merge_diff_stats_a11y">%1$d lines added, %2$d lines removed</string>
+    <string name="tide_merge_diff_line_added">Added: %1$s</string>
+    <string name="tide_merge_diff_line_removed">Removed: %1$s</string>
+    <string name="tide_merge_diff_hunk_line">line %1$d</string>
+    <string name="tide_merge_diff_discard">Discard</string>
+    <string name="tide_merge_diff_summary">%1$d files · +%2$d −%3$d</string>
+
+    <!-- Conflicts. -->
+    <string name="tide_merge_conflict_headline">Both sides edited this file.</string>
+    <string name="tide_merge_conflict_deleted_headline">Deleted on one side, edited on the other.</string>
+    <string name="tide_merge_conflict_renamed_headline">Renamed two different ways.</string>
+    <string name="tide_merge_conflict_pick">Pick the version to keep, or edit the result by hand.</string>
+    <string name="tide_merge_conflict_unresolved">Unresolved</string>
+    <string name="tide_merge_conflict_result">Result</string>
+    <string name="tide_merge_conflict_result_hint">this is what gets staged</string>
+    <string name="tide_merge_conflict_list_count">%1$d of %2$d resolved</string>
+    <string name="tide_merge_merge_complete_title">Finish the merge?</string>
+    <string name="tide_merge_merge_unresolved_title">Conflicts left to resolve</string>
+
+    <!-- Rebase. -->
+    <string name="tide_merge_rebase_kicker">Rebase</string>
+    <string name="tide_merge_rebase_initial">Fetch first, then decide.</string>
+    <string name="tide_merge_both_moved">Both sides moved</string>
+    <string name="tide_merge_moved_on">The remote moved on while you were writing.</string>
+    <string name="tide_merge_behind_kicker">New on remote</string>
+    <string name="tide_merge_behind_headline">The remote has commits you don\'t.</string>
+    <string name="tide_merge_ahead_kicker">Only yours</string>
+    <string name="tide_merge_ahead_headline">Nothing new on the remote.</string>
+    <string name="tide_merge_in_sync_kicker">In sync</string>
+    <string name="tide_merge_in_sync_headline">Already up to date.</string>
+    <string name="tide_merge_rebase_conflicts_headline">The rebase stopped on files both sides edited.</string>
+    <string name="tide_merge_rebase_blocked_headline">The rebase is waiting on a blocked checkout.</string>
+    <string name="tide_merge_rebase_ready_headline">Every conflict is staged. Continue to finish.</string>
+    <string name="tide_merge_rebase_done_headline">Your commits now sit on top of theirs.</string>
+    <string name="tide_merge_rebase_aborted_headline">Back where you started.</string>
+
+    <!-- Remote merge. -->
+    <string name="tide_merge_merge_kicker">Merge</string>
+    <string name="tide_merge_merge_initial">Fetch, review, then merge.</string>
+    <string name="tide_merge_merge_paused_kicker">Merge paused</string>
+    <string name="tide_merge_merge_paused_headline">Some files changed on both sides.</string>
+    <string name="tide_merge_merge_done_kicker">Merged</string>
+    <string name="tide_merge_merge_done_headline">Theirs are in.</string>
+    <string name="tide_merge_plan_section">Reviewed plan</string>
+    <string name="tide_merge_result_section">Result</string>
+
+    <!-- Upstream. -->
+    <string name="tide_merge_upstream_section">Tracking</string>
+    <string name="tide_merge_upstream_set">Tracking %1$s/%2$s</string>
+    <string name="tide_merge_upstream_unset">No upstream set</string>
+    <string name="tide_merge_upstream_unset_body">Pull and push won\'t know where to go until you pick one.</string>
+    <string name="tide_merge_upstream_loading">Reading branch settings…</string>
+</resources>

@@ -1,0 +1,18 @@
+
+> syncmd-push@1.0.0 test
+> vitest run && node tools/check-existing-lookup-runtime.mjs && node tools/check-fcm-runtime.mjs
+
+
+ RUN  v5.0.5 /private/tmp/syncmd-existing-installation-relay
+
+
+ Test Files  4 passed (4)
+      Tests  106 passed (106)
+   Start at  12:37:15
+   Duration  560ms (tests 91%, transform 4%, import 4%, worker 1%)
+
+PASS: existing-installation lookup executes in workerd with a synthetic key and mocked GitHub.
+PASS: workerd refuses the redirect without forwarding the app JWT.
+PASS: FCM default fetch completes OAuth and delivery in workerd.
+PASS: workerd rejects oauth-redirect without forwarding credentials.
+PASS: workerd rejects fcm-redirect without forwarding credentials.

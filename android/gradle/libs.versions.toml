@@ -6,8 +6,8 @@ coroutines = "1.8.1"
 # Android
 androidGradlePlugin = "8.2.0"
 androidMinSdk = "28"
-androidTargetSdk = "35"
-androidCompileSdk = "35"
+androidTargetSdk = "36"
+androidCompileSdk = "36"
 playPublisher = "3.12.1"
 
 # Jetpack
@@ -32,6 +32,8 @@ gson = "2.10.1"
 
 # JGit (pure-Java git — no system git binary required on device)
 jgit = "5.13.5.202508271544-r"
+jsch = "2.28.7"
+bouncycastle = "1.85.2"
 
 # Browser (Custom Tabs for OAuth)
 androidx-browser = "1.8.0"
@@ -43,6 +45,8 @@ mockito = "5.11.0"
 mockito-kotlin = "5.1.0"
 
 [libraries]
+jsch = { module = "com.github.mwiede:jsch", version.ref = "jsch" }
+bouncycastle = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
 # Kotlin & Coroutines
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }

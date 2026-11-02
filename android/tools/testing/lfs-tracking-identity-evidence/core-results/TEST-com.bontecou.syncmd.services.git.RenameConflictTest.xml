@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RenameConflictTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:45" hostname="MacBook-Pro.local" time="0.693">
+  <properties/>
+  <testcase name="reviewed remote merge stops before push for a two way rename" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.085"/>
+  <testcase name="whole side resolution retains the selected name content and merge parents" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.134"/>
+  <testcase name="binary rename keeps exact bytes and refuses manual empty replacement" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.065"/>
+  <testcase name="three index paths form one logical conflict with complete side identities" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.058"/>
+  <testcase name="manual resolution chooses incoming filename and preserves unrelated staged and untracked files" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.053"/>
+  <testcase name="app branch merge pauses a two way rename before creating a merge commit" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.073"/>
+  <testcase name="unreviewed filename and existing index lock leave files and index intact" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.056"/>
+  <testcase name="stale side objects or working files cannot remove the other renamed file" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.055"/>
+  <testcase name="a replaced working path cannot follow a link or remove the external file" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.051"/>
+  <testcase name="overlapping renamed destinations refuse before changing tracked or untracked contents" classname="com.bontecou.syncmd.services.git.RenameConflictTest" time="0.063"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

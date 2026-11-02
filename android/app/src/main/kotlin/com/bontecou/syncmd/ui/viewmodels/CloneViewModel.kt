@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
+import com.bontecou.syncmd.services.repositories.CompletedClone
 import java.io.File
 import javax.inject.Inject
 
@@ -34,6 +37,8 @@ class CloneViewModel @Inject constructor(
     private val gitRepository: GitRepository,
     val authManager: GitHubAuthManager,
     @ApplicationContext private val context: Context,
+    private val repositoryCredentials: com.bontecou.syncmd.security.RepositoryCredentialStore,
+    private val saved: androidx.lifecycle.SavedStateHandle = androidx.lifecycle.SavedStateHandle(),
 ) : ViewModel() {
 
     companion object {
@@ -52,7 +57,7 @@ class CloneViewModel @Inject constructor(
          * Clone succeeded.
          * @param localPath The absolute path of the cloned repo on device.
          */
-        data class Success(val localPath: String) : CloneState()
+        data class Success(val localPath: String, val repository: String, val completed: CompletedClone) : CloneState()
         /** Clone failed with a human-readable [message]. */
         data class Error(val message: String) : CloneState()
     }
@@ -60,75 +65,112 @@ class CloneViewModel @Inject constructor(
     private val _cloneState = MutableStateFlow<CloneState>(CloneState.Idle)
     val cloneState: StateFlow<CloneState> = _cloneState.asStateFlow()
 
+    private val publications = com.bontecou.syncmd.storage.clonePublications(context)
+    @Volatile private var ownedPublication: String? = null
+    private fun claimPublication(id: String): Boolean = try {
+        if (ownedPublication != id) { publications.activate(id); ownedPublication = id }
+        true
+    } catch (_: Exception) {
+        _cloneState.value = CloneState.Error("This clone is already open or needs review in Local repositories."); false
+    }
+    private fun releasePublication(id: String) {
+        publications.deactivate(id); if (ownedPublication == id) ownedPublication = null
+    }
+    private fun restorePublication(id: String) {
+        if (!claimPublication(id)) return
+        val epoch = generation.get()
+        _cloneState.value = CloneState.Cloning
+        cloneJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val selected = requireNotNull(publications.get(id)) { "Cloning was interrupted. Retry or reconnect its folder." }
+                val completed = com.bontecou.syncmd.services.git.RepositoryOperationCoordinator.withRepository(selected.completed.path) {
+                    val current = requireNotNull(publications.get(id))
+                    require(current.alias == saved.get<String>("clone_repository"))
+                    publications.publish(current, repositoryCredentials.recordVersion(current.completed.path))
+                }
+                publish(epoch, CloneState.Success(completed.path, selected.alias, completed))
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { publish(epoch, CloneState.Error("The interrupted clone needs review. Its files were kept; reconnect it from Local repositories.")) }
+        }
+    }
+    override fun onCleared() {
+        generation.incrementAndGet()
+        // Owner disposal is not an explicit cancellation of durable recovery.
+        ownedPublication?.let(::releasePublication)
+        super.onCleared()
+    }
+
     /**
      * Start cloning [repoFullName] (e.g. "owner/repo") to app-managed writable storage.
      * Safe to call again after an [CloneState.Error] to retry.
      */
-    fun startClone(repoFullName: String) {
-        val token = authManager.getToken()
+    private var cloneJob: Job? = null
+    private val generation = java.util.concurrent.atomic.AtomicLong()
+    init { saved.get<String>("clone_publication_id")?.let(::restorePublication) }
+    private suspend fun publish(id: Long, state: CloneState) = withContext(Dispatchers.Main.immediate) {
+        if (generation.get() == id) _cloneState.value = state
+    }
+    fun startClone(repoFullName: String, location: String? = null) {
+        if (_cloneState.value == CloneState.Cloning || _cloneState.value is CloneState.Success) return
+        val prior = saved.get<String>("clone_publication_id")
+        if (prior != null && runCatching { publications.hasReceipt(prior) }.getOrDefault(true)) { restorePublication(prior); return }
+        val parts = repoFullName.split('/')
+        if (parts.size != 2 || parts.any { it == "." || it == ".." || !it.matches(Regex("[A-Za-z0-9_.-]+")) }) {
+            _cloneState.value = CloneState.Error("Invalid GitHub repository name")
+            return
+        }
+        val account = runCatching { authManager.captureActiveAccount() }.getOrNull()
+        val token = account?.token
         if (token.isNullOrBlank()) {
             _cloneState.value = CloneState.Error("Not authenticated — please sign in first.")
             return
         }
 
-        val baseDir = CloneStorage.obsidianCompatibleCloneBaseDir(context)
-        if (baseDir.isNullOrBlank()) {
-            _cloneState.value = CloneState.Error(
-                "Obsidian-compatible storage is unavailable.\n\nPlease reconnect storage and retry."
-            )
-            return
-        }
-
-        // Clone location is fixed to Android/media for Obsidian compatibility.
-        val localPath = "$baseDir/$repoFullName"
-        val cloneUrl = "https://github.com/$repoFullName.git"
-        val debugLoggingEnabled = sharedPrefs.getBoolean("show_debug_info", false)
-
-        viewModelScope.launch(Dispatchers.IO) {
-            _cloneState.value = CloneState.Cloning
+        val publicationId = java.util.UUID.randomUUID().toString()
+        saved["clone_publication_id"] = publicationId; saved["clone_repository"] = repoFullName
+        val id = generation.incrementAndGet()
+        _cloneState.value = CloneState.Cloning
+        if (!claimPublication(publicationId)) return
+        cloneJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+            val baseDir = try { com.bontecou.syncmd.storage.RepositoryLocations(context).resolve(location).path }
+                catch (e: Exception) { publish(id, CloneState.Error(e.message ?: "Choose the clone location again")); return@launch }
+            val localPath = "$baseDir/$repoFullName"
+            val cloneUrl = "https://github.com/$repoFullName.git"
+            val debugLoggingEnabled = sharedPrefs.getBoolean("show_debug_info", false)
 
             debugLog(
                 enabled = debugLoggingEnabled,
                 message = "Starting clone repo=$repoFullName url=$cloneUrl path=$localPath"
             )
 
-            // Proactively remove any stale clone directory before attempting a fresh
-            // clone. This handles the case where a previous swipe-to-delete removed
-            // the repo from the saved list but deleteRecursively() failed silently
-            // (common on Android/media FUSE storage). Without this, JGit refuses to
-            // clone into the non-empty directory and cleanupPartialCloneDirectory()
-            // won't remove it because it looks like a healthy repo.
+            // A retained or imported working copy is user data, never a stale clone.
+            // Reconnection is offered by local repository discovery instead.
             val existingDir = File(localPath)
             if (existingDir.exists()) {
-                debugLog(
-                    enabled = debugLoggingEnabled,
-                    message = "Removing stale clone directory before re-clone path=$localPath"
-                )
-                var deleted = false
-                repeat(5) { attempt ->
-                    if (deleted) return@repeat
-                    deleted = runCatching { existingDir.deleteRecursively() }.getOrDefault(false)
-                    if (!deleted && attempt < 4) Thread.sleep(200L * (attempt + 1))
-                }
-                debugLog(
-                    enabled = debugLoggingEnabled,
-                    message = "Pre-clone cleanup ${if (deleted) "succeeded" else "failed"} path=$localPath"
-                )
+                publish(id, CloneState.Error(
+                    "The destination already exists. Reconnect it from Local repositories, or choose a new empty location. No files were deleted."
+                ))
+                return@launch
             }
 
             val result = cloneWithRetry(
                 cloneUrl = cloneUrl,
                 localPath = localPath,
                 token = token,
+                accountId = account!!.id,
                 debugLoggingEnabled = debugLoggingEnabled,
+                requireCurrent = { check(generation.get() == id) { "Clone request changed" } },
+                publicationId = publicationId, repository = repoFullName,
             )
 
-            _cloneState.value = if (result.isSuccess) {
+            publish(id, if (result.isSuccess) {
                 debugLog(
                     enabled = debugLoggingEnabled,
                     message = "Clone succeeded repo=$repoFullName path=$localPath"
                 )
-                CloneState.Success(localPath)
+                val completed = result.getOrThrow()
+                CloneState.Success(completed.path, repoFullName, completed)
             } else {
                 val error = result.exceptionOrNull()
                 debugLog(
@@ -137,24 +179,35 @@ class CloneViewModel @Inject constructor(
                     throwable = error,
                 )
                 CloneState.Error(friendlyCloneErrorMessage(error))
-            }
+            })
+            } finally { if (runCatching { !publications.hasReceipt(publicationId) }.getOrDefault(false)) releasePublication(publicationId) }
         }
     }
 
-    fun reset() {
+    fun reset(): Boolean {
+        generation.incrementAndGet(); cloneJob?.cancel(); cloneJob = null
+        try {
+            ownedPublication?.let { publications.forget(it); releasePublication(it) }
+        } catch (_: Exception) {
+            _cloneState.value = CloneState.Error(context.getString(com.bontecou.syncmd.R.string.clone_recovery_cancel_failed)); return false
+        }
+        saved.remove<String>("clone_publication_id"); saved.remove<String>("clone_repository")
         _cloneState.value = CloneState.Idle
+        return true
     }
 
     private suspend fun cloneWithRetry(
         cloneUrl: String,
         localPath: String,
         token: String,
+        accountId: String,
         debugLoggingEnabled: Boolean,
-    ): Result<Unit> {
-        val targetDir = File(localPath)
-        val existedBeforeAttempt = targetDir.exists()
+        requireCurrent: () -> Unit,
+        publicationId: String, repository: String,
+    ): Result<CompletedClone> {
         val maxAttempts = 2
         var lastError: Throwable? = null
+        val credentialRevision = repositoryCredentials.recordVersion(localPath)
 
         repeat(maxAttempts) { index ->
             val attempt = index + 1
@@ -163,28 +216,38 @@ class CloneViewModel @Inject constructor(
                 message = "Clone attempt $attempt/$maxAttempts path=$localPath"
             )
 
+            var completed: CompletedClone? = null
             val result = try {
-                gitRepository.clone(
+                com.bontecou.syncmd.services.repositories.SafeCloneService(gitRepository).clone(
                     url = cloneUrl,
-                    path = localPath,
-                    creds = Credentials.Pat(token),
+                    destination = localPath,
+                    credentials = Credentials.Pat(token),
+                    beforePublication = { staging ->
+                        requireCurrent()
+                        publications.reserve(publicationId, staging, localPath, repositoryCredentials.recordVersion(localPath), repository.substringAfterLast('/'), repository)
+                    },
+                    retainStagingOnFailure = { publications.hasReceipt(publicationId) },
+                    withPublication = { move ->
+                        requireCurrent()
+                        check(repositoryCredentials.recordVersion(localPath) == credentialRevision) { "Saved credentials changed during cloning. Review the connection before retrying." }
+                        repositoryCredentials.updateCloneConnection(localPath, cloneUrl,
+                            credentialRevision, accountId, publications, publicationId) {
+                            requireCurrent(); move()
+                            completed = CompletedClone.capture(localPath, repositoryCredentials.recordVersion(localPath))
+                        }
+                    },
                 )
             } catch (t: Throwable) {
                 if (t is CancellationException) throw t
                 Result.failure(t)
             }
-            if (result.isSuccess) return result
+            if (result.isSuccess) return Result.success(requireNotNull(completed))
 
             val error = result.exceptionOrNull()
             lastError = error
 
-            cleanupPartialCloneDirectory(
-                targetDir = targetDir,
-                existedBeforeAttempt = existedBeforeAttempt,
-                debugLoggingEnabled = debugLoggingEnabled,
-            )
-
-            val shouldRetry = attempt < maxAttempts && isRetryableCloneFailure(error)
+            val shouldRetry = attempt < maxAttempts &&
+                runCatching { !publications.hasReceipt(publicationId) }.getOrDefault(false) && isRetryableCloneFailure(error)
             if (shouldRetry) {
                 debugLog(
                     enabled = debugLoggingEnabled,
@@ -196,52 +259,6 @@ class CloneViewModel @Inject constructor(
         }
 
         return Result.failure(lastError ?: Exception("Clone failed — please try again."))
-    }
-
-    /**
-     * Removes a failed clone directory to prevent stale partial repos from blocking retries.
-     *
-     * Safety guard:
-     *  - If the directory existed before clone began, we only delete when it looks like an
-     *    incomplete git repo (contains .git but missing required git metadata files).
-     */
-    private fun cleanupPartialCloneDirectory(
-        targetDir: File,
-        existedBeforeAttempt: Boolean,
-        debugLoggingEnabled: Boolean,
-    ) {
-        if (!targetDir.exists()) return
-
-        val gitDir = File(targetDir, ".git")
-        val looksLikeHealthyRepo =
-            gitDir.isDirectory && File(gitDir, "HEAD").isFile && File(gitDir, "config").isFile
-
-        val shouldDelete = when {
-            !existedBeforeAttempt -> true
-            gitDir.exists() && !looksLikeHealthyRepo -> true
-            else -> false
-        }
-
-        if (!shouldDelete) {
-            debugLog(
-                enabled = debugLoggingEnabled,
-                message = "Skipping clone-dir cleanup for existing non-partial path=${targetDir.absolutePath}"
-            )
-            return
-        }
-
-        // Use retries with backoff — MediaProvider can hold file locks briefly on
-        // Android/media storage, causing a single deleteRecursively() to fail.
-        var deleted = false
-        repeat(5) { attempt ->
-            if (deleted) return@repeat
-            deleted = runCatching { targetDir.deleteRecursively() }.getOrDefault(false)
-            if (!deleted && attempt < 4) Thread.sleep(200L * (attempt + 1))
-        }
-        debugLog(
-            enabled = debugLoggingEnabled,
-            message = "Cleanup ${if (deleted) "removed" else "failed to remove"} path=${targetDir.absolutePath}"
-        )
     }
 
     private fun isRetryableCloneFailure(error: Throwable?): Boolean {

@@ -2,210 +2,174 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bontecou.syncmd.services.github.GitHubApiService
-import com.bontecou.syncmd.services.github.GitHubAuthManager
-import com.bontecou.syncmd.services.github.GitHubRepo
-import com.bontecou.syncmd.services.github.GitHubUser
+import com.bontecou.syncmd.services.github.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
-/**
- * Drives GitHub authentication and repository browsing.
- *
- * Login flow:
- *   1. UI calls [generateOAuthUrl] → gets a URL to open in a Chrome Custom Tab
- *   2. After the OAuth redirect, MainActivity calls [GitHubAuthManager.handleCallback]
- *   3. [isLoggedIn] flips to true → [loadUserAndRepos] is triggered automatically
- */
+/** Account-owned publications: a delayed response cannot repopulate another session's profile or repos. */
 @HiltViewModel
-class GitHubViewModel @Inject constructor(
-    val authManager: GitHubAuthManager
-) : ViewModel() {
-
-    // ─── Auth state ──────────────────────────────────────────────────────────
-
-    val isLoggedIn: StateFlow<Boolean> = authManager.token
-        .map { !it.isNullOrEmpty() }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, authManager.isLoggedIn)
-
-    // ─── Profile ─────────────────────────────────────────────────────────────
-
+class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, private val api: GitHubClient) : ViewModel() {
+    val isLoggedIn = authManager.token.map { !it.isNullOrBlank() }.stateIn(viewModelScope, SharingStarted.Eagerly, authManager.isLoggedIn)
     private val _user = MutableStateFlow<GitHubUser?>(null)
-    val user: StateFlow<GitHubUser?> = _user.asStateFlow()
-
-    // ─── Repos ───────────────────────────────────────────────────────────────
-
+    val user = _user.asStateFlow()
     private val _repos = MutableStateFlow<List<GitHubRepo>>(emptyList())
-    val repos: StateFlow<List<GitHubRepo>> = _repos.asStateFlow()
-
+    val repos = _repos.asStateFlow()
     private val _filteredRepos = MutableStateFlow<List<GitHubRepo>>(emptyList())
-    val filteredRepos: StateFlow<List<GitHubRepo>> = _filteredRepos.asStateFlow()
-
+    val filteredRepos = _filteredRepos.asStateFlow()
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    // ─── UI state ────────────────────────────────────────────────────────────
-
+    val searchQuery = _searchQuery.asStateFlow()
+    private val _signOutReview = MutableStateFlow<GitHubAuthManager.SignOutReview?>(null)
+    val signOutReview = _signOutReview.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
+    val isLoading = _isLoading.asStateFlow()
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
-
+    val error = combine(_error, authManager.sessionError) { request, session -> request ?: session }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, authManager.sessionError.value)
+    private var loadJob: Job? = null
+    private var signInJob: Job? = null
+    private var request = 0L
+    private var signInRequest = 0L
+    private var publishingSignInToken: String? = null
+    private var ownedSessionRevision: Long? = null
+    private var dataToken: String? = null
+    private var loading = false
+    private var signingIn = false
+    private fun busy() { _isLoading.value = loading || signingIn }
+    private fun clearAccountData() {
+        _user.value = null; _repos.value = emptyList(); _filteredRepos.value = emptyList(); _searchQuery.value = ""
+    }
     init {
-        if (authManager.isLoggedIn) {
-            loadUserAndRepos()
+        val initialRevision = authManager.sessionRevision.value
+        if (authManager.isLoggedIn) loadUserAndRepos()
+        viewModelScope.launch {
+            var observed = initialRevision
+            authManager.sessionRevision.collect { revision ->
+                if (observed != revision) {
+                    _signOutReview.value = null
+                    observed = revision
+                    val token = authManager.getToken()
+                    // A validated PAT publishes its own revision before finishing profile/repo loading.
+                    // Every other revision invalidates both requests, even when the token is unchanged.
+                    if (revision == ownedSessionRevision ||
+                        (publishingSignInToken != null && token == publishingSignInToken)) return@collect
+                    ownedSessionRevision = null
+                    signInRequest++; signInJob?.cancel(); signingIn = false
+                    request++; loadJob?.cancel(); loading = false
+                    if (dataToken != token) { clearAccountData(); dataToken = token }
+                    _error.value = null; busy()
+                    if (token != null) loadUserAndRepos()
+                }
+            }
         }
     }
-
-    // ─── OAuth ───────────────────────────────────────────────────────────────
-
-    /**
-     * Generates a one-time OAuth login URL with a random CSRF state.
-     * The caller (LoginScreen) opens this in a Custom Tab.
-     */
-    fun generateOAuthUrl(): String {
-        val state = UUID.randomUUID().toString().replace("-", "")
-        return authManager.buildLoginUrl(state)
-    }
-
-    /** Called after a successful OAuth deep link callback. */
-    fun onOAuthSuccess() {
-        loadUserAndRepos(forceRefresh = true)
-    }
-
-    // ─── Data loading ─────────────────────────────────────────────────────────
-
+    fun generateOAuthUrl(): String? = authManager.createOAuthLoginUrl()
+    fun browserLaunchFailed() { _error.value = "Could not open the browser. Retry or use a Personal Access Token." }
+    fun onOAuthSuccess() = loadUserAndRepos(forceRefresh = true)
     fun loadUserAndRepos(forceRefresh: Boolean = false) {
         val token = authManager.getToken() ?: return
-
+        val revision = authManager.sessionRevision.value
+        val id = ++request
+        loadJob?.cancel()
+        if (dataToken != token) { clearAccountData(); dataToken = token }
         if (!forceRefresh) {
-            if (_repos.value.isNotEmpty()) {
-                if (_user.value == null) hydrateUserFromCachedProfile()
-                applyFilter(_searchQuery.value)
-                return
-            }
-
-            val cachedRepos = authManager.getCachedRepos()
-            if (!cachedRepos.isNullOrEmpty()) {
-                _repos.value = cachedRepos
-                if (_user.value == null) hydrateUserFromCachedProfile()
-                _error.value = null
-                _isLoading.value = false
-                applyFilter(_searchQuery.value)
-                return
+            if (_repos.value.isNotEmpty() && !authManager.needsAccountVerification()) { hydrate(); loading = false; busy(); applyFilter(); return }
+            authManager.getCachedRepos()?.let { cached ->
+                _repos.value = cached; hydrate(); _error.value = null; loading = false; busy(); applyFilter()
+                if (!authManager.needsAccountVerification()) return
             }
         }
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+        loading = true; busy(); _error.value = null
+        loadJob = viewModelScope.launch {
+            fun current() = id == request && authManager.getToken() == token && authManager.sessionRevision.value == revision
             try {
-                val user = GitHubApiService.fetchUser(token)
-                _user.value = user
-
-                // Fetch email separately (may not be on the public profile)
-                val email = user.email
-                    ?: GitHubApiService.fetchPrimaryEmail(token)
-                authManager.cacheUserProfile(user.login, user.name, user.avatarUrl, email)
-
-                val repos = GitHubApiService.fetchRepos(token)
-                _repos.value = repos
-                authManager.cacheRepos(repos)
-                applyFilter(_searchQuery.value)
-            } catch (e: Exception) {
-                _error.value = e.message ?: "Failed to load GitHub data"
-            } finally {
-                _isLoading.value = false
-            }
+                val user = api.fetchUser(token)
+                if (!current()) return@launch
+                val email = user.email ?: api.fetchPrimaryEmail(token)
+                if (!current()) return@launch
+                if (!authManager.cacheUserProfile(user.login, user.name, user.avatarUrl, email, token, user.id)) return@launch
+                _user.value = user.copy(email = email)
+                val repos = api.fetchRepos(token)
+                if (!current()) return@launch
+                if (!authManager.cacheRepos(repos, token)) return@launch
+                _repos.value = repos; applyFilter()
+            } catch (e: CancellationException) { throw e
+            } catch (e: Exception) { if (current()) _error.value = e.message ?: "Failed to load GitHub data"
+            } finally { if (id == request) { loading = false; busy() } }
         }
     }
-
-    /**
-     * Sign in with a Personal Access Token instead of the browser OAuth flow.
-     * Validates the token immediately by fetching the user profile.
-     */
     fun signInWithPAT(token: String) {
-        if (token.isBlank()) {
-            _error.value = "Token cannot be empty"
-            return
-        }
-        viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+        if (signingIn) return
+        if (token.isBlank()) { _error.value = "Token cannot be empty"; return }
+        val id = ++signInRequest
+        val startingRevision = authManager.sessionRevision.value
+        signingIn = true; busy(); _error.value = null; authManager.clearSessionError()
+        signInJob = viewModelScope.launch {
+            var acceptedRevision: Long? = null
+            fun current() = id == signInRequest && authManager.sessionRevision.value == (acceptedRevision ?: startingRevision)
             try {
-                val user = GitHubApiService.fetchUser(token)
-                // Token is valid — store it
-                authManager.handleCallback(token)
-                _user.value = user
-
-                val email = user.email
-                    ?: GitHubApiService.fetchPrimaryEmail(token)
-                authManager.cacheUserProfile(user.login, user.name, user.avatarUrl, email)
-
-                val repos = GitHubApiService.fetchRepos(token)
-                _repos.value = repos
-                authManager.cacheRepos(repos)
-                applyFilter(_searchQuery.value)
-            } catch (e: IllegalStateException) {
-                _error.value = "Invalid token — please check it and try again"
-            } catch (e: Exception) {
-                _error.value = e.message ?: "Sign-in failed"
-            } finally {
-                _isLoading.value = false
-            }
+                val user = api.fetchUser(token)
+                if (!current()) return@launch
+                publishingSignInToken = token
+                try {
+                    check(authManager.saveValidatedToken(token, user)) { "Could not securely save sign-in" }
+                    if (id != signInRequest || authManager.getToken() != token) return@launch
+                    acceptedRevision = authManager.sessionRevision.value
+                    ownedSessionRevision = acceptedRevision
+                } finally { publishingSignInToken = null }
+                if (!current() || authManager.getToken() != token) return@launch
+                request++; loadJob?.cancel(); loading = false
+                clearAccountData(); dataToken = token; _user.value = user
+                val email = user.email ?: api.fetchPrimaryEmail(token)
+                if (!current()) return@launch
+                if (!authManager.cacheUserProfile(user.login, user.name, user.avatarUrl, email, token, user.id)) return@launch
+                _user.value = user.copy(email = email)
+                val repos = api.fetchRepos(token)
+                if (!current()) return@launch
+                if (!authManager.cacheRepos(repos, token)) return@launch
+                _repos.value = repos; applyFilter()
+            } catch (e: CancellationException) { throw e
+            } catch (e: Exception) { if (current()) _error.value = e.message ?: "Sign-in failed"
+            } finally { if (id == signInRequest) { signingIn = false; busy() } }
         }
     }
-
-    private fun hydrateUserFromCachedProfile() {
+    private fun hydrate() {
         val login = authManager.cachedLogin.value ?: return
-        _user.value = GitHubUser(
-            login = login,
-            name = authManager.cachedName.value,
-            email = authManager.cachedEmail.value,
-            avatarUrl = authManager.cachedAvatarUrl.value
-        )
+        _user.value = GitHubUser(login, authManager.cachedName.value, authManager.cachedEmail.value, authManager.cachedAvatarUrl.value)
     }
-
-    // ─── Search / filter ─────────────────────────────────────────────────────
-
-    fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
-        applyFilter(query)
+    fun onSearchQueryChanged(query: String) { _searchQuery.value = query; applyFilter() }
+    private fun applyFilter() {
+        val query = _searchQuery.value
+        _filteredRepos.value = _repos.value.filter { query.isBlank() || it.name.contains(query, true) || it.fullName.contains(query, true) || it.description?.contains(query, true) == true }
     }
-
-    private fun applyFilter(query: String) {
-        _filteredRepos.value = if (query.isBlank()) {
-            _repos.value
-        } else {
-            _repos.value.filter { repo ->
-                repo.name.contains(query, ignoreCase = true) ||
-                        repo.fullName.contains(query, ignoreCase = true) ||
-                        (repo.description?.contains(query, ignoreCase = true) == true)
-            }
-        }
+    fun prepareSignOut(expectedRevision: Long) {
+        val review = authManager.reviewSignOut(expectedRevision) ?: return
+        _signOutReview.value = review
     }
-
-    // ─── Sign out ────────────────────────────────────────────────────────────
-
+    fun dismissSignOut(review: GitHubAuthManager.SignOutReview) {
+        if (_signOutReview.value === review) _signOutReview.value = null
+    }
+    fun confirmSignOut(review: GitHubAuthManager.SignOutReview) {
+        if (_signOutReview.value !== review) return
+        _signOutReview.value = null
+        // Reject stale consent without cancelling the current account's requests.
+        if (authManager.signOut(review)) clearSignedOutRequests()
+    }
+    private fun clearSignedOutRequests() {
+        ownedSessionRevision = null
+        signInRequest++; request++; signInJob?.cancel(); loadJob?.cancel(); signingIn = false; loading = false; busy()
+        clearAccountData(); dataToken = null; _error.value = null
+    }
+    /** Programmatic cancellation also supports a sign-in that has no connected account yet. */
     fun signOut() {
-        authManager.signOut()
-        _user.value = null
-        _repos.value = emptyList()
-        _filteredRepos.value = emptyList()
-        _searchQuery.value = ""
-        _error.value = null
+        _signOutReview.value = null
+        ownedSessionRevision = null
+        signInRequest++; request++; signInJob?.cancel(); loadJob?.cancel(); signingIn = false; loading = false; busy()
+        if (!authManager.signOut()) return
+        clearAccountData(); dataToken = null; _error.value = null
     }
-
-    fun clearError() {
-        _error.value = null
-    }
+    fun clearError() { _error.value = null; authManager.clearSessionError() }
 }

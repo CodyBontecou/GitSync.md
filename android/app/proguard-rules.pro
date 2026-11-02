@@ -36,6 +36,9 @@
 -keep class com.bontecou.syncmd.services.** { *; }
 -keep class com.bontecou.syncmd.data.** { *; }
 -keep class com.bontecou.syncmd.ui.viewmodels.** { *; }
+# Persisted Gson move payloads must survive shrinking and retain their schema across updates.
+-keep class com.bontecou.syncmd.storage.RepositoryMoveMetadata { *; }
+-keep class com.bontecou.syncmd.onboarding.GuideTarget { *; }
 
 # Keep parcelable
 -keep class * implements android.os.Parcelable {
@@ -68,11 +71,27 @@
 -dontpreverify
 
 # JGit references optional JVM-only APIs not present on Android
+# Translation bundle class and field names must match the packaged .properties
+# resources: JGit looks them up reflectively, including when starting a push.
+-keep class * extends org.eclipse.jgit.nls.TranslationBundle { *; }
 -dontwarn java.lang.ProcessHandle
 -dontwarn java.lang.management.**
 -dontwarn javax.management.**
 -dontwarn org.ietf.jgss.**
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# JSch selects cryptographic implementations by class name in its algorithm
+# registry. Bouncy Castle also loads provider mappings reflectively on Android.
+-keep class com.jcraft.jsch.jce.** { *; }
+-keep class com.jcraft.jsch.bc.** { *; }
+-keep class com.jcraft.jsch.jzlib.** { *; }
+-keep class * extends com.jcraft.jsch.KeyExchange { *; }
+-keep class com.jcraft.jsch.UserAuthNone { *; }
+-keep class com.jcraft.jsch.UserAuthPublicKey { *; }
+-keep class com.jcraft.jsch.CipherNone { *; }
+-keep class org.bouncycastle.** { *; }
+# BC's unused LDAP certificate-store adapters reference desktop JNDI APIs.
+-dontwarn javax.naming.**
 
 # Logging
 -assumenosideeffects class android.util.Log {

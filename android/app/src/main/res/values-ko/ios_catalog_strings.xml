@@ -1,0 +1,1221 @@
+<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<resources>
+    <string name="account_removal_subject" formatted="false">"이 계정"</string>
+    <string name="background_active" formatted="false">"포함된 저장소의 백그라운드 확인이 예약되었습니다."</string>
+    <string name="background_allow_push" formatted="false">"자동 게시 허용"</string>
+    <string name="background_attempt">"마지막 확인: %1$s"</string>
+    <string name="background_attention" formatted="false">"검토가 필요합니다. 저장소를 열어 로컬 변경 사항, 기록 분기, 누락된 업스트림 또는 업로드 대기 중인 저장된 커밋을 처리하세요."</string>
+    <string name="background_binding">"%2$s/%3$s을(를) 추적하는 %1$s 브랜치만 해당합니다. 브랜치, 폴더, 연결 또는 계정이 바뀌면 다시 검토해야 합니다."</string>
+    <string name="background_changed" formatted="false">"폴더, 브랜치 또는 연결이 바뀌었습니다. 다시 검토하세요."</string>
+    <string name="background_current" formatted="false">"최신 상태"</string>
+    <string name="background_empty" formatted="false">"등록된 로컬 저장소가 없습니다."</string>
+    <string name="background_error" formatted="false">"이 작업을 완료하지 못했습니다. 다시 불러와 현재 저장소와 설정을 검토하세요."</string>
+    <string name="background_exclude" formatted="false">"백그라운드 동기화에서 제외"</string>
+    <string name="background_excluded" formatted="false">"제외"</string>
+    <string name="background_failed" formatted="false">"연결, 인증, 신뢰 또는 파일 접근을 확인해야 합니다. 저장소를 열고 거기서 다시 시도하세요."</string>
+    <string name="background_forget" formatted="false">"저장된 정책 삭제"</string>
+    <string name="background_inactive" formatted="false">"백그라운드 확인이 꺼져 있습니다. 모드를 켜고 저장소를 하나 이상 포함하세요."</string>
+    <string name="background_include" formatted="false">"이 저장소 포함"</string>
+    <string name="background_included" formatted="false">"포함됨"</string>
+    <string name="background_never" formatted="false">"아직 확인하지 않음"</string>
+    <string name="background_open" formatted="false">"저장소 열기"</string>
+    <string name="background_power" formatted="false">"외부 전원만 사용"</string>
+    <string name="background_pull" formatted="false">"원격 변경 사항 자동 풀"</string>
+    <string name="background_push" formatted="false">"로컬 변경 사항 자동 커밋 및 푸시"</string>
+    <string name="background_push_confirm" formatted="false">"자동 게시를 허용할까요?"</string>
+    <string name="background_push_detail" formatted="false">"GitSync.md는 로컬 변경 사항을 스테이징하고 각 저장소의 작성자 정보로 커밋을 만든 뒤, 포함된 저장소의 검토한 브랜치에 업로드할 수 있습니다. 강제 푸시, 갈라진 기록 병합 또는 브랜치 전환은 절대 하지 않습니다. 끄면 이후 단계가 중지되지만 완료된 커밋과 업로드는 유지됩니다."</string>
+    <string name="background_queued" formatted="false">"확인을 요청했습니다. Android 및 연결을 기다리는 중입니다."</string>
+    <string name="background_reload" formatted="false">"다시 불러오기"</string>
+    <string name="background_reset" formatted="false">"백그라운드 동기화 초기화"</string>
+    <string name="background_reset_detail" formatted="false">"읽을 수 없는 백그라운드 동기화 설정으로는 작업을 허용할 수 없습니다. 초기화하면 저장된 정책과 상태만 삭제하고 두 자동 모드를 모두 끕니다. 저장소 파일, 계정 및 다른 동기화 기능은 유지됩니다. 다시 포함하기 전에 각 저장소를 검토하세요."</string>
+    <string name="background_review" formatted="false">"검토 후 포함"</string>
+    <string name="background_review_again" formatted="false">"설정 검토"</string>
+    <string name="background_run" formatted="false">"지금 확인"</string>
+    <string name="background_running" formatted="false">"저장소 확인 중…"</string>
+    <string name="background_schedule" formatted="false">"Android는 연결, 배터리 및 시스템 제한에 따라 약 15분마다 또는 그보다 늦게 확인을 예약합니다. 지금 확인은 더 이른 확인을 요청합니다. 앱을 강제 종료하면 다시 열 때까지 백그라운드 작업이 중지됩니다."</string>
+    <string name="background_scope" formatted="false">"현재 브랜치와 연결을 검토한 후 저장소를 포함하세요. 자동 풀은 변경 사항을 가져와 안전할 때 fast-forward를 수행합니다. 자동 푸시는 로컬 변경 사항으로 커밋을 만들고 업로드합니다. 갈라진 기록, 로컬 편집이 있는 상태의 수신 변경 사항, 바뀐 연결은 검토가 필요합니다."</string>
+    <string name="background_stop" formatted="false">"확인 중지"</string>
+    <string name="background_stopped" formatted="false">"확인 중지됨"</string>
+    <string name="background_title" formatted="false">"백그라운드 동기화"</string>
+    <string name="background_transfer">"마지막 전송: %1$s"</string>
+    <string name="background_unavailable" formatted="false">"이 작업 복사본은 더 이상 등록되어 있지 않습니다. 다시 연결한 후 정책을 다시 검토하세요."</string>
+    <string name="background_updated" formatted="false">"변경 사항 동기화됨"</string>
+    <string name="background_wait_network" formatted="false">"인터넷 연결 대기 중"</string>
+    <string name="background_wait_power" formatted="false">"외부 전원 대기 중"</string>
+    <string name="background_wait_wifi" formatted="false">"Wi-Fi 대기 중"</string>
+    <string name="background_wifi" formatted="false">"Wi-Fi만 사용 가능"</string>
+    <string name="background_wrong_branch" formatted="false">"작업 복사본이 다른 브랜치에 있습니다. 이전 브랜치로 돌아가거나 다시 검토하세요."</string>
+    <string name="branch_screen" formatted="false">"브랜치"</string>
+    <string name="callback_action" formatted="false">"요청한 작업"</string>
+    <string name="callback_authorized_scope" formatted="false">"승인된 링크는 다시 묻지 않고 저장된 작업을 실행합니다. 변경되거나 취소된 링크는 여기서 중단됩니다. 저장소 작업 → 승인된 링크에서 권한을 관리하세요."</string>
+    <string name="callback_auto_return" formatted="false">"이번 실행 후 자동으로 돌아가기"</string>
+    <string name="callback_background_attention" formatted="false">"콜백을 확인해야 합니다. 저장소 작업에서 저장된 결과를 검토하세요. 사용 가능한 결과를 반환하려면 탭하세요."</string>
+    <string name="callback_background_busy" formatted="false">"다른 작업이 이미 실행 중이었습니다. 이 콜백은 실행되지 않았습니다. 작업이 끝난 후 링크를 다시 사용하세요."</string>
+    <string name="callback_background_channel" formatted="false">"승인된 콜백 작업"</string>
+    <string name="callback_background_complete" formatted="false">"콜백이 완료되었습니다. 탭하여 승인된 호출 앱으로 결과를 반환하세요."</string>
+    <string name="callback_background_complete_no_return" formatted="false">"콜백이 완료되었습니다. 저장소 작업을(를) 열어 저장된 결과를 검토하세요."</string>
+    <string name="callback_background_consent" formatted="false">"이 링크를 사용할 때마다 검토한 저장소, 브랜치 및 저장된 연결/계정을 사용하여 GitSync.md를 열지 않고 한 번 실행합니다. 결과는 저장소 작업에 저장됩니다. 알림이 허용된 경우 완료 알림을 탭하면 승인된 호출 앱으로 결과를 반환할 수 있습니다. 이 모드에서는 자동 반환을 사용할 수 없습니다. 프로세스가 중단되면 저장소를 검토한 후 링크를 다시 사용하세요. 중단된 작업은 절대로 자동으로 다시 시작되지 않습니다."</string>
+    <string name="callback_background_results_unavailable" formatted="false">"저장된 콜백 결과를 읽을 수 없습니다. 승인은 별도로 유지됩니다. 결과를 지우면 홈 화면 바로가기의 결과도 지워집니다."</string>
+    <string name="callback_background_return_expired" formatted="false">"이 콜백 결과를 사용할 수 없거나 권한이 변경되었습니다. 링크를 다시 사용하기 전에 저장소 작업을(를) 검토하세요."</string>
+    <string name="callback_background_running" formatted="false">"승인된 콜백 실행 중"</string>
+    <string name="callback_busy" formatted="false">"이 요청이 열린 동안 다른 요청이 도착했습니다. 대기열에 추가하거나 실행하지 않았습니다. 다른 요청을 열기 전에 이 요청을 완료하거나 닫으세요."</string>
+    <string name="callback_cancel" formatted="false">"요청 취소"</string>
+    <string name="callback_choose" formatted="false">"이 이름의 폴더가 여러 개 있습니다. 원하는 작업 사본을 선택하세요."</string>
+    <string name="callback_close" formatted="false">"닫기"</string>
+    <string name="callback_connection" formatted="false">"이 저장소에 저장된 연결, 계정 및 작성자 설정을 사용합니다. 확인한 브랜치나 연결이 변경되면 이 요청이 중단됩니다."</string>
+    <string name="callback_copy_authorized" formatted="false">"승인하고 링크 복사"</string>
+    <string name="callback_create_link" formatted="false">"승인된 자동화 링크 만들기"</string>
+    <string name="callback_delivery_failed" formatted="false">"반환 대상을 열 수 있는 앱이 없습니다. 결과는 여기에 보관됩니다. Git 작업을 반복하지 않고 반환을 다시 시도할 수 있습니다."</string>
+    <string name="callback_destinations" formatted="false">"결과 반환 대상"</string>
+    <string name="callback_error" formatted="false">"요청 확인 필요"</string>
+    <string name="callback_error_destination">"오류 시: %1$s"</string>
+    <string name="callback_expired" formatted="false">"활성 요청이 없습니다. GitSync.md를 다시 시작한 후 새 콜백 링크를 열어 다시 검토하세요."</string>
+    <string name="callback_grant_consent" formatted="false">"이 링크를 가진 사람은 누구나 추가 확인 없이 이 저장소에서 정확히 이 작업과 커밋 메시지를 사용할 수 있으며, 이후의 로컬 변경 사항도 포함됩니다. 브랜치, 연결, 계정 및 결과 반환 대상은 고정됩니다. 링크를 비공개로 유지하세요. 저장소 작업 → 승인된 링크에서 권한을 취소할 수 있습니다. 링크를 만들어도 Git은 실행되지 않습니다."</string>
+    <string name="callback_grant_disabled" formatted="false">"승인 취소됨"</string>
+    <string name="callback_grant_enabled" formatted="false">"향후 실행 승인됨"</string>
+    <string name="callback_grant_forget" formatted="false">"승인 취소된 링크 삭제"</string>
+    <string name="callback_grant_identity">"링크 %1$s · 생성일 %2$s"</string>
+    <string name="callback_grant_manage" formatted="false">"승인된 링크"</string>
+    <string name="callback_grant_refresh" formatted="false">"승인된 링크 새로고침"</string>
+    <string name="callback_grant_reset" formatted="false">"승인된 링크 초기화"</string>
+    <string name="callback_grant_reset_scope" formatted="false">"읽을 수 없는 기록을 포함하여 저장된 모든 링크 승인을 삭제할까요? 기존 승인된 링크가 모두 작동하지 않게 됩니다. 검토한 자동화 요청에서 새 링크를 만드세요. 저장소, 파일, 계정 및 홈 화면 바로가기는 유지됩니다."</string>
+    <string name="callback_grant_return" formatted="false">"확인한 대상에 결과 자동 반환"</string>
+    <string name="callback_grant_revoke" formatted="false">"링크 승인 취소"</string>
+    <string name="callback_grant_revoke_scope" formatted="false">"이 링크를 사용하는 모든 사람이 이 작업을 실행하거나 결과를 자동으로 반환할 권한을 잃게 됩니다. 이미 Git에 전달된 작업은 완료되었을 수 있습니다."</string>
+    <string name="callback_grant_unreadable" formatted="false">"승인된 링크를 읽을 수 없습니다. 저장된 기록은 보존되었으며 복구될 때까지 실행할 수 없습니다."</string>
+    <string name="callback_link_copied">"승인된 링크 %1$s을(를) 복사했습니다. 비공개로 유지하고 자동화에 붙여넣으세요. 토큰은 나중에 복구할 수 없습니다. 필요한 경우 다른 링크를 만드세요."</string>
+    <string name="callback_link_failed" formatted="false">"승인된 링크를 복사할 수 없습니다. 저장소를 다시 검토하고 재시도하기 전에 승인된 링크을(를) 확인하세요."</string>
+    <string name="callback_no_destination" formatted="false">"반환 URL이 제공되지 않았습니다. 결과는 여기에 남습니다."</string>
+    <string name="callback_preparing" formatted="false">"로컬 저장소 검토 중…"</string>
+    <string name="callback_result_branch">"브랜치: %1$s"</string>
+    <string name="callback_result_changes">"변경된 파일: %1$s"</string>
+    <string name="callback_result_commit">"커밋: %1$s"</string>
+    <string name="callback_result_pulled" formatted="false">"원격 변경 사항을 풀했습니다."</string>
+    <string name="callback_result_saved" formatted="false">"커밋이 로컬에 저장되었습니다. 업로드는 확인되지 않았습니다."</string>
+    <string name="callback_result_skipped" formatted="false">"업로드할 로컬 변경 사항이 없었습니다."</string>
+    <string name="callback_return" formatted="false">"호출한 앱에 결과 반환"</string>
+    <string name="callback_return_scope" formatted="false">"결과를 반환하면 아래 대상이 열리고 작업 결과와 브랜치 및 커밋 식별자가 공유됩니다. 인증 정보와 로컬 폴더 경로는 절대 포함되지 않습니다. 실행을 승인하기 전에 자동 반환을 선택하거나, 실행 후 직접 결과를 반환하세요."</string>
+    <string name="callback_returned" formatted="false">"결과가 Android에 전달되었습니다. 이후 동작은 수신 앱에서 결정합니다."</string>
+    <string name="callback_run" formatted="false">"허용하고 한 번 실행"</string>
+    <string name="callback_running" formatted="false">"승인된 작업 실행 중…"</string>
+    <string name="callback_scope" formatted="false">"다른 앱이나 링크가 Git 작업을 요청했습니다. 이번 한 번의 실행을 허용하기 전에 저장소와 작업을 확인하세요."</string>
+    <string name="callback_success" formatted="false">"작업 완료"</string>
+    <string name="callback_success_destination">"성공 시: %1$s"</string>
+    <string name="callback_title" formatted="false">"자동화 요청"</string>
+    <string name="callback_unknown_action" formatted="false">"알 수 없는 작업"</string>
+    <string name="clone_completed_title" formatted="false">"복제됨"</string>
+    <string name="clone_lfs_attention" formatted="false">"복제가 완료되었습니다. 일부 Git LFS 파일은 아직 검토하거나 다운로드해야 합니다. 복제본과 로컬 편집 내용은 유지됩니다."</string>
+    <string name="clone_lfs_review" formatted="false">"Git LFS 검토"</string>
+    <string name="clone_location_reconnect" formatted="false">"폴더를 다시 연결해야 합니다"</string>
+    <string name="clone_location_title" formatted="false">"복제 위치"</string>
+    <string name="clone_recovery_added" formatted="false">"클론한 저장소를 추가했습니다"</string>
+    <string name="clone_recovery_cancel_failed" formatted="false">"이 클론 복구를 무시할 수 없습니다. 앱 저장소를 확인하고 다시 시도하세요. 파일은 유지되었습니다."</string>
+    <string name="clone_recovery_cannot_dismiss" formatted="false">"복구 정보가 변경되었거나 안전하게 제거할 수 없습니다. 새로고침하여 다시 검토하세요."</string>
+    <string name="clone_recovery_confirm_body" formatted="false">"자동 복구가 중지됩니다. 저장소 폴더와 저장된 연결은 이 기기에 남습니다. 로컬 저장소에서 완료된 저장소를 추가할 수 있습니다."</string>
+    <string name="clone_recovery_confirm_title" formatted="false">"이 클론 복구를 무시할까요?"</string>
+    <string name="clone_recovery_damaged" formatted="false">"이 복구 정보를 읽을 수 없습니다. 복구를 무시하고 완료된 폴더를 수동으로 다시 연결할 수 있습니다."</string>
+    <string name="clone_recovery_dismiss" formatted="false">"복구 무시"</string>
+    <string name="clone_recovery_dismissed" formatted="false">"복구를 무시했습니다. 저장소 파일과 저장된 연결은 유지되었습니다."</string>
+    <string name="clone_recovery_ready" formatted="false">"폴더와 연결을 검토한 후 이 클론 추가를 다시 시도하세요. 기존 파일은 유지됩니다."</string>
+    <string name="clone_recovery_refresh" formatted="false">"클론 복구 새로고침"</string>
+    <string name="clone_recovery_retry" formatted="false">"클론 추가 재시도"</string>
+    <string name="clone_recovery_review_needed" formatted="false">"일부 중단된 클론은 로컬 저장소에서 검토해야 합니다. 파일은 유지되었습니다."</string>
+    <string name="clone_recovery_staging">"임시 사본: %1$s"</string>
+    <string name="clone_recovery_title" formatted="false">"중단된 클론"</string>
+    <string name="clone_recovery_unavailable" formatted="false">"클론 복구를 사용할 수 없습니다. 앱 저장소를 확인하고 다시 시도하세요."</string>
+    <string name="clone_recovery_unreadable" formatted="false">"클론 복구 정보를 읽을 수 없음"</string>
+    <string name="clone_registration_failed" formatted="false">"복제한 저장소를 추가하지 못했습니다. 파일은 유지되었습니다. 다시 추가하거나 로컬 저장소에서 폴더를 다시 연결하세요."</string>
+    <string name="commit_screen" formatted="false">"커밋"</string>
+    <string name="conflict_choose_filename" formatted="false">"유지할 파일 이름 선택"</string>
+    <string name="conflict_current_deleted" formatted="false">"현재 브랜치에서 이 파일을 삭제했습니다. “현재 버전”을(를) 선택하면 파일이 제거됩니다."</string>
+    <string name="conflict_filename_cleanup" formatted="false">"이 충돌을 해결하고 스테이징하면 충돌에 있는 다른 파일 이름은 제거됩니다."</string>
+    <string name="conflict_incoming_deleted" formatted="false">"들어오는 브랜치에서 이 파일을 삭제했습니다. “원격 버전”을(를) 선택하면 파일이 제거됩니다."</string>
+    <string name="conflict_renamed_differently" formatted="false">"서로 다른 이름으로 변경됨"</string>
+    <string name="connection_endpoint_count">"엔드포인트에 연결된 연결 %1$d개가 저장되어 있습니다. origin을 편집해도 다른 연결은 유지됩니다. 공개 접근을 선택하면 저장된 자격 증명이 모두 제거됩니다."</string>
+    <string name="connection_keep_public_recovered" formatted="false">"공개 접근 유지 · 복구된 자격 증명은 비활성 상태 유지"</string>
+    <string name="connection_keep_saved" formatted="false">"저장된 인증 정보 유지"</string>
+    <string name="connection_migration_fetch" formatted="false">"가져오기 주소"</string>
+    <string name="connection_migration_push" formatted="false">"푸시 주소"</string>
+    <string name="connection_new_basic" formatted="false">"새 사용자 이름 및 토큰"</string>
+    <string name="connection_public_access" formatted="false">"공개 액세스 · 인증 정보 없음"</string>
+    <string name="connection_url_credentials_body" formatted="false">"지원되는 HTTPS 자격 증명을 암호화된 저장소로 옮기고 Git 원격 URL에서 제거합니다. 별도의 가져오기 및 푸시 주소는 유지됩니다."</string>
+    <string name="connection_url_credentials_migrate" formatted="false">"URL 자격 증명을 보안 저장소로 이동"</string>
+    <string name="connection_url_credentials_preserve" formatted="false">"기존 보안 자격 증명과 명시적인 공개 접근 선택이 우선합니다. URL의 사용자 이름과 토큰은 여기에 표시되지 않습니다."</string>
+    <string name="connection_url_credentials_title" formatted="false">"원격 URL의 자격 증명"</string>
+    <string name="connection_use_alternative" formatted="false">"다른 저장된 자격 증명 사용"</string>
+    <string name="diagnostics_action_failed" formatted="false">"이 진단 작업을 완료하지 못했습니다. 기존 기록은 보존되었습니다."</string>
+    <string name="diagnostics_all" formatted="false">"전체"</string>
+    <string name="diagnostics_clear_entries">"삭제할 기록: %1$d개. 필터로 숨긴 기록도 포함됩니다. 이후 새 작업은 기록을 추가할 수 있습니다."</string>
+    <string name="diagnostics_clear_recovery" formatted="false">"읽을 수 없는 데이터를 포함하여 저장된 모든 진단을 삭제합니다. 이후 새 작업은 기록을 추가할 수 있습니다."</string>
+    <string name="diagnostics_cleared" formatted="false">"진단 로그를 지웠습니다"</string>
+    <string name="diagnostics_copied" formatted="false">"표시된 기록을 복사했습니다"</string>
+    <string name="diagnostics_empty" formatted="false">"아직 진단 기록이 없습니다. Git 작업이 여기에 표시됩니다."</string>
+    <string name="diagnostics_errors" formatted="false">"오류"</string>
+    <string name="diagnostics_filtered_empty" formatted="false">"이 필터와 일치하는 기록이 없습니다."</string>
+    <string name="diagnostics_operation_clone" formatted="false">"복제"</string>
+    <string name="diagnostics_operation_conflict" formatted="false">"충돌"</string>
+    <string name="diagnostics_operation_fetch" formatted="false">"가져오기"</string>
+    <string name="diagnostics_operation_lfs" formatted="false">"Git LFS"</string>
+    <string name="diagnostics_operation_push" formatted="false">"푸시"</string>
+    <string name="diagnostics_operation_rebase" formatted="false">"리베이스"</string>
+    <string name="diagnostics_operation_revert" formatted="false">"되돌리기"</string>
+    <string name="diagnostics_operation_tag" formatted="false">"태그"</string>
+    <string name="diagnostics_outcome_attention" formatted="false">"확인 필요"</string>
+    <string name="diagnostics_outcome_cancelled" formatted="false">"취소됨"</string>
+    <string name="diagnostics_outcome_completed" formatted="false">"완료됨"</string>
+    <string name="diagnostics_outcome_started" formatted="false">"시작됨"</string>
+    <string name="diagnostics_outcome_stopped" formatted="false">"중지됨"</string>
+    <string name="diagnostics_reason_cancelled" formatted="false">"작업이 취소되었습니다"</string>
+    <string name="diagnostics_reason_lfs_contents" formatted="false">"Git은 완료되었지만 일부 LFS 콘텐츠를 아직 다운로드해야 합니다"</string>
+    <string name="diagnostics_reason_lfs_lock" formatted="false">"서버의 LFS 잠금이 게시를 차단했습니다"</string>
+    <string name="diagnostics_reason_local_changes" formatted="false">"로컬 변경 사항을 검토해야 합니다"</string>
+    <string name="diagnostics_reason_network" formatted="false">"네트워크 작업이 완료되지 않았습니다"</string>
+    <string name="diagnostics_reason_review" formatted="false">"리포지토리 상태를 검토해야 합니다"</string>
+    <string name="diagnostics_reason_storage" formatted="false">"저장소에 접근할 수 없습니다"</string>
+    <string name="diagnostics_reason_trust" formatted="false">"서버 승인 또는 신뢰 검토가 필요합니다"</string>
+    <string name="diagnostics_reason_unknown" formatted="false">"작업이 중지되었습니다. 리포지토리 상태와 연결 설정을 검토하세요."</string>
+    <string name="diagnostics_share_title" formatted="false">"진단 공유"</string>
+    <string name="diagnostics_warnings" formatted="false">"경고"</string>
+    <string name="discard_clear_staging" formatted="false">"스테이징 해제"</string>
+    <string name="discard_review_all" formatted="false">"아래에 나열된 추적 파일의 변경 사항과 새 파일은 영구적으로 삭제됩니다. 무시된 파일은 유지됩니다."</string>
+    <string name="discard_review_empty" formatted="false">"취소할 변경 사항이 없습니다."</string>
+    <string name="discard_review_operation" formatted="false">"진행 중인 Git 작업도 중단됩니다."</string>
+    <string name="discard_review_unborn" formatted="false">"아직 커밋이 없습니다. 나열된 파일의 스테이징을 해제하고 내용은 유지합니다."</string>
+    <string name="file_clone_failure" formatted="false">"로컬 저장소를 복제하지 못했습니다. 원본 폴더, 저장공간 접근 권한과 브랜치를 확인하세요. 기존 폴더는 유지되었습니다."</string>
+    <string name="file_clone_guidance" formatted="false">"로컬 접근으로 기기의 저장소를 복제합니다. 공유 저장공간을 사용하려면 먼저 설정에서 폴더 접근을 허용하세요."</string>
+    <string name="file_delete_body" formatted="false">"파일이 이 기기에서 삭제됩니다. Git이 추적하던 파일이면 삭제된 것으로 표시됩니다."</string>
+    <string name="file_delete_title" formatted="false">"파일을 삭제할까요?"</string>
+    <string name="file_issue_access_denied" formatted="false">"저장소 접근이 거부되었습니다. 이 폴더의 권한을 확인하세요."</string>
+    <string name="file_issue_already_exists" formatted="false">"이 이름의 파일이나 폴더가 이미 있습니다. 다른 이름을 선택하세요."</string>
+    <string name="file_issue_binary" formatted="false">"이 바이너리 파일은 텍스트로 편집할 수 없습니다."</string>
+    <string name="file_issue_external_change" formatted="false">"이 파일은 편집기 밖에서 변경되었습니다. 저장하기 전에 최신 버전을 다시 불러오세요. 편집 내용은 여전히 여기에 있습니다."</string>
+    <string name="file_issue_file_unavailable" formatted="false">"파일을 더 이상 사용할 수 없습니다. 저장소 접근 권한을 확인하세요."</string>
+    <string name="file_issue_folder_unavailable" formatted="false">"폴더를 더 이상 사용할 수 없습니다. 저장소 접근 권한을 확인하세요."</string>
+    <string name="file_issue_invalid_name" formatted="false">"경로 구분자 없이 파일 이름을 입력하세요."</string>
+    <string name="file_issue_not_utf8" formatted="false">"이 파일은 UTF-8 텍스트가 아닙니다. 외부 편집기에서 여세요."</string>
+    <string name="file_issue_operation_failed" formatted="false">"파일 작업에 실패했습니다. 저장소 접근 권한을 확인하고 다시 시도하세요."</string>
+    <string name="file_issue_protected_path" formatted="false">"이 저장소 안에서 Git 메타데이터와 심볼릭 링크가 아닌 파일을 선택하세요."</string>
+    <string name="file_issue_read_failed" formatted="false">"이 파일이나 폴더를 읽을 수 없습니다. 저장소 접근 권한을 확인하세요."</string>
+    <string name="file_issue_too_large" formatted="false">"이 파일은 2 MB보다 큽니다. 외부 편집기에서 여세요."</string>
+    <string name="file_local_access" formatted="false">"로컬 접근"</string>
+    <string name="file_reload_body" formatted="false">"저장하지 않은 편집 내용을 디스크의 파일로 바꿉니다."</string>
+    <string name="file_reload_title" formatted="false">"파일을 다시 불러올까요?"</string>
+    <string name="file_renamed" formatted="false">"이름 변경됨"</string>
+    <string name="file_save_title" formatted="false">"변경 사항을 저장할까요?"</string>
+    <string name="file_saved" formatted="false">"저장됨"</string>
+    <string name="file_unsaved_changes" formatted="false">"저장하지 않은 변경 사항"</string>
+    <string name="files_folder" formatted="false">"폴더"</string>
+    <string name="files_hide_hidden" formatted="false">"숨김 파일 숨기기"</string>
+    <string name="files_show_hidden" formatted="false">"숨김 파일 표시"</string>
+    <string name="folder_access_not_enabled" formatted="false">"폴더 접근이 활성화되지 않았습니다. 앱 저장 공간을 계속 사용할 수 있습니다."</string>
+    <string name="folder_picker_unavailable" formatted="false">"이 기기에는 폴더 선택기가 없습니다"</string>
+    <string name="folder_settings_unavailable" formatted="false">"Android 저장 공간 설정을 사용할 수 없습니다. 앱 저장 공간은 계속 사용할 수 있습니다."</string>
+    <string name="folder_unusable" formatted="false">"이 폴더를 사용할 수 없습니다"</string>
+    <string name="git_native_public_only" formatted="false">"Git 기본 프로토콜은 공개 접근만 지원합니다. 인증하려면 HTTPS 또는 SSH를 사용하세요."</string>
+    <string name="guide_back" formatted="false">"뒤로"</string>
+    <string name="guide_clone_body" formatted="false">"GitHub, 공개, 자체 호스팅 저장소 또는 SSH를 통한 저장소를 복제하세요. 각 작업 사본은 자체 연결과 브랜치를 유지합니다."</string>
+    <string name="guide_clone_title" formatted="false">"Android에서 저장소 관리"</string>
+    <string name="guide_continue" formatted="false">"계속"</string>
+    <string name="guide_done" formatted="false">"완료"</string>
+    <string name="guide_edit_body" formatted="false">"여기서 파일을 탐색하고 편집하거나 Obsidian 같은 다른 편집기에서 사용할 기기 폴더를 선택하세요. 복제하기 전에 설정에서 폴더 접근 권한을 확인하세요."</string>
+    <string name="guide_edit_title" formatted="false">"작업하는 곳에서 편집"</string>
+    <string name="guide_git_body" formatted="false">"차이를 확인하고 선택한 변경 사항을 스테이징하여 로컬 커밋을 만드세요. 준비되면 푸시하세요. 브랜치, 기록, 태그, 충돌 해결 및 Git LFS는 저장소 화면에서 사용할 수 있습니다."</string>
+    <string name="guide_git_title" formatted="false">"게시 전에 검토"</string>
+    <string name="guide_home" formatted="false">"계정 없이 계속"</string>
+    <string name="guide_login" formatted="false">"GitHub으로 로그인"</string>
+    <string name="guide_sample" formatted="false">"오프라인 예제 사용해 보기"</string>
+    <string name="guide_save_error" formatted="false">"둘러보기 진행 상황을 저장하지 못했습니다. 계속할 수 있지만 다음에 둘러보기가 다시 표시될 수 있습니다."</string>
+    <string name="guide_skip" formatted="false">"둘러보기 건너뛰기"</string>
+    <string name="guide_start_body" formatted="false">"계정을 연결하거나 URL에서 복제하거나 오프라인 예제를 사용해 보세요. 지금 저장 위치를 선택할 수도 있습니다."</string>
+    <string name="guide_start_title" formatted="false">"시작 방법 선택"</string>
+    <string name="guide_step">"%1$d/4단계"</string>
+    <string name="guide_storage" formatted="false">"저장 위치 선택"</string>
+    <string name="guide_title" formatted="false">"앱 둘러보기"</string>
+    <string name="guide_url" formatted="false">"URL에서 복제"</string>
+    <string name="help_community" formatted="false">"– Discord에 가입하세요"</string>
+    <string name="help_copy_email" formatted="false">"지원 이메일 주소 복사"</string>
+    <string name="help_email_copied" formatted="false">"지원 이메일 주소를 복사했습니다"</string>
+    <string name="help_feedback" formatted="false">"피드백 보내기"</string>
+    <string name="help_open_failed" formatted="false">"이 링크를 열 수 있는 앱이 없습니다. 지원 이메일 주소를 복사할 수 있습니다."</string>
+    <string name="help_title" formatted="false">"도움말"</string>
+    <string name="help_tour" formatted="false">"앱 투어 보기"</string>
+    <string name="history_screen" formatted="false">"기록"</string>
+    <string name="history_tag_annotation" formatted="false">"주석 메시지(선택 사항)"</string>
+    <string name="http_transport_warning" formatted="false">"HTTP는 암호화되지 않습니다. 저장소 데이터와 입력한 사용자 이름 또는 토큰이 전송 중에 노출될 수 있습니다. 가능하면 HTTPS를 사용하세요."</string>
+    <string name="language_settings_legacy" formatted="false">"Android 13 이전에는 이 앱이 기기 언어를 사용합니다."</string>
+    <string name="language_settings_title" formatted="false">"언어"</string>
+    <string name="language_settings_unavailable" formatted="false">"언어 설정을 열 수 없습니다."</string>
+    <string name="lfs_action_refresh_required" formatted="false">"작업은 완료되었지만 업데이트된 LFS 상태를 불러오지 못했습니다. 다음 작업 전에 LFS 상태를 새로고침하세요."</string>
+    <string name="lfs_allow_downloads" formatted="false">"다운로드 허용"</string>
+    <string name="lfs_allow_uploads" formatted="false">"업로드 허용"</string>
+    <string name="lfs_cache_missing" formatted="false">"캐시되지 않음"</string>
+    <string name="lfs_cache_verified" formatted="false">"검증된 캐시"</string>
+    <string name="lfs_consent_download_body" formatted="false">"이 리포지토리는 별도의 LFS 서버에서 파일 내용을 다운로드할 권한을 요청합니다."</string>
+    <string name="lfs_consent_download_title" formatted="false">"LFS 다운로드를 허용할까요?"</string>
+    <string name="lfs_consent_upload_body" formatted="false">"이 리포지토리는 별도의 LFS 서버로 파일 내용을 보낼 권한을 요청합니다."</string>
+    <string name="lfs_consent_upload_title" formatted="false">"LFS 업로드를 허용할까요?"</string>
+    <string name="lfs_downloads_authenticated" formatted="false">"다운로드 · 별도로 암호화된 인증 정보"</string>
+    <string name="lfs_downloads_public" formatted="false">"다운로드 · 공개 접근"</string>
+    <string name="lfs_error_authentication" formatted="false">"인증 방식이 더 이상 이 검토와 일치하지 않습니다. 취소하고 엔드포인트를 다시 검토하세요."</string>
+    <string name="lfs_error_changed" formatted="false">"검토 중 LFS 엔드포인트 승인이 변경되었습니다. 승인을 다시 불러오고 작업을 다시 검토하세요."</string>
+    <string name="lfs_error_credentials" formatted="false">"LFS 엔드포인트 전용의 유효한 사용자 이름과 토큰 또는 비밀번호를 입력하세요."</string>
+    <string name="lfs_error_damaged" formatted="false">"저장된 LFS 엔드포인트 승인을 검토해야 합니다. 다시 시도하기 전에 설정에서 재설정하세요."</string>
+    <string name="lfs_error_recovery" formatted="false">"LFS 엔드포인트 승인 복구를 저장하지 못했습니다. 다시 시도하기 전에 설정에서 승인을 재설정하세요."</string>
+    <string name="lfs_error_reset" formatted="false">"LFS 엔드포인트 승인을 재설정하지 못했습니다. 다시 시도하기 전에 저장된 승인을 검토하세요."</string>
+    <string name="lfs_error_revoke" formatted="false">"LFS 엔드포인트 승인을 취소하지 못했습니다. 다시 시도하기 전에 저장된 승인을 다시 불러오세요."</string>
+    <string name="lfs_error_save" formatted="false">"LFS 엔드포인트 승인을 저장하지 못했습니다. 다시 시도하기 전에 저장된 승인을 검토하세요."</string>
+    <string name="lfs_extensions_apply" formatted="false">"규칙 적용"</string>
+    <string name="lfs_extensions_cancel" formatted="false">"취소"</string>
+    <string name="lfs_extensions_commit" formatted="false">"규칙을 적용하면 .gitattributes만 변경됩니다. 파일 내용, 인덱스 및 커밋은 그대로 유지됩니다. 해당 파일을 스테이징하면 Git 내용이 LFS 포인터로 변환됩니다."</string>
+    <string name="lfs_extensions_exact_fallback" formatted="false">"알 수 없는 확장자를 가진 선택된 대용량 파일은 정확한 경로 규칙을 유지합니다."</string>
+    <string name="lfs_extensions_existing" formatted="false">"기존 추적 규칙이 일치하는 파일을 제외할 수 있습니다. 추적 방식을 명시적으로 선택한 현재 파일은 해당 선택을 유지합니다."</string>
+    <string name="lfs_extensions_limits" formatted="false">"무시된 파일은 계속 무시됩니다. LFS 저장 공간 및 대역폭 제한은 Git 호스팅 서비스에 따라 다릅니다."</string>
+    <string name="lfs_extensions_repository">"저장소: %1$s · %2$s"</string>
+    <string name="lfs_extensions_review" formatted="false">"일치하는 확장자 검토…"</string>
+    <string name="lfs_extensions_scope" formatted="false">"이 규칙은 하위 폴더의 현재 및 향후 일치하는 파일에 적용됩니다. 대소문자를 구분합니다."</string>
+    <string name="lfs_extensions_title" formatted="false">"일치하는 확장자를 추적할까요?"</string>
+    <string name="lfs_extensions_updated" formatted="false">"확장자 추적 규칙을 업데이트했습니다. 커밋하기 전에 .gitattributes와 영향을 받는 파일을 검토하고 스테이징하세요."</string>
+    <string name="lfs_file_available" formatted="false">"파일 내용을 사용할 수 있음"</string>
+    <string name="lfs_file_local_edits" formatted="false">"로컬 수정 사항 · 다운로드 중에도 유지"</string>
+    <string name="lfs_file_pointer" formatted="false">"포인터 · 파일 내용 다운로드"</string>
+    <string name="lfs_local_edits_kept" formatted="false">"로컬 편집 내용은 유지되었습니다."</string>
+    <string name="lfs_lock_candidates_empty" formatted="false">"인덱스에 잠금 가능으로 표시된 잠금 해제 파일이 없습니다. .gitattributes에 lockable 규칙을 추가하고 새로고침하여 검토하세요."</string>
+    <string name="lfs_lock_create_action" formatted="false">"파일 잠금"</string>
+    <string name="lfs_lock_create_heading" formatted="false">"잠금 만들기"</string>
+    <string name="lfs_lock_create_review">"%1$s 잠금…"</string>
+    <string name="lfs_lock_create_title" formatted="false">"이 파일을 잠글까요?"</string>
+    <string name="lfs_lock_force_action" formatted="false">"강제 해제"</string>
+    <string name="lfs_lock_force_review" formatted="false">"강제 해제…"</string>
+    <string name="lfs_lock_force_title" formatted="false">"다른 소유자의 잠금을 강제로 해제할까요?"</string>
+    <string name="lfs_lock_ours" formatted="false">"현재 연결이 소유함"</string>
+    <string name="lfs_lock_owner_missing" formatted="false">"서버에서 제공하지 않음"</string>
+    <string name="lfs_lock_release_action" formatted="false">"해제"</string>
+    <string name="lfs_lock_release_review" formatted="false">"잠금 해제…"</string>
+    <string name="lfs_lock_release_title" formatted="false">"이 잠금을 해제할까요?"</string>
+    <string name="lfs_lock_theirs" formatted="false">"다른 연결이 소유함"</string>
+    <string name="lfs_lock_unverified" formatted="false">"소유권을 확인하지 않음"</string>
+    <string name="lfs_locks_check" formatted="false">"잠금 소유권 확인"</string>
+    <string name="lfs_locks_empty" formatted="false">"이 브랜치에 서버 잠금이 없습니다."</string>
+    <string name="lfs_locks_intro" formatted="false">"잠금을 변경하기 전에 서버에서 소유권을 확인하세요. 잠금은 서버 메타데이터를 변경하며 로컬 파일, 스테이징된 변경 사항과 커밋은 그대로 유지됩니다."</string>
+    <string name="lfs_locks_list" formatted="false">"읽기 권한으로 잠금 목록 보기"</string>
+    <string name="lfs_locks_read_only" formatted="false">"읽기 전용 목록 · 소유권을 확인하지 않음"</string>
+    <string name="lfs_locks_refreshed" formatted="false">"서버 잠금을 새로고침했습니다."</string>
+    <string name="lfs_locks_remote">"원격: %1$s"</string>
+    <string name="lfs_locks_server">"LFS 서버: %1$s"</string>
+    <string name="lfs_locks_title" formatted="false">"서버 잠금"</string>
+    <string name="lfs_locks_unsupported" formatted="false">"이 서버는 Git LFS 잠금을 지원하지 않습니다."</string>
+    <string name="lfs_locks_verified" formatted="false">"현재 연결로 소유권 확인됨"</string>
+    <string name="lfs_revoke_download_body">"앞으로 %1$s에서 다운로드하려면 새 검토가 필요합니다. 업로드 승인과 저장된 인증 정보는 유지됩니다."</string>
+    <string name="lfs_revoke_download_title" formatted="false">"다운로드 승인을 취소할까요?"</string>
+    <string name="lfs_revoke_downloads" formatted="false">"다운로드 승인 취소"</string>
+    <string name="lfs_revoke_upload_body">"앞으로 %1$s에 업로드하려면 새 검토가 필요합니다. 다운로드 승인과 저장된 인증 정보는 유지됩니다."</string>
+    <string name="lfs_revoke_upload_title" formatted="false">"업로드 승인을 취소할까요?"</string>
+    <string name="lfs_revoke_uploads" formatted="false">"업로드 승인 취소"</string>
+    <string name="lfs_ssh_authorization" formatted="false">"SSH에서 제공한 인증"</string>
+    <string name="lfs_ssh_http_review" formatted="false">"이 HTTP 엔드포인트가 검증된 SSH 서버에서 제공한 단기 인증 정보를 받도록 허용합니다. SSH 개인 키는 이 기기에 유지됩니다. 인증 정보는 전송 중에 읽힐 수 있으며 이 승인과 함께 저장되지 않습니다."</string>
+    <string name="lfs_tracking_git_body" formatted="false">"검토한 파일에 일반 Git을 사용하는 명시적 규칙을 추가합니다. 파일 내용은 Git 커밋에 저장됩니다. 100 MiB를 초과하는 파일에는 여전히 LFS가 필요합니다."</string>
+    <string name="lfs_tracking_git_title" formatted="false">"선택한 파일에 일반 Git을 사용할까요?"</string>
+    <string name="lfs_tracking_lfs_body" formatted="false">"검토한 파일의 정확한 경로에 LFS 규칙을 추가합니다. LFS 저장 공간과 대역폭 제한은 Git 호스트에 따라 다릅니다. 커밋하기 전에 변경 사항을 검토하고 스테이징하세요."</string>
+    <string name="lfs_tracking_lfs_title" formatted="false">"선택한 파일에 LFS를 사용할까요?"</string>
+    <string name="lfs_tracking_updated" formatted="false">"추적 규칙을 업데이트했습니다. .gitattributes와 선택한 파일을 검토하고 스테이징한 다음 커밋하세요."</string>
+    <string name="lfs_uploads_authenticated" formatted="false">"업로드 · 별도로 암호화된 인증 정보"</string>
+    <string name="lfs_uploads_public" formatted="false">"업로드 · 공개 접근"</string>
+    <string name="modified" formatted="false">"수정됨"</string>
+    <string name="notes_acknowledge" formatted="false">"확인"</string>
+    <string name="notes_connections_body" formatted="false">"GitHub 계정과 저장소 작성자 정보를 관리합니다. HTTPS 또는 SSH로 연결하고, 클론 저장 위치를 선택하고, 로컬 사본을 다시 연결하며 저장소 이동이나 제거를 검토할 수 있습니다."</string>
+    <string name="notes_connections_title" formatted="false">"연결 및 저장소"</string>
+    <string name="notes_files_body" formatted="false">"Git LFS 추적을 검토하고 누락된 콘텐츠를 다운로드하며 서버 잠금 경고를 확인합니다. 진단은 제한된 크기의 로컬 로그를 유지하며 필터링된 복사와 공유를 지원합니다."</string>
+    <string name="notes_files_title" formatted="false">"대용량 파일 및 진단"</string>
+    <string name="notes_notice_title" formatted="false">"새로운 기능"</string>
+    <string name="notes_title" formatted="false">"릴리스 노트"</string>
+    <string name="notes_version">"Android %1$s · 빌드 %2$d"</string>
+    <string name="notes_workflow_body" formatted="false">"파일을 탐색하고 편집하며 스테이징된 변경과 스테이징되지 않은 변경의 차이를 검토하고, 로컬 커밋을 만들고 기존 커밋을 푸시하며, 브랜치·이력·태그·리베이스 작업을 할 수 있습니다."</string>
+    <string name="notes_workflow_title" formatted="false">"저장소 워크플로"</string>
+    <string name="obsidian_empty" formatted="false">"Obsidian 연결을 준비하기 전에 로컬 저장소를 추가하거나 클론하세요."</string>
+    <string name="obsidian_error" formatted="false">"Obsidian을 연결할 수 없습니다. 폴더 접근 권한, 원래 GitHub HTTPS 원격 주소, 저장소에서 선택한 GitHub 계정을 확인한 후 새 연결을 준비하세요."</string>
+    <string name="obsidian_forget" formatted="false">"연결 잊기"</string>
+    <string name="obsidian_forget_scope" formatted="false">"이 폴더의 향후 자격 증명 전달을 차단할까요? Obsidian에 이미 가져온 자격 증명은 그대로 남습니다. 필요한 경우 별도로 제거하거나 취소하세요. 작업 사본은 원래 위치에 유지됩니다."</string>
+    <string name="obsidian_forgotten" formatted="false">"향후 전달이 비활성화되었습니다. 이 폴더를 다시 연결하려면 새 연결을 준비하세요."</string>
+    <string name="obsidian_interrupted" formatted="false">"연결이 중지되었습니다. 요청이 자동으로 다시 실행되지 않습니다. Obsidian에서 재시도하기 전에 새 연결을 준비하세요."</string>
+    <string name="obsidian_prepare" formatted="false">"Obsidian 연결 준비"</string>
+    <string name="obsidian_prepared" formatted="false">"연결이 준비되었습니다. Obsidian에서 이 폴더를 열고 GitSync.md Connect: Connect this vault를 실행하세요. 새 요청은 이전에 대기 중이던 연결을 대체합니다."</string>
+    <string name="obsidian_ready" formatted="false">"암호화된 자격 증명이 Obsidian에 전달될 준비가 되었습니다."</string>
+    <string name="obsidian_requirements" formatted="false">"Obsidian 보관함과 동일한 기기 폴더를 사용하세요. Obsidian에서 Git 및 GitSync.md Connect 커뮤니티 플러그인을 활성화하세요. HTTPS GitHub 저장소는 저장소 연결에서 연결된 GitHub 계정을 선택해야 합니다. 연결 준비는 파일이나 Git 이력을 변경하지 않습니다."</string>
+    <string name="obsidian_return" formatted="false">"Obsidian으로 돌아가기"</string>
+    <string name="obsidian_return_failed" formatted="false">"Obsidian을 열 수 없습니다. Obsidian에서 GitSync.md Connect를 활성화한 후 다시 돌아가기를 시도하세요."</string>
+    <string name="obsidian_scope" formatted="false">"이 저장소에서 선택한 GitHub 계정으로 Obsidian Git을 연결합니다. 자격 증명은 연동 플러그인용으로 암호화되며 콜백 링크에 포함되지 않습니다."</string>
+    <string name="obsidian_title" formatted="false">"Obsidian 연결"</string>
+    <string name="publication_accounts" formatted="false">"GitHub 계정"</string>
+    <string name="publication_adopt" formatted="false">"저장소 사용"</string>
+    <string name="publication_adopt_title" formatted="false">"이 저장소를 사용하겠습니까?"</string>
+    <string name="publication_adopt_warning">"GitHub에 %1$s/%2$s(%3$s), 저장소 ID %4$d이(가) 있습니다. 이름이 일치해도 이 시도에서 생성했다는 증거는 아닙니다. 저장된 커밋에 이 빈 저장소를 사용할까요?\n\n%5$s"</string>
+    <string name="publication_author" formatted="false">"작성자 이름"</string>
+    <string name="publication_back" formatted="false">"뒤로"</string>
+    <string name="publication_cancel" formatted="false">"취소"</string>
+    <string name="publication_check_destination" formatted="false">"원래 대상 확인"</string>
+    <string name="publication_choose" formatted="false">"폴더 선택"</string>
+    <string name="publication_commit">"저장된 커밋: %1$s"</string>
+    <string name="publication_destination">"대상: %1$s/%2$s"</string>
+    <string name="publication_discard" formatted="false">"저장된 검토 버리기"</string>
+    <string name="publication_discard_close" formatted="false">"편집 내용을 저장하지 않고 나가기"</string>
+    <string name="publication_discard_title" formatted="false">"이 검토를 버릴까요?"</string>
+    <string name="publication_discard_warning" formatted="false">"저장된 검토 선택과 저장되지 않은 편집 내용을 제거할까요? 작업 파일은 그대로 유지됩니다. 이 검토의 준비 및 게시는 아직 시작되지 않았습니다."</string>
+    <string name="publication_email" formatted="false">"작성자 이메일"</string>
+    <string name="publication_file_ignored" formatted="false">"무시됨"</string>
+    <string name="publication_file_large" formatted="false">"10 MiB 초과"</string>
+    <string name="publication_file_regular" formatted="false">"일반 파일"</string>
+    <string name="publication_file_sensitive" formatted="false">"민감한 파일 이름"</string>
+    <string name="publication_file_size">"%1$s · %2$s"</string>
+    <string name="publication_file_unsupported" formatted="false">"지원되지 않는 콘텐츠 변환"</string>
+    <string name="publication_files" formatted="false">"파일"</string>
+    <string name="publication_finish" formatted="false">"설정 완료"</string>
+    <string name="publication_folder" formatted="false">"원래 폴더"</string>
+    <string name="publication_include" formatted="false">"파일 포함"</string>
+    <string name="publication_leave_title" formatted="false">"검토를 저장할까요?"</string>
+    <string name="publication_leave_warning" formatted="false">"계정, 작성자, 메시지 또는 대상 변경 사항이 저장되지 않았습니다."</string>
+    <string name="publication_limits" formatted="false">"파일은 원래 폴더에 남습니다. 첫 게시에서는 파일당 최대 10 MiB의 일반 파일, 선택한 파일 최대 10,000개, 총 256 MiB까지 지원합니다. Git은 빈 폴더를 저장하지 않습니다."</string>
+    <string name="publication_manage_accounts" formatted="false">"계정 관리"</string>
+    <string name="publication_message" formatted="false">"초기 커밋 메시지"</string>
+    <string name="publication_name" formatted="false">"저장소 이름"</string>
+    <string name="publication_none" formatted="false">"아직 저장된 게시가 없습니다."</string>
+    <string name="publication_open" formatted="false">"저장소 열기"</string>
+    <string name="publication_pending_help" formatted="false">"나가도 준비된 진행 상황은 저장됩니다. Android에서 접근 권한을 제거하면 저장된 위치의 동일한 폴더를 다시 연결하세요."</string>
+    <string name="publication_phase_completed" formatted="false">"게시됨"</string>
+    <string name="publication_phase_creation_unknown" formatted="false">"저장소 생성 검토 필요"</string>
+    <string name="publication_phase_prepared" formatted="false">"로컬 커밋 준비됨"</string>
+    <string name="publication_phase_preparing" formatted="false">"로컬 준비 재개"</string>
+    <string name="publication_phase_published" formatted="false">"커밋 게시됨 · 설정 대기 중"</string>
+    <string name="publication_phase_push_unknown" formatted="false">"업로드 결과의 상태 조정 필요"</string>
+    <string name="publication_phase_remote" formatted="false">"저장소 생성됨 · 업로드 대기 중"</string>
+    <string name="publication_phase_review" formatted="false">"파일 및 대상 검토"</string>
+    <string name="publication_prepare" formatted="false">"로컬 커밋 준비"</string>
+    <string name="publication_prepare_title" formatted="false">"이 스냅샷을 준비할까요?"</string>
+    <string name="publication_prepare_warning" formatted="false">"Git 메타데이터를 생성하고 선택한 파일만 로컬에 커밋합니다. 작업 파일은 그대로 남습니다. 제외한 파일에는 로컬 무시 규칙을 설정합니다. 아직 GitHub 저장소는 생성하지 않습니다. 준비가 시작되면 파일 선택, 작성자 및 계정은 고정됩니다. 저장소 생성이 시작되기 전까지 이름과 공개 범위는 수정할 수 있습니다."</string>
+    <string name="publication_private" formatted="false">"비공개 저장소"</string>
+    <string name="publication_private_detail" formatted="false">"접근 권한을 부여한 사람만 읽을 수 있습니다."</string>
+    <string name="publication_private_label" formatted="false">"개인용"</string>
+    <string name="publication_public_confirm" formatted="false">"공개 선택"</string>
+    <string name="publication_public_detail" formatted="false">"누구나 선택한 파일과 이력을 읽을 수 있습니다."</string>
+    <string name="publication_public_label" formatted="false">"공개"</string>
+    <string name="publication_public_title" formatted="false">"이 저장소를 공개할까요?"</string>
+    <string name="publication_public_warning" formatted="false">"누구나 게시한 파일을 읽을 수 있게 됩니다. 선택 항목에 비밀 정보, 개인 정보 또는 공유할 수 없는 파일이 없는지 확인하세요."</string>
+    <string name="publication_publish" formatted="false">"GitHub에 게시"</string>
+    <string name="publication_publish_title" formatted="false">"이 저장된 커밋을 게시할까요?"</string>
+    <string name="publication_publish_warning">"%1$s/%2$s을(를) 공개 범위 %3$s로 생성하고 저장된 초기 커밋을 업로드할까요? 앱을 열어 두세요. 재시도하면 이 대상의 상태를 확인하고 조정하며 새 커밋을 만들지 않습니다."</string>
+    <string name="publication_reconnect" formatted="false">"원래 폴더 다시 연결"</string>
+    <string name="publication_refresh" formatted="false">"파일 새로고침"</string>
+    <string name="publication_reload" formatted="false">"저장된 진행 상황 다시 불러오기"</string>
+    <string name="publication_retry_upload" formatted="false">"저장된 업로드 확인 및 재시도"</string>
+    <string name="publication_save" formatted="false">"검토 저장"</string>
+    <string name="publication_save_close" formatted="false">"저장 후 나가기"</string>
+    <string name="publication_save_destination" formatted="false">"대상 저장"</string>
+    <string name="publication_saved" formatted="false">"저장된 진행 상황"</string>
+    <string name="publication_scope" formatted="false">"로컬 폴더를 선택하고 파일을 검토한 후 로컬 커밋을 준비합니다. 그다음 게시하면 개인 GitHub 계정에 저장소가 생성되고 저장된 커밋을 업로드합니다."</string>
+    <string name="publication_selected">"선택됨: %1$d · %2$s"</string>
+    <string name="publication_sensitive_title" formatted="false">"민감한 파일을 포함할까요?"</string>
+    <string name="publication_sensitive_warning">"%1$s에 자격 증명이나 개인 정보가 포함될 수 있습니다. 내용을 확인한 후에만 포함하세요. 게시된 Git 이력에는 삭제 후에도 남아 있을 수 있습니다."</string>
+    <string name="publication_sign_in" formatted="false">"폴더를 선택하려면 확인된 GitHub 계정으로 로그인하세요. 저장된 진행 상황은 아래에서 계속 확인할 수 있습니다."</string>
+    <string name="publication_stop" formatted="false">"작업 중지"</string>
+    <string name="publication_stopping" formatted="false">"안전하게 중지 중…"</string>
+    <string name="publication_title" formatted="false">"폴더 게시"</string>
+    <string name="publication_unknown" formatted="false">"GitHub에서 저장소를 생성했을 수 있습니다. 원래 대상을 확인하세요. 일치하는 빈 저장소 사용을 명시적으로 승인하기 전까지 추가 생성은 차단됩니다."</string>
+    <string name="publication_upload" formatted="false">"저장된 게시 계속"</string>
+    <string name="publication_work_adopt" formatted="false">"검토한 저장소 검증 중…"</string>
+    <string name="publication_work_check" formatted="false">"원래 대상 확인 중…"</string>
+    <string name="publication_work_create" formatted="false">"GitHub 저장소 생성 중…"</string>
+    <string name="publication_work_inspect" formatted="false">"폴더 검사 중…"</string>
+    <string name="publication_work_load" formatted="false">"저장된 진행 상황 읽는 중…"</string>
+    <string name="publication_work_prepare" formatted="false">"로컬 스냅샷 준비 중…"</string>
+    <string name="publication_work_reconnect" formatted="false">"폴더 접근 권한 확인 중…"</string>
+    <string name="publication_work_refresh" formatted="false">"파일 검토 새로고침 중…"</string>
+    <string name="publication_work_register" formatted="false">"저장소 설정을 마무리하는 중…"</string>
+    <string name="publication_work_save" formatted="false">"검토 저장 중…"</string>
+    <string name="publication_work_upload" formatted="false">"저장된 커밋 업로드 중…"</string>
+    <string name="pull_all_again" formatted="false">"모두 다시 가져오기"</string>
+    <string name="pull_all_attention" formatted="false">"풀이 완료되었습니다. 일부 LFS 콘텐츠를 다운로드해야 합니다. Git LFS를 열어 다시 시도하세요."</string>
+    <string name="pull_all_back" formatted="false">"뒤로"</string>
+    <string name="pull_all_background_attention" formatted="false">"모두 가져오기에 확인이 필요합니다. 탭하여 저장된 요약을 확인하세요."</string>
+    <string name="pull_all_background_busy" formatted="false">"모두 가져오기가 이미 실행 중입니다. 모두 가져오기를 열어 중지하거나 진행 상황을 확인하세요."</string>
+    <string name="pull_all_background_clear" formatted="false">"백그라운드 요약 지우기"</string>
+    <string name="pull_all_background_clear_scope" formatted="false">"최근 백그라운드 모두 가져오기 요약을 삭제합니다. 저장소 내용과 설정은 변경되지 않습니다. 중단된 작업은 자동으로 다시 시작되지 않습니다."</string>
+    <string name="pull_all_background_complete" formatted="false">"모두 가져오기가 완료되었습니다. 저장된 요약을 확인하세요."</string>
+    <string name="pull_all_background_control_failed" formatted="false">"백그라운드 작업을 변경할 수 없습니다. 이 화면을 새로고침하고 다시 시도하세요."</string>
+    <string name="pull_all_background_counts">"업데이트: %1$d · 이미 최신: %2$d · LFS 확인 필요: %3$d · 차단: %4$d · 실패: %5$d"</string>
+    <string name="pull_all_background_failed" formatted="false">"모두 가져오기가 오류로 중지되었습니다. 일부 풀은 완료되었을 수 있습니다. 다시 실행하기 전에 요약과 저장소 상태를 확인하세요."</string>
+    <string name="pull_all_background_interrupted" formatted="false">"모두 가져오기가 중단되었으며 자동으로 다시 시작하지 않습니다. 중단 전에 풀이 완료되었을 수 있습니다. 다시 실행하기 전에 저장소 상태를 확인하세요."</string>
+    <string name="pull_all_background_running" formatted="false">"모두 가져오기가 앱을 열지 않고 실행 중입니다. 중지를 선택하면 나머지 저장소는 시작하지 않습니다."</string>
+    <string name="pull_all_background_title" formatted="false">"백그라운드에서 모두 가져오기"</string>
+    <string name="pull_all_background_unreadable" formatted="false">"저장된 백그라운드 요약을 읽을 수 없어 보존했습니다. 다른 백그라운드 실행을 시작하기 전에 명시적으로 지우세요."</string>
+    <string name="pull_all_blocked" formatted="false">"변경 없이 유지되었습니다. 다시 시도하기 전에 로컬 변경 사항을 커밋 또는 stash하고, 진행 중인 Git 작업을 끝내거나 업스트림 브랜치를 설정하세요."</string>
+    <string name="pull_all_current" formatted="false">"들어오는 변경 사항 없음"</string>
+    <string name="pull_all_empty" formatted="false">"가져올 로컬 저장소가 없습니다. 먼저 저장소를 복제하거나 가져오세요."</string>
+    <string name="pull_all_failed" formatted="false">"모두 가져오기를 시작하지 못했습니다. 저장소 설정을 확인하고 다시 시도하세요."</string>
+    <string name="pull_all_item_failed" formatted="false">"안전하게 풀할 수 없습니다. 연결과 저장소 접근 권한을 확인한 뒤 Git 제어 화면에서 갈라진 기록이나 다른 복구 요구 사항을 확인하세요."</string>
+    <string name="pull_all_not_run" formatted="false">"실행되지 않음"</string>
+    <string name="pull_all_progress">"확인한 저장소: %1$d / %2$d"</string>
+    <string name="pull_all_running" formatted="false">"가져오는 중…"</string>
+    <string name="pull_all_scope" formatted="false">"추가한 모든 로컬 저장소에서 업데이트를 가져오고 패스트포워드합니다. 모두 가져오기는 변경 사항을 스테이징하지 않고, 커밋을 만들지 않으며, 변경 사항을 푸시하지 않습니다."</string>
+    <string name="pull_all_stop" formatted="false">"모두 가져오기 중지"</string>
+    <string name="pull_all_stopped" formatted="false">"중지되었습니다. 이미 시작된 풀은 완료되었을 수 있습니다. 다시 시도하기 전에 Git 상태를 확인하세요. 나머지 저장소는 시작되지 않았습니다."</string>
+    <string name="pull_all_stopping" formatted="false">"현재 작업 후 중지하는 중…"</string>
+    <string name="pull_all_system_help" formatted="false">"빠르게 사용하려면 홈 화면에 모두 가져오기 위젯을 추가하거나 빠른 설정에 GitSync.md 모두 가져오기 타일을 추가하세요. 둘 다 앱을 열지 않고 한 번 실행합니다. 이후 모두 가져오기를 열어 저장된 요약을 확인하고, 다시 실행하려면 모두 다시 가져오기를 선택하세요."</string>
+    <string name="pull_all_title" formatted="false">"모두 가져오기"</string>
+    <string name="pull_all_updated" formatted="false">"원격에서 업데이트됨"</string>
+    <string name="pull_all_widget_button" formatted="false">"모든 저장소 가져오기"</string>
+    <string name="pull_all_widget_description" formatted="false">"GitSync.md를 열지 않고 모든 로컬 저장소에서 업데이트를 가져와 패스트포워드합니다."</string>
+    <string name="pull_all_widget_subtitle" formatted="false">"가져오기와 패스트포워드만"</string>
+    <string name="pull_screen" formatted="false">"Pull"</string>
+    <string name="push_all_repositories" formatted="false">"앞으로 생성되는 저장소를 포함한 모든 저장소"</string>
+    <string name="push_cancelled" formatted="false">"GitHub 연결이 취소되었습니다."</string>
+    <string name="push_channel" formatted="false">"저장소 업데이트"</string>
+    <string name="push_enable" formatted="false">"GitHub 변경 시 알림 받기"</string>
+    <string name="push_existing" formatted="false">"GitHub 앱이 이미 설치되어 있나요?"</string>
+    <string name="push_existing_account" formatted="false">"GitHub 사용자 이름 또는 조직"</string>
+    <string name="push_existing_connect" formatted="false">"기존 설치 연결"</string>
+    <string name="push_existing_scope" formatted="false">"계정 소유자 또는 조직 소유자로 로그인하여 기존 설치를 연결하세요. 저장소에 대한 접근 권한은 변경되지 않습니다."</string>
+    <string name="push_failed" formatted="false">"푸시 알림으로 동기화가 이 작업을 완료하지 못했습니다. 알림, 네트워크 연결, GitHub 접근 권한을 확인한 후 연결 정보를 새로고침하세요. 로컬 파일은 보존되었습니다."</string>
+    <string name="push_link" formatted="false">"GitHub 연결"</string>
+    <string name="push_manage_github" formatted="false">"GitHub에서 관리"</string>
+    <string name="push_no_connections" formatted="false">"GitHub 계정 또는 조직을 연결하여 업데이트를 보낼 수 있는 저장소를 선택하세요."</string>
+    <string name="push_no_match" formatted="false">"이 GitHub 저장소 및 추적 중인 원격 브랜치와 일치하는 접근 가능한 작업 사본이 없습니다. 연결, 브랜치, 폴더 접근 권한을 확인하세요."</string>
+    <string name="push_notification">"GitHub 브랜치 %1$s이(가) 변경되었습니다. 탭하여 이 작업 사본을 확인하세요."</string>
+    <string name="push_open_failed" formatted="false">"이 링크를 열 수 없습니다. 브라우저 또는 Android 설정을 확인하고 다시 시도하세요."</string>
+    <string name="push_open_repository" formatted="false">"저장소 열기"</string>
+    <string name="push_open_settings" formatted="false">"알림 설정 열기"</string>
+    <string name="push_owner" formatted="false">"이 설치를 연결하려면 개인 계정 소유자 또는 조직 소유자로 로그인하세요."</string>
+    <string name="push_permission" formatted="false">"푸시 알림으로 동기화를 켜기 전에 Android 설정에서 알림을 허용하세요."</string>
+    <string name="push_refresh" formatted="false">"연결 정보 새로고침"</string>
+    <string name="push_registered" formatted="false">"알림용 기기가 등록되었습니다."</string>
+    <string name="push_registration_pending" formatted="false">"알림 등록이 대기 중입니다. 네트워크에 연결되면 연결 정보를 새로고침하세요."</string>
+    <string name="push_result">"확인: %1$d · 업데이트: %2$d · 검토 필요: %3$d"</string>
+    <string name="push_result_current" formatted="false">"이미 최신 상태입니다"</string>
+    <string name="push_result_review" formatted="false">"업데이트하기 전에 검토가 필요합니다"</string>
+    <string name="push_result_updated" formatted="false">"설정된 업스트림에서 업데이트됨"</string>
+    <string name="push_scope" formatted="false">"GitSync.md의 GitHub 앱을 연결하여 저장소 업데이트를 받으세요. 일치하는 작업 사본에 로컬 변경 사항이 없으면 백그라운드에서 가져오기와 패스트포워드 업데이트를 수행할 수 있습니다. 알림을 탭하면 다시 확인합니다. 푸시 알림으로 동기화는 커밋 생성, 변경 사항 업로드, 브랜치 전환을 하지 않습니다. 로컬 변경 사항과 갈라진 기록은 직접 검토해야 합니다."</string>
+    <string name="push_selected_repositories" formatted="false">"선택한 저장소"</string>
+    <string name="push_stopped" formatted="false">"이 확인이 중지되었습니다. Git에 이미 전달된 작업은 완료되었을 수 있습니다. 다시 시도하기 전에 저장소를 검토하세요."</string>
+    <string name="push_suspended" formatted="false">"GitHub 접근이 일시 중지되었습니다"</string>
+    <string name="push_title" formatted="false">"푸시 알림으로 동기화"</string>
+    <string name="push_unavailable" formatted="false">"이 빌드에서는 푸시 알림을 사용할 수 없습니다."</string>
+    <string name="push_unlink" formatted="false">"연결 제거"</string>
+    <string name="push_unlink_scope" formatted="false">"이 기기에서 이 GitHub 설치의 푸시 알림 동기화 라우팅을 제거할까요? GitHub 앱은 제거되지 않습니다. 저장소 접근 권한을 변경하거나 앱을 제거하려면 GitHub에서 관리를 사용하세요."</string>
+    <string name="rebase_abort_body" formatted="false">"원래 브랜치와 커밋을 복원합니다. 이 리베이스 중에 수행한 추적 파일의 편집과 충돌 해결 내용은 버려집니다."</string>
+    <string name="rebase_abort_title" formatted="false">"이 리베이스를 중단할까요?"</string>
+    <string name="rebase_accept_local_deletion" formatted="false">"로컬 삭제 수락"</string>
+    <string name="rebase_accept_upstream_deletion" formatted="false">"업스트림 삭제 수락"</string>
+    <string name="rebase_begin_body" formatted="false">"로컬 커밋이 검토한 업스트림에 재적용되며 새 ID를 받을 수 있습니다. 리베이스는 로컬 작업이며 푸시는 별도 작업입니다."</string>
+    <string name="rebase_begin_title" formatted="false">"로컬 커밋을 다시 작성할까요?"</string>
+    <string name="rebase_checkout_blocked_summary" formatted="false">"체크아웃이 차단되었습니다. 나열된 파일을 안전한 위치로 옮기고 새로고침한 다음 이 커밋을 다시 시도하세요. 이미 재적용된 진행 상황은 유지됩니다."</string>
+    <string name="rebase_checkout_more_paths">"추가로 차단된 경로 %1$d개가 표시되지 않습니다."</string>
+    <string name="rebase_checkout_retry" formatted="false">"차단된 커밋 다시 시도"</string>
+    <string name="rebase_checkout_review_required" formatted="false">"체크아웃 복구 정보가 변경되었거나 읽을 수 없습니다. Git 도구를 사용하거나 리베이스를 중단하기 전에 로컬 작업을 확인하세요."</string>
+    <string name="rebase_detached" formatted="false">"HEAD가 분리된 리베이스"</string>
+    <string name="rebase_problem_active_operation" formatted="false">"리베이스를 시작하기 전에 진행 중인 Git 작업을 완료하세요."</string>
+    <string name="rebase_problem_local_branch" formatted="false">"리베이스하기 전에 로컬 브랜치로 전환하세요."</string>
+    <string name="rebase_problem_local_changes" formatted="false">"리베이스하기 전에 모든 로컬 변경 사항을 커밋하거나 스태시에 저장하세요."</string>
+    <string name="rebase_problem_upstream" formatted="false">"리베이스하기 전에 원격 업스트림 브랜치를 설정하세요."</string>
+    <string name="rebase_skip_body" formatted="false">"현재 커밋을 재적용에서 제외합니다. 건너뛰기 전에 변경 내용을 검토하세요. 결과 기록에서 로컬 작업이 제거될 수 있습니다."</string>
+    <string name="rebase_skip_title" formatted="false">"이 로컬 커밋을 건너뛸까요?"</string>
+    <string name="rebase_status_aborted" formatted="false">"리베이스 중단됨"</string>
+    <string name="rebase_status_conflicts" formatted="false">"의 리베이스 과정에서 충돌이 발생했습니다. 충돌을 해결한 후 리베이스를 계속 진행하십시오."</string>
+    <string name="rebase_status_format">"리베이스: %1$s"</string>
+    <string name="rebase_status_success" formatted="false">"재기준화 작업이 성공적으로 완료되었습니다."</string>
+    <string name="rebase_use_local" formatted="false">"로컬 커밋 사용"</string>
+    <string name="rebase_use_upstream" formatted="false">"업스트림 사용"</string>
+    <string name="remote_address_formats" formatted="false">": HTTP/HTTPS 사용 SSH, git://, file://, 또는 소유자/저장소."</string>
+    <string name="remote_merge_author">"병합 작성자: %1$s &lt;%2$s&gt;"</string>
+    <string name="remote_merge_confirm_local" formatted="false">"검토한 커밋을 병합할까요?"</string>
+    <string name="remote_merge_confirm_local_body">"%1$s을(를) %2$s의 검토한 커밋으로 업데이트합니다. 병합 커밋이 생성될 수 있습니다. 아무것도 푸시하지 않습니다."</string>
+    <string name="remote_merge_confirm_push" formatted="false">"병합하고 업스트림에 게시할까요?"</string>
+    <string name="remote_merge_confirm_push_body">"%1$s을(를) 업데이트한 후 검토한 푸시 주소의 %2$s에 커밋을 푸시합니다. 충돌이 있으면 게시를 중단합니다. 푸시가 실패하거나 확인되지 않으면 명시적으로 재시도할 수 있도록 로컬 Git 결과를 유지합니다."</string>
+    <string name="remote_merge_counts">"로컬 커밋: %1$d · 들어오는 커밋: %2$d"</string>
+    <string name="remote_merge_current" formatted="false">"두 브랜치 모두 최신 상태입니다."</string>
+    <string name="remote_merge_destination">"대상 로컬 브랜치: %1$s"</string>
+    <string name="remote_merge_fetch_address">"가져오기 주소: %1$s"</string>
+    <string name="remote_merge_in_flight" formatted="false">"Git 작업 마무리 중…"</string>
+    <string name="remote_merge_incoming_oid">"들어오는 커밋: %1$s"</string>
+    <string name="remote_merge_local" formatted="false">"로컬에서 병합"</string>
+    <string name="remote_merge_local_oid">"로컬 커밋: %1$s"</string>
+    <string name="remote_merge_local_result" formatted="false">"결과는 로컬에 있습니다. 푸시는 별도 작업입니다."</string>
+    <string name="remote_merge_no_incoming" formatted="false">"들어오는 커밋이 없습니다. 로컬 커밋은 별도로 푸시할 수 있습니다."</string>
+    <string name="remote_merge_open_git" formatted="false">"Git으로 돌아가기"</string>
+    <string name="remote_merge_publish" formatted="false">"병합 후 푸시"</string>
+    <string name="remote_merge_push_address">"푸시 주소: %1$s"</string>
+    <string name="remote_merge_push_blocked" formatted="false">"충돌이 남아 있는 동안 아무것도 푸시하지 않았습니다."</string>
+    <string name="remote_merge_push_confirmed" formatted="false">"원격에서 이 커밋을 확인했습니다."</string>
+    <string name="remote_merge_push_unconfirmed" formatted="false">"푸시가 확인되지 않았습니다. 로컬 Git 결과가 유지되었습니다. 재시도하면 다시 병합하거나 커밋하지 않고 같은 커밋을 푸시합니다."</string>
+    <string name="remote_merge_refresh" formatted="false">"저장소 상태 새로고침"</string>
+    <string name="remote_merge_result_conflicts" formatted="false">"충돌로 병합이 일시 중지되었습니다. Git을 열어 각 파일을 해결하고 스테이징한 다음 병합을 완료하거나 중단하세요."</string>
+    <string name="remote_merge_result_current" formatted="false">"병합이 필요하지 않았습니다."</string>
+    <string name="remote_merge_result_ff" formatted="false">"로컬 브랜치를 fast-forward했습니다."</string>
+    <string name="remote_merge_result_merged" formatted="false">"병합 커밋이 로컬에 저장되었습니다."</string>
+    <string name="remote_merge_retry" formatted="false">"저장된 커밋 푸시 재시도"</string>
+    <string name="remote_merge_review" formatted="false">"가져와서 병합 검토"</string>
+    <string name="remote_merge_scope" formatted="false">"설정된 업스트림을 가져와 검토합니다. 기존 커밋은 ID를 유지하며 갈라진 이력은 병합 커밋을 만듭니다. 충돌은 수동으로 해결해야 할 수 있습니다."</string>
+    <string name="remote_merge_title" formatted="false">"원격과 병합"</string>
+    <string name="remote_merge_upstream">"원본 업스트림: %1$s"</string>
+    <string name="remote_normalized_target">"저장소 주소: %1$s"</string>
+    <string name="repository_actions_behind" formatted="false">"푸시하기 전에 수신 커밋을 풀하세요."</string>
+    <string name="repository_actions_blocked" formatted="false">"작업에 확인이 필요합니다"</string>
+    <string name="repository_actions_branch">"브랜치: %1$s\n검토한 커밋: %2$s"</string>
+    <string name="repository_actions_cancel" formatted="false">"취소"</string>
+    <string name="repository_actions_changes">"변경된 경로: %1$d"</string>
+    <string name="repository_actions_confirm" formatted="false">"한 번 실행"</string>
+    <string name="repository_actions_destination">"업스트림: %1$s / %2$s"</string>
+    <string name="repository_actions_dirty" formatted="false">"로컬 변경 사항 때문에 수신 커밋을 풀할 수 없습니다. 먼저 커밋하거나 스태시하세요."</string>
+    <string name="repository_actions_diverged" formatted="false">"로컬과 원격 기록이 갈라졌습니다. Git 제어 화면에서 병합 또는 리베이스를 명시적으로 선택하세요."</string>
+    <string name="repository_actions_failed" formatted="false">"작업을 완료할 수 없습니다. 연결, 계정, 신뢰 및 폴더 접근 권한을 확인한 후 현재 상태를 검토하고 다시 시도하세요."</string>
+    <string name="repository_actions_local_saved" formatted="false">"로컬 커밋은 저장되었지만 업로드는 확인되지 않았습니다. 현재 상태를 검토한 후 해당 커밋의 업로드를 다시 시도하세요."</string>
+    <string name="repository_actions_message" formatted="false">"커밋 메시지"</string>
+    <string name="repository_actions_no_changes" formatted="false">"업로드할 커밋이 없습니다"</string>
+    <string name="repository_actions_pull" formatted="false">"저장소 풀"</string>
+    <string name="repository_actions_pulled" formatted="false">"수신 변경 사항을 풀했습니다"</string>
+    <string name="repository_actions_push" formatted="false">"저장소 푸시"</string>
+    <string name="repository_actions_pushed" formatted="false">"커밋을 업로드했습니다"</string>
+    <string name="repository_actions_reload" formatted="false">"저장소 다시 불러오기"</string>
+    <string name="repository_actions_remote_missing" formatted="false">"설정된 업스트림 브랜치가 서버에 없습니다. Git 제어 화면에서 확인하세요."</string>
+    <string name="repository_actions_review" formatted="false">"현재 상태 검토"</string>
+    <string name="repository_actions_run" formatted="false">"작업 실행"</string>
+    <string name="repository_actions_scope" formatted="false">"작업을 실행하기 전에 로컬 저장소를 선택하고 현재 브랜치를 검토하세요."</string>
+    <string name="repository_actions_stale" formatted="false">"이 검토 또는 승인은 더 이상 유효하지 않습니다. 저장소의 현재 상태를 검토하고 작업을 다시 승인하세요."</string>
+    <string name="repository_actions_status" formatted="false">"상태 읽기"</string>
+    <string name="repository_actions_status_ready" formatted="false">"네트워크 연결 없이 상태를 읽었습니다"</string>
+    <string name="repository_actions_stop" formatted="false">"작업 중지"</string>
+    <string name="repository_actions_stopped" formatted="false">"중지되었습니다. Git 작업이 이미 완료되었거나 업로드했을 수 있습니다. 다시 시도하기 전에 현재 상태를 검토하세요. 저장된 커밋과 파일은 유지되었습니다."</string>
+    <string name="repository_actions_sync" formatted="false">"저장소 동기화"</string>
+    <string name="repository_actions_synced" formatted="false">"풀과 푸시를 완료했습니다"</string>
+    <string name="repository_actions_title" formatted="false">"저장소 작업"</string>
+    <string name="repository_actions_unconfigured" formatted="false">"이 작업을 실행하기 전에 Git 제어 화면에서 원격 업스트림 브랜치를 설정하세요."</string>
+    <string name="repository_actions_unsafe" formatted="false">"로컬 브랜치로 전환하고 진행 중인 Git 작업이나 충돌을 먼저 해결하세요."</string>
+    <string name="repository_actions_unsettled" formatted="false">"스테이징 중에 파일이 계속 변경되었습니다. 다시 시도하기 전에 인덱스와 파일을 검토하세요."</string>
+    <string name="repository_actions_write_scope" formatted="false">"푸시와 동기화는 무시되지 않은 현재 변경 사항을 모두 스테이징하고, 필요한 경우 커밋을 만든 다음, 대기 중인 커밋을 업로드합니다. 동기화는 먼저 변경 사항을 가져오고 안전한 경우 빨리 감기를 수행합니다. 충돌, 갈라진 기록, 안전하지 않은 원격 상태가 있으면 작업이 중지됩니다. 업로드가 실패해도 새 로컬 커밋은 재시도를 위해 유지됩니다."</string>
+    <string name="repository_discovery_branch_unknown" formatted="false">"분리된 HEAD 또는 첫 커밋 없음"</string>
+    <string name="repository_discovery_clean" formatted="false">"변경 사항 없음"</string>
+    <string name="repository_discovery_dirty" formatted="false">"로컬 변경 사항"</string>
+    <string name="repository_history_files_deleted" formatted="false">"로컬 파일 삭제됨"</string>
+    <string name="repository_history_files_kept" formatted="false">"로컬 파일 유지됨"</string>
+    <string name="repository_history_tracking_removed" formatted="false">"Git 추적 제거됨 · 작업 파일 유지됨"</string>
+    <string name="repository_metadata_unavailable" formatted="false">"저장소 메타데이터를 사용할 수 없음"</string>
+    <string name="repository_no_commits" formatted="false">"커밋 없음"</string>
+    <string name="repository_shortcut_active" formatted="false">"승인 및 고정됨"</string>
+    <string name="repository_shortcut_add" formatted="false">"홈 화면 바로가기 추가"</string>
+    <string name="repository_shortcut_busy" formatted="false">"이미 작업이 실행 중입니다. 이 바로가기는 대기열에 추가되지 않았습니다. 기다린 후 다시 탭하세요."</string>
+    <string name="repository_shortcut_consent" formatted="false">"탭할 때마다 GitSync.md를 열고 다시 묻지 않고 이 작업을 한 번 실행합니다. 바로가기는 이 저장소, 브랜치 및 저장된 연결 또는 계정에 계속 연결됩니다. 새 로컬 커밋은 허용됩니다. 연결 정보가 바뀌면 바로가기가 중지됩니다. 검토한 후 새 바로가기를 만들어 승인하세요. 여기서 언제든지 권한을 취소할 수 있습니다."</string>
+    <string name="repository_shortcut_forget" formatted="false">"사용 중지된 바로가기 기록 삭제"</string>
+    <string name="repository_shortcut_inactive" formatted="false">"활성 상태가 아닙니다. 홈 화면 승인이 대기 중이거나 권한이 취소되었습니다."</string>
+    <string name="repository_shortcut_manage" formatted="false">"홈 화면 바로가기"</string>
+    <string name="repository_shortcut_refresh" formatted="false">"바로가기 새로고침"</string>
+    <string name="repository_shortcut_request" formatted="false">"바로가기 요청"</string>
+    <string name="repository_shortcut_requested" formatted="false">"바로가기를 요청했습니다. 홈 화면에서 승인한 다음 바로가기를 새로고침하여 상태를 확인하세요."</string>
+    <string name="repository_shortcut_revoke" formatted="false">"권한 취소"</string>
+    <string name="repository_shortcut_revoke_scope" formatted="false">"이 바로가기는 Git 작업 실행을 중지합니다. 홈 화면 아이콘은 삭제할 때까지 사용 중지된 상태로 남을 수 있습니다. 새 바로가기를 만들려면 다시 승인해야 합니다."</string>
+    <string name="repository_shortcut_revoked" formatted="false">"바로가기 권한이 취소되었습니다"</string>
+    <string name="repository_shortcut_unsupported" formatted="false">"홈 화면에서 이 바로가기 요청을 수락할 수 없습니다. 이 화면의 작업을 사용하세요."</string>
+    <string name="repository_sync_not_recorded" formatted="false">"기록되지 않음"</string>
+    <string name="settings_folder_unavailable" formatted="false">"폴더 접근 권한을 확인하세요"</string>
+    <string name="shortcut_background_attention" formatted="false">"바로가기에 확인이 필요합니다. 다시 시도하기 전에 저장소 작업을 열어 상태를 검토하세요."</string>
+    <string name="shortcut_background_channel" formatted="false">"바로가기 작업"</string>
+    <string name="shortcut_background_complete" formatted="false">"바로가기 작업이 완료되었습니다. 저장소 작업을 열어 결과를 검토하세요."</string>
+    <string name="shortcut_background_consent" formatted="false">"탭할 때마다 이 저장소, 브랜치 및 저장된 연결 또는 계정으로 백그라운드에서 한 번 실행합니다. 결과는 여기에 저장되며 허용된 경우 알림에도 표시됩니다. 중단된 실행은 다시 탭해야 합니다. 여기서 이 권한을 취소할 수 있습니다."</string>
+    <string name="shortcut_background_interrupted" formatted="false">"실행이 중단되었습니다. 자동으로 다시 실행되지 않습니다. 다시 탭하기 전에 저장소를 검토하세요."</string>
+    <string name="shortcut_background_option" formatted="false">"GitSync.md를 열지 않고 실행"</string>
+    <string name="shortcut_background_running" formatted="false">"바로가기 작업 실행 중"</string>
+    <string name="shortcut_results_clear" formatted="false">"자동화 결과 지우기"</string>
+    <string name="shortcut_results_clear_scope" formatted="false">"저장된 바로가기 및 콜백 실행 결과를 삭제합니다. 해당 권한은 변경되지 않습니다. 중단된 작업은 자동으로 다시 실행되지 않습니다."</string>
+    <string name="shortcut_results_unavailable" formatted="false">"저장된 바로가기 결과를 읽을 수 없습니다. 권한은 별도로 유지됩니다."</string>
+    <string name="ssh_hide_private_key" formatted="false">"비공개 키 숨기기"</string>
+    <string name="ssh_show_private_key" formatted="false">"비공개 키 표시"</string>
+    <string name="ssh_trust_changed_title" formatted="false">"SSH 서버 키가 변경됨"</string>
+    <string name="ssh_trust_connect" formatted="false">"신뢰하고 연결"</string>
+    <string name="ssh_trust_error_changed" formatted="false">"검토 중 SSH 신뢰가 변경되었습니다. 현재 서버 항목을 검토하고 다시 연결하세요."</string>
+    <string name="ssh_trust_error_damaged" formatted="false">"저장된 SSH 신뢰를 검토해야 합니다. 다시 시도하기 전에 설정에서 SSH 서버 신뢰를 재설정하세요."</string>
+    <string name="ssh_trust_error_recovery" formatted="false">"SSH 신뢰 복구를 저장하지 못했습니다. 다시 시도하기 전에 설정에서 SSH 서버 신뢰를 검토하세요."</string>
+    <string name="ssh_trust_error_remove" formatted="false">"SSH 서버 신뢰를 제거하지 못했습니다. 다시 시도하기 전에 현재 서버 항목을 검토하세요."</string>
+    <string name="ssh_trust_error_reset" formatted="false">"SSH 서버 신뢰를 지우지 못했습니다. 다시 시도하기 전에 저장된 항목을 검토하세요."</string>
+    <string name="ssh_trust_error_save" formatted="false">"SSH 서버 신뢰를 저장하지 못했습니다. 다시 시도하기 전에 지문을 다시 확인하세요."</string>
+    <string name="ssh_trust_replace" formatted="false">"신뢰를 교체하고 연결"</string>
+    <string name="ssh_trust_verify_title" formatted="false">"SSH 서버 확인"</string>
+    <string name="staged" formatted="false">"스테이지됨"</string>
+    <string name="stash_screen" formatted="false">"스태시"</string>
+    <string name="status_screen" formatted="false">"상태"</string>
+    <string name="storage_app_saved" formatted="false">"새 클론은 앱 저장소를 사용합니다"</string>
+    <string name="storage_default_saved" formatted="false">"기본 클론 위치를 저장했습니다"</string>
+    <string name="tide_git_annotated" formatted="false">"주석"</string>
+    <string name="tide_git_branch_operation" formatted="false">"브랜치 작업"</string>
+    <string name="tide_git_commit_locally" formatted="false">"로컬 커밋"</string>
+    <string name="tide_git_committing" formatted="false">"커밋 중…"</string>
+    <string name="tide_git_detached" formatted="false">"분리된 HEAD"</string>
+    <string name="tide_git_force_delete" formatted="false">"강제 삭제 (안전하지 않음)"</string>
+    <string name="tide_git_force_delete_detail" formatted="false">"강제 삭제는 병합되지 않은 브랜치도 삭제합니다."</string>
+    <string name="tide_git_git_operation" formatted="false">"Git 작업"</string>
+    <string name="tide_git_headline_choose" formatted="false">"커밋할 내용 선택"</string>
+    <string name="tide_git_headline_complete_merge" formatted="false">"완전 통합"</string>
+    <string name="tide_git_headline_nothing" formatted="false">"커밋할 변경 사항 없음"</string>
+    <string name="tide_git_hint_message" formatted="false">"커밋 메시지 입력"</string>
+    <string name="tide_git_hint_stage" formatted="false">"커밋하려면 파일을 하나 이상 스테이징하세요"</string>
+    <string name="tide_git_included" formatted="false">"포함됨"</string>
+    <string name="tide_git_lightweight" formatted="false">"경량"</string>
+    <string name="tide_git_local_only" formatted="false">"로컬 전용"</string>
+    <string name="tide_git_message" formatted="false">"메시지"</string>
+    <string name="tide_git_normal_delete" formatted="false">"일반 삭제"</string>
+    <string name="tide_git_normal_delete_detail" formatted="false">"완전히 병합된 브랜치만 삭제합니다."</string>
+    <string name="tide_git_push_current" formatted="false">"푸시 전류 분기"</string>
+    <string name="tide_git_pushing" formatted="false">"푸시 중…"</string>
+    <string name="tide_git_remote" formatted="false">"원격"</string>
+    <string name="tide_git_resolve_and_stage" formatted="false">"해결 후 스테이징"</string>
+    <string name="tide_git_resolving" formatted="false">"해결 중…"</string>
+    <string name="tide_git_status_added" formatted="false">"추가됨"</string>
+    <string name="tide_git_status_changed" formatted="false">"변경됨"</string>
+    <string name="tide_git_status_copied" formatted="false">"복사됨"</string>
+    <string name="tide_git_status_deleted" formatted="false">"삭제됨"</string>
+    <string name="tide_git_status_modified" formatted="false">"수정됨"</string>
+    <string name="tide_git_status_renamed" formatted="false">"이름 변경됨"</string>
+    <string name="tide_git_status_type_changed" formatted="false">"유형 변경됨"</string>
+    <string name="tide_git_strategy_ff" formatted="false">"Fast-forward만"</string>
+    <string name="tide_git_strategy_prefer_ff" formatted="false">"가능하면 Fast-forward"</string>
+    <string name="tide_git_strategy_recursive" formatted="false">"항상 병합 커밋 사용"</string>
+    <string name="tide_git_tools" formatted="false">"Git 도구"</string>
+    <string name="tide_git_unstaged" formatted="false">"스테이징 안 됨"</string>
+    <string name="tide_home_add_first" formatted="false">"첫 보관함 추가"</string>
+    <string name="tide_home_empty_filter_detail" formatted="false">"이 휴대전화의 모든 보관함을 읽을 수 있었습니다."</string>
+    <string name="tide_home_empty_filter_title" formatted="false">"확인이 필요한 항목이 없습니다"</string>
+    <string name="tide_home_empty_rail_description" formatted="false">"첫 보관함을 기다리는 빈 동기화 표시줄"</string>
+    <string name="tide_home_empty_rail_nothing" formatted="false">"동기화할 항목 없음"</string>
+    <string name="tide_home_empty_title" formatted="false">"아직 보관함이 없습니다."</string>
+    <string name="tide_home_filter_all" formatted="false">"전체"</string>
+    <string name="tide_home_filter_attention" formatted="false">"확인 필요"</string>
+    <string name="tide_home_meta_checking">"확인 중: %1$d"</string>
+    <string name="tide_home_meta_ready">"준비됨: %1$d"</string>
+    <string name="tide_home_meta_unreadable">"읽기 불가: %1$d"</string>
+    <string name="tide_home_rail_phone" formatted="false">"휴대전화"</string>
+    <string name="tide_home_signed_in_as">"@%1$s 계정으로 로그인됨"</string>
+    <string name="tide_home_start_github" formatted="false">"GitHub에서 복제"</string>
+    <string name="tide_home_start_github_signed_in" formatted="false">"내 저장소 중 하나 선택"</string>
+    <string name="tide_home_start_github_signed_out" formatted="false">"로그인한 후 저장소 선택"</string>
+    <string name="tide_home_start_local_detail" formatted="false">"이 휴대전화에 있는 복제본 찾기"</string>
+    <string name="tide_home_start_publish_detail" formatted="false">"폴더를 새 저장소로 변환"</string>
+    <string name="tide_home_start_url_detail" formatted="false">"공개 또는 비공개 Git 원격 저장소"</string>
+    <string name="tide_home_start_with" formatted="false">"시작하기"</string>
+    <string name="tide_home_state_checking" formatted="false">"확인 중…"</string>
+    <string name="tide_home_state_never_synced" formatted="false">"동기화한 적 없음"</string>
+    <string name="tide_home_state_synced">"동기화됨 %1$s"</string>
+    <string name="tide_home_state_unreadable" formatted="false">"확인이 필요함"</string>
+    <string name="tide_merge_conflict_result" formatted="false">"결과"</string>
+    <string name="tide_merge_conflict_result_hint" formatted="false">": 이 내용이 스테이징됩니다."</string>
+    <string name="tide_merge_diff_added" formatted="false">"추가"</string>
+    <string name="tide_merge_diff_changed" formatted="false">"변경됨"</string>
+    <string name="tide_merge_diff_deleted" formatted="false">"삭제됨"</string>
+    <string name="tide_merge_diff_modified" formatted="false">"수정됨"</string>
+    <string name="tide_merge_diff_renamed" formatted="false">"이름 변경됨"</string>
+    <string name="tide_merge_diff_staged" formatted="false">"스테이지됨"</string>
+    <string name="tide_merge_diff_type_changed" formatted="false">"유형 변경됨"</string>
+    <string name="tide_merge_merge_kicker" formatted="false">"병합"</string>
+    <string name="tide_merge_ours_filename" formatted="false">"현재 버전"</string>
+    <string name="tide_merge_rebase_kicker" formatted="false">"리베이스"</string>
+    <string name="tide_merge_result_section" formatted="false">"결과"</string>
+    <string name="tide_merge_side_deleted" formatted="false">"삭제됨"</string>
+    <string name="tide_merge_theirs" formatted="false">"원격 버전"</string>
+    <string name="tide_merge_theirs_filename" formatted="false">"원격 버전"</string>
+    <string name="tide_onboarding_clone_failed" formatted="false">"클론 실패"</string>
+    <string name="tide_onboarding_create_pat" formatted="false">"GitHub에서 PAT 만들기 ↗"</string>
+    <string name="tide_onboarding_headline_git" formatted="false">"진짜 Git."</string>
+    <string name="tide_onboarding_headline_notes" formatted="false">"당신의 노트."</string>
+    <string name="tide_onboarding_headline_step" formatted="false">"언제나 함께."</string>
+    <string name="tide_onboarding_hide_token" formatted="false">"숨기기"</string>
+    <string name="tide_onboarding_illustration" formatted="false">"휴대전화의 노트와 GitHub의 커밋이 하나의 동기화 지점에서 만나는 그림"</string>
+    <string name="tide_onboarding_pat_subtitle" formatted="false">"저장소 접근 권한이 있는 GitHub 토큰을 붙여넣으세요."</string>
+    <string name="tide_onboarding_picker_clear" formatted="false">"검색 지우기"</string>
+    <string name="tide_onboarding_picker_no_matches" formatted="false">"일치하는 항목 없음"</string>
+    <string name="tide_onboarding_picker_title" formatted="false">"저장소 선택"</string>
+    <string name="tide_onboarding_publication_step">"%1$d/3단계"</string>
+    <string name="tide_onboarding_rail_device" formatted="false">"이 휴대전화"</string>
+    <string name="tide_onboarding_save_muted" formatted="false">"위치."</string>
+    <string name="tide_onboarding_save_subtitle" formatted="false">"클론할 때 다른 폴더를 선택하거나 설정에서 기본 폴더를 지정하세요."</string>
+    <string name="tide_onboarding_save_title" formatted="false">"기본 저장"</string>
+    <string name="tide_onboarding_show_token" formatted="false">"표시"</string>
+    <string name="tide_onboarding_welcome_body" formatted="false">"어떤 저장소든 클론하고 Obsidian이나 다른 앱에서 작성한 뒤 한 번의 탭으로 동기화하세요."</string>
+    <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_vault_check_for_changes" formatted="false">"변경 사항 확인"</string>
+    <string name="tide_vault_conflict_detail" formatted="false">"Git 작업이 일시 중지되었습니다. 계속하려면 충돌한 각 파일을 해결하세요."</string>
+    <string name="tide_vault_eyebrow_both_moved" formatted="false">"양쪽에 변경 사항 있음"</string>
+    <string name="tide_vault_eyebrow_conflict" formatted="false">"충돌"</string>
+    <string name="tide_vault_eyebrow_empty" formatted="false">"빈 저장소"</string>
+    <string name="tide_vault_eyebrow_in_sync" formatted="false">"동기화됨"</string>
+    <string name="tide_vault_eyebrow_new_on_remote" formatted="false">"원격에 새 항목 있음"</string>
+    <string name="tide_vault_eyebrow_ready_to_commit" formatted="false">"커밋 준비 완료"</string>
+    <string name="tide_vault_eyebrow_ready_to_push" formatted="false">"푸시 준비 완료"</string>
+    <string name="tide_vault_eyebrow_unreadable" formatted="false">"읽을 수 없음"</string>
+    <string name="tide_vault_files_section" formatted="false">"파일"</string>
+    <string name="tide_vault_from_remote">"원격에서: ↓%1$d"</string>
+    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_headline_ahead">"푸시 대기: %1$d"</string>
+    <string name="tide_vault_headline_behind">"원격의 새 항목: %1$d"</string>
+    <string name="tide_vault_headline_in_sync" formatted="false">"동기화됨"</string>
+    <string name="tide_vault_headline_unreadable" formatted="false">"이 보관함을 읽을 수 없습니다."</string>
+    <string name="tide_vault_latest_commit" formatted="false">"최신 커밋"</string>
+    <string name="tide_vault_more" formatted="false">"보관함 추가 옵션"</string>
+    <string name="tide_vault_moved_on" formatted="false">"작성하는 동안 원격이 변경되었습니다."</string>
+    <string name="tide_vault_no_changes_body" formatted="false">"Obsidian에서 편집한 내용이 여기에 표시됩니다."</string>
+    <string name="tide_vault_no_changes_title" formatted="false">"이 휴대전화에 변경 사항 없음"</string>
+    <string name="tide_vault_reading" formatted="false">"이 보관함 읽는 중…"</string>
+    <string name="tide_vault_remote_current" formatted="false">"원격에 새 커밋이 없습니다"</string>
+    <string name="tide_vault_remote_new" formatted="false">"원격에 새 커밋이 있습니다"</string>
+    <string name="tide_vault_remote_not_checked" formatted="false">"원격 확인 안 함"</string>
+    <string name="tide_vault_resolve" formatted="false">"해결"</string>
+    <string name="tide_vault_sub_ahead" formatted="false">"커밋됨, 아직 푸시하지 않음"</string>
+    <string name="tide_vault_sub_behind" formatted="false">"가져와서 이 휴대전화를 최신 상태로 업데이트"</string>
+    <string name="tide_vault_sub_empty" formatted="false">"메모를 추가한 후 여기서 커밋하세요."</string>
+    <string name="tide_vault_sub_in_sync" formatted="false">"이 휴대전화에 대기 중인 항목 없음"</string>
+    <string name="tide_vault_syncing" formatted="false">"동기화 중..."</string>
+    <string name="tide_vault_yours">"로컬: ↑%1$d"</string>
+    <string name="tracking_metadata_size">"Git 메타데이터: %1$s"</string>
+    <string name="tracking_remove_backup_body" formatted="false">"GitSync.md는 사본과 ZIP 아카이브를 검증하고 원본 메타데이터를 백업에 보존한 뒤 이 폴더의 연결을 해제합니다. 작업 파일은 그대로 유지됩니다."</string>
+    <string name="tracking_remove_backup_title" formatted="false">"백업을 유지하고 추적을 제거할까요?"</string>
+    <string name="tracking_remove_permanent_body" formatted="false">"검토한 .git 메타데이터만 삭제됩니다. 작업 파일은 그대로 유지되지만 다른 사본이 없으면 로컬 Git 기록을 복구할 수 없습니다."</string>
+    <string name="tracking_remove_permanent_title" formatted="false">"Git 기록을 영구적으로 제거할까요?"</string>
+    <string name="tracking_remove_review_changed" formatted="false">"검토 정보가 변경되었습니다. 취소하고 추적 제거를 다시 검토하세요."</string>
+    <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\n모든 작업 파일과 로컬 Git 기록은 이 기기에 남습니다. 나중에 폴더를 다시 연결할 수 있습니다."</string>
+    <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\n앱에서 관리하는 이 복제본을 영구적으로 삭제합니다. 푸시하지 않은 커밋, 스태시 및 저장하지 않은 파일도 포함됩니다. 원격 저장소는 변경되지 않습니다."</string>
+    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s에 다시 연결하기 전에 지문 확인이 필요합니다."</string>
+    <string name="ui_1_s_files_ddef923b">"파일 %1$s개"</string>
+    <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"로컬 커밋 %1$s개 · 업스트림 커밋 %2$s개"</string>
+    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s개 표시 · %2$s개 저장"</string>
+    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Google Play에서 일회성 구매"</string>
+    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"키 변경은 사칭을 의미할 수 있습니다. 신뢰를 교체하기 전에 서버 소유자에게 새 지문을 확인하세요."</string>
+    <string name="ui_abort_merge_5af7a9ac" formatted="false">"✕  병합 중단"</string>
+    <string name="ui_abort_merge_8821f613" formatted="false">"병합 중단"</string>
+    <string name="ui_abort_rebase_fd5cfc32" formatted="false">"리베이스 중단…"</string>
+    <string name="ui_about_4efca0d1" formatted="false">"정보"</string>
+    <string name="ui_add_9fd728c6" formatted="false">"추가"</string>
+    <string name="ui_add_cloned_repository_f84b64e8" formatted="false">"복제한 저장소 추가"</string>
+    <string name="ui_add_github_account_ed4d4d4c" formatted="false">"추가 GitHub 계정"</string>
+    <string name="ui_add_local_repository_b8323c70" formatted="false">"로컬 리포지토리 추가"</string>
+    <string name="ui_add_repository_33da2ac1" formatted="false">"저장소 추가"</string>
+    <string name="ui_add_repository_e2be0a30" formatted="false">"저장소 추가"</string>
+    <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"선택한 리포지토리 추가"</string>
+    <string name="ui_added_b4561641" formatted="false">"추가"</string>
+    <string name="ui_added_repositories_400f05cb" formatted="false">"추가된 리포지토리"</string>
+    <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"모든 충돌 해결 내용이 스테이징되었습니다. 커밋 재적용을 계속하세요. Git이 NOTHING_TO_COMMIT을 보고하면 빈 커밋을 건너뛸지 검토하세요."</string>
+    <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"모든 충돌이 해결되었습니다. 병합을 완료하거나 중단하세요."</string>
+    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"유료 앱을 설치하면 모든 기능이 포함됩니다. 구독이나 인앱 구매는 없습니다."</string>
+    <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": 이 파일에 대한 모든 지역 변경 사항은 영구적으로 무효화됩니다."</string>
+    <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"로컬 폴더 접근 허용"</string>
+    <string name="ui_already_added_253b22d7" formatted="false">"이미 추가됨"</string>
+    <string name="ui_and_1_s_more_f93ea742">"및 %1$s 더 보기..."</string>
+    <string name="ui_app_0d04bfeb" formatted="false">"앱"</string>
+    <string name="ui_app_settings_da645334" formatted="false">"앱 설정"</string>
+    <string name="ui_apply_2cbf6555" formatted="false">"적용"</string>
+    <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"추적 방식 적용"</string>
+    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"승인은 이 기기에 저장되며 대기 중인 연결이 계속됩니다. 취소하면 서버를 신뢰하지 않습니다."</string>
+    <string name="ui_authentication_66880d2d" formatted="false">"인증"</string>
+    <string name="ui_back_639807a2" formatted="false">"뒤로"</string>
+    <string name="ui_back_aceb696a" formatted="false">"← 뒤로"</string>
+    <string name="ui_back_f645ed02" formatted="false">"←  뒤로"</string>
+    <string name="ui_backup_1_s_6ad01ca6">"백업: %1$s"</string>
+    <string name="ui_base_7b47361a" formatted="false">"기준"</string>
+    <string name="ui_binary_file_2c7ccf98" formatted="false">"이진 파일"</string>
+    <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"바이너리, 대용량 또는 LFS 파일: 한쪽 전체를 선택하세요."</string>
+    <string name="ui_branch_52656e81" formatted="false">"브랜치"</string>
+    <string name="ui_branch_name_06f6bb71" formatted="false">"브랜치 이름"</string>
+    <string name="ui_branch_optional_e9dedf99" formatted="false">"브랜치(선택 사항)"</string>
+    <string name="ui_browse_files_c8bb105f" formatted="false">"파일 탐색"</string>
+    <string name="ui_browse_repos_e9c9d50c" formatted="false">"저장소 둘러보기"</string>
+    <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"이 계정으로 탐색 중"</string>
+    <string name="ui_cancel_ad8d6985" formatted="false">"취소"</string>
+    <string name="ui_changed_2a6141e4" formatted="false">"변경됨"</string>
+    <string name="ui_changed_files_cdf024ce" formatted="false">"변경된 파일"</string>
+    <string name="ui_changes_bbd4b6a8" formatted="false">"변경사항"</string>
+    <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"이 저장소에 사용할 연결된 계정을 선택하세요."</string>
+    <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"기기의 폴더 선택"</string>
+    <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"복제하기 전에 인증 방법을 선택하세요."</string>
+    <string name="ui_choose_another_folder_b50df380" formatted="false">"다른 폴더 선택"</string>
+    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"복제본 저장 위치 선택"</string>
+    <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"기기 내부 또는 연결된 저장소를 선택하세요. 클라우드 문서 제공자는 이 Git 엔진에서 사용할 수 있는 파일 시스템을 제공하지 않습니다."</string>
+    <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"GitHub를 탐색할 계정을 선택하세요. 각 저장소에 지정된 계정은 유지됩니다. 저장소 연결에서 변경할 수 있습니다."</string>
+    <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"새 클론의 기본 폴더를 선택하세요. 기존 저장소는 현재 위치에 유지됩니다."</string>
+    <string name="ui_clear_all_29a390f9" formatted="false">"모두 지우기"</string>
+    <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"모든 진단을 지울까요?"</string>
+    <string name="ui_clear_log_a8858ac7" formatted="false">"로그 지우기"</string>
+    <string name="ui_clone_a_github_repository_or_reconnect_a_l_dd9aa7e0" formatted="false">"GitHub 리포지토리를 복제하거나 로컬 작업 사본을 다시 연결하세요."</string>
+    <string name="ui_clone_again_e05eb495" formatted="false">"다시 복제"</string>
+    <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"다시 복제 · 시작하기 전에 이전 브랜치와 연결을 검토하세요."</string>
+    <string name="ui_clone_directory_157fc791" formatted="false">"복제 디렉터리"</string>
+    <string name="ui_clone_failed_958e3f3a" formatted="false">"복제 실패"</string>
+    <string name="ui_clone_repository_e8fa94ab" formatted="false">"저장소 복제"</string>
+    <string name="ui_clone_storage_47cafc8a" formatted="false">"클론 저장소"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_90548a33" formatted="false">"복제하고 작업 사본을 준비하는 중…"</string>
+    <string name="ui_cloning_repository_c9d2441e" formatted="false">"저장소 복제 중"</string>
+    <string name="ui_commit_84da95ea" formatted="false">"커밋:"</string>
+    <string name="ui_commit_author_e9376b3a" formatted="false">"커밋 작성자"</string>
+    <string name="ui_commit_message_a4b361b7" formatted="false">"커밋 메시지…"</string>
+    <string name="ui_commit_push_94e9650a" formatted="false">"Commit &amp; Push"</string>
+    <string name="ui_commit_sha_d0bc6028" formatted="false">"커밋 SHA"</string>
+    <string name="ui_compare_this_fingerprint_with_the_server_o_69b2eaae" formatted="false">"신뢰하기 전에 이 지문을 서버 소유자가 게시한 SSH 호스트 키와 비교하세요."</string>
+    <string name="ui_complete_894981ff" formatted="false">"완료"</string>
+    <string name="ui_complete_merge_385cc51b" formatted="false">"완전 통합"</string>
+    <string name="ui_confirm_eebdd24a" formatted="false">"확인"</string>
+    <string name="ui_conflict_center_e9f65d36" formatted="false">"충돌 센터"</string>
+    <string name="ui_conflict_d79910c7" formatted="false">"충돌"</string>
+    <string name="ui_connect_a_github_repository_to_start_synci_0e1f2ea6" formatted="false">"동기화를 시작하려면 GitHub 리포지토리를 연결하세요."</string>
+    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"GitHub, GitLab, Bitbucket 또는 자체 Git 서버의 공개 또는 비공개 HTTPS나 SSH 저장소에 연결하세요."</string>
+    <string name="ui_connect_with_github_6f2b4e53" formatted="false">"GitHub로 연결"</string>
+    <string name="ui_connect_your_github_account_to_browse_and_b692e428" formatted="false">"GitHub 계정을 연결하여 저장소를 둘러보고 동기화하세요."</string>
+    <string name="ui_continue_rebase_7a14e965" formatted="false">": 재기준화 계속"</string>
+    <string name="ui_copy_visible_29e7587c" formatted="false">"표시된 기록 복사"</string>
+    <string name="ui_create_4759498a" formatted="false">"생성"</string>
+    <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"새로 만들기로 파일이나 폴더를 만드세요."</string>
+    <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"생성하기 PAT ON GITHUB →"</string>
+    <string name="ui_create_fde9c501" formatted="false">"생성"</string>
+    <string name="ui_current_default_d914f86e" formatted="false">"현재 기본 폴더"</string>
+    <string name="ui_current_e3cc57e1" formatted="false">"현재"</string>
+    <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"현재 별도 푸시 주소: %1$s"</string>
+    <string name="ui_dark_theme_6f2a0915" formatted="false">"어두운 테마"</string>
+    <string name="ui_debug_0ffd43f5" formatted="false">"디버그"</string>
+    <string name="ui_debug_info_697b4941" formatted="false">"디버그 정보"</string>
+    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"새 복제본의 기본 저장 위치입니다. 각 복제본은 다른 폴더를 사용할 수 있습니다."</string>
+    <string name="ui_delete_1_s_6474596f">"\"%1$s\"을(를) 삭제할까요?"</string>
+    <string name="ui_delete_branch_00339d48" formatted="false">"브랜치를 삭제하겠습니까?"</string>
+    <string name="ui_delete_branch_1c3f98e5" formatted="false">"브랜치 삭제"</string>
+    <string name="ui_delete_e2d0a549" formatted="false">"삭제"</string>
+    <string name="ui_delete_file_28e18dc9" formatted="false">"파일 삭제"</string>
+    <string name="ui_delete_local_files_09697434" formatted="false">": 로컬 파일 삭제 여부?"</string>
+    <string name="ui_delete_local_files_20424441" formatted="false">": 로컬 파일 삭제"</string>
+    <string name="ui_delete_tag_365635aa" formatted="false">"태그 삭제"</string>
+    <string name="ui_diagnostics_268f14bb" formatted="false">"진단"</string>
+    <string name="ui_diff_b6aeb797" formatted="false">"차이"</string>
+    <string name="ui_discard_draft_cb30147e" formatted="false">"초안 버리기"</string>
+    <string name="ui_discard_eb1a70e3" formatted="false">"버리기"</string>
+    <string name="ui_discard_resolution_draft_47c16148" formatted="false">"해결 초안을 버릴까요?"</string>
+    <string name="ui_discovered_repositories_059a8e8d" formatted="false">"발견한 리포지토리"</string>
+    <string name="ui_dismiss_48845bff" formatted="false">"닫기"</string>
+    <string name="ui_done_283e91eb" formatted="false">"완료"</string>
+    <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"누락된 파일 내용 다운로드"</string>
+    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"리베이스 중에는 업스트림이 Git의 ours 쪽이고, 재적용되는 로컬 커밋이 theirs 쪽입니다."</string>
+    <string name="ui_edit_commit_author_443f376d" formatted="false">"커밋 작성자 편집"</string>
+    <string name="ui_edit_connection_047f9f95" formatted="false">"연결 편집"</string>
+    <string name="ui_edit_resolution_9a6cda88" formatted="false">"해결 내용 편집"</string>
+    <string name="ui_email_969ccbd3" formatted="false">"이메일"</string>
+    <string name="ui_empty_folder_ca1fd454" formatted="false">"빈 폴더"</string>
+    <string name="ui_enable_access_9d7caf64" formatted="false">"접근 활성화"</string>
+    <string name="ui_endpoint_authentication_1841e2be" formatted="false">"엔드포인트 인증"</string>
+    <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"새 주소에 사용할 인증 정보를 다시 입력하거나 공개 액세스를 선택하세요."</string>
+    <string name="ui_error_54a0e8c1" formatted="false">"오류"</string>
+    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"모든 SSH 서버는 다시 연결하기 전에 지문 확인이 필요합니다. 손상된 신뢰 항목도 제거됩니다."</string>
+    <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"원격 변경사항 가져와서 적용"</string>
+    <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"가져와서 리베이스 검토"</string>
+    <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"원격 변경 사항 가져오기"</string>
+    <string name="ui_file_operation_failed_f78a328b" formatted="false">"파일 작업 실패"</string>
+    <string name="ui_finishing_up_13f4f85a" formatted="false">"마무리하는 중"</string>
+    <string name="ui_forget_a6bd489d" formatted="false">"잊기"</string>
+    <string name="ui_forget_server_e43c85d4" formatted="false">"서버 잊기"</string>
+    <string name="ui_forget_ssh_server_d5c91f0a" formatted="false">"SSH 서버를 잊을까요?"</string>
+    <string name="ui_from_1_s_40f7d611">" %1$s에서"</string>
+    <string name="ui_full_version_no_subscription_8fe42d1c" formatted="false">"전체 버전 · 구독 없음"</string>
+    <string name="ui_ghp_ff475c83" formatted="false">"ghp_..."</string>
+    <string name="ui_git_b084246d" formatted="false">"GIT"</string>
+    <string name="ui_git_lfs_keeps_large_file_contents_outside_4b4afd49" formatted="false">"Git LFS는 큰 파일 내용을 Git 기록 외부에 보관합니다. 커밋에는 작은 포인터를 저장하며, 복제와 풀은 내용을 다운로드하고 푸시는 커밋을 게시하기 전에 객체를 업로드합니다."</string>
+    <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS 확인이 필요합니다"</string>
+    <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · 추적 및 다운로드"</string>
+    <string name="ui_git_remote_91593664" formatted="false">"Git 원격"</string>
+    <string name="ui_github_accounts_653cf0c5" formatted="false">"GitHub 계정"</string>
+    <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub 로그인"</string>
+    <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Gitsync.md 정식 버전"</string>
+    <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md가 기기 폴더에서 실제 Git 작업 사본을 관리하려면 공유 저장 공간에 접근해야 합니다. Android 설정에서 접근을 활성화한 후 사용할 폴더를 선택하세요."</string>
+    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md는 이 저장소에 자격 증명을 제공하지 않습니다."</string>
+    <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"다른 소유자가 아직 이 파일을 편집 중일 수 있음을 이해합니다."</string>
+    <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"주소에 SSH 사용자 이름을 포함하세요: git@host:team/repo.git 또는 ssh://git@host:2222/team/repo.git."</string>
+    <string name="ui_info_170322a3" formatted="false">"정보"</string>
+    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"검증된 메타데이터 백업 유지"</string>
+    <string name="ui_keep_editing_e76fd2ad" formatted="false">"계속 편집"</string>
+    <string name="ui_keep_selected_files_in_regular_git_7de351fc" formatted="false">"선택한 파일을 일반 Git에 유지"</string>
+    <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"키 암호 구문(선택 사항)"</string>
+    <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"키는 이 기기에서 암호화되며 저장된 저장소 주소에만 사용됩니다. 처음 연결할 때 서버의 지문을 확인하세요."</string>
+    <string name="ui_last_sync_a0d540dd" formatted="false">"마지막 동기화"</string>
+    <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"서버의 기본 브랜치를 사용하려면 비워 두세요."</string>
+    <string name="ui_lfs_endpoint_02a55a73" formatted="false">"LFS 엔드포인트"</string>
+    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"LFS 엔드포인트 승인"</string>
+    <string name="ui_lfs_endpoint_token_or_password_e069890b" formatted="false">"LFS 엔드포인트 토큰 또는 비밀번호"</string>
+    <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS 엔드포인트 사용자 이름"</string>
+    <string name="ui_license_c011d609" formatted="false">"라이선스"</string>
+    <string name="ui_loading_dc380888" formatted="false">"불러오는 중"</string>
+    <string name="ui_loading_diff_3944c704" formatted="false">"차이 로딩 중"</string>
+    <string name="ui_loading_repos_2f4f4a93" formatted="false">"리포지토리 불러오는 중"</string>
+    <string name="ui_loading_repository_15b79262" formatted="false">"리포지토리 불러오는 중"</string>
+    <string name="ui_local_changes_4d25c7d4" formatted="false">"로컬 변경 사항"</string>
+    <string name="ui_local_repositories_ddcf4270" formatted="false">"로컬 저장소"</string>
+    <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"GitHub 계정 관리"</string>
+    <string name="ui_manual_7c8107bd" formatted="false">"수동"</string>
+    <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"일치하는 공개 키(선택 사항)"</string>
+    <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
+    <string name="ui_merge_8851aaa7" formatted="false">"병합"</string>
+    <string name="ui_merge_commit_message_2132e189" formatted="false">"병합 커밋 메시지"</string>
+    <string name="ui_merge_fc2b737d" formatted="false">"병합"</string>
+    <string name="ui_message_f5394f72" formatted="false">"메시지:"</string>
+    <string name="ui_more_d47d7cb0" formatted="false">"더 보기"</string>
+    <string name="ui_move_repository_1c4a6083" formatted="false">"저장소 이동"</string>
+    <string name="ui_name_dcd1d522" formatted="false">"이름"</string>
+    <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"GitSync.md에서의 이름"</string>
+    <string name="ui_new_18fdd549" formatted="false">"새로 만들기"</string>
+    <string name="ui_new_branch_name_3fb60017" formatted="false">"new-branch-name"</string>
+    <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"이 저장소의 새 커밋은 이 이름과 이메일을 사용합니다. 기존 커밋의 원래 작성자는 유지됩니다."</string>
+    <string name="ui_new_file_44dedd0f" formatted="false">"새 파일"</string>
+    <string name="ui_new_folder_cf28f49e" formatted="false">"새 폴더"</string>
+    <string name="ui_new_token_or_password_fc54aafe" formatted="false">"새 토큰 또는 비밀번호"</string>
+    <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"승인된 사용자 지정 LFS 엔드포인트 없음"</string>
+    <string name="ui_no_commits_found_64ccb533" formatted="false">"커밋을 찾을 수 없습니다"</string>
+    <string name="ui_no_conflicts_found_d356b17b" formatted="false">"충돌을 찾을 수 없습니다"</string>
+    <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"연결된 계정이 없습니다. 로컬 저장소는 계속 사용할 수 있습니다."</string>
+    <string name="ui_no_lfs_pointers_in_the_current_index_612c2995" formatted="false">"현재 인덱스에 LFS 포인터가 없습니다."</string>
+    <string name="ui_no_local_changes_56319dc5" formatted="false">"로컬 변경사항 없음"</string>
+    <string name="ui_no_local_changes_to_stash_0beb8393" formatted="false">"스태시할 로컬 변경사항 없음"</string>
+    <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"추적 방식을 선택해야 하는 새 바이너리 또는 대용량 파일이 없습니다."</string>
+    <string name="ui_no_repositories_a6e9ff91" formatted="false">"저장소 없음"</string>
+    <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"아직 추가된 리포지토리가 없습니다."</string>
+    <string name="ui_no_repository_aec5972a" formatted="false">"리포지토리 없음"</string>
+    <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"스태시를 찾을 수 없습니다"</string>
+    <string name="ui_no_tags_found_8a6dd503" formatted="false">"태그를 찾을 수 없습니다"</string>
+    <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"이 저장소에 태그 없음"</string>
+    <string name="ui_no_trusted_ssh_servers_df52a7ed" formatted="false">"신뢰하는 SSH 서버 없음"</string>
+    <string name="ui_no_working_copies_found_in_the_scanned_fol_904c5b06" formatted="false">"검색한 폴더에 작업 사본이 없습니다."</string>
+    <string name="ui_none_dc937b59" formatted="false">"없음"</string>
+    <string name="ui_now_ed5eb9a3" formatted="false">"지금"</string>
+    <string name="ui_ok_565339bc" formatted="false">"확인"</string>
+    <string name="ui_open_ed077f3d" formatted="false">"열기"</string>
+    <string name="ui_open_in_files_e1d250d0" formatted="false">"파일에서 열기"</string>
+    <string name="ui_opening_file_de0df916" formatted="false">"파일을 여는 중…"</string>
+    <string name="ui_or_7175517a" formatted="false">"또는"</string>
+    <string name="ui_ours_ab658c14" formatted="false">"현재 버전"</string>
+    <string name="ui_override_system_appearance_2685888c" formatted="false">"시스템 모양 설정 재정의"</string>
+    <string name="ui_owner_1_s_599ca9ce">"소유자: %1$s"</string>
+    <string name="ui_path_62fa5a5b" formatted="false">"경로"</string>
+    <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
+    <string name="ui_personal_access_token_702ef4a0" formatted="false">"개인 액세스 토큰"</string>
+    <string name="ui_platform_c78ffe19" formatted="false">"플랫폼"</string>
+    <string name="ui_pop_52e740ad" formatted="false">"팝"</string>
+    <string name="ui_previously_added_627f4765" formatted="false">"이전에 추가됨"</string>
+    <string name="ui_previously_trusted_1_s_df583fd2">"이전에 신뢰한 지문: %1$s"</string>
+    <string name="ui_privacy_policy_506ff394" formatted="false">"개인정보 처리방침"</string>
+    <string name="ui_public_access_03e7db61" formatted="false">"공개 접근"</string>
+    <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": 재기준화 시의 당김"</string>
+    <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"리베이스로 풀 / 리베이스 재개"</string>
+    <string name="ui_push_792aac67" formatted="false">"푸시"</string>
+    <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"로컬 변경 사항을 원격으로 푸시"</string>
+    <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"리베이스 진행 중"</string>
+    <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"검토한 업스트림으로 리베이스"</string>
+    <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"이 기기에서 수행한 최근 작업 결과입니다. 로그는 최대 500개의 기록을 보관합니다. 인증 정보, 리포지토리 주소, 파일 경로 및 파일 내용은 포함되지 않습니다."</string>
+    <string name="ui_reconnect_bf8a9eab" formatted="false">"다시 연결"</string>
+    <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"GitSync.md에 이미 저장된 작업 사본을 다시 연결합니다. 항목을 제거해도 파일은 유지됩니다. 관리되는 복제본 삭제와 Git 추적 제거는 별도 작업입니다."</string>
+    <string name="ui_refresh_0e916101" formatted="false">"새로고침"</string>
+    <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"리베이스 상태 새로고침"</string>
+    <string name="ui_reload_1_s_873e324f">"%1$s을(를) 다시 불러올까요?"</string>
+    <string name="ui_reload_author_18a711d8" formatted="false">"작성자 다시 불러오기"</string>
+    <string name="ui_reload_connection_ceed2dae" formatted="false">"연결 다시 불러오기"</string>
+    <string name="ui_reload_from_disk_d4288839" formatted="false">"디스크에서 다시 불러오기"</string>
+    <string name="ui_reload_lfs_state_046eb2f5" formatted="false">"LFS 상태 새로고침"</string>
+    <string name="ui_remove_1_s_e4dd7c24">"%1$s을(를) 삭제할까요?"</string>
+    <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"“%1$s”을(를) 제거할까요?\n\nGitSync.md에서 제거합니다. 모든 로컬 파일과 Git 기록은 이 기기에 남으며 나중에 다시 연결할 수 있습니다. 원격 리포지토리는 영향을 받지 않습니다."</string>
+    <string name="ui_remove_5fdf0b2b" formatted="false">"삭제"</string>
+    <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"이 기기에 저장된 모든 사용자 지정 엔드포인트 승인과 인증 정보를 제거합니다. 각 엔드포인트와 전송 방향에 대해 새 검토가 필요합니다."</string>
+    <string name="ui_remove_c3812fc4" formatted="false">"삭제"</string>
+    <string name="ui_remove_credentials_1b0700a3" formatted="false">"인증 정보 제거"</string>
+    <string name="ui_remove_from_app_0d20b3a2" formatted="false">"앱에서 제거"</string>
+    <string name="ui_remove_from_gitsync_md_ead6e2d6" formatted="false">": 제거 GitSync.md?"</string>
+    <string name="ui_remove_git_tracking_1f8255d9" formatted="false">"Git 추적을 제거할까요?"</string>
+    <string name="ui_remove_git_tracking_d3e1065f" formatted="false">"Git 추적 제거"</string>
+    <string name="ui_remove_recovery_copy_b24c79b1" formatted="false">"복구 사본 삭제"</string>
+    <string name="ui_remove_repository_fc68168b" formatted="false">"저장소 제거"</string>
+    <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"저장된 인증 정보 제거"</string>
+    <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"저장된 인증 정보를 제거할까요?"</string>
+    <string name="ui_remove_sign_in_ae9ee617" formatted="false">"로그인 정보 삭제"</string>
+    <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"보관한 원본을 삭제할까요?"</string>
+    <string name="ui_remove_tracking_4b40d72c" formatted="false">"추적 제거"</string>
+    <string name="ui_removed_70fa71f8" formatted="false">"삭제"</string>
+    <string name="ui_rename_1_s_9b09e088">"%1$s 이름 변경"</string>
+    <string name="ui_rename_3064d79a" formatted="false">"이름 변경"</string>
+    <string name="ui_rename_file_e3526ab6" formatted="false">"파일 이름 변경"</string>
+    <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"재적용되는 로컬 커밋"</string>
+    <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"설정된 업스트림에 로컬 커밋을 재적용합니다. 로컬 커밋 ID가 변경될 수 있습니다. 기존 병합 구조는 유지됩니다. 푸시는 수행하지 않습니다."</string>
+    <string name="ui_repo_health_ed3e070f" formatted="false">"저장소 상태"</string>
+    <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"이 계정에 지정된 저장소는 다시 로그인하거나 저장소 연결에서 다른 계정을 선택해야 합니다. 로컬 파일과 커밋은 유지됩니다."</string>
+    <string name="ui_repository_13d6ff07" formatted="false">"저장소"</string>
+    <string name="ui_repository_connection_1188001b" formatted="false">"저장소 연결"</string>
+    <string name="ui_repository_path_037711af" formatted="false">"저장소 경로"</string>
+    <string name="ui_repository_status_64c67cd2" formatted="false">"저장소 상태"</string>
+    <string name="ui_repository_url_c83db013" formatted="false">"저장소 URL"</string>
+    <string name="ui_reset_all_lfs_endpoint_approvals_d20616d7" formatted="false">"모든 LFS 엔드포인트 승인을 재설정할까요?"</string>
+    <string name="ui_reset_all_lfs_endpoint_approvals_e6d5c6c6" formatted="false">"모든 LFS 엔드포인트 승인 재설정"</string>
+    <string name="ui_reset_all_ssh_server_trust_3b8a05a5" formatted="false">"모든 SSH 서버 신뢰 재설정"</string>
+    <string name="ui_reset_all_ssh_server_trust_4917ea5f" formatted="false">"모든 SSH 서버 신뢰를 재설정할까요?"</string>
+    <string name="ui_reset_approvals_79eec91d" formatted="false">"승인 재설정"</string>
+    <string name="ui_reset_trust_b9be3a3c" formatted="false">"신뢰 재설정"</string>
+    <string name="ui_resolve_1_s_94accfee">"%1$s 해결"</string>
+    <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"해결하고 스테이징"</string>
+    <string name="ui_resolve_conflict_ff598c8a" formatted="false">"갈등 해결"</string>
+    <string name="ui_resolved_5be3c2c8" formatted="false">"해결됨"</string>
+    <string name="ui_resolved_contents_55ceff37" formatted="false">"해결된 내용"</string>
+    <string name="ui_resolved_fea6a678" formatted="false">"해결됨"</string>
+    <string name="ui_retry_942087cc" formatted="false">"다시 시도"</string>
+    <string name="ui_retry_e464c660" formatted="false">"다시 시도"</string>
+    <string name="ui_return_to_repositories_c97a4463" formatted="false">"저장소로 돌아가기"</string>
+    <string name="ui_revert_all_changes_06b0eb3d" formatted="false">"모든 변경사항 되돌리기"</string>
+    <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  모든 변경사항 되돌리기"</string>
+    <string name="ui_revert_c8d62872" formatted="false">"↩  되돌리기"</string>
+    <string name="ui_revert_changes_5b36e77f" formatted="false">"변경사항 되돌리기"</string>
+    <string name="ui_review_restored_folder_66729a70" formatted="false">"복원된 폴더 검토"</string>
+    <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"리포지토리에 허용한 별도의 LFS 서버를 검토하세요. 승인을 취소하면 해당 방향의 향후 전송이 중지되지만 이미 진행 중인 작업은 완료될 수 있습니다."</string>
+    <string name="ui_revoke_87e6d00b" formatted="false">"승인 취소"</string>
+    <string name="ui_save_1509f561" formatted="false">"저장"</string>
+    <string name="ui_save_author_1c24b32a" formatted="false">"작성자 저장"</string>
+    <string name="ui_save_c210bfdf" formatted="false">"저장"</string>
+    <string name="ui_save_changes_to_1_s_4cb0cf65">"%1$s의 변경 사항을 저장할까요?"</string>
+    <string name="ui_save_connection_df24ef12" formatted="false">"연결 저장"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"저장된 자격 증명은 이 기기에서 암호화되며 이 저장소의 HTTPS 주소에만 사용됩니다."</string>
+    <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"저장하면 가져오기와 푸시에 모두 이 주소를 사용합니다. 이후 가져오기를 실행하여 원격 상태를 새로고침하세요."</string>
+    <string name="ui_scan_a_device_folder_995756f2" formatted="false">"기기 폴더 검색"</string>
+    <string name="ui_scan_app_folders_12ed3a77" formatted="false">"앱 폴더 검색"</string>
+    <string name="ui_search_repositories_243865a1" formatted="false">"리포지토리 검색…"</string>
+    <string name="ui_select_repository_64bd6444" formatted="false">"저장소 선택"</string>
+    <string name="ui_selected_folder_0cf59bef" formatted="false">"선택한 폴더"</string>
+    <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"별도 사용자 이름 및 토큰"</string>
+    <string name="ui_settings_02f6ea12" formatted="false">"설정"</string>
+    <string name="ui_share_backup_archive_ee4ba873" formatted="false">"백업 압축 파일 공유"</string>
+    <string name="ui_share_visible_4fcf9b94" formatted="false">"표시된 기록 공유"</string>
+    <string name="ui_show_debug_information_6e8abf80" formatted="false">"디버그 정보 표시"</string>
+    <string name="ui_sign_in_75606a00" formatted="false">"로그인"</string>
+    <string name="ui_sign_out_0b184bc5" formatted="false">"로그아웃"</string>
+    <string name="ui_skip_current_commit_370b7166" formatted="false">"현재 커밋 건너뛰기…"</string>
+    <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"일부 진단을 읽거나 저장하지 못했습니다. 기존 데이터는 보존되었습니다. 로그를 지우면 기록을 다시 시작할 수 있습니다."</string>
+    <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH 개인 키"</string>
+    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH 서버 신뢰 설정"</string>
+    <string name="ui_stage_all_d1ce47c8" formatted="false">"모든 변경 사항 스테이징"</string>
+    <string name="ui_stage_de838855" formatted="false">"스테이지"</string>
+    <string name="ui_stash_message_optional_7b463cf6" formatted="false">"저장 메시지(선택 사항) …"</string>
+    <string name="ui_switch_39921a74" formatted="false">"전환"</string>
+    <string name="ui_switch_to_branch_278b039a" formatted="false">"브랜치로 전환"</string>
+    <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
+    <string name="ui_tag_name_e_g_v1_0_0_16aa5a68" formatted="false">"tag-name (e.g. v1.0.0)"</string>
+    <string name="ui_tags_1331275b" formatted="false">"태그"</string>
+    <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"사용 중인 대상은 그대로 유지됩니다. GitSync.md는 보관한 원본에 이후 편집 내용이 없는지 확인한 후 해당 파일과 Git 기록을 영구적으로 삭제합니다."</string>
+    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"암호화된 연결은 원래 저장소 주소에만 재사용됩니다. 다른 주소를 사용하려면 인증 방법을 명시적으로 변경하세요."</string>
+    <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"이전 GitHub 계정의 연결이 끊어졌습니다. 연결된 계정을 선택하거나 다른 인증 방법을 선택하세요."</string>
+    <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"재적용되는 로컬 커밋이 이 파일을 삭제합니다."</string>
+    <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"검토 정보가 변경되었습니다. 취소하고 서버 잠금을 새로고침하세요."</string>
+    <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"검색이 깊이 또는 폴더 수 제한에 도달했습니다. 일부 폴더는 검색하지 않았습니다."</string>
+    <string name="ui_theirs_691ef727" formatted="false">"원격 버전"</string>
+    <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">": 이 작업은 되돌릴 수 없습니다."</string>
+    <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"이 작업은 .gitattributes를 변경합니다. 변경 사항을 스테이징할 때까지 파일과 인덱스는 그대로 유지됩니다."</string>
+    <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"다른 연결의 잠금을 제거합니다. 계속하기 전에 소유자와 조율하세요."</string>
+    <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"인증 방법을 다시 선택할 때까지 이 저장소는 공개 액세스를 사용합니다. 로그인한 GitHub 계정은 이 저장소에 사용되지 않습니다. 가져오기 및 푸시 주소는 그대로 유지됩니다."</string>
+    <string name="ui_token_or_password_d6e43f8a" formatted="false">"토큰 또는 비밀번호"</string>
+    <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"선택한 파일을 LFS로 추적"</string>
+    <string name="ui_tracked_objects_a265fdb0" formatted="false">"추적 중인 객체"</string>
+    <string name="ui_tracking_review_8d316853" formatted="false">"추적 방식 검토"</string>
+    <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"신뢰하는 서버 지문은 이 기기에 저장됩니다. 서버를 잊으면 다음 연결 시 확인이 필요합니다. 리포지토리 개인 키는 계속 저장됩니다."</string>
+    <string name="ui_unable_to_open_file_2787a028" formatted="false">"파일을 열 수 없음"</string>
+    <string name="ui_unstage_033f86f9" formatted="false">"스테이지 해제"</string>
+    <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"이 작업 사본의 주소나 인증 방법을 변경합니다. 로컬 파일, 커밋 및 스테이징된 변경 사항은 그대로 유지됩니다."</string>
+    <string name="ui_upstream_94adc696" formatted="false">"업스트림"</string>
+    <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"업스트림에서 이 파일을 삭제했습니다."</string>
+    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"github.com의 HTTPS 주소를 사용하세요. 저장소를 탐색하는 계정을 바꿔도 복제본은 선택한 계정을 유지합니다."</string>
+    <string name="ui_use_app_storage_d199e8e0" formatted="false">"앱 저장 공간 사용"</string>
+    <string name="ui_use_for_browsing_f4b0d6df" formatted="false">"탐색에 사용"</string>
+    <string name="ui_use_for_new_clones_be174c95" formatted="false">"새 클론에 사용"</string>
+    <string name="ui_use_ours_4bec9877" formatted="false">"저희 제품을 사용하세요"</string>
+    <string name="ui_use_saved_connection_21052734" formatted="false">"저장된 연결 사용"</string>
+    <string name="ui_use_saved_default_3bb7260d" formatted="false">"저장된 기본값 사용"</string>
+    <string name="ui_use_saved_endpoint_credentials_2f2000f7" formatted="false">"저장된 엔드포인트 인증 정보 사용"</string>
+    <string name="ui_use_theirs_352c4272" formatted="false">"그들의 것을 사용하세요"</string>
+    <string name="ui_username_e3b89e9d" formatted="false">"사용자 이름"</string>
+    <string name="ui_username_token_7375b2ff" formatted="false">"사용자 이름 + 토큰"</string>
+    <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"리포지토리 소유자에게 이 주소를 확인하세요. 승인은 이 기기에서 이 리포지토리, Git 원격, LFS 엔드포인트 및 전송 방향에만 적용됩니다."</string>
+    <string name="ui_version_dd167905" formatted="false">"버전"</string>
+    <string name="ui_warning_e981ddae" formatted="false">"경고"</string>
+    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"백업이 없으면 로컬 Git 기록이 영구적으로 삭제됩니다. 이 작업은 되돌릴 수 없습니다."</string>
+    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"작업 파일은 그대로 유지됩니다. 로컬 브랜치, 커밋, 스태시, 원격 저장소와 기록은 이 폴더에서 연결 해제됩니다."</string>
+    <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"편집 내용이 저장되지 않았습니다."</string>
+    <string name="ui_your_git_sign_in_is_not_shared_with_this_s_8fbab830" formatted="false">"Git 로그인 정보는 이 서버와 공유되지 않습니다. 별도 엔드포인트 인증 정보는 이 기기에서 암호화됩니다. 설정 → LFS 엔드포인트 승인에서 관리하거나 취소하세요."</string>
+    <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"제출하지 않은 텍스트는 버려집니다. 작업 파일은 변경되지 않습니다."</string>
+    <string name="untracked" formatted="false">"추적 안 됨"</string>
+    <string name="upstream_body" formatted="false">"이 로컬 브랜치의 동기화 대상을 설정합니다. 파일, 커밋, 저장된 연결은 변경되지 않습니다."</string>
+    <string name="upstream_branch" formatted="false">"브랜치"</string>
+    <string name="upstream_local_branch">"로컬 브랜치: %1$s"</string>
+    <string name="upstream_remote" formatted="false">"원격 저장소"</string>
+    <string name="upstream_title" formatted="false">"추적 브랜치"</string>
+    <string name="upstream_unavailable" formatted="false">"원격 저장소가 설정된 로컬 브랜치를 선택하고 진행 중인 Git 작업을 먼저 완료하세요."</string>
+    <plurals name="discard_review_files">
+        <item quantity="one">"파일 %1$d개"</item>
+        <item quantity="other">"파일 %1$d개"</item>
+    </plurals>
+    <plurals name="lfs_downloaded_objects">
+        <item quantity="one">"객체 %1$d개를 다운로드했습니다."</item>
+        <item quantity="other">"객체 %1$d개를 다운로드했습니다."</item>
+    </plurals>
+    <plurals name="lfs_extensions_affected">
+        <item quantity="one">"현재 파일 %1$d개는 스테이징하면 LFS를 사용합니다"</item>
+        <item quantity="other">"현재 파일 %1$d개는 스테이징하면 LFS를 사용합니다"</item>
+    </plurals>
+    <plurals name="lfs_extensions_more">
+        <item quantity="one">"현재 파일이 %1$d개 더 있습니다. 커밋하기 전에 Git 변경 사항을 검토하세요."</item>
+        <item quantity="other">"현재 파일이 %1$d개 더 있습니다. 커밋하기 전에 Git 변경 사항을 검토하세요."</item>
+    </plurals>
+    <plurals name="lfs_extensions_retained">
+        <item quantity="one">"현재 파일 %1$d개는 명시적으로 선택한 추적 설정을 유지합니다."</item>
+        <item quantity="other">"현재 파일 %1$d개는 명시적으로 선택한 추적 설정을 유지합니다."</item>
+    </plurals>
+    <plurals name="lfs_restored_files">
+        <item quantity="one">"파일 %1$d개를 복원했습니다."</item>
+        <item quantity="other">"파일 %1$d개를 복원했습니다."</item>
+    </plurals>
+    <plurals name="lfs_tracking_files">
+        <item quantity="one">"파일 %1$d개"</item>
+        <item quantity="other">"파일 %1$d개"</item>
+    </plurals>
+    <plurals name="rebase_additional_blocked_paths">
+        <item quantity="one">"추가로 차단된 경로 %1$d개가 표시되지 않습니다."</item>
+        <item quantity="other">"추가로 차단된 경로 %1$d개가 표시되지 않습니다."</item>
+    </plurals>
+    <plurals name="rebase_local_commits">
+        <item quantity="one">"로컬 커밋 %1$d개"</item>
+        <item quantity="other">"로컬 커밋 %1$d개"</item>
+    </plurals>
+    <plurals name="rebase_upstream_commits">
+        <item quantity="one">"업스트림 커밋 %1$d개"</item>
+        <item quantity="other">"업스트림 커밋 %1$d개"</item>
+    </plurals>
+    <plurals name="repository_picker_count">
+        <item quantity="one">"· 리포지토리 %1$d개"</item>
+        <item quantity="other">"· 리포지토리 %1$d개"</item>
+    </plurals>
+    <plurals name="tide_git_conflicts_to_resolve">
+        <item quantity="one">"해결할 충돌 %1$d개"</item>
+        <item quantity="other">"해결할 충돌 %1$d개"</item>
+    </plurals>
+    <plurals name="tide_git_files_staged">
+        <item quantity="one">"파일 %1$d개 스테이징됨"</item>
+        <item quantity="other">"파일 %1$d개 스테이징됨"</item>
+    </plurals>
+    <plurals name="tide_git_headline_commit">
+        <item quantity="one">"파일 %1$d개 커밋"</item>
+        <item quantity="other">"파일 %1$d개 커밋"</item>
+    </plurals>
+    <plurals name="tide_home_headline_attention">
+        <item quantity="one">"보관함 %1$d개에\n확인이 필요합니다."</item>
+        <item quantity="other">"보관함 %1$d개에\n확인이 필요합니다."</item>
+    </plurals>
+    <plurals name="tide_home_headline_ready">
+        <item quantity="one">"이 휴대전화에\n보관함 %1$d개가 있습니다."</item>
+        <item quantity="other">"이 휴대전화에\n보관함 %1$d개가 있습니다."</item>
+    </plurals>
+    <plurals name="tide_home_start_github_count">
+        <item quantity="one">"사용 가능한 저장소 %1$d개"</item>
+        <item quantity="other">"사용 가능한 저장소 %1$d개"</item>
+    </plurals>
+    <plurals name="tide_vault_changes_on_phone">
+        <item quantity="one">"이 휴대전화의 변경 사항"</item>
+        <item quantity="other">"이 휴대전화의 변경 사항"</item>
+    </plurals>
+    <plurals name="tide_vault_conflicts_to_resolve">
+        <item quantity="one">"해결할 충돌"</item>
+        <item quantity="other">"해결할 충돌"</item>
+    </plurals>
+</resources>

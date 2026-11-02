@@ -1,0 +1,91 @@
+{
+  "app_id": 4897662,
+  "fixture": "CodyBontecou/gitsync-android-push-check-20261102",
+  "deliveries": [
+    {
+      "id": "3851807202285191168",
+      "guid": "d4540f56-d6d9-11f1-9d14-01685f200680",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:38:20.296Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": true,
+      "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    },
+    {
+      "id": "3851806882886885376",
+      "guid": "d4540f56-d6d9-11f1-9d14-01685f200680",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:35:51.585Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": true,
+      "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    },
+    {
+      "id": "3851806715158740992",
+      "guid": "d4540f56-d6d9-11f1-9d14-01685f200680",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:34:33.472Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": true,
+      "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    },
+    {
+      "id": "3851806416541065216",
+      "guid": "d4540f56-d6d9-11f1-9d14-01685f200680",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:32:14.413Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": true,
+      "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    },
+    {
+      "id": "3851805826308120576",
+      "guid": "d4540f56-d6d9-11f1-9d14-01685f200680",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:27:39.575Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": true,
+      "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    },
+    {
+      "id": "3851805374264918016",
+      "guid": "d4540f56-d6d9-11f1-9d14-01685f200680",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:24:09.04Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": false,
+      "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    },
+    {
+      "id": "3851805011757498368",
+      "guid": "6fc22c4e-d6d9-11f1-959b-1a4a22a861f0",
+      "event": "push",
+      "delivered_at": "2026-11-02T16:21:20.248Z",
+      "status": "OK",
+      "status_code": 200,
+      "redelivery": false,
+      "head": "47d94ab58ca8a56b03345d7f0df4ceda4e60410c",
+      "ref": "refs/heads/main",
+      "response_status": 200
+    }
+  ],
+  "read_only": true
+}

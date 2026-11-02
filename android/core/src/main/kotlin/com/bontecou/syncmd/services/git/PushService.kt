@@ -30,29 +30,11 @@ class PushService(
         config: PushConfig
     ): Result<Unit> {
         return try {
-            // Get ahead/behind counts
-            val (aheadCount, behindCount) = remoteRepository.getAheadBehindCounts(
-                repository,
-                config.branch,
-                config.remote
+            // Cached tracking refs can be stale or absent (new branches). Let the
+            // remote validate the explicit refspec and return its acknowledgement.
+            remoteRepository.push(
+                repository, config.branch, config.remote, config.actualRemoteBranch, config.forcePush
             )
-
-            // Check if there are commits to push
-            if (aheadCount == 0) {
-                Result.failure(Exception("No commits to push"))
-            } else if (behindCount > 0 && !config.forcePush) {
-                // Check if remote has commits we don't have (unless force pushing)
-                Result.failure(Exception("Local branch is behind remote. Fetch first or use force push."))
-            } else {
-                // Execute push
-                remoteRepository.push(
-                    repository,
-                    config.branch,
-                    config.remote,
-                    config.actualRemoteBranch,
-                    config.forcePush
-                )
-            }
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -119,6 +101,9 @@ class PushService(
         }
     }
 
+    suspend fun pushTag(repository: String, name: String, remote: String = "origin"): Result<Unit> =
+        remoteRepository.pushTag(repository, name, remote)
+
     /**
      * Push tags to remote
      */
@@ -133,8 +118,7 @@ class PushService(
             if (tags.isEmpty()) {
                 Result.failure(Exception("No tags to push"))
             } else {
-                remoteRepository.pushTags(repository, remote)
-                Result.success(tags.size)
+                remoteRepository.pushTags(repository, remote).map { tags.size }
             }
         } catch (e: Exception) {
             Result.failure(e)

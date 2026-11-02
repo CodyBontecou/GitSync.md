@@ -76,6 +76,9 @@ class ConflictService(private val conflictRepository: ConflictRepository) {
         return conflictRepository.resolveConflict(repoPath, filePath, strategy, customContent)
     }
 
+    suspend fun resolveConflictWithPath(repoPath: String, filePath: String, keepPath: String, content: String): Result<ConflictResolution> =
+        conflictRepository.resolveConflictWithPath(repoPath, filePath, keepPath, content)
+
     /**
      * Mark all conflicts as resolved
      */

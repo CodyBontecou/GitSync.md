@@ -3,6 +3,7 @@ package com.bontecou.syncmd.ui.theme
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
@@ -11,66 +12,73 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 
-// ─── Shapes — zero corner radius everywhere (brutalist) ─────────────────────
-private val BrutalShapes = Shapes(
-    extraSmall = RoundedCornerShape(0.dp),
-    small      = RoundedCornerShape(0.dp),
-    medium     = RoundedCornerShape(0.dp),
-    large      = RoundedCornerShape(0.dp),
-    extraLarge = RoundedCornerShape(0.dp),
+// ─── Shapes — Tide rounds everything: fields 18, cards 22, sheets 28+ ───────
+private val TideShapes = Shapes(
+    extraSmall = RoundedCornerShape(8.dp),
+    small      = RoundedCornerShape(12.dp),
+    medium     = RoundedCornerShape(18.dp),
+    large      = RoundedCornerShape(22.dp),
+    extraLarge = RoundedCornerShape(28.dp),
 )
 
-// ─── Color schemes ───────────────────────────────────────────────────────────
-private val BrutalLightColorScheme = lightColorScheme(
-    primary              = BrutalAccentLight,
-    onPrimary            = Color.White,
-    primaryContainer     = Color(0x1A007AFF),
-    onPrimaryContainer   = BrutalAccentLight,
-    secondary            = BrutalTextLight,
-    onSecondary          = BrutalBgLight,
-    secondaryContainer   = BrutalSurfaceLight,
-    onSecondaryContainer = BrutalTextLight,
-    background           = BrutalBgLight,
-    onBackground         = BrutalTextLight,
-    surface              = BrutalBgLight,
-    onSurface            = BrutalTextLight,
-    surfaceVariant       = BrutalSurfaceLight,
-    onSurfaceVariant     = BrutalTextMidLight,
-    outline              = BrutalBorderLight,
-    outlineVariant       = BrutalBorderSoftLight,
-    error                = BrutalErrorLight,
-    onError              = Color.White,
-    errorContainer       = Color(0x1AD70015),
-    onErrorContainer     = BrutalErrorLight,
-)
+/**
+ * Material components (dialogs, text fields, switches, menus) draw from this
+ * scheme, so it is Tide underneath: ink is primary, paper the ground, cards
+ * the raised surfaces, remote blue secondary and synced green tertiary.
+ */
+private fun TideColors.materialScheme(): ColorScheme {
+    val base = if (isDark) darkColorScheme() else lightColorScheme()
+    return base.copy(
+        primary = ink,
+        onPrimary = paper,
+        primaryContainer = well,
+        onPrimaryContainer = ink,
+        inversePrimary = paper,
+        secondary = behind,
+        onSecondary = Color.White,
+        secondaryContainer = behind.copy(alpha = 0.12f),
+        onSecondaryContainer = behind,
+        tertiary = synced,
+        onTertiary = Color.White,
+        tertiaryContainer = synced.copy(alpha = 0.12f),
+        onTertiaryContainer = synced,
+        background = paper,
+        onBackground = ink,
+        surface = paper,
+        onSurface = ink,
+        surfaceVariant = well,
+        onSurfaceVariant = inkMid,
+        surfaceTint = Color.Transparent,
+        inverseSurface = heroBg,
+        inverseOnSurface = heroText,
+        outline = lineSoft,
+        outlineVariant = line,
+        scrim = Color(0xFF111113),
+        error = danger,
+        onError = Color.White,
+        errorContainer = danger.copy(alpha = 0.12f),
+        onErrorContainer = danger,
+    )
+}
 
-private val BrutalDarkColorScheme = darkColorScheme(
-    primary              = BrutalAccentDark,
-    onPrimary            = Color.Black,
-    primaryContainer     = Color(0x1A0A84FF),
-    onPrimaryContainer   = BrutalAccentDark,
-    secondary            = BrutalTextDark,
-    onSecondary          = BrutalBgDark,
-    secondaryContainer   = BrutalSurfaceDark,
-    onSecondaryContainer = BrutalTextDark,
-    background           = BrutalBgDark,
-    onBackground         = BrutalTextDark,
-    surface              = BrutalBgDark,
-    onSurface            = BrutalTextDark,
-    surfaceVariant       = BrutalSurfaceDark,
-    onSurfaceVariant     = BrutalTextMidDark,
-    outline              = BrutalBorderDark,
-    outlineVariant       = BrutalBorderSoftDark,
-    error                = BrutalErrorDark,
-    onError              = Color.Black,
-    errorContainer       = Color(0x1AFF453A),
-    onErrorContainer     = BrutalErrorDark,
+/** The legacy B* palette, rendered in Tide (matches iOS BrutalDesignSystem.swift). */
+private fun TideColors.brutal() = BrutalColors(
+    bg = paper,
+    surface = well,
+    border = line,
+    borderSoft = lineSoft,
+    text = ink,
+    textMid = inkMid,
+    textFaint = inkFaint,
+    accent = behind,
+    error = danger,
+    success = synced,
+    warning = ahead,
 )
 
 @Composable
@@ -78,53 +86,29 @@ fun SyncMdTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) BrutalDarkColorScheme else BrutalLightColorScheme
-
-    // Build the BrutalColors object for the current theme
-    val brutalColors = if (darkTheme) {
-        BrutalColors(
-            bg          = BrutalBgDark,
-            surface     = BrutalSurfaceDark,
-            border      = BrutalBorderDark,
-            borderSoft  = BrutalBorderSoftDark,
-            text        = BrutalTextDark,
-            textMid     = BrutalTextMidDark,
-            textFaint   = BrutalTextFaintDark,
-            accent      = BrutalAccentDark,
-            error       = BrutalErrorDark,
-            success     = BrutalSuccessDark,
-            warning     = BrutalWarningDark,
-        )
-    } else {
-        BrutalColors(
-            bg          = BrutalBgLight,
-            surface     = BrutalSurfaceLight,
-            border      = BrutalBorderLight,
-            borderSoft  = BrutalBorderSoftLight,
-            text        = BrutalTextLight,
-            textMid     = BrutalTextMidLight,
-            textFaint   = BrutalTextFaintLight,
-            accent      = BrutalAccentLight,
-            error       = BrutalErrorLight,
-            success     = BrutalSuccessLight,
-            warning     = BrutalWarningLight,
-        )
-    }
+    val tide = if (darkTheme) TideDark else TideLight
 
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            window.statusBarColor = tide.paper.toArgb()
+            window.navigationBarColor = tide.paper.toArgb()
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
+            }
         }
     }
 
-    CompositionLocalProvider(LocalBrutalColors provides brutalColors) {
+    CompositionLocalProvider(
+        LocalTideColors provides tide,
+        LocalBrutalColors provides tide.brutal(),
+    ) {
         MaterialTheme(
-            colorScheme = colorScheme,
+            colorScheme = tide.materialScheme(),
             typography  = Typography,
-            shapes      = BrutalShapes,
+            shapes      = TideShapes,
             content     = content,
         )
     }

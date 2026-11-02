@@ -24,6 +24,31 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
+    @Provides
+    @Singleton
+    fun provideRepositoryCallbacks(runner: com.bontecou.syncmd.services.automation.RepositoryActionRunner,
+        auth: com.bontecou.syncmd.services.github.GitHubAuthManager,
+        credentials: com.bontecou.syncmd.security.RepositoryCredentialStore,
+        @dagger.hilt.android.qualifiers.ApplicationContext context: android.content.Context) =
+        com.bontecou.syncmd.services.automation.RepositoryCallbackRunner(runner,
+            com.bontecou.syncmd.automation.PullAllCatalog(context)::snapshot,
+            { path -> com.bontecou.syncmd.automation.RepositoryShortcutService.accountBinding(path, auth, credentials) })
+
+    @Provides
+    @Singleton
+    fun provideRepositoryActions(diff: DiffRepository, pull: PullRepository, remote: RemoteRepository,
+        authors: com.bontecou.syncmd.security.RepositoryAuthors,
+        auth: com.bontecou.syncmd.services.github.GitHubAuthManager,
+        credentials: com.bontecou.syncmd.security.RepositoryCredentialStore,
+        @dagger.hilt.android.qualifiers.ApplicationContext context: android.content.Context) =
+        com.bontecou.syncmd.services.automation.RepositoryActionRunner(diff, pull, remote, authors::resolve,
+            com.bontecou.syncmd.automation.PullAllCatalog(context)::requireCurrent,
+            { auth.defaultToken() }, { path, url -> auth.repositoryCredentials(path, url, credentials) }, credentials::recordVersion)
+
+    @Provides
+    @Singleton
+    fun provideGitHubClient(): com.bontecou.syncmd.services.github.GitHubClient = com.bontecou.syncmd.services.github.GitHubApiService
+
 
     @Provides
     @Singleton

@@ -5,7 +5,11 @@ package com.bontecou.syncmd.data.models
  */
 data class GitStatusEntry(
     val filePath: String,
-    val kind: GitFileStatusKind
+    val kind: GitFileStatusKind,
+    val hasStagedChanges: Boolean = kind == GitFileStatusKind.STAGED,
+    val hasUnstagedChanges: Boolean = kind != GitFileStatusKind.STAGED,
+    val isDeleted: Boolean = false,
+    val isConflicted: Boolean = false,
 )
 
 /**
@@ -21,8 +25,12 @@ enum class GitFileStatusKind {
  * Represents credentials for git operations (clone, push, etc.)
  */
 sealed class Credentials {
+    object None : Credentials()
     data class Pat(val token: String) : Credentials()
     data class Basic(val username: String, val password: String) : Credentials()
+    data class Ssh(val privateKey: String, val passphrase: String = "", val publicKey: String = "") : Credentials() {
+        override fun toString() = "SSH credentials (redacted)"
+    }
 }
 
 /**

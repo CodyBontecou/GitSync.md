@@ -1,0 +1,1221 @@
+<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<resources>
+    <string name="account_removal_subject" formatted="false">"此帳號"</string>
+    <string name="background_active" formatted="false">"已為納入的儲存庫安排背景檢查。"</string>
+    <string name="background_allow_push" formatted="false">"允許自動發佈"</string>
+    <string name="background_attempt">"上次檢查：%1$s"</string>
+    <string name="background_attention" formatted="false">"需要檢查。請開啟儲存庫，處理本機變更、歷史分歧、缺少上游分支或等待上傳的已儲存提交。"</string>
+    <string name="background_binding">"僅限追蹤 %2$s/%3$s 的 %1$s 分支。分支、資料夾、連線或帳號變更後需要重新檢查。"</string>
+    <string name="background_changed" formatted="false">"資料夾、分支或連線已變更。請重新檢查。"</string>
+    <string name="background_current" formatted="false">"已是最新"</string>
+    <string name="background_empty" formatted="false">"尚未註冊本機儲存庫。"</string>
+    <string name="background_error" formatted="false">"無法完成此操作。請重新載入並檢查目前的儲存庫與設定。"</string>
+    <string name="background_exclude" formatted="false">"從背景同步排除"</string>
+    <string name="background_excluded" formatted="false">"排除"</string>
+    <string name="background_failed" formatted="false">"連線、身分驗證、信任或檔案存取需要處理。請開啟儲存庫並在該處重試。"</string>
+    <string name="background_forget" formatted="false">"移除已儲存的原則"</string>
+    <string name="background_inactive" formatted="false">"背景檢查已關閉。請啟用一種模式並納入至少一個儲存庫。"</string>
+    <string name="background_include" formatted="false">"納入此儲存庫"</string>
+    <string name="background_included" formatted="false">"已納入"</string>
+    <string name="background_never" formatted="false">"尚未檢查"</string>
+    <string name="background_open" formatted="false">"開啟儲存庫"</string>
+    <string name="background_power" formatted="false">"僅外部電源供電"</string>
+    <string name="background_pull" formatted="false">"自動提取遠端變更"</string>
+    <string name="background_push" formatted="false">"自動提交並推送本機變更"</string>
+    <string name="background_push_confirm" formatted="false">"允許自動發佈？"</string>
+    <string name="background_push_detail" formatted="false">"GitSync.md 可以暫存本機變更，使用各儲存庫的作者身分建立提交，並為已納入的儲存庫上傳至檢查過的分支。它絕不會強制推送、合併已分歧的歷史或切換分支。關閉後會停止後續步驟；已完成的提交和上傳會保留。"</string>
+    <string name="background_queued" formatted="false">"已要求檢查。正在等待 Android 與連線。"</string>
+    <string name="background_reload" formatted="false">"重新載入"</string>
+    <string name="background_reset" formatted="false">"重設背景同步設定"</string>
+    <string name="background_reset_detail" formatted="false">"無法讀取的背景同步設定不能授權工作。重設只會移除其已儲存的原則和狀態，並關閉兩種自動模式。儲存庫檔案、帳號及其他同步功能都會保留。請在重新納入前檢查每個儲存庫。"</string>
+    <string name="background_review" formatted="false">"檢查並納入"</string>
+    <string name="background_review_again" formatted="false">"檢查設定"</string>
+    <string name="background_run" formatted="false">"立即檢查"</string>
+    <string name="background_running" formatted="false">"正在檢查儲存庫…"</string>
+    <string name="background_schedule" formatted="false">"Android 會根據連線、電池與系統限制，大約每15分鐘或更晚安排檢查。「立即檢查」會要求提早檢查。強制停止應用程式後，背景工作會暫停，直到再次開啟應用程式。"</string>
+    <string name="background_scope" formatted="false">"請先檢查儲存庫的目前分支與連線，再將其納入。自動提取會取得變更，並在安全時執行快轉。自動推送會根據本機變更建立提交並上傳。歷史分歧、有本機編輯時收到的變更，以及連線變更都需要檢查。"</string>
+    <string name="background_stop" formatted="false">"停止檢查"</string>
+    <string name="background_stopped" formatted="false">"檢查已停止"</string>
+    <string name="background_title" formatted="false">"背景同步"</string>
+    <string name="background_transfer">"上次傳輸：%1$s"</string>
+    <string name="background_unavailable" formatted="false">"此工作複本已取消註冊。請重新連線並再次檢查其原則。"</string>
+    <string name="background_updated" formatted="false">"變更已同步"</string>
+    <string name="background_wait_network" formatted="false">"正在等待網際網路連線"</string>
+    <string name="background_wait_power" formatted="false">"正在等待外部電源"</string>
+    <string name="background_wait_wifi" formatted="false">"正在等待 Wi-Fi"</string>
+    <string name="background_wifi" formatted="false">"僅支援 Wi-Fi"</string>
+    <string name="background_wrong_branch" formatted="false">"工作複本位於其他分支。請切回原分支或重新檢查。"</string>
+    <string name="branch_screen" formatted="false">"分支"</string>
+    <string name="callback_action" formatted="false">"要求的操作"</string>
+    <string name="callback_authorized_scope" formatted="false">"授權連結會直接執行已儲存的操作，無需再次確認。已變更或撤銷的連結會在此停止。請在「儲存庫操作」→「已授權的連結」中管理權限。"</string>
+    <string name="callback_auto_return" formatted="false">"本次執行後自動返回"</string>
+    <string name="callback_background_attention" formatted="false">"此回呼需要處理。請在「儲存庫操作」中檢視已儲存的結果。點一下可傳回可用的結果。"</string>
+    <string name="callback_background_busy" formatted="false">"已有其他操作正在執行。此回呼未執行。請在該操作完成後再次使用連結。"</string>
+    <string name="callback_background_channel" formatted="false">"已授權的回呼操作"</string>
+    <string name="callback_background_complete" formatted="false">"回呼已完成。點一下以將結果傳回給已核准的呼叫 App。"</string>
+    <string name="callback_background_complete_no_return" formatted="false">"回呼已完成。開啟「儲存庫操作」以查看已儲存的結果。"</string>
+    <string name="callback_background_consent" formatted="false">"每次使用此連結都會執行一次操作，無需開啟 GitSync.md，並使用已檢查的儲存庫、分支和已儲存的連線／帳號。結果會儲存在「儲存庫操作」中。允許通知時，可點一下完成通知，將結果傳回給已核准的呼叫 App。此模式不支援自動返回。程序中斷後，請檢查儲存庫並再次使用連結；中斷的操作絕不會自動重新啟動。"</string>
+    <string name="callback_background_results_unavailable" formatted="false">"無法讀取已儲存的回呼結果。授權仍個別保留。清除結果也會清除主畫面捷徑的結果。"</string>
+    <string name="callback_background_return_expired" formatted="false">"此回呼結果無法使用或其授權已變更。請先檢查「儲存庫操作」，再使用此連結。"</string>
+    <string name="callback_background_running" formatted="false">"已授權的回呼正在執行"</string>
+    <string name="callback_busy" formatted="false">"此請求開啟期間收到了另一個請求。該請求未排入佇列，也未執行。請先完成或關閉此請求，再開啟其他請求。"</string>
+    <string name="callback_cancel" formatted="false">"取消請求"</string>
+    <string name="callback_choose" formatted="false">"有多個同名資料夾。請選擇目標工作複本。"</string>
+    <string name="callback_close" formatted="false">"關閉"</string>
+    <string name="callback_connection" formatted="false">"使用此儲存庫已儲存的連線、帳號和作者設定。如果已確認的分支或連線發生變更，此請求將停止。"</string>
+    <string name="callback_copy_authorized" formatted="false">"授權並複製連結"</string>
+    <string name="callback_create_link" formatted="false">"建立已授權的自動化連結"</string>
+    <string name="callback_delivery_failed" formatted="false">"沒有 App 能開啟返回目標。結果會保留在此處。你可以再次嘗試返回，無需重複 Git 操作。"</string>
+    <string name="callback_destinations" formatted="false">"傳回目標"</string>
+    <string name="callback_error" formatted="false">"請求需要處理"</string>
+    <string name="callback_error_destination">"發生錯誤時：%1$s"</string>
+    <string name="callback_expired" formatted="false">"沒有有效的請求。重新啟動 GitSync.md 後，請開啟新的回呼連結並重新檢查。"</string>
+    <string name="callback_grant_consent" formatted="false">"任何持有此連結的人都可以在此儲存庫中使用完全相同的操作和提交訊息，無需再次確認，包括處理未來的本機變更。分支、連線、帳號和傳回目標保持固定。請將連結保密。你可以在「儲存庫操作」→「已授權的連結」中撤銷它。建立連結不會執行 Git。"</string>
+    <string name="callback_grant_disabled" formatted="false">"已撤銷"</string>
+    <string name="callback_grant_enabled" formatted="false">"已授權後續執行"</string>
+    <string name="callback_grant_forget" formatted="false">"移除已撤銷的連結"</string>
+    <string name="callback_grant_identity">"連結 %1$s · 建立於 %2$s"</string>
+    <string name="callback_grant_manage" formatted="false">"已授權的連結"</string>
+    <string name="callback_grant_refresh" formatted="false">"重新整理已授權的連結"</string>
+    <string name="callback_grant_reset" formatted="false">"重設連結授權"</string>
+    <string name="callback_grant_reset_scope" formatted="false">"移除所有已儲存的連結授權，包括無法讀取的記錄？現有的所有已授權連結都將失效。請從已檢閱的自動化要求建立新連結。儲存庫、檔案、帳號和主畫面捷徑將保留。"</string>
+    <string name="callback_grant_return" formatted="false">"自動將結果傳回已確認的目標"</string>
+    <string name="callback_grant_revoke" formatted="false">"撤銷連結授權"</string>
+    <string name="callback_grant_revoke_scope" formatted="false">"使用此連結的任何人都將失去執行此操作或自動傳回結果的權限。已交給 Git 的工作可能已完成。"</string>
+    <string name="callback_grant_unreadable" formatted="false">"無法讀取已授權的連結。已保留儲存的記錄，修復前無法執行。"</string>
+    <string name="callback_link_copied">"已複製已授權連結 %1$s。請將其保密，並貼到你的自動化流程中。其權杖之後無法復原；如有需要，請建立另一個連結。"</string>
+    <string name="callback_link_failed" formatted="false">"無法複製授權連結。請重新檢查儲存庫，並在重試前查看「已授權的連結」。"</string>
+    <string name="callback_no_destination" formatted="false">"未提供返回 URL。結果將保留在此處。"</string>
+    <string name="callback_preparing" formatted="false">"正在檢查本機儲存庫…"</string>
+    <string name="callback_result_branch">"分支：%1$s"</string>
+    <string name="callback_result_changes">"已變更的檔案：%1$s"</string>
+    <string name="callback_result_commit">"提交：%1$s"</string>
+    <string name="callback_result_pulled" formatted="false">"已拉取遠端變更。"</string>
+    <string name="callback_result_saved" formatted="false">"你的提交已儲存在本機，但尚未確認上傳。"</string>
+    <string name="callback_result_skipped" formatted="false">"沒有需要上傳的本機變更。"</string>
+    <string name="callback_return" formatted="false">"將結果傳回呼叫端 App"</string>
+    <string name="callback_return_scope" formatted="false">"傳回結果會開啟下方目標，並分享操作結果、分支和提交的識別碼。絕不會包含憑證和本機資料夾路徑。請在核准執行前選擇自動返回，或在執行後手動傳回結果。"</string>
+    <string name="callback_returned" formatted="false">"已將結果交給 Android。後續操作由接收 App 決定。"</string>
+    <string name="callback_run" formatted="false">"允許並執行一次"</string>
+    <string name="callback_running" formatted="false">"正在執行已核准的操作…"</string>
+    <string name="callback_scope" formatted="false">"另一個 App 或連結要求執行 Git 操作。允許本次單次執行前，請先檢查儲存庫和操作。"</string>
+    <string name="callback_success" formatted="false">"操作已完成"</string>
+    <string name="callback_success_destination">"成功時：%1$s"</string>
+    <string name="callback_title" formatted="false">"自動化請求"</string>
+    <string name="callback_unknown_action" formatted="false">"未知操作"</string>
+    <string name="clone_completed_title" formatted="false">"已剋隆"</string>
+    <string name="clone_lfs_attention" formatted="false">"複製已完成。部分 Git LFS 檔案仍需檢查或下載。複製內容和本機編輯均已保留。"</string>
+    <string name="clone_lfs_review" formatted="false">"檢查 Git LFS"</string>
+    <string name="clone_location_reconnect" formatted="false">"資料夾需要重新連結"</string>
+    <string name="clone_location_title" formatted="false">"複製位置"</string>
+    <string name="clone_recovery_added" formatted="false">"已新增複製的儲存庫"</string>
+    <string name="clone_recovery_cancel_failed" formatted="false">"無法關閉此複製作業復原記錄。請檢查 App 儲存空間後重試。其檔案已保留。"</string>
+    <string name="clone_recovery_cannot_dismiss" formatted="false">"這些復原資訊已變更或無法安全移除。請重新整理並再次檢查。"</string>
+    <string name="clone_recovery_confirm_body" formatted="false">"自動復原將停止。儲存庫資料夾和已儲存的連線會保留在此裝置上。你可以從「本機儲存庫」新增已完成的儲存庫。"</string>
+    <string name="clone_recovery_confirm_title" formatted="false">"關閉此複製作業復原記錄？"</string>
+    <string name="clone_recovery_damaged" formatted="false">"無法讀取這些復原資訊。你可以關閉此復原記錄，並手動重新連接已完成的資料夾。"</string>
+    <string name="clone_recovery_dismiss" formatted="false">"關閉復原記錄"</string>
+    <string name="clone_recovery_dismissed" formatted="false">"已關閉復原記錄。儲存庫檔案和已儲存的連線已保留。"</string>
+    <string name="clone_recovery_ready" formatted="false">"檢查資料夾和連線後，重試新增此複製作業。現有檔案會保留。"</string>
+    <string name="clone_recovery_refresh" formatted="false">"重新整理複製作業復原記錄"</string>
+    <string name="clone_recovery_retry" formatted="false">"重試新增複製作業"</string>
+    <string name="clone_recovery_review_needed" formatted="false">"部分中斷的複製作業需要在「本機儲存庫」中檢查。其檔案已保留。"</string>
+    <string name="clone_recovery_staging">"暫存複本：%1$s"</string>
+    <string name="clone_recovery_title" formatted="false">"中斷的複製作業"</string>
+    <string name="clone_recovery_unavailable" formatted="false">"複製作業復原無法使用。請檢查 App 儲存空間後重試。"</string>
+    <string name="clone_recovery_unreadable" formatted="false">"複製作業復原資訊無法讀取"</string>
+    <string name="clone_registration_failed" formatted="false">"無法新增已複製的儲存庫。檔案已保留。請重試新增，或從「本機儲存庫」重新連結其資料夾。"</string>
+    <string name="commit_screen" formatted="false">"提交"</string>
+    <string name="conflict_choose_filename" formatted="false">"選擇要保留的檔案名稱"</string>
+    <string name="conflict_current_deleted" formatted="false">"目前分支已刪除此檔案。選擇「本地版本」會移除它。"</string>
+    <string name="conflict_filename_cleanup" formatted="false">"解決此衝突並暫存時，將移除衝突中的其他檔案名稱。"</string>
+    <string name="conflict_incoming_deleted" formatted="false">"傳入分支已刪除此檔案。選擇「遠端版本」會移除它。"</string>
+    <string name="conflict_renamed_differently" formatted="false">"重新命名為不同名稱"</string>
+    <string name="connection_endpoint_count">"已儲存 %1$d 個與端點綁定的連線。編輯 origin 會保留其他連線；選擇公開存取會移除所有已儲存的憑證。"</string>
+    <string name="connection_keep_public_recovered" formatted="false">"保留公開存取 · 復原的憑證維持停用"</string>
+    <string name="connection_keep_saved" formatted="false">"保留已儲存的憑證"</string>
+    <string name="connection_migration_fetch" formatted="false">"擷取位址"</string>
+    <string name="connection_migration_push" formatted="false">"推送位址"</string>
+    <string name="connection_new_basic" formatted="false">"新使用者名稱和權杖"</string>
+    <string name="connection_public_access" formatted="false">"公開存取 · 無憑證"</string>
+    <string name="connection_url_credentials_body" formatted="false">"將支援的 HTTPS 憑證移入加密儲存空間，並從 Git 遠端 URL 中移除。分別設定的擷取和推送位址會保留。"</string>
+    <string name="connection_url_credentials_migrate" formatted="false">"將 URL 憑證移入安全儲存空間"</string>
+    <string name="connection_url_credentials_preserve" formatted="false">"現有的安全憑證及明確選擇的公開存取優先。URL 中的使用者名稱和權杖絕不會在此顯示。"</string>
+    <string name="connection_url_credentials_title" formatted="false">"遠端 URL 中的憑證"</string>
+    <string name="connection_use_alternative" formatted="false">"使用其他已儲存的憑證"</string>
+    <string name="diagnostics_action_failed" formatted="false">"無法完成此診斷操作。現有記錄已保留。"</string>
+    <string name="diagnostics_all" formatted="false">"全部"</string>
+    <string name="diagnostics_clear_entries">"將移除的記錄數：%1$d，包括篩選器隱藏的記錄。之後的新操作仍可新增記錄。"</string>
+    <string name="diagnostics_clear_recovery" formatted="false">"移除所有已儲存的診斷，包括無法讀取的資料。之後的新操作仍可新增記錄。"</string>
+    <string name="diagnostics_cleared" formatted="false">"已清空診斷日誌"</string>
+    <string name="diagnostics_copied" formatted="false">"已複製可見記錄"</string>
+    <string name="diagnostics_empty" formatted="false">"尚無診斷記錄。Git 操作將顯示於此。"</string>
+    <string name="diagnostics_errors" formatted="false">"錯誤"</string>
+    <string name="diagnostics_filtered_empty" formatted="false">"沒有符合此篩選條件的記錄。"</string>
+    <string name="diagnostics_operation_clone" formatted="false">"複製儲存庫"</string>
+    <string name="diagnostics_operation_conflict" formatted="false">"衝突"</string>
+    <string name="diagnostics_operation_fetch" formatted="false">"擷取"</string>
+    <string name="diagnostics_operation_lfs" formatted="false">"Git LFS"</string>
+    <string name="diagnostics_operation_push" formatted="false">"推送"</string>
+    <string name="diagnostics_operation_rebase" formatted="false">"重訂基底"</string>
+    <string name="diagnostics_operation_revert" formatted="false">"還原提交"</string>
+    <string name="diagnostics_operation_tag" formatted="false">"標籤"</string>
+    <string name="diagnostics_outcome_attention" formatted="false">"需要處理"</string>
+    <string name="diagnostics_outcome_cancelled" formatted="false">"已取消"</string>
+    <string name="diagnostics_outcome_completed" formatted="false">"已完成"</string>
+    <string name="diagnostics_outcome_started" formatted="false">"已開始"</string>
+    <string name="diagnostics_outcome_stopped" formatted="false">"已停止"</string>
+    <string name="diagnostics_reason_cancelled" formatted="false">"操作已取消"</string>
+    <string name="diagnostics_reason_lfs_contents" formatted="false">"Git 已完成；部分 LFS 內容仍需下載"</string>
+    <string name="diagnostics_reason_lfs_lock" formatted="false">"伺服器上的 LFS 鎖定阻止了發佈"</string>
+    <string name="diagnostics_reason_local_changes" formatted="false">"本機變更需要檢查"</string>
+    <string name="diagnostics_reason_network" formatted="false">"網路操作未完成"</string>
+    <string name="diagnostics_reason_review" formatted="false">"儲存庫狀態需要檢查"</string>
+    <string name="diagnostics_reason_storage" formatted="false">"無法存取儲存空間"</string>
+    <string name="diagnostics_reason_trust" formatted="false">"需要伺服器核准或信任檢查"</string>
+    <string name="diagnostics_reason_unknown" formatted="false">"操作已停止。請檢查儲存庫狀態和連線設定。"</string>
+    <string name="diagnostics_share_title" formatted="false">"分享診斷"</string>
+    <string name="diagnostics_warnings" formatted="false">"警告"</string>
+    <string name="discard_clear_staging" formatted="false">"清除暫存"</string>
+    <string name="discard_review_all" formatted="false">"下列已追蹤檔案的變更和新檔案將被永久捨棄。忽略的檔案會保留。"</string>
+    <string name="discard_review_empty" formatted="false">"沒有可捨棄的變更。"</string>
+    <string name="discard_review_operation" formatted="false">"此操作也會中止進行中的 Git 操作。"</string>
+    <string name="discard_review_unborn" formatted="false">"尚無提交。此操作將取消所列檔案的暫存，並保留其內容。"</string>
+    <string name="file_clone_failure" formatted="false">"無法複製本機儲存庫。請檢查來源資料夾、儲存空間存取權和分支。現有資料夾已保留。"</string>
+    <string name="file_clone_guidance" formatted="false">"使用本機存取複製裝置上的儲存庫。若使用共用儲存空間，請先在設定中授予資料夾存取權。"</string>
+    <string name="file_delete_body" formatted="false">"檔案將從此裝置移除。如果該檔案受 Git 追蹤，Git 會將其顯示為已刪除。"</string>
+    <string name="file_delete_title" formatted="false">"刪除檔案？"</string>
+    <string name="file_issue_access_denied" formatted="false">"儲存空間存取遭拒。請檢查此資料夾的權限。"</string>
+    <string name="file_issue_already_exists" formatted="false">"已存在同名檔案或資料夾。請選擇其他名稱。"</string>
+    <string name="file_issue_binary" formatted="false">"此二進位檔案無法作為文字編輯。"</string>
+    <string name="file_issue_external_change" formatted="false">"此檔案已在編輯器外變更。儲存前請重新載入最新版本。你的編輯內容仍保留在這裡。"</string>
+    <string name="file_issue_file_unavailable" formatted="false">"檔案已無法使用。請檢查儲存空間存取權限。"</string>
+    <string name="file_issue_folder_unavailable" formatted="false">"資料夾已無法使用。請檢查儲存空間存取權限。"</string>
+    <string name="file_issue_invalid_name" formatted="false">"請輸入不含路徑分隔符的檔案名稱。"</string>
+    <string name="file_issue_not_utf8" formatted="false">"此檔案不是UTF-8文字。請在外部編輯器中開啟。"</string>
+    <string name="file_issue_operation_failed" formatted="false">"檔案操作失敗。請檢查儲存空間存取權限後重試。"</string>
+    <string name="file_issue_protected_path" formatted="false">"請選擇此儲存庫內的檔案，不包括Git中繼資料和符號連結。"</string>
+    <string name="file_issue_read_failed" formatted="false">"無法讀取此檔案或資料夾。請檢查儲存空間存取權限。"</string>
+    <string name="file_issue_too_large" formatted="false">"此檔案大於2 MB。請在外部編輯器中開啟。"</string>
+    <string name="file_local_access" formatted="false">"本機存取"</string>
+    <string name="file_reload_body" formatted="false">"這會以磁碟上的檔案取代尚未儲存的編輯。"</string>
+    <string name="file_reload_title" formatted="false">"重新載入檔案？"</string>
+    <string name="file_renamed" formatted="false">"已重新命名"</string>
+    <string name="file_save_title" formatted="false">"儲存變更？"</string>
+    <string name="file_saved" formatted="false">"已儲存"</string>
+    <string name="file_unsaved_changes" formatted="false">"未儲存的變更"</string>
+    <string name="files_folder" formatted="false">"資料夾"</string>
+    <string name="files_hide_hidden" formatted="false">"隱藏隱藏檔案"</string>
+    <string name="files_show_hidden" formatted="false">"顯示隱藏檔案"</string>
+    <string name="folder_access_not_enabled" formatted="false">"未啟用資料夾存取權限。你可以繼續使用應用程式儲存空間。"</string>
+    <string name="folder_picker_unavailable" formatted="false">"此裝置沒有可用的資料夾選擇器"</string>
+    <string name="folder_settings_unavailable" formatted="false">"無法使用 Android 儲存空間設定。應用程式儲存空間仍然可用。"</string>
+    <string name="folder_unusable" formatted="false">"無法使用此資料夾"</string>
+    <string name="git_native_public_only" formatted="false">"Git 原生通訊協定僅支援公開存取。請使用 HTTPS 或 SSH 進行驗證。"</string>
+    <string name="guide_back" formatted="false">"返回"</string>
+    <string name="guide_clone_body" formatted="false">"複製 GitHub 儲存庫、公開儲存庫、自行託管的儲存庫，或透過 SSH 存取的儲存庫。每個工作複本保留各自的連線與分支。"</string>
+    <string name="guide_clone_title" formatted="false">"在 Android 上管理儲存庫"</string>
+    <string name="guide_continue" formatted="false">"繼續"</string>
+    <string name="guide_done" formatted="false">"完成"</string>
+    <string name="guide_edit_body" formatted="false">"在此瀏覽與編輯檔案，或選擇裝置上的資料夾，供 Obsidian 等其他編輯器使用。複製前，請在設定中檢查資料夾存取權限。"</string>
+    <string name="guide_edit_title" formatted="false">"在工作的地方編輯"</string>
+    <string name="guide_git_body" formatted="false">"查看差異、暫存所選變更並在本機提交。準備好後再推送。儲存庫頁面提供分支、歷史記錄、標籤、衝突解決與 Git LFS 功能。"</string>
+    <string name="guide_git_title" formatted="false">"發佈前先檢查"</string>
+    <string name="guide_home" formatted="false">"不登入帳號，繼續使用"</string>
+    <string name="guide_login" formatted="false">"使用 GitHub 登入"</string>
+    <string name="guide_sample" formatted="false">"試用離線範例"</string>
+    <string name="guide_save_error" formatted="false">"無法儲存導覽進度。你可以繼續，但下次可能會再次顯示導覽。"</string>
+    <string name="guide_skip" formatted="false">"略過導覽"</string>
+    <string name="guide_start_body" formatted="false">"連結帳號、從 URL 複製，或試用離線範例。你也可以立即選擇儲存位置。"</string>
+    <string name="guide_start_title" formatted="false">"選擇開始方式"</string>
+    <string name="guide_step">"第 %1$d 步，共 4 步"</string>
+    <string name="guide_storage" formatted="false">"選擇儲存位置"</string>
+    <string name="guide_title" formatted="false">"應用程式導覽"</string>
+    <string name="guide_url" formatted="false">"從 URL 複製"</string>
+    <string name="help_community" formatted="false">"加入我們的 Discord 頻道"</string>
+    <string name="help_copy_email" formatted="false">"複製支援信箱"</string>
+    <string name="help_email_copied" formatted="false">"已複製支援信箱"</string>
+    <string name="help_feedback" formatted="false">"傳送意見回饋"</string>
+    <string name="help_open_failed" formatted="false">"沒有應用程式能開啟此連結。你可以複製支援信箱地址。"</string>
+    <string name="help_title" formatted="false">"幫助"</string>
+    <string name="help_tour" formatted="false">"查看應用導覽"</string>
+    <string name="history_screen" formatted="false">"歷史記錄"</string>
+    <string name="history_tag_annotation" formatted="false">"註釋消息（可選）"</string>
+    <string name="http_transport_warning" formatted="false">"HTTP 未加密。儲存庫資料及你輸入的使用者名稱或權杖可能在傳輸過程中被讀取。請盡可能使用 HTTPS。"</string>
+    <string name="language_settings_legacy" formatted="false">"在 Android 13 之前，此 App 使用裝置語言。"</string>
+    <string name="language_settings_title" formatted="false">"語言"</string>
+    <string name="language_settings_unavailable" formatted="false">"無法開啟語言設定。"</string>
+    <string name="lfs_action_refresh_required" formatted="false">"操作已完成，但無法載入更新後的 LFS 狀態。請在執行其他操作前重新載入 LFS 狀態。"</string>
+    <string name="lfs_allow_downloads" formatted="false">"允許下載"</string>
+    <string name="lfs_allow_uploads" formatted="false">"允許上傳"</string>
+    <string name="lfs_cache_missing" formatted="false">"未快取"</string>
+    <string name="lfs_cache_verified" formatted="false">"已驗證的快取"</string>
+    <string name="lfs_consent_download_body" formatted="false">"此儲存庫請求從獨立的 LFS 伺服器下載檔案內容的權限。"</string>
+    <string name="lfs_consent_download_title" formatted="false">"允許 LFS 下載？"</string>
+    <string name="lfs_consent_upload_body" formatted="false">"此儲存庫請求向獨立的 LFS 伺服器傳送檔案內容的權限。"</string>
+    <string name="lfs_consent_upload_title" formatted="false">"允許 LFS 上傳？"</string>
+    <string name="lfs_downloads_authenticated" formatted="false">"下載 · 獨立的加密憑證"</string>
+    <string name="lfs_downloads_public" formatted="false">"下載 · 公開存取"</string>
+    <string name="lfs_error_authentication" formatted="false">"授權方式不再與此次檢查相符。請取消並重新檢查端點。"</string>
+    <string name="lfs_error_changed" formatted="false">"檢查期間 LFS 端點核准已變更。請重新載入核准並再次檢查操作。"</string>
+    <string name="lfs_error_credentials" formatted="false">"請輸入有效的獨立 LFS 端點使用者名稱和權杖或密碼。"</string>
+    <string name="lfs_error_damaged" formatted="false">"已儲存的 LFS 端點核准需要檢查。重試前請在設定中重設。"</string>
+    <string name="lfs_error_recovery" formatted="false">"無法儲存 LFS 端點核准復原。重試前請在設定中重設核准。"</string>
+    <string name="lfs_error_reset" formatted="false">"無法重設 LFS 端點核准。重試前請檢查已儲存的核准。"</string>
+    <string name="lfs_error_revoke" formatted="false">"無法撤銷 LFS 端點核准。重試前請重新載入已儲存的核准。"</string>
+    <string name="lfs_error_save" formatted="false">"無法儲存 LFS 端點核准。重試前請檢查已儲存的核准。"</string>
+    <string name="lfs_extensions_apply" formatted="false">"套用規則"</string>
+    <string name="lfs_extensions_cancel" formatted="false">"取消"</string>
+    <string name="lfs_extensions_commit" formatted="false">"套用規則只會變更 .gitattributes。檔案內容、暫存區及提交均保持不變。暫存受影響的檔案後，其 Git 內容將轉換為 LFS 指標。"</string>
+    <string name="lfs_extensions_exact_fallback" formatted="false">"所選副檔名未知的大型檔案會保留精確路徑規則。"</string>
+    <string name="lfs_extensions_existing" formatted="false">"現有追蹤規則可能會排除相符的檔案。已明確選擇追蹤方式的現有檔案會保留該選擇。"</string>
+    <string name="lfs_extensions_limits" formatted="false">"已忽略的檔案仍會被忽略。LFS 儲存空間及頻寬限制取決於你的 Git 託管服務商。"</string>
+    <string name="lfs_extensions_repository">"儲存庫：%1$s · %2$s"</string>
+    <string name="lfs_extensions_review" formatted="false">"檢查相符的副檔名…"</string>
+    <string name="lfs_extensions_scope" formatted="false">"這些規則適用於子資料夾中現有及未來的相符檔案。比對會區分大小寫。"</string>
+    <string name="lfs_extensions_title" formatted="false">"追蹤相符的副檔名？"</string>
+    <string name="lfs_extensions_updated" formatted="false">"副檔名追蹤規則已更新。請在提交前檢閱並暫存 .gitattributes 和受影響的檔案。"</string>
+    <string name="lfs_file_available" formatted="false">"可使用檔案內容"</string>
+    <string name="lfs_file_local_edits" formatted="false">"本機編輯 · 下載時保留"</string>
+    <string name="lfs_file_pointer" formatted="false">"指標 · 下載檔案內容"</string>
+    <string name="lfs_local_edits_kept" formatted="false">"本機編輯已保留。"</string>
+    <string name="lfs_lock_candidates_empty" formatted="false">"索引中沒有標記為可鎖定的未鎖定檔案。請在 .gitattributes 新增 lockable 規則並重新整理清單以進行檢閱。"</string>
+    <string name="lfs_lock_create_action" formatted="false">"鎖定檔案"</string>
+    <string name="lfs_lock_create_heading" formatted="false">"建立鎖定"</string>
+    <string name="lfs_lock_create_review">"鎖定 %1$s…"</string>
+    <string name="lfs_lock_create_title" formatted="false">"鎖定此檔案？"</string>
+    <string name="lfs_lock_force_action" formatted="false">"強制解除"</string>
+    <string name="lfs_lock_force_review" formatted="false">"強制解除…"</string>
+    <string name="lfs_lock_force_title" formatted="false">"強制解除其他擁有者的鎖定？"</string>
+    <string name="lfs_lock_ours" formatted="false">"由目前連線持有"</string>
+    <string name="lfs_lock_owner_missing" formatted="false">"伺服器未提供"</string>
+    <string name="lfs_lock_release_action" formatted="false">"解除"</string>
+    <string name="lfs_lock_release_review" formatted="false">"解除鎖定…"</string>
+    <string name="lfs_lock_release_title" formatted="false">"解除此鎖定？"</string>
+    <string name="lfs_lock_theirs" formatted="false">"由其他連線持有"</string>
+    <string name="lfs_lock_unverified" formatted="false">"擁有權未驗證"</string>
+    <string name="lfs_locks_check" formatted="false">"檢查鎖定擁有權"</string>
+    <string name="lfs_locks_empty" formatted="false">"此分支沒有伺服器鎖定。"</string>
+    <string name="lfs_locks_intro" formatted="false">"變更鎖定前請先檢查伺服器上的擁有權。鎖定會變更伺服器中繼資料；本機檔案、已暫存的變更和提交將保持不變。"</string>
+    <string name="lfs_locks_list" formatted="false">"以讀取權限列出鎖定"</string>
+    <string name="lfs_locks_read_only" formatted="false">"唯讀清單 · 尚未驗證擁有權"</string>
+    <string name="lfs_locks_refreshed" formatted="false">"伺服器鎖定已重新整理。"</string>
+    <string name="lfs_locks_remote">"遠端儲存庫：%1$s"</string>
+    <string name="lfs_locks_server">"LFS 伺服器：%1$s"</string>
+    <string name="lfs_locks_title" formatted="false">"伺服器鎖定"</string>
+    <string name="lfs_locks_unsupported" formatted="false">"此伺服器不支援 Git LFS 鎖定。"</string>
+    <string name="lfs_locks_verified" formatted="false">"已透過目前連線驗證擁有權"</string>
+    <string name="lfs_revoke_download_body">"今後從 %1$s 下載需要重新檢查。上傳的核准和已儲存的憑證將保留。"</string>
+    <string name="lfs_revoke_download_title" formatted="false">"撤銷下載核准？"</string>
+    <string name="lfs_revoke_downloads" formatted="false">"撤銷下載"</string>
+    <string name="lfs_revoke_upload_body">"今後向 %1$s 上傳需要重新檢查。下載的核准和已儲存的憑證將保留。"</string>
+    <string name="lfs_revoke_upload_title" formatted="false">"撤銷上傳核准？"</string>
+    <string name="lfs_revoke_uploads" formatted="false">"撤銷上傳"</string>
+    <string name="lfs_ssh_authorization" formatted="false">"來自 SSH 的授權"</string>
+    <string name="lfs_ssh_http_review" formatted="false">"允許此 HTTP 端點接收由已驗證的 SSH 伺服器提供的短期授權。SSH 私密金鑰保留在此裝置上。授權在傳輸過程中可能被讀取，且絕不會隨此核准一起儲存。"</string>
+    <string name="lfs_tracking_git_body" formatted="false">"為已檢閱檔案新增明確的一般 Git 規則。檔案內容將儲存在 Git 提交中。超過 100 MiB 的檔案仍須使用 LFS。"</string>
+    <string name="lfs_tracking_git_title" formatted="false">"對所選檔案使用一般 Git？"</string>
+    <string name="lfs_tracking_lfs_body" formatted="false">"為已檢閱檔案的確切路徑新增 LFS 規則。LFS 儲存空間和頻寬限制取決於 Git 託管服務。請在提交前檢閱並暫存這些變更。"</string>
+    <string name="lfs_tracking_lfs_title" formatted="false">"對所選檔案使用 LFS？"</string>
+    <string name="lfs_tracking_updated" formatted="false">"追蹤規則已更新。請檢閱並暫存 .gitattributes 和所選檔案，然後提交。"</string>
+    <string name="lfs_uploads_authenticated" formatted="false">"上傳 · 獨立的加密憑證"</string>
+    <string name="lfs_uploads_public" formatted="false">"上傳 · 公開存取"</string>
+    <string name="modified" formatted="false">"已修改"</string>
+    <string name="notes_acknowledge" formatted="false">"知道了"</string>
+    <string name="notes_connections_body" formatted="false">"管理 GitHub 帳號和儲存庫作者身分。透過 HTTPS 或 SSH 連線，選擇複製作業的儲存位置，重新連接本機複本，並檢查儲存庫移動或移除操作。"</string>
+    <string name="notes_connections_title" formatted="false">"連線與儲存空間"</string>
+    <string name="notes_files_body" formatted="false">"檢查 Git LFS 追蹤，下載缺少的內容並查看伺服器鎖定警告。診斷會保留大小受限的本機記錄，支援複製和分享篩選後的內容。"</string>
+    <string name="notes_files_title" formatted="false">"大型檔案與診斷"</string>
+    <string name="notes_notice_title" formatted="false">"新功能"</string>
+    <string name="notes_title" formatted="false">"版本說明"</string>
+    <string name="notes_version">"Android %1$s · 組建 %2$d"</string>
+    <string name="notes_workflow_body" formatted="false">"瀏覽和編輯檔案，檢查已暫存及未暫存的差異，在本機提交，推送現有提交，並使用分支、歷史、標籤和重定基底功能。"</string>
+    <string name="notes_workflow_title" formatted="false">"儲存庫工作流程"</string>
+    <string name="obsidian_empty" formatted="false">"準備 Obsidian 連線前，請先新增或複製本機儲存庫。"</string>
+    <string name="obsidian_error" formatted="false">"Obsidian 無法連接。請檢查資料夾存取權限、原始 GitHub HTTPS 遠端位址和儲存庫選定的 GitHub 帳號，然後準備新連線。"</string>
+    <string name="obsidian_forget" formatted="false">"忘記連線"</string>
+    <string name="obsidian_forget_scope" formatted="false">"阻止日後為此資料夾傳遞憑證？已匯入 Obsidian 的憑證仍會保留在該處。請視需要單獨移除或撤銷這些憑證。工作複本會保留在原位。"</string>
+    <string name="obsidian_forgotten" formatted="false">"已停用日後的憑證傳遞。請準備新連線以重新連接此資料夾。"</string>
+    <string name="obsidian_interrupted" formatted="false">"連線已停止。請求不會自動重新執行。在 Obsidian 中重試前，請準備新連線。"</string>
+    <string name="obsidian_prepare" formatted="false">"準備 Obsidian 連線"</string>
+    <string name="obsidian_prepared" formatted="false">"連線已準備好。在 Obsidian 中開啟此資料夾，然後執行 GitSync.md Connect: Connect this vault。新請求會取代任何較早的待處理連線。"</string>
+    <string name="obsidian_ready" formatted="false">"加密憑證已準備好供 Obsidian 使用。"</string>
+    <string name="obsidian_requirements" formatted="false">"請使用與 Obsidian 保管庫相同的裝置資料夾。在 Obsidian 中啟用 Git 和 GitSync.md Connect 社群外掛程式。GitHub HTTPS 儲存庫需要在「儲存庫連線」中選擇已連接的 GitHub 帳號。準備連線不會變更檔案或 Git 歷史。"</string>
+    <string name="obsidian_return" formatted="false">"返回 Obsidian"</string>
+    <string name="obsidian_return_failed" formatted="false">"無法開啟 Obsidian。請在 Obsidian 中啟用 GitSync.md Connect，然後再次嘗試返回。"</string>
+    <string name="obsidian_scope" formatted="false">"使用此儲存庫選定的 GitHub 帳號連接 Obsidian Git。憑證會為配套外掛程式加密，且不會包含在回呼連結中。"</string>
+    <string name="obsidian_title" formatted="false">"Obsidian 連線"</string>
+    <string name="publication_accounts" formatted="false">"GitHub 賬戶"</string>
+    <string name="publication_adopt" formatted="false">"使用儲存庫"</string>
+    <string name="publication_adopt_title" formatted="false">"要使用此儲存庫嗎？"</string>
+    <string name="publication_adopt_warning">"GitHub 上存在 %1$s/%2$s（%3$s），儲存庫 ID 為 %4$d。名稱相符並不能證明它由此次嘗試建立。是否將此空儲存庫用於已儲存的提交？\n\n%5$s"</string>
+    <string name="publication_author" formatted="false">"作者名稱"</string>
+    <string name="publication_back" formatted="false">"返回"</string>
+    <string name="publication_cancel" formatted="false">"取消"</string>
+    <string name="publication_check_destination" formatted="false">"檢查原始目標"</string>
+    <string name="publication_choose" formatted="false">"選擇資料夾"</string>
+    <string name="publication_commit">"已儲存的提交：%1$s"</string>
+    <string name="publication_destination">"目標：%1$s/%2$s"</string>
+    <string name="publication_discard" formatted="false">"捨棄已儲存的檢查結果"</string>
+    <string name="publication_discard_close" formatted="false">"離開而不儲存編輯"</string>
+    <string name="publication_discard_title" formatted="false">"捨棄此檢查結果？"</string>
+    <string name="publication_discard_warning" formatted="false">"移除這些已儲存的檢查選擇和未儲存的編輯？工作檔案不會受到影響。此檢查尚未開始準備或發佈。"</string>
+    <string name="publication_email" formatted="false">"作者電子郵件"</string>
+    <string name="publication_file_ignored" formatted="false">"已忽略"</string>
+    <string name="publication_file_large" formatted="false">"超過 10 MiB"</string>
+    <string name="publication_file_regular" formatted="false">"一般檔案"</string>
+    <string name="publication_file_sensitive" formatted="false">"敏感檔案名稱"</string>
+    <string name="publication_file_size">"%1$s · %2$s"</string>
+    <string name="publication_file_unsupported" formatted="false">"不支援的內容轉換"</string>
+    <string name="publication_files" formatted="false">"檔案"</string>
+    <string name="publication_finish" formatted="false">"完成設定"</string>
+    <string name="publication_folder" formatted="false">"原始資料夾"</string>
+    <string name="publication_include" formatted="false">"包含檔案"</string>
+    <string name="publication_leave_title" formatted="false">"儲存檢查結果？"</string>
+    <string name="publication_leave_warning" formatted="false">"帳號、作者、訊息或目標的編輯尚未儲存。"</string>
+    <string name="publication_limits" formatted="false">"檔案會保留在原始資料夾中。首次發佈支援一般檔案，每個檔案最大 10 MiB，最多選擇 10,000 個檔案，總大小上限為 256 MiB。Git 不儲存空資料夾。"</string>
+    <string name="publication_manage_accounts" formatted="false">"管理帳號"</string>
+    <string name="publication_message" formatted="false">"初始提交訊息"</string>
+    <string name="publication_name" formatted="false">"儲存庫名稱"</string>
+    <string name="publication_none" formatted="false">"還沒有已儲存的發佈。"</string>
+    <string name="publication_open" formatted="false">"打開儲存庫"</string>
+    <string name="publication_pending_help" formatted="false">"離開時仍會儲存已準備的進度。如果 Android 移除存取權限，請重新連接已儲存位置中的同一資料夾。"</string>
+    <string name="publication_phase_completed" formatted="false">"已發佈"</string>
+    <string name="publication_phase_creation_unknown" formatted="false">"儲存庫建立需要檢查"</string>
+    <string name="publication_phase_prepared" formatted="false">"本機提交已準備好"</string>
+    <string name="publication_phase_preparing" formatted="false">"恢復本機準備"</string>
+    <string name="publication_phase_published" formatted="false">"提交已發佈，等待設定"</string>
+    <string name="publication_phase_push_unknown" formatted="false">"上傳結果需要核對"</string>
+    <string name="publication_phase_remote" formatted="false">"儲存庫已建立，等待上傳"</string>
+    <string name="publication_phase_review" formatted="false">"檢查檔案和目標"</string>
+    <string name="publication_prepare" formatted="false">"準備本機提交"</string>
+    <string name="publication_prepare_title" formatted="false">"準備此快照？"</string>
+    <string name="publication_prepare_warning" formatted="false">"這會建立 Git 中繼資料，並僅在本機提交所選檔案。工作檔案會保留在原位。排除的檔案會獲得本機忽略規則。此時尚不建立 GitHub 儲存庫。準備開始後，檔案選擇、作者和帳號將固定。在開始建立儲存庫前，仍可編輯名稱和可見性。"</string>
+    <string name="publication_private" formatted="false">"私有儲存庫"</string>
+    <string name="publication_private_detail" formatted="false">"只有你授予存取權限的人才能讀取。"</string>
+    <string name="publication_private_label" formatted="false">"俬有"</string>
+    <string name="publication_public_confirm" formatted="false">"選擇公開"</string>
+    <string name="publication_public_detail" formatted="false">"任何人都可以讀取所選檔案和歷史。"</string>
+    <string name="publication_public_label" formatted="false">"公共"</string>
+    <string name="publication_public_title" formatted="false">"將此儲存庫設為公開？"</string>
+    <string name="publication_public_warning" formatted="false">"任何人都能夠讀取你發佈的檔案。請檢查所選內容是否包含機密、個人資訊或不可分享的檔案。"</string>
+    <string name="publication_publish" formatted="false">"發佈到 GitHub"</string>
+    <string name="publication_publish_title" formatted="false">"發佈此已儲存的提交？"</string>
+    <string name="publication_publish_warning">"建立可見性為 %3$s 的 %1$s/%2$s 並上傳已儲存的初始提交？請保持 App 開啟。重試會檢查並協調此目標的狀態，不會建立另一個提交。"</string>
+    <string name="publication_reconnect" formatted="false">"重新連接原始資料夾"</string>
+    <string name="publication_refresh" formatted="false">"重新整理檔案"</string>
+    <string name="publication_reload" formatted="false">"重新載入已儲存的進度"</string>
+    <string name="publication_retry_upload" formatted="false">"檢查並重試已儲存的上傳"</string>
+    <string name="publication_save" formatted="false">"儲存檢查結果"</string>
+    <string name="publication_save_close" formatted="false">"儲存並離開"</string>
+    <string name="publication_save_destination" formatted="false">"儲存目標"</string>
+    <string name="publication_saved" formatted="false">"已儲存的進度"</string>
+    <string name="publication_scope" formatted="false">"選擇本機資料夾，檢查檔案並準備本機提交。發佈時會在你的個人 GitHub 帳號中建立儲存庫，並上傳該已儲存的提交。"</string>
+    <string name="publication_selected">"已選擇：%1$d · %2$s"</string>
+    <string name="publication_sensitive_title" formatted="false">"包含敏感檔案？"</string>
+    <string name="publication_sensitive_warning">"%1$s 可能包含憑證或私人資訊。請在檢查內容後再包含它。已發佈的 Git 歷史可能在刪除後仍保留該檔案。"</string>
+    <string name="publication_sign_in" formatted="false">"請登入已驗證的 GitHub 帳號以選擇資料夾。下方仍可查看已儲存的進度。"</string>
+    <string name="publication_stop" formatted="false">"停止操作"</string>
+    <string name="publication_stopping" formatted="false">"正在安全停止…"</string>
+    <string name="publication_title" formatted="false">"發佈資料夾"</string>
+    <string name="publication_unknown" formatted="false">"GitHub 可能已經建立儲存庫。請檢查原始目標。在你明確同意使用相符的空儲存庫之前，將阻止再次建立。"</string>
+    <string name="publication_upload" formatted="false">"繼續已儲存的發佈"</string>
+    <string name="publication_work_adopt" formatted="false">"正在驗證已檢查的儲存庫…"</string>
+    <string name="publication_work_check" formatted="false">"正在檢查原始目標…"</string>
+    <string name="publication_work_create" formatted="false">"正在建立 GitHub 儲存庫…"</string>
+    <string name="publication_work_inspect" formatted="false">"正在檢查資料夾…"</string>
+    <string name="publication_work_load" formatted="false">"正在讀取已儲存的進度…"</string>
+    <string name="publication_work_prepare" formatted="false">"正在準備本機快照…"</string>
+    <string name="publication_work_reconnect" formatted="false">"正在檢查資料夾存取權限…"</string>
+    <string name="publication_work_refresh" formatted="false">"正在重新整理檔案檢查…"</string>
+    <string name="publication_work_register" formatted="false">"正在完成儲存庫設定…"</string>
+    <string name="publication_work_save" formatted="false">"正在儲存檢查結果…"</string>
+    <string name="publication_work_upload" formatted="false">"正在上傳已儲存的提交…"</string>
+    <string name="pull_all_again" formatted="false">"再次全部拉取"</string>
+    <string name="pull_all_attention" formatted="false">"拉取已完成；仍需下載部分 LFS 內容。請開啟 Git LFS 重試。"</string>
+    <string name="pull_all_back" formatted="false">"返回"</string>
+    <string name="pull_all_background_attention" formatted="false">"全部拉取需要處理。點一下可查看已儲存的摘要。"</string>
+    <string name="pull_all_background_busy" formatted="false">"全部拉取已在執行。請開啟全部拉取以停止或查看進度。"</string>
+    <string name="pull_all_background_clear" formatted="false">"清除背景摘要"</string>
+    <string name="pull_all_background_clear_scope" formatted="false">"刪除最近一次背景全部拉取的摘要。儲存庫內容和設定保持不變。已中斷的工作不會自動重新啟動。"</string>
+    <string name="pull_all_background_complete" formatted="false">"全部拉取已完成。請查看已儲存的摘要。"</string>
+    <string name="pull_all_background_control_failed" formatted="false">"無法變更背景操作。請重新整理此畫面後重試。"</string>
+    <string name="pull_all_background_counts">"已更新：%1$d · 已是最新：%2$d · LFS 待處理：%3$d · 已阻擋：%4$d · 失敗：%5$d"</string>
+    <string name="pull_all_background_failed" formatted="false">"全部拉取因錯誤而停止。部分拉取可能已完成。再次執行前請查看摘要和儲存庫狀態。"</string>
+    <string name="pull_all_background_interrupted" formatted="false">"全部拉取已中斷，不會自動重新啟動。中斷前某次拉取可能已完成。再次執行前請檢查儲存庫狀態。"</string>
+    <string name="pull_all_background_running" formatted="false">"全部拉取正在執行，無須開啟應用程式。選擇停止後，其餘儲存庫將不會開始。"</string>
+    <string name="pull_all_background_title" formatted="false">"背景全部拉取"</string>
+    <string name="pull_all_background_unreadable" formatted="false">"無法讀取已儲存的背景摘要，已將其保留。開始下一次背景執行前，請明確清除此摘要。"</string>
+    <string name="pull_all_blocked" formatted="false">"已保持不變。重試前請提交或 stash 本機變更、完成進行中的 Git 操作，或設定上游分支。"</string>
+    <string name="pull_all_current" formatted="false">"沒有傳入變更"</string>
+    <string name="pull_all_empty" formatted="false">"沒有可拉取的本機儲存庫。請先複製或匯入儲存庫。"</string>
+    <string name="pull_all_failed" formatted="false">"無法啟動全部拉取。請檢查儲存庫設定後重試。"</string>
+    <string name="pull_all_item_failed" formatted="false">"無法安全拉取。請檢查連線和儲存空間存取權限，再於 Git 控制畫面檢查分歧的歷史或其他復原需求。"</string>
+    <string name="pull_all_not_run" formatted="false">"未執行"</string>
+    <string name="pull_all_progress">"已檢查的儲存庫：%1$d / %2$d"</string>
+    <string name="pull_all_running" formatted="false">"正在拉取…"</string>
+    <string name="pull_all_scope" formatted="false">"擷取更新並對每個已新增的本機儲存庫執行快轉更新。全部拉取不會暫存你的變更，不會建立提交，也不會推送你的變更。"</string>
+    <string name="pull_all_stop" formatted="false">"停止全部拉取"</string>
+    <string name="pull_all_stopped" formatted="false">"已停止。已開始的儲存庫拉取可能已經完成。重試前請檢查其 Git 狀態；其餘儲存庫尚未開始。"</string>
+    <string name="pull_all_stopping" formatted="false">"將在目前的操作完成後停止…"</string>
+    <string name="pull_all_system_help" formatted="false">"若要快速使用，請在主畫面新增「全部拉取」小工具，或在快速設定中新增「GitSync.md 全部拉取」圖塊。兩者都會在不開啟應用程式的情況下執行一次。之後開啟「全部拉取」查看已儲存的摘要；選擇「再次全部拉取」可再次執行。"</string>
+    <string name="pull_all_title" formatted="false">"全部拉取"</string>
+    <string name="pull_all_updated" formatted="false">"已從遠端更新"</string>
+    <string name="pull_all_widget_button" formatted="false">"拉取所有儲存庫"</string>
+    <string name="pull_all_widget_description" formatted="false">"在不開啟 GitSync.md 的情況下，擷取所有本機儲存庫的更新並執行快轉更新。"</string>
+    <string name="pull_all_widget_subtitle" formatted="false">"僅擷取和快轉更新"</string>
+    <string name="pull_screen" formatted="false">"拉取"</string>
+    <string name="push_all_repositories" formatted="false">"所有儲存庫，包括日後建立的儲存庫"</string>
+    <string name="push_cancelled" formatted="false">"已取消連結 GitHub。"</string>
+    <string name="push_channel" formatted="false">"儲存庫更新"</string>
+    <string name="push_enable" formatted="false">"GitHub 有變更時通知我"</string>
+    <string name="push_existing" formatted="false">"已安裝 GitHub App？"</string>
+    <string name="push_existing_account" formatted="false">"GitHub 使用者名稱或組織"</string>
+    <string name="push_existing_connect" formatted="false">"連接現有安裝"</string>
+    <string name="push_existing_scope" formatted="false">"以帳號擁有者或組織擁有者身分登入，連接現有安裝。該安裝對儲存庫的存取權限維持不變。"</string>
+    <string name="push_failed" formatted="false">"推播通知同步無法完成此操作。請檢查通知、網路連線與 GitHub 存取權限，然後重新整理連結。本機檔案已保留。"</string>
+    <string name="push_link" formatted="false">"連結 GitHub"</string>
+    <string name="push_manage_github" formatted="false">"在 GitHub 管理"</string>
+    <string name="push_no_connections" formatted="false">"連結 GitHub 帳號或組織，以選擇哪些儲存庫可以傳送更新。"</string>
+    <string name="push_no_match" formatted="false">"沒有可存取的工作複本與此 GitHub 儲存庫和上游分支相符。請檢查其連結、分支與資料夾存取權限。"</string>
+    <string name="push_notification">"GitHub 分支 %1$s 已變更。點選以檢查此工作複本。"</string>
+    <string name="push_open_failed" formatted="false">"無法開啟此連結。請檢查瀏覽器或 Android 設定，然後重試。"</string>
+    <string name="push_open_repository" formatted="false">"開啟儲存庫"</string>
+    <string name="push_open_settings" formatted="false">"開啟通知設定"</string>
+    <string name="push_owner" formatted="false">"請以個人帳號擁有者或組織擁有者身分登入，以連結此安裝項目。"</string>
+    <string name="push_permission" formatted="false">"啟用推播通知同步前，請在 Android 設定中允許通知。"</string>
+    <string name="push_refresh" formatted="false">"重新整理連結"</string>
+    <string name="push_registered" formatted="false">"裝置已註冊接收通知。"</string>
+    <string name="push_registration_pending" formatted="false">"通知註冊尚未完成。連線後請重新整理連結。"</string>
+    <string name="push_result">"已檢查：%1$d · 已更新：%2$d · 需檢查：%3$d"</string>
+    <string name="push_result_current" formatted="false">"已是最新狀態"</string>
+    <string name="push_result_review" formatted="false">"更新前需要檢查"</string>
+    <string name="push_result_updated" formatted="false">"已從設定的上游更新"</string>
+    <string name="push_scope" formatted="false">"連結 GitSync.md 的 GitHub App 以接收儲存庫更新。相符且沒有本機變更的工作複本可以在背景擷取變更並進行快轉更新。點選通知可再次檢查。推播通知同步不會建立提交、上傳變更或切換分支；本機變更與已分歧的歷程需要由你檢查。"</string>
+    <string name="push_selected_repositories" formatted="false">"所選儲存庫"</string>
+    <string name="push_stopped" formatted="false">"本次檢查已停止。已傳送給 Git 的操作可能已完成；重試前請檢查儲存庫。"</string>
+    <string name="push_suspended" formatted="false">"GitHub 存取權限已暫停"</string>
+    <string name="push_title" formatted="false">"推播通知同步"</string>
+    <string name="push_unavailable" formatted="false">"此組建版本不支援推播通知。"</string>
+    <string name="push_unlink" formatted="false">"移除連結"</string>
+    <string name="push_unlink_scope" formatted="false">"移除此裝置上這個 GitHub 安裝項目的推播通知同步路由？這不會解除安裝 GitHub App。請使用「在 GitHub 管理」變更其儲存庫存取權限或解除安裝。"</string>
+    <string name="rebase_abort_body" formatted="false">"還原原始分支和提交。此次重定基底期間對追蹤中檔案的編輯與衝突解決結果將被捨棄。"</string>
+    <string name="rebase_abort_title" formatted="false">"中止此次重定基底？"</string>
+    <string name="rebase_accept_local_deletion" formatted="false">"接受本機刪除"</string>
+    <string name="rebase_accept_upstream_deletion" formatted="false">"接受上游刪除"</string>
+    <string name="rebase_begin_body" formatted="false">"本機提交將在已檢查的上游之上重播，並可能取得新的 ID。重定基底在本機進行，推送仍需個別操作。"</string>
+    <string name="rebase_begin_title" formatted="false">"重寫本機提交？"</string>
+    <string name="rebase_checkout_blocked_summary" formatted="false">"簽出已受阻。請將列出的檔案移到安全位置，重新整理後重試此提交。已重播的進度會保留。"</string>
+    <string name="rebase_checkout_more_paths">"另有 %1$d 個受阻路徑未顯示。"</string>
+    <string name="rebase_checkout_retry" formatted="false">"重試受阻提交"</string>
+    <string name="rebase_checkout_review_required" formatted="false">"簽出復原資訊已變更或無法讀取。使用 Git 工具或中止重定基底前，請檢查本機工作。"</string>
+    <string name="rebase_detached" formatted="false">"HEAD 分離的重定基底"</string>
+    <string name="rebase_problem_active_operation" formatted="false">"開始變基前，請先完成進行中的 Git 操作。"</string>
+    <string name="rebase_problem_local_branch" formatted="false">"變基前，請切換至本機分支。"</string>
+    <string name="rebase_problem_local_changes" formatted="false">"變基前，請提交所有本機變更，或將其儲存至 stash。"</string>
+    <string name="rebase_problem_upstream" formatted="false">"變基前，請設定遠端追蹤分支。"</string>
+    <string name="rebase_skip_body" formatted="false">"將目前提交從重播中移除。略過前請檢查其變更，這可能會從最終歷史中移除本機工作。"</string>
+    <string name="rebase_skip_title" formatted="false">"略過此本機提交？"</string>
+    <string name="rebase_status_aborted" formatted="false">"重定基底已中止"</string>
+    <string name="rebase_status_conflicts" formatted="false">"：重基線操作存在衝突——請先解決這些衝突，再繼續執行重基線操作"</string>
+    <string name="rebase_status_format">"重定基底：%1$s"</string>
+    <string name="rebase_status_success" formatted="false">"重置基準成功完成"</string>
+    <string name="rebase_use_local" formatted="false">"使用本機提交"</string>
+    <string name="rebase_use_upstream" formatted="false">"使用上游版本"</string>
+    <string name="remote_address_formats" formatted="false">"：請使用HTTP/HTTPS。 SSH, git://, file://, 或所有者/存儲庫。"</string>
+    <string name="remote_merge_author">"合併作者：%1$s &lt;%2$s&gt;"</string>
+    <string name="remote_merge_confirm_local" formatted="false">"合併已檢查的提交？"</string>
+    <string name="remote_merge_confirm_local_body">"使用來自 %2$s 的已檢查提交更新 %1$s。可能會建立合併提交。不會推送任何內容。"</string>
+    <string name="remote_merge_confirm_push" formatted="false">"合併並發佈到上游？"</string>
+    <string name="remote_merge_confirm_push_body">"更新 %1$s，然後將其提交推送到已檢查的推送位址上的 %2$s。衝突會阻止發佈。推送失敗或未確認時，將保留本機 Git 結果，以供手動重試。"</string>
+    <string name="remote_merge_counts">"本機提交：%1$d · 傳入提交：%2$d"</string>
+    <string name="remote_merge_current" formatted="false">"兩個分支都是最新狀態。"</string>
+    <string name="remote_merge_destination">"合入本機分支：%1$s"</string>
+    <string name="remote_merge_fetch_address">"擷取位址：%1$s"</string>
+    <string name="remote_merge_in_flight" formatted="false">"正在完成 Git 操作…"</string>
+    <string name="remote_merge_incoming_oid">"傳入提交：%1$s"</string>
+    <string name="remote_merge_local" formatted="false">"在本機合併"</string>
+    <string name="remote_merge_local_oid">"本機提交：%1$s"</string>
+    <string name="remote_merge_local_result" formatted="false">"結果儲存在本機。推送仍是獨立的操作。"</string>
+    <string name="remote_merge_no_incoming" formatted="false">"沒有傳入提交。仍可明確選擇推送本機提交。"</string>
+    <string name="remote_merge_open_git" formatted="false">"返回 Git"</string>
+    <string name="remote_merge_publish" formatted="false">"合併並推送"</string>
+    <string name="remote_merge_push_address">"推送位址：%1$s"</string>
+    <string name="remote_merge_push_blocked" formatted="false">"仍有衝突時未推送任何內容。"</string>
+    <string name="remote_merge_push_confirmed" formatted="false">"遠端已確認此提交。"</string>
+    <string name="remote_merge_push_unconfirmed" formatted="false">"推送未確認。已保留本機 Git 結果。重試會推送同一提交，不會再次合併或建立提交。"</string>
+    <string name="remote_merge_refresh" formatted="false">"重新整理儲存庫狀態"</string>
+    <string name="remote_merge_result_conflicts" formatted="false">"合併因衝突暫停。開啟 Git 解決並暫存每個檔案，然後完成或中止合併。"</string>
+    <string name="remote_merge_result_current" formatted="false">"無需合併。"</string>
+    <string name="remote_merge_result_ff" formatted="false">"已快轉本機分支。"</string>
+    <string name="remote_merge_result_merged" formatted="false">"合併提交已儲存在本機。"</string>
+    <string name="remote_merge_retry" formatted="false">"重試推送已儲存的提交"</string>
+    <string name="remote_merge_review" formatted="false">"擷取並檢查合併"</string>
+    <string name="remote_merge_scope" formatted="false">"擷取並檢查已設定的上游。現有提交保留其 ID；分歧的歷史會建立合併提交。衝突可能需要手動解決。"</string>
+    <string name="remote_merge_title" formatted="false">"與遠端合併"</string>
+    <string name="remote_merge_upstream">"來自上游：%1$s"</string>
+    <string name="remote_normalized_target">"儲存庫位址：%1$s"</string>
+    <string name="repository_actions_behind" formatted="false">"推送前請先拉取傳入的提交。"</string>
+    <string name="repository_actions_blocked" formatted="false">"操作需要處理"</string>
+    <string name="repository_actions_branch">"分支：%1$s\n已檢查的提交：%2$s"</string>
+    <string name="repository_actions_cancel" formatted="false">"取消"</string>
+    <string name="repository_actions_changes">"已變更的路徑：%1$d"</string>
+    <string name="repository_actions_confirm" formatted="false">"執行一次"</string>
+    <string name="repository_actions_destination">"上游：%1$s / %2$s"</string>
+    <string name="repository_actions_dirty" formatted="false">"本機變更使傳入的提交無法拉取。請先提交變更或將其存入 stash。"</string>
+    <string name="repository_actions_diverged" formatted="false">"本機和遠端歷程已分歧。請在 Git 控制項中明確選擇合併或重定基底。"</string>
+    <string name="repository_actions_failed" formatted="false">"無法完成操作。請檢查連線、帳號、信任和資料夾存取權限，並在重試前檢查目前狀態。"</string>
+    <string name="repository_actions_local_saved" formatted="false">"已儲存本機提交，但尚未確認上傳成功。請檢查目前狀態，然後重試上傳該提交。"</string>
+    <string name="repository_actions_message" formatted="false">"提交訊息"</string>
+    <string name="repository_actions_no_changes" formatted="false">"沒有待上傳的提交"</string>
+    <string name="repository_actions_pull" formatted="false">"拉取儲存庫"</string>
+    <string name="repository_actions_pulled" formatted="false">"已拉取傳入的變更"</string>
+    <string name="repository_actions_push" formatted="false">"推送儲存庫"</string>
+    <string name="repository_actions_pushed" formatted="false">"已上傳提交"</string>
+    <string name="repository_actions_reload" formatted="false">"重新載入儲存庫"</string>
+    <string name="repository_actions_remote_missing" formatted="false">"伺服器上不存在已設定的上游分支。請檢查 Git 控制項。"</string>
+    <string name="repository_actions_review" formatted="false">"檢查目前狀態"</string>
+    <string name="repository_actions_run" formatted="false">"執行操作"</string>
+    <string name="repository_actions_scope" formatted="false">"選擇本機儲存庫，並在執行操作前檢查其目前分支。"</string>
+    <string name="repository_actions_stale" formatted="false">"此檢查或授權已不再適用。請檢查儲存庫的目前狀態，並重新確認操作。"</string>
+    <string name="repository_actions_status" formatted="false">"讀取狀態"</string>
+    <string name="repository_actions_status_ready" formatted="false">"已讀取狀態，未存取網路"</string>
+    <string name="repository_actions_stop" formatted="false">"停止操作"</string>
+    <string name="repository_actions_stopped" formatted="false">"已停止。Git 操作可能已完成或已上傳。請在重試前檢查目前狀態；已儲存的提交和檔案均已保留。"</string>
+    <string name="repository_actions_sync" formatted="false">"同步儲存庫"</string>
+    <string name="repository_actions_synced" formatted="false">"已拉取並推送"</string>
+    <string name="repository_actions_title" formatted="false">"儲存庫操作"</string>
+    <string name="repository_actions_unconfigured" formatted="false">"執行此操作前，請在 Git 控制項中設定遠端上游分支。"</string>
+    <string name="repository_actions_unsafe" formatted="false">"請切換至本機分支，並先完成進行中的 Git 操作或解決衝突。"</string>
+    <string name="repository_actions_unsettled" formatted="false">"暫存期間檔案持續變更。請在重試前檢查索引和檔案。"</string>
+    <string name="repository_actions_write_scope" formatted="false">"推送和同步會暫存目前所有未被忽略的變更，視需要建立提交，然後上傳待推送的提交。同步會先擷取變更，並在安全時執行快轉更新。發生衝突、歷程分歧或遠端狀態不安全時，操作將停止。如果上傳失敗，新建立的本機提交會保留，以便重試。"</string>
+    <string name="repository_discovery_branch_unknown" formatted="false">"分離的 HEAD 或尚無首次提交"</string>
+    <string name="repository_discovery_clean" formatted="false">"沒有變更"</string>
+    <string name="repository_discovery_dirty" formatted="false">"本機變更"</string>
+    <string name="repository_history_files_deleted" formatted="false">"本機檔案已刪除"</string>
+    <string name="repository_history_files_kept" formatted="false">"本機檔案已保留"</string>
+    <string name="repository_history_tracking_removed" formatted="false">"Git 追蹤已移除 · 工作檔案已保留"</string>
+    <string name="repository_metadata_unavailable" formatted="false">"儲存庫中繼資料無法使用"</string>
+    <string name="repository_no_commits" formatted="false">"無提交"</string>
+    <string name="repository_shortcut_active" formatted="false">"已授權並固定"</string>
+    <string name="repository_shortcut_add" formatted="false">"新增主畫面捷徑"</string>
+    <string name="repository_shortcut_busy" formatted="false">"已有操作正在執行。此捷徑未加入佇列。請稍候再點按。"</string>
+    <string name="repository_shortcut_consent" formatted="false">"每次點按都會開啟 GitSync.md，並執行此操作一次，不再詢問。捷徑會持續綁定此儲存庫、分支和已儲存的連線或帳號。允許新的本機提交。綁定變更時，捷徑會停止；請檢查並建立新捷徑以核准這些變更。你可以隨時在此撤銷授權。"</string>
+    <string name="repository_shortcut_forget" formatted="false">"忘記已停用的捷徑"</string>
+    <string name="repository_shortcut_inactive" formatted="false">"未啟用。可能仍在等待主畫面核准，或授權已遭撤銷。"</string>
+    <string name="repository_shortcut_manage" formatted="false">"主畫面捷徑"</string>
+    <string name="repository_shortcut_refresh" formatted="false">"重新整理捷徑"</string>
+    <string name="repository_shortcut_request" formatted="false">"請求捷徑"</string>
+    <string name="repository_shortcut_requested" formatted="false">"已請求捷徑。請在主畫面中核准，然後重新整理捷徑以檢查狀態。"</string>
+    <string name="repository_shortcut_revoke" formatted="false">"撤銷授權"</string>
+    <string name="repository_shortcut_revoke_scope" formatted="false">"此捷徑將停止執行 Git 操作。其主畫面圖示可能會維持停用，直到你將其移除。建立新捷徑需要重新核准。"</string>
+    <string name="repository_shortcut_revoked" formatted="false">"已撤銷捷徑授權"</string>
+    <string name="repository_shortcut_unsupported" formatted="false">"主畫面無法接受此捷徑請求。請改用此畫面上的操作。"</string>
+    <string name="repository_sync_not_recorded" formatted="false">"未記錄"</string>
+    <string name="settings_folder_unavailable" formatted="false">"請檢查資料夾存取權限"</string>
+    <string name="shortcut_background_attention" formatted="false">"捷徑需要處理。重試前請開啟儲存庫操作並檢查狀態。"</string>
+    <string name="shortcut_background_channel" formatted="false">"主畫面捷徑操作"</string>
+    <string name="shortcut_background_complete" formatted="false">"捷徑操作已完成。請開啟儲存庫操作以檢查結果。"</string>
+    <string name="shortcut_background_consent" formatted="false">"每次點按都會使用此儲存庫、分支和已儲存的連線或帳號，在背景執行一次。結果儲存於此處，並在獲准時顯示為通知。中斷的執行需要再次點按。你可以在此撤銷授權。"</string>
+    <string name="shortcut_background_interrupted" formatted="false">"執行已中斷，不會自動再次執行。請在再次點按前檢查儲存庫。"</string>
+    <string name="shortcut_background_option" formatted="false">"不開啟 GitSync.md 即可執行"</string>
+    <string name="shortcut_background_running" formatted="false">"捷徑操作執行中"</string>
+    <string name="shortcut_results_clear" formatted="false">"清除自動化結果"</string>
+    <string name="shortcut_results_clear_scope" formatted="false">"刪除已儲存的捷徑和回呼執行結果。它們的授權維持不變。中斷的操作不會自動再次執行。"</string>
+    <string name="shortcut_results_unavailable" formatted="false">"無法讀取已儲存的捷徑結果。授權另行保留。"</string>
+    <string name="ssh_hide_private_key" formatted="false">"隱藏私密金鑰"</string>
+    <string name="ssh_show_private_key" formatted="false">"顯示私密金鑰"</string>
+    <string name="ssh_trust_changed_title" formatted="false">"SSH 伺服器金鑰已變更"</string>
+    <string name="ssh_trust_connect" formatted="false">"信任並連線"</string>
+    <string name="ssh_trust_error_changed" formatted="false">"檢查期間 SSH 信任已變更。請檢查目前的伺服器記錄並重試連線。"</string>
+    <string name="ssh_trust_error_damaged" formatted="false">"已儲存的 SSH 信任需要檢查。重試前請在設定中重設 SSH 伺服器信任。"</string>
+    <string name="ssh_trust_error_recovery" formatted="false">"無法儲存 SSH 信任復原。重試前請在設定中檢查 SSH 伺服器信任。"</string>
+    <string name="ssh_trust_error_remove" formatted="false">"無法移除 SSH 伺服器信任。重試前請檢查目前的伺服器記錄。"</string>
+    <string name="ssh_trust_error_reset" formatted="false">"無法清空 SSH 伺服器信任。重試前請檢查已儲存的記錄。"</string>
+    <string name="ssh_trust_error_save" formatted="false">"無法儲存 SSH 伺服器信任。重試前請再次驗證指紋。"</string>
+    <string name="ssh_trust_replace" formatted="false">"取代信任並連線"</string>
+    <string name="ssh_trust_verify_title" formatted="false">"驗證 SSH 伺服器"</string>
+    <string name="staged" formatted="false">"已暫存"</string>
+    <string name="stash_screen" formatted="false">"暫存區"</string>
+    <string name="status_screen" formatted="false">"狀態"</string>
+    <string name="storage_app_saved" formatted="false">"新複製將使用應用程式儲存空間"</string>
+    <string name="storage_default_saved" formatted="false">"已儲存預設複製位置"</string>
+    <string name="tide_git_annotated" formatted="false">"註釋"</string>
+    <string name="tide_git_branch_operation" formatted="false">"分支操作"</string>
+    <string name="tide_git_commit_locally" formatted="false">"本機提交"</string>
+    <string name="tide_git_committing" formatted="false">"正在提交…"</string>
+    <string name="tide_git_detached" formatted="false">"分離 HEAD"</string>
+    <string name="tide_git_force_delete" formatted="false">"強制刪除（不安全）"</string>
+    <string name="tide_git_force_delete_detail" formatted="false">"即使分支尚未合併，強制刪除仍會將其移除。"</string>
+    <string name="tide_git_git_operation" formatted="false">"Git 操作"</string>
+    <string name="tide_git_headline_choose" formatted="false">"選擇要提交的內容"</string>
+    <string name="tide_git_headline_complete_merge" formatted="false">"全量閤併"</string>
+    <string name="tide_git_headline_nothing" formatted="false">"沒有可提交的變更"</string>
+    <string name="tide_git_hint_message" formatted="false">"輸入提交說明"</string>
+    <string name="tide_git_hint_stage" formatted="false">"至少暫存一個檔案才能提交"</string>
+    <string name="tide_git_included" formatted="false">"已包含"</string>
+    <string name="tide_git_lightweight" formatted="false">"輕量"</string>
+    <string name="tide_git_local_only" formatted="false">"僅本機"</string>
+    <string name="tide_git_message" formatted="false">"訊息"</string>
+    <string name="tide_git_normal_delete" formatted="false">"一般刪除"</string>
+    <string name="tide_git_normal_delete_detail" formatted="false">"僅刪除已完全合併的分支。"</string>
+    <string name="tide_git_push_current" formatted="false">"推流分支"</string>
+    <string name="tide_git_pushing" formatted="false">"正在推送…"</string>
+    <string name="tide_git_remote" formatted="false">"遠端"</string>
+    <string name="tide_git_resolve_and_stage" formatted="false">"解決衝突並暫存"</string>
+    <string name="tide_git_resolving" formatted="false">"正在解決衝突…"</string>
+    <string name="tide_git_status_added" formatted="false">"已新增"</string>
+    <string name="tide_git_status_changed" formatted="false">"已更改"</string>
+    <string name="tide_git_status_copied" formatted="false">"已複製"</string>
+    <string name="tide_git_status_deleted" formatted="false">"已刪除"</string>
+    <string name="tide_git_status_modified" formatted="false">"已修改"</string>
+    <string name="tide_git_status_renamed" formatted="false">"已重新命名"</string>
+    <string name="tide_git_status_type_changed" formatted="false">"類型已更改"</string>
+    <string name="tide_git_strategy_ff" formatted="false">"僅快轉"</string>
+    <string name="tide_git_strategy_prefer_ff" formatted="false">"盡可能快轉"</string>
+    <string name="tide_git_strategy_recursive" formatted="false">"一律使用合併提交"</string>
+    <string name="tide_git_tools" formatted="false">"Git 工具"</string>
+    <string name="tide_git_unstaged" formatted="false">"未暫存"</string>
+    <string name="tide_home_add_first" formatted="false">"加入第一個儲存庫"</string>
+    <string name="tide_home_empty_filter_detail" formatted="false">"此手機上的所有儲存庫都能讀取。"</string>
+    <string name="tide_home_empty_filter_title" formatted="false">"沒有需要你關注的項目"</string>
+    <string name="tide_home_empty_rail_description" formatted="false">"等待第一個儲存庫的空同步列"</string>
+    <string name="tide_home_empty_rail_nothing" formatted="false">"沒有需要同步的內容"</string>
+    <string name="tide_home_empty_title" formatted="false">"還沒有儲存庫。"</string>
+    <string name="tide_home_filter_all" formatted="false">"全部"</string>
+    <string name="tide_home_filter_attention" formatted="false">"需關注"</string>
+    <string name="tide_home_meta_checking">"檢查中：%1$d"</string>
+    <string name="tide_home_meta_ready">"就緒：%1$d"</string>
+    <string name="tide_home_meta_unreadable">"無法讀取：%1$d"</string>
+    <string name="tide_home_rail_phone" formatted="false">"手機"</string>
+    <string name="tide_home_signed_in_as">"已登入為 @%1$s"</string>
+    <string name="tide_home_start_github" formatted="false">"從 GitHub 複製"</string>
+    <string name="tide_home_start_github_signed_in" formatted="false">"選擇你的一個儲存庫"</string>
+    <string name="tide_home_start_github_signed_out" formatted="false">"登入後選擇儲存庫"</string>
+    <string name="tide_home_start_local_detail" formatted="false">"尋找此手機上已有的複製庫"</string>
+    <string name="tide_home_start_publish_detail" formatted="false">"將資料夾轉換為新儲存庫"</string>
+    <string name="tide_home_start_url_detail" formatted="false">"任何公開或私有的 Git 遠端儲存庫"</string>
+    <string name="tide_home_start_with" formatted="false">"從這裡開始"</string>
+    <string name="tide_home_state_checking" formatted="false">"檢查中…"</string>
+    <string name="tide_home_state_never_synced" formatted="false">"從未同步"</string>
+    <string name="tide_home_state_synced">"已衕步 %1$s"</string>
+    <string name="tide_home_state_unreadable" formatted="false">"需要檢查"</string>
+    <string name="tide_merge_conflict_result" formatted="false">"結果"</string>
+    <string name="tide_merge_conflict_result_hint" formatted="false">"——此內容將被排入舞颱"</string>
+    <string name="tide_merge_diff_added" formatted="false">"新增"</string>
+    <string name="tide_merge_diff_changed" formatted="false">"已更改"</string>
+    <string name="tide_merge_diff_deleted" formatted="false">"已刪除"</string>
+    <string name="tide_merge_diff_modified" formatted="false">"已修改"</string>
+    <string name="tide_merge_diff_renamed" formatted="false">"已重新命名"</string>
+    <string name="tide_merge_diff_staged" formatted="false">"已暫存"</string>
+    <string name="tide_merge_diff_type_changed" formatted="false">"類型已更改"</string>
+    <string name="tide_merge_merge_kicker" formatted="false">"合併"</string>
+    <string name="tide_merge_ours_filename" formatted="false">"本地版本"</string>
+    <string name="tide_merge_rebase_kicker" formatted="false">"重置基準"</string>
+    <string name="tide_merge_result_section" formatted="false">"結果"</string>
+    <string name="tide_merge_side_deleted" formatted="false">"已刪除"</string>
+    <string name="tide_merge_theirs" formatted="false">"遠端版本"</string>
+    <string name="tide_merge_theirs_filename" formatted="false">"遠端版本"</string>
+    <string name="tide_onboarding_clone_failed" formatted="false">"複製失敗"</string>
+    <string name="tide_onboarding_create_pat" formatted="false">"在 GitHub 上建立 PAT ↗"</string>
+    <string name="tide_onboarding_headline_git" formatted="false">"真正的 Git。"</string>
+    <string name="tide_onboarding_headline_notes" formatted="false">"你的筆記。"</string>
+    <string name="tide_onboarding_headline_step" formatted="false">"始終同步。"</string>
+    <string name="tide_onboarding_hide_token" formatted="false">"隱藏"</string>
+    <string name="tide_onboarding_illustration" formatted="false">"手機上的筆記與 GitHub 上的提交在同一個同步點匯合"</string>
+    <string name="tide_onboarding_pat_subtitle" formatted="false">"貼上具有儲存庫存取權限的 GitHub 權杖。"</string>
+    <string name="tide_onboarding_picker_clear" formatted="false">"清除搜尋"</string>
+    <string name="tide_onboarding_picker_no_matches" formatted="false">"沒有符合的結果"</string>
+    <string name="tide_onboarding_picker_title" formatted="false">"選擇儲存庫"</string>
+    <string name="tide_onboarding_publication_step">"第 %1$d 步，共 3 步"</string>
+    <string name="tide_onboarding_rail_device" formatted="false">"此手機"</string>
+    <string name="tide_onboarding_save_muted" formatted="false">"位置。"</string>
+    <string name="tide_onboarding_save_subtitle" formatted="false">"複製時選擇其他資料夾，或在設定中指定預設資料夾。"</string>
+    <string name="tide_onboarding_save_title" formatted="false">"預設儲存"</string>
+    <string name="tide_onboarding_show_token" formatted="false">"顯示"</string>
+    <string name="tide_onboarding_welcome_body" formatted="false">"複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"</string>
+    <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_vault_check_for_changes" formatted="false">"檢查變更"</string>
+    <string name="tide_vault_conflict_detail" formatted="false">"Git 操作已暫停。請解決每個衝突檔案以繼續。"</string>
+    <string name="tide_vault_eyebrow_both_moved" formatted="false">"兩端皆有變更"</string>
+    <string name="tide_vault_eyebrow_conflict" formatted="false">"衝突"</string>
+    <string name="tide_vault_eyebrow_empty" formatted="false">"空儲存庫"</string>
+    <string name="tide_vault_eyebrow_in_sync" formatted="false">"已同步"</string>
+    <string name="tide_vault_eyebrow_new_on_remote" formatted="false">"遠端有新內容"</string>
+    <string name="tide_vault_eyebrow_ready_to_commit" formatted="false">"可提交"</string>
+    <string name="tide_vault_eyebrow_ready_to_push" formatted="false">"可推送"</string>
+    <string name="tide_vault_eyebrow_unreadable" formatted="false">"無法讀取"</string>
+    <string name="tide_vault_files_section" formatted="false">"檔案"</string>
+    <string name="tide_vault_from_remote">"來自遠端：↓%1$d"</string>
+    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_headline_ahead">"待推送：%1$d"</string>
+    <string name="tide_vault_headline_behind">"遠端新增：%1$d"</string>
+    <string name="tide_vault_headline_in_sync" formatted="false">"已同步"</string>
+    <string name="tide_vault_headline_unreadable" formatted="false">"無法讀取此儲存庫。"</string>
+    <string name="tide_vault_latest_commit" formatted="false">"最新提交"</string>
+    <string name="tide_vault_more" formatted="false">"更多儲存庫選項"</string>
+    <string name="tide_vault_moved_on" formatted="false">"你編輯時遠端已有新進展。"</string>
+    <string name="tide_vault_no_changes_body" formatted="false">"你在 Obsidian 中的編輯會顯示在這裡。"</string>
+    <string name="tide_vault_no_changes_title" formatted="false">"此手機上沒有變更"</string>
+    <string name="tide_vault_reading" formatted="false">"正在讀取此儲存庫…"</string>
+    <string name="tide_vault_remote_current" formatted="false">"遠端沒有新提交"</string>
+    <string name="tide_vault_remote_new" formatted="false">"遠端有新提交"</string>
+    <string name="tide_vault_remote_not_checked" formatted="false">"尚未檢查遠端"</string>
+    <string name="tide_vault_resolve" formatted="false">"解決"</string>
+    <string name="tide_vault_sub_ahead" formatted="false">"已提交，尚未推送"</string>
+    <string name="tide_vault_sub_behind" formatted="false">"拉取以更新此手機"</string>
+    <string name="tide_vault_sub_empty" formatted="false">"加入筆記後，在此處提交。"</string>
+    <string name="tide_vault_sub_in_sync" formatted="false">"此手機上沒有待處理內容"</string>
+    <string name="tide_vault_syncing" formatted="false">"正在衕步……"</string>
+    <string name="tide_vault_yours">"本機：↑%1$d"</string>
+    <string name="tracking_metadata_size">"Git 中繼資料：%1$s"</string>
+    <string name="tracking_remove_backup_body" formatted="false">"GitSync.md 將驗證複本和 ZIP 封存，將原始中繼資料保留在備份中，並中斷此資料夾的連線。工作檔案將保留在原處。"</string>
+    <string name="tracking_remove_backup_title" formatted="false">"移除追蹤並保留備份？"</string>
+    <string name="tracking_remove_permanent_body" formatted="false">"僅刪除已檢閱的 .git 中繼資料。工作檔案將保留在原處，但沒有其他複本就無法復原本機 Git 歷史記錄。"</string>
+    <string name="tracking_remove_permanent_title" formatted="false">"永久移除 Git 歷史記錄？"</string>
+    <string name="tracking_remove_review_changed" formatted="false">"檢閱資訊已變更。請取消並重新檢閱追蹤移除操作。"</string>
+    <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\n所有工作檔案和本機 Git 歷史記錄都會保留在此裝置上。你可以稍後重新連接此資料夾。"</string>
+    <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\n這將永久刪除此 App 管理的複製庫，包括尚未推送的提交、暫存於 stash 的變更和未儲存的檔案。遠端儲存庫不會變更。"</string>
+    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"再次連線 %1$s:%2$s 前需要驗證指紋。"</string>
+    <string name="ui_1_s_files_ddef923b">"%1$s 個檔案"</string>
+    <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s 個本機提交 · %2$s 個上游提交"</string>
+    <string name="ui_1_s_shown_2_s_stored_c5d98835">"顯示 %1$s · 已儲存 %2$s"</string>
+    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"透過 Google Play 一次性購買"</string>
+    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"金鑰變更可能表示身分冒用。取代信任前，請與伺服器擁有者核實新指紋。"</string>
+    <string name="ui_abort_merge_5af7a9ac" formatted="false">"✕  中止合併"</string>
+    <string name="ui_abort_merge_8821f613" formatted="false">"中止合併"</string>
+    <string name="ui_abort_rebase_fd5cfc32" formatted="false">"中止變基…"</string>
+    <string name="ui_about_4efca0d1" formatted="false">"關於"</string>
+    <string name="ui_add_9fd728c6" formatted="false">"新增"</string>
+    <string name="ui_add_cloned_repository_f84b64e8" formatted="false">"新增已複製的儲存庫"</string>
+    <string name="ui_add_github_account_ed4d4d4c" formatted="false">"添加 GitHub 賬戶"</string>
+    <string name="ui_add_local_repository_b8323c70" formatted="false">"新增本機儲存庫"</string>
+    <string name="ui_add_repository_33da2ac1" formatted="false">"新增儲存庫"</string>
+    <string name="ui_add_repository_e2be0a30" formatted="false">"添加存儲庫"</string>
+    <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"新增所選儲存庫"</string>
+    <string name="ui_added_b4561641" formatted="false">"新增"</string>
+    <string name="ui_added_repositories_400f05cb" formatted="false">"已新增的儲存庫"</string>
+    <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"所有衝突解決結果均已暫存。請繼續重播提交。如果 Git 回報 NOTHING_TO_COMMIT，請檢查是否應略過空提交。"</string>
+    <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"所有衝突已解決。請完成或中止合併。"</string>
+    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"安裝付費應用程式後即可使用所有功能。沒有訂閱或應用程式內購買。"</string>
+    <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"：對本文件的所有本地修改都將永久丟失。"</string>
+    <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"允許存取本機資料夾"</string>
+    <string name="ui_already_added_253b22d7" formatted="false">"已新增"</string>
+    <string name="ui_and_1_s_more_f93ea742">"及 %1$s 更多..."</string>
+    <string name="ui_app_0d04bfeb" formatted="false">"應用程式"</string>
+    <string name="ui_app_settings_da645334" formatted="false">"應用程式設定"</string>
+    <string name="ui_apply_2cbf6555" formatted="false">"套用"</string>
+    <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"套用追蹤選項"</string>
+    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"核准將儲存在此裝置上，等待中的連線將繼續。取消將不會信任伺服器。"</string>
+    <string name="ui_authentication_66880d2d" formatted="false">"認証"</string>
+    <string name="ui_back_639807a2" formatted="false">"返回"</string>
+    <string name="ui_back_aceb696a" formatted="false">"← 返回"</string>
+    <string name="ui_back_f645ed02" formatted="false">"←  返回"</string>
+    <string name="ui_backup_1_s_6ad01ca6">"備份：%1$s"</string>
+    <string name="ui_base_7b47361a" formatted="false">"共同祖先"</string>
+    <string name="ui_binary_file_2c7ccf98" formatted="false">"二進製文件"</string>
+    <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"二進位、大型或 LFS 檔案：請選擇一方的完整版本。"</string>
+    <string name="ui_branch_52656e81" formatted="false">"分支"</string>
+    <string name="ui_branch_name_06f6bb71" formatted="false">"分支名稱"</string>
+    <string name="ui_branch_optional_e9dedf99" formatted="false">"分支（選填）"</string>
+    <string name="ui_browse_files_c8bb105f" formatted="false">"瀏覽文件"</string>
+    <string name="ui_browse_repos_e9c9d50c" formatted="false">"瀏覽儲存庫"</string>
+    <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"正在使用此帳號瀏覽"</string>
+    <string name="ui_cancel_ad8d6985" formatted="false">"取消"</string>
+    <string name="ui_changed_2a6141e4" formatted="false">"已更改"</string>
+    <string name="ui_changed_files_cdf024ce" formatted="false">"已更改檔案"</string>
+    <string name="ui_changes_bbd4b6a8" formatted="false">"更改"</string>
+    <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"為此儲存庫選擇已連接的帳號。"</string>
+    <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"選擇裝置上的資料夾"</string>
+    <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"複製前請選擇驗證方式。"</string>
+    <string name="ui_choose_another_folder_b50df380" formatted="false">"選擇其他資料夾"</string>
+    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"選擇複製儲存位置"</string>
+    <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"請選擇裝置本機儲存空間或已連接的儲存裝置。雲端文件供應商並未提供此 Git 引擎可用的檔案系統。"</string>
+    <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"選擇用於瀏覽 GitHub 的帳號。每個儲存庫都會保留其指定帳號；可在「儲存庫連線」中變更。"</string>
+    <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"選擇新複製的預設資料夾。現有儲存庫將保留在目前位置。"</string>
+    <string name="ui_clear_all_29a390f9" formatted="false">"清空全部"</string>
+    <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"清空所有診斷？"</string>
+    <string name="ui_clear_log_a8858ac7" formatted="false">"清空日誌"</string>
+    <string name="ui_clone_a_github_repository_or_reconnect_a_l_dd9aa7e0" formatted="false">"複製 GitHub 儲存庫或重新連接本機工作複本。"</string>
+    <string name="ui_clone_again_e05eb495" formatted="false">"重新複製"</string>
+    <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"重新複製 · 開始前請檢查先前的分支與連線設定。"</string>
+    <string name="ui_clone_directory_157fc791" formatted="false">"複製目錄"</string>
+    <string name="ui_clone_failed_958e3f3a" formatted="false">"複製失敗"</string>
+    <string name="ui_clone_repository_e8fa94ab" formatted="false">"複製儲存庫"</string>
+    <string name="ui_clone_storage_47cafc8a" formatted="false">"複製儲存位置"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_90548a33" formatted="false">"正在複製並準備工作複本…"</string>
+    <string name="ui_cloning_repository_c9d2441e" formatted="false">"正在複製儲存庫"</string>
+    <string name="ui_commit_84da95ea" formatted="false">"提交:"</string>
+    <string name="ui_commit_author_e9376b3a" formatted="false">"提交作者"</string>
+    <string name="ui_commit_message_a4b361b7" formatted="false">"提交訊息⋯"</string>
+    <string name="ui_commit_push_94e9650a" formatted="false">"提交並推送"</string>
+    <string name="ui_commit_sha_d0bc6028" formatted="false">"提交 SHA"</string>
+    <string name="ui_compare_this_fingerprint_with_the_server_o_69b2eaae" formatted="false">"信任前，請將此指紋與伺服器擁有者公布的 SSH 主機金鑰進行比較。"</string>
+    <string name="ui_complete_894981ff" formatted="false">"完成"</string>
+    <string name="ui_complete_merge_385cc51b" formatted="false">"全量閤併"</string>
+    <string name="ui_confirm_eebdd24a" formatted="false">"確認"</string>
+    <string name="ui_conflict_center_e9f65d36" formatted="false">"衝突中心"</string>
+    <string name="ui_conflict_d79910c7" formatted="false">"衝突"</string>
+    <string name="ui_connect_a_github_repository_to_start_synci_0e1f2ea6" formatted="false">"連接 GitHub 儲存庫以開始同步。"</string>
+    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"連結 GitHub、GitLab、Bitbucket 或你自己的 Git 伺服器上的公開或私人 HTTPS 或 SSH 儲存庫。"</string>
+    <string name="ui_connect_with_github_6f2b4e53" formatted="false">"連接 GitHub"</string>
+    <string name="ui_connect_your_github_account_to_browse_and_b692e428" formatted="false">"連接 GitHub 帳號以瀏覽和同步儲存庫。"</string>
+    <string name="ui_continue_rebase_7a14e965" formatted="false">"繼續重基線"</string>
+    <string name="ui_copy_visible_29e7587c" formatted="false">"複製可見記錄"</string>
+    <string name="ui_create_4759498a" formatted="false">"建立"</string>
+    <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"使用「新增」建立檔案或資料夾。"</string>
+    <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"創建 PAT ON GITHUB →"</string>
+    <string name="ui_create_fde9c501" formatted="false">"建立"</string>
+    <string name="ui_current_default_d914f86e" formatted="false">"目前的預設資料夾"</string>
+    <string name="ui_current_e3cc57e1" formatted="false">"當前"</string>
+    <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"目前獨立的推送位址：%1$s"</string>
+    <string name="ui_dark_theme_6f2a0915" formatted="false">"深色主題"</string>
+    <string name="ui_debug_0ffd43f5" formatted="false">"除錯"</string>
+    <string name="ui_debug_info_697b4941" formatted="false">"偵錯資訊"</string>
+    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"新複製的預設位置。每個複製都可以使用其他資料夾。"</string>
+    <string name="ui_delete_1_s_6474596f">"刪除「%1$s」？"</string>
+    <string name="ui_delete_branch_00339d48" formatted="false">"要刪除分支嗎？"</string>
+    <string name="ui_delete_branch_1c3f98e5" formatted="false">"刪除分支"</string>
+    <string name="ui_delete_e2d0a549" formatted="false">"刪除"</string>
+    <string name="ui_delete_file_28e18dc9" formatted="false">"刪除檔案"</string>
+    <string name="ui_delete_local_files_09697434" formatted="false">"是否刪除本地文件？"</string>
+    <string name="ui_delete_local_files_20424441" formatted="false">"刪除本地文件"</string>
+    <string name="ui_delete_tag_365635aa" formatted="false">"刪除標籤"</string>
+    <string name="ui_diagnostics_268f14bb" formatted="false">"診斷"</string>
+    <string name="ui_diff_b6aeb797" formatted="false">"差異"</string>
+    <string name="ui_discard_draft_cb30147e" formatted="false">"捨棄草稿"</string>
+    <string name="ui_discard_eb1a70e3" formatted="false">"捨棄"</string>
+    <string name="ui_discard_resolution_draft_47c16148" formatted="false">"捨棄解決方案草稿？"</string>
+    <string name="ui_discovered_repositories_059a8e8d" formatted="false">"找到的儲存庫"</string>
+    <string name="ui_dismiss_48845bff" formatted="false">"關閉"</string>
+    <string name="ui_done_283e91eb" formatted="false">"完成"</string>
+    <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"下載缺少的檔案內容"</string>
+    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"重定基底期間，上游是 Git 的 ours 一方，重播的本機提交是 theirs 一方。"</string>
+    <string name="ui_edit_commit_author_443f376d" formatted="false">"編輯提交作者"</string>
+    <string name="ui_edit_connection_047f9f95" formatted="false">"編輯連線"</string>
+    <string name="ui_edit_resolution_9a6cda88" formatted="false">"編輯解決方案"</string>
+    <string name="ui_email_969ccbd3" formatted="false">"電子郵件"</string>
+    <string name="ui_empty_folder_ca1fd454" formatted="false">"空資料夾"</string>
+    <string name="ui_enable_access_9d7caf64" formatted="false">"啟用存取權"</string>
+    <string name="ui_endpoint_authentication_1841e2be" formatted="false">"端點驗證"</string>
+    <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"請為新位址重新輸入憑證，或選擇公開存取。"</string>
+    <string name="ui_error_54a0e8c1" formatted="false">"錯誤"</string>
+    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"再次連線每個 SSH 伺服器前都需要驗證指紋。這也會移除損壞的信任記錄。"</string>
+    <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"獲取並套用遠端更改"</string>
+    <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"擷取並檢查重定基底"</string>
+    <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"擷取遠端變更"</string>
+    <string name="ui_file_operation_failed_f78a328b" formatted="false">"檔案操作失敗"</string>
+    <string name="ui_finishing_up_13f4f85a" formatted="false">"正在完成"</string>
+    <string name="ui_forget_a6bd489d" formatted="false">"忘記"</string>
+    <string name="ui_forget_server_e43c85d4" formatted="false">"忘記伺服器"</string>
+    <string name="ui_forget_ssh_server_d5c91f0a" formatted="false">"忘記 SSH 伺服器？"</string>
+    <string name="ui_from_1_s_40f7d611">" 來自 %1$s"</string>
+    <string name="ui_full_version_no_subscription_8fe42d1c" formatted="false">"完整版本 · 無需訂閱"</string>
+    <string name="ui_ghp_ff475c83" formatted="false">"ghp_..."</string>
+    <string name="ui_git_b084246d" formatted="false">"GIT"</string>
+    <string name="ui_git_lfs_keeps_large_file_contents_outside_4b4afd49" formatted="false">"Git LFS 將大型檔案內容儲存在 Git 歷史記錄之外。提交僅儲存小型指標；複製與拉取會下載內容，推送則在發布提交前上傳物件。"</string>
+    <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS 需要處理"</string>
+    <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · 追蹤與下載"</string>
+    <string name="ui_git_remote_91593664" formatted="false">"Git 遠端儲存庫"</string>
+    <string name="ui_github_accounts_653cf0c5" formatted="false">"GitHub 帳戶"</string>
+    <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub 登録"</string>
+    <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Gitsync.md 完整版"</string>
+    <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md 需要共用儲存空間的存取權，才能管理裝置資料夾中的實際 Git 工作複本。在 Android 設定中啟用存取權後，請選擇要使用的資料夾。"</string>
+    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md 不會為此儲存庫提供憑證。"</string>
+    <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"我了解其他擁有者可能仍在編輯此檔案。"</string>
+    <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"請在位址中包含 SSH 使用者名稱：git@host:team/repo.git 或 ssh://git@host:2222/team/repo.git。"</string>
+    <string name="ui_info_170322a3" formatted="false">"信息"</string>
+    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"保留經過驗證的中繼資料備份"</string>
+    <string name="ui_keep_editing_e76fd2ad" formatted="false">"繼續編輯"</string>
+    <string name="ui_keep_selected_files_in_regular_git_7de351fc" formatted="false">"將所選檔案保留在一般 Git 中"</string>
+    <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"金鑰密碼（選填）"</string>
+    <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"金鑰會在此裝置上加密，且只用於已儲存的儲存庫位址。首次連線時請核對伺服器指紋。"</string>
+    <string name="ui_last_sync_a0d540dd" formatted="false">"上次同步"</string>
+    <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"留空以使用伺服器的預設分支。"</string>
+    <string name="ui_lfs_endpoint_02a55a73" formatted="false">"LFS 端點"</string>
+    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"LFS 端點授權"</string>
+    <string name="ui_lfs_endpoint_token_or_password_e069890b" formatted="false">"LFS 端點權杖或密碼"</string>
+    <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS 端點使用者名稱"</string>
+    <string name="ui_license_c011d609" formatted="false">"授權"</string>
+    <string name="ui_loading_dc380888" formatted="false">"正在載入"</string>
+    <string name="ui_loading_diff_3944c704" formatted="false">"正在載入差異"</string>
+    <string name="ui_loading_repos_2f4f4a93" formatted="false">"正在載入儲存庫"</string>
+    <string name="ui_loading_repository_15b79262" formatted="false">"正在載入儲存庫"</string>
+    <string name="ui_local_changes_4d25c7d4" formatted="false">"本機變更"</string>
+    <string name="ui_local_repositories_ddcf4270" formatted="false">"本機儲存庫"</string>
+    <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"管理 GitHub 帳號"</string>
+    <string name="ui_manual_7c8107bd" formatted="false">"手動"</string>
+    <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"對應的公開金鑰（選填）"</string>
+    <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
+    <string name="ui_merge_8851aaa7" formatted="false">"合併"</string>
+    <string name="ui_merge_commit_message_2132e189" formatted="false">"閤併提交信息"</string>
+    <string name="ui_merge_fc2b737d" formatted="false">"合併"</string>
+    <string name="ui_message_f5394f72" formatted="false">"訊息："</string>
+    <string name="ui_more_d47d7cb0" formatted="false">"更多"</string>
+    <string name="ui_move_repository_1c4a6083" formatted="false">"移動儲存庫"</string>
+    <string name="ui_name_dcd1d522" formatted="false">"名稱"</string>
+    <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"在 GitSync.md 中的名稱"</string>
+    <string name="ui_new_18fdd549" formatted="false">"新增"</string>
+    <string name="ui_new_branch_name_3fb60017" formatted="false">"new-branch-name"</string>
+    <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"此儲存庫中的新提交將使用此姓名和電子郵件。現有提交將保留原作者。"</string>
+    <string name="ui_new_file_44dedd0f" formatted="false">"新文件"</string>
+    <string name="ui_new_folder_cf28f49e" formatted="false">"新增資料夾"</string>
+    <string name="ui_new_token_or_password_fc54aafe" formatted="false">"新權杖或密碼"</string>
+    <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"沒有已核准的自訂 LFS 端點"</string>
+    <string name="ui_no_commits_found_64ccb533" formatted="false">"找不到提交"</string>
+    <string name="ui_no_conflicts_found_d356b17b" formatted="false">"找不到衝突"</string>
+    <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"沒有已連線的帳號。本機儲存庫仍然可用。"</string>
+    <string name="ui_no_lfs_pointers_in_the_current_index_612c2995" formatted="false">"目前索引中沒有 LFS 指標。"</string>
+    <string name="ui_no_local_changes_56319dc5" formatted="false">"無本地更改"</string>
+    <string name="ui_no_local_changes_to_stash_0beb8393" formatted="false">"沒有可暫存的本地更改"</string>
+    <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"沒有需要選擇追蹤方式的新二進位檔案或大型檔案。"</string>
+    <string name="ui_no_repositories_a6e9ff91" formatted="false">"沒有儲存庫"</string>
+    <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"尚未新增儲存庫。"</string>
+    <string name="ui_no_repository_aec5972a" formatted="false">"沒有儲存庫"</string>
+    <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"找不到暫存的變更"</string>
+    <string name="ui_no_tags_found_8a6dd503" formatted="false">"找不到標籤"</string>
+    <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"該倉庫沒有標籤"</string>
+    <string name="ui_no_trusted_ssh_servers_df52a7ed" formatted="false">"沒有受信任的 SSH 伺服器"</string>
+    <string name="ui_no_working_copies_found_in_the_scanned_fol_904c5b06" formatted="false">"掃描的資料夾中未找到工作複本。"</string>
+    <string name="ui_none_dc937b59" formatted="false">"無"</string>
+    <string name="ui_now_ed5eb9a3" formatted="false">"現在"</string>
+    <string name="ui_ok_565339bc" formatted="false">"確定"</string>
+    <string name="ui_open_ed077f3d" formatted="false">"開啟"</string>
+    <string name="ui_open_in_files_e1d250d0" formatted="false">"打開文件"</string>
+    <string name="ui_opening_file_de0df916" formatted="false">"正在開啟檔案…"</string>
+    <string name="ui_or_7175517a" formatted="false">"或"</string>
+    <string name="ui_ours_ab658c14" formatted="false">"本地版本"</string>
+    <string name="ui_override_system_appearance_2685888c" formatted="false">"覆寫系統外觀設定"</string>
+    <string name="ui_owner_1_s_599ca9ce">"擁有者：%1$s"</string>
+    <string name="ui_path_62fa5a5b" formatted="false">"路徑"</string>
+    <string name="ui_personal_access_token_5572fccc" formatted="false">"個人存取權杖"</string>
+    <string name="ui_personal_access_token_702ef4a0" formatted="false">"個人訪問令牌"</string>
+    <string name="ui_platform_c78ffe19" formatted="false">"平台"</string>
+    <string name="ui_pop_52e740ad" formatted="false">"彈出"</string>
+    <string name="ui_previously_added_627f4765" formatted="false">"曾經新增"</string>
+    <string name="ui_previously_trusted_1_s_df583fd2">"先前信任的指紋：%1$s"</string>
+    <string name="ui_privacy_policy_506ff394" formatted="false">"隱私權政策"</string>
+    <string name="ui_public_access_03e7db61" formatted="false">"公開存取"</string>
+    <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"重置基準值下的拉取"</string>
+    <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"重定基底並拉取 / 繼續重定基底"</string>
+    <string name="ui_push_792aac67" formatted="false">"推送"</string>
+    <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"將本機變更推送至遠端"</string>
+    <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"正在重定基底"</string>
+    <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"重定基底至已檢查的上游"</string>
+    <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"此裝置上最近的操作結果。日誌最多保留 500 筆記錄。不包含憑證、儲存庫位址、檔案路徑或檔案內容。"</string>
+    <string name="ui_reconnect_bf8a9eab" formatted="false">"重新連接"</string>
+    <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"重新連接 GitSync.md 已儲存的工作複本。移除項目會保留檔案；刪除應用程式管理的複製本和移除 Git 追蹤是獨立選項。"</string>
+    <string name="ui_refresh_0e916101" formatted="false">"重新整理"</string>
+    <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"重新整理重定基底狀態"</string>
+    <string name="ui_reload_1_s_873e324f">"重新載入 %1$s？"</string>
+    <string name="ui_reload_author_18a711d8" formatted="false">"重新載入作者"</string>
+    <string name="ui_reload_connection_ceed2dae" formatted="false">"重新載入連線"</string>
+    <string name="ui_reload_from_disk_d4288839" formatted="false">"從磁碟重新載入"</string>
+    <string name="ui_reload_lfs_state_046eb2f5" formatted="false">"重新載入 LFS 狀態"</string>
+    <string name="ui_remove_1_s_e4dd7c24">"移除 %1$s？"</string>
+    <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"移除「%1$s」？\n\n這會將其從 GitSync.md 中移除。所有本機檔案和 Git 歷史記錄都會保留在此裝置上，之後可以重新連接。遠端儲存庫不會受到影響。"</string>
+    <string name="ui_remove_5fdf0b2b" formatted="false">"移除"</string>
+    <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"移除此裝置上的所有自訂端點核准及其已儲存的憑證。每個端點和傳輸方向都需要重新檢查。"</string>
+    <string name="ui_remove_c3812fc4" formatted="false">"移除"</string>
+    <string name="ui_remove_credentials_1b0700a3" formatted="false">"移除憑證"</string>
+    <string name="ui_remove_from_app_0d20b3a2" formatted="false">"從 App 中移除"</string>
+    <string name="ui_remove_from_gitsync_md_ead6e2d6" formatted="false">"從...中移除 GitSync.md?"</string>
+    <string name="ui_remove_git_tracking_1f8255d9" formatted="false">"移除 Git 追蹤？"</string>
+    <string name="ui_remove_git_tracking_d3e1065f" formatted="false">"移除 Git 追蹤"</string>
+    <string name="ui_remove_recovery_copy_b24c79b1" formatted="false">"移除復原副本"</string>
+    <string name="ui_remove_repository_fc68168b" formatted="false">"移除儲存庫"</string>
+    <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"移除已儲存的憑證"</string>
+    <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"移除已儲存的憑證？"</string>
+    <string name="ui_remove_sign_in_ae9ee617" formatted="false">"移除登入資訊"</string>
+    <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"移除保留的原始副本？"</string>
+    <string name="ui_remove_tracking_4b40d72c" formatted="false">"移除追蹤"</string>
+    <string name="ui_removed_70fa71f8" formatted="false">"刪除"</string>
+    <string name="ui_rename_1_s_9b09e088">"重新命名 %1$s"</string>
+    <string name="ui_rename_3064d79a" formatted="false">"重命名"</string>
+    <string name="ui_rename_file_e3526ab6" formatted="false">"文件重命名"</string>
+    <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"重播的本機提交"</string>
+    <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"在已設定的上游之上重播本機提交。本機提交 ID 可能改變。現有合併結構會保留。不會推送任何內容。"</string>
+    <string name="ui_repo_health_ed3e070f" formatted="false">"倉庫健康"</string>
+    <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"指派給此帳號的儲存庫需要重新登入，或在「儲存庫連線」中選擇其他帳號。本機檔案和提交將保留。"</string>
+    <string name="ui_repository_13d6ff07" formatted="false">"儲存庫"</string>
+    <string name="ui_repository_connection_1188001b" formatted="false">"儲存庫連線"</string>
+    <string name="ui_repository_path_037711af" formatted="false">"儲存庫路徑"</string>
+    <string name="ui_repository_status_64c67cd2" formatted="false">"儲存庫狀態"</string>
+    <string name="ui_repository_url_c83db013" formatted="false">"儲存庫 URL"</string>
+    <string name="ui_reset_all_lfs_endpoint_approvals_d20616d7" formatted="false">"重設所有 LFS 端點核准？"</string>
+    <string name="ui_reset_all_lfs_endpoint_approvals_e6d5c6c6" formatted="false">"重設所有 LFS 端點核准"</string>
+    <string name="ui_reset_all_ssh_server_trust_3b8a05a5" formatted="false">"重設所有 SSH 伺服器信任"</string>
+    <string name="ui_reset_all_ssh_server_trust_4917ea5f" formatted="false">"重設所有 SSH 伺服器信任？"</string>
+    <string name="ui_reset_approvals_79eec91d" formatted="false">"重設核准"</string>
+    <string name="ui_reset_trust_b9be3a3c" formatted="false">"重設信任"</string>
+    <string name="ui_resolve_1_s_94accfee">"解決 %1$s"</string>
+    <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"解決並暫存"</string>
+    <string name="ui_resolve_conflict_ff598c8a" formatted="false">"解決衝突"</string>
+    <string name="ui_resolved_5be3c2c8" formatted="false">"已解決"</string>
+    <string name="ui_resolved_contents_55ceff37" formatted="false">"解決後的內容"</string>
+    <string name="ui_resolved_fea6a678" formatted="false">"已解決"</string>
+    <string name="ui_retry_942087cc" formatted="false">"重試"</string>
+    <string name="ui_retry_e464c660" formatted="false">"重試"</string>
+    <string name="ui_return_to_repositories_c97a4463" formatted="false">"返回儲存庫"</string>
+    <string name="ui_revert_all_changes_06b0eb3d" formatted="false">"撤銷所有更改"</string>
+    <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  撤銷所有更改"</string>
+    <string name="ui_revert_c8d62872" formatted="false">"↩  撤銷"</string>
+    <string name="ui_revert_changes_5b36e77f" formatted="false">"撤銷更改"</string>
+    <string name="ui_review_restored_folder_66729a70" formatted="false">"檢閱已還原的資料夾"</string>
+    <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"檢查獲准用於儲存庫的獨立 LFS 伺服器。撤銷核准會停止該方向的後續傳輸；正在進行的操作可能仍會完成。"</string>
+    <string name="ui_revoke_87e6d00b" formatted="false">"撤銷"</string>
+    <string name="ui_save_1509f561" formatted="false">"儲存"</string>
+    <string name="ui_save_author_1c24b32a" formatted="false">"儲存作者"</string>
+    <string name="ui_save_c210bfdf" formatted="false">"儲存"</string>
+    <string name="ui_save_changes_to_1_s_4cb0cf65">"儲存對 %1$s 的變更？"</string>
+    <string name="ui_save_connection_df24ef12" formatted="false">"儲存連線"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"儲存的憑證會在此裝置上加密，且只用於此儲存庫的 HTTPS 位址。"</string>
+    <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"儲存後，擷取和推送都會使用此位址。之後請執行擷取以重新整理遠端狀態。"</string>
+    <string name="ui_scan_a_device_folder_995756f2" formatted="false">"掃描裝置資料夾"</string>
+    <string name="ui_scan_app_folders_12ed3a77" formatted="false">"掃描應用程式資料夾"</string>
+    <string name="ui_search_repositories_243865a1" formatted="false">"搜尋儲存庫…"</string>
+    <string name="ui_select_repository_64bd6444" formatted="false">"選擇存儲庫"</string>
+    <string name="ui_selected_folder_0cf59bef" formatted="false">"所選資料夾"</string>
+    <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"獨立的使用者名稱和權杖"</string>
+    <string name="ui_settings_02f6ea12" formatted="false">"設定"</string>
+    <string name="ui_share_backup_archive_ee4ba873" formatted="false">"分享備份封存檔"</string>
+    <string name="ui_share_visible_4fcf9b94" formatted="false">"分享可見記錄"</string>
+    <string name="ui_show_debug_information_6e8abf80" formatted="false">"顯示偵錯資訊"</string>
+    <string name="ui_sign_in_75606a00" formatted="false">"登入"</string>
+    <string name="ui_sign_out_0b184bc5" formatted="false">"登出"</string>
+    <string name="ui_skip_current_commit_370b7166" formatted="false">"略過目前提交…"</string>
+    <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"無法讀取或儲存部分診斷。現有資料已保留。清空日誌以重新開始記錄。"</string>
+    <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH 俬鑰"</string>
+    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH 伺服器信任設定"</string>
+    <string name="ui_stage_all_d1ce47c8" formatted="false">"暫存所有變更"</string>
+    <string name="ui_stage_de838855" formatted="false">"暫存"</string>
+    <string name="ui_stash_message_optional_7b463cf6" formatted="false">"存儲消息（可選）……"</string>
+    <string name="ui_switch_39921a74" formatted="false">"切換"</string>
+    <string name="ui_switch_to_branch_278b039a" formatted="false">"切換到分支"</string>
+    <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
+    <string name="ui_tag_name_e_g_v1_0_0_16aa5a68" formatted="false">"tag-name (e.g. v1.0.0)"</string>
+    <string name="ui_tags_1331275b" formatted="false">"標籤"</string>
+    <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"使用中的目標資料夾會保留。GitSync.md 會先檢查保留的原始副本是否沒有後續編輯，再永久移除其檔案和 Git 歷史記錄。"</string>
+    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"加密連線只會重用於儲存庫的原始位址。若要使用其他位址，請明確變更驗證方式。"</string>
+    <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"先前的 GitHub 帳號已中斷連線。請選擇已連結的帳號或其他驗證方式。"</string>
+    <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"重播的本機提交會刪除此檔案。"</string>
+    <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"檢閱資訊已變更。請取消並重新整理伺服器鎖定。"</string>
+    <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"掃描已達到深度或資料夾數量上限。部分資料夾未被掃描。"</string>
+    <string name="ui_theirs_691ef727" formatted="false">"遠端版本"</string>
+    <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"此操作不可撤銷。"</string>
+    <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"這會變更 .gitattributes。在暫存變更之前，檔案和索引將保持原樣。"</string>
+    <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"這會移除其他連線的鎖定。請在繼續前與擁有者協調。"</string>
+    <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"此儲存庫會使用公開存取，直到你重新選擇驗證方式。你已登入的 GitHub 帳號不會用於此儲存庫。擷取和推送位址保持不變。"</string>
+    <string name="ui_token_or_password_d6e43f8a" formatted="false">"令牌或密碼"</string>
+    <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"使用 LFS 追蹤所選檔案"</string>
+    <string name="ui_tracked_objects_a265fdb0" formatted="false">"已追蹤物件"</string>
+    <string name="ui_tracking_review_8d316853" formatted="false">"追蹤檢閱"</string>
+    <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"受信任伺服器的指紋儲存在此裝置上。忘記伺服器後，下次連線時需要驗證。儲存庫私密金鑰仍會保留。"</string>
+    <string name="ui_unable_to_open_file_2787a028" formatted="false">"無法開啟檔案"</string>
+    <string name="ui_unstage_033f86f9" formatted="false">"取消暫存"</string>
+    <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"更新此工作複本的位址或驗證方式。本機檔案、提交和已暫存的變更會保留。"</string>
+    <string name="ui_upstream_94adc696" formatted="false">"上游"</string>
+    <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"上游已刪除此檔案。"</string>
+    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"請使用 github.com 的 HTTPS 位址。即使切換瀏覽儲存庫時使用的帳號，複本仍保留所選帳號。"</string>
+    <string name="ui_use_app_storage_d199e8e0" formatted="false">"使用應用程式儲存空間"</string>
+    <string name="ui_use_for_browsing_f4b0d6df" formatted="false">"用於瀏覽"</string>
+    <string name="ui_use_for_new_clones_be174c95" formatted="false">"用於新複製"</string>
+    <string name="ui_use_ours_4bec9877" formatted="false">"使用我們的服務"</string>
+    <string name="ui_use_saved_connection_21052734" formatted="false">"使用已儲存的連線"</string>
+    <string name="ui_use_saved_default_3bb7260d" formatted="false">"使用已儲存的預設設定"</string>
+    <string name="ui_use_saved_endpoint_credentials_2f2000f7" formatted="false">"使用已儲存的端點憑證"</string>
+    <string name="ui_use_theirs_352c4272" formatted="false">"使用他們的"</string>
+    <string name="ui_username_e3b89e9d" formatted="false">"使用者名稱"</string>
+    <string name="ui_username_token_7375b2ff" formatted="false">"使用者名稱 + 權杖"</string>
+    <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"請與儲存庫擁有者核實此位址。核准僅適用於此裝置上的此儲存庫、Git 遠端儲存庫、LFS 端點和傳輸方向。"</string>
+    <string name="ui_version_dd167905" formatted="false">"版本"</string>
+    <string name="ui_warning_e981ddae" formatted="false">"警告"</string>
+    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"若無備份，本機 Git 歷史記錄將被永久刪除。此操作無法復原。"</string>
+    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"工作檔案將保留在原處。本機分支、提交、stash、遠端儲存庫和歷史記錄將與此資料夾中斷連線。"</string>
+    <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"你的編輯尚未儲存。"</string>
+    <string name="ui_your_git_sign_in_is_not_shared_with_this_s_8fbab830" formatted="false">"您的 Git 登入資訊不會與此伺服器共用。獨立的端點憑證在此裝置上加密。可在設定 → LFS 端點核准中管理或撤銷核准。"</string>
+    <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"尚未送出的文字將被捨棄。工作檔案保持不變。"</string>
+    <string name="untracked" formatted="false">"未追蹤"</string>
+    <string name="upstream_body" formatted="false">"設定此本機分支的同步目標。檔案、提交和已儲存的連線均保持不變。"</string>
+    <string name="upstream_branch" formatted="false">"分支"</string>
+    <string name="upstream_local_branch">"本機分支：%1$s"</string>
+    <string name="upstream_remote" formatted="false">"遠端儲存庫"</string>
+    <string name="upstream_title" formatted="false">"追蹤分支"</string>
+    <string name="upstream_unavailable" formatted="false">"請選擇已設定遠端儲存庫的本機分支，並先完成所有進行中的 Git 操作。"</string>
+    <plurals name="discard_review_files">
+        <item quantity="one">"%1$d 個檔案"</item>
+        <item quantity="other">"%1$d 個檔案"</item>
+    </plurals>
+    <plurals name="lfs_downloaded_objects">
+        <item quantity="one">"已下載 %1$d 個物件。"</item>
+        <item quantity="other">"已下載 %1$d 個物件。"</item>
+    </plurals>
+    <plurals name="lfs_extensions_affected">
+        <item quantity="one">"%1$d 個現有檔案在暫存時將使用 LFS"</item>
+        <item quantity="other">"%1$d 個現有檔案在暫存時將使用 LFS"</item>
+    </plurals>
+    <plurals name="lfs_extensions_more">
+        <item quantity="one">"以及另外 %1$d 個現有檔案。提交前請檢查 Git 變更。"</item>
+        <item quantity="other">"以及另外 %1$d 個現有檔案。提交前請檢查 Git 變更。"</item>
+    </plurals>
+    <plurals name="lfs_extensions_retained">
+        <item quantity="one">"%1$d 個現有檔案會保留其明確選擇的追蹤方式。"</item>
+        <item quantity="other">"%1$d 個現有檔案會保留其明確選擇的追蹤方式。"</item>
+    </plurals>
+    <plurals name="lfs_restored_files">
+        <item quantity="one">"已還原 %1$d 個檔案。"</item>
+        <item quantity="other">"已還原 %1$d 個檔案。"</item>
+    </plurals>
+    <plurals name="lfs_tracking_files">
+        <item quantity="one">"%1$d 個檔案"</item>
+        <item quantity="other">"%1$d 個檔案"</item>
+    </plurals>
+    <plurals name="rebase_additional_blocked_paths">
+        <item quantity="one">"另有 %1$d 個受阻路徑未顯示。"</item>
+        <item quantity="other">"另有 %1$d 個受阻路徑未顯示。"</item>
+    </plurals>
+    <plurals name="rebase_local_commits">
+        <item quantity="one">"%1$d 個本機提交"</item>
+        <item quantity="other">"%1$d 個本機提交"</item>
+    </plurals>
+    <plurals name="rebase_upstream_commits">
+        <item quantity="one">"%1$d 個上游提交"</item>
+        <item quantity="other">"%1$d 個上游提交"</item>
+    </plurals>
+    <plurals name="repository_picker_count">
+        <item quantity="one">"· %1$d 個儲存庫"</item>
+        <item quantity="other">"· %1$d 個儲存庫"</item>
+    </plurals>
+    <plurals name="tide_git_conflicts_to_resolve">
+        <item quantity="one">"%1$d 個衝突待解決"</item>
+        <item quantity="other">"%1$d 個衝突待解決"</item>
+    </plurals>
+    <plurals name="tide_git_files_staged">
+        <item quantity="one">"已暫存 %1$d 個檔案"</item>
+        <item quantity="other">"已暫存 %1$d 個檔案"</item>
+    </plurals>
+    <plurals name="tide_git_headline_commit">
+        <item quantity="one">"提交 %1$d 個檔案"</item>
+        <item quantity="other">"提交 %1$d 個檔案"</item>
+    </plurals>
+    <plurals name="tide_home_headline_attention">
+        <item quantity="one">"%1$d 個儲存庫\n需要你關注。"</item>
+        <item quantity="other">"%1$d 個儲存庫\n需要你關注。"</item>
+    </plurals>
+    <plurals name="tide_home_headline_ready">
+        <item quantity="one">"此手機上有\n%1$d 個儲存庫。"</item>
+        <item quantity="other">"此手機上有\n%1$d 個儲存庫。"</item>
+    </plurals>
+    <plurals name="tide_home_start_github_count">
+        <item quantity="one">"%1$d 個可用儲存庫"</item>
+        <item quantity="other">"%1$d 個可用儲存庫"</item>
+    </plurals>
+    <plurals name="tide_vault_changes_on_phone">
+        <item quantity="one">"此手機上的變更"</item>
+        <item quantity="other">"此手機上的變更"</item>
+    </plurals>
+    <plurals name="tide_vault_conflicts_to_resolve">
+        <item quantity="one">"待解決的衝突"</item>
+        <item quantity="other">"待解決的衝突"</item>
+    </plurals>
+</resources>

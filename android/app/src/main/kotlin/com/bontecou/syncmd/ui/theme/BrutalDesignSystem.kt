@@ -1,79 +1,92 @@
 package com.bontecou.syncmd.ui.theme
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.annotation.DrawableRes
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
 
-// ─── Brutal Colors ─────────────────────────────────────────────────────────
+// ─── GitSync.md legacy primitives ────────────────────────────────────────────
+// The B* components keep their original API but render in Tide: paper ground,
+// white rounded cards, ink and outline pills, Geist / Geist Mono, sentence-case
+// labels. Mirrors iOS BrutalDesignSystem.swift on the Tide redesign.
+
+// ─── Brutal Colors (Tide palette behind the legacy names; see Theme.kt) ─────
 data class BrutalColors(
+    /** Screen background — Tide paper. */
     val bg: Color,
+    /** Wells, inputs and segmented tracks. */
     val surface: Color,
+    /** Hairline separators and outlines. */
     val border: Color,
     val borderSoft: Color,
     val text: Color,
     val textMid: Color,
     val textFaint: Color,
+    /** Remote / pull blue. */
     val accent: Color,
     val error: Color,
     val success: Color,
+    /** Local / push orange. */
     val warning: Color,
 )
 
 val LocalBrutalColors = compositionLocalOf {
     BrutalColors(
-        bg         = BrutalBgLight,
-        surface    = BrutalSurfaceLight,
-        border     = BrutalBorderLight,
-        borderSoft = BrutalBorderSoftLight,
-        text       = BrutalTextLight,
-        textMid    = BrutalTextMidLight,
-        textFaint  = BrutalTextFaintLight,
-        accent     = BrutalAccentLight,
-        error      = BrutalErrorLight,
-        success    = BrutalSuccessLight,
-        warning    = BrutalWarningLight,
+        bg         = TideLight.paper,
+        surface    = TideLight.well,
+        border     = TideLight.line,
+        borderSoft = TideLight.lineSoft,
+        text       = TideLight.ink,
+        textMid    = TideLight.inkMid,
+        textFaint  = TideLight.inkFaint,
+        accent     = TideLight.behind,
+        error      = TideLight.danger,
+        success    = TideLight.synced,
+        warning    = TideLight.ahead,
     )
 }
 
@@ -82,10 +95,7 @@ enum class BBadgeStyle { DEFAULT, ACCENT, SUCCESS, WARNING, ERROR }
 
 fun BrutalColors.badgeBg(style: BBadgeStyle): Color = when (style) {
     BBadgeStyle.DEFAULT -> surface
-    BBadgeStyle.ACCENT  -> accent.copy(alpha = 0.10f)
-    BBadgeStyle.SUCCESS -> success.copy(alpha = 0.10f)
-    BBadgeStyle.WARNING -> warning.copy(alpha = 0.10f)
-    BBadgeStyle.ERROR   -> error.copy(alpha = 0.10f)
+    else -> badgeFg(style).copy(alpha = 0.12f)
 }
 
 fun BrutalColors.badgeFg(style: BBadgeStyle): Color = when (style) {
@@ -96,30 +106,24 @@ fun BrutalColors.badgeFg(style: BBadgeStyle): Color = when (style) {
     BBadgeStyle.ERROR   -> error
 }
 
-fun BrutalColors.badgeBorder(style: BBadgeStyle): Color = when (style) {
-    BBadgeStyle.DEFAULT -> borderSoft
-    BBadgeStyle.ACCENT  -> accent.copy(alpha = 0.30f)
-    BBadgeStyle.SUCCESS -> success.copy(alpha = 0.30f)
-    BBadgeStyle.WARNING -> warning.copy(alpha = 0.30f)
-    BBadgeStyle.ERROR   -> error.copy(alpha = 0.30f)
-}
+fun BrutalColors.badgeBorder(style: BBadgeStyle): Color = Color.Transparent
 
 // ─── BCard ───────────────────────────────────────────────────────────────────
-/**
- * Sharp-edged card with hard 1dp border — the core brutalist container.
- */
+/** White rounded card on paper — renders as a TideCard. */
 @Composable
 fun BCard(
     modifier: Modifier = Modifier,
-    bg: Color = LocalBrutalColors.current.bg,
+    bg: Color = Tide.colors.card,
     bc: BrutalColors = LocalBrutalColors.current,
     content: @Composable () -> Unit,
 ) {
+    // Callers that asked for the old screen background get a card instead.
+    val fill = if (bg == bc.bg) Tide.colors.card else bg
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(bg)
-            .border(1.dp, bc.border)
+            .clip(Tide.cardShape)
+            .background(fill, Tide.cardShape)
     ) {
         content()
     }
@@ -132,23 +136,16 @@ fun BBadge(
     style: BBadgeStyle = BBadgeStyle.DEFAULT,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    Box(
+    Text(
+        text = text,
+        style = TideType.metaStrong,
+        color = bc.badgeFg(style),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         modifier = Modifier
-            .background(bc.badgeBg(style))
-            .border(1.dp, bc.badgeBorder(style))
-            .padding(horizontal = 8.dp, vertical = 5.dp)
-    ) {
-        Text(
-            text = text.uppercase(),
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp,
-                letterSpacing = 1.sp,
-                color = bc.badgeFg(style),
-            )
-        )
-    }
+            .background(bc.badgeBg(style), RoundedCornerShape(10.dp))
+            .padding(horizontal = 9.dp, vertical = 5.dp),
+    )
 }
 
 // ─── BSectionHeader ──────────────────────────────────────────────────────────
@@ -159,37 +156,9 @@ fun BSectionHeader(
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Box(
-                modifier = Modifier
-                    .width(3.dp)
-                    .height(13.dp)
-                    .background(bc.text)
-            )
-            Text(
-                text = title.uppercase(),
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    letterSpacing = 2.sp,
-                    color = bc.text,
-                )
-            )
-        }
+        TideSectionLabel(title)
         if (subtitle != null) {
-            Text(
-                text = subtitle,
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    color = bc.text,
-                ),
-                modifier = Modifier.padding(start = 11.dp),
-            )
+            Text(text = subtitle, style = TideType.sans(14.sp), color = bc.textMid)
         }
     }
 }
@@ -207,29 +176,55 @@ fun BDivider(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Box(Modifier.weight(1f).height(1.dp).background(bc.border))
-            Text(
-                text = label.uppercase(),
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 12.sp,
-                    letterSpacing = 2.sp,
-                    color = bc.text,
-                )
-            )
+            TideSectionLabel(label)
             Box(Modifier.weight(1f).height(1.dp).background(bc.border))
         }
     } else {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(bc.border)
-        )
+        Box(Modifier.fillMaxWidth().height(1.dp).background(bc.border))
     }
 }
 
-// ─── BPrimaryButton ─────────────────────────────────────────────────────────
+// ─── Pill buttons ────────────────────────────────────────────────────────────
+
+@Composable
+private fun BPill(
+    title: String,
+    modifier: Modifier,
+    fill: Color?,
+    outline: Color?,
+    tint: Color,
+    enabled: Boolean,
+    isLoading: Boolean,
+    dimmed: Float,
+    @DrawableRes iconRes: Int? = null,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
+            .clip(CircleShape)
+            .then(if (fill != null) Modifier.background(fill, CircleShape) else Modifier)
+            .then(if (outline != null) Modifier.border(1.dp, outline, CircleShape) else Modifier)
+            .clickable(enabled = enabled && !isLoading, role = Role.Button, onClick = onClick)
+            .alpha(dimmed)
+            .padding(horizontal = 20.dp, vertical = 12.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(modifier = Modifier.size(20.dp), color = tint, strokeWidth = 2.dp)
+        } else {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                iconRes?.let {
+                    Icon(painterResource(it), contentDescription = null, tint = tint, modifier = Modifier.size(18.dp))
+                }
+                Text(text = title, textAlign = TextAlign.Center, style = TideType.button, color = tint)
+            }
+        }
+    }
+}
+
+/** Solid ink pill — the one right action. */
 @Composable
 fun BPrimaryButton(
     title: String,
@@ -240,55 +235,14 @@ fun BPrimaryButton(
     onClick: () -> Unit,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    val alpha = if (isDisabled || isLoading) 0.3f else 1f
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .background(bc.text.copy(alpha = alpha))
-            .clickable(
-                enabled = !isDisabled && !isLoading,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(20.dp),
-                color = bc.bg,
-                strokeWidth = 2.dp,
-            )
-        } else {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                leadingIconRes?.let { iconRes ->
-                    Icon(
-                        painter = painterResource(id = iconRes),
-                        contentDescription = null,
-                        tint = bc.bg,
-                        modifier = Modifier.size(16.dp),
-                    )
-                }
-                Text(
-                    text = title.uppercase(),
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        letterSpacing = 2.sp,
-                        color = bc.bg,
-                    )
-                )
-            }
-        }
-    }
+    BPill(
+        title, modifier,
+        fill = bc.text.copy(alpha = if (isDisabled) 0.3f else 1f), outline = null, tint = bc.bg,
+        enabled = !isDisabled, isLoading = isLoading, dimmed = 1f, iconRes = leadingIconRes, onClick = onClick,
+    )
 }
 
-// ─── BSecondaryButton ────────────────────────────────────────────────────────
+/** Outline pill. */
 @Composable
 fun BSecondaryButton(
     title: String,
@@ -298,42 +252,14 @@ fun BSecondaryButton(
     onClick: () -> Unit,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .background(bc.bg)
-            .border(1.dp, bc.border)
-            .clickable(
-                enabled = !isDisabled && !isLoading,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(20.dp),
-                color = bc.text,
-                strokeWidth = 2.dp,
-            )
-        } else {
-            Text(
-                text = title.uppercase(),
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    letterSpacing = 2.sp,
-                    color = if (isDisabled) bc.textFaint else bc.text,
-                )
-            )
-        }
-    }
+    BPill(
+        title, modifier,
+        fill = null, outline = bc.borderSoft, tint = bc.text,
+        enabled = !isDisabled, isLoading = isLoading, dimmed = if (isDisabled) 0.4f else 1f, onClick = onClick,
+    )
 }
 
-// ─── BGhostButton ────────────────────────────────────────────────────────────
+/** Text-only action with a 48dp hit target. */
 @Composable
 fun BGhostButton(
     title: String,
@@ -343,28 +269,18 @@ fun BGhostButton(
 ) {
     Box(
         modifier = modifier
-            .padding(vertical = 14.dp)
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            ),
+            .heightIn(min = 48.dp)
+            .widthIn(min = 48.dp)
+            .clip(CircleShape)
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = title.uppercase(),
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Medium,
-                fontSize = 13.sp,
-                letterSpacing = 1.sp,
-                color = color,
-            )
-        )
+        Text(text = title, style = TideType.sans(15.sp, FontWeight.Medium), color = color)
     }
 }
 
-// ─── BDestructiveButton ──────────────────────────────────────────────────────
+/** Solid danger pill. */
 @Composable
 fun BDestructiveButton(
     title: String,
@@ -373,42 +289,14 @@ fun BDestructiveButton(
     onClick: () -> Unit,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .background(bc.error.copy(alpha = 0.08f))
-            .border(1.dp, bc.error.copy(alpha = 0.5f))
-            .clickable(
-                enabled = !isLoading,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(20.dp),
-                color = bc.error,
-                strokeWidth = 2.dp,
-            )
-        } else {
-            Text(
-                text = title.uppercase(),
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    letterSpacing = 2.sp,
-                    color = bc.error,
-                )
-            )
-        }
-    }
+    BPill(
+        title, modifier,
+        fill = bc.error, outline = null, tint = Color.White,
+        enabled = true, isLoading = isLoading, dimmed = 1f, onClick = onClick,
+    )
 }
 
-// ─── BSmallActionButton ──────────────────────────────────────────────────────
+/** Compact outline pill for row-level actions. */
 @Composable
 fun BSmallActionButton(
     title: String,
@@ -418,28 +306,17 @@ fun BSmallActionButton(
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
     val fg = if (isDestructive) bc.error else bc.text
-    val borderColor = if (isDestructive) bc.error.copy(alpha = 0.4f) else bc.border
     Box(
         modifier = Modifier
-            .border(1.dp, if (enabled) borderColor else borderColor.copy(alpha = 0.3f))
-            .clickable(
-                enabled = enabled,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            )
-            .padding(horizontal = 9.dp, vertical = 6.dp)
+            .heightIn(min = 36.dp)
+            .clip(CircleShape)
+            .border(1.dp, if (isDestructive) bc.error.copy(alpha = 0.35f) else bc.borderSoft, CircleShape)
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
+            .alpha(if (enabled) 1f else 0.4f)
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = title.uppercase(),
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp,
-                letterSpacing = 1.sp,
-                color = if (enabled) fg else fg.copy(alpha = 0.4f),
-            )
-        )
+        Text(text = title, style = TideType.sans(13.sp, FontWeight.SemiBold), color = fg, maxLines = 1)
     }
 }
 
@@ -456,51 +333,28 @@ fun BTextField(
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
     var isFocused by remember { mutableStateOf(false) }
+    val tide = Tide.colors
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        Text(
-            text = label.uppercase(),
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 12.sp,
-                letterSpacing = 2.sp,
-                color = bc.text,
-            )
-        )
-
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        TideSectionLabel(label)
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            textStyle = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontSize = 16.sp,
-                color = bc.text,
-            ),
+            textStyle = TideType.sans(16.sp, FontWeight.Medium).copy(color = bc.text),
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             singleLine = true,
             keyboardOptions = keyboardOptions,
             cursorBrush = SolidColor(bc.text),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(bc.surface)
-                .border(if (isFocused) 2.dp else 1.dp, bc.border)
+                .background(tide.card, Tide.fieldShape)
+                .border(if (isFocused) 1.5.dp else 1.dp, if (isFocused) bc.text else bc.border, Tide.fieldShape)
                 .onFocusChanged { isFocused = it.isFocused }
-                .padding(horizontal = 12.dp, vertical = 13.dp),
+                .padding(horizontal = 16.dp, vertical = 15.dp),
         ) { innerTextField ->
             Box {
                 if (value.isEmpty() && placeholder.isNotEmpty()) {
-                    Text(
-                        text = placeholder,
-                        style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 16.sp,
-                            color = bc.textFaint,
-                        )
-                    )
+                    Text(text = placeholder, style = TideType.sans(16.sp), color = bc.textFaint)
                 }
                 innerTextField()
             }
@@ -508,7 +362,7 @@ fun BTextField(
     }
 }
 
-// ─── BActionRow ──────────────────────────────────────────────────────────────
+// ─── BActionRow (icon + title + subtitle + chevron) ─────────────────────────
 @Composable
 fun BActionRow(
     icon: String,
@@ -522,53 +376,22 @@ fun BActionRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .heightIn(min = 52.dp)
+            .padding(horizontal = 16.dp, vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(
-            text = icon,
-            style = TextStyle(fontSize = 20.sp),
-            modifier = Modifier.width(32.dp),
-        )
+        Box(
+            Modifier.size(28.dp).background(bc.surface, RoundedCornerShape(8.dp)),
+            contentAlignment = Alignment.Center,
+        ) { Text(text = icon, style = TideType.sans(14.sp), color = bc.text) }
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(
-                text = title,
-                style = TextStyle(
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 17.sp,
-                    color = bc.text,
-                )
-            )
-            if (subtitle != null) {
-                Text(
-                    text = subtitle,
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 14.sp,
-                        color = bc.textMid,
-                    )
-                )
-            }
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(text = title, style = TideType.body, color = bc.text)
+            if (subtitle != null) Text(text = subtitle, style = TideType.mono(11.sp), color = bc.textFaint)
         }
 
-        if (badge != null && badge > 0) {
-            BBadge(text = "$badge", style = badgeStyle)
-        } else {
-            Text(
-                text = "→",
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    color = bc.textFaint,
-                )
-            )
-        }
+        if (badge != null && badge > 0) BBadge(text = "$badge", style = badgeStyle) else TideChevron()
     }
 }
 
@@ -589,105 +412,48 @@ fun BCardRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 13.dp)
-            .then(
-                if (onClick != null) Modifier.clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onClick,
-                ) else Modifier
-            ),
+            .heightIn(min = 48.dp)
+            .then(if (onClick != null) Modifier.clickable(role = Role.Button, onClick = onClick) else Modifier)
+            .padding(vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(3.dp),
-        ) {
-            Text(
-                text = title,
-                style = TextStyle(
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    color = if (destructive) bc.error else bc.text,
-                )
-            )
-            if (subtitle != null) {
-                Text(
-                    text = subtitle,
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 14.sp,
-                        color = bc.textMid,
-                    )
-                )
-            }
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(text = title, style = TideType.body, color = if (destructive) bc.error else bc.text)
+            if (subtitle != null) Text(text = subtitle, style = TideType.mono(11.sp), color = bc.textFaint)
         }
-
-        if (badgeText != null) {
-            BBadge(text = badgeText, style = badgeStyle)
-        }
-        if (value != null) {
-            Text(
-                text = value,
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    color = bc.textMid,
-                )
-            )
-        }
-        if (showArrow) {
-            Text(
-                text = "→",
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    color = bc.textFaint,
-                )
-            )
-        }
+        if (badgeText != null) BBadge(text = badgeText, style = badgeStyle)
+        if (value != null) Text(text = value, style = TideType.mono(13.sp), color = bc.textMid)
+        if (showArrow) TideChevron()
     }
 }
 
-// ─── BMonoRow ────────────────────────────────────────────────────────────────
+// ─── BMonoRow (key / value) ─────────────────────────────────────────────────
 @Composable
 fun BMonoRow(
     key: String,
     value: String,
     modifier: Modifier = Modifier,
-    valueColor: Color = LocalBrutalColors.current.text,
+    valueColor: Color = LocalBrutalColors.current.textMid,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(
-            text = key.uppercase(),
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
-                letterSpacing = 1.sp,
-                color = bc.text,
-            )
-        )
-        Spacer(Modifier.weight(1f))
+        Text(text = key, style = TideType.body, color = bc.text)
         Text(
             text = value,
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp,
-                color = valueColor,
-            )
+            style = TideType.mono(13.sp),
+            color = valueColor,
+            textAlign = TextAlign.End,
+            modifier = Modifier.weight(1f),
         )
     }
 }
 
-// ─── BSpineHeader ────────────────────────────────────────────────────────────
+// ─── BSpineHeader (big left-aligned title) ──────────────────────────────────
 @Composable
 fun BSpineHeader(
     title: String,
@@ -695,38 +461,16 @@ fun BSpineHeader(
     modifier: Modifier = Modifier,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        if (subtitle != null) Text(text = subtitle, style = TideType.meta, color = bc.textFaint)
         Text(
             text = title,
-            style = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Black,
-                fontSize = 40.sp,
-                letterSpacing = (-1).sp,
-                color = bc.text,
-            )
+            style = TideType.display(36.sp),
+            color = bc.text,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.semantics { heading() },
         )
-        if (subtitle != null) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Box(Modifier.width(20.dp).height(1.dp).background(bc.border))
-                Text(
-                    text = subtitle.uppercase(),
-                    style = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 12.sp,
-                        letterSpacing = 2.sp,
-                        color = bc.textMid,
-                    )
-                )
-            }
-        }
     }
 }
 
@@ -745,14 +489,14 @@ fun BProgressBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(3.dp)
-            .background(bc.text.copy(alpha = 0.12f))
+            .height(4.dp)
+            .background(bc.border, CircleShape)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(animatedProgress)
-                .height(3.dp)
-                .background(bc.text)
+                .height(4.dp)
+                .background(bc.text, CircleShape)
         )
     }
 }
@@ -770,67 +514,36 @@ fun BEmptyState(
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 40.dp),
+        modifier = modifier.padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(0.dp),
     ) {
         Text(
-            text = "—",
-            style = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Black,
-                fontSize = 72.sp,
-                color = bc.text,
-            ),
-            modifier = Modifier.padding(bottom = 16.dp),
-        )
-        Text(
-            text = title.uppercase(),
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                letterSpacing = 2.sp,
-                color = bc.text,
-            ),
-            modifier = Modifier.padding(bottom = 8.dp),
+            text = title,
+            style = TideType.display(30.sp),
+            color = bc.text,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 10.dp).semantics { heading() },
         )
         Text(
             text = subtitle,
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontSize = 15.sp,
-                color = bc.textMid,
-            ),
-            modifier = Modifier.padding(bottom = if (note != null) 10.dp else 28.dp),
+            style = TideType.copy,
+            color = bc.textMid,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = if (note != null) 12.dp else 28.dp),
         )
         if (note != null) {
             Text(
                 text = note,
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 11.sp,
-                    letterSpacing = 1.5.sp,
-                    color = bc.accent,
-                ),
+                style = TideType.sans(14.sp, FontWeight.Medium),
+                color = bc.accent,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(bottom = 28.dp)
-                    .then(
-                        if (onNoteClick != null) Modifier.clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = onNoteClick,
-                        ) else Modifier
-                    ),
+                    .then(if (onNoteClick != null) Modifier.clickable(role = Role.Button, onClick = onNoteClick) else Modifier),
             )
         }
         if (actionTitle != null && onAction != null) {
-            BPrimaryButton(
-                title = actionTitle,
-                modifier = Modifier.width(220.dp),
-                onClick = onAction,
-            )
+            BPrimaryButton(title = actionTitle, modifier = Modifier.widthIn(max = 260.dp), onClick = onAction)
         }
     }
 }
@@ -841,25 +554,10 @@ fun BLoading(
     text: String = "Loading",
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    var dotCount by remember { mutableIntStateOf(0) }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(400)
-            dotCount = (dotCount + 1) % 4
-        }
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        CircularProgressIndicator(modifier = Modifier.size(16.dp), color = bc.text, strokeWidth = 2.dp)
+        Text(text = text, style = TideType.sans(15.sp, FontWeight.Medium), color = bc.textMid)
     }
-
-    Text(
-        text = (text + ".".repeat(dotCount)).uppercase(),
-        style = TextStyle(
-            fontFamily = FontFamily.Monospace,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
-            letterSpacing = 2.sp,
-            color = bc.text,
-        )
-    )
 }
 
 // ─── BMetaChip ───────────────────────────────────────────────────────────────
@@ -875,15 +573,7 @@ fun BMetaChip(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Text(text = icon, style = TextStyle(fontSize = 12.sp, color = bc.textMid))
-        Text(
-            text = text,
-            style = TextStyle(
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Medium,
-                fontSize = 13.sp,
-                color = bc.textMid,
-            )
-        )
+        Text(text = icon, style = TideType.mono(12.sp), color = bc.textMid)
+        Text(text = text, style = TideType.mono(12.sp), color = bc.textMid)
     }
 }
