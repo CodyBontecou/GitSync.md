@@ -7,6 +7,8 @@ extension UUID: @retroactive Identifiable {
 
 struct RepoListView: View {
     @Environment(AppState.self) private var state
+    @Environment(AppUnlock.self) private var unlock
+    @State private var pendingUnlock: (() -> Void)? = nil
     @Environment(PremiumRuntime.self) private var premiumRuntime
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
     @State private var showAddRepo = false
@@ -200,6 +202,7 @@ struct RepoListView: View {
                 }
             }
             .sheet(isPresented: $showAddRepo) { AddRepoView(initialURL: addRepoInitialURL) }
+            .unlockGate($pendingUnlock)
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
@@ -404,13 +407,13 @@ struct RepoListView: View {
                         emptyStartRow(
                             title: String(localized: "Find clones on this iPhone").forThisDevice,
                             detail: String(localized: "Obsidian, Working Copy…"),
-                            action: { showEmptyDiscovery = true }
+                            action: { requireUnlock { showEmptyDiscovery = true } }
                         )
                         Rectangle().fill(Tide.line).frame(height: 1)
                         emptyStartRow(
                             title: String(localized: "Publish an existing folder"),
                             detail: String(localized: "creates a private repo"),
-                            action: { showEmptyFolderPublication = true }
+                            action: { requireUnlock { showEmptyFolderPublication = true } }
                         )
                     }
                     .padding(.horizontal, 18)
@@ -1161,7 +1164,11 @@ struct RepoListView: View {
 
     /// Tapping a ghost card triggers an immediate clone using stored defaults.
     private func cloneGhostRepo(_ identifier: String) {
-        performGhostClone(identifier)
+        requireUnlock { performGhostClone(identifier) }
+    }
+
+    private func requireUnlock(_ action: @escaping () -> Void) {
+        if unlock.isUnlocked { action() } else { pendingUnlock = action }
     }
 
     private func performGhostClone(_ identifier: String) {

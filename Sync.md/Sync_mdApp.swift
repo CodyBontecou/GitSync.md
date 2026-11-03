@@ -44,6 +44,7 @@ struct Sync_mdApp: App {
     @UIApplicationDelegateAdaptor(SyncAppDelegate.self) private var appDelegate
     @State private var appState: AppState
     @State private var premiumRuntime: PremiumRuntime
+    @State private var appUnlock = AppUnlock()
     @State private var foregroundSyncLifecycle: ForegroundSyncLifecycle
     @State private var pushRegistrationTask: Task<Void, Never>? = nil
     @Environment(\.scenePhase) private var scenePhase
@@ -95,6 +96,7 @@ struct Sync_mdApp: App {
                 #endif
                 .environment(appState)
                 .environment(premiumRuntime)
+                .environment(appUnlock)
                 .preferredColorScheme(AppAppearance(rawValue: appearanceRaw)?.colorScheme)
                 .onChange(of: appearanceRaw, initial: true) { _, raw in
                     // preferredColorScheme(nil) does not always hand control back
@@ -103,6 +105,9 @@ struct Sync_mdApp: App {
                 }
                 .task {
                     let isTestProcess = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+                    if !isTestProcess {
+                        appUnlock.start(hasExistingVaults: !appState.isDemoMode && !appState.repos.isEmpty)
+                    }
                     let isActiveLaunch = UIApplication.shared.applicationState == .active
                     if !isTestProcess, isActiveLaunch {
                         if FeatureFlags.gitSyncAssistEnabled {

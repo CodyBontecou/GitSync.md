@@ -14,6 +14,7 @@ struct RepoPickerView: View {
     var onCloned: (() -> Void)? = nil
 
     @Environment(AppState.self) private var state
+    @Environment(AppUnlock.self) private var unlock
     @Environment(\.dismiss) private var dismiss
 
     @State private var searchText = ""
@@ -31,6 +32,9 @@ struct RepoPickerView: View {
     @State private var cloning: InlineClone? = nil
     @State private var cloneTask: Task<Void, Never>? = nil
     @State private var isVisible = false
+    /// Free vault check shown before a locked app clones.
+    @State private var vaultCheck: VaultPreflight? = nil
+    @State private var vaultCheckRepo: GitHubRepo? = nil
 
     private enum Tab: Hashable { case yours, orgs, starred }
     private enum LoadState: Equatable { case idle, loading, loaded, failed(String) }
@@ -170,6 +174,14 @@ struct RepoPickerView: View {
                 await probeObsidianFolders()
             }
             .onAppear { isVisible = true }
+            .fullScreenCover(item: $vaultCheck) { check in
+                VaultCheckView(
+                    preflight: check,
+                    destination: vaultCheckRepo.map { cloneDestination(folderName: $0.name) } ?? ""
+                ) {
+                    if let repo = vaultCheckRepo { cloneDirectly(repo) }
+                }
+            }
             .onDisappear { isVisible = false }
         }
     }
@@ -296,7 +308,13 @@ struct RepoPickerView: View {
         return Button {
             // A second copy of an added repo needs a deliberate location:
             // send it through the form instead of cloning inline.
-            if isAdded { customize(repo) } else { cloneDirectly(repo) }
+            if isAdded {
+                customize(repo)
+            } else if unlock.isUnlocked {
+                cloneDirectly(repo)
+            } else {
+                checkThenClone(repo)
+            }
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -465,6 +483,34 @@ struct RepoPickerView: View {
         dismiss()
     }
 
+    /// Locked app: run the free vault check; its unlock sheet leads into
+    /// `cloneDirectly`. Missing defaults go through the form, which checks too.
+    private func checkThenClone(_ repo: GitHubRepo) {
+        guard !isCloneBlocked else { return }
+        let authorName = state.defaultAuthorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let authorEmail = state.defaultAuthorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        let token = state.pat.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard state.isSignedIn, !state.isDemoMode, !token.isEmpty,
+              !authorName.isEmpty, !authorEmail.isEmpty else {
+            customize(repo)
+            return
+        }
+        vaultCheckRepo = repo
+        vaultCheck = VaultPreflight(target: .init(
+            name: repo.name,
+            repoURL: repo.htmlURL,
+            branch: repo.defaultBranch,
+            transportPayload: GitRemoteCredentials.gitHubPAT(state.pat).transportPayload,
+            gitHubToken: state.pat
+        ))
+    }
+
+    private func cloneDestination(folderName: String) -> String {
+        let destinationParent = state.resolvedDefaultSaveURL.map { "Files › \(RepoDiscoveryView.friendlyLocation(for: $0))" }
+            ?? String(localized: "Files › On My iPhone › GitSync.md").forThisDevice
+        return "\(destinationParent) › \(folderName)"
+    }
+
     /// Clones `repo` right here: GitHub sign-in, default branch, default save
     /// location, default author. Missing defaults fall back to the remote
     /// form so nothing is guessed.
@@ -496,12 +542,10 @@ struct RepoPickerView: View {
         RepositoryHistoryStore.shared.recordRepoAdded(identifier: repo.htmlURL.lowercased())
         state.addRepo(config)
 
-        let destinationParent = state.resolvedDefaultSaveURL.map { "Files › \(RepoDiscoveryView.friendlyLocation(for: $0))" }
-            ?? String(localized: "Files › On My iPhone › GitSync.md").forThisDevice
         cloning = InlineClone(
             repoID: config.id,
             name: repo.name,
-            destination: "\(destinationParent) › \(folderName)",
+            destination: cloneDestination(folderName: folderName),
             totalBytes: repo.sizeInBytes
         )
 
