@@ -1,11 +1,11 @@
 # GitSync.md pricing
 
 Canonical product page: https://gitsync.md/
-Reviewed: October 26, 2026.
+Reviewed: November 2, 2026.
 
 ## iPhone and iPad
 
-GitSync.md costs $19.99 once on the US App Store. The purchase includes unlimited repositories, the editor, manual Git tools, and optional Background Sync. There is no subscription. Local store prices can differ.
+GitSync.md costs $9.99 once on the US App Store. The purchase includes unlimited repositories, the editor, manual Git tools, and optional Background Sync. There is no subscription. Local store prices can differ.
 
 [Check the current App Store price](https://apps.apple.com/us/app/gitsync-md/id6758960270).
 
