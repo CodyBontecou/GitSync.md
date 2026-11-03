@@ -211,13 +211,13 @@ class RepositoryShortcutDeviceTest {
         try {
             withTimeout(10_000) { while (settings.allRepositories.value.isEmpty()) delay(10) }
             instrumentation.runOnMainSync { settings.prepareMove(root.path, RepositoryLocations.APP) }
-            withTimeout(10_000) { while (settings.moveReview.value == null && settings.errorMessage.value == null) delay(10) }
-            assertNull(settings.errorMessage.value); val move = settings.moveReview.value!!.plan
+            withTimeout(10_000) { while (settings.moveReview.value == null && settings.moveReviewError.value == null && settings.errorMessage.value == null) delay(10) }
+            assertNull(settings.errorMessage.value); assertNull(settings.moveReviewError.value); val move = settings.moveReview.value!!.plan
             val destination = move.destination
             movedFixtures += File(destination)
             movedFixtures += move.recoveryOwner
             movedFixtures += move.stagingOwner
-            instrumentation.runOnMainSync { settings.moveReviewed() }
+            instrumentation.runOnMainSync { settings.moveReviewed(settings.moveReview.value!!) }
             withTimeout(15_000) { while (settings.destructiveBusy.value) delay(10) }
             assertNull(settings.errorMessage.value)
             assertFalse(root.exists()); assertEquals(destination, settings.allRepositories.value.single().path)

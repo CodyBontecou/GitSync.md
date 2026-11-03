@@ -2227,3 +2227,56 @@ Home/status languages: [evidence](home-language-evidence/README.md), 550 authore
 - [Git tools language evidence](git-tools-language-evidence/README.md): 575 translations, exact debug/release resource-table readback, 72 app JVM tests, APK builds and release lint; native and linguistic review pending.
 
 - [Onboarding language evidence](onboarding-language-evidence/README.md): 450 translations, split-headline notes, integer signatures and exact debug/release table readback; 72 app JVM tests, APK builds and release lint; native and linguistic review pending.
+
+- [Reviewed sign-out evidence](signout-consent-evidence/README.md): frozen dialog consent, auth/store session checks and fourteen new cases; 86 app JVM tests, APK builds and release lint; encrypted persistence and native dialog qualification pending.
+
+- [Persisted sign-out refresh evidence](signout-refresh-evidence/README.md): account/profile reconciliation before fresh consent, owned-cache invalidation and seven new cases; 93 app JVM tests, APK builds and release lint; native persistence/rendering pending.
+
+- [Settings language evidence](settings-language-evidence/README.md): 225 translations, literal-handle/fallback/version direction boundaries, compiled table readback and twelve JDK probes; 93 app JVM tests, APK builds and release lint; native/linguistic review pending.
+
+- [Diff/conflict language evidence](diff-language-evidence/README.md): 675 mapped values, exact-source reuse, signed-total LTR formatting and eighteen positive JDK probes with a negative control; 93 app JVM tests, APK builds and release lint; native/linguistic review pending.
+
+- [Merge/rebase status language evidence](merge-status-language-evidence/README.md): 525 translations, two reviewed English clarifications, exact APK resource readback and twelve upstream-display JDK probes; 93 app JVM tests, APK builds and release lint; native/linguistic review pending.
+
+- [Git workflow language evidence](git-workflow-language-evidence/README.md): 675 values with current production references, localized strategy presentation and ninety argument probes; 93 app JVM tests, APK builds and release lint. Includes the separately unresolved byte-counter finding.
+
+- [Conflict byte-count evidence](conflict-byte-evidence/README.md): indexed blob sizes and accurate UTF-8 fallback, empty/deleted/unknown distinctions and ten new real-Git cases; 700 core + 93 app JVM tests, APK builds and release lint. Native counters and character/grapheme semantics pending.
+
+- [Branch-control language evidence](branch-language-evidence/README.md): 300 translations, literal ref display and explicit LTR branch input; exact APK readback and thirty JDK probes; 93 app JVM tests, APK builds and release lint; native/linguistic review pending.
+
+- [Repository setup language evidence](repository-language-evidence/README.md): 200 translations for eight active setup/empty-state keys, literal example preservation and exact APK readback; 93 app JVM tests, APK builds and release lint; native/linguistic review pending.
+
+- [Move confirmation ownership evidence](move-consent-evidence/README.md): explicit displayed-review callbacks, lease-time guard and seven new real-Git cases; 100 app JVM tests, APK builds and release lint. Android UI/lifecycle and request-token publication still require native qualification.
+
+- [Move review lifecycle evidence](move-lifecycle-evidence/README.md): atomic request/screen ownership, accepted-move retention and owner-bound completion; ten new state/real-Git cases, 110 app JVM tests, APK builds and release lint. Compose/Android failure paths, resumed navigation and stale-error delivery remain open.
+
+- [Move completion delivery evidence](move-delivery-evidence/README.md): resumed-only route-bound receipt delivery, replay prevention and request-owned preparation errors; twelve new AndroidX lifecycle/state cases, 122 app JVM tests, APK builds and release lint. Real Activity/navigation/process-death and Android store wiring remain unqualified.
+
+### Vault resolution and complete resource languages
+
+[Vault resolution evidence](vault-resolution-evidence/README.md) covers:
+- **Blocked pull → Resolve:** commit locally, then the reviewed remote merge.
+- **Fetch:** a new entry on the Git screen.
+- **Vault overflow menu:** copy URL with HTTP userinfo stripped, Connection, Author and Move.
+- **Conflict editor counter:** counts user-perceived characters (grapheme clusters).
+- **Localization:** the move, restore and removal flows, and resource coverage of 1,321/1,321 strings in 25 locales.
+
+Results:
+- 130 app JVM tests pass on a frozen snapshot.
+- **31/31 native tests pass on the API 36 parity emulator.** These include `VaultResolveDeviceTest`, all-locale `LocalizationTest` and `RepositoryMoveTest`.
+- The emulator-only storage appop is restored after the run.
+
+Physical-device and accessibility qualification remain open.
+
+### Remaining literals, UiText and the literal guard
+
+[Localization literals evidence](localization-literals-evidence/README.md) covers:
+- **Copy:** 276 strings and 8 plurals with translations in all 25 locales. Coverage is now 1,597/1,597 strings and 30/30 plurals.
+- **`UiText`:** typed, display-time messages for ViewModels that have no Context.
+- **`literal_guard.py`:** blocks new user-facing literals.
+- **Importer:** now enforces Android ICU plural categories.
+
+Results:
+- 130/130 JVM tests and 28/28 tooling tests pass.
+- First full instrumentation suite on API 36: 565 pass, 83 fail, 20 skipped.
+- An A/B rerun against the previous phase's APKs shows 81 of those failures already existed there. The other 2 are timing flakes that pass 3/3 in isolation.

@@ -62,6 +62,7 @@ import com.bontecou.syncmd.ui.theme.TideDisplay
 import com.bontecou.syncmd.ui.theme.TidePill
 import com.bontecou.syncmd.ui.theme.TideTopBar
 import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.DiffViewModel
 
 // ─── Screen ──────────────────────────────────────────────────────────────────
@@ -91,7 +92,7 @@ fun DiffScreen(
 
     val isLoading        by diffVM.isLoading.collectAsState()
     val selectedFileDiff by diffVM.selectedFileDiff.collectAsState()
-    val diffError by diffVM.errorMessage.collectAsState()
+    val diffError = diffVM.errorMessage.collectAsState().value?.asString()
 
     val discardReview by diffVM.discardReview.collectAsState()
     val reviewingDiscard by diffVM.isReviewingDiscard.collectAsState()
@@ -124,7 +125,7 @@ fun DiffScreen(
                 onDismissRequest = diffVM::clearError,
                 title = stringResource(R.string.ui_error_54a0e8c1),
                 text = {
-                    Text(diffError!!, Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()).testTag("diff-operation-error"))
+                    Text(diffError, Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()).testTag("diff-operation-error"))
                 },
                 confirmButton = { BPrimaryButton(stringResource(R.string.ui_ok_565339bc), onClick = diffVM::clearError) },
             )
@@ -236,8 +237,8 @@ private fun DiffHeader(filename: String, fileDiff: FileDiff?, staged: Boolean?, 
         if (showStats) {
             val a11y = stringResource(R.string.tide_merge_diff_stats_a11y, added, removed)
             Row(Modifier.clearAndSetSemantics { contentDescription = a11y }, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("+$added", style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (added > 0) c.synced else c.inkFaint)
-                Text("−$removed", style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (removed > 0) c.danger else c.inkFaint)
+                Text("+$added", style = TideType.mono(12.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr), color = if (added > 0) c.synced else c.inkFaint)
+                Text("−$removed", style = TideType.mono(12.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr), color = if (removed > 0) c.danger else c.inkFaint)
             }
         }
     }

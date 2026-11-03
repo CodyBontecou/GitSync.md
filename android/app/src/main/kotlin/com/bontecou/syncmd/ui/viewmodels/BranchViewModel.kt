@@ -2,12 +2,14 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Branch
 import com.bontecou.syncmd.data.models.BranchType
 import com.bontecou.syncmd.data.models.MergeStrategy
 import com.bontecou.syncmd.services.git.BranchService
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.ui.util.RepositorySelection
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +27,7 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
         val isLoading: Boolean = false,
         val isMerging: Boolean = false,
         val actionsReady: Boolean = false,
-        val errorMessage: String? = null,
+        val errorMessage: UiText? = null,
         val operationRevision: Long = 0,
     ) {
         val localBranches get() = branches.filter { it.type == BranchType.LOCAL || it.type == BranchType.TRACKING }
@@ -39,7 +41,7 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
     @Volatile private var readId = 0L
     private var mutationRunning = false
     private var refreshPending = false
-    private var operationNotice: String? = null
+    private var operationNotice: UiText? = null
     private fun current(expected: RepositorySelection?) = expected != null && _state.value.selection === expected
     private fun available(expected: RepositorySelection) = current(expected) && _state.value.actionsReady && !_state.value.isLoading && !mutationRunning
 
@@ -66,7 +68,7 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
                 if (current(expected) && request == readId && fresh != null) publish(fresh)
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (failure: Exception) {
-                if (current(expected) && request == readId) update { it.copy(errorMessage = operationNotice ?: failure.message ?: "Could not refresh branches") }
+                if (current(expected) && request == readId) update { it.copy(errorMessage = operationNotice ?: failure.gitOpsText(R.string.gitops_branches_refresh_failed)) }
             } finally {
                 if (current(expected) && request == readId && !mutationRunning) update { it.copy(isLoading = false) }
             }
@@ -75,7 +77,7 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
     private suspend fun readSnapshot(path: String): Snapshot {
         val before = branchService.getCurrentBranch(path).getOrThrow()
         val branches = branchService.listBranches(path).getOrThrow()
-        check(before == branchService.getCurrentBranch(path).getOrThrow()) { "Current branch changed while loading. Refresh and review again." }
+        gitOpsCheck(before == branchService.getCurrentBranch(path).getOrThrow(), R.string.gitops_branch_changed_while_loading)
         return Snapshot(before, branches)
     }
     private fun publish(fresh: Snapshot) {
@@ -84,9 +86,9 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
     }
     fun createBranch(expected: RepositorySelection, name: String, onSuccess: () -> Unit = {}) {
         if (!available(expected)) return
-        if (name.isBlank()) { operationNotice = "Branch name cannot be empty"; update { it.copy(errorMessage = operationNotice) }; return }
+        if (name.isBlank()) { operationNotice = UiText.res(R.string.gitops_branch_name_empty); update { it.copy(errorMessage = operationNotice) }; return }
         mutate(expected, onSuccess = onSuccess) { path, fresh ->
-            val head = requireNotNull(fresh.current.lastCommit) { "Commit a file before creating a branch." }
+            val head = fresh.current.lastCommit ?: gitOpsError(R.string.gitops_branch_needs_commit)
             branchService.createBranch(path, name, head).getOrThrow(); null
         }
     }
@@ -98,19 +100,18 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
     }
     fun mergeBranch(expected: RepositorySelection, branch: Branch, strategy: MergeStrategy = MergeStrategy.PREFER_FF) = changeBranch(expected, branch, merging = true) { path ->
         val result = branchService.merge(path, branch.name, strategy).getOrThrow()
-        if (result.success) "Merge successful: ${result.message}"
-        else "Merge stopped: ${result.message}" + if (result.conflictCount > 0) " (${result.conflictCount} conflicts)" else ""
+        if (result.success) UiText.res(R.string.gitops_merge_successful, result.message)
+        else if (result.conflictCount > 0) UiText.plural(R.plurals.gitops_merge_stopped_conflicts, result.conflictCount, result.message, result.conflictCount)
+        else UiText.res(R.string.gitops_merge_stopped, result.message)
     }
-    private fun changeBranch(expected: RepositorySelection, branch: Branch, merging: Boolean = false, action: suspend (String) -> String?) {
+    private fun changeBranch(expected: RepositorySelection, branch: Branch, merging: Boolean = false, action: suspend (String) -> UiText?) {
         if (_state.value.localBranches.none { it === branch } || branch.isHead || branch.name == _state.value.currentBranch?.name) return
         mutate(expected, merging) { path, fresh ->
-            check(fresh.branches.firstOrNull { it.type != BranchType.REMOTE && it.name == branch.name } == branch) {
-                "Branch changed. Review the current branch before trying again."
-            }
+            gitOpsCheck(fresh.branches.firstOrNull { it.type != BranchType.REMOTE && it.name == branch.name } == branch, R.string.gitops_branch_changed)
             action(path)
         }
     }
-    private fun mutate(expected: RepositorySelection, merging: Boolean = false, onSuccess: () -> Unit = {}, action: suspend (String, Snapshot) -> String?) {
+    private fun mutate(expected: RepositorySelection, merging: Boolean = false, onSuccess: () -> Unit = {}, action: suspend (String, Snapshot) -> UiText?) {
         if (!available(expected)) return
         val reviewed = snapshot ?: return
         mutationRunning = true; refreshPending = false; readId++; readJob?.cancel(); operationNotice = null
@@ -118,7 +119,7 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
         viewModelScope.launch {
             var fresh: Snapshot? = null
             var failure: Exception? = null
-            var notice: String? = null
+            var notice: UiText? = null
             var completed = false
             try {
                 withContext(Dispatchers.IO) {
@@ -126,7 +127,7 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
                         if (!current(expected)) return@withRepository
                         try {
                             val before = readSnapshot(expected.path)
-                            check(before.current == reviewed.current) { "Current branch or commit changed. Refresh and review again." }
+                            gitOpsCheck(before.current == reviewed.current, R.string.gitops_branch_or_commit_changed)
                             notice = action(expected.path, before); completed = true
                         } catch (cancelled: CancellationException) { throw cancelled
                         } catch (error: Exception) { failure = error }
@@ -138,13 +139,13 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
                 }
                 if (current(expected)) {
                     fresh?.let(::publish)
-                    operationNotice = failure?.let { it.message ?: "Branch action could not complete. Refresh repository status." } ?: notice
+                    operationNotice = failure?.gitOpsText(R.string.gitops_branch_action_failed_refresh) ?: notice
                     update { it.copy(errorMessage = operationNotice, operationRevision = it.operationRevision + 1) }
                     if (completed) onSuccess()
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {
-                if (current(expected)) { operationNotice = error.message ?: "Branch action could not complete"; update { it.copy(errorMessage = operationNotice) } }
+                if (current(expected)) { operationNotice = error.gitOpsText(R.string.gitops_branch_action_failed); update { it.copy(errorMessage = operationNotice) } }
             } finally {
                 mutationRunning = false; update { it.copy(isLoading = false, isMerging = false) }
                 val refresh = !current(expected) || refreshPending; refreshPending = false

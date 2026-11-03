@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:57:13" hostname="MacBook-Pro.local" time="0.917">
+  <properties/>
+  <testcase name="only owned finalized publication can remove pending guard and later history survives retry" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.115"/>
+  <testcase name="unconfirmed or changed remote cannot finish or change the saved destination" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.062"/>
+  <testcase name="saved tree attributes are checked without publishing newer working attributes" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.113"/>
+  <testcase name="lost reply reconciles without a second push or another commit" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.131"/>
+  <testcase name="branch created after advertisement is not overwritten" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.103"/>
+  <testcase name="production boundary rejects credentials redirects and noncanonical destination URLs before transport" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.049"/>
+  <testcase name="nonempty destination on a different branch is preserved without a push" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.103"/>
+  <testcase name="acknowledged publication remains successful when optional timestamp cannot be stored" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.101"/>
+  <testcase name="publication pushes only the pinned commit and retry finish preserve newer work and index" classname="com.bontecou.syncmd.services.publication.FolderPublicationPushTest" time="0.138"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

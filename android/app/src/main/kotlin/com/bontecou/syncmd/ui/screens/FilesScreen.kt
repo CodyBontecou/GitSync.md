@@ -157,7 +157,7 @@ fun FilesScreen(
                         name = entry.name,
                         detail = listOfNotNull(
                             if (entry.isDirectory) stringResource(R.string.files_folder) else formatFileSize(entry.size, locale),
-                            entry.gitStatus?.let { "Git: $it" },
+                            entry.gitStatus?.let { stringResource(R.string.vault_l10n_files_git_status, it) },
                         ).joinToString(" · "),
                         isDirectory = entry.isDirectory,
                         enabled = !state.isMutating,
@@ -683,10 +683,11 @@ private fun FileConfirmation(title: String, message: String, action: String, sub
     )
 }
 
+@Composable
 private fun formatFileSize(bytes: Long, locale: java.util.Locale): String = when {
-    bytes < 1024 -> "${java.text.NumberFormat.getIntegerInstance(locale).format(bytes)} B"
-    bytes < 1024 * 1024 -> String.format(locale, "%.1f KB", bytes / 1024.0)
-    else -> String.format(locale, "%.1f MB", bytes / (1024.0 * 1024.0))
+    bytes < 1024 -> stringResource(R.string.vault_l10n_size_bytes, java.text.NumberFormat.getIntegerInstance(locale).format(bytes))
+    bytes < 1024 * 1024 -> stringResource(R.string.vault_l10n_size_kb, String.format(locale, "%.1f", bytes / 1024.0))
+    else -> stringResource(R.string.vault_l10n_size_mb, String.format(locale, "%.1f", bytes / (1024.0 * 1024.0)))
 }
 
 // ─── Previews ───────────────────────────────────────────────────────────────

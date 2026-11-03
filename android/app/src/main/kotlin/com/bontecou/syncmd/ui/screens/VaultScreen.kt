@@ -24,13 +24,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +60,11 @@ import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.GitFileStatusKind
 import com.bontecou.syncmd.data.models.GitStatusEntry
 import com.bontecou.syncmd.data.models.RepositoryStatus
+import com.bontecou.syncmd.ui.components.VaultOpsBanner
+import com.bontecou.syncmd.ui.components.VaultOpsButton
+import com.bontecou.syncmd.ui.components.VaultOpsProgress
+import com.bontecou.syncmd.ui.components.VaultOpsSheet
+import com.bontecou.syncmd.ui.components.VaultOpsTextButton
 import com.bontecou.syncmd.ui.components.headCommitText
 import com.bontecou.syncmd.ui.components.recordedSyncText
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
@@ -78,7 +87,11 @@ import com.bontecou.syncmd.ui.theme.TideSyncState
 import com.bontecou.syncmd.ui.theme.TideTopBar
 import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.util.FilesAppLauncher
+import com.bontecou.syncmd.ui.util.RepositorySelection
+import com.bontecou.syncmd.ui.util.asString
+import com.bontecou.syncmd.ui.viewmodels.LocalChangesRequestSupersededException
 import com.bontecou.syncmd.ui.viewmodels.PullViewModel
+import com.bontecou.syncmd.ui.viewmodels.ResolveLocalChangesViewModel
 
 /**
  * Vault screen — Tide port of iOS VaultView.
@@ -97,7 +110,14 @@ fun VaultScreen(
     onNavigateBack: () -> Unit,
     repositoryName: String? = null,
     repositoryOwner: String? = null,
+    remoteUrl: String? = null,
+    onOpenConnection: () -> Unit = {},
+    onEditAuthor: () -> Unit = {},
+    onMoveRepository: () -> Unit = {},
+    onOpenRemoteMerge: () -> Unit = {},
     viewModel: PullViewModel = hiltViewModel(),
+    /** Created only when the Resolve sheet opens, so non-Hilt hosts can render the Vault. */
+    resolveViewModel: ResolveLocalChangesViewModel? = null,
 ) {
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) { viewModel.setRepositoryPath(repositoryPath) }
     LaunchedEffect(repositoryPath) {
@@ -109,19 +129,23 @@ fun VaultScreen(
     val loadedStatus by viewModel.status.collectAsState()
     val status = loadedStatus?.takeIf { requestContext != null && it.repoPath == repositoryPath }
     val isLoading by viewModel.isLoading.collectAsState()
-    val loadedError by viewModel.errorMessage.collectAsState()
+    val loadedError = viewModel.errorText.collectAsState().value?.asString()
     val errorMessage = loadedError.takeIf { requestContext != null }
     val loadedAttention by viewModel.attention.collectAsState()
     val attention = loadedAttention.takeIf { requestContext != null }
     // Upstream counts are only shown when a plan for this repository is already loaded.
     val loadedPlan by viewModel.pullPlan.collectAsState()
     val plan = loadedPlan?.takeIf { requestContext != null && it.repoPath == repositoryPath }
+    val loadedBlock by viewModel.localChangesBlock.collectAsState()
+    val localChangesBlock = loadedBlock && requestContext != null
     val context = LocalContext.current
-    val openInFilesFailed = "Could not open this folder in Files."
+    val openInFilesFailed = stringResource(R.string.vault_open_in_files_failed)
+    val copiedLabel = stringResource(R.string.vault_url_copied)
+    var resolving by rememberSaveable(repositoryPath) { mutableStateOf(false) }
 
     // Catalog identity follows selection; only an unregistered working copy uses its folder name.
     val repoDisplayName = repositoryName?.takeIf { it.isNotBlank() }
-        ?: repositoryPath.substringAfterLast("/").ifBlank { "Repository" }
+        ?: repositoryPath.substringAfterLast("/").ifBlank { stringResource(R.string.vault_repository_fallback) }
 
     VaultContent(
         ui = VaultUi(
@@ -134,6 +158,8 @@ fun VaultScreen(
             canPull = !isLoading && requestContext != null,
             errorMessage = errorMessage,
             attention = attention,
+            localChangesBlock = localChangesBlock,
+            canCopyUrl = !remoteUrl.isNullOrBlank(),
             ahead = plan?.commitsAhead,
             behind = plan?.commitsBehind,
             showDebugInfo = showDebugInfo,
@@ -145,11 +171,61 @@ fun VaultScreen(
         onPull = { requestContext?.let(viewModel::executePull) },
         onDismissError = { viewModel.clearError(requestContext) },
         onDismissAttention = { viewModel.clearAttention(requestContext) },
+        onResolveLocalChanges = { resolving = true },
+        onDismissLocalChanges = { viewModel.clearLocalChangesBlock(requestContext) },
+        onOpenConnection = onOpenConnection,
+        onEditAuthor = onEditAuthor,
+        onMoveRepository = onMoveRepository,
+        onCopyUrl = {
+            remoteUrl?.let(::shareableRemoteUrl)?.let { url ->
+                val clipboard = context.getSystemService(android.content.ClipboardManager::class.java)
+                clipboard?.setPrimaryClip(android.content.ClipData.newPlainText(url, url))
+                // Android 13+ shows its own clipboard confirmation.
+                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU) Toast.makeText(context, copiedLabel, Toast.LENGTH_SHORT).show()
+            }
+        },
         onOpenInFiles = {
             val opened = FilesAppLauncher.openFolder(context, repositoryPath)
             if (!opened) Toast.makeText(context, openInFilesFailed, Toast.LENGTH_SHORT).show()
         },
     )
+    if (resolving && requestContext != null) ResolveLocalChangesSheet(requestContext, resolveViewModel ?: hiltViewModel(),
+        onDismiss = { resolving = false },
+        onCommitted = { resolving = false; viewModel.clearLocalChangesBlock(requestContext); viewModel.loadStatus(); onOpenRemoteMerge() })
+}
+
+/** HTTP(S) userinfo can hold legacy tokens; only the address itself may reach the clipboard. */
+internal fun shareableRemoteUrl(remote: String): String {
+    val trimmed = remote.trim()
+    val match = Regex("^(https?://)[^/@]*@(.*)$", RegexOption.IGNORE_CASE).matchEntire(trimmed) ?: return trimmed
+    return match.groupValues[1] + match.groupValues[2]
+}
+
+@Composable
+private fun ResolveLocalChangesSheet(selection: RepositorySelection, model: ResolveLocalChangesViewModel, onDismiss: () -> Unit, onCommitted: () -> Unit) {
+    SideEffect { model.bind(selection) }
+    DisposableEffect(model, selection) { onDispose { model.bind(null) } }
+    val busy by model.busy.collectAsState()
+    val failure by model.failure.collectAsState()
+    val defaultMessage = stringResource(R.string.resolve_local_default_message)
+    var message by rememberSaveable(selection.path) { mutableStateOf(defaultMessage) }
+    VaultOpsSheet(onDismissRequest = { if (!busy) onDismiss() }, title = stringResource(R.string.resolve_local_title),
+        modifier = Modifier.testTag("resolve-local-sheet"),
+        confirmButton = { VaultOpsButton(stringResource(R.string.resolve_local_commit_merge), { model.commitAll(selection, message, onCommitted) },
+            Modifier.testTag("resolve-local-confirm"), enabled = !busy && message.isNotBlank()) },
+        dismissButton = { VaultOpsTextButton(stringResource(R.string.publication_cancel), onDismiss, Modifier.fillMaxWidth(), enabled = !busy) }) {
+        Text(stringResource(R.string.resolve_local_body), style = TideType.body)
+        OutlinedTextField(message, { message = it }, Modifier.fillMaxWidth().testTag("resolve-local-message"), enabled = !busy,
+            label = { Text(stringResource(R.string.resolve_local_message_label)) })
+        if (busy) VaultOpsProgress(stringResource(R.string.resolve_local_committing))
+        failure?.let { VaultOpsBanner(resolveFailureText(it), Modifier.testTag("resolve-local-error"), danger = true) }
+    }
+}
+
+@Composable
+private fun resolveFailureText(failure: Exception): String = when (failure) {
+    is LocalChangesRequestSupersededException -> stringResource(R.string.resolve_local_superseded)
+    else -> failure.message ?: stringResource(R.string.ui_repository_operation_failed_f1152917)
 }
 
 // ─── Stateless content ──────────────────────────────────────────────────────
@@ -164,6 +240,8 @@ private data class VaultUi(
     val canPull: Boolean,
     val errorMessage: String?,
     val attention: String?,
+    val localChangesBlock: Boolean = false,
+    val canCopyUrl: Boolean = false,
     /** Upstream commit counts; null when the remote has not been checked. */
     val ahead: Int?,
     val behind: Int?,
@@ -208,6 +286,12 @@ private fun VaultContent(
     onDismissError: () -> Unit,
     onDismissAttention: () -> Unit,
     onOpenInFiles: () -> Unit,
+    onResolveLocalChanges: () -> Unit = {},
+    onDismissLocalChanges: () -> Unit = {},
+    onOpenConnection: () -> Unit = {},
+    onEditAuthor: () -> Unit = {},
+    onMoveRepository: () -> Unit = {},
+    onCopyUrl: () -> Unit = {},
 ) {
     val c = Tide.colors
     val status = ui.status
@@ -244,6 +328,26 @@ private fun VaultContent(
                                 text = { Text(stringResource(R.string.tide_vault_git), style = TideType.body) },
                                 onClick = { menuOpen = false; onOpenGit() },
                             )
+                            if (ui.canCopyUrl) DropdownMenuItem(
+                                text = { Text(stringResource(R.string.vault_copy_url), style = TideType.body) },
+                                onClick = { menuOpen = false; onCopyUrl() },
+                                modifier = Modifier.testTag("vault-copy-url"),
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.ui_repository_connection_1188001b), style = TideType.body) },
+                                onClick = { menuOpen = false; onOpenConnection() },
+                                modifier = Modifier.testTag("vault-connection"),
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.ui_commit_author_e9376b3a), style = TideType.body) },
+                                onClick = { menuOpen = false; onEditAuthor() },
+                                modifier = Modifier.testTag("vault-author"),
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.ui_move_repository_1c4a6083), style = TideType.body) },
+                                onClick = { menuOpen = false; onMoveRepository() },
+                                modifier = Modifier.testTag("vault-move"),
+                            )
                         }
                     }
                 }
@@ -274,6 +378,17 @@ private fun VaultContent(
 
                 if (ui.errorMessage != null) {
                     VaultErrorCard(ui.errorMessage, onDismissError)
+                }
+                if (ui.localChangesBlock) {
+                    TideBanner(
+                        title = stringResource(R.string.resolve_local_title),
+                        modifier = Modifier.testTag("vault-local-changes-block"),
+                        tone = TideBannerTone.AHEAD,
+                        actionTitle = stringResource(R.string.resolve_local_action),
+                        onAction = onResolveLocalChanges,
+                        onDismiss = onDismissLocalChanges,
+                        dismissLabel = stringResource(R.string.ui_dismiss_48845bff),
+                    )
                 }
                 if (ui.attention != null) {
                     TideBanner(
@@ -629,12 +744,12 @@ private fun VaultChanges(changes: List<GitStatusEntry>, onOpenDiff: (String) -> 
 private fun ChangedFileRow(entry: GitStatusEntry, onClick: () -> Unit = {}) {
     val c = Tide.colors
     val label = when {
-        entry.isConflicted -> "conflict"
-        entry.hasStagedChanges && entry.hasUnstagedChanges -> "staged + unstaged"
-        entry.isDeleted -> if (entry.hasStagedChanges) "staged deletion" else "deleted"
-        entry.kind == GitFileStatusKind.STAGED -> "staged"
-        entry.kind == GitFileStatusKind.UNTRACKED -> "untracked"
-        else -> "modified"
+        entry.isConflicted -> stringResource(R.string.vault_l10n_status_conflict)
+        entry.hasStagedChanges && entry.hasUnstagedChanges -> stringResource(R.string.vault_l10n_status_staged_unstaged)
+        entry.isDeleted -> stringResource(if (entry.hasStagedChanges) R.string.vault_l10n_status_staged_deletion else R.string.tide_git_status_deleted)
+        entry.kind == GitFileStatusKind.STAGED -> stringResource(R.string.vault_l10n_status_staged)
+        entry.kind == GitFileStatusKind.UNTRACKED -> stringResource(R.string.vault_l10n_status_untracked)
+        else -> stringResource(R.string.tide_git_status_modified)
     }
     val (glyph, tint) = when {
         entry.isConflicted -> "!" to c.danger
@@ -683,13 +798,13 @@ private fun VaultLatestCommit(status: RepositoryStatus) {
                         modifier = Modifier.testTag("vault-overview-head"),
                     )
                     Text(
-                        "${stringResource(R.string.ui_branch_52656e81)}: ${status.currentBranch}",
+                        stringResource(R.string.vault_l10n_branch_value, status.currentBranch),
                         style = TideType.meta,
                         color = c.inkFaint,
                         modifier = Modifier.testTag("vault-overview-branch"),
                     )
                     Text(
-                        "${stringResource(R.string.ui_last_sync_a0d540dd)}: ${recordedSyncText(status.lastSyncAt)}",
+                        stringResource(R.string.vault_l10n_last_sync_value, recordedSyncText(status.lastSyncAt)),
                         style = TideType.meta,
                         color = c.inkFaint,
                         modifier = Modifier.testTag("vault-overview-sync"),

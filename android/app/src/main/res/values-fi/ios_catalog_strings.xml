@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"Toinen vaihtoehtoinen yhteys on jo tallennettu. Tarkista se ennen kuin siirrät lisää URL-tunnistetietoja."</string>
+    <string name="account_api_error">"GitHub API -virhe: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"Määritetty GitHub-tili ei ole yhdistettynä. Valitse tili tälle tietovarastolle."</string>
+    <string name="account_basic_requires_http" formatted="false">"Käyttäjätunnus- ja tunnustodennus vaatii HTTP- tai HTTPS-osoitteen"</string>
+    <string name="account_browser_failed" formatted="false">"Selainta ei voitu avata. Yritä uudelleen tai käytä Personal Access Tokenia."</string>
+    <string name="account_choose_authentication" formatted="false">"Valitse todennus tälle osoitteelle"</string>
+    <string name="account_choose_credentials" formatted="false">"Valitse tunnistetiedot tälle yhteydelle"</string>
+    <string name="account_choose_location_again" formatted="false">"Valitse kloonauksen sijainti uudelleen"</string>
+    <string name="account_choose_public_access" formatted="false">"Valitse tälle osoitteelle käyttö ilman verkkotunnistetietoja"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"Valitse yksityinen SSH-avain SSH-osoitteelle tai HTTPS-todennus HTTPS-osoitteelle."</string>
+    <string name="account_choose_storage" formatted="false">"Valitse tallennustila asetuksista"</string>
+    <string name="account_cleanup_failed" formatted="false">"GitHub-kirjautuminen on salattu, mutta vanhoja paikallisia asetuksia ei voitu siivota. Yritä uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"Tallennetut tunnistetiedot muuttuivat kloonauksen aikana. Tarkista yhteys ennen kuin yrität uudelleen."</string>
+    <string name="account_clone_destination_changed" formatted="false">"Kloonauksen kohde muuttui; sen yhteys säilytettiin"</string>
+    <string name="account_clone_failed_network" formatted="false">"Tietovarastoa ei voitu kloonata. Tarkista URL, käyttötunnukset, haara ja verkkoyhteys. Olemassa olevat kansiot säilytettiin."</string>
+    <string name="account_clone_failed_retry" formatted="false">"Kloonaus epäonnistui — yritä uudelleen."</string>
+    <string name="account_clone_in_use" formatted="false">"Tämä klooni on jo auki tai vaatii tarkistusta kohdassa Paikalliset tietovarastot."</string>
+    <string name="account_clone_interrupted" formatted="false">"Keskeytynyt klooni vaatii tarkistusta. Sen tiedostot säilytettiin; yhdistä se uudelleen kohdasta Paikalliset tietovarastot."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nKloonauksen sijainti on kiinteästi sovelluksen tallennustilassa Android/media yhteensopivuuden vuoksi Obsidianin kanssa."</string>
+    <string name="account_configuration_changed" formatted="false">"Tietovaraston määritykset muuttuivat. Lataa uudelleen ennen tunnistetietojen poistamista."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"Yhteyden tallennus epäonnistui, eikä tunnistetietojen palautusta voitu tallentaa. Anna tunnistetiedot uudelleen."</string>
+    <string name="account_connection_save_failed" formatted="false">"Tietovaraston yhteyttä ei voitu tallentaa"</string>
+    <string name="account_connection_unreadable" formatted="false">"Tallennettua yhteyttä ei voi avata. Anna tietovaraston tunnistetiedot uudelleen."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"Tallennetut tunnistetiedot muuttuivat. Lataa uudelleen ennen tallentamista."</string>
+    <string name="account_destination_exists" formatted="false">"Kohde on jo olemassa. Yhdistä se uudelleen kohdasta Paikalliset tietovarastot tai valitse uusi tyhjä sijainti. Tiedostoja ei poistettu."</string>
+    <string name="account_enter_new_credentials" formatted="false">"Anna uudet tunnistetiedot"</string>
+    <string name="account_enter_ssh_key" formatted="false">"Anna yksityinen SSH-avain"</string>
+    <string name="account_enter_username_secret" formatted="false">"Anna käyttäjätunnus ja tunnus tai salasana"</string>
+    <string name="account_enter_valid_url" formatted="false">"Anna kelvollinen tietovaraston URL ja tunnistetiedot erillisiin kenttiin."</string>
+    <string name="account_finish_migration" formatted="false">"Viimeistele GitHub-kirjautuminen, jotta aiempien tunnistetietojen siirto valmistuu."</string>
+    <string name="account_github_requires_https" formatted="false">"GitHub-tilin käyttö vaatii github.com-HTTPS-osoitteen"</string>
+    <string name="account_invalid_repository_name" formatted="false">"Virheellinen GitHub-tietovaraston nimi"</string>
+    <string name="account_invalid_repository_url" formatted="false">"Virheellinen tietovaraston URL"</string>
+    <string name="account_load_author_failed" formatted="false">"Tekijän tietoja ei voitu ladata"</string>
+    <string name="account_load_failed" formatted="false">"GitHub-tietojen lataus epäonnistui"</string>
+    <string name="account_migration_changed" formatted="false">"Tallennetut tunnistetiedot muuttuivat. Lataa siirto uudelleen."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"Tunnistetietojen palautusta ei voitu tallentaa. Tarkista tämä yhteys."</string>
+    <string name="account_migration_unverified" formatted="false">"Salattuja tunnistetietoja ei voitu vahvistaa. URL-tunnistetiedot säilytettiin."</string>
+    <string name="account_move_changed" formatted="false">"Tietovaraston tunnistetiedot muuttuivat tarkistuksen jälkeen. Tarkista siirto uudelleen."</string>
+    <string name="account_move_finish_failed" formatted="false">"Tunnistetietojen siirron palautusta ei voitu viimeistellä"</string>
+    <string name="account_move_persist_failed" formatted="false">"Siirrettyjä tietovaraston tunnistetietoja ei voitu tallentaa"</string>
+    <string name="account_move_recovery_changed" formatted="false">"Siirretyt tunnistetiedot muuttuivat palautuksen aikana. Tarkista kohteen yhteys ennen jatkamista."</string>
+    <string name="account_move_recovery_failed" formatted="false">"Tunnistetietojen siirron palautusta ei voitu tallentaa. Kaikki työkopiot säilytettiin."</string>
+    <string name="account_move_verify_failed" formatted="false">"Siirrettyjä tietovaraston tunnistetietoja ei voitu vahvistaa"</string>
+    <string name="account_no_alternative" formatted="false">"Tälle osoitteelle ei ole tallennettu vaihtoehtoisia tunnistetietoja"</string>
+    <string name="account_no_backup_folder" formatted="false">"Tämän tietovaraston tallennusasemalla ei ole sovelluksen varmuuskopiokansiota. Työkopiosi säilytettiin."</string>
+    <string name="account_no_matching_repositories">"Mikään tietovarasto ei vastaa hakua \"%1$s\""</string>
+    <string name="account_no_remote" formatted="false">"Etätietovarastoa ei ole määritetty"</string>
+    <string name="account_no_repositories_found" formatted="false">"Tälle tilille ei löytynyt tietovarastoja."</string>
+    <string name="account_no_url_credentials" formatted="false">"Siirrettäviä tuettuja URL-tunnistetietoja ei ole"</string>
+    <string name="account_not_authenticated" formatted="false">"Ei todennettu — kirjaudu ensin sisään."</string>
+    <string name="account_open_connection_failed" formatted="false">"Yhteyttä ei voitu avata"</string>
+    <string name="account_opening_sample" formatted="false">"Avataan esimerkkiä…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"Turvallista GitHub-kirjautumista ei voitu valmistella. Yritä uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_previous_address_missing" formatted="false">"Aiempaa etäosoitetta ei tallennettu. Tarkista tämä ehdotettu GitHub-URL ja valitse todennus ennen kloonausta."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"Aiempaa yhteyttä ei voi palauttaa. Tarkista URL ja valitse todennus erikseen; nykyiset tiedostot ja tallennetut tunnistetiedot säilytettiin."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"Julkaisuyhteyttä ei voitu vahvistaa"</string>
+    <string name="account_publication_conflict" formatted="false">"Tällä kansiolla on jo toinen tallennettu yhteys. Nykyiset tunnistetiedot säilytettiin."</string>
+    <string name="account_publication_recovery" formatted="false">"Julkaisun tunnistetiedot on palautettava. Kansio säilytettiin."</string>
+    <string name="account_publication_verify_failed" formatted="false">"Julkaisuyhteyttä ei voitu tarkistaa"</string>
+    <string name="account_reenter_credentials" formatted="false">"Anna tietovaraston tunnistetiedot uudelleen"</string>
+    <string name="account_reload_public_access" formatted="false">"Lataa tallennettu julkisen käytön yhteys uudelleen"</string>
+    <string name="account_remote_url_changed" formatted="false">"Etä-URL on muuttunut. Tarkista tietovaraston yhteys ennen todennusta."</string>
     <string name="account_removal_subject" formatted="false">"tämä tili"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"Tallennettuja tunnistetietoja ei voitu poistaa"</string>
+    <string name="account_remove_failed" formatted="false">"GitHub-kirjautumista ei voitu poistaa. Yritä uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_repository_name_length" formatted="false">"Anna tietovaraston nimi, jossa on 1–120 merkkiä"</string>
+    <string name="account_review_github_connection" formatted="false">"Tarkista GitHub-tilin yhteys"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"Tarkista keskeytynyt klooni ennen uuden aloittamista. Sen tiedostot säilytettiin."</string>
+    <string name="account_sample_hint" formatted="false">"Kokeile oikeita Git-toimintoja offline-tilassa. Tiliä ei tarvita."</string>
+    <string name="account_save_author_failed" formatted="false">"Tekijän tietoja ei voitu tallentaa"</string>
+    <string name="account_save_connection_failed" formatted="false">"Yhteyttä ei voitu tallentaa"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"GitHub-kirjautumista ei voitu tallentaa turvallisesti. Yritä uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_save_sign_in_short" formatted="false">"Kirjautumista ei voitu tallentaa turvallisesti"</string>
+    <string name="account_saved_connection_changed" formatted="false">"Tallennettu yhteys muuttui. Tarkista todennus ennen kuin kloonaat uudelleen."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"Tallennettuja tunnistetietoja ei voi avata. Valitse julkinen käyttö tai anna uudet tunnistetiedot."</string>
+    <string name="account_select_connected_account" formatted="false">"Valitse yhdistetty GitHub-tili ja github.com-HTTPS-osoite"</string>
+    <string name="account_select_failed" formatted="false">"GitHub-tiliä ei voitu valita. Yritä uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_select_github_account" formatted="false">"Valitse GitHub-tili"</string>
+    <string name="account_select_repository_account" formatted="false">"Valitse GitHub-tili tälle tietovarastolle"</string>
+    <string name="account_select_repository_github_account" formatted="false">"Valitse tietovaraston GitHub-tili"</string>
+    <string name="account_session_open_failed" formatted="false">"GitHubin suojattua tallennustilaa ei voitu avata. Kirjaudu uudelleen palauttaaksesi istunnon."</string>
+    <string name="account_session_recovery_failed" formatted="false">"GitHubin suojatun tallennustilan palautus epäonnistui. Yritä kirjautua uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_session_save_failed" formatted="false">"GitHubin suojattua tallennustilaa ei voitu tallentaa. Yritä kirjautua uudelleen."</string>
+    <string name="account_session_verify_failed" formatted="false">"GitHubin suojattua tallennustilaa ei voitu vahvistaa. Yritä kirjautua uudelleen."</string>
+    <string name="account_sign_in" formatted="false">"Kirjaudu sisään"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"Kirjaudu GitHubiin ennen tilin käytön valitsemista"</string>
+    <string name="account_sign_in_failed" formatted="false">"Kirjautuminen epäonnistui"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"Kirjaudu tietovaraston GitHub-tilille"</string>
+    <string name="account_sign_in_unverified" formatted="false">"GitHub-kirjautumista ei voitu vahvistaa. Aloita kirjautuminen uudelleen."</string>
+    <string name="account_sign_out_failed" formatted="false">"Turvallinen uloskirjautuminen epäonnistui. Yritä uudelleen, kun tallennustila on käytettävissä."</string>
+    <string name="account_signing_in" formatted="false">"Kirjaudutaan…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"SSH-isäntäavainta ei hyväksytty. Yritä uudelleen, kun voit vahvistaa palvelimen sormenjäljen."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"SSH-avaimia voi käyttää vain SSH-tietovarasto-osoitteiden kanssa"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"Tallennettua SSH-luottamusta ei voi avata. Tarkista SSH-palvelinten luottamus asetuksista."</string>
+    <string name="account_storage_attention" formatted="false">"GitHubin suojattu tallennustila vaatii huomiota. Nykyiset tunnistetiedot säilytettiin; yritä kirjautua uudelleen."</string>
+    <string name="account_token_empty" formatted="false">"Tunnus ei voi olla tyhjä"</string>
+    <string name="account_token_invalid">"GitHub-tunnus on virheellinen tai vanhentunut (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"Kokeile esimerkkitietovarastoa"</string>
+    <string name="account_updated_just_now" formatted="false">"juuri nyt"</string>
+    <string name="account_valid_branch" formatted="false">"Anna kelvollinen haaran nimi"</string>
+    <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_active" formatted="false">"Taustatarkistukset on ajoitettu mukana oleville tietovarastoille."</string>
     <string name="background_allow_push" formatted="false">"Salli automaattinen julkaisu"</string>
     <string name="background_attempt">"Viimeisin tarkistus: %1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"Toiminto pysähtyi. Tarkista tietovaraston tila ja yhteysasetukset."</string>
     <string name="diagnostics_share_title" formatted="false">"Jaa diagnostiikka"</string>
     <string name="diagnostics_warnings" formatted="false">"Varoitukset"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"paikallinen"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"etä"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"seuraava"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"tuntematon"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"Supista"</string>
+    <string name="dialogs_commit_expand" formatted="false">"Laajenna"</string>
+    <string name="dialogs_error_branch_exists">"Haara ”%1$s” on jo olemassa.\n\nValitse toinen nimi."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"Nykyistä haaraa ei voi poistaa.\n\nVaihda ensin toiseen haaraan."</string>
+    <string name="dialogs_error_commit_failed">"Commit epäonnistui: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"Toimintoa ei voi suorittaa, kun muutoksia ei ole commitoitu.\n\nTee muutoksista ensin commit tai siirrä ne stashiin."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"Virheellinen haaran nimi.\n\nKäytä kirjaimia, numeroita, yhdysmerkkejä ja alaviivoja."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"Tämä ei näytä olevan kelvollinen Git-repositorio.\n\nVarmista, että polku osoittaa .git-kansioon tai työhakemistoon."</string>
+    <string name="dialogs_error_network" formatted="false">"Verkkovirhe. Tarkista yhteys ja yritä uudelleen."</string>
+    <string name="dialogs_error_pull_failed">"Pull epäonnistui: %1$s"</string>
+    <string name="dialogs_error_push_failed">"Push epäonnistui: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"Repositoriota ei löytynyt sijainnista: %1$s\n\nTarkista polku ja yritä uudelleen."</string>
+    <string name="dialogs_error_title" formatted="false">"Virhe"</string>
+    <string name="dialogs_info_title" formatted="false">"Tietoja"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"Yhdistä vain, jos lähde on suoraan edellä. Säilyttää lineaarisen historian."</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"Fast-forward, jos mahdollista, muuten luo yhdistämiscommit."</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Luo aina yhdistämiscommit, vaikka fast-forward olisi mahdollinen."</string>
+    <string name="dialogs_success_title" formatted="false">"Onnistui"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"Tuntematon"</string>
+    <string name="dialogs_warning_title" formatted="false">"Varoitus"</string>
     <string name="discard_clear_staging" formatted="false">"Tyhjennä valmistelualue"</string>
     <string name="discard_review_all" formatted="false">"Seurattujen tiedostojen muutokset ja alla luetellut uudet tiedostot poistetaan pysyvästi. Ohitetut tiedostot säilytetään."</string>
     <string name="discard_review_empty" formatted="false">"Hylättäviä muutoksia ei ole."</string>
     <string name="discard_review_operation" formatted="false">"Tämä myös keskeyttää aktiivisen Git-toiminnon."</string>
     <string name="discard_review_unborn" formatted="false">"Commitia ei ole vielä tehty. Tämä poistaa luetellut tiedostot valmistelualueelta ja säilyttää niiden sisällön."</string>
+    <string name="discovery_scanned">"%1$s tarkistettu. Valitse lisättävät työkopiot."</string>
     <string name="file_clone_failure" formatted="false">"Paikallista tietovarastoa ei voitu kloonata. Tarkista lähdekansio, tallennustilan käyttöoikeus ja haara. Olemassa olevat kansiot säilytettiin."</string>
     <string name="file_clone_guidance" formatted="false">"Kloonaa laitteen tietovarasto paikallisesti. Salli jaetun tallennustilan kansion käyttö ensin asetuksissa."</string>
     <string name="file_delete_body" formatted="false">"Tiedosto poistetaan tältä laitteelta. Git näyttää sen poistettuna, jos se oli versionhallinnassa."</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"Tällä laitteella ei ole kansiovalitsinta"</string>
     <string name="folder_settings_unavailable" formatted="false">"Androidin tallennustilan asetukset eivät ole käytettävissä. Sovelluksen tallennustila on yhä käytettävissä."</string>
     <string name="folder_unusable" formatted="false">"Tätä kansiota ei voitu käyttää"</string>
+    <string name="git_fetch" formatted="false">"Hae"</string>
+    <string name="git_fetch_detail" formatted="false">"Tarkista uusien toimitusten etäosuus"</string>
     <string name="git_native_public_only" formatted="false">"Gitin oma protokolla tukee vain julkista käyttöä. Käytä tunnistautumiseen HTTPS:ää tai SSH:ta."</string>
+    <string name="gitops_action_failed" formatted="false">"Git ei voinut suorittaa tätä toimintoa loppuun"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"Haaratoimintoa ei voitu suorittaa loppuun"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"Haaratoimintoa ei voitu suorittaa loppuun. Päivitä repositorion tila."</string>
+    <string name="gitops_branch_changed" formatted="false">"Haara muuttui. Tarkista nykyinen haara ennen kuin yrität uudelleen."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"Nykyinen haara muuttui. Päivitä ennen commitia ja pushia."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"Nykyinen haara muuttui. Päivitä ennen pushia."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"Nykyinen haara muuttui latauksen aikana. Päivitä ja tarkista uudelleen."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"Haaran nimi ei voi olla tyhjä"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"Tee tiedostosta commit ennen haaran luomista."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"Nykyinen haara tai commit muuttui. Päivitä ja tarkista uudelleen."</string>
+    <string name="gitops_branch_pushed" formatted="false">"Haara pushattu"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"Haarojen päivittäminen epäonnistui"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"Muutosten lataaminen epäonnistui"</string>
+    <string name="gitops_commit_changed" formatted="false">"Commit muuttui. Päivitä historia ja tarkista uudelleen."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"Commit-viesti ei voi olla tyhjä"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"Commit tehty paikallisesti. Push pysäytetty; yritä uudelleen, kun olet valmis."</string>
+    <string name="gitops_committed_pushed" formatted="false">"Commit ja push tehty"</string>
+    <string name="gitops_committed_pushing" formatted="false">"Commit tehty paikallisesti. Pushataan…"</string>
+    <string name="gitops_committed_ready" formatted="false">"Commit tehty paikallisesti. Valmis pushattavaksi, kun haluat."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"Valitse oma tai heidän versionsa joukkoratkaisuun"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"Ristiriita muuttui. Luonnoksesi näkyy edelleen. Kopioi teksti, jonka haluat säilyttää, sulje sitten ja tarkista nykyinen ristiriita."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"Ristiriitaa ei voitu ratkaista"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"Ristiriidat muuttuivat. Päivitä ennen ratkaisemista."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"Merge-ristiriitojen päivittäminen epäonnistui"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"Osa ristiriidoista on yhä ratkaisematta. Tarkista päivitetty ristiriitaluettelo."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"Tiedoston diffin lataaminen epäonnistui"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Git ei voinut suorittaa tätä historiatoimintoa loppuun"</string>
+    <string name="gitops_history_changed" formatted="false">"Repositorion historia muuttui. Päivitä ja tarkista uudelleen."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"Historian päivittäminen epäonnistui"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"Tallennettuja LFS-päätepisteiden hyväksyntöjä ei voi avata. Nollaa ne Asetuksissa ennen kuin yrität uudelleen."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"Virheellinen LFS-päätepisteen osoite"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"Tiedostopäätteiden seurannan tarkistaminen epäonnistui. Lataa uudelleen ja tarkista nykyiset attribuutit, ristiriidat ja tiedostojen käyttöoikeudet ennen kuin yrität uudelleen."</string>
+    <string name="gitops_lfs_failed" formatted="false">"Git LFS:n suorittaminen epäonnistui. Tarkista yhteys ja nykyinen seurantatila, lataa uudelleen ja yritä uudelleen. Paikalliset tiedostosi ja commitisi säilytettiin."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Git LFS:n tarkistaminen epäonnistui. Tarkista tallennustilan käyttöoikeus ja repositorion tila ja lataa sitten uudelleen."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"Palvelimen lukitusten tarkistaminen epäonnistui. Päivitä ennen seuraavaa muutosta."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"Palvelin esti pääsyn lukitusluetteloonsa. Tarkista repositorion yhteys ja push-oikeudet."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"Palvelimen lukitusten tarkistaminen epäonnistui. Tarkista yhteys ja repositorion tila ja päivitä ennen seuraavaa muutosta."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"Merge-viesti ei voi olla tyhjä"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"Merge-istunto muuttui. Päivitä ennen jatkamista."</string>
+    <string name="gitops_merge_stopped">"Merge pysäytetty: %1$s"</string>
+    <string name="gitops_merge_successful">"Merge onnistui: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"Git-toiminto epäonnistui"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"Pull ei valmistunut"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"Valitse tarkistettu ristiriita"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"Valitse tarkistettu tiedostonimi"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"Ristiriita tai työtiedostot muuttuivat. Luonnoksesi säilytettiin; päivitä ennen ratkaisemista."</string>
+    <string name="gitops_rebase_failed" formatted="false">"Git ei voinut suorittaa tätä toimintoa loppuun. Tarkista yhteys, jos haettiin, ja päivitä sitten rebasen tila ennen kuin yrität uudelleen."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"Rebase on tarkistettava"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"Avaa ristiriitaeditori ennen ratkaisemista"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"Päivitä rebase-istunto"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"Tarkista rebase ensin"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Git ei voinut suorittaa tätä toimintoa loppuun. Tarkista yhteys ja sitten repositorion nykyinen tila ennen kuin yrität uudelleen."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"Valittu repositorio muuttui. Tarkista toiminto uudelleen."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"Paikallisten muutosten tarkistaminen epäonnistui"</string>
+    <string name="gitops_stash_changed" formatted="false">"Stash-luettelo muuttui. Tarkista nykyinen stash ennen kuin yrität uudelleen."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"Repositorion tilan päivittäminen epäonnistui"</string>
+    <string name="gitops_tag_changed" formatted="false">"Tunniste muuttui. Tarkista nykyinen tunniste ennen kuin yrität uudelleen."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"Tunnisteen nimi ei voi olla tyhjä"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"Tee tiedostosta commit ennen tunnisteen luomista."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"Upstream-haaran lataaminen epäonnistui"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"Upstream-haaran tallentaminen epäonnistui"</string>
     <string name="guide_back" formatted="false">"Takaisin"</string>
     <string name="guide_clone_body" formatted="false">"Kloonaa GitHub-tietovarastoja, julkisia tai itse ylläpidettyjä tietovarastoja sekä tietovarastoja SSH:n kautta. Jokaisella työkopiolla on oma yhteys ja haara."</string>
     <string name="guide_clone_title" formatted="false">"Tietovarastosi Androidissa"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"Lähetykset · erilliset salatut tunnistetiedot"</string>
     <string name="lfs_uploads_public" formatted="false">"Lähetykset · julkinen käyttö"</string>
     <string name="modified" formatted="false">"Muokattu"</string>
+    <string name="move_action" formatted="false">"Siirrä työkopio"</string>
+    <string name="move_cancelled" formatted="false">"Siirto peruttu. Alkuperäinen työkopio säilytettiin."</string>
+    <string name="move_confirm_action" formatted="false">"Siirrä"</string>
+    <string name="move_confirm_action_restore" formatted="false">"Palauta"</string>
+    <string name="move_confirm_guidance" formatted="false">"Valitse käyttämätön kohde äläkä anna muiden sovellusten muuttaa näitä kansioita siirron aikana."</string>
+    <string name="move_confirm_retained" formatted="false">"Alkuperäinen säilytetään palautuskopiona."</string>
+    <string name="move_confirm_title" formatted="false">"Siirretäänkö tämä työkopio?"</string>
+    <string name="move_confirm_title_restore" formatted="false">"Palautetaanko tämä palautuskopio?"</string>
+    <string name="move_done" formatted="false">"Repositorio siirretty"</string>
+    <string name="move_done_retained" formatted="false">"Repositorio siirretty. Alkuperäinen säilytetään kohdassa Siirtojen palautukset."</string>
+    <string name="move_error_destination_other" formatted="false">"Kohde on rekisteröity toiselle repositoriolle"</string>
+    <string name="move_error_destination_registered" formatted="false">"Tähän kohteeseen on jo rekisteröity toinen repositorio"</string>
+    <string name="move_error_finish_pending" formatted="false">"Viimeistele ensin odottava siirto"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"Viimeistele ensin tämän repositorion odottava siirto"</string>
+    <string name="move_error_recovery_added" formatted="false">"Palautuskopio on jo lisätty. Siirrä se sen repositoriomerkinnästä."</string>
+    <string name="move_error_restored_registered" formatted="false">"Palautettu sijainti on nyt rekisteröity toisin; asetuksia ei korvattu"</string>
+    <string name="move_error_settings_changed" formatted="false">"Repositorion asetukset muuttuivat. Tarkista siirron palautus ennen jatkamista."</string>
+    <string name="move_error_settings_review" formatted="false">"Siirron asetukset on tarkistettava; kaikki työkopiot säilytettiin"</string>
+    <string name="move_error_stale_review" formatted="false">"Siirron tarkistus muuttui. Tarkista kohde uudelleen ennen siirtoa."</string>
+    <string name="move_intro" formatted="false">"Siirrä koko tämä työkopio, mukaan lukien Git-historia, valmistellut muutokset ja tallentamattomat tiedostot levyllä. Sen tili- ja tekijäasetukset siirtyvät mukana."</string>
+    <string name="move_intro_restore" formatted="false">"Palauta säilytetty alkuperäinen erillisenä repositoriona. Nykyinen työkopio pysyy paikallaan."</string>
+    <string name="move_progress_moving" formatted="false">"Siirretään ja tallennetaan repositorion asetuksia…"</string>
+    <string name="move_progress_reviewing" formatted="false">"Tarkistetaan tiedostoja ja Git-metatietoja…"</string>
+    <string name="move_recovered_name">"%1$s (palautettu)"</string>
+    <string name="move_recovery_attention">"Siirron palautus vaatii huomiota: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"Siirron palautus valmis"</string>
+    <string name="move_recovery_removed" formatted="false">"Palautuskopio poistettu"</string>
+    <string name="move_title_restore" formatted="false">"Palauta palautuskopio"</string>
     <string name="notes_acknowledge" formatted="false">"Selvä"</string>
     <string name="notes_connections_body" formatted="false">"Hallitse GitHub-tilejä ja tietovaraston tekijätietoja. Yhdistä HTTPS:n tai SSH:n kautta, valitse kloonien tallennustila, yhdistä paikalliset kopiot uudelleen ja tarkista tietovarastojen siirrot tai poistot."</string>
     <string name="notes_connections_title" formatted="false">"Yhteydet ja tallennustila"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"Vaihda paikalliseen haaraan ja viimeistele ensin käynnissä oleva Git-toiminto tai ristiriita."</string>
     <string name="repository_actions_unsettled" formatted="false">"Tiedostot muuttuivat edelleen indeksiin lisäämisen aikana. Tarkista indeksi ja tiedostot ennen uutta yritystä."</string>
     <string name="repository_actions_write_scope" formatted="false">"Push ja Synkronoi lisäävät indeksiin kaikki nykyiset muutokset, joita ei ohiteta, luovat tarvittaessa commitin ja lähettävät odottavat commitit. Synkronoi hakee ensin muutokset ja tekee fast-forward-päivityksen, kun se on turvallista. Ristiriidat, eriytyneet historiat ja turvaton etätila pysäyttävät toiminnon. Jos lähetys epäonnistuu, mahdollinen uusi paikallinen commit säilytetään uutta yritystä varten."</string>
+    <string name="repository_add_none_new" formatted="false">"Valitse vähintään yksi repositorio, jota ei ole lisätty"</string>
+    <string name="repository_clone_deleted" formatted="false">"Paikallinen klooni poistettu"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"Irrallinen HEAD tai ei vielä ensimmäistä commitia"</string>
     <string name="repository_discovery_clean" formatted="false">"Ei muutoksia"</string>
     <string name="repository_discovery_dirty" formatted="false">"Paikallisia muutoksia"</string>
     <string name="repository_history_files_deleted" formatted="false">"Paikalliset tiedostot poistettu"</string>
     <string name="repository_history_files_kept" formatted="false">"Paikalliset tiedostot säilytetty"</string>
     <string name="repository_history_tracking_removed" formatted="false">"Git-seuranta poistettu · työtiedostot säilytetty"</string>
+    <string name="repository_history_unavailable" formatted="false">"Repositorion historia ei ole käytettävissä"</string>
+    <string name="repository_imported_files_kept" formatted="false">"Tuotujen repositorioiden tiedostot säilytetään tällä laitteella"</string>
     <string name="repository_metadata_unavailable" formatted="false">"Tietovaraston metatiedot eivät ole käytettävissä"</string>
     <string name="repository_no_commits" formatted="false">"Ei committeja"</string>
+    <string name="repository_no_longer_added" formatted="false">"Repositoriota ei ole enää lisätty"</string>
+    <string name="repository_removed_files_kept" formatted="false">"Repositorio poistettu sovelluksesta. Paikalliset tiedostot säilytettiin."</string>
+    <string name="repository_restore_backup_first" formatted="false">"Palauta Git-metatietojen varmuuskopio ennen kuin yhdistät tämän kansion uudelleen"</string>
     <string name="repository_shortcut_active" formatted="false">"Valtuutettu ja kiinnitetty"</string>
     <string name="repository_shortcut_add" formatted="false">"Lisää aloitusnäytön pikakuvake"</string>
     <string name="repository_shortcut_busy" formatted="false">"Toiminto on jo käynnissä. Tätä pikakuvaketta ei lisätty jonoon. Odota ja napauta sitä uudelleen."</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"Pikakuvakkeen valtuutus peruttu"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"Aloitusnäyttösi ei voinut hyväksyä pikakuvakepyyntöä. Käytä tämän näkymän toimintoja."</string>
     <string name="repository_sync_not_recorded" formatted="false">"Ei tallennettu"</string>
+    <string name="resolve_local_action" formatted="false">"Ratkaise"</string>
+    <string name="resolve_local_body" formatted="false">"Toteutamme paikalliset muutokset ja yhdistämme sitten kaukosäätimeen. Jos on ristiriitoja, voit ratkaista ne seuraavassa näytössä."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"Commit &amp; yhdisty"</string>
+    <string name="resolve_local_committing" formatted="false">"Tehdään paikallisten muutosten committia…"</string>
+    <string name="resolve_local_default_message" formatted="false">"Paikalliset muutokset GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"toimitusviesti"</string>
+    <string name="resolve_local_superseded" formatted="false">"Valittu repositorio muuttui. Tarkista paikalliset muutokset uudelleen."</string>
+    <string name="resolve_local_title" formatted="false">"Paikalliset muokkaukset estävät vetoa"</string>
     <string name="settings_folder_unavailable" formatted="false">"Kansion käyttöoikeus vaatii huomiota"</string>
     <string name="shortcut_background_attention" formatted="false">"Pikakuvake vaatii huomiota. Avaa tietovaraston toiminnot ja tarkista tila ennen uutta yritystä."</string>
     <string name="shortcut_background_channel" formatted="false">"Pikakuvakkeiden toiminnot"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"Ei vielä synkronoitu"</string>
     <string name="tide_home_state_synced">"Synkronoi %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"Vaatii tarkistuksen"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"Etätietovarastossa ei ole uutta."</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"Vain omat"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"Etätietovarastossa on committeja, joita sinulla ei ole."</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"Uutta etätietovarastossa"</string>
+    <string name="tide_merge_both_moved" formatted="false">"Molemmat puolet muuttuivat"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"Poistettu toisella puolella, muokattu toisella."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"Molemmat puolet muokkasivat tätä tiedostoa."</string>
+    <string name="tide_merge_conflict_list_count">"Ratkaistu: %1$d/%2$d"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"Valitse säilytettävä versio tai muokkaa tulosta käsin."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"Nimetty uudelleen kahdella eri tavalla."</string>
     <string name="tide_merge_conflict_result" formatted="false">"TULOKSI"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">"– tämä on se, mitä vaiheessa käsitellään."</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"Ratkaisematta"</string>
     <string name="tide_merge_diff_added" formatted="false">"Lisätty"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"Binaarisisältöä ei voi näyttää tekstinä."</string>
     <string name="tide_merge_diff_changed" formatted="false">"Muutettu"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"Kopioitu"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"Poistettu"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"Hylkää"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"Tällä muutoksella ei ole rivikohtaista eroa."</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"Ei tekstimuutoksia"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"Eron lataaminen epäonnistui"</string>
+    <string name="tide_merge_diff_hunk_line">"rivi %1$d"</string>
+    <string name="tide_merge_diff_line_added">"Lisätty: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"Poistettu: %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"Muokattu"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"Nimetty uudelleen"</string>
     <string name="tide_merge_diff_staged" formatted="false">"vaiheistettu"</string>
+    <string name="tide_merge_diff_stats_a11y">"Lisättyjä rivejä: %1$d, poistettuja rivejä: %2$d"</string>
+    <string name="tide_merge_diff_summary">"Tiedostoja: %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"tyyppi muutettu"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"Ei indeksissä"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"Jo ajan tasalla."</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"Synkronoitu"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"Viimeistelläänkö yhdistäminen?"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"Toisen puolen muutokset ovat mukana."</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"Yhdistetty"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"Nouda, tarkista ja yhdistä."</string>
     <string name="tide_merge_merge_kicker" formatted="false">"Yhdistä"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"Joitakin tiedostoja muutettiin molemmilla puolilla."</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"Yhdistäminen keskeytetty"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"Ristiriitoja on vielä ratkaisematta"</string>
+    <string name="tide_merge_moved_on" formatted="false">"Etätietovarasto muuttui kirjoittaessasi."</string>
     <string name="tide_merge_ours_filename" formatted="false">"Meidän"</string>
+    <string name="tide_merge_plan_section" formatted="false">"Tarkistettu suunnitelma"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"Takaisin lähtötilanteessa."</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"Rebase odottaa estynyttä checkoutia."</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"Rebase pysähtyi tiedostoihin, joita molemmat puolet muokkasivat."</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"Rebase on valmis."</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"Nouda ensin, päätä sitten."</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"Tarkista tämä vaihe ennen jatkamista."</string>
     <string name="tide_merge_result_section" formatted="false">"TULOKSI"</string>
     <string name="tide_merge_side_deleted" formatted="false">"poistettu"</string>
     <string name="tide_merge_theirs" formatted="false">"Heidän"</string>
+    <string name="tide_merge_theirs_count">"Etätietovarastosta: ↓%1$d"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"Heidän"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"Luetaan haaran asetuksia…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"Seuranta"</string>
+    <string name="tide_merge_upstream_set">"Seurataan: %1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"Seurattavaa haaraa ei ole asetettu"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"Pull ja push eivät tiedä kohdettaan, ennen kuin valitset seurattavan haaran."</string>
+    <string name="tide_merge_yours" formatted="false">"Oma versio"</string>
+    <string name="tide_merge_yours_count">"Paikalliset: ↑%1$d"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"Kloonaus epäonnistui"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"Luo PAT GitHubissa ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"Aito Git."</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"Oletusarvoinen"</string>
     <string name="tide_onboarding_show_token" formatted="false">"Näytä"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"Kloonaa mikä tahansa tietovarasto, kirjoita Obsidianissa tai muussa sovelluksessa ja synkronoi yhdellä napautuksella."</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"Ei kirjautunut"</string>
+    <string name="tide_settings_off" formatted="false">"pois"</string>
+    <string name="tide_settings_on" formatted="false">"päällä"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"Uudet kloonit"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"GitSync.md unohtaa tällä laitteella käytettävän tokenin (%1$s). Tietovarastosi ja niiden tiedostot pysyvät paikoillaan."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"Kirjaudutaanko ulos GitHubista?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"kirjautunut sisään"</string>
+    <string name="tide_settings_this_account" formatted="false">"tämä GitHub-tili"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"Tarkista muutokset"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"Git-toiminto on keskeytynyt. Ratkaise jokaisen ristiriitaisen tiedoston ristiriidat jatkaaksesi."</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Molemmat puolet muuttuivat"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"Vain tarkistetut .git-metatiedot poistetaan. Työtiedostot säilyvät paikoillaan, mutta paikallista Git-historiaa ei voi palauttaa ilman toista kopiota."</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Poistetaanko Git-historia pysyvästi?"</string>
     <string name="tracking_remove_review_changed" formatted="false">"Tarkistuksen tiedot muuttuivat. Peruuta ja tarkista seurannan poistaminen uudelleen."</string>
+    <string name="tracking_removed_backup">"Git-seuranta poistettu. Tarkistettu varmuuskopio: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Git-seuranta poistettu. Työtiedostot säilytettiin."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nKaikki työtiedostot ja paikallinen Git-historia säilyvät tällä laitteella. Voit yhdistää kansion uudelleen myöhemmin."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nTämä poistaa pysyvästi sovelluksen hallitseman kloonin, mukaan lukien lähettämättömät commitit, stash-tallennukset ja tallentamattomat tiedostot. Etätietovarasto ei muutu."</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s vaatii sormenjäljen vahvistamisen ennen seuraavaa yhteyttä."</string>
+    <string name="ui_1_s_bytes_81cdb385">"Tavuja: %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"Merkkejä: %1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s tiedostoa"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Rivejä: %1$s, tavuja: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s paikallista committia · %2$s ylävirran committia"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"Näytetään %1$s · tallennettu %2$s"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Kertaostos Google Playsta"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"Lisää valitut repositoriot"</string>
     <string name="ui_added_b4561641" formatted="false">"Lisätty"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"Lisätyt repositoriot"</string>
+    <string name="ui_alias_1_s_e7e8c040">"Lisänimi: %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"Alias (valinnainen)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Kaikki konfliktiratkaisut on valmisteltu. Jatka committien toistamista. Jos Git ilmoittaa NOTHING_TO_COMMIT, tarkista, pitäisikö tyhjä commit ohittaa."</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"Kaikki ristiriidat on ratkaistu. Viimeistelläänkö yhdistäminen?"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"Kaikki ristiriidat ratkaistu. Viimeistele tai keskeytä."</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Kaikki ominaisuudet sisältyvät maksullisen sovelluksen asennukseen. Ei tilauksia eikä sovelluksen sisäisiä ostoja."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Kaikki paikalliset muutokset tähän tiedostoon hylätään pysyvästi."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Salli paikallisten kansioiden käyttö"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"Jo lisätty"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"Keskeytynyt siirto on palautettava. Kaikki tunnistetut kopiot säilytetään, kunnes se on valmis."</string>
     <string name="ui_and_1_s_more_f93ea742">"ja %1$s lisää R"</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"MIKÄ TAHANSA REPO. SYNKRONOITUNA ANDROIDIIN."</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Sovellus"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Sovelluksen asetukset"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"Käytä"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"Käytä stashia"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Käytä seurantavalintaa"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Hyväksyntä tallennetaan tälle laitteelle ja odottava yhteys jatkuu. Peruminen jättää palvelimen ilman luottamusta."</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"Haluatko varmasti keskeyttää tämän yhdistämisen?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"tunnistaminen"</string>
     <string name="ui_back_639807a2" formatted="false">"TAKAISIN"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Takaisin"</string>
@@ -822,6 +1123,7 @@
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"Selaa tietovarastoja"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Selaus tällä tilillä"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"Kumoa"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Peru odottava siirto"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"Muutettu"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"Muutetut tiedostot"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Muutokset"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Valitse toinen kansio"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Valitse kloonien tallennuspaikka"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Valitse laitteen oma tai siihen liitetty tallennustila. Pilvitiedostopalvelut eivät tarjoa tämän Git-moottorin käyttämää tiedostojärjestelmää."</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"Valitse lähtökohta"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"Valitse strategia"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Valitse GitHubin selaamiseen käytettävä tili. Kukin tietovarasto säilyttää sille määritetyn tilin; vaihda se kohdassa Tietovaraston yhteys."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Valitse uusien kloonien oletuskansio. Nykyiset tietovarastot säilyvät nykyisissä sijainneissaan."</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"Tyhjennä kaikki"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Luo tiedosto tai kansio valitsemalla Uusi."</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"CREATE A. PAT GITHUB →"</string>
     <string name="ui_create_fde9c501" formatted="false">"Luo"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"Luo uusi haara"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Nykyinen oletuskansio"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"Nykyinen"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Nykyinen erillinen lähetysosoite: %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Oletus uusille klooneille. Jokainen klooni voi käyttää eri kansiota."</string>
     <string name="ui_delete_1_s_6474596f">"Poistetaanko ”%1$s”?"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"Poistetaanko haara?"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"Poistetaanko haara \"%1$s\"?"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"Poista haara"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"PoistaComment"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Poista tiedosto"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"Poista paikalliset tiedostot?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">"Poista paikalliset tiedostot"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"Poista tunniste"</string>
+    <string name="ui_destination_1_s_0df94639">"Kohde: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Kohteen yläkansio"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnostiikka"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"Ero"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Hylkää luonnos"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"Löydetyt repositoriot"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Ohita"</string>
     <string name="ui_done_283e91eb" formatted="false">"Valmis"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"Latauspaikka"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"Lataa puuttuvat tiedostosisällöt"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"Poista stash"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Uudelleenpohjustuksessa ylävirta on Gitin ours-puoli ja toistettava paikallinen commit theirs-puoli."</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"esim. feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"esim. MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"esim. prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Muokkaa commitin tekijää"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Muokkaa yhteyttä"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Muokkaa ratkaisua"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Muokkaa sisältöä tässä ratkaistaksesi ristiriidan käsin"</string>
     <string name="ui_email_969ccbd3" formatted="false">"Sähköposti"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"Tyhjä kansio"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"Ota käyttöoikeus käyttöön"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"Päätepisteen todennus"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Anna tunnistetiedot uudelleen tai valitse uudelle osoitteelle julkinen pääsy."</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Anna Git-tietovarastosi täydellinen polku."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Virhe"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Kaikki SSH-palvelimet vaativat sormenjäljen vahvistamisen ennen seuraavaa yhteyttä. Myös vaurioituneet luottamusmerkinnät poistetaan."</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"Nouda ja käytä etämuutokset"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Nouda ja tarkista uudelleenpohjustus"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"Nouda etämuutokset"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"Tiedosto: %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Tiedostotoiminto epäonnistui"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Viimeistele siirron palautus"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"Viimeistellään"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"Unohda"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"Unohda palvelin"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS vaatii huomiota"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · Seuranta ja lataukset"</string>
     <string name="ui_git_remote_91593664" formatted="false">"Git-etätietovarasto"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"GitHub-tili yhdistetty"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"GitHub-tilit"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub sisäänkirjoitus"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Gitsync.md:n täysi versio"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md tarvitsee jaetun tallennustilan käyttöoikeuden hallitakseen oikeita Git-työkopioita laitteen kansioissa. Valitse haluamasi kansiot, kun olet ottanut käyttöoikeuden käyttöön Androidin asetuksissa."</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md ei anna tunnistetietoja tälle tietovarastolle."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Palaa takaisin ja valitse tietovarasto."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Tiiviste"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Ymmärrän, että toinen omistaja saattaa yhä muokata tätä tiedostoa."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Lisää SSH-käyttäjätunnus osoitteeseen: git@host:team/repo.git tai ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_info_170322a3" formatted="false">"Tiedot"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Vastaava julkinen avain (valinnainen)"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"Yhdistä"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"Yhdistä haara kohteeseen %1$s"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">"Yhdistäminen viesti"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"Yhdistä"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"Yhdistämisstrategia:"</string>
     <string name="ui_message_f5394f72" formatted="false">"Viesti:"</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"Metatiedot:"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"Lisää"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Siirtojen palautukset"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"Siirrä tietovarasto"</string>
     <string name="ui_name_dcd1d522" formatted="false">"Nimi"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Nimi GitSync.md:ssä"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"Uusi kansio"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Uusi token tai salasana"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"Ei hyväksyttyjä mukautettuja LFS-päätepisteitä"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"Haaroja ei ole saatavilla"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Ei näytettäviä muutoksia"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Committeja ei löytynyt"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"Ristiriitoja ei löytynyt"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Ei yhdistettyjä tilejä. Paikalliset tietovarastot ovat edelleen käytettävissä."</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"Uusille binääri- tai suurille tiedostoille ei tarvitse valita seurantatapaa."</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"Ei tietovarastoja"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"Repositorioita ei ole vielä lisätty."</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"Ei tallennettuja tietovarastoja. Lisää yksi asetuksissa."</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"Ei tietovarastoa"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"EI REPOSITORIOTA"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Väliaikaisesti tallennettuja muutoksia ei löytynyt"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"Tunnisteita ei löytynyt"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"nyt"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"Avaa"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Avaa Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Avaa tiedostoissa"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Avataan tiedostoa…"</string>
     <string name="ui_or_7175517a" formatted="false">"tai"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"Oma versio: %1$s tavua"</string>
     <string name="ui_ours_ab658c14" formatted="false">"Meidän"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"Ohita järjestelmän ulkoasu"</string>
     <string name="ui_owner_1_s_599ca9ce">"Omistaja: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Vanhemmat (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Polku"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"HENKILÖS"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Alusta"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"Ratkaise kaikki ristiriidat ennen yhdistämisen viimeistelyä."</string>
     <string name="ui_pop_52e740ad" formatted="false">"Pop"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"Käytä ja poista stash"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"Aiemmin lisätyt"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"Aiemmin luotettu: %1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"Tietosuojakäytännöt"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Veto siirtymässä"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Vedä uudelleenpohjustaen / jatka uudelleenpohjustusta"</string>
     <string name="ui_push_792aac67" formatted="false">"Työnnä"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"LFS-lukot estävät lähetyksen"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"Lähetä paikalliset muutokset etäpalvelimelle"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"Lue ja muokkaa tämän repositorion tiedostoja"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Uudelleenpohjustus käynnissä"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Pohjusta tarkistetun ylävirran päälle"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"Tämän laitteen viimeisimmät toimintojen tulokset. Loki säilyttää enintään 500 merkintää. Tunnistetietoja, tietovarastojen osoitteita, tiedostopolkuja ja tiedostojen sisältöjä ei tallenneta."</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Yhdistä uudelleen"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"Yhdistä GitSync.md:n jo tallentamat työkopiot uudelleen. Merkinnän poistaminen säilyttää tiedostot; hallitun kloonin poistaminen ja Git-seurannan poistaminen ovat erillisiä valintoja."</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"Palautus vaatii huomiota. Tunnistetut työkopiot säilytetään."</string>
     <string name="ui_refresh_0e916101" formatted="false">"Päivitä"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Päivitä uudelleenpohjustuksen tila"</string>
     <string name="ui_reload_1_s_873e324f">"Ladataanko %1$s uudelleen?"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Poistetaanko tallennetut tunnistetiedot?"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"Poista kirjautuminen"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Poistetaanko säilytetty alkuperäinen?"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"Poistetaanko tämä repositorio ja sen paikalliset tiedostot tältä laitteelta? GitHub-repositorioosi ei tehdä muutoksia."</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Poista seuranta"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"Poistettu"</string>
     <string name="ui_rename_1_s_9b09e088">"Nimeä %1$s uudelleen"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Toistettu paikallinen commit"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Toistaa paikalliset commitit määritetyn ylävirran päälle. Paikallisten committien tunnisteet voivat muuttua. Nykyinen yhdistämisrakenne säilytetään. Mitään ei lähetetä."</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"Repon tila"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Repon polku"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Tähän tiliin liitetyt tietovarastot edellyttävät uutta kirjautumista tai toisen tilin valintaa kohdassa Tietovaraston yhteys. Paikalliset tiedostosi ja commitit säilyvät."</string>
     <string name="ui_repository_13d6ff07" formatted="false">"Tietovarasto"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"Tietovaraston yhteys"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"Tietovaraston toiminto epäonnistui"</string>
     <string name="ui_repository_path_037711af" formatted="false">"Tietovaraston polku"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"Tietovaraston tila"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"Tietovaraston URL"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Ratkaise ja valmistele"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"RESOLVE CONFLIKTI"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"Ratkaistu"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Ratkaistu sisältö"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"Ratkaistu sisältö"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"RATKAISTU"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Ratkaistaan: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Palauta erillisenä repositoriona"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Säilytetty alkuperäinen: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"Uudelleenyrittää"</string>
     <string name="ui_retry_e464c660" formatted="false">"Uudelleenyrittää"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"Palaa tietovarastoihin"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  Kumoa kaikki muutokset"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  Kumoa"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"Kumoa muutokset"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Kumoa commit"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Tarkista kohde"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"Tarkista palautettu kansio"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"Tarkista tietovarastoillesi sallitut erilliset LFS-palvelimet. Hyväksynnän peruminen estää tulevat siirrot kyseisessä suunnassa; käynnissä olevat toiminnot voivat valmistua."</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"Tarkistettu kohde"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"Peru hyväksyntä"</string>
     <string name="ui_save_1509f561" formatted="false">"Tallenna"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Tallenna tekijä"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"Tutki sovelluksen kansiot"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"Etsi repositorioita…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">"– tallennusjärjestelmän valinta"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"Valitse yhdistettävä lähdehaara:"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Valittu kansio"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"Erillinen käyttäjänimi ja tunniste"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"Asetukset"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Luottamus SSH-palvelimiin"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"Valmistele kaikki muutokset"</string>
     <string name="ui_stage_de838855" formatted="false">"Vaiheista"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"Aloita kohdasta"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"kiinnitysviesti (valinnainen)"</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"Strategia"</string>
     <string name="ui_switch_39921a74" formatted="false">"Vaihda"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"Vaihda haaraan"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"Tunnisteet"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Aktiivinen kohde säilyy paikallaan. GitSync.md tarkistaa, ettei säilytetyssä alkuperäisessä ole myöhempiä muutoksia, ennen kuin sen tiedostot ja Git-historia poistetaan pysyvästi."</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Salattua yhteyttä käytetään uudelleen vain tietovaraston alkuperäiseen osoitteeseen. Vaihda todennustapa erikseen, jos haluat käyttää muuta osoitetta."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Kansion voi siirtää suoraan tällä tallennustaltiolla."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Aiemman GitHub-tilin yhteys on katkaistu. Valitse yhdistetty tili tai toinen todennustapa."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Toistettava paikallinen commit poistaa tämän tiedoston."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Tarkistuksen tiedot muuttuivat. Peruuta ja päivitä palvelimen lukitukset."</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"Tutkiminen saavutti syvyys- tai kansiorajan. Joitakin kansioita ei tutkittu."</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"Tuleva versio: %1$s tavua"</string>
     <string name="ui_theirs_691ef727" formatted="false">"Heidän"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"Ratkaisemattomia ristiriitoja: %1$s."</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"Tätä ei voi peruuttaa."</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"Tämä muuttaa .gitattributes-tiedostoa. Tiedostot ja indeksi pysyvät ennallaan, kunnes lisäät muutokset indeksiin."</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"Siirto tapahtuu tallennustaltioiden välillä. GitSync.md tarkistaa kopioidun sisällön ja säilyttää alkuperäisen kohdassa Siirtojen palautukset, kunnes poistat sen."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Tämä historiamerkintä ei ole käytettävissä."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Tämä poistaa toisen yhteyden lukituksen. Sovi asiasta omistajan kanssa ennen jatkamista."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Tämä tietovarasto käyttää julkista pääsyä, kunnes valitset todennuksen uudelleen. Kirjautunutta GitHub-tiliäsi ei käytetä siihen. Fetch- ja push-osoitteet säilyvät ennallaan."</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"Tämä hylkää kaiken edistymisen ja palauttaa tietovaraston yhdistämistä edeltävään tilaan."</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"Tämä säilyttää oman versiosi tiedostosta."</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"Tämä käyttää tiedoston tulevaa versiota."</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"Tämä käyttää käsin muokkaamaasi sisältöä."</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">"tunnus tai salasana:"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"Seuraa valittuja tiedostoja LFS:llä"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"Seuratut objektit"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"Seuranta: %1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"Tarkista seuranta"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"Luotettujen palvelinten sormenjäljet tallennetaan tälle laitteelle. Palvelimen unohtaminen vaatii vahvistuksen seuraavalla yhdistämiskerralla. Tietovarastojen yksityiset avaimet pysyvät tallessa."</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Tiedostoa ei voi avata"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">"KÄYTÄÄN"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Käyttäjänimi"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"Käyttäjätunnus + tunniste"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"Käytettävä strategia: %1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"Vahvista tämä osoite tietovaraston omistajalta. Hyväksyntä koskee vain tätä tietovarastoa, Git-etätietovarastoa, LFS-päätepistettä ja siirtosuuntaa tällä laitteella."</string>
     <string name="ui_version_dd167905" formatted="false">"Versio"</string>
     <string name="ui_warning_e981ddae" formatted="false">"Varoitus"</string>
@@ -1142,9 +1503,139 @@
     <string name="upstream_remote" formatted="false">"Etätietovarasto"</string>
     <string name="upstream_title" formatted="false">"Seurattava haara"</string>
     <string name="upstream_unavailable" formatted="false">"Valitse paikallinen haara, jolla on määritetty etätietovarasto, ja viimeistele ensin aktiiviset Git-toiminnot."</string>
+    <string name="vault_copy_url" formatted="false">"Kopioi repositorion URL"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"Sovelluksen ulkoinen tallennustila"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"Sovelluksen tallennustila"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Git-metatietojen varmuuskopio"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"Varmuuskopioarkistoa ei voi jakaa"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Jaa Git-metatietojen varmuuskopio"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"Varmuuskopioarkisto ei ole käytettävissä"</string>
+    <string name="vault_l10n_branch_value">"Haara: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"Valmis klooni muuttui. Yhdistä sen kansio uudelleen kohdasta Paikalliset tietovarastot."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"Kloonatun repositorion tallentamista ei voitu viimeistellä. Yritä lisätä se uudelleen."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"Kloonin historia muuttui"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"Kloonin historia poistettiin"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"Tämä klooni ei enää odota palautusta"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"Kloonin palautus peruttiin"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"Kloonin palautus muuttui"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"Kloonin palautus muuttui. Tarkista se uudelleen."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"Kloonin palautus hylättiin"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"Kloonin palautus ei ole enää käytettävissä. Yhdistä sen kansio uudelleen kohdasta Paikalliset tietovarastot."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"Tämä klooni poistettiin tai rekisteröitiin uudelleen. Tarkista sen nykyinen merkintä."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"Oletuskloonaussijaintia ei voitu tallentaa"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"Repositorion poiston tarkistus muuttui. Tarkista klooni uudelleen ennen sen poistamista."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"Laitteen tallennustila"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"Ota jaetun tallennustilan käyttöoikeus käyttöön ja valitse kansio sitten uudelleen. Sovelluksen tallennustila on käytettävissä ilman tätä lupaa."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"Ota jaetun tallennustilan käyttöoikeus käyttöön ennen kansion valitsemista"</string>
+    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"Kansion käyttöoikeus poistettiin. Valitse kansio uudelleen ennen jatkamista."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"Kansion käyttöoikeutta ei voitu tallentaa"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"Valitse kansio tästä laitteesta tai liitetystä tallennusvälineestä. Tämä Git-moottori ei voi käyttää pilvidokumenttipalvelua suoraan."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"Valitse kansio, jonka polussa ei ole symbolisia linkkejä"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"Tämä kansio ei yksilöi laitteen tallennusvälinettä"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"Tämä kansio ei tue kirjoitettavia Git-tiedostoja. Tarkista käyttöoikeus ja vapaa tallennustila."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Valitse työkansio Git-metatietojen ulkopuolelta"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"Valittu kansio on tallennusvälineensä ulkopuolella"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"Tämä kansio on jo rekisteröity eri tavalla. Nykyiset asetukset säilytettiin."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"Tämä kansio on jo rekisteröity eri tavalla. Tarkista se kohdassa Paikalliset tietovarastot."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"Valitse repositorion kansio uudelleen palauttaaksesi käyttöoikeuden"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"Kansion luku- ja kirjoitusoikeutta ei voitu säilyttää"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"Valittu kansio ei ole käytettävissä"</string>
+    <string name="vault_l10n_github_user" formatted="false">"GitHub-käyttäjä"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"Repositoriohistoria muuttui. Valmis klooni säilytettiin; tarkista se kohdassa Paikalliset tietovarastot."</string>
+    <string name="vault_l10n_last_sync_value">"Viimeisin synkronointi: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"Paikallinen etärepositorio"</string>
+    <string name="vault_l10n_local_remote_named">"Paikallinen etärepositorio: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"Kohde on jo olemassa. Nykyiset tiedostot säilytettiin."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"Tämä ei ole sovelluksen hallitsema kloonaussijainti"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"Repositorio lisättiin, mutta sen Obsidian-yhteyttä ei voitu valmistella. Yritä uudelleen kohdasta Asetukset → Obsidian-yhteydet."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"Jotkin Obsidian-yhteydet on tarkistettava. Yritä uudelleen kohdasta Asetukset → Obsidian-yhteydet."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"Julkaisukansion käyttöoikeus poistettiin. Valitse alkuperäinen kansio uudelleen."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"Julkaisutili muuttui"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"Valitse alkuperäinen laitteen kansio uudelleen palauttaaksesi julkaisun käyttöoikeuden"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"Valitse alkuperäinen julkaisukansio uudelleen palauttaaksesi käyttöoikeuden"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"Tämä kansio on eri kuin tarkistettu julkaisu. Nykyiset tiedostot säilytettiin."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"Tämä käyttöoikeus kuuluu toiselle kansiolle. Valitse alkuperäinen julkaisukansio."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"Julkaisu vaatii huomiota. Tallennetut tiedostot säilytettiin."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"Valitse julkaisukansio ilman symbolisia linkkejä"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"Valitse alkuperäinen julkaisukansio ilman symbolisia linkkejä"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"Alkuperäinen julkaisukansio ei ole käytettävissä"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"Julkaisun rekisteröinti kuuluu toiseen kohteeseen"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"Tämä kansio menee päällekkäin rekisteröidyn repositorion kanssa. Tarkista sen nykyinen merkintä ennen julkaisemista."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"Tallennettu julkaisun edistyminen ei ole käytettävissä"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"Yhdistä valittu GitHub-tili uudelleen"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"Valitse yhdistetty GitHub-tili"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"Julkaisun repositorioasetukset muuttuivat"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"Repositorioasetukset on korjattava ennen julkaisemista"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"Kirjaudu tälle julkaisulle valittuun GitHub-tiliin"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"Pysäytetty. Tallennettu edistyminen on valmis tarkistettavaksi; viimeisin verkkotulos voi olla epävarma."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"Vahvista valittu GitHub-tili ennen julkaisemista"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"Repositorion palautus tarvitsee kansion käyttöoikeuden. Valitse kyseinen kansio uudelleen kohdassa Paikalliset tietovarastot."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"Tämä repositorio on jo lisätty"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"Valitse tämän repositorion kansio uudelleen palauttaaksesi tallennetun käyttöoikeuden."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"Repositorion nimi vaaditaan"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"Repositorioasetuksia ei voitu tallentaa; tarkista vapaa tallennustila"</string>
+    <string name="vault_l10n_sample_open_failed">"Esimerkkirepositoriota ei voitu avata: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"Esimerkkirepositorio"</string>
+    <string name="vault_l10n_settings_load_failed">"Asetusten lataaminen epäonnistui: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"Asetuksia ei voitu tallentaa"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"Jaetun tallennustilan käyttöoikeus poistettiin. Ota se käyttöön avataksesi tämän repositorion."</string>
+    <string name="vault_l10n_size_bytes">"%1$s t"</string>
+    <string name="vault_l10n_size_kb">"%1$s kt"</string>
+    <string name="vault_l10n_size_mb">"%1$s Mt"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"ristiriita"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"vaiheistettu"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"vaiheistettu poisto"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"vaiheistettu + vaiheistamaton"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"seuraamaton"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Valitse ensin kansio"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"Tämä tallennussijainti muuttui. Valitse kansio uudelleen."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"Tallennustila vaatii huomiota"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"Seurannan poiston tarkistus muuttui. Tarkista repositorio ja varmuuskopiovalinta uudelleen."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"Tämä tallennusväline ei ole käytettävissä"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Tämä tallennusväline ei ole käytettävissä. Yhdistä se uudelleen ja valitse kansio uudelleen."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"Kansiota ei voitu avata Tiedostot-sovelluksessa."</string>
+    <string name="vault_repository_fallback" formatted="false">"Tietovarasto"</string>
+    <string name="vault_url_copied" formatted="false">"Kopioitu!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"%1$d pv sitten"</item>
+        <item quantity="other">"%1$d pv sitten"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"%1$d t sitten"</item>
+        <item quantity="other">"%1$d t sitten"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"%1$d min sitten"</item>
+        <item quantity="other">"%1$d min sitten"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"%1$d kk sitten"</item>
+        <item quantity="other">"%1$d kk sitten"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"%1$d vk sitten"</item>
+        <item quantity="other">"%1$d vk sitten"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"%1$d v sitten"</item>
+        <item quantity="other">"%1$d v sitten"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"Yhdistämisessä on %1$d ratkaisematon ristiriita.\n\nRatkaise se ennen yhdistämisen viimeistelyä."</item>
+        <item quantity="other">"Yhdistämisessä on %1$d ratkaisematonta ristiriitaa.\n\nRatkaise ne ennen yhdistämisen viimeistelyä."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s rivi"</item>
+        <item quantity="other">"+%1$s -%2$s riviä"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d tiedosto"</item>
         <item quantity="other">"%1$d tiedostoa"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"Merge pysäytetty: %1$s (%2$d ristiriita)"</item>
+        <item quantity="other">"Merge pysäytetty: %1$s (%2$d ristiriitaa)"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"Ladattiin %1$d objekti."</item>
@@ -1170,6 +1661,10 @@
         <item quantity="one">"%1$d tiedosto"</item>
         <item quantity="other">"%1$d tiedostoa"</item>
     </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s tiedosto Git-metatiedot mukaan lukien · %2$s"</item>
+        <item quantity="other">"%1$s tiedostoa Git-metatiedot mukaan lukien · %2$s"</item>
+    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d muu estynyt polku ei näy."</item>
         <item quantity="other">"%1$d muuta estynyttä polkua ei näy."</item>
@@ -1181,6 +1676,10 @@
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"%1$d ylävirran commit"</item>
         <item quantity="other">"%1$d ylävirran committia"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d repositorio lisätty"</item>
+        <item quantity="other">"%1$d repositoriota lisätty"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d repositorio"</item>

@@ -2,8 +2,10 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.services.git.lfs.*
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LfsViewModel @Inject constructor(private val repositories: LfsRepository) : ViewModel() {
     data class State(val busy: Boolean = false, val files: List<LfsFileInfo> = emptyList(), val plan: LfsTrackingPlan? = null,
-        val error: String? = null, val notice: LfsNotice? = null, val locks: LfsLockReview? = null, val blockBack: Boolean = false,
+        val error: UiText? = null, val notice: LfsNotice? = null, val locks: LfsLockReview? = null, val blockBack: Boolean = false,
         val extensionReview: LfsExtensionReview? = null, val refreshRequired: Boolean = false)
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
@@ -42,7 +44,7 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
                 } ?: return@launch
                 if (request == generation) _state.value = result
             } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { if (request == generation) _state.value = State(error = "Could not inspect Git LFS. Check storage access and repository state, then reload.") }
+            } catch (_: Exception) { if (request == generation) _state.value = State(error = UiText.res(R.string.gitops_lfs_inspect_failed)) }
         }
     }
     override fun onCleared() {
@@ -66,7 +68,7 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
     fun releaseLock(review: LfsLockReview, lock: LfsLock, force: Boolean) = changeLock(review) { repositories.releaseReviewedLock(review, lock, force) }
     private fun changeLock(review: LfsLockReview, action: suspend () -> LfsLockChange) {
         if (_state.value.busy || _state.value.refreshRequired) return
-        if (_state.value.locks != review) { _state.value = _state.value.copy(locks = null, error = LfsLockReviewChanged().message); return }
+        if (_state.value.locks != review) { _state.value = _state.value.copy(locks = null, error = UiText.of(LfsLockReviewChanged(), R.string.gitops_lfs_locks_check_failed)); return }
         lockAction(true) { action() }
     }
     private fun lockAction(write: Boolean, action: suspend (String) -> LfsLockChange) {
@@ -85,10 +87,10 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
                 val safe = when (e) {
-                    is LfsLockReviewChanged, is LfsLockManagementException -> e.message
-                    is LfsEndpointReviewCancelled, is LfsEndpointApprovalFailed -> e.message
-                    is LfsHttpStatusException -> if (e.status in listOf(401,403)) "The server rejected access to its lock list. Check the repository connection and push permissions." else "Could not check server locks. Refresh before another change."
-                    else -> "Could not check server locks. Check connection and repository state, then refresh before another change."
+                    is LfsLockReviewChanged, is LfsLockManagementException -> UiText.of(e, R.string.gitops_lfs_locks_check_failed)
+                    is LfsEndpointReviewCancelled, is LfsEndpointApprovalFailed -> UiText.of(e, R.string.gitops_lfs_locks_check_failed)
+                    is LfsHttpStatusException -> UiText.res(if (e.status in listOf(401,403)) R.string.gitops_lfs_locks_denied else R.string.gitops_lfs_locks_check_failed)
+                    else -> UiText.res(R.string.gitops_lfs_locks_unavailable)
                 }
                 if (request == generation) _state.value = before.copy(locks = null, error = safe)
             } finally { if (request == generation) _state.value = _state.value.copy(busy = false, blockBack = false) }
@@ -114,15 +116,15 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
                 if (request == generation) _state.value = before.copy(extensionReview = review, error = null)
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
-                if (request == generation) _state.value = before.copy(extensionReview = null, error = if (e is LfsExtensionReviewChanged) e.message else
-                    "Could not review extension tracking. Reload and check existing attributes, conflicts and file access before trying again.")
+                if (request == generation) _state.value = before.copy(extensionReview = null, error = if (e is LfsExtensionReviewChanged) UiText.of(e, R.string.gitops_lfs_extensions_review_failed) else
+                    UiText.res(R.string.gitops_lfs_extensions_review_failed))
             } finally { if (request == generation) _state.value = _state.value.copy(busy = false, blockBack = false) }
         }
     }
     fun dismissExtensionReview() { if (!_state.value.busy) _state.value = _state.value.copy(extensionReview = null) }
     fun applyExtensions(review: LfsExtensionReview) {
         if (_state.value.busy || _state.value.refreshRequired) return
-        if (_state.value.extensionReview != review) { _state.value = _state.value.copy(extensionReview = null, error = LfsExtensionReviewChanged().message); return }
+        if (_state.value.extensionReview != review) { _state.value = _state.value.copy(extensionReview = null, error = UiText.of(LfsExtensionReviewChanged(), R.string.gitops_lfs_extensions_review_failed)); return }
         _state.value = _state.value.copy(extensionReview = null)
         perform {
             tracking.applyExtensions(review)
@@ -132,7 +134,7 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
     fun decide(selected: Set<String>, useLfs: Boolean, expectedPlan: LfsTrackingPlan? = null) {
         if (_state.value.busy || _state.value.refreshRequired) return
         val plan = _state.value.plan ?: return
-        if (expectedPlan != null && expectedPlan != plan) { _state.value = _state.value.copy(error = LfsExtensionReviewChanged().message); return }
+        if (expectedPlan != null && expectedPlan != plan) { _state.value = _state.value.copy(error = UiText.of(LfsExtensionReviewChanged(), R.string.gitops_lfs_extensions_review_failed)); return }
         val choice = selected.toSet()
         perform {
             tracking.decide(plan, choice, useLfs)
@@ -165,8 +167,8 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
                 if (request == generation) _state.value = if (e is LfsEndpointReviewCancelled || e is LfsEndpointApprovalFailed) before.copy(notice = e.message?.let { LfsNotice.Plain(it) })
-                    else before.copy(error = if (e is LfsWorktreeChangedException || e is LfsEndpointApprovalRequired || e is LfsExtensionReviewChanged) e.message else
-                        "Could not complete Git LFS. Check the connection and current tracking state, then reload and retry. Your local files and commits were kept.")
+                    else before.copy(error = if (e is LfsWorktreeChangedException || e is LfsEndpointApprovalRequired || e is LfsExtensionReviewChanged) UiText.of(e, R.string.gitops_lfs_failed) else
+                        UiText.res(R.string.gitops_lfs_failed))
             } finally { if (request == generation) _state.value = _state.value.copy(busy = false, blockBack = false) }
         }
     }

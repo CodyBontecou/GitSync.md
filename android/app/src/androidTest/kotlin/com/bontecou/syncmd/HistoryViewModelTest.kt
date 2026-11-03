@@ -105,9 +105,9 @@ class HistoryViewModelTest {
     @Test fun refreshDoesNotEraseAnUnacknowledgedMutationFailure() {
         val repository = ControlledHistory(); repository.creating = { _, _, _, _, _ -> Result.failure(IOException("Owned create failure")) }
         val model = model(repository); ready(model)
-        main { model.createTag(model.state.value.selection!!, "new-tag") }; await { model.state.value.errorMessage == "Owned create failure" && !model.state.value.isLoading }
+        main { model.createTag(model.state.value.selection!!, "new-tag") }; await { model.state.value.errorMessage?.resolve(instrumentation.targetContext) == "Owned create failure" && !model.state.value.isLoading }
         main { model.loadHistory() }; await { !model.state.value.isLoading }
-        assertEquals("Owned create failure", main { model.state.value.errorMessage })
+        assertEquals("Owned create failure", main { model.state.value.errorMessage?.resolve(instrumentation.targetContext) })
     }
     @Test fun oldSelectionCannotActAfterReturningToTheSamePath() {
         val repository = ControlledHistory(); val writes = AtomicInteger()
@@ -143,7 +143,7 @@ class HistoryViewModelTest {
         for (action in actions) {
             val row = main { model.state.value.stashes.single() }; version++
             main { action(model.state.value.selection!!, row) }
-            await { !model.state.value.isLoading && model.state.value.errorMessage?.contains("Stash list changed") == true }
+            await { !model.state.value.isLoading && model.state.value.errorMessage?.resolve(instrumentation.targetContext)?.contains("Stash list changed") == true }
             assertEquals(0, writes.get()); assertEquals("stash-$version", main { model.state.value.stashes.single().commitHash })
         }
     }
@@ -155,7 +155,7 @@ class HistoryViewModelTest {
         for (action in listOf(model::pushTag, model::deleteTag)) {
             val row = main { model.state.value.tags.single() }; version++
             main { action(model.state.value.selection!!, row) }
-            await { !model.state.value.isLoading && model.state.value.errorMessage?.contains("Tag changed") == true }
+            await { !model.state.value.isLoading && model.state.value.errorMessage?.resolve(instrumentation.targetContext)?.contains("Tag changed") == true }
             assertEquals(0, writes.get()); assertEquals("tag-$version", main { model.state.value.tags.single().refObjectId })
         }
     }
@@ -168,7 +168,7 @@ class HistoryViewModelTest {
         main { model.loadTags() }; await { !model.state.value.isLoading && model.state.value.errorMessage != null }
         assertFalse(main { model.state.value.actionsReady })
         main { model.stashSave(model.state.value.selection!!); model.pushTag(model.state.value.selection!!, model.state.value.tags.single()); model.clearError(old) }
-        assertEquals(0, writes.get()); assertEquals("Owned tag inventory failure", main { model.state.value.errorMessage })
+        assertEquals(0, writes.get()); assertEquals("Owned tag inventory failure", main { model.state.value.errorMessage?.resolve(instrumentation.targetContext) })
     }
     @Test fun annotationAndExactReviewedHeadAreCapturedAndSuccessIsDeliveredOnce() {
         val repository = ControlledHistory(); val held = gate(); val calls = CopyOnWriteArrayList<List<Any?>>()

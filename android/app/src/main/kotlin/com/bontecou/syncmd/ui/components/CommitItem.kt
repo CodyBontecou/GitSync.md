@@ -82,7 +82,7 @@ fun CommitItem(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            val expandLabel = if (isExpanded) "Collapse" else "Expand"
+            val expandLabel = stringResource(if (isExpanded) R.string.dialogs_commit_collapse else R.string.dialogs_commit_expand)
             Box(Modifier.size(32.dp).semantics { contentDescription = expandLabel }, contentAlignment = Alignment.Center) {
                 Box(Modifier.rotate(if (isExpanded) 270f else 90f)) { TideChevron() }
             }
@@ -146,13 +146,14 @@ private fun CommitFact(label: String, value: String) {
 /**
  * Format a unix timestamp into a readable date string.
  */
+@Composable
 fun formatTimestamp(timestamp: Long): String {
     return if (timestamp > 0) {
         val date = Date(timestamp * 1000)
         val format = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
         format.format(date)
     } else {
-        "Unknown"
+        stringResource(R.string.dialogs_timestamp_unknown)
     }
 }
 

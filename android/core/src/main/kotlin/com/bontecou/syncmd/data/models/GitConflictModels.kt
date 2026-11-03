@@ -1,6 +1,7 @@
 package com.bontecou.syncmd.data.models
 
-data class ConflictSide(val path: String, val objectId: String, val mode: Int)
+/** Size is the indexed Git blob, including a pointer blob for LFS; null for non-blob/unknown sides. */
+data class ConflictSide(val path: String, val objectId: String, val mode: Int, val byteCount: Long? = null)
 
 /**
  * Represents a single conflict within a file
@@ -18,6 +19,14 @@ data class Conflict(
     val theirs: ConflictSide? = null,
     val workTreeVersions: Map<String, String?> = emptyMap(),
 ) {
+    val currentByteCount: Long? get() = sideBytes(hasCurrentVersion, ours, currentContent)
+    val incomingByteCount: Long? get() = sideBytes(hasIncomingVersion, theirs, incomingContent)
+    private fun sideBytes(present: Boolean, side: ConflictSide?, text: String): Long? = when {
+        !present -> null
+        side != null -> side.byteCount
+        isBinaryOrTooLarge -> null
+        else -> text.toByteArray(Charsets.UTF_8).size.toLong()
+    }
     val isRenameRename: Boolean get() = ours != null && theirs != null && ours.path != theirs.path
     val allPaths: List<String> get() = listOfNotNull(ancestor?.path, ours?.path, theirs?.path).distinct().ifEmpty { listOf(filePath) }
 }

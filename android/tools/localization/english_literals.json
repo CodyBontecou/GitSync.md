@@ -271,21 +271,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_ours_current_branch_f0aeae8d",
-      "source": "Ours (Current Branch)",
-      "arguments": 0
-    },
-    {
-      "name": "ui_theirs_incoming_branch_2050c1eb",
-      "source": "Theirs (Incoming Branch)",
-      "arguments": 0
-    },
-    {
-      "name": "ui_manual_resolution_502f7d6c",
-      "source": "Manual Resolution",
-      "arguments": 0
-    },
-    {
       "name": "ui_resolved_content_69213720",
       "source": "Resolved content",
       "arguments": 0
@@ -334,11 +319,6 @@
       "name": "ui_info_170322a3",
       "source": "Info",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_2_s_lines_59b29a56",
-      "source": "+%1$s -%2$s lines",
-      "arguments": 2
     },
     {
       "name": "ui_unstage_033f86f9",
@@ -524,11 +504,6 @@
       "name": "ui_all_local_changes_to_this_file_will_be_per_0919f539",
       "source": "All local changes to this file will be permanently discarded.",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_file_2_s_will_be_discarded_bad3301d",
-      "source": "%1$s file%2$s will be discarded",
-      "arguments": 2
     },
     {
       "name": "ui_and_1_s_more_f93ea742",
@@ -749,11 +724,6 @@
     {
       "name": "ui_edit_commit_author_443f376d",
       "source": "Edit commit author",
-      "arguments": 0
-    },
-    {
-      "name": "ui_https_or_ssh_repository_url_779c26ae",
-      "source": "HTTPS or SSH repository URL",
       "arguments": 0
     },
     {
@@ -1166,11 +1136,6 @@
       "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
-      "name": "ui_1_s_staged_472525f2",
-      "source": "%1$s staged",
-      "arguments": 1
-    },
-    {
       "name": "ui_stage_all_d1ce47c8",
       "source": "Stage All",
       "arguments": 0
@@ -1376,16 +1341,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_revoke_1_s_approval_15011a0f",
-      "source": "Revoke %1$s approval?",
-      "arguments": 1
-    },
-    {
-      "name": "ui_future_1_s_transfers_for_2_s_will_require_eef2b67d",
-      "source": "Future %1$s transfers for %2$s will require a new review. The approval and saved credentials for the other direction stay in place.",
-      "arguments": 2
-    },
-    {
       "name": "ui_revoke_87e6d00b",
       "source": "Revoke",
       "arguments": 0
@@ -1476,11 +1431,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_1_s_bytes_2_s_bb252a3c",
-      "source": "%1$s bytes · %2$s",
-      "arguments": 2
-    },
-    {
       "name": "ui_download_missing_file_contents_f54939ee",
       "source": "Download missing file contents",
       "arguments": 0
@@ -1559,22 +1509,10 @@
       "arguments": 0
     },
     {
-      "name": "ui_onboarding_a4963c49",
-      "source": "onboarding",
-      "arguments": 0
-    },
-    {
       "name": "ui_download_location_7cc4e69d",
       "source": "Download location",
       "arguments": 0,
       "original_source": "DOWNLOAD LOCATION",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_choose_a_different_folder_when_cloning_or_f2d3c905",
-      "source": "Choose a different folder when cloning, or set a default in settings.",
-      "arguments": 0,
-      "original_source": "CHOOSE A DIFFERENT FOLDER WHEN CLONING, OR SET A DEFAULT IN SETTINGS.",
       "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
@@ -1596,11 +1534,6 @@
       "name": "ui_reviewed_destination_7173c3da",
       "source": "Reviewed destination",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_files_including_git_metadata_2_s_bytes_ae4f1906",
-      "source": "%1$s files including Git metadata · %2$s bytes",
-      "arguments": 2
     },
     {
       "name": "ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d",
@@ -1626,11 +1559,6 @@
       "name": "ui_cancel_pending_move_0858583b",
       "source": "Cancel pending move",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527",
-      "source": "%1$s\n\n%2$sChoose an unused destination and keep other apps from changing these folders while the move finishes.",
-      "arguments": 2
     },
     {
       "name": "ui_pull_with_rebase_6d25f1e0",
@@ -1838,11 +1766,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_clone_complete_adding_the_repository_b73c7feb",
-      "source": "Clone complete. Adding the repository…",
-      "arguments": 0
-    },
-    {
       "name": "ui_add_cloned_repository_f84b64e8",
       "source": "Add cloned repository",
       "arguments": 0
@@ -1851,11 +1774,6 @@
       "name": "ui_back_aceb696a",
       "source": "← Back",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_repos_93f20a63",
-      "source": "· %1$s repos",
-      "arguments": 1
     },
     {
       "name": "ui_search_repositories_243865a1",
@@ -2118,11 +2036,6 @@
       "arguments": 1
     },
     {
-      "name": "ui_git_metadata_1_s_bytes_384286d3",
-      "source": "Git metadata: %1$s bytes",
-      "arguments": 1
-    },
-    {
       "name": "ui_working_files_stay_in_place_local_branches_a0748350",
       "source": "Working files stay in place. Local branches, commits, stashes, remotes and history will be disconnected from this folder.",
       "arguments": 0
@@ -2339,13 +2252,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_repos_6dc25005",
-      "source": "Repos",
-      "arguments": 0,
-      "original_source": "REPOS",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
       "name": "ui_loading_repository_15b79262",
       "source": "Loading repository",
       "arguments": 0
@@ -2408,11 +2314,6 @@
     {
       "name": "ui_open_in_files_e1d250d0",
       "source": "Open in Files",
-      "arguments": 0
-    },
-    {
-      "name": "ui_open_this_repo_folder_in_android_files_c74257aa",
-      "source": "Open this repo folder in Android Files",
       "arguments": 0
     },
     {

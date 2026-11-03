@@ -2,7 +2,9 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.github.*
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -26,7 +28,7 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
     val signOutReview = _signOutReview.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
-    private val _error = MutableStateFlow<String?>(null)
+    private val _error = MutableStateFlow<UiText?>(null)
     val error = combine(_error, authManager.sessionError) { request, session -> request ?: session }
         .stateIn(viewModelScope, SharingStarted.Eagerly, authManager.sessionError.value)
     private var loadJob: Job? = null
@@ -60,6 +62,11 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
                     signInRequest++; signInJob?.cancel(); signingIn = false
                     request++; loadJob?.cancel(); loading = false
                     if (dataToken != token) { clearAccountData(); dataToken = token }
+                    else {
+                        // A reread may change the encrypted profile without changing its token.
+                        _user.value = null
+                        if (token != null) hydrate()
+                    }
                     _error.value = null; busy()
                     if (token != null) loadUserAndRepos()
                 }
@@ -67,7 +74,10 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
         }
     }
     fun generateOAuthUrl(): String? = authManager.createOAuthLoginUrl()
-    fun browserLaunchFailed() { _error.value = "Could not open the browser. Retry or use a Personal Access Token." }
+    fun browserLaunchFailed() { _error.value = UiText.res(R.string.account_browser_failed) }
+    private fun failure(e: Exception, fallback: Int): UiText =
+        if (e is GitHubApiException) UiText.res(if (e.isUnauthorized) R.string.account_token_invalid else R.string.account_api_error, e.status)
+        else UiText.of(e, fallback)
     fun onOAuthSuccess() = loadUserAndRepos(forceRefresh = true)
     fun loadUserAndRepos(forceRefresh: Boolean = false) {
         val token = authManager.getToken() ?: return
@@ -97,13 +107,13 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
                 if (!authManager.cacheRepos(repos, token)) return@launch
                 _repos.value = repos; applyFilter()
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { if (current()) _error.value = e.message ?: "Failed to load GitHub data"
+            } catch (e: Exception) { if (current()) _error.value = failure(e, R.string.account_load_failed)
             } finally { if (id == request) { loading = false; busy() } }
         }
     }
     fun signInWithPAT(token: String) {
         if (signingIn) return
-        if (token.isBlank()) { _error.value = "Token cannot be empty"; return }
+        if (token.isBlank()) { _error.value = UiText.res(R.string.account_token_empty); return }
         val id = ++signInRequest
         val startingRevision = authManager.sessionRevision.value
         signingIn = true; busy(); _error.value = null; authManager.clearSessionError()
@@ -115,7 +125,10 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
                 if (!current()) return@launch
                 publishingSignInToken = token
                 try {
-                    check(authManager.saveValidatedToken(token, user)) { "Could not securely save sign-in" }
+                    if (!authManager.saveValidatedToken(token, user)) {
+                        if (current()) _error.value = UiText.res(R.string.account_save_sign_in_short)
+                        return@launch
+                    }
                     if (id != signInRequest || authManager.getToken() != token) return@launch
                     acceptedRevision = authManager.sessionRevision.value
                     ownedSessionRevision = acceptedRevision
@@ -132,7 +145,7 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
                 if (!authManager.cacheRepos(repos, token)) return@launch
                 _repos.value = repos; applyFilter()
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { if (current()) _error.value = e.message ?: "Sign-in failed"
+            } catch (e: Exception) { if (current()) _error.value = failure(e, R.string.account_sign_in_failed)
             } finally { if (id == signInRequest) { signingIn = false; busy() } }
         }
     }

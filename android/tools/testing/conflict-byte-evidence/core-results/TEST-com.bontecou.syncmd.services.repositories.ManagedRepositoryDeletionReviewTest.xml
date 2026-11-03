@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:57:17" hostname="MacBook-Pro.local" time="0.222">
+  <properties/>
+  <testcase name="queuedDeletionRejectsAReplacementCheckout" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.037"/>
+  <testcase name="changedBranchRejectsDeletion" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.028"/>
+  <testcase name="changedConfigurationRejectsDeletion" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.022"/>
+  <testcase name="replacementMetadataMustNotBeDeleted" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.036"/>
+  <testcase name="changedIndexRejectsDeletion" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.026"/>
+  <testcase name="replacementCheckoutMustNotBeDeleted" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.033"/>
+  <testcase name="changedManagedPolicyRejectsDeletion" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.02"/>
+  <testcase name="freshReviewDeletesTheOwnedCloneAndPreservesLinkedOutsideFiles" classname="com.bontecou.syncmd.services.repositories.ManagedRepositoryDeletionReviewTest" time="0.02"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

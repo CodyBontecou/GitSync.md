@@ -741,7 +741,7 @@ fun TideBanner(
     actionTitle: String? = null,
     onAction: (() -> Unit)? = null,
     onDismiss: (() -> Unit)? = null,
-    dismissLabel: String = "Dismiss",
+    dismissLabel: String = androidx.compose.ui.res.stringResource(R.string.ui_dismiss_48845bff),
 ) {
     val c = Tide.colors
     val tint = when (tone) {
@@ -803,7 +803,7 @@ fun TideModalIcon(glyph: String = "!", tint: Color = Tide.colors.danger, modifie
 fun TideTopBar(
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
-    backLabel: String = "Back",
+    backLabel: String = androidx.compose.ui.res.stringResource(R.string.publication_back),
     backEnabled: Boolean = true,
     backModifier: Modifier = Modifier,
     center: (@Composable () -> Unit)? = null,

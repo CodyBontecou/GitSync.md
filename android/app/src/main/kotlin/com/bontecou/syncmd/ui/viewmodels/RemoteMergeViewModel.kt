@@ -2,6 +2,8 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.util.UiText
 import com.bontecou.syncmd.services.git.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -13,7 +15,7 @@ import javax.inject.Inject
 class RemoteMergeViewModel @Inject constructor(private val merge: RepositoryRemoteMerge) : ViewModel() {
     data class State(val path: String = "", val busy: Boolean = false, val mutating: Boolean = false,
         val plan: RemoteMergePlan? = null, val outcome: RemoteMergeOutcome? = null, val retryPlan: RemoteMergePlan? = null,
-        val conflicts: Boolean = false, val error: String? = null)
+        val conflicts: Boolean = false, val error: UiText? = null)
     private val mutable = MutableStateFlow(State())
     val state = mutable.asStateFlow()
     private var generation = 0L
@@ -68,9 +70,9 @@ class RemoteMergeViewModel @Inject constructor(private val merge: RepositoryRemo
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (failure: Exception) {
                 val conflicts = if (mutation) withContext(Dispatchers.IO) { runCatching { merge.hasConflicts(before.path) }.getOrDefault(before.conflicts) } else before.conflicts
-                val safe = if (failure is IllegalStateException || failure is IllegalArgumentException || failure is com.bontecou.syncmd.data.models.DirtyRepoException) failure.message else null
+                val safe = if (failure is IllegalStateException || failure is IllegalArgumentException || failure is com.bontecou.syncmd.data.models.DirtyRepoException) failure.message?.let { UiText.Raw(it) } else null
                 if (request == generation) mutable.value = before.copy(plan = null, conflicts = conflicts,
-                    error = safe ?: "Git could not complete this action. Check the connection, then review the current repository state before retrying.")
+                    error = safe ?: UiText.res(R.string.gitops_remote_merge_failed))
             } finally {
                 if (request == generation) mutable.value = mutable.value.copy(busy = false, mutating = false)
             }

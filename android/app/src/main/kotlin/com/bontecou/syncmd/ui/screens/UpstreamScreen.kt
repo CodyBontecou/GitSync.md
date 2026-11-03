@@ -61,6 +61,8 @@ import com.bontecou.syncmd.ui.theme.TidePrimaryButton
 import com.bontecou.syncmd.ui.theme.TideSectionLabel
 import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.theme.tideFieldColors
+import com.bontecou.syncmd.ui.util.UiText
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.UpstreamViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -139,7 +141,7 @@ private fun UpstreamContent(
                 modifier = Modifier.testTag("upstream-save"),
             )
         }
-        state.error?.let { GitWorkNote(it, tone = GitWorkTone.DANGER, textModifier = Modifier.testTag("upstream-error")) }
+        state.error?.let { GitWorkNote(it.asString(), tone = GitWorkTone.DANGER, textModifier = Modifier.testTag("upstream-error")) }
         GitWorkPill(stringResource(R.string.background_reload), onReload, Modifier.testTag("upstream-reload"), enabled = !state.busy)
         Spacer(Modifier.size(16.dp))
     }
@@ -220,5 +222,5 @@ private fun UpstreamUnavailable() = SyncMdTheme(darkTheme = false) {
 
 @Preview(name = "Upstream · error", heightDp = 400) @Composable
 private fun UpstreamError() = SyncMdTheme(darkTheme = true) {
-    UpstreamPreview(UpstreamViewModel.State(busy = false, error = "Could not load the upstream branch"))
+    UpstreamPreview(UpstreamViewModel.State(busy = false, error = UiText.Raw("Could not load the upstream branch")))
 }

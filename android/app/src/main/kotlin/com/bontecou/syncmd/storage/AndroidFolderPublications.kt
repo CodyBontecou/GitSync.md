@@ -3,6 +3,8 @@ package com.bontecou.syncmd.storage
 import android.content.Context
 import android.system.Os
 import android.system.OsConstants
+import androidx.annotation.StringRes
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.github.GitHubAuthManager
 import com.bontecou.syncmd.services.publication.*
 import kotlinx.coroutines.Dispatchers
@@ -27,17 +29,17 @@ class AndroidFolderPublications(
     suspend fun begin(folder: RepositoryFolder, accountId: String): FolderPublicationRecord = withContext(Dispatchers.IO) {
         val selected = File(folder.path)
         require(selected.isAbsolute && selected.canonicalFile == selected.absoluteFile && !Files.isSymbolicLink(selected.toPath())) {
-            "Choose the original publication folder without symbolic links"
+            text(R.string.vault_l10n_publication_original_no_links)
         }
         val path = selected.canonicalPath
         requireUnregistered(path)
         coordinator.withAvailableFolder(path) {
             val uri = folder.uri.takeUnless { it == RepositoryLocations.APP }
             requireBinding(path, uri)
-            val summary = auth.accountSummary(accountId) ?: error("Select a connected GitHub account")
+            val summary = auth.accountSummary(accountId) ?: error(text(R.string.vault_l10n_publication_select_account))
             val account = publisher.account(auth.tokenForAccount(accountId))
             require(summary.id == "github:${account.id}" && summary.login?.equals(account.login, true) == true) {
-                "Verify the selected GitHub account before publishing"
+                text(R.string.vault_l10n_publication_verify_account)
             }
             val review = git.inspect(path)
             val author = auth.authorForAccount(summary.id)
@@ -52,7 +54,7 @@ class AndroidFolderPublications(
     suspend fun reconnect(expected: FolderPublicationRecord, folder: RepositoryFolder): FolderPublicationRecord = withContext(Dispatchers.IO) {
         val selected = File(folder.path)
         require(selected.isAbsolute && selected.canonicalFile == selected.absoluteFile && !Files.isSymbolicLink(selected.toPath())) {
-            "Choose the publication folder without symbolic links"
+            text(R.string.vault_l10n_publication_no_links)
         }
         if (selected.path != expected.input.review.path) requireUnregistered(selected.path)
         coordinator.reconnect(expected, folder.uri.takeUnless { it == RepositoryLocations.APP }, selected.path)
@@ -62,18 +64,18 @@ class AndroidFolderPublications(
         // Reject even stale catalog entries before any initial commit or rebinding can occur.
         val catalog = context.getSharedPreferences("sync_md_prefs", Context.MODE_PRIVATE).all
         val registered = catalog.filterKeys { it.matches(Regex("repo_[0-9]+_path")) }.values.map { value ->
-            require(value is String && value.isNotBlank()) { "Repository settings need repair before publishing" }
+            require(value is String && value.isNotBlank()) { text(R.string.vault_l10n_publication_settings_repair) }
             value
         }.filterNot { it.startsWith("github://") }.map { File(it).canonicalPath }
         require(registered.none { it == path || it.startsWith("$path/") || path.startsWith("$it/") }) {
-            "This folder overlaps a registered repository. Review its existing entry before publishing."
+            text(R.string.vault_l10n_publication_overlaps)
         }
     }
 
     fun token(record: FolderPublicationRecord): String {
         val id = "github:${record.account.id}"
-        val summary = auth.accountSummary(id) ?: error("Sign in to the GitHub account selected for this publication")
-        require(summary.connected && summary.login?.equals(record.account.login, true) == true) { "Reconnect the selected GitHub account" }
+        val summary = auth.accountSummary(id) ?: error(text(R.string.vault_l10n_publication_sign_in))
+        require(summary.connected && summary.login?.equals(record.account.login, true) == true) { text(R.string.vault_l10n_publication_reconnect_account) }
         return auth.tokenForAccount(id)
     }
 
@@ -82,20 +84,23 @@ class AndroidFolderPublications(
         requireBinding(path, record.folderUri)
         val root = File(path)
         require(root.canonicalFile == root.absoluteFile && Files.isDirectory(root.toPath(), NOFOLLOW_LINKS)) {
-            "The original publication folder is unavailable"
+            text(R.string.vault_l10n_publication_original_unavailable)
         }
         val identity = Files.readAttributes(root.toPath(), BasicFileAttributes::class.java, NOFOLLOW_LINKS).fileKey()?.toString()
         require(identity != null && identity == record.input.review.identity) {
-            "This folder is different from the reviewed publication. Existing files were kept."
+            text(R.string.vault_l10n_publication_folder_different)
         }
     }
 
     private fun requireBinding(path: String, uri: String?) {
         if (uri == null) require(CloneStorage.isWithinAppWritableRoots(context, path)) {
-            "Choose the original device folder again to restore publication access"
+            text(R.string.vault_l10n_publication_device_folder_again)
         } else locations.requireFolderBinding(uri, path)
         locations.requireRepositoryAccess(path)
     }
+
+    /** Localized user-facing copy for callers that hold this runtime but no Context of their own. */
+    internal fun text(@StringRes id: Int, vararg args: Any): String = context.getString(id, *args)
 
     companion object {
         fun privateStore(context: Context): FolderPublicationStore = FolderPublicationStore(

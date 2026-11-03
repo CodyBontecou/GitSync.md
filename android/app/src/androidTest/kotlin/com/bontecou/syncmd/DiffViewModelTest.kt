@@ -179,8 +179,8 @@ class DiffViewModelTest {
         val vm = model(remote)
         main { vm.setCommitMessage("Commit before offline push"); vm.commitAndPush("main") }
         awaitIdle(vm)
-        assertEquals("Simulated offline remote", vm.errorMessage.value)
-        assertEquals("Committed locally. Push stopped; retry when ready.", vm.operationMessage.value)
+        assertEquals("Simulated offline remote", vm.errorMessage.value?.resolve(instrumentation.targetContext))
+        assertEquals("Committed locally. Push stopped; retry when ready.", vm.operationMessage.value?.resolve(instrumentation.targetContext))
         assertEquals("", vm.commitMessage.value)
         assertEquals(0, vm.diff.value!!.files.count { it.isStaged })
         val committed = Git.open(root).use { it.repository.resolve("HEAD") }
@@ -198,7 +198,7 @@ class DiffViewModelTest {
         val vm = model()
         main { vm.setCommitMessage("Stale branch request"); vm.commitAndPush("sample-branch") }
         awaitIdle(vm)
-        assertTrue(vm.errorMessage.value.orEmpty().contains("branch changed"))
+        assertTrue(vm.errorMessage.value?.resolve(instrumentation.targetContext).orEmpty().contains("branch changed"))
         assertEquals(before, Git.open(root).use { it.repository.resolve("HEAD") })
         assertEquals("Stale branch request", vm.commitMessage.value)
         assertEquals(1, vm.diff.value!!.files.count { it.isStaged })

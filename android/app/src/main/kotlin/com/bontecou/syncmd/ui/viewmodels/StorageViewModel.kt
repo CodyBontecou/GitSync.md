@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.storage.RepositoryFolder
 import com.bontecou.syncmd.storage.RepositoryLocations
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class StorageViewModel @Inject constructor(@ApplicationContext context: Context) : ViewModel() {
     enum class Message { DEFAULT_SAVED, APP_STORAGE_SAVED }
     data class State(val busy: Boolean = false, val current: RepositoryFolder? = null, val chosen: RepositoryFolder? = null, val error: String? = null, val message: Message? = null)
+    private val appContext = context
     private val locations = RepositoryLocations(context)
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
@@ -27,7 +29,7 @@ class StorageViewModel @Inject constructor(@ApplicationContext context: Context)
     fun reload() = operation { _state.value = _state.value.copy(current = locations.summary()) }
     fun choose(uri: Uri) = operation { _state.value = _state.value.copy(chosen = locations.rememberFolder(uri)) }
     fun useDefault() = operation {
-        val chosen = _state.value.chosen ?: error("Choose a folder first")
+        val chosen = _state.value.chosen ?: error(appContext.getString(R.string.vault_l10n_storage_choose_folder_first))
         locations.setDefault(chosen.uri)
         _state.value = _state.value.copy(current = chosen, message = Message.DEFAULT_SAVED)
     }
@@ -43,7 +45,7 @@ class StorageViewModel @Inject constructor(@ApplicationContext context: Context)
         viewModelScope.launch {
             try { withContext(Dispatchers.IO) { action() }
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { _state.value = _state.value.copy(error = e.message ?: "Storage needs attention")
+            } catch (e: Exception) { _state.value = _state.value.copy(error = e.message ?: appContext.getString(R.string.vault_l10n_storage_needs_attention))
             } finally { _state.value = _state.value.copy(busy = false) }
         }
     }

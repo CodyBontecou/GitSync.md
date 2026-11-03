@@ -61,6 +61,8 @@ import com.bontecou.syncmd.ui.theme.TideHairline
 import com.bontecou.syncmd.ui.theme.TideSectionLabel
 import com.bontecou.syncmd.ui.theme.TideSyncState
 import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.util.UiText
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.RemoteMergeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -175,7 +177,7 @@ private fun RemoteMergeContent(
 
         Text(stringResource(R.string.remote_merge_scope), Modifier.padding(horizontal = 4.dp), style = TideType.sans(14.sp), color = c.inkMid)
         if (state.mutating) GitWorkWorking(stringResource(R.string.remote_merge_in_flight))
-        state.error?.let { GitWorkNote(it, tone = GitWorkTone.DANGER, textModifier = Modifier.testTag("remote-merge-error")) }
+        state.error?.let { GitWorkNote(it.asString(), tone = GitWorkTone.DANGER, textModifier = Modifier.testTag("remote-merge-error")) }
 
         plan?.let { PlanDetails(it) }
         state.outcome?.let { OutcomeCard(it, state.busy, onRetry) }
@@ -318,7 +320,7 @@ private fun MergeUnconfirmed() = SyncMdTheme(darkTheme = true) {
 
 @Preview(name = "Merge · error", heightDp = 640) @Composable
 private fun MergeError() = SyncMdTheme(darkTheme = false) {
-    MergePreview(RemoteMergeViewModel.State(error = "The remote could not be reached."))
+    MergePreview(RemoteMergeViewModel.State(error = UiText.Raw("The remote could not be reached.")))
 }
 
 @Preview(name = "Merge · reviewed, diverged · light") @Composable

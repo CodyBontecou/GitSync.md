@@ -551,7 +551,7 @@ fun BEmptyState(
 // ─── BLoading ────────────────────────────────────────────────────────────────
 @Composable
 fun BLoading(
-    text: String = "Loading",
+    text: String = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_loading_dc380888),
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {

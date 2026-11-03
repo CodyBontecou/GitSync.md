@@ -68,16 +68,21 @@ fun ConflictViewer(
             label = stringResource(R.string.tide_merge_yours),
             content = if (conflict.hasCurrentVersion) conflict.currentContent else null,
             deletedNote = stringResource(R.string.conflict_current_deleted),
+            blobByteCount = conflict.currentByteCount,
+            textAvailable = !conflict.isBinaryOrTooLarge,
         )
         GitWorkVersionCard(
             yours = false,
             label = stringResource(R.string.tide_merge_theirs),
             content = if (conflict.hasIncomingVersion) conflict.incomingContent else null,
             deletedNote = stringResource(R.string.conflict_incoming_deleted),
+            blobByteCount = conflict.incomingByteCount,
+            textAvailable = !conflict.isBinaryOrTooLarge,
         )
         val baseContent = conflict.baseContent
         if (baseContent != null && baseContent.isNotBlank()) {
-            GitWorkVersionCard(yours = null, label = stringResource(R.string.ui_base_7b47361a), content = baseContent, deletedNote = "")
+            GitWorkVersionCard(yours = null, label = stringResource(R.string.ui_base_7b47361a), content = baseContent, deletedNote = "",
+                blobByteCount = conflict.ancestor?.byteCount, textAvailable = !conflict.isBinaryOrTooLarge)
         }
 
         // ── Result: what gets staged ─────────────────────────────────────
@@ -89,7 +94,7 @@ fun ConflictViewer(
             OutlinedTextField(
                 value = manualResolution,
                 onValueChange = onManualResolutionChange,
-                enabled = enabled,
+                enabled = enabled && !conflict.isBinaryOrTooLarge,
                 label = { Text(stringResource(R.string.ui_resolved_content_69213720)) },
                 modifier = Modifier.fillMaxWidth().heightIn(min = 150.dp),
                 placeholder = { Text(stringResource(R.string.ui_edit_the_content_here_to_manually_resolve_1985871d)) },
@@ -99,7 +104,9 @@ fun ConflictViewer(
                 textStyle = TideType.mono(12.5.sp).copy(color = c.ink, textDirection = TextDirection.Ltr),
             )
             Text(
-                text = stringResource(R.string.ui_1_s_characters_bde60398, manualResolution.length.toString()),
+                text = stringResource(R.string.ui_1_s_characters_bde60398,
+                    java.text.NumberFormat.getIntegerInstance(androidx.compose.ui.platform.LocalConfiguration.current.locales[0])
+                        .format(remember(manualResolution) { com.bontecou.syncmd.ui.util.userCharacterCount(manualResolution) })),
                 style = TideType.meta,
                 color = c.inkFaint,
                 modifier = Modifier.padding(horizontal = 4.dp)
@@ -140,8 +147,14 @@ internal fun GitWorkVersionCard(
     deletedNote: String,
     modifier: Modifier = Modifier,
     footer: (@Composable () -> Unit)? = null,
+    blobByteCount: Long? = null,
+    textAvailable: Boolean = true,
 ) {
     val c = Tide.colors
+    val textBytes = remember(content, textAvailable, blobByteCount) {
+        if (textAvailable && blobByteCount == null) content?.toByteArray(Charsets.UTF_8)?.size?.toLong() else null
+    }
+    val bytes = blobByteCount ?: textBytes
     val tint = when (yours) { true -> c.ahead; false -> c.behind; null -> c.inkMid }
     Column(
         modifier.fillMaxWidth().background(c.card, Tide.cardShape).padding(16.dp),
@@ -150,9 +163,13 @@ internal fun GitWorkVersionCard(
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             if (yours != null) GitWorkSideDot(yours) else Box(Modifier.size(9.dp).background(c.lineSoft, RoundedCornerShape(2.dp)))
             Text(label, style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))
-            Text(
-                if (content == null) stringResource(R.string.tide_merge_side_deleted)
-                else stringResource(R.string.ui_1_s_lines_2_s_bytes_c30a0cd1, content.lines().size.toString(), content.length.toString()),
+            val summary = when {
+                content == null -> stringResource(R.string.tide_merge_side_deleted)
+                !textAvailable -> bytes?.let { stringResource(R.string.ui_1_s_bytes_81cdb385, it.toString()) }
+                else -> stringResource(R.string.ui_1_s_lines_2_s_bytes_c30a0cd1, content.lines().size.toString(), requireNotNull(bytes).toString())
+            }
+            if (summary != null) Text(
+                summary,
                 style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1,
             )
         }
@@ -163,7 +180,8 @@ internal fun GitWorkVersionCard(
                 .padding(horizontal = 12.dp, vertical = 10.dp)
         ) {
             Text(
-                content ?: deletedNote,
+                if (content == null) deletedNote else if (!textAvailable)
+                    stringResource(R.string.ui_binary_large_or_lfs_file_choose_an_entire_52c3278a) else content,
                 style = TideType.mono(12.5.sp).copy(lineHeight = 19.sp, textDirection = TextDirection.Ltr),
                 color = if (content == null || content.isEmpty()) c.inkFaint else c.ink,
             )

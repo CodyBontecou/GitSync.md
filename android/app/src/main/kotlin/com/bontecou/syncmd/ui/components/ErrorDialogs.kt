@@ -33,6 +33,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import com.bontecou.syncmd.ui.theme.TideChevron
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.bontecou.syncmd.ui.util.UiText
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.paneTitle
@@ -360,7 +361,7 @@ internal fun VaultOpsProgress(label: String? = null, modifier: Modifier = Modifi
 /** Failure sheet: danger glyph, plain title, message, raw detail in a mono well. */
 @Composable
 fun ErrorDialog(
-    title: String = "Error",
+    title: String = stringResource(R.string.dialogs_error_title),
     message: String,
     details: String? = null,
     onDismiss: () -> Unit,
@@ -386,9 +387,9 @@ fun ErrorDialog(
 /** Warning sheet for potentially destructive actions. */
 @Composable
 fun WarningDialog(
-    title: String = "Warning",
+    title: String = stringResource(R.string.dialogs_warning_title),
     message: String,
-    confirmText: String = "Continue",
+    confirmText: String = stringResource(R.string.guide_continue),
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -404,7 +405,7 @@ fun WarningDialog(
 /** Success sheet: synced-green check, title and message. */
 @Composable
 fun SuccessDialog(
-    title: String = "Success",
+    title: String = stringResource(R.string.dialogs_success_title),
     message: String,
     onDismiss: () -> Unit
 ) {
@@ -419,7 +420,7 @@ fun SuccessDialog(
 /** Informational sheet. */
 @Composable
 fun InfoDialog(
-    title: String = "Information",
+    title: String = stringResource(R.string.dialogs_info_title),
     message: String,
     onDismiss: () -> Unit
 ) {
@@ -435,38 +436,38 @@ fun InfoDialog(
  * Helpful error messages for common git scenarios.
  */
 object ErrorMessages {
-    fun repositoryNotFound(path: String): String =
-        "Repository not found at: $path\n\nCheck the path and try again."
+    fun repositoryNotFound(path: String): UiText =
+        UiText.res(R.string.dialogs_error_repository_not_found, path)
 
-    fun dirtyWorkTree(): String =
-        "Cannot perform this operation with uncommitted changes.\n\nCommit or stash your changes first."
+    fun dirtyWorkTree(): UiText =
+        UiText.res(R.string.dialogs_error_dirty_work_tree)
 
-    fun mergeConflicts(count: Int): String =
-        "Merge has $count unresolved conflicts.\n\nResolve them before completing the merge."
+    fun mergeConflicts(count: Int): UiText =
+        UiText.plural(R.plurals.dialogs_error_merge_conflicts, count, count)
 
-    fun networkError(): String =
-        "Network error. Check your connection and try again."
+    fun networkError(): UiText =
+        UiText.res(R.string.dialogs_error_network)
 
-    fun invalidGitRepository(): String =
-        "This doesn't appear to be a valid Git repository.\n\nEnsure the path points to a .git folder or a working directory."
+    fun invalidGitRepository(): UiText =
+        UiText.res(R.string.dialogs_error_invalid_repository)
 
-    fun commitFailed(reason: String): String =
-        "Commit failed: $reason"
+    fun commitFailed(reason: String): UiText =
+        UiText.res(R.string.dialogs_error_commit_failed, reason)
 
-    fun pushFailed(reason: String): String =
-        "Push failed: $reason"
+    fun pushFailed(reason: String): UiText =
+        UiText.res(R.string.dialogs_error_push_failed, reason)
 
-    fun pullFailed(reason: String): String =
-        "Pull failed: $reason"
+    fun pullFailed(reason: String): UiText =
+        UiText.res(R.string.dialogs_error_pull_failed, reason)
 
-    fun branchAlreadyExists(name: String): String =
-        "Branch '$name' already exists.\n\nChoose a different name."
+    fun branchAlreadyExists(name: String): UiText =
+        UiText.res(R.string.dialogs_error_branch_exists, name)
 
-    fun cannotDeleteCurrentBranch(): String =
-        "Cannot delete the current branch.\n\nSwitch to another branch first."
+    fun cannotDeleteCurrentBranch(): UiText =
+        UiText.res(R.string.dialogs_error_cannot_delete_current_branch)
 
-    fun invalidBranchName(): String =
-        "Invalid branch name.\n\nUse alphanumeric characters, hyphens, and underscores."
+    fun invalidBranchName(): UiText =
+        UiText.res(R.string.dialogs_error_invalid_branch_name)
 }
 
 // ─── Previews ───────────────────────────────────────────────────────────────

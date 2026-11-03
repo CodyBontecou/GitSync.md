@@ -1,7 +1,9 @@
 package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.PushConfig
 import com.bontecou.syncmd.data.models.UnifiedDiffResult
 import com.bontecou.syncmd.services.git.BranchService
@@ -9,6 +11,7 @@ import com.bontecou.syncmd.services.git.DiffService
 import com.bontecou.syncmd.services.git.DiscardReview
 import com.bontecou.syncmd.services.git.PushService
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -18,6 +21,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+/**
+ * An app-authored failure whose copy resolves in the display locale. [message] keeps the English
+ * text for logs and String-typed consumers; screens read [text].
+ */
+internal class GitOpsFailure(val text: UiText, message: String? = null) : IllegalStateException(message)
+
+/** Throws [GitOpsFailure] for a localized string resource. */
+internal fun gitOpsError(@StringRes id: Int, english: String? = null): Nothing = throw GitOpsFailure(UiText.res(id), english)
+
+/** Like `check`, with a localized failure message. */
+internal fun gitOpsCheck(condition: Boolean, @StringRes id: Int, english: String? = null) { if (!condition) gitOpsError(id, english) }
+
+/** Display copy for a failure: localized app copy, the exception's own (Git/server) message, or [fallback]. */
+internal fun Throwable.gitOpsText(@StringRes fallback: Int): UiText = (this as? GitOpsFailure)?.text ?: UiText.of(this, fallback)
 
 /** Owns one repository's draft and prevents stale reads or duplicate mutation submissions. */
 @HiltViewModel
@@ -41,11 +59,11 @@ class DiffViewModel @Inject constructor(
     val isPushing = _isPushing.asStateFlow()
     private val _isCommitting = MutableStateFlow(false)
     val isCommitting = _isCommitting.asStateFlow()
-    private val _errorMessage = MutableStateFlow<String?>(null)
+    private val _errorMessage = MutableStateFlow<UiText?>(null)
     val errorMessage = _errorMessage.asStateFlow()
     private val _lockedPaths = MutableStateFlow<List<String>?>(null)
     val lockedPaths = _lockedPaths.asStateFlow()
-    private val _operationMessage = MutableStateFlow<String?>(null)
+    private val _operationMessage = MutableStateFlow<UiText?>(null)
     val operationMessage = _operationMessage.asStateFlow()
     private val _currentRepoPath = MutableStateFlow<String?>(null)
     val currentRepoPath = _currentRepoPath.asStateFlow()
@@ -94,7 +112,7 @@ class DiffViewModel @Inject constructor(
             try {
                 val result = diffService.getDiff(path)
                 if (generation == requestGeneration && readVersion == version) {
-                    result.onSuccess { _diff.value = it }.onFailure { _lockedPaths.value = null; _errorMessage.value = it.message ?: "Failed to load changes" }
+                    result.onSuccess { _diff.value = it }.onFailure { _lockedPaths.value = null; _errorMessage.value = it.gitOpsText(R.string.gitops_changes_load_failed) }
                 }
             } catch (e: CancellationException) { throw e
             } finally {
@@ -119,7 +137,7 @@ class DiffViewModel @Inject constructor(
         fileJob = viewModelScope.launch {
             val result = diffService.getFileDiff(path, filePath, staged)
             if (generation == requestGeneration && _selectedFilePath.value == filePath) {
-                result.onSuccess { _selectedFileDiff.value = it }.onFailure { _errorMessage.value = it.message ?: "Failed to load file diff" }
+                result.onSuccess { _selectedFileDiff.value = it }.onFailure { _errorMessage.value = it.gitOpsText(R.string.gitops_file_diff_load_failed) }
             }
         }
     }
@@ -156,9 +174,7 @@ class DiffViewModel @Inject constructor(
             try {
                 try {
                     RepositoryOperationCoordinator.withRepository(path) {
-                        check(generation == requestGeneration && _currentRepoPath.value == path) {
-                            "The selected repository changed. Review the operation again."
-                        }
+                        gitOpsCheck(generation == requestGeneration && _currentRepoPath.value == path, R.string.gitops_repository_changed_review)
                         try { action(path) } finally {
                             // Keep the refresh under the same lease, including failed pushes.
                             refreshed = diffService.getDiff(path)
@@ -178,7 +194,7 @@ class DiffViewModel @Inject constructor(
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
                 if (generation == requestGeneration) {
-                    _errorMessage.value = e.message ?: "Git operation failed"
+                    _errorMessage.value = e.gitOpsText(R.string.gitops_operation_failed)
                     _lockedPaths.value = (e as? com.bontecou.syncmd.services.git.lfs.LfsLockedFilesException)?.paths?.toList()
                 }
             } finally {
@@ -202,16 +218,16 @@ class DiffViewModel @Inject constructor(
     private fun commit(push: Boolean, branch: String = "", remote: String = "origin") {
         if (mutationRunning) return
         val message = _commitMessage.value
-        if (message.isBlank()) { _errorMessage.value = "Commit message cannot be empty"; return }
+        if (message.isBlank()) { _errorMessage.value = UiText.res(R.string.gitops_commit_message_empty); return }
         val requestGeneration = generation
         mutate(push = push, commit = true) { path ->
-            if (push) check(branchService.getCurrentBranch(path).getOrThrow().name == branch) { "The current branch changed. Refresh before committing and pushing." }
+            if (push) gitOpsCheck(branchService.getCurrentBranch(path).getOrThrow().name == branch, R.string.gitops_branch_changed_commit_push)
             val author = authors.resolve(path)
             diffService.commit(path, message, author.first, author.second).getOrThrow()
             withContext(Dispatchers.Main.immediate) {
                 if (generation == requestGeneration) {
                     if (_commitMessage.value == message) _commitMessage.value = ""
-                    _operationMessage.value = if (push) "Committed locally. Pushing…" else "Committed locally. Ready to push when you choose."
+                    _operationMessage.value = UiText.res(if (push) R.string.gitops_committed_pushing else R.string.gitops_committed_ready)
                 }
             }
             if (push) {
@@ -219,11 +235,11 @@ class DiffViewModel @Inject constructor(
                 catch (e: CancellationException) { throw e }
                 catch (e: Exception) {
                     withContext(Dispatchers.Main.immediate) {
-                        if (generation == requestGeneration) _operationMessage.value = "Committed locally. Push stopped; retry when ready."
+                        if (generation == requestGeneration) _operationMessage.value = UiText.res(R.string.gitops_committed_push_stopped)
                     }
                     throw e
                 }
-                withContext(Dispatchers.Main.immediate) { if (generation == requestGeneration) _operationMessage.value = "Committed and pushed" }
+                withContext(Dispatchers.Main.immediate) { if (generation == requestGeneration) _operationMessage.value = UiText.res(R.string.gitops_committed_pushed) }
             }
         }
     }
@@ -233,9 +249,9 @@ class DiffViewModel @Inject constructor(
     fun pushCurrentBranch(branch: String, remote: String = "origin") {
         val requestGeneration = generation
         mutate(push = true) { path ->
-            check(branchService.getCurrentBranch(path).getOrThrow().name == branch) { "The current branch changed. Refresh before pushing." }
+            gitOpsCheck(branchService.getCurrentBranch(path).getOrThrow().name == branch, R.string.gitops_branch_changed_push)
             pushService.push(path, PushConfig(branch = branch, remote = remote)).getOrThrow()
-            withContext(Dispatchers.Main.immediate) { if (generation == requestGeneration) _operationMessage.value = "Branch pushed" }
+            withContext(Dispatchers.Main.immediate) { if (generation == requestGeneration) _operationMessage.value = UiText.res(R.string.gitops_branch_pushed) }
         }
     }
     fun requestDiscard(filePath: String? = null) {
@@ -250,11 +266,11 @@ class DiffViewModel @Inject constructor(
             try {
                 val result = diffService.reviewDiscard(path, filePath)
                 if (discardRequest == request && generation == owner && _currentRepoPath.value == path && !mutationRunning) {
-                    result.onSuccess { _discardReview.value = it }.onFailure { _errorMessage.value = it.message ?: "Could not review local changes" }
+                    result.onSuccess { _discardReview.value = it }.onFailure { _errorMessage.value = it.gitOpsText(R.string.gitops_review_local_changes_failed) }
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (failure: Exception) {
-                if (discardRequest == request && generation == owner) _errorMessage.value = failure.message ?: "Could not review local changes"
+                if (discardRequest == request && generation == owner) _errorMessage.value = failure.gitOpsText(R.string.gitops_review_local_changes_failed)
             } finally {
                 if (discardRequest == request) _isReviewingDiscard.value = false
             }

@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"Már van mentett másik alternatív kapcsolat. További URL-hitelesítő adatok átköltöztetése előtt ellenőrizd."</string>
+    <string name="account_api_error">"GitHub API-hiba: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"A hozzárendelt GitHub-fiók nincs csatlakoztatva. Válassz fiókot ehhez a tárolóhoz."</string>
+    <string name="account_basic_requires_http" formatted="false">"A felhasználónév és token alapú hitelesítéshez HTTP- vagy HTTPS-cím szükséges"</string>
+    <string name="account_browser_failed" formatted="false">"Nem sikerült megnyitni a böngészőt. Próbáld újra, vagy használj Personal Access Tokent."</string>
+    <string name="account_choose_authentication" formatted="false">"Válaszd ki a hitelesítést ehhez a címhez"</string>
+    <string name="account_choose_credentials" formatted="false">"Válassz hitelesítő adatokat ehhez a kapcsolathoz"</string>
+    <string name="account_choose_location_again" formatted="false">"Válaszd ki újra a klónozás helyét"</string>
+    <string name="account_choose_public_access" formatted="false">"Válassz hálózati hitelesítő adatok nélküli hozzáférést ehhez a címhez"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"SSH-címhez válassz privát SSH-kulcsot, HTTPS-címhez pedig HTTPS-hitelesítést."</string>
+    <string name="account_choose_storage" formatted="false">"Válassz tárhelyet a Beállításokban"</string>
+    <string name="account_cleanup_failed" formatted="false">"A GitHub-bejelentkezés titkosítva van, de a régi helyi beállításokat nem sikerült törölni. Próbáld újra, amikor a tárhely elérhető."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"A mentett hitelesítő adatok megváltoztak klónozás közben. Újrapróbálás előtt ellenőrizd a kapcsolatot."</string>
+    <string name="account_clone_destination_changed" formatted="false">"A klónozás célhelye megváltozott; a kapcsolata megmaradt"</string>
+    <string name="account_clone_failed_network" formatted="false">"Nem sikerült klónozni a tárolót. Ellenőrizd az URL-jét, a hozzáférési adatokat, az ágat és a hálózati kapcsolatot. A meglévő mappák megmaradtak."</string>
+    <string name="account_clone_failed_retry" formatted="false">"A klónozás sikertelen — próbáld újra."</string>
+    <string name="account_clone_in_use" formatted="false">"Ez a klón már meg van nyitva, vagy ellenőrizni kell a Helyi tárolók között."</string>
+    <string name="account_clone_interrupted" formatted="false">"A megszakadt klónt ellenőrizni kell. A fájljai megmaradtak; csatlakoztasd újra a Helyi tárolók közül."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nA klónozás helye az Obsidian-kompatibilitás miatt az alkalmazás Android/media tárhelyére van rögzítve."</string>
+    <string name="account_configuration_changed" formatted="false">"A tároló konfigurációja megváltozott. A hitelesítő adatok eltávolítása előtt töltsd újra."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"A kapcsolat mentése sikertelen, és a hitelesítő adatok helyreállítását sem sikerült menteni. Add meg újra a hitelesítő adatokat."</string>
+    <string name="account_connection_save_failed" formatted="false">"Nem sikerült menteni a tároló kapcsolatát"</string>
+    <string name="account_connection_unreadable" formatted="false">"A mentett kapcsolat nem nyitható meg. Add meg újra a tároló hitelesítő adatait."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"A mentett hitelesítő adatok megváltoztak. Mentés előtt töltsd újra."</string>
+    <string name="account_destination_exists" formatted="false">"A célhely már létezik. Csatlakoztasd újra a Helyi tárolók közül, vagy válassz új, üres helyet. Egy fájl sem lett törölve."</string>
+    <string name="account_enter_new_credentials" formatted="false">"Add meg az új hitelesítő adatokat"</string>
+    <string name="account_enter_ssh_key" formatted="false">"Add meg a privát SSH-kulcsot"</string>
+    <string name="account_enter_username_secret" formatted="false">"Adj meg felhasználónevet és tokent vagy jelszót"</string>
+    <string name="account_enter_valid_url" formatted="false">"Adj meg érvényes tároló-URL-t, a hitelesítő adatokat pedig a külön mezőkben."</string>
+    <string name="account_finish_migration" formatted="false">"Fejezd be a GitHub-bejelentkezést a korábbi hitelesítő adatok átköltöztetéséhez."</string>
+    <string name="account_github_requires_https" formatted="false">"A GitHub-fiókos hozzáféréshez github.com HTTPS-cím szükséges"</string>
+    <string name="account_invalid_repository_name" formatted="false">"Érvénytelen GitHub-tárolónév"</string>
+    <string name="account_invalid_repository_url" formatted="false">"Érvénytelen tároló-URL"</string>
+    <string name="account_load_author_failed" formatted="false">"Nem sikerült betölteni a szerző azonosítóját"</string>
+    <string name="account_load_failed" formatted="false">"Nem sikerült betölteni a GitHub-adatokat"</string>
+    <string name="account_migration_changed" formatted="false">"A mentett hitelesítő adatok megváltoztak. Töltsd újra az átköltöztetést."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"A hitelesítő adatok helyreállítását nem sikerült menteni. Ellenőrizd ezt a kapcsolatot."</string>
+    <string name="account_migration_unverified" formatted="false">"A titkosított hitelesítő adatokat nem sikerült ellenőrizni. Az URL-hitelesítő adatok megmaradtak."</string>
+    <string name="account_move_changed" formatted="false">"A tároló hitelesítő adatai az ellenőrzés után megváltoztak. Ellenőrizd újra az áthelyezést."</string>
+    <string name="account_move_finish_failed" formatted="false">"Nem sikerült befejezni a hitelesítő adatok áthelyezésének helyreállítását"</string>
+    <string name="account_move_persist_failed" formatted="false">"Nem sikerült menteni az áthelyezett tároló hitelesítő adatait"</string>
+    <string name="account_move_recovery_changed" formatted="false">"Az áthelyezett hitelesítő adatok megváltoztak a helyreállítás közben. Folytatás előtt ellenőrizd a célkapcsolatot."</string>
+    <string name="account_move_recovery_failed" formatted="false">"A hitelesítő adatok áthelyezésének helyreállítását nem sikerült menteni. Minden munkapéldány megmaradt."</string>
+    <string name="account_move_verify_failed" formatted="false">"Az áthelyezett tároló hitelesítő adatait nem sikerült ellenőrizni"</string>
+    <string name="account_no_alternative" formatted="false">"Ehhez a címhez nincsenek mentett alternatív hitelesítő adatok"</string>
+    <string name="account_no_backup_folder" formatted="false">"Ennek a tárolónak a tárhelykötetén nincs elérhető alkalmazás-biztonsági mentési mappa. A munkapéldányod megmaradt."</string>
+    <string name="account_no_matching_repositories">"Egy tároló sem felel meg a következőnek: „%1$s”"</string>
+    <string name="account_no_remote" formatted="false">"Nincs beállított távoli tároló"</string>
+    <string name="account_no_repositories_found" formatted="false">"Ehhez a fiókhoz nem található tároló."</string>
+    <string name="account_no_url_credentials" formatted="false">"Nincs átköltöztethető, támogatott URL-hitelesítő adat"</string>
+    <string name="account_not_authenticated" formatted="false">"Nincs hitelesítve — előbb jelentkezz be."</string>
+    <string name="account_open_connection_failed" formatted="false">"Nem sikerült megnyitni a kapcsolatot"</string>
+    <string name="account_opening_sample" formatted="false">"Minta megnyitása…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"Nem sikerült előkészíteni a biztonságos GitHub-bejelentkezést. Próbáld újra, amikor a tárhely elérhető."</string>
+    <string name="account_previous_address_missing" formatted="false">"A korábbi távoli cím nem lett rögzítve. Klónozás előtt ellenőrizd ezt a javasolt GitHub URL-t, és válassz hitelesítést."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"A korábbi kapcsolat nem állítható vissza. Ellenőrizd az URL-t, és válassz kifejezetten hitelesítést; a meglévő fájlok és mentett hitelesítő adatok megmaradtak."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"Nem sikerült megerősíteni a közzétételi kapcsolatot"</string>
+    <string name="account_publication_conflict" formatted="false">"Ehhez a mappához már egy másik kapcsolat van mentve. A meglévő hitelesítő adatok megmaradtak."</string>
+    <string name="account_publication_recovery" formatted="false">"A közzétételi hitelesítő adatokat helyre kell állítani. A mappa megmaradt."</string>
+    <string name="account_publication_verify_failed" formatted="false">"Nem sikerült ellenőrizni a közzétételi kapcsolatot"</string>
+    <string name="account_reenter_credentials" formatted="false">"Add meg újra a tároló hitelesítő adatait"</string>
+    <string name="account_reload_public_access" formatted="false">"Töltsd újra a mentett nyilvános hozzáférésű kapcsolatot"</string>
+    <string name="account_remote_url_changed" formatted="false">"A távoli URL megváltozott. Hitelesítés előtt ellenőrizd a tároló kapcsolatát."</string>
     <string name="account_removal_subject" formatted="false">"ez a fiók"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"Nem sikerült eltávolítani a mentett hitelesítő adatokat"</string>
+    <string name="account_remove_failed" formatted="false">"Nem sikerült eltávolítani a GitHub-bejelentkezést. Próbáld újra, amikor a tárhely elérhető."</string>
+    <string name="account_repository_name_length" formatted="false">"Adj meg 1–120 karakteres tárolónevet"</string>
+    <string name="account_review_github_connection" formatted="false">"Ellenőrizd a GitHub-fiók kapcsolatát"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"Másik klónozás indítása előtt ellenőrizd a megszakadt klónt. A fájljai megmaradtak."</string>
+    <string name="account_sample_hint" formatted="false">"Próbálj ki valódi Git-műveleteket offline. Nem kell fiók."</string>
+    <string name="account_save_author_failed" formatted="false">"Nem sikerült menteni a szerző azonosítóját"</string>
+    <string name="account_save_connection_failed" formatted="false">"Nem sikerült menteni a kapcsolatot"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"Nem sikerült biztonságosan menteni a GitHub-bejelentkezést. Próbáld újra, amikor a tárhely elérhető."</string>
+    <string name="account_save_sign_in_short" formatted="false">"Nem sikerült biztonságosan menteni a bejelentkezést"</string>
+    <string name="account_saved_connection_changed" formatted="false">"A mentett kapcsolat megváltozott. Újbóli klónozás előtt ellenőrizd a hitelesítést."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"A mentett hitelesítő adatok nem nyithatók meg. Válassz nyilvános hozzáférést, vagy adj meg új hitelesítő adatokat."</string>
+    <string name="account_select_connected_account" formatted="false">"Válassz csatlakoztatott GitHub-fiókot és github.com HTTPS-címet"</string>
+    <string name="account_select_failed" formatted="false">"Nem sikerült kiválasztani a GitHub-fiókot. Próbáld újra, amikor a tárhely elérhető."</string>
+    <string name="account_select_github_account" formatted="false">"Válassz GitHub-fiókot"</string>
+    <string name="account_select_repository_account" formatted="false">"Válassz GitHub-fiókot ehhez a tárolóhoz"</string>
+    <string name="account_select_repository_github_account" formatted="false">"Válaszd ki a tároló GitHub-fiókját"</string>
+    <string name="account_session_open_failed" formatted="false">"A biztonságos GitHub-tárhelyet nem sikerült megnyitni. Jelentkezz be újra a munkamenet helyreállításához."</string>
+    <string name="account_session_recovery_failed" formatted="false">"A biztonságos GitHub-tárhely helyreállítása sikertelen. Jelentkezz be újra, amikor a tárhely elérhető."</string>
+    <string name="account_session_save_failed" formatted="false">"A biztonságos GitHub-tárhelyet nem sikerült menteni. Próbálj újra bejelentkezni."</string>
+    <string name="account_session_verify_failed" formatted="false">"A biztonságos GitHub-tárhelyet nem sikerült ellenőrizni. Próbálj újra bejelentkezni."</string>
+    <string name="account_sign_in" formatted="false">"Bejelentkezés"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"Fiókos hozzáférés választása előtt jelentkezz be a GitHubra"</string>
+    <string name="account_sign_in_failed" formatted="false">"A bejelentkezés sikertelen"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"Jelentkezz be a tároló GitHub-fiókjába"</string>
+    <string name="account_sign_in_unverified" formatted="false">"A GitHub-bejelentkezést nem sikerült ellenőrizni. Kezdd újra a bejelentkezést."</string>
+    <string name="account_sign_out_failed" formatted="false">"Nem sikerült biztonságosan kijelentkezni. Próbáld újra, amikor a tárhely elérhető."</string>
+    <string name="account_signing_in" formatted="false">"Bejelentkezés…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"Az SSH-gazdakulcs nem lett jóváhagyva. Próbáld újra, amikor ellenőrizni tudod a szerver ujjlenyomatát."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"SSH-kulcsok csak SSH-tárolócímekkel használhatók"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"A mentett SSH-megbízhatóság nem nyitható meg. Ellenőrizd az SSH-szerverek megbízhatóságát a Beállításokban."</string>
+    <string name="account_storage_attention" formatted="false">"A biztonságos GitHub-tárhely figyelmet igényel. A meglévő hitelesítő adatok megmaradtak; jelentkezz be újra."</string>
+    <string name="account_token_empty" formatted="false">"A token nem lehet üres"</string>
+    <string name="account_token_invalid">"A GitHub-token érvénytelen vagy lejárt (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"Mintatároló kipróbálása"</string>
+    <string name="account_updated_just_now" formatted="false">"épp most"</string>
+    <string name="account_valid_branch" formatted="false">"Adj meg érvényes ágnevet"</string>
+    <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_active" formatted="false">"A bevont tárolók háttérellenőrzése ütemezve van."</string>
     <string name="background_allow_push" formatted="false">"Automatikus közzététel engedélyezése"</string>
     <string name="background_attempt">"Utolsó ellenőrzés: %1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"A művelet leállt. Ellenőrizd a tároló állapotát és a kapcsolati beállításokat."</string>
     <string name="diagnostics_share_title" formatted="false">"Diagnosztika megosztása"</string>
     <string name="diagnostics_warnings" formatted="false">"Figyelmeztetések"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"helyi"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"távoli"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"követő"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"ismeretlen"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"Összecsukás"</string>
+    <string name="dialogs_commit_expand" formatted="false">"Kibontás"</string>
+    <string name="dialogs_error_branch_exists">"A(z) „%1$s” ág már létezik.\n\nVálassz másik nevet."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"Az aktuális ág nem törölhető.\n\nElőbb válts egy másik ágra."</string>
+    <string name="dialogs_error_commit_failed">"A commit sikertelen: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"Ez a művelet nem hajtható végre commitolatlan változásokkal.\n\nElőbb készíts commitot a változásaidról, vagy tedd őket stashbe."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"Érvénytelen ágnév.\n\nHasználj betűket, számokat, kötőjeleket és aláhúzásjeleket."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"Ez nem tűnik érvényes Git-tárolónak.\n\nEllenőrizd, hogy az elérési út egy .git mappára vagy egy munkakönyvtárra mutat."</string>
+    <string name="dialogs_error_network" formatted="false">"Hálózati hiba. Ellenőrizd a kapcsolatot, és próbáld újra."</string>
+    <string name="dialogs_error_pull_failed">"A pull sikertelen: %1$s"</string>
+    <string name="dialogs_error_push_failed">"A push sikertelen: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"A tároló nem található itt: %1$s\n\nEllenőrizd az elérési utat, és próbáld újra."</string>
+    <string name="dialogs_error_title" formatted="false">"Hiba"</string>
+    <string name="dialogs_info_title" formatted="false">"Információ"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"Csak akkor egyesít, ha a forrás közvetlenül előrébb jár. Megőrzi a lineáris előzményeket."</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"Fast-forward, ha lehetséges, egyébként egyesítő commit létrehozása."</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Mindig egyesítő commitot hoz létre, akkor is, ha a fast-forward lehetséges."</string>
+    <string name="dialogs_success_title" formatted="false">"Sikeres"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"Ismeretlen"</string>
+    <string name="dialogs_warning_title" formatted="false">"Figyelmeztetés"</string>
     <string name="discard_clear_staging" formatted="false">"Index ürítése"</string>
     <string name="discard_review_all" formatted="false">"Az alább felsorolt követett módosítások és új fájlok végleg elvesznek. A figyelmen kívül hagyott fájlok megmaradnak."</string>
     <string name="discard_review_empty" formatted="false">"Nincs elvethető módosítás."</string>
     <string name="discard_review_operation" formatted="false">"Ez az aktív Git-műveletet is megszakítja."</string>
     <string name="discard_review_unborn" formatted="false">"Még nincs commit. Ez eltávolítja a felsorolt fájlokat az indexből, de megtartja a tartalmukat."</string>
+    <string name="discovery_scanned">"%1$s átvizsgálva. Válaszd ki a hozzáadandó munkapéldányokat."</string>
     <string name="file_clone_failure" formatted="false">"Nem sikerült klónozni a helyi tárolót. Ellenőrizd a forrásmappát, a tárhely-hozzáférést és az ágat. A meglévő mappák megmaradtak."</string>
     <string name="file_clone_guidance" formatted="false">"Klónozz egy eszközön lévő tárolót helyi hozzáféréssel. Megosztott tárhelyhez előbb engedélyezd a mappa elérését a Beállításokban."</string>
     <string name="file_delete_body" formatted="false">"A fájl eltávolításra kerül erről az eszközről. A Git töröltként jeleníti meg, ha követve volt."</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"Ezen az eszközön nem érhető el mappaválasztó"</string>
     <string name="folder_settings_unavailable" formatted="false">"Az Android tárhelybeállításai nem érhetők el. Az alkalmazás tárhelye továbbra is használható."</string>
     <string name="folder_unusable" formatted="false">"Ez a mappa nem használható"</string>
+    <string name="git_fetch" formatted="false">"– Felhívás"</string>
+    <string name="git_fetch_detail" formatted="false">": távoli rendszerről új commitek ellenőrzése"</string>
     <string name="git_native_public_only" formatted="false">"A Git natív protokollja csak nyilvános hozzáférést támogat. Hitelesítéshez használj HTTPS-t vagy SSH-t."</string>
+    <string name="gitops_action_failed" formatted="false">"A Git nem tudta befejezni ezt a műveletet"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"Az ágművelet nem fejeződött be"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"Az ágművelet nem fejeződött be. Frissítsd a repository állapotát."</string>
+    <string name="gitops_branch_changed" formatted="false">"Az ág megváltozott. Ellenőrizd az aktuális ágat, mielőtt újra próbálkozol."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"Az aktuális ág megváltozott. Frissíts a commit és a push előtt."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"Az aktuális ág megváltozott. Frissíts a push előtt."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"Az aktuális ág betöltés közben megváltozott. Frissíts, és ellenőrizd újra."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"Az ág neve nem lehet üres"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"Commitolj egy fájlt az ág létrehozása előtt."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"Az aktuális ág vagy commit megváltozott. Frissíts, és ellenőrizd újra."</string>
+    <string name="gitops_branch_pushed" formatted="false">"Ág pusholva"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"Nem sikerült frissíteni az ágakat"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"Nem sikerült betölteni a módosításokat"</string>
+    <string name="gitops_commit_changed" formatted="false">"A commit megváltozott. Frissítsd az előzményeket, és ellenőrizd újra."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"A commitüzenet nem lehet üres"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"Helyben commitolva. A push leállt; próbáld újra, amikor készen állsz."</string>
+    <string name="gitops_committed_pushed" formatted="false">"Commitolva és pusholva"</string>
+    <string name="gitops_committed_pushing" formatted="false">"Helyben commitolva. Push folyamatban…"</string>
+    <string name="gitops_committed_ready" formatted="false">"Helyben commitolva. Készen áll a pushra, amikor szeretnéd."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"Válaszd a sajátunkat vagy az övéket a csoportos feloldáshoz"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"Az ütközés megváltozott. A piszkozatod továbbra is látható. Másold ki a megtartandó szöveget, majd zárd be, és ellenőrizd az aktuális ütközést."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"Az ütközést nem sikerült feloldani"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"Az ütközések megváltoztak. Frissíts a feloldás előtt."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"Nem sikerült frissíteni a merge-ütközéseket"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"Néhány ütközés feloldatlan maradt. Ellenőrizd a frissített ütközéslistát."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"Nem sikerült betölteni a fájl diffjét"</string>
+    <string name="gitops_history_action_failed" formatted="false">"A Git nem tudta befejezni ezt az előzményműveletet"</string>
+    <string name="gitops_history_changed" formatted="false">"A repository előzményei megváltoztak. Frissíts, és ellenőrizd újra."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"Nem sikerült frissíteni az előzményeket"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"A mentett LFS-végpont-jóváhagyások nem nyithatók meg. Állítsd vissza őket a Beállításokban, mielőtt újra próbálkozol."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"Érvénytelen LFS-végpontcím"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"Nem sikerült ellenőrizni a kiterjesztések követését. Töltsd be újra, és ellenőrizd a meglévő attribútumokat, ütközéseket és a fájlhozzáférést, mielőtt újra próbálkozol."</string>
+    <string name="gitops_lfs_failed" formatted="false">"Nem sikerült befejezni a Git LFS-t. Ellenőrizd a kapcsolatot és az aktuális követési állapotot, majd töltsd be újra, és próbáld újra. A helyi fájljaid és commitjaid megmaradtak."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Nem sikerült megvizsgálni a Git LFS-t. Ellenőrizd a tárhely-hozzáférést és a repository állapotát, majd töltsd be újra."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"Nem sikerült ellenőrizni a szerver zárolásait. Frissíts a következő módosítás előtt."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"A szerver megtagadta a hozzáférést a zárolási listájához. Ellenőrizd a repository-kapcsolatot és a push-jogosultságokat."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"Nem sikerült ellenőrizni a szerver zárolásait. Ellenőrizd a kapcsolatot és a repository állapotát, majd frissíts a következő módosítás előtt."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"A merge-üzenet nem lehet üres"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"A merge-munkamenet megváltozott. Frissíts a folytatás előtt."</string>
+    <string name="gitops_merge_stopped">"A merge leállt: %1$s"</string>
+    <string name="gitops_merge_successful">"Sikeres merge: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"A Git-művelet sikertelen"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"A pull nem fejeződött be"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"Válaszd az ellenőrzött ütközést"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"Válaszd az ellenőrzött fájlnevet"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"Az ütközés vagy a munkafájlok megváltoztak. A piszkozatod megmaradt; frissíts a feloldás előtt."</string>
+    <string name="gitops_rebase_failed" formatted="false">"A Git nem tudta befejezni ezt a műveletet. Lekéréskor ellenőrizd a kapcsolatot, majd frissítsd a rebase állapotát, mielőtt újra próbálkozol."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"A rebase ellenőrzést igényel"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"A feloldás előtt nyisd meg az ütközésszerkesztőt"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"Frissítsd a rebase-munkamenetet"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"Először ellenőrizd a rebase-t"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"A Git nem tudta befejezni ezt a műveletet. Ellenőrizd a kapcsolatot, majd a repository aktuális állapotát, mielőtt újra próbálkozol."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"A kiválasztott repository megváltozott. Ellenőrizd újra a műveletet."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"Nem sikerült ellenőrizni a helyi módosításokat"</string>
+    <string name="gitops_stash_changed" formatted="false">"A stash-lista megváltozott. Ellenőrizd az aktuális stasht, mielőtt újra próbálkozol."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"Nem sikerült frissíteni a repository állapotát"</string>
+    <string name="gitops_tag_changed" formatted="false">"A címke megváltozott. Ellenőrizd az aktuális címkét, mielőtt újra próbálkozol."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"A címke neve nem lehet üres"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"Commitolj egy fájlt a címke létrehozása előtt."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"Nem sikerült betölteni az upstream ágat"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"Nem sikerült menteni az upstream ágat"</string>
     <string name="guide_back" formatted="false">"Vissza"</string>
     <string name="guide_clone_body" formatted="false">"Klónozz GitHub-tárolókat, nyilvános vagy saját kiszolgálón tárolt tárolókat, illetve SSH-n keresztül elérhető tárolókat. Minden munkapéldány megőrzi a saját kapcsolatát és ágát."</string>
     <string name="guide_clone_title" formatted="false">"Tárolóid Androidon"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"Feltöltések · külön titkosított hitelesítő adatok"</string>
     <string name="lfs_uploads_public" formatted="false">"Feltöltések · nyilvános hozzáférés"</string>
     <string name="modified" formatted="false">"Módosítva"</string>
+    <string name="move_action" formatted="false">"Munkapéldány áthelyezése"</string>
+    <string name="move_cancelled" formatted="false">"Áthelyezés megszakítva. Az eredeti munkapéldány megmaradt."</string>
+    <string name="move_confirm_action" formatted="false">"Áthelyezés"</string>
+    <string name="move_confirm_action_restore" formatted="false">"Visszaállítás"</string>
+    <string name="move_confirm_guidance" formatted="false">"Válassz nem használt célt, és ne engedd, hogy más alkalmazások módosítsák ezeket a mappákat, amíg az áthelyezés befejeződik."</string>
+    <string name="move_confirm_retained" formatted="false">"Az eredeti helyreállítási másolatként megmarad."</string>
+    <string name="move_confirm_title" formatted="false">"Áthelyezed ezt a munkapéldányt?"</string>
+    <string name="move_confirm_title_restore" formatted="false">"Visszaállítod ezt a helyreállítási másolatot?"</string>
+    <string name="move_done" formatted="false">"Tároló áthelyezve"</string>
+    <string name="move_done_retained" formatted="false">"Tároló áthelyezve. Az eredeti az Áthelyezési helyreállítások között marad."</string>
+    <string name="move_error_destination_other" formatted="false">"A cél egy másik tárolóhoz van regisztrálva"</string>
+    <string name="move_error_destination_registered" formatted="false">"Ezen a célon már egy másik tároló van regisztrálva"</string>
+    <string name="move_error_finish_pending" formatted="false">"Előbb fejezd be a függő áthelyezést"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"Előbb fejezd be ennek a tárolónak a függő áthelyezését"</string>
+    <string name="move_error_recovery_added" formatted="false">"A helyreállítási másolat már hozzá van adva. A tárolóbejegyzéséből helyezd át."</string>
+    <string name="move_error_restored_registered" formatted="false">"A visszaállított hely most másként van regisztrálva; egyetlen beállítás sem lett felülírva"</string>
+    <string name="move_error_settings_changed" formatted="false">"A tároló beállításai megváltoztak. Folytatás előtt ellenőrizd az áthelyezés helyreállítását."</string>
+    <string name="move_error_settings_review" formatted="false">"Az áthelyezés beállításait ellenőrizni kell; minden munkapéldány megmaradt"</string>
+    <string name="move_error_stale_review" formatted="false">"Az áthelyezés ellenőrzése megváltozott. Áthelyezés előtt ellenőrizd újra a célt."</string>
+    <string name="move_intro" formatted="false">"Áthelyezi a teljes munkapéldányt, a Git-előzményekkel, az előkészített módosításokkal és a lemezen lévő, nem mentett fájlokkal együtt. A fiók- és szerzőbeállítások is vele mennek."</string>
+    <string name="move_intro_restore" formatted="false">"A megőrzött eredeti visszaállítása különálló tárolóként. A jelenlegi munkapéldány a helyén marad."</string>
+    <string name="move_progress_moving" formatted="false">"Áthelyezés és a tároló beállításainak mentése…"</string>
+    <string name="move_progress_reviewing" formatted="false">"Fájlok és Git-metaadatok ellenőrzése…"</string>
+    <string name="move_recovered_name">"%1$s (helyreállított)"</string>
+    <string name="move_recovery_attention">"Az áthelyezés helyreállítása figyelmet igényel: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"Az áthelyezés helyreállítása befejeződött"</string>
+    <string name="move_recovery_removed" formatted="false">"Helyreállítási másolat eltávolítva"</string>
+    <string name="move_title_restore" formatted="false">"Helyreállítási másolat visszaállítása"</string>
     <string name="notes_acknowledge" formatted="false">"Értem"</string>
     <string name="notes_connections_body" formatted="false">"Kezeld a GitHub-fiókokat és a tároló szerzői adatait. Kapcsolódj HTTPS-sel vagy SSH-val, válassz tárhelyet a klónozáshoz, csatlakoztasd újra a helyi másolatokat, és ellenőrizd a tárolók áthelyezését vagy eltávolítását."</string>
     <string name="notes_connections_title" formatted="false">"Kapcsolatok és tárhely"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"Válts egy helyi ágra, és előbb fejezd be az aktív Git-műveletet vagy ütközést."</string>
     <string name="repository_actions_unsettled" formatted="false">"A fájlok az indexhez adás közben tovább változtak. Újrapróbálás előtt ellenőrizd az indexet és a fájlokat."</string>
     <string name="repository_actions_write_scope" formatted="false">"A Push és a Szinkronizálás minden jelenlegi, nem figyelmen kívül hagyott változást hozzáad az indexhez, szükség esetén commitot készít, majd feltölti a még el nem küldött commitokat. A Szinkronizálás először lekéri a változásokat, és ha biztonságos, fast-forward frissítést végez. Ütközés, szétvált előzmények vagy nem biztonságos távoli állapot esetén a művelet leáll. Sikertelen feltöltéskor az új helyi commit megmarad az újrapróbáláshoz."</string>
+    <string name="repository_add_none_new" formatted="false">"Válassz legalább egy olyan tárolót, amely még nincs hozzáadva"</string>
+    <string name="repository_clone_deleted" formatted="false">"Helyi klón törölve"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"Leválasztott HEAD vagy még nincs első commit"</string>
     <string name="repository_discovery_clean" formatted="false">"Nincs módosítás"</string>
     <string name="repository_discovery_dirty" formatted="false">"Helyi módosítások"</string>
     <string name="repository_history_files_deleted" formatted="false">"Helyi fájlok törölve"</string>
     <string name="repository_history_files_kept" formatted="false">"Helyi fájlok megtartva"</string>
     <string name="repository_history_tracking_removed" formatted="false">"Git-követés eltávolítva · munkafájlok megtartva"</string>
+    <string name="repository_history_unavailable" formatted="false">"A tároló előzményei nem érhetők el"</string>
+    <string name="repository_imported_files_kept" formatted="false">"Az importált tárolók fájljai megmaradnak ezen az eszközön"</string>
     <string name="repository_metadata_unavailable" formatted="false">"A tároló metaadatai nem érhetők el"</string>
     <string name="repository_no_commits" formatted="false">"Nincsenek commitok"</string>
+    <string name="repository_no_longer_added" formatted="false">"A tároló már nincs hozzáadva"</string>
+    <string name="repository_removed_files_kept" formatted="false">"A tároló eltávolítva az alkalmazásból. A helyi fájlok megmaradtak."</string>
+    <string name="repository_restore_backup_first" formatted="false">"A mappa újracsatlakoztatása előtt állítsd vissza a Git-metaadatok biztonsági mentését"</string>
     <string name="repository_shortcut_active" formatted="false">"Engedélyezve és rögzítve"</string>
     <string name="repository_shortcut_add" formatted="false">"Kezdőképernyős parancsikon hozzáadása"</string>
     <string name="repository_shortcut_busy" formatted="false">"Már fut egy művelet. Ez a parancsikon nem került várólistára. Várj, majd koppints rá újra."</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"A parancsikon engedélye visszavonva"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"A kezdőképernyőd nem tudta elfogadni ezt a parancsikonkérést. Használd az ezen a képernyőn lévő műveleteket."</string>
     <string name="repository_sync_not_recorded" formatted="false">"Nincs rögzítve"</string>
+    <string name="resolve_local_action" formatted="false">"– Megoldás"</string>
+    <string name="resolve_local_body" formatted="false">": Az Ön helyi változtatásait beállítjuk, majd azokat a távoli szakaszhoz összevonjuk. Ha konfliktusok lépnek fel, ezeket a következő képernyőn oldhatja meg."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"– Felvétel és összevonás"</string>
+    <string name="resolve_local_committing" formatted="false">"Helyi módosítások véglegesítése…"</string>
+    <string name="resolve_local_default_message" formatted="false">"helyi módosítások a következőből GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"– Állítási üzenet"</string>
+    <string name="resolve_local_superseded" formatted="false">"A kiválasztott tároló megváltozott. Ellenőrizd újra a helyi módosításokat."</string>
+    <string name="resolve_local_title" formatted="false">": helyi módosítások elkerülik ezt a kiválasztást."</string>
     <string name="settings_folder_unavailable" formatted="false">"A mappahozzáférés figyelmet igényel"</string>
     <string name="shortcut_background_attention" formatted="false">"A parancsikon figyelmet igényel. Újrapróbálás előtt nyisd meg a tárolóműveleteket, és ellenőrizd az állapotát."</string>
     <string name="shortcut_background_channel" formatted="false">"Parancsikonok műveletei"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"Még nem szinkronizálva"</string>
     <string name="tide_home_state_synced">": Szinkronosítva %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"Ellenőrzést igényel"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"Nincs újdonság a távoli tárolóban."</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"Csak a sajátjaid"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"A távoli tárolóban olyan commitok vannak, amelyek nálad nincsenek."</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"Újdonság a távoli oldalon"</string>
+    <string name="tide_merge_both_moved" formatted="false">"Mindkét oldal változott"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"Az egyik oldalon törölve, a másikon szerkesztve."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"Mindkét oldal szerkesztette ezt a fájlt."</string>
+    <string name="tide_merge_conflict_list_count">"Feloldva: %1$d/%2$d"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"Válaszd ki a megtartandó verziót, vagy szerkeszd az eredményt kézzel."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"Két különböző módon átnevezve."</string>
     <string name="tide_merge_conflict_result" formatted="false">"eredmény"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">"– ezt az adatot a szerveren tárolják."</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"Feloldatlan"</string>
     <string name="tide_merge_diff_added" formatted="false">"Hozzáadva"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"A bináris tartalom nem jeleníthető meg szövegként."</string>
     <string name="tide_merge_diff_changed" formatted="false">"Módosított"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"Másolva"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"Törölve"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"Elvetés"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"Ehhez a változáshoz nincs soronkénti eltérés."</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"Nincs szöveges változás"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"Nem sikerült betölteni ezt az eltérést"</string>
+    <string name="tide_merge_diff_hunk_line">"%1$d. sor"</string>
+    <string name="tide_merge_diff_line_added">"Hozzáadva: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"Eltávolítva: %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"Módosítva"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"Átnevezve"</string>
     <string name="tide_merge_diff_staged" formatted="false">"előkészítve"</string>
+    <string name="tide_merge_diff_stats_a11y">"Hozzáadott sorok: %1$d, eltávolított sorok: %2$d"</string>
+    <string name="tide_merge_diff_summary">"Fájlok: %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"típus módosítva"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"Nincs előkészítve"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"Már naprakész."</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"Szinkronban"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"Befejezed az egyesítést?"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"A másik oldal változásai bekerültek."</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"Egyesítve"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"Lekérés, ellenőrzés, majd egyesítés."</string>
     <string name="tide_merge_merge_kicker" formatted="false">"Összevonás"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"Egyes fájlok mindkét oldalon megváltoztak."</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"Egyesítés szünetel"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"Még vannak feloldandó ütközések"</string>
+    <string name="tide_merge_moved_on" formatted="false">"A távoli tároló változott, miközben írtál."</string>
     <string name="tide_merge_ours_filename" formatted="false">"Miénk"</string>
+    <string name="tide_merge_plan_section" formatted="false">"Ellenőrzött terv"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"Vissza a kiindulópontra."</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"Az újraalapozás egy blokkolt checkoutra vár."</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"Az újraalapozás megállt a mindkét oldalon szerkesztett fájloknál."</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"Az újraalapozás befejeződött."</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"Előbb kérd le, aztán dönts."</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"A folytatás előtt ellenőrizd ezt a lépést."</string>
     <string name="tide_merge_result_section" formatted="false">"eredmény"</string>
     <string name="tide_merge_side_deleted" formatted="false">"törölve"</string>
     <string name="tide_merge_theirs" formatted="false">"Övék"</string>
+    <string name="tide_merge_theirs_count">"↓%1$d a távoli oldalról"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"Övék"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"Ágbeállítások olvasása…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"Követés"</string>
+    <string name="tide_merge_upstream_set">"Követett cél: %1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"Nincs upstream beállítva"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"A pull és push célja nem ismert, amíg nem választasz upstream ágat."</string>
+    <string name="tide_merge_yours" formatted="false">"Saját verzió"</string>
+    <string name="tide_merge_yours_count">"↑%1$d helyben"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"A klónozás sikertelen"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"PAT létrehozása a GitHubon ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"Valódi Git."</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"Alapértelmezett"</string>
     <string name="tide_onboarding_show_token" formatted="false">"Megjelenítés"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"Nincs bejelentkezve"</string>
+    <string name="tide_settings_off" formatted="false">"ki"</string>
+    <string name="tide_settings_on" formatted="false">"be"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"Új klónok"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"A GitSync.md elfelejti az ezen az eszközön használt tokent (%1$s). A tárolóid és a fájljaik a helyükön maradnak."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"Kijelentkezel a GitHubból?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"bejelentkezve"</string>
+    <string name="tide_settings_this_account" formatted="false">"ez a GitHub-fiók"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"Módosítások keresése"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"A Git-művelet szünetel. A folytatáshoz oldd fel az összes érintett fájl ütközéseit."</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Mindkét oldal változott"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"Csak az áttekintett .git-metaadatok törlődnek. A munkafájlok megmaradnak, de a helyi Git-előzmények másik másolat nélkül nem állíthatók vissza."</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Végleg eltávolítod a Git-előzményeket?"</string>
     <string name="tracking_remove_review_changed" formatted="false">"Az áttekintés adatai megváltoztak. Szakítsd meg, és tekintsd át újra a követés eltávolítását."</string>
+    <string name="tracking_removed_backup">"Git-követés eltávolítva. Ellenőrzött biztonsági mentés: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Git-követés eltávolítva. A munkafájlok megmaradtak."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nMinden munkafájl és a helyi Git-előzmények ezen az eszközön maradnak. A mappát később újra csatlakoztathatod."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nEz végleg törli az alkalmazás által kezelt klónt, beleértve a még fel nem küldött commitokat, a stash-ben tárolt változásokat és a nem mentett fájlokat. A távoli tároló változatlan marad."</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"A következő csatlakozás előtt a(z) %1$s:%2$s ujjlenyomatát ellenőrizni kell."</string>
+    <string name="ui_1_s_bytes_81cdb385">"Bájtok: %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"Karakterek: %1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s fájl"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Sorok: %1$s, bájtok: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s helyi commit · %2$s upstream commit"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s megjelenítve · %2$s tárolva"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Egyszeri vásárlás a Google Playen"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"Kijelölt tárolók hozzáadása"</string>
     <string name="ui_added_b4561641" formatted="false">"Hozzáadva"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"Hozzáadott tárolók"</string>
+    <string name="ui_alias_1_s_e7e8c040">"Álnév: %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"Álnév (nem kötelező)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Minden konfliktusmegoldás előkészítve. Folytasd a commitok újraalkalmazását. Ha a Git NOTHING_TO_COMMIT állapotot jelez, mérlegeld az üres commit kihagyását."</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"Minden ütközés feloldva. Befejezed az egyesítést?"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"Minden ütközés feloldva. Fejezd be vagy szakítsd meg az összevonást."</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"A fizetős alkalmazás telepítése után minden funkció elérhető. Nincsenek előfizetések vagy alkalmazáson belüli vásárlások."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Ez a fájlra vonatkozó minden helyi módosítás mindig eltűnik."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Helyi mappák elérésének engedélyezése"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"Már hozzáadva"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"Egy megszakadt áthelyezést helyre kell állítani. Minden felismert másolat megmarad, amíg be nem fejeződik."</string>
     <string name="ui_and_1_s_more_f93ea742">"és %1$s – további információk..."</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"BÁRMELY REPÓ. SZINKRONIZÁLVA AZ ANDROIDDAL."</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Alkalmazás"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Alkalmazás beállításai"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"Alkalmazás"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"Stash alkalmazása"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Követési beállítás alkalmazása"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"A jóváhagyás ezen az eszközön tárolódik, és a várakozó kapcsolat folytatódik. A megszakítás nem ad bizalmat a szervernek."</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"Biztosan megszakítod ezt az egyesítést?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Authentikáció"</string>
     <string name="ui_back_639807a2" formatted="false">"VISSZA"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Vissza"</string>
@@ -822,6 +1123,7 @@
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"Tárolók böngészése"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Böngészés ezzel a fiókkal"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"Mégsem"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Függő áthelyezés megszakítása"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"Módosított"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"Módosított fájlok"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Változások"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Másik mappa választása"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Klónok tárhelyének kiválasztása"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Válassz helyi vagy csatlakoztatott tárhelyet. A felhőalapú dokumentumszolgáltatók nem biztosítanak a Git-motor által használható fájlrendszert."</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"Válassz kiindulópontot"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"Válassz stratégiát"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Válaszd ki a GitHub böngészéséhez használt fiókot. Minden tároló megtartja a hozzárendelt fiókot; ezt a Tárolókapcsolat alatt módosíthatod."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Válaszd ki az új klónok alapértelmezett mappáját. A meglévő tárolók a jelenlegi helyükön maradnak."</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"Összes törlése"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Hozz létre fájlt vagy mappát az Új gombbal."</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"– létrehozás PAT – GitHub-on →"</string>
     <string name="ui_create_fde9c501" formatted="false">"Létrehozás"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"Új ág létrehozása"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Jelenlegi alapértelmezés"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"Jelenlegi"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Jelenlegi külön push-cím: %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Alapértelmezés új klónokhoz. Minden klón másik mappát is használhat."</string>
     <string name="ui_delete_1_s_6474596f">"Törlöd ezt: „%1$s”?"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"Törli az ágat?"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"Törlöd a(z) \"%1$s\" ágat?"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"Ág törlése"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"törlés"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Fájl törlése"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">": helyi fájlok törlése?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">": helyi fájlok törlése"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"Címke törlése"</string>
+    <string name="ui_destination_1_s_0df94639">"Cél: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Cél szülőmappája"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnosztika"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"Különbség"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Piszkozat elvetése"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"Talált tárolók"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Bezárás"</string>
     <string name="ui_done_283e91eb" formatted="false">"Kész"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"Letöltési hely"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"Hiányzó fájltartalom letöltése"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"Stash törlése"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Újraalapozáskor az upstream a Git ours oldala; az újraalkalmazott helyi commit a theirs."</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"pl. feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"pl. MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"pl. prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Commit szerzőjének szerkesztése"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Kapcsolat szerkesztése"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Megoldás szerkesztése"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Az ütközés kézi feloldásához itt szerkeszd a tartalmat"</string>
     <string name="ui_email_969ccbd3" formatted="false">"E-mail"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"Üres mappa"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"Hozzáférés engedélyezése"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"Végpont-hitelesítés"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Add meg újra a hitelesítő adatokat, vagy válassz nyilvános hozzáférést az új címhez."</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Add meg a Git-tárolód teljes elérési útját."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Hiba"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"A következő csatlakozás előtt minden SSH-szerver ujjlenyomatát ellenőrizni kell. A sérült bizalmi bejegyzések is eltávolításra kerülnek."</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"Távoli változások lekérése és alkalmazása"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Lekérés és az újraalapozás áttekintése"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"Távoli módosítások lekérése"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"Fájl: %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"A fájlművelet sikertelen"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Áthelyezés helyreállításának befejezése"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"Befejezés"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"Elfelejtés"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"Szerver elfelejtése"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"A Git LFS figyelmet igényel"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · Követés és letöltések"</string>
     <string name="ui_git_remote_91593664" formatted="false">"Git-távoli tároló"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"GitHub-fiók csatlakoztatva"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"GitHub-fiókok"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub bejelentkezés\nA"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"A Gitsync.md teljes verziója"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"A GitSync.md-nek hozzáférésre van szüksége a megosztott tárhelyhez, hogy valódi Git-munkapéldányokat kezeljen az eszköz mappáiban. Az Android beállításaiban engedélyezd a hozzáférést, majd válaszd ki a használni kívánt mappákat."</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"A GitSync.md nem ad meg hitelesítő adatokat ehhez a tárolóhoz."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Lépj vissza, és válassz egy tárolót."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Megértettem, hogy egy másik tulajdonos még szerkesztheti ezt a fájlt."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Add meg az SSH-felhasználónevet a címben: git@host:team/repo.git vagy ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_info_170322a3" formatted="false">"Információ"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Hozzá tartozó nyilvános kulcs (nem kötelező)"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"Összevonás"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"Ág egyesítése ide: %1$s"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">"– Összevonási bejegyzés"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"Összevonás"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"Egyesítési stratégia:"</string>
     <string name="ui_message_f5394f72" formatted="false">"Üzenet:"</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"Metaadatok:"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"Továbbiak"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Áthelyezési helyreállítások"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"Tároló áthelyezése"</string>
     <string name="ui_name_dcd1d522" formatted="false">"Név"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Név a GitSync.md-ben"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"Új mappa"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Új token vagy jelszó"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"Nincsenek jóváhagyott egyéni LFS-végpontok"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"Nincs elérhető ág"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Nincs megjeleníthető változás"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Nem találhatók commitok"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"Nem találhatók ütközések"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Nincsenek csatlakoztatott fiókok. A helyi tárolók továbbra is elérhetők."</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"Nincs új bináris vagy nagy fájl, amelyhez követési beállítást kell választani."</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"Nincsenek tárolók"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"Még nincs hozzáadott tároló."</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"Nincs mentett tároló. Adj hozzá egyet a beállításokban."</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"Nincs tároló"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"NINCS TÁROLÓ"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Nem találhatók félretett módosítások"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"Nem találhatók címkék"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"most"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"Megnyitás"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS megnyitása"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">": Fájlokban nyitás"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Fájl megnyitása…"</string>
     <string name="ui_or_7175517a" formatted="false">"vagy"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"Saját verzió: %1$s bájt"</string>
     <string name="ui_ours_ab658c14" formatted="false">"Miénk"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"Rendszermegjelenés felülbírálása"</string>
     <string name="ui_owner_1_s_599ca9ce">"Tulajdonos: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Szülők (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Útvonal"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"– személyes hozzáférési token"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"Az egyesítés befejezése előtt oldj fel minden ütközést."</string>
     <string name="ui_pop_52e740ad" formatted="false">"Kiemelés"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"Stash alkalmazása és törlése"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"Korábban hozzáadva"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"Korábban megbízható: %1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"Adatvédelmi irányelvek"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Rebase mellett vonás"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Pull újraalapozással / újraalapozás folytatása"</string>
     <string name="ui_push_792aac67" formatted="false">"Push"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"Az LFS-zárolások blokkolják a feltöltést"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"Helyi módosítások feltöltése"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"A tároló fájljainak olvasása és szerkesztése"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Újraalapozás folyamatban"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Újraalapozás az áttekintett upstreamre"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"A legutóbbi műveletek eredményei ezen az eszközön. A napló legfeljebb 500 bejegyzést tárol. Hitelesítő adatokat, tárolócímeket, fájlútvonalakat és fájltartalmakat nem tartalmaz."</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Újracsatlakozás"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"Csatlakoztasd újra a GitSync.md által már tárolt munkapéldányokat. Egy bejegyzés eltávolítása megtartja a fájlokat; a kezelt klón törlése és a Git-követés eltávolítása külön művelet."</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"A helyreállítás figyelmet igényel. A felismert munkapéldányok megmaradnak."</string>
     <string name="ui_refresh_0e916101" formatted="false">"Frissítés"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Újraalapozás állapotának frissítése"</string>
     <string name="ui_reload_1_s_873e324f">"Újratöltöd a(z) %1$s fájlt?"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Eltávolítod a mentett hitelesítő adatokat?"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"Bejelentkezés eltávolítása"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Eltávolítod a megőrzött eredetit?"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"Eltávolítod ezt a tárolót, és törlöd a helyi fájljait erről az eszközről? A GitHub-tárolódat ez nem érinti."</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Követés eltávolítása"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"Eltávolítva"</string>
     <string name="ui_rename_1_s_9b09e088">"%1$s átnevezése"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Újraalkalmazott helyi commit"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Újraalkalmazza a helyi commitokat a beállított upstreamen. A helyi commitok azonosítói változhatnak. A meglévő összevonási szerkezet megmarad. Semmit sem pushol."</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"Repo állapota"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Tároló elérési útja"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Az ehhez a fiókhoz rendelt tárolókhoz újra be kell jelentkezned, vagy másik fiókot kell választanod a Tárolókapcsolat alatt. Helyi fájljaid és commitjaid megmaradnak."</string>
     <string name="ui_repository_13d6ff07" formatted="false">"Tároló"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"Tárolókapcsolat"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"A tárolóművelet sikertelen"</string>
     <string name="ui_repository_path_037711af" formatted="false">"Tároló elérési útja"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"Tároló állapota"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"Tároló URL"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Feloldás és előkészítés"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"– Konfliktus megoldása"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"Megoldva"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Feloldott tartalom"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"Feloldott tartalom"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"MEGOLDVA"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Feloldás: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Visszaállítás különálló tárolóként"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Megőrzött eredeti: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"Ismételje meg"</string>
     <string name="ui_retry_e464c660" formatted="false">"Ismételje meg"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"Vissza a tárolókhoz"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  Összes változás visszavonása"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  Visszavonás"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"Változások visszavonása"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Commit visszavonása"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Cél ellenőrzése"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"Visszaállított mappa áttekintése"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"Ellenőrizd a tárolóidhoz engedélyezett külön LFS-szervereket. A jóváhagyás visszavonása leállítja az adott irányú jövőbeli átviteleket; a folyamatban lévő műveletek befejeződhetnek."</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"Ellenőrzött cél"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"Visszavonás"</string>
     <string name="ui_save_1509f561" formatted="false">"Mentés"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Szerző mentése"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"Alkalmazásmappák keresése"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"Tárolók keresése…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">": Repozitorium kiválasztása"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"Válaszd ki az egyesítendő forráságat:"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Kiválasztott mappa"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"Külön felhasználónév és token"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"Beállítások"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH-kiszolgálók megbízhatósága"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"Minden változás előkészítése"</string>
     <string name="ui_stage_de838855" formatted="false">"Előkészítés"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"Kiindulópont"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"tároló üzenet (voltvajonos) …"</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"Stratégia"</string>
     <string name="ui_switch_39921a74" formatted="false">"Váltás"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"Váltás ágra"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"Címkék"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Az aktív célhely megmarad. A GitSync.md ellenőrzi, hogy a megőrzött eredetiben nincsenek későbbi módosítások, mielőtt végleg eltávolítja annak fájljait és Git-előzményeit."</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"A titkosított kapcsolat csak a tároló eredeti címéhez használható újra. Másik címhez kifejezetten módosítsd a hitelesítést."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"A mappa közvetlenül áthelyezhető ezen a tárolóköteten."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"A korábbi GitHub-fiók nincs csatlakoztatva. Válassz egy csatlakoztatott fiókot vagy másik hitelesítési módot."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Az újraalkalmazott helyi commit törli ezt a fájlt."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Az áttekintés adatai megváltoztak. Mégse, majd frissítsd a kiszolgáló zárolásait."</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"A keresés elérte a mélység- vagy mappakorlátot. Néhány mappát nem vizsgált át."</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"Bejövő verzió: %1$s bájt"</string>
     <string name="ui_theirs_691ef727" formatted="false">"Övék"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"Még feloldatlan ütközések: %1$s."</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"Ez nem ismételhető."</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"Ez módosítja a .gitattributes fájlt. A fájlok és az index változatlanok maradnak, amíg a módosításokat nem adod az indexhez."</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"Ez tárolókötetek között történik. A GitSync.md ellenőrzi a másolt tartalmat, és az eredetit az Áthelyezési helyreállítások között tartja, amíg el nem távolítod."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Ez az előzménybejegyzés nem érhető el."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Ez eltávolítja egy másik kapcsolat zárolását. Folytatás előtt egyeztess a tulajdonosával."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Ez a tároló nyilvános hozzáférést használ, amíg újra nem választasz hitelesítést. A bejelentkezett GitHub-fiókodat nem használja hozzá. A fetch és push címek változatlanok maradnak."</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"Ez elvet minden előrehaladást, és visszaállítja a tárolót az egyesítés előtti állapotra."</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"Ez megtartja a fájl saját verzióját."</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"Ez a fájl bejövő verzióját használja."</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"Ez a kézzel szerkesztett tartalmadat használja."</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">"token vagy jelszó"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"Kijelölt fájlok követése LFS-sel"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"Követett objektumok"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"Követés: %1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"Követés áttekintése"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"A megbízható szerverujjlenyomatok ezen az eszközön tárolódnak. Egy szerver elfelejtésekor a következő csatlakozásnál ellenőrzés szükséges. A tárolók privát kulcsai megmaradnak."</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"A fájl nem nyitható meg"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">": használják azokat"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Felhasználónév"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"Felhasználónév + token"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"Használt stratégia: %1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"Ellenőrizd ezt a címet a tároló tulajdonosával. A jóváhagyás ezen az eszközön csak erre a tárolóra, Git-távoli tárolóra, LFS-végpontra és átviteli irányra vonatkozik."</string>
     <string name="ui_version_dd167905" formatted="false">"Verzió"</string>
     <string name="ui_warning_e981ddae" formatted="false">"figyelmeztetés"</string>
@@ -1142,9 +1503,139 @@
     <string name="upstream_remote" formatted="false">"Távoli tároló"</string>
     <string name="upstream_title" formatted="false">"Követett ág"</string>
     <string name="upstream_unavailable" formatted="false">"Válassz egy beállított távoli tárolóval rendelkező helyi ágat, és előbb fejezd be az aktív Git-műveleteket."</string>
+    <string name="vault_copy_url" formatted="false">"Tároló URL-jének másolása"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"Alkalmazás külső tárhelye"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"Alkalmazástárhely"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Git-metaadatok biztonsági mentése"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"A biztonsági mentés archívuma nem osztható meg"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Git-metaadatok biztonsági mentésének megosztása"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"A biztonsági mentés archívuma nem érhető el"</string>
+    <string name="vault_l10n_branch_value">"Ág: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"Az elkészült klón megváltozott. Csatlakoztasd újra a mappáját a Helyi tárolók részből."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"Nem sikerült befejezni a klónozott tároló mentését. Próbáld újra hozzáadni."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"A klón előzményei megváltoztak"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"A klón előzményei eltávolításra kerültek"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"Ez a klón már nem vár helyreállításra"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"A klón helyreállítása megszakadt"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"A klón helyreállítása megváltozott"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"A klón helyreállítása megváltozott. Nézd át újra."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"A klón helyreállítását elvetették"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"A klón helyreállítása már nem érhető el. Csatlakoztasd újra a mappáját a Helyi tárolók részből."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"Ezt a klónt eltávolították vagy újra regisztrálták. Nézd át a jelenlegi bejegyzését."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"Nem sikerült menteni az alapértelmezett klónozási helyet"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"A tároló törlésének áttekintése megváltozott. Törlés előtt nézd át újra a klónt."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"Eszköztárhely"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"Engedélyezd a megosztott tárhely elérését, majd válaszd ki újra a mappát. Az alkalmazástárhely e nélkül is elérhető marad."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"A mappa kiválasztása előtt engedélyezd a megosztott tárhely elérését"</string>
+    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"A mappa-hozzáférés megszűnt. Folytatás előtt válaszd ki újra ezt a mappát."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"Nem sikerült menteni a mappa-hozzáférést"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"Válassz mappát ezen az eszközön vagy egy csatlakoztatott tárolókötetén. Ez a Git-motor nem tud közvetlenül felhőalapú dokumentumszolgáltatót használni."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"Válassz olyan mappát, amelynek útvonalában nincs szimbolikus hivatkozás"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"Ez a mappa nem azonosít eszköztároló-kötetet"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"Ez a mappa nem támogatja az írható Git-fájlokat. Ellenőrizd a hozzáférést és a szabad tárhelyet."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Válassz munkamappát a Git-metaadatokon kívül"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"A kiválasztott mappa kívül esik a tárolókötetén"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"Ez a mappa már másként van regisztrálva. A meglévő beállítások megmaradtak."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"Ez a mappa már másként van regisztrálva. Nézd át a Helyi tárolók részben."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"Válaszd ki újra a tároló mappáját a hozzáférés visszaállításához"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"Nem sikerült megőrizni a mappa olvasási és írási hozzáférését"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"A kiválasztott mappa nem érhető el"</string>
+    <string name="vault_l10n_github_user" formatted="false">"GitHub-felhasználó"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"A tárolóelőzmények megváltoztak. Az elkészült klón megmaradt; nézd át a Helyi tárolók részben."</string>
+    <string name="vault_l10n_last_sync_value">"Utolsó szinkronizálás: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"Helyi távoli tároló"</string>
+    <string name="vault_l10n_local_remote_named">"Helyi távoli tároló: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"A cél már létezik. A meglévő fájlok megmaradtak."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"Ez nem az alkalmazás által kezelt klónozási hely"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"A tároló hozzáadva, de az Obsidian-kapcsolatát nem sikerült előkészíteni. Próbáld újra a Beállítások → Obsidian-kapcsolatok menüben."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"Néhány Obsidian-kapcsolatot át kell nézni. Próbáld újra a Beállítások → Obsidian-kapcsolatok menüben."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"A közzétételi mappa elérése megszűnt. Válaszd ki újra az eredeti mappát."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"A közzétételi fiók megváltozott"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"Válaszd ki újra az eredeti eszközmappát a közzétételi hozzáférés visszaállításához"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"Válaszd ki újra az eredeti közzétételi mappát a hozzáférés visszaállításához"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"Ez a mappa eltér az átnézett közzétételtől. A meglévő fájlok megmaradtak."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"Ez az engedély egy másik mappához tartozik. Válaszd az eredeti közzétételi mappát."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"A közzététel figyelmet igényel. A mentett fájlok megmaradtak."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"Válaszd a közzétételi mappát szimbolikus hivatkozások nélkül"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"Válaszd az eredeti közzétételi mappát szimbolikus hivatkozások nélkül"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"Az eredeti közzétételi mappa nem érhető el"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"A közzététel regisztrációja egy másik célhoz tartozik"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"Ez a mappa átfedésben van egy regisztrált tárolóval. Közzététel előtt nézd át a meglévő bejegyzését."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"A mentett közzétételi állapot nem érhető el"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"Csatlakoztasd újra a kiválasztott GitHub-fiókot"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"Válassz egy csatlakoztatott GitHub-fiókot"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"A közzétételi tároló beállításai megváltoztak"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"A tárolóbeállításokat közzététel előtt javítani kell"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"Jelentkezz be az ehhez a közzétételhez kiválasztott GitHub-fiókba"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"Leállítva. A mentett állapot átnézhető; az utolsó hálózati eredmény bizonytalan lehet."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"Közzététel előtt ellenőrizd a kiválasztott GitHub-fiókot"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"A tároló helyreállításához mappa-hozzáférés kell. Válaszd ki újra az érintett mappát a Helyi tárolók részben."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"Ez a tároló már hozzá van adva"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"Válaszd ki újra ennek a tárolónak a mappáját a mentett hozzáférés visszaállításához."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"A tároló neve kötelező"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"Nem sikerült menteni a tárolóbeállításokat; ellenőrizd a szabad tárhelyet"</string>
+    <string name="vault_l10n_sample_open_failed">"Nem sikerült megnyitni a mintatárolót: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"Mintatároló"</string>
+    <string name="vault_l10n_settings_load_failed">"A beállítások betöltése sikertelen: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"Nem sikerült menteni a beállításokat"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"A megosztott tárhely elérése megszűnt. Engedélyezd a tároló megnyitásához."</string>
+    <string name="vault_l10n_size_bytes">"%1$s B"</string>
+    <string name="vault_l10n_size_kb">"%1$s KB"</string>
+    <string name="vault_l10n_size_mb">"%1$s MB"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"ütközés"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"előkészítve"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"előkészített törlés"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"előkészítve + nem előkészítve"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"nem követett"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Először válassz egy mappát"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"Ez a tárolási hely megváltozott. Válaszd ki újra a mappát."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"A tárhely figyelmet igényel"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"A követés megszüntetésének áttekintése megváltozott. Nézd át újra a tárolót és a biztonsági mentés választását."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"Ez a tárolókötet nem érhető el"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Ez a tárolókötet nem érhető el. Csatlakoztasd újra, és válaszd ki újra a mappát."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"Ez a mappa nem nyitható meg a Fájlokban."</string>
+    <string name="vault_repository_fallback" formatted="false">"Tároló"</string>
+    <string name="vault_url_copied" formatted="false">"Másolva!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"%1$d napja"</item>
+        <item quantity="other">"%1$d napja"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"%1$d órája"</item>
+        <item quantity="other">"%1$d órája"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"%1$d perce"</item>
+        <item quantity="other">"%1$d perce"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"%1$d hónapja"</item>
+        <item quantity="other">"%1$d hónapja"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"%1$d hete"</item>
+        <item quantity="other">"%1$d hete"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"%1$d éve"</item>
+        <item quantity="other">"%1$d éve"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"Az egyesítésben %1$d megoldatlan ütközés van.\n\nOldd meg az egyesítés befejezése előtt."</item>
+        <item quantity="other">"Az egyesítésben %1$d megoldatlan ütközés van.\n\nOldd meg őket az egyesítés befejezése előtt."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s sor"</item>
+        <item quantity="other">"+%1$s -%2$s sor"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d fájl"</item>
         <item quantity="other">"%1$d fájl"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"A merge leállt: %1$s (%2$d ütközés)"</item>
+        <item quantity="other">"A merge leállt: %1$s (%2$d ütközés)"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"%1$d objektum letöltve."</item>
@@ -1170,6 +1661,10 @@
         <item quantity="one">"%1$d fájl"</item>
         <item quantity="other">"%1$d fájl"</item>
     </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s fájl a Git-metaadatokkal együtt · %2$s"</item>
+        <item quantity="other">"%1$s fájl a Git-metaadatokkal együtt · %2$s"</item>
+    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d további blokkolt útvonal nem jelenik meg."</item>
         <item quantity="other">"%1$d további blokkolt útvonal nem jelenik meg."</item>
@@ -1181,6 +1676,10 @@
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"%1$d upstream commit"</item>
         <item quantity="other">"%1$d upstream commit"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d tároló hozzáadva"</item>
+        <item quantity="other">"%1$d tároló hozzáadva"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d tároló"</item>

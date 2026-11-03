@@ -61,7 +61,11 @@ internal object ConflictIndex {
         return repository.newObjectReader().use { reader ->
             groups.map { entries ->
                 var unsupported = false
-                fun side(stage: Int) = entries.singleOrNull { it.stage == stage }?.let { ConflictSide(it.pathString, it.objectId.name, it.rawMode) }
+                fun side(stage: Int) = entries.singleOrNull { it.stage == stage }?.let {
+                    val bytes = if (it.fileMode.objectType == org.eclipse.jgit.lib.Constants.OBJ_BLOB)
+                        reader.open(it.objectId, org.eclipse.jgit.lib.Constants.OBJ_BLOB).size else null
+                    ConflictSide(it.pathString, it.objectId.name, it.rawMode, bytes)
+                }
                 fun content(stage: Int): String? {
                     val entry = entries.singleOrNull { it.stage == stage } ?: return null
                     if (entry.fileMode != org.eclipse.jgit.lib.FileMode.REGULAR_FILE && entry.fileMode != org.eclipse.jgit.lib.FileMode.EXECUTABLE_FILE) {

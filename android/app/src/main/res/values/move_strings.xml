@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Repository move, restore, removal and import feedback. Paths and names are formatter arguments. -->
+<resources>
+    <string name="move_title_restore">Restore recovery copy</string>
+    <string name="move_intro">Move this entire working copy, including Git history, staged changes and unsaved files on disk. Its account and author settings move with it.</string>
+    <string name="move_intro_restore">Restore the retained original as a separate repository. The current working copy stays in place.</string>
+    <string name="move_progress_moving">Moving and saving repository settings…</string>
+    <string name="move_progress_reviewing">Reviewing files and Git metadata…</string>
+    <string name="move_action">Move working copy</string>
+    <string name="move_confirm_title">Move this working copy?</string>
+    <string name="move_confirm_title_restore">Restore this recovery copy?</string>
+    <string name="move_confirm_action">Move</string>
+    <string name="move_confirm_action_restore">Restore</string>
+    <string name="move_confirm_retained">The original will be retained as a recovery copy.</string>
+    <string name="move_confirm_guidance">Choose an unused destination and keep other apps from changing these folders while the move finishes.</string>
+    <string name="move_error_stale_review">Repository move review changed. Review the destination again before moving it.</string>
+    <string name="move_error_finish_pending">Finish the pending move first</string>
+    <string name="move_error_recovery_added">The recovery copy is already added. Move it from its repository entry.</string>
+    <string name="move_recovered_name">%1$s (recovered)</string>
+    <string name="move_error_finish_pending_repository">Finish the pending move for this repository first</string>
+    <string name="move_error_destination_registered">Another repository is already registered at this destination</string>
+    <string name="move_done_retained">Repository moved. Its original is retained in Move recoveries.</string>
+    <string name="move_done">Repository moved</string>
+    <string name="move_recovery_done">Move recovery completed</string>
+    <string name="move_cancelled">Move cancelled. The original working copy was kept.</string>
+    <string name="move_recovery_removed">Recovery copy removed</string>
+    <string name="move_error_settings_review">Move settings need review; all working copies were kept</string>
+    <string name="move_error_settings_changed">Repository settings changed. Review move recovery before continuing.</string>
+    <string name="move_error_restored_registered">The restored location is now registered differently; no settings were overwritten</string>
+    <string name="move_error_destination_other">The destination is registered to another repository</string>
+    <string name="move_recovery_attention">Move recovery needs attention: %1$s</string>
+    <string name="repository_no_longer_added">Repository is no longer added</string>
+    <string name="repository_add_none_new">Choose at least one repository that has not been added</string>
+    <string name="repository_clone_deleted">Local clone deleted</string>
+    <string name="repository_removed_files_kept">Repository removed from the app. Local files were kept.</string>
+    <string name="tracking_removed_backup">Git tracking removed. Verified backup: %1$s</string>
+    <string name="tracking_removed_files_kept">Git tracking removed. Working files were kept.</string>
+    <string name="discovery_scanned">Scanned %1$s. Choose the working copies to add.</string>
+    <string name="repository_imported_files_kept">Imported repository files are kept on this device</string>
+    <string name="repository_history_unavailable">Repository history is unavailable</string>
+    <string name="repository_restore_backup_first">Restore the Git metadata backup before reconnecting this folder</string>
+    <plurals name="move_plan_summary">
+        <item quantity="one">%1$s file including Git metadata · %2$s</item>
+        <item quantity="other">%1$s files including Git metadata · %2$s</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">+%1$s -%2$s line</item>
+        <item quantity="other">+%1$s -%2$s lines</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">%1$d repository added</item>
+        <item quantity="other">%1$d repositories added</item>
+    </plurals>
+</resources>

@@ -2,6 +2,7 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Credentials
 import com.bontecou.syncmd.security.RepositoryCredentialStore
 import com.bontecou.syncmd.services.git.GitRemote
@@ -9,6 +10,7 @@ import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.services.github.GitHubAuthManager
 import com.bontecou.syncmd.services.repositories.RepositoryConnection
 import com.bontecou.syncmd.services.repositories.RepositoryConnectionPlan
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +26,14 @@ import javax.inject.Inject
 class ConnectionViewModel @Inject constructor(private val credentials: RepositoryCredentialStore,
     private val auth: GitHubAuthManager) : ViewModel() {
     data class State(val busy: Boolean = true, val plan: RepositoryConnectionPlan? = null,
-        val summary: RepositoryCredentialStore.Summary? = null, val warning: String? = null,
-        val error: String? = null, val credentialVersion: String? = null, val saved: Boolean = false, val githubAvailable: Boolean = false,
+        val summary: RepositoryCredentialStore.Summary? = null, val warning: UiText? = null,
+        val error: UiText? = null, val credentialVersion: String? = null, val saved: Boolean = false, val githubAvailable: Boolean = false,
         val migration: com.bontecou.syncmd.services.repositories.RemoteCredentialMigrationPlan? = null,
         val savedEndpoints: List<RepositoryCredentialStore.Summary> = emptyList(),
         // Equality-based UI collectors must distinguish otherwise-identical reloads.
         val requestId: Long = 0)
+    /** A refusal raised by this model; its copy resolves in the screen's language. */
+    private class Refusal(val text: Int) : IllegalStateException()
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
     val accounts = auth.accounts
@@ -53,14 +57,14 @@ class ConnectionViewModel @Inject constructor(private val credentials: Repositor
                         val plan = connection.inspect(path)
                         val summary = runCatching { credentials.summary(plan.path) }
                         State(busy = false, plan = plan, summary = summary.getOrNull(), credentialVersion = credentials.recordVersion(plan.path),
-                            warning = if (summary.isFailure) "Saved credentials cannot be opened. Choose public access or enter new credentials." else null,
+                            warning = if (summary.isFailure) UiText.res(R.string.account_saved_credentials_unreadable) else null,
                             githubAvailable = auth.isLoggedIn, migration = migration.inspect(plan.path),
                             savedEndpoints = runCatching { credentials.summaries(plan.path) }.getOrDefault(emptyList()), requestId = request)
                     }
                 }
                 if (generation == request) _state.value = loaded
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { if (generation == request) _state.value = State(busy = false, error = e.message ?: "Could not open the connection", requestId = request) }
+            } catch (e: Exception) { if (generation == request) _state.value = State(busy = false, error = UiText.of(e, R.string.account_open_connection_failed), requestId = request) }
         }
     }
     fun save(review: State, url: String, choice: RepositoryCredentialStore.Choice, username: String, secret: String, accountId: String? = auth.activeAccountId(), ssh: Credentials.Ssh? = null) {
@@ -69,20 +73,20 @@ class ConnectionViewModel @Inject constructor(private val credentials: Repositor
         val plan = current.plan ?: return
         if (current.busy || current.saved) return
         val endpoint = try { GitRemote.parseInput(url) } catch (e: Exception) {
-            _state.value = current.copy(error = "Enter a valid repository URL, with credentials in the separate fields."); return
+            _state.value = current.copy(error = UiText.res(R.string.account_enter_valid_url)); return
         }
         if (endpoint.usesNoNetworkCredentials && choice !in listOf(RepositoryCredentialStore.Choice.PUBLIC, RepositoryCredentialStore.Choice.PUBLIC_KEEP)) {
-            _state.value = current.copy(error = "Choose access without network credentials for this address"); return
+            _state.value = current.copy(error = UiText.res(R.string.account_choose_public_access)); return
         }
         if (endpoint.isSsh && choice !in listOf(RepositoryCredentialStore.Choice.KEEP, RepositoryCredentialStore.Choice.PUBLIC_KEEP, RepositoryCredentialStore.Choice.SSH) ||
             !endpoint.isSsh && choice == RepositoryCredentialStore.Choice.SSH) {
-            _state.value = current.copy(error = "Choose an SSH private key for an SSH address, or HTTPS authentication for an HTTPS address."); return
+            _state.value = current.copy(error = UiText.res(R.string.account_choose_ssh_or_https)); return
         }
         if (choice == RepositoryCredentialStore.Choice.GITHUB && (accountId == null || auth.accountSummary(accountId)?.connected != true)) {
-            _state.value = current.copy(error = "Sign in to GitHub before selecting account access"); return
+            _state.value = current.copy(error = UiText.res(R.string.account_sign_in_before_account_access)); return
         }
         if (choice == RepositoryCredentialStore.Choice.REPLACE && (username.isBlank() || secret.isEmpty())) {
-            _state.value = current.copy(error = "Enter a username and token or password"); return
+            _state.value = current.copy(error = UiText.res(R.string.account_enter_username_secret)); return
         }
         perform(current) {
             connection.save(plan, endpoint.url) { commit ->
@@ -110,8 +114,8 @@ class ConnectionViewModel @Inject constructor(private val credentials: Repositor
         perform(current) {
             RepositoryOperationCoordinator.withRepository(plan.path) {
                 val fresh = connection.inspect(plan.path)
-                check(fresh.revision == plan.revision && fresh.metadataIdentity == plan.metadataIdentity) { "Repository configuration changed. Reload before removing credentials." }
-                credentials.updateConnection(plan.path, plan.fetchUrl ?: error("No remote is configured"), RepositoryCredentialStore.Choice.PUBLIC, null, current.credentialVersion) {}
+                if (fresh.revision != plan.revision || fresh.metadataIdentity != plan.metadataIdentity) throw Refusal(R.string.account_configuration_changed)
+                credentials.updateConnection(plan.path, plan.fetchUrl ?: throw Refusal(R.string.account_no_remote), RepositoryCredentialStore.Choice.PUBLIC, null, current.credentialVersion) {}
             }
         }
     }
@@ -147,7 +151,7 @@ class ConnectionViewModel @Inject constructor(private val credentials: Repositor
                 if (request == generation) _state.value = current.copy(busy = false, saved = true)
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
-                if (request == generation) _state.value = current.copy(busy = false, error = e.message ?: "Could not save the connection")
+                if (request == generation) _state.value = current.copy(busy = false, error = (e as? Refusal)?.let { UiText.res(it.text) } ?: UiText.of(e, R.string.account_save_connection_failed))
             }
         }
     }

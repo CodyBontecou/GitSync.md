@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -130,12 +131,18 @@ fun ConflictItem(
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
                     GitWorkSideDot(yours = true)
-                    Text(stringResource(R.string.ui_ours_1_s_bytes_e7da423a, conflict.currentContent.length.toString()),
+                    val bytes = remember(conflict) { conflict.currentByteCount }
+                    val label = stringResource(R.string.tide_merge_yours)
+                    Text(if (bytes != null) stringResource(R.string.ui_ours_1_s_bytes_e7da423a, bytes.toString())
+                        else if (conflict.hasCurrentVersion) label else "$label · ${stringResource(R.string.tide_merge_side_deleted)}",
                         style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1)
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
                     GitWorkSideDot(yours = false)
-                    Text(stringResource(R.string.ui_theirs_1_s_bytes_70028ef3, conflict.incomingContent.length.toString()),
+                    val bytes = remember(conflict) { conflict.incomingByteCount }
+                    val label = stringResource(R.string.tide_merge_theirs)
+                    Text(if (bytes != null) stringResource(R.string.ui_theirs_1_s_bytes_70028ef3, bytes.toString())
+                        else if (conflict.hasIncomingVersion) label else "$label · ${stringResource(R.string.tide_merge_side_deleted)}",
                         style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1)
                 }
             }

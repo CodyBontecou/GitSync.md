@@ -2,10 +2,12 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Conflict
 import com.bontecou.syncmd.data.models.ConflictResolutionStrategy
 import com.bontecou.syncmd.domain.repository.ConflictRepository
 import com.bontecou.syncmd.services.git.*
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RebaseViewModel @Inject constructor(private val rebase: RepositoryRebase, private val conflicts: ConflictRepository) : ViewModel() {
     data class State(val path: String = "", val busy: Boolean = false, val mutating: Boolean = false, val plan: RebasePlan? = null,
-        val session: RebaseSession? = null, val selected: Conflict? = null, val draft: String = "", val error: String? = null, val message: String? = null,
+        val session: RebaseSession? = null, val selected: Conflict? = null, val draft: String = "", val error: UiText? = null, val message: String? = null,
         val resolutionPath: String? = null, val status: String? = null, val problem: RebaseProblem? = null)
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
@@ -30,7 +32,7 @@ class RebaseViewModel @Inject constructor(private val rebase: RepositoryRebase, 
     fun refresh() { if (_state.value.selected == null) run(false) { it.copy(session = rebase.session(it.path), plan = null) } }
     fun review() = run(false) { it.copy(plan = rebase.plan(it.path), session = null, message = null, status = null) }
     fun begin() = run(true) { before ->
-        val outcome = rebase.begin(before.plan ?: error("Review the rebase first"))
+        val outcome = rebase.begin(before.plan ?: gitOpsError(R.string.gitops_rebase_review_first))
         before.copy(plan = null, session = outcome.session, message = outcome.notice, status = outcome.status)
     }
     fun continueRebase() = advance { rebase.continueRebase(it) }
@@ -38,7 +40,7 @@ class RebaseViewModel @Inject constructor(private val rebase: RepositoryRebase, 
     fun skip() = advance { rebase.skip(it) }
     fun retryCheckout() = advance { rebase.retryCheckout(it) }
     private fun advance(action: suspend (RebaseSession) -> RebaseOutcome) = run(true) { before ->
-        val outcome = action(before.session ?: error("Refresh the rebase session"))
+        val outcome = action(before.session ?: gitOpsError(R.string.gitops_rebase_refresh_session))
         before.copy(plan = null, session = outcome.session, selected = null, draft = "", resolutionPath = null, message = outcome.notice, status = outcome.status)
     }
     fun edit(conflict: Conflict) {
@@ -55,12 +57,12 @@ class RebaseViewModel @Inject constructor(private val rebase: RepositoryRebase, 
     fun resolve(path: String, strategy: ConflictResolutionStrategy) = run(true) { before ->
         withContext(NonCancellable) {
             RepositoryOperationCoordinator.withRepository(before.path) {
-                val expected = before.session ?: error("Refresh the rebase session")
-                check(rebase.session(before.path)?.revision == expected.revision) { "The conflict or working files changed. Your draft was kept; refresh before resolving." }
+                val expected = before.session ?: gitOpsError(R.string.gitops_rebase_refresh_session)
+                gitOpsCheck(rebase.session(before.path)?.revision == expected.revision, R.string.gitops_rebase_conflict_changed)
                 val resolution = if (strategy == ConflictResolutionStrategy.MANUAL) {
-                    val selected = before.selected ?: error("Open the conflict editor before resolving")
-                    check(selected.filePath == path) { "Choose the reviewed conflict" }
-                    conflicts.resolveConflictWithPath(before.path,path,before.resolutionPath ?: error("Choose the reviewed filename"),before.draft)
+                    val selected = before.selected ?: gitOpsError(R.string.gitops_rebase_open_editor)
+                    gitOpsCheck(selected.filePath == path, R.string.gitops_rebase_choose_conflict)
+                    conflicts.resolveConflictWithPath(before.path,path,before.resolutionPath ?: gitOpsError(R.string.gitops_rebase_choose_filename),before.draft)
                 } else conflicts.resolveConflict(before.path,path,strategy,null)
                 before.copy(session = rebase.session(before.path), selected = null, draft = "", resolutionPath = null, error = null, status = null, message = resolution.getOrThrow().message.takeIf { it.isNotBlank() })
             }
@@ -77,10 +79,14 @@ class RebaseViewModel @Inject constructor(private val rebase: RepositoryRebase, 
                 if (request == generation) _state.value = after.copy(busy = false, mutating = false, error = null, problem = null)
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
-                val safe = if (e is IllegalArgumentException || e is IllegalStateException || e is com.bontecou.syncmd.data.models.DirtyRepoException) e.message
-                    else "Git could not complete this action. Check the connection if fetching, then refresh the rebase state before retrying."
+                val safe = when (e) {
+                    is GitOpsFailure -> e.text
+                    is IllegalArgumentException, is IllegalStateException, is com.bontecou.syncmd.data.models.DirtyRepoException ->
+                        e.message?.let { UiText.Raw(it) } ?: UiText.res(R.string.gitops_rebase_needs_review)
+                    else -> UiText.res(R.string.gitops_rebase_failed)
+                }
                 val current = if (mutation && before.selected == null) withContext(Dispatchers.IO) { runCatching { rebase.session(before.path) }.getOrNull() } else before.session
-                if (request == generation) _state.value = before.copy(session = current, error = safe ?: "Rebase needs review", problem = (e as? RebaseFailure)?.problem, message = if(mutation)null else before.message, status = if(mutation)null else before.status)
+                if (request == generation) _state.value = before.copy(session = current, error = safe, problem = (e as? RebaseFailure)?.problem, message = if(mutation)null else before.message, status = if(mutation)null else before.status)
             } finally { if (request == generation) _state.value = _state.value.copy(busy = false, mutating = false) }
         }
     }

@@ -3,7 +3,9 @@ package com.bontecou.syncmd.services.github
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.security.*
+import com.bontecou.syncmd.ui.util.UiText
 import java.security.MessageDigest
 import java.util.UUID
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -56,9 +58,13 @@ class GitHubAuthManager @Inject constructor(
         context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
 
     private val secure = GitHubSessionStore(context)
-    private val _sessionError = MutableStateFlow<String?>(null)
-    val sessionError: StateFlow<String?> = _sessionError.asStateFlow()
+    /** Thrown messages reach repository screens through their error text. */
+    private fun text(id: Int): String = context.getString(id).orEmpty()
+    private val _sessionError = MutableStateFlow<UiText?>(null)
+    /** Resolved at display time so the message follows the app language. */
+    val sessionError: StateFlow<UiText?> = _sessionError.asStateFlow()
     private val _sessionRevision = MutableStateFlow(0L)
+    private var signOutReadFailed = false
     val sessionRevision: StateFlow<Long> = _sessionRevision.asStateFlow()
     private var accountState: GitHubSessionStore.Session? = null
     private val _token = MutableStateFlow(loadSecureToken())
@@ -73,7 +79,25 @@ class GitHubAuthManager @Inject constructor(
     }
     fun reviewSignOut(expectedRevision: Long): SignOutReview? = synchronized(sessionLock) {
         if (_sessionRevision.value != expectedRevision) return@synchronized null
+        try {
+            // A refreshed identity must be displayed before another click can review it.
+            if (reconcilePersistedSession()) return@synchronized null
+        } catch (e: Exception) {
+            signOutReadFailed = true
+            _sessionError.value = UiText.res(R.string.account_storage_attention)
+            return@synchronized null
+        }
+        if (!isLoggedIn) return@synchronized null
         SignOutReview(this, expectedRevision, accountState, cached(KEY_LOGIN))
+    }
+
+    private class ChangedSignOutSession : IllegalStateException()
+    private fun reconcilePersistedSession(): Boolean {
+        val current = secure.read()?.normalized()
+        if (signOutReadFailed) { _sessionError.value = null; signOutReadFailed = false }
+        if (current == accountState) return false
+        publishAccountState(current, true, resetCache = true)
+        return true
     }
 
     /** Check consent again inside the store update, before its persistence callback can write. */
@@ -81,15 +105,21 @@ class GitHubAuthManager @Inject constructor(
         if (!review.belongsTo(this, _sessionRevision.value, accountState)) return@synchronized false
         try {
             val next = secure.update { current ->
-                check(review.matchesStored(current)) { "GitHub session changed. Review sign-out again." }
+                if (!review.matchesStored(current)) throw ChangedSignOutSession()
                 val state = current?.normalized() ?: GitHubSessionStore.Session()
                 val id = state.activeAccountId
                 state.copy(accounts = state.accounts.map { if (it.id == id) it.copy(token = null) else it },
                     token = null, activeAccountId = null, pendingState = null, createdAt = 0)
             }
             publishAccountState(next, true); true
+        } catch (e: ChangedSignOutSession) {
+            try { reconcilePersistedSession() } catch (_: Exception) {
+                signOutReadFailed = true
+                _sessionError.value = UiText.res(R.string.account_storage_attention)
+            }
+            false
         } catch (e: Exception) {
-            _sessionError.value = "Could not securely sign out. Retry when storage is available."
+            _sessionError.value = UiText.res(R.string.account_sign_out_failed)
             false
         }
     }
@@ -107,9 +137,9 @@ class GitHubAuthManager @Inject constructor(
         accountSummaries().firstOrNull { it.id == canonical }
     }
     fun tokenForAccount(id: String): String = synchronized(sessionLock) {
-        val state = accountState ?: error("Sign in to the repository's GitHub account")
+        val state = accountState ?: error(text(R.string.account_sign_in_repository_account))
         state.accounts.firstOrNull { it.id == state.canonicalAccount(id) }?.token
-            ?: error("The assigned GitHub account is disconnected. Select an account for this repository.")
+            ?: error(text(R.string.account_assigned_disconnected))
     }
     fun defaultToken(): String? = synchronized(sessionLock) { defaultAccountId()?.let(::tokenForAccount) }
     fun switchAccount(id: String): Boolean = synchronized(sessionLock) {
@@ -121,7 +151,7 @@ class GitHubAuthManager @Inject constructor(
                 state.copy(token = account.token, activeAccountId = account.id, pendingState = null, createdAt = 0)
             }
             publishAccountState(next, true); true
-        } catch (e: Exception) { _sessionError.value = "Could not select the GitHub account. Retry when storage is available."; false }
+        } catch (e: Exception) { _sessionError.value = UiText.res(R.string.account_select_failed); false }
     }
     fun removeAccount(id: String): Boolean = synchronized(sessionLock) {
         try {
@@ -135,12 +165,12 @@ class GitHubAuthManager @Inject constructor(
                     pendingState = null, createdAt = 0)
             }
             publishAccountState(next, next.token != getToken()); true
-        } catch (e: Exception) { _sessionError.value = "Could not remove GitHub sign-in. Retry when storage is available."; false }
+        } catch (e: Exception) { _sessionError.value = UiText.res(R.string.account_remove_failed); false }
     }
-    private fun publishAccountState(next: GitHubSessionStore.Session, changed: Boolean) {
+    private fun publishAccountState(next: GitHubSessionStore.Session?, changed: Boolean, resetCache: Boolean = false) {
         accountState = next
         _accounts.value = accountSummaries()
-        if (changed) publishToken(next.token)
+        if (changed) publishToken(next?.token, resetCache)
     }
     val token: StateFlow<String?> = _token.asStateFlow()
     val isLoggedIn: Boolean get() = !_token.value.isNullOrBlank()
@@ -153,7 +183,7 @@ class GitHubAuthManager @Inject constructor(
         return stored ?: when (key) { KEY_LOGIN -> profile?.login; KEY_NAME -> profile?.name; KEY_EMAIL -> profile?.email; KEY_AVATAR -> profile?.avatarUrl; else -> null }
     }
     fun repositoryCredentials(path: String, url: String, store: RepositoryCredentialStore): com.bontecou.syncmd.data.models.Credentials? =
-        store.resolve(path, url) { id -> id?.let(::tokenForAccount) ?: defaultToken() ?: error("Select a GitHub account for this repository") }
+        store.resolve(path, url) { id -> id?.let(::tokenForAccount) ?: defaultToken() ?: error(text(R.string.account_select_repository_account)) }
     fun authorForAccount(id: String?): Pair<String, String> {
         val profile = id?.let(::accountSummary)
         return (profile?.name?.takeIf { it.isNotBlank() } ?: profile?.login ?: "Gitsync.md User") to
@@ -180,7 +210,7 @@ class GitHubAuthManager @Inject constructor(
             if (session != null && session != existing) secure.write(session)
             accountState = session
             if (legacy != null && session?.token == null && session?.pendingState != null) {
-                _sessionError.value = "Complete GitHub sign-in to finish migrating previous credentials."
+                _sessionError.value = UiText.res(R.string.account_finish_migration)
                 return@synchronized null
             }
             if (legacy != null) {
@@ -197,7 +227,7 @@ class GitHubAuthManager @Inject constructor(
             _sessionError.value = null
             session?.token
         } catch (e: Exception) {
-            _sessionError.value = "Secure GitHub storage needs attention. Existing credentials were retained; retry sign-in."
+            _sessionError.value = UiText.res(R.string.account_storage_attention)
             null
         }
     }
@@ -243,7 +273,7 @@ class GitHubAuthManager @Inject constructor(
             secure.write(current.copy(pendingState = state, createdAt = now))
             _sessionError.value = null
             "$SERVER_URL/api/auth/login?state=$state"
-        } catch (e: Exception) { _sessionError.value = "Could not prepare secure GitHub sign-in. Retry when storage is available."; null }
+        } catch (e: Exception) { _sessionError.value = UiText.res(R.string.account_prepare_sign_in_failed); null }
     }
 
     fun acceptOAuthCallback(uri: Uri, now: Long = System.currentTimeMillis()): Boolean = synchronized(sessionLock) {
@@ -267,7 +297,7 @@ class GitHubAuthManager @Inject constructor(
             }.also { publishAccountState(it, true) }
             true
         } catch (e: Exception) {
-            _sessionError.value = "GitHub sign-in could not be verified. Start sign-in again."
+            _sessionError.value = UiText.res(R.string.account_sign_in_unverified)
             false
         }
     }
@@ -279,17 +309,17 @@ class GitHubAuthManager @Inject constructor(
             val next = secure.update(recoverUnreadable = true) { (it ?: GitHubSessionStore.Session()).withToken(token, user) }
             publishAccountState(next, true)
             true
-        } catch (e: Exception) { _sessionError.value = "Could not securely save GitHub sign-in. Retry when storage is available."; false }
+        } catch (e: Exception) { _sessionError.value = UiText.res(R.string.account_save_sign_in_failed); false }
     }
 
-    private fun publishToken(token: String?) {
-        val cleaned = if (_token.value != token) {
+    private fun publishToken(token: String?, resetCache: Boolean = false) {
+        val cleaned = if (_token.value != token || resetCache) {
             val result = prefs.edit().remove(KEY_TOKEN).remove(KEY_LOGIN).remove(KEY_NAME).remove(KEY_AVATAR).remove(KEY_EMAIL)
                 .remove(KEY_REPOS_JSON).remove(KEY_REPOS_CACHED_AT).putString(KEY_OWNER, token?.let(::owner)).commit()
             _cachedLogin.value = null; _cachedName.value = null; _cachedAvatarUrl.value = null; _cachedEmail.value = null
             result
         } else prefs.edit().remove(KEY_TOKEN).commit()
-        _sessionError.value = if (cleaned) null else "GitHub sign-in is encrypted, but old local preferences could not be cleaned up. Retry when storage is available."
+        _sessionError.value = if (cleaned) null else UiText.res(R.string.account_cleanup_failed)
         _token.value = token
         _cachedLogin.value = cached(KEY_LOGIN); _cachedName.value = cached(KEY_NAME)
         _cachedEmail.value = cached(KEY_EMAIL); _cachedAvatarUrl.value = cached(KEY_AVATAR)
@@ -387,6 +417,6 @@ class GitHubAuthManager @Inject constructor(
         if (id != null) removeAccount(id) else try {
             val next = secure.update { (it ?: GitHubSessionStore.Session()).copy(token = null, activeAccountId = null, pendingState = null, createdAt = 0) }
             publishAccountState(next, true); true
-        } catch (e: Exception) { _sessionError.value = "Could not securely sign out. Retry when storage is available."; false }
+        } catch (e: Exception) { _sessionError.value = UiText.res(R.string.account_sign_out_failed); false }
     }
 }

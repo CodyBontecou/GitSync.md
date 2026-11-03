@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -36,6 +38,7 @@ import com.bontecou.syncmd.data.models.FileDiff
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
 import com.bontecou.syncmd.ui.theme.Tide
 import com.bontecou.syncmd.ui.theme.TideType
+import java.text.NumberFormat
 
 /**
  * Displays a list of files with status badges and click handlers.
@@ -112,7 +115,9 @@ fun FileListItem(
                 val additions = fileDiff.hunks.sumOf { hunk -> hunk.lines.count { it.type.name == "ADDITION" } }
                 val deletions = fileDiff.hunks.sumOf { hunk -> hunk.lines.count { it.type.name == "DELETION" } }
                 Text(
-                    text = stringResource(R.string.ui_1_s_2_s_lines_59b29a56, (additions).toString(), (deletions).toString()),
+                    text = NumberFormat.getIntegerInstance(LocalConfiguration.current.locales[0]).let { numbers ->
+                        pluralStringResource(R.plurals.diff_changed_lines, additions + deletions, numbers.format(additions), numbers.format(deletions))
+                    },
                     style = TideType.mono(11.sp),
                     color = c.inkFaint,
                 )

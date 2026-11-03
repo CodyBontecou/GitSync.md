@@ -74,7 +74,7 @@ class RepositoryMoveColdStartTest {
             await { model.selectedRepository.value == named.path }
             val connection = ObsidianConnections(context, auth, credentials).prepare(named.path)
             instrumentation.runOnMainSync { model.prepareMove(named.path, RepositoryLocations.APP) }
-            await { model.moveReview.value != null || model.errorMessage.value != null }; assertNull(model.errorMessage.value)
+            await { model.moveReview.value != null || model.moveReviewError.value != null || model.errorMessage.value != null }; assertNull(model.errorMessage.value); assertNull(model.moveReviewError.value)
             val review = model.moveReview.value!!
             assertTrue(review.plan.copyRequired)
             val moves = AndroidRepositoryServices.moves(context)

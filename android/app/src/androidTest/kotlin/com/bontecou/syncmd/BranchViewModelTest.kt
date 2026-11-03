@@ -79,9 +79,9 @@ class BranchViewModelTest {
         assertTrue(vm.state.value.isLoading); assertEquals(1, calls.get())
         release.complete(Unit); idle(vm)
         assertEquals("other", vm.state.value.currentBranch!!.name)
-        assertEquals("Branch switched. Download missing file contents.", vm.state.value.errorMessage)
+        assertEquals("Branch switched. Download missing file contents.", vm.state.value.errorMessage?.resolve(instrumentation.targetContext))
         main { vm.loadBranches() }; idle(vm)
-        assertEquals("Branch switched. Download missing file contents.", vm.state.value.errorMessage)
+        assertEquals("Branch switched. Download missing file contents.", vm.state.value.errorMessage?.resolve(instrumentation.targetContext))
         main { vm.clearError(vm.state.value.selection) }; assertNull(vm.state.value.errorMessage)
     }
     @Test fun lateBranchReadCannotOverwriteAnotherRepository() = runBlocking {
@@ -179,7 +179,7 @@ class BranchViewModelTest {
         })
         main { vm.switchBranch(vm.state.value.selection!!, vm.state.value.localBranches.first { it.name == "other" }) }; idle(vm)
         assertEquals("other", Git.open(root).use { it.repository.branch })
-        assertEquals("Branch switched. Download missing file contents.", vm.state.value.errorMessage)
+        assertEquals("Branch switched. Download missing file contents.", vm.state.value.errorMessage?.resolve(instrumentation.targetContext))
     }
 
     @Test fun oldRoundTripSelectionCannotWriteOrAcknowledgeTheNewVisit() {
@@ -226,7 +226,7 @@ class BranchViewModelTest {
             Git.open(root).use { it.checkout().setName("main").call() }
             main { if (index == 0) vm.switchBranch(expected, row) else vm.deleteBranch(expected, row, force = true) }; idle(vm)
             Git.open(root).use { assertEquals("main", it.repository.branch); assertEquals(before, it.repository.resolve("HEAD")); assertNotNull(it.repository.exactRef("refs/heads/other")) }
-            assertTrue(vm.state.value.errorMessage!!.contains("Branch changed"))
+            assertTrue(vm.state.value.errorMessage!!.resolve(instrumentation.targetContext).contains("Branch changed"))
         }
     }
     @Test fun aCurrentBranchChangeDuringInventoryReadCannotPublishAnActionableMixedSnapshot() {
@@ -239,7 +239,7 @@ class BranchViewModelTest {
             }
         })
         move = true; main { vm.loadBranches() }; idle(vm)
-        assertFalse(vm.state.value.actionsReady); assertTrue(vm.state.value.errorMessage!!.contains("changed while loading"))
+        assertFalse(vm.state.value.actionsReady); assertTrue(vm.state.value.errorMessage!!.resolve(instrumentation.targetContext).contains("changed while loading"))
         main { vm.createBranch(vm.state.value.selection!!, "mixed-snapshot") }; idle(vm)
         assertNull(Git.open(root).use { it.repository.exactRef("refs/heads/mixed-snapshot") })
         main { vm.loadBranches() }; idle(vm)

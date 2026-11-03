@@ -35,6 +35,7 @@ import com.bontecou.syncmd.ui.components.vaultOpsSlice
 import com.bontecou.syncmd.ui.theme.Tide
 import com.bontecou.syncmd.ui.theme.TideCard
 import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.LfsViewModel
 import com.bontecou.syncmd.services.git.lfs.LfsTrackingPlan
 
@@ -133,7 +134,7 @@ fun LfsScreen(path: String, onBack: () -> Unit, model: LfsViewModel = hiltViewMo
         VaultOpsSheet(onDismissRequest = model::clearError, title = stringResource(R.string.ui_git_lfs_needs_attention_01f551e1),
             icon = { VaultOpsDangerIcon() },
             confirmButton = { VaultOpsButton(stringResource(R.string.ui_ok_565339bc), model::clearError) }) {
-            Text(error, modifier = Modifier.testTag("lfs-error"))
+            Text(error.asString(), modifier = Modifier.testTag("lfs-error"))
         }
     }
     choice?.let { pending -> LfsTrackingConfirmation(pending.selected, pending.lfs,

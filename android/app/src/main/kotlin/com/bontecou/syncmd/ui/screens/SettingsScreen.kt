@@ -116,7 +116,7 @@ fun SettingsScreen(
     val cachedName by githubViewModel.authManager.cachedName.collectAsState()
     val accounts by githubViewModel.authManager.accounts.collectAsState()
 
-    val displayName = githubUser?.name ?: githubUser?.login ?: cachedName ?: cachedLogin ?: "GitHub User"
+    val displayName = githubUser?.name ?: githubUser?.login ?: cachedName ?: cachedLogin ?: stringResource(R.string.vault_l10n_github_user)
     val loginHandle = githubUser?.login ?: cachedLogin
 
     SettingsContent(
@@ -163,7 +163,7 @@ fun SettingsScreen(
     )
 
     signOutReview?.let { review ->
-        val subject = review.login?.let { "@$it" } ?: stringResource(R.string.tide_settings_this_account)
+        val subject = review.login?.let { "\u2066@$it\u2069" } ?: stringResource(R.string.tide_settings_this_account)
         TideConfirmDialog(
             title = stringResource(R.string.tide_settings_sign_out_title),
             message = stringResource(R.string.tide_settings_sign_out_message, subject),

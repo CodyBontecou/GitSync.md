@@ -54,15 +54,15 @@ class RepositoryOperationScreenTest {
     }
     @Test fun vaultPullIsDisabledWhileRunningAndItsFailureCanBeAcknowledgedWithoutRetry() {
         val before = Git.open(root).use { it.repository.resolve("HEAD") }
-        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasTestTag("vault-pull"))
+        compose.onNodeWithTag("vault-pull").performScrollTo()
         compose.onNodeWithTag("vault-pull").performClick()
         runBlocking { withTimeout(10_000) { entered.await() } }
-        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasTestTag("vault-pull"))
+        compose.onNodeWithTag("vault-pull").performScrollTo()
         compose.onNodeWithTag("vault-pull").assertIsNotEnabled()
         compose.runOnIdle { model.loadStatus() }
         release.complete(Unit)
         compose.waitUntil(10_000) { !model.isLoading.value && model.errorMessage.value != null }
-        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasTestTag("vault-pull-error-dismiss"))
+        compose.onNodeWithTag("vault-pull-error-dismiss").performScrollTo()
         compose.onNodeWithText("Owned pull failure", substring = false).assertIsDisplayed()
         compose.waitForIdle()
         val evidence = File(instrumentation.targetContext.filesDir, "parity-evidence").apply { mkdirs() }

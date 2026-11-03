@@ -4,6 +4,7 @@ import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
+import com.bontecou.syncmd.R
 import org.json.JSONObject
 import org.json.JSONArray
 import java.security.KeyStore
@@ -13,7 +14,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 /** A durable signed-out record prevents a stale legacy preference from resurrecting a session. */
-class GitHubSessionStore(context: Context) {
+class GitHubSessionStore(private val context: Context) {
     data class Session(val token: String? = null, val pendingState: String? = null, val createdAt: Long = 0L,
         val accounts: List<StoredGitHubAccount> = emptyList(), val activeAccountId: String? = null,
         val defaultAccountId: String? = null, val aliases: Map<String, String> = emptyMap(), val version: Int = 2)
@@ -54,7 +55,7 @@ class GitHubSessionStore(context: Context) {
             Session(json.optString("token").ifEmpty { null }, json.optString("state").ifEmpty { null }, json.optLong("createdAt", 0L),
                 accounts, json.optString("active").ifEmpty { null }, json.optString("default").ifEmpty { null },
                 links.keys().asSequence().associateWith { links.getString(it) }, version)
-        } catch (e: Exception) { throw IllegalStateException("Secure GitHub storage could not be opened. Sign in again to recover the session.") }
+        } catch (e: Exception) { throw IllegalStateException(context.getString(R.string.account_session_open_failed)) }
     }
     fun write(session: Session) = synchronized(lock) {
         require(session.version == 2)
@@ -70,11 +71,11 @@ class GitHubSessionStore(context: Context) {
         val record = Base64.encodeToString(cipher.iv, Base64.NO_WRAP) + ":" + Base64.encodeToString(encrypted, Base64.NO_WRAP)
         val previous = prefs.getString("session", null)
         try {
-            check(prefs.edit().putString("session", record).commit()) { "Secure GitHub storage could not be saved. Retry sign-in." }
-            check(read() == session) { "Secure GitHub storage could not be verified. Retry sign-in." }
+            check(prefs.edit().putString("session", record).commit()) { context.getString(R.string.account_session_save_failed) }
+            check(read() == session) { context.getString(R.string.account_session_verify_failed) }
         } catch (e: Exception) {
             if (prefs.getString("session", null) != previous) {
-                check(prefs.edit().putString("session", previous).commit()) { "Secure GitHub storage recovery failed. Retry sign-in when storage is available." }
+                check(prefs.edit().putString("session", previous).commit()) { context.getString(R.string.account_session_recovery_failed) }
             }
             throw e
         }

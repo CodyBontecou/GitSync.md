@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-03T01:43:21" hostname="MacBook-Pro.local" time="0.186">
+  <properties/>
+  <testcase name="failedMoveReleasesClaimAndPreservesNewWork" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.031"/>
+  <testcase name="newerFolderRequestRejectsLatePreparation" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.015"/>
+  <testcase name="acceptedMoveFinishesAfterScreenClosesWithoutOwningItsNavigation" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.036"/>
+  <testcase name="oldScreenDisposalCannotClearReopenedScreen" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.012"/>
+  <testcase name="newScreenCannotCancelAcceptedMoveOrReceiveOldCompletion" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.03"/>
+  <testcase name="leavingWhilePreparationWaitsCannotPublishItsDestination" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.014"/>
+  <testcase name="clearingFolderSelectionRevokesDisplayedConfirmation" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.01"/>
+  <testcase name="preMoveFailureCanReleaseClaimForFreshReview" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.015"/>
+  <testcase name="repeatedOldCleanupCannotClearFreshScreenReview" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.012"/>
+  <testcase name="departedScreenCannotRequestOrConfirmCurrentScreenMove" classname="com.bontecou.syncmd.ui.viewmodels.MoveReviewLifecycleTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

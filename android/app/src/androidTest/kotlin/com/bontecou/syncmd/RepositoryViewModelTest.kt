@@ -185,7 +185,7 @@ class RepositoryViewModelTest {
         assertEquals(0, repository.resolveCalls.get())
         assertSame(original, main { model.selectedConflict.value }); assertEquals("Keep my draft\n", main { model.manualResolutionContent.value })
         assertEquals("new index ours\n", main { model.conflicts.value.single().currentContent })
-        assertTrue(main { model.errorMessage.value!!.contains("Conflict changed") })
+        assertTrue(main { model.errorMessage.value!!.resolve(instrumentation.targetContext).contains("Conflict changed") })
     }
     @Test fun failedConflictRefreshDisablesDestructiveCommandsFromTheCachedSnapshot() {
         val repository = ControlledConflicts(); val model = conflicts(repository)
@@ -213,7 +213,7 @@ class RepositoryViewModelTest {
         finish(pullGate, pullJob); finish(conflictGate, conflictJob)
         await { !pull.isLoading.value && !editor.isLoading.value && editor.actionsReady.value }
         assertEquals("Owned current pull failure", main { pull.errorMessage.value })
-        assertEquals("Owned current abort failure", main { editor.errorMessage.value })
+        assertEquals("Owned current abort failure", main { editor.errorMessage.value?.resolve(instrumentation.targetContext) })
         main { pull.clearError(conflictBinding); editor.clearError(pullBinding) }
         assertNotNull(main { pull.errorMessage.value }); assertNotNull(main { editor.errorMessage.value })
         main { pull.clearError(pullBinding); editor.clearError(conflictBinding) }

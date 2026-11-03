@@ -1,0 +1,196 @@
+{
+  "new_keys": [
+    "ui_choose_start_point_3071447f",
+    "ui_choose_strategy_95d66200",
+    "ui_create_new_branch_bf815ec6",
+    "ui_delete_branch_1_s_bbe46386",
+    "ui_e_g_feature_new_ui_76d6dd27",
+    "ui_merge_branch_into_1_s_88a0ca2d",
+    "ui_merge_strategy_69ea53c4",
+    "ui_no_branches_available_7f5adec5",
+    "ui_select_source_branch_to_merge_c3dbf949",
+    "ui_start_from_eb3f51dc",
+    "ui_strategy_6b27710d",
+    "ui_tracking_1_s_b83cf9b3"
+  ],
+  "new_values": 300,
+  "formatted_values": 75,
+  "unformatted_values": 225,
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "6eda2dbfc11a13ef8499f216602152c916e7f4ffab678ac840f9279c3a7e279f"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "4915122f9ac5161f3d612a6d4611289a3243cb4757e6fdfa2d67f735a72a26c1"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "062ce76f5ce0ebc15df731a09ac32a531083a0bc51da579e537496768711d348"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "692e36b71a689317729b8993802032de9c41cc05235756c4bb22e1c294046dc0"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "0149705bee8f16860241c0158cc2a6b37a832bd552485ee1cbd0725372ed0e8e"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "f106eceb333a6f9d74f82d66a690d8f2ca77274ca53e937f40a798a57ca93b31"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "5328855bd8d0919ea77d8045b2ef08f532ca08bd82a2da92f2083af989b48537"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "47b373a38a282b21bf25480c4afa766f66e7f058cc18328fa25c376d57c3a990"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "2a856132f47fed6bbec8b77313f4e7213b8f41ce19d6430fcf75dba9426323bf"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "97e81ca6f3af74dd611ebe0f5bb6acc9a74e519ee8e7b65ce2951a75c68c1e85"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "ec45bc3f5e68df6510754b7627055db815fe48575524c1a797ec1d1ad3866c93"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "bd97ad0f26dab8ea3f600feb183132fb878eadabdfb1d8985a1448361ed018c1"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "9b14c48e75e7ff10f87c99a1beaae7f397d47ef93fa1c0058b9265c1695605a8"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "439aba00c739f7e0d299491d5202a0839df684e785ccd9eb935f78a110dd0f66"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "ce48b9be29fac5d2c2c77e8fb059eb2dfa31966052a19510440b89cce558450d"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "df1efe931cb6b65b6978aca05b6f295ed8f036f7078e33b52422a8b1e1ecbbf2"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "7b3c14132242b093c541c0be34da4a291e31bbc72485cb0646a94e6382c976d7"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "a83784a4fde9e288151e17d2e05cc4d505585a762be5225648d5ef8c81efc0cc"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "083df7236a9f837cfcd40a14a0bd5959d626b7708d5901433dec2afd5d8e1879"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "510f7d88d0629d4439e3bf7c6203a339383bcf61fe32c3a39ebb3c2c5308c2cc"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "d90b5403a8dd2740724f22b6b9e8ab11466abe35188588b5e4dfc23cf83d198b"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "2c8804df015b0aa7f42dce458d899c8b8aa509f17ca612dac8a3bafec3f66fa8"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "f5f8682d51347069317fdbfb50c7841f1a080bb8dd88250b8215946d361f7644"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "c467d9638e06e01539f4c26d225e6c855e821ea378561e7cbf8d1ea80ac4aa38"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_values": 12,
+      "formatted_values": 3,
+      "unformatted_values": 9,
+      "xml_sha256": "767a7fca3d6020b4c379b93977f5a4a4f536e9093895bf5f9c5469944900e9c5"
+    }
+  }
+}

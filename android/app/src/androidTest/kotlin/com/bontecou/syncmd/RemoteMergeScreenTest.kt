@@ -250,7 +250,7 @@ class RemoteMergeScreenTest {
         val before = head(); val model = show()
         compose.onNodeWithTag("remote-merge-review").performScrollTo().performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.error != null }
-        assertTrue(model.state.value.error!!.contains("uncommitted changes"))
+        assertTrue(model.state.value.error!!.resolve(instrumentation.targetContext).contains("uncommitted changes"))
         assertNull(model.state.value.plan); assertNull(model.state.value.outcome)
         assertEquals(before, head()); assertEquals("Unsaved local contents\n", File(root, "notes.md").readText())
         compose.onNodeWithTag("remote-merge-error").assertIsDisplayed()

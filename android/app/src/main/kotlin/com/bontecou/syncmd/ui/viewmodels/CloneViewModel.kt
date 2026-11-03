@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Credentials
 import com.bontecou.syncmd.domain.repository.GitRepository
 import com.bontecou.syncmd.services.github.GitHubAuthManager
@@ -71,7 +72,7 @@ class CloneViewModel @Inject constructor(
         if (ownedPublication != id) { publications.activate(id); ownedPublication = id }
         true
     } catch (_: Exception) {
-        _cloneState.value = CloneState.Error("This clone is already open or needs review in Local repositories."); false
+        _cloneState.value = CloneState.Error(context.getString(R.string.account_clone_in_use)); false
     }
     private fun releasePublication(id: String) {
         publications.deactivate(id); if (ownedPublication == id) ownedPublication = null
@@ -90,7 +91,7 @@ class CloneViewModel @Inject constructor(
                 }
                 publish(epoch, CloneState.Success(completed.path, selected.alias, completed))
             } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { publish(epoch, CloneState.Error("The interrupted clone needs review. Its files were kept; reconnect it from Local repositories.")) }
+            catch (_: Exception) { publish(epoch, CloneState.Error(context.getString(R.string.account_clone_interrupted))) }
         }
     }
     override fun onCleared() {
@@ -116,13 +117,13 @@ class CloneViewModel @Inject constructor(
         if (prior != null && runCatching { publications.hasReceipt(prior) }.getOrDefault(true)) { restorePublication(prior); return }
         val parts = repoFullName.split('/')
         if (parts.size != 2 || parts.any { it == "." || it == ".." || !it.matches(Regex("[A-Za-z0-9_.-]+")) }) {
-            _cloneState.value = CloneState.Error("Invalid GitHub repository name")
+            _cloneState.value = CloneState.Error(context.getString(R.string.account_invalid_repository_name))
             return
         }
         val account = runCatching { authManager.captureActiveAccount() }.getOrNull()
         val token = account?.token
         if (token.isNullOrBlank()) {
-            _cloneState.value = CloneState.Error("Not authenticated — please sign in first.")
+            _cloneState.value = CloneState.Error(context.getString(R.string.account_not_authenticated))
             return
         }
 
@@ -134,7 +135,7 @@ class CloneViewModel @Inject constructor(
         cloneJob = viewModelScope.launch(Dispatchers.IO) {
             try {
             val baseDir = try { com.bontecou.syncmd.storage.RepositoryLocations(context).resolve(location).path }
-                catch (e: Exception) { publish(id, CloneState.Error(e.message ?: "Choose the clone location again")); return@launch }
+                catch (e: Exception) { publish(id, CloneState.Error(e.message ?: context.getString(R.string.account_choose_location_again))); return@launch }
             val localPath = "$baseDir/$repoFullName"
             val cloneUrl = "https://github.com/$repoFullName.git"
             val debugLoggingEnabled = sharedPrefs.getBoolean("show_debug_info", false)
@@ -148,9 +149,7 @@ class CloneViewModel @Inject constructor(
             // Reconnection is offered by local repository discovery instead.
             val existingDir = File(localPath)
             if (existingDir.exists()) {
-                publish(id, CloneState.Error(
-                    "The destination already exists. Reconnect it from Local repositories, or choose a new empty location. No files were deleted."
-                ))
+                publish(id, CloneState.Error(context.getString(R.string.account_destination_exists)))
                 return@launch
             }
 
@@ -229,7 +228,7 @@ class CloneViewModel @Inject constructor(
                     retainStagingOnFailure = { publications.hasReceipt(publicationId) },
                     withPublication = { move ->
                         requireCurrent()
-                        check(repositoryCredentials.recordVersion(localPath) == credentialRevision) { "Saved credentials changed during cloning. Review the connection before retrying." }
+                        check(repositoryCredentials.recordVersion(localPath) == credentialRevision) { context.getString(R.string.account_clone_credentials_changed) }
                         repositoryCredentials.updateCloneConnection(localPath, cloneUrl,
                             credentialRevision, accountId, publications, publicationId) {
                             requireCurrent(); move()
@@ -254,11 +253,11 @@ class CloneViewModel @Inject constructor(
                     message = "Retrying clone after transient failure: ${error?.message}"
                 )
             } else {
-                return Result.failure(error ?: Exception("Clone failed — please try again."))
+                return Result.failure(error ?: Exception(context.getString(R.string.account_clone_failed_retry)))
             }
         }
 
-        return Result.failure(lastError ?: Exception("Clone failed — please try again."))
+        return Result.failure(lastError ?: Exception(context.getString(R.string.account_clone_failed_retry)))
     }
 
     private fun isRetryableCloneFailure(error: Throwable?): Boolean {
@@ -274,9 +273,9 @@ class CloneViewModel @Inject constructor(
     }
 
     private fun friendlyCloneErrorMessage(error: Throwable?): String {
-        val raw = error?.message ?: "Clone failed — please try again."
+        val raw = error?.message ?: context.getString(R.string.account_clone_failed_retry)
         if (!isStorageCompatibilityFailure(error)) return raw
-        return "$raw\n\nClone location is fixed to Android/media app storage for Obsidian compatibility."
+        return context.getString(R.string.account_clone_storage_note, raw)
     }
 
     private fun buildMessageChain(error: Throwable): String =

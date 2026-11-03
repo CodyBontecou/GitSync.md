@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"Koneksi alternatif lain sudah tersimpan. Tinjau koneksi itu sebelum memigrasikan kredensial URL lainnya."</string>
+    <string name="account_api_error">"Kesalahan API GitHub: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"Akun GitHub yang ditetapkan terputus. Pilih akun untuk repositori ini."</string>
+    <string name="account_basic_requires_http" formatted="false">"Autentikasi nama pengguna dan token memerlukan alamat HTTP atau HTTPS"</string>
+    <string name="account_browser_failed" formatted="false">"Tidak dapat membuka browser. Coba lagi atau gunakan Personal Access Token."</string>
+    <string name="account_choose_authentication" formatted="false">"Pilih autentikasi untuk alamat ini"</string>
+    <string name="account_choose_credentials" formatted="false">"Pilih kredensial untuk koneksi ini"</string>
+    <string name="account_choose_location_again" formatted="false">"Pilih lokasi klon lagi"</string>
+    <string name="account_choose_public_access" formatted="false">"Pilih akses tanpa kredensial jaringan untuk alamat ini"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"Pilih kunci privat SSH untuk alamat SSH, atau autentikasi HTTPS untuk alamat HTTPS."</string>
+    <string name="account_choose_storage" formatted="false">"Pilih penyimpanan di Pengaturan"</string>
+    <string name="account_cleanup_failed" formatted="false">"Akses masuk GitHub sudah terenkripsi, tetapi preferensi lokal lama tidak dapat dibersihkan. Coba lagi saat penyimpanan tersedia."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"Kredensial tersimpan berubah selama proses klon. Tinjau koneksi sebelum mencoba lagi."</string>
+    <string name="account_clone_destination_changed" formatted="false">"Tujuan klon berubah; koneksinya tetap disimpan"</string>
+    <string name="account_clone_failed_network" formatted="false">"Tidak dapat mengklon repositori. Periksa URL, kredensial akses, cabang, dan koneksi jaringannya. Folder yang ada tetap disimpan."</string>
+    <string name="account_clone_failed_retry" formatted="false">"Klon gagal — silakan coba lagi."</string>
+    <string name="account_clone_in_use" formatted="false">"Klon ini sudah terbuka atau perlu ditinjau di Repositori lokal."</string>
+    <string name="account_clone_interrupted" formatted="false">"Klon yang terputus perlu ditinjau. File-nya tetap disimpan; sambungkan kembali dari Repositori lokal."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nLokasi klon ditetapkan ke penyimpanan aplikasi Android/media agar kompatibel dengan Obsidian."</string>
+    <string name="account_configuration_changed" formatted="false">"Konfigurasi repositori berubah. Muat ulang sebelum menghapus kredensial."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"Gagal menyimpan koneksi dan pemulihan kredensial tidak dapat disimpan. Masukkan ulang kredensial."</string>
+    <string name="account_connection_save_failed" formatted="false">"Tidak dapat menyimpan koneksi repositori"</string>
+    <string name="account_connection_unreadable" formatted="false">"Koneksi tersimpan tidak dapat dibuka. Masukkan ulang kredensial repositori."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"Kredensial tersimpan berubah. Muat ulang sebelum menyimpan."</string>
+    <string name="account_destination_exists" formatted="false">"Tujuan sudah ada. Sambungkan kembali dari Repositori lokal, atau pilih lokasi kosong yang baru. Tidak ada file yang dihapus."</string>
+    <string name="account_enter_new_credentials" formatted="false">"Masukkan kredensial baru"</string>
+    <string name="account_enter_ssh_key" formatted="false">"Masukkan kunci privat SSH"</string>
+    <string name="account_enter_username_secret" formatted="false">"Masukkan nama pengguna dan token atau kata sandi"</string>
+    <string name="account_enter_valid_url" formatted="false">"Masukkan URL repositori yang valid, dengan kredensial di kolom terpisah."</string>
+    <string name="account_finish_migration" formatted="false">"Selesaikan proses masuk GitHub untuk menuntaskan migrasi kredensial sebelumnya."</string>
+    <string name="account_github_requires_https" formatted="false">"Akses akun GitHub memerlukan alamat HTTPS github.com"</string>
+    <string name="account_invalid_repository_name" formatted="false">"Nama repositori GitHub tidak valid"</string>
+    <string name="account_invalid_repository_url" formatted="false">"URL repositori tidak valid"</string>
+    <string name="account_load_author_failed" formatted="false">"Tidak dapat memuat identitas penulis"</string>
+    <string name="account_load_failed" formatted="false">"Gagal memuat data GitHub"</string>
+    <string name="account_migration_changed" formatted="false">"Kredensial tersimpan berubah. Muat ulang migrasi."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"Pemulihan kredensial tidak dapat disimpan. Tinjau koneksi ini."</string>
+    <string name="account_migration_unverified" formatted="false">"Kredensial terenkripsi tidak dapat diverifikasi. Kredensial URL tetap disimpan."</string>
+    <string name="account_move_changed" formatted="false">"Kredensial repositori berubah setelah ditinjau. Tinjau pemindahan lagi."</string>
+    <string name="account_move_finish_failed" formatted="false">"Tidak dapat menyelesaikan pemulihan pemindahan kredensial"</string>
+    <string name="account_move_persist_failed" formatted="false">"Tidak dapat menyimpan kredensial repositori yang dipindahkan"</string>
+    <string name="account_move_recovery_changed" formatted="false">"Kredensial yang dipindahkan berubah selama pemulihan. Tinjau koneksi tujuan sebelum melanjutkan."</string>
+    <string name="account_move_recovery_failed" formatted="false">"Pemulihan pemindahan kredensial tidak dapat disimpan. Semua salinan kerja tetap disimpan."</string>
+    <string name="account_move_verify_failed" formatted="false">"Kredensial repositori yang dipindahkan tidak dapat diverifikasi"</string>
+    <string name="account_no_alternative" formatted="false">"Tidak ada kredensial alternatif tersimpan untuk alamat ini"</string>
+    <string name="account_no_backup_folder" formatted="false">"Tidak ada folder cadangan aplikasi di volume penyimpanan repositori ini. Salinan kerja Anda tetap disimpan."</string>
+    <string name="account_no_matching_repositories">"Tidak ada repositori yang cocok dengan \"%1$s\""</string>
+    <string name="account_no_remote" formatted="false">"Tidak ada remote yang dikonfigurasi"</string>
+    <string name="account_no_repositories_found" formatted="false">"Tidak ada repositori untuk akun ini."</string>
+    <string name="account_no_url_credentials" formatted="false">"Tidak ada kredensial URL yang didukung untuk dimigrasikan"</string>
+    <string name="account_not_authenticated" formatted="false">"Belum diautentikasi — masuk terlebih dahulu."</string>
+    <string name="account_open_connection_failed" formatted="false">"Tidak dapat membuka koneksi"</string>
+    <string name="account_opening_sample" formatted="false">"Membuka contoh…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"Tidak dapat menyiapkan proses masuk GitHub yang aman. Coba lagi saat penyimpanan tersedia."</string>
+    <string name="account_previous_address_missing" formatted="false">"Alamat remote sebelumnya tidak tercatat. Verifikasi URL GitHub yang disarankan ini dan pilih autentikasi sebelum mengklon."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"Koneksi sebelumnya tidak dapat dipulihkan. Tinjau URL dan pilih autentikasi secara eksplisit; file yang ada dan kredensial tersimpan tetap disimpan."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"Tidak dapat mengonfirmasi koneksi publikasi"</string>
+    <string name="account_publication_conflict" formatted="false">"Folder ini sudah memiliki koneksi tersimpan yang berbeda. Kredensial yang ada tetap disimpan."</string>
+    <string name="account_publication_recovery" formatted="false">"Kredensial publikasi perlu dipulihkan. Folder tetap disimpan."</string>
+    <string name="account_publication_verify_failed" formatted="false">"Tidak dapat memverifikasi koneksi publikasi"</string>
+    <string name="account_reenter_credentials" formatted="false">"Masukkan ulang kredensial repositori"</string>
+    <string name="account_reload_public_access" formatted="false">"Muat ulang koneksi akses publik tersimpan"</string>
+    <string name="account_remote_url_changed" formatted="false">"URL remote berubah. Tinjau koneksi repositori sebelum melakukan autentikasi."</string>
     <string name="account_removal_subject" formatted="false">"akun ini"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"Tidak dapat menghapus kredensial tersimpan"</string>
+    <string name="account_remove_failed" formatted="false">"Tidak dapat menghapus akses masuk GitHub. Coba lagi saat penyimpanan tersedia."</string>
+    <string name="account_repository_name_length" formatted="false">"Masukkan nama repositori sepanjang 1–120 karakter"</string>
+    <string name="account_review_github_connection" formatted="false">"Tinjau koneksi akun GitHub"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"Tinjau klon yang terputus sebelum memulai klon lain. File-nya tetap disimpan."</string>
+    <string name="account_sample_hint" formatted="false">"Coba operasi Git sungguhan secara offline. Tanpa perlu akun."</string>
+    <string name="account_save_author_failed" formatted="false">"Tidak dapat menyimpan identitas penulis"</string>
+    <string name="account_save_connection_failed" formatted="false">"Tidak dapat menyimpan koneksi"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"Tidak dapat menyimpan akses masuk GitHub dengan aman. Coba lagi saat penyimpanan tersedia."</string>
+    <string name="account_save_sign_in_short" formatted="false">"Tidak dapat menyimpan akses masuk dengan aman"</string>
+    <string name="account_saved_connection_changed" formatted="false">"Koneksi tersimpan berubah. Tinjau autentikasi sebelum mengklon lagi."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"Kredensial tersimpan tidak dapat dibuka. Pilih akses publik atau masukkan kredensial baru."</string>
+    <string name="account_select_connected_account" formatted="false">"Pilih akun GitHub yang terhubung dan alamat HTTPS github.com"</string>
+    <string name="account_select_failed" formatted="false">"Tidak dapat memilih akun GitHub. Coba lagi saat penyimpanan tersedia."</string>
+    <string name="account_select_github_account" formatted="false">"Pilih akun GitHub"</string>
+    <string name="account_select_repository_account" formatted="false">"Pilih akun GitHub untuk repositori ini"</string>
+    <string name="account_select_repository_github_account" formatted="false">"Pilih akun GitHub repositori"</string>
+    <string name="account_session_open_failed" formatted="false">"Penyimpanan GitHub aman tidak dapat dibuka. Masuk lagi untuk memulihkan sesi."</string>
+    <string name="account_session_recovery_failed" formatted="false">"Pemulihan penyimpanan GitHub aman gagal. Coba masuk lagi saat penyimpanan tersedia."</string>
+    <string name="account_session_save_failed" formatted="false">"Penyimpanan GitHub aman tidak dapat disimpan. Coba masuk lagi."</string>
+    <string name="account_session_verify_failed" formatted="false">"Penyimpanan GitHub aman tidak dapat diverifikasi. Coba masuk lagi."</string>
+    <string name="account_sign_in" formatted="false">"Masuk"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"Masuk ke GitHub sebelum memilih akses akun"</string>
+    <string name="account_sign_in_failed" formatted="false">"Gagal masuk"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"Masuk ke akun GitHub repositori"</string>
+    <string name="account_sign_in_unverified" formatted="false">"Proses masuk GitHub tidak dapat diverifikasi. Mulai masuk lagi."</string>
+    <string name="account_sign_out_failed" formatted="false">"Tidak dapat keluar dengan aman. Coba lagi saat penyimpanan tersedia."</string>
+    <string name="account_signing_in" formatted="false">"Sedang masuk…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"Kunci host SSH tidak disetujui. Coba lagi saat Anda dapat memverifikasi sidik jari server."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"Kunci SSH hanya dapat digunakan dengan alamat repositori SSH"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"Kepercayaan SSH tersimpan tidak dapat dibuka. Tinjau kepercayaan server SSH di Pengaturan."</string>
+    <string name="account_storage_attention" formatted="false">"Penyimpanan GitHub aman perlu diperiksa. Kredensial yang ada tetap disimpan; coba masuk lagi."</string>
+    <string name="account_token_empty" formatted="false">"Token tidak boleh kosong"</string>
+    <string name="account_token_invalid">"Token GitHub tidak valid atau kedaluwarsa (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"Coba repositori contoh"</string>
+    <string name="account_updated_just_now" formatted="false">"baru saja"</string>
+    <string name="account_valid_branch" formatted="false">"Masukkan nama cabang yang valid"</string>
+    <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_active" formatted="false">"Pemeriksaan latar belakang dijadwalkan untuk repositori yang disertakan."</string>
     <string name="background_allow_push" formatted="false">"Izinkan publikasi otomatis"</string>
     <string name="background_attempt">"Pemeriksaan terakhir: %1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"Tindakan berhenti. Tinjau status repositori dan pengaturan koneksi."</string>
     <string name="diagnostics_share_title" formatted="false">"Bagikan diagnostik"</string>
     <string name="diagnostics_warnings" formatted="false">"Peringatan"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"lokal"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"remote"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"melacak"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"tidak dikenal"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"Ciutkan"</string>
+    <string name="dialogs_commit_expand" formatted="false">"Luaskan"</string>
+    <string name="dialogs_error_branch_exists">"Cabang \'%1$s\' sudah ada.\n\nPilih nama lain."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"Tidak dapat menghapus cabang saat ini.\n\nBeralih ke cabang lain terlebih dahulu."</string>
+    <string name="dialogs_error_commit_failed">"Commit gagal: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"Operasi ini tidak dapat dilakukan dengan perubahan yang belum di-commit.\n\nCommit atau stash perubahan Anda terlebih dahulu."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"Nama cabang tidak valid.\n\nGunakan karakter alfanumerik, tanda hubung, dan garis bawah."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"Ini sepertinya bukan repositori Git yang valid.\n\nPastikan jalur mengarah ke folder .git atau direktori kerja."</string>
+    <string name="dialogs_error_network" formatted="false">"Kesalahan jaringan. Periksa koneksi Anda lalu coba lagi."</string>
+    <string name="dialogs_error_pull_failed">"Pull gagal: %1$s"</string>
+    <string name="dialogs_error_push_failed">"Push gagal: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"Repositori tidak ditemukan di: %1$s\n\nPeriksa jalurnya lalu coba lagi."</string>
+    <string name="dialogs_error_title" formatted="false">"Kesalahan"</string>
+    <string name="dialogs_info_title" formatted="false">"Informasi"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"Gabungkan hanya jika sumber langsung berada di depan. Mempertahankan riwayat linear."</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"Fast-forward jika memungkinkan, jika tidak buat commit merge."</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Selalu buat commit merge, meskipun fast-forward memungkinkan."</string>
+    <string name="dialogs_success_title" formatted="false">"Berhasil"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"Tidak diketahui"</string>
+    <string name="dialogs_warning_title" formatted="false">"Peringatan"</string>
     <string name="discard_clear_staging" formatted="false">"Hapus penyiapan"</string>
     <string name="discard_review_all" formatted="false">"Perubahan terlacak dan berkas baru yang tercantum di bawah akan dibuang secara permanen. Berkas yang diabaikan tetap disimpan."</string>
     <string name="discard_review_empty" formatted="false">"Tidak ada perubahan untuk dibuang."</string>
     <string name="discard_review_operation" formatted="false">"Ini juga membatalkan operasi Git yang aktif."</string>
     <string name="discard_review_unborn" formatted="false">"Belum ada commit. Ini menghapus penyiapan berkas yang tercantum dan mempertahankan isinya."</string>
+    <string name="discovery_scanned">"%1$s telah dipindai. Pilih salinan kerja yang akan ditambahkan."</string>
     <string name="file_clone_failure" formatted="false">"Tidak dapat mengklon repositori lokal. Periksa folder sumber, akses penyimpanan, dan cabang. Folder yang ada tetap disimpan."</string>
     <string name="file_clone_guidance" formatted="false">"Klon repositori di perangkat menggunakan akses lokal. Untuk penyimpanan bersama, berikan akses folder di Setelan terlebih dahulu."</string>
     <string name="file_delete_body" formatted="false">"Berkas akan dihapus dari perangkat ini. Git akan menampilkannya sebagai berkas yang dihapus jika sebelumnya dilacak."</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"Pemilih folder tidak tersedia di perangkat ini"</string>
     <string name="folder_settings_unavailable" formatted="false">"Setelan penyimpanan Android tidak tersedia. Penyimpanan aplikasi tetap tersedia."</string>
     <string name="folder_unusable" formatted="false">"Folder ini tidak dapat digunakan"</string>
+    <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_fetch_detail" formatted="false">"Periksa remote untuk commit baru"</string>
     <string name="git_native_public_only" formatted="false">"Protokol asli Git hanya mendukung akses publik. Gunakan HTTPS atau SSH untuk autentikasi."</string>
+    <string name="gitops_action_failed" formatted="false">"Git tidak dapat menyelesaikan tindakan ini"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"Tindakan branch tidak dapat diselesaikan"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"Tindakan branch tidak dapat diselesaikan. Muat ulang status repositori."</string>
+    <string name="gitops_branch_changed" formatted="false">"Branch berubah. Tinjau branch saat ini sebelum mencoba lagi."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"Branch saat ini berubah. Muat ulang sebelum commit dan push."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"Branch saat ini berubah. Muat ulang sebelum push."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"Branch saat ini berubah saat memuat. Muat ulang dan tinjau lagi."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"Nama branch tidak boleh kosong"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"Commit sebuah file sebelum membuat branch."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"Branch atau commit saat ini berubah. Muat ulang dan tinjau lagi."</string>
+    <string name="gitops_branch_pushed" formatted="false">"Branch di-push"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"Tidak dapat memuat ulang branch"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"Gagal memuat perubahan"</string>
+    <string name="gitops_commit_changed" formatted="false">"Commit berubah. Muat ulang riwayat dan tinjau lagi."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"Pesan commit tidak boleh kosong"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"Di-commit secara lokal. Push dihentikan; coba lagi saat siap."</string>
+    <string name="gitops_committed_pushed" formatted="false">"Di-commit dan di-push"</string>
+    <string name="gitops_committed_pushing" formatted="false">"Di-commit secara lokal. Melakukan push…"</string>
+    <string name="gitops_committed_ready" formatted="false">"Di-commit secara lokal. Siap di-push kapan pun Anda mau."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"Pilih milik kita atau milik mereka untuk penyelesaian massal"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"Konflik berubah. Draf Anda masih ditampilkan. Salin teks yang ingin Anda simpan, lalu tutup dan tinjau konflik saat ini."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"Konflik tidak dapat diselesaikan"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"Konflik berubah. Muat ulang sebelum menyelesaikan."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"Tidak dapat memuat ulang konflik merge"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"Beberapa konflik belum terselesaikan. Tinjau daftar konflik yang dimuat ulang."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"Gagal memuat diff file"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Git tidak dapat menyelesaikan tindakan riwayat ini"</string>
+    <string name="gitops_history_changed" formatted="false">"Riwayat repositori berubah. Muat ulang dan tinjau lagi."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"Tidak dapat memuat ulang riwayat"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"Persetujuan endpoint LFS yang tersimpan tidak dapat dibuka. Setel ulang di Pengaturan sebelum mencoba lagi."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"Alamat endpoint LFS tidak valid"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"Tidak dapat meninjau pelacakan ekstensi. Muat ulang dan periksa atribut yang ada, konflik, dan akses file sebelum mencoba lagi."</string>
+    <string name="gitops_lfs_failed" formatted="false">"Tidak dapat menyelesaikan Git LFS. Periksa koneksi dan status pelacakan saat ini, lalu muat ulang dan coba lagi. File dan commit lokal Anda tetap disimpan."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Tidak dapat memeriksa Git LFS. Periksa akses penyimpanan dan status repositori, lalu muat ulang."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"Tidak dapat memeriksa kunci server. Muat ulang sebelum perubahan berikutnya."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"Server menolak akses ke daftar kuncinya. Periksa koneksi repositori dan izin push."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"Tidak dapat memeriksa kunci server. Periksa koneksi dan status repositori, lalu muat ulang sebelum perubahan berikutnya."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"Pesan merge tidak boleh kosong"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"Sesi merge berubah. Muat ulang sebelum melanjutkan."</string>
+    <string name="gitops_merge_stopped">"Merge dihentikan: %1$s"</string>
+    <string name="gitops_merge_successful">"Merge berhasil: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"Operasi Git gagal"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"Pull tidak selesai"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"Pilih konflik yang ditinjau"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"Pilih nama file yang ditinjau"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"Konflik atau file kerja berubah. Draf Anda disimpan; muat ulang sebelum menyelesaikan."</string>
+    <string name="gitops_rebase_failed" formatted="false">"Git tidak dapat menyelesaikan tindakan ini. Periksa koneksi jika sedang mengambil, lalu muat ulang status rebase sebelum mencoba lagi."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"Rebase perlu ditinjau"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"Buka editor konflik sebelum menyelesaikan"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"Muat ulang sesi rebase"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"Tinjau rebase terlebih dahulu"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Git tidak dapat menyelesaikan tindakan ini. Periksa koneksi, lalu tinjau status repositori saat ini sebelum mencoba lagi."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"Repositori yang dipilih berubah. Tinjau operasi lagi."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"Tidak dapat meninjau perubahan lokal"</string>
+    <string name="gitops_stash_changed" formatted="false">"Daftar stash berubah. Tinjau stash saat ini sebelum mencoba lagi."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"Tidak dapat memuat ulang status repositori"</string>
+    <string name="gitops_tag_changed" formatted="false">"Tag berubah. Tinjau tag saat ini sebelum mencoba lagi."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"Nama tag tidak boleh kosong"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"Commit sebuah file sebelum membuat tag."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"Tidak dapat memuat branch upstream"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"Tidak dapat menyimpan branch upstream"</string>
     <string name="guide_back" formatted="false">"Kembali"</string>
     <string name="guide_clone_body" formatted="false">"Klon repositori GitHub, publik, yang dihosting sendiri, atau melalui SSH. Setiap salinan kerja menyimpan koneksi dan branch-nya sendiri."</string>
     <string name="guide_clone_title" formatted="false">"Repositori Anda di Android"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"Unggahan · kredensial terenkripsi terpisah"</string>
     <string name="lfs_uploads_public" formatted="false">"Unggahan · akses publik"</string>
     <string name="modified" formatted="false">"Diubah"</string>
+    <string name="move_action" formatted="false">"Pindahkan salinan kerja"</string>
+    <string name="move_cancelled" formatted="false">"Pemindahan dibatalkan. Salinan kerja asli tetap disimpan."</string>
+    <string name="move_confirm_action" formatted="false">"Pindahkan"</string>
+    <string name="move_confirm_action_restore" formatted="false">"Pulihkan"</string>
+    <string name="move_confirm_guidance" formatted="false">"Pilih tujuan yang belum digunakan dan cegah aplikasi lain mengubah folder ini hingga pemindahan selesai."</string>
+    <string name="move_confirm_retained" formatted="false">"Asli akan disimpan sebagai salinan pemulihan."</string>
+    <string name="move_confirm_title" formatted="false">"Pindahkan salinan kerja ini?"</string>
+    <string name="move_confirm_title_restore" formatted="false">"Pulihkan salinan pemulihan ini?"</string>
+    <string name="move_done" formatted="false">"Repositori dipindahkan"</string>
+    <string name="move_done_retained" formatted="false">"Repositori dipindahkan. Aslinya disimpan di Pemulihan pemindahan."</string>
+    <string name="move_error_destination_other" formatted="false">"Tujuan terdaftar untuk repositori lain"</string>
+    <string name="move_error_destination_registered" formatted="false">"Repositori lain sudah terdaftar di tujuan ini"</string>
+    <string name="move_error_finish_pending" formatted="false">"Selesaikan pemindahan tertunda terlebih dahulu"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"Selesaikan dulu pemindahan tertunda untuk repositori ini"</string>
+    <string name="move_error_recovery_added" formatted="false">"Salinan pemulihan sudah ditambahkan. Pindahkan dari entri repositorinya."</string>
+    <string name="move_error_restored_registered" formatted="false">"Lokasi yang dipulihkan kini terdaftar secara berbeda; tidak ada pengaturan yang ditimpa"</string>
+    <string name="move_error_settings_changed" formatted="false">"Pengaturan repositori berubah. Tinjau pemulihan pemindahan sebelum melanjutkan."</string>
+    <string name="move_error_settings_review" formatted="false">"Pengaturan pemindahan perlu ditinjau; semua salinan kerja tetap disimpan"</string>
+    <string name="move_error_stale_review" formatted="false">"Tinjauan pemindahan repositori berubah. Tinjau kembali tujuan sebelum memindahkan."</string>
+    <string name="move_intro" formatted="false">"Pindahkan seluruh salinan kerja ini, termasuk riwayat Git, perubahan yang di-stage, dan file yang belum disimpan di disk. Pengaturan akun dan penulisnya ikut dipindahkan."</string>
+    <string name="move_intro_restore" formatted="false">"Pulihkan asli yang disimpan sebagai repositori terpisah. Salinan kerja saat ini tetap di tempatnya."</string>
+    <string name="move_progress_moving" formatted="false">"Memindahkan dan menyimpan pengaturan repositori…"</string>
+    <string name="move_progress_reviewing" formatted="false">"Meninjau file dan metadata Git…"</string>
+    <string name="move_recovered_name">"%1$s (dipulihkan)"</string>
+    <string name="move_recovery_attention">"Pemulihan pemindahan perlu ditinjau: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"Pemulihan pemindahan selesai"</string>
+    <string name="move_recovery_removed" formatted="false">"Salinan pemulihan dihapus"</string>
+    <string name="move_title_restore" formatted="false">"Pulihkan salinan pemulihan"</string>
     <string name="notes_acknowledge" formatted="false">"Mengerti"</string>
     <string name="notes_connections_body" formatted="false">"Kelola akun GitHub dan identitas penulis repositori. Hubungkan melalui HTTPS atau SSH, pilih penyimpanan klon, hubungkan kembali salinan lokal, dan tinjau pemindahan atau penghapusan repositori."</string>
     <string name="notes_connections_title" formatted="false">"Koneksi dan penyimpanan"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"Beralih ke branch lokal dan selesaikan operasi Git atau konflik yang aktif terlebih dahulu."</string>
     <string name="repository_actions_unsettled" formatted="false">"File terus berubah saat ditambahkan ke staging. Tinjau indeks dan file sebelum mencoba lagi."</string>
     <string name="repository_actions_write_scope" formatted="false">"Kirim dan Sinkronkan menambahkan semua perubahan saat ini yang tidak diabaikan ke staging, membuat commit jika perlu, lalu mengunggah commit yang tertunda. Sinkronkan terlebih dahulu mengambil perubahan dan melakukan fast-forward jika aman. Konflik, riwayat yang menyimpang, dan status remote yang tidak aman menghentikan tindakan. Jika unggahan gagal, commit lokal baru tetap disimpan untuk dicoba lagi."</string>
+    <string name="repository_add_none_new" formatted="false">"Pilih setidaknya satu repositori yang belum ditambahkan"</string>
+    <string name="repository_clone_deleted" formatted="false">"Klon lokal dihapus"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"HEAD terlepas atau belum ada commit pertama"</string>
     <string name="repository_discovery_clean" formatted="false">"Tanpa perubahan"</string>
     <string name="repository_discovery_dirty" formatted="false">"Perubahan lokal"</string>
     <string name="repository_history_files_deleted" formatted="false">"File lokal dihapus"</string>
     <string name="repository_history_files_kept" formatted="false">"File lokal tetap disimpan"</string>
     <string name="repository_history_tracking_removed" formatted="false">"Pelacakan Git dihapus · file kerja tetap disimpan"</string>
+    <string name="repository_history_unavailable" formatted="false">"Riwayat repositori tidak tersedia"</string>
+    <string name="repository_imported_files_kept" formatted="false">"File repositori yang diimpor tetap disimpan di perangkat ini"</string>
     <string name="repository_metadata_unavailable" formatted="false">"Metadata repositori tidak tersedia"</string>
     <string name="repository_no_commits" formatted="false">"Tidak ada commit"</string>
+    <string name="repository_no_longer_added" formatted="false">"Repositori tidak lagi ditambahkan"</string>
+    <string name="repository_removed_files_kept" formatted="false">"Repositori dihapus dari aplikasi. File lokal tetap disimpan."</string>
+    <string name="repository_restore_backup_first" formatted="false">"Pulihkan cadangan metadata Git sebelum menghubungkan ulang folder ini"</string>
     <string name="repository_shortcut_active" formatted="false">"Diotorisasi dan disematkan"</string>
     <string name="repository_shortcut_add" formatted="false">"Tambahkan pintasan ke layar utama"</string>
     <string name="repository_shortcut_busy" formatted="false">"Tindakan sedang berjalan. Pintasan ini tidak dimasukkan ke antrean. Tunggu, lalu ketuk lagi."</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"Otorisasi pintasan dicabut"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"Layar utama Anda tidak dapat menerima permintaan pintasan ini. Gunakan tindakan pada layar ini."</string>
     <string name="repository_sync_not_recorded" formatted="false">"Belum dicatat"</string>
+    <string name="resolve_local_action" formatted="false">"Selesaikan"</string>
+    <string name="resolve_local_body" formatted="false">"Kami akan menyimpan perubahan lokal Anda, kemudian menggabungkannya dengan repositori jarak jauh. Jika terdapat konflik, Anda dapat menyelesaikannya pada layar berikutnya."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"Commit &amp; merge"</string>
+    <string name="resolve_local_committing" formatted="false">"Meng-commit perubahan lokal…"</string>
+    <string name="resolve_local_default_message" formatted="false">"Perubahan lokal dari GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"Pesan komitmen"</string>
+    <string name="resolve_local_superseded" formatted="false">"Repositori yang dipilih berubah. Tinjau kembali perubahan lokal."</string>
+    <string name="resolve_local_title" formatted="false">": Edisi lokal menghambat operasi pull ini."</string>
     <string name="settings_folder_unavailable" formatted="false">"Akses folder memerlukan perhatian"</string>
     <string name="shortcut_background_attention" formatted="false">"Pintasan memerlukan perhatian. Buka tindakan repositori dan tinjau statusnya sebelum mencoba lagi."</string>
     <string name="shortcut_background_channel" formatted="false">"Tindakan pintasan"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"Belum pernah disinkronkan"</string>
     <string name="tide_home_state_synced">"Sinkronisasi Selesai %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"Perlu diperiksa"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"Tidak ada yang baru di remote."</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"Hanya milik Anda"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"Remote memiliki commit yang belum Anda miliki."</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"Baru di jarak jauh"</string>
+    <string name="tide_merge_both_moved" formatted="false">"Kedua sisi berubah"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"Dihapus di satu sisi, diedit di sisi lainnya."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"Kedua sisi mengedit berkas ini."</string>
+    <string name="tide_merge_conflict_list_count">"%1$d dari %2$d diselesaikan"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"Pilih versi yang ingin disimpan, atau edit hasilnya secara manual."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"Diganti nama dengan dua cara berbeda."</string>
     <string name="tide_merge_conflict_result" formatted="false">"HASIL"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">": ini adalah yang diproses dalam proses staging."</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"Belum diselesaikan"</string>
     <string name="tide_merge_diff_added" formatted="false">"Ditambahkan"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"Konten biner tidak dapat ditampilkan sebagai teks."</string>
     <string name="tide_merge_diff_changed" formatted="false">"Diubah"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"Disalin"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"Dihapus"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"Buang"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"Perubahan ini tidak memiliki diff baris demi baris."</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"Tidak ada perubahan teks"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"Tidak dapat memuat diff ini"</string>
+    <string name="tide_merge_diff_hunk_line">"baris %1$d"</string>
+    <string name="tide_merge_diff_line_added">"Ditambahkan: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"Dihapus: %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"Diubah"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"Diubah nama"</string>
     <string name="tide_merge_diff_staged" formatted="false">"disiapkan"</string>
+    <string name="tide_merge_diff_stats_a11y">"Baris ditambahkan: %1$d, baris dihapus: %2$d"</string>
+    <string name="tide_merge_diff_summary">"Berkas: %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"tipe diubah"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"Belum di-stage"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"Sudah terkini."</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"Tersinkron"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"Selesaikan penggabungan?"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"Perubahan sisi lain sudah disertakan."</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"Digabungkan"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"Fetch, tinjau, lalu gabungkan."</string>
     <string name="tide_merge_merge_kicker" formatted="false">"Gabungkan"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"Beberapa berkas berubah di kedua sisi."</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"Penggabungan dijeda"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"Masih ada konflik yang harus diselesaikan"</string>
+    <string name="tide_merge_moved_on" formatted="false">"Repositori jarak jauh berubah saat Anda menulis."</string>
     <string name="tide_merge_ours_filename" formatted="false">"Milik kita"</string>
+    <string name="tide_merge_plan_section" formatted="false">"Rencana yang ditinjau"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"Kembali ke titik awal."</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"Rebase menunggu checkout yang terblokir."</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"Rebase berhenti pada berkas yang diedit kedua sisi."</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"Rebase selesai."</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"Fetch dahulu, lalu putuskan."</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"Tinjau langkah ini sebelum melanjutkan."</string>
     <string name="tide_merge_result_section" formatted="false">"HASIL"</string>
     <string name="tide_merge_side_deleted" formatted="false">"dihapus"</string>
     <string name="tide_merge_theirs" formatted="false">"Milik mereka"</string>
+    <string name="tide_merge_theirs_count">"↓%1$d dari jarak jauh"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"Milik mereka"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"Membaca pengaturan branch…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"Pelacakan"</string>
+    <string name="tide_merge_upstream_set">"Melacak %1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"Upstream belum diatur"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"Pull dan push belum memiliki tujuan sampai Anda memilih upstream."</string>
+    <string name="tide_merge_yours" formatted="false">"Versi Anda"</string>
+    <string name="tide_merge_yours_count">"↑%1$d lokal"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"Klon gagal"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"Buat PAT di GitHub ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"Git sungguhan."</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"Lokasi penyimpanan"</string>
     <string name="tide_onboarding_show_token" formatted="false">"Tampilkan"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"Belum masuk"</string>
+    <string name="tide_settings_off" formatted="false">"nonaktif"</string>
+    <string name="tide_settings_on" formatted="false">"aktif"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"Klon baru"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"GitSync.md melupakan token untuk %1$s di perangkat ini. Repositori dan berkasnya tetap di tempatnya."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"Keluar dari GitHub?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"sudah masuk"</string>
+    <string name="tide_settings_this_account" formatted="false">"akun GitHub ini"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"Periksa perubahan"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"Operasi Git dijeda. Selesaikan setiap berkas yang berkonflik untuk melanjutkan."</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Kedua sisi berubah"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"Hanya metadata .git yang ditinjau yang akan dihapus. File kerja tetap ada, tetapi riwayat Git lokal tidak dapat dipulihkan tanpa salinan lain."</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Hapus riwayat Git secara permanen?"</string>
     <string name="tracking_remove_review_changed" formatted="false">"Informasi tinjauan berubah. Batalkan dan tinjau lagi penghapusan pelacakan."</string>
+    <string name="tracking_removed_backup">"Pelacakan Git dihapus. Cadangan terverifikasi: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Pelacakan Git dihapus. File kerja tetap disimpan."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nSemua berkas kerja dan riwayat Git lokal akan tetap ada di perangkat ini. Anda dapat menghubungkan kembali folder nanti."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nIni menghapus permanen klona yang dikelola aplikasi ini, termasuk commit yang belum di-push, perubahan dalam stash, dan berkas yang belum disimpan. Repositori jarak jauh tidak berubah."</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s akan memerlukan verifikasi sidik jari sebelum terhubung lagi."</string>
+    <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"Karakter: %1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s file"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Baris: %1$s, byte: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commit lokal · %2$s commit upstream"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s ditampilkan · %2$s disimpan"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Pembelian satu kali melalui Google Play"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"Tambahkan repositori yang dipilih"</string>
     <string name="ui_added_b4561641" formatted="false">"Ditambahkan"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"Repositori yang ditambahkan"</string>
+    <string name="ui_alias_1_s_e7e8c040">"Alias: %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"Alias (opsional)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Semua penyelesaian konflik sudah di-stage. Lanjutkan menerapkan ulang commit. Jika Git melaporkan NOTHING_TO_COMMIT, tinjau apakah commit kosong perlu dilewati."</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"Semua konflik telah diselesaikan. Selesaikan penggabungan?"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"Semua konflik diselesaikan. Selesaikan atau batalkan penggabungan."</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Semua fitur disertakan setelah aplikasi berbayar diinstal. Tanpa langganan atau pembelian dalam aplikasi."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Semua perubahan lokal pada file ini akan dihapus secara permanen."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Izinkan akses folder lokal"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"Sudah ditambahkan"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"Pemindahan yang terputus perlu dipulihkan. Semua salinan yang dikenali disimpan hingga selesai."</string>
     <string name="ui_and_1_s_more_f93ea742">"dan %1$s lebih lanjut..."</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"REPO APA PUN. TERSINKRON KE ANDROID."</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Aplikasi"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Pengaturan Aplikasi"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"Terapkan"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"Terapkan stash"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Terapkan pilihan pelacakan"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Persetujuan disimpan di perangkat ini dan koneksi yang menunggu dilanjutkan. Membatalkan membiarkan server tidak dipercaya."</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"Yakin ingin membatalkan penggabungan ini?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Autentikasi"</string>
     <string name="ui_back_639807a2" formatted="false">"KEMBALI"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Kembali"</string>
@@ -822,6 +1123,7 @@
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"Jelajahi repositori"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Menjelajah dengan akun ini"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"Batal"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Batalkan pemindahan tertunda"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"Diubah"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"File yang diubah"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Perubahan"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Pilih folder lain"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Pilih penyimpanan klon"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Pilih penyimpanan lokal atau yang terhubung ke perangkat. Penyedia dokumen cloud tidak menyediakan sistem berkas yang dapat digunakan mesin Git ini."</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"Pilih titik awal"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"Pilih strategi"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Pilih akun untuk menjelajahi GitHub. Setiap repositori tetap memakai akun yang ditetapkan; ubah di Koneksi repositori."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Pilih folder default untuk klon baru. Repositori yang sudah ada tetap di lokasi saat ini."</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"Hapus semua"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Buat berkas atau folder menggunakan Baru."</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"Ciptakan PAT ON GITHUB →"</string>
     <string name="ui_create_fde9c501" formatted="false">"Buat"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"Buat branch baru"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Default saat ini"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"Saat ini"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Alamat push terpisah saat ini: %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Default untuk klon baru. Setiap klon dapat menggunakan folder lain."</string>
     <string name="ui_delete_1_s_6474596f">"Hapus \"%1$s\"?"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"Hapus branch?"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"Hapus branch \"%1$s\"?"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"Hapus cabang"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Hapus"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Hapus berkas"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"Menghapus File Lokal?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">"Hapus File Lokal"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"Hapus tag"</string>
+    <string name="ui_destination_1_s_0df94639">"Tujuan: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Folder induk tujuan"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnostik"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"Perbedaan"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Buang draf"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"Repositori ditemukan"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Tutup"</string>
     <string name="ui_done_283e91eb" formatted="false">"Selesai"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"Lokasi unduhan"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"Unduh isi file yang belum tersedia"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"Hapus stash"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Saat rebase, upstream adalah sisi ours Git; commit lokal yang diterapkan ulang adalah theirs."</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"mis., feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"mis., MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"mis., prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Edit penulis commit"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Edit koneksi"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Edit penyelesaian"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Edit konten di sini untuk menyelesaikan konflik secara manual"</string>
     <string name="ui_email_969ccbd3" formatted="false">"Email"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"Folder kosong"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"Aktifkan akses"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"Autentikasi endpoint"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Masukkan kredensial lagi atau pilih akses publik untuk alamat baru."</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Masukkan jalur lengkap ke repositori Git Anda."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Kesalahan\nFilter"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Setiap server SSH akan memerlukan verifikasi sidik jari sebelum terhubung lagi. Ini juga menghapus entri kepercayaan yang rusak."</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"Ambil dan terapkan perubahan remote"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Ambil dan tinjau rebase"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"Ambil perubahan remote"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"Berkas: %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Operasi berkas gagal"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Selesaikan pemulihan pemindahan"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"Menyelesaikan"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"Lupakan"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"Lupakan server"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS perlu perhatian"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · Pelacakan dan unduhan"</string>
     <string name="ui_git_remote_91593664" formatted="false">"Remote Git"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"Akun GitHub terhubung"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"Akun GitHub"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub – Masuk"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Versi lengkap Gitsync.md"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md memerlukan akses penyimpanan bersama untuk mengelola salinan kerja Git asli di folder perangkat. Pilih folder yang ingin digunakan setelah mengaktifkan akses di Setelan Android."</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md tidak akan memberikan kredensial untuk repositori ini."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Kembali dan pilih repositori."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Saya memahami bahwa pemilik lain mungkin masih mengedit file ini."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Sertakan nama pengguna SSH dalam alamat: git@host:team/repo.git atau ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_info_170322a3" formatted="false">"Informasi\nJalur"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Kunci publik yang sesuai (opsional)"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"Gabungkan"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"Gabungkan branch ke %1$s"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">"Pesan merge commit"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"Gabungkan"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"Strategi penggabungan:"</string>
     <string name="ui_message_f5394f72" formatted="false">"Pesan:"</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"Metadata:"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"Lainnya"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Pemulihan pemindahan"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"Pindahkan repositori"</string>
     <string name="ui_name_dcd1d522" formatted="false">"Nama"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Nama di GitSync.md"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"Folder baru"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Token atau kata sandi baru"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"Tidak ada endpoint LFS khusus yang disetujui"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"Tidak ada branch tersedia"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Tidak ada perubahan untuk ditampilkan"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Tidak ada commit yang ditemukan"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"Tidak ada konflik yang ditemukan"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Tidak ada akun terhubung. Repositori lokal tetap tersedia."</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"Tidak ada file biner atau besar baru yang memerlukan pilihan pelacakan."</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"Tidak Ada Repositori"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"Belum ada repositori yang ditambahkan."</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"Belum ada repositori tersimpan. Tambahkan di Pengaturan."</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"Tidak ada repositori"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"TIDAK ADA REPOSITORI"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Tidak ada perubahan tersimpan sementara yang ditemukan"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"Tidak ada tag yang ditemukan"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"sekarang"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"Buka"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Buka Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Buka dalam Berkas"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Membuka berkas…"</string>
     <string name="ui_or_7175517a" formatted="false">"atau"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"Versi kami: %1$s byte"</string>
     <string name="ui_ours_ab658c14" formatted="false">"Milik kita"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"Ganti tampilan sistem"</string>
     <string name="ui_owner_1_s_599ca9ce">"Pemilik: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Induk (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Jalur"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"Token Akses Pribadi"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"Selesaikan semua konflik sebelum menyelesaikan penggabungan."</string>
     <string name="ui_pop_52e740ad" formatted="false">"Keluarkan"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"Terapkan dan hapus stash"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"Pernah ditambahkan"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"Sebelumnya dipercaya: %1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"Kebijakan Privasi"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Pull dengan rebase"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Pull dengan rebase / lanjutkan rebase"</string>
     <string name="ui_push_792aac67" formatted="false">"Dorong"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"Push diblokir oleh kunci LFS"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"Kirim perubahan lokal ke remote"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"Baca dan edit file di repositori ini"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase berlangsung"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase ke upstream yang ditinjau"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"Hasil operasi terbaru di perangkat ini. Log menyimpan hingga 500 entri. Kredensial, alamat repositori, jalur file, dan isi file tidak disertakan."</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Hubungkan ulang"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"Hubungkan kembali salinan kerja yang sudah disimpan GitSync.md. Menghapus entri tetap menyimpan filenya; menghapus klon terkelola dan menghapus pelacakan Git adalah pilihan terpisah."</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"Pemulihan perlu ditinjau. Salinan kerja yang dikenali tetap disimpan."</string>
     <string name="ui_refresh_0e916101" formatted="false">"Muat ulang"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Muat ulang status rebase"</string>
     <string name="ui_reload_1_s_873e324f">"Muat ulang %1$s?"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Hapus kredensial tersimpan?"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"Hapus akses masuk"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Hapus sumber asli yang dipertahankan?"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"Hapus repositori ini dan file lokalnya dari perangkat ini? Repo GitHub Anda tidak terpengaruh."</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Hapus pelacakan"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"Dihapus"</string>
     <string name="ui_rename_1_s_9b09e088">"Ganti nama %1$s"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Commit lokal yang diterapkan ulang"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Menerapkan ulang commit lokal pada upstream yang dikonfigurasi. ID commit lokal dapat berubah. Struktur merge yang ada dipertahankan. Tidak ada yang di-push."</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"Kesehatan repo"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Jalur Repo"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Repositori yang ditetapkan ke akun ini memerlukan masuk kembali atau memilih akun lain di Koneksi repositori. File dan commit lokal Anda tetap tersimpan."</string>
     <string name="ui_repository_13d6ff07" formatted="false">"Repositori"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"Koneksi repositori"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"Operasi repositori gagal"</string>
     <string name="ui_repository_path_037711af" formatted="false">"Jalur repositori"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"Status Repositori"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"URL Repositori"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Selesaikan dan stage"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"Menyelesaikan Konflik"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"Terselesaikan"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Konten yang diselesaikan"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"Isi hasil penyelesaian"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"TERSELESAIKAN"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Menyelesaikan: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Pulihkan sebagai repositori terpisah"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Asli yang disimpan: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"Coba lagi"</string>
     <string name="ui_retry_e464c660" formatted="false">"Coba lagi"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"Kembali ke repositori"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  Kembalikan semua perubahan"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  Kembalikan"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"Kembalikan perubahan"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Revert commit"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Tinjau tujuan"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"Tinjau folder yang dipulihkan"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"Tinjau server LFS terpisah yang diizinkan untuk repositori Anda. Mencabut persetujuan menghentikan transfer mendatang dalam arah tersebut; operasi yang sedang berjalan mungkin tetap selesai."</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"Tujuan yang ditinjau"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"Cabut"</string>
     <string name="ui_save_1509f561" formatted="false">"Simpan"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Simpan penulis"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"Pindai folder aplikasi"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"Cari repositori…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">"Pilih Repositori"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"Pilih branch sumber untuk digabungkan:"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Folder terpilih"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"Nama pengguna dan token terpisah"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"Pengaturan"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Kepercayaan server SSH"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"Siapkan semua perubahan"</string>
     <string name="ui_stage_de838855" formatted="false">"Siapkan"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"Mulai dari"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"Pesan Stash (opsional) ..."</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"Strategi"</string>
     <string name="ui_switch_39921a74" formatted="false">"Pindah"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"Ganti ke branch"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"Tag"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Tujuan aktif tetap berada di tempatnya. GitSync.md memeriksa bahwa sumber asli yang dipertahankan tidak memiliki suntingan setelahnya sebelum menghapus berkas dan riwayat Git-nya secara permanen."</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Koneksi terenkripsi hanya digunakan kembali untuk alamat repositori aslinya. Ubah autentikasi secara eksplisit untuk menggunakan alamat lain."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Folder dapat dipindahkan langsung di volume penyimpanan ini."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Akun GitHub sebelumnya terputus. Pilih akun yang terhubung atau metode autentikasi lain."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Commit lokal yang diterapkan ulang menghapus file ini."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Informasi tinjauan berubah. Batalkan dan muat ulang kunci server."</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"Pemindaian mencapai batas kedalaman atau jumlah folder. Sebagian folder tidak dipindai."</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"Versi mereka: %1$s byte"</string>
     <string name="ui_theirs_691ef727" formatted="false">"Milik mereka"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"Konflik yang belum diselesaikan: %1$s."</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"Tindakan ini tidak dapat dibatalkan."</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"Ini mengubah .gitattributes. File dan indeks staging tetap seperti semula sampai Anda memasukkan perubahan ke staging."</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"Ini melintasi volume penyimpanan. GitSync.md akan memverifikasi konten yang disalin dan menyimpan aslinya di Pemulihan pemindahan hingga Anda menghapusnya."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Entri riwayat ini tidak tersedia."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Ini menghapus kunci koneksi lain. Koordinasikan dengan pemiliknya sebelum melanjutkan."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Repositori ini akan menggunakan akses publik sampai Anda memilih autentikasi lagi. Akun GitHub yang Anda masuki tidak akan digunakan untuk repositori ini. Alamat fetch dan push tetap sama."</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"Ini akan membuang seluruh progres dan mengembalikan repositori ke kondisi sebelum penggabungan."</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"Ini akan mempertahankan versi berkas Anda."</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"Ini akan menggunakan versi berkas yang masuk."</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"Ini akan menggunakan konten yang Anda edit secara manual."</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">"token atau kata sandi"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"Lacak file yang dipilih dengan LFS"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"Objek yang dilacak"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"Pelacakan: %1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"Tinjau pelacakan"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"Sidik jari server tepercaya disimpan di perangkat ini. Melupakan server memerlukan verifikasi saat terhubung lagi. Kunci privat repositori tetap tersimpan."</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Tidak dapat membuka berkas"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">"Gunakan milik mereka"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Nama Pengguna"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"Nama pengguna + token"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"Strategi yang digunakan: %1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"Verifikasi alamat ini dengan pemilik repositori. Persetujuan hanya berlaku untuk repositori, remote Git, endpoint LFS, dan arah transfer ini di perangkat ini."</string>
     <string name="ui_version_dd167905" formatted="false">"Versi"</string>
     <string name="ui_warning_e981ddae" formatted="false">"Peringatan"</string>
@@ -1142,9 +1503,139 @@
     <string name="upstream_remote" formatted="false">"Remote"</string>
     <string name="upstream_title" formatted="false">"Cabang upstream"</string>
     <string name="upstream_unavailable" formatted="false">"Pilih cabang lokal dengan remote yang dikonfigurasi dan selesaikan operasi Git yang aktif terlebih dahulu."</string>
+    <string name="vault_copy_url" formatted="false">"Salin URL repositori"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"Penyimpanan eksternal aplikasi"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"Penyimpanan aplikasi"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Cadangan metadata Git"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"Tidak dapat membagikan arsip cadangan"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Bagikan cadangan metadata Git"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"Arsip cadangan tidak tersedia"</string>
+    <string name="vault_l10n_branch_value">"Cabang: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"Klon yang selesai berubah. Hubungkan kembali foldernya dari Repositori lokal."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"Tidak dapat menyelesaikan penyimpanan repositori hasil kloning. Coba tambahkan lagi."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"Riwayat klon berubah"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"Riwayat klon dihapus"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"Klon ini tidak lagi menunggu pemulihan"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"Pemulihan klon dibatalkan"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"Pemulihan klon berubah"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"Pemulihan klon berubah. Tinjau lagi."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"Pemulihan klon diabaikan"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"Pemulihan klon tidak lagi tersedia. Hubungkan kembali foldernya dari Repositori lokal."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"Klon ini dihapus atau didaftarkan ulang. Tinjau entrinya saat ini."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"Tidak dapat menyimpan lokasi kloning default"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"Tinjauan penghapusan repositori berubah. Tinjau kembali klon sebelum menghapusnya."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"Penyimpanan perangkat"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"Aktifkan akses penyimpanan bersama, lalu pilih folder lagi. Penyimpanan aplikasi tetap tersedia tanpa izin ini."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"Aktifkan akses penyimpanan bersama sebelum memilih folder"</string>
+    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"Akses folder dihapus. Pilih folder ini lagi sebelum melanjutkan."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"Tidak dapat menyimpan akses folder"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"Pilih folder di perangkat ini atau di volume penyimpanan yang terpasang. Mesin Git ini tidak dapat menggunakan penyedia dokumen cloud secara langsung."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"Pilih folder tanpa tautan simbolis di jalurnya"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"Folder ini tidak mengidentifikasi volume penyimpanan perangkat"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"Folder ini tidak mendukung file Git yang dapat ditulis. Periksa akses dan ruang penyimpanan yang tersedia."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Pilih folder kerja di luar metadata Git"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"Folder yang dipilih berada di luar volume penyimpanannya"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"Folder ini sudah terdaftar dengan cara berbeda. Pengaturan yang ada tetap disimpan."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"Folder ini sudah terdaftar dengan cara berbeda. Tinjau di Repositori lokal."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"Pilih folder repositori lagi untuk memulihkan akses"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"Tidak dapat mempertahankan akses baca dan tulis ke folder ini"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"Folder yang dipilih tidak tersedia"</string>
+    <string name="vault_l10n_github_user" formatted="false">"Pengguna GitHub"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"Riwayat repositori berubah. Klon yang selesai tetap disimpan; tinjau di Repositori lokal."</string>
+    <string name="vault_l10n_last_sync_value">"Sinkronisasi Terakhir: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"Remote lokal"</string>
+    <string name="vault_l10n_local_remote_named">"Remote lokal: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"Tujuan sudah ada. File yang ada tetap disimpan."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"Ini bukan lokasi kloning yang dikelola aplikasi"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"Repositori ditambahkan, tetapi koneksi Obsidian-nya tidak dapat disiapkan. Coba lagi dari Pengaturan → Koneksi Obsidian."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"Beberapa koneksi Obsidian perlu ditinjau. Coba lagi dari Pengaturan → Koneksi Obsidian."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"Akses ke folder publikasi dihapus. Pilih folder asli lagi."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"Akun publikasi berubah"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"Pilih folder perangkat asli lagi untuk memulihkan akses publikasi"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"Pilih folder publikasi asli lagi untuk memulihkan akses"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"Folder ini berbeda dari publikasi yang ditinjau. File yang ada tetap disimpan."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"Izin ini milik folder lain. Pilih folder publikasi asli."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"Publikasi perlu ditinjau. File yang tersimpan tetap disimpan."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"Pilih folder publikasi tanpa tautan simbolis"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"Pilih folder publikasi asli tanpa tautan simbolis"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"Folder publikasi asli tidak tersedia"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"Pendaftaran publikasi milik tujuan lain"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"Folder ini tumpang tindih dengan repositori terdaftar. Tinjau entrinya sebelum memublikasikan."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"Progres publikasi yang tersimpan tidak tersedia"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"Hubungkan kembali akun GitHub yang dipilih"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"Pilih akun GitHub yang terhubung"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"Pengaturan repositori publikasi berubah"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"Pengaturan repositori perlu diperbaiki sebelum memublikasikan"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"Masuk ke akun GitHub yang dipilih untuk publikasi ini"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"Dihentikan. Progres yang tersimpan siap ditinjau; hasil jaringan terakhir mungkin belum pasti."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"Verifikasi akun GitHub yang dipilih sebelum memublikasikan"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"Pemulihan repositori memerlukan akses folder. Pilih lagi folder yang terdampak di Repositori lokal."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"Repositori ini sudah ditambahkan"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"Pilih folder repositori ini lagi untuk memulihkan akses yang tersimpan."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"Nama repositori wajib diisi"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"Tidak dapat menyimpan pengaturan repositori; periksa ruang penyimpanan yang tersedia"</string>
+    <string name="vault_l10n_sample_open_failed">"Tidak dapat membuka repositori contoh: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"Repositori contoh"</string>
+    <string name="vault_l10n_settings_load_failed">"Gagal memuat pengaturan: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"Tidak dapat menyimpan pengaturan"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"Akses penyimpanan bersama dihapus. Aktifkan untuk membuka repositori ini."</string>
+    <string name="vault_l10n_size_bytes">"%1$s B"</string>
+    <string name="vault_l10n_size_kb">"%1$s KB"</string>
+    <string name="vault_l10n_size_mb">"%1$s MB"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"konflik"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"disiapkan"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"penghapusan disiapkan"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"disiapkan + belum disiapkan"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"tidak terlacak"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Pilih folder terlebih dahulu"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"Lokasi penyimpanan ini berubah. Pilih folder lagi."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"Penyimpanan perlu ditinjau"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"Tinjauan penghapusan pelacakan berubah. Tinjau kembali repositori dan pilihan cadangan."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"Volume penyimpanan ini tidak tersedia"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Volume penyimpanan ini tidak tersedia. Sambungkan kembali lalu pilih folder lagi."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"Folder ini tidak dapat dibuka di File."</string>
+    <string name="vault_repository_fallback" formatted="false">"Repositori"</string>
+    <string name="vault_url_copied" formatted="false">"Disalin!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"%1$d hr lalu"</item>
+        <item quantity="other">"%1$d hr lalu"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"%1$d jam lalu"</item>
+        <item quantity="other">"%1$d jam lalu"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"%1$d mnt lalu"</item>
+        <item quantity="other">"%1$d mnt lalu"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"%1$d bln lalu"</item>
+        <item quantity="other">"%1$d bln lalu"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"%1$d mgg lalu"</item>
+        <item quantity="other">"%1$d mgg lalu"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"%1$d thn lalu"</item>
+        <item quantity="other">"%1$d thn lalu"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"Merge memiliki %1$d konflik yang belum diselesaikan.\n\nSelesaikan konflik tersebut sebelum merge dirampungkan."</item>
+        <item quantity="other">"Merge memiliki %1$d konflik yang belum diselesaikan.\n\nSelesaikan konflik tersebut sebelum merge dirampungkan."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s baris"</item>
+        <item quantity="other">"+%1$s -%2$s baris"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d berkas"</item>
         <item quantity="other">"%1$d berkas"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"Merge dihentikan: %1$s (%2$d konflik)"</item>
+        <item quantity="other">"Merge dihentikan: %1$s (%2$d konflik)"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"%1$d objek diunduh."</item>
@@ -1170,6 +1661,10 @@
         <item quantity="one">"%1$d berkas"</item>
         <item quantity="other">"%1$d berkas"</item>
     </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s file termasuk metadata Git · %2$s"</item>
+        <item quantity="other">"%1$s file termasuk metadata Git · %2$s"</item>
+    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d jalur terhalang lainnya tidak ditampilkan."</item>
         <item quantity="other">"%1$d jalur terhalang lainnya tidak ditampilkan."</item>
@@ -1181,6 +1676,10 @@
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"%1$d commit upstream"</item>
         <item quantity="other">"%1$d commit upstream"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d repositori ditambahkan"</item>
+        <item quantity="other">"%1$d repositori ditambahkan"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d repositori"</item>

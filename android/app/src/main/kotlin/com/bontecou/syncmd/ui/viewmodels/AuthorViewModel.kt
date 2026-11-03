@@ -2,10 +2,12 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.security.RepositoryAuthors
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.services.repositories.RepositoryIdentity
 import com.bontecou.syncmd.services.repositories.RepositoryIdentityPlan
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthorViewModel @Inject constructor(private val authors: RepositoryAuthors) : ViewModel() {
     data class State(val busy: Boolean = true, val plan: RepositoryIdentityPlan? = null,
-        val name: String = "", val email: String = "", val error: String? = null, val saved: Boolean = false,
+        val name: String = "", val email: String = "", val error: UiText? = null, val saved: Boolean = false,
         val requestId: Long = 0)
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
@@ -35,7 +37,7 @@ class AuthorViewModel @Inject constructor(private val authors: RepositoryAuthors
                 }
                 if (generation == request) _state.value = loaded
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { if (generation == request) _state.value = State(busy = false, error = e.message ?: "Could not load author identity", requestId = request) }
+            } catch (e: Exception) { if (generation == request) _state.value = State(busy = false, error = UiText.of(e, R.string.account_load_author_failed), requestId = request) }
         }
     }
     fun save(review: State, name: String, email: String) {
@@ -56,7 +58,7 @@ class AuthorViewModel @Inject constructor(private val authors: RepositoryAuthors
                 }
                 if (generation == request) _state.value = current.copy(busy = false, saved = true)
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { if (generation == request) _state.value = current.copy(busy = false, error = e.message ?: "Could not save author identity") }
+            } catch (e: Exception) { if (generation == request) _state.value = current.copy(busy = false, error = UiText.of(e, R.string.account_save_author_failed)) }
         }
     }
 }

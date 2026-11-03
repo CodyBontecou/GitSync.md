@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"Une autre connexion alternative est déjà enregistrée. Vérifiez-la avant de migrer d’autres identifiants d’URL."</string>
+    <string name="account_api_error">"Erreur de l’API GitHub : HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"Le compte GitHub attribué est déconnecté. Sélectionnez un compte pour ce dépôt."</string>
+    <string name="account_basic_requires_http" formatted="false">"L’authentification par nom d’utilisateur et jeton nécessite une adresse HTTP ou HTTPS"</string>
+    <string name="account_browser_failed" formatted="false">"Impossible d’ouvrir le navigateur. Réessayez ou utilisez un Personal Access Token."</string>
+    <string name="account_choose_authentication" formatted="false">"Choisissez l’authentification pour cette adresse"</string>
+    <string name="account_choose_credentials" formatted="false">"Choisissez des identifiants pour cette connexion"</string>
+    <string name="account_choose_location_again" formatted="false">"Choisissez à nouveau l’emplacement du clonage"</string>
+    <string name="account_choose_public_access" formatted="false">"Choisissez un accès sans identifiants réseau pour cette adresse"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"Choisissez une clé privée SSH pour une adresse SSH, ou une authentification HTTPS pour une adresse HTTPS."</string>
+    <string name="account_choose_storage" formatted="false">"Choisissez le stockage dans les Réglages"</string>
+    <string name="account_cleanup_failed" formatted="false">"La connexion GitHub est chiffrée, mais les anciennes préférences locales n’ont pas pu être nettoyées. Réessayez lorsque le stockage sera disponible."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"Les identifiants enregistrés ont changé pendant le clonage. Vérifiez la connexion avant de réessayer."</string>
+    <string name="account_clone_destination_changed" formatted="false">"La destination du clonage a changé ; sa connexion a été conservée"</string>
+    <string name="account_clone_failed_network" formatted="false">"Impossible de cloner le dépôt. Vérifiez son URL, les identifiants d’accès, la branche et la connexion réseau. Les dossiers existants ont été conservés."</string>
+    <string name="account_clone_failed_retry" formatted="false">"Échec du clonage — veuillez réessayer."</string>
+    <string name="account_clone_in_use" formatted="false">"Ce clone est déjà ouvert ou doit être vérifié dans Dépôts locaux."</string>
+    <string name="account_clone_interrupted" formatted="false">"Le clonage interrompu doit être vérifié. Ses fichiers ont été conservés ; reconnectez-le depuis Dépôts locaux."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nL’emplacement de clonage est fixé au stockage Android/media de l’app pour la compatibilité avec Obsidian."</string>
+    <string name="account_configuration_changed" formatted="false">"La configuration du dépôt a changé. Rechargez avant de supprimer les identifiants."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"L’enregistrement de la connexion a échoué et la récupération des identifiants n’a pas pu être enregistrée. Saisissez à nouveau les identifiants."</string>
+    <string name="account_connection_save_failed" formatted="false">"Impossible d’enregistrer la connexion du dépôt"</string>
+    <string name="account_connection_unreadable" formatted="false">"La connexion enregistrée ne peut pas être ouverte. Saisissez à nouveau les identifiants du dépôt."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"Les identifiants enregistrés ont changé. Rechargez avant d’enregistrer."</string>
+    <string name="account_destination_exists" formatted="false">"La destination existe déjà. Reconnectez-la depuis Dépôts locaux ou choisissez un nouvel emplacement vide. Aucun fichier n’a été supprimé."</string>
+    <string name="account_enter_new_credentials" formatted="false">"Saisissez les nouveaux identifiants"</string>
+    <string name="account_enter_ssh_key" formatted="false">"Saisissez la clé privée SSH"</string>
+    <string name="account_enter_username_secret" formatted="false">"Saisissez un nom d’utilisateur et un jeton ou un mot de passe"</string>
+    <string name="account_enter_valid_url" formatted="false">"Saisissez une URL de dépôt valide, avec les identifiants dans les champs séparés."</string>
+    <string name="account_finish_migration" formatted="false">"Terminez la connexion à GitHub pour achever la migration des anciens identifiants."</string>
+    <string name="account_github_requires_https" formatted="false">"L’accès par compte GitHub nécessite une adresse HTTPS github.com"</string>
+    <string name="account_invalid_repository_name" formatted="false">"Nom de dépôt GitHub invalide"</string>
+    <string name="account_invalid_repository_url" formatted="false">"URL de dépôt invalide"</string>
+    <string name="account_load_author_failed" formatted="false">"Impossible de charger l’identité de l’auteur"</string>
+    <string name="account_load_failed" formatted="false">"Impossible de charger les données GitHub"</string>
+    <string name="account_migration_changed" formatted="false">"Les identifiants enregistrés ont changé. Rechargez la migration."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"La récupération des identifiants n’a pas pu être enregistrée. Vérifiez cette connexion."</string>
+    <string name="account_migration_unverified" formatted="false">"Les identifiants chiffrés n’ont pas pu être vérifiés. Les identifiants d’URL ont été conservés."</string>
+    <string name="account_move_changed" formatted="false">"Les identifiants du dépôt ont changé après la vérification. Vérifiez à nouveau le déplacement."</string>
+    <string name="account_move_finish_failed" formatted="false">"Impossible de terminer la récupération du déplacement des identifiants"</string>
+    <string name="account_move_persist_failed" formatted="false">"Impossible d’enregistrer les identifiants du dépôt déplacé"</string>
+    <string name="account_move_recovery_changed" formatted="false">"Les identifiants déplacés ont changé pendant la récupération. Vérifiez la connexion de destination avant de continuer."</string>
+    <string name="account_move_recovery_failed" formatted="false">"La récupération du déplacement des identifiants n’a pas pu être enregistrée. Toutes les copies de travail ont été conservées."</string>
+    <string name="account_move_verify_failed" formatted="false">"Les identifiants du dépôt déplacé n’ont pas pu être vérifiés"</string>
+    <string name="account_no_alternative" formatted="false">"Aucun identifiant alternatif n’est enregistré pour cette adresse"</string>
+    <string name="account_no_backup_folder" formatted="false">"Aucun dossier de sauvegarde de l’app n’est disponible sur le volume de stockage de ce dépôt. Votre copie de travail a été conservée."</string>
+    <string name="account_no_matching_repositories">"Aucun dépôt ne correspond à « %1$s »"</string>
+    <string name="account_no_remote" formatted="false">"Aucun dépôt distant n’est configuré"</string>
+    <string name="account_no_repositories_found" formatted="false">"Aucun dépôt trouvé pour ce compte."</string>
+    <string name="account_no_url_credentials" formatted="false">"Aucun identifiant d’URL pris en charge à migrer"</string>
+    <string name="account_not_authenticated" formatted="false">"Non authentifié — connectez-vous d’abord."</string>
+    <string name="account_open_connection_failed" formatted="false">"Impossible d’ouvrir la connexion"</string>
+    <string name="account_opening_sample" formatted="false">"Ouverture de l’exemple…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"Impossible de préparer la connexion sécurisée à GitHub. Réessayez lorsque le stockage sera disponible."</string>
+    <string name="account_previous_address_missing" formatted="false">"L’adresse distante précédente n’a pas été enregistrée. Vérifiez cette URL GitHub suggérée et choisissez l’authentification avant de cloner."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"La connexion précédente ne peut pas être restaurée. Vérifiez l’URL et choisissez explicitement l’authentification ; les fichiers existants et les identifiants enregistrés ont été conservés."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"Impossible de confirmer la connexion de publication"</string>
+    <string name="account_publication_conflict" formatted="false">"Ce dossier a déjà une autre connexion enregistrée. Les identifiants existants ont été conservés."</string>
+    <string name="account_publication_recovery" formatted="false">"Les identifiants de publication doivent être récupérés. Le dossier a été conservé."</string>
+    <string name="account_publication_verify_failed" formatted="false">"Impossible de vérifier la connexion de publication"</string>
+    <string name="account_reenter_credentials" formatted="false">"Saisissez à nouveau les identifiants du dépôt"</string>
+    <string name="account_reload_public_access" formatted="false">"Rechargez la connexion à accès public enregistrée"</string>
+    <string name="account_remote_url_changed" formatted="false">"L’URL distante a changé. Vérifiez la connexion du dépôt avant de vous authentifier."</string>
     <string name="account_removal_subject" formatted="false">"ce compte"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"Impossible de supprimer les identifiants enregistrés"</string>
+    <string name="account_remove_failed" formatted="false">"Impossible de supprimer la connexion GitHub. Réessayez lorsque le stockage sera disponible."</string>
+    <string name="account_repository_name_length" formatted="false">"Saisissez un nom de dépôt de 1 à 120 caractères"</string>
+    <string name="account_review_github_connection" formatted="false">"Vérifiez la connexion au compte GitHub"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"Vérifiez le clonage interrompu avant d’en lancer un autre. Ses fichiers ont été conservés."</string>
+    <string name="account_sample_hint" formatted="false">"Essayez de vraies opérations Git hors ligne. Aucun compte nécessaire."</string>
+    <string name="account_save_author_failed" formatted="false">"Impossible d’enregistrer l’identité de l’auteur"</string>
+    <string name="account_save_connection_failed" formatted="false">"Impossible d’enregistrer la connexion"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"Impossible d’enregistrer la connexion GitHub de façon sécurisée. Réessayez lorsque le stockage sera disponible."</string>
+    <string name="account_save_sign_in_short" formatted="false">"Impossible d’enregistrer la connexion de façon sécurisée"</string>
+    <string name="account_saved_connection_changed" formatted="false">"La connexion enregistrée a changé. Vérifiez l’authentification avant de cloner à nouveau."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"Les identifiants enregistrés ne peuvent pas être ouverts. Choisissez l’accès public ou saisissez de nouveaux identifiants."</string>
+    <string name="account_select_connected_account" formatted="false">"Sélectionnez un compte GitHub connecté et une adresse HTTPS github.com"</string>
+    <string name="account_select_failed" formatted="false">"Impossible de sélectionner le compte GitHub. Réessayez lorsque le stockage sera disponible."</string>
+    <string name="account_select_github_account" formatted="false">"Sélectionnez un compte GitHub"</string>
+    <string name="account_select_repository_account" formatted="false">"Sélectionnez un compte GitHub pour ce dépôt"</string>
+    <string name="account_select_repository_github_account" formatted="false">"Sélectionnez le compte GitHub du dépôt"</string>
+    <string name="account_session_open_failed" formatted="false">"Impossible d’ouvrir le stockage sécurisé GitHub. Reconnectez-vous pour récupérer la session."</string>
+    <string name="account_session_recovery_failed" formatted="false">"La récupération du stockage sécurisé GitHub a échoué. Reconnectez-vous lorsque le stockage sera disponible."</string>
+    <string name="account_session_save_failed" formatted="false">"Impossible d’enregistrer le stockage sécurisé GitHub. Réessayez de vous connecter."</string>
+    <string name="account_session_verify_failed" formatted="false">"Impossible de vérifier le stockage sécurisé GitHub. Réessayez de vous connecter."</string>
+    <string name="account_sign_in" formatted="false">"Se connecter"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"Connectez-vous à GitHub avant de choisir l’accès par compte"</string>
+    <string name="account_sign_in_failed" formatted="false">"Échec de la connexion"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"Connectez-vous au compte GitHub du dépôt"</string>
+    <string name="account_sign_in_unverified" formatted="false">"La connexion à GitHub n’a pas pu être vérifiée. Recommencez la connexion."</string>
+    <string name="account_sign_out_failed" formatted="false">"Impossible de se déconnecter de façon sécurisée. Réessayez lorsque le stockage sera disponible."</string>
+    <string name="account_signing_in" formatted="false">"Connexion…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"La clé d’hôte SSH n’a pas été approuvée. Réessayez lorsque vous pourrez vérifier l’empreinte du serveur."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"Les clés SSH ne peuvent être utilisées qu’avec des adresses de dépôt SSH"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"La confiance SSH enregistrée ne peut pas être ouverte. Vérifiez la confiance des serveurs SSH dans les Réglages."</string>
+    <string name="account_storage_attention" formatted="false">"Le stockage sécurisé GitHub nécessite votre attention. Les identifiants existants ont été conservés ; reconnectez-vous."</string>
+    <string name="account_token_empty" formatted="false">"Le jeton ne peut pas être vide"</string>
+    <string name="account_token_invalid">"Le jeton GitHub est invalide ou expiré (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"Essayer le dépôt d’exemple"</string>
+    <string name="account_updated_just_now" formatted="false">"à l’instant"</string>
+    <string name="account_valid_branch" formatted="false">"Saisissez un nom de branche valide"</string>
+    <string name="automation_shortcut_label">"%1$s : %2$s"</string>
     <string name="background_active" formatted="false">"Des vérifications en arrière-plan sont programmées pour les dépôts inclus."</string>
     <string name="background_allow_push" formatted="false">"Autoriser la publication automatique"</string>
     <string name="background_attempt">"Dernière vérification : %1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"L’action s’est arrêtée. Vérifiez l’état du dépôt et les paramètres de connexion."</string>
     <string name="diagnostics_share_title" formatted="false">"Partager les diagnostics"</string>
     <string name="diagnostics_warnings" formatted="false">"Avertissements"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"locale"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"distante"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"suivie"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"inconnue"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"Réduire"</string>
+    <string name="dialogs_commit_expand" formatted="false">"Développer"</string>
+    <string name="dialogs_error_branch_exists">"La branche « %1$s » existe déjà.\n\nChoisissez un autre nom."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"Impossible de supprimer la branche actuelle.\n\nPassez d’abord à une autre branche."</string>
+    <string name="dialogs_error_commit_failed">"Échec du commit : %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"Impossible d’effectuer cette opération avec des modifications non commitées.\n\nFaites d’abord un commit ou placez vos modifications dans le stash."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"Nom de branche non valide.\n\nUtilisez des caractères alphanumériques, des tirets et des traits de soulignement."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"Ceci ne semble pas être un dépôt Git valide.\n\nAssurez-vous que le chemin pointe vers un dossier .git ou un répertoire de travail."</string>
+    <string name="dialogs_error_network" formatted="false">"Erreur réseau. Vérifiez votre connexion et réessayez."</string>
+    <string name="dialogs_error_pull_failed">"Échec du pull : %1$s"</string>
+    <string name="dialogs_error_push_failed">"Échec du push : %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"Dépôt introuvable à l’emplacement : %1$s\n\nVérifiez le chemin et réessayez."</string>
+    <string name="dialogs_error_title" formatted="false">"Erreur"</string>
+    <string name="dialogs_info_title" formatted="false">"Information"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"Fusionner uniquement si la source est directement en avance. Préserve un historique linéaire."</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"Fast-forward si possible, sinon créer un commit de fusion."</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Toujours créer un commit de fusion, même si un fast-forward est possible."</string>
+    <string name="dialogs_success_title" formatted="false">"Succès"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"Inconnu"</string>
+    <string name="dialogs_warning_title" formatted="false">"Avertissement"</string>
     <string name="discard_clear_staging" formatted="false">"Vider l’index"</string>
     <string name="discard_review_all" formatted="false">"Les modifications des fichiers suivis et les nouveaux fichiers ci-dessous seront définitivement supprimés. Les fichiers ignorés sont conservés."</string>
     <string name="discard_review_empty" formatted="false">"Il n’y a aucune modification à annuler."</string>
     <string name="discard_review_operation" formatted="false">"Cette action abandonne aussi l’opération Git en cours."</string>
     <string name="discard_review_unborn" formatted="false">"Il n’y a pas encore de commit. Cette action retire les fichiers indiqués de l’index tout en conservant leur contenu."</string>
+    <string name="discovery_scanned">"%1$s analysé. Choisissez les copies de travail à ajouter."</string>
     <string name="file_clone_failure" formatted="false">"Impossible de cloner le dépôt local. Vérifiez le dossier source, l’accès au stockage et la branche. Les dossiers existants ont été conservés."</string>
     <string name="file_clone_guidance" formatted="false">"Clonez un dépôt de l’appareil avec un accès local. Pour le stockage partagé, autorisez d’abord l’accès au dossier dans les réglages."</string>
     <string name="file_delete_body" formatted="false">"Le fichier sera supprimé de cet appareil. Git l’affichera comme supprimé s’il était suivi."</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"Aucun sélecteur de dossiers n’est disponible sur cet appareil"</string>
     <string name="folder_settings_unavailable" formatted="false">"Les réglages de stockage Android ne sont pas disponibles. Le stockage de l’application reste disponible."</string>
     <string name="folder_unusable" formatted="false">"Impossible d’utiliser ce dossier"</string>
+    <string name="git_fetch" formatted="false">"chercher"</string>
+    <string name="git_fetch_detail" formatted="false">"Vérifier la télécommande pour les nouveaux commits"</string>
     <string name="git_native_public_only" formatted="false">"Le protocole natif Git prend uniquement en charge l’accès public. Utilisez HTTPS ou SSH pour vous authentifier."</string>
+    <string name="gitops_action_failed" formatted="false">"Git n’a pas pu terminer cette action"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"L’action sur la branche n’a pas pu aboutir"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"L’action sur la branche n’a pas pu aboutir. Actualisez l’état du dépôt."</string>
+    <string name="gitops_branch_changed" formatted="false">"La branche a changé. Vérifiez la branche actuelle avant de réessayer."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"La branche actuelle a changé. Actualisez avant de commiter et de pousser."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"La branche actuelle a changé. Actualisez avant de pousser."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"La branche actuelle a changé pendant le chargement. Actualisez et vérifiez à nouveau."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"Le nom de la branche ne peut pas être vide"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"Commitez un fichier avant de créer une branche."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"La branche ou le commit actuel a changé. Actualisez et vérifiez à nouveau."</string>
+    <string name="gitops_branch_pushed" formatted="false">"Branche poussée"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"Impossible d’actualiser les branches"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"Impossible de charger les modifications"</string>
+    <string name="gitops_commit_changed" formatted="false">"Le commit a changé. Actualisez l’historique et vérifiez à nouveau."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"Le message de commit ne peut pas être vide"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"Commit local effectué. Push interrompu ; réessayez quand vous serez prêt."</string>
+    <string name="gitops_committed_pushed" formatted="false">"Commit et push effectués"</string>
+    <string name="gitops_committed_pushing" formatted="false">"Commit local effectué. Push en cours…"</string>
+    <string name="gitops_committed_ready" formatted="false">"Commit local effectué. Prêt à pousser quand vous le souhaitez."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"Choisissez « nôtre » ou « leur » pour une résolution groupée"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"Le conflit a changé. Votre brouillon reste affiché. Copiez le texte à conserver, puis fermez et examinez le conflit actuel."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"Le conflit n’a pas pu être résolu"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"Les conflits ont changé. Actualisez avant de les résoudre."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"Impossible d’actualiser les conflits de fusion"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"Certains conflits ne sont pas résolus. Vérifiez la liste de conflits actualisée."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"Impossible de charger le diff du fichier"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Git n’a pas pu terminer cette action sur l’historique"</string>
+    <string name="gitops_history_changed" formatted="false">"L’historique du dépôt a changé. Actualisez et vérifiez à nouveau."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"Impossible d’actualiser l’historique"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"Les autorisations enregistrées des points de terminaison LFS ne peuvent pas être ouvertes. Réinitialisez-les dans Réglages avant de réessayer."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"Adresse de point de terminaison LFS non valide"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"Impossible de vérifier le suivi des extensions. Rechargez et vérifiez les attributs existants, les conflits et l’accès aux fichiers avant de réessayer."</string>
+    <string name="gitops_lfs_failed" formatted="false">"Impossible de terminer Git LFS. Vérifiez la connexion et l’état de suivi actuel, puis rechargez et réessayez. Vos fichiers et commits locaux ont été conservés."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Impossible d’inspecter Git LFS. Vérifiez l’accès au stockage et l’état du dépôt, puis rechargez."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"Impossible de vérifier les verrous du serveur. Actualisez avant toute autre modification."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"Le serveur a refusé l’accès à sa liste de verrous. Vérifiez la connexion au dépôt et les autorisations de push."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"Impossible de vérifier les verrous du serveur. Vérifiez la connexion et l’état du dépôt, puis actualisez avant toute autre modification."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"Le message de fusion ne peut pas être vide"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"La session de fusion a changé. Actualisez avant de continuer."</string>
+    <string name="gitops_merge_stopped">"Fusion interrompue : %1$s"</string>
+    <string name="gitops_merge_successful">"Fusion réussie : %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"L’opération Git a échoué"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"Le pull n’a pas abouti"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"Choisissez le conflit vérifié"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"Choisissez le nom de fichier vérifié"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"Le conflit ou les fichiers de travail ont changé. Votre brouillon a été conservé ; actualisez avant de résoudre."</string>
+    <string name="gitops_rebase_failed" formatted="false">"Git n’a pas pu terminer cette action. Vérifiez la connexion en cas de récupération, puis actualisez l’état du rebase avant de réessayer."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"Le rebase doit être vérifié"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"Ouvrez l’éditeur de conflits avant de résoudre"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"Actualisez la session de rebase"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"Vérifiez d’abord le rebase"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Git n’a pas pu terminer cette action. Vérifiez la connexion, puis l’état actuel du dépôt avant de réessayer."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"Le dépôt sélectionné a changé. Vérifiez à nouveau l’opération."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"Impossible de vérifier les modifications locales"</string>
+    <string name="gitops_stash_changed" formatted="false">"La liste des remises a changé. Vérifiez la remise actuelle avant de réessayer."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"Impossible d’actualiser l’état du dépôt"</string>
+    <string name="gitops_tag_changed" formatted="false">"Le tag a changé. Vérifiez le tag actuel avant de réessayer."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"Le nom du tag ne peut pas être vide"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"Commitez un fichier avant de créer un tag."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"Impossible de charger la branche amont"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"Impossible d’enregistrer la branche amont"</string>
     <string name="guide_back" formatted="false">"Retour"</string>
     <string name="guide_clone_body" formatted="false">"Clonez des dépôts GitHub, publics, auto-hébergés ou accessibles par SSH. Chaque copie de travail conserve sa propre connexion et sa propre branche."</string>
     <string name="guide_clone_title" formatted="false">"Vos dépôts sur Android"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"Envois · identifiants chiffrés distincts"</string>
     <string name="lfs_uploads_public" formatted="false">"Envois · accès public"</string>
     <string name="modified" formatted="false">"Modifié"</string>
+    <string name="move_action" formatted="false">"Déplacer la copie de travail"</string>
+    <string name="move_cancelled" formatted="false">"Déplacement annulé. La copie de travail d’origine a été conservée."</string>
+    <string name="move_confirm_action" formatted="false">"Déplacer"</string>
+    <string name="move_confirm_action_restore" formatted="false">"Restaurer"</string>
+    <string name="move_confirm_guidance" formatted="false">"Choisissez une destination inutilisée et empêchez les autres apps de modifier ces dossiers pendant la fin du déplacement."</string>
+    <string name="move_confirm_retained" formatted="false">"L’original sera conservé comme copie de récupération."</string>
+    <string name="move_confirm_title" formatted="false">"Déplacer cette copie de travail ?"</string>
+    <string name="move_confirm_title_restore" formatted="false">"Restaurer cette copie de récupération ?"</string>
+    <string name="move_done" formatted="false">"Dépôt déplacé"</string>
+    <string name="move_done_retained" formatted="false">"Dépôt déplacé. Son original est conservé dans Récupérations de déplacements."</string>
+    <string name="move_error_destination_other" formatted="false">"La destination est enregistrée pour un autre dépôt"</string>
+    <string name="move_error_destination_registered" formatted="false">"Un autre dépôt est déjà enregistré à cette destination"</string>
+    <string name="move_error_finish_pending" formatted="false">"Terminez d’abord le déplacement en attente"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"Terminez d’abord le déplacement en attente de ce dépôt"</string>
+    <string name="move_error_recovery_added" formatted="false">"La copie de récupération est déjà ajoutée. Déplacez-la depuis son entrée de dépôt."</string>
+    <string name="move_error_restored_registered" formatted="false">"L’emplacement restauré est désormais enregistré différemment ; aucun réglage n’a été écrasé"</string>
+    <string name="move_error_settings_changed" formatted="false">"Les réglages du dépôt ont changé. Vérifiez la récupération du déplacement avant de continuer."</string>
+    <string name="move_error_settings_review" formatted="false">"Les réglages du déplacement doivent être vérifiés ; toutes les copies de travail ont été conservées"</string>
+    <string name="move_error_stale_review" formatted="false">"La vérification du déplacement a changé. Vérifiez à nouveau la destination avant de déplacer."</string>
+    <string name="move_intro" formatted="false">"Déplacez toute cette copie de travail, y compris l’historique Git, les modifications indexées et les fichiers non enregistrés sur le disque. Ses réglages de compte et d’auteur la suivent."</string>
+    <string name="move_intro_restore" formatted="false">"Restaurez l’original conservé comme dépôt distinct. La copie de travail actuelle reste en place."</string>
+    <string name="move_progress_moving" formatted="false">"Déplacement et enregistrement des réglages du dépôt…"</string>
+    <string name="move_progress_reviewing" formatted="false">"Vérification des fichiers et des métadonnées Git…"</string>
+    <string name="move_recovered_name">"%1$s (récupéré)"</string>
+    <string name="move_recovery_attention">"La récupération du déplacement nécessite votre attention : %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"Récupération du déplacement terminée"</string>
+    <string name="move_recovery_removed" formatted="false">"Copie de récupération supprimée"</string>
+    <string name="move_title_restore" formatted="false">"Restaurer la copie de récupération"</string>
     <string name="notes_acknowledge" formatted="false">"Compris"</string>
     <string name="notes_connections_body" formatted="false">"Gérez les comptes GitHub et l’identité de l’auteur du dépôt. Connectez-vous en HTTPS ou SSH, choisissez le stockage des clones, reconnectez les copies locales et vérifiez les déplacements ou suppressions de dépôts."</string>
     <string name="notes_connections_title" formatted="false">"Connexions et stockage"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"Passez à une branche locale et terminez d’abord l’opération Git ou le conflit en cours."</string>
     <string name="repository_actions_unsettled" formatted="false">"Les fichiers continuaient de changer pendant leur ajout à l’index. Vérifiez l’index et les fichiers avant de réessayer."</string>
     <string name="repository_actions_write_scope" formatted="false">"Push et Synchroniser ajoutent à l’index toutes les modifications actuelles non ignorées, créent un commit si nécessaire et envoient les commits en attente. Synchroniser récupère d’abord les modifications et avance en fast-forward lorsque cela est sûr. Les conflits, les historiques divergents et un état distant non sûr arrêtent l’action. Si l’envoi échoue, tout nouveau commit local est conservé pour réessayer."</string>
+    <string name="repository_add_none_new" formatted="false">"Choisissez au moins un dépôt qui n’a pas été ajouté"</string>
+    <string name="repository_clone_deleted" formatted="false">"Clone local supprimé"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"HEAD détaché ou sans premier commit"</string>
     <string name="repository_discovery_clean" formatted="false">"Aucune modification"</string>
     <string name="repository_discovery_dirty" formatted="false">"Modifications locales"</string>
     <string name="repository_history_files_deleted" formatted="false">"Fichiers locaux supprimés"</string>
     <string name="repository_history_files_kept" formatted="false">"Fichiers locaux conservés"</string>
     <string name="repository_history_tracking_removed" formatted="false">"Suivi Git retiré · fichiers de travail conservés"</string>
+    <string name="repository_history_unavailable" formatted="false">"L’historique du dépôt n’est pas disponible"</string>
+    <string name="repository_imported_files_kept" formatted="false">"Les fichiers des dépôts importés sont conservés sur cet appareil"</string>
     <string name="repository_metadata_unavailable" formatted="false">"Métadonnées du dépôt indisponibles"</string>
     <string name="repository_no_commits" formatted="false">"Aucun commit"</string>
+    <string name="repository_no_longer_added" formatted="false">"Le dépôt n’est plus ajouté"</string>
+    <string name="repository_removed_files_kept" formatted="false">"Dépôt retiré de l’app. Les fichiers locaux ont été conservés."</string>
+    <string name="repository_restore_backup_first" formatted="false">"Restaurez la sauvegarde des métadonnées Git avant de reconnecter ce dossier"</string>
     <string name="repository_shortcut_active" formatted="false">"Autorisé et épinglé"</string>
     <string name="repository_shortcut_add" formatted="false">"Ajouter un raccourci à l’accueil"</string>
     <string name="repository_shortcut_busy" formatted="false">"Une action est déjà en cours. Ce raccourci n’a pas été mis en file d’attente. Patientez, puis appuyez à nouveau dessus."</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"Autorisation du raccourci révoquée"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"Votre écran d’accueil n’a pas pu accepter ce raccourci. Utilisez les actions de cet écran."</string>
     <string name="repository_sync_not_recorded" formatted="false">"Non enregistré"</string>
+    <string name="resolve_local_action" formatted="false">"Résoudre"</string>
+    <string name="resolve_local_body" formatted="false">": Nous enregistrerons vos modifications locales, puis fusionnerons ces modifications avec la version distante. En cas de conflits, vous pourrez les résoudre sur l\'écran suivant."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"Commit et fusionne"</string>
+    <string name="resolve_local_committing" formatted="false">"Validation des modifications locales…"</string>
+    <string name="resolve_local_default_message" formatted="false">"Changements locaux de GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"Message de commit"</string>
+    <string name="resolve_local_superseded" formatted="false">"Le dépôt sélectionné a changé. Vérifiez à nouveau les modifications locales."</string>
+    <string name="resolve_local_title" formatted="false">"Les modifications locales bloquent cette traction"</string>
     <string name="settings_folder_unavailable" formatted="false">"L’accès au dossier nécessite votre attention"</string>
     <string name="shortcut_background_attention" formatted="false">"Le raccourci nécessite votre attention. Ouvrez les actions du dépôt et vérifiez son état avant de réessayer."</string>
     <string name="shortcut_background_channel" formatted="false">"Actions des raccourcis"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"Jamais synchronisé"</string>
     <string name="tide_home_state_synced">"synchronisé %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"À vérifier"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"Rien de nouveau sur le dépôt distant."</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"Les vôtres uniquement"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"Le dépôt distant a des commits que vous n’avez pas."</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"Nouveautés distantes"</string>
+    <string name="tide_merge_both_moved" formatted="false">"Les deux côtés ont changé"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"Supprimé d’un côté, modifié de l’autre."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"Les deux côtés ont modifié ce fichier."</string>
+    <string name="tide_merge_conflict_list_count">"%1$d sur %2$d résolus"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"Choisissez la version à conserver ou modifiez le résultat à la main."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"Renommé de deux façons différentes."</string>
     <string name="tide_merge_conflict_result" formatted="false">"RÉSULTAT"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">": c\'est ce qui est mis en scène."</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"Non résolu"</string>
     <string name="tide_merge_diff_added" formatted="false">"Ajouté"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"Le contenu binaire ne peut pas être affiché comme du texte."</string>
     <string name="tide_merge_diff_changed" formatted="false">"Modifiés"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"Copié"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"Supprimé"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"Abandonner"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"Cette modification n’a pas de diff ligne par ligne."</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"Aucune modification de texte"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"Impossible de charger ce diff"</string>
+    <string name="tide_merge_diff_hunk_line">"ligne %1$d"</string>
+    <string name="tide_merge_diff_line_added">"Ajouté : %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"Supprimé : %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"Modifié"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"Renommé"</string>
     <string name="tide_merge_diff_staged" formatted="false">"indexé"</string>
+    <string name="tide_merge_diff_stats_a11y">"Lignes ajoutées : %1$d, lignes supprimées : %2$d"</string>
+    <string name="tide_merge_diff_summary">"Fichiers : %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"type modifié"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"Non indexé"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"Déjà à jour."</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"Synchronisé"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"Terminer la fusion ?"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"Les modifications de l’autre côté sont intégrées."</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"Fusionné"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"Récupérez, vérifiez, puis fusionnez."</string>
     <string name="tide_merge_merge_kicker" formatted="false">"Fusionner"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"Certains fichiers ont changé des deux côtés."</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"Fusion en pause"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"Il reste des conflits à résoudre"</string>
+    <string name="tide_merge_moved_on" formatted="false">"Le dépôt distant a évolué pendant que vous écriviez."</string>
     <string name="tide_merge_ours_filename" formatted="false">"Le nôtre"</string>
+    <string name="tide_merge_plan_section" formatted="false">"Plan vérifié"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"Retour au point de départ."</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"Le rebase attend une extraction bloquée."</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"Le rebase s’est arrêté sur des fichiers modifiés des deux côtés."</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"Le rebase est terminé."</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"Récupérez d’abord, puis décidez."</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"Vérifiez cette étape avant de continuer."</string>
     <string name="tide_merge_result_section" formatted="false">"RÉSULTAT"</string>
     <string name="tide_merge_side_deleted" formatted="false">"supprimé"</string>
     <string name="tide_merge_theirs" formatted="false">"Le leur"</string>
+    <string name="tide_merge_theirs_count">"↓%1$d à distance"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"Le leur"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"Lecture des réglages de branche…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"Suivi"</string>
+    <string name="tide_merge_upstream_set">"Suivi de %1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"Aucune branche amont définie"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"Pull et push n’auront pas de destination tant que vous n’aurez pas choisi de branche amont."</string>
+    <string name="tide_merge_yours" formatted="false">"Votre version"</string>
+    <string name="tide_merge_yours_count">"↑%1$d en local"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"Échec du clonage"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"Créer un PAT sur GitHub ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"Du vrai Git."</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"Emplacement"</string>
     <string name="tide_onboarding_show_token" formatted="false">"Afficher"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"Clonez un dépôt, écrivez dans Obsidian ou une autre app et synchronisez en un geste."</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"Non connecté"</string>
+    <string name="tide_settings_off" formatted="false">"désactivé"</string>
+    <string name="tide_settings_on" formatted="false">"activé"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"Nouveaux clones"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"GitSync.md oublie le jeton de %1$s sur cet appareil. Vos dépôts et leurs fichiers restent à leur emplacement."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"Se déconnecter de GitHub ?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"connecté"</string>
+    <string name="tide_settings_this_account" formatted="false">"ce compte GitHub"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"Rechercher des modifications"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"L’opération Git est en pause. Résolvez chaque fichier en conflit pour continuer."</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Les deux côtés ont changé"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"Seules les métadonnées .git examinées seront supprimées. Les fichiers de travail restent en place, mais l’historique Git local ne pourra pas être récupéré sans autre copie."</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Supprimer définitivement l’historique Git ?"</string>
     <string name="tracking_remove_review_changed" formatted="false">"Les données examinées ont changé. Annulez et vérifiez à nouveau le retrait du suivi."</string>
+    <string name="tracking_removed_backup">"Suivi Git supprimé. Sauvegarde vérifiée : %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Suivi Git supprimé. Les fichiers de travail ont été conservés."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTous les fichiers de travail et l’historique Git local resteront sur cet appareil. Vous pourrez reconnecter le dossier plus tard."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nCette action supprime définitivement ce clone géré par l’app, y compris les commits non envoyés, les changements mis de côté dans des stashes et les fichiers non enregistrés. Le dépôt distant reste inchangé."</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s nécessitera une vérification d’empreinte avant la prochaine connexion."</string>
+    <string name="ui_1_s_bytes_81cdb385">"Octets : %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"Caractères : %1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s fichiers"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Lignes : %1$s, octets : %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commits locaux · %2$s commits en amont"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s affichées · %2$s enregistrées"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Achat unique via Google Play"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"Ajouter les dépôts sélectionnés"</string>
     <string name="ui_added_b4561641" formatted="false">"Ajouté"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"Dépôts ajoutés"</string>
+    <string name="ui_alias_1_s_e7e8c040">"Alias : %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"Alias (facultatif)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Toutes les résolutions sont indexées. Continuez à rejouer les commits. Si Git indique NOTHING_TO_COMMIT, vérifiez s’il faut ignorer le commit vide."</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"Tous les conflits sont résolus. Terminer la fusion ?"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"Tous les conflits sont résolus. Terminez ou annulez la fusion."</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Toutes les fonctionnalités sont incluses après l’installation de l’application payante. Aucun abonnement ni achat intégré."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Toutes les modifications locales apportées à ce fichier seront définitivement supprimées."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Autoriser l’accès aux dossiers locaux"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"Déjà ajouté"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"Un déplacement interrompu doit être récupéré. Toutes les copies reconnues sont conservées jusqu’à la fin."</string>
     <string name="ui_and_1_s_more_f93ea742">"et %1$s plus..."</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"N’IMPORTE QUEL DÉPÔT. SYNCHRONISÉ SUR ANDROID."</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Application"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Réglages de l\'app"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"Appliquer"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"Appliquer le stash"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Appliquer le choix de suivi"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"L’approbation est enregistrée sur cet appareil et la connexion en attente reprend. Annuler laisse le serveur sans confiance."</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"Voulez-vous vraiment abandonner cette fusion ?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Auteur"</string>
     <string name="ui_back_639807a2" formatted="false">"RETOUR"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Retour"</string>
@@ -822,6 +1123,7 @@
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"Parcourir les dépôts"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Navigation avec ce compte"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"Annuler"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Annuler le déplacement en attente"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"Modifiés"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"Fichiers modifiés"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Modifications"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Choisir un autre dossier"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Choisir le stockage des clones"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Choisissez un stockage local ou connecté à cet appareil. Les fournisseurs de documents cloud ne proposent pas de système de fichiers utilisable par ce moteur Git."</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"Choisir le point de départ"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"Choisir la stratégie"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Choisissez le compte utilisé pour parcourir GitHub. Chaque dépôt conserve son compte attribué ; modifiez-le dans Connexion du dépôt."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Choisissez le dossier par défaut des nouveaux clones. Les dépôts existants conservent leur emplacement actuel."</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"Tout effacer"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Créez un fichier ou un dossier avec Nouveau."</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"CRÉER UN PAT SUR GITHUB →"</string>
     <string name="ui_create_fde9c501" formatted="false">"Créer"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"Créer une branche"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Dossier par défaut actuel"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"Actuel"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Adresse de push distincte actuelle : %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Emplacement par défaut des nouveaux clones. Chaque clone peut utiliser un autre dossier."</string>
     <string name="ui_delete_1_s_6474596f">"Supprimer « %1$s » ?"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"Supprimer la branche ?"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"Supprimer la branche \"%1$s\" ?"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"Supprimer la branche"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Supprimer\nSupprimer &amp;quot;"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Supprimer le fichier"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"Supprimer les fichiers locaux?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">"Supprimer les fichiers locaux"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"Supprimer le tag"</string>
+    <string name="ui_destination_1_s_0df94639">"Destination : %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Dossier parent de destination"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnostic"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"Différence"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Abandonner le brouillon"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"Dépôts découverts"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Fermer"</string>
     <string name="ui_done_283e91eb" formatted="false">"Terminé"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"Emplacement de téléchargement"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"Télécharger le contenu manquant"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"Supprimer le stash"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Pendant un rebasage, l’amont correspond au côté ours de Git ; le commit local rejoué correspond à theirs."</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"p. ex. feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"p. ex. MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"p. ex. prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Modifier l’auteur du commit"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Modifier la connexion"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Modifier la résolution"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Modifiez le contenu ici pour résoudre le conflit manuellement"</string>
     <string name="ui_email_969ccbd3" formatted="false">"E-mail"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"Dossier vide"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"Activer l’accès"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"Authentification du point de terminaison"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Saisissez à nouveau les identifiants ou choisissez l’accès public pour la nouvelle adresse."</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Saisissez le chemin complet de votre dépôt Git."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Erreur"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Chaque serveur SSH nécessitera une vérification d’empreinte avant la prochaine connexion. Les entrées de confiance endommagées seront aussi supprimées."</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"Récupérer et appliquer les modifications distantes"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Récupérer et vérifier le rebasage"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"Récupérer les modifications distantes"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"Fichier : %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Échec de l’opération sur le fichier"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Terminer la récupération du déplacement"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"Finalisation"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"Oublier"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"Oublier le serveur"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS nécessite votre attention"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · Suivi et téléchargements"</string>
     <string name="ui_git_remote_91593664" formatted="false">"Distant Git"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"Compte GitHub connecté"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"Comptes GitHub"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub sign-in\nDétails sur"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Version complète de Gitsync.md"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md a besoin d’accéder au stockage partagé pour gérer de vraies copies de travail Git dans les dossiers de l’appareil. Choisissez les dossiers à utiliser après avoir activé l’accès dans les réglages Android."</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md ne fournira pas d’identifiants pour ce dépôt."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Revenez en arrière et sélectionnez un dépôt."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Je comprends qu’un autre propriétaire peut encore modifier ce fichier."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Incluez le nom d’utilisateur SSH dans l’adresse : git@host:team/repo.git ou ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_info_170322a3" formatted="false">"REJOIGNEZ"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Clé publique correspondante (facultatif)"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"Fusionner"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"Fusionner une branche dans %1$s"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">"Message du commit de fusion"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"Fusionner"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"Stratégie de fusion :"</string>
     <string name="ui_message_f5394f72" formatted="false">"Message :"</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"Métadonnées :"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"Plus"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Récupérations de déplacements"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"Déplacer le dépôt"</string>
     <string name="ui_name_dcd1d522" formatted="false">"Nom"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Nom dans GitSync.md"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"Nouveau dossier"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Nouveau jeton ou mot de passe"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"Aucun point de terminaison LFS personnalisé approuvé"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"Aucune branche disponible"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Aucune modification à afficher"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Aucun commit trouvé"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"Aucun conflit trouvé"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Aucun compte connecté. Les dépôts locaux restent disponibles."</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"Aucun nouveau fichier binaire ou volumineux ne nécessite un choix de suivi."</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"Aucun dépôt"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"Aucun dépôt ajouté pour le moment."</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"Aucun dépôt enregistré. Ajoutez-en un dans les réglages."</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"Aucun dépôt"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"AUCUN DÉPÔT"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Aucune modification remisée trouvée"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"Aucun tag trouvé"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"maintenant"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"Ouvrir"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Ouvrir Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Ouvrir dans des fichiers"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Ouverture du fichier…"</string>
     <string name="ui_or_7175517a" formatted="false">"ou"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"Notre version : %1$s octets"</string>
     <string name="ui_ours_ab658c14" formatted="false">"Le nôtre"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"Remplacer l’apparence du système"</string>
     <string name="ui_owner_1_s_599ca9ce">"Propriétaire : %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Parents (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Chemin"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"Token d\'accès personnel"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Plateforme"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"Résolvez tous les conflits avant de terminer la fusion."</string>
     <string name="ui_pop_52e740ad" formatted="false">"Pop"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"Appliquer et supprimer le stash"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"Ajoutés précédemment"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"Empreinte précédemment approuvée : %1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"Politique de confidentialité"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Tirer avec rebase"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Pull avec rebasage / reprendre le rebasage"</string>
     <string name="ui_push_792aac67" formatted="false">"Pousser"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"Push bloqué par des verrous LFS"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"Envoyer les modifications locales"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"Lire et modifier les fichiers de ce dépôt"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebasage en cours"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebaser sur l’amont vérifié"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"Résultats récents des opérations sur cet appareil. Le journal conserve jusqu’à 500 entrées. Les identifiants, adresses de dépôts, chemins et contenus de fichiers sont exclus."</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Reconnecter"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"Reconnectez les copies de travail déjà stockées par GitSync.md. Retirer une entrée conserve ses fichiers ; supprimer un clone géré et retirer le suivi Git sont des choix distincts."</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"La récupération nécessite votre attention. Les copies de travail reconnues sont conservées."</string>
     <string name="ui_refresh_0e916101" formatted="false">"Actualiser"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Actualiser l’état du rebasage"</string>
     <string name="ui_reload_1_s_873e324f">"Recharger %1$s ?"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Supprimer les identifiants enregistrés ?"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"Supprimer la connexion"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Supprimer l’original conservé ?"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"Retirer ce dépôt et supprimer ses fichiers locaux de cet appareil ? Votre dépôt GitHub n’est pas affecté."</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Retirer le suivi"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"Supprimé"</string>
     <string name="ui_rename_1_s_9b09e088">"Renommer %1$s"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Commit local rejoué"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Rejoue les commits locaux sur l’amont configuré. Les identifiants des commits locaux peuvent changer. La structure de fusion existante est conservée. Rien n’est envoyé."</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"État du dépôt"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Chemin du dépôt"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Les dépôts associés à ce compte nécessiteront une nouvelle connexion ou le choix d’un autre compte dans Connexion du dépôt. Vos fichiers et commits locaux sont conservés."</string>
     <string name="ui_repository_13d6ff07" formatted="false">"Dépôt"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"Connexion du dépôt"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"Échec de l’opération sur le dépôt"</string>
     <string name="ui_repository_path_037711af" formatted="false">"Chemin du dépôt"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"État du dépôt"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"URL du dépôt"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Résoudre et indexer"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"RÉSOUDRE LES CONFLITS\nRÉSULTAT DE"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"Résolu"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Contenu résolu"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"Contenu résolu"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"RÉSOLU"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Résolution : %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Restaurer comme dépôt distinct"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Original conservé : %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"Réessayer"</string>
     <string name="ui_retry_e464c660" formatted="false">"Réessayer"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"Retour aux dépôts"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  Annuler toutes les modifications"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  Annuler"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"Annuler les modifications"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Annuler le commit (revert)"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Vérifier la destination"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"Vérifier le dossier restauré"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"Vérifiez les serveurs LFS distincts autorisés pour vos dépôts. Révoquer une autorisation arrête les futurs transferts dans ce sens ; les opérations en cours peuvent se terminer."</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"Destination vérifiée"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"Révoquer"</string>
     <string name="ui_save_1509f561" formatted="false">"Enregistrer"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Enregistrer l’auteur"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"Analyser les dossiers de l’app"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"Rechercher des dépôts…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">"SÉLECTIONNER LE DÉPÔT"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"Choisir la branche source à fusionner :"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Dossier sélectionné"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"Nom d’utilisateur et jeton distincts"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"Réglages"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Confiance des serveurs SSH"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"Indexer toutes les modifications"</string>
     <string name="ui_stage_de838855" formatted="false">"Indexer"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"Partir de"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"Message de stockage (optionnel) ..."</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"Stratégie"</string>
     <string name="ui_switch_39921a74" formatted="false">"Basculer"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"Passer à la branche"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"Tags"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"La destination active reste en place. GitSync.md vérifie que l’original conservé ne comporte aucune modification ultérieure avant de supprimer définitivement ses fichiers et son historique Git."</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"La connexion chiffrée est réutilisée uniquement pour l’adresse d’origine du dépôt. Changez explicitement l’authentification pour utiliser une autre adresse."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Le dossier peut être déplacé directement sur ce volume de stockage."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Le compte GitHub précédent est déconnecté. Sélectionnez un compte connecté ou une autre méthode d’authentification."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Le commit local rejoué supprime ce fichier."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Les données examinées ont changé. Annulez et actualisez les verrous du serveur."</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"L’analyse a atteint sa limite de profondeur ou de dossiers. Certains dossiers n’ont pas été analysés."</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"Leur version : %1$s octets"</string>
     <string name="ui_theirs_691ef727" formatted="false">"Le leur"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"Conflits encore non résolus : %1$s."</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">": Cela ne peut pas être annulé."</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"Ceci modifie .gitattributes. Les fichiers et l’index restent en place tant que vous n’indexez pas vos changements."</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"Cette opération traverse plusieurs volumes de stockage. GitSync.md vérifiera le contenu copié et conservera l’original dans Récupérations de déplacements jusqu’à ce que vous le supprimiez."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Cette entrée de l’historique n’est pas disponible."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Ceci supprime le verrou d’une autre connexion. Consultez son propriétaire avant de continuer."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Ce dépôt utilisera l’accès public jusqu’à ce que vous choisissiez à nouveau une authentification. Votre compte GitHub connecté ne sera pas utilisé pour ce dépôt. Les adresses de fetch et de push restent inchangées."</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"Toute la progression sera abandonnée et le dépôt reviendra à son état d’avant la fusion."</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"Votre version du fichier sera conservée."</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"La version entrante du fichier sera utilisée."</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"Le contenu que vous avez modifié manuellement sera utilisé."</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">": jeton ou mot de passe"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"Suivre les fichiers sélectionnés avec LFS"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"Objets suivis"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"Suivi : %1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"Vérifier le suivi"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"Les empreintes des serveurs de confiance sont enregistrées sur cet appareil. Oublier un serveur impose une vérification à la prochaine connexion. Les clés privées des dépôts restent enregistrées."</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Impossible d’ouvrir le fichier"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">"Utilisez-les"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Nom d\'utilisateur"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"Nom d’utilisateur + jeton"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"Stratégie utilisée : %1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"Vérifiez cette adresse auprès du propriétaire du dépôt. L’approbation s’applique uniquement à ce dépôt, distant Git, point de terminaison LFS et sens de transfert sur cet appareil."</string>
     <string name="ui_version_dd167905" formatted="false">"Version"</string>
     <string name="ui_warning_e981ddae" formatted="false">"Avertissement"</string>
@@ -1142,99 +1503,248 @@
     <string name="upstream_remote" formatted="false">"Dépôt distant"</string>
     <string name="upstream_title" formatted="false">"Branche de suivi"</string>
     <string name="upstream_unavailable" formatted="false">"Choisissez une branche locale avec un dépôt distant configuré et terminez d’abord toute opération Git en cours."</string>
+    <string name="vault_copy_url" formatted="false">"Copier l’URL du dépôt"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"Stockage externe de l’app"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"Stockage de l’app"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Sauvegarde des métadonnées Git"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"Impossible de partager l’archive de sauvegarde"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Partager la sauvegarde des métadonnées Git"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"L’archive de sauvegarde n’est pas disponible"</string>
+    <string name="vault_l10n_branch_value">"Branche : %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"Le clone terminé a changé. Reconnectez son dossier depuis Dépôts locaux."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"Impossible de terminer l’enregistrement du dépôt cloné. Réessayez de l’ajouter."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"L’historique du clone a changé"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"L’historique du clone a été supprimé"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"Ce clone n’attend plus de récupération"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"La récupération du clone a été annulée"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"La récupération du clone a changé"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"La récupération du clone a changé. Vérifiez-la à nouveau."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"La récupération du clone a été ignorée"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"La récupération du clone n’est plus disponible. Reconnectez son dossier depuis Dépôts locaux."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"Ce clone a été retiré ou enregistré à nouveau. Vérifiez son entrée actuelle."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"Impossible d’enregistrer l’emplacement de clonage par défaut"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"La vérification de suppression du dépôt a changé. Vérifiez à nouveau le clone avant de le supprimer."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"Stockage de l’appareil"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"Activez l’accès au stockage partagé, puis choisissez à nouveau le dossier. Le stockage de l’app reste disponible sans cette autorisation."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"Activez l’accès au stockage partagé avant de choisir le dossier"</string>
+    <string name="vault_l10n_files_git_status">"Git : %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"L’accès au dossier a été retiré. Choisissez à nouveau ce dossier avant de continuer."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"Impossible d’enregistrer l’accès au dossier"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"Choisissez un dossier sur cet appareil ou sur un volume de stockage connecté. Ce moteur Git ne peut pas utiliser directement un fournisseur de documents cloud."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"Choisissez un dossier sans lien symbolique dans son chemin"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"Ce dossier n’identifie aucun volume de stockage de l’appareil"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"Ce dossier ne prend pas en charge les fichiers Git modifiables. Vérifiez l’accès et l’espace disponible."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Choisissez un dossier de travail en dehors des métadonnées Git"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"Le dossier sélectionné se trouve en dehors de son volume de stockage"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"Ce dossier est déjà enregistré différemment. Les réglages existants ont été conservés."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"Ce dossier est déjà enregistré différemment. Vérifiez-le dans Dépôts locaux."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"Choisissez à nouveau le dossier du dépôt pour rétablir l’accès"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"Impossible de conserver l’accès en lecture et en écriture à ce dossier"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"Le dossier sélectionné n’est pas disponible"</string>
+    <string name="vault_l10n_github_user" formatted="false">"Utilisateur GitHub"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"L’historique des dépôts a changé. Le clone terminé a été conservé ; vérifiez-le dans Dépôts locaux."</string>
+    <string name="vault_l10n_last_sync_value">"Dernière synchro : %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"Distant local"</string>
+    <string name="vault_l10n_local_remote_named">"Distant local : %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"La destination existe déjà. Les fichiers existants ont été conservés."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"Cet emplacement de clonage n’est pas géré par l’app"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"Dépôt ajouté, mais sa connexion Obsidian n’a pas pu être préparée. Réessayez depuis Réglages → Connexions Obsidian."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"Certaines connexions Obsidian doivent être vérifiées. Réessayez depuis Réglages → Connexions Obsidian."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"L’accès au dossier de publication a été retiré. Choisissez à nouveau le dossier d’origine."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"Le compte de publication a changé"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"Choisissez à nouveau le dossier d’origine de l’appareil pour rétablir l’accès à la publication"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"Choisissez à nouveau le dossier de publication d’origine pour rétablir l’accès"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"Ce dossier est différent de la publication vérifiée. Les fichiers existants ont été conservés."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"Cette autorisation concerne un autre dossier. Choisissez le dossier de publication d’origine."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"La publication nécessite votre attention. Les fichiers enregistrés ont été conservés."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"Choisissez le dossier de publication, sans lien symbolique"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"Choisissez le dossier de publication d’origine, sans lien symbolique"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"Le dossier de publication d’origine n’est pas disponible"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"L’enregistrement de la publication concerne une autre destination"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"Ce dossier chevauche un dépôt enregistré. Vérifiez son entrée existante avant de publier."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"La progression de publication enregistrée n’est pas disponible"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"Reconnectez le compte GitHub sélectionné"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"Sélectionnez un compte GitHub connecté"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"Les réglages du dépôt de publication ont changé"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"Les réglages des dépôts doivent être réparés avant la publication"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"Connectez-vous au compte GitHub sélectionné pour cette publication"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"Arrêté. La progression enregistrée est prête à être vérifiée ; le dernier résultat réseau peut être incertain."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"Vérifiez le compte GitHub sélectionné avant de publier"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"La récupération du dépôt nécessite l’accès au dossier. Choisissez à nouveau le dossier concerné dans Dépôts locaux."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"Ce dépôt est déjà ajouté"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"Choisissez à nouveau le dossier de ce dépôt pour rétablir l’accès enregistré."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"Le nom du dépôt est obligatoire"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"Impossible d’enregistrer les réglages des dépôts ; vérifiez l’espace disponible"</string>
+    <string name="vault_l10n_sample_open_failed">"Impossible d’ouvrir le dépôt d’exemple : %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"Dépôt d’exemple"</string>
+    <string name="vault_l10n_settings_load_failed">"Impossible de charger les réglages : %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"Impossible d’enregistrer les réglages"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"L’accès au stockage partagé a été retiré. Activez-le pour ouvrir ce dépôt."</string>
+    <string name="vault_l10n_size_bytes">"%1$s o"</string>
+    <string name="vault_l10n_size_kb">"%1$s Ko"</string>
+    <string name="vault_l10n_size_mb">"%1$s Mo"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"conflit"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"indexé"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"suppression indexée"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"indexé + non indexé"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"non suivi"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Choisissez d’abord un dossier"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"Cet emplacement de stockage a changé. Choisissez à nouveau le dossier."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"Le stockage nécessite votre attention"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"La vérification de l’arrêt du suivi a changé. Vérifiez à nouveau le dépôt et le choix de sauvegarde."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"Ce volume de stockage n’est pas disponible"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Ce volume de stockage n’est pas disponible. Reconnectez-le et choisissez à nouveau le dossier."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"Impossible d’ouvrir ce dossier dans Fichiers."</string>
+    <string name="vault_repository_fallback" formatted="false">"Dépôt"</string>
+    <string name="vault_url_copied" formatted="false">"Copié !"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"il y a %1$d j"</item>
+        <item quantity="many">"il y a %1$d j"</item>
+        <item quantity="other">"il y a %1$d j"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"il y a %1$d h"</item>
+        <item quantity="many">"il y a %1$d h"</item>
+        <item quantity="other">"il y a %1$d h"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"il y a %1$d min"</item>
+        <item quantity="many">"il y a %1$d min"</item>
+        <item quantity="other">"il y a %1$d min"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"il y a %1$d mois"</item>
+        <item quantity="many">"il y a %1$d mois"</item>
+        <item quantity="other">"il y a %1$d mois"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"il y a %1$d sem."</item>
+        <item quantity="many">"il y a %1$d sem."</item>
+        <item quantity="other">"il y a %1$d sem."</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"il y a %1$d an"</item>
+        <item quantity="many">"il y a %1$d ans"</item>
+        <item quantity="other">"il y a %1$d ans"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"La fusion comporte %1$d conflit non résolu.\n\nRésolvez-le avant de terminer la fusion."</item>
+        <item quantity="many">"La fusion comporte %1$d conflits non résolus.\n\nRésolvez-les avant de terminer la fusion."</item>
+        <item quantity="other">"La fusion comporte %1$d conflits non résolus.\n\nRésolvez-les avant de terminer la fusion."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s ligne"</item>
+        <item quantity="many">"+%1$s -%2$s lignes"</item>
+        <item quantity="other">"+%1$s -%2$s lignes"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d fichier"</item>
-        <item quantity="other">"%1$d fichiers"</item>
         <item quantity="many">"%1$d fichiers"</item>
+        <item quantity="other">"%1$d fichiers"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"Fusion interrompue : %1$s (%2$d conflit)"</item>
+        <item quantity="many">"Fusion interrompue : %1$s (%2$d conflits)"</item>
+        <item quantity="other">"Fusion interrompue : %1$s (%2$d conflits)"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"%1$d objet téléchargé."</item>
-        <item quantity="other">"%1$d objets téléchargés."</item>
         <item quantity="many">"%1$d objets téléchargés."</item>
+        <item quantity="other">"%1$d objets téléchargés."</item>
     </plurals>
     <plurals name="lfs_extensions_affected">
         <item quantity="one">"%1$d fichier actuel utilisera LFS après son ajout à l’index"</item>
-        <item quantity="other">"%1$d fichiers actuels utiliseront LFS après leur ajout à l’index"</item>
         <item quantity="many">"%1$d fichiers actuels utiliseront LFS après leur ajout à l’index"</item>
+        <item quantity="other">"%1$d fichiers actuels utiliseront LFS après leur ajout à l’index"</item>
     </plurals>
     <plurals name="lfs_extensions_more">
         <item quantity="one">"Et %1$d autre fichier actuel. Vérifiez les modifications Git avant de créer un commit."</item>
-        <item quantity="other">"Et %1$d autres fichiers actuels. Vérifiez les modifications Git avant de créer un commit."</item>
         <item quantity="many">"Et %1$d autres fichiers actuels. Vérifiez les modifications Git avant de créer un commit."</item>
+        <item quantity="other">"Et %1$d autres fichiers actuels. Vérifiez les modifications Git avant de créer un commit."</item>
     </plurals>
     <plurals name="lfs_extensions_retained">
         <item quantity="one">"%1$d fichier actuel conserve son choix de suivi explicite."</item>
-        <item quantity="other">"%1$d fichiers actuels conservent leurs choix de suivi explicites."</item>
         <item quantity="many">"%1$d fichiers actuels conservent leurs choix de suivi explicites."</item>
+        <item quantity="other">"%1$d fichiers actuels conservent leurs choix de suivi explicites."</item>
     </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d fichier restauré."</item>
-        <item quantity="other">"%1$d fichiers restaurés."</item>
         <item quantity="many">"%1$d fichiers restaurés."</item>
+        <item quantity="other">"%1$d fichiers restaurés."</item>
     </plurals>
     <plurals name="lfs_tracking_files">
         <item quantity="one">"%1$d fichier"</item>
-        <item quantity="other">"%1$d fichiers"</item>
         <item quantity="many">"%1$d fichiers"</item>
+        <item quantity="other">"%1$d fichiers"</item>
+    </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s fichier, métadonnées Git comprises · %2$s"</item>
+        <item quantity="many">"%1$s fichiers, métadonnées Git comprises · %2$s"</item>
+        <item quantity="other">"%1$s fichiers, métadonnées Git comprises · %2$s"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d autre chemin bloqué n’est pas affiché."</item>
-        <item quantity="other">"%1$d autres chemins bloqués ne sont pas affichés."</item>
         <item quantity="many">"%1$d autres chemins bloqués ne sont pas affichés."</item>
+        <item quantity="other">"%1$d autres chemins bloqués ne sont pas affichés."</item>
     </plurals>
     <plurals name="rebase_local_commits">
         <item quantity="one">"%1$d commit local"</item>
-        <item quantity="other">"%1$d commits locaux"</item>
         <item quantity="many">"%1$d commits locaux"</item>
+        <item quantity="other">"%1$d commits locaux"</item>
     </plurals>
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"%1$d commit en amont"</item>
-        <item quantity="other">"%1$d commits en amont"</item>
         <item quantity="many">"%1$d commits en amont"</item>
+        <item quantity="other">"%1$d commits en amont"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d dépôt ajouté"</item>
+        <item quantity="many">"%1$d dépôts ajoutés"</item>
+        <item quantity="other">"%1$d dépôts ajoutés"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d dépôt"</item>
-        <item quantity="other">"· %1$d dépôts"</item>
         <item quantity="many">"· %1$d dépôts"</item>
+        <item quantity="other">"· %1$d dépôts"</item>
     </plurals>
     <plurals name="tide_git_conflicts_to_resolve">
         <item quantity="one">"%1$d conflit à résoudre"</item>
-        <item quantity="other">"%1$d conflits à résoudre"</item>
         <item quantity="many">"%1$d conflits à résoudre"</item>
+        <item quantity="other">"%1$d conflits à résoudre"</item>
     </plurals>
     <plurals name="tide_git_files_staged">
         <item quantity="one">"%1$d fichier indexé"</item>
-        <item quantity="other">"%1$d fichiers indexés"</item>
         <item quantity="many">"%1$d fichiers indexés"</item>
+        <item quantity="other">"%1$d fichiers indexés"</item>
     </plurals>
     <plurals name="tide_git_headline_commit">
         <item quantity="one">"Créer un commit de %1$d fichier"</item>
-        <item quantity="other">"Créer un commit de %1$d fichiers"</item>
         <item quantity="many">"Créer un commit de %1$d fichiers"</item>
+        <item quantity="other">"Créer un commit de %1$d fichiers"</item>
     </plurals>
     <plurals name="tide_home_headline_attention">
         <item quantity="one">"%1$d coffre\na besoin de vous."</item>
-        <item quantity="other">"%1$d coffres\nont besoin de vous."</item>
         <item quantity="many">"%1$d coffres\nont besoin de vous."</item>
+        <item quantity="other">"%1$d coffres\nont besoin de vous."</item>
     </plurals>
     <plurals name="tide_home_headline_ready">
         <item quantity="one">"%1$d coffre\nsur ce téléphone."</item>
-        <item quantity="other">"%1$d coffres\nsur ce téléphone."</item>
         <item quantity="many">"%1$d coffres\nsur ce téléphone."</item>
+        <item quantity="other">"%1$d coffres\nsur ce téléphone."</item>
     </plurals>
     <plurals name="tide_home_start_github_count">
         <item quantity="one">"%1$d dépôt disponible"</item>
-        <item quantity="other">"%1$d dépôts disponibles"</item>
         <item quantity="many">"%1$d dépôts disponibles"</item>
+        <item quantity="other">"%1$d dépôts disponibles"</item>
     </plurals>
     <plurals name="tide_vault_changes_on_phone">
         <item quantity="one">"modification sur ce téléphone"</item>
-        <item quantity="other">"modifications sur ce téléphone"</item>
         <item quantity="many">"modifications sur ce téléphone"</item>
+        <item quantity="other">"modifications sur ce téléphone"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
         <item quantity="one">"conflit à résoudre"</item>
-        <item quantity="other">"conflits à résoudre"</item>
         <item quantity="many">"conflits à résoudre"</item>
+        <item quantity="other">"conflits à résoudre"</item>
     </plurals>
 </resources>

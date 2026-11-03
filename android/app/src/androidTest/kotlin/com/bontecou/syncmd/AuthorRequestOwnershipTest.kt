@@ -139,7 +139,7 @@ class AuthorRequestOwnershipTest {
         release.complete(Unit); quiescent(vm)
         assertEquals(changed, bytes(root))
         assertFalse(vm.state.value.saved)
-        assertTrue(vm.state.value.error.orEmpty().contains("configuration changed"))
+        assertTrue(vm.state.value.error?.resolve(app).orEmpty().contains("configuration changed"))
         assertEquals("Original external", vm.state.value.name)
     }
 }

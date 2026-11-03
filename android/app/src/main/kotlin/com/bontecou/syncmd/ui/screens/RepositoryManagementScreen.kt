@@ -179,7 +179,7 @@ fun RepositoryManagementScreen(
                                 CompositionLocalProvider(LocalTextStyle provides TideType.mono(11.5.sp), LocalContentColor provides c.inkMid) {
                                     RepositoryDiscoverySummary(candidate.branch, candidate.hasLocalChanges)
                                 }
-                                candidate.remoteUrl?.let { Text(remoteLabel(it), style = TideType.mono(11.5.sp).copy(textDirection = TextDirection.Ltr), color = c.inkFaint, maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                                candidate.remoteUrl?.let { Text(remoteLabel(context, it), style = TideType.mono(11.5.sp).copy(textDirection = TextDirection.Ltr), color = c.inkFaint, maxLines = 1, overflow = TextOverflow.Ellipsis) }
                                 if (alreadyAdded) TidePill(stringResource(R.string.ui_already_added_253b22d7), c.synced, c.synced.copy(alpha = 0.12f), Modifier.padding(top = 4.dp))
                             }
                         }
@@ -276,13 +276,13 @@ fun RepositoryManagementScreen(
                         VaultOpsRow(stringResource(R.string.ui_share_backup_archive_ee4ba873), {
                             runCatching {
                                 val file = File(archive)
-                                require(file.isFile && file.name == "git-metadata.zip") { "Backup archive is not available" }
+                                require(file.isFile && file.name == "git-metadata.zip") { context.getString(R.string.vault_l10n_backup_unavailable) }
                                 val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
                                 val intent = Intent(Intent.ACTION_SEND).setType("application/zip").putExtra(Intent.EXTRA_STREAM, uri)
                                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                intent.clipData = ClipData.newUri(context.contentResolver, "Git metadata backup", uri)
-                                context.startActivity(Intent.createChooser(intent, "Share Git metadata backup"))
-                            }.onFailure { viewModel.reportError(it.message ?: "Cannot share the backup archive") }
+                                intent.clipData = ClipData.newUri(context.contentResolver, context.getString(R.string.vault_l10n_backup_clip_label), uri)
+                                context.startActivity(Intent.createChooser(intent, context.getString(R.string.vault_l10n_backup_share_title)))
+                            }.onFailure { viewModel.reportError(it.message ?: context.getString(R.string.vault_l10n_backup_share_failed)) }
                         }, chevron = true)
                     }
                 }
@@ -351,16 +351,16 @@ fun RepositoryManagementScreen(
 
 private fun repositoryLocation(context: android.content.Context, path: String): String {
     val bases = buildList {
-        add(context.filesDir.canonicalPath to "App storage")
+        add(context.filesDir.canonicalPath to context.getString(R.string.vault_l10n_app_storage))
         @Suppress("DEPRECATION")
         context.externalMediaDirs.firstOrNull()?.let { add(it.canonicalPath to "Android/media") }
-        context.getExternalFilesDir(null)?.let { add(it.canonicalPath to "App external storage") }
+        context.getExternalFilesDir(null)?.let { add(it.canonicalPath to context.getString(R.string.vault_l10n_app_external_storage)) }
     }
     val base = bases.firstOrNull { path.startsWith(it.first + "/") }
     return if (base != null) "${base.second} / ${path.removePrefix(base.first + "/")}" else path
 }
 
-private fun remoteLabel(remote: String): String = if (remote.startsWith("file:")) {
+private fun remoteLabel(context: android.content.Context, remote: String): String = if (remote.startsWith("file:")) {
     val name = runCatching { java.net.URI(remote).path.trimEnd('/').substringAfterLast('/') }.getOrDefault("")
-    "Local remote${if (name.isBlank()) "" else ": $name"}"
+    if (name.isBlank()) context.getString(R.string.vault_l10n_local_remote) else context.getString(R.string.vault_l10n_local_remote_named, name)
 } else remote

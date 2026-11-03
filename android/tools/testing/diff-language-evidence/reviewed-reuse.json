@@ -1,0 +1,10 @@
+{
+  "tide_merge_behind_kicker": "tide_vault_eyebrow_new_on_remote",
+  "tide_merge_both_moved": "tide_vault_eyebrow_both_moved",
+  "tide_merge_diff_discard": "ui_discard_eb1a70e3",
+  "tide_merge_diff_unstaged": "tide_git_unstaged",
+  "tide_merge_in_sync_kicker": "tide_vault_eyebrow_in_sync",
+  "tide_merge_moved_on": "tide_vault_moved_on",
+  "tide_merge_theirs_count": "tide_vault_from_remote",
+  "tide_merge_yours_count": "tide_vault_yours"
+}

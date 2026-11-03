@@ -57,8 +57,10 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
     private val clonePublications = com.bontecou.syncmd.storage.clonePublications(context)
     private val credentials = com.bontecou.syncmd.security.RepositoryCredentialStore(context)
     private val locations = com.bontecou.syncmd.storage.RepositoryLocations(context)
-    private val _moveReview = MutableStateFlow<com.bontecou.syncmd.storage.RepositoryMoveReview?>(null)
-    val moveReview = _moveReview.asStateFlow()
+    private val moveReviews = MoveReviewState()
+    val moveReview = moveReviews.review
+    val moveReviewError = moveReviews.error
+    internal val moveCompletion = moveReviews.completion
     private val _moveJournals = MutableStateFlow<List<RepositoryMoveJournal>>(emptyList())
     val moveJournals = _moveJournals.asStateFlow()
     private val _selectedRepository = MutableStateFlow("")
@@ -121,9 +123,9 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
     }, destructive = true)
     fun retryCloneRecovery(review: com.bontecou.syncmd.services.repositories.CloneRecovery) = mutate({
         try {
-            require(clonePublications.inspect().singleOrNull { it.key == review.key } == review) { "Clone recovery changed. Review it again." }
+            require(clonePublications.inspect().singleOrNull { it.key == review.key } == review) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_recovery_changed_review) }
             val record = requireNotNull(review.publication)
-            require(record.registeredDate == null && !clonePublications.isActive(record.id)) { "This clone is no longer awaiting recovery" }
+            require(record.registeredDate == null && !clonePublications.isActive(record.id)) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_not_awaiting) }
             recoverClonePublication(record)
             _operationMessage.value = context.getString(com.bontecou.syncmd.R.string.clone_recovery_added)
         } finally { readCloneRecoveries() }
@@ -143,12 +145,12 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                     recoverClonePublications()
                     if (!com.bontecou.syncmd.obsidian.ObsidianConnections(context,
                         com.bontecou.syncmd.services.github.GitHubAuthManager(context), credentials).recoverPendingPreparations() && _errorMessage.value == null) {
-                        _errorMessage.value = "Some Obsidian connections need review. Retry from Settings → Obsidian connections."
+                        _errorMessage.value = text(com.bontecou.syncmd.R.string.vault_l10n_obsidian_review)
                     }
                     _appSettings.value = AppSettings(_selectedRepository.value,
                         prefs.getLong("auto_fetch_interval", 3600000L), prefs.getBoolean("is_dark_theme", false), prefs.getBoolean("show_debug_info", false))
                 } catch (e: CancellationException) { throw e
-                } catch (e: Exception) { _errorMessage.value = "Failed to load settings: ${e.message}"
+                } catch (e: Exception) { _errorMessage.value = text(com.bontecou.syncmd.R.string.vault_l10n_settings_load_failed, e.message.toString())
                 } finally { readCloneRecoveries(); _isLoading.value = false; initialLoad.complete(Unit) }
             }
         }
@@ -191,7 +193,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         CloneCatalogProvenance.plan(prefs.all, repos.associate { it.path to it.dateAdded }, liveClones, cloneReceipt).forEach { (key, value) ->
             if (value == null) editor.remove(key) else editor.putString(key, value)
         }
-        check(editor.commit()) { "Could not save repository settings; check available storage" }
+        check(editor.commit()) { text(com.bontecou.syncmd.R.string.vault_l10n_repository_settings_save_failed) }
         _allRepositories.value = repos
         _repositoryHistory.value = history.take(100)
         _selectedRepository.value = selected
@@ -218,7 +220,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         }
         // Commit disconnection, history and journal cleanup before publishing recovery results.
         persist(repos, history, selected, deferred)
-        if (deferred.isNotEmpty()) _errorMessage.value = "Repository recovery needs folder access. Choose the affected folder again in Local repositories."
+        if (deferred.isNotEmpty()) _errorMessage.value = text(com.bontecou.syncmd.R.string.vault_l10n_recovery_needs_access)
     }
 
     private fun finishRemoval(entry: RepositoryHistoryEntry, pending: List<RepositoryHistoryEntry>? = null) {
@@ -228,24 +230,38 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         persist(repos, history, selected, pending)
     }
 
-    private fun mutate(action: suspend () -> Unit, onSuccess: () -> Unit = {}, destructive: Boolean = false) {
+    private fun mutate(action: suspend () -> Unit, onSuccess: () -> Unit = {}, destructive: Boolean = false, onFinally: () -> Unit = {}, onError: ((Exception) -> Unit)? = null) {
         if (destructive && _destructiveBusy.value) return
         if (destructive) _destructiveBusy.value = true
         viewModelScope.launch {
-            initialLoad.await()
             try {
+                initialLoad.await()
                 withContext(Dispatchers.IO) {
                     persistence.withLock {
                         _isLoading.value = true
-                        _errorMessage.value = null
+                        if (onError == null) _errorMessage.value = null
                         try { readState(); action() } finally { _isLoading.value = false }
                     }
                 }
                 onSuccess()
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { _errorMessage.value = e.message ?: "Repository operation failed"
-            } finally { if (destructive) _destructiveBusy.value = false }
+            } catch (e: Exception) {
+                if (onError != null) onError(e) else _errorMessage.value = userMessage(e)
+            } finally {
+                if (destructive) _destructiveBusy.value = false
+                onFinally()
+            }
         }
+    }
+
+    private fun text(id: Int, vararg args: Any): String = context.getString(id, *args)
+    /** Typed failures get localized copy; other exceptions keep their diagnostic message. */
+    private fun userMessage(e: Exception): String = when (e) {
+        is com.bontecou.syncmd.storage.StaleMoveReviewException -> text(com.bontecou.syncmd.R.string.move_error_stale_review)
+        is StaleTrackingRemovalException -> text(com.bontecou.syncmd.R.string.vault_l10n_tracking_review_changed)
+        is StaleRepositoryDeletionException -> text(com.bontecou.syncmd.R.string.vault_l10n_deletion_review_changed)
+        is com.bontecou.syncmd.storage.MoveDestinationExistsException -> text(com.bontecou.syncmd.R.string.vault_l10n_move_destination_exists)
+        else -> e.message ?: text(com.bontecou.syncmd.R.string.ui_repository_operation_failed_f1152917)
     }
 
     fun setRepositoryPath(path: String, onSelected: () -> Unit = {}) = mutate({
@@ -268,7 +284,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         historyEntry: RepositoryHistoryEntry?) = RepositoryOperationCoordinator.withRepository(completed.path) {
             readState()
             require(com.bontecou.syncmd.services.repositories.CompletedClone.capture(completed.path, credentials.recordVersion(completed.path)) == completed) {
-                "The completed clone changed. Reconnect its folder from Local repositories."
+                text(com.bontecou.syncmd.R.string.vault_l10n_clone_changed_reconnect)
             }
             require(name.isNotBlank())
             val previous = historyEntry?.let { selected -> _repositoryHistory.value.singleOrNull {
@@ -276,15 +292,15 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             } }
             val expectedAlias = historyEntry?.repository?.alias ?: alias
             val publication = requireNotNull(clonePublications.records().singleOrNull { it.completed == completed && it.name == name && it.alias == expectedAlias }) {
-                "The clone recovery is no longer available. Reconnect its folder from Local repositories."
+                text(com.bontecou.syncmd.R.string.vault_l10n_clone_recovery_unavailable)
             }
             val managed = CloneStorage.isManagedClonePath(context, completed.path)
             val existing = _allRepositories.value.singleOrNull { it.path == completed.path }
             CloneCatalogProvenance.requireAllowed(prefs.all, publication.id, completed, existing?.dateAdded)
-            if (publication.registeredDate != null) require(existing?.dateAdded == publication.registeredDate) { "This clone was removed or registered again. Review its current entry." }
+            if (publication.registeredDate != null) require(existing?.dateAdded == publication.registeredDate) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_removed_or_registered) }
             if (existing != null) require(existing.name == name && existing.alias == expectedAlias && existing.managedStorage == managed &&
-                existing.remoteUrl == completed.remote && existing.branch == completed.branch) { "This folder is already registered differently. Review it in Local repositories." }
-            if (historyEntry != null) require(previous == historyEntry || previous == null && existing != null) { "Repository history changed. The completed clone was kept; review it in Local repositories." }
+                existing.remoteUrl == completed.remote && existing.branch == completed.branch) { text(com.bontecou.syncmd.R.string.vault_l10n_folder_registered_differently_review) }
+            if (historyEntry != null) require(previous == historyEntry || previous == null && existing != null) { text(com.bontecou.syncmd.R.string.vault_l10n_history_changed_clone_kept) }
             val entry = existing ?: SavedRepository(name, completed.path, expectedAlias, managedStorage = managed,
                 remoteUrl = completed.remote, branch = completed.branch)
             val pendingKey = CloneCatalogProvenance.PENDING_PREFIX + CloneCatalogProvenance.fingerprint(completed)
@@ -300,14 +316,14 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                 if (!java.nio.file.Files.exists(File(completed.path, ".git/gitsync-obsidian/connection.json").toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
                     prepareObsidianConnection(completed.path)
                 }
-                check(prefs.edit().remove(pendingKey).commit()) { "Could not finish saving the cloned repository. Retry adding it." }
+                check(prefs.edit().remove(pendingKey).commit()) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_finish_save_failed) }
             }
             clonePublications.registered(publication.id, entry.dateAdded)
     }
     private suspend fun recoverClonePublication(selected: com.bontecou.syncmd.services.repositories.ClonePublication) {
         RepositoryOperationCoordinator.withRepository(selected.completed.path) {
-            val current = clonePublications.get(selected.id) ?: error("Clone recovery was dismissed")
-            require(current == selected && current.registeredDate == null && !clonePublications.isActive(current.id)) { "Clone recovery changed" }
+            val current = clonePublications.get(selected.id) ?: error(text(com.bontecou.syncmd.R.string.vault_l10n_clone_recovery_dismissed_error))
+            require(current == selected && current.registeredDate == null && !clonePublications.isActive(current.id)) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_recovery_changed) }
             readState()
             CloneCatalogProvenance.requireAllowed(prefs.all, current.id, current.completed,
                 _allRepositories.value.singleOrNull { it.path == current.completed.path }?.dateAdded)
@@ -315,12 +331,12 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             val history = current.history?.let { raw ->
                 val review = org.json.JSONObject(raw)
                 val entry = _repositoryHistory.value.singleOrNull { canonical(it.repository.path) == canonical(review.getString("path")) }
-                if (entry != null) require(com.bontecou.syncmd.storage.cloneHistoryReview(entry) == raw) { "The clone history changed" }
-                else require(_allRepositories.value.any { it.path == current.completed.path }) { "The clone history was removed" }
+                if (entry != null) require(com.bontecou.syncmd.storage.cloneHistoryReview(entry) == raw) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_history_changed) }
+                else require(_allRepositories.value.any { it.path == current.completed.path }) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_history_removed) }
                 entry
             }
             val completed = clonePublications.publish(current, credentials.recordVersion(current.completed.path))
-            require(clonePublications.get(current.id) == current) { "Clone recovery was cancelled" }
+            require(clonePublications.get(current.id) == current) { text(com.bontecou.syncmd.R.string.vault_l10n_clone_recovery_cancelled) }
             registerCompletedCloneNow(completed, current.name, current.alias, history)
         }
     }
@@ -339,7 +355,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
 
     fun addHistoryClone(name: String, path: String, historyPath: String, onAdded: () -> Unit = {}) = mutate({
         val previous = _repositoryHistory.value.firstOrNull { canonical(it.repository.path) == canonical(historyPath) }
-            ?: error("Repository history changed. The completed clone was kept; review it in Local repositories.")
+            ?: error(text(com.bontecou.syncmd.R.string.vault_l10n_history_changed_clone_kept))
         addNow(name, path, previous.repository.alias, CloneStorage.isManagedClonePath(context, path), previous.repository.path)
         prepareObsidianConnection(path)
     }, onAdded)
@@ -352,14 +368,14 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                     com.bontecou.syncmd.services.github.GitHubAuthManager(context), credentials).prepare(java.io.File(path).canonicalPath)
             }
         } catch (cancelled: CancellationException) { throw cancelled }
-        catch (_: Exception) { _errorMessage.value = "Repository added, but its Obsidian connection could not be prepared. Retry from Settings → Obsidian connections." }
+        catch (_: Exception) { _errorMessage.value = text(com.bontecou.syncmd.R.string.vault_l10n_obsidian_prepare_failed) }
     }
 
     private suspend fun addNow(name: String, path: String, alias: String = "", managedStorage: Boolean = false, historySource: String? = null) {
-        require(name.isNotBlank()) { "Repository name is required" }
+        require(name.isNotBlank()) { text(com.bontecou.syncmd.R.string.vault_l10n_repository_name_required) }
         val info = discovery.inspect(path)
-        require(_allRepositories.value.none { canonical(it.path) == info.path }) { "This repository is already added" }
-        require(!managedStorage || CloneStorage.isManagedClonePath(context, info.path)) { "This is not an app-managed clone location" }
+        require(_allRepositories.value.none { canonical(it.path) == info.path }) { text(com.bontecou.syncmd.R.string.vault_l10n_repository_already_added) }
+        require(!managedStorage || CloneStorage.isManagedClonePath(context, info.path)) { text(com.bontecou.syncmd.R.string.vault_l10n_not_managed_location) }
         val repo = SavedRepository(name, info.path, alias, managedStorage = managedStorage, remoteUrl = info.remoteUrl, branch = info.branch)
         persist(_allRepositories.value + repo, _repositoryHistory.value.filterNot { canonical(it.repository.path) == info.path || it.repository.path == historySource },
             _selectedRepository.value.ifBlank { info.path })
@@ -370,20 +386,20 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         initialLoad.await()
         persistence.withLock {
             require(record.phase == com.bontecou.syncmd.services.publication.FolderPublicationPhase.PUBLISHED)
-            require(accountId == "github:${record.account.id}") { "The publication account changed" }
+            require(accountId == "github:${record.account.id}") { text(com.bontecou.syncmd.R.string.vault_l10n_publication_account_changed) }
             readState()
             val remote = requireNotNull(record.remote); val path = record.input.review.path
             val info = discovery.inspect(path)
-            require(info.path == path && info.remoteUrl == remote.cloneUrl && info.branch == "main") { "Publication repository settings changed" }
+            require(info.path == path && info.remoteUrl == remote.cloneUrl && info.branch == "main") { text(com.bontecou.syncmd.R.string.vault_l10n_publication_settings_changed) }
             val receiptKey = "publication_${record.id}"
             val receipt = org.json.JSONObject().put("workflow", record.id).put("path", path).put("remote", remote.cloneUrl)
                 .put("accountId", accountId).put("repositoryId", remote.id).toString()
             val existing = _allRepositories.value.singleOrNull { it.path == path }
             val previous = prefs.getString(receiptKey, null)
-            require(previous == null || previous == receipt) { "Publication registration belongs to another destination" }
+            require(previous == null || previous == receipt) { text(com.bontecou.syncmd.R.string.vault_l10n_publication_other_destination) }
             require(existing == null && previous == null || existing != null && previous == receipt &&
                 existing.remoteUrl == remote.cloneUrl && existing.branch == "main" && existing.name == remote.name) {
-                "This folder is already registered differently. Existing settings were kept."
+                text(com.bontecou.syncmd.R.string.vault_l10n_folder_registered_differently_kept)
             }
             credentials.bindPublication(record.id, path, remote.cloneUrl, accountId)
             val added = existing ?: SavedRepository(remote.name, path, managedStorage = CloneStorage.isManagedClonePath(context, path),
@@ -395,8 +411,8 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
     }
 
     fun reconnect(path: String, onReady: () -> Unit = {}) = mutate({
-        val previous = _repositoryHistory.value.firstOrNull { it.repository.path == path } ?: error("Repository history is unavailable")
-        require(!previous.trackingRemoved) { "Restore the Git metadata backup before reconnecting this folder" }
+        val previous = _repositoryHistory.value.firstOrNull { it.repository.path == path } ?: error(text(com.bontecou.syncmd.R.string.repository_history_unavailable))
+        require(!previous.trackingRemoved) { text(com.bontecou.syncmd.R.string.repository_restore_backup_first) }
         val repo = previous.repository
         addNow(repo.name, repo.path, repo.alias, repo.managedStorage)
     }, onReady)
@@ -407,8 +423,8 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         deletionReviewOwner = owner
         _deletionReview.value = null
         mutate({
-            val repo = _allRepositories.value.firstOrNull { it.path == path } ?: error("Repository is no longer added")
-            require(repo.managedStorage) { "Imported repository files are kept on this device" }
+            val repo = _allRepositories.value.firstOrNull { it.path == path } ?: error(text(com.bontecou.syncmd.R.string.repository_no_longer_added))
+            require(repo.managedStorage) { text(com.bontecou.syncmd.R.string.repository_imported_files_kept) }
             val plan = ManagedRepositoryDeletion().prepare(path, CloneStorage.managedCloneRoots(context))
             if (deletionReviewOwner === owner) _deletionReview.value = RepositoryDeletionReview(repo, plan)
         })
@@ -426,7 +442,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             val info = runCatching { discovery.inspect(path) }.getOrNull()
             val saved = repo.copy(remoteUrl = info?.remoteUrl ?: repo.remoteUrl, branch = info?.branch ?: repo.branch)
             if (deletion != null) {
-                require(repo.managedStorage) { "Imported repository files are kept on this device" }
+                require(repo.managedStorage) { text(com.bontecou.syncmd.R.string.repository_imported_files_kept) }
                 ManagedRepositoryDeletion().delete(deletion.plan, CloneStorage.managedCloneRoots(context))
             }
             finishRemoval(RepositoryHistoryEntry(saved, filesDeleted = deletion != null))
@@ -436,9 +452,9 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             withRepositoryDeletionReview(deletion, { _deletionReview.value },
                 { _allRepositories.value.firstOrNull { it.path == path } }) { repo, _ -> remove(repo) }
         } else RepositoryOperationCoordinator.withRepository(path) {
-            remove(_allRepositories.value.firstOrNull { it.path == path } ?: error("Repository is no longer added"))
+            remove(_allRepositories.value.firstOrNull { it.path == path } ?: error(text(com.bontecou.syncmd.R.string.repository_no_longer_added)))
         }
-        _operationMessage.value = if (deletion != null) "Local clone deleted" else "Repository removed from the app. Local files were kept."
+        _operationMessage.value = text(if (deletion != null) com.bontecou.syncmd.R.string.repository_clone_deleted else com.bontecou.syncmd.R.string.repository_removed_files_kept)
     }, destructive = deletion != null)
 
     /** The visible caller owns cancellation and navigation; persistence never retains a route callback. */
@@ -455,7 +471,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                         val repos = _allRepositories.value.map { repo ->
                             if (canonical(repo.path) == info.path) repo.copy(remoteUrl = info.remoteUrl, branch = info.branch) else repo
                         }
-                        require(repos.any { canonical(it.path) == info.path }) { "Repository is no longer added" }
+                        require(repos.any { canonical(it.path) == info.path }) { text(com.bontecou.syncmd.R.string.repository_no_longer_added) }
                         persist(repos, _repositoryHistory.value, _selectedRepository.value)
                     } finally { _isLoading.value = false }
                 }
@@ -463,7 +479,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             true
         } catch (e: CancellationException) { throw e
         } catch (e: Exception) {
-            _errorMessage.value = e.message ?: "Repository operation failed"
+            _errorMessage.value = userMessage(e)
             false
         }
     }
@@ -473,49 +489,72 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         val folder = com.bontecou.syncmd.storage.RepositoryLocations(context).rememberFolder(uri)
         recoverInterruptedRemovals()
         _discoveryResult.value = discovery.scan(listOf(folder.path))
-        _operationMessage.value = "Scanned ${folder.name}. Choose the working copies to add."
+        _operationMessage.value = text(com.bontecou.syncmd.R.string.discovery_scanned, folder.name)
     })
     fun reportStorageError(message: String) { _errorMessage.value = message }
 
-    fun prepareMove(path: String, selection: String?) = mutate({
-        val original = _allRepositories.value.firstOrNull { it.path == canonical(path) } ?: error("Repository is no longer added")
-        prepareMoveNow(original, selection, null)
-    })
-    fun prepareRecoveryRestore(id: String, selection: String?) = mutate({
-        val journal = moves.read(id)
-        require(journal.phase == RepositoryMovePhase.COMMITTED && journal.plan.copyRequired) { "Finish the pending move first" }
-        require(_allRepositories.value.none { it.path == journal.plan.recovery.path }) { "The recovery copy is already added. Move it from its repository entry." }
-        val previous = moveMetadata(journal).original
-        val restored = previous.copy(name = "${previous.name} (recovered)", alias = previous.alias.takeIf { it.isNotBlank() }?.let { "$it (recovered)" }.orEmpty(),
-            path = journal.plan.recovery.path, dateAdded = System.currentTimeMillis(), managedStorage = false)
-        prepareMoveNow(restored, selection, id, File(journal.plan.source).name)
-    })
-    private suspend fun prepareMoveNow(original: SavedRepository, selection: String?, restoringId: String?, folderName: String = File(original.path).name) {
-        _moveReview.value = null
+    fun prepareMove(path: String, selection: String?, screenOwner: Any? = null) {
+        if (_destructiveBusy.value) return
+        val owner = moveReviews.begin(screenOwner) ?: return
+        _errorMessage.value = null
+        mutate({
+            if (!moveReviews.isRequestCurrent(owner)) return@mutate
+            val original = _allRepositories.value.firstOrNull { it.path == canonical(path) } ?: error(text(com.bontecou.syncmd.R.string.repository_no_longer_added))
+            prepareMoveNow(original, selection, null, owner)
+        }, onError = { moveReviews.fail(owner, userMessage(it)) })
+    }
+    fun prepareRecoveryRestore(id: String, selection: String?, screenOwner: Any? = null) {
+        if (_destructiveBusy.value) return
+        val owner = moveReviews.begin(screenOwner) ?: return
+        _errorMessage.value = null
+        mutate({
+            if (!moveReviews.isRequestCurrent(owner)) return@mutate
+            val journal = moves.read(id)
+            require(journal.phase == RepositoryMovePhase.COMMITTED && journal.plan.copyRequired) { text(com.bontecou.syncmd.R.string.move_error_finish_pending) }
+            require(_allRepositories.value.none { it.path == journal.plan.recovery.path }) { text(com.bontecou.syncmd.R.string.move_error_recovery_added) }
+            val previous = moveMetadata(journal).original
+            val restored = previous.copy(name = text(com.bontecou.syncmd.R.string.move_recovered_name, previous.name), alias = previous.alias.takeIf { it.isNotBlank() }?.let { text(com.bontecou.syncmd.R.string.move_recovered_name, it) }.orEmpty(),
+                path = journal.plan.recovery.path, dateAdded = System.currentTimeMillis(), managedStorage = false)
+            prepareMoveNow(restored, selection, id, owner, File(journal.plan.source).name)
+        }, onError = { moveReviews.fail(owner, userMessage(it)) })
+    }
+    private suspend fun prepareMoveNow(original: SavedRepository, selection: String?, restoringId: String?, owner: Any, folderName: String = File(original.path).name) {
         require(moves.journals().none { it.phase !in listOf(RepositoryMovePhase.COMMITTED, RepositoryMovePhase.DISCARDING_RECOVERY) &&
-            (it.plan.source == original.path || it.plan.destination == original.path) }) { "Finish the pending move for this repository first" }
+            (it.plan.source == original.path || it.plan.destination == original.path) }) { text(com.bontecou.syncmd.R.string.move_error_finish_pending_repository) }
         val parent = locations.resolve(selection).path
         val plan = moves.prepare(original.path, parent, CloneStorage.moveRecoveryRoot(context, original.path), folderName)
-        require(_allRepositories.value.none { it.path == plan.destination }) { "Another repository is already registered at this destination" }
+        require(_allRepositories.value.none { it.path == plan.destination }) { text(com.bontecou.syncmd.R.string.move_error_destination_registered) }
         val info = discovery.inspect(original.path)
         credentials.summary(original.path)
         val metadata = com.bontecou.syncmd.storage.RepositoryMoveMetadata(original, info.remoteUrl, info.branch,
             credentials.recordVersion(original.path), credentials.recordVersion(plan.destination),
             if (plan.copyRequired) credentials.recordVersion(plan.recovery.path) else null, restoringId)
-        _moveReview.value = com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata)
+        moveReviews.publish(owner, com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata))
     }
-    fun clearMoveReview() { if (!_destructiveBusy.value) _moveReview.value = null }
-    fun moveReviewed(onReady: () -> Unit = {}) {
-        val review = _moveReview.value ?: return
-        if (_destructiveBusy.value) return
+    fun openMoveReview(owner: Any, routeId: String) { moveReviews.open(owner, routeId) }
+    internal suspend fun deliverMoveCompletion(owner: Any, lifecycle: androidx.lifecycle.Lifecycle, onReady: () -> Unit) =
+        moveReviews.deliver(owner, lifecycle, onReady)
+    fun closeMoveReview(owner: Any) { moveReviews.close(owner) }
+    fun clearMoveReview(owner: Any? = null) { moveReviews.clear(owner) }
+    fun moveReviewed(review: com.bontecou.syncmd.storage.RepositoryMoveReview, screenOwner: Any? = null, onReady: () -> Unit = {}) {
+        if (_destructiveBusy.value || !moveReviews.claim(review, screenOwner)) return
         mutate({
-            validateMoveCatalog(review.plan, review.metadata)
             try {
-                val done = moves.execute(review.plan, gson.toJson(review.metadata), beforeMove = { checkMoveCredentials(review.plan, review.metadata) }, commit = ::commitMove)
+                com.bontecou.syncmd.storage.requireCurrentMoveReview(review, moveReview.value)
+                validateMoveCatalog(review.plan, review.metadata)
+                val done = moves.execute(review.plan, gson.toJson(review.metadata), beforeMove = {
+                    com.bontecou.syncmd.storage.requireCurrentMoveReview(review, moveReview.value)
+                    checkMoveCredentials(review.plan, review.metadata)
+                }, commit = ::commitMove)
                 finishMove(done)
-                _operationMessage.value = if (done.plan.copyRequired) "Repository moved. Its original is retained in Move recoveries." else "Repository moved"
-            } finally { _moveReview.value = null; reloadMoveJournals() }
-        }, onReady, destructive = true)
+                _operationMessage.value = text(if (done.plan.copyRequired) com.bontecou.syncmd.R.string.move_done_retained else com.bontecou.syncmd.R.string.move_done)
+            } finally {
+                reloadMoveJournals()
+            }
+        }, {
+            if (screenOwner == null) onReady() else moveReviews.complete(review)
+        }, destructive = true,
+            onFinally = { moveReviews.finish(review) })
     }
     fun resumeMove(id: String) = mutate({
         try {
@@ -523,31 +562,31 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             if (journal.phase == RepositoryMovePhase.DISCARDING_RECOVERY) moves.discardRecovery(id) { credentials.remove(journal.plan.recovery.path) }
             else if (journal.phase == RepositoryMovePhase.COMMITTED) finishMove(journal)
             else finishMove(moves.resume(id, beforeMove = { checkMoveCredentials(it.plan, moveMetadata(it)) }, commit = ::commitMove))
-            _operationMessage.value = "Move recovery completed"
+            _operationMessage.value = text(com.bontecou.syncmd.R.string.move_recovery_done)
         } finally { reloadMoveJournals() }
     }, destructive = true)
     fun cancelPendingMove(id: String) = mutate({
-        try { moves.cancel(id); _operationMessage.value = "Move cancelled. The original working copy was kept." }
+        try { moves.cancel(id); _operationMessage.value = text(com.bontecou.syncmd.R.string.move_cancelled) }
         finally { reloadMoveJournals() }
     }, destructive = true)
     fun discardMoveRecovery(id: String) = mutate({
         val journal = moves.read(id)
-        try { moves.discardRecovery(id) { credentials.remove(journal.plan.recovery.path) }; _operationMessage.value = "Recovery copy removed" }
+        try { moves.discardRecovery(id) { credentials.remove(journal.plan.recovery.path) }; _operationMessage.value = text(com.bontecou.syncmd.R.string.move_recovery_removed) }
         finally { reloadMoveJournals() }
     }, destructive = true)
 
     private fun moveMetadata(journal: RepositoryMoveJournal): com.bontecou.syncmd.storage.RepositoryMoveMetadata {
         val metadata = gson.fromJson(journal.payload, com.bontecou.syncmd.storage.RepositoryMoveMetadata::class.java)
-        require(metadata.version == 1 && metadata.original.path == journal.plan.source) { "Move settings need review; all working copies were kept" }
+        require(metadata.version == 1 && metadata.original.path == journal.plan.source) { text(com.bontecou.syncmd.R.string.move_error_settings_review) }
         return metadata
     }
     private fun validateMoveCatalog(plan: RepositoryMovePlan, metadata: com.bontecou.syncmd.storage.RepositoryMoveMetadata) {
         val source = _allRepositories.value.firstOrNull { it.path == plan.source }
         val target = _allRepositories.value.firstOrNull { it.path == plan.destination }
         val expected = movedRepository(plan, metadata)
-        if (metadata.restoringRecoveryId == null) require(source == metadata.original || source == null && target == expected) { "Repository settings changed. Review move recovery before continuing." }
-        else require(source == null && (target == null || target == expected)) { "The restored location is now registered differently; no settings were overwritten" }
-        require(target == null || target == expected) { "The destination is registered to another repository" }
+        if (metadata.restoringRecoveryId == null) require(source == metadata.original || source == null && target == expected) { text(com.bontecou.syncmd.R.string.move_error_settings_changed) }
+        else require(source == null && (target == null || target == expected)) { text(com.bontecou.syncmd.R.string.move_error_restored_registered) }
+        require(target == null || target == expected) { text(com.bontecou.syncmd.R.string.move_error_destination_other) }
     }
     private fun checkMoveCredentials(plan: RepositoryMovePlan, metadata: com.bontecou.syncmd.storage.RepositoryMoveMetadata) = credentials.checkRelocation(
         plan.source, plan.destination, if (plan.copyRequired) plan.recovery.path else null,
@@ -609,10 +648,10 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                 else if (journal.phase == RepositoryMovePhase.COMMITTED) finishMove(journal)
                 else finishMove(moves.resume(journal.plan.id, beforeMove = { checkMoveCredentials(it.plan, moveMetadata(it)) }, commit = ::commitMove))
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { errors += (e.message ?: "Move recovery needs attention") }
+            } catch (e: Exception) { errors += userMessage(e) }
         }
         reloadMoveJournals()
-        if (errors.isNotEmpty()) _errorMessage.value = "Move recovery needs attention: ${errors.first()}"
+        if (errors.isNotEmpty()) _errorMessage.value = text(com.bontecou.syncmd.R.string.move_recovery_attention, errors.first())
     }
     fun scanDirectory(path: String) = mutate({ _discoveryResult.value = discovery.scan(listOf(path)) })
 
@@ -623,11 +662,11 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
             SavedRepository(previous?.repository?.name ?: info.name, info.path, previous?.repository?.alias.orEmpty(),
                 managedStorage = previous?.repository?.managedStorage ?: CloneStorage.isManagedClonePath(context, info.path), remoteUrl = info.remoteUrl, branch = info.branch)
         }
-        require(added.isNotEmpty()) { "Choose at least one repository that has not been added" }
+        require(added.isNotEmpty()) { text(com.bontecou.syncmd.R.string.repository_add_none_new) }
         val addedPaths = added.map { it.path }.toSet()
         persist(_allRepositories.value + added, _repositoryHistory.value.filterNot { canonical(it.repository.path) in addedPaths },
             _selectedRepository.value.ifBlank { added.first().path })
-        _operationMessage.value = if (added.size == 1) "Repository added" else "Added ${added.size} repositories"
+        _operationMessage.value = context.resources.getQuantityString(com.bontecou.syncmd.R.plurals.repositories_added, added.size, added.size)
     })
 
     fun prepareTrackingRemoval(path: String) = mutate({ _trackingPlan.value = tracking.prepare(path) })
@@ -637,7 +676,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         if (_trackingPlan.value !== request.plan) return
         mutate({
             withTrackingRemovalRequest(request, { _trackingPlan.value }) { plan, keepBackup ->
-                val repo = _allRepositories.value.firstOrNull { it.path == plan.path } ?: error("Repository is no longer added")
+                val repo = _allRepositories.value.firstOrNull { it.path == plan.path } ?: error(text(com.bontecou.syncmd.R.string.repository_no_longer_added))
                 val backupRoot = if (keepBackup) CloneStorage.backupRoot(context, plan.path) else null
                 val predictedBackup = backupRoot?.let { File(it, "gitsync-backup-${plan.operationId}").path }
                 val pending = RepositoryHistoryEntry(repo, trackingRemoved = true, backupDirectory = predictedBackup,
@@ -647,8 +686,8 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                     val result = tracking.remove(plan, backupRoot)
                     finishRemoval(pending.copy(backupDirectory = result.backupDirectory, backupArchive = result.backupArchive), emptyList())
                     _trackingPlan.value = null
-                    _operationMessage.value = result.backupDirectory?.let { "Git tracking removed. Verified backup: $it" }
-                        ?: "Git tracking removed. Working files were kept."
+                    _operationMessage.value = result.backupDirectory?.let { text(com.bontecou.syncmd.R.string.tracking_removed_backup, it) }
+                        ?: text(com.bontecou.syncmd.R.string.tracking_removed_files_kept)
                 } catch (e: Exception) {
                     if ((e is GitTrackingRemovalException && e.detached) || !File(plan.path, ".git").isDirectory) {
                         finishRemoval(pending, emptyList())
@@ -670,12 +709,12 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
                 withContext(Dispatchers.IO) { persistence.withLock {
                     readState()
                     val sample = SampleRepository.openOrCreate(File(context.filesDir, "sample-workspace"))
-                    if (_allRepositories.value.none { canonical(it.path) == sample.canonicalPath }) addNow("Sample repository", sample.path)
+                    if (_allRepositories.value.none { canonical(it.path) == sample.canonicalPath }) addNow(text(com.bontecou.syncmd.R.string.vault_l10n_sample_repository_name), sample.path)
                     persist(_allRepositories.value, _repositoryHistory.value, sample.canonicalPath)
                 } }
                 onReady()
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { _sampleError.value = "Couldn't open the sample repository: ${e.message}"
+            } catch (e: Exception) { _sampleError.value = text(com.bontecou.syncmd.R.string.vault_l10n_sample_open_failed, e.message.toString())
                 _errorMessage.value = _sampleError.value
             } finally { _isOpeningSample.value = false }
         }
@@ -683,7 +722,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
 
     fun updateSettings(settings: AppSettings) = mutate({
         check(prefs.edit().putLong("auto_fetch_interval", settings.autoFetchInterval).putBoolean("is_dark_theme", settings.isDarkTheme)
-            .putBoolean("show_debug_info", settings.showDebugInfo).commit()) { "Could not save settings" }
+            .putBoolean("show_debug_info", settings.showDebugInfo).commit()) { text(com.bontecou.syncmd.R.string.vault_l10n_settings_save_failed) }
         _appSettings.value = settings.copy(selectedRepository = _selectedRepository.value)
     })
     fun reportError(message: String) { _errorMessage.value = message }

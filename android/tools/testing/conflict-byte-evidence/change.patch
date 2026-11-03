@@ -1,0 +1,896 @@
+--- before/app/src/androidTest/assets/localization_expected.json
++++ after/app/src/androidTest/assets/localization_expected.json
+@@ -9587,6 +9587,10 @@
+         "source": "سيتطلب ⁦%1$s:%2$s⁩ التحقق من البصمة قبل الاتصال مجددًا."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "البايتات: ⁨%1$s⁩"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "الأحرف: ⁨%1$s⁩"
+       },
+@@ -14493,6 +14497,10 @@
+         "source": "%1$s:%2$s kræver bekræftelse af fingeraftryk, før der forbindes igen."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bytes: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Tegn: %1$s"
+       },
+@@ -19399,6 +19407,10 @@
+         "source": "Für %1$s:%2$s muss vor der nächsten Verbindung der Fingerabdruck überprüft werden."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bytes: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Zeichen: %1$s"
+       },
+@@ -24305,6 +24317,10 @@
+         "source": "%1$s:%2$s requerirá verificar la huella antes de volver a conectar."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bytes: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Caracteres: %1$s"
+       },
+@@ -29211,6 +29227,10 @@
+         "source": "%1$s:%2$s vaatii sormenjäljen vahvistamisen ennen seuraavaa yhteyttä."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Tavuja: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Merkkejä: %1$s"
+       },
+@@ -34117,6 +34137,10 @@
+         "source": "%1$s:%2$s nécessitera une vérification d’empreinte avant la prochaine connexion."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Octets : %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Caractères : %1$s"
+       },
+@@ -39023,6 +39047,10 @@
+         "source": "יידרש אימות טביעת אצבע עבור ⁦%1$s:%2$s⁩ לפני ההתחברות הבאה."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "בתים: ⁨%1$s⁩"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "תווים: ⁨%1$s⁩"
+       },
+@@ -43929,6 +43957,10 @@
+         "source": "फिर कनेक्ट करने से पहले %1$s:%2$s के फ़िंगरप्रिंट का सत्यापन ज़रूरी होगा।"
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "बाइट: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "अक्षर: %1$s"
+       },
+@@ -48835,6 +48867,10 @@
+         "source": "A következő csatlakozás előtt a(z) %1$s:%2$s ujjlenyomatát ellenőrizni kell."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bájtok: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Karakterek: %1$s"
+       },
+@@ -53741,6 +53777,10 @@
+         "source": "%1$s:%2$s akan memerlukan verifikasi sidik jari sebelum terhubung lagi."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Byte: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Karakter: %1$s"
+       },
+@@ -58647,6 +58687,10 @@
+         "source": "%1$s:%2$s richiederà la verifica dell’impronta prima di una nuova connessione."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Byte: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Caratteri: %1$s"
+       },
+@@ -63553,6 +63597,10 @@
+         "source": "%1$s:%2$s への次回接続前にフィンガープリントの確認が必要になります。"
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "バイト数：%1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "文字数：%1$s"
+       },
+@@ -68459,6 +68507,10 @@
+         "source": "%1$s:%2$s에 다시 연결하기 전에 지문 확인이 필요합니다."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "바이트: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "문자 수: %1$s"
+       },
+@@ -73365,6 +73417,10 @@
+         "source": "%1$s:%2$s vil kreve bekreftelse av fingeravtrykk før neste tilkobling."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Byte: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Tegn: %1$s"
+       },
+@@ -78271,6 +78327,10 @@
+         "source": "%1$s:%2$s vereist verificatie van de vingerafdruk voordat je opnieuw verbindt."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bytes: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Tekens: %1$s"
+       },
+@@ -83177,6 +83237,10 @@
+         "source": "%1$s:%2$s będzie wymagać weryfikacji odcisku przed ponownym połączeniem."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bajty: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Znaki: %1$s"
+       },
+@@ -88083,6 +88147,10 @@
+         "source": "%1$s:%2$s exigirá verificação da impressão digital antes da próxima conexão."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bytes: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Caracteres: %1$s"
+       },
+@@ -92989,6 +93057,10 @@
+         "source": "Для %1$s:%2$s потребуется проверка отпечатка перед следующим подключением."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Байты: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Символы: %1$s"
+       },
+@@ -97895,6 +97967,10 @@
+         "source": "%1$s:%2$s kommer att kräva verifiering av fingeravtryck före nästa anslutning."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Byte: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Tecken: %1$s"
+       },
+@@ -102801,6 +102877,10 @@
+         "source": "%1$s:%2$s จะต้องยืนยันลายนิ้วมือก่อนเชื่อมต่ออีกครั้ง"
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "ไบต์: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "อักขระ: %1$s"
+       },
+@@ -107707,6 +107787,10 @@
+         "source": "%1$s:%2$s için yeniden bağlanmadan önce parmak izi doğrulaması gerekecek."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Bayt: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Karakter: %1$s"
+       },
+@@ -112613,6 +112697,10 @@
+         "source": "Для %1$s:%2$s потрібна перевірка відбитка перед наступним з’єднанням."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Байти: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Символи: %1$s"
+       },
+@@ -117519,6 +117607,10 @@
+         "source": "%1$s:%2$s sẽ yêu cầu xác minh dấu vân tay trước khi kết nối lại."
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "Byte: %1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "Ký tự: %1$s"
+       },
+@@ -122425,6 +122517,10 @@
+         "source": "再次连接 %1$s:%2$s 前需要验证指纹。"
+       },
+       {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "字节数：%1$s"
++      },
++      {
+         "name": "ui_1_s_characters_bde60398",
+         "source": "字符数：%1$s"
+       },
+@@ -127329,6 +127425,10 @@
+       {
+         "name": "ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8",
+         "source": "再次連線 %1$s:%2$s 前需要驗證指紋。"
++      },
++      {
++        "name": "ui_1_s_bytes_81cdb385",
++        "source": "位元組數：%1$s"
+       },
+       {
+         "name": "ui_1_s_characters_bde60398",
+@@ -128904,7 +129004,6 @@
+     "ui_1_s_2_s_lines_59b29a56",
+     "ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527",
+     "ui_1_s_bytes_2_s_bb252a3c",
+-    "ui_1_s_bytes_81cdb385",
+     "ui_1_s_file_2_s_will_be_discarded_bad3301d",
+     "ui_1_s_files_including_git_metadata_2_s_bytes_ae4f1906",
+     "ui_1_s_repos_93f20a63",
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictList.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictList.kt
+@@ -17,6 +17,7 @@
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.remember
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+@@ -130,12 +131,18 @@
+             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
+                     GitWorkSideDot(yours = true)
+-                    Text(stringResource(R.string.ui_ours_1_s_bytes_e7da423a, conflict.currentContent.length.toString()),
++                    val bytes = remember(conflict) { conflict.currentByteCount }
++                    val label = stringResource(R.string.tide_merge_yours)
++                    Text(if (bytes != null) stringResource(R.string.ui_ours_1_s_bytes_e7da423a, bytes.toString())
++                        else if (conflict.hasCurrentVersion) label else "$label · ${stringResource(R.string.tide_merge_side_deleted)}",
+                         style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1)
+                 }
+                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
+                     GitWorkSideDot(yours = false)
+-                    Text(stringResource(R.string.ui_theirs_1_s_bytes_70028ef3, conflict.incomingContent.length.toString()),
++                    val bytes = remember(conflict) { conflict.incomingByteCount }
++                    val label = stringResource(R.string.tide_merge_theirs)
++                    Text(if (bytes != null) stringResource(R.string.ui_theirs_1_s_bytes_70028ef3, bytes.toString())
++                        else if (conflict.hasIncomingVersion) label else "$label · ${stringResource(R.string.tide_merge_side_deleted)}",
+                         style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1)
+                 }
+             }
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt
+@@ -68,16 +68,21 @@
+             label = stringResource(R.string.tide_merge_yours),
+             content = if (conflict.hasCurrentVersion) conflict.currentContent else null,
+             deletedNote = stringResource(R.string.conflict_current_deleted),
++            blobByteCount = conflict.currentByteCount,
++            textAvailable = !conflict.isBinaryOrTooLarge,
+         )
+         GitWorkVersionCard(
+             yours = false,
+             label = stringResource(R.string.tide_merge_theirs),
+             content = if (conflict.hasIncomingVersion) conflict.incomingContent else null,
+             deletedNote = stringResource(R.string.conflict_incoming_deleted),
++            blobByteCount = conflict.incomingByteCount,
++            textAvailable = !conflict.isBinaryOrTooLarge,
+         )
+         val baseContent = conflict.baseContent
+         if (baseContent != null && baseContent.isNotBlank()) {
+-            GitWorkVersionCard(yours = null, label = stringResource(R.string.ui_base_7b47361a), content = baseContent, deletedNote = "")
++            GitWorkVersionCard(yours = null, label = stringResource(R.string.ui_base_7b47361a), content = baseContent, deletedNote = "",
++                blobByteCount = conflict.ancestor?.byteCount, textAvailable = !conflict.isBinaryOrTooLarge)
+         }
+ 
+         // ── Result: what gets staged ─────────────────────────────────────
+@@ -89,7 +94,7 @@
+             OutlinedTextField(
+                 value = manualResolution,
+                 onValueChange = onManualResolutionChange,
+-                enabled = enabled,
++                enabled = enabled && !conflict.isBinaryOrTooLarge,
+                 label = { Text(stringResource(R.string.ui_resolved_content_69213720)) },
+                 modifier = Modifier.fillMaxWidth().heightIn(min = 150.dp),
+                 placeholder = { Text(stringResource(R.string.ui_edit_the_content_here_to_manually_resolve_1985871d)) },
+@@ -140,8 +145,14 @@
+     deletedNote: String,
+     modifier: Modifier = Modifier,
+     footer: (@Composable () -> Unit)? = null,
++    blobByteCount: Long? = null,
++    textAvailable: Boolean = true,
+ ) {
+     val c = Tide.colors
++    val textBytes = remember(content, textAvailable, blobByteCount) {
++        if (textAvailable && blobByteCount == null) content?.toByteArray(Charsets.UTF_8)?.size?.toLong() else null
++    }
++    val bytes = blobByteCount ?: textBytes
+     val tint = when (yours) { true -> c.ahead; false -> c.behind; null -> c.inkMid }
+     Column(
+         modifier.fillMaxWidth().background(c.card, Tide.cardShape).padding(16.dp),
+@@ -150,9 +161,13 @@
+         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+             if (yours != null) GitWorkSideDot(yours) else Box(Modifier.size(9.dp).background(c.lineSoft, RoundedCornerShape(2.dp)))
+             Text(label, style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))
+-            Text(
+-                if (content == null) stringResource(R.string.tide_merge_side_deleted)
+-                else stringResource(R.string.ui_1_s_lines_2_s_bytes_c30a0cd1, content.lines().size.toString(), content.length.toString()),
++            val summary = when {
++                content == null -> stringResource(R.string.tide_merge_side_deleted)
++                !textAvailable -> bytes?.let { stringResource(R.string.ui_1_s_bytes_81cdb385, it.toString()) }
++                else -> stringResource(R.string.ui_1_s_lines_2_s_bytes_c30a0cd1, content.lines().size.toString(), requireNotNull(bytes).toString())
++            }
++            if (summary != null) Text(
++                summary,
+                 style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1,
+             )
+         }
+@@ -163,7 +178,8 @@
+                 .padding(horizontal = 12.dp, vertical = 10.dp)
+         ) {
+             Text(
+-                content ?: deletedNote,
++                if (content == null) deletedNote else if (!textAvailable)
++                    stringResource(R.string.ui_binary_large_or_lfs_file_choose_an_entire_52c3278a) else content,
+                 style = TideType.mono(12.5.sp).copy(lineHeight = 19.sp, textDirection = TextDirection.Ltr),
+                 color = if (content == null || content.isEmpty()) c.inkFaint else c.ink,
+             )
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RebaseScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RebaseScreen.kt
+@@ -424,12 +424,16 @@
+             label = stringResource(R.string.ui_replayed_local_commit_cb0e9ca0),
+             content = if (conflict.hasIncomingVersion) conflict.incomingContent else null,
+             deletedNote = stringResource(R.string.ui_the_replayed_local_commit_deletes_this_fil_ab00656d),
++            blobByteCount = conflict.incomingByteCount,
++            textAvailable = !conflict.isBinaryOrTooLarge,
+         )
+         GitWorkVersionCard(
+             yours = false,
+             label = stringResource(R.string.ui_upstream_94adc696),
+             content = if (conflict.hasCurrentVersion) conflict.currentContent else null,
+             deletedNote = stringResource(R.string.ui_upstream_deleted_this_file_40765116),
++            blobByteCount = conflict.currentByteCount,
++            textAvailable = !conflict.isBinaryOrTooLarge,
+         )
+         OutlinedTextField(
+             state.draft, onDraft, enabled = !state.busy,
+--- before/app/src/main/res/values-ar/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ar/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nستبقى جميع ملفات العمل وسجل Git المحلي على هذا الجهاز. يمكنك إعادة ربط المجلد لاحقًا."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nيؤدي هذا إلى حذف هذه النسخة المُدارة بواسطة التطبيق نهائيًا، بما في ذلك الالتزامات التي لم تُرسل إلى المستودع البعيد والتغييرات المحفوظة في stash والملفات غير المحفوظة. لن يتغير المستودع البعيد."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"سيتطلب ⁦%1$s:%2$s⁩ التحقق من البصمة قبل الاتصال مجددًا."</string>
++    <string name="ui_1_s_bytes_81cdb385">"البايتات: ⁨%1$s⁩"</string>
+     <string name="ui_1_s_characters_bde60398">"الأحرف: ⁨%1$s⁩"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s ملفات"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"الأسطر: ⁨%1$s⁩، البايتات: ⁨%2$s⁩"</string>
+--- before/app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml
++++ after/app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\n所有工作文件和本地 Git 历史记录都将保留在此设备上。你可以稍后重新连接此文件夹。"</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\n这将永久删除此应用管理的克隆，包括未推送的提交、暂存于 stash 的更改和未保存的文件。远程仓库不会更改。"</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"再次连接 %1$s:%2$s 前需要验证指纹。"</string>
++    <string name="ui_1_s_bytes_81cdb385">"字节数：%1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"字符数：%1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s 个文件"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行数：%1$s，字节数：%2$s"</string>
+--- before/app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml
++++ after/app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\n所有工作檔案和本機 Git 歷史記錄都會保留在此裝置上。你可以稍後重新連接此資料夾。"</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\n這將永久刪除此 App 管理的複製庫，包括尚未推送的提交、暫存於 stash 的變更和未儲存的檔案。遠端儲存庫不會變更。"</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"再次連線 %1$s:%2$s 前需要驗證指紋。"</string>
++    <string name="ui_1_s_bytes_81cdb385">"位元組數：%1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"字元數：%1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s 個檔案"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行數：%1$s，位元組數：%2$s"</string>
+--- before/app/src/main/res/values-da/ios_catalog_strings.xml
++++ after/app/src/main/res/values-da/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle arbejdsfiler og den lokale Git-historik bliver på denne enhed. Du kan tilslutte mappen igen senere."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDette sletter permanent denne klon, som administreres af appen, inklusive commits, der ikke er pushet, stashes og ugemte filer. Det eksterne repository ændres ikke."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s kræver bekræftelse af fingeraftryk, før der forbindes igen."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Tegn: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s filer"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Linjer: %1$s, bytes: %2$s"</string>
+--- before/app/src/main/res/values-de/ios_catalog_strings.xml
++++ after/app/src/main/res/values-de/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle Arbeitsdateien und der lokale Git-Verlauf bleiben auf diesem Gerät. Du kannst den Ordner später erneut verbinden."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDadurch wird dieser von der App verwaltete Klon dauerhaft gelöscht, einschließlich nicht gepushter Commits, Stashes und ungespeicherter Dateien. Das entfernte Repository bleibt unverändert."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"Für %1$s:%2$s muss vor der nächsten Verbindung der Fingerabdruck überprüft werden."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Zeichen: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s Dateien"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Zeilen: %1$s, Bytes: %2$s"</string>
+--- before/app/src/main/res/values-es/ios_catalog_strings.xml
++++ after/app/src/main/res/values-es/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTodos los archivos de trabajo y el historial local de Git permanecerán en este dispositivo. Puedes volver a conectar la carpeta más adelante."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nEsto elimina permanentemente este clon gestionado por la app, incluidos los commits sin enviar, los cambios guardados en stash y los archivos sin guardar. El repositorio remoto no cambia."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s requerirá verificar la huella antes de volver a conectar."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Caracteres: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s archivos"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Líneas: %1$s, bytes: %2$s"</string>
+--- before/app/src/main/res/values-fi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-fi/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nKaikki työtiedostot ja paikallinen Git-historia säilyvät tällä laitteella. Voit yhdistää kansion uudelleen myöhemmin."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nTämä poistaa pysyvästi sovelluksen hallitseman kloonin, mukaan lukien lähettämättömät commitit, stash-tallennukset ja tallentamattomat tiedostot. Etätietovarasto ei muutu."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s vaatii sormenjäljen vahvistamisen ennen seuraavaa yhteyttä."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Tavuja: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Merkkejä: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s tiedostoa"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Rivejä: %1$s, tavuja: %2$s"</string>
+--- before/app/src/main/res/values-fr/ios_catalog_strings.xml
++++ after/app/src/main/res/values-fr/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTous les fichiers de travail et l’historique Git local resteront sur cet appareil. Vous pourrez reconnecter le dossier plus tard."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nCette action supprime définitivement ce clone géré par l’app, y compris les commits non envoyés, les changements mis de côté dans des stashes et les fichiers non enregistrés. Le dépôt distant reste inchangé."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s nécessitera une vérification d’empreinte avant la prochaine connexion."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Octets : %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Caractères : %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s fichiers"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Lignes : %1$s, octets : %2$s"</string>
+--- before/app/src/main/res/values-hi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-hi/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nसभी कार्य फ़ाइलें और स्थानीय Git इतिहास इस डिवाइस पर रहेंगे। आप फ़ोल्डर को बाद में फिर से जोड़ सकते हैं।"</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nइससे ऐप द्वारा प्रबंधित यह क्लोन स्थायी रूप से मिट जाएगा, जिसमें पुश न किए गए कमिट, स्टैश में रखे बदलाव और बिना सहेजी फ़ाइलें शामिल हैं। रिमोट रिपॉज़िटरी में कोई बदलाव नहीं होगा।"</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"फिर कनेक्ट करने से पहले %1$s:%2$s के फ़िंगरप्रिंट का सत्यापन ज़रूरी होगा।"</string>
++    <string name="ui_1_s_bytes_81cdb385">"बाइट: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"अक्षर: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s फ़ाइलें"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"पंक्तियाँ: %1$s, बाइट: %2$s"</string>
+--- before/app/src/main/res/values-hu/ios_catalog_strings.xml
++++ after/app/src/main/res/values-hu/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nMinden munkafájl és a helyi Git-előzmények ezen az eszközön maradnak. A mappát később újra csatlakoztathatod."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nEz végleg törli az alkalmazás által kezelt klónt, beleértve a még fel nem küldött commitokat, a stash-ben tárolt változásokat és a nem mentett fájlokat. A távoli tároló változatlan marad."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"A következő csatlakozás előtt a(z) %1$s:%2$s ujjlenyomatát ellenőrizni kell."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bájtok: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Karakterek: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s fájl"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Sorok: %1$s, bájtok: %2$s"</string>
+--- before/app/src/main/res/values-in/ios_catalog_strings.xml
++++ after/app/src/main/res/values-in/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nSemua berkas kerja dan riwayat Git lokal akan tetap ada di perangkat ini. Anda dapat menghubungkan kembali folder nanti."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nIni menghapus permanen klona yang dikelola aplikasi ini, termasuk commit yang belum di-push, perubahan dalam stash, dan berkas yang belum disimpan. Repositori jarak jauh tidak berubah."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s akan memerlukan verifikasi sidik jari sebelum terhubung lagi."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Karakter: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s file"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Baris: %1$s, byte: %2$s"</string>
+--- before/app/src/main/res/values-it/ios_catalog_strings.xml
++++ after/app/src/main/res/values-it/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTutti i file di lavoro e la cronologia Git locale resteranno su questo dispositivo. Potrai ricollegare la cartella in seguito."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nQuesta azione elimina definitivamente questo clone gestito dall’app, inclusi i commit non inviati, le modifiche accantonate negli stash e i file non salvati. Il repository remoto resta invariato."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s richiederà la verifica dell’impronta prima di una nuova connessione."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Caratteri: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s file"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Righe: %1$s, byte: %2$s"</string>
+--- before/app/src/main/res/values-iw/ios_catalog_strings.xml
++++ after/app/src/main/res/values-iw/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nכל קובצי העבודה והיסטוריית Git המקומית יישארו במכשיר הזה. ניתן לחבר מחדש את התיקייה מאוחר יותר."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nהפעולה תמחק לצמיתות את העותק המשוכפל שמנוהל באפליקציה, כולל קומיטים שלא נדחפו, שינויים שנשמרו ב־stash וקבצים שלא נשמרו. המאגר המרוחק לא ישתנה."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"יידרש אימות טביעת אצבע עבור ⁦%1$s:%2$s⁩ לפני ההתחברות הבאה."</string>
++    <string name="ui_1_s_bytes_81cdb385">"בתים: ⁨%1$s⁩"</string>
+     <string name="ui_1_s_characters_bde60398">"תווים: ⁨%1$s⁩"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s קבצים"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"שורות: ⁨%1$s⁩, בתים: ⁨%2$s⁩"</string>
+--- before/app/src/main/res/values-ja/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ja/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nすべての作業ファイルとローカルのGit履歴はこのデバイスに残ります。フォルダは後で再接続できます。"</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nこのアプリが管理するクローンを完全に削除します。未プッシュのコミット、スタッシュ、未保存のファイルも含まれます。リモートリポジトリは変更されません。"</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s への次回接続前にフィンガープリントの確認が必要になります。"</string>
++    <string name="ui_1_s_bytes_81cdb385">"バイト数：%1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"文字数：%1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s 個のファイル"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行数：%1$s、バイト数：%2$s"</string>
+--- before/app/src/main/res/values-ko/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ko/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\n모든 작업 파일과 로컬 Git 기록은 이 기기에 남습니다. 나중에 폴더를 다시 연결할 수 있습니다."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\n앱에서 관리하는 이 복제본을 영구적으로 삭제합니다. 푸시하지 않은 커밋, 스태시 및 저장하지 않은 파일도 포함됩니다. 원격 저장소는 변경되지 않습니다."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s에 다시 연결하기 전에 지문 확인이 필요합니다."</string>
++    <string name="ui_1_s_bytes_81cdb385">"바이트: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"문자 수: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"파일 %1$s개"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"줄 수: %1$s, 바이트: %2$s"</string>
+--- before/app/src/main/res/values-nb/ios_catalog_strings.xml
++++ after/app/src/main/res/values-nb/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle arbeidsfiler og lokal Git-historikk blir værende på denne enheten. Du kan koble til mappen igjen senere."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDette sletter denne appadministrerte klonen permanent, inkludert commits som ikke er pushet, stasher og ulagrede filer. Det eksterne repositoryet endres ikke."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s vil kreve bekreftelse av fingeravtrykk før neste tilkobling."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Tegn: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s filer"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Linjer: %1$s, byte: %2$s"</string>
+--- before/app/src/main/res/values-nl/ios_catalog_strings.xml
++++ after/app/src/main/res/values-nl/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle werkbestanden en de lokale Git-geschiedenis blijven op dit apparaat. Je kunt de map later opnieuw verbinden."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDit verwijdert deze door de app beheerde kloon permanent, inclusief niet-gepushte commits, stashes en niet-opgeslagen bestanden. De externe repository blijft ongewijzigd."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s vereist verificatie van de vingerafdruk voordat je opnieuw verbindt."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Tekens: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s bestanden"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Regels: %1$s, bytes: %2$s"</string>
+--- before/app/src/main/res/values-pl/ios_catalog_strings.xml
++++ after/app/src/main/res/values-pl/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nWszystkie pliki robocze i lokalna historia Git pozostaną na tym urządzeniu. Możesz później ponownie połączyć folder."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nTa czynność trwale usunie ten klon zarządzany przez aplikację, w tym niewysłane commity, zmiany zachowane w stash i niezapisane pliki. Zdalne repozytorium pozostanie bez zmian."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s będzie wymagać weryfikacji odcisku przed ponownym połączeniem."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bajty: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Znaki: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"Pliki: %1$s"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Wiersze: %1$s, bajty: %2$s"</string>
+--- before/app/src/main/res/values-pt-rBR/ios_catalog_strings.xml
++++ after/app/src/main/res/values-pt-rBR/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTodos os arquivos de trabalho e o histórico local do Git permanecerão neste dispositivo. Você poderá reconectar a pasta depois."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nIsso exclui permanentemente este clone gerenciado pelo app, incluindo commits não enviados, alterações guardadas em stashes e arquivos não salvos. O repositório remoto permanece inalterado."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s exigirá verificação da impressão digital antes da próxima conexão."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Caracteres: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s arquivos"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Linhas: %1$s, bytes: %2$s"</string>
+--- before/app/src/main/res/values-ru/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ru/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nВсе рабочие файлы и локальная история Git останутся на этом устройстве. Вы сможете подключить папку снова позже."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nЭто навсегда удалит клон, управляемый приложением, включая неотправленные коммиты, изменения в stash и несохранённые файлы. Удалённый репозиторий не изменится."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"Для %1$s:%2$s потребуется проверка отпечатка перед следующим подключением."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Байты: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Символы: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"Файлов: %1$s"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Строки: %1$s, байты: %2$s"</string>
+--- before/app/src/main/res/values-sv/ios_catalog_strings.xml
++++ after/app/src/main/res/values-sv/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlla arbetsfiler och den lokala Git-historiken finns kvar på den här enheten. Du kan ansluta mappen igen senare."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDetta raderar den här apphanterade klonen permanent, inklusive commits som inte har pushats, stashar och osparade filer. Fjärrarkivet ändras inte."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s kommer att kräva verifiering av fingeravtryck före nästa anslutning."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Tecken: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s filer"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Rader: %1$s, byte: %2$s"</string>
+--- before/app/src/main/res/values-th/ios_catalog_strings.xml
++++ after/app/src/main/res/values-th/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nไฟล์งานและประวัติ Git ในเครื่องทั้งหมดจะยังอยู่บนอุปกรณ์นี้ คุณสามารถเชื่อมต่อโฟลเดอร์อีกครั้งได้ในภายหลัง"</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nการดำเนินการนี้จะลบสำเนาโคลนที่แอปจัดการอย่างถาวร รวมถึงคอมมิตที่ยังไม่ได้พุช การเปลี่ยนแปลงที่เก็บใน stash และไฟล์ที่ยังไม่ได้บันทึก โดยไม่เปลี่ยนแปลงที่เก็บระยะไกล"</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s จะต้องยืนยันลายนิ้วมือก่อนเชื่อมต่ออีกครั้ง"</string>
++    <string name="ui_1_s_bytes_81cdb385">"ไบต์: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"อักขระ: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s ไฟล์"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"บรรทัด: %1$s ไบต์: %2$s"</string>
+--- before/app/src/main/res/values-tr/ios_catalog_strings.xml
++++ after/app/src/main/res/values-tr/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTüm çalışma dosyaları ve yerel Git geçmişi bu cihazda kalacak. Klasörü daha sonra yeniden bağlayabilirsiniz."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nBu işlem, uygulamanın yönettiği bu klonu gönderilmemiş commitler, stash kayıtları ve kaydedilmemiş dosyalarla birlikte kalıcı olarak siler. Uzak depo değişmez."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s için yeniden bağlanmadan önce parmak izi doğrulaması gerekecek."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Bayt: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Karakter: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s dosya"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Satır: %1$s, bayt: %2$s"</string>
+--- before/app/src/main/res/values-uk/ios_catalog_strings.xml
++++ after/app/src/main/res/values-uk/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nУсі робочі файли та локальна історія Git залишаться на цьому пристрої. Ви зможете підключити папку знову пізніше."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nЦе назавжди видалить клон, яким керує застосунок, включно з ненадісланими комітами, змінами в stash і незбереженими файлами. Віддалений репозиторій не зміниться."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"Для %1$s:%2$s потрібна перевірка відбитка перед наступним з’єднанням."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Байти: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Символи: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"Файлів: %1$s"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Рядки: %1$s, байти: %2$s"</string>
+--- before/app/src/main/res/values-vi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-vi/ios_catalog_strings.xml
+@@ -834,6 +834,7 @@
+     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTất cả tệp làm việc và lịch sử Git cục bộ sẽ vẫn ở trên thiết bị này. Bạn có thể kết nối lại thư mục sau."</string>
+     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nThao tác này xóa vĩnh viễn bản sao do ứng dụng quản lý, bao gồm các commit chưa đẩy, thay đổi trong stash và tệp chưa lưu. Kho lưu trữ từ xa không thay đổi."</string>
+     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s sẽ yêu cầu xác minh dấu vân tay trước khi kết nối lại."</string>
++    <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
+     <string name="ui_1_s_characters_bde60398">"Ký tự: %1$s"</string>
+     <string name="ui_1_s_files_ddef923b">"%1$s tệp"</string>
+     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Dòng: %1$s, byte: %2$s"</string>
+--- before/core/src/main/kotlin/com/bontecou/syncmd/data/models/GitConflictModels.kt
++++ after/core/src/main/kotlin/com/bontecou/syncmd/data/models/GitConflictModels.kt
+@@ -1,6 +1,7 @@
+ package com.bontecou.syncmd.data.models
+ 
+-data class ConflictSide(val path: String, val objectId: String, val mode: Int)
++/** Size is the indexed Git blob, including a pointer blob for LFS; null for non-blob/unknown sides. */
++data class ConflictSide(val path: String, val objectId: String, val mode: Int, val byteCount: Long? = null)
+ 
+ /**
+  * Represents a single conflict within a file
+@@ -18,6 +19,14 @@
+     val theirs: ConflictSide? = null,
+     val workTreeVersions: Map<String, String?> = emptyMap(),
+ ) {
++    val currentByteCount: Long? get() = sideBytes(hasCurrentVersion, ours, currentContent)
++    val incomingByteCount: Long? get() = sideBytes(hasIncomingVersion, theirs, incomingContent)
++    private fun sideBytes(present: Boolean, side: ConflictSide?, text: String): Long? = when {
++        !present -> null
++        side != null -> side.byteCount
++        isBinaryOrTooLarge -> null
++        else -> text.toByteArray(Charsets.UTF_8).size.toLong()
++    }
+     val isRenameRename: Boolean get() = ours != null && theirs != null && ours.path != theirs.path
+     val allPaths: List<String> get() = listOfNotNull(ancestor?.path, ours?.path, theirs?.path).distinct().ifEmpty { listOf(filePath) }
+ }
+--- before/core/src/main/kotlin/com/bontecou/syncmd/services/git/ConflictIndex.kt
++++ after/core/src/main/kotlin/com/bontecou/syncmd/services/git/ConflictIndex.kt
+@@ -61,7 +61,11 @@
+         return repository.newObjectReader().use { reader ->
+             groups.map { entries ->
+                 var unsupported = false
+-                fun side(stage: Int) = entries.singleOrNull { it.stage == stage }?.let { ConflictSide(it.pathString, it.objectId.name, it.rawMode) }
++                fun side(stage: Int) = entries.singleOrNull { it.stage == stage }?.let {
++                    val bytes = if (it.fileMode.objectType == org.eclipse.jgit.lib.Constants.OBJ_BLOB)
++                        reader.open(it.objectId, org.eclipse.jgit.lib.Constants.OBJ_BLOB).size else null
++                    ConflictSide(it.pathString, it.objectId.name, it.rawMode, bytes)
++                }
+                 fun content(stage: Int): String? {
+                     val entry = entries.singleOrNull { it.stage == stage } ?: return null
+                     if (entry.fileMode != org.eclipse.jgit.lib.FileMode.REGULAR_FILE && entry.fileMode != org.eclipse.jgit.lib.FileMode.EXECUTABLE_FILE) {
+--- before/core/src/test/kotlin/com/bontecou/syncmd/services/git/ConflictByteCountTest.kt
++++ after/core/src/test/kotlin/com/bontecou/syncmd/services/git/ConflictByteCountTest.kt
+@@ -0,0 +1,111 @@
++package com.bontecou.syncmd.services.git
++
++import com.bontecou.syncmd.data.models.Conflict
++import com.bontecou.syncmd.data.models.ConflictSide
++import com.bontecou.syncmd.services.git.lfs.LfsPointer
++import kotlinx.coroutines.runBlocking
++import org.eclipse.jgit.api.Git
++import org.eclipse.jgit.dircache.DirCacheEntry
++import org.eclipse.jgit.lib.Constants
++import org.eclipse.jgit.lib.FileMode
++import org.junit.*
++import org.junit.Assert.*
++import org.junit.rules.TemporaryFolder
++import java.io.File
++
++/** Actual staged blobs, including deliberately unsupported previews; inspection must not mutate Git/files. */
++class ConflictByteCountTest {
++    @get:Rule val temporary = TemporaryFolder()
++    private fun contents(root: File) = root.walkTopDown().filter { it.isFile }
++        .associate { it.relativeTo(root).invariantSeparatorsPath to it.readBytes().toList() }
++    private suspend fun conflict(ours: ByteArray?, theirs: ByteArray?, gitlink: Boolean = false): Conflict {
++        val root = temporary.newFolder().canonicalFile
++        Git.init().setDirectory(root).setInitialBranch("main").call().use { git ->
++            File(root,"README.md").writeText("Generated blob metrics fixture\n")
++            git.add().addFilepattern(".").call()
++            val head = git.commit().setMessage("Fixture").setAuthor("Fixture","fixture@example.invalid")
++                .setCommitter("Fixture","fixture@example.invalid").call()
++            val cache = git.repository.lockDirCache()
++            try {
++                val builder = cache.builder()
++                git.repository.newObjectInserter().use { objects ->
++                    fun entry(stage: Int, bytes: ByteArray, link: Boolean = false) {
++                        builder.add(DirCacheEntry("notes.md",stage).apply {
++                            fileMode = if (link) FileMode.GITLINK else FileMode.REGULAR_FILE
++                            setObjectId(if (link) head.id else objects.insert(Constants.OBJ_BLOB,bytes))
++                        })
++                    }
++                    entry(1,"base\r\n".toByteArray())
++                    if (ours != null) entry(2,ours,gitlink)
++                    if (theirs != null) entry(3,theirs)
++                    objects.flush(); assertTrue(builder.commit())
++                }
++            } finally { cache.unlock() }
++        }
++        val before = contents(root)
++        val result = LocalConflictRepository().getFileConflict(root.path,"notes.md").getOrThrow()!!
++        assertEquals(before,contents(root))
++        return result
++    }
++    @Test fun unicodeAndCrLfCountsComeFromTheCompleteIndexedBlob(): Unit = runBlocking {
++        val ours="é😀\r\n"; val theirs="עברית\n中文\n"
++        val result=conflict(ours.toByteArray(Charsets.UTF_8),theirs.toByteArray(Charsets.UTF_8))
++        assertFalse(result.isBinaryOrTooLarge)
++        assertEquals(ours,result.currentContent); assertEquals(theirs,result.incomingContent)
++        assertEquals(8L,result.currentByteCount)
++        assertEquals(theirs.toByteArray(Charsets.UTF_8).size.toLong(),result.incomingByteCount)
++        assertNotEquals(ours.length.toLong(),result.currentByteCount)
++        assertEquals(6L,result.ancestor!!.byteCount)
++    }
++    @Test fun presentEmptyBlobIsZeroNotDeleted(): Unit = runBlocking {
++        val result=conflict(byteArrayOf(),"incoming".toByteArray())
++        assertTrue(result.hasCurrentVersion); assertNotNull(result.ours)
++        assertEquals(0L,result.currentByteCount); assertEquals("",result.currentContent)
++    }
++    @Test fun deletedCurrentSideHasNoInventedZeroByteBlob(): Unit = runBlocking {
++        val result=conflict(null,"incoming".toByteArray())
++        assertFalse(result.hasCurrentVersion); assertNull(result.ours); assertNull(result.currentByteCount)
++        assertEquals(8L,result.incomingByteCount)
++    }
++    @Test fun deletedIncomingSideHasNoInventedZeroByteBlob(): Unit = runBlocking {
++        val result=conflict("current".toByteArray(),null)
++        assertFalse(result.hasIncomingVersion); assertNull(result.theirs); assertNull(result.incomingByteCount)
++        assertEquals(7L,result.currentByteCount)
++    }
++    @Test fun binarySizesDoNotDependOnUnavailableText(): Unit = runBlocking {
++        val result=conflict(byteArrayOf(0,1,2,3,4),byteArrayOf(0,9,8))
++        assertTrue(result.isBinaryOrTooLarge); assertEquals("",result.currentContent)
++        assertEquals(5L,result.currentByteCount); assertEquals(3L,result.incomingByteCount)
++    }
++    @Test fun invalidUtf8StillHasExactBlobSizes(): Unit = runBlocking {
++        val result=conflict(byteArrayOf(0xc3.toByte(),0x28),"readable".toByteArray())
++        assertTrue(result.isBinaryOrTooLarge); assertEquals("",result.currentContent)
++        assertEquals(2L,result.currentByteCount); assertEquals(8L,result.incomingByteCount)
++    }
++    @Test fun oversizedBlobSizeIsAvailableWithoutATextPreview(): Unit = runBlocking {
++        val bytes=ByteArray(2*1024*1024+1){0x61}
++        val result=conflict(bytes,"small".toByteArray())
++        assertTrue(result.isBinaryOrTooLarge); assertEquals("",result.currentContent)
++        assertEquals(bytes.size.toLong(),result.currentByteCount); assertEquals(5L,result.incomingByteCount)
++    }
++    @Test fun lfsReportsGitPointerBlobSizeNotHydratedAssetSize(): Unit = runBlocking {
++        val pointer=LfsPointer("a".repeat(64),9_000_000).bytes()
++        val result=conflict(pointer,"text".toByteArray())
++        assertTrue(result.isBinaryOrTooLarge)
++        assertEquals(pointer.size.toLong(),result.currentByteCount)
++        assertNotEquals(9_000_000L,result.currentByteCount)
++    }
++    @Test fun gitlinkHasNoFileBlobSize(): Unit = runBlocking {
++        val result=conflict(byteArrayOf(),"text".toByteArray(),gitlink=true)
++        assertTrue(result.isBinaryOrTooLarge); assertTrue(result.hasCurrentVersion)
++        assertEquals(FileMode.GITLINK.bits,result.ours!!.mode)
++        assertNull(result.ours!!.byteCount); assertNull(result.currentByteCount)
++    }
++    @Test fun legacyTextFallbackAndUnknownMetadataStayDistinct() {
++        val readable=Conflict("notes.md","é😀\r\n","")
++        assertEquals(8L,readable.currentByteCount); assertEquals(0L,readable.incomingByteCount)
++        assertNull(readable.copy(isBinaryOrTooLarge=true).currentByteCount)
++        assertNull(readable.copy(hasCurrentVersion=false).currentByteCount)
++        assertNull(readable.copy(ours=ConflictSide("notes.md","unknown",FileMode.REGULAR_FILE.bits)).currentByteCount)
++    }
++}
+--- before/tools/localization/README.md
++++ after/tools/localization/README.md
+@@ -6,8 +6,8 @@
+ 
+ Coverage is intentionally explicit: the complete current base inventory contains
+ 1,288 translatable string keys and nineteen plural resources. Each non-English
+-locale has 1,226 translated string keys and all nineteen translated plural resources;
+-62 strings remain untranslated. All three tools share discovery
++locale has 1,227 translated string keys and all nineteen translated plural resources;
++61 strings remain untranslated. All three tools share discovery
+ of every XML filename under base `values`, including `strings_*.xml` and arbitrary
+ names. Style entries do not count as strings. Coverage still does not include all
+ raw conditional/model/default copy, and native/linguistic acceptance remains open.
+--- before/tools/localization/android_workflow_overrides.json
++++ after/tools/localization/android_workflow_overrides.json
+@@ -31195,6 +31195,37 @@
+         "zh-Hans": "LFS 锁阻止了推送",
+         "zh-Hant": "LFS 鎖阻止了推送"
+       }
++    },
++    "ui_1_s_bytes_81cdb385": {
++      "source": "%1$s bytes",
++      "localizations": {
++        "ar": "البايتات: ⁨%1$s⁩",
++        "da": "Bytes: %1$s",
++        "de": "Bytes: %1$s",
++        "es": "Bytes: %1$s",
++        "fi": "Tavuja: %1$s",
++        "fr": "Octets : %1$s",
++        "he": "בתים: ⁨%1$s⁩",
++        "hi": "बाइट: %1$s",
++        "hu": "Bájtok: %1$s",
++        "id": "Byte: %1$s",
++        "it": "Byte: %1$s",
++        "ja": "バイト数：%1$s",
++        "ko": "바이트: %1$s",
++        "nb": "Byte: %1$s",
++        "nl": "Bytes: %1$s",
++        "pl": "Bajty: %1$s",
++        "pt-BR": "Bytes: %1$s",
++        "ru": "Байты: %1$s",
++        "sv": "Byte: %1$s",
++        "th": "ไบต์: %1$s",
++        "tr": "Bayt: %1$s",
++        "uk": "Байти: %1$s",
++        "vi": "Byte: %1$s",
++        "zh-Hans": "字节数：%1$s",
++        "zh-Hant": "位元組數：%1$s"
++      },
++      "notes": "Exact byte count supplied as a String; Arabic/Hebrew use FSI/PDI. For conflict versions this measures indexed Git blob data, not hydrated LFS assets."
+     }
+   },
+   "plurals": {
+--- before/tools/localization/coverage.json
++++ after/tools/localization/coverage.json
+@@ -28,7 +28,7 @@
+     "zh-Hant"
+   ],
+   "base_strings": 1288,
+-  "translated_per_language": 1226,
++  "translated_per_language": 1227,
+   "mapped": {
+     "account_removal_subject": "android_overrides",
+     "background_active": "android_overrides",
+@@ -864,6 +864,7 @@
+     "ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983": "android_overrides",
+     "ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e": "android_overrides",
+     "ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8": "android_overrides",
++    "ui_1_s_bytes_81cdb385": "android_overrides",
+     "ui_1_s_characters_bde60398": "android_overrides",
+     "ui_1_s_files_ddef923b": "android_overrides",
+     "ui_1_s_lines_2_s_bytes_c30a0cd1": "android_overrides",
+@@ -1261,7 +1262,6 @@
+     "ui_1_s_2_s_lines_59b29a56",
+     "ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527",
+     "ui_1_s_bytes_2_s_bb252a3c",
+-    "ui_1_s_bytes_81cdb385",
+     "ui_1_s_file_2_s_will_be_discarded_bad3301d",
+     "ui_1_s_files_including_git_metadata_2_s_bytes_ae4f1906",
+     "ui_1_s_repos_93f20a63",

@@ -29,7 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import com.bontecou.syncmd.ui.util.asString
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDirection
@@ -73,7 +75,7 @@ fun RepoPickerScreen(
     val filteredRepos by viewModel.filteredRepos.collectAsState()
     val searchQuery   by viewModel.searchQuery.collectAsState()
     val isLoading     by viewModel.isLoading.collectAsState()
-    val error         by viewModel.error.collectAsState()
+    val error = viewModel.error.collectAsState().value?.asString()
 
     if (!isLoggedIn) {
         LoginScreen(
@@ -145,10 +147,10 @@ private fun RepoPickerContent(
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         if (searchQuery.isNotBlank()) BEmptyState(
                             title    = stringResource(R.string.tide_onboarding_picker_no_matches),
-                            subtitle = "No repositories match \"$searchQuery\"",
+                            subtitle = stringResource(R.string.account_no_matching_repositories, searchQuery),
                         ) else BEmptyState(
                             title    = stringResource(R.string.ui_no_repositories_a6e9ff91),
-                            subtitle = "No repositories found for this account.",
+                            subtitle = stringResource(R.string.account_no_repositories_found),
                             actionTitle = stringResource(R.string.ui_refresh_0e916101),
                             onAction = onRefresh,
                         )
@@ -254,18 +256,21 @@ private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
 
 private val isoFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
 
+@Composable
 private fun formatRelativeDate(iso: String): String? {
     val date: Date = try { isoFmt.parse(iso) ?: return null } catch (_: Exception) { return null }
     val diff = System.currentTimeMillis() - date.time
-    return when {
-        diff < TimeUnit.MINUTES.toMillis(2)  -> "just now"
-        diff < TimeUnit.HOURS.toMillis(1)    -> "${TimeUnit.MILLISECONDS.toMinutes(diff)}m ago"
-        diff < TimeUnit.DAYS.toMillis(1)     -> "${TimeUnit.MILLISECONDS.toHours(diff)}h ago"
-        diff < TimeUnit.DAYS.toMillis(7)     -> "${TimeUnit.MILLISECONDS.toDays(diff)}d ago"
-        diff < TimeUnit.DAYS.toMillis(30)    -> "${TimeUnit.MILLISECONDS.toDays(diff) / 7}w ago"
-        diff < TimeUnit.DAYS.toMillis(365)   -> "${TimeUnit.MILLISECONDS.toDays(diff) / 30}mo ago"
-        else                                 -> "${TimeUnit.MILLISECONDS.toDays(diff) / 365}y ago"
+    val days = TimeUnit.MILLISECONDS.toDays(diff).toInt()
+    if (diff < TimeUnit.MINUTES.toMillis(2)) return stringResource(R.string.account_updated_just_now)
+    val (id, count) = when {
+        diff < TimeUnit.HOURS.toMillis(1)    -> R.plurals.account_updated_minutes to TimeUnit.MILLISECONDS.toMinutes(diff).toInt()
+        diff < TimeUnit.DAYS.toMillis(1)     -> R.plurals.account_updated_hours to TimeUnit.MILLISECONDS.toHours(diff).toInt()
+        diff < TimeUnit.DAYS.toMillis(7)     -> R.plurals.account_updated_days to days
+        diff < TimeUnit.DAYS.toMillis(30)    -> R.plurals.account_updated_weeks to days / 7
+        diff < TimeUnit.DAYS.toMillis(365)   -> R.plurals.account_updated_months to days / 30
+        else                                 -> R.plurals.account_updated_years to days / 365
     }
+    return pluralStringResource(id, count, count)
 }
 
 // ─── Previews ───────────────────────────────────────────────────────────────

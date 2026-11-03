@@ -143,8 +143,8 @@ class RepositoryMoveTest {
     }
     private fun review(model: SettingsViewModel, source: File): RepositoryMoveReview {
         instrumentation.runOnMainSync { model.prepareMove(source.path, RepositoryLocations.APP) }
-        compose.waitUntil(10_000) { model.moveReview.value != null || model.errorMessage.value != null }
-        assertNull(model.errorMessage.value)
+        compose.waitUntil(10_000) { model.moveReview.value != null || model.moveReviewError.value != null || model.errorMessage.value != null }
+        assertNull(model.errorMessage.value); assertNull(model.moveReviewError.value)
         return model.moveReview.value!!.also { externalPaths += File(it.plan.destination); externalPaths += it.plan.stagingOwner }
     }
     private fun bindAccount(source: File): GitHubAuthManager {
@@ -166,7 +166,7 @@ class RepositoryMoveTest {
     }
     private fun executeReviewedMove(model: SettingsViewModel, review: RepositoryMoveReview) {
         var done = false
-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
         compose.waitUntil(15_000) { done || model.errorMessage.value != null }
         assertNull(model.errorMessage.value); assertTrue(done)
         assertEquals(review.plan.destination, model.allRepositories.value.single().path)
@@ -293,7 +293,7 @@ class RepositoryMoveTest {
         val initial = preferences.all.toMap()
         val review = review(model, source)
         failNext = true
-        instrumentation.runOnMainSync { model.moveReviewed() }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
         compose.waitUntil(15_000) { model.errorMessage.value != null && !model.destructiveBusy.value }
         assertTrue(model.errorMessage.value.orEmpty().contains("Could not save connection"))
         assertEquals(initial, preferences.all)
@@ -330,7 +330,7 @@ class RepositoryMoveTest {
         val reviewed = review(model, source)
         assertTrue("The emulator must exercise its real data/shared-storage boundary", reviewed.plan.copyRequired)
         var done = false
-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
         compose.waitUntil(15_000) { done || model.errorMessage.value != null }
         assertNull(model.errorMessage.value); assertTrue(done)
         assertFalse(source.exists())
@@ -414,7 +414,7 @@ class RepositoryMoveTest {
         val source = source(); val model = model(); register(model, source)
         val reviewed = review(model, source)
         store.save(source.path, "https://github.com/fixture/notes.git", Credentials.None)
-        instrumentation.runOnMainSync { model.moveReviewed() }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
         compose.waitUntil(10_000) { model.errorMessage.value != null }
         assertTrue(model.errorMessage.value.orEmpty().contains("credentials changed"))
         assertTrue(source.exists()); assertFalse(File(reviewed.plan.destination).exists()); assertTrue(moves.journals().isEmpty())
@@ -442,7 +442,7 @@ class RepositoryMoveTest {
         val model = model(failing); register(model, source)
         val reviewed = review(model, source)
         failNext = true
-        instrumentation.runOnMainSync { model.moveReviewed() }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
         compose.waitUntil(15_000) { model.errorMessage.value != null }
         assertTrue(model.errorMessage.value.orEmpty().contains("Could not save repository settings"))
         assertFalse(source.exists())
@@ -460,7 +460,7 @@ class RepositoryMoveTest {
         val source = source(); val auth = bindAccount(source); val model = model(); register(model, source)
         val first = review(model, source)
         var moved = false
-        instrumentation.runOnMainSync { model.moveReviewed { moved = true } }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { moved = true } }
         compose.waitUntil(15_000) { moved || model.errorMessage.value != null }; assertNull(model.errorMessage.value)
         val originalRecoveryId = model.moveJournals.value.single().plan.id
         File(first.plan.destination, "active-edit.md").writeText("Keep active edits\n")
@@ -493,7 +493,7 @@ class RepositoryMoveTest {
         val source = source(); val auth = bindAccount(source); val model = model(); register(model, source)
         val reviewed = review(model, source)
         var done = false
-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
         compose.waitUntil(15_000) { done || model.errorMessage.value != null }; assertNull(model.errorMessage.value)
         val destination = File(reviewed.plan.destination)
         File(destination, "new-active.md").writeText("Keep this after cleanup\n")
@@ -512,8 +512,8 @@ class RepositoryMoveTest {
         var returned = false
         show { MoveRepositoryScreen(source.path, settings = model, onBack = { returned = true }) }
         compose.onNodeWithTag("move-review").performScrollTo().performClick()
-        compose.waitUntil(10_000) { model.moveReview.value != null || model.errorMessage.value != null }
-        assertNull(model.errorMessage.value)
+        compose.waitUntil(10_000) { model.moveReview.value != null || model.moveReviewError.value != null || model.errorMessage.value != null }
+        assertNull(model.errorMessage.value); assertNull(model.moveReviewError.value)
         val reviewed = model.moveReview.value!!; externalPaths += File(reviewed.plan.destination); externalPaths += reviewed.plan.stagingOwner
         capture("move-review-light")
         compose.runOnIdle { dark.value = true; large.value = true }
@@ -533,8 +533,8 @@ class RepositoryMoveTest {
         val destination = File(locations.resolve(RepositoryLocations.APP).path, source.name).also { externalPaths += it; it.mkdirs() }
         File(destination, "someone-elses.md").writeText("Retain me")
         instrumentation.runOnMainSync { model.prepareMove(source.path, RepositoryLocations.APP) }
-        compose.waitUntil(10_000) { model.errorMessage.value != null }
-        assertTrue(model.errorMessage.value.orEmpty().contains("already exists"))
+        compose.waitUntil(10_000) { model.moveReviewError.value != null }
+        assertTrue(model.moveReviewError.value.orEmpty().contains("already exists"))
         assertEquals("Retain me", File(destination, "someone-elses.md").readText())
         assertTrue(source.exists()); assertEquals(source.path, model.allRepositories.value.single().path)
     }
@@ -566,14 +566,14 @@ class RepositoryMoveTest {
         val model = model(); register(model, source)
         val reviewed = review(model, source); assertFalse(reviewed.plan.copyRequired)
         app.contentResolver.releasePersistableUriPermission(grantedUri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        instrumentation.runOnMainSync { model.moveReviewed() }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
         compose.waitUntil(10_000) { model.errorMessage.value != null }
         assertTrue(source.isDirectory); assertFalse(File(reviewed.plan.destination).exists()); assertTrue(moves.journals().isEmpty())
         grant()
         instrumentation.runOnMainSync { model.clearError() }
         val retry = review(model, source)
         var done = false
-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
+        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
         compose.waitUntil(15_000) { done || model.errorMessage.value != null }; assertNull(model.errorMessage.value); assertTrue(done)
         val destination = File(retry.plan.destination)
         assertEquals(inode, android.system.Os.stat(destination.path).st_ino)

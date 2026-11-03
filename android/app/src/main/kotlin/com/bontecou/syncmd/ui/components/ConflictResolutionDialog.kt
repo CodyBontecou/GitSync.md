@@ -61,7 +61,11 @@ fun ConflictResolutionDialog(
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     if (strategy == "Ours" || strategy == "Theirs") GitWorkSideDot(yours)
                     Text(
-                        stringResource(R.string.ui_using_strategy_1_s_6c76b5ef, strategy),
+                        stringResource(R.string.ui_using_strategy_1_s_6c76b5ef, stringResource(when (strategy) {
+                            "Ours" -> R.string.tide_merge_yours
+                            "Theirs" -> R.string.tide_merge_theirs
+                            else -> R.string.ui_manual_7c8107bd
+                        })),
                         style = TideType.mono(12.sp, FontWeight.SemiBold),
                         color = when (strategy) { "Ours" -> c.ahead; "Theirs" -> c.behind; else -> c.inkMid },
                     )

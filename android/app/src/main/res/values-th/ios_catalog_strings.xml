@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"มีการเชื่อมต่อสำรองอื่นบันทึกไว้แล้ว ตรวจสอบก่อนย้ายข้อมูลรับรองจาก URL เพิ่มเติม"</string>
+    <string name="account_api_error">"ข้อผิดพลาด API ของ GitHub: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"บัญชี GitHub ที่กำหนดไว้ถูกตัดการเชื่อมต่อแล้ว เลือกบัญชีสำหรับคลังนี้"</string>
+    <string name="account_basic_requires_http" formatted="false">"การยืนยันตัวตนด้วยชื่อผู้ใช้และโทเค็นต้องใช้ที่อยู่ HTTP หรือ HTTPS"</string>
+    <string name="account_browser_failed" formatted="false">"ไม่สามารถเปิดเบราว์เซอร์ได้ ลองอีกครั้งหรือใช้ Personal Access Token"</string>
+    <string name="account_choose_authentication" formatted="false">"เลือกวิธียืนยันตัวตนสำหรับที่อยู่นี้"</string>
+    <string name="account_choose_credentials" formatted="false">"เลือกข้อมูลรับรองสำหรับการเชื่อมต่อนี้"</string>
+    <string name="account_choose_location_again" formatted="false">"เลือกตำแหน่งของโคลนอีกครั้ง"</string>
+    <string name="account_choose_public_access" formatted="false">"เลือกการเข้าถึงแบบไม่ใช้ข้อมูลรับรองเครือข่ายสำหรับที่อยู่นี้"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"เลือกคีย์ส่วนตัว SSH สำหรับที่อยู่ SSH หรือการยืนยันตัวตนแบบ HTTPS สำหรับที่อยู่ HTTPS"</string>
+    <string name="account_choose_storage" formatted="false">"เลือกพื้นที่เก็บข้อมูลในการตั้งค่า"</string>
+    <string name="account_cleanup_failed" formatted="false">"การลงชื่อเข้าใช้ GitHub ถูกเข้ารหัสแล้ว แต่ไม่สามารถล้างการตั้งค่าในเครื่องแบบเก่าได้ ลองอีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_clone_credentials_changed" formatted="false">"ข้อมูลรับรองที่บันทึกไว้เปลี่ยนไประหว่างการโคลน ตรวจสอบการเชื่อมต่อก่อนลองอีกครั้ง"</string>
+    <string name="account_clone_destination_changed" formatted="false">"ปลายทางของโคลนเปลี่ยนไปแล้ว การเชื่อมต่อยังคงอยู่"</string>
+    <string name="account_clone_failed_network" formatted="false">"ไม่สามารถโคลนคลังได้ ตรวจสอบ URL ข้อมูลรับรองการเข้าถึง สาขา และการเชื่อมต่อเครือข่าย โฟลเดอร์เดิมยังคงอยู่"</string>
+    <string name="account_clone_failed_retry" formatted="false">"โคลนไม่สำเร็จ — โปรดลองอีกครั้ง"</string>
+    <string name="account_clone_in_use" formatted="false">"โคลนนี้เปิดอยู่แล้วหรือต้องตรวจสอบใน คลังในเครื่อง"</string>
+    <string name="account_clone_interrupted" formatted="false">"โคลนที่ถูกขัดจังหวะต้องได้รับการตรวจสอบ ไฟล์ยังคงอยู่ เชื่อมต่อใหม่ได้จาก คลังในเครื่อง"</string>
+    <string name="account_clone_storage_note">"%1$s\n\nตำแหน่งของโคลนถูกกำหนดไว้ที่พื้นที่เก็บข้อมูลแอปใน Android/media เพื่อให้เข้ากันได้กับ Obsidian"</string>
+    <string name="account_configuration_changed" formatted="false">"การกำหนดค่าคลังเปลี่ยนไปแล้ว โหลดใหม่ก่อนลบข้อมูลรับรอง"</string>
+    <string name="account_connection_recovery_failed" formatted="false">"บันทึกการเชื่อมต่อไม่สำเร็จ และไม่สามารถบันทึกการกู้คืนข้อมูลรับรองได้ ป้อนข้อมูลรับรองอีกครั้ง"</string>
+    <string name="account_connection_save_failed" formatted="false">"ไม่สามารถบันทึกการเชื่อมต่อของคลังได้"</string>
+    <string name="account_connection_unreadable" formatted="false">"ไม่สามารถเปิดการเชื่อมต่อที่บันทึกไว้ได้ ป้อนข้อมูลรับรองของคลังอีกครั้ง"</string>
+    <string name="account_credentials_changed_reload" formatted="false">"ข้อมูลรับรองที่บันทึกไว้เปลี่ยนไปแล้ว โหลดใหม่ก่อนบันทึก"</string>
+    <string name="account_destination_exists" formatted="false">"ปลายทางมีอยู่แล้ว เชื่อมต่อใหม่จาก คลังในเครื่อง หรือเลือกตำแหน่งว่างใหม่ ไม่มีไฟล์ใดถูกลบ"</string>
+    <string name="account_enter_new_credentials" formatted="false">"ป้อนข้อมูลรับรองใหม่"</string>
+    <string name="account_enter_ssh_key" formatted="false">"ป้อนคีย์ส่วนตัว SSH"</string>
+    <string name="account_enter_username_secret" formatted="false">"ป้อนชื่อผู้ใช้และโทเค็นหรือรหัสผ่าน"</string>
+    <string name="account_enter_valid_url" formatted="false">"ป้อน URL ของคลังที่ถูกต้อง โดยใส่ข้อมูลรับรองในช่องแยกต่างหาก"</string>
+    <string name="account_finish_migration" formatted="false">"ลงชื่อเข้าใช้ GitHub ให้เสร็จเพื่อย้ายข้อมูลรับรองเดิมให้เสร็จสมบูรณ์"</string>
+    <string name="account_github_requires_https" formatted="false">"การเข้าถึงด้วยบัญชี GitHub ต้องใช้ที่อยู่ HTTPS ของ github.com"</string>
+    <string name="account_invalid_repository_name" formatted="false">"ชื่อคลัง GitHub ไม่ถูกต้อง"</string>
+    <string name="account_invalid_repository_url" formatted="false">"URL ของคลังไม่ถูกต้อง"</string>
+    <string name="account_load_author_failed" formatted="false">"ไม่สามารถโหลดข้อมูลผู้เขียนได้"</string>
+    <string name="account_load_failed" formatted="false">"โหลดข้อมูล GitHub ไม่สำเร็จ"</string>
+    <string name="account_migration_changed" formatted="false">"ข้อมูลรับรองที่บันทึกไว้เปลี่ยนไปแล้ว โหลดการย้ายข้อมูลใหม่"</string>
+    <string name="account_migration_recovery_failed" formatted="false">"ไม่สามารถบันทึกการกู้คืนข้อมูลรับรองได้ ตรวจสอบการเชื่อมต่อนี้"</string>
+    <string name="account_migration_unverified" formatted="false">"ไม่สามารถยืนยันข้อมูลรับรองที่เข้ารหัสได้ ข้อมูลรับรองใน URL ยังคงอยู่"</string>
+    <string name="account_move_changed" formatted="false">"ข้อมูลรับรองของคลังเปลี่ยนไปหลังการตรวจสอบ ตรวจสอบการย้ายอีกครั้ง"</string>
+    <string name="account_move_finish_failed" formatted="false">"ไม่สามารถกู้คืนการย้ายข้อมูลรับรองให้เสร็จสมบูรณ์ได้"</string>
+    <string name="account_move_persist_failed" formatted="false">"ไม่สามารถบันทึกข้อมูลรับรองของคลังที่ย้ายแล้วได้"</string>
+    <string name="account_move_recovery_changed" formatted="false">"ข้อมูลรับรองที่ย้ายเปลี่ยนไประหว่างการกู้คืน ตรวจสอบการเชื่อมต่อปลายทางก่อนดำเนินการต่อ"</string>
+    <string name="account_move_recovery_failed" formatted="false">"ไม่สามารถบันทึกการกู้คืนการย้ายข้อมูลรับรองได้ สำเนาทำงานทั้งหมดยังคงอยู่"</string>
+    <string name="account_move_verify_failed" formatted="false">"ไม่สามารถยืนยันข้อมูลรับรองของคลังที่ย้ายแล้วได้"</string>
+    <string name="account_no_alternative" formatted="false">"ไม่มีข้อมูลรับรองสำรองที่บันทึกไว้สำหรับที่อยู่นี้"</string>
+    <string name="account_no_backup_folder" formatted="false">"ไม่มีโฟลเดอร์สำรองข้อมูลของแอปในโวลุ่มที่เก็บข้อมูลของคลังนี้ สำเนาทำงานของคุณยังคงอยู่"</string>
+    <string name="account_no_matching_repositories">"ไม่มีคลังที่ตรงกับ “%1$s”"</string>
+    <string name="account_no_remote" formatted="false">"ยังไม่ได้กำหนดค่ารีโมต"</string>
+    <string name="account_no_repositories_found" formatted="false">"ไม่พบคลังสำหรับบัญชีนี้"</string>
+    <string name="account_no_url_credentials" formatted="false">"ไม่มีข้อมูลรับรองจาก URL ที่รองรับให้ย้าย"</string>
+    <string name="account_not_authenticated" formatted="false">"ยังไม่ได้ยืนยันตัวตน — โปรดลงชื่อเข้าใช้ก่อน"</string>
+    <string name="account_open_connection_failed" formatted="false">"ไม่สามารถเปิดการเชื่อมต่อได้"</string>
+    <string name="account_opening_sample" formatted="false">"กำลังเปิดตัวอย่าง…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"ไม่สามารถเตรียมการลงชื่อเข้าใช้ GitHub อย่างปลอดภัยได้ ลองอีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_previous_address_missing" formatted="false">"ไม่ได้บันทึกที่อยู่ระยะไกลก่อนหน้าไว้ ตรวจสอบ URL GitHub ที่แนะนำนี้และเลือกวิธียืนยันตัวตนก่อนโคลน"</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"ไม่สามารถกู้คืนการเชื่อมต่อก่อนหน้าได้ ตรวจสอบ URL และเลือกวิธียืนยันตัวตนเอง ไฟล์และข้อมูลรับรองที่บันทึกไว้ยังคงอยู่"</string>
+    <string name="account_publication_confirm_failed" formatted="false">"ไม่สามารถยืนยันการเชื่อมต่อสำหรับการเผยแพร่ได้"</string>
+    <string name="account_publication_conflict" formatted="false">"โฟลเดอร์นี้มีการเชื่อมต่ออื่นบันทึกไว้แล้ว ข้อมูลรับรองเดิมยังคงอยู่"</string>
+    <string name="account_publication_recovery" formatted="false">"ข้อมูลรับรองสำหรับการเผยแพร่ต้องกู้คืน โฟลเดอร์ยังคงอยู่"</string>
+    <string name="account_publication_verify_failed" formatted="false">"ไม่สามารถตรวจสอบการเชื่อมต่อสำหรับการเผยแพร่ได้"</string>
+    <string name="account_reenter_credentials" formatted="false">"ป้อนข้อมูลรับรองของคลังอีกครั้ง"</string>
+    <string name="account_reload_public_access" formatted="false">"โหลดการเชื่อมต่อแบบเข้าถึงสาธารณะที่บันทึกไว้ใหม่"</string>
+    <string name="account_remote_url_changed" formatted="false">"URL ระยะไกลเปลี่ยนไปแล้ว ตรวจสอบการเชื่อมต่อของคลังก่อนยืนยันตัวตน"</string>
     <string name="account_removal_subject" formatted="false">"บัญชีนี้"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"ไม่สามารถลบข้อมูลรับรองที่บันทึกไว้ได้"</string>
+    <string name="account_remove_failed" formatted="false">"ไม่สามารถลบการลงชื่อเข้าใช้ GitHub ได้ ลองอีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_repository_name_length" formatted="false">"ป้อนชื่อคลังความยาว 1–120 อักขระ"</string>
+    <string name="account_review_github_connection" formatted="false">"ตรวจสอบการเชื่อมต่อบัญชี GitHub"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"ตรวจสอบโคลนที่ถูกขัดจังหวะก่อนเริ่มโคลนใหม่ ไฟล์ยังคงอยู่"</string>
+    <string name="account_sample_hint" formatted="false">"ลองใช้คำสั่ง Git จริงแบบออฟไลน์ ไม่ต้องมีบัญชี"</string>
+    <string name="account_save_author_failed" formatted="false">"ไม่สามารถบันทึกข้อมูลผู้เขียนได้"</string>
+    <string name="account_save_connection_failed" formatted="false">"ไม่สามารถบันทึกการเชื่อมต่อได้"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"ไม่สามารถบันทึกการลงชื่อเข้าใช้ GitHub อย่างปลอดภัยได้ ลองอีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_save_sign_in_short" formatted="false">"ไม่สามารถบันทึกการลงชื่อเข้าใช้อย่างปลอดภัยได้"</string>
+    <string name="account_saved_connection_changed" formatted="false">"การเชื่อมต่อที่บันทึกไว้เปลี่ยนไปแล้ว ตรวจสอบการยืนยันตัวตนก่อนโคลนอีกครั้ง"</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"ไม่สามารถเปิดข้อมูลรับรองที่บันทึกไว้ได้ เลือกการเข้าถึงสาธารณะหรือป้อนข้อมูลรับรองใหม่"</string>
+    <string name="account_select_connected_account" formatted="false">"เลือกบัญชี GitHub ที่เชื่อมต่ออยู่และที่อยู่ HTTPS ของ github.com"</string>
+    <string name="account_select_failed" formatted="false">"ไม่สามารถเลือกบัญชี GitHub ได้ ลองอีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_select_github_account" formatted="false">"เลือกบัญชี GitHub"</string>
+    <string name="account_select_repository_account" formatted="false">"เลือกบัญชี GitHub สำหรับคลังนี้"</string>
+    <string name="account_select_repository_github_account" formatted="false">"เลือกบัญชี GitHub ของคลัง"</string>
+    <string name="account_session_open_failed" formatted="false">"ไม่สามารถเปิดพื้นที่เก็บข้อมูล GitHub ที่ปลอดภัยได้ ลงชื่อเข้าใช้อีกครั้งเพื่อกู้คืนเซสชัน"</string>
+    <string name="account_session_recovery_failed" formatted="false">"การกู้คืนพื้นที่เก็บข้อมูล GitHub ที่ปลอดภัยล้มเหลว ลองลงชื่อเข้าใช้อีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_session_save_failed" formatted="false">"ไม่สามารถบันทึกพื้นที่เก็บข้อมูล GitHub ที่ปลอดภัยได้ ลองลงชื่อเข้าใช้อีกครั้ง"</string>
+    <string name="account_session_verify_failed" formatted="false">"ไม่สามารถยืนยันพื้นที่เก็บข้อมูล GitHub ที่ปลอดภัยได้ ลองลงชื่อเข้าใช้อีกครั้ง"</string>
+    <string name="account_sign_in" formatted="false">"ลงชื่อเข้าใช้"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"ลงชื่อเข้าใช้ GitHub ก่อนเลือกการเข้าถึงด้วยบัญชี"</string>
+    <string name="account_sign_in_failed" formatted="false">"ลงชื่อเข้าใช้ไม่สำเร็จ"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"ลงชื่อเข้าใช้บัญชี GitHub ของคลังนี้"</string>
+    <string name="account_sign_in_unverified" formatted="false">"ไม่สามารถยืนยันการลงชื่อเข้าใช้ GitHub ได้ เริ่มลงชื่อเข้าใช้ใหม่อีกครั้ง"</string>
+    <string name="account_sign_out_failed" formatted="false">"ไม่สามารถออกจากระบบอย่างปลอดภัยได้ ลองอีกครั้งเมื่อพื้นที่เก็บข้อมูลพร้อมใช้งาน"</string>
+    <string name="account_signing_in" formatted="false">"กำลังลงชื่อเข้าใช้…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"คีย์โฮสต์ SSH ไม่ได้รับการอนุมัติ ลองอีกครั้งเมื่อคุณตรวจสอบลายนิ้วมือของเซิร์ฟเวอร์ได้"</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"คีย์ SSH ใช้ได้กับที่อยู่คลังแบบ SSH เท่านั้น"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"ไม่สามารถเปิดความเชื่อถือ SSH ที่บันทึกไว้ได้ ตรวจสอบความเชื่อถือเซิร์ฟเวอร์ SSH ในการตั้งค่า"</string>
+    <string name="account_storage_attention" formatted="false">"พื้นที่เก็บข้อมูล GitHub ที่ปลอดภัยต้องได้รับการตรวจสอบ ข้อมูลรับรองเดิมยังคงอยู่ ลองลงชื่อเข้าใช้อีกครั้ง"</string>
+    <string name="account_token_empty" formatted="false">"โทเค็นต้องไม่ว่างเปล่า"</string>
+    <string name="account_token_invalid">"โทเค็น GitHub ไม่ถูกต้องหรือหมดอายุแล้ว (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"ลองใช้คลังตัวอย่าง"</string>
+    <string name="account_updated_just_now" formatted="false">"เมื่อสักครู่"</string>
+    <string name="account_valid_branch" formatted="false">"ป้อนชื่อสาขาที่ถูกต้อง"</string>
+    <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_active" formatted="false">"จัดกำหนดการตรวจสอบเบื้องหลังให้ที่เก็บที่รวมไว้แล้ว"</string>
     <string name="background_allow_push" formatted="false">"อนุญาตให้เผยแพร่อัตโนมัติ"</string>
     <string name="background_attempt">"ตรวจสอบล่าสุด: %1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"การดำเนินการหยุดแล้ว โปรดตรวจสอบสถานะคลังและการตั้งค่าการเชื่อมต่อ"</string>
     <string name="diagnostics_share_title" formatted="false">"แชร์ข้อมูลวินิจฉัย"</string>
     <string name="diagnostics_warnings" formatted="false">"คำเตือน"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"ในเครื่อง"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"ระยะไกล"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"ติดตาม"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"ไม่ทราบ"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"ยุบ"</string>
+    <string name="dialogs_commit_expand" formatted="false">"ขยาย"</string>
+    <string name="dialogs_error_branch_exists">"มีแบรนช์ \'%1$s\' อยู่แล้ว\n\nเลือกชื่ออื่น"</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"ไม่สามารถลบแบรนช์ปัจจุบันได้\n\nสลับไปยังแบรนช์อื่นก่อน"</string>
+    <string name="dialogs_error_commit_failed">"คอมมิตไม่สำเร็จ: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"ไม่สามารถดำเนินการนี้ได้ขณะมีการเปลี่ยนแปลงที่ยังไม่ได้คอมมิต\n\nให้คอมมิตหรือเก็บการเปลี่ยนแปลงใน stash ก่อน"</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"ชื่อแบรนช์ไม่ถูกต้อง\n\nใช้ตัวอักษร ตัวเลข ขีดกลาง และขีดล่าง"</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"ดูเหมือนว่านี่ไม่ใช่รีโพซิทอรี Git ที่ถูกต้อง\n\nตรวจสอบให้แน่ใจว่าพาธชี้ไปยังโฟลเดอร์ .git หรือไดเรกทอรีทำงาน"</string>
+    <string name="dialogs_error_network" formatted="false">"เครือข่ายผิดพลาด ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"</string>
+    <string name="dialogs_error_pull_failed">"พูลไม่สำเร็จ: %1$s"</string>
+    <string name="dialogs_error_push_failed">"พุชไม่สำเร็จ: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"ไม่พบรีโพซิทอรีที่: %1$s\n\nตรวจสอบพาธแล้วลองอีกครั้ง"</string>
+    <string name="dialogs_error_title" formatted="false">"ข้อผิดพลาด"</string>
+    <string name="dialogs_info_title" formatted="false">"ข้อมูล"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"รวมเฉพาะเมื่อต้นทางนำหน้าโดยตรง รักษาประวัติแบบเส้นตรง"</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"fast-forward หากทำได้ มิฉะนั้นสร้างคอมมิตรวม"</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"สร้างคอมมิตรวมเสมอ แม้จะ fast-forward ได้"</string>
+    <string name="dialogs_success_title" formatted="false">"สำเร็จ"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"ไม่ทราบ"</string>
+    <string name="dialogs_warning_title" formatted="false">"คำเตือน"</string>
     <string name="discard_clear_staging" formatted="false">"ยกเลิกการเตรียมไฟล์"</string>
     <string name="discard_review_all" formatted="false">"การเปลี่ยนแปลงในไฟล์ที่ติดตามและไฟล์ใหม่ที่แสดงด้านล่างจะถูกทิ้งอย่างถาวร ไฟล์ที่ละเว้นจะยังคงอยู่"</string>
     <string name="discard_review_empty" formatted="false">"ไม่มีการเปลี่ยนแปลงให้ทิ้ง"</string>
     <string name="discard_review_operation" formatted="false">"การดำเนินการนี้จะยกเลิกการทำงานของ Git ที่กำลังดำเนินอยู่ด้วย"</string>
     <string name="discard_review_unborn" formatted="false">"ยังไม่มีคอมมิต การดำเนินการนี้จะยกเลิกการเตรียมไฟล์ที่แสดง โดยเก็บเนื้อหาไว้"</string>
+    <string name="discovery_scanned">"สแกน %1$s แล้ว เลือกสำเนาการทำงานที่จะเพิ่ม"</string>
     <string name="file_clone_failure" formatted="false">"ไม่สามารถโคลนคลังในเครื่องได้ ตรวจสอบโฟลเดอร์ต้นทาง สิทธิ์เข้าถึงพื้นที่เก็บข้อมูล และสาขา โฟลเดอร์ที่มีอยู่ยังคงอยู่"</string>
     <string name="file_clone_guidance" formatted="false">"โคลนคลังบนอุปกรณ์โดยใช้การเข้าถึงในเครื่อง สำหรับพื้นที่เก็บข้อมูลที่ใช้ร่วมกัน ให้สิทธิ์เข้าถึงโฟลเดอร์ในการตั้งค่าก่อน"</string>
     <string name="file_delete_body" formatted="false">"ไฟล์จะถูกลบออกจากอุปกรณ์นี้ Git จะแสดงว่าไฟล์ถูกลบหากเคยติดตามไฟล์นี้"</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"ไม่มีตัวเลือกโฟลเดอร์บนอุปกรณ์นี้"</string>
     <string name="folder_settings_unavailable" formatted="false">"การตั้งค่าพื้นที่จัดเก็บ Android ไม่พร้อมใช้งาน พื้นที่จัดเก็บของแอปยังคงใช้งานได้"</string>
     <string name="folder_unusable" formatted="false">"ไม่สามารถใช้โฟลเดอร์นี้ได้"</string>
+    <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_fetch_detail" formatted="false">"ตรวจสอบจากระยะไกลเพื่อค้นหาการคอมมิตใหม่"</string>
     <string name="git_native_public_only" formatted="false">"โปรโตคอลดั้งเดิมของ Git รองรับเฉพาะการเข้าถึงแบบสาธารณะ ใช้ HTTPS หรือ SSH สำหรับการยืนยันตัวตน"</string>
+    <string name="gitops_action_failed" formatted="false">"Git ไม่สามารถดำเนินการนี้ให้เสร็จสิ้นได้"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"ไม่สามารถดำเนินการกับบรานช์ให้เสร็จสิ้นได้"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"ไม่สามารถดำเนินการกับบรานช์ให้เสร็จสิ้นได้ รีเฟรชสถานะที่เก็บ"</string>
+    <string name="gitops_branch_changed" formatted="false">"บรานช์เปลี่ยนไปแล้ว ตรวจสอบบรานช์ปัจจุบันก่อนลองอีกครั้ง"</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"บรานช์ปัจจุบันเปลี่ยนไปแล้ว รีเฟรชก่อนคอมมิตและพุช"</string>
+    <string name="gitops_branch_changed_push" formatted="false">"บรานช์ปัจจุบันเปลี่ยนไปแล้ว รีเฟรชก่อนพุช"</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"บรานช์ปัจจุบันเปลี่ยนไประหว่างโหลด รีเฟรชแล้วตรวจสอบอีกครั้ง"</string>
+    <string name="gitops_branch_name_empty" formatted="false">"ชื่อบรานช์ต้องไม่ว่างเปล่า"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"คอมมิตไฟล์ก่อนสร้างบรานช์"</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"บรานช์หรือคอมมิตปัจจุบันเปลี่ยนไปแล้ว รีเฟรชแล้วตรวจสอบอีกครั้ง"</string>
+    <string name="gitops_branch_pushed" formatted="false">"พุชบรานช์แล้ว"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"ไม่สามารถรีเฟรชบรานช์ได้"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"โหลดการเปลี่ยนแปลงไม่สำเร็จ"</string>
+    <string name="gitops_commit_changed" formatted="false">"คอมมิตเปลี่ยนไปแล้ว รีเฟรชประวัติแล้วตรวจสอบอีกครั้ง"</string>
+    <string name="gitops_commit_message_empty" formatted="false">"ข้อความคอมมิตต้องไม่ว่างเปล่า"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"คอมมิตในเครื่องแล้ว การพุชหยุดลง ลองอีกครั้งเมื่อพร้อม"</string>
+    <string name="gitops_committed_pushed" formatted="false">"คอมมิตและพุชแล้ว"</string>
+    <string name="gitops_committed_pushing" formatted="false">"คอมมิตในเครื่องแล้ว กำลังพุช…"</string>
+    <string name="gitops_committed_ready" formatted="false">"คอมมิตในเครื่องแล้ว พร้อมพุชเมื่อคุณต้องการ"</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"เลือกของเราหรือของเขาสำหรับการแก้ไขแบบกลุ่ม"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"ข้อขัดแย้งเปลี่ยนไปแล้ว ฉบับร่างของคุณยังแสดงอยู่ คัดลอกข้อความที่ต้องการเก็บไว้ แล้วปิดและตรวจสอบข้อขัดแย้งปัจจุบัน"</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"ไม่สามารถแก้ไขข้อขัดแย้งได้"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"ข้อขัดแย้งเปลี่ยนไปแล้ว รีเฟรชก่อนแก้ไข"</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"ไม่สามารถรีเฟรชข้อขัดแย้งในการรวมได้"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"ยังมีข้อขัดแย้งบางรายการที่ไม่ได้แก้ไข ตรวจสอบรายการข้อขัดแย้งที่รีเฟรชแล้ว"</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"โหลด diff ของไฟล์ไม่สำเร็จ"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Git ไม่สามารถดำเนินการกับประวัตินี้ให้เสร็จสิ้นได้"</string>
+    <string name="gitops_history_changed" formatted="false">"ประวัติที่เก็บเปลี่ยนไปแล้ว รีเฟรชแล้วตรวจสอบอีกครั้ง"</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"ไม่สามารถรีเฟรชประวัติได้"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"ไม่สามารถเปิดการอนุมัติปลายทาง LFS ที่บันทึกไว้ได้ รีเซ็ตในการตั้งค่าก่อนลองอีกครั้ง"</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"ที่อยู่ปลายทาง LFS ไม่ถูกต้อง"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"ไม่สามารถตรวจสอบการติดตามนามสกุลไฟล์ได้ โหลดใหม่และตรวจสอบแอตทริบิวต์ที่มีอยู่ ข้อขัดแย้ง และสิทธิ์เข้าถึงไฟล์ก่อนลองอีกครั้ง"</string>
+    <string name="gitops_lfs_failed" formatted="false">"ไม่สามารถดำเนินการ Git LFS ให้เสร็จสิ้นได้ ตรวจสอบการเชื่อมต่อและสถานะการติดตามปัจจุบัน แล้วโหลดใหม่และลองอีกครั้ง ไฟล์และคอมมิตในเครื่องของคุณยังคงอยู่"</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"ไม่สามารถตรวจสอบ Git LFS ได้ ตรวจสอบสิทธิ์เข้าถึงพื้นที่จัดเก็บและสถานะที่เก็บ แล้วโหลดใหม่"</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"ไม่สามารถตรวจสอบล็อกบนเซิร์ฟเวอร์ได้ รีเฟรชก่อนการเปลี่ยนแปลงครั้งถัดไป"</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"เซิร์ฟเวอร์ปฏิเสธการเข้าถึงรายการล็อก ตรวจสอบการเชื่อมต่อที่เก็บและสิทธิ์การพุช"</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"ไม่สามารถตรวจสอบล็อกบนเซิร์ฟเวอร์ได้ ตรวจสอบการเชื่อมต่อและสถานะที่เก็บ แล้วรีเฟรชก่อนการเปลี่ยนแปลงครั้งถัดไป"</string>
+    <string name="gitops_merge_message_empty" formatted="false">"ข้อความการรวมต้องไม่ว่างเปล่า"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"เซสชันการรวมเปลี่ยนไปแล้ว รีเฟรชก่อนดำเนินการต่อ"</string>
+    <string name="gitops_merge_stopped">"การรวมหยุดลง: %1$s"</string>
+    <string name="gitops_merge_successful">"รวมสำเร็จ: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"การดำเนินการ Git ล้มเหลว"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"การพูลไม่เสร็จสมบูรณ์"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"เลือกข้อขัดแย้งที่ตรวจสอบแล้ว"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"เลือกชื่อไฟล์ที่ตรวจสอบแล้ว"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"ข้อขัดแย้งหรือไฟล์งานเปลี่ยนไปแล้ว ฉบับร่างของคุณยังคงอยู่ รีเฟรชก่อนแก้ไข"</string>
+    <string name="gitops_rebase_failed" formatted="false">"Git ไม่สามารถดำเนินการนี้ให้เสร็จสิ้นได้ หากกำลังดึงข้อมูล ให้ตรวจสอบการเชื่อมต่อ แล้วรีเฟรชสถานะรีเบสก่อนลองอีกครั้ง"</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"รีเบสต้องได้รับการตรวจสอบ"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"เปิดตัวแก้ไขข้อขัดแย้งก่อนแก้ไข"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"รีเฟรชเซสชันรีเบส"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"ตรวจสอบการรีเบสก่อน"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Git ไม่สามารถดำเนินการนี้ให้เสร็จสิ้นได้ ตรวจสอบการเชื่อมต่อ แล้วตรวจสอบสถานะปัจจุบันของที่เก็บก่อนลองอีกครั้ง"</string>
+    <string name="gitops_repository_changed_review" formatted="false">"ที่เก็บที่เลือกเปลี่ยนไปแล้ว ตรวจสอบการดำเนินการอีกครั้ง"</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"ไม่สามารถตรวจสอบการเปลี่ยนแปลงในเครื่องได้"</string>
+    <string name="gitops_stash_changed" formatted="false">"รายการ stash เปลี่ยนไปแล้ว ตรวจสอบ stash ปัจจุบันก่อนลองอีกครั้ง"</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"ไม่สามารถรีเฟรชสถานะที่เก็บได้"</string>
+    <string name="gitops_tag_changed" formatted="false">"แท็กเปลี่ยนไปแล้ว ตรวจสอบแท็กปัจจุบันก่อนลองอีกครั้ง"</string>
+    <string name="gitops_tag_name_empty" formatted="false">"ชื่อแท็กต้องไม่ว่างเปล่า"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"คอมมิตไฟล์ก่อนสร้างแท็ก"</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"ไม่สามารถโหลดบรานช์ upstream ได้"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"ไม่สามารถบันทึกบรานช์ upstream ได้"</string>
     <string name="guide_back" formatted="false">"กลับ"</string>
     <string name="guide_clone_body" formatted="false">"โคลนที่เก็บ GitHub ที่เก็บสาธารณะ ที่เก็บบนเซิร์ฟเวอร์ของคุณเอง หรือที่เก็บผ่าน SSH สำเนาการทำงานแต่ละชุดจะเก็บการเชื่อมต่อและสาขาของตัวเองไว้"</string>
     <string name="guide_clone_title" formatted="false">"ที่เก็บของคุณบน Android"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"อัปโหลด · ข้อมูลรับรองที่เข้ารหัสแยกต่างหาก"</string>
     <string name="lfs_uploads_public" formatted="false">"อัปโหลด · การเข้าถึงสาธารณะ"</string>
     <string name="modified" formatted="false">"แก้ไขแล้ว"</string>
+    <string name="move_action" formatted="false">"ย้ายสำเนาการทำงาน"</string>
+    <string name="move_cancelled" formatted="false">"ยกเลิกการย้ายแล้ว สำเนาการทำงานเดิมยังคงอยู่"</string>
+    <string name="move_confirm_action" formatted="false">"ย้าย"</string>
+    <string name="move_confirm_action_restore" formatted="false">"กู้คืน"</string>
+    <string name="move_confirm_guidance" formatted="false">"เลือกปลายทางที่ยังไม่ได้ใช้ และอย่าให้แอปอื่นเปลี่ยนแปลงโฟลเดอร์เหล่านี้จนกว่าการย้ายจะเสร็จสิ้น"</string>
+    <string name="move_confirm_retained" formatted="false">"ต้นฉบับจะถูกเก็บไว้เป็นสำเนาการกู้คืน"</string>
+    <string name="move_confirm_title" formatted="false">"ย้ายสำเนาการทำงานนี้หรือไม่"</string>
+    <string name="move_confirm_title_restore" formatted="false">"กู้คืนสำเนาการกู้คืนนี้หรือไม่"</string>
+    <string name="move_done" formatted="false">"ย้ายรีโพแล้ว"</string>
+    <string name="move_done_retained" formatted="false">"ย้ายรีโพแล้ว ต้นฉบับถูกเก็บไว้ในการกู้คืนการย้าย"</string>
+    <string name="move_error_destination_other" formatted="false">"ปลายทางลงทะเบียนไว้กับรีโพอื่น"</string>
+    <string name="move_error_destination_registered" formatted="false">"มีรีโพอื่นลงทะเบียนไว้ที่ปลายทางนี้แล้ว"</string>
+    <string name="move_error_finish_pending" formatted="false">"ทำการย้ายที่รอดำเนินการให้เสร็จก่อน"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"ทำการย้ายที่รอดำเนินการของรีโพนี้ให้เสร็จก่อน"</string>
+    <string name="move_error_recovery_added" formatted="false">"เพิ่มสำเนาการกู้คืนแล้ว ย้ายจากรายการรีโพของสำเนานั้น"</string>
+    <string name="move_error_restored_registered" formatted="false">"ตำแหน่งที่กู้คืนลงทะเบียนต่างไปแล้ว ไม่มีการเขียนทับการตั้งค่าใด"</string>
+    <string name="move_error_settings_changed" formatted="false">"การตั้งค่ารีโพเปลี่ยนไป โปรดตรวจสอบการกู้คืนการย้ายก่อนดำเนินการต่อ"</string>
+    <string name="move_error_settings_review" formatted="false">"ต้องตรวจสอบการตั้งค่าการย้าย สำเนาการทำงานทั้งหมดยังคงอยู่"</string>
+    <string name="move_error_stale_review" formatted="false">"การตรวจสอบการย้ายรีโพเปลี่ยนไป โปรดตรวจสอบปลายทางอีกครั้งก่อนย้าย"</string>
+    <string name="move_intro" formatted="false">"ย้ายสำเนาการทำงานนี้ทั้งหมด รวมถึงประวัติ Git การเปลี่ยนแปลงที่เตรียมไว้ และไฟล์ที่ยังไม่บันทึกในดิสก์ การตั้งค่าบัญชีและผู้เขียนจะย้ายไปด้วย"</string>
+    <string name="move_intro_restore" formatted="false">"กู้คืนต้นฉบับที่เก็บไว้เป็นรีโพแยกต่างหาก สำเนาการทำงานปัจจุบันจะอยู่ที่เดิม"</string>
+    <string name="move_progress_moving" formatted="false">"กำลังย้ายและบันทึกการตั้งค่ารีโพ…"</string>
+    <string name="move_progress_reviewing" formatted="false">"กำลังตรวจสอบไฟล์และเมทาดาทา Git…"</string>
+    <string name="move_recovered_name">"%1$s (กู้คืนแล้ว)"</string>
+    <string name="move_recovery_attention">"การกู้คืนการย้ายต้องได้รับการตรวจสอบ: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"กู้คืนการย้ายเสร็จสิ้น"</string>
+    <string name="move_recovery_removed" formatted="false">"นำสำเนาการกู้คืนออกแล้ว"</string>
+    <string name="move_title_restore" formatted="false">"กู้คืนสำเนาการกู้คืน"</string>
     <string name="notes_acknowledge" formatted="false">"เข้าใจแล้ว"</string>
     <string name="notes_connections_body" formatted="false">"จัดการบัญชี GitHub และข้อมูลผู้เขียนของคลัง เชื่อมต่อผ่าน HTTPS หรือ SSH เลือกพื้นที่เก็บโคลน เชื่อมต่อสำเนาในเครื่องอีกครั้ง และตรวจสอบการย้ายหรือนำคลังออก"</string>
     <string name="notes_connections_title" formatted="false">"การเชื่อมต่อและพื้นที่เก็บข้อมูล"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"เปลี่ยนไปยังสาขาในเครื่องและดำเนินการ Git ที่ค้างอยู่หรือแก้ข้อขัดแย้งให้เสร็จก่อน"</string>
     <string name="repository_actions_unsettled" formatted="false">"ไฟล์ยังคงเปลี่ยนแปลงขณะเพิ่มลง staging ตรวจสอบดัชนีและไฟล์ก่อนลองใหม่"</string>
     <string name="repository_actions_write_scope" formatted="false">"พุชและซิงค์จะเพิ่มการเปลี่ยนแปลงปัจจุบันทั้งหมดที่ไม่ได้ถูกละเว้นลง staging สร้างคอมมิตหากจำเป็น แล้วอัปโหลดคอมมิตที่ยังไม่ได้ส่ง ซิงค์จะดึงข้อมูลก่อนและอัปเดตแบบ fast-forward เมื่อปลอดภัย ความขัดแย้ง ประวัติที่แยกจากกัน และสถานะระยะไกลที่ไม่ปลอดภัยจะหยุดการดำเนินการ หากอัปโหลดล้มเหลว คอมมิตใหม่ในเครื่องจะยังคงอยู่เพื่อให้ลองใหม่"</string>
+    <string name="repository_add_none_new" formatted="false">"เลือกรีโพอย่างน้อยหนึ่งรายการที่ยังไม่ได้เพิ่ม"</string>
+    <string name="repository_clone_deleted" formatted="false">"ลบโคลนในเครื่องแล้ว"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"HEAD แยกจากบรานช์หรือยังไม่มีคอมมิตแรก"</string>
     <string name="repository_discovery_clean" formatted="false">"ไม่มีการเปลี่ยนแปลง"</string>
     <string name="repository_discovery_dirty" formatted="false">"การเปลี่ยนแปลงในเครื่อง"</string>
     <string name="repository_history_files_deleted" formatted="false">"ลบไฟล์ในเครื่องแล้ว"</string>
     <string name="repository_history_files_kept" formatted="false">"เก็บไฟล์ในเครื่องไว้"</string>
     <string name="repository_history_tracking_removed" formatted="false">"นำการติดตาม Git ออกแล้ว · เก็บไฟล์ทำงานไว้"</string>
+    <string name="repository_history_unavailable" formatted="false">"ประวัติรีโพไม่พร้อมใช้งาน"</string>
+    <string name="repository_imported_files_kept" formatted="false">"ไฟล์ของรีโพที่นำเข้าจะถูกเก็บไว้ในอุปกรณ์นี้"</string>
     <string name="repository_metadata_unavailable" formatted="false">"ข้อมูลเมตาของคลังไม่พร้อมใช้งาน"</string>
     <string name="repository_no_commits" formatted="false">"ไม่มีคอมมิต"</string>
+    <string name="repository_no_longer_added" formatted="false">"รีโพไม่ได้ถูกเพิ่มไว้แล้ว"</string>
+    <string name="repository_removed_files_kept" formatted="false">"นำรีโพออกจากแอปแล้ว ไฟล์ในเครื่องยังคงอยู่"</string>
+    <string name="repository_restore_backup_first" formatted="false">"กู้คืนข้อมูลสำรองเมทาดาทา Git ก่อนเชื่อมต่อโฟลเดอร์นี้อีกครั้ง"</string>
     <string name="repository_shortcut_active" formatted="false">"ได้รับอนุญาตและปักหมุดแล้ว"</string>
     <string name="repository_shortcut_add" formatted="false">"เพิ่มทางลัดในหน้าจอหลัก"</string>
     <string name="repository_shortcut_busy" formatted="false">"มีการดำเนินการทำงานอยู่แล้ว ทางลัดนี้ไม่ได้ถูกเพิ่มในคิว ให้รอแล้วแตะอีกครั้ง"</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"เพิกถอนการอนุญาตทางลัดแล้ว"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"หน้าจอหลักไม่สามารถรับคำขอเพิ่มทางลัดนี้ได้ ให้ใช้การดำเนินการในหน้าจอนี้แทน"</string>
     <string name="repository_sync_not_recorded" formatted="false">"ยังไม่ได้บันทึก"</string>
+    <string name="resolve_local_action" formatted="false">"แก้ไข"</string>
+    <string name="resolve_local_body" formatted="false">"เราจะบันทึกการเปลี่ยนแปลงในเครื่องของคุณก่อน จากนั้นจึงรวมข้อมูลเข้ากับเวอร์ชันจากระยะไกล หากมีความขัดแย้ง คุณสามารถแก้ไขได้ในหน้าจอถัดไป"</string>
+    <string name="resolve_local_commit_merge" formatted="false">"Commit &amp; merge"</string>
+    <string name="resolve_local_committing" formatted="false">"กำลังคอมมิตการเปลี่ยนแปลงในเครื่อง…"</string>
+    <string name="resolve_local_default_message" formatted="false">"การเปลี่ยนแปลงในระดับท้องถิ่นจาก GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"ข้อความการยืนยัน"</string>
+    <string name="resolve_local_superseded" formatted="false">"รีโพที่เลือกเปลี่ยนไป โปรดตรวจสอบการเปลี่ยนแปลงในเครื่องอีกครั้ง"</string>
+    <string name="resolve_local_title" formatted="false">": การแก้ไขท้องถิ่นได้ขัดขวางการดึงข้อมูลนี้"</string>
     <string name="settings_folder_unavailable" formatted="false">"ต้องตรวจสอบสิทธิ์การเข้าถึงโฟลเดอร์"</string>
     <string name="shortcut_background_attention" formatted="false">"ทางลัดต้องได้รับการตรวจสอบ เปิดการดำเนินการกับที่เก็บและตรวจสอบสถานะก่อนลองใหม่"</string>
     <string name="shortcut_background_channel" formatted="false">"การดำเนินการของทางลัด"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"ยังไม่เคยซิงค์"</string>
     <string name="tide_home_state_synced">"ซิงค์แล้ว %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"ต้องตรวจสอบ"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"ไม่มีสิ่งใหม่ในรีโมต"</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"เฉพาะของคุณ"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"รีโมตมีคอมมิตที่คุณยังไม่มี"</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"มีรายการใหม่บนรีโมต"</string>
+    <string name="tide_merge_both_moved" formatted="false">"ทั้งสองฝั่งมีการเปลี่ยนแปลง"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"ฝั่งหนึ่งลบ อีกฝั่งแก้ไข"</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"ทั้งสองฝั่งแก้ไขไฟล์นี้"</string>
+    <string name="tide_merge_conflict_list_count">"แก้ไขแล้ว %1$d จาก %2$d"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"เลือกเวอร์ชันที่จะเก็บไว้ หรือแก้ไขผลลัพธ์ด้วยตนเอง"</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"เปลี่ยนชื่อเป็นสองชื่อที่ต่างกัน"</string>
     <string name="tide_merge_conflict_result" formatted="false">"ผลลัพธ์"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">": นี่คือสิ่งที่ถูกจัดวาง"</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"ยังไม่แก้ไข"</string>
     <string name="tide_merge_diff_added" formatted="false">"เพิ่มแล้ว"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"ไม่สามารถแสดงเนื้อหาไบนารีเป็นข้อความได้"</string>
     <string name="tide_merge_diff_changed" formatted="false">"เปลี่ยนแปลง"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"คัดลอกแล้ว"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"ลบแล้ว"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"ละทิ้ง"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"การเปลี่ยนแปลงนี้ไม่มีความแตกต่างแบบบรรทัดต่อบรรทัด"</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"ไม่มีการเปลี่ยนแปลงข้อความ"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"โหลดความแตกต่างนี้ไม่ได้"</string>
+    <string name="tide_merge_diff_hunk_line">"บรรทัด %1$d"</string>
+    <string name="tide_merge_diff_line_added">"เพิ่ม: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"ลบ: %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"แก้ไขแล้ว"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"เปลี่ยนชื่อแล้ว"</string>
     <string name="tide_merge_diff_staged" formatted="false">"จัดเตรียมแล้ว"</string>
+    <string name="tide_merge_diff_stats_a11y">"บรรทัดที่เพิ่ม: %1$d บรรทัดที่ลบ: %2$d"</string>
+    <string name="tide_merge_diff_summary">"ไฟล์: %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"เปลี่ยนประเภท"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"ยังไม่อยู่ในสเตจ"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"เป็นปัจจุบันแล้ว"</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"ซิงค์แล้ว"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"ทำการผสานให้เสร็จหรือไม่?"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"รวมการเปลี่ยนแปลงของอีกฝั่งแล้ว"</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"ผสานแล้ว"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"ดึงข้อมูล ตรวจสอบ แล้วผสาน"</string>
     <string name="tide_merge_merge_kicker" formatted="false">"รวม"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"บางไฟล์เปลี่ยนไปทั้งสองฝั่ง"</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"การผสานหยุดชั่วคราว"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"ยังมีความขัดแย้งที่ต้องแก้ไข"</string>
+    <string name="tide_merge_moved_on" formatted="false">"รีโมตมีการเปลี่ยนแปลงขณะที่คุณเขียน"</string>
     <string name="tide_merge_ours_filename" formatted="false">"ของเรา"</string>
+    <string name="tide_merge_plan_section" formatted="false">"แผนที่ตรวจสอบแล้ว"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"กลับสู่จุดเริ่มต้น"</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"รีเบสกำลังรอ checkout ที่ถูกบล็อก"</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"รีเบสหยุดที่ไฟล์ซึ่งทั้งสองฝั่งแก้ไข"</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"รีเบสเสร็จแล้ว"</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"ดึงข้อมูลก่อน แล้วค่อยตัดสินใจ"</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"ตรวจสอบขั้นตอนนี้ก่อนดำเนินการต่อ"</string>
     <string name="tide_merge_result_section" formatted="false">"ผลลัพธ์"</string>
     <string name="tide_merge_side_deleted" formatted="false">"ลบแล้ว"</string>
     <string name="tide_merge_theirs" formatted="false">"ของเขา"</string>
+    <string name="tide_merge_theirs_count">"จากรีโมต: ↓%1$d"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"ของเขา"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"กำลังอ่านการตั้งค่าบรานช์…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"การติดตาม"</string>
+    <string name="tide_merge_upstream_set">"กำลังติดตาม %1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"ยังไม่ได้ตั้งค่า upstream"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"Pull และ push จะไม่มีปลายทางจนกว่าคุณจะเลือก upstream"</string>
+    <string name="tide_merge_yours" formatted="false">"เวอร์ชันของคุณ"</string>
+    <string name="tide_merge_yours_count">"ในเครื่อง: ↑%1$d"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"โคลนไม่สำเร็จ"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"สร้าง PAT บน GitHub ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"Git ของจริง"</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"ตำแหน่งบันทึก"</string>
     <string name="tide_onboarding_show_token" formatted="false">"แสดง"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"ยังไม่ได้ลงชื่อเข้าใช้"</string>
+    <string name="tide_settings_off" formatted="false">"ปิด"</string>
+    <string name="tide_settings_on" formatted="false">"เปิด"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"สำเนาโคลนใหม่"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"GitSync.md จะลืมโทเค็นของ %1$s บนอุปกรณ์นี้ ที่เก็บและไฟล์ของคุณจะยังอยู่ที่เดิม"</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"ลงชื่อออกจาก GitHub หรือไม่?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"ลงชื่อเข้าใช้แล้ว"</string>
+    <string name="tide_settings_this_account" formatted="false">"บัญชี GitHub นี้"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"ตรวจหาการเปลี่ยนแปลง"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"การดำเนินการ Git หยุดชั่วคราว แก้ไขไฟล์ที่ขัดแย้งแต่ละไฟล์เพื่อดำเนินการต่อ"</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"ทั้งสองฝั่งมีการเปลี่ยนแปลง"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"จะลบเฉพาะเมทาดาทา .git ที่ตรวจสอบแล้ว ไฟล์ทำงานจะยังคงอยู่ แต่ไม่สามารถกู้คืนประวัติ Git ในเครื่องได้หากไม่มีสำเนาอื่น"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"นำประวัติ Git ออกอย่างถาวรหรือไม่?"</string>
     <string name="tracking_remove_review_changed" formatted="false">"ข้อมูลที่ตรวจสอบเปลี่ยนไปแล้ว โปรดยกเลิกและตรวจสอบการนำการติดตามออกอีกครั้ง"</string>
+    <string name="tracking_removed_backup">"นำการติดตาม Git ออกแล้ว ข้อมูลสำรองที่ตรวจสอบแล้ว: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"นำการติดตาม Git ออกแล้ว ไฟล์ทำงานยังคงอยู่"</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nไฟล์งานและประวัติ Git ในเครื่องทั้งหมดจะยังอยู่บนอุปกรณ์นี้ คุณสามารถเชื่อมต่อโฟลเดอร์อีกครั้งได้ในภายหลัง"</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nการดำเนินการนี้จะลบสำเนาโคลนที่แอปจัดการอย่างถาวร รวมถึงคอมมิตที่ยังไม่ได้พุช การเปลี่ยนแปลงที่เก็บใน stash และไฟล์ที่ยังไม่ได้บันทึก โดยไม่เปลี่ยนแปลงที่เก็บระยะไกล"</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s จะต้องยืนยันลายนิ้วมือก่อนเชื่อมต่ออีกครั้ง"</string>
+    <string name="ui_1_s_bytes_81cdb385">"ไบต์: %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"อักขระ: %1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s ไฟล์"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"บรรทัด: %1$s ไบต์: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"คอมมิตในเครื่อง %1$s รายการ · คอมมิตอัปสตรีม %2$s รายการ"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"แสดง %1$s · บันทึกไว้ %2$s"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"ซื้อครั้งเดียวผ่าน Google Play"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"เพิ่มรีโพซิทอรีที่เลือก"</string>
     <string name="ui_added_b4561641" formatted="false">"เพิ่มแล้ว"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"รีโพซิทอรีที่เพิ่มแล้ว"</string>
+    <string name="ui_alias_1_s_e7e8c040">"ชื่อแทน: %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"ชื่อแทน (ไม่บังคับ)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"เตรียมการแก้ไขข้อขัดแย้งทั้งหมดแล้ว ดำเนินการนำคอมมิตกลับมาใช้ต่อ หาก Git รายงาน NOTHING_TO_COMMIT ให้พิจารณาว่าควรข้ามคอมมิตว่างหรือไม่"</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"แก้ข้อขัดแย้งทั้งหมดแล้ว ทำการผสานให้เสร็จหรือไม่?"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"แก้ไขข้อขัดแย้งทั้งหมดแล้ว เสร็จสิ้นหรือยกเลิกการรวม"</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"รวมทุกฟีเจอร์หลังติดตั้งแอปแบบชำระเงิน ไม่มีการสมัครสมาชิกหรือการซื้อภายในแอป"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"การเปลี่ยนแปลงทั้งหมดในไฟล์นี้จะถูกละทิ้งอย่างถาวร"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"อนุญาตการเข้าถึงโฟลเดอร์ในเครื่อง"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"เพิ่มแล้ว"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"การย้ายที่ถูกขัดจังหวะต้องได้รับการกู้คืน สำเนาที่รู้จักทั้งหมดจะถูกเก็บไว้จนกว่าจะเสร็จสิ้น"</string>
     <string name="ui_and_1_s_more_f93ea742">"และ %1$s อื่นๆ..."</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"ทุกรีโพ ซิงก์กับ Android"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"แอป"</string>
     <string name="ui_app_settings_da645334" formatted="false">"การตั้งค่าแอป"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"ใช้"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"ใช้ stash"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"ใช้ตัวเลือกการติดตาม"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"การอนุมัติจะบันทึกบนอุปกรณ์นี้และการเชื่อมต่อที่รออยู่จะดำเนินต่อ การยกเลิกจะไม่เชื่อถือเซิร์ฟเวอร์"</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการผสานนี้?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"การยืนยันตัวตน"</string>
     <string name="ui_back_639807a2" formatted="false">"กลับ"</string>
     <string name="ui_back_aceb696a" formatted="false">"← กลับ"</string>
@@ -815,13 +1116,14 @@
     <string name="ui_base_7b47361a" formatted="false">"ฐาน"</string>
     <string name="ui_binary_file_2c7ccf98" formatted="false">"ไฟล์ไบนารี"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"ไฟล์ไบนารี ไฟล์ขนาดใหญ่ หรือไฟล์ LFS: เลือกข้อมูลทั้งฝั่ง"</string>
-    <string name="ui_branch_52656e81" formatted="false">"ข้อผิดพลาดของ"</string>
+    <string name="ui_branch_52656e81" formatted="false">"สาขา"</string>
     <string name="ui_branch_name_06f6bb71" formatted="false">"ชื่อสาขา"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"สาขา (ไม่บังคับ)"</string>
     <string name="ui_browse_files_c8bb105f" formatted="false">"ดูไฟล์"</string>
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"เรียกดูคลังเก็บ"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"กำลังเรียกดูด้วยบัญชีนี้"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"ยกเลิก"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"ยกเลิกการย้ายที่รอดำเนินการ"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"เปลี่ยนแปลง"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"ไฟล์ที่เปลี่ยน"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"การเปลี่ยนแปลง"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"เลือกโฟลเดอร์อื่น"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"เลือกที่จัดเก็บสำเนาโคลน"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"เลือกที่เก็บข้อมูลในอุปกรณ์หรือที่เชื่อมต่ออยู่ ผู้ให้บริการเอกสารบนคลาวด์ไม่มีระบบไฟล์ที่กลไก Git นี้ใช้ได้"</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"เลือกจุดเริ่มต้น"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"เลือกกลยุทธ์"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"เลือกบัญชีที่ใช้เรียกดู GitHub แต่ละที่เก็บจะคงบัญชีที่กำหนดไว้ เปลี่ยนได้ในการเชื่อมต่อที่เก็บ"</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"เลือกโฟลเดอร์เริ่มต้นสำหรับโคลนใหม่ คลังที่มีอยู่จะยังอยู่ในตำแหน่งเดิม"</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"ล้างทั้งหมด"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"สร้างไฟล์หรือโฟลเดอร์ด้วยปุ่มใหม่"</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"สร้าง PAT ON GITHUB →"</string>
     <string name="ui_create_fde9c501" formatted="false">"สร้าง"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"สร้างบรานช์ใหม่"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"โฟลเดอร์เริ่มต้นปัจจุบัน"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"ปัจจุบัน"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"ที่อยู่ push แยกต่างหากปัจจุบัน: %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"ค่าเริ่มต้นสำหรับสำเนาโคลนใหม่ แต่ละสำเนาสามารถใช้โฟลเดอร์อื่นได้"</string>
     <string name="ui_delete_1_s_6474596f">"ลบ \"%1$s\" หรือไม่?"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"ลบสาขาไหม"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"ลบบรานช์ \"%1$s\" หรือไม่?"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"ลบสาขา"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"ลบ"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"ลบไฟล์"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"ลบไฟล์ท้องถิ่นหรือไม่?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">": ลบไฟล์ท้องถิ่น"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"ลบแท็ก"</string>
+    <string name="ui_destination_1_s_0df94639">"ปลายทาง: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"โฟลเดอร์หลักปลายทาง"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"การวินิจฉัย"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"ความแตกต่าง"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"ทิ้งฉบับร่าง"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"รีโพซิทอรีที่ค้นพบ"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"ปิด"</string>
     <string name="ui_done_283e91eb" formatted="false">"เสร็จ"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"ตำแหน่งดาวน์โหลด"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"ดาวน์โหลดเนื้อหาไฟล์ที่ขาดหายไป"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"ลบ stash"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"ระหว่างรีเบส อัปสตรีมคือฝั่ง ours ของ Git ส่วนคอมมิตในเครื่องที่นำกลับมาใช้คือ theirs"</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"เช่น feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"เช่น MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"เช่น prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"แก้ไขผู้สร้างคอมมิต"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"แก้ไขการเชื่อมต่อ"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"แก้ไขการแก้ข้อขัดแย้ง"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"แก้ไขเนื้อหาที่นี่เพื่อแก้ข้อขัดแย้งด้วยตนเอง"</string>
     <string name="ui_email_969ccbd3" formatted="false">"อีเมล"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"โฟลเดอร์ว่าง"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"เปิดสิทธิ์เข้าถึง"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"การยืนยันตัวตนของปลายทาง"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"ป้อนข้อมูลรับรองอีกครั้ง หรือเลือกการเข้าถึงแบบสาธารณะสำหรับที่อยู่ใหม่"</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"ป้อนเส้นทางแบบเต็มไปยังที่เก็บ Git ของคุณ"</string>
     <string name="ui_error_54a0e8c1" formatted="false">"ข้อผิดพลาด"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"ทุกเซิร์ฟเวอร์ SSH จะต้องยืนยันลายนิ้วมือก่อนเชื่อมต่ออีกครั้ง และจะนำรายการความเชื่อถือที่เสียหายออกด้วย"</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"ดึงและใช้การเปลี่ยนแปลงจากรีโมท"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"ดึงข้อมูลและตรวจสอบรีเบส"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"ดึงการเปลี่ยนแปลงจากรีโมต"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"ไฟล์: %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"การดำเนินการกับไฟล์ล้มเหลว"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"ทำการกู้คืนการย้ายให้เสร็จ"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"กำลังดำเนินการขั้นสุดท้าย"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"ลืม"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"ลืมเซิร์ฟเวอร์"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS ต้องได้รับการตรวจสอบ"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · การติดตามและดาวน์โหลด"</string>
     <string name="ui_git_remote_91593664" formatted="false">"รีโมต Git"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"เชื่อมต่อบัญชี GitHub แล้ว"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"บัญชี GitHub"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub ระบบเข้าสู่ระบบ"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Gitsync.md เวอร์ชันเต็ม"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md ต้องการสิทธิ์เข้าถึงพื้นที่จัดเก็บที่ใช้ร่วมกันเพื่อจัดการสำเนาการทำงาน Git จริงในโฟลเดอร์ของอุปกรณ์ เลือกโฟลเดอร์ที่ต้องการใช้หลังจากเปิดสิทธิ์ในการตั้งค่า Android"</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md จะไม่ให้ข้อมูลรับรองสำหรับที่เก็บนี้"</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"กลับไปเลือกที่เก็บ"</string>
+    <string name="ui_hash_a9106914" formatted="false">"แฮช"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"ฉันเข้าใจว่าเจ้าของคนอื่นอาจยังแก้ไขไฟล์นี้อยู่"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"ใส่ชื่อผู้ใช้ SSH ในที่อยู่: git@host:team/repo.git หรือ ssh://git@host:2222/team/repo.git"</string>
     <string name="ui_info_170322a3" formatted="false">"ดึง"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"คีย์สาธารณะที่ตรงกัน (ไม่บังคับ)"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"รวม"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"ผสานบรานช์เข้า %1$s"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">": ข้อความการรวมคำมั่นสัญญา"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"รวม"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"กลยุทธ์การผสาน:"</string>
     <string name="ui_message_f5394f72" formatted="false">"ข้อความ:"</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"เมทาดาทา:"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"เพิ่มเติม"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"การกู้คืนการย้าย"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"ย้ายคลังเก็บ"</string>
     <string name="ui_name_dcd1d522" formatted="false">"ชื่อ"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"ชื่อใน GitSync.md"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"โฟลเดอร์ใหม่"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"โทเค็นหรือรหัสผ่านใหม่"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"ไม่มีปลายทาง LFS แบบกำหนดเองที่อนุมัติ"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"ไม่มีบรานช์ที่ใช้ได้"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"ไม่มีการเปลี่ยนแปลงที่จะแสดง"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"ไม่พบคอมมิต"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"ไม่พบข้อขัดแย้ง"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"ไม่มีบัญชีที่เชื่อมต่อ ที่เก็บในเครื่องยังคงใช้งานได้"</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"ไม่มีไฟล์ไบนารีหรือไฟล์ขนาดใหญ่ใหม่ที่ต้องเลือกวิธีติดตาม"</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"ไม่มี Repository"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"ยังไม่มีรีโพซิทอรีที่เพิ่ม"</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"ไม่มีที่เก็บที่บันทึกไว้ เพิ่มได้ในการตั้งค่า"</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"ไม่มีที่เก็บ"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"ไม่มีรีโพซิทอรี"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"ไม่พบการเปลี่ยนแปลงที่พักไว้"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"ไม่พบแท็ก"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"ตอนนี้"</string>
     <string name="ui_ok_565339bc" formatted="false">"ตกลง"</string>
     <string name="ui_open_ed077f3d" formatted="false">"เปิด"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"เปิด Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"เปิดในไฟล์"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"กำลังเปิดไฟล์…"</string>
     <string name="ui_or_7175517a" formatted="false">"หรือ"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"ฝั่งเรา: %1$s ไบต์"</string>
     <string name="ui_ours_ab658c14" formatted="false">"ของเรา"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"แทนที่รูปลักษณ์ของระบบ"</string>
     <string name="ui_owner_1_s_599ca9ce">"เจ้าของ: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"พาเรนต์ (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"เส้นทาง"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"โทเคนเข้าถึงส่วนบุคคล"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"แพลตฟอร์ม"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"โปรดแก้ข้อขัดแย้งทั้งหมดก่อนทำการผสานให้เสร็จ"</string>
     <string name="ui_pop_52e740ad" formatted="false">"ดึงออก"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"ใช้และลบ stash"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"เคยเพิ่มไว้"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"ลายนิ้วมือที่เคยเชื่อถือ: %1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"นโยบายความเป็นส่วนตัว"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"พร้อมฐานรอง\nที่เก็บ"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"พูลพร้อมรีเบส / รีเบสต่อ"</string>
     <string name="ui_push_792aac67" formatted="false">"พุช"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"การพุชถูกบล็อกโดยล็อก LFS"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"ส่งการเปลี่ยนแปลงในเครื่องไปยังรีโมต"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"อ่านและแก้ไขไฟล์ในรีโพนี้"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"กำลังรีเบส"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"รีเบสบนอัปสตรีมที่ตรวจสอบแล้ว"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"ผลการดำเนินการล่าสุดบนอุปกรณ์นี้ บันทึกเก็บได้สูงสุด 500 รายการ โดยไม่รวมข้อมูลรับรอง ที่อยู่คลัง พาธไฟล์ และเนื้อหาไฟล์"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"เชื่อมต่อใหม่"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"เชื่อมต่อสำเนาการทำงานที่ GitSync.md เก็บไว้แล้วอีกครั้ง การนำรายการออกจะยังเก็บไฟล์ไว้ ส่วนการลบสำเนาที่แอปจัดการและการนำการติดตาม Git ออกเป็นคนละตัวเลือก"</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"การกู้คืนต้องได้รับการตรวจสอบ สำเนาการทำงานที่รู้จักจะถูกเก็บไว้"</string>
     <string name="ui_refresh_0e916101" formatted="false">"รีเฟรช"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"รีเฟรชสถานะรีเบส"</string>
     <string name="ui_reload_1_s_873e324f">"โหลด %1$s ใหม่หรือไม่?"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"ลบข้อมูลรับรองที่บันทึกไว้หรือไม่?"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"ลบการลงชื่อเข้าใช้"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"ลบต้นฉบับที่เก็บไว้หรือไม่?"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"นำรีโพนี้ออกและลบไฟล์ในเครื่องออกจากอุปกรณ์นี้หรือไม่ รีโพ GitHub ของคุณจะไม่ได้รับผลกระทบ"</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"นำการติดตามออก"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"ลบแล้ว"</string>
     <string name="ui_rename_1_s_9b09e088">"เปลี่ยนชื่อ %1$s"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"คอมมิตในเครื่องที่นำกลับมาใช้"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"นำคอมมิตในเครื่องกลับมาใช้บนอัปสตรีมที่กำหนดไว้ ID คอมมิตในเครื่องอาจเปลี่ยนแปลง โครงสร้างการผสานเดิมจะคงอยู่ และไม่มีการพุช"</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"สุขภาพ Repo"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"พาธของรีโพ"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"ที่เก็บที่กำหนดให้บัญชีนี้จะต้องลงชื่อเข้าใช้อีกครั้งหรือเลือกบัญชีอื่นในการเชื่อมต่อที่เก็บ ไฟล์และคอมมิตในเครื่องของคุณจะยังคงอยู่"</string>
     <string name="ui_repository_13d6ff07" formatted="false">"รีโพซิทอรี"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"การเชื่อมต่อคลัง"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"การดำเนินการกับที่เก็บล้มเหลว"</string>
     <string name="ui_repository_path_037711af" formatted="false">"เส้นทางคลังเก็บ"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"สถานะ Repository"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"URL ของ Repository"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"แก้ไขและเตรียม"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"แก้ไขความขัดแย้ง"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"แก้ไขแล้ว"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"เนื้อหาหลังแก้ข้อขัดแย้ง"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"เนื้อหาที่แก้ข้อขัดแย้งแล้ว"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"แก้ไขแล้ว"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"กำลังแก้ข้อขัดแย้ง: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"กู้คืนเป็นรีโพแยกต่างหาก"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"ต้นฉบับที่เก็บไว้: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"ลองใหม่อีกครั้ง"</string>
     <string name="ui_retry_e464c660" formatted="false">"ลองใหม่อีกครั้ง"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"กลับไปยังที่เก็บ"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  ย้อนกลับการเปลี่ยนแปลงทั้งหมด"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  ย้อนกลับ"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"ย้อนกลับการเปลี่ยนแปลง"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"ย้อนกลับคอมมิตด้วย revert"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"ตรวจสอบปลายทาง"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"ตรวจสอบโฟลเดอร์ที่กู้คืน"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"ตรวจสอบเซิร์ฟเวอร์ LFS แยกต่างหากที่อนุญาตสำหรับคลังของคุณ การเพิกถอนการอนุมัติจะหยุดการถ่ายโอนในทิศทางนั้นในอนาคต ส่วนการดำเนินการที่เริ่มแล้วอาจเสร็จสมบูรณ์ได้"</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"ปลายทางที่ตรวจสอบแล้ว"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"เพิกถอน"</string>
     <string name="ui_save_1509f561" formatted="false">"บันทึก"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"บันทึกผู้เขียน"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"สแกนโฟลเดอร์ของแอป"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"ค้นหารีโพซิทอรี…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">"เลือกคลังข้อมูล"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"เลือกบรานช์ต้นทางที่จะผสาน:"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"โฟลเดอร์ที่เลือก"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"ชื่อผู้ใช้และโทเค็นแยกต่างหาก"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"การตั้งค่า"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"ความเชื่อถือเซิร์ฟเวอร์ SSH"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"เตรียมการเปลี่ยนแปลงทั้งหมด"</string>
     <string name="ui_stage_de838855" formatted="false">"จัดเตรียม"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"เริ่มจาก"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"ข้อความ Stash (ไม่จำเป็น) ..."</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"กลยุทธ์"</string>
     <string name="ui_switch_39921a74" formatted="false">"สลับ"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"สลับไปยังสาขา"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"แท็ก"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"ปลายทางที่ใช้งานอยู่จะยังคงอยู่ GitSync.md จะตรวจสอบว่าต้นฉบับที่เก็บไว้ไม่มีการแก้ไขภายหลัง ก่อนลบไฟล์และประวัติ Git ของต้นฉบับอย่างถาวร"</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"การเชื่อมต่อที่เข้ารหัสจะใช้ซ้ำได้เฉพาะกับที่อยู่เดิมของที่เก็บเท่านั้น โปรดเปลี่ยนการตรวจสอบสิทธิ์อย่างชัดเจนหากต้องการใช้ที่อยู่อื่น"</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"สามารถย้ายโฟลเดอร์ได้โดยตรงบนวอลุ่มจัดเก็บนี้"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"บัญชี GitHub เดิมถูกตัดการเชื่อมต่อ เลือกบัญชีที่เชื่อมต่ออยู่หรือวิธีตรวจสอบสิทธิ์อื่น"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"คอมมิตในเครื่องที่นำกลับมาใช้นี้จะลบไฟล์นี้"</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"ข้อมูลที่ตรวจสอบเปลี่ยนไปแล้ว โปรดยกเลิกและโหลดล็อกของเซิร์ฟเวอร์อีกครั้ง"</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"การสแกนถึงขีดจำกัดความลึกหรือจำนวนโฟลเดอร์แล้ว บางโฟลเดอร์ไม่ได้รับการสแกน"</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"ฝั่งเขา: %1$s ไบต์"</string>
     <string name="ui_theirs_691ef727" formatted="false">"ของเขา"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"ข้อขัดแย้งที่ยังไม่แก้: %1$s"</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"ไม่สามารถย้อนกลับได้"</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"การดำเนินการนี้เปลี่ยน .gitattributes ไฟล์และดัชนีจะยังคงเดิมจนกว่าคุณจะนำการเปลี่ยนแปลงเข้า staging"</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"การย้ายนี้ข้ามวอลุ่มจัดเก็บ GitSync.md จะตรวจสอบเนื้อหาที่คัดลอกและเก็บต้นฉบับไว้ในการกู้คืนการย้ายจนกว่าคุณจะนำออก"</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"รายการประวัตินี้ไม่พร้อมใช้งาน"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"การดำเนินการนี้จะลบล็อกของการเชื่อมต่ออื่น โปรดประสานงานกับเจ้าของก่อนดำเนินการต่อ"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"ที่เก็บนี้จะใช้การเข้าถึงแบบสาธารณะจนกว่าคุณจะเลือกการยืนยันตัวตนอีกครั้ง บัญชี GitHub ที่คุณลงชื่อเข้าใช้จะไม่ถูกใช้กับที่เก็บนี้ ที่อยู่ fetch และ push จะไม่เปลี่ยนแปลง"</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"จะทิ้งความคืบหน้าทั้งหมดและคืนที่เก็บสู่สถานะก่อนผสาน"</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"จะเก็บไฟล์เวอร์ชันของคุณไว้"</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"จะใช้ไฟล์เวอร์ชันที่เข้ามา"</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"จะใช้เนื้อหาที่คุณแก้ไขด้วยตนเอง"</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">"โทเคนหรือรหัสผ่าน"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"ติดตามไฟล์ที่เลือกด้วย LFS"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"ออบเจ็กต์ที่ติดตาม"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"การติดตาม: %1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"ตรวจสอบการติดตาม"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"ลายนิ้วมือเซิร์ฟเวอร์ที่เชื่อถือจะบันทึกบนอุปกรณ์นี้ เมื่อลืมเซิร์ฟเวอร์จะต้องยืนยันเมื่อเชื่อมต่อครั้งถัดไป คีย์ส่วนตัวของคลังยังคงบันทึกไว้"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"ไม่สามารถเปิดไฟล์ได้"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">"ใช้ของพวกเขา"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"ชื่อผู้ใช้"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"ชื่อผู้ใช้ + โทเค็น"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"กลยุทธ์ที่ใช้: %1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"ยืนยันที่อยู่นี้กับเจ้าของคลัง การอนุมัติใช้ได้เฉพาะคลัง รีโมต Git ปลายทาง LFS และทิศทางการถ่ายโอนนี้บนอุปกรณ์นี้"</string>
     <string name="ui_version_dd167905" formatted="false">"เวอร์ชัน"</string>
     <string name="ui_warning_e981ddae" formatted="false">"คำเตือน"</string>
@@ -1142,9 +1503,139 @@
     <string name="upstream_remote" formatted="false">"ที่เก็บระยะไกล"</string>
     <string name="upstream_title" formatted="false">"สาขาที่ติดตาม"</string>
     <string name="upstream_unavailable" formatted="false">"เลือกสาขาในเครื่องที่กำหนดค่าที่เก็บระยะไกลแล้ว และดำเนินการ Git ที่กำลังทำอยู่ให้เสร็จก่อน"</string>
+    <string name="vault_copy_url" formatted="false">"คัดลอก URL ของรีโพ"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"พื้นที่เก็บข้อมูลภายนอกของแอป"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"พื้นที่เก็บข้อมูลของแอป"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"ข้อมูลสำรองของข้อมูลเมตา Git"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"แชร์ไฟล์เก็บถาวรสำรองข้อมูลไม่ได้"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"แชร์ข้อมูลสำรองของข้อมูลเมตา Git"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"ไฟล์เก็บถาวรสำรองข้อมูลไม่พร้อมใช้งาน"</string>
+    <string name="vault_l10n_branch_value">"สาขา: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"โคลนที่เสร็จแล้วเปลี่ยนไป เชื่อมต่อโฟลเดอร์ของโคลนอีกครั้งจาก คลังเก็บในเครื่อง"</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"บันทึกรีโพที่โคลนไว้ให้เสร็จไม่ได้ ลองเพิ่มอีกครั้ง"</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"ประวัติของโคลนเปลี่ยนไป"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"ประวัติของโคลนถูกนำออกแล้ว"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"โคลนนี้ไม่ได้รอการกู้คืนแล้ว"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"การกู้คืนโคลนถูกยกเลิก"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"การกู้คืนโคลนเปลี่ยนไป"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"การกู้คืนโคลนเปลี่ยนไป ตรวจสอบอีกครั้ง"</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"การกู้คืนโคลนถูกปิดไปแล้ว"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"การกู้คืนโคลนไม่พร้อมใช้งานแล้ว เชื่อมต่อโฟลเดอร์ของโคลนอีกครั้งจาก คลังเก็บในเครื่อง"</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"โคลนนี้ถูกนำออกหรือลงทะเบียนใหม่แล้ว ตรวจสอบรายการปัจจุบัน"</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"ไม่สามารถบันทึกตำแหน่งโคลนเริ่มต้นได้"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"การตรวจสอบการลบรีโพเปลี่ยนไป ตรวจสอบโคลนอีกครั้งก่อนลบ"</string>
+    <string name="vault_l10n_device_storage" formatted="false">"พื้นที่เก็บข้อมูลของอุปกรณ์"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"เปิดสิทธิ์เข้าถึงพื้นที่เก็บข้อมูลที่ใช้ร่วมกัน แล้วเลือกโฟลเดอร์อีกครั้ง พื้นที่เก็บข้อมูลของแอปยังใช้ได้แม้ไม่มีสิทธิ์นี้"</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"เปิดสิทธิ์เข้าถึงพื้นที่เก็บข้อมูลที่ใช้ร่วมกันก่อนเลือกโฟลเดอร์"</string>
+    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"สิทธิ์เข้าถึงโฟลเดอร์ถูกนำออกแล้ว เลือกโฟลเดอร์นี้อีกครั้งก่อนดำเนินการต่อ"</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"ไม่สามารถบันทึกสิทธิ์เข้าถึงโฟลเดอร์ได้"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"เลือกโฟลเดอร์บนอุปกรณ์นี้หรือบนวอลุ่มพื้นที่เก็บข้อมูลที่เชื่อมต่ออยู่ เอนจิน Git นี้ใช้ผู้ให้บริการเอกสารบนคลาวด์โดยตรงไม่ได้"</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"เลือกโฟลเดอร์ที่ไม่มีลิงก์สัญลักษณ์ในเส้นทาง"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"โฟลเดอร์นี้ไม่ได้ระบุวอลุ่มพื้นที่เก็บข้อมูลของอุปกรณ์"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"โฟลเดอร์นี้ไม่รองรับไฟล์ Git ที่เขียนได้ ตรวจสอบสิทธิ์เข้าถึงและพื้นที่ว่าง"</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"เลือกโฟลเดอร์ทำงานที่อยู่นอกข้อมูลเมตาของ Git"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"โฟลเดอร์ที่เลือกอยู่นอกวอลุ่มพื้นที่เก็บข้อมูลของตน"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"โฟลเดอร์นี้ลงทะเบียนไว้แบบอื่นแล้ว การตั้งค่าที่มีอยู่ยังคงเก็บไว้"</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"โฟลเดอร์นี้ลงทะเบียนไว้แบบอื่นแล้ว ตรวจสอบใน คลังเก็บในเครื่อง"</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"เลือกโฟลเดอร์ของรีโพอีกครั้งเพื่อกู้คืนการเข้าถึง"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"ไม่สามารถคงสิทธิ์อ่านและเขียนโฟลเดอร์นี้ไว้ได้"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"โฟลเดอร์ที่เลือกไม่พร้อมใช้งาน"</string>
+    <string name="vault_l10n_github_user" formatted="false">"ผู้ใช้ GitHub"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"ประวัติรีโพเปลี่ยนไป โคลนที่เสร็จแล้วยังคงเก็บไว้ ตรวจสอบใน คลังเก็บในเครื่อง"</string>
+    <string name="vault_l10n_last_sync_value">"ซิงค์ล่าสุด: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"รีโมตในเครื่อง"</string>
+    <string name="vault_l10n_local_remote_named">"รีโมตในเครื่อง: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"มีปลายทางนี้อยู่แล้ว ไฟล์ที่มีอยู่ยังคงเก็บไว้"</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"ตำแหน่งนี้ไม่ใช่ตำแหน่งโคลนที่แอปจัดการ"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"เพิ่มรีโพแล้ว แต่ไม่สามารถเตรียมการเชื่อมต่อ Obsidian ได้ ลองอีกครั้งจาก การตั้งค่า → การเชื่อมต่อ Obsidian"</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"การเชื่อมต่อ Obsidian บางรายการต้องได้รับการตรวจสอบ ลองอีกครั้งจาก การตั้งค่า → การเชื่อมต่อ Obsidian"</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"สิทธิ์เข้าถึงโฟลเดอร์เผยแพร่ถูกนำออกแล้ว เลือกโฟลเดอร์เดิมอีกครั้ง"</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"บัญชีที่ใช้เผยแพร่เปลี่ยนไป"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"เลือกโฟลเดอร์เดิมบนอุปกรณ์อีกครั้งเพื่อกู้คืนการเข้าถึงการเผยแพร่"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"เลือกโฟลเดอร์เผยแพร่เดิมอีกครั้งเพื่อกู้คืนการเข้าถึง"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"โฟลเดอร์นี้ต่างจากการเผยแพร่ที่ตรวจสอบไว้ ไฟล์ที่มีอยู่ยังคงเก็บไว้"</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"สิทธิ์นี้เป็นของโฟลเดอร์อื่น เลือกโฟลเดอร์เผยแพร่เดิม"</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"การเผยแพร่ต้องได้รับการตรวจสอบ ไฟล์ที่บันทึกไว้ยังคงเก็บไว้"</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"เลือกโฟลเดอร์เผยแพร่ที่ไม่มีลิงก์สัญลักษณ์"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"เลือกโฟลเดอร์เผยแพร่เดิมที่ไม่มีลิงก์สัญลักษณ์"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"โฟลเดอร์เผยแพร่เดิมไม่พร้อมใช้งาน"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"การลงทะเบียนการเผยแพร่เป็นของปลายทางอื่น"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"โฟลเดอร์นี้ซ้อนทับกับรีโพที่ลงทะเบียนไว้ ตรวจสอบรายการเดิมก่อนเผยแพร่"</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"ความคืบหน้าการเผยแพร่ที่บันทึกไว้ไม่พร้อมใช้งาน"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"เชื่อมต่อบัญชี GitHub ที่เลือกอีกครั้ง"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"เลือกบัญชี GitHub ที่เชื่อมต่อแล้ว"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"การตั้งค่ารีโพสำหรับการเผยแพร่เปลี่ยนไป"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"ต้องซ่อมแซมการตั้งค่ารีโพก่อนเผยแพร่"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"ลงชื่อเข้าใช้บัญชี GitHub ที่เลือกไว้สำหรับการเผยแพร่นี้"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"หยุดแล้ว ความคืบหน้าที่บันทึกไว้พร้อมให้ตรวจสอบ ผลลัพธ์เครือข่ายล่าสุดอาจไม่แน่นอน"</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"ยืนยันบัญชี GitHub ที่เลือกก่อนเผยแพร่"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"การกู้คืนรีโพต้องใช้สิทธิ์เข้าถึงโฟลเดอร์ เลือกโฟลเดอร์ที่ได้รับผลกระทบอีกครั้งใน คลังเก็บในเครื่อง"</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"เพิ่มรีโพนี้ไว้แล้ว"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"เลือกโฟลเดอร์ของรีโพนี้อีกครั้งเพื่อกู้คืนสิทธิ์เข้าถึงที่บันทึกไว้"</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"ต้องระบุชื่อรีโพ"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"ไม่สามารถบันทึกการตั้งค่ารีโพได้ ตรวจสอบพื้นที่ว่าง"</string>
+    <string name="vault_l10n_sample_open_failed">"เปิดรีโพตัวอย่างไม่ได้: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"รีโพตัวอย่าง"</string>
+    <string name="vault_l10n_settings_load_failed">"โหลดการตั้งค่าไม่สำเร็จ: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"ไม่สามารถบันทึกการตั้งค่าได้"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"สิทธิ์เข้าถึงพื้นที่เก็บข้อมูลที่ใช้ร่วมกันถูกนำออกแล้ว เปิดใช้เพื่อเปิดรีโพนี้"</string>
+    <string name="vault_l10n_size_bytes">"%1$s B"</string>
+    <string name="vault_l10n_size_kb">"%1$s KB"</string>
+    <string name="vault_l10n_size_mb">"%1$s MB"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"ขัดแย้ง"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"จัดเตรียมแล้ว"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"การลบที่จัดเตรียมแล้ว"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"จัดเตรียมแล้ว + ยังไม่จัดเตรียม"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"ไม่ได้ติดตาม"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"เลือกโฟลเดอร์ก่อน"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"ตำแหน่งพื้นที่เก็บข้อมูลนี้เปลี่ยนไป เลือกโฟลเดอร์อีกครั้ง"</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"พื้นที่เก็บข้อมูลต้องได้รับการตรวจสอบ"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"การตรวจสอบการเลิกติดตามเปลี่ยนไป ตรวจสอบรีโพและตัวเลือกการสำรองข้อมูลอีกครั้ง"</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"วอลุ่มพื้นที่เก็บข้อมูลนี้ไม่พร้อมใช้งาน"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"วอลุ่มพื้นที่เก็บข้อมูลนี้ไม่พร้อมใช้งาน เชื่อมต่ออีกครั้งแล้วเลือกโฟลเดอร์ใหม่"</string>
+    <string name="vault_open_in_files_failed" formatted="false">"ไม่สามารถเปิดโฟลเดอร์นี้ในแอปไฟล์ได้"</string>
+    <string name="vault_repository_fallback" formatted="false">"รีโพซิทอรี"</string>
+    <string name="vault_url_copied" formatted="false">"คัดลอกแล้ว!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"%1$d วันที่แล้ว"</item>
+        <item quantity="other">"%1$d วันที่แล้ว"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"%1$d ชม. ที่แล้ว"</item>
+        <item quantity="other">"%1$d ชม. ที่แล้ว"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"%1$d นาทีที่แล้ว"</item>
+        <item quantity="other">"%1$d นาทีที่แล้ว"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"%1$d เดือนที่แล้ว"</item>
+        <item quantity="other">"%1$d เดือนที่แล้ว"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"%1$d สัปดาห์ที่แล้ว"</item>
+        <item quantity="other">"%1$d สัปดาห์ที่แล้ว"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"%1$d ปีที่แล้ว"</item>
+        <item quantity="other">"%1$d ปีที่แล้ว"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"การรวมมีความขัดแย้งที่ยังไม่ได้แก้ %1$d รายการ\n\nแก้ไขก่อนทำการรวมให้เสร็จ"</item>
+        <item quantity="other">"การรวมมีความขัดแย้งที่ยังไม่ได้แก้ %1$d รายการ\n\nแก้ไขก่อนทำการรวมให้เสร็จ"</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s บรรทัด"</item>
+        <item quantity="other">"+%1$s -%2$s บรรทัด"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d ไฟล์"</item>
         <item quantity="other">"%1$d ไฟล์"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"การรวมหยุดลง: %1$s (ข้อขัดแย้ง %2$d รายการ)"</item>
+        <item quantity="other">"การรวมหยุดลง: %1$s (ข้อขัดแย้ง %2$d รายการ)"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"ดาวน์โหลดออบเจ็กต์ %1$d รายการแล้ว"</item>
@@ -1170,6 +1661,10 @@
         <item quantity="one">"%1$d ไฟล์"</item>
         <item quantity="other">"%1$d ไฟล์"</item>
     </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s ไฟล์ รวมเมทาดาทา Git · %2$s"</item>
+        <item quantity="other">"%1$s ไฟล์ รวมเมทาดาทา Git · %2$s"</item>
+    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"ไม่ได้แสดงเส้นทางที่ถูกบล็อกเพิ่มเติม %1$d รายการ"</item>
         <item quantity="other">"ไม่ได้แสดงเส้นทางที่ถูกบล็อกเพิ่มเติม %1$d รายการ"</item>
@@ -1181,6 +1676,10 @@
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"คอมมิตอัปสตรีม %1$d รายการ"</item>
         <item quantity="other">"คอมมิตอัปสตรีม %1$d รายการ"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"เพิ่ม %1$d รีโพแล้ว"</item>
+        <item quantity="other">"เพิ่ม %1$d รีโพแล้ว"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d รีโพซิทอรี"</item>

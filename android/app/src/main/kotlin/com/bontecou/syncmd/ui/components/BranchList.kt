@@ -210,13 +210,14 @@ fun branchTypeTextColor(type: String): Color = when (type) {
 /**
  * Get display label for branch type.
  */
+@Composable
 fun branchTypeLabel(type: String): String {
-    return when (type) {
-        "LOCAL" -> "local"
-        "REMOTE" -> "remote"
-        "TRACKING" -> "tracking"
-        else -> "unknown"
-    }
+    return stringResource(when (type) {
+        "LOCAL" -> R.string.dialogs_branch_type_local
+        "REMOTE" -> R.string.dialogs_branch_type_remote
+        "TRACKING" -> R.string.dialogs_branch_type_tracking
+        else -> R.string.dialogs_branch_type_unknown
+    })
 }
 
 // ─── Previews ─────────────────────────────────────────────────────────────────

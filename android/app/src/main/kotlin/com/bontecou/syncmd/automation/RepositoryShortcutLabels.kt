@@ -23,7 +23,7 @@ internal fun repositoryShortcutLabels(context: Context, record: RepositoryShortc
         RepositoryAction.PUSH -> R.string.repository_actions_push
         RepositoryAction.SYNC -> R.string.repository_actions_sync
     })
-    val label = "$action: ${record.plan.target.name}"
+    val label = context.getString(R.string.automation_shortcut_label, action, record.plan.target.name)
     fun clip(max: Int) = label.substring(0, label.offsetByCodePoints(0, minOf(label.codePointCount(0, label.length), max)))
     return clip(24) to clip(128)
 }

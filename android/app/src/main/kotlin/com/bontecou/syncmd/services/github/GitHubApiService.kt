@@ -31,6 +31,13 @@ data class GitHubRepo(
     val stargazersCount: Int
 )
 
+/** An HTTP failure from the GitHub API; the UI maps [status] to localized copy. */
+class GitHubApiException(val status: Int) : IllegalStateException(
+    if (status == 401 || status == 403) "GitHub token is invalid or expired (HTTP $status)" else "GitHub API error: HTTP $status"
+) {
+    val isUnauthorized: Boolean get() = status == 401 || status == 403
+}
+
 // ─── Service ─────────────────────────────────────────────────────────────────
 
 interface GitHubClient {
@@ -127,13 +134,9 @@ object GitHubApiService : GitHubClient {
         conn.setRequestProperty("Accept", "application/vnd.github+json")
         conn.setRequestProperty("X-GitHub-Api-Version", "2022-11-28")
         val status = conn.responseCode
-        if (status == 401 || status == 403) {
-            conn.disconnect()
-            throw IllegalStateException("GitHub token is invalid or expired (HTTP $status)")
-        }
         if (status !in 200..299) {
             conn.disconnect()
-            throw IllegalStateException("GitHub API error: HTTP $status")
+            throw GitHubApiException(status)
         }
         return conn
     }

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextDirection
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Branch
 import com.bontecou.syncmd.data.models.BranchType
@@ -103,7 +104,7 @@ private fun CreateBranchContent(
                 onValueChange = onBranchNameChange,
                 label = { Text(stringResource(R.string.ui_branch_name_06f6bb71)) },
                 placeholder = { Text(stringResource(R.string.ui_e_g_feature_new_ui_76d6dd27), style = TideType.mono(15.sp)) },
-                textStyle = TideType.mono(15.sp),
+                textStyle = TideType.mono(15.sp).copy(textDirection = TextDirection.Ltr),
                 singleLine = true,
                 shape = Tide.fieldShape,
                 colors = tideFieldColors(),
@@ -287,15 +288,13 @@ private fun DeleteBranchContent(
 /**
  * Get a description of a merge strategy.
  */
+@Composable
 fun strategyDescription(strategy: MergeStrategy): String {
-    return when (strategy) {
-        MergeStrategy.FAST_FORWARD ->
-            "Only merge if source is directly ahead. Preserves linear history."
-        MergeStrategy.RECURSIVE ->
-            "Always create a merge commit, even if fast-forward is possible."
-        MergeStrategy.PREFER_FF ->
-            "Fast-forward if possible, otherwise create a merge commit."
-    }
+    return stringResource(when (strategy) {
+        MergeStrategy.FAST_FORWARD -> R.string.dialogs_merge_strategy_fast_forward_description
+        MergeStrategy.RECURSIVE -> R.string.dialogs_merge_strategy_recursive_description
+        MergeStrategy.PREFER_FF -> R.string.dialogs_merge_strategy_prefer_ff_description
+    })
 }
 
 // ─── Previews ─────────────────────────────────────────────────────────────────

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.git.GitRemote
 import com.bontecou.syncmd.services.git.SshLfsOperation
 import com.bontecou.syncmd.services.git.lfs.LfsEndpointApprovalRequired
@@ -31,7 +32,7 @@ import javax.inject.Singleton
 
 /** Encrypted, device-local approvals and credentials for an exact repository/remote/LFS endpoint. */
 @Singleton
-class LfsEndpointStore @Inject constructor(@ApplicationContext context: Context) {
+class LfsEndpointStore @Inject constructor(@ApplicationContext private val context: Context) {
     data class Scope(val repository: String, val remote: String, val endpoint: String)
     data class Approval(val scope: Scope, val operations: Set<SshLfsOperation>, val authenticated: Set<SshLfsOperation>, val revision: String, val sshAuthorized: Set<SshLfsOperation> = emptySet(), val publicAccess: Set<SshLfsOperation> = emptySet())
     data class Challenge(val id: String, val scope: Scope, val operation: SshLfsOperation,
@@ -70,9 +71,10 @@ class LfsEndpointStore @Inject constructor(@ApplicationContext context: Context)
     val error = _error.asStateFlow()
     init { synchronized(lock) { reload() } }
     private fun scope(repository: String, remote: String, endpoint: String): Scope {
-        val uri = runCatching { URI(endpoint) }.getOrNull() ?: error("Invalid LFS endpoint address")
+        val invalid = { context.getString(R.string.gitops_lfs_endpoint_invalid) }
+        val uri = runCatching { URI(endpoint) }.getOrNull() ?: error(invalid())
         require((uri.scheme.equals("https", true) || uri.scheme.equals("http", true)) && !uri.host.isNullOrBlank() && uri.rawUserInfo == null && uri.rawQuery == null && uri.rawFragment == null &&
-            (uri.port == -1 || uri.port in 1..65535) && endpoint.none { it.isISOControl() || it == '\\' } && uri.path.split('/').none { it == "." || it == ".." }) { "Invalid LFS endpoint address" }
+            (uri.port == -1 || uri.port in 1..65535) && endpoint.none { it.isISOControl() || it == '\\' } && uri.path.split('/').none { it == "." || it == ".." }, invalid)
         val scheme = uri.scheme.lowercase()
         val defaultPort = if (scheme == "https") 443 else 80
         val origin = URI(scheme, null, uri.host.lowercase(), if (uri.port == defaultPort) -1 else uri.port, "", null, null).toASCIIString()
@@ -142,7 +144,7 @@ class LfsEndpointStore @Inject constructor(@ApplicationContext context: Context)
     }
     private fun read(scope: Scope): Pair<String?, Record?> {
         val raw = prefs.getString(id(scope), null)
-        val record = raw?.let { runCatching { decode(id(scope), it) }.getOrElse { failApproval(Failure.DAMAGED, "Saved LFS endpoint approvals cannot be opened. Reset them in Settings before retrying.") } }
+        val record = raw?.let { runCatching { decode(id(scope), it) }.getOrElse { failApproval(Failure.DAMAGED, context.getString(R.string.gitops_lfs_endpoint_damaged)) } }
         return raw to record
     }
     private fun reload() {

@@ -93,12 +93,20 @@ def alias_translations(item, source, catalog, languages):
         values[locale]=adapt(decoration('prefix',locale)+unit['value']+decoration('suffix',locale),english,source)
     return values
 
+# Categories Android ICU selects for each locale; every one needs a form (`other` alone would be used silently otherwise).
+REQUIRED_PLURAL_CATEGORIES={'ar':{'zero','one','two','few','many','other'},'he':{'one','two','other'},
+    'pl':{'one','few','many','other'},'ru':{'one','few','many','other'},'uk':{'one','few','many','other'},
+    'es':{'one','many','other'},'fr':{'one','many','other'},'it':{'one','many','other'},'pt-BR':{'one','many','other'},
+    **{locale:{'other'} for locale in ('id','ja','ko','th','vi','zh-Hans','zh-Hant')}}
+
 def checked_plurals(item, source, languages):
     if item['source']!=source: raise ValueError('Android plural source changed')
     if set(item['localizations'])!=set(languages): raise ValueError('Android plural locales differ')
     values={}
     for locale,forms in item['localizations'].items():
         if 'other' not in forms or not set(forms)<={'zero','one','two','few','many','other'}: raise ValueError('Invalid plural categories')
+        missing=REQUIRED_PLURAL_CATEGORIES.get(locale,{'one','other'})-set(forms)
+        if missing: raise ValueError(f'Plural {locale} lacks ICU categories {sorted(missing)}')
         values[locale]={quantity:adapt(value,source.get(quantity,source['other']),source.get(quantity,source['other'])) for quantity,value in forms.items()}
     return values
 

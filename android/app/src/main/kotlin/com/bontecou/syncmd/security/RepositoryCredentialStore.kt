@@ -4,6 +4,8 @@ import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
+import androidx.annotation.StringRes
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.Credentials
 import com.bontecou.syncmd.services.git.HttpsRemote
 import com.bontecou.syncmd.services.git.GitRemote
@@ -22,12 +24,14 @@ import javax.inject.Singleton
 
 /** Device-bound encryption, per-repository AAD, and explicit anonymous policies. */
 @Singleton
-class RepositoryCredentialStore @Inject constructor(@ApplicationContext context: Context) {
+class RepositoryCredentialStore @Inject constructor(@ApplicationContext private val context: Context) {
     companion object {
         private const val ALIAS = "gitsync.repository.credentials.v1"
         private val lock = Any()
     }
     private val prefs = context.getSharedPreferences("repository_credentials", Context.MODE_PRIVATE)
+    /** Messages thrown here reach the UI through the caller's error text. */
+    private fun text(@StringRes id: Int): String = context.getString(id)
     private fun id(path: String) = MessageDigest.getInstance("SHA-256").digest(File(path).canonicalPath.toByteArray()).joinToString("") { "%02x".format(it) }
     private fun key(): SecretKey {
         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
@@ -55,13 +59,13 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
         when (credentials) {
             Credentials.None -> json.put("method", "none")
             is Credentials.Basic -> {
-                require(endpoint.isHttpTransport) { "Username and token authentication requires an HTTP or HTTPS address" }
-                require(credentials.username.isNotBlank() && credentials.password.isNotEmpty()) { "Enter a username and token or password" }
+                require(endpoint.isHttpTransport) { text(R.string.account_basic_requires_http) }
+                require(credentials.username.isNotBlank() && credentials.password.isNotEmpty()) { text(R.string.account_enter_username_secret) }
                 json.put("method", "basic").put("username", credentials.username).put("secret", credentials.password)
             }
-            is Credentials.Pat -> { require(endpoint.isHttpTransport) { "Username and token authentication requires an HTTP or HTTPS address" }; json.put("method", "basic").put("username", "x-access-token").put("secret", credentials.token) }
+            is Credentials.Pat -> { require(endpoint.isHttpTransport) { text(R.string.account_basic_requires_http) }; json.put("method", "basic").put("username", "x-access-token").put("secret", credentials.token) }
             is Credentials.Ssh -> {
-                require(endpoint.isSsh) { "SSH keys can only be used with SSH repository addresses" }
+                require(endpoint.isSsh) { text(R.string.account_ssh_requires_ssh_address) }
                 SshKeys.validate(credentials)
                 json.put("method", "ssh").put("privateKey", credentials.privateKey).put("passphrase", credentials.passphrase).put("publicKey", credentials.publicKey)
             }
@@ -71,7 +75,7 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
     private fun write(path: String, json: JSONObject) {
         val recordId = id(path)
         val record = encode(path, json)
-        check(prefs.edit().putString(recordId, record).commit()) { "Could not save the repository connection" }
+        check(prefs.edit().putString(recordId, record).commit()) { text(R.string.account_connection_save_failed) }
     }
     private fun encode(path: String, json: JSONObject): String {
         val recordId = id(path)
@@ -94,27 +98,27 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
                 updateAAD(recordId.toByteArray())
             }
             JSONObject(String(cipher.doFinal(Base64.decode(parts[1], Base64.NO_WRAP)), Charsets.UTF_8))
-        } catch (e: Exception) { throw IllegalStateException("The saved connection cannot be opened. Re-enter the repository credentials.") }
+        } catch (e: Exception) { throw IllegalStateException(text(R.string.account_connection_unreadable)) }
         return json
     }
     private fun normalizedAddress(url: String): String = try { GitRemote.parse(url).url } catch (_: Exception) {
         val local = runCatching { java.net.URI(url) }.getOrNull()
         check(local != null && (local.scheme == "file" || local.scheme == null && local.rawAuthority == null) &&
             local.rawUserInfo == null && local.rawQuery == null && local.rawFragment == null) {
-            "The remote URL changed. Review the repository connection before authenticating."
+            text(R.string.account_remote_url_changed)
         }
         if (local.scheme == "file" && local.rawAuthority == null) java.net.URI("file:" + local.rawPath.orEmpty()).toASCIIString() else url
     }
     private fun selectedPolicy(json: JSONObject, url: String): JSONObject {
         val endpoint = normalizedAddress(url)
         if (json.getString("method") != "endpoints") {
-            check(normalizedAddress(json.getString("url")) == endpoint) { "The remote URL changed. Review the repository connection before authenticating." }
+            check(normalizedAddress(json.getString("url")) == endpoint) { text(R.string.account_remote_url_changed) }
             return json
         }
         json.getJSONObject("entries").optJSONObject(endpoint)?.let { return it }
         val defaults = json.optJSONArray("defaults")
         check(defaults != null && (0 until defaults.length()).any { defaults.getString(it) == endpoint }) {
-            "The remote URL changed. Review the repository connection before authenticating."
+            text(R.string.account_remote_url_changed)
         }
         return JSONObject().put("url", endpoint).put("method", "legacy")
     }
@@ -157,10 +161,10 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
             "ssh" -> Credentials.Ssh(json.getString("privateKey"), json.optString("passphrase"), json.optString("publicKey"))
             "github" -> {
                 val endpoint = HttpsRemote.parse(url)
-                check(endpoint.host == "github.com" && endpoint.port == 443) { "Review the GitHub account connection" }
-                Credentials.Pat((githubToken ?: error("Select the repository's GitHub account"))(json.optString("accountId").ifEmpty { null }))
+                check(endpoint.host == "github.com" && endpoint.port == 443) { text(R.string.account_review_github_connection) }
+                Credentials.Pat((githubToken ?: error(text(R.string.account_select_repository_github_account)))(json.optString("accountId").ifEmpty { null }))
             }
-            else -> error("Re-enter the repository credentials")
+            else -> error(text(R.string.account_reenter_credentials))
         }
     }
 
@@ -168,7 +172,7 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
     fun migrateEmbedded(path: String, primaryUrl: String?, bindings: List<com.bontecou.syncmd.services.repositories.EmbeddedRemoteCredential>,
         configuredUrls: List<String>, expectedVersion: String?, publish: () -> Unit) = synchronized(lock) {
         val recordId = id(path); val before = prefs.getString(recordId, null)
-        check(recordVersion(path) == expectedVersion) { "Saved credentials changed. Reload the migration." }
+        check(recordVersion(path) == expectedVersion) { text(R.string.account_migration_changed) }
         val existing = read(path)
         // Preserve public-access intent while keeping recovered credentials encrypted and inactive.
         val refused = existing?.getString("method") == "none" || existing?.optBoolean("refuseCredentials") == true
@@ -187,7 +191,7 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
             else if (!sameBasic(active, incoming)) {
                 val alternative = recovered.optJSONObject(url)
                 check(alternative == null || sameBasic(alternative, incoming)) {
-                    "Another alternative connection is already saved. Review it before migrating more URL credentials."
+                    text(R.string.account_alternative_exists)
                 }
                 recovered.put(url, incoming)
             }
@@ -199,18 +203,18 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
         else if (existing == null) configuredUrls.map(::normalizedAddress).distinct().filterNot(entries::has).forEach(defaults::put)
         else existing.optJSONArray("defaults")?.let { old -> (0 until old.length()).forEach { defaults.put(old.getString(it)) } }
         val primary = primaryUrl?.let(::normalizedAddress) ?: existing?.getString("url") ?: bindings.firstOrNull()?.url
-            ?: error("No supported URL credentials to migrate")
+            ?: error(text(R.string.account_no_url_credentials))
         val next = JSONObject().put("url", primary).put("method", "endpoints").put("entries", entries).put("defaults", defaults).put("refuseCredentials", refused).put("recovered", recovered)
         // Verify primary policy is available before publishing; no guessed authentication fallback.
         selectedPolicy(next, primary)
         var published = false
         try {
             write(path, next)
-            check(read(path)?.toString() == next.toString()) { "Encrypted credentials could not be verified. URL credentials were kept." }
+            check(read(path)?.toString() == next.toString()) { text(R.string.account_migration_unverified) }
             publish(); published = true
         } catch (failure: Exception) {
             if (!published && prefs.getString(recordId, null) != before)
-                check(prefs.edit().putString(recordId, before).commit()) { "Credential recovery could not be persisted. Review this connection." }
+                check(prefs.edit().putString(recordId, before).commit()) { text(R.string.account_migration_recovery_failed) }
             throw failure
         }
     }
@@ -224,7 +228,7 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
     /** A completed clone receipt owns its exact new credential record until recovery or explicit dismissal. */
     fun updateCloneConnection(path: String, url: String, expectedVersion: String?, accountId: String,
         publications: com.bontecou.syncmd.services.repositories.ClonePublicationLedger, publicationId: String, commit: () -> Unit) {
-        require(!java.nio.file.Files.exists(java.io.File(path).toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS)) { "The clone destination changed; its connection was kept" }
+        require(!java.nio.file.Files.exists(java.io.File(path).toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS)) { text(R.string.account_clone_destination_changed) }
         updateConnectionInternal(path, url, Choice.GITHUB, null, expectedVersion, accountId, {
             publications.get(publicationId)?.let { record ->
                 record.completed.path == java.io.File(path).canonicalPath && record.completed.credentialRevision == recordVersion(path)
@@ -234,32 +238,32 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
     private fun updateConnectionInternal(path: String, url: String, choice: Choice, replacement: Credentials?, expectedVersion: String?,
         accountId: String?, retainOnFailure: () -> Boolean, commit: () -> Unit) = synchronized(lock) {
         val endpoint = GitRemote.parse(url)
-        require(!endpoint.usesNoNetworkCredentials || choice in listOf(Choice.PUBLIC, Choice.PUBLIC_KEEP)) { "Choose access without network credentials for this address" }
+        require(!endpoint.usesNoNetworkCredentials || choice in listOf(Choice.PUBLIC, Choice.PUBLIC_KEEP)) { text(R.string.account_choose_public_access) }
         val recordId = id(path)
         val before = prefs.getString(recordId, null)
-        check(recordVersion(path) == expectedVersion) { "Saved credentials changed. Reload before saving." }
+        check(recordVersion(path) == expectedVersion) { text(R.string.account_credentials_changed_reload) }
         val previous = try { read(path) } catch (failure: Exception) {
             if (choice in listOf(Choice.KEEP, Choice.ALTERNATIVE, Choice.PUBLIC_KEEP)) throw failure else null
         }
         val multiple = previous?.getString("method") == "endpoints"
         try {
             val primary = when (choice) {
-                Choice.KEEP -> JSONObject(selectedPolicy(previous ?: error("Choose credentials for this connection"), endpoint.url).toString()).also {
-                    check(it.getString("method") != "legacy") { "Choose credentials for this connection" }
+                Choice.KEEP -> JSONObject(selectedPolicy(previous ?: error(text(R.string.account_choose_credentials)), endpoint.url).toString()).also {
+                    check(it.getString("method") != "legacy") { text(R.string.account_choose_credentials) }
                     it.remove("disabled")
                 }
                 Choice.ALTERNATIVE -> JSONObject((previous?.optJSONObject("recovered")?.optJSONObject(endpoint.url)
-                    ?: error("No alternative credentials are saved for this address")).toString()).also { it.remove("disabled") }
-                Choice.PUBLIC_KEEP -> JSONObject((previous ?: error("Reload the saved public-access connection")).toString()).also {
-                    check(describe(it, endpoint.url).isPublicAccess) { "Choose the authentication for this address" }
+                    ?: error(text(R.string.account_no_alternative))).toString()).also { it.remove("disabled") }
+                Choice.PUBLIC_KEEP -> JSONObject((previous ?: error(text(R.string.account_reload_public_access))).toString()).also {
+                    check(describe(it, endpoint.url).isPublicAccess) { text(R.string.account_choose_authentication) }
                     it.put("url", endpoint.url)
                 }
                 Choice.PUBLIC -> credentialRecord(endpoint.url, Credentials.None)
-                Choice.REPLACE -> credentialRecord(endpoint.url, replacement as? Credentials.Basic ?: error("Enter the new credentials"))
-                Choice.SSH -> credentialRecord(endpoint.url, replacement as? Credentials.Ssh ?: error("Enter the SSH private key"))
+                Choice.REPLACE -> credentialRecord(endpoint.url, replacement as? Credentials.Basic ?: error(text(R.string.account_enter_new_credentials)))
+                Choice.SSH -> credentialRecord(endpoint.url, replacement as? Credentials.Ssh ?: error(text(R.string.account_enter_ssh_key)))
                 Choice.GITHUB -> {
-                    require(endpoint.isHttps && endpoint.host == "github.com" && endpoint.port == 443) { "GitHub account access requires a github.com HTTPS address" }
-                    require(!accountId.isNullOrBlank()) { "Select a GitHub account" }
+                    require(endpoint.isHttps && endpoint.host == "github.com" && endpoint.port == 443) { text(R.string.account_github_requires_https) }
+                    require(!accountId.isNullOrBlank()) { text(R.string.account_select_github_account) }
                     JSONObject().put("url", endpoint.url).put("method", "github").put("accountId", accountId)
                 }
             }
@@ -279,14 +283,14 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
         } catch (e: Exception) {
             // SharedPreferences can update memory even when its disk commit returns false.
             if (prefs.getString(recordId, null) != before && !runCatching(retainOnFailure).getOrDefault(true)) {
-                check(prefs.edit().putString(recordId, before).commit()) { "Connection save failed and credential recovery could not be persisted. Re-enter the credentials." }
+                check(prefs.edit().putString(recordId, before).commit()) { text(R.string.account_connection_recovery_failed) }
             }
             throw e
         }
     }
 
     fun remove(path: String) = synchronized(lock) {
-        check(prefs.edit().remove(id(path)).commit()) { "Could not remove saved credentials" }
+        check(prefs.edit().remove(id(path)).commit()) { text(R.string.account_remove_credentials_failed) }
     }
 
     /** Publication retries may reuse only their own encrypted receipt, never replace another policy. */
@@ -298,23 +302,23 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
             .put("accountId", accountId).put("publicationWorkflow", workflow)
         val old = read(path)
         if (old != null) {
-            require(old.toString() == expected.toString()) { "This folder already has a different saved connection. Existing credentials were kept." }
+            require(old.toString() == expected.toString()) { text(R.string.account_publication_conflict) }
             // Verify durable storage again even after an earlier preferences commit reported failure.
         }
         val recordId = id(path); val previous = prefs.getString(recordId, null)
         try {
             if (old == null) write(path, expected)
-            else check(prefs.edit().putString(recordId, previous).commit()) { "Could not confirm the publication connection" }
-            check(read(path)?.toString() == expected.toString()) { "Could not verify the publication connection" }
+            else check(prefs.edit().putString(recordId, previous).commit()) { text(R.string.account_publication_confirm_failed) }
+            check(read(path)?.toString() == expected.toString()) { text(R.string.account_publication_verify_failed) }
         } catch (failure: Exception) {
-            check(prefs.edit().putString(recordId, previous).commit()) { "Publication credentials need recovery. The folder was kept." }
+            check(prefs.edit().putString(recordId, previous).commit()) { text(R.string.account_publication_recovery) }
             throw failure
         }
     }
 
     fun checkRelocation(source: String, destination: String, retained: String?, sourceVersion: String?, destinationVersion: String?, retainedVersion: String?) = synchronized(lock) {
         check(recordVersion(source) == sourceVersion && recordVersion(destination) == destinationVersion &&
-            (retained == null || recordVersion(retained) == retainedVersion)) { "Repository credentials changed after review. Review the move again." }
+            (retained == null || recordVersion(retained) == retainedVersion)) { text(R.string.account_move_changed) }
         read(source) // An unreadable source policy must be repaired before changing its working-copy path.
         Unit
     }
@@ -330,7 +334,7 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
             check(receipt.getString("source") == sourceId && receipt.getString("destination") == destinationId && receipt.optString("retained").ifEmpty { null } == retainedId)
             check(recordVersion(source) == null && recordVersion(destination).orEmpty() == receipt.getString("destinationVersion") &&
                 (retained == null || recordVersion(retained).orEmpty() == receipt.getString("retainedVersion"))) {
-                "Moved credentials changed during recovery. Review the destination connection before continuing."
+                text(R.string.account_move_recovery_changed)
             }
             return@synchronized
         }
@@ -345,17 +349,17 @@ class RepositoryCredentialStore @Inject constructor(@ApplicationContext context:
         try {
             val editor = prefs.edit().remove(sourceId).putString(destinationId, newDestination).putString(receiptKey, receipt.toString())
             if (retainedId != null) editor.putString(retainedId, newRetained)
-            check(editor.commit()) { "Could not persist moved repository credentials" }
-            check(read(destination)?.toString() == payload?.toString() && (retained == null || read(retained)?.toString() == payload?.toString())) { "Moved repository credentials could not be verified" }
+            check(editor.commit()) { text(R.string.account_move_persist_failed) }
+            check(read(destination)?.toString() == payload?.toString() && (retained == null || read(retained)?.toString() == payload?.toString())) { text(R.string.account_move_verify_failed) }
         } catch (e: Exception) {
             val restore = prefs.edit()
             old.forEach { (key, value) -> restore.putString(key, value) }
-            check(restore.commit()) { "Credential move recovery could not be saved. All working copies were kept." }
+            check(restore.commit()) { text(R.string.account_move_recovery_failed) }
             throw e
         }
     }
 
     fun finishRelocation(operationId: String) = synchronized(lock) {
-        check(prefs.edit().remove("move_$operationId").commit()) { "Could not finish credential move recovery" }
+        check(prefs.edit().remove("move_$operationId").commit()) { text(R.string.account_move_finish_failed) }
     }
 }

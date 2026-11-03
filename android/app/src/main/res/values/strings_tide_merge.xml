@@ -58,8 +58,8 @@
     <string name="tide_merge_in_sync_headline">Already up to date.</string>
     <string name="tide_merge_rebase_conflicts_headline">The rebase stopped on files both sides edited.</string>
     <string name="tide_merge_rebase_blocked_headline">The rebase is waiting on a blocked checkout.</string>
-    <string name="tide_merge_rebase_ready_headline">Every conflict is staged. Continue to finish.</string>
-    <string name="tide_merge_rebase_done_headline">Your commits now sit on top of theirs.</string>
+    <string name="tide_merge_rebase_ready_headline">Review this step before continuing.</string>
+    <string name="tide_merge_rebase_done_headline">The rebase finished.</string>
     <string name="tide_merge_rebase_aborted_headline">Back where you started.</string>
 
     <!-- Remote merge. -->

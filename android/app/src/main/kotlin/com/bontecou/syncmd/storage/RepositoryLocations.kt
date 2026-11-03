@@ -9,7 +9,9 @@ import android.os.Build
 import android.os.Environment
 import android.os.storage.StorageManager
 import android.provider.DocumentsContract
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.bontecou.syncmd.R
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -27,6 +29,7 @@ class RepositoryLocations(private val context: Context) {
         fun hasSharedStorageAccess(context: Context): Boolean = if (Build.VERSION.SDK_INT >= 30) Environment.isExternalStorageManager()
             else ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
+    private fun text(@StringRes id: Int): String = context.getString(id)
     private val prefs = context.getSharedPreferences("repository_locations", Context.MODE_PRIVATE)
     private fun records(): List<RepositoryFolder> {
         val items = JSONArray(prefs.getString("folders", "[]"))
@@ -37,18 +40,18 @@ class RepositoryLocations(private val context: Context) {
     fun defaultSelection(): String = prefs.getString("default", APP) ?: APP
     fun summary(selection: String? = null): RepositoryFolder = synchronized(lock) {
         val selected = selection ?: defaultSelection()
-        if (selected == APP) return@synchronized RepositoryFolder(APP, CloneStorage.appDefaultCloneBaseDir(context), "App storage")
-        records().firstOrNull { it.uri == selected } ?: error("Choose the repository folder again to restore access")
+        if (selected == APP) return@synchronized RepositoryFolder(APP, CloneStorage.appDefaultCloneBaseDir(context), text(R.string.vault_l10n_app_storage))
+        records().firstOrNull { it.uri == selected } ?: error(text(R.string.vault_l10n_folder_repository_choose_again))
     }
     fun resolve(selection: String? = null): RepositoryFolder = synchronized(lock) {
         val folder = summary(selection)
         if (folder.uri == APP) return@synchronized folder
         val uri = Uri.parse(folder.uri)
         require(context.contentResolver.persistedUriPermissions.any { it.uri == uri && it.isReadPermission && it.isWritePermission }) {
-            "Folder access was removed. Choose this folder again before continuing."
+            text(R.string.vault_l10n_folder_access_removed)
         }
         val physical = deviceFolder(uri)
-        require(physical.canonicalPath == folder.path) { "This storage location changed. Choose the folder again." }
+        require(physical.canonicalPath == folder.path) { text(R.string.vault_l10n_storage_location_changed) }
         requireAccess(physical)
         folder
     }
@@ -59,17 +62,17 @@ class RepositoryLocations(private val context: Context) {
     private fun rememberFolder(uri: Uri, probe: Boolean): RepositoryFolder = synchronized(lock) {
         val file = deviceFolder(uri)
         if (probe) requireAccess(file) else {
-            require(CloneStorage.isWithinAppWritableRoots(context, file.path) || hasSharedStorageAccess(context)) { "Enable shared storage access before choosing the folder" }
-            require(file.isDirectory && !Files.isSymbolicLink(file.toPath())) { "The selected folder is unavailable" }
+            require(CloneStorage.isWithinAppWritableRoots(context, file.path) || hasSharedStorageAccess(context)) { text(R.string.vault_l10n_enable_shared_storage_before) }
+            require(file.isDirectory && !Files.isSymbolicLink(file.toPath())) { text(R.string.vault_l10n_folder_unavailable) }
         }
         context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        require(context.contentResolver.persistedUriPermissions.any { it.uri == uri && it.isReadPermission && it.isWritePermission }) { "Could not retain read and write access to this folder" }
-        val folder = RepositoryFolder(uri.toString(), file.canonicalPath, file.name.ifBlank { "Device storage" })
+        require(context.contentResolver.persistedUriPermissions.any { it.uri == uri && it.isReadPermission && it.isWritePermission }) { text(R.string.vault_l10n_folder_retain_access_failed) }
+        val folder = RepositoryFolder(uri.toString(), file.canonicalPath, file.name.ifBlank { text(R.string.vault_l10n_device_storage) })
         val previous = prefs.getString("folders", "[]")
         val updated = listOf(folder) + records().filterNot { it.uri == folder.uri }
         val items = JSONArray()
         updated.forEach { items.put(JSONObject().put("uri", it.uri).put("path", it.path).put("name", it.name)) }
-        try { check(prefs.edit().putString("folders", items.toString()).commit()) { "Could not save folder access" }
+        try { check(prefs.edit().putString("folders", items.toString()).commit()) { text(R.string.vault_l10n_folder_access_save_failed) }
         } catch (e: Exception) { check(prefs.edit().putString("folders", previous).commit()); throw e }
         folder
     }
@@ -78,20 +81,20 @@ class RepositoryLocations(private val context: Context) {
         val previous = defaultSelection()
         if (!prefs.edit().putString("default", selection).commit()) {
             check(prefs.edit().putString("default", previous).commit())
-            error("Could not save the default clone location")
+            error(text(R.string.vault_l10n_default_location_save_failed))
         }
     }
     fun selectedFolders(): List<RepositoryFolder> = synchronized(lock) { records() }
 
     /** Read-only publication binding check: an old path alone never restores an expired tree grant. */
     fun requireFolderBinding(uri: String, path: String) = synchronized(lock) {
-        val saved = records().singleOrNull { it.uri == uri } ?: error("Choose the original publication folder again to restore access")
+        val saved = records().singleOrNull { it.uri == uri } ?: error(text(R.string.vault_l10n_publication_folder_choose_again))
         val parsed = Uri.parse(uri)
         require(context.contentResolver.persistedUriPermissions.any { it.uri == parsed && it.isReadPermission && it.isWritePermission }) {
-            "Access to the publication folder was removed. Choose the original folder again."
+            text(R.string.vault_l10n_publication_access_removed)
         }
         require(saved.path == File(path).canonicalPath && deviceFolder(parsed).canonicalPath == saved.path) {
-            "This grant belongs to a different folder. Choose the original publication folder."
+            text(R.string.vault_l10n_publication_grant_different)
         }
         requireRepositoryAccess(path)
     }
@@ -99,49 +102,49 @@ class RepositoryLocations(private val context: Context) {
     /** Recheck saved grants for reads and writes, including already-added working copies. */
     fun requireRepositoryAccess(path: String) = synchronized(lock) {
         if (CloneStorage.isWithinAppWritableRoots(context, path)) return@synchronized
-        require(hasSharedStorageAccess(context)) { "Shared storage access was removed. Enable it to open this repository." }
+        require(hasSharedStorageAccess(context)) { text(R.string.vault_l10n_shared_storage_removed) }
         val canonical = File(path).canonicalPath
         val candidates = records().filter { canonical == it.path || canonical.startsWith(it.path + "/") }
         require(candidates.any { folder ->
             val uri = Uri.parse(folder.uri)
             context.contentResolver.persistedUriPermissions.any { it.uri == uri && it.isReadPermission && it.isWritePermission } &&
                 runCatching { deviceFolder(uri).canonicalPath == folder.path }.getOrDefault(false)
-        }) { "Choose this repository's folder again to restore saved access." }
+        }) { text(R.string.vault_l10n_repository_folder_choose_again) }
     }
 
     private fun deviceFolder(uri: Uri): File {
         require(uri.scheme == "content" && uri.authority == "com.android.externalstorage.documents" && DocumentsContract.isTreeUri(uri)) {
-            "Choose a folder on this device or an attached storage volume. This Git engine cannot use a cloud document provider directly."
+            text(R.string.vault_l10n_folder_cloud_provider)
         }
         val id = DocumentsContract.getTreeDocumentId(uri).split(':', limit = 2)
-        require(id.size == 2 && id[0].isNotBlank()) { "This folder does not identify a device storage volume" }
+        require(id.size == 2 && id[0].isNotBlank()) { text(R.string.vault_l10n_folder_no_volume) }
         // DocumentsUI can return its home: alias instead of primary:Documents/….
         // Treat Documents as a checked path component, so aliases cannot bypass link checks.
         val documents = id[0] == "home"
         val segments = (if (documents) listOf(Environment.DIRECTORY_DOCUMENTS) else emptyList()) +
             id[1].split('/').filter { it.isNotEmpty() }
-        require(segments.none { it == "." || it == ".." || it == ".git" || it.contains('\\') || it.contains('\u0000') }) { "Choose a working folder outside Git metadata" }
+        require(segments.none { it == "." || it == ".." || it == ".git" || it.contains('\\') || it.contains('\u0000') }) { text(R.string.vault_l10n_folder_outside_git_metadata) }
         val storage = context.getSystemService(StorageManager::class.java)
         val volume = storage.storageVolumes.firstOrNull { if (documents || id[0].equals("primary", true)) it.isPrimary else it.uuid?.equals(id[0], true) == true }
-            ?: error("This storage volume is unavailable. Reconnect it and choose the folder again.")
+            ?: error(text(R.string.vault_l10n_volume_unavailable_reconnect))
         val root = if (Build.VERSION.SDK_INT >= 30) volume.directory else if (volume.isPrimary) Environment.getExternalStorageDirectory()
             else volume.uuid?.takeIf { it.matches(Regex("[A-Za-z0-9-]+")) }?.let { File("/storage/$it") }
-        require(root != null && root.isDirectory) { "This storage volume is unavailable" }
+        require(root != null && root.isDirectory) { text(R.string.vault_l10n_volume_unavailable) }
         val base = root.canonicalFile
         var current = base
         for (part in segments) {
             current = File(current, part)
-            require(!Files.isSymbolicLink(current.toPath())) { "Choose a folder without symbolic links in its path" }
+            require(!Files.isSymbolicLink(current.toPath())) { text(R.string.vault_l10n_folder_no_links) }
         }
         val result = current.canonicalFile
-        require(result == base || result.path.startsWith(base.path + "/")) { "The selected folder is outside its storage volume" }
+        require(result == base || result.path.startsWith(base.path + "/")) { text(R.string.vault_l10n_folder_outside_volume) }
         return result
     }
     private fun requireAccess(folder: File) {
         require(CloneStorage.isWithinAppWritableRoots(context, folder.path) || hasSharedStorageAccess(context)) {
-            "Enable shared storage access, then choose the folder again. App storage remains available without this permission."
+            text(R.string.vault_l10n_enable_shared_storage)
         }
-        require(folder.isDirectory && !Files.isSymbolicLink(folder.toPath())) { "The selected folder is unavailable" }
+        require(folder.isDirectory && !Files.isSymbolicLink(folder.toPath())) { text(R.string.vault_l10n_folder_unavailable) }
         val probe = File(folder, ".gitsync-access-${UUID.randomUUID()}")
         val renamed = File(folder, ".gitsync-access-${UUID.randomUUID()}")
         var ownsProbe = false
@@ -154,7 +157,7 @@ class RepositoryLocations(private val context: Context) {
             ownsRenamed = true
             check(renamed.readText() == "GitSync.md folder access")
             check(renamed.delete())
-        } catch (e: Exception) { throw IllegalStateException("This folder does not support writable Git files. Check access and available storage.")
+        } catch (e: Exception) { throw IllegalStateException(text(R.string.vault_l10n_folder_not_writable))
         } finally { if (ownsProbe) probe.delete(); if (ownsRenamed) renamed.delete() }
     }
 }

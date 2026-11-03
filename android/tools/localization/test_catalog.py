@@ -41,9 +41,17 @@ class CatalogTest(unittest.TestCase):
         with self.assertRaises(ValueError):checked_translations(row,'Apply rules',['es','ar'])
     def test_plural_forms_retain_count_and_reject_missing_other_or_unknown_category(self):
         source={'one':'%1$d file','other':'%1$d files'}
-        row={'source':source,'localizations':{'ar':{'one':'ملف %1$d','other':'ملفات %1$d'}}}
-        self.assertEqual(row['localizations'],checked_plurals(row,source,['ar']))
-        for forms in [{'one':'ملف %1$d'},{'other':'ملفات'},{'other':'ملفات %2$d'},{'other':'ملفات %1$d','invalid':'%1$d'}]:
-            with self.assertRaises(ValueError):checked_plurals({'source':source,'localizations':{'ar':forms}},source,['ar'])
+        row={'source':source,'localizations':{'de':{'one':'%1$d Datei','other':'%1$d Dateien'}}}
+        self.assertEqual(row['localizations'],checked_plurals(row,source,['de']))
+        for forms in [{'one':'%1$d Datei'},{'one':'Datei','other':'Dateien'},{'one':'%1$d Datei','other':'%2$d Dateien'},{'one':'%1$d Datei','other':'%1$d Dateien','invalid':'%1$d'}]:
+            with self.assertRaises(ValueError):checked_plurals({'source':source,'localizations':{'de':forms}},source,['de'])
+    def test_plurals_need_every_icu_category_android_selects(self):
+        source={'one':'%1$d file','other':'%1$d files'}
+        arabic={q:'ملفات %1$d' for q in ['zero','one','two','few','many','other']}
+        self.assertEqual(arabic,checked_plurals({'source':source,'localizations':{'ar':arabic}},source,['ar'])['ar'])
+        self.assertEqual({'other':'%1$d 件'},checked_plurals({'source':source,'localizations':{'ja':{'other':'%1$d 件'}}},source,['ja'])['ja'])
+        for locale,forms in [('ar',{'one':'ملف %1$d','other':'ملفات %1$d'}),('es',{'one':'%1$d archivo','other':'%1$d archivos'}),
+                             ('ru',{'one':'%1$d файл','few':'%1$d файла','other':'%1$d файлов'})]:
+            with self.assertRaises(ValueError):checked_plurals({'source':source,'localizations':{locale:forms}},source,[locale])
 
 if __name__=='__main__':unittest.main()

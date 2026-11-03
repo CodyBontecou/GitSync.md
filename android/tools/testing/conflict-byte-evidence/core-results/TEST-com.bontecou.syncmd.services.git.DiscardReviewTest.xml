@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.DiscardReviewTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:56" hostname="MacBook-Pro.local" time="0.53">
+  <properties/>
+  <testcase name="replacing the repository folder with identical bytes invalidates the review" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.076"/>
+  <testcase name="reviewed untracked obstruction can be removed to restore the tracked file" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.027"/>
+  <testcase name="all restores a tracked directory after a reviewed untracked file replaced it" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.029"/>
+  <testcase name="single file review still rejects changed checkout attributes while preserving every draft" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.016"/>
+  <testcase name="single new staged or untracked file is deleted without changing other paths" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.043"/>
+  <testcase name="ignored obstruction is protected before a review can authorize restoration" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.018"/>
+  <testcase name="single file review keeps unrelated later working edits and still restores the selected file" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.016"/>
+  <testcase name="selected symlink discard does not follow its target outside the repository" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.015"/>
+  <testcase name="all explicitly abandons a real conflicted merge while single file discard keeps the operation" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.035"/>
+  <testcase name="single tracked file restores both layers while retaining other staged and working changes" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.018"/>
+  <testcase name="all reviews distinct full paths and restores HEAD while deleting new files and preserving ignored files" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.024"/>
+  <testcase name="new untracked index configuration branch and operation changes each reject a stale confirmation" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.074"/>
+  <testcase name="unborn all only clears staging and keeps new files whereas selected discard deletes the selected file" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.02"/>
+  <testcase name="selected LFS file restores verified cached content and leaves a pointer in the index" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.044"/>
+  <testcase name="same sized same mtime edits invalidate review without changing index or any file" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.018"/>
+  <testcase name="tracked file replaced by a symlink restores without writing to the outside target" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.015"/>
+  <testcase name="foreign index lock rejects discard before touching files and is never deleted" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.017"/>
+  <testcase name="another repository cannot consume a review" classname="com.bontecou.syncmd.services.git.DiscardReviewTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

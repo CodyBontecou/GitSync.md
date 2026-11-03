@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.github.GitHubAuthManager
 import com.bontecou.syncmd.services.publication.*
 import com.bontecou.syncmd.storage.AndroidFolderPublications
@@ -142,15 +143,15 @@ class FolderPublicationViewModel(
             var failure: String? = null
             var cancelled = false
             try { action() }
-            catch (_: CancellationException) { cancelled = true; failure = "Stopped. Saved progress is ready to review; the last network result may be uncertain." }
-            catch (error: Exception) { failure = error.message ?: "Publication needs attention. Saved files were kept." }
+            catch (_: CancellationException) { cancelled = true; failure = runtime.text(R.string.vault_l10n_publication_stopped) }
+            catch (error: Exception) { failure = error.message ?: runtime.text(R.string.vault_l10n_publication_needs_attention) }
             finally {
                 // Keep the return from IO inside this scope too: returning directly into a cancelled
                 // caller would discard the loaded records through prompt cancellation.
                 withContext(NonCancellable) {
                     var loadFailed = false
                     val records = try { withContext(Dispatchers.IO) { runtime.coordinator.recover() } }
-                        catch (error: Exception) { loadFailed = true; failure = error.message ?: "Saved publication progress is unavailable"; mutable.value.records }
+                        catch (error: Exception) { loadFailed = true; failure = error.message ?: runtime.text(R.string.vault_l10n_publication_progress_unavailable); mutable.value.records }
                     withContext(Dispatchers.Main.immediate) {
                         if (generation == request) mutable.value = mutable.value.copy(records = records,
                             selected = mutable.value.selected?.takeIf { id -> records.any { it.id == id } },

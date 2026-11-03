@@ -133,12 +133,12 @@ class CatalogWriteGuardTest(unittest.TestCase):
         base.write_text('<resources><plurals name="files"><item quantity="one">%1$d file</item>'
             '<item quantity="other">%1$d files</item></plurals></resources>')
         (self.tools/'android_workflow_overrides.json').write_text(json.dumps({'strings':{},'plurals':{'files':{
-            'source':{'one':'%1$d file','other':'%1$d files'},'localizations':{'es':{'other':'%1$d archivos'}}}}}))
+            'source':{'one':'%1$d file','other':'%1$d files'},'localizations':{'es':{q:'%1$d archivos' for q in ['one','many','other']}}}}}))
         tree=ET.parse(self.xml);element=ET.SubElement(tree.getroot(),'plurals',{'name':'files'})
-        for quantity in ['one','other']: ET.SubElement(element,'item',{'quantity':quantity}).text='%1$d archivos'
+        for quantity in ['one','two','many','other']: ET.SubElement(element,'item',{'quantity':quantity}).text='%1$d archivos'
         tree.write(self.xml,encoding='unicode');before=self.generated_bytes()
         with self.assertRaises(SystemExit): self.run_import('--apply')
-        self.assertIn('"plural_forms": {"es": {"files": ["one"]}}',self.stderr.getvalue())
+        self.assertIn('"plural_forms": {"es": {"files": ["two"]}}',self.stderr.getvalue())
         self.assertEqual(before,self.generated_bytes())
 
 

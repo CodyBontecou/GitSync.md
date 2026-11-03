@@ -2,11 +2,13 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.*
 import com.bontecou.syncmd.services.git.ConflictService
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.services.git.lfs.LfsCheckoutIncompleteException
 import com.bontecou.syncmd.ui.util.RepositorySelection
+import com.bontecou.syncmd.ui.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +34,7 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
     val isLoading = _isLoading.asStateFlow()
     private val _actionsReady = MutableStateFlow(false)
     val actionsReady = _actionsReady.asStateFlow()
-    private val _errorMessage = MutableStateFlow<String?>(null)
+    private val _errorMessage = MutableStateFlow<UiText?>(null)
     val errorMessage = _errorMessage.asStateFlow()
     private val _currentRepoPath = MutableStateFlow<String?>(null)
     val currentRepoPath = _currentRepoPath.asStateFlow()
@@ -42,7 +44,7 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
     @Volatile private var readId = 0L
     private var mutationRunning = false
     private var refreshPending = false
-    private var operationNotice: String? = null
+    private var operationNotice: UiText? = null
     private data class Snapshot(val merge: MergeState, val conflicts: List<Conflict>)
     private fun current(expected: RepositorySelection?) = expected != null && _selection.value === expected
     private fun ready(expected: RepositorySelection) = current(expected) && _actionsReady.value && !mutationRunning && !_isLoading.value
@@ -84,7 +86,7 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
                 if (current(expected) && request == readId && value != null) publish(value)
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (failure: Exception) {
-                if (current(expected) && request == readId) _errorMessage.value = operationNotice ?: failure.message ?: "Could not refresh merge conflicts"
+                if (current(expected) && request == readId) _errorMessage.value = operationNotice ?: failure.gitOpsText(R.string.gitops_conflicts_refresh_failed)
             } finally {
                 if (current(expected) && request == readId && !mutationRunning) _isLoading.value = false
             }
@@ -117,14 +119,15 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
     private fun resolve(expected: RepositorySelection, conflict: Conflict, strategy: ConflictResolutionStrategy, draft: String? = null, keepPath: String? = null) {
         if (!ready(expected) || !visible(conflict)) return
         mutate(expected, onSuccess = { clearEditor(); _resolvedConflicts.value += conflict.filePath }) { path ->
-            check(conflictService.getFileConflict(path, conflict.filePath).getOrThrow() == conflict) {
-                "Conflict changed. Your draft is still shown. Copy any text you want to keep, then close and review the current conflict."
-            }
+            gitOpsCheck(conflictService.getFileConflict(path, conflict.filePath).getOrThrow() == conflict, R.string.gitops_conflict_changed_draft)
             val resolution = if (strategy == ConflictResolutionStrategy.MANUAL && conflict.isRenameRename)
                 conflictService.resolveConflictWithPath(path, conflict.filePath, requireNotNull(keepPath), requireNotNull(draft)).getOrThrow()
             else conflictService.resolveConflict(path, conflict.filePath, strategy, draft).getOrThrow()
-            check(resolution.resolved) { resolution.message.ifBlank { "Conflict could not be resolved" } }
-            resolution.message.takeIf { it.isNotBlank() }
+            if (!resolution.resolved) {
+                resolution.message.takeIf { it.isNotBlank() }?.let { throw IllegalStateException(it) }
+                gitOpsError(R.string.gitops_conflict_not_resolved)
+            }
+            resolution.message.takeIf { it.isNotBlank() }?.let { UiText.Raw(it) }
         }
     }
     fun resolveAllConflicts(expected: RepositorySelection, strategy: ConflictResolutionStrategy) {
@@ -132,21 +135,21 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
         val before = _conflicts.value
         if (before.isEmpty()) return
         mutate(expected) { path ->
-            require(strategy == ConflictResolutionStrategy.OURS || strategy == ConflictResolutionStrategy.THEIRS) { "Choose ours or theirs for a batch resolution" }
-            check(conflictService.getConflicts(path).getOrThrow() == before) { "Conflicts changed. Refresh before resolving." }
+            gitOpsCheck(strategy == ConflictResolutionStrategy.OURS || strategy == ConflictResolutionStrategy.THEIRS, R.string.gitops_conflict_batch_choose)
+            gitOpsCheck(conflictService.getConflicts(path).getOrThrow() == before, R.string.gitops_conflicts_changed)
             val results = conflictService.resolveAllConflicts(path, strategy).getOrThrow()
-            check(results.size == before.size && results.all { it.resolved }) { "Some conflicts remain unresolved. Review the refreshed conflict list." }
-            results.map { it.message }.filter { it.isNotBlank() }.distinct().joinToString("\n\n").takeIf { it.isNotEmpty() }
+            gitOpsCheck(results.size == before.size && results.all { it.resolved }, R.string.gitops_conflicts_remain)
+            results.map { it.message }.filter { it.isNotBlank() }.distinct().joinToString("\n\n").takeIf { it.isNotEmpty() }?.let { UiText.Raw(it) }
         }
     }
     fun completeMerge(expected: RepositorySelection, message: String) {
         if (!ready(expected) || _conflicts.value.isNotEmpty()) return
-        if (message.isBlank()) { _errorMessage.value = "Merge message cannot be empty"; return }
+        if (message.isBlank()) { _errorMessage.value = UiText.res(R.string.gitops_merge_message_empty); return }
         val before = _mergeState.value ?: return
         mutate(expected, onSuccess = { clearEditor(); _resolvedConflicts.value = emptySet() }) { path ->
             verifyMerge(path, before)
             val result = conflictService.completeMerge(path, message)
-            if (result.exceptionOrNull() is LfsCheckoutIncompleteException) result.exceptionOrNull()?.message else { result.getOrThrow(); null }
+            if (result.exceptionOrNull() is LfsCheckoutIncompleteException) result.exceptionOrNull()?.message?.let { UiText.Raw(it) } else { result.getOrThrow(); null }
         }
     }
     fun abortMerge(expected: RepositorySelection) {
@@ -155,21 +158,21 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
         mutate(expected, onSuccess = { clearEditor(); _resolvedConflicts.value = emptySet() }) { path ->
             verifyMerge(path, before)
             val result = conflictService.abortMerge(path)
-            if (result.exceptionOrNull() is LfsCheckoutIncompleteException) result.exceptionOrNull()?.message else { result.getOrThrow(); null }
+            if (result.exceptionOrNull() is LfsCheckoutIncompleteException) result.exceptionOrNull()?.message?.let { UiText.Raw(it) } else { result.getOrThrow(); null }
         }
     }
     private suspend fun verifyMerge(path: String, before: MergeState) {
         val fresh = conflictService.getMergeState(path).getOrThrow()
-        check(before.isMergeInProgress && fresh.isMergeInProgress && fresh.sourceBranch == before.sourceBranch) { "Merge session changed. Refresh before continuing." }
+        gitOpsCheck(before.isMergeInProgress && fresh.isMergeInProgress && fresh.sourceBranch == before.sourceBranch, R.string.gitops_merge_session_changed)
     }
-    private fun mutate(expected: RepositorySelection, onSuccess: () -> Unit = {}, action: suspend (String) -> String?) {
+    private fun mutate(expected: RepositorySelection, onSuccess: () -> Unit = {}, action: suspend (String) -> UiText?) {
         if (!ready(expected)) return
         mutationRunning = true; refreshPending = false
         readId++; readJob?.cancel(); _isLoading.value = true; _actionsReady.value = false; operationNotice = null; _errorMessage.value = null
         viewModelScope.launch {
             var updated: Snapshot? = null
             var failure: Exception? = null
-            var notice: String? = null
+            var notice: UiText? = null
             var succeeded = false
             try {
                 withContext(Dispatchers.IO) {
@@ -186,12 +189,12 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
                 if (current(expected)) {
                     if (succeeded) onSuccess()
                     updated?.let(::publish)
-                    operationNotice = failure?.let { it.message ?: "Git could not complete this action" } ?: notice
+                    operationNotice = failure?.gitOpsText(R.string.gitops_action_failed) ?: notice
                     _errorMessage.value = operationNotice
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {
-                if (current(expected)) { operationNotice = error.message ?: "Git could not complete this action"; _errorMessage.value = operationNotice }
+                if (current(expected)) { operationNotice = error.gitOpsText(R.string.gitops_action_failed); _errorMessage.value = operationNotice }
             } finally {
                 mutationRunning = false; _isLoading.value = false
                 val refresh = !current(expected) || refreshPending

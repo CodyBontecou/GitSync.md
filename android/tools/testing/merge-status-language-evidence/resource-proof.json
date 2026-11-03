@@ -1,0 +1,206 @@
+{
+  "new_keys": [
+    "tide_merge_rebase_initial",
+    "tide_merge_behind_headline",
+    "tide_merge_ahead_kicker",
+    "tide_merge_ahead_headline",
+    "tide_merge_in_sync_headline",
+    "tide_merge_rebase_conflicts_headline",
+    "tide_merge_rebase_blocked_headline",
+    "tide_merge_rebase_ready_headline",
+    "tide_merge_rebase_done_headline",
+    "tide_merge_rebase_aborted_headline",
+    "tide_merge_merge_initial",
+    "tide_merge_merge_paused_kicker",
+    "tide_merge_merge_paused_headline",
+    "tide_merge_merge_done_kicker",
+    "tide_merge_merge_done_headline",
+    "tide_merge_plan_section",
+    "tide_merge_upstream_section",
+    "tide_merge_upstream_set",
+    "tide_merge_upstream_unset",
+    "tide_merge_upstream_unset_body",
+    "tide_merge_upstream_loading"
+  ],
+  "new_values": 525,
+  "mapped_merge_strings": 64,
+  "formatted_values": 25,
+  "unformatted_values": 500,
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "c48ed61d1aa0426e2d1b138dc989458e8937a8d8a0b348a585b73cbbc3eed9f4"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "6ba21d6bf1f72cde15568ce93ea1d009734806c783dfd5a76f8aec2b47ea3f33"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "140416bc6e0857a1b9e4db5e3037f7df8c42f3b3540cc740e8e5d775b04ade13"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "f1a53686cb3a21779a01b39ecdd9d739a0b8f5a4a1092a7278496c827a2f06b1"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "901c0504b45d45bb527f4c2e9e74a9600c46b5b018cfe19c3b08aa8465aa14c4"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "36bdfb9040783a8862a6116036641b7feac87db396cebe5e67e58402a30dd7fa"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "31aaf2b82ffe492eeb002d3416a5365b9bd34eda972e5670a0130396d37b1d7c"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "de957b323bf6542a35b10ae89001f1400353b33be6cb8b342f49f6b20fa12c45"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "3b7d02d49e286e61e320b758b3a0236a6e2881b3fd867bdce2115731c24dd813"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "ffde75770a70c37bf9ac2a46aecb71e6feabff3f7aa39180dde245ef67bfbccd"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "b7b51a50d69d654e5a951db23bf57a1ffdb007b642bad756da73fc8f96de2a3a"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "b4de8a3ab4a55013a92b80f64c4c54c87fb6c5a41bfe34ad10e6dfd5d6394098"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "dda7570ace9b022b79052898821e10740db20ae3aff96d002c68bdc7020e1672"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "304565003e429e8385aacf6a71198f575a5f1d43f4550857454b453ae93e63de"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "e736c6775e636b7dfcdb685f66b17a730c57cc7e78181e64556a4a4cc42fb9cf"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "73d6c7a0831f0a4050d499323ec4e9bf7a5b0675324622573c914e8c8840b2fe"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "741963176f2752da065a883abf4b3ea7740342d0acb47e1da83a18c1d83571bb"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "05dd0e1d42b9079824ab7c982ab3b003cc196f6da843d73057e069172f305424"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "b930f16042f10b6149bde26f1ad89159add2978a652eaa1c8ff181fe65c82212"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "0e763fb91a1b1123756f97013b347cf37f3900a214ac95db9ba86a8a63884e98"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "eeb1a3bc3e610179e26de0951b9ed5da21324e3bf65878fc3d9a79d625b49c3a"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "c2b90b06a26cf3972f16555501dfe898f7e328679053cbac7aeeb808bf79a4ad"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "7776381645cd65fb05feaf6ec1c3567b295ee8ca0828df48a6e9d0b2c222af38"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "afb73418217f68e7e473a76db179a612eafb578970a81b44ad3f83e6eb727cff"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_values": 21,
+      "formatted_values": 1,
+      "unformatted_values": 20,
+      "xml_sha256": "5d4dc346c86b6a785304091a40a2ab510933180a1d07a44b0914c2d4d3833858"
+    }
+  }
+}

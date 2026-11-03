@@ -36,7 +36,7 @@ class LocalizationTest {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val app get() = instrumentation.targetContext
     private val expected by lazy { JSONObject(instrumentation.context.assets.open("localization_expected.json").bufferedReader().use { it.readText() }) }
-    private val samples = listOf("sample Ω 1 · 19%", "sample 東京 2", "sample 3")
+    private val samples = listOf("sample Ω 1 · 19%", "sample 東京 2", "sample 3", "sample 4", "sample 5", "sample 6")
     private fun context(tag: String): Context {
         val locale = Locale.forLanguageTag(tag)
         val configuration = Configuration(app.resources.configuration).apply { setLocales(LocaleList(locale)); setLayoutDirection(locale) }
@@ -134,10 +134,15 @@ class LocalizationTest {
                 for (quantity in quantities) {
                     val category = rules.select(quantity.toDouble())
                     val source = forms.getString(if (forms.has(category)) category else "other")
-                    assertEquals("$tag / $name / $quantity / $category", String.format(locale, source, quantity),
-                        localized.resources.getQuantityString(resource, quantity, quantity))
+                    // Integer quantities bind to the count; preformatted (string) counts and sizes use typed samples.
+                    val args = arguments(source).also { if (it.isNotEmpty() && it[0] is Long) it[0] = quantity }
+                    assertEquals("$tag / $name / $quantity / $category", String.format(locale, source, *args),
+                        localized.resources.getQuantityString(resource, quantity, *args))
                 }
-                if (tag == "en") assertEquals(localized.resources.getQuantityString(resource, 2, 2), context("zz").resources.getQuantityString(resource, 2, 2))
+                if (tag == "en") {
+                    val args = arguments(forms.getString("other")).also { if (it.isNotEmpty() && it[0] is Long) it[0] = 2 }
+                    assertEquals(localized.resources.getQuantityString(resource, 2, *args), context("zz").resources.getQuantityString(resource, 2, *args))
+                }
             }
         }
     }

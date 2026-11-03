@@ -5,9 +5,20 @@ English plus 25 other locales. Generated Android resources are checked in;
 compiling the Android app does not require that sibling checkout or Python tools.
 
 Coverage is intentionally explicit: the complete current base inventory contains
-1,288 translatable string keys and nineteen plural resources. Each non-English
-locale has 1,142 translated string keys and all nineteen translated plural resources;
-146 strings remain untranslated. All three tools share discovery
+1,597 translatable string keys and 30 plural resources. Each non-English
+locale has all 1,597 string keys and all 30 plural resources; no base resource
+falls back to English. The 2026-11-03 literal pass moved remaining user-visible
+Kotlin copy into five `values/l10n_*_strings.xml` files (276 strings, 8 plurals;
+translations in `android_workflow_overrides.json`). ViewModels without a Context
+expose `ui.util.UiText` (resource id + arguments, or raw Git/server text) and
+screens resolve it at display time. `literal_guard.py` fails on new English
+literals in Compose text, copy parameters, UI error/notice state and app-authored
+exception messages; 143 reviewed exceptions (previews, Git/commit data, product
+names, diagnostics that are caught and replaced) are pinned in
+`literal_guard_baseline.json`. Raw JGit/server output is still shown verbatim.
+The importer rejects plural forms that omit a category Android ICU selects for
+the locale (for example Spanish `many`, Arabic `zero`/`two`).
+All three tools share discovery
 of every XML filename under base `values`, including `strings_*.xml` and arbitrary
 names. Style entries do not count as strings. Coverage still does not include all
 raw conditional/model/default copy, and native/linguistic acceptance remains open.
@@ -57,6 +68,7 @@ python3 tools/localization/import_ios_catalog.py --check
 python3 tools/localization/native_expectations.py
 python3 tools/localization/native_expectations.py --check
 python3 -m unittest discover -s tools/localization -p 'test_*.py'
+python3 tools/localization/literal_guard.py
 ```
 
 The native expectation generator also accepts `--catalog /absolute/path/to/Localizable.xcstrings` for fixed-checkout verification.

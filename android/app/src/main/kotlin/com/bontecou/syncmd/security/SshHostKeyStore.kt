@@ -1,6 +1,7 @@
 package com.bontecou.syncmd.security
 
 import android.content.Context
+import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.git.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 
 /** Device-local SSH host pins. Unknown/changed keys block before public-key authentication. */
 @Singleton
-class SshHostKeyStore @Inject constructor(@ApplicationContext context: Context) {
+class SshHostKeyStore @Inject constructor(@ApplicationContext private val context: Context) {
     enum class Failure { DAMAGED, CHANGED, SAVE, RECOVERY, REMOVE, RESET }
     private class TrustFailure(val reason: Failure, message: String) : IllegalStateException(message)
     private fun requireTrust(condition: Boolean, reason: Failure, message: String) {
@@ -65,7 +66,7 @@ class SshHostKeyStore @Inject constructor(@ApplicationContext context: Context) 
     fun verify(key: SshHostKey) {
         val request = synchronized(lock) {
             val raw = prefs.getString(id(key), null)
-            val previous = raw?.let { try { decode(it) } catch (_: Exception) { error("Saved SSH trust cannot be opened. Review SSH server trust in Settings.") } }
+            val previous = raw?.let { try { decode(it) } catch (_: Exception) { error(context.getString(R.string.account_ssh_trust_unreadable)) } }
             if (previous == key) return
             if (!interactive) throw SshTrustRequired(key)
             requests.firstOrNull { it.challenge.key == key && it.expected == raw } ?: Request(Challenge(UUID.randomUUID().toString(), key, previous), raw).also { requests += it; publish() }
@@ -73,7 +74,7 @@ class SshHostKeyStore @Inject constructor(@ApplicationContext context: Context) 
         val completed = try { request.done.await(120, TimeUnit.SECONDS) } catch (e: InterruptedException) { Thread.currentThread().interrupt(); false }
         synchronized(lock) {
             if (!completed) { requests.remove(request); request.done.countDown(); publish() }
-            check(completed && request.approved && prefs.getString(id(key), null) == encode(key)) { "SSH host key was not approved. Retry when you can verify the server fingerprint." }
+            check(completed && request.approved && prefs.getString(id(key), null) == encode(key)) { context.getString(R.string.account_ssh_not_approved) }
         }
     }
     fun approve(challenge: Challenge) = synchronized(lock) {

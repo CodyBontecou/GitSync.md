@@ -262,7 +262,7 @@ class RebaseScreenTest {
         val blocker=File(root,data.blocked).apply { writeBytes(ReplayCheckoutFixture.bytes) };val index=File(root,".git/index").readBytes()
         compose.onNodeWithTag("rebase-continue").performScrollTo().performClick()
         compose.waitUntil(15_000) { !vm.state.value.busy&&vm.state.value.error!=null }
-        assertTrue(vm.state.value.error!!.contains(data.blocked));assertArrayEquals(index,File(root,".git/index").readBytes())
+        assertTrue(vm.state.value.error!!.resolve(instrumentation.targetContext).contains(data.blocked));assertArrayEquals(index,File(root,".git/index").readBytes())
         assertArrayEquals(ReplayCheckoutFixture.bytes,blocker.readBytes());assertEquals(ReplayCheckoutFixture.RESOLUTION,File(root,"notes.md").readText())
         val retained=File(workspace,"retained-parent-data");Files.move(blocker.toPath(),retained.toPath())
         val fresh=show();compose.onNodeWithTag("rebase-continue").performScrollTo().assertIsEnabled().performClick()
@@ -399,7 +399,7 @@ class RebaseScreenTest {
         compose.waitUntil(10_000) { !vm.state.value.busy }
         compose.onNodeWithTag("rebase-abort").performScrollTo().performClick(); compose.onNodeWithTag("rebase-confirm").performClick()
         compose.waitUntil(10_000) { vm.state.value.error != null }
-        assertTrue(vm.state.value.error.orEmpty().contains("Untracked files"))
+        assertTrue(vm.state.value.error?.resolve(app).orEmpty().contains("Untracked files"))
         assertEquals("Keep my new untracked note\n", File(root, "notes.md").readText()); assertNotNull(vm.state.value.session)
     }
 }

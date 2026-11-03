@@ -11,10 +11,14 @@ import java.nio.file.FileAlreadyExistsException
  * Android's shared-storage FUSE rejects RENAME_NOREPLACE, so an external process could still
  * create an empty destination between this check and rename. No existing file content is replaced.
  */
+/** Typed so the UI can present localized copy; the reason is a diagnostic fallback only. */
+class MoveDestinationExistsException(path: String) :
+    FileAlreadyExistsException(path, null, "The destination already exists. Existing files were kept.")
+
 internal object NativeFileMoves {
     fun move(source: File, destination: File) {
         if (Files.exists(destination.toPath(), LinkOption.NOFOLLOW_LINKS))
-            throw FileAlreadyExistsException(destination.path, null, "The destination already exists. Existing files were kept.")
+            throw MoveDestinationExistsException(destination.path)
         Os.rename(source.path, destination.path)
     }
 }

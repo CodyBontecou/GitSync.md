@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.bontecou.syncmd.ui.util.asString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun AuthorScreen(path: String, onBack: () -> Unit, viewModel: AuthorViewModel = 
     LaunchedEffect(state.requestId, state.saved) { if (state.saved && viewModel.state.value === state) onBack() }
     BackHandler(state.busy && state.plan != null) {}
     AuthorContent(
-        busy = state.busy, hasPlan = state.plan != null, saved = state.saved, error = state.error,
+        busy = state.busy, hasPlan = state.plan != null, saved = state.saved, error = state.error?.asString(),
         name = name, email = email, onName = { name = it }, onEmail = { email = it },
         onBack = onBack, onSave = { viewModel.save(state, name, email) }, onReload = { viewModel.load(path) },
     )

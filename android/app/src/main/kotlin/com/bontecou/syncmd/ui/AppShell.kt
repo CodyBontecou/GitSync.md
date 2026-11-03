@@ -1,6 +1,7 @@
 package com.bontecou.syncmd.ui
 
 import com.bontecou.syncmd.ui.util.displayIdentity
+import com.bontecou.syncmd.ui.util.asString
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -384,6 +385,11 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     showDebugInfo   = appSettings.showDebugInfo,
                     repositoryName = registeredRepositories.firstOrNull { it.path == selectedRepository }?.displayIdentity()?.name,
                     repositoryOwner = registeredRepositories.firstOrNull { it.path == selectedRepository }?.displayIdentity()?.owner,
+                    remoteUrl = registeredRepositories.firstOrNull { it.path == selectedRepository }?.remoteUrl,
+                    onOpenConnection = { navController.navigateSafe("${Routes.CONNECTION}/${Uri.encode(selectedRepository)}") },
+                    onEditAuthor = { navController.navigateSafe("${Routes.AUTHOR}/${Uri.encode(selectedRepository)}") },
+                    onMoveRepository = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(selectedRepository)}") },
+                    onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
                     onOpenGit       = { navController.navigateSafe(Routes.GIT) },
                     onOpenFiles     = { navController.navigateSafe(Routes.FILES) },
                     onOpenDiff      = { filePath ->
@@ -588,7 +594,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         com.bontecou.syncmd.ui.theme.TideDialog(onDismissRequest = githubViewModel.authManager::clearSessionError,
             icon = { com.bontecou.syncmd.ui.theme.TideModalIcon(tint = com.bontecou.syncmd.ui.theme.Tide.colors.ahead) },
             title = stringResource(R.string.ui_github_sign_in_a2e50311),
-            text = { Text(sessionError.orEmpty()) },
+            text = { Text(sessionError?.asString().orEmpty()) },
             confirmButton = { com.bontecou.syncmd.ui.theme.BPrimaryButton(stringResource(R.string.ui_ok_565339bc),
                 onClick = githubViewModel.authManager::clearSessionError) })
     }

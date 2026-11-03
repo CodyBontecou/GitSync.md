@@ -743,7 +743,7 @@ class RemoteConnectionTest {
         field("connection-secret", "stale-fixture-token")
         compose.onNodeWithTag("connection-save").performScrollTo().performClick()
         compose.waitUntil(10_000) { vm.state.value.error != null }
-        assertTrue(vm.state.value.error.orEmpty().contains("credentials changed"))
+        assertTrue(vm.state.value.error?.resolve(app).orEmpty().contains("credentials changed"))
         assertEquals(Credentials.Basic("other-editor", "other-fixture-token"), store.resolve(root.path, "https://old.example/team/notes.git"))
         assertArrayEquals(configBefore, File(root, ".git/config").readBytes())
         compose.onNodeWithText("Reload connection", substring = false).assertExists()

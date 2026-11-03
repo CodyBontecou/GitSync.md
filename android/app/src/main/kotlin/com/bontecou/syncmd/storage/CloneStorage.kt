@@ -1,6 +1,7 @@
 package com.bontecou.syncmd.storage
 
 import android.content.Context
+import com.bontecou.syncmd.R
 import java.io.File
 /**
  * Play-safe clone storage helpers.
@@ -85,7 +86,7 @@ object CloneStorage {
         val volume = android.system.Os.stat(repository).st_dev
         val root = matching ?: (externalRoots + context.filesDir).firstOrNull { candidate ->
             runCatching { (candidate.isDirectory || candidate.mkdirs()) && android.system.Os.stat(candidate.path).st_dev == volume }.getOrDefault(false)
-        } ?: error("No app backup folder is available on this repository's storage volume. Your working copy was kept.")
+        } ?: error(context.getString(R.string.account_no_backup_folder))
         return root
     }
 

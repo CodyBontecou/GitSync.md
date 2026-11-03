@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"En anden alternativ forbindelse er allerede gemt. Gennemgå den, før du overfører flere URL-loginoplysninger."</string>
+    <string name="account_api_error">"GitHub API-fejl: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"Den tildelte GitHub-konto er afbrudt. Vælg en konto til dette arkiv."</string>
+    <string name="account_basic_requires_http" formatted="false">"Godkendelse med brugernavn og token kræver en HTTP- eller HTTPS-adresse"</string>
+    <string name="account_browser_failed" formatted="false">"Kunne ikke åbne browseren. Prøv igen, eller brug et Personal Access Token."</string>
+    <string name="account_choose_authentication" formatted="false">"Vælg godkendelsen til denne adresse"</string>
+    <string name="account_choose_credentials" formatted="false">"Vælg loginoplysninger til denne forbindelse"</string>
+    <string name="account_choose_location_again" formatted="false">"Vælg klonens placering igen"</string>
+    <string name="account_choose_public_access" formatted="false">"Vælg adgang uden netværkslogin til denne adresse"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"Vælg en privat SSH-nøgle til en SSH-adresse eller HTTPS-godkendelse til en HTTPS-adresse."</string>
+    <string name="account_choose_storage" formatted="false">"Vælg lager i Indstillinger"</string>
+    <string name="account_cleanup_failed" formatted="false">"GitHub-login er krypteret, men gamle lokale indstillinger kunne ikke ryddes op. Prøv igen, når lageret er tilgængeligt."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"Gemte loginoplysninger blev ændret under kloningen. Gennemgå forbindelsen, før du prøver igen."</string>
+    <string name="account_clone_destination_changed" formatted="false">"Klonens destination er ændret; dens forbindelse blev bevaret"</string>
+    <string name="account_clone_failed_network" formatted="false">"Kunne ikke klone arkivet. Kontrollér URL, adgangsoplysninger, gren og netværksforbindelse. Eksisterende mapper blev bevaret."</string>
+    <string name="account_clone_failed_retry" formatted="false">"Kloning mislykkedes — prøv igen."</string>
+    <string name="account_clone_in_use" formatted="false">"Denne klon er allerede åben eller skal gennemgås under Lokale arkiver."</string>
+    <string name="account_clone_interrupted" formatted="false">"Den afbrudte klon skal gennemgås. Filerne blev bevaret; forbind den igen fra Lokale arkiver."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nKloneplaceringen er fastlåst til appens lager i Android/media af hensyn til kompatibilitet med Obsidian."</string>
+    <string name="account_configuration_changed" formatted="false">"Arkivets konfiguration er ændret. Genindlæs, før du fjerner loginoplysninger."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"Forbindelsen kunne ikke gemmes, og gendannelse af loginoplysninger kunne ikke gemmes. Angiv loginoplysningerne igen."</string>
+    <string name="account_connection_save_failed" formatted="false">"Kunne ikke gemme arkivforbindelsen"</string>
+    <string name="account_connection_unreadable" formatted="false">"Den gemte forbindelse kan ikke åbnes. Angiv arkivets loginoplysninger igen."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"Gemte loginoplysninger er ændret. Genindlæs før du gemmer."</string>
+    <string name="account_destination_exists" formatted="false">"Destinationen findes allerede. Forbind den igen fra Lokale arkiver, eller vælg en ny tom placering. Ingen filer blev slettet."</string>
+    <string name="account_enter_new_credentials" formatted="false">"Angiv de nye loginoplysninger"</string>
+    <string name="account_enter_ssh_key" formatted="false">"Angiv den private SSH-nøgle"</string>
+    <string name="account_enter_username_secret" formatted="false">"Angiv et brugernavn og et token eller en adgangskode"</string>
+    <string name="account_enter_valid_url" formatted="false">"Angiv en gyldig arkiv-URL med loginoplysningerne i de separate felter."</string>
+    <string name="account_finish_migration" formatted="false">"Fuldfør GitHub-login for at afslutte overførslen af tidligere loginoplysninger."</string>
+    <string name="account_github_requires_https" formatted="false">"Adgang med GitHub-konto kræver en github.com-HTTPS-adresse"</string>
+    <string name="account_invalid_repository_name" formatted="false">"Ugyldigt GitHub-arkivnavn"</string>
+    <string name="account_invalid_repository_url" formatted="false">"Ugyldig arkiv-URL"</string>
+    <string name="account_load_author_failed" formatted="false">"Kunne ikke indlæse forfatteridentitet"</string>
+    <string name="account_load_failed" formatted="false">"Kunne ikke indlæse GitHub-data"</string>
+    <string name="account_migration_changed" formatted="false">"Gemte loginoplysninger er ændret. Genindlæs overførslen."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"Gendannelse af loginoplysninger kunne ikke gemmes. Gennemgå denne forbindelse."</string>
+    <string name="account_migration_unverified" formatted="false">"Krypterede loginoplysninger kunne ikke bekræftes. URL-loginoplysningerne blev bevaret."</string>
+    <string name="account_move_changed" formatted="false">"Arkivets loginoplysninger er ændret efter gennemgangen. Gennemgå flytningen igen."</string>
+    <string name="account_move_finish_failed" formatted="false">"Kunne ikke afslutte gendannelsen af flyttede loginoplysninger"</string>
+    <string name="account_move_persist_failed" formatted="false">"Kunne ikke gemme flyttede arkivloginoplysninger"</string>
+    <string name="account_move_recovery_changed" formatted="false">"Flyttede loginoplysninger er ændret under gendannelsen. Gennemgå destinationsforbindelsen, før du fortsætter."</string>
+    <string name="account_move_recovery_failed" formatted="false">"Gendannelse af flytningen af loginoplysninger kunne ikke gemmes. Alle arbejdskopier blev bevaret."</string>
+    <string name="account_move_verify_failed" formatted="false">"Flyttede arkivloginoplysninger kunne ikke bekræftes"</string>
+    <string name="account_no_alternative" formatted="false">"Der er ingen alternative loginoplysninger gemt til denne adresse"</string>
+    <string name="account_no_backup_folder" formatted="false">"Der er ingen app-backupmappe på dette arkivs lagerenhed. Din arbejdskopi blev bevaret."</string>
+    <string name="account_no_matching_repositories">"Ingen arkiver matcher \"%1$s\""</string>
+    <string name="account_no_remote" formatted="false">"Der er ikke konfigureret noget fjernarkiv"</string>
+    <string name="account_no_repositories_found" formatted="false">"Der blev ikke fundet nogen arkiver for denne konto."</string>
+    <string name="account_no_url_credentials" formatted="false">"Ingen understøttede URL-loginoplysninger at overføre"</string>
+    <string name="account_not_authenticated" formatted="false">"Ikke godkendt — log ind først."</string>
+    <string name="account_open_connection_failed" formatted="false">"Kunne ikke åbne forbindelsen"</string>
+    <string name="account_opening_sample" formatted="false">"Åbner eksempel…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"Kunne ikke forberede sikkert GitHub-login. Prøv igen, når lageret er tilgængeligt."</string>
+    <string name="account_previous_address_missing" formatted="false">"Den tidligere fjernadresse blev ikke registreret. Bekræft denne foreslåede GitHub-URL, og vælg godkendelse før kloning."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"Den tidligere forbindelse kan ikke gendannes. Gennemgå URL\'en, og vælg godkendelse udtrykkeligt; eksisterende filer og gemte loginoplysninger blev bevaret."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"Kunne ikke bekræfte publiceringsforbindelsen"</string>
+    <string name="account_publication_conflict" formatted="false">"Denne mappe har allerede en anden gemt forbindelse. Eksisterende loginoplysninger blev bevaret."</string>
+    <string name="account_publication_recovery" formatted="false">"Publiceringsloginoplysningerne skal gendannes. Mappen blev bevaret."</string>
+    <string name="account_publication_verify_failed" formatted="false">"Kunne ikke kontrollere publiceringsforbindelsen"</string>
+    <string name="account_reenter_credentials" formatted="false">"Angiv arkivets loginoplysninger igen"</string>
+    <string name="account_reload_public_access" formatted="false">"Genindlæs den gemte forbindelse med offentlig adgang"</string>
+    <string name="account_remote_url_changed" formatted="false">"Fjern-URL\'en er ændret. Gennemgå arkivforbindelsen før godkendelse."</string>
     <string name="account_removal_subject" formatted="false">"denne konto"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"Kunne ikke fjerne gemte loginoplysninger"</string>
+    <string name="account_remove_failed" formatted="false">"Kunne ikke fjerne GitHub-login. Prøv igen, når lageret er tilgængeligt."</string>
+    <string name="account_repository_name_length" formatted="false">"Angiv et arkivnavn på 1–120 tegn"</string>
+    <string name="account_review_github_connection" formatted="false">"Gennemgå GitHub-kontoforbindelsen"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"Gennemgå den afbrudte klon, før du starter en ny. Filerne blev bevaret."</string>
+    <string name="account_sample_hint" formatted="false">"Prøv rigtige Git-handlinger offline. Ingen konto nødvendig."</string>
+    <string name="account_save_author_failed" formatted="false">"Kunne ikke gemme forfatteridentitet"</string>
+    <string name="account_save_connection_failed" formatted="false">"Kunne ikke gemme forbindelsen"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"Kunne ikke gemme GitHub-login sikkert. Prøv igen, når lageret er tilgængeligt."</string>
+    <string name="account_save_sign_in_short" formatted="false">"Kunne ikke gemme login sikkert"</string>
+    <string name="account_saved_connection_changed" formatted="false">"Den gemte forbindelse er ændret. Gennemgå godkendelsen, før du kloner igen."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"Gemte loginoplysninger kan ikke åbnes. Vælg offentlig adgang, eller angiv nye loginoplysninger."</string>
+    <string name="account_select_connected_account" formatted="false">"Vælg en tilsluttet GitHub-konto og en github.com-HTTPS-adresse"</string>
+    <string name="account_select_failed" formatted="false">"Kunne ikke vælge GitHub-kontoen. Prøv igen, når lageret er tilgængeligt."</string>
+    <string name="account_select_github_account" formatted="false">"Vælg en GitHub-konto"</string>
+    <string name="account_select_repository_account" formatted="false">"Vælg en GitHub-konto til dette arkiv"</string>
+    <string name="account_select_repository_github_account" formatted="false">"Vælg arkivets GitHub-konto"</string>
+    <string name="account_session_open_failed" formatted="false">"Sikkert GitHub-lager kunne ikke åbnes. Log ind igen for at gendanne sessionen."</string>
+    <string name="account_session_recovery_failed" formatted="false">"Gendannelse af sikkert GitHub-lager mislykkedes. Prøv at logge ind igen, når lageret er tilgængeligt."</string>
+    <string name="account_session_save_failed" formatted="false">"Sikkert GitHub-lager kunne ikke gemmes. Prøv at logge ind igen."</string>
+    <string name="account_session_verify_failed" formatted="false">"Sikkert GitHub-lager kunne ikke bekræftes. Prøv at logge ind igen."</string>
+    <string name="account_sign_in" formatted="false">"Log ind"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"Log ind på GitHub, før du vælger kontoadgang"</string>
+    <string name="account_sign_in_failed" formatted="false">"Login mislykkedes"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"Log ind på arkivets GitHub-konto"</string>
+    <string name="account_sign_in_unverified" formatted="false">"GitHub-login kunne ikke bekræftes. Start login igen."</string>
+    <string name="account_sign_out_failed" formatted="false">"Kunne ikke logge sikkert ud. Prøv igen, når lageret er tilgængeligt."</string>
+    <string name="account_signing_in" formatted="false">"Logger ind…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"SSH-værtsnøglen blev ikke godkendt. Prøv igen, når du kan bekræfte serverens fingeraftryk."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"SSH-nøgler kan kun bruges med SSH-arkivadresser"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"Gemt SSH-tillid kan ikke åbnes. Gennemgå tillid til SSH-servere i Indstillinger."</string>
+    <string name="account_storage_attention" formatted="false">"Sikkert GitHub-lager kræver opmærksomhed. Eksisterende loginoplysninger blev bevaret; prøv at logge ind igen."</string>
+    <string name="account_token_empty" formatted="false">"Token må ikke være tomt"</string>
+    <string name="account_token_invalid">"GitHub-token er ugyldigt eller udløbet (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"Prøv eksempelarkiv"</string>
+    <string name="account_updated_just_now" formatted="false">"lige nu"</string>
+    <string name="account_valid_branch" formatted="false">"Angiv et gyldigt grennavn"</string>
+    <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_active" formatted="false">"Baggrundskontrol er planlagt for medtagne arkiver."</string>
     <string name="background_allow_push" formatted="false">"Tillad automatisk udgivelse"</string>
     <string name="background_attempt">"Sidste kontrol: %1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"Handlingen stoppede. Gennemgå repositoriets status og forbindelsesindstillinger."</string>
     <string name="diagnostics_share_title" formatted="false">"Del diagnostik"</string>
     <string name="diagnostics_warnings" formatted="false">"Advarsler"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"lokal"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"remote"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"tracking"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"ukendt"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"Skjul"</string>
+    <string name="dialogs_commit_expand" formatted="false">"Udvid"</string>
+    <string name="dialogs_error_branch_exists">"Branchen \'%1$s\' findes allerede.\n\nVælg et andet navn."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"Den aktuelle branch kan ikke slettes.\n\nSkift til en anden branch først."</string>
+    <string name="dialogs_error_commit_failed">"Commit mislykkedes: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"Handlingen kan ikke udføres med ikke-committede ændringer.\n\nCommit eller stash dine ændringer først."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"Ugyldigt branchnavn.\n\nBrug bogstaver, tal, bindestreger og understregninger."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"Dette ser ikke ud til at være et gyldigt Git-repository.\n\nSørg for, at stien peger på en .git-mappe eller en arbejdsmappe."</string>
+    <string name="dialogs_error_network" formatted="false">"Netværksfejl. Kontrollér din forbindelse, og prøv igen."</string>
+    <string name="dialogs_error_pull_failed">"Pull mislykkedes: %1$s"</string>
+    <string name="dialogs_error_push_failed">"Push mislykkedes: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"Repository blev ikke fundet på: %1$s\n\nKontrollér stien, og prøv igen."</string>
+    <string name="dialogs_error_title" formatted="false">"Fejl"</string>
+    <string name="dialogs_info_title" formatted="false">"Information"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"Flet kun, hvis kilden ligger direkte foran. Bevarer en lineær historik."</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"Fast-forward hvis muligt, ellers opret en merge-commit."</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Opret altid en merge-commit, også selvom fast-forward er muligt."</string>
+    <string name="dialogs_success_title" formatted="false">"Udført"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"Ukendt"</string>
+    <string name="dialogs_warning_title" formatted="false">"Advarsel"</string>
     <string name="discard_clear_staging" formatted="false">"Ryd indekset"</string>
     <string name="discard_review_all" formatted="false">"Sporede ændringer og nye filer på listen nedenfor kasseres permanent. Ignorerede filer bevares."</string>
     <string name="discard_review_empty" formatted="false">"Der er ingen ændringer at kassere."</string>
     <string name="discard_review_operation" formatted="false">"Dette afbryder også den aktive Git-handling."</string>
     <string name="discard_review_unborn" formatted="false">"Der er endnu ingen commit. Dette fjerner de angivne filer fra indekset og bevarer indholdet."</string>
+    <string name="discovery_scanned">"%1$s er scannet. Vælg de arbejdskopier, der skal tilføjes."</string>
     <string name="file_clone_failure" formatted="false">"Kunne ikke klone det lokale arkiv. Kontrollér kildemappen, lageradgangen og grenen. Eksisterende mapper blev bevaret."</string>
     <string name="file_clone_guidance" formatted="false">"Klon et arkiv på enheden med lokal adgang. Giv først mappeadgang i Indstillinger ved brug af delt lager."</string>
     <string name="file_delete_body" formatted="false">"Filen fjernes fra denne enhed. Git viser den som slettet, hvis den blev sporet."</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"Der er ingen mappevælger på denne enhed"</string>
     <string name="folder_settings_unavailable" formatted="false">"Androids lagerindstillinger er ikke tilgængelige. Appens lager er stadig tilgængeligt."</string>
     <string name="folder_unusable" formatted="false">"Denne mappe kunne ikke bruges"</string>
+    <string name="git_fetch" formatted="false">"Hent"</string>
+    <string name="git_fetch_detail" formatted="false">"Tjek fjernbetjeningen for nye commits"</string>
     <string name="git_native_public_only" formatted="false">"Gits egen protokol understøtter kun offentlig adgang. Brug HTTPS eller SSH til godkendelse."</string>
+    <string name="gitops_action_failed" formatted="false">"Git kunne ikke fuldføre denne handling"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"Branchhandlingen kunne ikke fuldføres"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"Branchhandlingen kunne ikke fuldføres. Opdater repositoryets status."</string>
+    <string name="gitops_branch_changed" formatted="false">"Branchen er ændret. Gennemgå den aktuelle branch, før du prøver igen."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"Den aktuelle branch er ændret. Opdater, før du committer og pusher."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"Den aktuelle branch er ændret. Opdater, før du pusher."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"Den aktuelle branch ændrede sig under indlæsning. Opdater, og gennemgå igen."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"Branchnavnet må ikke være tomt"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"Commit en fil, før du opretter en branch."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"Den aktuelle branch eller commit er ændret. Opdater, og gennemgå igen."</string>
+    <string name="gitops_branch_pushed" formatted="false">"Branch pushet"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"Kunne ikke opdatere branches"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"Kunne ikke indlæse ændringer"</string>
+    <string name="gitops_commit_changed" formatted="false">"Committen er ændret. Opdater historikken, og gennemgå igen."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"Commitbeskeden må ikke være tom"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"Committet lokalt. Push stoppet; prøv igen, når du er klar."</string>
+    <string name="gitops_committed_pushed" formatted="false">"Committet og pushet"</string>
+    <string name="gitops_committed_pushing" formatted="false">"Committet lokalt. Pusher …"</string>
+    <string name="gitops_committed_ready" formatted="false">"Committet lokalt. Klar til push, når du vil."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"Vælg vores eller deres til en samlet løsning"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"Konflikten er ændret. Dit udkast vises stadig. Kopiér den tekst, du vil beholde, og luk derefter og gennemgå den aktuelle konflikt."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"Konflikten kunne ikke løses"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"Konflikterne er ændret. Opdater, før du løser dem."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"Kunne ikke opdatere mergekonflikter"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"Nogle konflikter er stadig uløste. Gennemgå den opdaterede konfliktliste."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"Kunne ikke indlæse fildiff"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Git kunne ikke fuldføre denne historikhandling"</string>
+    <string name="gitops_history_changed" formatted="false">"Repositoryets historik er ændret. Opdater, og gennemgå igen."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"Kunne ikke opdatere historikken"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"Gemte godkendelser af LFS-endpoints kan ikke åbnes. Nulstil dem i Indstillinger, før du prøver igen."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"Ugyldig LFS-endpointadresse"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"Kunne ikke gennemgå sporing af filtypenavne. Genindlæs, og kontrollér eksisterende attributter, konflikter og filadgang, før du prøver igen."</string>
+    <string name="gitops_lfs_failed" formatted="false">"Kunne ikke fuldføre Git LFS. Kontrollér forbindelsen og den aktuelle sporingstilstand, genindlæs, og prøv igen. Dine lokale filer og commits er bevaret."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Kunne ikke undersøge Git LFS. Kontrollér lageradgang og repositoryets tilstand, og genindlæs derefter."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"Kunne ikke kontrollere serverlåse. Opdater før næste ændring."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"Serveren afviste adgang til sin låseliste. Kontrollér repositoryforbindelsen og push-tilladelserne."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"Kunne ikke kontrollere serverlåse. Kontrollér forbindelsen og repositoryets tilstand, og opdater før næste ændring."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"Mergebeskeden må ikke være tom"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"Mergesessionen er ændret. Opdater, før du fortsætter."</string>
+    <string name="gitops_merge_stopped">"Merge stoppet: %1$s"</string>
+    <string name="gitops_merge_successful">"Merge gennemført: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"Git-handlingen mislykkedes"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"Pull blev ikke fuldført"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"Vælg den gennemgåede konflikt"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"Vælg det gennemgåede filnavn"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"Konflikten eller arbejdsfilerne er ændret. Dit udkast er bevaret; opdater, før du løser."</string>
+    <string name="gitops_rebase_failed" formatted="false">"Git kunne ikke fuldføre denne handling. Kontrollér forbindelsen ved hentning, og opdater derefter rebase-tilstanden, før du prøver igen."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"Rebasen skal gennemgås"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"Åbn konflikteditoren, før du løser"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"Opdater rebase-sessionen"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"Gennemgå rebasen først"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Git kunne ikke fuldføre denne handling. Kontrollér forbindelsen, og gennemgå derefter repositoryets aktuelle tilstand, før du prøver igen."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"Det valgte repository er ændret. Gennemgå handlingen igen."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"Kunne ikke gennemgå lokale ændringer"</string>
+    <string name="gitops_stash_changed" formatted="false">"Stashlisten er ændret. Gennemgå den aktuelle stash, før du prøver igen."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"Kunne ikke opdatere repositoryets status"</string>
+    <string name="gitops_tag_changed" formatted="false">"Tagget er ændret. Gennemgå det aktuelle tag, før du prøver igen."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"Tagnavnet må ikke være tomt"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"Commit en fil, før du opretter et tag."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"Kunne ikke indlæse upstream-branchen"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"Kunne ikke gemme upstream-branchen"</string>
     <string name="guide_back" formatted="false">"Tilbage"</string>
     <string name="guide_clone_body" formatted="false">"Klon GitHub-repositories, offentlige eller selvhostede repositories samt repositories via SSH. Hver arbejdskopi beholder sin egen forbindelse og gren."</string>
     <string name="guide_clone_title" formatted="false">"Dine repositories på Android"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"Uploads · separate krypterede legitimationsoplysninger"</string>
     <string name="lfs_uploads_public" formatted="false">"Uploads · offentlig adgang"</string>
     <string name="modified" formatted="false">"Ændret"</string>
+    <string name="move_action" formatted="false">"Flyt arbejdskopi"</string>
+    <string name="move_cancelled" formatted="false">"Flytning annulleret. Den oprindelige arbejdskopi blev bevaret."</string>
+    <string name="move_confirm_action" formatted="false">"Flyt"</string>
+    <string name="move_confirm_action_restore" formatted="false">"Gendan"</string>
+    <string name="move_confirm_guidance" formatted="false">"Vælg en ubrugt destination, og lad ikke andre apps ændre disse mapper, mens flytningen afsluttes."</string>
+    <string name="move_confirm_retained" formatted="false">"Originalen bevares som en gendannelseskopi."</string>
+    <string name="move_confirm_title" formatted="false">"Vil du flytte denne arbejdskopi?"</string>
+    <string name="move_confirm_title_restore" formatted="false">"Vil du gendanne denne gendannelseskopi?"</string>
+    <string name="move_done" formatted="false">"Repository flyttet"</string>
+    <string name="move_done_retained" formatted="false">"Repository flyttet. Originalen bevares under Gendannelser af flytninger."</string>
+    <string name="move_error_destination_other" formatted="false">"Destinationen er registreret til et andet repository"</string>
+    <string name="move_error_destination_registered" formatted="false">"Et andet repository er allerede registreret på denne destination"</string>
+    <string name="move_error_finish_pending" formatted="false">"Fuldfør den ventende flytning først"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"Fuldfør den ventende flytning af dette repository først"</string>
+    <string name="move_error_recovery_added" formatted="false">"Gendannelseskopien er allerede tilføjet. Flyt den fra dens repository-post."</string>
+    <string name="move_error_restored_registered" formatted="false">"Den gendannede placering er nu registreret anderledes; ingen indstillinger blev overskrevet"</string>
+    <string name="move_error_settings_changed" formatted="false">"Repository-indstillingerne er ændret. Gennemgå gendannelsen af flytningen, før du fortsætter."</string>
+    <string name="move_error_settings_review" formatted="false">"Flytningsindstillingerne skal gennemgås; alle arbejdskopier blev bevaret"</string>
+    <string name="move_error_stale_review" formatted="false">"Gennemgangen af flytningen er ændret. Gennemgå destinationen igen, før du flytter."</string>
+    <string name="move_intro" formatted="false">"Flyt hele denne arbejdskopi, inklusive Git-historik, klargjorte ændringer og ikke-gemte filer på disken. Dens konto- og forfatterindstillinger flyttes med."</string>
+    <string name="move_intro_restore" formatted="false">"Gendan den bevarede original som et separat repository. Den nuværende arbejdskopi bliver, hvor den er."</string>
+    <string name="move_progress_moving" formatted="false">"Flytter og gemmer repository-indstillinger…"</string>
+    <string name="move_progress_reviewing" formatted="false">"Gennemgår filer og Git-metadata…"</string>
+    <string name="move_recovered_name">"%1$s (gendannet)"</string>
+    <string name="move_recovery_attention">"Gendannelse af flytning kræver opmærksomhed: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"Gendannelse af flytning fuldført"</string>
+    <string name="move_recovery_removed" formatted="false">"Gendannelseskopi fjernet"</string>
+    <string name="move_title_restore" formatted="false">"Gendan gendannelseskopi"</string>
     <string name="notes_acknowledge" formatted="false">"Forstået"</string>
     <string name="notes_connections_body" formatted="false">"Administrer GitHub-konti og repositoryets forfatteridentitet. Forbind via HTTPS eller SSH, vælg klonlager, forbind lokale kopier igen, og gennemgå flytning eller fjernelse af repositories."</string>
     <string name="notes_connections_title" formatted="false">"Forbindelser og lager"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"Skift til en lokal gren, og afslut først den aktive Git-handling eller konflikt."</string>
     <string name="repository_actions_unsettled" formatted="false">"Filerne blev ved med at ændre sig under staging. Gennemgå indeks og filer, før du prøver igen."</string>
     <string name="repository_actions_write_scope" formatted="false">"Push og Synkroniser føjer alle aktuelle ændringer, som ikke ignoreres, til staging, opretter om nødvendigt en commit og uploader udestående commits. Synkroniser henter først og udfører fast-forward, når det er sikkert. Konflikter, divergerende historik og usikker tilstand på serveren stopper handlingen. Hvis upload mislykkes, bevares en eventuel ny lokal commit til et nyt forsøg."</string>
+    <string name="repository_add_none_new" formatted="false">"Vælg mindst ét repository, der ikke er tilføjet"</string>
+    <string name="repository_clone_deleted" formatted="false">"Lokal klon slettet"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"Frakoblet HEAD eller ingen første commit"</string>
     <string name="repository_discovery_clean" formatted="false">"Ingen ændringer"</string>
     <string name="repository_discovery_dirty" formatted="false">"Lokale ændringer"</string>
     <string name="repository_history_files_deleted" formatted="false">"Lokale filer slettet"</string>
     <string name="repository_history_files_kept" formatted="false">"Lokale filer bevaret"</string>
     <string name="repository_history_tracking_removed" formatted="false">"Git-sporing fjernet · arbejdsfiler bevaret"</string>
+    <string name="repository_history_unavailable" formatted="false">"Repository-historikken er ikke tilgængelig"</string>
+    <string name="repository_imported_files_kept" formatted="false">"Filer fra importerede repositories bevares på denne enhed"</string>
     <string name="repository_metadata_unavailable" formatted="false">"Repositoryets metadata er ikke tilgængelige"</string>
     <string name="repository_no_commits" formatted="false">"Ingen commits"</string>
+    <string name="repository_no_longer_added" formatted="false">"Repositoryet er ikke længere tilføjet"</string>
+    <string name="repository_removed_files_kept" formatted="false">"Repository fjernet fra appen. Lokale filer blev bevaret."</string>
+    <string name="repository_restore_backup_first" formatted="false">"Gendan sikkerhedskopien af Git-metadata, før du genforbinder denne mappe"</string>
     <string name="repository_shortcut_active" formatted="false">"Godkendt og fastgjort"</string>
     <string name="repository_shortcut_add" formatted="false">"Tilføj genvej på startskærmen"</string>
     <string name="repository_shortcut_busy" formatted="false">"En handling kører allerede. Denne genvej blev ikke sat i kø. Vent, og tryk derefter på den igen."</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"Godkendelse af genvejen tilbagekaldt"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"Din startskærm kunne ikke acceptere anmodningen om genvejen. Brug handlingerne på denne skærm i stedet."</string>
     <string name="repository_sync_not_recorded" formatted="false">"Ikke registreret"</string>
+    <string name="resolve_local_action" formatted="false">"Løs"</string>
+    <string name="resolve_local_body" formatted="false">"Vi foretager dine lokale ændringer og fusionerer derefter med fjernbetjeningen. Hvis der er konflikter, kan du løse dem på næste skærmbillede."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"Forpligt og flet"</string>
+    <string name="resolve_local_committing" formatted="false">"Committer lokale ændringer…"</string>
+    <string name="resolve_local_default_message" formatted="false">"Lokale ændringer fra GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"Bekræft besked"</string>
+    <string name="resolve_local_superseded" formatted="false">"Det valgte repository er ændret. Gennemgå de lokale ændringer igen."</string>
+    <string name="resolve_local_title" formatted="false">"Lokale redigeringer blokerer denne pull"</string>
     <string name="settings_folder_unavailable" formatted="false">"Adgang til mappen kræver din opmærksomhed"</string>
     <string name="shortcut_background_attention" formatted="false">"Genvejen kræver opmærksomhed. Åbn repository-handlinger for at gennemgå tilstanden, før du prøver igen."</string>
     <string name="shortcut_background_channel" formatted="false">"Handlinger fra genveje"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"Aldrig synkroniseret"</string>
     <string name="tide_home_state_synced">"Synkroniseret %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"Kræver et kig"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"Intet nyt eksternt."</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"Kun dine"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"Det eksterne repository har commits, du ikke har."</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"Nyt eksternt"</string>
+    <string name="tide_merge_both_moved" formatted="false">"Begge sider ændret"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"Slettet på den ene side, redigeret på den anden."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"Begge sider har redigeret denne fil."</string>
+    <string name="tide_merge_conflict_list_count">"%1$d af %2$d løst"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"Vælg den version, der skal beholdes, eller rediger resultatet manuelt."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"Omdøbt på to forskellige måder."</string>
     <string name="tide_merge_conflict_result" formatted="false">"RESULTAT"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">"dette er, hvad der bliver iscenesat"</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"Uløst"</string>
     <string name="tide_merge_diff_added" formatted="false">"Tilføjet"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"Binært indhold kan ikke vises som tekst."</string>
     <string name="tide_merge_diff_changed" formatted="false">"Ændret"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"Kopieret"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"Slettet"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"Kassér"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"Denne ændring har ingen linjevis diff."</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"Ingen tekstændringer"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"Kunne ikke indlæse denne diff"</string>
+    <string name="tide_merge_diff_hunk_line">"linje %1$d"</string>
+    <string name="tide_merge_diff_line_added">"Tilføjet: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"Fjernet: %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"Ændret"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"Omdøbt"</string>
     <string name="tide_merge_diff_staged" formatted="false">"klargjort"</string>
+    <string name="tide_merge_diff_stats_a11y">"Tilføjede linjer: %1$d, fjernede linjer: %2$d"</string>
+    <string name="tide_merge_diff_summary">"Filer: %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"type ændret"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"Ikke staged"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"Allerede opdateret."</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"Synkroniseret"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"Afslut fletningen?"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"De eksterne ændringer er med."</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"Flettet"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"Hent, gennemgå, og flet derefter."</string>
     <string name="tide_merge_merge_kicker" formatted="false">"Flet"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"Nogle filer er ændret på begge sider."</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"Fletning sat på pause"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"Der er konflikter tilbage"</string>
+    <string name="tide_merge_moved_on" formatted="false">"Det eksterne repository ændrede sig, mens du skrev."</string>
     <string name="tide_merge_ours_filename" formatted="false">"Vores"</string>
+    <string name="tide_merge_plan_section" formatted="false">"Gennemgået plan"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"Tilbage ved udgangspunktet."</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"Rebase venter på en blokeret checkout."</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"Rebase stoppede ved filer, som begge sider har redigeret."</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"Rebase er afsluttet."</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"Hent først, og beslut derefter."</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"Gennemgå dette trin, før du fortsætter."</string>
     <string name="tide_merge_result_section" formatted="false">"RESULTAT"</string>
     <string name="tide_merge_side_deleted" formatted="false">"slettet"</string>
     <string name="tide_merge_theirs" formatted="false">"Deres"</string>
+    <string name="tide_merge_theirs_count">"↓%1$d eksternt"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"Deres"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"Læser grenindstillinger…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"Sporing"</string>
+    <string name="tide_merge_upstream_set">"Sporer %1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"Ingen upstream angivet"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"Pull og push ved ikke, hvor de skal gå hen, før du vælger en upstream."</string>
+    <string name="tide_merge_yours" formatted="false">"Din version"</string>
+    <string name="tide_merge_yours_count">"↑%1$d lokalt"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"Kloning mislykkedes"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"Opret et PAT på GitHub ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"Ægte Git."</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"Standardplacering"</string>
     <string name="tide_onboarding_show_token" formatted="false">"Vis"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"Klon et repository, skriv i Obsidian eller en anden app, og synkroniser med ét tryk."</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"Ikke logget ind"</string>
+    <string name="tide_settings_off" formatted="false">"fra"</string>
+    <string name="tide_settings_on" formatted="false">"til"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"Nye kloner"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"GitSync.md glemmer tokenet til %1$s på denne enhed. Dine repositories og deres filer bliver, hvor de er."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"Log ud af GitHub?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"logget ind"</string>
+    <string name="tide_settings_this_account" formatted="false">"denne GitHub-konto"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"Søg efter ændringer"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"Git-handlingen er sat på pause. Løs alle filer med konflikter for at fortsætte."</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Begge sider ændret"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"Kun de gennemgåede .git-metadata slettes. Arbejdsfilerne bliver på deres plads, men lokal Git-historik kan ikke gendannes uden en anden kopi."</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Fjern Git-historik permanent?"</string>
     <string name="tracking_remove_review_changed" formatted="false">"Gennemgangen er ændret. Annuller, og gennemgå fjernelse af sporing igen."</string>
+    <string name="tracking_removed_backup">"Git-sporing fjernet. Bekræftet sikkerhedskopi: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Git-sporing fjernet. Arbejdsfiler blev bevaret."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle arbejdsfiler og den lokale Git-historik bliver på denne enhed. Du kan tilslutte mappen igen senere."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDette sletter permanent denne klon, som administreres af appen, inklusive commits, der ikke er pushet, stashes og ugemte filer. Det eksterne repository ændres ikke."</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s kræver bekræftelse af fingeraftryk, før der forbindes igen."</string>
+    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"Tegn: %1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s filer"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Linjer: %1$s, bytes: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s lokale commits · %2$s upstream-commits"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s vist · %2$s gemt"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Engangskøb via Google Play"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"Tilføj valgte repositories"</string>
     <string name="ui_added_b4561641" formatted="false">"Tilføjet"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"Tilføjede repositories"</string>
+    <string name="ui_alias_1_s_e7e8c040">"Alias: %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"Alias (valgfrit)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Alle konflikter er klargjort. Fortsæt genafspilningen af commits. Hvis Git viser NOTHING_TO_COMMIT, skal du overveje at springe den tomme commit over."</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"Alle konflikter er løst. Vil du afslutte fletningen?"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"Alle konflikter er løst. Fuldfør eller afbryd fletningen."</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Alle funktioner er inkluderet efter installation af den betalte app. Ingen abonnementer eller køb i appen."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Alle lokale ændringer af denne fil vil blive kasseret permanent."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Tillad adgang til lokale mapper"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"Allerede tilføjet"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"En afbrudt flytning skal gendannes. Alle genkendte kopier bevares, indtil den er færdig."</string>
     <string name="ui_and_1_s_more_f93ea742">"og %1$s mere..."</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"ETHVERT REPO. SYNKRONISERET MED ANDROID."</string>
     <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Appindstillinger"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"Anvend"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"Anvend stash"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Anvend sporingsvalg"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Godkendelsen gemmes på denne enhed, og den ventende forbindelse fortsætter. Annullering lader serveren være uden tillid."</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"Er du sikker på, at du vil afbryde denne fletning?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"-godkendelse"</string>
     <string name="ui_back_639807a2" formatted="false">"TILBAGE"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Tilbage"</string>
@@ -815,13 +1116,14 @@
     <string name="ui_base_7b47361a" formatted="false">"Basis"</string>
     <string name="ui_binary_file_2c7ccf98" formatted="false">"binær fil"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Binær, stor eller LFS-fil: vælg en hel side."</string>
-    <string name="ui_branch_52656e81" formatted="false">"- afdelingen"</string>
+    <string name="ui_branch_52656e81" formatted="false">"Gren"</string>
     <string name="ui_branch_name_06f6bb71" formatted="false">"Grennavn"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Gren (valgfri)"</string>
     <string name="ui_browse_files_c8bb105f" formatted="false">"Gennemse filer"</string>
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"Gennemse repositories"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Gennemser med denne konto"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"Annuller"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Annuller ventende flytning"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"Ændret"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"Ændrede filer"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Ændringer"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Vælg en anden mappe"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Vælg lager til kloner"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Vælg lokal eller tilsluttet lagerplads. Udbydere af skydokumenter stiller ikke et filsystem til rådighed, som denne Git-motor kan bruge."</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"Vælg udgangspunkt"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"Vælg strategi"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Vælg den konto, der bruges til at gennemse GitHub. Hvert repository beholder sin tildelte konto; skift den under Repository-forbindelse."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Vælg standardmappen til nye kloner. Eksisterende repositories beholder deres nuværende placering."</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"Ryd alle"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Opret en fil eller mappe med Ny."</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"OPRET EN PAT PÅ GITHUB →"</string>
     <string name="ui_create_fde9c501" formatted="false">"Opret"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"Opret ny gren"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Nuværende standard"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"Aktuel"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Nuværende separate push-adresse: %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Standard for nye kloner. Hver klon kan bruge en anden mappe."</string>
     <string name="ui_delete_1_s_6474596f">"Slet \"%1$s\"?"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"Slet gren?"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"Slet grenen \"%1$s\"?"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"Slet gren"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Slet"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Slet fil"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"Slet lokale filer?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">"Slet lokale filer"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"Slet tag"</string>
+    <string name="ui_destination_1_s_0df94639">"Destination: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Overordnet destinationsmappe"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnosticering"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"Forskel"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Kassér kladde"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"Fundne repositories"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Luk"</string>
     <string name="ui_done_283e91eb" formatted="false">"Udfort"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"Downloadplacering"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"Download manglende filindhold"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"Slet stash"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Under rebase er upstream Gits ours-side; den genafspillede lokale commit er theirs."</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"f.eks. feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"f.eks. MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"f.eks. prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Rediger commit-forfatter"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Rediger forbindelse"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Rediger løsning"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Rediger indholdet her for at løse konflikten manuelt"</string>
     <string name="ui_email_969ccbd3" formatted="false">"E-mail"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"Tom mappe"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"Aktivér adgang"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"Endpoint-godkendelse"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Indtast legitimationsoplysninger igen, eller vælg offentlig adgang til den nye adresse."</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Indtast den fulde sti til dit Git-repository."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Fejl"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Alle SSH-servere kræver bekræftelse af fingeraftryk, før der forbindes igen. Dette fjerner også beskadigede tillidsposter."</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"Hent og anvend fjernændringer"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Hent og gennemgå rebase"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"Hent fjaernbetjente aendringer"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"Fil: %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Filhandlingen mislykkedes"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Fuldfør gendannelse af flytning"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"Afslutter"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"Glem"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"Glem server"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS kræver opmærksomhed"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · Sporing og downloads"</string>
     <string name="ui_git_remote_91593664" formatted="false">"Git-remote"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"GitHub-konto forbundet"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"GitHub-konti"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub login"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Gitsync.md i fuld version"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md skal have adgang til delt lager for at administrere rigtige Git-arbejdskopier i enhedens mapper. Vælg de ønskede mapper, når du har aktiveret adgangen i Android-indstillingerne."</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md giver ikke legitimationsoplysninger til dette repository."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Gå tilbage, og vælg et repository."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Jeg forstår, at en anden ejer muligvis stadig redigerer denne fil."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Medtag SSH-brugernavnet i adressen: git@host:team/repo.git eller ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_info_170322a3" formatted="false">"information"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Tilhørende offentlig nøgle (valgfri)"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"Flet"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"Flet gren ind i %1$s"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">"Merge commit besked"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"Flet"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"Flettestrategi:"</string>
     <string name="ui_message_f5394f72" formatted="false">"Besked:"</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"Metadata:"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"Mere"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Gendannelser af flytninger"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"Flyt repository"</string>
     <string name="ui_name_dcd1d522" formatted="false">"Navn"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Navn i GitSync.md"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"Ny mappe"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Nyt token eller adgangskode"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"Ingen godkendte brugerdefinerede LFS-endpoints"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"Ingen grene tilgængelige"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Ingen ændringer at vise"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Ingen commits fundet"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"Ingen konflikter fundet"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Ingen tilsluttede konti. Lokale repositories er stadig tilgængelige."</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"Ingen nye binære eller store filer kræver et sporingsvalg."</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"Ingen repositories"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"Ingen repositories tilføjet endnu."</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"Ingen gemte repositories. Tilføj et i Indstillinger."</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"Intet repository"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"INTET REPOSITORY"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Ingen stashes fundet"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"Ingen tags fundet"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"nu"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"Åbn"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Åbn Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Åbn i filer"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Åbner fil…"</string>
     <string name="ui_or_7175517a" formatted="false">"eller"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"Vores: %1$s bytes"</string>
     <string name="ui_ours_ab658c14" formatted="false">"Vores"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"Tilsidesæt systemets udseende"</string>
     <string name="ui_owner_1_s_599ca9ce">"Ejer: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Forældre (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Sti"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"PERSONLIG ADGANGSTOKEN"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"Løs alle konflikter, før du afslutter fletningen."</string>
     <string name="ui_pop_52e740ad" formatted="false">"Pop"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"Anvend og fjern stash"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"Tidligere tilføjet"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"Tidligere betroet: %1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"Privatlivspolitik"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Træk med rebase"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Pull med rebase / genoptag rebase"</string>
     <string name="ui_push_792aac67" formatted="false">"Push"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"Push blokeret af LFS-låse"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"Send lokale aendringer til fjernserver"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"Læs og rediger filer i dette repository"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase i gang"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase på gennemgået upstream"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"Seneste resultater af handlinger på denne enhed. Loggen gemmer op til 500 poster. Legitimationsoplysninger, repositoryadresser, filstier og filindhold medtages ikke."</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Genopret forbindelse"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"Tilknyt arbejdskopier, som allerede er gemt af GitSync.md. Når en post fjernes, beholdes filerne; sletning af en administreret klon og fjernelse af Git-sporing er separate valg."</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"Gendannelsen kræver opmærksomhed. Genkendte arbejdskopier bevares."</string>
     <string name="ui_refresh_0e916101" formatted="false">"Opdater"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Opdater rebase-status"</string>
     <string name="ui_reload_1_s_873e324f">"Genindlæs %1$s?"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Fjern gemte legitimationsoplysninger?"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"Fjern login"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Fjern den bevarede original?"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"Vil du fjerne dette repository og slette dets lokale filer fra enheden? Dit GitHub-repo påvirkes ikke."</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Fjern sporing"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"Fjernet"</string>
     <string name="ui_rename_1_s_9b09e088">"Omdøb %1$s"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Genafspillet lokal commit"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Genafspiller lokale commits på den konfigurerede upstream. Lokale commit-id\'er kan ændres. Den eksisterende flettestruktur bevares. Intet pushes."</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"Repotilstand"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Repo-sti"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Repositories knyttet til denne konto kræver, at du logger ind igen eller vælger en anden konto under Repository-forbindelse. Dine lokale filer og commits bevares."</string>
     <string name="ui_repository_13d6ff07" formatted="false">"lagerName"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"Repositoryforbindelse"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"Repository-handlingen mislykkedes"</string>
     <string name="ui_repository_path_037711af" formatted="false">"Sti til repository"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"Repository-status"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"lager- urle"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Løs og klargør"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"LØS KONFLIKT"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"Løst"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Løst indhold"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"Løst indhold"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"LØST"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Løser: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Gendan som separat repository"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Bevaret original: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"Prøv igen"</string>
     <string name="ui_retry_e464c660" formatted="false">"Prøv igen"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"Tilbage til repositories"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  Fortryd alle ændringer"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  Fortryd"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"Fortryd ændringer"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Tilbagefør commit"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Gennemgå destination"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"Gennemgå gendannet mappe"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"Gennemgå de separate LFS-servere, der er tilladt for dine repositorier. Tilbagekaldelse stopper fremtidige overførsler i den retning; igangværende handlinger kan blive færdige."</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"Gennemgået destination"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"Tilbagekald"</string>
     <string name="ui_save_1509f561" formatted="false">"Gem"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Gem forfatter"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"Scan appmapper"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"Søg i repositories…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">"VÆLG LAGER"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"Vælg kildegren til fletning:"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Valgt mappe"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"Separat brugernavn og token"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"Indstillinger"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Tillid til SSH-servere"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"Klargør alle ændringer"</string>
     <string name="ui_stage_de838855" formatted="false">"Klargør"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"Start fra"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"Stash-meddelelse (valgfrit)..."</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"Strategi"</string>
     <string name="ui_switch_39921a74" formatted="false">"Skift"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"Skift til gren"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"Tags"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Den aktive destination bliver på sin plads. GitSync.md kontrollerer, at den bevarede original ikke har senere ændringer, før dens filer og Git-historik slettes permanent."</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Den krypterede forbindelse genbruges kun til repositoryets oprindelige adresse. Skift udtrykkeligt godkendelse for at bruge en anden adresse."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Mappen kan flyttes direkte på dette lagerdrev."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Den tidligere GitHub-konto er afbrudt. Vælg en tilsluttet konto eller en anden godkendelsesmetode."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Den genafspillede lokale commit sletter denne fil."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Gennemgangen er ændret. Annuller, og opdater serverlåsene."</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"Scanningen nåede grænsen for dybde eller mapper. Nogle mapper blev ikke scannet."</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"Deres: %1$s bytes"</string>
     <string name="ui_theirs_691ef727" formatted="false">"Deres"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"Der er stadig %1$s uløste konflikter."</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"Dette kan ikke fortrydes."</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"Dette ændrer .gitattributes. Filerne og staging-indekset forbliver uændrede, indtil du klargør dine ændringer."</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"Dette krydser lagerdrev. GitSync.md bekræfter det kopierede indhold og bevarer originalen under Gendannelser af flytninger, indtil du fjerner den."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Denne historikpost er ikke tilgængelig."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Dette fjerner en anden forbindelses lås. Aftal det med ejeren, før du fortsætter."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Dette repository bruger offentlig adgang, indtil du vælger godkendelse igen. Din indloggede GitHub-konto bruges ikke til det. Adresserne til fetch og push forbliver uændrede."</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"Dette kasserer al fremgang og gendanner repositoryets tilstand før fletningen."</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"Dette beholder din version af filen."</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"Dette bruger den indkommende version af filen."</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"Dette bruger dit manuelt redigerede indhold."</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">"token eller adgangskode"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"Spor valgte filer med LFS"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"Sporede objekter"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"Sporing: %1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"Gennemgå sporing"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"Betroede serverfingeraftryk gemmes på denne enhed. Hvis du glemmer en server, kræves bekræftelse ved næste forbindelse. Repositoriernes private nøgler forbliver gemt."</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Filen kan ikke åbnes"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">"BRUG DERES"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Brugernavn"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"Brugernavn + token"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"Bruger strategi: %1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"Bekræft denne adresse med repositoriets ejer. Godkendelsen gælder kun dette repository, Git-remote, LFS-endpoint og denne overførselsretning på denne enhed."</string>
     <string name="ui_version_dd167905" formatted="false">"VersionName"</string>
     <string name="ui_warning_e981ddae" formatted="false">"Advarsel"</string>
@@ -1142,9 +1503,139 @@
     <string name="upstream_remote" formatted="false">"Fjernlager"</string>
     <string name="upstream_title" formatted="false">"Upstream-gren"</string>
     <string name="upstream_unavailable" formatted="false">"Vælg en lokal gren med et konfigureret fjernlager, og afslut først eventuelle igangværende Git-handlinger."</string>
+    <string name="vault_copy_url" formatted="false">"Kopiér repository-URL"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"Appens eksterne lager"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"App-lager"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Sikkerhedskopi af Git-metadata"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"Sikkerhedskopiarkivet kan ikke deles"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Del sikkerhedskopi af Git-metadata"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"Sikkerhedskopiarkivet er ikke tilgængeligt"</string>
+    <string name="vault_l10n_branch_value">"Gren: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"Den fuldførte klon er ændret. Forbind dens mappe igen fra Lokale repositories."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"Det klonede repository kunne ikke gemmes færdigt. Prøv at tilføje det igen."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"Klonens historik er ændret"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"Klonens historik blev fjernet"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"Denne klon venter ikke længere på gendannelse"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"Gendannelsen af klonen blev annulleret"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"Gendannelsen af klonen er ændret"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"Gendannelsen af klonen er ændret. Gennemgå den igen."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"Gendannelsen af klonen blev afvist"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"Gendannelsen af klonen er ikke længere tilgængelig. Forbind dens mappe igen fra Lokale repositories."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"Denne klon blev fjernet eller registreret igen. Gennemgå den aktuelle post."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"Kunne ikke gemme standardplaceringen for kloner"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"Gennemgangen af sletning af repositoryet er ændret. Gennemgå klonen igen, før du sletter den."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"Enhedslager"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"Aktivér adgang til delt lager, og vælg derefter mappen igen. App-lager er stadig tilgængeligt uden denne tilladelse."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"Aktivér adgang til delt lager, før du vælger mappen"</string>
+    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"Adgangen til mappen blev fjernet. Vælg mappen igen, før du fortsætter."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"Kunne ikke gemme mappeadgangen"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"Vælg en mappe på denne enhed eller et tilsluttet lagerdrev. Denne Git-motor kan ikke bruge en dokumentudbyder i skyen direkte."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"Vælg en mappe uden symbolske links i stien"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"Denne mappe angiver ikke et lagerdrev på enheden"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"Denne mappe understøtter ikke skrivbare Git-filer. Kontrollér adgangen og den ledige lagerplads."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Vælg en arbejdsmappe uden for Git-metadata"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"Den valgte mappe ligger uden for sit lagerdrev"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"Denne mappe er allerede registreret anderledes. De eksisterende indstillinger blev bevaret."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"Denne mappe er allerede registreret anderledes. Gennemgå den under Lokale repositories."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"Vælg repository-mappen igen for at gendanne adgangen"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"Kunne ikke bevare læse- og skriveadgang til mappen"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"Den valgte mappe er ikke tilgængelig"</string>
+    <string name="vault_l10n_github_user" formatted="false">"GitHub-bruger"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"Repository-historikken er ændret. Den fuldførte klon blev bevaret; gennemgå den under Lokale repositories."</string>
+    <string name="vault_l10n_last_sync_value">"Sidste synkronisering: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"Lokalt remote"</string>
+    <string name="vault_l10n_local_remote_named">"Lokalt remote: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"Destinationen findes allerede. Eksisterende filer blev bevaret."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"Dette er ikke en klonplacering, som appen administrerer"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"Repositoryet blev tilføjet, men dets Obsidian-forbindelse kunne ikke klargøres. Prøv igen fra Indstillinger → Obsidian-forbindelser."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"Nogle Obsidian-forbindelser skal gennemgås. Prøv igen fra Indstillinger → Obsidian-forbindelser."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"Adgangen til udgivelsesmappen blev fjernet. Vælg den oprindelige mappe igen."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"Udgivelseskontoen er ændret"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"Vælg den oprindelige enhedsmappe igen for at gendanne adgangen til udgivelsen"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"Vælg den oprindelige udgivelsesmappe igen for at gendanne adgangen"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"Denne mappe er en anden end den gennemgåede udgivelse. Eksisterende filer blev bevaret."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"Denne tilladelse hører til en anden mappe. Vælg den oprindelige udgivelsesmappe."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"Udgivelsen kræver opmærksomhed. Gemte filer blev bevaret."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"Vælg udgivelsesmappen uden symbolske links"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"Vælg den oprindelige udgivelsesmappe uden symbolske links"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"Den oprindelige udgivelsesmappe er ikke tilgængelig"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"Udgivelsesregistreringen hører til en anden destination"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"Denne mappe overlapper et registreret repository. Gennemgå den eksisterende post før udgivelse."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"Den gemte udgivelsesstatus er ikke tilgængelig"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"Forbind den valgte GitHub-konto igen"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"Vælg en forbundet GitHub-konto"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"Indstillingerne for udgivelsens repository er ændret"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"Repository-indstillingerne skal repareres før udgivelse"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"Log ind på den GitHub-konto, der er valgt til denne udgivelse"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"Stoppet. Den gemte status er klar til gennemgang; det seneste netværksresultat kan være usikkert."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"Bekræft den valgte GitHub-konto før udgivelse"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"Gendannelse af repositoryet kræver adgang til mappen. Vælg den berørte mappe igen under Lokale repositories."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"Dette repository er allerede tilføjet"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"Vælg dette repositorys mappe igen for at gendanne den gemte adgang."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"Repository-navn er påkrævet"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"Repository-indstillingerne kunne ikke gemmes; kontrollér den ledige lagerplads"</string>
+    <string name="vault_l10n_sample_open_failed">"Eksempel-repositoryet kunne ikke åbnes: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"Eksempel-repository"</string>
+    <string name="vault_l10n_settings_load_failed">"Indstillingerne kunne ikke indlæses: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"Indstillingerne kunne ikke gemmes"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"Adgangen til delt lager blev fjernet. Aktivér den for at åbne dette repository."</string>
+    <string name="vault_l10n_size_bytes">"%1$s B"</string>
+    <string name="vault_l10n_size_kb">"%1$s KB"</string>
+    <string name="vault_l10n_size_mb">"%1$s MB"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"konflikt"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"klargjort"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"klargjort sletning"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"klargjort + ikke klargjort"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"usporet"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Vælg en mappe først"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"Lagerplaceringen er ændret. Vælg mappen igen."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"Lageret kræver opmærksomhed"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"Gennemgangen af fjernelse af sporing er ændret. Gennemgå repositoryet og valget af sikkerhedskopi igen."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"Dette lagerdrev er ikke tilgængeligt"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Dette lagerdrev er ikke tilgængeligt. Tilslut det igen, og vælg mappen igen."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"Mappen kunne ikke åbnes i Filer."</string>
+    <string name="vault_repository_fallback" formatted="false">"lagerName"</string>
+    <string name="vault_url_copied" formatted="false">"Kopieret!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"for %1$d dag siden"</item>
+        <item quantity="other">"for %1$d dage siden"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"for %1$d t. siden"</item>
+        <item quantity="other">"for %1$d t. siden"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"for %1$d min. siden"</item>
+        <item quantity="other">"for %1$d min. siden"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"for %1$d md. siden"</item>
+        <item quantity="other">"for %1$d md. siden"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"for %1$d uge siden"</item>
+        <item quantity="other">"for %1$d uger siden"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"for %1$d år siden"</item>
+        <item quantity="other">"for %1$d år siden"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"Sammenfletningen har %1$d uløst konflikt.\n\nLøs den, før du fuldfører sammenfletningen."</item>
+        <item quantity="other">"Sammenfletningen har %1$d uløste konflikter.\n\nLøs dem, før du fuldfører sammenfletningen."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s linje"</item>
+        <item quantity="other">"+%1$s -%2$s linjer"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d fil"</item>
         <item quantity="other">"%1$d filer"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"Merge stoppet: %1$s (%2$d konflikt)"</item>
+        <item quantity="other">"Merge stoppet: %1$s (%2$d konflikter)"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"Downloadede %1$d objekt."</item>
@@ -1170,6 +1661,10 @@
         <item quantity="one">"%1$d fil"</item>
         <item quantity="other">"%1$d filer"</item>
     </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s fil inklusive Git-metadata · %2$s"</item>
+        <item quantity="other">"%1$s filer inklusive Git-metadata · %2$s"</item>
+    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d yderligere blokeret sti vises ikke."</item>
         <item quantity="other">"%1$d yderligere blokerede stier vises ikke."</item>
@@ -1181,6 +1676,10 @@
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"%1$d upstream-commit"</item>
         <item quantity="other">"%1$d upstream-commits"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d repository tilføjet"</item>
+        <item quantity="other">"%1$d repositories tilføjet"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d repository"</item>

@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.bontecou.syncmd.ui.util.asString
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.sp
@@ -191,7 +192,7 @@ fun ConnectionScreen(path: String, settings: SettingsViewModel, onBack: () -> Un
                 if (choice == Choice.GITHUB) {
                     FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         accounts.filter { it.connected }.forEach { account ->
-                            AddVaultChoiceChip(account.login?.let { "@$it" } ?: "GitHub account", selected = selectedAccount == account.id, onClick = { selectedAccount = account.id },
+                            AddVaultChoiceChip(account.login?.let { "@$it" } ?: stringResource(R.string.publication_accounts), selected = selectedAccount == account.id, onClick = { selectedAccount = account.id },
                                 enabled = !state.busy && !state.saved, modifier = Modifier.testTag("connection-account-${account.id}"))
                         }
                     }
@@ -206,9 +207,9 @@ fun ConnectionScreen(path: String, settings: SettingsViewModel, onBack: () -> Un
                         colors = tideFieldColors(), shape = Tide.fieldShape, modifier = Modifier.fillMaxWidth().testTag("connection-secret"))
                 }
                 if (choice == Choice.SSH) SshKeyFields(privateKey, { privateKey = it }, passphrase, { passphrase = it }, publicKey, { publicKey = it }, !state.busy && !state.saved)
-                state.warning?.let { AddVaultNote(it, TideBannerTone.AHEAD) }
+                state.warning?.let { AddVaultNote(it.asString(), TideBannerTone.AHEAD) }
                 state.error?.let {
-                    AddVaultNote(it, TideBannerTone.DANGER, textModifier = Modifier.testTag("connection-error"))
+                    AddVaultNote(it.asString(), TideBannerTone.DANGER, textModifier = Modifier.testTag("connection-error"))
                     AddVaultTextButton(stringResource(R.string.ui_reload_connection_ceed2dae), onClick = { secret = ""; viewModel.load(path) }, enabled = !state.busy)
                 }
                 TidePrimaryButton(stringResource(R.string.ui_save_connection_df24ef12), onClick = { viewModel.save(state, url, choice, username, secret, selectedAccount, if (choice == Choice.SSH) Credentials.Ssh(privateKey, passphrase, publicKey) else null) }, enabled = !state.busy && !state.saved && url.isNotBlank() && (!noNetworkCredentials || choice == Choice.PUBLIC || choice == Choice.PUBLIC_KEEP) &&
@@ -219,7 +220,7 @@ fun ConnectionScreen(path: String, settings: SettingsViewModel, onBack: () -> Un
                 if (state.saved) TideOutlineButton(stringResource(R.string.ui_return_to_repositories_c97a4463), onClick = { if (viewModel.state.value === state) metadataRetry++ }, enabled = !catalogBusy,
                     modifier = Modifier.fillMaxWidth())
             } ?: state.error?.let { error ->
-                AddVaultNote(error, TideBannerTone.DANGER)
+                AddVaultNote(error.asString(), TideBannerTone.DANGER)
                 TideOutlineButton(stringResource(R.string.ui_retry_942087cc), onClick = { viewModel.load(path) }, modifier = Modifier.fillMaxWidth())
             }
         }

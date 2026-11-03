@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.bontecou.syncmd.ui.util.asString
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -106,7 +107,7 @@ fun LoginScreen(
     val revision by viewModel.authManager.sessionRevision.collectAsState()
     val startingRevision = rememberSaveable { viewModel.authManager.sessionRevision.value }
     val isLoggedIn = signedIn && (!addingAccount || revision != startingRevision)
-    val error       by viewModel.error.collectAsState()
+    val error = viewModel.error.collectAsState().value?.asString()
     val user        by viewModel.user.collectAsState()
 
     var showPatFlow by remember { mutableStateOf(false) }
@@ -169,7 +170,7 @@ fun LoginScreen(
         else -> LoginSaveLocationContent(
             login = user?.login,
             error = error,
-            location = runCatching { CloneStorage.defaultCloneBaseDir(context) }.getOrDefault("Choose storage in Settings"),
+            location = runCatching { CloneStorage.defaultCloneBaseDir(context) }.getOrDefault(stringResource(R.string.account_choose_storage)),
             onContinue = onContinueAfterLogin,
         )
     }
@@ -255,19 +256,19 @@ private fun LoginWelcomeContent(
 
             Column(verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 HeroPaperPill(
-                    title = if (signingIn) "Signing in…" else stringResource(R.string.guide_login),
+                    title = stringResource(if (signingIn) R.string.account_signing_in else R.string.guide_login),
                     loading = signingIn,
                     onClick = onGitHub,
                 )
                 HeroOutlinePill(stringResource(R.string.ui_personal_access_token_5572fccc), onClick = onToken)
                 if (showSample) {
                     AddVaultTextButton(
-                        if (isOpeningSample) "Opening sample…" else "Try sample repository",
+                        stringResource(if (isOpeningSample) R.string.account_opening_sample else R.string.account_try_sample),
                         onClick = onSample,
                         color = c.heroBehind,
                     )
                     Text(
-                        text = sampleError ?: "Try real Git operations offline. No account needed.",
+                        text = sampleError ?: stringResource(R.string.account_sample_hint),
                         style = TideType.mono(12.sp),
                         color = if (sampleError != null) c.heroDanger else c.heroMeta,
                     )
@@ -419,7 +420,7 @@ private fun LoginTokenContent(
             modifier = Modifier.padding(top = 4.dp))
 
         BPrimaryButton(
-            title     = if (isLoading) "Signing in…" else "Sign In",
+            title     = stringResource(if (isLoading) R.string.account_signing_in else R.string.account_sign_in),
             modifier = Modifier.padding(top = 18.dp).testTag("login-pat-submit"),
             isLoading = isLoading,
             isDisabled = token.isBlank(),

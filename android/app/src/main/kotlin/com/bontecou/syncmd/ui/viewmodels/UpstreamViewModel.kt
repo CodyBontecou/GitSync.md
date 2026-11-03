@@ -2,6 +2,8 @@ package com.bontecou.syncmd.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.util.UiText
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.services.repositories.RepositoryUpstream
 import com.bontecou.syncmd.services.repositories.RepositoryUpstreamPlan
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpstreamViewModel @Inject constructor(): ViewModel() {
-    data class State(val busy: Boolean = true, val plan: RepositoryUpstreamPlan? = null, val saved: Boolean = false, val error: String? = null,
+    data class State(val busy: Boolean = true, val plan: RepositoryUpstreamPlan? = null, val saved: Boolean = false, val error: UiText? = null,
         val requestId: Long = 0)
     private val service = RepositoryUpstream()
     private val _state = MutableStateFlow(State())
@@ -30,7 +32,7 @@ class UpstreamViewModel @Inject constructor(): ViewModel() {
                 val plan = withContext(Dispatchers.IO) { service.inspect(path) }
                 if(generation == request) _state.value = State(busy = false,plan = plan,requestId = request)
             } catch(cancelled: CancellationException) { throw cancelled
-            } catch(e: Exception) { if(generation == request) _state.value = State(busy = false,error = e.message ?: "Could not load the upstream branch",requestId = request) }
+            } catch(e: Exception) { if(generation == request) _state.value = State(busy = false,error = e.gitOpsText(R.string.gitops_upstream_load_failed),requestId = request) }
         }
     }
     fun save(review: State, remote: String, branch: String) {
@@ -46,7 +48,7 @@ class UpstreamViewModel @Inject constructor(): ViewModel() {
                 } }
                 if(generation == request) _state.value = current.copy(busy = false,saved = true)
             } catch(cancelled: CancellationException) { throw cancelled
-            } catch(e: Exception) { if(generation == request) _state.value = current.copy(busy = false,error = e.message ?: "Could not save the upstream branch") }
+            } catch(e: Exception) { if(generation == request) _state.value = current.copy(busy = false,error = e.gitOpsText(R.string.gitops_upstream_save_failed)) }
         }
     }
 }

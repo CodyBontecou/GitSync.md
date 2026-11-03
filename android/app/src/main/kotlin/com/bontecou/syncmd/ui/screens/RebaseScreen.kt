@@ -69,6 +69,8 @@ import com.bontecou.syncmd.ui.theme.TideSectionLabel
 import com.bontecou.syncmd.ui.theme.TideSyncState
 import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.theme.tideFieldColors
+import com.bontecou.syncmd.ui.util.UiText
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.RebaseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +85,7 @@ fun RebaseScreen(path: String, onBack: () -> Unit, model: RebaseViewModel = hilt
                 RebaseProblem.LOCAL_CHANGES -> R.string.rebase_problem_local_changes
                 RebaseProblem.UPSTREAM_REQUIRED -> R.string.rebase_problem_upstream
             })
-        } ?: detail
+        } ?: detail.asString()
     }
     var confirmation by remember { mutableStateOf<String?>(null) }
     var discardDraft by remember { mutableStateOf(false) }
@@ -424,12 +426,16 @@ private fun RebaseEditorBody(
             label = stringResource(R.string.ui_replayed_local_commit_cb0e9ca0),
             content = if (conflict.hasIncomingVersion) conflict.incomingContent else null,
             deletedNote = stringResource(R.string.ui_the_replayed_local_commit_deletes_this_fil_ab00656d),
+            blobByteCount = conflict.incomingByteCount,
+            textAvailable = !conflict.isBinaryOrTooLarge,
         )
         GitWorkVersionCard(
             yours = false,
             label = stringResource(R.string.ui_upstream_94adc696),
             content = if (conflict.hasCurrentVersion) conflict.currentContent else null,
             deletedNote = stringResource(R.string.ui_upstream_deleted_this_file_40765116),
+            blobByteCount = conflict.currentByteCount,
+            textAvailable = !conflict.isBinaryOrTooLarge,
         )
         OutlinedTextField(
             state.draft, onDraft, enabled = !state.busy,
@@ -495,5 +501,5 @@ private fun RebaseAborted() = SyncMdTheme(darkTheme = true) { RebasePreview(Reba
 
 @Preview(name = "Rebase · error", heightDp = 700) @Composable
 private fun RebaseError() = SyncMdTheme(darkTheme = false) {
-    RebasePreview(RebaseViewModel.State(error = "x"), error = "Commit or stash all local changes before rebasing.")
+    RebasePreview(RebaseViewModel.State(error = UiText.Raw("x")), error = "Commit or stash all local changes before rebasing.")
 }

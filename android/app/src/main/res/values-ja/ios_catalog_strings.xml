@@ -1,6 +1,107 @@
 <!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
 <resources>
+    <string name="account_alternative_exists" formatted="false">"別の代替接続がすでに保存されています。さらに URL の認証情報を移行する前に確認してください。"</string>
+    <string name="account_api_error">"GitHub API エラー: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"割り当てられた GitHub アカウントは接続が解除されています。このリポジトリのアカウントを選択してください。"</string>
+    <string name="account_basic_requires_http" formatted="false">"ユーザー名とトークンによる認証には HTTP または HTTPS アドレスが必要です"</string>
+    <string name="account_browser_failed" formatted="false">"ブラウザを開けませんでした。再試行するか、Personal Access Token を使用してください。"</string>
+    <string name="account_choose_authentication" formatted="false">"このアドレスの認証方法を選択してください"</string>
+    <string name="account_choose_credentials" formatted="false">"この接続の認証情報を選択してください"</string>
+    <string name="account_choose_location_again" formatted="false">"クローンの保存場所をもう一度選択してください"</string>
+    <string name="account_choose_public_access" formatted="false">"このアドレスにはネットワーク認証情報を使わないアクセスを選択してください"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"SSH アドレスには SSH 秘密鍵を、HTTPS アドレスには HTTPS 認証を選択してください。"</string>
+    <string name="account_choose_storage" formatted="false">"設定でストレージを選択してください"</string>
+    <string name="account_cleanup_failed" formatted="false">"GitHub のサインイン情報は暗号化されましたが、古いローカル設定を削除できませんでした。ストレージが利用可能になったら再試行してください。"</string>
+    <string name="account_clone_credentials_changed" formatted="false">"クローン中に保存された認証情報が変更されました。再試行する前に接続を確認してください。"</string>
+    <string name="account_clone_destination_changed" formatted="false">"クローン先が変更されました。接続は保持されました"</string>
+    <string name="account_clone_failed_network" formatted="false">"リポジトリをクローンできませんでした。URL、アクセス用の認証情報、ブランチ、ネットワーク接続を確認してください。既存のフォルダは保持されました。"</string>
+    <string name="account_clone_failed_retry" formatted="false">"クローンに失敗しました。もう一度お試しください。"</string>
+    <string name="account_clone_in_use" formatted="false">"このクローンはすでに開かれているか、ローカルリポジトリで確認が必要です。"</string>
+    <string name="account_clone_interrupted" formatted="false">"中断されたクローンの確認が必要です。ファイルは保持されました。ローカルリポジトリから再接続してください。"</string>
+    <string name="account_clone_storage_note">"%1$s\n\nObsidian との互換性のため、クローンの保存場所は Android/media のアプリストレージに固定されています。"</string>
+    <string name="account_configuration_changed" formatted="false">"リポジトリの設定が変更されました。認証情報を削除する前に再読み込みしてください。"</string>
+    <string name="account_connection_recovery_failed" formatted="false">"接続の保存に失敗し、認証情報の復旧も保存できませんでした。認証情報を再入力してください。"</string>
+    <string name="account_connection_save_failed" formatted="false">"リポジトリの接続を保存できませんでした"</string>
+    <string name="account_connection_unreadable" formatted="false">"保存された接続を開けません。リポジトリの認証情報を再入力してください。"</string>
+    <string name="account_credentials_changed_reload" formatted="false">"保存された認証情報が変更されました。保存する前に再読み込みしてください。"</string>
+    <string name="account_destination_exists" formatted="false">"保存先はすでに存在します。ローカルリポジトリから再接続するか、空の新しい場所を選択してください。ファイルは削除されていません。"</string>
+    <string name="account_enter_new_credentials" formatted="false">"新しい認証情報を入力してください"</string>
+    <string name="account_enter_ssh_key" formatted="false">"SSH 秘密鍵を入力してください"</string>
+    <string name="account_enter_username_secret" formatted="false">"ユーザー名とトークンまたはパスワードを入力してください"</string>
+    <string name="account_enter_valid_url" formatted="false">"有効なリポジトリ URL を入力し、認証情報は別の欄に入力してください。"</string>
+    <string name="account_finish_migration" formatted="false">"以前の認証情報の移行を完了するには、GitHub へのサインインを完了してください。"</string>
+    <string name="account_github_requires_https" formatted="false">"GitHub アカウントでのアクセスには github.com の HTTPS アドレスが必要です"</string>
+    <string name="account_invalid_repository_name" formatted="false">"GitHub リポジトリ名が無効です"</string>
+    <string name="account_invalid_repository_url" formatted="false">"リポジトリ URL が無効です"</string>
+    <string name="account_load_author_failed" formatted="false">"作成者情報を読み込めませんでした"</string>
+    <string name="account_load_failed" formatted="false">"GitHub のデータを読み込めませんでした"</string>
+    <string name="account_migration_changed" formatted="false">"保存された認証情報が変更されました。移行を再読み込みしてください。"</string>
+    <string name="account_migration_recovery_failed" formatted="false">"認証情報の復旧を保存できませんでした。この接続を確認してください。"</string>
+    <string name="account_migration_unverified" formatted="false">"暗号化された認証情報を確認できませんでした。URL の認証情報は保持されました。"</string>
+    <string name="account_move_changed" formatted="false">"確認後にリポジトリの認証情報が変更されました。移動をもう一度確認してください。"</string>
+    <string name="account_move_finish_failed" formatted="false">"認証情報の移動の復旧を完了できませんでした"</string>
+    <string name="account_move_persist_failed" formatted="false">"移動したリポジトリの認証情報を保存できませんでした"</string>
+    <string name="account_move_recovery_changed" formatted="false">"復旧中に移動した認証情報が変更されました。続行する前に移動先の接続を確認してください。"</string>
+    <string name="account_move_recovery_failed" formatted="false">"認証情報の移動の復旧を保存できませんでした。すべての作業コピーは保持されました。"</string>
+    <string name="account_move_verify_failed" formatted="false">"移動したリポジトリの認証情報を確認できませんでした"</string>
+    <string name="account_no_alternative" formatted="false">"このアドレスには代替の認証情報が保存されていません"</string>
+    <string name="account_no_backup_folder" formatted="false">"このリポジトリのストレージボリュームにはアプリのバックアップフォルダがありません。作業コピーは保持されました。"</string>
+    <string name="account_no_matching_repositories">"「%1$s」に一致するリポジトリはありません"</string>
+    <string name="account_no_remote" formatted="false">"リモートが設定されていません"</string>
+    <string name="account_no_repositories_found" formatted="false">"このアカウントのリポジトリは見つかりませんでした。"</string>
+    <string name="account_no_url_credentials" formatted="false">"移行できる URL の認証情報がありません"</string>
+    <string name="account_not_authenticated" formatted="false">"認証されていません。先にサインインしてください。"</string>
+    <string name="account_open_connection_failed" formatted="false">"接続を開けませんでした"</string>
+    <string name="account_opening_sample" formatted="false">"サンプルを開いています…"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"安全な GitHub サインインを準備できませんでした。ストレージが利用可能になったら再試行してください。"</string>
+    <string name="account_previous_address_missing" formatted="false">"以前のリモートアドレスは記録されていません。クローンする前に、提案された GitHub URL を確認して認証方法を選択してください。"</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"以前の接続を復元できません。URL を確認し、認証方法を明示的に選択してください。既存のファイルと保存された認証情報は保持されました。"</string>
+    <string name="account_publication_confirm_failed" formatted="false">"公開用の接続を確定できませんでした"</string>
+    <string name="account_publication_conflict" formatted="false">"このフォルダにはすでに別の接続が保存されています。既存の認証情報は保持されました。"</string>
+    <string name="account_publication_recovery" formatted="false">"公開用の認証情報の復旧が必要です。フォルダは保持されました。"</string>
+    <string name="account_publication_verify_failed" formatted="false">"公開用の接続を検証できませんでした"</string>
+    <string name="account_reenter_credentials" formatted="false">"リポジトリの認証情報を再入力してください"</string>
+    <string name="account_reload_public_access" formatted="false">"保存された公開アクセスの接続を再読み込みしてください"</string>
+    <string name="account_remote_url_changed" formatted="false">"リモート URL が変更されました。認証する前にリポジトリの接続を確認してください。"</string>
     <string name="account_removal_subject" formatted="false">"このアカウント"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"保存された認証情報を削除できませんでした"</string>
+    <string name="account_remove_failed" formatted="false">"GitHub のサインイン情報を削除できませんでした。ストレージが利用可能になったら再試行してください。"</string>
+    <string name="account_repository_name_length" formatted="false">"リポジトリ名は 1～120 文字で入力してください"</string>
+    <string name="account_review_github_connection" formatted="false">"GitHub アカウントの接続を確認してください"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"別のクローンを開始する前に、中断されたクローンを確認してください。ファイルは保持されました。"</string>
+    <string name="account_sample_hint" formatted="false">"実際の Git 操作をオフラインで試せます。アカウントは不要です。"</string>
+    <string name="account_save_author_failed" formatted="false">"作成者情報を保存できませんでした"</string>
+    <string name="account_save_connection_failed" formatted="false">"接続を保存できませんでした"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"GitHub のサインイン情報を安全に保存できませんでした。ストレージが利用可能になったら再試行してください。"</string>
+    <string name="account_save_sign_in_short" formatted="false">"サインイン情報を安全に保存できませんでした"</string>
+    <string name="account_saved_connection_changed" formatted="false">"保存された接続が変更されました。もう一度クローンする前に認証を確認してください。"</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"保存された認証情報を開けません。公開アクセスを選択するか、新しい認証情報を入力してください。"</string>
+    <string name="account_select_connected_account" formatted="false">"接続済みの GitHub アカウントと github.com の HTTPS アドレスを選択してください"</string>
+    <string name="account_select_failed" formatted="false">"GitHub アカウントを選択できませんでした。ストレージが利用可能になったら再試行してください。"</string>
+    <string name="account_select_github_account" formatted="false">"GitHub アカウントを選択してください"</string>
+    <string name="account_select_repository_account" formatted="false">"このリポジトリの GitHub アカウントを選択してください"</string>
+    <string name="account_select_repository_github_account" formatted="false">"リポジトリの GitHub アカウントを選択してください"</string>
+    <string name="account_session_open_failed" formatted="false">"安全な GitHub ストレージを開けませんでした。セッションを復元するにはもう一度サインインしてください。"</string>
+    <string name="account_session_recovery_failed" formatted="false">"安全な GitHub ストレージの復旧に失敗しました。ストレージが利用可能になったらもう一度サインインしてください。"</string>
+    <string name="account_session_save_failed" formatted="false">"安全な GitHub ストレージに保存できませんでした。もう一度サインインしてください。"</string>
+    <string name="account_session_verify_failed" formatted="false">"安全な GitHub ストレージを確認できませんでした。もう一度サインインしてください。"</string>
+    <string name="account_sign_in" formatted="false">"サインイン"</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"アカウントによるアクセスを選択する前に GitHub にサインインしてください"</string>
+    <string name="account_sign_in_failed" formatted="false">"サインインに失敗しました"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"リポジトリの GitHub アカウントにサインインしてください"</string>
+    <string name="account_sign_in_unverified" formatted="false">"GitHub のサインインを確認できませんでした。もう一度サインインを開始してください。"</string>
+    <string name="account_sign_out_failed" formatted="false">"安全にサインアウトできませんでした。ストレージが利用可能になったら再試行してください。"</string>
+    <string name="account_signing_in" formatted="false">"サインイン中…"</string>
+    <string name="account_ssh_not_approved" formatted="false">"SSH ホストキーは承認されませんでした。サーバーのフィンガープリントを確認できるときに再試行してください。"</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"SSH キーは SSH のリポジトリアドレスでのみ使用できます"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"保存された SSH の信頼情報を開けません。設定で SSH サーバーの信頼を確認してください。"</string>
+    <string name="account_storage_attention" formatted="false">"安全な GitHub ストレージに対応が必要です。既存の認証情報は保持されました。もう一度サインインしてください。"</string>
+    <string name="account_token_empty" formatted="false">"トークンを入力してください"</string>
+    <string name="account_token_invalid">"GitHub トークンが無効か期限切れです (HTTP %1$d)"</string>
+    <string name="account_try_sample" formatted="false">"サンプルリポジトリを試す"</string>
+    <string name="account_updated_just_now" formatted="false">"たった今"</string>
+    <string name="account_valid_branch" formatted="false">"有効なブランチ名を入力してください"</string>
+    <string name="automation_shortcut_label">"%1$s：%2$s"</string>
     <string name="background_active" formatted="false">"対象リポジトリのバックグラウンド確認を予約済みです。"</string>
     <string name="background_allow_push" formatted="false">"自動公開を許可"</string>
     <string name="background_attempt">"最終確認：%1$s"</string>
@@ -176,11 +277,36 @@
     <string name="diagnostics_reason_unknown" formatted="false">"操作が停止しました。リポジトリの状態と接続設定を確認してください。"</string>
     <string name="diagnostics_share_title" formatted="false">"診断を共有"</string>
     <string name="diagnostics_warnings" formatted="false">"警告"</string>
+    <string name="dialogs_branch_type_local" formatted="false">"ローカル"</string>
+    <string name="dialogs_branch_type_remote" formatted="false">"リモート"</string>
+    <string name="dialogs_branch_type_tracking" formatted="false">"追跡"</string>
+    <string name="dialogs_branch_type_unknown" formatted="false">"不明"</string>
+    <string name="dialogs_commit_collapse" formatted="false">"折りたたむ"</string>
+    <string name="dialogs_commit_expand" formatted="false">"展開"</string>
+    <string name="dialogs_error_branch_exists">"ブランチ「%1$s」はすでに存在します。\n\n別の名前を選んでください。"</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"現在のブランチは削除できません。\n\n先に別のブランチに切り替えてください。"</string>
+    <string name="dialogs_error_commit_failed">"コミットに失敗しました: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"コミットされていない変更があるため、この操作を実行できません。\n\n先に変更をコミットするかスタッシュしてください。"</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"ブランチ名が無効です。\n\n英数字、ハイフン、アンダースコアを使用してください。"</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"有効な Git リポジトリではないようです。\n\nパスが .git フォルダまたは作業ディレクトリを指していることを確認してください。"</string>
+    <string name="dialogs_error_network" formatted="false">"ネットワークエラーです。接続を確認して、もう一度お試しください。"</string>
+    <string name="dialogs_error_pull_failed">"プルに失敗しました: %1$s"</string>
+    <string name="dialogs_error_push_failed">"プッシュに失敗しました: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"リポジトリが見つかりません: %1$s\n\nパスを確認して、もう一度お試しください。"</string>
+    <string name="dialogs_error_title" formatted="false">"エラー"</string>
+    <string name="dialogs_info_title" formatted="false">"情報"</string>
+    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"ソースが直接先行している場合のみマージします。履歴を直線的に保ちます。"</string>
+    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"可能なら Fast-forward し、それ以外はマージコミットを作成します。"</string>
+    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Fast-forward が可能な場合でも、常にマージコミットを作成します。"</string>
+    <string name="dialogs_success_title" formatted="false">"成功"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"不明"</string>
+    <string name="dialogs_warning_title" formatted="false">"警告"</string>
     <string name="discard_clear_staging" formatted="false">"ステージングを解除"</string>
     <string name="discard_review_all" formatted="false">"以下に表示された追跡対象の変更と新規ファイルは完全に破棄されます。無視対象のファイルは保持されます。"</string>
     <string name="discard_review_empty" formatted="false">"破棄する変更はありません。"</string>
     <string name="discard_review_operation" formatted="false">"実行中の Git 操作も中止されます。"</string>
     <string name="discard_review_unborn" formatted="false">"コミットはまだありません。表示されたファイルのステージングを解除し、内容は保持します。"</string>
+    <string name="discovery_scanned">"%1$s をスキャンしました。追加する作業コピーを選択してください。"</string>
     <string name="file_clone_failure" formatted="false">"ローカルリポジトリをクローンできませんでした。ソースフォルダ、ストレージへのアクセス権、ブランチを確認してください。既存のフォルダは保持されました。"</string>
     <string name="file_clone_guidance" formatted="false">"ローカルアクセスでデバイス上のリポジトリをクローンします。共有ストレージの場合は、先に設定でフォルダへのアクセスを許可してください。"</string>
     <string name="file_delete_body" formatted="false">"ファイルはこのデバイスから削除されます。Gitで追跡されていた場合は、削除として表示されます。"</string>
@@ -211,7 +337,70 @@
     <string name="folder_picker_unavailable" formatted="false">"このデバイスにはフォルダ選択機能がありません"</string>
     <string name="folder_settings_unavailable" formatted="false">"Androidのストレージ設定を利用できません。アプリのストレージは引き続き使えます。"</string>
     <string name="folder_unusable" formatted="false">"このフォルダを使用できませんでした"</string>
+    <string name="git_fetch" formatted="false">"フェッチ"</string>
+    <string name="git_fetch_detail" formatted="false">"：リモートから新しいコミットを確認"</string>
     <string name="git_native_public_only" formatted="false">"Git ネイティブプロトコルは公開アクセスのみ対応しています。認証には HTTPS または SSH を使用してください。"</string>
+    <string name="gitops_action_failed" formatted="false">"Gitはこの操作を完了できませんでした"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"ブランチ操作を完了できませんでした"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"ブランチ操作を完了できませんでした。リポジトリの状態を更新してください。"</string>
+    <string name="gitops_branch_changed" formatted="false">"ブランチが変更されました。現在のブランチを確認してから再試行してください。"</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"現在のブランチが変更されました。コミットとプッシュの前に更新してください。"</string>
+    <string name="gitops_branch_changed_push" formatted="false">"現在のブランチが変更されました。プッシュする前に更新してください。"</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"読み込み中に現在のブランチが変更されました。更新してもう一度確認してください。"</string>
+    <string name="gitops_branch_name_empty" formatted="false">"ブランチ名は空にできません"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"ブランチを作成する前にファイルをコミットしてください。"</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"現在のブランチまたはコミットが変更されました。更新してもう一度確認してください。"</string>
+    <string name="gitops_branch_pushed" formatted="false">"ブランチをプッシュしました"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"ブランチを更新できませんでした"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"変更を読み込めませんでした"</string>
+    <string name="gitops_commit_changed" formatted="false">"コミットが変更されました。履歴を更新してもう一度確認してください。"</string>
+    <string name="gitops_commit_message_empty" formatted="false">"コミットメッセージは空にできません"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"ローカルにコミットしました。プッシュは停止しました。準備ができたら再試行してください。"</string>
+    <string name="gitops_committed_pushed" formatted="false">"コミットしてプッシュしました"</string>
+    <string name="gitops_committed_pushing" formatted="false">"ローカルにコミットしました。プッシュ中…"</string>
+    <string name="gitops_committed_ready" formatted="false">"ローカルにコミットしました。いつでもプッシュできます。"</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"一括解決には自分側か相手側を選んでください"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"コンフリクトが変更されました。下書きは表示されたままです。残したいテキストをコピーしてから閉じ、現在のコンフリクトを確認してください。"</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"コンフリクトを解決できませんでした"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"コンフリクトが変更されました。解決する前に更新してください。"</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"マージのコンフリクトを更新できませんでした"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"未解決のコンフリクトがあります。更新されたコンフリクト一覧を確認してください。"</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"ファイルの差分を読み込めませんでした"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Gitはこの履歴操作を完了できませんでした"</string>
+    <string name="gitops_history_changed" formatted="false">"リポジトリの履歴が変更されました。更新してもう一度確認してください。"</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"履歴を更新できませんでした"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"保存済みのLFSエンドポイントの承認を開けません。再試行する前に設定でリセットしてください。"</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"無効なLFSエンドポイントアドレスです"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"拡張子の追跡を確認できませんでした。再読み込みし、既存の属性、コンフリクト、ファイルアクセスを確認してから再試行してください。"</string>
+    <string name="gitops_lfs_failed" formatted="false">"Git LFSを完了できませんでした。接続と現在の追跡状態を確認し、再読み込みしてから再試行してください。ローカルのファイルとコミットは保持されています。"</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Git LFSを検査できませんでした。ストレージへのアクセスとリポジトリの状態を確認してから再読み込みしてください。"</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"サーバーのロックを確認できませんでした。次の変更の前に更新してください。"</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"サーバーがロック一覧へのアクセスを拒否しました。リポジトリの接続とプッシュ権限を確認してください。"</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"サーバーのロックを確認できませんでした。接続とリポジトリの状態を確認し、次の変更の前に更新してください。"</string>
+    <string name="gitops_merge_message_empty" formatted="false">"マージメッセージは空にできません"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"マージセッションが変更されました。続行する前に更新してください。"</string>
+    <string name="gitops_merge_stopped">"マージ停止: %1$s"</string>
+    <string name="gitops_merge_successful">"マージ成功: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"Git操作に失敗しました"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"プルが完了しませんでした"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"確認したコンフリクトを選んでください"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"確認したファイル名を選んでください"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"コンフリクトまたは作業ファイルが変更されました。下書きは保持されています。解決する前に更新してください。"</string>
+    <string name="gitops_rebase_failed" formatted="false">"Gitはこの操作を完了できませんでした。フェッチ中だった場合は接続を確認し、リベースの状態を更新してから再試行してください。"</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"リベースの確認が必要です"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"解決する前にコンフリクトエディタを開いてください"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"リベースセッションを更新してください"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"先にリベースを確認してください"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Gitはこの操作を完了できませんでした。接続を確認し、リポジトリの現在の状態を確認してから再試行してください。"</string>
+    <string name="gitops_repository_changed_review" formatted="false">"選択したリポジトリが変更されました。操作をもう一度確認してください。"</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"ローカルの変更を確認できませんでした"</string>
+    <string name="gitops_stash_changed" formatted="false">"スタッシュ一覧が変更されました。現在のスタッシュを確認してから再試行してください。"</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"リポジトリの状態を更新できませんでした"</string>
+    <string name="gitops_tag_changed" formatted="false">"タグが変更されました。現在のタグを確認してから再試行してください。"</string>
+    <string name="gitops_tag_name_empty" formatted="false">"タグ名は空にできません"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"タグを作成する前にファイルをコミットしてください。"</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"アップストリームブランチを読み込めませんでした"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"アップストリームブランチを保存できませんでした"</string>
     <string name="guide_back" formatted="false">"戻る"</string>
     <string name="guide_clone_body" formatted="false">"GitHub、公開、自分でホストしているリポジトリや、SSH経由のリポジトリをクローンできます。各作業コピーは独自の接続設定とブランチを保持します。"</string>
     <string name="guide_clone_title" formatted="false">"Androidでリポジトリを管理"</string>
@@ -321,6 +510,34 @@
     <string name="lfs_uploads_authenticated" formatted="false">"アップロード · 個別の暗号化された認証情報"</string>
     <string name="lfs_uploads_public" formatted="false">"アップロード · 公開アクセス"</string>
     <string name="modified" formatted="false">"変更"</string>
+    <string name="move_action" formatted="false">"作業コピーを移動"</string>
+    <string name="move_cancelled" formatted="false">"移動をキャンセルしました。元の作業コピーは保持されています。"</string>
+    <string name="move_confirm_action" formatted="false">"移動"</string>
+    <string name="move_confirm_action_restore" formatted="false">"復元"</string>
+    <string name="move_confirm_guidance" formatted="false">"未使用の移動先を選び、移動が完了するまで他のアプリにこれらのフォルダーを変更させないでください。"</string>
+    <string name="move_confirm_retained" formatted="false">"元のフォルダーは復旧用コピーとして保持されます。"</string>
+    <string name="move_confirm_title" formatted="false">"この作業コピーを移動しますか？"</string>
+    <string name="move_confirm_title_restore" formatted="false">"この復旧用コピーを復元しますか？"</string>
+    <string name="move_done" formatted="false">"リポジトリを移動しました"</string>
+    <string name="move_done_retained" formatted="false">"リポジトリを移動しました。元のフォルダーは「移動の復旧」に保持されています。"</string>
+    <string name="move_error_destination_other" formatted="false">"移動先は別のリポジトリに登録されています"</string>
+    <string name="move_error_destination_registered" formatted="false">"この移動先には別のリポジトリがすでに登録されています"</string>
+    <string name="move_error_finish_pending" formatted="false">"先に保留中の移動を完了してください"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"先にこのリポジトリの保留中の移動を完了してください"</string>
+    <string name="move_error_recovery_added" formatted="false">"復旧用コピーはすでに追加されています。そのリポジトリ項目から移動してください。"</string>
+    <string name="move_error_restored_registered" formatted="false">"復元先は現在別の内容で登録されています。設定は上書きされていません"</string>
+    <string name="move_error_settings_changed" formatted="false">"リポジトリの設定が変更されました。続行する前に移動の復旧を確認してください。"</string>
+    <string name="move_error_settings_review" formatted="false">"移動設定の確認が必要です。すべての作業コピーは保持されています"</string>
+    <string name="move_error_stale_review" formatted="false">"リポジトリ移動の確認内容が変わりました。移動する前に移動先をもう一度確認してください。"</string>
+    <string name="move_intro" formatted="false">"Git 履歴、ステージ済みの変更、ディスク上の未保存ファイルを含め、この作業コピー全体を移動します。アカウントと作成者の設定も一緒に移動します。"</string>
+    <string name="move_intro_restore" formatted="false">"保持された元のフォルダーを別のリポジトリとして復元します。現在の作業コピーはそのまま残ります。"</string>
+    <string name="move_progress_moving" formatted="false">"移動してリポジトリ設定を保存しています…"</string>
+    <string name="move_progress_reviewing" formatted="false">"ファイルと Git メタデータを確認しています…"</string>
+    <string name="move_recovered_name">"%1$s（復旧）"</string>
+    <string name="move_recovery_attention">"移動の復旧に確認が必要です: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"移動の復旧が完了しました"</string>
+    <string name="move_recovery_removed" formatted="false">"復旧用コピーを削除しました"</string>
+    <string name="move_title_restore" formatted="false">"復旧用コピーを復元"</string>
     <string name="notes_acknowledge" formatted="false">"了解"</string>
     <string name="notes_connections_body" formatted="false">"GitHub アカウントとリポジトリの作成者情報を管理できます。HTTPS または SSH での接続、クローン先の選択、ローカルコピーの再接続、リポジトリの移動や削除の確認に対応しています。"</string>
     <string name="notes_connections_title" formatted="false">"接続とストレージ"</string>
@@ -589,14 +806,21 @@
     <string name="repository_actions_unsafe" formatted="false">"ローカルブランチに切り替え、実行中のGit操作または競合を先に解決してください。"</string>
     <string name="repository_actions_unsettled" formatted="false">"ステージ中もファイルが変更され続けました。再試行する前にインデックスとファイルを確認してください。"</string>
     <string name="repository_actions_write_scope" formatted="false">"プッシュと同期は、無視対象でない現在の変更をすべてステージし、必要に応じてコミットを作成してから、未送信のコミットをアップロードします。同期は最初にフェッチし、安全な場合に早送りします。競合、履歴の分岐、安全でないリモートの状態があると操作は停止します。アップロードに失敗しても、新しいローカルコミットは再試行用に保持されます。"</string>
+    <string name="repository_add_none_new" formatted="false">"まだ追加されていないリポジトリを少なくとも 1 つ選択してください"</string>
+    <string name="repository_clone_deleted" formatted="false">"ローカルのクローンを削除しました"</string>
     <string name="repository_discovery_branch_unknown" formatted="false">"切り離された HEAD または最初のコミットなし"</string>
     <string name="repository_discovery_clean" formatted="false">"変更なし"</string>
     <string name="repository_discovery_dirty" formatted="false">"ローカルの変更あり"</string>
     <string name="repository_history_files_deleted" formatted="false">"ローカルファイルを削除済み"</string>
     <string name="repository_history_files_kept" formatted="false">"ローカルファイルは保持"</string>
     <string name="repository_history_tracking_removed" formatted="false">"Git 管理を解除済み · 作業ファイルは保持"</string>
+    <string name="repository_history_unavailable" formatted="false">"リポジトリの履歴を利用できません"</string>
+    <string name="repository_imported_files_kept" formatted="false">"インポートしたリポジトリのファイルはこのデバイスに保持されます"</string>
     <string name="repository_metadata_unavailable" formatted="false">"リポジトリのメタデータを取得できません"</string>
     <string name="repository_no_commits" formatted="false">"コミットなし"</string>
+    <string name="repository_no_longer_added" formatted="false">"リポジトリはもう追加されていません"</string>
+    <string name="repository_removed_files_kept" formatted="false">"リポジトリをアプリから削除しました。ローカルファイルは保持されています。"</string>
+    <string name="repository_restore_backup_first" formatted="false">"このフォルダーを再接続する前に Git メタデータのバックアップを復元してください"</string>
     <string name="repository_shortcut_active" formatted="false">"承認済み・固定済み"</string>
     <string name="repository_shortcut_add" formatted="false">"ホームに追加"</string>
     <string name="repository_shortcut_busy" formatted="false">"すでに操作を実行中です。このショートカットはキューに追加されませんでした。待ってからもう一度タップしてください。"</string>
@@ -612,6 +836,14 @@
     <string name="repository_shortcut_revoked" formatted="false">"ショートカットの承認を取り消しました"</string>
     <string name="repository_shortcut_unsupported" formatted="false">"ホーム画面でこのショートカットのリクエストを受け付けられませんでした。この画面の操作を使用してください。"</string>
     <string name="repository_sync_not_recorded" formatted="false">"記録なし"</string>
+    <string name="resolve_local_action" formatted="false">"解決"</string>
+    <string name="resolve_local_body" formatted="false">"：まず、あなたのローカル変更をコミットし、その後、リモートとマージします。もしコンフリクトが発生した場合は、次の画面で解決できます。"</string>
+    <string name="resolve_local_commit_merge" formatted="false">"コミットおよびマージ"</string>
+    <string name="resolve_local_committing" formatted="false">"ローカルの変更をコミットしています…"</string>
+    <string name="resolve_local_default_message" formatted="false">"：ローカル変更情報 GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"コミットメッセージ"</string>
+    <string name="resolve_local_superseded" formatted="false">"選択したリポジトリが変更されました。ローカルの変更をもう一度確認してください。"</string>
+    <string name="resolve_local_title" formatted="false">"：ローカル編集により、このプル操作がブロックされています。"</string>
     <string name="settings_folder_unavailable" formatted="false">"フォルダへのアクセスを確認してください"</string>
     <string name="shortcut_background_attention" formatted="false">"ショートカットの確認が必要です。再試行する前にリポジトリの操作を開き、状態を確認してください。"</string>
     <string name="shortcut_background_channel" formatted="false">"ショートカットの操作"</string>
@@ -700,22 +932,70 @@
     <string name="tide_home_state_never_synced" formatted="false">"未同期"</string>
     <string name="tide_home_state_synced">"：同期済み %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"確認が必要"</string>
+    <string name="tide_merge_ahead_headline" formatted="false">"リモートに新しい変更はありません。"</string>
+    <string name="tide_merge_ahead_kicker" formatted="false">"自分の分のみ"</string>
+    <string name="tide_merge_behind_headline" formatted="false">"リモートには手元にないコミットがあります。"</string>
+    <string name="tide_merge_behind_kicker" formatted="false">"リモートに更新あり"</string>
+    <string name="tide_merge_both_moved" formatted="false">"両側で変更あり"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"片側で削除され、もう片側で編集されました。"</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"両側でこのファイルが編集されました。"</string>
+    <string name="tide_merge_conflict_list_count">"%2$d 件中 %1$d 件解決済み"</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"残すバージョンを選ぶか、結果を手動で編集してください。"</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"2つの異なる名前に変更されました。"</string>
     <string name="tide_merge_conflict_result" formatted="false">"結果"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">"：これがステージングされる内容です。"</string>
+    <string name="tide_merge_conflict_unresolved" formatted="false">"未解決"</string>
     <string name="tide_merge_diff_added" formatted="false">"追加"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"バイナリ内容はテキストとして表示できません。"</string>
     <string name="tide_merge_diff_changed" formatted="false">"変更"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"コピー済み"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"削除"</string>
+    <string name="tide_merge_diff_discard" formatted="false">"破棄"</string>
+    <string name="tide_merge_diff_empty_body" formatted="false">"この変更には行ごとの差分がありません。"</string>
+    <string name="tide_merge_diff_empty_title" formatted="false">"テキストの変更はありません"</string>
+    <string name="tide_merge_diff_error_title" formatted="false">"この差分を読み込めませんでした"</string>
+    <string name="tide_merge_diff_hunk_line">"%1$d 行目"</string>
+    <string name="tide_merge_diff_line_added">"追加：%1$s"</string>
+    <string name="tide_merge_diff_line_removed">"削除：%1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"変更"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"名前変更"</string>
     <string name="tide_merge_diff_staged" formatted="false">"ステージ済"</string>
+    <string name="tide_merge_diff_stats_a11y">"追加行：%1$d、削除行：%2$d"</string>
+    <string name="tide_merge_diff_summary">"ファイル：%1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"タイプ変更"</string>
+    <string name="tide_merge_diff_unstaged" formatted="false">"未ステージ"</string>
+    <string name="tide_merge_in_sync_headline" formatted="false">"すでに最新です。"</string>
+    <string name="tide_merge_in_sync_kicker" formatted="false">"同期済み"</string>
+    <string name="tide_merge_merge_complete_title" formatted="false">"マージを完了しますか？"</string>
+    <string name="tide_merge_merge_done_headline" formatted="false">"相手側の変更が取り込まれました。"</string>
+    <string name="tide_merge_merge_done_kicker" formatted="false">"マージ済み"</string>
+    <string name="tide_merge_merge_initial" formatted="false">"フェッチし、確認してからマージ。"</string>
     <string name="tide_merge_merge_kicker" formatted="false">"マージ"</string>
+    <string name="tide_merge_merge_paused_headline" formatted="false">"一部のファイルが両側で変更されました。"</string>
+    <string name="tide_merge_merge_paused_kicker" formatted="false">"マージを一時停止中"</string>
+    <string name="tide_merge_merge_unresolved_title" formatted="false">"解決が必要な競合があります"</string>
+    <string name="tide_merge_moved_on" formatted="false">"作業中にリモートが更新されました。"</string>
     <string name="tide_merge_ours_filename" formatted="false">"こちら側"</string>
+    <string name="tide_merge_plan_section" formatted="false">"確認済みのプラン"</string>
+    <string name="tide_merge_rebase_aborted_headline" formatted="false">"開始時の状態に戻りました。"</string>
+    <string name="tide_merge_rebase_blocked_headline" formatted="false">"チェックアウトがブロックされているため、リベースは待機中です。"</string>
+    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"両側で編集されたファイルでリベースが停止しました。"</string>
+    <string name="tide_merge_rebase_done_headline" formatted="false">"リベースが完了しました。"</string>
+    <string name="tide_merge_rebase_initial" formatted="false">"まずフェッチしてから判断。"</string>
     <string name="tide_merge_rebase_kicker" formatted="false">"レバースベース"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"続行する前にこのステップを確認してください。"</string>
     <string name="tide_merge_result_section" formatted="false">"結果"</string>
     <string name="tide_merge_side_deleted" formatted="false">"削除"</string>
     <string name="tide_merge_theirs" formatted="false">"相手側"</string>
+    <string name="tide_merge_theirs_count">"リモートから: ↓%1$d"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"相手側"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"ブランチ設定を読み込み中…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"追跡"</string>
+    <string name="tide_merge_upstream_set">"追跡先：%1$s/%2$s"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"上流ブランチが未設定"</string>
+    <string name="tide_merge_upstream_unset_body" formatted="false">"上流ブランチを選ぶまで、pull と push の宛先は決まりません。"</string>
+    <string name="tide_merge_yours" formatted="false">"自分のバージョン"</string>
+    <string name="tide_merge_yours_count">"ローカル: ↑%1$d"</string>
     <string name="tide_onboarding_clone_failed" formatted="false">"クローンに失敗しました"</string>
     <string name="tide_onboarding_create_pat" formatted="false">"GitHub で PAT を作成 ↗"</string>
     <string name="tide_onboarding_headline_git" formatted="false">"本物の Git。"</string>
@@ -734,7 +1014,16 @@
     <string name="tide_onboarding_save_title" formatted="false">"既定の保存"</string>
     <string name="tide_onboarding_show_token" formatted="false">"表示"</string>
     <string name="tide_onboarding_welcome_body" formatted="false">"リポジトリをクローンし、Obsidian などのアプリで書いて、ワンタップで同期できます。"</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"未ログイン"</string>
+    <string name="tide_settings_off" formatted="false">"オフ"</string>
+    <string name="tide_settings_on" formatted="false">"オン"</string>
+    <string name="tide_settings_section_new_clones" formatted="false">"新しいクローン"</string>
     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+    <string name="tide_settings_sign_out_message">"このデバイス上の %1$s のトークンを GitSync.md から削除します。リポジトリとそのファイルは元の場所に残ります。"</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"GitHub からログアウトしますか？"</string>
+    <string name="tide_settings_signed_in" formatted="false">"ログイン済み"</string>
+    <string name="tide_settings_this_account" formatted="false">"この GitHub アカウント"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
     <string name="tide_vault_check_for_changes" formatted="false">"変更を確認"</string>
     <string name="tide_vault_conflict_detail" formatted="false">"Gitの操作は一時停止中です。競合のある各ファイルを解決して続行してください。"</string>
     <string name="tide_vault_eyebrow_both_moved" formatted="false">"両側で変更あり"</string>
@@ -774,10 +1063,15 @@
     <string name="tracking_remove_permanent_body" formatted="false">"確認した .git メタデータのみを削除します。作業ファイルは残りますが、別のコピーがないとローカルの Git 履歴を復元できません。"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git 履歴を完全に削除しますか？"</string>
     <string name="tracking_remove_review_changed" formatted="false">"確認内容が変わりました。キャンセルして Git 管理の解除をもう一度確認してください。"</string>
+    <string name="tracking_removed_backup">"Git の追跡を解除しました。検証済みバックアップ: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Git の追跡を解除しました。作業ファイルは保持されています。"</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nすべての作業ファイルとローカルのGit履歴はこのデバイスに残ります。フォルダは後で再接続できます。"</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nこのアプリが管理するクローンを完全に削除します。未プッシュのコミット、スタッシュ、未保存のファイルも含まれます。リモートリポジトリは変更されません。"</string>
     <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s への次回接続前にフィンガープリントの確認が必要になります。"</string>
+    <string name="ui_1_s_bytes_81cdb385">"バイト数：%1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"文字数：%1$s"</string>
     <string name="ui_1_s_files_ddef923b">"%1$s 個のファイル"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行数：%1$s、バイト数：%2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"ローカルのコミット %1$s 件 · 上流のコミット %2$s 件"</string>
     <string name="ui_1_s_shown_2_s_stored_c5d98835">"表示：%1$s · 保存：%2$s"</string>
     <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Google Play での買い切り購入"</string>
@@ -795,18 +1089,25 @@
     <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"選択したリポジトリを追加"</string>
     <string name="ui_added_b4561641" formatted="false">"追加"</string>
     <string name="ui_added_repositories_400f05cb" formatted="false">"追加済みのリポジトリ"</string>
+    <string name="ui_alias_1_s_e7e8c040">"エイリアス: %1$s"</string>
+    <string name="ui_alias_optional_0d402abb" formatted="false">"エイリアス（任意）"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"すべての競合の解決内容がステージされています。コミットの再適用を続けてください。Git が NOTHING_TO_COMMIT を報告した場合は、空のコミットをスキップするか確認してください。"</string>
+    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"すべての競合が解決されました。マージを完了しますか？"</string>
     <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"すべての競合が解消されました。マージを完了または中止してください。"</string>
     <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"有料アプリのインストール後はすべての機能を利用できます。サブスクリプションやアプリ内購入はありません。"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"：このファイルに対するすべてのローカル変更は、永続的に削除されます。"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"ローカルフォルダへのアクセスを許可"</string>
     <string name="ui_already_added_253b22d7" formatted="false">"追加済み"</string>
+    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"中断された移動の復旧が必要です。完了するまで、認識されたすべてのコピーが保持されます。"</string>
     <string name="ui_and_1_s_more_f93ea742">"および %1$s さらに…"</string>
+    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"あらゆるリポジトリを Android に同期。"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"アプリ"</string>
     <string name="ui_app_settings_da645334" formatted="false">"アプリ設定"</string>
     <string name="ui_apply_2cbf6555" formatted="false">"適用"</string>
+    <string name="ui_apply_stash_008c67fe" formatted="false">"スタッシュを適用"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"追跡方法を適用"</string>
     <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"承認はこの端末に保存され、待機中の接続が続行されます。キャンセルするとサーバーは信頼されません。"</string>
+    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"このマージを中止しますか？"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"認証"</string>
     <string name="ui_back_639807a2" formatted="false">"戻る"</string>
     <string name="ui_back_aceb696a" formatted="false">"← 戻る"</string>
@@ -822,6 +1123,7 @@
     <string name="ui_browse_repos_e9c9d50c" formatted="false">"リポジトリを参照"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"このアカウントで閲覧中"</string>
     <string name="ui_cancel_ad8d6985" formatted="false">"キャンセル"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"保留中の移動をキャンセル"</string>
     <string name="ui_changed_2a6141e4" formatted="false">"変更"</string>
     <string name="ui_changed_files_cdf024ce" formatted="false">"変更ファイル"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"変更"</string>
@@ -831,6 +1133,8 @@
     <string name="ui_choose_another_folder_b50df380" formatted="false">"別のフォルダを選択"</string>
     <string name="ui_choose_clone_storage_81f04f23" formatted="false">"クローンの保存先を選択"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"デバイス内または接続されたストレージを選択してください。クラウドのドキュメントプロバイダは、このGitエンジンが使用できるファイルシステムを提供していません。"</string>
+    <string name="ui_choose_start_point_3071447f" formatted="false">"開始点を選択"</string>
+    <string name="ui_choose_strategy_95d66200" formatted="false">"戦略を選択"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"GitHubの閲覧に使うアカウントを選択します。各リポジトリに割り当てられたアカウントは保持されます。「リポジトリ接続」で変更できます。"</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"新しいクローンの既定のフォルダを選択します。既存のリポジトリの保存先は変更されません。"</string>
     <string name="ui_clear_all_29a390f9" formatted="false">"すべて消去"</string>
@@ -866,6 +1170,7 @@
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"「新規」からファイルまたはフォルダを作成します。"</string>
     <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"新規作成 PAT ON GITHUB →"</string>
     <string name="ui_create_fde9c501" formatted="false">"作成"</string>
+    <string name="ui_create_new_branch_bf815ec6" formatted="false">"新しいブランチを作成"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"現在の既定の保存先"</string>
     <string name="ui_current_e3cc57e1" formatted="false">"現在"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"現在の個別プッシュアドレス: %1$s"</string>
@@ -875,12 +1180,15 @@
     <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"新しいクローンの既定の保存先です。クローンごとに別のフォルダを使用できます。"</string>
     <string name="ui_delete_1_s_6474596f">"「%1$s」を削除しますか？"</string>
     <string name="ui_delete_branch_00339d48" formatted="false">"ブランチを削除しますか？"</string>
+    <string name="ui_delete_branch_1_s_bbe46386">"ブランチ \"%1$s\" を削除しますか？"</string>
     <string name="ui_delete_branch_1c3f98e5" formatted="false">"ブランチを削除"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"削除"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"ファイルを削除"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"：ローカルファイルを削除しますか？"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">"：ローカルファイルの削除"</string>
     <string name="ui_delete_tag_365635aa" formatted="false">"タグを削除"</string>
+    <string name="ui_destination_1_s_0df94639">"移動先: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"移動先の親フォルダー"</string>
     <string name="ui_diagnostics_268f14bb" formatted="false">"診断"</string>
     <string name="ui_diff_b6aeb797" formatted="false">"差分"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"下書きを破棄"</string>
@@ -889,22 +1197,31 @@
     <string name="ui_discovered_repositories_059a8e8d" formatted="false">"見つかったリポジトリ"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"閉じる"</string>
     <string name="ui_done_283e91eb" formatted="false">"完了"</string>
+    <string name="ui_download_location_7cc4e69d" formatted="false">"ダウンロード場所"</string>
     <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"不足しているファイル内容をダウンロード"</string>
+    <string name="ui_drop_stash_969bf549" formatted="false">"スタッシュを削除"</string>
     <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"リベース中は、上流が Git の ours 側、再適用されるローカルコミットが theirs 側です。"</string>
+    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"例：feature/new-ui"</string>
+    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"例：MyProject"</string>
+    <string name="ui_e_g_prod_7d4c667a" formatted="false">"例：prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"コミットの作成者を編集"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"接続を編集"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"解決内容を編集"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"ここで内容を編集して競合を手動で解決します"</string>
     <string name="ui_email_969ccbd3" formatted="false">"メール"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"空のフォルダ"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"アクセスを有効にする"</string>
     <string name="ui_endpoint_authentication_1841e2be" formatted="false">"エンドポイント認証"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"新しいアドレスの認証情報を再入力するか、公開アクセスを選択してください。"</string>
+    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Git リポジトリのフルパスを入力してください。"</string>
     <string name="ui_error_54a0e8c1" formatted="false">"エラー"</string>
     <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"すべての SSH サーバーは次回接続前にフィンガープリントの確認が必要になります。破損した信頼情報も削除されます。"</string>
     <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"リモートの変更を取得して適用"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"フェッチしてリベースを確認"</string>
     <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"リモートの変更を取得"</string>
+    <string name="ui_file_1_s_9fdb0f6d">"ファイル：%1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"ファイル操作に失敗しました"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"移動の復旧を完了"</string>
     <string name="ui_finishing_up_13f4f85a" formatted="false">"仕上げています"</string>
     <string name="ui_forget_a6bd489d" formatted="false">"削除"</string>
     <string name="ui_forget_server_e43c85d4" formatted="false">"サーバーの信頼を削除"</string>
@@ -917,11 +1234,14 @@
     <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS の確認が必要です"</string>
     <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · 追跡とダウンロード"</string>
     <string name="ui_git_remote_91593664" formatted="false">"Git リモート"</string>
+    <string name="ui_github_account_connected_ccc5f749" formatted="false">"GitHub アカウントを接続しました"</string>
     <string name="ui_github_accounts_653cf0c5" formatted="false">"GitHub アカウント"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub ログイン"</string>
     <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Gitsync.md 完全版"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.mdがデバイスのフォルダで実際のGit作業コピーを管理するには、共有ストレージへのアクセスが必要です。Androidの設定でアクセスを有効にしてから、使いたいフォルダを選択してください。"</string>
     <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.mdはこのリポジトリに認証情報を提供しません。"</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"戻ってリポジトリを選択してください。"</string>
+    <string name="ui_hash_a9106914" formatted="false">"ハッシュ"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"別の所有者がまだこのファイルを編集している可能性があることを理解しました。"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"アドレスにSSHユーザー名を含めてください：git@host:team/repo.git または ssh://git@host:2222/team/repo.git。"</string>
     <string name="ui_info_170322a3" formatted="false">"情報"</string>
@@ -948,10 +1268,14 @@
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"対応する公開鍵（任意）"</string>
     <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"マージ"</string>
+    <string name="ui_merge_branch_into_1_s_88a0ca2d">"ブランチを %1$s にマージ"</string>
     <string name="ui_merge_commit_message_2132e189" formatted="false">"合併コミットメッセージ"</string>
     <string name="ui_merge_fc2b737d" formatted="false">"マージ"</string>
+    <string name="ui_merge_strategy_69ea53c4" formatted="false">"マージ戦略："</string>
     <string name="ui_message_f5394f72" formatted="false">"メッセージ："</string>
+    <string name="ui_metadata_b17f2c85" formatted="false">"メタデータ："</string>
     <string name="ui_more_d47d7cb0" formatted="false">"その他"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"移動の復旧"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"リポジトリを移動"</string>
     <string name="ui_name_dcd1d522" formatted="false">"名前"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"GitSync.mdでの名前"</string>
@@ -962,6 +1286,8 @@
     <string name="ui_new_folder_cf28f49e" formatted="false">"新しいフォルダ"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"新しいトークンまたはパスワード"</string>
     <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"承認済みのカスタム LFS エンドポイントはありません"</string>
+    <string name="ui_no_branches_available_7f5adec5" formatted="false">"利用できるブランチがありません"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"表示する変更はありません"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"コミットが見つかりません"</string>
     <string name="ui_no_conflicts_found_d356b17b" formatted="false">"競合が見つかりません"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"接続済みのアカウントはありません。ローカルリポジトリは引き続き利用できます。"</string>
@@ -971,6 +1297,8 @@
     <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"追跡方法の選択が必要な新しいバイナリファイルや大きなファイルはありません。"</string>
     <string name="ui_no_repositories_a6e9ff91" formatted="false">"リポジトリがありません"</string>
     <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"リポジトリはまだ追加されていません。"</string>
+    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"保存されたリポジトリはありません。設定で追加してください。"</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"リポジトリなし"</string>
     <string name="ui_no_repository_aec5972a" formatted="false">"リポジトリなし"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"スタッシュが見つかりません"</string>
     <string name="ui_no_tags_found_8a6dd503" formatted="false">"タグが見つかりません"</string>
@@ -981,17 +1309,23 @@
     <string name="ui_now_ed5eb9a3" formatted="false">"今"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"開く"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS を開く"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"：ファイルで開く"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"ファイルを開いています…"</string>
     <string name="ui_or_7175517a" formatted="false">"または"</string>
+    <string name="ui_ours_1_s_bytes_e7da423a">"自分側：%1$s バイト"</string>
     <string name="ui_ours_ab658c14" formatted="false">"こちら側"</string>
     <string name="ui_override_system_appearance_2685888c" formatted="false">"システムの外観設定を上書き"</string>
     <string name="ui_owner_1_s_599ca9ce">"所有者: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"親 (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"パス"</string>
+    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
     <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
     <string name="ui_personal_access_token_702ef4a0" formatted="false">"パーソナルアクセストークン"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"プラットフォーム"</string>
+    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"マージを完了する前にすべての競合を解決してください。"</string>
     <string name="ui_pop_52e740ad" formatted="false">"ポップ"</string>
+    <string name="ui_pop_stash_2adc4302" formatted="false">"スタッシュを適用して削除"</string>
     <string name="ui_previously_added_627f4765" formatted="false">"以前追加した項目"</string>
     <string name="ui_previously_trusted_1_s_df583fd2">"以前に信頼したフィンガープリント：%1$s"</string>
     <string name="ui_privacy_policy_506ff394" formatted="false">"プライバシーポリシー"</string>
@@ -999,12 +1333,15 @@
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"リベースしてプル"</string>
     <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"リベースしてプル / リベースを再開"</string>
     <string name="ui_push_792aac67" formatted="false">"プッシュ"</string>
+    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"LFS ロックによりプッシュがブロックされています"</string>
     <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"ローカルの変更をリモートにプッシュ"</string>
+    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"このリポジトリのファイルを閲覧・編集"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"リベース中"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"確認済みの上流にリベース"</string>
     <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"この端末での最近の操作結果です。ログには最大 500 件の記録が保存されます。認証情報、リポジトリのアドレス、ファイルパス、ファイルの内容は含まれません。"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"再接続"</string>
     <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"GitSync.md が既に保存している作業コピーを再接続します。一覧からの削除ではファイルを保持します。管理対象のクローンの削除と Git 管理の解除は別の操作です。"</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"復旧の確認が必要です。認識された作業コピーは保持されます。"</string>
     <string name="ui_refresh_0e916101" formatted="false">"更新"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"リベースの状態を更新"</string>
     <string name="ui_reload_1_s_873e324f">"%1$sを再読み込みしますか？"</string>
@@ -1028,6 +1365,7 @@
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"保存済みの認証情報を削除しますか？"</string>
     <string name="ui_remove_sign_in_ae9ee617" formatted="false">"サインイン情報を削除"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"保持した元のコピーを削除しますか？"</string>
+    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"このリポジトリを削除し、このデバイス上のローカルファイルを消去しますか？GitHub のリポジトリには影響しません。"</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Git 管理を解除"</string>
     <string name="ui_removed_70fa71f8" formatted="false">"削除"</string>
     <string name="ui_rename_1_s_9b09e088">"%1$sの名前を変更"</string>
@@ -1036,9 +1374,11 @@
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"再適用されるローカルコミット"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"設定された上流にローカルコミットを再適用します。ローカルコミットの ID が変わる場合があります。既存のマージ構造は保持されます。プッシュは行いません。"</string>
     <string name="ui_repo_health_ed3e070f" formatted="false">"リポジトリの状態"</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"リポジトリのパス"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"このアカウントが割り当てられたリポジトリでは、再度サインインするか「リポジトリ接続」で別のアカウントを選択する必要があります。ローカルのファイルとコミットは保持されます。"</string>
     <string name="ui_repository_13d6ff07" formatted="false">"リポジトリ"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"リポジトリの接続"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"リポジトリの操作に失敗しました"</string>
     <string name="ui_repository_path_037711af" formatted="false">"リポジトリのパス"</string>
     <string name="ui_repository_status_64c67cd2" formatted="false">"リポジトリの状態"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"リポジトリ URL"</string>
@@ -1052,8 +1392,12 @@
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"解決してステージ"</string>
     <string name="ui_resolve_conflict_ff598c8a" formatted="false">"矛盾解決"</string>
     <string name="ui_resolved_5be3c2c8" formatted="false">"解決済み"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"解決後の内容"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"解決後の内容"</string>
     <string name="ui_resolved_fea6a678" formatted="false">"解決済み"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"解決中：%1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"別のリポジトリとして復元"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"保持された元のフォルダー: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"再試行"</string>
     <string name="ui_retry_e464c660" formatted="false">"再試行"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"リポジトリに戻る"</string>
@@ -1061,8 +1405,11 @@
     <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  すべての変更を元に戻す"</string>
     <string name="ui_revert_c8d62872" formatted="false">"↩  元に戻す"</string>
     <string name="ui_revert_changes_5b36e77f" formatted="false">"変更を元に戻す"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"コミットをリバート"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"移動先を確認"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"復元したフォルダーを確認"</string>
     <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"リポジトリに許可した別の LFS サーバーを確認します。承認を取り消すと、その方向の今後の転送は停止します。進行中の操作は完了する場合があります。"</string>
+    <string name="ui_reviewed_destination_7173c3da" formatted="false">"確認した移動先"</string>
     <string name="ui_revoke_87e6d00b" formatted="false">"取り消す"</string>
     <string name="ui_save_1509f561" formatted="false">"保存"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"作成者を保存"</string>
@@ -1075,6 +1422,7 @@
     <string name="ui_scan_app_folders_12ed3a77" formatted="false">"アプリのフォルダーを検索"</string>
     <string name="ui_search_repositories_243865a1" formatted="false">"リポジトリを検索…"</string>
     <string name="ui_select_repository_64bd6444" formatted="false">"リポジトリを選択"</string>
+    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"マージするソースブランチを選択："</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"選択したフォルダ"</string>
     <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"個別のユーザー名とトークン"</string>
     <string name="ui_settings_02f6ea12" formatted="false">"設定"</string>
@@ -1089,7 +1437,9 @@
     <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH サーバーの信頼設定"</string>
     <string name="ui_stage_all_d1ce47c8" formatted="false">"すべての変更をステージ"</string>
     <string name="ui_stage_de838855" formatted="false">"ステージ"</string>
+    <string name="ui_start_from_eb3f51dc" formatted="false">"開始点"</string>
     <string name="ui_stash_message_optional_7b463cf6" formatted="false">"ストアメッセージ（オプション）…"</string>
+    <string name="ui_strategy_6b27710d" formatted="false">"戦略"</string>
     <string name="ui_switch_39921a74" formatted="false">"切替"</string>
     <string name="ui_switch_to_branch_278b039a" formatted="false">"ブランチに切り替え"</string>
     <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
@@ -1097,18 +1447,28 @@
     <string name="ui_tags_1331275b" formatted="false">"タグ"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"使用中の移動先はそのまま残ります。GitSync.mdは、保持した元のコピーに移動後の編集がないことを確認してから、そのファイルとGit履歴を完全に削除します。"</string>
     <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"暗号化された接続は、元のリポジトリアドレスにのみ再利用されます。別のアドレスを使う場合は、認証方法を明示的に変更してください。"</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"このストレージボリューム上でフォルダーを直接移動できます。"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"以前のGitHubアカウントは接続されていません。接続済みのアカウントか、別の認証方法を選択してください。"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"再適用されるローカルコミットはこのファイルを削除します。"</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"確認内容が変わりました。キャンセルしてサーバーのロックを再読み込みしてください。"</string>
     <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"検索が深さまたはフォルダー数の上限に達しました。一部のフォルダーは検索されていません。"</string>
+    <string name="ui_theirs_1_s_bytes_70028ef3">"相手側：%1$s バイト"</string>
     <string name="ui_theirs_691ef727" formatted="false">"相手側"</string>
+    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"未解決の競合：%1$s。"</string>
     <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"：この操作は取り消せません。"</string>
     <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"この操作は .gitattributes を変更します。変更をステージするまで、ファイルとインデックスはそのまま保持されます。"</string>
+    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"ストレージボリュームをまたいで移動します。GitSync.md はコピーした内容を検証し、削除するまで元のフォルダーを「移動の復旧」に保持します。"</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"この履歴項目は利用できません。"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"別の接続のロックを削除します。続行する前に所有者と調整してください。"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"認証方法を再度選ぶまで、このリポジトリは公開アクセスを使用します。ログイン中のGitHubアカウントは使用されません。フェッチとプッシュのアドレスは変更されません。"</string>
+    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"すべての進行状況を破棄し、リポジトリをマージ前の状態に戻します。"</string>
+    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"自分のファイルのバージョンを保持します。"</string>
+    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"受信したファイルのバージョンを使用します。"</string>
+    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"手動で編集した内容を使用します。"</string>
     <string name="ui_token_or_password_d6e43f8a" formatted="false">"トークンまたはパスワード"</string>
     <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"選択したファイルを LFS で追跡"</string>
     <string name="ui_tracked_objects_a265fdb0" formatted="false">"追跡対象のオブジェクト"</string>
+    <string name="ui_tracking_1_s_b83cf9b3">"追跡先：%1$s"</string>
     <string name="ui_tracking_review_8d316853" formatted="false">"追跡方法の確認"</string>
     <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"信頼したサーバーのフィンガープリントはこの端末に保存されます。サーバーを削除すると、次回の接続時に確認が必要になります。リポジトリの秘密鍵は保存されたままです。"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"ファイルを開けません"</string>
@@ -1127,6 +1487,7 @@
     <string name="ui_use_theirs_352c4272" formatted="false">"そのものを使用する"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"ユーザー名"</string>
     <string name="ui_username_token_7375b2ff" formatted="false">"ユーザー名＋トークン"</string>
+    <string name="ui_using_strategy_1_s_6c76b5ef">"使用する戦略：%1$s"</string>
     <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"リポジトリ所有者にこのアドレスを確認してください。承認は、この端末のこのリポジトリ、Git リモート、LFS エンドポイント、転送方向にのみ適用されます。"</string>
     <string name="ui_version_dd167905" formatted="false">"バージョン"</string>
     <string name="ui_warning_e981ddae" formatted="false">"警告"</string>
@@ -1142,9 +1503,139 @@
     <string name="upstream_remote" formatted="false">"リモート"</string>
     <string name="upstream_title" formatted="false">"追跡先ブランチ"</string>
     <string name="upstream_unavailable" formatted="false">"リモートが設定されたローカルブランチを選択し、実行中のGit操作を先に完了してください。"</string>
+    <string name="vault_copy_url" formatted="false">"リポジトリの URL をコピー"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"アプリの外部ストレージ"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"アプリのストレージ"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Git メタデータのバックアップ"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"バックアップアーカイブを共有できません"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Git メタデータのバックアップを共有"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"バックアップアーカイブは利用できません"</string>
+    <string name="vault_l10n_branch_value">"ブランチ: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"完了したクローンが変わりました。「ローカルリポジトリ」からフォルダを再接続してください。"</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"クローンしたリポジトリの保存を完了できませんでした。もう一度追加してください。"</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"クローンの履歴が変わりました"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"クローンの履歴が削除されました"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"このクローンはもう復旧待ちではありません"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"クローンの復旧はキャンセルされました"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"クローンの復旧内容が変わりました"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"クローンの復旧内容が変わりました。もう一度確認してください。"</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"クローンの復旧は破棄されました"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"クローンの復旧は利用できなくなりました。「ローカルリポジトリ」からフォルダを再接続してください。"</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"このクローンは削除されたか、再登録されました。現在の項目を確認してください。"</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"デフォルトのクローン先を保存できませんでした"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"リポジトリ削除の確認内容が変わりました。削除する前にクローンをもう一度確認してください。"</string>
+    <string name="vault_l10n_device_storage" formatted="false">"デバイスのストレージ"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"共有ストレージへのアクセスを有効にしてから、フォルダをもう一度選択してください。アプリのストレージはこの権限がなくても利用できます。"</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"フォルダを選択する前に、共有ストレージへのアクセスを有効にしてください"</string>
+    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"フォルダへのアクセスが削除されました。続ける前に、このフォルダをもう一度選択してください。"</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"フォルダへのアクセスを保存できませんでした"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"このデバイスまたは接続されたストレージボリューム上のフォルダを選択してください。この Git エンジンはクラウドのドキュメントプロバイダを直接使用できません。"</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"パスにシンボリックリンクを含まないフォルダを選択してください"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"このフォルダはデバイスのストレージボリュームを特定できません"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"このフォルダは書き込み可能な Git ファイルに対応していません。アクセス権と空き容量を確認してください。"</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Git メタデータの外にある作業フォルダを選択してください"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"選択したフォルダはストレージボリュームの外にあります"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"このフォルダはすでに別の内容で登録されています。既存の設定は保持されています。"</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"このフォルダはすでに別の内容で登録されています。「ローカルリポジトリ」で確認してください。"</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"アクセスを復元するには、リポジトリのフォルダをもう一度選択してください"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"このフォルダの読み書きアクセスを保持できませんでした"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"選択したフォルダは利用できません"</string>
+    <string name="vault_l10n_github_user" formatted="false">"GitHub ユーザー"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"リポジトリの履歴が変わりました。完了したクローンは保持されています。「ローカルリポジトリ」で確認してください。"</string>
+    <string name="vault_l10n_last_sync_value">"最終同期: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"ローカルのリモート"</string>
+    <string name="vault_l10n_local_remote_named">"ローカルのリモート: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"移動先はすでに存在します。既存のファイルは保持されています。"</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"これはアプリが管理するクローン先ではありません"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"リポジトリを追加しましたが、Obsidian の接続を準備できませんでした。設定 → Obsidian の接続から再試行してください。"</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"一部の Obsidian の接続に確認が必要です。設定 → Obsidian の接続から再試行してください。"</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"公開フォルダへのアクセスが削除されました。元のフォルダをもう一度選択してください。"</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"公開用アカウントが変わりました"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"公開へのアクセスを復元するには、元のデバイスフォルダをもう一度選択してください"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"アクセスを復元するには、元の公開フォルダをもう一度選択してください"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"このフォルダは確認した公開内容と異なります。既存のファイルは保持されています。"</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"この許可は別のフォルダのものです。元の公開フォルダを選択してください。"</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"公開に対応が必要です。保存されたファイルは保持されています。"</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"シンボリックリンクを含まない公開フォルダを選択してください"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"シンボリックリンクを含まない元の公開フォルダを選択してください"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"元の公開フォルダは利用できません"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"公開の登録は別の公開先のものです"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"このフォルダは登録済みのリポジトリと重なっています。公開する前に既存の項目を確認してください。"</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"保存された公開の進行状況は利用できません"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"選択した GitHub アカウントを再接続してください"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"接続済みの GitHub アカウントを選択してください"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"公開リポジトリの設定が変わりました"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"公開する前にリポジトリ設定を修復する必要があります"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"この公開用に選択した GitHub アカウントにサインインしてください"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"停止しました。保存された進行状況を確認できます。最後のネットワーク結果は不確かな場合があります。"</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"公開する前に、選択した GitHub アカウントを確認してください"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"リポジトリの復旧にはフォルダへのアクセスが必要です。「ローカルリポジトリ」で対象のフォルダをもう一度選択してください。"</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"このリポジトリはすでに追加されています"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"保存されたアクセスを復元するには、このリポジトリのフォルダをもう一度選択してください。"</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"リポジトリ名は必須です"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"リポジトリ設定を保存できませんでした。空き容量を確認してください"</string>
+    <string name="vault_l10n_sample_open_failed">"サンプルリポジトリを開けませんでした: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"サンプルリポジトリ"</string>
+    <string name="vault_l10n_settings_load_failed">"設定を読み込めませんでした: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"設定を保存できませんでした"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"共有ストレージへのアクセスが削除されました。このリポジトリを開くには有効にしてください。"</string>
+    <string name="vault_l10n_size_bytes">"%1$s B"</string>
+    <string name="vault_l10n_size_kb">"%1$s KB"</string>
+    <string name="vault_l10n_size_mb">"%1$s MB"</string>
+    <string name="vault_l10n_status_conflict" formatted="false">"競合"</string>
+    <string name="vault_l10n_status_staged" formatted="false">"ステージ済"</string>
+    <string name="vault_l10n_status_staged_deletion" formatted="false">"ステージ済の削除"</string>
+    <string name="vault_l10n_status_staged_unstaged" formatted="false">"ステージ済 + 未ステージ"</string>
+    <string name="vault_l10n_status_untracked" formatted="false">"未追跡"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"先にフォルダを選択してください"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"このストレージの場所が変わりました。フォルダをもう一度選択してください。"</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"ストレージに対応が必要です"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"追跡解除の確認内容が変わりました。リポジトリとバックアップの選択をもう一度確認してください。"</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"このストレージボリュームは利用できません"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"このストレージボリュームは利用できません。再接続して、フォルダをもう一度選択してください。"</string>
+    <string name="vault_open_in_files_failed" formatted="false">"このフォルダーを「ファイル」で開けませんでした。"</string>
+    <string name="vault_repository_fallback" formatted="false">"リポジトリ"</string>
+    <string name="vault_url_copied" formatted="false">"コピーしました！"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"%1$d日前"</item>
+        <item quantity="other">"%1$d日前"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"%1$d時間前"</item>
+        <item quantity="other">"%1$d時間前"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"%1$d分前"</item>
+        <item quantity="other">"%1$d分前"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"%1$dか月前"</item>
+        <item quantity="other">"%1$dか月前"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"%1$d週間前"</item>
+        <item quantity="other">"%1$d週間前"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"%1$d年前"</item>
+        <item quantity="other">"%1$d年前"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"マージに未解決のコンフリクトが %1$d 件あります。\n\nマージを完了する前に解決してください。"</item>
+        <item quantity="other">"マージに未解決のコンフリクトが %1$d 件あります。\n\nマージを完了する前に解決してください。"</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s 行"</item>
+        <item quantity="other">"+%1$s -%2$s 行"</item>
+    </plurals>
     <plurals name="discard_review_files">
         <item quantity="one">"%1$d ファイル"</item>
         <item quantity="other">"%1$d ファイル"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"マージ停止: %1$s（コンフリクト %2$d 件）"</item>
+        <item quantity="other">"マージ停止: %1$s（コンフリクト %2$d 件）"</item>
     </plurals>
     <plurals name="lfs_downloaded_objects">
         <item quantity="one">"%1$d 個のオブジェクトをダウンロードしました。"</item>
@@ -1170,6 +1661,10 @@
         <item quantity="one">"%1$d ファイル"</item>
         <item quantity="other">"%1$d ファイル"</item>
     </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"Git メタデータを含む %1$s 個のファイル · %2$s"</item>
+        <item quantity="other">"Git メタデータを含む %1$s 個のファイル · %2$s"</item>
+    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"ほかに %1$d 件のブロックされたパスが非表示です。"</item>
         <item quantity="other">"ほかに %1$d 件のブロックされたパスが非表示です。"</item>
@@ -1181,6 +1676,10 @@
     <plurals name="rebase_upstream_commits">
         <item quantity="one">"上流のコミット %1$d 件"</item>
         <item quantity="other">"上流のコミット %1$d 件"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d 件のリポジトリを追加しました"</item>
+        <item quantity="other">"%1$d 件のリポジトリを追加しました"</item>
     </plurals>
     <plurals name="repository_picker_count">
         <item quantity="one">"· %1$d 件のリポジトリ"</item>

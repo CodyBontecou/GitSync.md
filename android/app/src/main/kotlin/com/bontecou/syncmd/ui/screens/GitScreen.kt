@@ -91,6 +91,7 @@ import com.bontecou.syncmd.ui.theme.TideRow
 import com.bontecou.syncmd.ui.theme.TideSectionLabel
 import com.bontecou.syncmd.ui.theme.TideTopBar
 import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.BranchViewModel
 import com.bontecou.syncmd.ui.viewmodels.ConflictViewModel
 import com.bontecou.syncmd.ui.viewmodels.DiffViewModel
@@ -160,7 +161,7 @@ fun GitScreen(
         }
     }
     val pullAttention by pullVM.attention.collectAsState()
-    val pullError by pullVM.errorMessage.collectAsState()
+    val pullError = pullVM.errorText.collectAsState().value?.asString()
     val pullBusy by pullVM.isLoading.collectAsState()
     val pullSelection by pullVM.selection.collectAsState()
     val pullContext = pullSelection?.takeIf { it.path == repositoryPath }
@@ -170,30 +171,30 @@ fun GitScreen(
     val diff by diffState
     val commitMessage  by diffVM.commitMessage.collectAsState()
     val isCommitting by diffVM.isCommitting.collectAsState()
-    val operationMessage by diffVM.operationMessage.collectAsState()
+    val operationMessage = diffVM.operationMessage.collectAsState().value?.asString()
     val branchContext = branchState.value.selection?.takeIf { it.path == repositoryPath }
     val currentBranch = branchState.value.currentBranch?.takeIf { branchContext != null && branchState.value.actionsReady }
-    val branchError = branchState.value.errorMessage.takeIf { branchContext != null }
+    val branchError = branchState.value.errorMessage?.takeIf { branchContext != null }?.asString()
     val branchBusy = branchState.value.isLoading
     val conflicts      by conflictVM.conflicts.collectAsState()
     val resolvedConflicts by conflictVM.resolvedConflicts.collectAsState()
     val mergeState     by conflictVM.mergeState.collectAsState()
     val isPushing      by diffVM.isPushing.collectAsState()
     val isLoading by diffVM.isLoading.collectAsState()
-    val pushError      by diffVM.errorMessage.collectAsState()
+    val pushError = diffVM.errorMessage.collectAsState().value?.asString()
     val lockedPaths by diffVM.lockedPaths.collectAsState()
     val selectedConflict by conflictVM.selectedConflict.collectAsState()
     val manualContent by conflictVM.manualResolutionContent.collectAsState()
     val resolutionPath by conflictVM.resolutionPath.collectAsState()
     val conflictBusy by conflictVM.isLoading.collectAsState()
-    val conflictError by conflictVM.errorMessage.collectAsState()
+    val conflictError = conflictVM.errorMessage.collectAsState().value?.asString()
     val conflictSelection by conflictVM.selection.collectAsState()
     val conflictReady by conflictVM.actionsReady.collectAsState()
     val conflictContext = conflictSelection?.takeIf { it.path == repositoryPath }
     val canActOnConflict = conflictContext != null && conflictReady && !conflictBusy
     val historyState = historyVM.state.collectAsState()
     val historyContext = historyState.value.selection?.takeIf { it.path == repositoryPath }
-    val historyError = historyState.value.errorMessage
+    val historyError = historyState.value.errorMessage?.asString()
     val historyRevision = historyState.value.operationRevision
     LaunchedEffect(repositoryPath, historyRevision) {
         if (historyRevision > 0 && historyContext != null) {
@@ -555,7 +556,7 @@ fun GitScreen(
                         // Push error (rejected, auth, network…): tap or ✕ clears it.
                         if (pushError != null) {
                             TideBanner(
-                                title = pushError ?: "",
+                                title = pushError,
                                 tone = TideBannerTone.DANGER,
                                 onDismiss = { diffVM.clearError() },
                                 dismissLabel = stringResource(R.string.ui_dismiss_48845bff),
@@ -734,6 +735,15 @@ fun GitScreen(
             item {
                 GitGroup(title = stringResource(R.string.tide_git_remote)) {
                     TideRow(
+                        title = stringResource(R.string.git_fetch),
+                        subtitle = stringResource(R.string.git_fetch_detail),
+                        modifier = Modifier.testTag("git-fetch"),
+                        enabled = !pullBusy && pullContext != null,
+                        leading = { GitRowIcon("↕") },
+                        onClick = { pullContext?.let(pullVM::fetch) },
+                    )
+                    TideHairline()
+                    TideRow(
                         title = stringResource(R.string.pull_screen),
                         subtitle = stringResource(R.string.ui_fetch_and_apply_remote_changes_399278ae),
                         enabled = !pullBusy && pullContext != null,
@@ -824,7 +834,7 @@ fun GitScreen(
             onDismissRequest = diffVM::clearError,
             icon = { com.bontecou.syncmd.ui.theme.TideModalIcon(glyph = "!", tint = c.danger) },
             title = stringResource(R.string.ui_push_blocked_by_lfs_locks_e4e28836),
-            text = { Text(pushError!!, Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()).testTag("lfs-lock-error")) },
+            text = { Text(pushError, Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()).testTag("lfs-lock-error")) },
             confirmButton = { BPrimaryButton(stringResource(R.string.ui_ok_565339bc), Modifier.fillMaxWidth(), onClick = diffVM::clearError) },
         )
     } else if (operationError != null) {

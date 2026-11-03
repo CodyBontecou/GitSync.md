@@ -319,9 +319,9 @@ class RepositoryCallbackGrantTest {
         try {
             withTimeout(10_000) { while (settings.allRepositories.value.isEmpty()) delay(10) }
             instrumentation.runOnMainSync { settings.prepareMove(root.path, RepositoryLocations.APP) }
-            withTimeout(10_000) { while (settings.moveReview.value == null && settings.errorMessage.value == null) delay(10) }
-            assertNull(settings.errorMessage.value); val move = settings.moveReview.value!!.plan
-            instrumentation.runOnMainSync { settings.moveReviewed() }
+            withTimeout(10_000) { while (settings.moveReview.value == null && settings.moveReviewError.value == null && settings.errorMessage.value == null) delay(10) }
+            assertNull(settings.errorMessage.value); assertNull(settings.moveReviewError.value); val move = settings.moveReview.value!!.plan
+            instrumentation.runOnMainSync { settings.moveReviewed(settings.moveReview.value!!) }
             try { withTimeout(15_000) { while (settings.destructiveBusy.value) delay(10) } }
             catch (timeout: TimeoutCancellationException) {
                 throw AssertionError("Owned move did not finish: busy=${settings.destructiveBusy.value}; loading=${settings.isLoading.value}; error_present=${settings.errorMessage.value!=null}; source_exists=${root.exists()}; destination_exists=${File(move.destination).exists()}",timeout)
