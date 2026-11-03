@@ -42,7 +42,7 @@ final class AppUnlock {
     var isUnlocked: Bool { reason != nil }
 
     /// Localized one-time price, or a fallback while the product loads.
-    var displayPrice: String { product?.displayPrice ?? "$19.99" }
+    var displayPrice: String { product?.displayPrice ?? "$9.99" }
 
     private static let cacheKey = "appUnlock.reason"
     private let defaults: UserDefaults
