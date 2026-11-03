@@ -209296,156 +209296,156 @@
         }
       }
     },
-    "Report how many files changed on this iPhone and how many commits are waiting to push or pull — without touching the network.": {
+    "Report how many files changed on this device and how many commits are waiting to push or pull — without touching the network.": {
       "localizations": {
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "أبلغ عن عدد الملفات التي تغيّرت على هذا الـ iPhone وعدد عمليات commit التي تنتظر push أو pull — دون استخدام الشبكة."
+            "value": "أبلغ عن عدد الملفات التي تغيّرت على هذا الجهاز وعدد عمليات commit التي تنتظر push أو pull — دون استخدام الشبكة."
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rapportér, hvor mange filer der er ændret på denne iPhone, og hvor mange commits der venter på push eller pull – uden at bruge netværket."
+            "value": "Rapportér, hvor mange filer der er ændret på denne enhed, og hvor mange commits der venter på push eller pull – uden at bruge netværket."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Melden, wie viele Dateien auf diesem iPhone geändert wurden und wie viele Commits auf Push oder Pull warten – ohne Netzwerkzugriff."
+            "value": "Melden, wie viele Dateien auf diesem Gerät geändert wurden und wie viele Commits auf Push oder Pull warten – ohne Netzwerkzugriff."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Indica cuántos archivos cambiaron en este iPhone y cuántos commits esperan push o pull, sin usar la red."
+            "value": "Indica cuántos archivos cambiaron en este dispositivo y cuántos commits esperan push o pull, sin usar la red."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kerro, montako tiedostoa tässä iPhonessa muuttui ja montako committia odottaa lähetystä tai hakua – ilman verkkoyhteyttä."
+            "value": "Kerro, montako tiedostoa tässä laitteessa muuttui ja montako committia odottaa lähetystä tai hakua – ilman verkkoyhteyttä."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Indique combien de fichiers ont changé sur cet iPhone et combien de commits attendent un push ou un pull — sans accès réseau."
+            "value": "Indique combien de fichiers ont changé sur cet appareil et combien de commits attendent un push ou un pull — sans accès réseau."
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "דיווח כמה קבצים השתנו ב-iPhone הזה וכמה commits ממתינים ל-push או ל-pull — בלי לגשת לרשת."
+            "value": "דיווח כמה קבצים השתנו במכשיר הזה וכמה commits ממתינים ל-push או ל-pull — בלי לגשת לרשת."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "बताएँ कि इस iPhone पर कितनी फ़ाइलें बदलीं और कितने commit push या pull की प्रतीक्षा में हैं — नेटवर्क का उपयोग किए बिना।"
+            "value": "बताएँ कि इस डिवाइस पर कितनी फ़ाइलें बदलीं और कितने commit push या pull की प्रतीक्षा में हैं — नेटवर्क का उपयोग किए बिना।"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Megmutatja, hány fájl módosult ezen az iPhone-on, és hány commit vár pushra vagy pullra – hálózat használata nélkül."
+            "value": "Megmutatja, hány fájl módosult ezen az eszközön, és hány commit vár pushra vagy pullra – hálózat használata nélkül."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laporkan berapa banyak file yang berubah di iPhone ini dan berapa commit yang menunggu push atau pull — tanpa mengakses jaringan."
+            "value": "Laporkan berapa banyak file yang berubah di perangkat ini dan berapa commit yang menunggu push atau pull — tanpa mengakses jaringan."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Indica quanti file sono cambiati su questo iPhone e quanti commit attendono push o pull — senza usare la rete."
+            "value": "Indica quanti file sono cambiati su questo dispositivo e quanti commit attendono push o pull — senza usare la rete."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ネットワークに接続せずに、この iPhone で変更されたファイル数と、プッシュまたはプル待ちのコミット数を報告します。"
+            "value": "ネットワークに接続せずに、このデバイスで変更されたファイル数と、プッシュまたはプル待ちのコミット数を報告します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "네트워크에 접속하지 않고 이 iPhone에서 변경된 파일 수와 푸시 또는 풀을 기다리는 커밋 수를 알려줍니다."
+            "value": "네트워크에 접속하지 않고 이 기기에서 변경된 파일 수와 푸시 또는 풀을 기다리는 커밋 수를 알려줍니다."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rapporter hvor mange filer som er endret på denne iPhonen og hvor mange commits som venter på push eller pull – uten å bruke nettverket."
+            "value": "Rapporter hvor mange filer som er endret på denne enheten og hvor mange commits som venter på push eller pull – uten å bruke nettverket."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Meld hoeveel bestanden op deze iPhone zijn gewijzigd en hoeveel commits wachten op push of pull — zonder netwerk."
+            "value": "Meld hoeveel bestanden op dit apparaat zijn gewijzigd en hoeveel commits wachten op push of pull — zonder netwerk."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pokaż, ile plików zmieniło się na tym iPhonie i ile commitów czeka na push lub pull — bez łączenia z siecią."
+            "value": "Pokaż, ile plików zmieniło się na tym urządzeniu i ile commitów czeka na push lub pull — bez łączenia z siecią."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Informa quantos arquivos mudaram neste iPhone e quantos commits aguardam push ou pull — sem acessar a rede."
+            "value": "Informa quantos arquivos mudaram neste dispositivo e quantos commits aguardam push ou pull — sem acessar a rede."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Сообщить, сколько файлов изменено на этом iPhone и сколько commit ждут push или pull, — без обращения к сети."
+            "value": "Сообщить, сколько файлов изменено на этом устройстве и сколько commit ждут push или pull, — без обращения к сети."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rapportera hur många filer som ändrats på den här iPhonen och hur många commits som väntar på push eller pull – utan att använda nätverket."
+            "value": "Rapportera hur många filer som ändrats på den här enheten och hur många commits som väntar på push eller pull – utan att använda nätverket."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "รายงานจำนวนไฟล์ที่เปลี่ยนบน iPhone เครื่องนี้และจำนวน commit ที่รอ push หรือ pull — โดยไม่ใช้เครือข่าย"
+            "value": "รายงานจำนวนไฟล์ที่เปลี่ยนบนอุปกรณ์เครื่องนี้และจำนวน commit ที่รอ push หรือ pull — โดยไม่ใช้เครือข่าย"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu iPhone'da kaç dosyanın değiştiğini ve kaç commit'in push veya pull beklediğini bildir — ağa dokunmadan."
+            "value": "Bu cihazda kaç dosyanın değiştiğini ve kaç commit'in push veya pull beklediğini bildir — ağa dokunmadan."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Показати, скільки файлів змінено на цьому iPhone і скільки commit чекають на push або pull, — без звернення до мережі."
+            "value": "Показати, скільки файлів змінено на цьому пристрої і скільки commit чекають на push або pull, — без звернення до мережі."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Báo cáo số tệp đã thay đổi trên iPhone này và số commit đang chờ push hoặc pull — không cần dùng mạng."
+            "value": "Báo cáo số tệp đã thay đổi trên thiết bị này và số commit đang chờ push hoặc pull — không cần dùng mạng."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "报告此 iPhone 上有多少文件已更改，以及有多少提交等待推送或拉取，无需联网。"
+            "value": "报告此设备上有多少文件已更改，以及有多少提交等待推送或拉取，无需联网。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "回報此 iPhone 上有多少檔案已變更，以及有多少提交等待推送或拉取，不需連線。"
+            "value": "回報此裝置上有多少檔案已變更，以及有多少提交等待推送或拉取，不需連線。"
           }
         }
       }

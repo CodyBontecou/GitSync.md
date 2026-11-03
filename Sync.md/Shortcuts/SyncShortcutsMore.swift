@@ -17,7 +17,7 @@ struct SyncAllRepositoriesIntent: AppIntent {
 
 struct RepositoryStatusIntent: AppIntent {
     static var title: LocalizedStringResource = "Get Repository Status"
-    static var description = IntentDescription("Report how many files changed on this iPhone and how many commits are waiting to push or pull — without touching the network.")
+    static var description = IntentDescription("Report how many files changed on this device and how many commits are waiting to push or pull — without touching the network.")
     static var openAppWhenRun = false
 
     @Parameter(title: "Repository", requestValueDialog: "Which repository should GitSync.md check?")
