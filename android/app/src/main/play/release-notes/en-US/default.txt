@@ -1,2 +1,6 @@
-Gitsync.md moves to a new paid listing: a $9.99 one-time purchase matching the iOS app.
-All features included — no free tier, no subscriptions, no in-app purchases.
+A redesigned GitSync.md that matches the iOS app.
+• New Vault, Git and Settings screens
+• Resolve: commit local edits, then review the remote merge
+• Fetch from the Git screen; Vault menu for connection, author, move and copy URL
+• Fully translated into 25 languages
+• Safer moves, restores and conflict editing
