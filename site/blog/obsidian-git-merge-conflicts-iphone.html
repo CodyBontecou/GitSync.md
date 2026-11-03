@@ -38,7 +38,7 @@
   "headline": "Fix Obsidian Git merge conflicts on iPhone",
   "description": "Resolve Obsidian vault conflicts on iPhone with GitSync.md. Identify the Git state, review each file, finish the merge or rebase, and verify your notes.",
   "datePublished": "2026-10-26",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-03",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -132,7 +132,14 @@
           <li>For a combined result, edit the <strong>Result</strong> content. <strong>Use Ours</strong> and <strong>Use Theirs</strong> copy a side into that result; they are not a substitute for reviewing it.</li>
           <li>Choose <strong>Resolve</strong> and confirm saving the result. Repeat for every unresolved path.</li>
         </ol>
-        <p>In a normal merge, Ours refers to the current branch’s side and Theirs to the incoming side. Rebase changes the context of these labels. Do not assume Ours always means the newest phone note; read the contents.</p>
+        <h3 id="ours-and-theirs">Ours and Theirs depend on the operation</h3>
+        <p>These are Git-side labels, not a promise about which device has the newest note. Check the active operation and read both versions before choosing.</p>
+        <ul>
+          <li><strong>Normal merge:</strong> Ours is the current branch’s version; Theirs is the version being merged into it.</li>
+          <li><strong>Rebase:</strong> Ours is the history you are replaying commits onto, including commits already replayed. Theirs is the version from the commit currently being replayed.</li>
+        </ul>
+        <p>For example, suppose you committed a phone edit while another device pushed a different edit. If you then rebase the phone’s commits onto the updated remote branch, the phone commit being replayed is on the <strong>Theirs</strong> side. Choosing Ours because it sounds like “my phone” can remove the edit you meant to keep. This is an illustrative Git scenario, not an app test.</p>
+        <p><a href="https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---ours">Git’s documentation</a> explains this apparent reversal during rebase. When both versions contain useful text, combine the needed passages in Result, then review the whole note before resolving. Neither label chooses the correct wording for you. This explanation was reviewed November 3, 2026.</p>
         <h3>A small text example</h3>
         <p>This is an illustrative note, not a recorded app test. Suppose one side says:</p>
         <pre tabindex="0" role="region" aria-label="First version of an example note"><code>## Planning call
