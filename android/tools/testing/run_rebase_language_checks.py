@@ -20,7 +20,7 @@ parser.add_argument('--device', default='emulator-5556')
 parser.add_argument('--avd', choices=sorted(name for name, api in OWNED_AVDS.items() if api >= 33), default='gitsync-paid-review-20261026')
 options = parser.parse_args()
 base = require_owned_emulator(ADB, options.device, options.avd)
-package = 'md.gitsync.md.debug'
+package = 'com.bontecou.syncmd.debug'
 output = pathlib.Path(tempfile.mkdtemp(prefix='syncmd-rebase-language-', dir='/tmp'))
 print('Rebase language evidence:', output, flush=True)
 

@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Не вдалося відкрити Obsidian. Увімкніть GitSync.md Connect в Obsidian й знову спробуйте повернутися."</string>
     <string name="obsidian_scope" formatted="false">"Підключіть Obsidian Git за допомогою вибраного для цього репозиторію облікового запису GitHub. Облікові дані шифруються для супутнього плагіна й не потрапляють до посилань callback."</string>
     <string name="obsidian_title" formatted="false">"Підключення Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"Уже купували GitSync.md? Тоді його вже розблоковано. Якщо ні, торкніться «Відновити покупку»."</string>
+    <string name="paywall_buy" formatted="false">"Розблокувати GitSync.md"</string>
+    <string name="paywall_buy_vault">"Розблокувати й клонувати %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Перевірити ще раз"</string>
+    <string name="paywall_check_branch_missing">"%1$s не знайдено"</string>
+    <string name="paywall_check_branch_missing_detail">"Гілки %1$s немає в цьому віддаленому репозиторії. Перевірте назву гілки, а потім перевірте ще раз."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"немає з’єднання"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"підтвердьте ключ під час клонування"</string>
+    <string name="paywall_check_connected" formatted="false">"підключено"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Перевіряємо\nваше сховище."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Спершу треба\nдещо виправити."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Ваше сховище\nготове."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Не вдається зв’язатися\nз репозиторієм."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"немає"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"використовується · підтримується"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">".obsidian поки немає"</string>
+    <string name="paywall_check_on_clone" formatted="false">"перевіряється під час клонування"</string>
+    <string name="paywall_check_read_only" formatted="false">"лише читання"</string>
+    <string name="paywall_check_read_write" formatted="false">"читання · запис"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Переконуємося, що GitSync.md може синхронізувати цей репозиторій, перш ніж ви щось оплатите."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md може читати цей репозиторій, але не може надсилати в нього зміни. Попросіть власника про доступ на запис, а потім перевірте ще раз."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Усе гаразд. Один клон — і Obsidian відкриє його з повною історією."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Його буде клоновано лише для читання. Pull працює, але push буде відхилено."</string>
+    <string name="paywall_check_title" formatted="false">"Перевірка сховища"</string>
+    <string name="paywall_check_vault" formatted="false">"Перевірити сховище"</string>
+    <string name="paywall_checking_button" formatted="false">"Перевірка…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Клонувати сховище"</string>
+    <string name="paywall_close" formatted="false">"Закрити"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Продовжити лише для читання"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play не вдалося завершити покупку. Спробуйте ще раз за мить."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play зараз недоступний. Спробуйте ще раз за мить."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Ви нічого не сплатили. Розблокування з’явиться, лише коли сховище пройде перевірку."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Нічого не завантажено."</string>
+    <string name="paywall_foot_locked" formatted="false">"Читаються лише метадані. Нотатки не завантажуються до розблокування."</string>
+    <string name="paywall_foot_unlocked">"Читаються лише метадані. Нічого не завантажується, доки ви не торкнетеся «%1$s»."</string>
+    <string name="paywall_one_time_line" formatted="false">"Одноразова покупка. Без підписки."</string>
+    <string name="paywall_pending" formatted="false">"Очікування схвалення. Сховище буде додано, щойно покупку буде завершено."</string>
+    <string name="paywall_pick_another" formatted="false">"Вибрати інший репозиторій"</string>
+    <string name="paywall_pill_checking" formatted="false">"перевірка…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"потрібен доступ"</string>
+    <string name="paywall_pill_ready" formatted="false">"готово"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"недоступний"</string>
+    <string name="paywall_point_again_body" formatted="false">"Новий телефон, нове сховище, заплутане злиття. Кожне сховище, кожне оновлення."</string>
+    <string name="paywall_point_again_title" formatted="false">"Під рукою, коли знову знадобиться"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Повна історія, тож плагін Git працює з першого дня."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Клонується просто в Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH або токен. Без термінала й файлів конфігурації."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Вхід без клопоту"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"одноразова оплата · без підписки"</string>
+    <string name="paywall_price_once">"%1$s один раз"</string>
+    <string name="paywall_restore" formatted="false">"Відновити покупку"</string>
+    <string name="paywall_restore_none" formatted="false">"Для цього облікового запису Google не знайдено попередніх покупок."</string>
+    <string name="paywall_row_access" formatted="false">"Доступ на читання й запис"</string>
+    <string name="paywall_row_branch" formatted="false">"Гілка"</string>
+    <string name="paywall_row_checking" formatted="false">"перевірка"</string>
+    <string name="paywall_row_lfs" formatted="false">"Файли Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Сховище Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Плагін Obsidian Git налаштовано"</string>
+    <string name="paywall_row_size" formatted="false">"Розмір і кількість файлів"</string>
+    <string name="paywall_settings_title" formatted="false">"Повний доступ до GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Розблоковано"</string>
+    <string name="paywall_terms" formatted="false">"Умови"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Розблокуйте, щоб додати сховище. Далі роботу може взяти на себе плагін Obsidian Git."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Розблокуйте, щоб клонувати сховище в Obsidian. Далі роботу може взяти на себе плагін Obsidian Git."</string>
+    <string name="paywall_unlock_title" formatted="false">"Налаштуйте один раз.\nІ все готово."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Віддалений репозиторій відхилив ці облікові дані. Перевірте спосіб входу, а потім перевірте ще раз."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md не вдалося зв’язатися з віддаленим репозиторієм. Перевірте адресу й підключення, а потім перевірте ще раз."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"За цією адресою немає репозиторію. Перевірте URL, а потім перевірте ще раз."</string>
     <string name="publication_accounts" formatted="false">"GitHub — рахунок"</string>
     <string name="publication_adopt" formatted="false">"Використати репозиторій"</string>
     <string name="publication_adopt_title" formatted="false">"Використати цей репозиторій?"</string>
@@ -1698,6 +1767,12 @@
         <item quantity="few">"%1$s файли з метаданими Git · %2$s"</item>
         <item quantity="many">"%1$s файлів із метаданими Git · %2$s"</item>
         <item quantity="other">"%1$s файлу з метаданими Git · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d файл"</item>
+        <item quantity="few">"%1$d файли"</item>
+        <item quantity="many">"%1$d файлів"</item>
+        <item quantity="other">"%1$d файлу"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"Ще %1$d заблокований шлях не показано."</item>

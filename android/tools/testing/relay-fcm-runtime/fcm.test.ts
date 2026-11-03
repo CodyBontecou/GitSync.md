@@ -51,7 +51,7 @@ describe("FCM HTTP v1 transport", () => {
     expect(request?.headers).toMatchObject({ authorization: "Bearer synthetic-OAuth-access-token" });
     const sent = JSON.parse(String(request?.body)).message;
     expect(sent.notification).toBeUndefined();
-    expect(sent.android).toMatchObject({ priority: "HIGH", ttl: "3600s", restricted_package_name: "md.gitsync.md.debug" });
+    expect(sent.android).toMatchObject({ priority: "HIGH", ttl: "3600s", restricted_package_name: "com.bontecou.syncmd.debug" });
     expect(sent.data).toMatchObject({ type: "gitsync.push.v1", repo: "acme/notes", branch: "notes/東京", hint: "hint-123" });
   });
   it("shares exactly one OAuth exchange within one delivery fan-out", async () => {
@@ -60,7 +60,7 @@ describe("FCM HTTP v1 transport", () => {
     await Promise.all([sender.send(notification()), sender.send({ ...notification(), environment: "production" })]);
     expect(fetcher.mock.calls.filter(([url]) => String(url).endsWith("/token"))).toHaveLength(1);
     const payloads = fetcher.mock.calls.filter(([url]) => String(url).endsWith("messages:send")).map(([, request]) => JSON.parse(String(request?.body)));
-    expect(payloads.map(x => x.message.android.restricted_package_name).sort()).toEqual(["md.gitsync.md", "md.gitsync.md.debug"]);
+    expect(payloads.map(x => x.message.android.restricted_package_name).sort()).toEqual(["com.bontecou.syncmd", "com.bontecou.syncmd.debug"]);
   });
   it("rejects redirects at either credential-bearing endpoint without following them", async () => {
     for (const status of [301, 302, 303, 307, 308]) {

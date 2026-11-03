@@ -2490,3 +2490,25 @@ Post-build workspace check: three theme inputs (`BrutalDesignSystem.kt`, `Theme.
   - The one real regression (the `LocalizationTest` plural categories) is fixed and passes.
 - Evidence: `tools/testing/localization-literals-evidence/`. The release APK is not installed and no physical device was used.
 - **Open:** linguistic review, raw Git/server text, `pull_all_progress` plural, host-wrapper suites with fixtures/large text, physical devices and other API levels.
+
+### Free listing with the iOS hard paywall (1.1.0, 2026-11-03)
+
+- **Listing:** the package moves back to the permanently free listing `com.bontecou.syncmd` (versionCode 10 / 1.1.0). The new app IDs are registered in Firebase.
+- **Unlock:** `billing/AppUnlock` with Play Billing 8.3. It sells `full_access` and grandfathers anyone who owns any legacy unlock product, or who already had vaults on the first launch of a paywall build.
+- **Free vault check:** `ls-remote` plus GitHub metadata.
+- **Unlock sheet and gate:** placed on Clone from URL, the GitHub picker, adding local repositories and Publish a folder.
+- **Settings:** shows the unlock status and Restore purchase.
+- **Translations:** 69 strings and 1 plural in all 25 locales.
+- **Results:**
+  - JVM tests: 705/705 core and 151/151 app.
+  - Frozen build: 795 inputs, 0 drift.
+  - API 36 device: 33/33 paywall, localization and push tests.
+  - Full device suite: no new failures once the classes affected by focus loss were rerun alone.
+  - Release smoke test: the real `ls-remote` check, the price and the unlock sheet appear, and Play-unavailable is handled.
+- **Evidence:** `tools/testing/paywall-evidence/`.
+- **Open:**
+  - real license-tester purchase and restore
+  - `full_access` repricing, the upload-key match and the 1.1.0 Play submission
+  - declarations on the free listing
+  - unpublishing `md.gitsync.md`
+  - Play links on the website and the FCM relay package restriction

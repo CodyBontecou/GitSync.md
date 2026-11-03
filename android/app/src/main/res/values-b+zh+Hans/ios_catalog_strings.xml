@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"无法打开 Obsidian。请在 Obsidian 中启用 GitSync.md Connect，然后再次尝试返回。"</string>
     <string name="obsidian_scope" formatted="false">"使用此仓库选定的 GitHub 账户连接 Obsidian Git。凭据会为配套插件加密，且不会包含在回调链接中。"</string>
     <string name="obsidian_title" formatted="false">"Obsidian 连接"</string>
+    <string name="paywall_bought_before" formatted="false">"之前买过 GitSync.md？它已经解锁。如果没有，请轻点“恢复购买”。"</string>
+    <string name="paywall_buy" formatted="false">"解锁 GitSync.md"</string>
+    <string name="paywall_buy_vault">"解锁并克隆 %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"重新检查"</string>
+    <string name="paywall_check_branch_missing">"未找到 %1$s"</string>
+    <string name="paywall_check_branch_missing_detail">"此远程上没有分支 %1$s。请检查分支名称，然后重新检查。"</string>
+    <string name="paywall_check_cant_connect" formatted="false">"无法连接"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"克隆时确认密钥"</string>
+    <string name="paywall_check_connected" formatted="false">"已连接"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"正在检查\n你的仓库。"</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"还有一件事\n需要先解决。"</string>
+    <string name="paywall_check_headline_ready" formatted="false">"你的仓库\n已准备就绪。"</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"无法连接\n此 Git 仓库。"</string>
+    <string name="paywall_check_lfs_none" formatted="false">"无"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"已使用 · 支持"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"尚无 .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"克隆时检查"</string>
+    <string name="paywall_check_read_only" formatted="false">"只读"</string>
+    <string name="paywall_check_read_write" formatted="false">"读 · 写"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"在你付费之前，先确认 GitSync.md 能同步此 Git 仓库。"</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md 可以读取此 Git 仓库，但无法推送。请向所有者申请写入权限，然后重新检查。"</string>
+    <string name="paywall_check_sub_ready" formatted="false">"一切正常。克隆一次，Obsidian 就能带着完整历史打开它。"</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"它将以只读方式克隆。你可以拉取，但推送会被拒绝。"</string>
+    <string name="paywall_check_title" formatted="false">"仓库检查"</string>
+    <string name="paywall_check_vault" formatted="false">"检查仓库"</string>
+    <string name="paywall_checking_button" formatted="false">"正在检查…"</string>
+    <string name="paywall_clone_vault" formatted="false">"克隆仓库"</string>
+    <string name="paywall_close" formatted="false">"关闭"</string>
+    <string name="paywall_continue_read_only" formatted="false">"以只读方式继续"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play 无法完成购买。请稍后再试。"</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"目前无法连接 Google Play。请稍后再试。"</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"你尚未支付任何费用。仓库通过检查后才会显示解锁选项。"</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"未下载任何内容。"</string>
+    <string name="paywall_foot_locked" formatted="false">"只读取元数据。解锁之前不会下载任何笔记。"</string>
+    <string name="paywall_foot_unlocked">"只读取元数据。在你轻点“%1$s”之前，不会下载任何内容。"</string>
+    <string name="paywall_one_time_line" formatted="false">"一次性购买，无需订阅。"</string>
+    <string name="paywall_pending" formatted="false">"正在等待批准。购买完成后会立即添加你的仓库。"</string>
+    <string name="paywall_pick_another" formatted="false">"选择其他 Git 仓库"</string>
+    <string name="paywall_pill_checking" formatted="false">"正在检查…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"需要权限"</string>
+    <string name="paywall_pill_ready" formatted="false">"就绪"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"无法连接"</string>
+    <string name="paywall_point_again_body" formatted="false">"新手机、新仓库、复杂的合并，都能应对。每个仓库，每次更新。"</string>
+    <string name="paywall_point_again_title" formatted="false">"再次需要时，随时都在"</string>
+    <string name="paywall_point_clone_body" formatted="false">"包含完整历史，Git 插件从第一天起就能使用。"</string>
+    <string name="paywall_point_clone_title" formatted="false">"直接克隆到 Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub、SSH 或令牌。无需终端，无需配置文件。"</string>
+    <string name="paywall_point_signin_title" formatted="false">"登录无需操心"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"一次性付费 · 无需订阅"</string>
+    <string name="paywall_price_once">"%1$s 一次性"</string>
+    <string name="paywall_restore" formatted="false">"恢复购买"</string>
+    <string name="paywall_restore_none" formatted="false">"未找到此 Google 账号的过往购买记录。"</string>
+    <string name="paywall_row_access" formatted="false">"读写权限"</string>
+    <string name="paywall_row_branch" formatted="false">"分支"</string>
+    <string name="paywall_row_checking" formatted="false">"正在检查"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS 文件"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian 仓库"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"已配置 Obsidian Git 插件"</string>
+    <string name="paywall_row_size" formatted="false">"大小和文件数"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md 完整版"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"已解锁"</string>
+    <string name="paywall_terms" formatted="false">"条款"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"解锁后即可添加仓库。之后可交给 Obsidian Git 插件处理。"</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"解锁后即可将仓库克隆到 Obsidian。之后可交给 Obsidian Git 插件处理。"</string>
+    <string name="paywall_unlock_title" formatted="false">"设置一次，\n从此搞定。"</string>
+    <string name="paywall_unreachable_auth" formatted="false">"远程拒绝了这些凭据。请检查登录方式，然后重新检查。"</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md 无法连接到远程。请检查地址和网络连接，然后重新检查。"</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"此地址没有 Git 仓库。请检查 URL，然后重新检查。"</string>
     <string name="publication_accounts" formatted="false">"GitHub 账户"</string>
     <string name="publication_adopt" formatted="false">"使用仓库"</string>
     <string name="publication_adopt_title" formatted="false">"要使用此仓库吗？"</string>
@@ -1664,6 +1733,9 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s 个文件（含 Git 元数据）· %2$s"</item>
         <item quantity="other">"%1$s 个文件（含 Git 元数据）· %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="other">"%1$d 个文件"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"另有 %1$d 个受阻路径未显示。"</item>

@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian tidak dapat dibuka. Aktifkan GitSync.md Connect di Obsidian, lalu coba kembali lagi."</string>
     <string name="obsidian_scope" formatted="false">"Hubungkan Obsidian Git menggunakan akun GitHub yang dipilih untuk repositori ini. Kredensial dienkripsi untuk plugin pendamping dan tidak disertakan dalam tautan callback."</string>
     <string name="obsidian_title" formatted="false">"Koneksi Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"Pernah membeli GitSync.md? Kuncinya sudah terbuka. Jika belum, ketuk Pulihkan pembelian."</string>
+    <string name="paywall_buy" formatted="false">"Buka kunci GitSync.md"</string>
+    <string name="paywall_buy_vault">"Buka kunci dan klon %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Periksa lagi"</string>
+    <string name="paywall_check_branch_missing">"%1$s tidak ditemukan"</string>
+    <string name="paywall_check_branch_missing_detail">"Cabang %1$s tidak ada di remote ini. Periksa nama cabang, lalu periksa lagi."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"tidak dapat terhubung"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"konfirmasi kunci saat klon"</string>
+    <string name="paywall_check_connected" formatted="false">"terhubung"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Memeriksa\nvault Anda."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Ada satu hal\nyang perlu diperbaiki."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Vault Anda\nsudah siap."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Repositori ini\ntidak dapat dijangkau."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"tidak ada"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"dipakai · didukung"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"belum ada .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"diperiksa saat klon"</string>
+    <string name="paywall_check_read_only" formatted="false">"hanya baca"</string>
+    <string name="paywall_check_read_write" formatted="false">"baca · tulis"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Memastikan GitSync.md bisa menyinkronkan repositori ini sebelum Anda membayar apa pun."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md bisa membaca repositori ini, tetapi tidak bisa push ke sana. Minta akses tulis kepada pemiliknya, lalu periksa lagi."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Semuanya beres. Sekali klon, Obsidian membukanya dengan riwayat utuh."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Vault akan diklon sebagai hanya-baca. Anda bisa melakukan pull, tetapi push akan ditolak."</string>
+    <string name="paywall_check_title" formatted="false">"Pemeriksaan vault"</string>
+    <string name="paywall_check_vault" formatted="false">"Periksa vault"</string>
+    <string name="paywall_checking_button" formatted="false">"Memeriksa…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Klon vault"</string>
+    <string name="paywall_close" formatted="false">"Tutup"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Lanjutkan sebagai hanya-baca"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play tidak dapat menyelesaikan pembelian. Coba lagi sebentar lagi."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play tidak dapat dijangkau saat ini. Coba lagi sebentar lagi."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Anda belum membayar apa pun. Opsi buka kunci baru muncul setelah vault Anda lolos pemeriksaan."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Tidak ada yang diunduh."</string>
+    <string name="paywall_foot_locked" formatted="false">"Hanya metadata yang dibaca. Tidak ada catatan yang diunduh sampai Anda membuka kunci."</string>
+    <string name="paywall_foot_unlocked">"Hanya metadata yang dibaca. Tidak ada yang diunduh sampai Anda mengetuk %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Pembelian satu kali. Tanpa langganan."</string>
+    <string name="paywall_pending" formatted="false">"Menunggu persetujuan. Vault Anda ditambahkan begitu pembelian selesai."</string>
+    <string name="paywall_pick_another" formatted="false">"Pilih repositori lain"</string>
+    <string name="paywall_pill_checking" formatted="false">"memeriksa…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"perlu akses"</string>
+    <string name="paywall_pill_ready" formatted="false">"siap"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"tak terjangkau"</string>
+    <string name="paywall_point_again_body" formatted="false">"Ponsel baru, vault baru, merge yang kusut. Setiap vault, setiap pembaruan."</string>
+    <string name="paywall_point_again_title" formatted="false">"Siap saat Anda membutuhkannya lagi"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Riwayat lengkap, jadi plugin Git langsung berfungsi sejak hari pertama."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Diklon langsung ke Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH, atau token. Tanpa terminal, tanpa berkas konfigurasi."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Masuk sudah diurus"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"sekali bayar · tanpa langganan"</string>
+    <string name="paywall_price_once">"%1$s sekali bayar"</string>
+    <string name="paywall_restore" formatted="false">"Pulihkan pembelian"</string>
+    <string name="paywall_restore_none" formatted="false">"Tidak ditemukan pembelian sebelumnya untuk akun Google ini."</string>
+    <string name="paywall_row_access" formatted="false">"Akses baca dan tulis"</string>
+    <string name="paywall_row_branch" formatted="false">"Cabang"</string>
+    <string name="paywall_row_checking" formatted="false">"memeriksa"</string>
+    <string name="paywall_row_lfs" formatted="false">"Berkas Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Vault Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Plugin Obsidian Git terkonfigurasi"</string>
+    <string name="paywall_row_size" formatted="false">"Ukuran dan jumlah berkas"</string>
+    <string name="paywall_settings_title" formatted="false">"Akses Penuh GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Terbuka"</string>
+    <string name="paywall_terms" formatted="false">"Ketentuan"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Buka kunci untuk menambahkan vault Anda. Setelah itu, plugin Obsidian Git bisa mengambil alih."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Buka kunci untuk mengklon vault Anda ke Obsidian. Setelah itu, plugin Obsidian Git bisa mengambil alih."</string>
+    <string name="paywall_unlock_title" formatted="false">"Atur sekali.\nBeres selamanya."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Remote menolak kredensial ini. Periksa metode masuk, lalu periksa lagi."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md tidak dapat menjangkau remote. Periksa alamat dan koneksi Anda, lalu periksa lagi."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Tidak ada repositori di alamat ini. Periksa URL, lalu periksa lagi."</string>
     <string name="publication_accounts" formatted="false">"GitHub Akun"</string>
     <string name="publication_adopt" formatted="false">"Gunakan Repositori"</string>
     <string name="publication_adopt_title" formatted="false">"Gunakan repositori ini?"</string>
@@ -1664,6 +1733,9 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s file termasuk metadata Git · %2$s"</item>
         <item quantity="other">"%1$s file termasuk metadata Git · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="other">"%1$d berkas"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d jalur terhalang lainnya tidak ditampilkan."</item>

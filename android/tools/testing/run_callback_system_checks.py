@@ -32,7 +32,7 @@ try:
             '--raw-status', '--timeout', '180'], cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT, timeout=300)
     proof['returncode'] = result.returncode
     assert result.returncode == 0, 'Native check failed: ' + str(output / 'native.log')
-    capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'md.gitsync.md.debug', 'cat', 'files/parity-evidence/callback-background-busy.png'])
+    capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'com.bontecou.syncmd.debug', 'cat', 'files/parity-evidence/callback-background-busy.png'])
     assert capture.startswith(b'\x89PNG')
     (output / 'callback-background-busy.png').write_bytes(capture)
 finally:

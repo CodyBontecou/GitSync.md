@@ -115,7 +115,7 @@ class RepositoryShortcutRunService : Service() {
     }
     private fun notification(message: Int, ongoing: Boolean, id: String): Notification {
         val returnTarget = callbackRun && !ongoing && callbackReturnAvailable
-        val target = if (returnTarget) Intent(this, BackgroundCallbackResultActivity::class.java).setAction("md.gitsync.md.CALLBACK_RESULT.$id").putExtra("run_id", id)
+        val target = if (returnTarget) Intent(this, BackgroundCallbackResultActivity::class.java).setAction("com.bontecou.syncmd.CALLBACK_RESULT.$id").putExtra("run_id", id)
             else Intent(this, MainActivity::class.java).setAction(Intent.ACTION_MAIN)
         val open = PendingIntent.getActivity(this, if (returnTarget) id.hashCode() else 590, target,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
@@ -131,7 +131,7 @@ class RepositoryShortcutRunService : Service() {
         }
         return builder.build()
     }
-    companion object { const val CALLBACK = "md.gitsync.md.RUN_CALLBACK"; private const val CALLBACK_CHANNEL = "repository-callback-actions"; private const val CHANNEL = "repository-shortcut-actions"; private const val NOTIFICATION = 591; private const val STOP = "md.gitsync.md.STOP_SHORTCUT"
+    companion object { const val CALLBACK = "com.bontecou.syncmd.RUN_CALLBACK"; private const val CALLBACK_CHANNEL = "repository-callback-actions"; private const val CHANNEL = "repository-shortcut-actions"; private const val NOTIFICATION = 591; private const val STOP = "com.bontecou.syncmd.STOP_SHORTCUT"
         fun stopIntent(context: android.content.Context, id: String): Intent {
             require(java.util.UUID.fromString(id).toString() == id)
             return Intent(context, RepositoryShortcutRunService::class.java).setAction(STOP)

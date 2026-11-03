@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian açılamadı. Obsidian’da GitSync.md Connect’i etkinleştirip dönmeyi yeniden deneyin."</string>
     <string name="obsidian_scope" formatted="false">"Bu depo için seçilen GitHub hesabını kullanarak Obsidian Git’i bağlayın. Kimlik bilgileri yardımcı eklenti için şifrelenir ve callback bağlantılarına dahil edilmez."</string>
     <string name="obsidian_title" formatted="false">"Obsidian bağlantıları"</string>
+    <string name="paywall_bought_before" formatted="false">"GitSync.md’yi daha önce satın aldınız mı? Kilidi zaten açık. Değilse Satın alımı geri yükle’ye dokunun."</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md kilidini aç"</string>
+    <string name="paywall_buy_vault">"Kilidi aç ve klonla: %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Yeniden denetle"</string>
+    <string name="paywall_check_branch_missing">"%1$s bulunamadı"</string>
+    <string name="paywall_check_branch_missing_detail">"%1$s dalı bu uzak depoda yok. Dal adını kontrol edin, ardından yeniden denetleyin."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"bağlanılamıyor"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"klonlarken anahtarı onaylayın"</string>
+    <string name="paywall_check_connected" formatted="false">"bağlı"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Kasanız\ndenetleniyor."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Önce düzeltilecek\nbir şey var."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Kasanız\nhazır."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Bu depoya\nulaşılamıyor."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"yok"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"kullanılıyor · destekleniyor"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"henüz .obsidian yok"</string>
+    <string name="paywall_check_on_clone" formatted="false">"klonlarken denetlenir"</string>
+    <string name="paywall_check_read_only" formatted="false">"salt okunur"</string>
+    <string name="paywall_check_read_write" formatted="false">"okuma · yazma"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Bir şey ödemeden önce GitSync.md’nin bu depoyu eşitleyebildiğinden emin oluyoruz."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md bu depoyu okuyabiliyor ancak push yapamıyor. Sahibinden yazma erişimi isteyin, ardından yeniden denetleyin."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Her şey yolunda. Tek bir klonla Obsidian onu geçmişiyle birlikte açar."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Salt okunur olarak klonlanacak. Pull yapabilirsiniz, ancak push’lar reddedilecek."</string>
+    <string name="paywall_check_title" formatted="false">"Kasa denetimi"</string>
+    <string name="paywall_check_vault" formatted="false">"Kasayı denetle"</string>
+    <string name="paywall_checking_button" formatted="false">"Denetleniyor…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Kasayı klonla"</string>
+    <string name="paywall_close" formatted="false">"Kapat"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Salt okunur devam et"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play satın alma işlemini tamamlayamadı. Biraz sonra yeniden deneyin."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play’e şu anda ulaşılamıyor. Biraz sonra yeniden deneyin."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Hiçbir şey ödemediniz. Kilit açma yalnızca kasanız denetimi geçince görünür."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Hiçbir şey indirilmedi."</string>
+    <string name="paywall_foot_locked" formatted="false">"Yalnızca meta veriler okunur. Kilidi açana kadar hiçbir not indirilmez."</string>
+    <string name="paywall_foot_unlocked">"Yalnızca meta veriler okunur. %1$s düğmesine dokunana kadar hiçbir şey indirilmez."</string>
+    <string name="paywall_one_time_line" formatted="false">"Tek seferlik satın alma. Abonelik yok."</string>
+    <string name="paywall_pending" formatted="false">"Onay bekleniyor. Satın alma tamamlanır tamamlanmaz kasanız eklenecek."</string>
+    <string name="paywall_pick_another" formatted="false">"Başka bir depo seç"</string>
+    <string name="paywall_pill_checking" formatted="false">"denetleniyor…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"erişim gerekli"</string>
+    <string name="paywall_pill_ready" formatted="false">"hazır"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"ulaşılamıyor"</string>
+    <string name="paywall_point_again_body" formatted="false">"Yeni telefon, yeni kasa, karışık bir merge. Her kasa, her güncelleme."</string>
+    <string name="paywall_point_again_title" formatted="false">"Yeniden gerektiğinde burada"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Tüm geçmiş dahil, böylece Git eklentisi ilk günden çalışır."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Doğrudan Obsidian’a klonlanır"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH veya token. Terminal yok, yapılandırma dosyası yok."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Oturum açma halledildi"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"tek seferlik · abonelik yok"</string>
+    <string name="paywall_price_once">"tek seferlik %1$s"</string>
+    <string name="paywall_restore" formatted="false">"Satın alımı geri yükle"</string>
+    <string name="paywall_restore_none" formatted="false">"Bu Google hesabı için önceki bir satın alım bulunamadı."</string>
+    <string name="paywall_row_access" formatted="false">"Okuma ve yazma erişimi"</string>
+    <string name="paywall_row_branch" formatted="false">"Dal"</string>
+    <string name="paywall_row_checking" formatted="false">"denetleniyor"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS dosyaları"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian kasası"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git eklentisi yapılandırıldı"</string>
+    <string name="paywall_row_size" formatted="false">"Boyut ve dosya sayısı"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md Tam Erişim"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Kilidi açık"</string>
+    <string name="paywall_terms" formatted="false">"Koşullar"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Kasanızı eklemek için kilidi açın. Sonrasını Obsidian Git eklentisi devralabilir."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Kasanızı Obsidian’a klonlamak için kilidi açın. Sonrasını Obsidian Git eklentisi devralabilir."</string>
+    <string name="paywall_unlock_title" formatted="false">"Bir kez kurun.\nSonra unutun."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Uzak depo bu kimlik bilgilerini reddetti. Oturum açma yöntemini kontrol edin, ardından yeniden denetleyin."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md uzak depoya ulaşamadı. Adresi ve bağlantınızı kontrol edin, ardından yeniden denetleyin."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Bu adreste depo yok. URL’yi kontrol edin, ardından yeniden denetleyin."</string>
     <string name="publication_accounts" formatted="false">"GitHub Hesap"</string>
     <string name="publication_adopt" formatted="false">"Depoyu kullan"</string>
     <string name="publication_adopt_title" formatted="false">"Bu depo kullanılsın mı?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"Git meta verileri dahil %1$s dosya · %2$s"</item>
         <item quantity="other">"Git meta verileri dahil %1$s dosya · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d dosya"</item>
+        <item quantity="other">"%1$d dosya"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d ek engellenen yol gösterilmiyor."</item>

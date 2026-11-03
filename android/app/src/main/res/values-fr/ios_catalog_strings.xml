@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Impossible d’ouvrir Obsidian. Activez GitSync.md Connect dans Obsidian, puis réessayez le retour."</string>
     <string name="obsidian_scope" formatted="false">"Connectez Obsidian Git avec le compte GitHub sélectionné pour ce dépôt. Les identifiants sont chiffrés pour le module compagnon et restent hors des liens de callback."</string>
     <string name="obsidian_title" formatted="false">"Connexions Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"Vous avez déjà acheté GitSync.md ? Il est déjà déverrouillé. Sinon, touchez Restaurer l’achat."</string>
+    <string name="paywall_buy" formatted="false">"Déverrouiller GitSync.md"</string>
+    <string name="paywall_buy_vault">"Déverrouiller et cloner %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Vérifier à nouveau"</string>
+    <string name="paywall_check_branch_missing">"%1$s introuvable"</string>
+    <string name="paywall_check_branch_missing_detail">"La branche %1$s n’existe pas sur ce dépôt distant. Vérifiez le nom de la branche, puis vérifiez à nouveau."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"connexion impossible"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"confirmer la clé au clonage"</string>
+    <string name="paywall_check_connected" formatted="false">"connecté"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Vérification\nde votre coffre."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Un point\nà régler d’abord."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Votre coffre\nest prêt."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Impossible de joindre\nce dépôt."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"aucun"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"utilisé · pris en charge"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"pas encore de .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"vérifié au clonage"</string>
+    <string name="paywall_check_read_only" formatted="false">"lecture seule"</string>
+    <string name="paywall_check_read_write" formatted="false">"lecture · écriture"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Nous vérifions que GitSync.md peut synchroniser ce dépôt avant tout paiement."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md peut lire ce dépôt, mais pas y faire de push. Demandez un accès en écriture au propriétaire, puis vérifiez à nouveau."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Tout est en ordre. Un seul clonage, et Obsidian l’ouvre avec tout son historique."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Il sera cloné en lecture seule. Vous pourrez faire des pull, mais les push seront refusés."</string>
+    <string name="paywall_check_title" formatted="false">"Vérification du coffre"</string>
+    <string name="paywall_check_vault" formatted="false">"Vérifier le coffre"</string>
+    <string name="paywall_checking_button" formatted="false">"Vérification…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Cloner le coffre"</string>
+    <string name="paywall_close" formatted="false">"Fermer"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Continuer en lecture seule"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play n’a pas pu finaliser l’achat. Réessayez dans un instant."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play est injoignable pour le moment. Réessayez dans un instant."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Vous n’avez rien payé. Le déverrouillage n’apparaît que si votre coffre passe la vérification."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Rien n’a été téléchargé."</string>
+    <string name="paywall_foot_locked" formatted="false">"Seules les métadonnées sont lues. Aucune note n’est téléchargée avant le déverrouillage."</string>
+    <string name="paywall_foot_unlocked">"Seules les métadonnées sont lues. Rien n’est téléchargé avant que vous touchiez %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Achat unique. Sans abonnement."</string>
+    <string name="paywall_pending" formatted="false">"En attente d’approbation. Votre coffre sera ajouté dès que l’achat sera validé."</string>
+    <string name="paywall_pick_another" formatted="false">"Choisir un autre dépôt"</string>
+    <string name="paywall_pill_checking" formatted="false">"vérification…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"accès requis"</string>
+    <string name="paywall_pill_ready" formatted="false">"prêt"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"injoignable"</string>
+    <string name="paywall_point_again_body" formatted="false">"Nouveau téléphone, nouveau coffre, une fusion compliquée. Chaque coffre, chaque mise à jour."</string>
+    <string name="paywall_point_again_title" formatted="false">"Là quand vous en avez de nouveau besoin"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Historique complet : le plugin Git fonctionne dès le premier jour."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Cloné directement dans Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH ou un jeton. Pas de terminal, pas de fichiers de configuration."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Connexion prise en charge"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"paiement unique · sans abonnement"</string>
+    <string name="paywall_price_once">"%1$s une fois"</string>
+    <string name="paywall_restore" formatted="false">"Restaurer l’achat"</string>
+    <string name="paywall_restore_none" formatted="false">"Aucun achat antérieur trouvé pour ce compte Google."</string>
+    <string name="paywall_row_access" formatted="false">"Accès en lecture et écriture"</string>
+    <string name="paywall_row_branch" formatted="false">"Branche"</string>
+    <string name="paywall_row_checking" formatted="false">"vérification"</string>
+    <string name="paywall_row_lfs" formatted="false">"Fichiers Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Coffre Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Plugin Obsidian Git configuré"</string>
+    <string name="paywall_row_size" formatted="false">"Taille et nombre de fichiers"</string>
+    <string name="paywall_settings_title" formatted="false">"Accès complet à GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Déverrouillé"</string>
+    <string name="paywall_terms" formatted="false">"Conditions"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Déverrouillez pour ajouter votre coffre. Ensuite, le plugin Obsidian Git peut prendre le relais."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Déverrouillez pour cloner votre coffre dans Obsidian. Ensuite, le plugin Obsidian Git peut prendre le relais."</string>
+    <string name="paywall_unlock_title" formatted="false">"Configurez-le une fois.\nC’est réglé pour de bon."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Le dépôt distant a refusé ces identifiants. Vérifiez la méthode de connexion, puis vérifiez à nouveau."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md n’a pas pu joindre le dépôt distant. Vérifiez l’adresse et votre connexion, puis vérifiez à nouveau."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Il n’y a aucun dépôt à cette adresse. Vérifiez l’URL, puis vérifiez à nouveau."</string>
     <string name="publication_accounts" formatted="false">"GitHub L&amp;#39;authentification de compte"</string>
     <string name="publication_adopt" formatted="false">"Utiliser le dépôt"</string>
     <string name="publication_adopt_title" formatted="false">"Utiliser ce dépôt ?"</string>
@@ -1681,6 +1750,11 @@
         <item quantity="one">"%1$s fichier, métadonnées Git comprises · %2$s"</item>
         <item quantity="many">"%1$s fichiers, métadonnées Git comprises · %2$s"</item>
         <item quantity="other">"%1$s fichiers, métadonnées Git comprises · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d fichier"</item>
+        <item quantity="many">"%1$d fichiers"</item>
+        <item quantity="other">"%1$d fichiers"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d autre chemin bloqué n’est pas affiché."</item>

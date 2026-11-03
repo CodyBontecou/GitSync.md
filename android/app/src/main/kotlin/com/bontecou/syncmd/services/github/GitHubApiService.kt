@@ -38,6 +38,20 @@ class GitHubApiException(val status: Int) : IllegalStateException(
     val isUnauthorized: Boolean get() = status == 401 || status == 403
 }
 
+/** What the free vault check learns about a GitHub repository before anything is cloned. */
+data class GitHubRepoAccess(val canPush: Boolean?, val defaultBranch: String?, val sizeKilobytes: Long?)
+
+data class GitHubTreeSummary(val fileCount: Int, val hasObsidian: Boolean, val hasObsidianGit: Boolean,
+    val gitattributesSha: String?, val truncated: Boolean)
+
+/** Metadata-only reads for the vault check; nothing is written or downloaded beyond JSON. */
+interface GitHubVaultClient {
+    suspend fun repoAccess(token: String, owner: String, repo: String): GitHubRepoAccess
+    /** Null for an empty repository or a branch GitHub cannot list. */
+    suspend fun tree(token: String, owner: String, repo: String, branch: String): GitHubTreeSummary?
+    suspend fun blobText(token: String, owner: String, repo: String, sha: String): String
+}
+
 // ─── Service ─────────────────────────────────────────────────────────────────
 
 interface GitHubClient {
@@ -46,7 +60,7 @@ interface GitHubClient {
     suspend fun fetchPrimaryEmail(token: String): String?
 }
 
-object GitHubApiService : GitHubClient {
+object GitHubApiService : GitHubClient, GitHubVaultClient {
 
     private const val BASE = "https://api.github.com"
 
@@ -111,7 +125,39 @@ object GitHubApiService : GitHubClient {
         null
     }
 
+    override suspend fun repoAccess(token: String, owner: String, repo: String): GitHubRepoAccess = withContext(Dispatchers.IO) {
+        val json = get("$BASE/repos/${path(owner)}/${path(repo)}", token)
+        GitHubRepoAccess(
+            canPush = json.optJSONObject("permissions")?.takeIf { it.has("push") }?.getBoolean("push"),
+            defaultBranch = json.optString("default_branch").ifEmpty { null },
+            sizeKilobytes = json.optLong("size", -1).takeIf { it >= 0 },
+        )
+    }
+
+    override suspend fun tree(token: String, owner: String, repo: String, branch: String): GitHubTreeSummary? = withContext(Dispatchers.IO) {
+        val json = try { get("$BASE/repos/${path(owner)}/${path(repo)}/git/trees/${path(branch)}?recursive=1", token) }
+            catch (e: GitHubApiException) { if (e.status == 404 || e.status == 409) return@withContext null else throw e }
+        val entries = json.optJSONArray("tree") ?: JSONArray()
+        var files = 0; var obsidian = false; var obsidianGit = false; var attributes: String? = null
+        for (i in 0 until entries.length()) {
+            val entry = entries.getJSONObject(i)
+            val name = entry.optString("path"); val type = entry.optString("type")
+            if (type == "blob") files++
+            if (name == ".obsidian" || name.startsWith(".obsidian/")) obsidian = true
+            if (name.startsWith(".obsidian/plugins/obsidian-git/")) obsidianGit = true
+            if (name == ".gitattributes" && type == "blob") attributes = entry.optString("sha").ifEmpty { null }
+        }
+        GitHubTreeSummary(files, obsidian, obsidianGit, attributes, json.optBoolean("truncated", false))
+    }
+
+    override suspend fun blobText(token: String, owner: String, repo: String, sha: String): String = withContext(Dispatchers.IO) {
+        val json = get("$BASE/repos/${path(owner)}/${path(repo)}/git/blobs/${path(sha)}", token)
+        String(java.util.Base64.getMimeDecoder().decode(json.getString("content")), Charsets.UTF_8)
+    }
+
     // ─── Helpers ─────────────────────────────────────────────────────────────
+
+    private fun path(segment: String) = java.net.URLEncoder.encode(segment, "UTF-8").replace("+", "%20")
 
     private fun get(url: String, token: String): JSONObject {
         val conn = openConn(url, token)

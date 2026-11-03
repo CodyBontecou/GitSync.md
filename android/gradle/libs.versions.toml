@@ -30,6 +30,9 @@ material = "1.11.0"
 # JSON
 gson = "2.10.1"
 
+# Google Play Billing (one-time unlock)
+billing = "8.3.0"
+
 # JGit (pure-Java git — no system git binary required on device)
 jgit = "5.13.5.202508271544-r"
 jsch = "2.28.7"
@@ -86,6 +89,9 @@ com-google-android-material = { group = "com.google.android.material", name = "m
 
 # JSON
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+# Google Play Billing
+billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 
 # JGit
 jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "jgit" }

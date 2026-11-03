@@ -24,6 +24,8 @@ class MainActivity : ComponentActivity() {
     /** Injected so we can forward the OAuth token before the ViewModel is ready. */
     @Inject
     lateinit var authManager: GitHubAuthManager
+    @Inject
+    lateinit var appUnlock: com.bontecou.syncmd.billing.AppUnlock
 
     private val settingsViewModel: SettingsViewModel by viewModels()
     private val callbacks: com.bontecou.syncmd.ui.viewmodels.RepositoryCallbackViewModel by viewModels()
@@ -44,7 +46,9 @@ class MainActivity : ComponentActivity() {
 
             SyncMdTheme(darkTheme = appSettings.isDarkTheme) {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    AppShell(settingsViewModel = settingsViewModel)
+                    androidx.compose.runtime.CompositionLocalProvider(com.bontecou.syncmd.ui.util.LocalAppUnlock provides appUnlock) {
+                        AppShell(settingsViewModel = settingsViewModel)
+                    }
                 }
             }
         }

@@ -62,6 +62,8 @@ fun FolderPublicationScreen(onBack: () -> Unit, onManageAccounts: () -> Unit,
     register: suspend (FolderPublicationRecord) -> Unit, onReady: (String) -> Unit,
     model: FolderPublicationViewModel = hiltViewModel()) {
     val state by model.state.collectAsState()
+    // Publishing creates a new vault, so locked installs unlock first (as on iOS).
+    val unlockGate = com.bontecou.syncmd.ui.util.rememberUnlockGate()
     val locked = state.busy || state.loadFailed
     val accounts by model.auth.accounts.collectAsState()
     val available = accounts.filter { it.connected && it.id.startsWith("github:") && !it.login.isNullOrBlank() }
@@ -250,7 +252,7 @@ fun FolderPublicationScreen(onBack: () -> Unit, onManageAccounts: () -> Unit,
                                     FolderPublicationPhase.PUBLISHED -> R.string.publication_finish
                                     FolderPublicationPhase.COMPLETED -> R.string.publication_open
                                     else -> R.string.publication_upload
-                                }), onClick = { if (record.phase == FolderPublicationPhase.PREPARED) confirm = "publish" else model.publish(register, onReady) }, enabled = !locked && !dirty,
+                                }), onClick = { if (record.phase == FolderPublicationPhase.PREPARED) confirm = "publish" else unlockGate.require { model.publish(register, onReady) } }, enabled = !locked && !dirty,
                                 modifier = Modifier.testTag("publication-publish"))
                         }
                       }
@@ -323,7 +325,7 @@ fun FolderPublicationScreen(onBack: () -> Unit, onManageAccounts: () -> Unit,
                 "prepare" -> replacement()?.let(model::prepare)
                 "discard" -> model.discardReview()
                 "leave" -> saveDraft { if (exitToSaved) model.select(null) else onBack() }
-                else -> model.publish(register, onReady)
+                else -> unlockGate.require { model.publish(register, onReady) }
             }
         }, modifier = Modifier.testTag("publication-confirm")) }, dismissButton = {
             Column(Modifier.fillMaxWidth()) {

@@ -109,33 +109,70 @@ class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
         }
     }
     fun activeAccountId() = github.activeAccountId()
+
+    /** A validated clone request; the vault check and the clone both start from it. */
+    private class Request(val remote: GitRemote, val saved: HistoryDefaults?, val account: com.bontecou.syncmd.security.GitHubAccountSnapshot?)
+
+    /** Validates the form exactly as the clone will, reporting the first problem in [state]. */
+    private fun validate(url: String, name: String, branch: String, authenticated: Boolean, username: String, secret: String, accountId: String?,
+        useSavedHistoryConnection: Boolean, ssh: Credentials.Ssh?): Request? {
+        val remote = try { GitRemote.parseInput(url) } catch (e: Exception) { _state.value = State(error = e.message ?: context.getString(R.string.account_invalid_repository_url)); return null }
+        if (remote.usesNoNetworkCredentials && (authenticated || accountId != null || ssh != null || useSavedHistoryConnection)) {
+            _state.value = State(error = context.getString(if (remote.isLocalFile) com.bontecou.syncmd.R.string.file_clone_guidance else com.bontecou.syncmd.R.string.git_native_public_only)); return null
+        }
+        val saved = if (useSavedHistoryConnection) _history.value.defaults else null
+        if (useSavedHistoryConnection && (authenticated || accountId != null || ssh != null || saved == null || saved.auth != HistoryAuth.SAVED || saved.url != remote.url ||
+                saved.credentialVersion != credentials.recordVersion(saved.source))) {
+            _state.value = State(error = context.getString(R.string.account_saved_connection_changed)); return null
+        }
+        if (name.isBlank() || name.length > 120) { _state.value = State(error = context.getString(R.string.account_repository_name_length)); return null }
+        if (branch.isNotBlank() && !com.bontecou.syncmd.services.git.RemoteAuthentication.isValidBranch(branch.trim())) {
+            _state.value = State(error = context.getString(R.string.account_valid_branch)); return null
+        }
+        if (authenticated && (username.isBlank() || secret.isEmpty())) { _state.value = State(error = context.getString(R.string.account_enter_username_secret)); return null }
+        if (remote.isSsh && (authenticated || accountId != null || ssh == null && saved == null) || !remote.isSsh && ssh != null) {
+            _state.value = State(error = context.getString(R.string.account_choose_ssh_or_https)); return null
+        }
+        val account = if (accountId != null) try {
+            require(!authenticated && remote.isHttps && remote.host == "github.com" && remote.port == 443)
+            com.bontecou.syncmd.security.GitHubAccountSnapshot(accountId, github.tokenForAccount(accountId))
+        } catch (e: Exception) { _state.value = State(error = context.getString(R.string.account_select_connected_account)); return null } else null
+        return Request(remote, saved, account)
+    }
+
+    /** The credentials the clone will present; reads the saved connection, so call off the main thread. */
+    private fun credentialsFor(request: Request, authenticated: Boolean, username: String, secret: String, ssh: Credentials.Ssh?): Credentials =
+        request.saved?.let {
+            check(credentials.recordVersion(it.source) == it.credentialVersion)
+            val connection = credentials.resolve(it.source, request.remote.url) ?: error("Saved connection is unavailable")
+            check(credentials.recordVersion(it.source) == it.credentialVersion)
+            connection
+        } ?: ssh?.also { SshKeys.validate(it) } ?: request.account?.let { Credentials.Pat(it.token) }
+            ?: if (authenticated) Credentials.Basic(username.trim(), secret) else Credentials.None
+
+    /**
+     * The free vault check's input for this form, or null (with [state] explaining why).
+     * A GitHub token is passed only for a github.com account, as on iOS.
+     */
+    suspend fun vaultTarget(url: String, name: String, branch: String, authenticated: Boolean, username: String, secret: String, accountId: String? = null,
+        useSavedHistoryConnection: Boolean = false, ssh: Credentials.Ssh? = null): com.bontecou.syncmd.billing.VaultTarget? {
+        if (_state.value.busy || _state.value.path != null) return null
+        val request = validate(url, name, branch, authenticated, username, secret, accountId, useSavedHistoryConnection, ssh) ?: return null
+        return try {
+            val auth = kotlinx.coroutines.withContext(Dispatchers.IO) { credentialsFor(request, authenticated, username, secret, ssh) }
+            com.bontecou.syncmd.billing.VaultTarget(name.trim(), request.remote.url, branch.trim().ifEmpty { null }, auth, request.account?.token)
+        } catch (e: CancellationException) { throw e
+        } catch (e: Exception) { _state.value = State(error = context.getString(R.string.account_saved_connection_changed)); null }
+    }
+
     fun clone(url: String, name: String, branch: String, authenticated: Boolean, username: String, secret: String, accountId: String? = null, location: String? = null,
         useSavedHistoryConnection: Boolean = false, ssh: Credentials.Ssh? = null) {
         if (_state.value.busy || _state.value.path != null) return
         if (savedState.get<String>("clone_publication_id")?.let { runCatching { publications.hasReceipt(it) }.getOrDefault(true) } == true) {
             _state.value = State(error = context.getString(R.string.account_review_interrupted_clone)); return
         }
-        val remote = try { GitRemote.parseInput(url) } catch (e: Exception) { _state.value = State(error = e.message ?: context.getString(R.string.account_invalid_repository_url)); return }
-        if (remote.usesNoNetworkCredentials && (authenticated || accountId != null || ssh != null || useSavedHistoryConnection)) {
-            _state.value = State(error = context.getString(if (remote.isLocalFile) com.bontecou.syncmd.R.string.file_clone_guidance else com.bontecou.syncmd.R.string.git_native_public_only)); return
-        }
-        val saved = if (useSavedHistoryConnection) _history.value.defaults else null
-        if (useSavedHistoryConnection && (authenticated || accountId != null || ssh != null || saved == null || saved.auth != HistoryAuth.SAVED || saved.url != remote.url ||
-                saved.credentialVersion != credentials.recordVersion(saved.source))) {
-            _state.value = State(error = context.getString(R.string.account_saved_connection_changed)); return
-        }
-        if (name.isBlank() || name.length > 120) { _state.value = State(error = context.getString(R.string.account_repository_name_length)); return }
-        if (branch.isNotBlank() && !com.bontecou.syncmd.services.git.RemoteAuthentication.isValidBranch(branch.trim())) {
-            _state.value = State(error = context.getString(R.string.account_valid_branch)); return
-        }
-        if (authenticated && (username.isBlank() || secret.isEmpty())) { _state.value = State(error = context.getString(R.string.account_enter_username_secret)); return }
-        if (remote.isSsh && (authenticated || accountId != null || ssh == null && saved == null) || !remote.isSsh && ssh != null) {
-            _state.value = State(error = context.getString(R.string.account_choose_ssh_or_https)); return
-        }
-        val account = if (accountId != null) try {
-            require(!authenticated && remote.isHttps && remote.host == "github.com" && remote.port == 443)
-            com.bontecou.syncmd.security.GitHubAccountSnapshot(accountId, github.tokenForAccount(accountId))
-        } catch (e: Exception) { _state.value = State(error = context.getString(R.string.account_select_connected_account)); return } else null
+        val request = validate(url, name, branch, authenticated, username, secret, accountId, useSavedHistoryConnection, ssh) ?: return
+        val remote = request.remote; val saved = request.saved; val account = request.account
         val publicationId = UUID.randomUUID().toString()
         savedState["clone_publication_id"] = publicationId
         _state.value = State(busy = true)
@@ -148,13 +185,7 @@ class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
                 val base = com.bontecou.syncmd.storage.RepositoryLocations(context).resolve(location).path
                 // Display names never form a path. Every attempt owns a fresh destination.
                 target = File(base, "custom/${UUID.randomUUID()}")
-                val auth = saved?.let {
-                    check(credentials.recordVersion(it.source) == it.credentialVersion)
-                    val connection = credentials.resolve(it.source, remote.url) ?: error("Saved connection is unavailable")
-                    check(credentials.recordVersion(it.source) == it.credentialVersion)
-                    connection
-                }
-                    ?: ssh?.also { SshKeys.validate(it) } ?: account?.let { Credentials.Pat(it.token) } ?: if (authenticated) Credentials.Basic(username.trim(), secret) else Credentials.None
+                val auth = credentialsFor(request, authenticated, username, secret, ssh)
                 if (account == null) ownedCredentialVersion = credentials.saveWithVersion(target.path, remote.url, auth)
                 val targetCredentialRevision = ownedCredentialVersion ?: credentials.recordVersion(target.path)
                 var completed: com.bontecou.syncmd.services.repositories.CompletedClone? = null

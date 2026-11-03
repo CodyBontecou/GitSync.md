@@ -51,7 +51,7 @@ try:
     for state in ('remove', 'author'):
         for tag in ('ar', 'de', 'fi', 'ja', 'uk'):
             name = 'account-language-' + state + '-' + tag + '.png'
-            capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'md.gitsync.md.debug', 'cat', 'files/parity-evidence/' + name], timeout=30)
+            capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'com.bontecou.syncmd.debug', 'cat', 'files/parity-evidence/' + name], timeout=30)
             assert capture.startswith(b'\x89PNG'), name
             (output / name).write_bytes(capture)
 finally:

@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Az Obsidian nem nyitható meg. Engedélyezd benne a GitSync.md Connect bővítményt, majd próbálj újra visszatérni."</string>
     <string name="obsidian_scope" formatted="false">"Csatlakoztasd az Obsidian Gitet a tárolóhoz kiválasztott GitHub-fiókkal. A hitelesítő adatok a társbővítmény számára titkosítva vannak, és nem kerülnek a callback-linkekbe."</string>
     <string name="obsidian_title" formatted="false">"Obsidian-kapcsolatok"</string>
+    <string name="paywall_bought_before" formatted="false">"Korábban már megvetted a GitSync.md-t? Akkor már fel van oldva. Ha nem, koppints a Vásárlás visszaállítása gombra."</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md feloldása"</string>
+    <string name="paywall_buy_vault">"Feloldás és klónozás: %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Újraellenőrzés"</string>
+    <string name="paywall_check_branch_missing">"%1$s nem található"</string>
+    <string name="paywall_check_branch_missing_detail">"A(z) %1$s ág nem létezik ezen a távoli tárolón. Ellenőrizd az ág nevét, majd ellenőrizd újra."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"nem lehet csatlakozni"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"kulcs megerősítése klónozáskor"</string>
+    <string name="paywall_check_connected" formatted="false">"csatlakozva"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"A tárad\nellenőrzése."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Előbb egy dolgot\nrendezni kell."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"A tárad\nkész."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Ez a tároló\nnem érhető el."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"nincs"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"használatban · támogatott"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"még nincs .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"klónozáskor ellenőrizve"</string>
+    <string name="paywall_check_read_only" formatted="false">"csak olvasható"</string>
+    <string name="paywall_check_read_write" formatted="false">"olvasás · írás"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Ellenőrizzük, hogy a GitSync.md tudja-e szinkronizálni ezt a tárolót, mielőtt bármit fizetnél."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"A GitSync.md olvasni tudja ezt a tárolót, de pusholni nem tud bele. Kérj írási hozzáférést a tulajdonostól, majd ellenőrizd újra."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Minden rendben. Egy klónozás, és az Obsidian az előzményekkel együtt megnyitja."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Csak olvashatóként lesz klónozva. Pullolni tudsz, de a pushok el lesznek utasítva."</string>
+    <string name="paywall_check_title" formatted="false">"Tárellenőrzés"</string>
+    <string name="paywall_check_vault" formatted="false">"Tár ellenőrzése"</string>
+    <string name="paywall_checking_button" formatted="false">"Ellenőrzés…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Tár klónozása"</string>
+    <string name="paywall_close" formatted="false">"Bezárás"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Folytatás csak olvashatóként"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"A Google Play nem tudta befejezni a vásárlást. Próbáld újra egy kicsit később."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"A Google Play most nem érhető el. Próbáld újra egy kicsit később."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Még semmit sem fizettél. A feloldás csak akkor jelenik meg, ha a tárad átmegy az ellenőrzésen."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Semmi sem lett letöltve."</string>
+    <string name="paywall_foot_locked" formatted="false">"Csak metaadatokat olvasunk. Egy jegyzet sem töltődik le a feloldásig."</string>
+    <string name="paywall_foot_unlocked">"Csak metaadatokat olvasunk. Semmi sem töltődik le, amíg nem koppintasz erre: %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Egyszeri vásárlás. Nincs előfizetés."</string>
+    <string name="paywall_pending" formatted="false">"Jóváhagyásra vár. A tárad azonnal hozzáadódik, amint a vásárlás teljesül."</string>
+    <string name="paywall_pick_another" formatted="false">"Másik tároló választása"</string>
+    <string name="paywall_pill_checking" formatted="false">"ellenőrzés…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"hozzáférés kell"</string>
+    <string name="paywall_pill_ready" formatted="false">"kész"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"nem érhető el"</string>
+    <string name="paywall_point_again_body" formatted="false">"Új telefon, új tár, egy kusza merge. Minden tár, minden frissítés."</string>
+    <string name="paywall_point_again_title" formatted="false">"Itt van, ha újra szükséged lesz rá"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Teljes előzmények, így a Git bővítmény az első naptól működik."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Közvetlenül az Obsidianbe klónozva"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH vagy token. Nincs terminál, nincsenek konfigurációs fájlok."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Bejelentkezés megoldva"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"egyszeri · nincs előfizetés"</string>
+    <string name="paywall_price_once">"%1$s egyszer"</string>
+    <string name="paywall_restore" formatted="false">"Vásárlás visszaállítása"</string>
+    <string name="paywall_restore_none" formatted="false">"Ehhez a Google-fiókhoz nem található korábbi vásárlás."</string>
+    <string name="paywall_row_access" formatted="false">"Olvasási és írási hozzáférés"</string>
+    <string name="paywall_row_branch" formatted="false">"Ág"</string>
+    <string name="paywall_row_checking" formatted="false">"ellenőrzés"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS-fájlok"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-tár"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git bővítmény beállítva"</string>
+    <string name="paywall_row_size" formatted="false">"Méret és fájlszám"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md teljes hozzáférés"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Feloldva"</string>
+    <string name="paywall_terms" formatted="false">"Feltételek"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Oldd fel a tárad hozzáadásához. Onnantól az Obsidian Git bővítmény átveheti."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Oldd fel, hogy a tárad az Obsidianbe klónozd. Onnantól az Obsidian Git bővítmény átveheti."</string>
+    <string name="paywall_unlock_title" formatted="false">"Egyszer beállítod.\nÉs kész is."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"A távoli tároló elutasította ezeket a hitelesítő adatokat. Ellenőrizd a bejelentkezési módot, majd ellenőrizd újra."</string>
+    <string name="paywall_unreachable_network" formatted="false">"A GitSync.md nem érte el a távoli tárolót. Ellenőrizd a címet és a kapcsolatot, majd ellenőrizd újra."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Ezen a címen nincs tároló. Ellenőrizd az URL-t, majd ellenőrizd újra."</string>
     <string name="publication_accounts" formatted="false">"GitHub számla"</string>
     <string name="publication_adopt" formatted="false">"Tároló használata"</string>
     <string name="publication_adopt_title" formatted="false">"Ezt a tárolót használja?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s fájl a Git-metaadatokkal együtt · %2$s"</item>
         <item quantity="other">"%1$s fájl a Git-metaadatokkal együtt · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d fájl"</item>
+        <item quantity="other">"%1$d fájl"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d további blokkolt útvonal nem jelenik meg."</item>

@@ -111,6 +111,18 @@ class CloneViewModel @Inject constructor(
     private suspend fun publish(id: Long, state: CloneState) = withContext(Dispatchers.Main.immediate) {
         if (generation.get() == id) _cloneState.value = state
     }
+    /** The free vault check's input for a GitHub repository, with the token the clone will use. */
+    fun vaultTarget(repoFullName: String): com.bontecou.syncmd.billing.VaultTarget? {
+        val parts = repoFullName.split('/')
+        if (parts.size != 2 || parts.any { it == "." || it == ".." || !it.matches(Regex("[A-Za-z0-9_.-]+")) }) {
+            _cloneState.value = CloneState.Error(context.getString(R.string.account_invalid_repository_name)); return null
+        }
+        val token = runCatching { authManager.captureActiveAccount() }.getOrNull()?.token
+        if (token.isNullOrBlank()) { _cloneState.value = CloneState.Error(context.getString(R.string.account_not_authenticated)); return null }
+        return com.bontecou.syncmd.billing.VaultTarget(parts[1], "https://github.com/$repoFullName.git", null,
+            com.bontecou.syncmd.data.models.Credentials.Pat(token), token)
+    }
+
     fun startClone(repoFullName: String, location: String? = null) {
         if (_cloneState.value == CloneState.Cloning || _cloneState.value is CloneState.Success) return
         val prior = saved.get<String>("clone_publication_id")

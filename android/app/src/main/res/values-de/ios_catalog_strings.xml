@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian konnte nicht geöffnet werden. Aktiviere GitSync.md Connect in Obsidian und versuche dann erneut zurückzukehren."</string>
     <string name="obsidian_scope" formatted="false">"Verbinde Obsidian Git mit dem für dieses Repository ausgewählten GitHub-Konto. Zugangsdaten werden für das Begleit-Plugin verschlüsselt und nicht in Callback-Links aufgenommen."</string>
     <string name="obsidian_title" formatted="false">"Obsidian-Verbindungen"</string>
+    <string name="paywall_bought_before" formatted="false">"GitSync.md schon gekauft? Dann ist es bereits entsperrt. Falls nicht, tippe auf „Kauf wiederherstellen“."</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md entsperren"</string>
+    <string name="paywall_buy_vault">"Entsperren &amp; %1$s klonen"</string>
+    <string name="paywall_check_again" formatted="false">"Erneut prüfen"</string>
+    <string name="paywall_check_branch_missing">"%1$s nicht gefunden"</string>
+    <string name="paywall_check_branch_missing_detail">"Der Branch %1$s existiert auf diesem Remote nicht. Prüfe den Branch-Namen und prüfe dann erneut."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"keine Verbindung"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"Schlüssel beim Klonen bestätigen"</string>
+    <string name="paywall_check_connected" formatted="false">"verbunden"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Dein Tresor\nwird geprüft."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Eine Sache\nvorher klären."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Dein Tresor\nist bereit."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Repo nicht\nerreichbar."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"keine"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"verwendet · unterstützt"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"noch kein .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"beim Klonen geprüft"</string>
+    <string name="paywall_check_read_only" formatted="false">"nur lesen"</string>
+    <string name="paywall_check_read_write" formatted="false">"lesen · schreiben"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Wir prüfen, ob GitSync.md dieses Repo synchronisieren kann, bevor du etwas bezahlst."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md kann dieses Repo lesen, aber nicht pushen. Bitte den Eigentümer um Schreibzugriff und prüfe dann erneut."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Alles in Ordnung. Einmal klonen, und Obsidian öffnet ihn mit vollständigem Verlauf."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Er wird schreibgeschützt geklont. Pull funktioniert, Pushes werden abgelehnt."</string>
+    <string name="paywall_check_title" formatted="false">"Tresorprüfung"</string>
+    <string name="paywall_check_vault" formatted="false">"Tresor prüfen"</string>
+    <string name="paywall_checking_button" formatted="false">"Wird geprüft…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Tresor klonen"</string>
+    <string name="paywall_close" formatted="false">"Schließen"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Schreibgeschützt fortfahren"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play konnte den Kauf nicht abschließen. Versuche es gleich noch einmal."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play ist gerade nicht erreichbar. Versuche es gleich noch einmal."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Du hast nichts bezahlt. Das Entsperren erscheint erst, wenn dein Tresor die Prüfung besteht."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Es wurde nichts heruntergeladen."</string>
+    <string name="paywall_foot_locked" formatted="false">"Es werden nur Metadaten gelesen. Keine Notizen werden heruntergeladen, bis du entsperrst."</string>
+    <string name="paywall_foot_unlocked">"Es werden nur Metadaten gelesen. Nichts wird heruntergeladen, bis du auf %1$s tippst."</string>
+    <string name="paywall_one_time_line" formatted="false">"Einmaliger Kauf. Kein Abo."</string>
+    <string name="paywall_pending" formatted="false">"Warte auf Genehmigung. Dein Tresor wird hinzugefügt, sobald der Kauf abgeschlossen ist."</string>
+    <string name="paywall_pick_another" formatted="false">"Anderes Repo wählen"</string>
+    <string name="paywall_pill_checking" formatted="false">"wird geprüft…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"Zugriff nötig"</string>
+    <string name="paywall_pill_ready" formatted="false">"bereit"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"nicht erreichbar"</string>
+    <string name="paywall_point_again_body" formatted="false">"Neues Telefon, neuer Tresor, ein verzwickter Merge. Jeder Tresor, jedes Update."</string>
+    <string name="paywall_point_again_title" formatted="false">"Da, wenn du es wieder brauchst"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Vollständiger Verlauf – das Git-Plugin funktioniert vom ersten Tag an."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Direkt in Obsidian geklont"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH oder ein Token. Kein Terminal, keine Konfigurationsdateien."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Anmeldung inklusive"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"einmalig · kein Abo"</string>
+    <string name="paywall_price_once">"%1$s einmalig"</string>
+    <string name="paywall_restore" formatted="false">"Kauf wiederherstellen"</string>
+    <string name="paywall_restore_none" formatted="false">"Für dieses Google-Konto wurde kein früherer Kauf gefunden."</string>
+    <string name="paywall_row_access" formatted="false">"Lese- &amp; Schreibzugriff"</string>
+    <string name="paywall_row_branch" formatted="false">"Branch"</string>
+    <string name="paywall_row_checking" formatted="false">"wird geprüft"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS-Dateien"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-Tresor"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Plugin Obsidian Git eingerichtet"</string>
+    <string name="paywall_row_size" formatted="false">"Größe &amp; Dateianzahl"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md Vollzugriff"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Entsperrt"</string>
+    <string name="paywall_terms" formatted="false">"Bedingungen"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Entsperren, um deinen Tresor hinzuzufügen. Danach kann das Plugin Obsidian Git übernehmen."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Entsperren, um deinen Tresor in Obsidian zu klonen. Danach kann das Plugin Obsidian Git übernehmen."</string>
+    <string name="paywall_unlock_title" formatted="false">"Einmal einrichten.\nFür immer erledigt."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Der Remote hat diese Zugangsdaten abgelehnt. Prüfe die Anmeldemethode und prüfe dann erneut."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md konnte den Remote nicht erreichen. Prüfe die Adresse und deine Verbindung und prüfe dann erneut."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Unter dieser Adresse gibt es kein Repository. Prüfe die URL und prüfe dann erneut."</string>
     <string name="publication_accounts" formatted="false">"GitHub Konto"</string>
     <string name="publication_adopt" formatted="false">"Repository verwenden"</string>
     <string name="publication_adopt_title" formatted="false">"Dieses Repository verwenden?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s Datei einschließlich Git-Metadaten · %2$s"</item>
         <item quantity="other">"%1$s Dateien einschließlich Git-Metadaten · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d Datei"</item>
+        <item quantity="other">"%1$d Dateien"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d weiterer blockierter Pfad wird nicht angezeigt."</item>

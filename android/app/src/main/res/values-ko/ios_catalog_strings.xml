@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian을 열 수 없습니다. Obsidian에서 GitSync.md Connect를 활성화한 후 다시 돌아가기를 시도하세요."</string>
     <string name="obsidian_scope" formatted="false">"이 저장소에서 선택한 GitHub 계정으로 Obsidian Git을 연결합니다. 자격 증명은 연동 플러그인용으로 암호화되며 콜백 링크에 포함되지 않습니다."</string>
     <string name="obsidian_title" formatted="false">"Obsidian 연결"</string>
+    <string name="paywall_bought_before" formatted="false">"전에 GitSync.md를 구매하셨나요? 이미 잠금 해제되어 있습니다. 그렇지 않다면 구매 복원을 탭하세요."</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md 잠금 해제"</string>
+    <string name="paywall_buy_vault">"잠금 해제 및 %1$s 클론"</string>
+    <string name="paywall_check_again" formatted="false">"다시 확인"</string>
+    <string name="paywall_check_branch_missing">"%1$s 없음"</string>
+    <string name="paywall_check_branch_missing_detail">"이 원격에 %1$s 브랜치가 없습니다. 브랜치 이름을 확인한 다음 다시 확인하세요."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"연결할 수 없음"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"클론 시 키 확인"</string>
+    <string name="paywall_check_connected" formatted="false">"연결됨"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"보관함을\n확인하는 중입니다."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"먼저 고칠 것이\n하나 있습니다."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"보관함이\n준비되었습니다."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"이 저장소에\n연결할 수 없습니다."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"없음"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"사용 중 · 지원됨"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"아직 .obsidian 없음"</string>
+    <string name="paywall_check_on_clone" formatted="false">"클론 시 확인"</string>
+    <string name="paywall_check_read_only" formatted="false">"읽기 전용"</string>
+    <string name="paywall_check_read_write" formatted="false">"읽기 · 쓰기"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"결제하기 전에 GitSync.md가 이 저장소를 동기화할 수 있는지 확인하고 있습니다."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md가 이 저장소를 읽을 수는 있지만 푸시할 수는 없습니다. 소유자에게 쓰기 권한을 요청한 다음 다시 확인하세요."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"모두 정상입니다. 한 번 클론하면 Obsidian이 기록 그대로 엽니다."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"읽기 전용으로 클론됩니다. 풀은 할 수 있지만 푸시는 거부됩니다."</string>
+    <string name="paywall_check_title" formatted="false">"보관함 점검"</string>
+    <string name="paywall_check_vault" formatted="false">"보관함 확인"</string>
+    <string name="paywall_checking_button" formatted="false">"확인 중…"</string>
+    <string name="paywall_clone_vault" formatted="false">"보관함 클론"</string>
+    <string name="paywall_close" formatted="false">"닫기"</string>
+    <string name="paywall_continue_read_only" formatted="false">"읽기 전용으로 계속"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play에서 구매를 완료하지 못했습니다. 잠시 후 다시 시도하세요."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"지금은 Google Play에 연결할 수 없습니다. 잠시 후 다시 시도하세요."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"아직 결제한 것이 없습니다. 보관함이 확인을 통과해야만 잠금 해제가 표시됩니다."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"아무것도 다운로드되지 않았습니다."</string>
+    <string name="paywall_foot_locked" formatted="false">"메타데이터만 읽습니다. 잠금을 해제하기 전까지는 노트가 다운로드되지 않습니다."</string>
+    <string name="paywall_foot_unlocked">"메타데이터만 읽습니다. %1$s을(를) 탭하기 전까지는 아무것도 다운로드되지 않습니다."</string>
+    <string name="paywall_one_time_line" formatted="false">"1회 구매. 구독 없음."</string>
+    <string name="paywall_pending" formatted="false">"승인을 기다리는 중입니다. 구매가 완료되는 즉시 보관함이 추가됩니다."</string>
+    <string name="paywall_pick_another" formatted="false">"다른 저장소 선택"</string>
+    <string name="paywall_pill_checking" formatted="false">"확인 중…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"권한 필요"</string>
+    <string name="paywall_pill_ready" formatted="false">"준비됨"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"연결 불가"</string>
+    <string name="paywall_point_again_body" formatted="false">"새 휴대전화, 새 보관함, 꼬인 병합까지. 모든 보관함, 모든 업데이트."</string>
+    <string name="paywall_point_again_title" formatted="false">"다시 필요할 때도 여기에"</string>
+    <string name="paywall_point_clone_body" formatted="false">"전체 기록이 포함되어 Git 플러그인이 첫날부터 작동합니다."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Obsidian에 바로 클론"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH 또는 토큰. 터미널도 설정 파일도 필요 없습니다."</string>
+    <string name="paywall_point_signin_title" formatted="false">"로그인도 알아서"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"1회 결제 · 구독 없음"</string>
+    <string name="paywall_price_once">"%1$s 1회 결제"</string>
+    <string name="paywall_restore" formatted="false">"구매 복원"</string>
+    <string name="paywall_restore_none" formatted="false">"이 Google 계정에서 이전 구매를 찾을 수 없습니다."</string>
+    <string name="paywall_row_access" formatted="false">"읽기 및 쓰기 권한"</string>
+    <string name="paywall_row_branch" formatted="false">"브랜치"</string>
+    <string name="paywall_row_checking" formatted="false">"확인 중"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS 파일"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian 보관함"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git 플러그인 구성됨"</string>
+    <string name="paywall_row_size" formatted="false">"크기 및 파일 수"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md 전체 이용권"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"잠금 해제됨"</string>
+    <string name="paywall_terms" formatted="false">"약관"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"잠금을 해제하면 보관함을 추가할 수 있습니다. 그 후에는 Obsidian Git 플러그인이 이어받을 수 있습니다."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"잠금을 해제하면 보관함을 Obsidian에 클론할 수 있습니다. 그 후에는 Obsidian Git 플러그인이 이어받을 수 있습니다."</string>
+    <string name="paywall_unlock_title" formatted="false">"한 번만 설정하세요.\n그걸로 끝입니다."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"원격에서 이 자격 증명을 거부했습니다. 로그인 방법을 확인한 다음 다시 확인하세요."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md가 원격에 연결하지 못했습니다. 주소와 연결 상태를 확인한 다음 다시 확인하세요."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"이 주소에 저장소가 없습니다. URL을 확인한 다음 다시 확인하세요."</string>
     <string name="publication_accounts" formatted="false">"GitHub 계정"</string>
     <string name="publication_adopt" formatted="false">"저장소 사용"</string>
     <string name="publication_adopt_title" formatted="false">"이 저장소를 사용하겠습니까?"</string>
@@ -1664,6 +1733,9 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"Git 메타데이터 포함 파일 %1$s개 · %2$s"</item>
         <item quantity="other">"Git 메타데이터 포함 파일 %1$s개 · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="other">"파일 %1$d개"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"추가로 차단된 경로 %1$d개가 표시되지 않습니다."</item>

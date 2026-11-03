@@ -22,7 +22,7 @@ class FixtureSafetyTest {
     @Test fun removeOnlyValidatedInterruptedApi28Fixtures() {
         val args=InstrumentationRegistry.getArguments()
         Assume.assumeTrue(args.getString("repairOwnedApi28Fixtures")=="true")
-        require(android.os.Build.VERSION.SDK_INT==28 && context.packageName=="md.gitsync.md.debug")
+        require(android.os.Build.VERSION.SDK_INT==28 && context.packageName=="com.bontecou.syncmd.debug")
         require(!com.bontecou.syncmd.background.BackgroundSyncStore(context).read().active &&
             com.bontecou.syncmd.push.PushStateStore(context).read().let { !it.enabled && !it.unregisterPending })
         require(context.getSharedPreferences("sync_md_prefs",0).getInt("repository_count",0)==0)

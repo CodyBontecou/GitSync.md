@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"ไม่สามารถเปิด Obsidian ได้ เปิดใช้ GitSync.md Connect ใน Obsidian แล้วลองกลับอีกครั้ง"</string>
     <string name="obsidian_scope" formatted="false">"เชื่อมต่อ Obsidian Git โดยใช้บัญชี GitHub ที่เลือกสำหรับคลังนี้ ข้อมูลรับรองจะถูกเข้ารหัสสำหรับปลั๊กอินคู่กันและไม่รวมอยู่ในลิงก์ callback"</string>
     <string name="obsidian_title" formatted="false">"การเชื่อมต่อ Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"เคยซื้อ GitSync.md แล้วใช่ไหม แอปปลดล็อกอยู่แล้ว หากยังไม่ปลดล็อก ให้แตะกู้คืนการซื้อ"</string>
+    <string name="paywall_buy" formatted="false">"ปลดล็อก GitSync.md"</string>
+    <string name="paywall_buy_vault">"ปลดล็อกและโคลน %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"ตรวจสอบอีกครั้ง"</string>
+    <string name="paywall_check_branch_missing">"ไม่พบ %1$s"</string>
+    <string name="paywall_check_branch_missing_detail">"ไม่มีสาขา %1$s บนรีโมตนี้ ตรวจสอบชื่อสาขา แล้วตรวจสอบอีกครั้ง"</string>
+    <string name="paywall_check_cant_connect" formatted="false">"เชื่อมต่อไม่ได้"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"ยืนยันคีย์ตอนโคลน"</string>
+    <string name="paywall_check_connected" formatted="false">"เชื่อมต่อแล้ว"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"กำลังตรวจสอบ\nคลังของคุณ"</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"มีหนึ่งอย่าง\nที่ต้องแก้ก่อน"</string>
+    <string name="paywall_check_headline_ready" formatted="false">"คลังของคุณ\nพร้อมแล้ว"</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"เข้าถึง\nคลัง Git นี้ไม่ได้"</string>
+    <string name="paywall_check_lfs_none" formatted="false">"ไม่มี"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"มีใช้ · รองรับ"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"ยังไม่มี .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"ตรวจสอบตอนโคลน"</string>
+    <string name="paywall_check_read_only" formatted="false">"อ่านอย่างเดียว"</string>
+    <string name="paywall_check_read_write" formatted="false">"อ่าน · เขียน"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"กำลังตรวจสอบว่า GitSync.md ซิงค์คลัง Git นี้ได้ ก่อนที่คุณจะจ่ายเงินใดๆ"</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md อ่านคลัง Git นี้ได้ แต่พุชไม่ได้ ขอสิทธิ์เขียนจากเจ้าของ แล้วตรวจสอบอีกครั้ง"</string>
+    <string name="paywall_check_sub_ready" formatted="false">"ทุกอย่างเรียบร้อย โคลนครั้งเดียวแล้ว Obsidian จะเปิดคลังพร้อมประวัติครบถ้วน"</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"คลังจะถูกโคลนแบบอ่านอย่างเดียว คุณพูลได้ แต่การพุชจะถูกปฏิเสธ"</string>
+    <string name="paywall_check_title" formatted="false">"การตรวจสอบคลัง"</string>
+    <string name="paywall_check_vault" formatted="false">"ตรวจสอบคลัง"</string>
+    <string name="paywall_checking_button" formatted="false">"กำลังตรวจสอบ…"</string>
+    <string name="paywall_clone_vault" formatted="false">"โคลนคลัง"</string>
+    <string name="paywall_close" formatted="false">"ปิด"</string>
+    <string name="paywall_continue_read_only" formatted="false">"ดำเนินการต่อแบบอ่านอย่างเดียว"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play ดำเนินการซื้อให้เสร็จไม่ได้ โปรดลองอีกครั้งในอีกสักครู่"</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"เชื่อมต่อ Google Play ไม่ได้ในขณะนี้ โปรดลองอีกครั้งในอีกสักครู่"</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"คุณยังไม่ได้จ่ายอะไร ตัวเลือกปลดล็อกจะปรากฏเมื่อคลังของคุณผ่านการตรวจสอบเท่านั้น"</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"ไม่มีการดาวน์โหลดใดๆ"</string>
+    <string name="paywall_foot_locked" formatted="false">"อ่านเฉพาะข้อมูลเมตา จะไม่มีการดาวน์โหลดโน้ตจนกว่าคุณจะปลดล็อก"</string>
+    <string name="paywall_foot_unlocked">"อ่านเฉพาะข้อมูลเมตา จะไม่มีการดาวน์โหลดใดๆ จนกว่าคุณจะแตะ %1$s"</string>
+    <string name="paywall_one_time_line" formatted="false">"ซื้อครั้งเดียว ไม่มีการสมัครสมาชิก"</string>
+    <string name="paywall_pending" formatted="false">"กำลังรอการอนุมัติ ระบบจะเพิ่มคลังของคุณทันทีที่การซื้อเสร็จสมบูรณ์"</string>
+    <string name="paywall_pick_another" formatted="false">"เลือกคลัง Git อื่น"</string>
+    <string name="paywall_pill_checking" formatted="false">"กำลังตรวจสอบ…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"ต้องมีสิทธิ์"</string>
+    <string name="paywall_pill_ready" formatted="false">"พร้อม"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"เข้าถึงไม่ได้"</string>
+    <string name="paywall_point_again_body" formatted="false">"โทรศัพท์ใหม่ คลังใหม่ หรือ merge ที่ยุ่งเหยิง ทุกคลัง ทุกการอัปเดต"</string>
+    <string name="paywall_point_again_title" formatted="false">"พร้อมเมื่อคุณต้องใช้อีกครั้ง"</string>
+    <string name="paywall_point_clone_body" formatted="false">"ประวัติครบถ้วน ปลั๊กอิน Git จึงใช้งานได้ตั้งแต่วันแรก"</string>
+    <string name="paywall_point_clone_title" formatted="false">"โคลนเข้า Obsidian โดยตรง"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH หรือโทเค็น ไม่ต้องใช้เทอร์มินัล ไม่ต้องมีไฟล์การกำหนดค่า"</string>
+    <string name="paywall_point_signin_title" formatted="false">"จัดการการลงชื่อเข้าใช้ให้"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"จ่ายครั้งเดียว · ไม่มีการสมัครสมาชิก"</string>
+    <string name="paywall_price_once">"%1$s ครั้งเดียว"</string>
+    <string name="paywall_restore" formatted="false">"กู้คืนการซื้อ"</string>
+    <string name="paywall_restore_none" formatted="false">"ไม่พบการซื้อก่อนหน้าสำหรับบัญชี Google นี้"</string>
+    <string name="paywall_row_access" formatted="false">"สิทธิ์อ่านและเขียน"</string>
+    <string name="paywall_row_branch" formatted="false">"สาขา"</string>
+    <string name="paywall_row_checking" formatted="false">"กำลังตรวจสอบ"</string>
+    <string name="paywall_row_lfs" formatted="false">"ไฟล์ Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"คลัง Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"กำหนดค่าปลั๊กอิน Obsidian Git แล้ว"</string>
+    <string name="paywall_row_size" formatted="false">"ขนาดและจำนวนไฟล์"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md สิทธิ์เข้าถึงเต็มรูปแบบ"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"ปลดล็อกแล้ว"</string>
+    <string name="paywall_terms" formatted="false">"ข้อกำหนด"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"ปลดล็อกเพื่อเพิ่มคลังของคุณ จากนั้นปลั๊กอิน Obsidian Git จะดูแลต่อได้"</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"ปลดล็อกเพื่อโคลนคลังของคุณเข้า Obsidian จากนั้นปลั๊กอิน Obsidian Git จะดูแลต่อได้"</string>
+    <string name="paywall_unlock_title" formatted="false">"ตั้งค่าครั้งเดียว\nจบไปตลอด"</string>
+    <string name="paywall_unreachable_auth" formatted="false">"รีโมตปฏิเสธข้อมูลเข้าสู่ระบบนี้ ตรวจสอบวิธีลงชื่อเข้าใช้ แล้วตรวจสอบอีกครั้ง"</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md เข้าถึงรีโมตไม่ได้ ตรวจสอบที่อยู่และการเชื่อมต่อของคุณ แล้วตรวจสอบอีกครั้ง"</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"ไม่มีคลัง Git ที่ที่อยู่นี้ ตรวจสอบ URL แล้วตรวจสอบอีกครั้ง"</string>
     <string name="publication_accounts" formatted="false">"GitHub บัญชี"</string>
     <string name="publication_adopt" formatted="false">"ใช้ที่เก็บ"</string>
     <string name="publication_adopt_title" formatted="false">"ใช้ที่เก็บนี้ไหม"</string>
@@ -1664,6 +1733,9 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s ไฟล์ รวมเมทาดาทา Git · %2$s"</item>
         <item quantity="other">"%1$s ไฟล์ รวมเมทาดาทา Git · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="other">"%1$d ไฟล์"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"ไม่ได้แสดงเส้นทางที่ถูกบล็อกเพิ่มเติม %1$d รายการ"</item>

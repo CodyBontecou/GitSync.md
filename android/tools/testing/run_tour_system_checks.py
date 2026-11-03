@@ -38,7 +38,7 @@ try:
     assert result.returncode == 0, 'Native check failed: ' + str(output / 'native.log')
     names = ('tour-clone-ar.png', 'tour-clone-fi.png', 'tour-clone-ja.png') if options.clone_entry else ('tour-setup-ar.png', 'tour-setup-de.png', 'tour-setup-ja.png', 'tour-header-fi.png')
     for name in names:
-        capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'md.gitsync.md.debug', 'cat', 'files/parity-evidence/' + name])
+        capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'com.bontecou.syncmd.debug', 'cat', 'files/parity-evidence/' + name])
         assert capture.startswith(b'\x89PNG')
         (output / name).write_bytes(capture)
 

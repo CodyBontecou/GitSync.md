@@ -56,7 +56,7 @@ try:
              'files-long-unsaved-landscape.png', 'files-long-keyboard-landscape.png', 'files-long-editor-landscape-dark.png',
              'files-long-reload-landscape-dark.png', 'files-long-delete-landscape-dark.png')
     for name in names:
-        capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'md.gitsync.md.debug', 'cat',
+        capture = subprocess.check_output(BASE + ['exec-out', 'run-as', 'com.bontecou.syncmd.debug', 'cat',
                                                   'files/parity-evidence/' + name], timeout=20)
         assert capture.startswith(b'\x89PNG')
         (output / name).write_bytes(capture)

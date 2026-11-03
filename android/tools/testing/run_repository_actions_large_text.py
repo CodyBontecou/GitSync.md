@@ -20,7 +20,7 @@ parser.add_argument('--device', required=True)
 parser.add_argument('--avd', required=True, choices=sorted(OWNED_AVDS))
 options = parser.parse_args()
 base = require_owned_emulator(ADB, options.device, options.avd)
-package = 'md.gitsync.md.debug'
+package = 'com.bontecou.syncmd.debug'
 output = pathlib.Path(tempfile.mkdtemp(prefix='syncmd-action-large-text-', dir='/tmp'))
 print('Repository action large-text evidence:', output, flush=True)
 

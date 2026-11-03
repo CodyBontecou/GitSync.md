@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Public Firebase SDK configuration for the approved personal GitSync project. -->
 <resources>
-    <string name="google_app_id" translatable="false">1:338367595365:android:0a6fcb4f78e9f385f7d78c</string>
+    <string name="google_app_id" translatable="false">1:338367595365:android:4029172f9a707452f7d78c</string>
     <string name="gcm_defaultSenderId" translatable="false">338367595365</string>
     <string name="google_api_key" translatable="false">AIzaSyBw_mElUD5VtMcN6AcPIRlBy5ZmsH5u8sg</string>
     <string name="project_id" translatable="false">gitsync-md-android-20261028</string>

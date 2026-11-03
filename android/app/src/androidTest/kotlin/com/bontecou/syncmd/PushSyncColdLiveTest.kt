@@ -31,7 +31,7 @@ class PushSyncColdLiveTest {
     private val context get()=instrumentation.targetContext
     private fun owner():String {
         assumeTrue(InstrumentationRegistry.getArguments().getString("liveFirebase")=="true")
-        require(BuildConfig.DEBUG && context.packageName=="md.gitsync.md.debug")
+        require(BuildConfig.DEBUG && context.packageName=="com.bontecou.syncmd.debug")
         return requireNotNull(InstrumentationRegistry.getArguments().getString("fixture")).also { require(UUID.fromString(it).toString()==it) }
     }
     private fun workspace(id:String)=File(context.filesDir,"push-cold-live-$id").canonicalFile.also {

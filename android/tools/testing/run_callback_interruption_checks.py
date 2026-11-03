@@ -17,7 +17,7 @@ from callback_git_fixture import CallbackGitFixture
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 ADB = str(pathlib.Path.home() / 'Library/Android/sdk/platform-tools/adb')
 BASE = [ADB, '-s', 'emulator-5554']
-PACKAGE = 'md.gitsync.md.debug'
+PACKAGE = 'com.bontecou.syncmd.debug'
 RUNNER = PACKAGE + '.test/androidx.test.runner.AndroidJUnitRunner'
 PREFIX = 'com.bontecou.syncmd.'
 CLASS = PREFIX + 'RepositoryCallbackInterruptionTest#'

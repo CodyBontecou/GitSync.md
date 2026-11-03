@@ -30,7 +30,7 @@ class PushSyncLinkLiveTest {
     private val app get()=instrumentation.targetContext
     private fun owner():String {
         assumeTrue(InstrumentationRegistry.getArguments().getString("liveRelay")=="true")
-        require(BuildConfig.DEBUG && app.packageName=="md.gitsync.md.debug")
+        require(BuildConfig.DEBUG && app.packageName=="com.bontecou.syncmd.debug")
         return requireNotNull(InstrumentationRegistry.getArguments().getString("fixture")).also { require(UUID.fromString(it).toString()==it) }
     }
     private fun folder(id:String)=File(app.filesDir,"push-link-live-$id").canonicalFile.also { require(it.parentFile==app.filesDir.canonicalFile && !Files.isSymbolicLink(it.toPath())) }

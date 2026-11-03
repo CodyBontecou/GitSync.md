@@ -101,7 +101,7 @@ class PullAllRunService : Service() {
     }
     companion object {
         private const val CHANNEL = "pull-all-actions"; const val NOTIFICATION = 422
-        private const val STOP = "md.gitsync.md.STOP_PULL_ALL"
+        private const val STOP = "com.bontecou.syncmd.STOP_PULL_ALL"
         fun stopIntent(context: Context, id: String): Intent {
             require(java.util.UUID.fromString(id).toString() == id)
             return Intent(context, PullAllRunService::class.java).setAction(STOP)

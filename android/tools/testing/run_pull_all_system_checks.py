@@ -83,7 +83,7 @@ try:
             run(PREFIX + 'PullAllBackgroundTransportTest#actualWidgetPendingIntentRunsTheServiceWithoutMainAndReviewDoesNotPullAgain,' +
                 PREFIX + 'PullAllScreenTest#savedBackgroundSummaryReviewsWithoutGitAndOnlyConfirmedClearDeletesIt', 'large-text')
             for name in ('pull-all-headless-review.png', 'pull-all-background-summary-light.png', 'pull-all-background-summary-dark-xl.png'):
-                data = subprocess.check_output(BASE + ['exec-out', 'run-as', 'md.gitsync.md.debug', 'cat', 'files/parity-evidence/' + name])
+                data = subprocess.check_output(BASE + ['exec-out', 'run-as', 'com.bontecou.syncmd.debug', 'cat', 'files/parity-evidence/' + name])
                 assert data.startswith(b'\x89PNG')
                 (output / name).write_bytes(data)
         finally:

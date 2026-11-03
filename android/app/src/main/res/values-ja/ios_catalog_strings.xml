@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian を開けませんでした。Obsidian で GitSync.md Connect を有効にしてから、再度戻ってください。"</string>
     <string name="obsidian_scope" formatted="false">"このリポジトリで選択した GitHub アカウントを使って Obsidian Git に接続します。認証情報は連携プラグイン用に暗号化され、コールバックリンクには含まれません。"</string>
     <string name="obsidian_title" formatted="false">"Obsidian の接続"</string>
+    <string name="paywall_bought_before" formatted="false">"以前に GitSync.md を購入しましたか？すでにロック解除されています。されていない場合は、「購入を復元」をタップしてください。"</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md のロックを解除"</string>
+    <string name="paywall_buy_vault">"ロック解除して %1$s をクローン"</string>
+    <string name="paywall_check_again" formatted="false">"もう一度チェック"</string>
+    <string name="paywall_check_branch_missing">"%1$s が見つかりません"</string>
+    <string name="paywall_check_branch_missing_detail">"ブランチ %1$s はこのリモートにありません。ブランチ名を確認してから、もう一度チェックしてください。"</string>
+    <string name="paywall_check_cant_connect" formatted="false">"接続できません"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"クローン時に鍵を確認"</string>
+    <string name="paywall_check_connected" formatted="false">"接続済み"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"保管庫を\nチェックしています。"</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"先に1つ\n直すことがあります。"</string>
+    <string name="paywall_check_headline_ready" formatted="false">"保管庫の\n準備ができました。"</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"このリポジトリに\n接続できません。"</string>
+    <string name="paywall_check_lfs_none" formatted="false">"なし"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"使用中 · 対応"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">".obsidian はまだありません"</string>
+    <string name="paywall_check_on_clone" formatted="false">"クローン時に確認"</string>
+    <string name="paywall_check_read_only" formatted="false">"読み取り専用"</string>
+    <string name="paywall_check_read_write" formatted="false">"読み取り · 書き込み"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"お支払いの前に、GitSync.md がこのリポジトリを同期できるか確認しています。"</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md はこのリポジトリを読み取れますが、プッシュできません。所有者に書き込み権限を依頼してから、もう一度チェックしてください。"</string>
+    <string name="paywall_check_sub_ready" formatted="false">"問題ありません。一度クローンすれば、Obsidian が履歴ごと開きます。"</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"読み取り専用でクローンされます。プルはできますが、プッシュは拒否されます。"</string>
+    <string name="paywall_check_title" formatted="false">"保管庫チェック"</string>
+    <string name="paywall_check_vault" formatted="false">"保管庫をチェック"</string>
+    <string name="paywall_checking_button" formatted="false">"チェック中…"</string>
+    <string name="paywall_clone_vault" formatted="false">"保管庫をクローン"</string>
+    <string name="paywall_close" formatted="false">"閉じる"</string>
+    <string name="paywall_continue_read_only" formatted="false">"読み取り専用で続ける"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play で購入を完了できませんでした。しばらくしてからもう一度お試しください。"</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"現在 Google Play に接続できません。しばらくしてからもう一度お試しください。"</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"まだ何も支払っていません。ロック解除は、保管庫がチェックに合格したときにだけ表示されます。"</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"何もダウンロードされていません。"</string>
+    <string name="paywall_foot_locked" formatted="false">"読み取るのはメタデータのみです。ロックを解除するまでノートはダウンロードされません。"</string>
+    <string name="paywall_foot_unlocked">"読み取るのはメタデータのみです。「%1$s」をタップするまで何もダウンロードされません。"</string>
+    <string name="paywall_one_time_line" formatted="false">"1回限りの購入。サブスクリプションなし。"</string>
+    <string name="paywall_pending" formatted="false">"承認を待っています。購入が完了するとすぐに保管庫が追加されます。"</string>
+    <string name="paywall_pick_another" formatted="false">"別のリポジトリを選ぶ"</string>
+    <string name="paywall_pill_checking" formatted="false">"チェック中…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"アクセスが必要"</string>
+    <string name="paywall_pill_ready" formatted="false">"準備完了"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"接続できません"</string>
+    <string name="paywall_point_again_body" formatted="false">"新しいスマートフォン、新しい保管庫、こじれたマージにも。すべての保管庫、すべてのアップデートに。"</string>
+    <string name="paywall_point_again_title" formatted="false">"また必要になったときも"</string>
+    <string name="paywall_point_clone_body" formatted="false">"履歴をすべて含むので、Git プラグインが初日から使えます。"</string>
+    <string name="paywall_point_clone_title" formatted="false">"Obsidian に直接クローン"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub、SSH、トークンに対応。ターミナルも設定ファイルも不要です。"</string>
+    <string name="paywall_point_signin_title" formatted="false">"サインインもおまかせ"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"1回払い · サブスクリプションなし"</string>
+    <string name="paywall_price_once">"%1$s（買い切り）"</string>
+    <string name="paywall_restore" formatted="false">"購入を復元"</string>
+    <string name="paywall_restore_none" formatted="false">"この Google アカウントでは以前の購入が見つかりませんでした。"</string>
+    <string name="paywall_row_access" formatted="false">"読み取りと書き込みのアクセス"</string>
+    <string name="paywall_row_branch" formatted="false">"ブランチ"</string>
+    <string name="paywall_row_checking" formatted="false">"チェック中"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS ファイル"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian 保管庫"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git プラグインの設定"</string>
+    <string name="paywall_row_size" formatted="false">"サイズとファイル数"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md フルアクセス"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"ロック解除済み"</string>
+    <string name="paywall_terms" formatted="false">"利用規約"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"ロックを解除すると、保管庫を追加できます。その後は Obsidian Git プラグインに任せられます。"</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"ロックを解除すると、保管庫を Obsidian にクローンできます。その後は Obsidian Git プラグインに任せられます。"</string>
+    <string name="paywall_unlock_title" formatted="false">"設定は一度だけ。\nあとはずっとそのまま。"</string>
+    <string name="paywall_unreachable_auth" formatted="false">"リモートがこの認証情報を拒否しました。サインイン方法を確認してから、もう一度チェックしてください。"</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md がリモートに接続できませんでした。アドレスと接続を確認してから、もう一度チェックしてください。"</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"このアドレスにはリポジトリがありません。URL を確認してから、もう一度チェックしてください。"</string>
     <string name="publication_accounts" formatted="false">"GitHub アカウント"</string>
     <string name="publication_adopt" formatted="false">"リポジトリを使用"</string>
     <string name="publication_adopt_title" formatted="false">"このリポジトリを使用しますか？"</string>
@@ -1664,6 +1733,9 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"Git メタデータを含む %1$s 個のファイル · %2$s"</item>
         <item quantity="other">"Git メタデータを含む %1$s 個のファイル · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="other">"%1$d ファイル"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"ほかに %1$d 件のブロックされたパスが非表示です。"</item>

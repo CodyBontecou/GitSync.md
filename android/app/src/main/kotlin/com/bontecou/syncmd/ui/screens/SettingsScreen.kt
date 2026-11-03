@@ -32,6 +32,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import com.bontecou.syncmd.ui.util.asString
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -447,6 +450,8 @@ private fun SettingsAccountCard(account: SettingsAccount?, onLogin: () -> Unit, 
 @Composable
 private fun LicenseRows() {
     val c = Tide.colors
+    val unlock = com.bontecou.syncmd.ui.util.LocalAppUnlock.current
+    if (unlock?.paywallEnabled == true) { UnlockRows(unlock); return }
     Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
         Text(stringResource(R.string.ui_gitsync_md_full_version_dde459ca), style = TideType.body, color = c.ink)
         Text(stringResource(R.string.ui_9_99_one_time_purchase_via_google_play_fa8e82bc), style = TideType.mono(11.sp), color = c.synced)
@@ -457,6 +462,31 @@ private fun LicenseRows() {
         modifier = Modifier.padding(horizontal = 18.dp, vertical = 14.dp),
         style = TideType.sans(13.sp), color = c.inkMid,
     )
+}
+
+/** The free listing's one-time unlock: status, and Restore purchase while locked. */
+@Composable
+private fun UnlockRows(unlock: com.bontecou.syncmd.billing.AppUnlock) {
+    val c = Tide.colors
+    val unlocked by unlock.isUnlocked.collectAsState()
+    val price by unlock.price.collectAsState()
+    val restoring by unlock.restoring.collectAsState()
+    val purchase by unlock.purchase.collectAsState()
+    val scope = rememberCoroutineScope()
+    Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp).testTag("settings-unlock"), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+        Text(stringResource(R.string.paywall_settings_title), style = TideType.body, color = c.ink)
+        Text(if (unlocked) stringResource(R.string.paywall_settings_unlocked)
+            else stringResource(R.string.paywall_price_once, price ?: stringResource(R.string.paywall_price_fallback)),
+            style = TideType.mono(11.sp), color = if (unlocked) c.synced else c.inkMid, modifier = Modifier.testTag("settings-unlock-status"))
+    }
+    if (!unlocked) {
+        SettingsAreaSeparator()
+        SettingsAreaRow(stringResource(R.string.paywall_restore), Modifier.testTag("settings-unlock-restore"), enabled = !restoring,
+            onClick = { scope.launch { unlock.restore() } })
+        (purchase as? com.bontecou.syncmd.billing.UnlockPurchase.Failed)?.let {
+            Text(it.message.asString(), modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp), style = TideType.sans(13.sp), color = c.danger)
+        }
+    }
 }
 
 // ─── Clone directory row ────────────────────────────────────────────────────

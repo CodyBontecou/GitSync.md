@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"לא ניתן היה לפתוח את Obsidian. יש להפעיל את ⁦GitSync.md Connect⁩ ב־Obsidian ואז לנסות לחזור שוב."</string>
     <string name="obsidian_scope" formatted="false">"חבר את ⁦Obsidian Git⁩ באמצעות חשבון GitHub שנבחר למאגר זה. פרטי הכניסה מוצפנים עבור התוסף הנלווה ואינם נכללים בקישורי callback."</string>
     <string name="obsidian_title" formatted="false">"חיבורי Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"כבר קניתם את GitSync.md? הוא כבר פתוח. אם לא, יש להקיש על שחזור רכישה."</string>
+    <string name="paywall_buy" formatted="false">"ביטול הנעילה של GitSync.md"</string>
+    <string name="paywall_buy_vault">"ביטול נעילה ושכפול ⁨%1$s⁩"</string>
+    <string name="paywall_check_again" formatted="false">"בדיקה חוזרת"</string>
+    <string name="paywall_check_branch_missing">"‏⁨%1$s⁩ לא נמצא"</string>
+    <string name="paywall_check_branch_missing_detail">"הענף ⁨%1$s⁩ לא קיים במאגר המרוחק הזה. יש לבדוק את שם הענף ואז לבדוק שוב."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"אין חיבור"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"אישור מפתח בשכפול"</string>
+    <string name="paywall_check_connected" formatted="false">"מחובר"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"בודקים\nאת הכספת."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"דבר אחד\nצריך לתקן קודם."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"הכספת\nמוכנה."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"אין גישה\nלמאגר הזה."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"אין"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"בשימוש · נתמך"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"עדיין אין ‎.obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"נבדק בשכפול"</string>
+    <string name="paywall_check_read_only" formatted="false">"קריאה בלבד"</string>
+    <string name="paywall_check_read_write" formatted="false">"קריאה · כתיבה"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"מוודאים ש-GitSync.md יכול לסנכרן את המאגר הזה לפני שמשלמים משהו."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"‏GitSync.md יכול לקרוא את המאגר הזה אבל לא לבצע אליו push. יש לבקש מהבעלים הרשאת כתיבה ואז לבדוק שוב."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"הכול תקין. שכפול אחד ו-Obsidian פותח אותה עם ההיסטוריה המלאה."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"היא תשוכפל לקריאה בלבד. אפשר לבצע pull, אבל push יידחה."</string>
+    <string name="paywall_check_title" formatted="false">"בדיקת כספת"</string>
+    <string name="paywall_check_vault" formatted="false">"בדיקת הכספת"</string>
+    <string name="paywall_checking_button" formatted="false">"בודק…"</string>
+    <string name="paywall_clone_vault" formatted="false">"שכפול הכספת"</string>
+    <string name="paywall_close" formatted="false">"סגירה"</string>
+    <string name="paywall_continue_read_only" formatted="false">"המשך לקריאה בלבד"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"‏Google Play לא הצליח להשלים את הרכישה. אפשר לנסות שוב בעוד רגע."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"אין גישה ל-Google Play כרגע. אפשר לנסות שוב בעוד רגע."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"עדיין לא שילמתם כלום. ביטול הנעילה מופיע רק אחרי שהכספת עוברת את הבדיקה."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"שום דבר לא הורד."</string>
+    <string name="paywall_foot_locked" formatted="false">"נקראים רק מטא־נתונים. אף פתק לא יורד עד לביטול הנעילה."</string>
+    <string name="paywall_foot_unlocked">"נקראים רק מטא־נתונים. שום דבר לא יורד עד שמקישים על ⁨%1$s⁩."</string>
+    <string name="paywall_one_time_line" formatted="false">"רכישה חד־פעמית. ללא מנוי."</string>
+    <string name="paywall_pending" formatted="false">"ממתין לאישור. הכספת תתווסף ברגע שהרכישה תושלם."</string>
+    <string name="paywall_pick_another" formatted="false">"בחירת מאגר אחר"</string>
+    <string name="paywall_pill_checking" formatted="false">"בודק…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"נדרשת גישה"</string>
+    <string name="paywall_pill_ready" formatted="false">"מוכנה"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"אין גישה"</string>
+    <string name="paywall_point_again_body" formatted="false">"טלפון חדש, כספת חדשה, מיזוג מסובך. כל כספת, כל עדכון."</string>
+    <string name="paywall_point_again_title" formatted="false">"כאן כשיהיה בו צורך שוב"</string>
+    <string name="paywall_point_clone_body" formatted="false">"היסטוריה מלאה, כך שתוסף Git עובד מהיום הראשון."</string>
+    <string name="paywall_point_clone_title" formatted="false">"משוכפל ישירות ל-Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"‏GitHub,‏ SSH או אסימון. בלי מסוף, בלי קובצי תצורה."</string>
+    <string name="paywall_point_signin_title" formatted="false">"ההתחברות מטופלת"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"תשלום חד־פעמי · ללא מנוי"</string>
+    <string name="paywall_price_once">"‏⁨%1$s⁩ חד־פעמי"</string>
+    <string name="paywall_restore" formatted="false">"שחזור רכישה"</string>
+    <string name="paywall_restore_none" formatted="false">"לא נמצאה רכישה קודמת לחשבון Google הזה."</string>
+    <string name="paywall_row_access" formatted="false">"גישת קריאה וכתיבה"</string>
+    <string name="paywall_row_branch" formatted="false">"ענף"</string>
+    <string name="paywall_row_checking" formatted="false">"בודק"</string>
+    <string name="paywall_row_lfs" formatted="false">"קובצי Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"כספת Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"התוסף Obsidian Git מוגדר"</string>
+    <string name="paywall_row_size" formatted="false">"גודל ומספר קבצים"</string>
+    <string name="paywall_settings_title" formatted="false">"גישה מלאה ל-GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"פתוח"</string>
+    <string name="paywall_terms" formatted="false">"תנאים"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"יש לבטל את הנעילה כדי להוסיף את הכספת. משם התוסף Obsidian Git יכול להמשיך."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"יש לבטל את הנעילה כדי לשכפל את הכספת ל-Obsidian. משם התוסף Obsidian Git יכול להמשיך."</string>
+    <string name="paywall_unlock_title" formatted="false">"מגדירים פעם אחת.\nוזה מסודר לתמיד."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"המאגר המרוחק דחה את פרטי ההתחברות האלה. יש לבדוק את שיטת ההתחברות ואז לבדוק שוב."</string>
+    <string name="paywall_unreachable_network" formatted="false">"‏GitSync.md לא הצליח להגיע למאגר המרוחק. יש לבדוק את הכתובת ואת החיבור ואז לבדוק שוב."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"אין מאגר בכתובת הזו. יש לבדוק את כתובת ה-URL ואז לבדוק שוב."</string>
     <string name="publication_accounts" formatted="false">"GitHub חשבון"</string>
     <string name="publication_adopt" formatted="false">"שימוש במאגר"</string>
     <string name="publication_adopt_title" formatted="false">"להשתמש במאגר הזה?"</string>
@@ -1698,6 +1767,11 @@
         <item quantity="two">"%1$s קבצים כולל מטא-נתונים של Git · %2$s"</item>
         <item quantity="many">"%1$s קבצים כולל מטא-נתונים של Git · %2$s"</item>
         <item quantity="other">"%1$s קבצים כולל מטא-נתונים של Git · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"‏%1$d קובץ"</item>
+        <item quantity="two">"‏%1$d קבצים"</item>
+        <item quantity="other">"‏%1$d קבצים"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"נתיב חסום נוסף אינו מוצג (%1$d)."</item>

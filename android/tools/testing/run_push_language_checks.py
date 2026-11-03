@@ -20,7 +20,7 @@ parser.add_argument('--device', required=True, help='Explicit owned emulator ser
 parser.add_argument('--avd', required=True, choices=sorted(name for name, api in OWNED_AVDS.items() if api >= 33))
 options = parser.parse_args()
 base = require_owned_emulator(ADB, options.device, options.avd)
-package = 'md.gitsync.md.debug'
+package = 'com.bontecou.syncmd.debug'
 output = pathlib.Path(tempfile.mkdtemp(prefix='syncmd-push-language-', dir='/tmp'))
 print('Push Sync language evidence:', output, flush=True)
 

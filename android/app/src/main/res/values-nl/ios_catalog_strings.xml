@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian kon niet worden geopend. Schakel GitSync.md Connect in Obsidian in en probeer opnieuw terug te keren."</string>
     <string name="obsidian_scope" formatted="false">"Verbind Obsidian Git met het GitHub-account dat voor deze repository is geselecteerd. Inloggegevens worden versleuteld voor de bijbehorende plug-in en komen niet in callbacklinks terecht."</string>
     <string name="obsidian_title" formatted="false">"Obsidian-verbindingen"</string>
+    <string name="paywall_bought_before" formatted="false">"GitSync.md al eerder gekocht? Dan is het al ontgrendeld. Zo niet, tik op Aankoop herstellen."</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md ontgrendelen"</string>
+    <string name="paywall_buy_vault">"Ontgrendel en kloon %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Opnieuw controleren"</string>
+    <string name="paywall_check_branch_missing">"%1$s niet gevonden"</string>
+    <string name="paywall_check_branch_missing_detail">"De branch %1$s staat niet op deze remote. Controleer de branchnaam en controleer opnieuw."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"geen verbinding"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"sleutel bevestigen bij klonen"</string>
+    <string name="paywall_check_connected" formatted="false">"verbonden"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Je kluis\nwordt gecontroleerd."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Eerst nog\néén ding oplossen."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Je kluis\nis klaar."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Deze repository\nis niet bereikbaar."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"geen"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"gebruikt · ondersteund"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"nog geen .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"gecontroleerd bij klonen"</string>
+    <string name="paywall_check_read_only" formatted="false">"alleen-lezen"</string>
+    <string name="paywall_check_read_write" formatted="false">"lezen · schrijven"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"We controleren of GitSync.md deze repository kan synchroniseren voordat je iets betaalt."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md kan deze repository lezen, maar er niet naar pushen. Vraag de eigenaar om schrijftoegang en controleer opnieuw."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Alles klopt. Eén keer klonen en Obsidian opent hem met de volledige geschiedenis."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Hij wordt alleen-lezen gekloond. Pullen kan, maar pushes worden geweigerd."</string>
+    <string name="paywall_check_title" formatted="false">"Kluiscontrole"</string>
+    <string name="paywall_check_vault" formatted="false">"Kluis controleren"</string>
+    <string name="paywall_checking_button" formatted="false">"Controleren…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Kluis klonen"</string>
+    <string name="paywall_close" formatted="false">"Sluiten"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Doorgaan als alleen-lezen"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play kon de aankoop niet voltooien. Probeer het zo opnieuw."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play is nu niet bereikbaar. Probeer het zo opnieuw."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Je hebt niets betaald. Ontgrendelen verschijnt pas als je kluis de controle doorstaat."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Er is niets gedownload."</string>
+    <string name="paywall_foot_locked" formatted="false">"Alleen metadata wordt gelezen. Er worden geen notities gedownload tot je ontgrendelt."</string>
+    <string name="paywall_foot_unlocked">"Alleen metadata wordt gelezen. Er wordt niets gedownload tot je op %1$s tikt."</string>
+    <string name="paywall_one_time_line" formatted="false">"Eenmalige aankoop. Geen abonnement."</string>
+    <string name="paywall_pending" formatted="false">"Wachten op goedkeuring. Je kluis wordt toegevoegd zodra de aankoop rond is."</string>
+    <string name="paywall_pick_another" formatted="false">"Andere repository kiezen"</string>
+    <string name="paywall_pill_checking" formatted="false">"controleren…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"toegang nodig"</string>
+    <string name="paywall_pill_ready" formatted="false">"klaar"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"onbereikbaar"</string>
+    <string name="paywall_point_again_body" formatted="false">"Nieuwe telefoon, nieuwe kluis, een lastige merge. Elke kluis, elke update."</string>
+    <string name="paywall_point_again_title" formatted="false">"Er wanneer je het weer nodig hebt"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Volledige geschiedenis, dus de Git-plug-in werkt vanaf dag één."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Direct in Obsidian gekloond"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH of een token. Geen terminal, geen configuratiebestanden."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Inloggen geregeld"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"eenmalig · geen abonnement"</string>
+    <string name="paywall_price_once">"eenmalig %1$s"</string>
+    <string name="paywall_restore" formatted="false">"Aankoop herstellen"</string>
+    <string name="paywall_restore_none" formatted="false">"Geen eerdere aankoop gevonden voor dit Google-account."</string>
+    <string name="paywall_row_access" formatted="false">"Lees- en schrijftoegang"</string>
+    <string name="paywall_row_branch" formatted="false">"Branch"</string>
+    <string name="paywall_row_checking" formatted="false">"controleren"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS-bestanden"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-kluis"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git-plug-in ingesteld"</string>
+    <string name="paywall_row_size" formatted="false">"Grootte en aantal bestanden"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md volledige toegang"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Ontgrendeld"</string>
+    <string name="paywall_terms" formatted="false">"Voorwaarden"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Ontgrendel om je kluis toe te voegen. Daarna kan de Obsidian Git-plug-in het overnemen."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Ontgrendel om je kluis in Obsidian te klonen. Daarna kan de Obsidian Git-plug-in het overnemen."</string>
+    <string name="paywall_unlock_title" formatted="false">"Eén keer instellen.\nVoorgoed geregeld."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"De remote heeft deze inloggegevens geweigerd. Controleer de inlogmethode en controleer opnieuw."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md kon de remote niet bereiken. Controleer het adres en je verbinding en controleer opnieuw."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Er staat geen repository op dit adres. Controleer de URL en controleer opnieuw."</string>
     <string name="publication_accounts" formatted="false">"GitHub Rekening"</string>
     <string name="publication_adopt" formatted="false">"Repository gebruiken"</string>
     <string name="publication_adopt_title" formatted="false">"Deze repository gebruiken?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s bestand inclusief Git-metadata · %2$s"</item>
         <item quantity="other">"%1$s bestanden inclusief Git-metadata · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d extra geblokkeerd pad wordt niet getoond."</item>

@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Не удалось открыть Obsidian. Включите GitSync.md Connect в Obsidian и снова попробуйте вернуться."</string>
     <string name="obsidian_scope" formatted="false">"Подключите Obsidian Git с помощью выбранного для этого репозитория аккаунта GitHub. Учётные данные шифруются для сопутствующего плагина и не попадают в callback-ссылки."</string>
     <string name="obsidian_title" formatted="false">"Подключения Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"Уже покупали GitSync.md? Тогда он уже разблокирован. Если нет, нажмите «Восстановить покупку»."</string>
+    <string name="paywall_buy" formatted="false">"Разблокировать GitSync.md"</string>
+    <string name="paywall_buy_vault">"Разблокировать и клонировать %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Проверить снова"</string>
+    <string name="paywall_check_branch_missing">"%1$s не найдена"</string>
+    <string name="paywall_check_branch_missing_detail">"Ветки %1$s нет в этом удалённом репозитории. Проверьте имя ветки, затем проверьте снова."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"нет подключения"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"подтвердите ключ при клонировании"</string>
+    <string name="paywall_check_connected" formatted="false">"подключено"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Проверяем\nваше хранилище."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Сначала нужно\nкое-что исправить."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Ваше хранилище\nготово."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Не удаётся связаться\nс репозиторием."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"нет"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"используется · поддерживается"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">".obsidian пока нет"</string>
+    <string name="paywall_check_on_clone" formatted="false">"проверяется при клонировании"</string>
+    <string name="paywall_check_read_only" formatted="false">"только чтение"</string>
+    <string name="paywall_check_read_write" formatted="false">"чтение · запись"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Убеждаемся, что GitSync.md может синхронизировать этот репозиторий, прежде чем вы что-то оплатите."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md может читать этот репозиторий, но не может отправлять в него изменения. Попросите владельца о доступе на запись, затем проверьте снова."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Всё в порядке. Один клон — и Obsidian откроет его с полной историей."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Оно будет клонировано только для чтения. Pull работает, но push будет отклонён."</string>
+    <string name="paywall_check_title" formatted="false">"Проверка хранилища"</string>
+    <string name="paywall_check_vault" formatted="false">"Проверить хранилище"</string>
+    <string name="paywall_checking_button" formatted="false">"Проверка…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Клонировать хранилище"</string>
+    <string name="paywall_close" formatted="false">"Закрыть"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Продолжить только для чтения"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play не удалось завершить покупку. Повторите попытку чуть позже."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play сейчас недоступен. Повторите попытку чуть позже."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Вы ничего не заплатили. Разблокировка появится, только когда хранилище пройдёт проверку."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Ничего не загружено."</string>
+    <string name="paywall_foot_locked" formatted="false">"Читаются только метаданные. Заметки не загружаются до разблокировки."</string>
+    <string name="paywall_foot_unlocked">"Читаются только метаданные. Ничего не загружается, пока вы не нажмёте «%1$s»."</string>
+    <string name="paywall_one_time_line" formatted="false">"Разовая покупка. Без подписки."</string>
+    <string name="paywall_pending" formatted="false">"Ожидание подтверждения. Хранилище будет добавлено, как только покупка пройдёт."</string>
+    <string name="paywall_pick_another" formatted="false">"Выбрать другой репозиторий"</string>
+    <string name="paywall_pill_checking" formatted="false">"проверка…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"нужен доступ"</string>
+    <string name="paywall_pill_ready" formatted="false">"готово"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"недоступен"</string>
+    <string name="paywall_point_again_body" formatted="false">"Новый телефон, новое хранилище, запутанное слияние. Любое хранилище, любое обновление."</string>
+    <string name="paywall_point_again_title" formatted="false">"Под рукой, когда снова понадобится"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Полная история, поэтому плагин Git работает с первого дня."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Клонируется прямо в Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH или токен. Без терминала и файлов конфигурации."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Вход без хлопот"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"разовая оплата · без подписки"</string>
+    <string name="paywall_price_once">"%1$s один раз"</string>
+    <string name="paywall_restore" formatted="false">"Восстановить покупку"</string>
+    <string name="paywall_restore_none" formatted="false">"Для этого аккаунта Google не найдено прошлых покупок."</string>
+    <string name="paywall_row_access" formatted="false">"Доступ на чтение и запись"</string>
+    <string name="paywall_row_branch" formatted="false">"Ветка"</string>
+    <string name="paywall_row_checking" formatted="false">"проверка"</string>
+    <string name="paywall_row_lfs" formatted="false">"Файлы Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Хранилище Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Плагин Obsidian Git настроен"</string>
+    <string name="paywall_row_size" formatted="false">"Размер и число файлов"</string>
+    <string name="paywall_settings_title" formatted="false">"Полный доступ к GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Разблокировано"</string>
+    <string name="paywall_terms" formatted="false">"Условия"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Разблокируйте, чтобы добавить хранилище. Дальше работу может взять на себя плагин Obsidian Git."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Разблокируйте, чтобы клонировать хранилище в Obsidian. Дальше работу может взять на себя плагин Obsidian Git."</string>
+    <string name="paywall_unlock_title" formatted="false">"Настройте один раз.\nИ всё готово."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Удалённый репозиторий отклонил эти учётные данные. Проверьте способ входа, затем проверьте снова."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md не удалось связаться с удалённым репозиторием. Проверьте адрес и подключение, затем проверьте снова."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"По этому адресу нет репозитория. Проверьте URL, затем проверьте снова."</string>
     <string name="publication_accounts" formatted="false">"GitHub Счет"</string>
     <string name="publication_adopt" formatted="false">"Использовать репозиторий"</string>
     <string name="publication_adopt_title" formatted="false">"Использовать этот репозиторий?"</string>
@@ -1698,6 +1767,12 @@
         <item quantity="few">"%1$s файла с метаданными Git · %2$s"</item>
         <item quantity="many">"%1$s файлов с метаданными Git · %2$s"</item>
         <item quantity="other">"%1$s файла с метаданными Git · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d файл"</item>
+        <item quantity="few">"%1$d файла"</item>
+        <item quantity="many">"%1$d файлов"</item>
+        <item quantity="other">"%1$d файла"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"Ещё %1$d заблокированный путь не показан."</item>

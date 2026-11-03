@@ -24,7 +24,7 @@ parser.add_argument('--language', choices=all_tags, help='Replay only this langu
 options = parser.parse_args()
 expected_tags = [options.language] if options.language else all_tags
 base = require_owned_emulator(ADB, options.device, options.avd)
-package = 'md.gitsync.md.debug'
+package = 'com.bontecou.syncmd.debug'
 output = pathlib.Path(tempfile.mkdtemp(prefix='syncmd-background-language-', dir='/tmp'))
 print('Background Sync language evidence:', output, flush=True)
 

@@ -66,6 +66,8 @@ fun RepositoryManagementScreen(
     onMoveRepository: ((String) -> Unit)? = null,
     onRestoreMoveRecovery: ((String) -> Unit)? = null,
 ) {
+    // Adding found clones is a new vault, so locked installs unlock first (as on iOS).
+    val unlockGate = com.bontecou.syncmd.ui.util.rememberUnlockGate()
     val repos by viewModel.allRepositories.collectAsState()
     val history by viewModel.repositoryHistory.collectAsState()
     val result by viewModel.discoveryResult.collectAsState()
@@ -187,7 +189,7 @@ fun RepositoryManagementScreen(
                 }
                 item {
                     val additions = selected.filter { path -> repos.none { it.path == path } }
-                    VaultOpsButton(stringResource(R.string.ui_add_selected_repositories_d05e3c53), { viewModel.addDiscoveredRepositories(additions); selected = emptySet() },
+                    VaultOpsButton(stringResource(R.string.ui_add_selected_repositories_d05e3c53), { unlockGate.require { viewModel.addDiscoveredRepositories(additions); selected = emptySet() } },
                         enabled = !busy && additions.isNotEmpty())
                 }
             }

@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"تعذّر فتح Obsidian. فعّل ⁦GitSync.md Connect⁩ في Obsidian، ثم حاول العودة مجددًا."</string>
     <string name="obsidian_scope" formatted="false">"اربط ⁦Obsidian Git⁩ باستخدام حساب GitHub المحدد لهذا المستودع. تُشفّر بيانات الاعتماد للتطبيق المصاحب ولا تُضمّن في روابط الاستدعاء."</string>
     <string name="obsidian_title" formatted="false">"اتصالات Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"هل اشتريت GitSync.md من قبل؟ إنه مفتوح بالفعل. إن لم يكن كذلك، فانقر على استعادة الشراء."</string>
+    <string name="paywall_buy" formatted="false">"افتح قفل GitSync.md"</string>
+    <string name="paywall_buy_vault">"افتح القفل واستنسخ ⁨%1$s⁩"</string>
+    <string name="paywall_check_again" formatted="false">"افحص مجددًا"</string>
+    <string name="paywall_check_branch_missing">"لم يُعثر على ⁨%1$s⁩"</string>
+    <string name="paywall_check_branch_missing_detail">"الفرع ⁨%1$s⁩ غير موجود في هذا المستودع البعيد. تحقق من اسم الفرع، ثم افحص مجددًا."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"تعذّر الاتصال"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"أكّد المفتاح عند الاستنساخ"</string>
+    <string name="paywall_check_connected" formatted="false">"متصل"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"جارٍ فحص\nخزنتك."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"أمر واحد\nيجب إصلاحه أولًا."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"خزنتك\nجاهزة."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"تعذّر الوصول\nإلى هذا المستودع."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"لا شيء"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"مستخدمة · مدعومة"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"لا يوجد ‎.obsidian بعد"</string>
+    <string name="paywall_check_on_clone" formatted="false">"يُفحص عند الاستنساخ"</string>
+    <string name="paywall_check_read_only" formatted="false">"قراءة فقط"</string>
+    <string name="paywall_check_read_write" formatted="false">"قراءة · كتابة"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"نتأكد من أن GitSync.md يستطيع مزامنة هذا المستودع قبل أن تدفع أي شيء."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"يستطيع GitSync.md قراءة هذا المستودع لكنه لا يستطيع تنفيذ push إليه. اطلب من المالك صلاحية الكتابة، ثم افحص مجددًا."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"كل شيء سليم. استنساخ واحد ويفتحها Obsidian مع سجلها كاملًا."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"ستُستنسخ للقراءة فقط. يمكنك تنفيذ pull، لكن سيُرفض push."</string>
+    <string name="paywall_check_title" formatted="false">"التحقق من الخزنة"</string>
+    <string name="paywall_check_vault" formatted="false">"فحص الخزنة"</string>
+    <string name="paywall_checking_button" formatted="false">"جارٍ الفحص…"</string>
+    <string name="paywall_clone_vault" formatted="false">"استنساخ الخزنة"</string>
+    <string name="paywall_close" formatted="false">"إغلاق"</string>
+    <string name="paywall_continue_read_only" formatted="false">"المتابعة للقراءة فقط"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"تعذّر على Google Play إتمام الشراء. حاول مرة أخرى بعد لحظات."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"تعذّر الوصول إلى Google Play الآن. حاول مرة أخرى بعد لحظات."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"لم تدفع أي شيء. لا يظهر فتح القفل إلا بعد أن تجتاز خزنتك الفحص."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"لم يُنزَّل أي شيء."</string>
+    <string name="paywall_foot_locked" formatted="false">"تُقرأ البيانات الوصفية فقط. لن تُنزَّل أي ملاحظات حتى تفتح القفل."</string>
+    <string name="paywall_foot_unlocked">"تُقرأ البيانات الوصفية فقط. لن يُنزَّل أي شيء حتى تنقر على ⁨%1$s⁩."</string>
+    <string name="paywall_one_time_line" formatted="false">"شراء لمرة واحدة. بلا اشتراك."</string>
+    <string name="paywall_pending" formatted="false">"في انتظار الموافقة. ستُضاف خزنتك فور إتمام الشراء."</string>
+    <string name="paywall_pick_another" formatted="false">"اختيار مستودع آخر"</string>
+    <string name="paywall_pill_checking" formatted="false">"جارٍ الفحص…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"يحتاج إلى صلاحية"</string>
+    <string name="paywall_pill_ready" formatted="false">"جاهزة"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"يتعذّر الوصول"</string>
+    <string name="paywall_point_again_body" formatted="false">"هاتف جديد، خزنة جديدة، دمج متشابك. كل خزنة، كل تحديث."</string>
+    <string name="paywall_point_again_title" formatted="false">"موجود عندما تحتاج إليه مجددًا"</string>
+    <string name="paywall_point_clone_body" formatted="false">"السجل الكامل، لذا تعمل إضافة Git من اليوم الأول."</string>
+    <string name="paywall_point_clone_title" formatted="false">"استنساخ مباشر إلى Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"‏GitHub أو SSH أو رمز مميز. بلا طرفية ولا ملفات إعداد."</string>
+    <string name="paywall_point_signin_title" formatted="false">"تسجيل الدخول جاهز"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"مرة واحدة · بلا اشتراك"</string>
+    <string name="paywall_price_once">"‏⁨%1$s⁩ مرة واحدة"</string>
+    <string name="paywall_restore" formatted="false">"استعادة الشراء"</string>
+    <string name="paywall_restore_none" formatted="false">"لم يُعثر على عملية شراء سابقة لحساب Google هذا."</string>
+    <string name="paywall_row_access" formatted="false">"صلاحية القراءة والكتابة"</string>
+    <string name="paywall_row_branch" formatted="false">"الفرع"</string>
+    <string name="paywall_row_checking" formatted="false">"جارٍ الفحص"</string>
+    <string name="paywall_row_lfs" formatted="false">"ملفات Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"خزنة Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"تم إعداد إضافة Obsidian Git"</string>
+    <string name="paywall_row_size" formatted="false">"الحجم وعدد الملفات"</string>
+    <string name="paywall_settings_title" formatted="false">"الوصول الكامل إلى GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"مفتوح"</string>
+    <string name="paywall_terms" formatted="false">"الشروط"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"افتح القفل لإضافة خزنتك. بعدها يمكن لإضافة Obsidian Git أن تتولى الأمر."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"افتح القفل لاستنساخ خزنتك إلى Obsidian. بعدها يمكن لإضافة Obsidian Git أن تتولى الأمر."</string>
+    <string name="paywall_unlock_title" formatted="false">"أعدّه مرة واحدة.\nوانتهى الأمر."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"رفض المستودع البعيد بيانات الاعتماد هذه. تحقق من طريقة تسجيل الدخول، ثم افحص مجددًا."</string>
+    <string name="paywall_unreachable_network" formatted="false">"تعذّر على GitSync.md الوصول إلى المستودع البعيد. تحقق من العنوان واتصالك، ثم افحص مجددًا."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"لا يوجد مستودع على هذا العنوان. تحقق من عنوان URL، ثم افحص مجددًا."</string>
     <string name="publication_accounts" formatted="false">"GitHub الحساب"</string>
     <string name="publication_adopt" formatted="false">"استخدام المستودع"</string>
     <string name="publication_adopt_title" formatted="false">"هل تريد استخدام هذا المستودع؟"</string>
@@ -1732,6 +1801,14 @@
         <item quantity="few">"%1$s ملفات بما فيها بيانات Git الوصفية · %2$s"</item>
         <item quantity="many">"%1$s ملفًا بما فيها بيانات Git الوصفية · %2$s"</item>
         <item quantity="other">"%1$s ملف بما فيها بيانات Git الوصفية · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="zero">"‏%1$d ملف"</item>
+        <item quantity="one">"‏%1$d ملف"</item>
+        <item quantity="two">"‏%1$d ملفان"</item>
+        <item quantity="few">"‏%1$d ملفات"</item>
+        <item quantity="many">"‏%1$d ملفًا"</item>
+        <item quantity="other">"‏%1$d ملف"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="zero">"لا توجد مسارات محظورة إضافية غير معروضة (%1$d)."</item>

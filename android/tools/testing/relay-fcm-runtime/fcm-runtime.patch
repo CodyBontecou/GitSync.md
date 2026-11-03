@@ -39,7 +39,7 @@
        body: JSON.stringify({ message: {
          token: notification.token,
 @@ -106,6 +108,10 @@
-           restricted_package_name: notification.environment === "development" ? "md.gitsync.md.debug" : "md.gitsync.md" },
+           restricted_package_name: notification.environment === "development" ? "com.bontecou.syncmd.debug" : "com.bontecou.syncmd" },
        } }),
      });
 +    if (response.status >= 300 && response.status < 400) {

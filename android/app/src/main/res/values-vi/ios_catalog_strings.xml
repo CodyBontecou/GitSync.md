@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Không thể mở Obsidian. Bật GitSync.md Connect trong Obsidian rồi thử quay lại."</string>
     <string name="obsidian_scope" formatted="false">"Kết nối Obsidian Git bằng tài khoản GitHub đã chọn cho kho này. Thông tin xác thực được mã hóa cho plugin đồng hành và không nằm trong liên kết callback."</string>
     <string name="obsidian_title" formatted="false">"Kết nối Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"Đã mua GitSync.md trước đây? Ứng dụng đã được mở khóa. Nếu chưa, hãy nhấn Khôi phục giao dịch mua."</string>
+    <string name="paywall_buy" formatted="false">"Mở khóa GitSync.md"</string>
+    <string name="paywall_buy_vault">"Mở khóa và sao chép %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Kiểm tra lại"</string>
+    <string name="paywall_check_branch_missing">"không tìm thấy %1$s"</string>
+    <string name="paywall_check_branch_missing_detail">"Nhánh %1$s không có trên kho từ xa này. Hãy kiểm tra tên nhánh, rồi kiểm tra lại."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"không kết nối được"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"xác nhận khóa khi sao chép"</string>
+    <string name="paywall_check_connected" formatted="false">"đã kết nối"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Đang kiểm tra\nkho của bạn."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Còn một việc\ncần sửa trước."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Kho của bạn\nđã sẵn sàng."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Không thể truy cập\nkho lưu trữ này."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"không có"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"có dùng · được hỗ trợ"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"chưa có .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"kiểm tra khi sao chép"</string>
+    <string name="paywall_check_read_only" formatted="false">"chỉ đọc"</string>
+    <string name="paywall_check_read_write" formatted="false">"đọc · ghi"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Đang đảm bảo GitSync.md có thể đồng bộ kho lưu trữ này trước khi bạn trả bất cứ khoản nào."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md có thể đọc kho lưu trữ này nhưng không thể push lên. Hãy xin chủ sở hữu quyền ghi, rồi kiểm tra lại."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Mọi thứ đều ổn. Sao chép một lần là Obsidian mở kho với đầy đủ lịch sử."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Kho sẽ được sao chép ở chế độ chỉ đọc. Bạn có thể pull, nhưng push sẽ bị từ chối."</string>
+    <string name="paywall_check_title" formatted="false">"Kiểm tra kho"</string>
+    <string name="paywall_check_vault" formatted="false">"Kiểm tra kho"</string>
+    <string name="paywall_checking_button" formatted="false">"Đang kiểm tra…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Sao chép kho"</string>
+    <string name="paywall_close" formatted="false">"Đóng"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Tiếp tục ở chế độ chỉ đọc"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play không thể hoàn tất giao dịch mua. Hãy thử lại sau giây lát."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Hiện không kết nối được với Google Play. Hãy thử lại sau giây lát."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Bạn chưa trả gì cả. Tùy chọn mở khóa chỉ xuất hiện khi kho của bạn vượt qua kiểm tra."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Chưa có gì được tải xuống."</string>
+    <string name="paywall_foot_locked" formatted="false">"Chỉ đọc siêu dữ liệu. Không ghi chú nào được tải xuống cho đến khi bạn mở khóa."</string>
+    <string name="paywall_foot_unlocked">"Chỉ đọc siêu dữ liệu. Không có gì được tải xuống cho đến khi bạn nhấn %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Mua một lần. Không đăng ký."</string>
+    <string name="paywall_pending" formatted="false">"Đang chờ phê duyệt. Kho của bạn sẽ được thêm ngay khi giao dịch hoàn tất."</string>
+    <string name="paywall_pick_another" formatted="false">"Chọn kho lưu trữ khác"</string>
+    <string name="paywall_pill_checking" formatted="false">"đang kiểm tra…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"cần quyền truy cập"</string>
+    <string name="paywall_pill_ready" formatted="false">"sẵn sàng"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"không truy cập được"</string>
+    <string name="paywall_point_again_body" formatted="false">"Điện thoại mới, kho mới, một lần merge rối rắm. Mọi kho, mọi bản cập nhật."</string>
+    <string name="paywall_point_again_title" formatted="false">"Sẵn sàng khi bạn cần lại"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Đầy đủ lịch sử, nên plugin Git hoạt động ngay từ ngày đầu."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Sao chép thẳng vào Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH hoặc token. Không cần terminal, không cần tệp cấu hình."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Đăng nhập đã lo xong"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"một lần · không đăng ký"</string>
+    <string name="paywall_price_once">"%1$s một lần"</string>
+    <string name="paywall_restore" formatted="false">"Khôi phục giao dịch mua"</string>
+    <string name="paywall_restore_none" formatted="false">"Không tìm thấy giao dịch mua trước đó cho tài khoản Google này."</string>
+    <string name="paywall_row_access" formatted="false">"Quyền đọc và ghi"</string>
+    <string name="paywall_row_branch" formatted="false">"Nhánh"</string>
+    <string name="paywall_row_checking" formatted="false">"đang kiểm tra"</string>
+    <string name="paywall_row_lfs" formatted="false">"Tệp Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Kho Obsidian"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Đã cấu hình plugin Obsidian Git"</string>
+    <string name="paywall_row_size" formatted="false">"Dung lượng và số tệp"</string>
+    <string name="paywall_settings_title" formatted="false">"Toàn quyền truy cập GitSync.md"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Đã mở khóa"</string>
+    <string name="paywall_terms" formatted="false">"Điều khoản"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Mở khóa để thêm kho của bạn. Từ đó, plugin Obsidian Git có thể đảm nhận."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Mở khóa để sao chép kho của bạn vào Obsidian. Từ đó, plugin Obsidian Git có thể đảm nhận."</string>
+    <string name="paywall_unlock_title" formatted="false">"Thiết lập một lần.\nDùng mãi về sau."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Kho từ xa đã từ chối thông tin đăng nhập này. Hãy kiểm tra phương thức đăng nhập, rồi kiểm tra lại."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md không thể kết nối với kho từ xa. Hãy kiểm tra địa chỉ và kết nối của bạn, rồi kiểm tra lại."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Không có kho lưu trữ nào ở địa chỉ này. Hãy kiểm tra URL, rồi kiểm tra lại."</string>
     <string name="publication_accounts" formatted="false">"GitHub Tài khoản"</string>
     <string name="publication_adopt" formatted="false">"Dùng kho lưu trữ"</string>
     <string name="publication_adopt_title" formatted="false">"Dùng kho lưu trữ này?"</string>
@@ -1664,6 +1733,9 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s tệp, gồm siêu dữ liệu Git · %2$s"</item>
         <item quantity="other">"%1$s tệp, gồm siêu dữ liệu Git · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="other">"%1$d tệp"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"Không hiển thị %1$d đường dẫn bị chặn khác."</item>

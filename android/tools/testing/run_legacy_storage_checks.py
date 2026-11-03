@@ -15,7 +15,7 @@ from device_identity import OWNED_AVDS, require_owned_emulator
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 ADB = str(pathlib.Path.home() / 'Library/Android/sdk/platform-tools/adb')
-PACKAGE = 'md.gitsync.md.debug'
+PACKAGE = 'com.bontecou.syncmd.debug'
 PERMISSIONS = ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE']
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--device', required=True)

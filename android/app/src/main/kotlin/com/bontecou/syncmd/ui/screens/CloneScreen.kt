@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -74,6 +75,19 @@ fun CloneScreen(
 ) {
     val state by viewModel.cloneState.collectAsState()
     var location by rememberSaveable(repoFullName) { mutableStateOf<String?>(null) }
+    // Locked installs check the repository for free first, then ask for the unlock (as on iOS).
+    val gate = com.bontecou.syncmd.ui.util.rememberUnlockGate()
+    val unlocked by gate.isUnlocked.collectAsState()
+    val price by gate.price.collectAsState()
+    var checkTarget by remember { mutableStateOf<com.bontecou.syncmd.billing.VaultTarget?>(null) }
+    val start: () -> Unit = {
+        if (!gate.paywallEnabled || unlocked) viewModel.startClone(repoFullName, location)
+        else viewModel.vaultTarget(repoFullName)?.let { checkTarget = it }
+    }
+    checkTarget?.let { target ->
+        VaultCheckScreen(target, locked = !unlocked, price = price,
+            onClone = { gate.require(target.name) { checkTarget = null; viewModel.startClone(repoFullName, location) } }, onDismiss = { checkTarget = null })
+    }
 
     Box(Modifier.fillMaxSize().background(Tide.colors.paper)) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -99,7 +113,7 @@ fun CloneScreen(
                         CloneHeroCard(repoFullName, ClonePhase.READY)
                         FolderLocationField(location, { location = it })
                         TidePrimaryButton(stringResource(R.string.ui_clone_repository_e8fa94ab),
-                            onClick = { viewModel.startClone(repoFullName, location) }, modifier = Modifier.testTag("clone-start"))
+                            onClick = start, modifier = Modifier.testTag("clone-start"))
                     }
                     is CloneViewModel.CloneState.Cloning -> CloneHeroCard(repoFullName, ClonePhase.CLONING)
                     is CloneViewModel.CloneState.Success -> {
@@ -113,7 +127,7 @@ fun CloneScreen(
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                             TideOutlineButton(stringResource(R.string.publication_cancel), onClick = { if (viewModel.reset()) onCancel() },
                                 height = 60.dp, modifier = Modifier.weight(1f))
-                            TidePrimaryButton(stringResource(R.string.ui_retry_942087cc), onClick = { viewModel.startClone(repoFullName, location) },
+                            TidePrimaryButton(stringResource(R.string.ui_retry_942087cc), onClick = start,
                                 modifier = Modifier.weight(1f))
                         }
                     }

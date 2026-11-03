@@ -18,12 +18,12 @@ fixture=str(uuid.uuid4())
 pathlib.Path('/tmp/syncmd-push-live-fixture').write_text(fixture)
 log=pathlib.Path('/tmp/syncmd-push-live-delivery.log')
 with log.open('w') as output:
-    process=subprocess.Popen(base+['shell','am','instrument','-w','-e','liveFirebase','true','-e','fixture',fixture,'-e','class','com.bontecou.syncmd.PushSyncLiveDeliveryTest','md.gitsync.md.debug.test/androidx.test.runner.AndroidJUnitRunner'],stdout=output,stderr=subprocess.STDOUT)
+    process=subprocess.Popen(base+['shell','am','instrument','-w','-e','liveFirebase','true','-e','fixture',fixture,'-e','class','com.bontecou.syncmd.PushSyncLiveDeliveryTest','com.bontecou.syncmd.debug.test/androidx.test.runner.AndroidJUnitRunner'],stdout=output,stderr=subprocess.STDOUT)
     try:
         address=None
         deadline=time.monotonic()+130
         while time.monotonic()<deadline and process.poll() is None:
-            candidate=subprocess.run(base+['exec-out','run-as','md.gitsync.md.debug','cat',f'files/push-live-{fixture}/address.json'],capture_output=True)
+            candidate=subprocess.run(base+['exec-out','run-as','com.bontecou.syncmd.debug','cat',f'files/push-live-{fixture}/address.json'],capture_output=True)
             if candidate.returncode==0 and candidate.stdout.strip():
                 try: address=json.loads(candidate.stdout)
                 except (ValueError, UnicodeError): pass
@@ -31,7 +31,7 @@ with log.open('w') as output:
             time.sleep(1)
         if address:
             token=subprocess.check_output(['gcloud','auth','print-access-token','--account=bontecouc@gmail.com'],text=True).strip()
-            message={'message':{'token':address['token'],'data':{'type':'gitsync.push.v1','repo':'octocat/hello-world','branch':address['branch'],'hint':fixture,'head':'0'*40},'android':{'priority':'HIGH','ttl':'120s','restricted_package_name':'md.gitsync.md.debug'}}}
+            message={'message':{'token':address['token'],'data':{'type':'gitsync.push.v1','repo':'octocat/hello-world','branch':address['branch'],'hint':fixture,'head':'0'*40},'android':{'priority':'HIGH','ttl':'120s','restricted_package_name':'com.bontecou.syncmd.debug'}}}
             request=urllib.request.Request('https://fcm.googleapis.com/v1/projects/gitsync-md-android-20261028/messages:send',data=json.dumps(message).encode(),headers={'Authorization':'Bearer '+token,'Content-Type':'application/json','x-goog-user-project':'gitsync-md-android-20261028'})
             try:
                 with urllib.request.urlopen(request,timeout=30) as response:

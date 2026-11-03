@@ -1,5 +1,25 @@
 # Gitsync.md Android — Release Notes
 
+## Version 1.1.0 (free download, one-time unlock)
+
+### Back to the free listing `com.bontecou.syncmd`
+
+iOS moves to a free download with a hard paywall (branch `paywall-preflight`), and Android follows on the
+original free listing, which Google Play keeps free permanently:
+
+- **applicationId:** `com.bontecou.syncmd` again; versionCode 10 / versionName 1.1.0
+- **Model:** free to install. A free, metadata-only **vault check** (connection, write access, branch,
+  size, LFS, Obsidian folder) runs before the first clone; adding, cloning, linking or publishing a vault
+  then needs the one-time **`full_access`** in-app product (USD $9.99, Google Play Billing 8.3).
+- **Grandfathered:** owners of `full_access`, `unlock-full-version` or `com.bontecou.syncmd.unlock`, and
+  installs that already hold vaults on the first launch of this build.
+- `BuildConfig.HARD_PAYWALL` is true in release; debug builds default to false
+  (`-Psyncmd.hardPaywall=true` turns it on).
+- The paid `md.gitsync.md` listing (1.0.3 in production, 1.0.4 paused in open testing) is unpublished
+  once 1.1.0 is live.
+- Firebase needs `com.bontecou.syncmd` (+ `.debug`) registered and new `google_app_id` values in
+  `app/src/{release,debug}/res/values/firebase.xml` before push sync can work on this package.
+
 ## Version 1.0.3 (paid relaunch)
 
 ### Move to `md.gitsync.md` — new paid listing

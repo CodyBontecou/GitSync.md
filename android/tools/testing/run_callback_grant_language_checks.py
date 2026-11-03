@@ -23,7 +23,7 @@ assert len(all_tags) == 25
 options = parser.parse_args()
 expected_tags = all_tags
 base = require_owned_emulator(ADB, options.device, options.avd)
-package = 'md.gitsync.md.debug'
+package = 'com.bontecou.syncmd.debug'
 output = pathlib.Path(tempfile.mkdtemp(prefix='syncmd-callback-grant-language-', dir='/tmp'))
 print('Authorized links management language evidence:', output, flush=True)
 

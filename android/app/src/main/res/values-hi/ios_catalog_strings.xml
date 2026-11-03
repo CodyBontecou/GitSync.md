@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian नहीं खोला जा सका। Obsidian में GitSync.md Connect सक्षम करें, फिर दोबारा लौटने का प्रयास करें।"</string>
     <string name="obsidian_scope" formatted="false">"इस रिपॉज़िटरी के लिए चुने गए GitHub खाते से Obsidian Git कनेक्ट करें। क्रेडेंशियल साथी प्लगइन के लिए एन्क्रिप्ट किए जाते हैं और कॉलबैक लिंक में शामिल नहीं होते।"</string>
     <string name="obsidian_title" formatted="false">"Obsidian कनेक्शन"</string>
+    <string name="paywall_bought_before" formatted="false">"पहले GitSync.md खरीदा था? तो यह पहले से अनलॉक है। अगर नहीं, तो खरीदारी बहाल करें पर टैप करें।"</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md अनलॉक करें"</string>
+    <string name="paywall_buy_vault">"अनलॉक करें और %1$s क्लोन करें"</string>
+    <string name="paywall_check_again" formatted="false">"दोबारा जाँचें"</string>
+    <string name="paywall_check_branch_missing">"%1$s नहीं मिली"</string>
+    <string name="paywall_check_branch_missing_detail">"ब्रांच %1$s इस रिमोट पर नहीं है। ब्रांच का नाम जाँचें, फिर दोबारा जाँचें।"</string>
+    <string name="paywall_check_cant_connect" formatted="false">"कनेक्ट नहीं हो सका"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"क्लोन पर कुंजी की पुष्टि करें"</string>
+    <string name="paywall_check_connected" formatted="false">"कनेक्ट है"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"आपका वॉल्ट\nजाँचा जा रहा है।"</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"पहले एक चीज़\nठीक करनी है।"</string>
+    <string name="paywall_check_headline_ready" formatted="false">"आपका वॉल्ट\nतैयार है।"</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"इस रिपॉज़िटरी तक\nनहीं पहुँच पा रहे।"</string>
+    <string name="paywall_check_lfs_none" formatted="false">"कोई नहीं"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"इस्तेमाल में · समर्थित"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"अभी .obsidian नहीं है"</string>
+    <string name="paywall_check_on_clone" formatted="false">"क्लोन पर जाँचा जाएगा"</string>
+    <string name="paywall_check_read_only" formatted="false">"केवल पढ़ने के लिए"</string>
+    <string name="paywall_check_read_write" formatted="false">"पढ़ना · लिखना"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"कुछ भी भुगतान करने से पहले यह पक्का किया जा रहा है कि GitSync.md इस रिपॉज़िटरी को सिंक कर सकता है।"</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md इस रिपॉज़िटरी को पढ़ सकता है, लेकिन इसमें पुश नहीं कर सकता। मालिक से लिखने की एक्सेस माँगें, फिर दोबारा जाँचें।"</string>
+    <string name="paywall_check_sub_ready" formatted="false">"सब ठीक है। एक क्लोन और Obsidian इसे पूरे इतिहास के साथ खोल देगा।"</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"यह केवल पढ़ने के लिए क्लोन होगा। आप पुल कर सकते हैं, लेकिन पुश अस्वीकार होंगे।"</string>
+    <string name="paywall_check_title" formatted="false">"वॉल्ट जाँच"</string>
+    <string name="paywall_check_vault" formatted="false">"वॉल्ट जाँचें"</string>
+    <string name="paywall_checking_button" formatted="false">"जाँच हो रही है…"</string>
+    <string name="paywall_clone_vault" formatted="false">"वॉल्ट क्लोन करें"</string>
+    <string name="paywall_close" formatted="false">"बंद करें"</string>
+    <string name="paywall_continue_read_only" formatted="false">"केवल पढ़ने के लिए जारी रखें"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play खरीदारी पूरी नहीं कर सका। थोड़ी देर में फिर कोशिश करें।"</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"अभी Google Play तक नहीं पहुँचा जा सकता। थोड़ी देर में फिर कोशिश करें।"</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"आपने कुछ भी भुगतान नहीं किया है। अनलॉक तभी दिखता है जब आपका वॉल्ट जाँच में पास हो जाए।"</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"कुछ भी डाउनलोड नहीं हुआ।"</string>
+    <string name="paywall_foot_locked" formatted="false">"सिर्फ़ मेटाडेटा पढ़ा जाता है। अनलॉक करने तक कोई नोट डाउनलोड नहीं होता।"</string>
+    <string name="paywall_foot_unlocked">"सिर्फ़ मेटाडेटा पढ़ा जाता है। जब तक आप %1$s पर टैप नहीं करते, कुछ भी डाउनलोड नहीं होता।"</string>
+    <string name="paywall_one_time_line" formatted="false">"एक बार की खरीदारी। कोई सदस्यता नहीं।"</string>
+    <string name="paywall_pending" formatted="false">"मंज़ूरी का इंतज़ार है। खरीदारी पूरी होते ही आपका वॉल्ट जुड़ जाएगा।"</string>
+    <string name="paywall_pick_another" formatted="false">"दूसरी रिपॉज़िटरी चुनें"</string>
+    <string name="paywall_pill_checking" formatted="false">"जाँच हो रही है…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"एक्सेस चाहिए"</string>
+    <string name="paywall_pill_ready" formatted="false">"तैयार"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"पहुँच से बाहर"</string>
+    <string name="paywall_point_again_body" formatted="false">"नया फ़ोन, नया वॉल्ट, उलझा हुआ मर्ज। हर वॉल्ट, हर अपडेट।"</string>
+    <string name="paywall_point_again_title" formatted="false">"फिर ज़रूरत पड़े तो यहीं मौजूद"</string>
+    <string name="paywall_point_clone_body" formatted="false">"पूरा इतिहास, ताकि Git प्लगइन पहले दिन से काम करे।"</string>
+    <string name="paywall_point_clone_title" formatted="false">"सीधे Obsidian में क्लोन"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH या टोकन। न टर्मिनल, न कॉन्फ़िग फ़ाइलें।"</string>
+    <string name="paywall_point_signin_title" formatted="false">"साइन-इन की चिंता नहीं"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"एक बार · कोई सदस्यता नहीं"</string>
+    <string name="paywall_price_once">"एक बार %1$s"</string>
+    <string name="paywall_restore" formatted="false">"खरीदारी बहाल करें"</string>
+    <string name="paywall_restore_none" formatted="false">"इस Google खाते के लिए कोई पिछली खरीदारी नहीं मिली।"</string>
+    <string name="paywall_row_access" formatted="false">"पढ़ने और लिखने की एक्सेस"</string>
+    <string name="paywall_row_branch" formatted="false">"ब्रांच"</string>
+    <string name="paywall_row_checking" formatted="false">"जाँच हो रही है"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS फ़ाइलें"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian वॉल्ट"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git प्लगइन कॉन्फ़िगर है"</string>
+    <string name="paywall_row_size" formatted="false">"आकार और फ़ाइलों की संख्या"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md पूरी एक्सेस"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"अनलॉक है"</string>
+    <string name="paywall_terms" formatted="false">"शर्तें"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"अपना वॉल्ट जोड़ने के लिए अनलॉक करें। उसके बाद Obsidian Git प्लगइन काम संभाल सकता है।"</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"अपना वॉल्ट Obsidian में क्लोन करने के लिए अनलॉक करें। उसके बाद Obsidian Git प्लगइन काम संभाल सकता है।"</string>
+    <string name="paywall_unlock_title" formatted="false">"एक बार सेट करें।\nहमेशा के लिए तैयार।"</string>
+    <string name="paywall_unreachable_auth" formatted="false">"रिमोट ने ये क्रेडेंशियल अस्वीकार कर दिए। साइन-इन का तरीका जाँचें, फिर दोबारा जाँचें।"</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md रिमोट तक नहीं पहुँच सका। पता और अपना कनेक्शन जाँचें, फिर दोबारा जाँचें।"</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"इस पते पर कोई रिपॉज़िटरी नहीं है। URL जाँचें, फिर दोबारा जाँचें।"</string>
     <string name="publication_accounts" formatted="false">"GitHub खाता"</string>
     <string name="publication_adopt" formatted="false">"रिपॉज़िटरी का उपयोग करें"</string>
     <string name="publication_adopt_title" formatted="false">"इस रिपॉज़िटरी का उपयोग करें?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"Git मेटाडेटा सहित %1$s फ़ाइल · %2$s"</item>
         <item quantity="other">"Git मेटाडेटा सहित %1$s फ़ाइलें · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d फ़ाइल"</item>
+        <item quantity="other">"%1$d फ़ाइलें"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d अतिरिक्त अवरुद्ध पथ नहीं दिखाया गया है।"</item>

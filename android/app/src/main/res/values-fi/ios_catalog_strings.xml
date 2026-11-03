@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidiania ei voitu avata. Ota GitSync.md Connect käyttöön Obsidianissa ja yritä sitten paluuta uudelleen."</string>
     <string name="obsidian_scope" formatted="false">"Yhdistä Obsidian Git tämän tietovaraston valitulla GitHub-tilillä. Tunnistetiedot salataan kumppanilisäosaa varten eikä niitä sisällytetä callback-linkkeihin."</string>
     <string name="obsidian_title" formatted="false">"Obsidian-yhteydet"</string>
+    <string name="paywall_bought_before" formatted="false">"Ostitko GitSync.md:n aiemmin? Se on jo avattu. Jos et, napauta Palauta osto."</string>
+    <string name="paywall_buy" formatted="false">"Avaa GitSync.md"</string>
+    <string name="paywall_buy_vault">"Avaa ja kloonaa %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Tarkista uudelleen"</string>
+    <string name="paywall_check_branch_missing">"%1$s puuttuu"</string>
+    <string name="paywall_check_branch_missing_detail">"Haaraa %1$s ei ole tässä etätietovarastossa. Tarkista haaran nimi ja tarkista sitten uudelleen."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"ei yhteyttä"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"vahvista avain kloonattaessa"</string>
+    <string name="paywall_check_connected" formatted="false">"yhdistetty"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Tarkistetaan\nholviasi."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Yksi asia\nkorjattava ensin."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Holvisi\non valmis."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Tähän tietovarastoon\nei saada yhteyttä."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"ei mitään"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"käytössä · tuettu"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"ei vielä .obsidian-kansiota"</string>
+    <string name="paywall_check_on_clone" formatted="false">"tarkistetaan kloonattaessa"</string>
+    <string name="paywall_check_read_only" formatted="false">"vain luku"</string>
+    <string name="paywall_check_read_write" formatted="false">"luku · kirjoitus"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Varmistamme, että GitSync.md voi synkronoida tämän tietovaraston, ennen kuin maksat mitään."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md voi lukea tämän tietovaraston, mutta ei voi pushata siihen. Pyydä omistajalta kirjoitusoikeus ja tarkista sitten uudelleen."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Kaikki kunnossa. Yksi kloonaus, ja Obsidian avaa sen historia tallessa."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Se kloonataan vain luku -tilassa. Voit tehdä pullin, mutta pushit hylätään."</string>
+    <string name="paywall_check_title" formatted="false">"Holvin tarkistus"</string>
+    <string name="paywall_check_vault" formatted="false">"Tarkista holvi"</string>
+    <string name="paywall_checking_button" formatted="false">"Tarkistetaan…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Kloonaa holvi"</string>
+    <string name="paywall_close" formatted="false">"Sulje"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Jatka vain luku -tilassa"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play ei voinut viimeistellä ostoa. Yritä hetken päästä uudelleen."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Playhin ei saada juuri nyt yhteyttä. Yritä hetken päästä uudelleen."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Et ole maksanut mitään. Lukituksen avaus näkyy vasta, kun holvisi läpäisee tarkistuksen."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Mitään ei ladattu."</string>
+    <string name="paywall_foot_locked" formatted="false">"Vain metatiedot luetaan. Muistiinpanoja ei ladata, ennen kuin avaat lukituksen."</string>
+    <string name="paywall_foot_unlocked">"Vain metatiedot luetaan. Mitään ei ladata, ennen kuin napautat %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Kertaosto. Ei tilausta."</string>
+    <string name="paywall_pending" formatted="false">"Odotetaan hyväksyntää. Holvisi lisätään heti, kun osto menee läpi."</string>
+    <string name="paywall_pick_another" formatted="false">"Valitse toinen tietovarasto"</string>
+    <string name="paywall_pill_checking" formatted="false">"tarkistetaan…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"vaatii oikeudet"</string>
+    <string name="paywall_pill_ready" formatted="false">"valmis"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"ei tavoitettavissa"</string>
+    <string name="paywall_point_again_body" formatted="false">"Uusi puhelin, uusi holvi, sotkuinen merge. Jokainen holvi, jokainen päivitys."</string>
+    <string name="paywall_point_again_title" formatted="false">"Tässä, kun tarvitset sitä taas"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Koko historia, joten Git-laajennus toimii ensimmäisestä päivästä."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Kloonattu suoraan Obsidianiin"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH tai token. Ei päätettä, ei asetustiedostoja."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Kirjautuminen hoidettu"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"kertamaksu · ei tilausta"</string>
+    <string name="paywall_price_once">"%1$s kertamaksuna"</string>
+    <string name="paywall_restore" formatted="false">"Palauta osto"</string>
+    <string name="paywall_restore_none" formatted="false">"Tälle Google-tilille ei löytynyt aiempaa ostoa."</string>
+    <string name="paywall_row_access" formatted="false">"Luku- ja kirjoitusoikeus"</string>
+    <string name="paywall_row_branch" formatted="false">"Haara"</string>
+    <string name="paywall_row_checking" formatted="false">"tarkistetaan"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS -tiedostot"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-holvi"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git -laajennus määritetty"</string>
+    <string name="paywall_row_size" formatted="false">"Koko ja tiedostomäärä"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md – täysi käyttöoikeus"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Avattu"</string>
+    <string name="paywall_terms" formatted="false">"Ehdot"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Avaa lukitus lisätäksesi holvisi. Sen jälkeen Obsidian Git -laajennus voi jatkaa siitä."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Avaa lukitus kloonataksesi holvisi Obsidianiin. Sen jälkeen Obsidian Git -laajennus voi jatkaa siitä."</string>
+    <string name="paywall_unlock_title" formatted="false">"Määritä kerran.\nValmista pysyvästi."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Etätietovarasto hylkäsi nämä tunnistetiedot. Tarkista kirjautumistapa ja tarkista sitten uudelleen."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md ei saanut yhteyttä etätietovarastoon. Tarkista osoite ja yhteytesi ja tarkista sitten uudelleen."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Tässä osoitteessa ei ole tietovarastoa. Tarkista URL ja tarkista sitten uudelleen."</string>
     <string name="publication_accounts" formatted="false">"GitHub Tili"</string>
     <string name="publication_adopt" formatted="false">"Käytä tietovarastoa"</string>
     <string name="publication_adopt_title" formatted="false">"Käytetäänkö tätä tietovarastoa?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s tiedosto Git-metatiedot mukaan lukien · %2$s"</item>
         <item quantity="other">"%1$s tiedostoa Git-metatiedot mukaan lukien · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d tiedosto"</item>
+        <item quantity="other">"%1$d tiedostoa"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d muu estynyt polku ei näy."</item>

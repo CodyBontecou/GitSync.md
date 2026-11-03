@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian kunne ikke åbnes. Aktivér GitSync.md Connect i Obsidian, og prøv derefter at vende tilbage igen."</string>
     <string name="obsidian_scope" formatted="false">"Forbind Obsidian Git med den GitHub-konto, der er valgt til dette repository. Legitimationsoplysninger krypteres til ledsagerpluginet og indgår ikke i callback-links."</string>
     <string name="obsidian_title" formatted="false">"Obsidian-forbindelser"</string>
+    <string name="paywall_bought_before" formatted="false">"Har du købt GitSync.md før? Så er det allerede låst op. Hvis ikke, så tryk på Gendan køb."</string>
+    <string name="paywall_buy" formatted="false">"Lås GitSync.md op"</string>
+    <string name="paywall_buy_vault">"Lås op og klon %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Tjek igen"</string>
+    <string name="paywall_check_branch_missing">"%1$s blev ikke fundet"</string>
+    <string name="paywall_check_branch_missing_detail">"Grenen %1$s findes ikke på dette eksterne arkiv. Tjek grenens navn, og tjek så igen."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"kan ikke forbinde"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"bekræft nøgle ved kloning"</string>
+    <string name="paywall_check_connected" formatted="false">"forbundet"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Tjekker\ndin boks."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"Én ting\nskal ordnes først."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Din boks\ner klar."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Kan ikke nå\ndette arkiv."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"ingen"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"bruges · understøttet"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"ingen .obsidian endnu"</string>
+    <string name="paywall_check_on_clone" formatted="false">"tjekkes ved kloning"</string>
+    <string name="paywall_check_read_only" formatted="false">"skrivebeskyttet"</string>
+    <string name="paywall_check_read_write" formatted="false">"læse · skrive"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Vi sikrer, at GitSync.md kan synkronisere dette arkiv, før du betaler noget."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md kan læse dette arkiv, men ikke pushe til det. Bed ejeren om skriveadgang, og tjek så igen."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Alt ser fint ud. Én kloning, og Obsidian åbner den med historikken intakt."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Den klones skrivebeskyttet. Du kan lave pull, men push bliver afvist."</string>
+    <string name="paywall_check_title" formatted="false">"Tjek af boks"</string>
+    <string name="paywall_check_vault" formatted="false">"Tjek boks"</string>
+    <string name="paywall_checking_button" formatted="false">"Tjekker…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Klon boks"</string>
+    <string name="paywall_close" formatted="false">"Luk"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Fortsæt skrivebeskyttet"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play kunne ikke gennemføre købet. Prøv igen om lidt."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play kan ikke nås lige nu. Prøv igen om lidt."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Du har ikke betalt noget. Oplåsningen vises først, når din boks består tjekket."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Intet blev downloadet."</string>
+    <string name="paywall_foot_locked" formatted="false">"Kun metadata læses. Ingen noter downloades, før du låser op."</string>
+    <string name="paywall_foot_unlocked">"Kun metadata læses. Intet downloades, før du trykker på %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Engangskøb. Intet abonnement."</string>
+    <string name="paywall_pending" formatted="false">"Venter på godkendelse. Din boks tilføjes, så snart købet går igennem."</string>
+    <string name="paywall_pick_another" formatted="false">"Vælg et andet arkiv"</string>
+    <string name="paywall_pill_checking" formatted="false">"tjekker…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"mangler adgang"</string>
+    <string name="paywall_pill_ready" formatted="false">"klar"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"kan ikke nås"</string>
+    <string name="paywall_point_again_body" formatted="false">"Ny telefon, ny boks, en indviklet merge. Hver boks, hver opdatering."</string>
+    <string name="paywall_point_again_title" formatted="false">"Klar, når du får brug for det igen"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Fuld historik, så Git-pluginnet virker fra første dag."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Klonet direkte til Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH eller et token. Ingen terminal, ingen konfigurationsfiler."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Login klaret"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"engangskøb · intet abonnement"</string>
+    <string name="paywall_price_once">"%1$s én gang"</string>
+    <string name="paywall_restore" formatted="false">"Gendan køb"</string>
+    <string name="paywall_restore_none" formatted="false">"Der blev ikke fundet noget tidligere køb for denne Google-konto."</string>
+    <string name="paywall_row_access" formatted="false">"Læse- og skriveadgang"</string>
+    <string name="paywall_row_branch" formatted="false">"Gren"</string>
+    <string name="paywall_row_checking" formatted="false">"tjekker"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS-filer"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-boks"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git-plugin konfigureret"</string>
+    <string name="paywall_row_size" formatted="false">"Størrelse og antal filer"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md fuld adgang"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Låst op"</string>
+    <string name="paywall_terms" formatted="false">"Vilkår"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Lås op for at tilføje din boks. Derfra kan Obsidian Git-pluginnet tage over."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Lås op for at klone din boks til Obsidian. Derfra kan Obsidian Git-pluginnet tage over."</string>
+    <string name="paywall_unlock_title" formatted="false">"Sæt det op én gang.\nSå er det klaret."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Det eksterne arkiv afviste disse loginoplysninger. Tjek loginmetoden, og tjek så igen."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md kunne ikke nå det eksterne arkiv. Tjek adressen og din forbindelse, og tjek så igen."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Der er intet arkiv på denne adresse. Tjek URL’en, og tjek så igen."</string>
     <string name="publication_accounts" formatted="false">"GitHub Konto"</string>
     <string name="publication_adopt" formatted="false">"Brug repository"</string>
     <string name="publication_adopt_title" formatted="false">"Brug dette repository?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s fil inklusive Git-metadata · %2$s"</item>
         <item quantity="other">"%1$s filer inklusive Git-metadata · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d yderligere blokeret sti vises ikke."</item>

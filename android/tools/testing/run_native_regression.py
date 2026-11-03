@@ -7,7 +7,7 @@ sync are mandatory. No preferences, credentials or recovery journal are exported
 import argparse,json,pathlib,re,subprocess,tempfile,uuid
 from device_identity import OWNED_AVDS, require_owned_emulator
 ADB='/Users/codybontecou/Library/Android/sdk/platform-tools/adb'
-DEVICE='emulator-5554';PACKAGE='md.gitsync.md.debug';RUNNER=PACKAGE+'.test/androidx.test.runner.AndroidJUnitRunner'
+DEVICE='emulator-5554';PACKAGE='com.bontecou.syncmd.debug';RUNNER=PACKAGE+'.test/androidx.test.runner.AndroidJUnitRunner'
 DEFAULT=[
  'RepositoryObservationDeviceTest','ReplayCheckoutDeviceTest','RebaseScreenTest','RenameStorageDeviceTest','RemoteCredentialMigrationDeviceTest','RemoteConnectionTest','RepositoryActionsScreenTest','PullAllScreenTest','PullAllBackgroundStoreTest','PullAllBackgroundTransportTest','HistoryCloneTest','CloneCompletionTest','CloneRecoveryManagementTest','CloneCatalogProvenanceDeviceTest','RepositoryShortcutLauncherTest',
  'RepositoryCallbackScreenTest','RepositoryShortcutRunStoreTest','RepositoryShortcutDeviceTest','RepositoryShortcutLabelsTest','ObsidianConnectionTest','FileNavigationTest',

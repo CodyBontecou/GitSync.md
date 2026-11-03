@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -79,6 +80,16 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
     val nativeGit = url.trim().startsWith("git://", ignoreCase = true)
     val normalizedUrl = runCatching { com.bontecou.syncmd.services.git.GitRemote.parseInput(url).url }.getOrNull()?.takeIf { it != url.trim() }
     val locked = state.busy || state.path != null || historyState.busy
+    val gate = com.bontecou.syncmd.ui.util.rememberUnlockGate()
+    val unlocked by gate.isUnlocked.collectAsState()
+    val price by gate.price.collectAsState()
+    var checkTarget by remember { mutableStateOf<com.bontecou.syncmd.billing.VaultTarget?>(null) }
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val cloneNow = { viewModel.clone(url, name, branch, authenticated, username, secret, if (useGithub) accountId else null, location, useSaved, if (useSsh) Credentials.Ssh(privateKey, passphrase, publicKey) else null) }
+    checkTarget?.let { target ->
+        VaultCheckScreen(target, locked = !unlocked, price = price,
+            onClone = { gate.require(target.name) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null })
+    }
     BackHandler(!state.busy) { if (viewModel.cancelRecovery()) onBack() }
     BackHandler(state.busy) { /* Keep the operation's ViewModel alive until safe clone publication finishes. */ }
     LaunchedEffect(state.path) { if (state.path != null) { secret = ""; privateKey = ""; passphrase = ""; publicKey = "" } }
@@ -175,7 +186,12 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
                     com.bontecou.syncmd.ui.components.CloneCompletion(completed, state.name, settings,
                         historyEntry = historyEntry, onReviewLfs = onReviewLfs, onRegistered = onSuccess)
                 }
-            } else TidePrimaryButton(stringResource(R.string.ui_clone_repository_e8fa94ab), onClick = { viewModel.clone(url, name, branch, authenticated, username, secret, if (useGithub) accountId else null, location, useSaved, if (useSsh) Credentials.Ssh(privateKey, passphrase, publicKey) else null) },
+            } else TidePrimaryButton(stringResource(if (gate.paywallEnabled) R.string.paywall_check_vault else R.string.ui_clone_repository_e8fa94ab), onClick = {
+                    // With the paywall on, every URL clone starts with the free vault check (as on iOS).
+                    if (!gate.paywallEnabled) cloneNow()
+                    else scope.launch { viewModel.vaultTarget(url, name, branch, authenticated, username, secret, if (useGithub) accountId else null, useSaved,
+                        if (useSsh) Credentials.Ssh(privateKey, passphrase, publicKey) else null)?.let { checkTarget = it } }
+                },
                 enabled = !locked && (!noNetworkCredentials || !authenticated && !useSsh && !useSaved && !useGithub) && authenticationReviewed && url.isNotBlank() && name.isNotBlank() && (!useSsh || privateKey.isNotBlank()) && (!useGithub || accounts.any { it.connected && it.id == accountId }),
                 loading = state.busy, modifier = Modifier.padding(top = 4.dp).testTag("remote-clone"))
             Spacer(Modifier.height(16.dp))

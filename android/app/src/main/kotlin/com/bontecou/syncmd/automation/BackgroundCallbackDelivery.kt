@@ -71,7 +71,7 @@ object BackgroundCallbackDelivery {
             val channel = "repository-callback-actions"
             manager.createNotificationChannel(NotificationChannel(channel, context.getString(R.string.callback_background_channel), NotificationManager.IMPORTANCE_LOW))
             val target = if (available) Intent(context, BackgroundCallbackResultActivity::class.java)
-                .setAction("md.gitsync.md.CALLBACK_RESULT.$id").putExtra("run_id", id) else Intent(context, MainActivity::class.java).setAction(Intent.ACTION_MAIN)
+                .setAction("com.bontecou.syncmd.CALLBACK_RESULT.$id").putExtra("run_id", id) else Intent(context, MainActivity::class.java).setAction(Intent.ACTION_MAIN)
             val open = PendingIntent.getActivity(context, id.hashCode(), target, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
             val text = context.getString(if (problem == CallbackProblem.BUSY) R.string.callback_background_busy else R.string.callback_background_attention)
             val notification = NotificationCompat.Builder(context, channel).setSmallIcon(R.drawable.ic_pull_all)

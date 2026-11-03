@@ -28,7 +28,7 @@ options=parser.parse_args()
 assert 10<=options.permission_wait_seconds<=300 and 30<=options.link_wait_seconds<=1200
 ADB=str(pathlib.Path.home()/'Library/Android/sdk/platform-tools/adb')
 base=require_owned_emulator(ADB,options.device,options.avd)
-PACKAGE='md.gitsync.md.debug'
+PACKAGE='com.bontecou.syncmd.debug'
 RUNNER=PACKAGE+'.test/androidx.test.runner.AndroidJUnitRunner'
 PREFIX='com.bontecou.syncmd.'
 fixture=str(uuid.uuid4())

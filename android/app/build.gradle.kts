@@ -26,15 +26,19 @@ android {
     compileSdk = 36
     
     defaultConfig {
-        // Store identity for the paid-upfront listing. The original free listing
-        // (com.bontecou.syncmd) is permanently free per Play policy and is being
-        // unpublished; the code namespace above intentionally stays unchanged.
-        applicationId = "md.gitsync.md"
+        // The free Play listing: GitSync.md is free to download and sold through a
+        // one-time in-app unlock (billing/AppUnlock). The paid md.gitsync.md listing
+        // is being retired.
+        applicationId = "com.bontecou.syncmd"
         minSdk = 28
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.0.4"
+        versionCode = 10
+        versionName = "1.1.0"
         
+        // Free download, one-time unlock before the first vault (mirrors iOS
+        // FeatureFlags.hardPaywallEnabled). False treats every install as unlocked.
+        buildConfigField("boolean", "HARD_PAYWALL", "true")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -61,6 +65,10 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
+            // Instrumentation suites start from empty installs; they inject their own
+            // AppUnlock when they exercise the paywall. Pass -Psyncmd.hardPaywall=true
+            // to try the paywall in a debug build.
+            buildConfigField("boolean", "HARD_PAYWALL", (findProperty("syncmd.hardPaywall") ?: "false").toString())
         }
         release {
             if (
@@ -138,6 +146,7 @@ dependencies {
     // Project modules
     implementation(project(":core"))
     implementation(libs.gson)
+    implementation(libs.billing)
     implementation("com.google.firebase:firebase-messaging:25.0.1")
     implementation("androidx.work:work-runtime-ktx:2.9.1")
     androidTestImplementation("androidx.work:work-testing:2.9.1")

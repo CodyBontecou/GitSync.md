@@ -16,7 +16,7 @@ from device_identity import OWNED_AVDS, require_owned_emulator
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 ADB = str(pathlib.Path.home() / 'Library/Android/sdk/platform-tools/adb')
-PACKAGE = 'md.gitsync.md.debug'
+PACKAGE = 'com.bontecou.syncmd.debug'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--device', required=True)
 parser.add_argument('--avd', choices=sorted(name for name, api in OWNED_AVDS.items() if api >= 30), required=True)

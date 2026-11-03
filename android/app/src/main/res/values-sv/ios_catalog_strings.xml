@@ -562,6 +562,75 @@
     <string name="obsidian_return_failed" formatted="false">"Obsidian kunde inte öppnas. Aktivera GitSync.md Connect i Obsidian och försök sedan återvända igen."</string>
     <string name="obsidian_scope" formatted="false">"Anslut Obsidian Git med GitHub-kontot som valts för det här arkivet. Inloggningsuppgifter krypteras för det tillhörande tillägget och ingår inte i callback-länkar."</string>
     <string name="obsidian_title" formatted="false">"Obsidian-anslutningar"</string>
+    <string name="paywall_bought_before" formatted="false">"Har du köpt GitSync.md tidigare? Då är det redan upplåst. Om inte, tryck på Återställ köp."</string>
+    <string name="paywall_buy" formatted="false">"Lås upp GitSync.md"</string>
+    <string name="paywall_buy_vault">"Lås upp och klona %1$s"</string>
+    <string name="paywall_check_again" formatted="false">"Kontrollera igen"</string>
+    <string name="paywall_check_branch_missing">"%1$s hittades inte"</string>
+    <string name="paywall_check_branch_missing_detail">"Grenen %1$s finns inte på det här fjärrarkivet. Kontrollera grenens namn och kontrollera sedan igen."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"kan inte ansluta"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"bekräfta nyckel vid kloning"</string>
+    <string name="paywall_check_connected" formatted="false">"ansluten"</string>
+    <string name="paywall_check_headline_checking" formatted="false">"Kontrollerar\nditt valv."</string>
+    <string name="paywall_check_headline_readonly" formatted="false">"En sak\natt åtgärda först."</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Ditt valv\när klart."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Det här arkivet\ngår inte att nå."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"inga"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"används · stöds"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"ingen .obsidian än"</string>
+    <string name="paywall_check_on_clone" formatted="false">"kontrolleras vid kloning"</string>
+    <string name="paywall_check_read_only" formatted="false">"skrivskyddat"</string>
+    <string name="paywall_check_read_write" formatted="false">"läsa · skriva"</string>
+    <string name="paywall_check_sub_checking" formatted="false">"Vi ser till att GitSync.md kan synkronisera det här arkivet innan du betalar något."</string>
+    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md kan läsa det här arkivet men inte pusha till det. Be ägaren om skrivåtkomst och kontrollera sedan igen."</string>
+    <string name="paywall_check_sub_ready" formatted="false">"Allt ser bra ut. En kloning, så öppnar Obsidian det med historiken intakt."</string>
+    <string name="paywall_check_sub_ready_readonly" formatted="false">"Det klonas skrivskyddat. Du kan göra pull, men push nekas."</string>
+    <string name="paywall_check_title" formatted="false">"Valvkontroll"</string>
+    <string name="paywall_check_vault" formatted="false">"Kontrollera valv"</string>
+    <string name="paywall_checking_button" formatted="false">"Kontrollerar…"</string>
+    <string name="paywall_clone_vault" formatted="false">"Klona valv"</string>
+    <string name="paywall_close" formatted="false">"Stäng"</string>
+    <string name="paywall_continue_read_only" formatted="false">"Fortsätt skrivskyddat"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play kunde inte slutföra köpet. Försök igen om en stund."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play går inte att nå just nu. Försök igen om en stund."</string>
+    <string name="paywall_foot_blocked_locked" formatted="false">"Du har inte betalat något. Upplåsningen visas först när ditt valv klarar kontrollen."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Inget laddades ned."</string>
+    <string name="paywall_foot_locked" formatted="false">"Endast metadata läses. Inga anteckningar laddas ned förrän du låser upp."</string>
+    <string name="paywall_foot_unlocked">"Endast metadata läses. Inget laddas ned förrän du trycker på %1$s."</string>
+    <string name="paywall_one_time_line" formatted="false">"Engångsköp. Ingen prenumeration."</string>
+    <string name="paywall_pending" formatted="false">"Väntar på godkännande. Ditt valv läggs till så snart köpet har gått igenom."</string>
+    <string name="paywall_pick_another" formatted="false">"Välj ett annat arkiv"</string>
+    <string name="paywall_pill_checking" formatted="false">"kontrollerar…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"behöver åtkomst"</string>
+    <string name="paywall_pill_ready" formatted="false">"klart"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"går inte att nå"</string>
+    <string name="paywall_point_again_body" formatted="false">"Ny telefon, nytt valv, en trasslig merge. Varje valv, varje uppdatering."</string>
+    <string name="paywall_point_again_title" formatted="false">"Här när du behöver det igen"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Full historik, så att Git-pluginet fungerar från dag ett."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Klonat direkt till Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH eller en token. Ingen terminal, inga konfigurationsfiler."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Inloggning ordnad"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"engångsköp · ingen prenumeration"</string>
+    <string name="paywall_price_once">"%1$s en gång"</string>
+    <string name="paywall_restore" formatted="false">"Återställ köp"</string>
+    <string name="paywall_restore_none" formatted="false">"Inget tidigare köp hittades för det här Google-kontot."</string>
+    <string name="paywall_row_access" formatted="false">"Läs- och skrivåtkomst"</string>
+    <string name="paywall_row_branch" formatted="false">"Gren"</string>
+    <string name="paywall_row_checking" formatted="false">"kontrollerar"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS-filer"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-valv"</string>
+    <string name="paywall_row_obsidian_git" formatted="false">"Obsidian Git-plugin konfigurerat"</string>
+    <string name="paywall_row_size" formatted="false">"Storlek och antal filer"</string>
+    <string name="paywall_settings_title" formatted="false">"GitSync.md full åtkomst"</string>
+    <string name="paywall_settings_unlocked" formatted="false">"Upplåst"</string>
+    <string name="paywall_terms" formatted="false">"Villkor"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Lås upp för att lägga till ditt valv. Därifrån kan Obsidian Git-pluginet ta över."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Lås upp för att klona ditt valv till Obsidian. Därifrån kan Obsidian Git-pluginet ta över."</string>
+    <string name="paywall_unlock_title" formatted="false">"Ställ in det en gång.\nKlart för gott."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"Fjärrarkivet nekade de här inloggningsuppgifterna. Kontrollera inloggningsmetoden och kontrollera sedan igen."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md kunde inte nå fjärrarkivet. Kontrollera adressen och din anslutning och kontrollera sedan igen."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Det finns inget arkiv på den här adressen. Kontrollera URL:en och kontrollera sedan igen."</string>
     <string name="publication_accounts" formatted="false">"GitHub Kontonummer"</string>
     <string name="publication_adopt" formatted="false">"Använd arkiv"</string>
     <string name="publication_adopt_title" formatted="false">"Använda det här arkivet?"</string>
@@ -1664,6 +1733,10 @@
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s fil inklusive Git-metadata · %2$s"</item>
         <item quantity="other">"%1$s filer inklusive Git-metadata · %2$s"</item>
+    </plurals>
+    <plurals name="paywall_check_files">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"Ytterligare %1$d blockerad sökväg visas inte."</item>
