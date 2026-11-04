@@ -68,7 +68,9 @@ fun LfsEndpointGate(model: LfsEndpointViewModel = hiltViewModel(), otherTrustDia
                     enabled = authentication != LfsEndpointStore.Authentication.NEW || username.isNotBlank() && secret.isNotEmpty()) },
                 dismissButton = { VaultOpsTextButton(stringResource(R.string.publication_cancel), { secret = ""; endpoints.reject(pending) },
                     Modifier.fillMaxWidth().testTag("lfs-endpoint-cancel")) }) {
-                Column(Modifier.heightIn(max = 480.dp).verticalScroll(rememberScrollState()).testTag("lfs-approval-body"), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                // TideDialog already scrolls its body above the pinned actions; a second, nested scroll here
+                // left the authentication choices unreachable by a single scroll at large text.
+                Column(Modifier.testTag("lfs-approval-body"), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(stringResource(if (uploading) R.string.lfs_consent_upload_body else R.string.lfs_consent_download_body), modifier = Modifier.testTag("lfs-approval-direction"))
                     TideCard(padding = 16.dp) {
                         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
