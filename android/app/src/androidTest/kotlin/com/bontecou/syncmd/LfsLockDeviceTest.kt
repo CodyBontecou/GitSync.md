@@ -90,8 +90,8 @@ class LfsLockDeviceTest {
             scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
             awaitText("LFS lock fixture")
             compose.onNodeWithText("LFS lock fixture", substring = false).performScrollTo().performClick()
-            awaitText(root.name)
-            compose.onNode(hasScrollAction()).performScrollToNode(hasText("Commit & Push"))
+            // The Material 3 vault titles the repository by its catalog name; wait for its tab bar.
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("vault-tab-git").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("vault-tab-git").performClick()
             awaitText("Repository Status")
             compose.onNodeWithTag("git-actions").performScrollToNode(hasText("Push current branch"))

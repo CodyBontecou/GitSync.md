@@ -46,7 +46,7 @@ class LfsCheckoutDeviceTest {
         var scenario: ActivityScenario<MainActivity>? = null
         fun awaitText(text: String) = compose.waitUntil(15_000) { compose.onAllNodesWithText(text, substring = true).fetchSemanticsNodes().isNotEmpty() }
         fun switch(name: String) {
-            compose.onNodeWithTag("git-actions").performScrollToNode(hasText("BRANCHES"))
+            compose.onNodeWithTag("git-actions").performScrollToNode(hasText(context.getString(R.string.branch_screen)))
             compose.waitUntil(15_000) { compose.onAllNodesWithTag("git-branch-$name").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("git-branch-$name").performScrollTo()
             val button = hasText("Switch") and hasAnyAncestor(hasTestTag("git-branch-$name"))
@@ -98,8 +98,8 @@ class LfsCheckoutDeviceTest {
             scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
             awaitText("LFS checkout fixture")
             compose.onNodeWithText("LFS checkout fixture", substring = false).performScrollTo().performClick()
-            awaitText(root.name)
-            compose.onNode(hasScrollAction()).performScrollToNode(hasText("Commit & Push"))
+            // The Material 3 vault titles the repository by its catalog name; wait for its tab bar.
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("vault-tab-git").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("vault-tab-git").performClick()
             awaitText("Repository Status")
             switch("assets")
