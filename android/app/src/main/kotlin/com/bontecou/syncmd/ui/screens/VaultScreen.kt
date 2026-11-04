@@ -79,6 +79,10 @@ import com.bontecou.syncmd.ui.theme.TideCircleButton
 import com.bontecou.syncmd.ui.theme.TideDisplay
 import com.bontecou.syncmd.ui.theme.TideHairline
 import com.bontecou.syncmd.ui.theme.TideHero
+import com.bontecou.syncmd.ui.theme.TideIcon
+import com.bontecou.syncmd.ui.components.VaultNavigationBar
+import com.bontecou.syncmd.ui.components.VaultTab
+import androidx.compose.ui.semantics.selected
 import com.bontecou.syncmd.ui.theme.TidePulse
 import com.bontecou.syncmd.ui.theme.TideRow
 import com.bontecou.syncmd.ui.theme.TideSection
@@ -118,7 +122,17 @@ fun VaultScreen(
     viewModel: PullViewModel = hiltViewModel(),
     /** Created only when the Resolve sheet opens, so non-Hilt hosts can render the Vault. */
     resolveViewModel: ResolveLocalChangesViewModel? = null,
+    /** Bottom navigation between Changes, Files, History and Git; off when a rail is shown instead. */
+    showNavigation: Boolean = true,
+    onSelectTab: (VaultTab) -> Unit = {},
+    /** The file shown in a list-detail pane beside the list, highlighted in Changes. */
+    selectedFile: String? = null,
+    /** On tablets the vault list sits beside the vault, so Back can be hidden. */
+    showBack: Boolean = true,
+    /** Called when the commit sheet closes, so a diff pane beside the list can re-read its file. */
+    onCommitSheetClosed: () -> Unit = {},
 ) {
+    var committing by rememberSaveable(repositoryPath) { mutableStateOf(false) }
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) { viewModel.setRepositoryPath(repositoryPath) }
     LaunchedEffect(repositoryPath) {
         if (repositoryPath.isNotBlank()) viewModel.setRepositoryPath(repositoryPath)
@@ -188,7 +202,16 @@ fun VaultScreen(
             val opened = FilesAppLauncher.openFolder(context, repositoryPath)
             if (!opened) Toast.makeText(context, openInFilesFailed, Toast.LENGTH_SHORT).show()
         },
+        showNavigation = showNavigation,
+        onSelectTab = onSelectTab,
+        selectedFile = selectedFile,
+        showBack = showBack,
+        onCommit = { committing = true },
     )
+    if (committing && requestContext != null) {
+        com.bontecou.syncmd.ui.components.CommitSheet(repositoryPath, repoDisplayName,
+            onDismiss = { committing = false; viewModel.loadStatus(); onCommitSheetClosed() })
+    }
     if (resolving && requestContext != null) ResolveLocalChangesSheet(requestContext, resolveViewModel ?: hiltViewModel(),
         onDismiss = { resolving = false },
         onCommitted = { resolving = false; viewModel.clearLocalChangesBlock(requestContext); viewModel.loadStatus(); onOpenRemoteMerge() })
@@ -292,6 +315,11 @@ private fun VaultContent(
     onEditAuthor: () -> Unit = {},
     onMoveRepository: () -> Unit = {},
     onCopyUrl: () -> Unit = {},
+    showNavigation: Boolean = false,
+    onSelectTab: (VaultTab) -> Unit = {},
+    selectedFile: String? = null,
+    showBack: Boolean = true,
+    onCommit: (() -> Unit)? = null,
 ) {
     val c = Tide.colors
     val status = ui.status
@@ -299,34 +327,36 @@ private fun VaultContent(
 
     Column(Modifier.fillMaxSize().background(c.paper)) {
         TideTopBar(
-            onBack = onNavigateBack,
+            onBack = if (showBack) onNavigateBack else null,
             backLabel = stringResource(R.string.publication_back),
-            center = if (status != null) {
-                {
-                    Text(
-                        "⑂ ${status.currentBranch}",
-                        style = TideType.mono(12.sp, FontWeight.Medium),
+            center = {
+                Column {
+                    Text(ui.displayName, style = TideType.title, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.testTag("vault-title"))
+                    val sub = listOfNotNull(status?.currentBranch, ui.owner.takeIf { it.isNotBlank() }?.let { "$it/${ui.displayName}" })
+                    if (sub.isNotEmpty()) Text(
+                        sub.joinToString(" · "),
+                        style = TideType.meta,
                         color = c.inkMid,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.testTag("vault-branch-caption"),
                     )
                 }
-            } else null,
+            },
             actions = if (ui.hasRepository) {
                 {
+                    TideCircleButton(stringResource(R.string.tide_vault_check_for_changes), onPull, Modifier.testTag("vault-check"), enabled = ui.canPull) {
+                        TideIcon(R.drawable.ic_m3_sync, tint = c.inkMid)
+                    }
                     Box {
                         TideCircleButton(stringResource(R.string.tide_vault_more), { menuOpen = true }) {
-                            Text("•••", style = TideType.mono(13.sp, FontWeight.SemiBold), color = c.ink)
+                            TideIcon(R.drawable.ic_m3_more_vert, tint = c.inkMid)
                         }
                         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.ui_open_in_files_e1d250d0), style = TideType.body) },
                                 onClick = { menuOpen = false; onOpenInFiles() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.tide_vault_git), style = TideType.body) },
-                                onClick = { menuOpen = false; onOpenGit() },
                             )
                             if (ui.canCopyUrl) DropdownMenuItem(
                                 text = { Text(stringResource(R.string.vault_copy_url), style = TideType.body) },
@@ -362,8 +392,8 @@ private fun VaultContent(
                 .weight(1f)
                 .testTag(if (!ui.isLoading && status != null) "vault-ready" else "vault-loading")
                 .verticalScroll(rememberScrollState())
-                .padding(start = Tide.gutter, end = Tide.gutter, top = 4.dp, bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(18.dp),
+                .padding(start = Tide.gutter, end = Tide.gutter, top = 8.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             if (!ui.hasRepository) {
                 VaultNoRepository()
@@ -374,6 +404,7 @@ private fun VaultContent(
                     ui = ui,
                     onOpenGit = onOpenGit,
                     onPull = onPull,
+                    onCommit = onCommit ?: onOpenGit,
                 )
 
                 if (ui.errorMessage != null) {
@@ -399,22 +430,16 @@ private fun VaultContent(
                     )
                 }
 
-                TideSection(title = stringResource(R.string.tide_vault_files_section)) {
-                    TideRow(
-                        title = stringResource(R.string.ui_browse_files_c8bb105f),
-                        subtitle = stringResource(R.string.ui_read_and_edit_files_in_this_repository_3ecfad78),
-                        accessory = TideAccessory.CHEVRON,
-                        onClick = onOpenFiles,
-                    )
-                }
-
                 if (status != null) {
                     val loaded: RepositoryStatus = status
-                    VaultChanges(loaded.allChanges, onOpenDiff)
+                    VaultChanges(loaded.allChanges, onOpenDiff, selectedFile)
                     VaultLatestCommit(loaded)
                     if (ui.showDebugInfo) VaultDebugInfo(ui.repositoryPath, loaded)
                 }
             }
+        }
+        if (showNavigation && ui.hasRepository) {
+            VaultNavigationBar(VaultTab.CHANGES, onSelectTab, changes = status?.totalChanges)
         }
     }
 }
@@ -434,24 +459,15 @@ private fun VaultTitleBlock(name: String, owner: String) {
             .semantics { text = AnnotatedString(name); invisibleToUser() },
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        if (owner.isNotBlank()) {
-            Text(
-                owner,
-                style = TideType.meta,
-                color = c.inkFaint,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.testTag("vault-owner"),
-            )
-        }
-        TideDisplay(name, size = 36.sp, modifier = Modifier.testTag("vault-title"))
+        // The visible title and owner live in the top app bar.
+        if (owner.isNotBlank()) Box(Modifier.testTag("vault-owner").semantics { text = AnnotatedString(owner) })
     }
 }
 
 // ─── State hero ─────────────────────────────────────────────────────────────
 
 @Composable
-private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Unit) {
+private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Unit, onCommit: () -> Unit = onOpenGit) {
     val c = Tide.colors
     val kind = ui.heroKind()
     val status = ui.status
@@ -459,7 +475,8 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
     val rail = ui.railState()
     val syncing = ui.isLoading && status != null
 
-    TideHero(Modifier.testTag("vault-hero")) {
+    // Board "22 · Syncing": the hero turns primary-container while an operation runs.
+    TideHero(Modifier.testTag("vault-hero"), color = if (syncing) c.primaryContainer else c.heroBg) {
         Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
             when {
                 kind == VaultHeroKind.READING -> {
@@ -476,13 +493,13 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
                 }
                 syncing -> {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(stringResource(R.string.tide_vault_syncing), style = TideType.sans(30.sp, FontWeight.SemiBold).copy(letterSpacing = (-0.04).em), color = c.heroText)
-                        Text(stringResource(R.string.ui_loading_repository_15b79262), style = TideType.body, color = c.heroMeta)
+                        Text(stringResource(R.string.tide_vault_syncing), style = TideType.display(28.sp).copy(lineHeight = 34.sp), color = c.onPrimaryContainer)
+                        Text(stringResource(R.string.ui_loading_repository_15b79262), style = TideType.sans(14.sp), color = c.onPrimaryContainer)
                     }
                     LinearProgressIndicator(
-                        Modifier.fillMaxWidth().height(3.dp),
-                        color = c.heroAhead,
-                        trackColor = c.heroLine,
+                        Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
+                        color = c.primary,
+                        trackColor = c.onPrimaryContainer.copy(alpha = 0.16f),
                     )
                 }
                 kind == VaultHeroKind.CONFLICT -> {
@@ -493,14 +510,12 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
                         Text(pluralStringResource(R.plurals.tide_vault_conflicts_to_resolve, count), style = TideType.body, color = c.heroText)
                         Text(stringResource(R.string.tide_vault_conflict_detail), style = TideType.mono(11.sp), color = c.heroMeta, modifier = Modifier.padding(top = 2.dp))
                     }
-                    SyncRail(rail, dot = 10.dp, onHero = true)
                 }
                 kind == VaultHeroKind.DIVERGED -> {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         HeroEyebrow(stringResource(R.string.tide_vault_eyebrow_both_moved), c.heroDanger)
                         HeroSentence(stringResource(R.string.tide_vault_moved_on))
                     }
-                    SyncRail(rail, dot = 10.dp, onHero = true)
                     Row(Modifier.fillMaxWidth()) {
                         Text(stringResource(R.string.tide_vault_yours, maxOf(ui.ahead ?: 0, 1)), style = TideType.mono(11.sp), color = c.heroMeta)
                         Spacer(Modifier.weight(1f))
@@ -520,8 +535,8 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             when (kind) {
                                 VaultHeroKind.DIRTY -> {
-                                    HeroCount(changes, c.heroAhead)
-                                    Text(pluralStringResource(R.plurals.tide_vault_changes_on_phone, changes), style = TideType.body, color = c.heroText)
+                                    HeroCount(changes, c.heroText)
+                                    Text(pluralStringResource(R.plurals.tide_vault_changes_on_phone, changes), style = TideType.sans(18.sp).copy(lineHeight = 24.sp), color = c.heroText)
                                 }
                                 else -> {
                                     val (headline, sub) = when (kind) {
@@ -530,23 +545,18 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
                                         VaultHeroKind.EMPTY -> stringResource(R.string.repository_no_commits) to stringResource(R.string.tide_vault_sub_empty)
                                         else -> stringResource(R.string.tide_vault_headline_in_sync) to stringResource(R.string.tide_vault_sub_in_sync)
                                     }
-                                    Text(headline, style = TideType.sans(34.sp, FontWeight.SemiBold).copy(letterSpacing = (-0.04).em, lineHeight = 36.sp), color = tint, maxLines = 2)
+                                    Text(headline, style = TideType.display(32.sp).copy(lineHeight = 38.sp), color = tint, maxLines = 2)
                                     Text(sub, style = TideType.body, color = c.heroText)
                                 }
                             }
                         }
-                        Text(
-                            remoteSummary(ui),
-                            style = TideType.mono(11.sp).copy(lineHeight = 16.sp),
-                            color = c.heroMeta,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.End,
-                            modifier = Modifier.padding(bottom = 3.dp),
-                        )
                     }
-                    SyncRail(rail, dot = 10.dp, onHero = true)
+                    Text(remoteSummary(ui), style = TideType.meta, color = c.heroMeta)
                 }
             }
-            VaultHeroActions(ui, kind, onOpenGit, onPull)
+            androidx.compose.runtime.CompositionLocalProvider(LocalHeroTonal provides syncing) {
+                VaultHeroActions(ui, kind, onOpenGit, onPull, onCommit)
+            }
         }
     }
 }
@@ -561,17 +571,17 @@ private fun remoteSummary(ui: VaultUi): String = when {
 @Composable
 private fun HeroEyebrow(text: String, tint: Color) {
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0] ?: java.util.Locale.getDefault()
-    Text(text.uppercase(locale), style = TideType.mono(11.sp, FontWeight.SemiBold).copy(letterSpacing = 0.06.em), color = tint)
+    Text(text, style = TideType.sans(12.sp, FontWeight.SemiBold).copy(letterSpacing = 0.033.em, lineHeight = 16.sp), color = tint)
 }
 
 @Composable
 private fun HeroSentence(text: String) {
-    Text(text, style = TideType.sans(24.sp, FontWeight.SemiBold).copy(letterSpacing = (-0.03).em, lineHeight = 28.sp), color = Tide.colors.heroText)
+    Text(text, style = TideType.display(24.sp).copy(lineHeight = 30.sp), color = Tide.colors.heroText)
 }
 
 @Composable
 private fun HeroCount(count: Int, tint: Color) {
-    Text("$count", style = TideType.sans(54.sp, FontWeight.SemiBold).copy(letterSpacing = (-0.05).em, lineHeight = 50.sp), color = tint)
+    Text("$count", style = TideType.display(57.sp).copy(lineHeight = 64.sp, letterSpacing = (-0.026).em), color = tint)
 }
 
 /**
@@ -579,32 +589,38 @@ private fun HeroCount(count: Int, tint: Color) {
  * `vault-pull` identity and is disabled (not hidden) while an operation runs.
  */
 @Composable
-private fun VaultHeroActions(ui: VaultUi, kind: VaultHeroKind, onOpenGit: () -> Unit, onPull: () -> Unit) {
+private fun VaultHeroActions(ui: VaultUi, kind: VaultHeroKind, onOpenGit: () -> Unit, onPull: () -> Unit, onCommit: () -> Unit = onOpenGit) {
     if (kind == VaultHeroKind.READING) return
     val commitPush = stringResource(R.string.ui_commit_push_94e9650a)
     val pull = stringResource(R.string.pull_screen)
     val changes = ui.status?.totalChanges ?: 0
     val busy = ui.isLoading
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        when (kind) {
-            VaultHeroKind.UNREADABLE -> {
-                HeroSecondary(commitPush, onOpenGit, enabled = !busy)
+    // The one right action for the state, plus a quiet secondary.
+    val primary: (@Composable RowScope.() -> Unit)? = when (kind) {
+        VaultHeroKind.UNREADABLE -> null
+        VaultHeroKind.CONFLICT -> { { HeroPrimary(stringResource(R.string.tide_vault_resolve), "⑂", onOpenGit, enabled = !busy) } }
+        VaultHeroKind.DIRTY, VaultHeroKind.AHEAD -> { {
+            HeroPrimary(commitPush, "↑", if (kind == VaultHeroKind.DIRTY) onCommit else onOpenGit, enabled = !busy,
+                badge = changes.takeIf { it > 0 }, tag = "vault-commit")
+        } }
+        VaultHeroKind.BEHIND, VaultHeroKind.DIVERGED -> { { HeroPrimary(pull, "↓", onPull, enabled = ui.canPull, tag = "vault-pull") } }
+        else -> { { HeroPrimary(stringResource(R.string.tide_vault_check_for_changes), "↻", onPull, enabled = ui.canPull, tag = "vault-pull") } }
+    }
+    val secondary: @Composable (Modifier) -> Unit = { m ->
+        if (kind == VaultHeroKind.DIRTY || kind == VaultHeroKind.AHEAD) HeroSecondary(pull, onPull, enabled = ui.canPull, tag = "vault-pull", modifier = m)
+        else HeroSecondary(commitPush, onOpenGit, enabled = !busy, modifier = m)
+    }
+    // Narrow panes (foldable inner display, split screen) stack the two actions so labels never truncate.
+    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxWidth()) {
+        if (maxWidth < 320.dp && primary != null) {
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(Modifier.fillMaxWidth(), content = primary)
+                secondary(Modifier.fillMaxWidth())
             }
-            VaultHeroKind.CONFLICT -> {
-                HeroPrimary(stringResource(R.string.tide_vault_resolve), "⑂", onOpenGit, enabled = !busy)
-                HeroSecondary(commitPush, onOpenGit, enabled = !busy)
-            }
-            VaultHeroKind.DIRTY, VaultHeroKind.AHEAD -> {
-                HeroPrimary(commitPush, "↑", onOpenGit, enabled = !busy, badge = changes.takeIf { it > 0 })
-                HeroSecondary(pull, onPull, enabled = ui.canPull, tag = "vault-pull")
-            }
-            VaultHeroKind.BEHIND, VaultHeroKind.DIVERGED -> {
-                HeroPrimary(pull, "↓", onPull, enabled = ui.canPull, tag = "vault-pull")
-                HeroSecondary(commitPush, onOpenGit, enabled = !busy)
-            }
-            else -> {
-                HeroPrimary(stringResource(R.string.tide_vault_check_for_changes), "↻", onPull, enabled = ui.canPull, tag = "vault-pull")
-                HeroSecondary(commitPush, onOpenGit, enabled = !busy)
+        } else {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                primary?.invoke(this)
+                secondary(Modifier)
             }
         }
     }
@@ -614,21 +630,30 @@ private fun VaultHeroActions(ui: VaultUi, kind: VaultHeroKind, onOpenGit: () -> 
 @Composable
 private fun RowScope.HeroPrimary(title: String, glyph: String, onClick: () -> Unit, enabled: Boolean, tag: String? = null, badge: Int? = null) {
     val c = Tide.colors
+    val tonal = LocalHeroTonal.current
+    val fill = if (tonal) c.primary else c.heroText
+    val ink = if (tonal) c.onPrimary else c.heroBg
+    val icon = when (glyph) {
+        "↑" -> R.drawable.ic_m3_arrow_upward
+        "↓" -> R.drawable.ic_m3_arrow_downward
+        "↻" -> R.drawable.ic_m3_sync
+        else -> R.drawable.ic_m3_branch
+    }
     Row(
         Modifier
             .weight(1f)
-            .heightIn(min = 50.dp)
+            .heightIn(min = 48.dp)
             .clip(CircleShape)
-            .background(c.heroText.copy(alpha = if (enabled) 1f else 0.45f), CircleShape)
+            .background(fill.copy(alpha = if (enabled) 1f else 0.45f), CircleShape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (tag != null) Modifier.testTag(tag) else Modifier)
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(glyph, style = TideType.sans(15.sp, FontWeight.Bold), color = c.heroBg)
+        TideIcon(icon, tint = ink.copy(alpha = if (enabled) 1f else 0.6f), size = 20.dp)
         Spacer(Modifier.size(8.dp))
-        Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.heroBg, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         if (badge != null) {
             Spacer(Modifier.size(8.dp))
             Box(Modifier.background(c.heroAhead, CircleShape).padding(horizontal = 8.dp, vertical = 2.dp)) {
@@ -640,21 +665,26 @@ private fun RowScope.HeroPrimary(title: String, glyph: String, onClick: () -> Un
 
 /** Outline pill on the dark hero. */
 @Composable
-private fun HeroSecondary(title: String, onClick: () -> Unit, enabled: Boolean, tag: String? = null) {
+private fun HeroSecondary(title: String, onClick: () -> Unit, enabled: Boolean, tag: String? = null, modifier: Modifier = Modifier) {
     val c = Tide.colors
+    val tonal = LocalHeroTonal.current
+    val ink = if (tonal) c.onPrimaryContainer else c.heroText
     Box(
-        Modifier
-            .heightIn(min = 50.dp)
+        modifier
+            .heightIn(min = 48.dp)
             .clip(CircleShape)
-            .border(1.dp, c.heroLine, CircleShape)
+            .border(1.dp, if (tonal) c.onPrimaryContainer.copy(alpha = 0.3f) else c.heroLine, CircleShape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (tag != null) Modifier.testTag(tag) else Modifier)
             .padding(horizontal = 18.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(title, style = TideType.sans(15.sp, FontWeight.Medium), color = c.heroText.copy(alpha = if (enabled) 1f else 0.45f), maxLines = 1)
+        Text(title, style = TideType.sans(15.sp, FontWeight.Medium), color = ink.copy(alpha = if (enabled) 1f else 0.45f), maxLines = 1)
     }
 }
+
+/** True while the hero is the primary-container "Syncing" card, so its actions use that container's ink. */
+private val LocalHeroTonal = androidx.compose.runtime.staticCompositionLocalOf { false }
 
 // ─── Error, empty ───────────────────────────────────────────────────────────
 
@@ -665,14 +695,13 @@ private fun VaultErrorCard(message: String, onDismiss: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
-            .background(c.danger.copy(alpha = 0.10f), shape)
-            .border(1.dp, c.danger.copy(alpha = 0.25f), shape)
+            .background(c.errorContainer, shape)
             .padding(start = 16.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Text("!", style = TideType.mono(15.sp, FontWeight.SemiBold), color = c.danger)
-        Text(message, style = TideType.sans(14.sp, FontWeight.Medium), color = c.danger, modifier = Modifier.weight(1f).padding(vertical = 8.dp))
+        TideIcon(R.drawable.ic_m3_info, tint = c.onErrorContainer, size = 20.dp)
+        Text(message, style = TideType.sans(14.sp), color = c.onErrorContainer, modifier = Modifier.weight(1f).padding(vertical = 8.dp))
         Box(
             Modifier
                 .heightIn(min = 48.dp)
@@ -682,7 +711,7 @@ private fun VaultErrorCard(message: String, onDismiss: () -> Unit) {
                 .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(stringResource(R.string.ui_dismiss_48845bff), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.ink)
+            Text(stringResource(R.string.ui_dismiss_48845bff), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onErrorContainer)
         }
     }
 }
@@ -695,8 +724,8 @@ private fun VaultNoRepository() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Box(Modifier.size(56.dp).background(c.well, RoundedCornerShape(18.dp)), contentAlignment = Alignment.Center) {
-            Text("⑂", style = TideType.sans(24.sp, FontWeight.SemiBold), color = c.inkMid)
+        Box(Modifier.size(56.dp).background(c.well, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+            TideIcon(R.drawable.ic_m3_branch, tint = c.inkMid)
         }
         TideDisplay(stringResource(R.string.ui_no_repository_555da78f), size = 26.sp)
         Text(stringResource(R.string.ui_go_back_and_select_a_repository_c3eedd39), style = TideType.meta, color = c.inkFaint)
@@ -706,42 +735,49 @@ private fun VaultNoRepository() {
 // ─── Changes ────────────────────────────────────────────────────────────────
 
 @Composable
-private fun VaultChanges(changes: List<GitStatusEntry>, onOpenDiff: (String) -> Unit) {
+private fun VaultChanges(changes: List<GitStatusEntry>, onOpenDiff: (String) -> Unit, selectedFile: String? = null) {
     val c = Tide.colors
     Column(Modifier.fillMaxWidth()) {
-        Row(Modifier.padding(start = 4.dp, end = 4.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            TideSectionLabel(stringResource(R.string.ui_changed_files_cdf024ce))
-            if (changes.isNotEmpty()) {
-                Spacer(Modifier.size(8.dp))
-                Text("${changes.size}", style = TideType.mono(11.sp, FontWeight.SemiBold), color = c.ahead)
-            }
-        }
+        TideSectionLabel(
+            stringResource(R.string.ui_changes_bbd4b6a8) + if (changes.isNotEmpty()) " · ${changes.size}" else "",
+            Modifier.padding(start = 4.dp, end = 4.dp, bottom = 8.dp),
+        )
         if (changes.isEmpty()) {
             TideCard {
                 Text(stringResource(R.string.tide_vault_no_changes_title), style = TideType.body, color = c.ink)
                 Text(
                     stringResource(R.string.tide_vault_no_changes_body),
-                    style = TideType.sans(13.sp),
-                    color = c.inkFaint,
-                    modifier = Modifier.padding(top = 3.dp),
+                    style = TideType.sans(14.sp),
+                    color = c.inkMid,
+                    modifier = Modifier.padding(top = 2.dp),
                 )
             }
         } else {
-            TideCard(padding = 0.dp) {
-                Column(Modifier.padding(horizontal = 16.dp)) {
-                    val sorted = changes.sortedBy { it.filePath }
-                    sorted.forEachIndexed { index, entry ->
-                        ChangedFileRow(entry, onClick = { onOpenDiff(entry.filePath) })
-                        if (index < sorted.lastIndex) TideHairline()
-                    }
+            Column(Modifier.fillMaxWidth().clip(Tide.cardShape).background(c.card)) {
+                val sorted = changes.sortedBy { it.filePath }
+                sorted.forEachIndexed { index, entry ->
+                    if (index > 0) TideHairline()
+                    ChangedFileRow(entry, selected = entry.filePath == selectedFile, onClick = { onOpenDiff(entry.filePath) })
                 }
             }
         }
     }
 }
 
+/** Letter badge colors for a change: A added, M modified, D deleted, ! conflicted. */
 @Composable
-private fun ChangedFileRow(entry: GitStatusEntry, onClick: () -> Unit = {}) {
+internal fun changeBadge(entry: GitStatusEntry): Triple<String, Color, Color> {
+    val c = Tide.colors
+    return when {
+        entry.isConflicted -> Triple("!", c.errorContainer, c.onErrorContainer)
+        entry.isDeleted -> Triple("D", c.errorContainer, c.onErrorContainer)
+        entry.kind == GitFileStatusKind.UNTRACKED -> Triple("A", c.okContainer, c.onOkContainer)
+        else -> Triple("M", c.tertiaryContainer, c.onTertiaryContainer)
+    }
+}
+
+@Composable
+private fun ChangedFileRow(entry: GitStatusEntry, selected: Boolean = false, onClick: () -> Unit = {}) {
     val c = Tide.colors
     val label = when {
         entry.isConflicted -> stringResource(R.string.vault_l10n_status_conflict)
@@ -751,30 +787,28 @@ private fun ChangedFileRow(entry: GitStatusEntry, onClick: () -> Unit = {}) {
         entry.kind == GitFileStatusKind.UNTRACKED -> stringResource(R.string.vault_l10n_status_untracked)
         else -> stringResource(R.string.tide_git_status_modified)
     }
-    val (glyph, tint) = when {
-        entry.isConflicted -> "!" to c.danger
-        entry.isDeleted -> "D" to c.danger
-        entry.kind == GitFileStatusKind.UNTRACKED -> "A" to c.synced
-        else -> "M" to c.ahead
-    }
+    val (glyph, fill, ink) = changeBadge(entry)
+    val name = entry.filePath.substringAfterLast('/')
+    val dir = entry.filePath.substringBeforeLast('/', "").let { if (it.isEmpty()) "/" else "$it/" }
     Row(
         Modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
+            .heightIn(min = 72.dp)
+            .then(if (selected) Modifier.background(c.secondaryContainer) else Modifier)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(vertical = 11.dp),
+            .semantics { this.selected = selected }
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(
-            Modifier.size(26.dp).background(tint.copy(alpha = 0.12f), RoundedCornerShape(8.dp)),
+            Modifier.size(40.dp).background(fill, RoundedCornerShape(12.dp)),
             contentAlignment = Alignment.Center,
-        ) { Text(glyph, style = TideType.mono(12.sp, FontWeight.SemiBold), color = tint) }
+        ) { Text(glyph, style = TideType.mono(15.sp, FontWeight.SemiBold), color = ink) }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(entry.filePath, style = TideType.mono(13.sp, FontWeight.Medium), color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(label, style = TideType.mono(11.sp), color = c.inkFaint)
+            Text(name, style = TideType.body, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(listOf(dir, label).joinToString(" · "), style = TideType.meta, color = c.inkMid, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        TideChevron()
     }
 }
 
@@ -785,28 +819,25 @@ private fun VaultLatestCommit(status: RepositoryStatus) {
     val c = Tide.colors
     Column(Modifier.fillMaxWidth()) {
         TideSectionLabel(stringResource(R.string.tide_vault_latest_commit), Modifier.padding(start = 4.dp, bottom = 8.dp))
-        TideCard {
+        Column(Modifier.fillMaxWidth().border(1.dp, c.line, Tide.cardShape).padding(horizontal = 20.dp, vertical = 16.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Box(
-                    Modifier.padding(top = 4.dp).size(12.dp).border(2.dp, c.ink, CircleShape),
-                )
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(
                         headCommitText(status.headCommit),
-                        style = TideType.mono(15.sp, FontWeight.SemiBold),
+                        style = TideType.mono(16.sp, FontWeight.Medium),
                         color = c.ink,
                         modifier = Modifier.testTag("vault-overview-head"),
                     )
                     Text(
                         stringResource(R.string.vault_l10n_branch_value, status.currentBranch),
                         style = TideType.meta,
-                        color = c.inkFaint,
+                        color = c.inkMid,
                         modifier = Modifier.testTag("vault-overview-branch"),
                     )
                     Text(
                         stringResource(R.string.vault_l10n_last_sync_value, recordedSyncText(status.lastSyncAt)),
                         style = TideType.meta,
-                        color = c.inkFaint,
+                        color = c.inkMid,
                         modifier = Modifier.testTag("vault-overview-sync"),
                     )
                 }

@@ -115,7 +115,7 @@ class AppGuideNavigationTest {
             startTour(3)
             compose.onNodeWithTag("tour-start-SAMPLE").performScrollTo().performClick()
             val sample = File(sampleWorkspace,"sample-repository").canonicalPath
-            compose.waitUntil(15_000) { prefs.getString("selected_repository","") == sample && compose.onAllNodesWithText("Browse files",substring=false).fetchSemanticsNodes().isNotEmpty() }
+            compose.waitUntil(15_000) { prefs.getString("selected_repository","") == sample && compose.onAllNodesWithTag("vault-tab-files").fetchSemanticsNodes().isNotEmpty() }
             assertTrue(guide.getBoolean("completed",false))
             compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
         } finally {

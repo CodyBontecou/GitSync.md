@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Aturan pelacakan diperbarui. Tinjau dan masukkan .gitattributes serta file yang dipilih ke staging, lalu lakukan commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Unggahan · kredensial terenkripsi terpisah"</string>
     <string name="lfs_uploads_public" formatted="false">"Unggahan · akses publik"</string>
+    <string name="m3_editor_preview" formatted="false">"Pratinjau"</string>
+    <string name="m3_editor_write" formatted="false">"Tulis"</string>
+    <string name="m3_md_bold" formatted="false">"Tebal"</string>
+    <string name="m3_md_checklist" formatted="false">"Item daftar periksa"</string>
+    <string name="m3_md_code" formatted="false">"Kode sebaris"</string>
+    <string name="m3_md_heading" formatted="false">"Judul"</string>
+    <string name="m3_md_italic" formatted="false">"Miring"</string>
+    <string name="m3_md_link" formatted="false">"Tautan ke catatan"</string>
+    <string name="m3_open_in_editor" formatted="false">"Buka di editor"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Pembelian satu kali melalui Google Play. Tanpa langganan."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Dibayar dengan akun Google Play Anda"</string>
+    <string name="m3_pick_a_file" formatted="false">"Pilih file untuk melihat perubahannya."</string>
     <string name="modified" formatted="false">"Diubah"</string>
     <string name="move_action" formatted="false">"Pindahkan salinan kerja"</string>
     <string name="move_cancelled" formatted="false">"Pemindahan dibatalkan. Salinan kerja asli tetap disimpan."</string>

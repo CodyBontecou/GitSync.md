@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Đã cập nhật quy tắc theo dõi. Xem xét và đưa .gitattributes cùng các tệp đã chọn vào vùng chờ, sau đó tạo commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Tải lên · thông tin xác thực mã hóa riêng"</string>
     <string name="lfs_uploads_public" formatted="false">"Tải lên · truy cập công khai"</string>
+    <string name="m3_editor_preview" formatted="false">"Xem trước"</string>
+    <string name="m3_editor_write" formatted="false">"Viết"</string>
+    <string name="m3_md_bold" formatted="false">"In đậm"</string>
+    <string name="m3_md_checklist" formatted="false">"Mục danh sách kiểm tra"</string>
+    <string name="m3_md_code" formatted="false">"Mã nội dòng"</string>
+    <string name="m3_md_heading" formatted="false">"Tiêu đề"</string>
+    <string name="m3_md_italic" formatted="false">"In nghiêng"</string>
+    <string name="m3_md_link" formatted="false">"Liên kết đến ghi chú"</string>
+    <string name="m3_open_in_editor" formatted="false">"Mở trong trình soạn thảo"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Mua một lần qua Google Play. Không cần đăng ký."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Thanh toán bằng tài khoản Google Play của bạn"</string>
+    <string name="m3_pick_a_file" formatted="false">"Chọn một tệp để xem các thay đổi."</string>
     <string name="modified" formatted="false">"Đã sửa"</string>
     <string name="move_action" formatted="false">"Di chuyển bản sao làm việc"</string>
     <string name="move_cancelled" formatted="false">"Đã hủy di chuyển. Bản sao làm việc gốc vẫn được giữ."</string>

@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"อัปเดตกฎการติดตามแล้ว ตรวจสอบและนำ .gitattributes กับไฟล์ที่เลือกเข้า staging จากนั้นจึงคอมมิต"</string>
     <string name="lfs_uploads_authenticated" formatted="false">"อัปโหลด · ข้อมูลรับรองที่เข้ารหัสแยกต่างหาก"</string>
     <string name="lfs_uploads_public" formatted="false">"อัปโหลด · การเข้าถึงสาธารณะ"</string>
+    <string name="m3_editor_preview" formatted="false">"ดูตัวอย่าง"</string>
+    <string name="m3_editor_write" formatted="false">"เขียน"</string>
+    <string name="m3_md_bold" formatted="false">"ตัวหนา"</string>
+    <string name="m3_md_checklist" formatted="false">"รายการเช็กลิสต์"</string>
+    <string name="m3_md_code" formatted="false">"โค้ดในบรรทัด"</string>
+    <string name="m3_md_heading" formatted="false">"หัวเรื่อง"</string>
+    <string name="m3_md_italic" formatted="false">"ตัวเอียง"</string>
+    <string name="m3_md_link" formatted="false">"ลิงก์ไปยังโน้ต"</string>
+    <string name="m3_open_in_editor" formatted="false">"เปิดในตัวแก้ไข"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"ซื้อครั้งเดียวผ่าน Google Play ไม่มีการสมัครสมาชิก"</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"ชำระด้วยบัญชี Google Play ของคุณ"</string>
+    <string name="m3_pick_a_file" formatted="false">"เลือกไฟล์เพื่อดูการเปลี่ยนแปลง"</string>
     <string name="modified" formatted="false">"แก้ไขแล้ว"</string>
     <string name="move_action" formatted="false">"ย้ายสำเนาการทำงาน"</string>
     <string name="move_cancelled" formatted="false">"ยกเลิกการย้ายแล้ว สำเนาการทำงานเดิมยังคงอยู่"</string>

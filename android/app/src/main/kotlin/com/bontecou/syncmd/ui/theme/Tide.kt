@@ -46,6 +46,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.annotation.DrawableRes
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -66,23 +68,31 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
 
-// ─── Tide design system ─────────────────────────────────────────────────────
+// ─── Tide design system, Material 3 edition ─────────────────────────────────
 //
-// "State first, git second." Mirrors iOS TideDesignSystem.swift: paper ground,
-// white rounded cards, ink pills, Geist for words and Geist Mono for git facts
-// (branches, paths, hashes, counts, times). Orange = yours to push, blue =
-// theirs to pull, green = in sync.
+// "State first, git second." The Android build follows the GitSync.md Material 3
+// design: a warm surface, tonal containers, a blue primary, Roboto for words and a
+// monospace face for git facts (branches, paths, hashes, counts, times). Orange =
+// yours to push, blue = theirs to pull, green = in sync. The legacy Tide names
+// (paper, card, ink…) map onto Material roles so every screen moves together.
 
 @Immutable
 data class TideColors(
+    /** M3 surface — the screen ground. */
     val paper: Color,
+    /** M3 surfaceContainerLow — grouped lists and cards. */
     val card: Color,
+    /** M3 onSurface. */
     val ink: Color,
+    /** M3 onSurfaceVariant. */
     val inkMid: Color,
+    /** Supporting text, still 4.5:1 on surface. */
     val inkFaint: Color,
+    /** M3 outlineVariant — dividers. */
     val line: Color,
-    /** Softer outline for outline pills and chips. */
+    /** M3 outline — outlined buttons, chips, fields. */
     val lineSoft: Color,
+    /** M3 surfaceContainerHighest — wells, tracks, muted badges. */
     val well: Color,
     /** Local commits / changes to push. */
     val ahead: Color,
@@ -90,10 +100,35 @@ data class TideColors(
     val behind: Color,
     val synced: Color,
     val danger: Color,
-    /** Dark state hero: stays dark in both appearances. */
+    /** Inverse state hero: stays dark in both appearances. */
     val heroBg: Color,
     val heroBorder: Color,
     val isDark: Boolean,
+    val primary: Color,
+    val onPrimary: Color,
+    val primaryContainer: Color,
+    val onPrimaryContainer: Color,
+    val secondaryContainer: Color,
+    val onSecondaryContainer: Color,
+    val tertiary: Color,
+    val tertiaryContainer: Color,
+    val onTertiaryContainer: Color,
+    /** Pinned-vault card fill: a whisper of tertiary. */
+    val tertiarySoft: Color,
+    /** M3 surfaceContainer — navigation bar, menus. */
+    val container: Color,
+    /** M3 surfaceContainerHigh — dialogs, notifications. */
+    val containerHigh: Color,
+    val onError: Color,
+    val errorContainer: Color,
+    val onErrorContainer: Color,
+    val okContainer: Color,
+    val onOkContainer: Color,
+    /** Diff ink for added and removed lines. */
+    val addInk: Color,
+    val delInk: Color,
+    val addBg: Color,
+    val delBg: Color,
 ) {
     val heroText get() = Color(0xFFF2F1EC)
     val heroMeta get() = Color(0xFFB5B5BB)
@@ -102,17 +137,26 @@ data class TideColors(
     val heroBehind get() = Color(0xFF7C95FF)
     val heroSynced get() = Color(0xFF5BC489)
     val heroDanger get() = Color(0xFFFF7A6B)
+
+    /** Tonal container (fill, ink) for a state tint, or null for any other color. */
+    fun containerFor(tint: Color): Pair<Color, Color>? = when (tint.copy(alpha = 1f)) {
+        danger -> errorContainer to onErrorContainer
+        synced -> okContainer to onOkContainer
+        ahead -> tertiaryContainer to onTertiaryContainer
+        behind, primary -> primaryContainer to onPrimaryContainer
+        else -> null
+    }
 }
 
 val TideLight = TideColors(
-    paper = Color(0xFFF2F1EC),
-    card = Color(0xFFFFFFFF),
-    ink = Color(0xFF111113),
-    inkMid = Color(0xFF55555C),
-    inkFaint = Color(0xFF6B6B72),
-    line = Color(0xFFE2E0D9),
-    lineSoft = Color(0xFFD9D7CF),
-    well = Color(0xFFE6E4DD),
+    paper = Color(0xFFFBF8F3),
+    card = Color(0xFFF5F2EC),
+    ink = Color(0xFF1C1B1A),
+    inkMid = Color(0xFF4A4850),
+    inkFaint = Color(0xFF5C5A62),
+    line = Color(0xFFCBC6CC),
+    lineSoft = Color(0xFF79767E),
+    well = Color(0xFFE3E0DA),
     ahead = Color(0xFFB4410E),
     behind = Color(0xFF2D5BFF),
     synced = Color(0xFF17703F),
@@ -120,24 +164,66 @@ val TideLight = TideColors(
     heroBg = Color(0xFF111113),
     heroBorder = Color.Transparent,
     isDark = false,
+    primary = Color(0xFF2D4FD8),
+    onPrimary = Color(0xFFFFFFFF),
+    primaryContainer = Color(0xFFDEE1FF),
+    onPrimaryContainer = Color(0xFF00164F),
+    secondaryContainer = Color(0xFFE3E1EC),
+    onSecondaryContainer = Color(0xFF1B1B24),
+    tertiary = Color(0xFFA33F0E),
+    tertiaryContainer = Color(0xFFFFDBCB),
+    onTertiaryContainer = Color(0xFF370E00),
+    tertiarySoft = Color(0xFFFCEDE4),
+    container = Color(0xFFEFECE6),
+    containerHigh = Color(0xFFE9E6E0),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFFFDAD6),
+    onErrorContainer = Color(0xFF410002),
+    okContainer = Color(0xFFCDEED8),
+    onOkContainer = Color(0xFF00210E),
+    addInk = Color(0xFF17703F),
+    delInk = Color(0xFFB42318),
+    addBg = Color(0xFFE3F4E8),
+    delBg = Color(0xFFFCE8E5),
 )
 
 val TideDark = TideColors(
-    paper = Color(0xFF0E0E10),
-    card = Color(0xFF1A1A1D),
-    ink = Color(0xFFF2F1EC),
-    inkMid = Color(0xFFA9A9B0),
-    inkFaint = Color(0xFF8C8C94),
-    line = Color(0xFF34343A),
-    lineSoft = Color(0xFF3A3A40),
-    well = Color(0xFF1A1A1D),
+    paper = Color(0xFF131316),
+    card = Color(0xFF1B1B1F),
+    ink = Color(0xFFE5E2E1),
+    inkMid = Color(0xFFC8C5CD),
+    inkFaint = Color(0xFFB4B1BA),
+    line = Color(0xFF47464E),
+    lineSoft = Color(0xFF928F98),
+    well = Color(0xFF353539),
     ahead = Color(0xFFFF8A4C),
     behind = Color(0xFF7C95FF),
     synced = Color(0xFF5BC489),
-    danger = Color(0xFFFF7A6B),
+    danger = Color(0xFFFFB4AB),
     heroBg = Color(0xFF1E1E22),
-    heroBorder = Color(0xFF2E2E33),
+    heroBorder = Color.Transparent,
     isDark = true,
+    primary = Color(0xFFB9C3FF),
+    onPrimary = Color(0xFF06228A),
+    primaryContainer = Color(0xFF2440B8),
+    onPrimaryContainer = Color(0xFFDEE1FF),
+    secondaryContainer = Color(0xFF45464F),
+    onSecondaryContainer = Color(0xFFE3E1EC),
+    tertiary = Color(0xFFFFB596),
+    tertiaryContainer = Color(0xFF7F2C05),
+    onTertiaryContainer = Color(0xFFFFDBCB),
+    tertiarySoft = Color(0xFF2C1D16),
+    container = Color(0xFF1F1F23),
+    containerHigh = Color(0xFF2A2A2E),
+    onError = Color(0xFF690005),
+    errorContainer = Color(0xFF93000A),
+    onErrorContainer = Color(0xFFFFDAD6),
+    okContainer = Color(0xFF0F5130),
+    onOkContainer = Color(0xFFB6F2CB),
+    addInk = Color(0xFF5BC489),
+    delInk = Color(0xFFFF8A7E),
+    addBg = Color(0xFF16301F),
+    delBg = Color(0xFF3A1A17),
 )
 
 val LocalTideColors = staticCompositionLocalOf { TideLight }
@@ -146,10 +232,13 @@ object Tide {
     val colors: TideColors
         @Composable @ReadOnlyComposable get() = LocalTideColors.current
 
-    val radiusCard = 22.dp
-    val radiusHero = 26.dp
-    val radiusField = 18.dp
-    val radiusSheet = 32.dp
+    /** M3 large shape: list containers, cards, the hero. */
+    val radiusCard = 28.dp
+    val radiusHero = 28.dp
+    /** M3 extra-small shape: outlined text fields. */
+    val radiusField = 4.dp
+    /** M3 extra-large shape: sheets and dialogs. */
+    val radiusSheet = 28.dp
     val gutter = 16.dp
 
     val cardShape = RoundedCornerShape(radiusCard)
@@ -160,14 +249,10 @@ object Tide {
 // ─── Type ───────────────────────────────────────────────────────────────────
 
 object TideFonts {
-    val Sans = FontFamily(
-        Font(R.font.geist_regular, FontWeight.Normal),
-        Font(R.font.geist_medium, FontWeight.Medium),
-        Font(R.font.geist_semibold, FontWeight.SemiBold),
-        Font(R.font.geist_bold, FontWeight.Bold),
-    )
+    /** Roboto (Roboto Flex where the system ships it) — the Material 3 type scale. */
+    val Sans: FontFamily = FontFamily.SansSerif
 
-    /** Geist Mono — git facts only: branches, paths, hashes, counts, times. */
+    /** Monospace for git facts only: branches, paths, hashes, counts, times. */
     val Mono = FontFamily(
         Font(R.font.geist_mono_regular, FontWeight.Normal),
         Font(R.font.geist_mono_medium, FontWeight.Medium),
@@ -179,49 +264,49 @@ object TideFonts {
 }
 
 object TideType {
-    /** Big state headline ("1 vault needs you.") — 38/600, tight tracking. */
-    fun display(size: TextUnit = 38.sp) = TextStyle(
-        fontFamily = TideFonts.Sans, fontWeight = FontWeight.SemiBold,
-        fontSize = size, lineHeight = size * 1.08f, letterSpacing = (-0.035).em,
+    /** Big state headline ("1 vault needs you.") — M3 display/headline, weight 500. */
+    fun display(size: TextUnit = 36.sp) = TextStyle(
+        fontFamily = TideFonts.Sans, fontWeight = FontWeight.Medium,
+        fontSize = size, lineHeight = size * 1.2f, letterSpacing = (-0.012).em,
     )
 
     fun sans(size: TextUnit, weight: FontWeight = FontWeight.Normal) =
-        TextStyle(fontFamily = TideFonts.Sans, fontWeight = weight, fontSize = size, lineHeight = size * 1.3f)
+        TextStyle(fontFamily = TideFonts.Sans, fontWeight = weight, fontSize = size, lineHeight = size * 1.4f)
 
     fun mono(size: TextUnit, weight: FontWeight = FontWeight.Normal) =
         TextStyle(fontFamily = TideFonts.Mono, fontWeight = weight, fontSize = size, lineHeight = size * 1.35f)
 
-    /** Vault names, sheet titles — 19/600. */
-    val title = sans(19.sp, FontWeight.SemiBold)
-    /** Body copy and row labels — 15/500. */
-    val body = sans(15.sp, FontWeight.Medium)
-    /** Plain reading copy — 15/400. */
-    val copy = sans(15.sp)
-    /** Primary button label — 16/600. */
-    val button = sans(16.sp, FontWeight.SemiBold)
-    /** Meta line — mono 11.5/400. */
-    val meta = mono(11.5.sp)
-    val metaStrong = mono(11.5.sp, FontWeight.SemiBold)
-    /** Section labels ("INCLUDED", "LAST PUSHED") — mono 11, caps, +0.06em. */
-    val section = mono(11.sp).copy(letterSpacing = 0.06.em)
+    /** Vault names, sheet and top-bar titles — M3 title large, 22/500. */
+    val title = TextStyle(fontFamily = TideFonts.Sans, fontWeight = FontWeight.Medium, fontSize = 22.sp, lineHeight = 28.sp)
+    /** List headlines and row labels — M3 body large, 16/24. */
+    val body = TextStyle(fontFamily = TideFonts.Sans, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 24.sp)
+    /** Supporting copy — 15/22. */
+    val copy = TextStyle(fontFamily = TideFonts.Sans, fontWeight = FontWeight.Normal, fontSize = 15.sp, lineHeight = 22.sp)
+    /** Button label — 16/600. */
+    val button = TextStyle(fontFamily = TideFonts.Sans, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, lineHeight = 22.sp)
+    /** Meta line — mono 12/16. */
+    val meta = mono(12.sp).copy(lineHeight = 16.sp)
+    val metaStrong = mono(12.sp, FontWeight.SemiBold).copy(lineHeight = 16.sp)
+    /** List section headers ("Changes · 3", "Latest commit") — 14/600 in primary. */
+    val section = TextStyle(fontFamily = TideFonts.Sans, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, lineHeight = 20.sp)
 }
 
 @Composable
-fun TideDisplay(text: String, modifier: Modifier = Modifier, size: TextUnit = 38.sp, color: Color = Tide.colors.ink) {
+fun TideDisplay(text: String, modifier: Modifier = Modifier, size: TextUnit = 36.sp, color: Color = Tide.colors.ink) {
     Text(text, modifier = modifier.semantics { heading() }, style = TideType.display(size), color = color)
 }
 
-/** "gitsync.md" wordmark — mono, the ".md" in remote blue. */
+/** "gitsync.md" wordmark — the ".md" in primary. */
 @Composable
-fun TideWordmark(modifier: Modifier = Modifier) {
+fun TideWordmark(modifier: Modifier = Modifier, size: TextUnit = 22.sp, mono: Boolean = false) {
     val c = Tide.colors
     Text(
         buildAnnotatedString {
             withStyle(SpanStyle(color = c.ink)) { append("gitsync") }
-            withStyle(SpanStyle(color = c.behind)) { append(".md") }
+            withStyle(SpanStyle(color = c.primary)) { append(".md") }
         },
         modifier = modifier.semantics { contentDescription = "GitSync.md" },
-        style = TideType.mono(14.sp, FontWeight.SemiBold),
+        style = if (mono) TideType.mono(size, FontWeight.SemiBold) else TideType.sans(size, FontWeight.SemiBold).copy(letterSpacing = (-0.014).em),
     )
 }
 
@@ -284,7 +369,7 @@ fun SyncRail(
             .then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier),
         contentAlignment = Alignment.Center,
     ) {
-        Box(Modifier.fillMaxWidth().height(1.dp).background(if (onHero) c.heroLine else c.line))
+        Box(Modifier.fillMaxWidth().height(2.dp).background(if (onHero) c.heroLine else c.line))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                 repeat(minOf(local, maxDots)) { Box(Modifier.size(dot).background(aheadTint, CircleShape)) }
@@ -329,13 +414,23 @@ fun LabeledSyncRail(
 
 // ─── Pills, badges, labels ──────────────────────────────────────────────────
 
+/**
+ * M3 badge chip (8dp corners, 12/600). A state tint passed with its translucent
+ * fill becomes the matching tonal container, so "synced green on 12% green"
+ * renders as okContainer / onOkContainer.
+ */
 @Composable
-fun TidePill(text: String, fg: Color, bg: Color, modifier: Modifier = Modifier) {
+fun TidePill(text: String, fg: Color, bg: Color, modifier: Modifier = Modifier, mono: Boolean = false) {
+    val c = Tide.colors
+    val tonal = if (bg.alpha < 1f && bg.copy(alpha = 1f) == fg.copy(alpha = 1f)) c.containerFor(fg) else null
+    val fill = tonal?.first ?: if (bg == c.well) c.well else bg
+    val ink = tonal?.second ?: fg
+    val glyphs = mono || text.firstOrNull()?.let { it == '↑' || it == '↓' || it.isDigit() } == true
     Text(
         text,
-        modifier = modifier.background(bg, RoundedCornerShape(10.dp)).padding(horizontal = 9.dp, vertical = 5.dp),
-        style = TideType.metaStrong,
-        color = fg,
+        modifier = modifier.background(fill, RoundedCornerShape(8.dp)).padding(horizontal = 10.dp, vertical = 4.dp),
+        style = if (glyphs) TideType.metaStrong else TideType.sans(12.sp, FontWeight.SemiBold).copy(lineHeight = 16.sp),
+        color = ink,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
     )
@@ -346,18 +441,16 @@ fun TideStatePill(state: TideSyncState, headline: String, modifier: Modifier = M
     val c = Tide.colors
     when (activity) {
         TideActivity.PAUSED -> TidePill(headline, c.inkMid, c.well, modifier)
-        TideActivity.SYNCING -> TidePill(headline, c.paper, c.ink, modifier)
+        TideActivity.SYNCING -> TidePill(headline, c.onPrimary, c.primary, modifier)
         null -> TidePill(headline, state.tint(), state.tint().copy(alpha = 0.12f), modifier)
     }
 }
 
-/** Mono caps section label ("LAST PUSHED"). */
+/** M3 list section header ("Changes · 3", "Latest commit"): 14/600 in primary, sentence case. */
 @Composable
-fun TideSectionLabel(title: String, modifier: Modifier = Modifier, color: Color = Tide.colors.inkFaint) {
-    // Uppercase in the UI language, so Turkish "i" becomes "İ".
-    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0] ?: java.util.Locale.getDefault()
+fun TideSectionLabel(title: String, modifier: Modifier = Modifier, color: Color = Tide.colors.primary) {
     Text(
-        title.uppercase(locale),
+        title,
         modifier = modifier.semantics { heading() },
         style = TideType.section,
         color = color,
@@ -366,7 +459,7 @@ fun TideSectionLabel(title: String, modifier: Modifier = Modifier, color: Color 
 
 // ─── Containers ─────────────────────────────────────────────────────────────
 
-/** White rounded card on paper — Tide's basic container. */
+/** Tonal rounded container on the surface (M3 surfaceContainerLow, 28dp). */
 @Composable
 fun TideCard(
     modifier: Modifier = Modifier,
@@ -388,21 +481,21 @@ fun TideCard(
     )
 }
 
-/** Dark state hero — stays dark in both appearances (Vault header). */
+/** Inverse state hero — stays dark in both appearances (Home and Vault headers). */
 @Composable
-fun TideHero(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
+fun TideHero(modifier: Modifier = Modifier, color: Color = Tide.colors.heroBg, content: @Composable ColumnScope.() -> Unit) {
     val c = Tide.colors
     Column(
         modifier
             .fillMaxWidth()
-            .background(c.heroBg, Tide.heroShape)
+            .background(color, Tide.heroShape)
             .border(1.dp, c.heroBorder, Tide.heroShape)
-            .padding(18.dp),
+            .padding(20.dp),
         content = content,
     )
 }
 
-/** A card of rows separated by hairlines, under an optional section label. */
+/** An M3 list in a 28dp tonal container under an optional primary section header. */
 @Composable
 fun TideSection(
     title: String?,
@@ -416,8 +509,8 @@ fun TideSection(
         if (footer != null) {
             Text(
                 footer,
-                style = TideType.sans(13.sp),
-                color = Tide.colors.inkFaint,
+                style = TideType.sans(12.sp).copy(lineHeight = 16.sp),
+                color = Tide.colors.inkMid,
                 modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp),
             )
         }
@@ -431,7 +524,7 @@ fun TideHairline(modifier: Modifier = Modifier) {
 
 enum class TideAccessory { NONE, CHEVRON, EXTERNAL }
 
-/** Settings-style row: title (+ subtitle) on the left, mono value and chevron on the right. */
+/** M3 list item: headline (+ supporting text) on the left, mono value and chevron on the right. */
 @Composable
 fun TideRow(
     title: String,
@@ -451,22 +544,22 @@ fun TideRow(
     Row(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
+            .heightIn(min = 56.dp)
             .then(if (onClick != null) Modifier.clickable(enabled = enabled, role = Role.Button, onClick = onClick) else Modifier)
-            .alpha(if (enabled) 1f else 0.45f)
-            .padding(vertical = 13.dp),
+            .alpha(if (enabled) 1f else 0.38f)
+            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        leading?.invoke()
+        if (leading != null) CompositionLocalProvider(LocalContentColor provides c.inkMid) { leading() }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(title, style = TideType.body, color = if (destructive) c.danger else c.ink)
-            if (subtitle != null) Text(subtitle, style = TideType.mono(11.sp), color = c.inkFaint)
+            if (subtitle != null) Text(subtitle, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = c.inkMid)
         }
         if (value != null) {
             Text(
                 value,
-                style = if (valueIsMono) TideType.mono(13.sp) else TideType.sans(15.sp),
+                style = if (valueIsMono) TideType.mono(12.sp) else TideType.sans(14.sp),
                 color = valueTint,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -476,7 +569,7 @@ fun TideRow(
         trailing?.invoke(this)
         when (accessory) {
             TideAccessory.CHEVRON -> TideChevron()
-            TideAccessory.EXTERNAL -> Text("↗", style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.inkFaint)
+            TideAccessory.EXTERNAL -> Icon(painterResource(R.drawable.ic_m3_open_in_new), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(20.dp))
             TideAccessory.NONE -> Unit
         }
     }
@@ -484,14 +577,19 @@ fun TideRow(
 
 /** Row disclosure chevron; mirrors in right-to-left layouts. */
 @Composable
-fun TideChevron(color: Color = Tide.colors.inkFaint) {
-    val rtl = androidx.compose.ui.platform.LocalLayoutDirection.current == androidx.compose.ui.unit.LayoutDirection.Rtl
-    Text(if (rtl) "‹" else "›", style = TideType.sans(22.sp, FontWeight.Medium).copy(lineHeight = 22.sp), color = color)
+fun TideChevron(color: Color = Tide.colors.inkMid) {
+    Icon(painterResource(R.drawable.ic_m3_chevron_right), contentDescription = null, tint = color, modifier = Modifier.size(24.dp))
+}
+
+/** 24dp Material icon from the GitSync.md set. */
+@Composable
+fun TideIcon(@DrawableRes id: Int, modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, size: Dp = 24.dp, contentDescription: String? = null) {
+    Icon(painterResource(id), contentDescription = contentDescription, tint = tint, modifier = modifier.size(size))
 }
 
 // ─── Buttons ────────────────────────────────────────────────────────────────
 
-/** Solid ink pill with a lift — the one right action, optionally with a count badge. */
+/** M3 filled button, 56dp: the one right action, optionally with a count badge. */
 @Composable
 fun TidePrimaryButton(
     title: String,
@@ -503,45 +601,46 @@ fun TidePrimaryButton(
     icon: Painter? = null,
 ) {
     val c = Tide.colors
+    val fill = if (enabled) c.primary else c.ink.copy(alpha = 0.12f)
+    val ink = if (enabled) c.onPrimary else c.ink.copy(alpha = 0.38f)
     Row(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 60.dp)
-            .shadow(if (enabled) 12.dp else 0.dp, CircleShape, ambientColor = Color.Black.copy(alpha = 0.2f), spotColor = Color.Black.copy(alpha = 0.25f))
+            .heightIn(min = 56.dp)
             .clip(CircleShape)
-            .background(c.ink.copy(alpha = if (enabled) 1f else 0.3f))
+            .background(fill)
             .clickable(enabled = enabled && !loading, role = Role.Button, onClick = onClick)
             .padding(start = 24.dp, end = if (badge == null) 24.dp else 8.dp, top = 8.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (loading) {
             Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(Modifier.size(20.dp), color = c.paper, strokeWidth = 2.dp)
+                CircularProgressIndicator(Modifier.size(20.dp), color = ink, strokeWidth = 2.dp)
             }
         } else {
             if (icon != null) {
-                Icon(icon, contentDescription = null, tint = c.paper, modifier = Modifier.size(18.dp))
-                Spacer(Modifier.width(10.dp))
+                Icon(icon, contentDescription = null, tint = ink, modifier = Modifier.size(20.dp))
+                Spacer(Modifier.width(8.dp))
             }
-            Text(title, style = TideType.button, color = c.paper, modifier = Modifier.weight(1f))
+            Text(title, style = TideType.button, color = ink, modifier = Modifier.weight(1f))
             if (badge != null) {
                 Box(
-                    Modifier.height(44.dp).background(c.behind, CircleShape).padding(horizontal = 14.dp),
+                    Modifier.height(40.dp).background(if (enabled) c.onPrimary else Color.Transparent, CircleShape).padding(horizontal = 14.dp),
                     contentAlignment = Alignment.Center,
-                ) { Text(badge, style = TideType.metaStrong, color = Color.White) }
+                ) { Text(badge, style = TideType.metaStrong.copy(fontSize = 14.sp), color = if (enabled) c.primary else ink) }
             }
         }
     }
 }
 
-/** Outline pill — secondary action next to the primary. */
+/** M3 outlined button — secondary action next to the primary. */
 @Composable
 fun TideOutlineButton(
     title: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    height: Dp = 52.dp,
+    height: Dp = 48.dp,
     onHero: Boolean = false,
 ) {
     val c = Tide.colors
@@ -551,16 +650,16 @@ fun TideOutlineButton(
             .clip(CircleShape)
             .border(1.dp, if (onHero) c.heroLine else c.lineSoft, CircleShape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
-            .alpha(if (enabled) 1f else 0.4f)
+            .alpha(if (enabled) 1f else 0.38f)
             .padding(horizontal = 20.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = if (onHero) c.heroText else c.ink,
+        Text(title, style = TideType.sans(14.sp, FontWeight.SemiBold), color = if (onHero) c.heroText else c.primary,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.padding(vertical = 10.dp))
     }
 }
 
-/** 48dp circle icon button (back, more, add). */
+/** M3 icon button, 48dp (back, more, add). `filled = false` draws the outlined variant. */
 @Composable
 fun TideCircleButton(
     contentDescription: String,
@@ -576,10 +675,10 @@ fun TideCircleButton(
         modifier
             .size(size)
             .clip(CircleShape)
-            .then(if (filled) Modifier.background(c.card, CircleShape) else Modifier.border(1.dp, c.lineSoft, CircleShape))
+            .then(if (filled) Modifier else Modifier.border(1.dp, c.lineSoft, CircleShape))
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .semantics { this.contentDescription = contentDescription }
-            .alpha(if (enabled) 1f else 0.4f),
+            .alpha(if (enabled) 1f else 0.38f),
         contentAlignment = Alignment.Center,
     ) {
         CompositionLocalProvider(LocalContentColor provides c.ink) { content() }
@@ -588,6 +687,7 @@ fun TideCircleButton(
 
 // ─── Chips & segmented control ──────────────────────────────────────────────
 
+/** M3 filter chip: 32dp, 8dp corners, a check when selected, inside a 48dp touch target. */
 @Composable
 fun TideFilterChip(
     label: String,
@@ -598,20 +698,29 @@ fun TideFilterChip(
     dot: Color? = null,
 ) {
     val c = Tide.colors
-    Row(
+    val shape = RoundedCornerShape(8.dp)
+    Box(
         modifier
-            .height(44.dp)
-            .clip(CircleShape)
-            .then(if (selected) Modifier.background(c.ink, CircleShape) else Modifier.border(1.dp, c.lineSoft, CircleShape))
-            .clickable(role = Role.Tab, onClick = onClick)
-            .semantics { this.selected = selected }
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+            .heightIn(min = 48.dp)
+            .clickable(role = Role.Tab, onClick = onClick, indication = null,
+                interactionSource = androidx.compose.runtime.remember { androidx.compose.foundation.interaction.MutableInteractionSource() })
+            .semantics { this.selected = selected },
+        contentAlignment = Alignment.Center,
     ) {
-        if (dot != null) Box(Modifier.size(8.dp).background(dot, CircleShape))
-        Text(label, style = TideType.sans(15.sp, FontWeight.Medium), color = if (selected) c.paper else c.ink)
-        if (count != null) Text("$count", style = TideType.sans(15.sp, FontWeight.Medium), color = if (selected) c.paper else c.ink)
+        Row(
+            Modifier
+                .heightIn(min = 32.dp)
+                .clip(shape)
+                .then(if (selected) Modifier.background(c.secondaryContainer, shape) else Modifier.border(1.dp, c.line, shape))
+                .padding(start = if (selected) 8.dp else 16.dp, end = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            val ink = if (selected) c.onSecondaryContainer else c.inkMid
+            if (selected) Icon(painterResource(R.drawable.ic_m3_check), contentDescription = null, tint = ink, modifier = Modifier.size(18.dp))
+            else if (dot != null) Box(Modifier.size(8.dp).background(dot, CircleShape))
+            Text(label + if (count != null) " $count" else "", style = TideType.sans(14.sp, FontWeight.Medium).copy(lineHeight = 20.sp), color = ink)
+        }
     }
 }
 
@@ -620,11 +729,12 @@ fun TideChipRow(modifier: Modifier = Modifier, content: @Composable RowScope.() 
     Row(
         modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
         content = content,
     )
 }
 
-/** Changes · Files · History · Git — rounded well with a raised selected segment. */
+/** M3 segmented button: outlined, the selected segment tonal with a check. */
 @Composable
 fun TideSegmented(
     options: List<String>,
@@ -634,37 +744,44 @@ fun TideSegmented(
     badges: List<Int?> = emptyList(),
 ) {
     val c = Tide.colors
+    val outer = RoundedCornerShape(20.dp)
     Row(
         modifier
             .fillMaxWidth()
-            .background(c.well.copy(alpha = if (c.isDark) 1f else 0.7f), RoundedCornerShape(14.dp))
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+            .heightIn(min = 48.dp)
+            .padding(vertical = 4.dp)
+            .clip(outer)
+            .border(1.dp, c.lineSoft, outer),
     ) {
         options.forEachIndexed { index, option ->
             val selected = index == selectedIndex
+            if (index > 0) Box(Modifier.width(1.dp).heightIn(min = 40.dp).background(c.lineSoft))
             Row(
                 Modifier
                     .weight(1f)
                     .heightIn(min = 40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .then(if (selected) Modifier.background(if (c.isDark) Color(0xFF2A2A2F) else c.card, RoundedCornerShape(10.dp)) else Modifier)
+                    .then(if (selected) Modifier.background(c.secondaryContainer) else Modifier)
                     .clickable(role = Role.Tab) { onSelect(index) }
                     .semantics { this.selected = selected }
-                    .padding(horizontal = 6.dp),
+                    .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ) {
+                val ink = if (selected) c.onSecondaryContainer else c.ink
+                if (selected) {
+                    Icon(painterResource(R.drawable.ic_m3_check), contentDescription = null, tint = ink, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(6.dp))
+                }
                 Text(
                     option,
-                    style = TideType.sans(14.sp, if (selected) FontWeight.SemiBold else FontWeight.Medium),
-                    color = if (selected) c.ink else c.inkMid,
+                    style = TideType.sans(14.sp, FontWeight.Medium),
+                    color = ink,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 val badge = badges.getOrNull(index)
                 if (badge != null && badge > 0) {
-                    Spacer(Modifier.width(5.dp))
+                    Spacer(Modifier.width(6.dp))
                     Text("$badge", style = TideType.mono(11.sp, FontWeight.SemiBold), color = c.ahead)
                 }
             }
@@ -676,7 +793,7 @@ fun TideSegmented(
 
 enum class TideToastStyle { SUCCESS, BEHIND, DANGER, NEUTRAL }
 
-/** Dark floating toast ("Pushed 3 commits · VoxVault · e19c4a0  Undo"). */
+/** M3 snackbar on the inverse surface ("Pushed 3 commits · VoxVault · e19c4a0  Undo"). */
 @Composable
 fun TideToast(
     title: String,
@@ -688,42 +805,38 @@ fun TideToast(
 ) {
     val c = Tide.colors
     val badgeFill = when (style) {
-        TideToastStyle.SUCCESS -> c.synced
-        TideToastStyle.BEHIND -> Color(0xFF2D5BFF)
-        TideToastStyle.DANGER -> Color(0xFFB42318)
-        TideToastStyle.NEUTRAL -> c.heroLine
+        TideToastStyle.SUCCESS -> c.heroSynced
+        TideToastStyle.BEHIND -> c.heroBehind
+        TideToastStyle.DANGER -> c.heroDanger
+        TideToastStyle.NEUTRAL -> c.heroMeta
     }
-    val glyph = when (style) {
-        TideToastStyle.SUCCESS -> "✓"
-        TideToastStyle.BEHIND -> "↓"
-        TideToastStyle.DANGER -> "!"
-        TideToastStyle.NEUTRAL -> "i"
+    val icon = when (style) {
+        TideToastStyle.SUCCESS -> R.drawable.ic_m3_check
+        TideToastStyle.BEHIND -> R.drawable.ic_m3_arrow_downward
+        TideToastStyle.DANGER, TideToastStyle.NEUTRAL -> R.drawable.ic_m3_info
     }
-    val shape = RoundedCornerShape(20.dp)
+    val shape = RoundedCornerShape(12.dp)
     Row(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
-            .shadow(14.dp, shape, ambientColor = Color.Black.copy(alpha = 0.18f))
+            .heightIn(min = 48.dp)
+            .shadow(6.dp, shape)
             .background(c.heroBg, shape)
-            .border(1.dp, c.heroBorder, shape)
-            .padding(start = 14.dp, end = if (actionTitle == null) 14.dp else 4.dp, top = 10.dp, bottom = 10.dp),
+            .padding(start = 16.dp, end = if (actionTitle == null) 16.dp else 4.dp, top = 10.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Box(Modifier.size(28.dp).background(badgeFill, CircleShape), contentAlignment = Alignment.Center) {
-            Text(glyph, style = TideType.mono(13.sp, FontWeight.SemiBold), color = Color.White)
-        }
+        Icon(painterResource(icon), contentDescription = null, tint = badgeFill, modifier = Modifier.size(20.dp))
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.heroText, maxLines = 2)
+            Text(title, style = TideType.sans(14.sp, FontWeight.Medium), color = c.heroText, maxLines = 2)
             if (detail != null) Text(detail, style = TideType.mono(11.sp), color = c.heroMeta, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         if (actionTitle != null && onAction != null) {
             Box(
-                Modifier.heightIn(min = 44.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onAction).padding(horizontal = 10.dp),
+                Modifier.heightIn(min = 48.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onAction).padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(actionTitle, style = TideType.sans(14.sp, FontWeight.Medium), color = if (style == TideToastStyle.DANGER) c.heroText else Color(0xFFAFC0FF))
+                Text(actionTitle, style = TideType.sans(14.sp, FontWeight.SemiBold), color = Color(0xFFB9C3FF))
             }
         }
     }
@@ -731,7 +844,7 @@ fun TideToast(
 
 enum class TideBannerTone { NEUTRAL, BEHIND, AHEAD, DANGER, SYNCED }
 
-/** Inline banner on paper: tinted well with a title, detail and optional action. */
+/** Inline tonal banner: container fill, title, detail and an optional action. */
 @Composable
 fun TideBanner(
     title: String,
@@ -744,60 +857,60 @@ fun TideBanner(
     dismissLabel: String = androidx.compose.ui.res.stringResource(R.string.ui_dismiss_48845bff),
 ) {
     val c = Tide.colors
-    val tint = when (tone) {
-        TideBannerTone.NEUTRAL -> c.ink
-        TideBannerTone.BEHIND -> c.behind
-        TideBannerTone.AHEAD -> c.ahead
-        TideBannerTone.DANGER -> c.danger
-        TideBannerTone.SYNCED -> c.synced
+    val (fill, ink) = when (tone) {
+        TideBannerTone.NEUTRAL -> c.well to c.ink
+        TideBannerTone.BEHIND -> c.primaryContainer to c.onPrimaryContainer
+        TideBannerTone.AHEAD -> c.tertiaryContainer to c.onTertiaryContainer
+        TideBannerTone.DANGER -> c.errorContainer to c.onErrorContainer
+        TideBannerTone.SYNCED -> c.okContainer to c.onOkContainer
     }
-    val shape = RoundedCornerShape(20.dp)
+    val shape = RoundedCornerShape(16.dp)
     Row(
         modifier
             .fillMaxWidth()
-            .background(if (tone == TideBannerTone.NEUTRAL) c.card else tint.copy(alpha = 0.10f), shape)
-            .border(1.dp, if (tone == TideBannerTone.NEUTRAL) c.line else tint.copy(alpha = 0.25f), shape)
+            .background(fill, shape)
             .padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = if (tone == TideBannerTone.NEUTRAL) c.ink else tint)
-            if (detail != null) Text(detail, style = TideType.sans(13.sp), color = c.inkMid)
+            Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = ink)
+            if (detail != null) Text(detail, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = ink.copy(alpha = 0.86f))
         }
         if (actionTitle != null && onAction != null) {
+            val (btn, onBtn) = if (tone == TideBannerTone.DANGER) (if (c.isDark) c.danger to c.onError else c.danger to c.onError) else c.primary to c.onPrimary
             Box(
-                Modifier.heightIn(min = 40.dp).clip(CircleShape).background(c.ink, CircleShape)
+                Modifier.heightIn(min = 40.dp).clip(CircleShape).background(btn, CircleShape)
                     .clickable(role = Role.Button, onClick = onAction).padding(horizontal = 16.dp),
                 contentAlignment = Alignment.Center,
-            ) { Text(actionTitle, style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.paper) }
+            ) { Text(actionTitle, style = TideType.sans(14.sp, FontWeight.SemiBold), color = onBtn) }
         }
         if (onDismiss != null) {
             Box(
-                Modifier.size(40.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onDismiss)
+                Modifier.size(48.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onDismiss)
                     .semantics { contentDescription = dismissLabel },
                 contentAlignment = Alignment.Center,
-            ) { Text("✕", style = TideType.sans(15.sp), color = c.inkMid) }
+            ) { Icon(painterResource(R.drawable.ic_m3_close), contentDescription = null, tint = ink, modifier = Modifier.size(20.dp)) }
         }
     }
 }
 
 // ─── Modal pieces ───────────────────────────────────────────────────────────
 
-/** Tinted rounded-square glyph at the top of a confirmation sheet. */
+/** M3 dialog hero icon: a 24dp glyph in the dialog's tint. */
 @Composable
 fun TideModalIcon(glyph: String = "!", tint: Color = Tide.colors.danger, modifier: Modifier = Modifier) {
-    Box(
-        modifier.size(48.dp).background(tint.copy(alpha = 0.12f), RoundedCornerShape(16.dp)),
-        contentAlignment = Alignment.Center,
-    ) { Text(glyph, style = TideType.sans(20.sp, FontWeight.SemiBold), color = tint) }
+    Box(modifier.size(40.dp), contentAlignment = Alignment.Center) {
+        if (glyph == "!") Icon(painterResource(R.drawable.ic_m3_info), contentDescription = null, tint = tint, modifier = Modifier.size(24.dp))
+        else Text(glyph, style = TideType.sans(22.sp, FontWeight.Medium), color = tint)
+    }
 }
 
 // ─── Top bar ────────────────────────────────────────────────────────────────
 
 /**
- * Tide navigation bar: circular back button, a small centred caption (often a
- * mono branch or the wordmark), and trailing circle actions.
+ * M3 small top app bar: a back icon button, the title block start-aligned after
+ * it (often the vault name over a mono branch line), and trailing icon actions.
  */
 @Composable
 fun TideTopBar(
@@ -809,23 +922,34 @@ fun TideTopBar(
     center: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
 ) {
-    Box(
+    Row(
         modifier
             .fillMaxWidth()
             .background(Tide.colors.paper)
             .statusBarsPadding()
-            .heightIn(min = 60.dp)
-            .padding(horizontal = Tide.gutter, vertical = 8.dp),
+            .heightIn(min = 64.dp)
+            .padding(start = if (onBack != null) 4.dp else 20.dp, end = 4.dp, top = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (onBack != null) {
-            TideCircleButton(backLabel, onBack, backModifier.align(Alignment.CenterStart), enabled = backEnabled) {
-                Icon(androidx.compose.ui.res.painterResource(R.drawable.ic_arrow_back), contentDescription = null, modifier = Modifier.size(20.dp))
+            TideCircleButton(backLabel, onBack, backModifier, enabled = backEnabled) {
+                Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, modifier = Modifier.size(24.dp))
             }
         }
-        if (center != null) Box(Modifier.align(Alignment.Center).padding(horizontal = 56.dp)) { center() }
+        Box(Modifier.weight(1f).padding(start = if (onBack != null) 4.dp else 0.dp)) { center?.invoke() }
         if (actions != null) {
-            Row(Modifier.align(Alignment.CenterEnd), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically, content = actions)
+            Row(horizontalArrangement = Arrangement.spacedBy(0.dp), verticalAlignment = Alignment.CenterVertically, content = actions)
         }
+    }
+}
+
+/** Title block for [TideTopBar]: 22/500 title over an optional mono subtitle. */
+@Composable
+fun TideTopBarTitle(title: String, subtitle: String? = null, modifier: Modifier = Modifier) {
+    Column(modifier) {
+        Text(title, style = TideType.title, color = Tide.colors.ink, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.semantics { heading() })
+        if (subtitle != null) Text(subtitle, style = TideType.meta, color = Tide.colors.inkMid, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 

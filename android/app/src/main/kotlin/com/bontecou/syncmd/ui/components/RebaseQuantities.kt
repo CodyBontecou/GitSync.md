@@ -224,7 +224,7 @@ internal fun GitWorkStateHero(
     val c = Tide.colors
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0] ?: java.util.Locale.getDefault()
     TideHero(modifier) {
-        Text(kicker.uppercase(locale), kickerModifier, style = TideType.mono(11.sp, FontWeight.SemiBold).copy(letterSpacing = 0.06.em),
+        Text(kicker, kickerModifier, style = TideType.sans(12.sp, FontWeight.SemiBold).copy(letterSpacing = 0.033.em),
             color = tone.heroTint())
         Spacer(Modifier.size(8.dp))
         Text(headline, style = TideType.display(24.sp), color = c.heroText, modifier = Modifier.semantics { heading() })

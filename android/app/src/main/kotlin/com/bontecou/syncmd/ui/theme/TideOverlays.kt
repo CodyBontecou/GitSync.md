@@ -28,6 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.heading
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,6 +54,8 @@ fun TideDialog(
     title: String? = null,
     text: (@Composable () -> Unit)? = null,
     properties: DialogProperties = DialogProperties(),
+    /** True draws an M3 modal bottom sheet (drag handle, top corners); false a basic dialog. */
+    sheet: Boolean = false,
     content: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     // A Dialog window re-provides its own context and configuration; carry the
@@ -59,6 +64,9 @@ fun TideDialog(
     val parentConfiguration = androidx.compose.ui.platform.LocalConfiguration.current
     val parentDirection = androidx.compose.ui.platform.LocalLayoutDirection.current
     val parentDensity = androidx.compose.ui.platform.LocalDensity.current
+    // Dialog windows report no system-bar insets on recent Android (edge-to-edge), so also pad with the
+    // activity's bars; otherwise the lowest action can sit under the navigation bar.
+    val bars = com.bontecou.syncmd.ui.screens.activitySystemBarPadding()
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -76,49 +84,68 @@ fun TideDialog(
         androidx.compose.ui.platform.LocalDensity provides parentDensity,
       ) {
         val c = Tide.colors
+        val compactHeight = parentConfiguration.screenHeightDp < 480
         Box(
             Modifier
                 .fillMaxSize()
-                .background(Color(0xFF111113).copy(alpha = if (c.isDark) 0.6f else 0.45f))
+                .background(Color.Black.copy(alpha = 0.32f))
                 // Raw tap handling, not clickable: clickable would merge the whole
                 // sheet into one accessibility node and hide its tags and headings.
                 .pointerInput(properties.dismissOnClickOutside) {
                     if (properties.dismissOnClickOutside) detectTapGestures { onDismissRequest() }
                 },
-            contentAlignment = Alignment.BottomCenter,
+            contentAlignment = if (sheet) Alignment.BottomCenter else Alignment.Center,
         ) {
+            val shape = if (sheet) RoundedCornerShape(topStart = Tide.radiusSheet, topEnd = Tide.radiusSheet) else RoundedCornerShape(Tide.radiusSheet)
             Column(
                 modifier
                     .statusBarsPadding()
-                    .navigationBarsPadding()
+                    .padding(top = bars.calculateTopPadding())
+                    // Short windows (landscape phones) keep every action on screen by trimming the outer margin.
+                    .then(if (sheet) Modifier else Modifier.navigationBarsPadding().padding(bottom = bars.calculateBottomPadding())
+                        .padding(horizontal = 24.dp, vertical = if (compactHeight) 8.dp else 24.dp))
                     .imePadding()
-                    .padding(10.dp)
-                    .widthIn(max = 560.dp)
+                    .widthIn(min = 280.dp, max = if (sheet) 640.dp else 560.dp)
                     .fillMaxWidth()
-                    .background(c.paper, RoundedCornerShape(Tide.radiusSheet))
-                    .border(1.dp, if (c.isDark) c.heroBorder else Color.Transparent, RoundedCornerShape(Tide.radiusSheet))
+                    .background(if (sheet) c.card else c.containerHigh, shape)
                     // Swallow taps so they don't reach the backdrop.
                     .pointerInput(Unit) { detectTapGestures { } }
-                    .padding(start = 20.dp, end = 20.dp, top = 26.dp, bottom = 16.dp)
+                    .then(if (sheet) Modifier.navigationBarsPadding().padding(bottom = bars.calculateBottomPadding()) else Modifier)
+                    .padding(start = 24.dp, end = 24.dp, top = if (sheet) 0.dp else if (compactHeight) 16.dp else 24.dp, bottom = if (sheet) 16.dp else if (compactHeight) 8.dp else 20.dp)
                     .semantics { if (title != null) paneTitle = title },
             ) {
+                if (sheet) {
+                    Box(Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 16.dp), contentAlignment = Alignment.Center) {
+                        Box(Modifier.size(width = 32.dp, height = 4.dp).background(c.lineSoft, RoundedCornerShape(2.dp)))
+                    }
+                }
                 // The body scrolls; the actions stay pinned below it, as in AlertDialog,
                 // so large text never pushes the confirm button off screen.
-                Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState())) {
+                Column(
+                    Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()),
+                    horizontalAlignment = if (icon != null && !sheet) Alignment.CenterHorizontally else Alignment.Start,
+                ) {
                     if (icon != null) Box(Modifier.padding(bottom = 16.dp)) { icon() }
-                    if (title != null) TideDisplay(title, size = 26.sp)
+                    if (title != null) Text(
+                        title,
+                        style = TideType.sans(24.sp).copy(lineHeight = 32.sp),
+                        color = c.ink,
+                        textAlign = if (icon != null && !sheet) androidx.compose.ui.text.style.TextAlign.Center else androidx.compose.ui.text.style.TextAlign.Start,
+                        modifier = Modifier.semantics { heading() },
+                    )
                     if (text != null) {
-                        Box(Modifier.padding(top = 8.dp)) {
+                        // Bounded so a caller's own scrolling body never meets this scroll's infinite height.
+                        Box(Modifier.fillMaxWidth().padding(top = 16.dp).heightIn(max = 4000.dp)) {
                             androidx.compose.runtime.CompositionLocalProvider(
                                 androidx.compose.material3.LocalContentColor provides c.inkMid,
-                                androidx.compose.material3.LocalTextStyle provides TideType.copy.copy(lineHeight = 21.sp),
+                                androidx.compose.material3.LocalTextStyle provides TideType.sans(14.sp).copy(lineHeight = 20.sp),
                             ) { text() }
                         }
                     }
-                    if (content != null) Column(Modifier.padding(top = 16.dp), content = content)
+                    if (content != null) Column(Modifier.fillMaxWidth().padding(top = 16.dp).heightIn(max = 4000.dp), content = content)
                 }
                 Column(
-                    Modifier.fillMaxWidth().padding(top = 20.dp),
+                    Modifier.fillMaxWidth().padding(top = if (compactHeight) 12.dp else 24.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -156,41 +183,41 @@ fun TideConfirmDialog(
     )
 }
 
-/** OutlinedTextField colors for Tide: card fill, hairline outline, ink focus. */
+/** M3 outlined text field colors: transparent fill, outline at rest, primary when focused. */
 @Composable
 fun tideFieldColors(): TextFieldColors {
     val c = Tide.colors
     return OutlinedTextFieldDefaults.colors(
-        focusedContainerColor = c.card,
-        unfocusedContainerColor = c.card,
-        disabledContainerColor = c.well,
-        errorContainerColor = c.card,
-        focusedBorderColor = c.ink,
-        unfocusedBorderColor = c.line,
-        disabledBorderColor = c.line,
+        focusedContainerColor = Color.Transparent,
+        unfocusedContainerColor = Color.Transparent,
+        disabledContainerColor = Color.Transparent,
+        errorContainerColor = Color.Transparent,
+        focusedBorderColor = c.primary,
+        unfocusedBorderColor = c.lineSoft,
+        disabledBorderColor = c.ink.copy(alpha = 0.12f),
         errorBorderColor = c.danger,
-        focusedLabelColor = c.ink,
-        unfocusedLabelColor = c.inkFaint,
-        cursorColor = c.ink,
+        focusedLabelColor = c.primary,
+        unfocusedLabelColor = c.inkMid,
+        cursorColor = c.primary,
         focusedTextColor = c.ink,
         unfocusedTextColor = c.ink,
-        focusedPlaceholderColor = c.inkFaint,
-        unfocusedPlaceholderColor = c.inkFaint,
+        focusedPlaceholderColor = c.inkMid,
+        unfocusedPlaceholderColor = c.inkMid,
         focusedSupportingTextColor = c.inkMid,
-        unfocusedSupportingTextColor = c.inkFaint,
+        unfocusedSupportingTextColor = c.inkMid,
     )
 }
 
-/** Switch colors for Tide: synced green when on, a quiet well when off. */
+/** M3 switch colors: primary track when on, outlined well when off. */
 @Composable
 fun tideSwitchColors(): SwitchColors {
     val c = Tide.colors
     return SwitchDefaults.colors(
-        checkedThumbColor = Color.White,
-        checkedTrackColor = c.synced,
+        checkedThumbColor = c.onPrimary,
+        checkedTrackColor = c.primary,
         checkedBorderColor = Color.Transparent,
-        uncheckedThumbColor = c.card,
-        uncheckedTrackColor = c.lineSoft,
-        uncheckedBorderColor = Color.Transparent,
+        uncheckedThumbColor = c.lineSoft,
+        uncheckedTrackColor = c.well,
+        uncheckedBorderColor = c.lineSoft,
     )
 }

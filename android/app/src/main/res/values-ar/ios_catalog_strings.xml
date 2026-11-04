@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"تم تحديث قواعد التتبع. راجع .gitattributes والملفات المحددة وأضفها إلى منطقة التجهيز، ثم أنشئ التزامًا."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"الرفع · بيانات اعتماد مشفرة منفصلة"</string>
     <string name="lfs_uploads_public" formatted="false">"الرفع · وصول عام"</string>
+    <string name="m3_editor_preview" formatted="false">"معاينة"</string>
+    <string name="m3_editor_write" formatted="false">"كتابة"</string>
+    <string name="m3_md_bold" formatted="false">"غامق"</string>
+    <string name="m3_md_checklist" formatted="false">"عنصر قائمة تحقق"</string>
+    <string name="m3_md_code" formatted="false">"تعليمات برمجية مضمّنة"</string>
+    <string name="m3_md_heading" formatted="false">"عنوان"</string>
+    <string name="m3_md_italic" formatted="false">"مائل"</string>
+    <string name="m3_md_link" formatted="false">"رابط إلى ملاحظة"</string>
+    <string name="m3_open_in_editor" formatted="false">"فتح في المحرر"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"شراء لمرة واحدة عبر Google Play. بلا اشتراك."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"يُدفع بحساب Google Play الخاص بك"</string>
+    <string name="m3_pick_a_file" formatted="false">"اختر ملفًا لعرض تغييراته."</string>
     <string name="modified" formatted="false">"معدّل"</string>
     <string name="move_action" formatted="false">"نقل نسخة العمل"</string>
     <string name="move_cancelled" formatted="false">"تم إلغاء النقل. تم الاحتفاظ بنسخة العمل الأصلية."</string>

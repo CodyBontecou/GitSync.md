@@ -20,6 +20,9 @@
     <string name="pull_all_widget_description">Fetch and fast-forward all local repositories without opening GitSync.md.</string>
     <string name="pull_all_widget_button">Pull all repositories</string>
     <string name="pull_all_widget_subtitle">Fetch and fast-forward only</string>
-    <color name="pull_all_widget_background">#FFFBFE</color>
-    <color name="pull_all_widget_text">#1C1B1F</color>
+    <color name="pull_all_widget_background">#FBF8F3</color>
+    <color name="pull_all_widget_text">#1C1B1A</color>
+    <color name="pull_all_widget_text_variant">#4A4850</color>
+    <color name="pull_all_widget_tonal">#DEE1FF</color>
+    <color name="pull_all_widget_on_tonal">#00164F</color>
 </resources>

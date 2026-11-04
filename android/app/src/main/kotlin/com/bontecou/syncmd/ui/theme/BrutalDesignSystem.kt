@@ -136,16 +136,8 @@ fun BBadge(
     style: BBadgeStyle = BBadgeStyle.DEFAULT,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    Text(
-        text = text,
-        style = TideType.metaStrong,
-        color = bc.badgeFg(style),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier
-            .background(bc.badgeBg(style), RoundedCornerShape(10.dp))
-            .padding(horizontal = 9.dp, vertical = 5.dp),
-    )
+    val fg = bc.badgeFg(style)
+    TidePill(text, fg, if (style == BBadgeStyle.DEFAULT) bc.surface else fg.copy(alpha = 0.12f))
 }
 
 // ─── BSectionHeader ──────────────────────────────────────────────────────────
@@ -224,7 +216,7 @@ private fun BPill(
     }
 }
 
-/** Solid ink pill — the one right action. */
+/** M3 filled button — the one right action. */
 @Composable
 fun BPrimaryButton(
     title: String,
@@ -237,12 +229,13 @@ fun BPrimaryButton(
 ) {
     BPill(
         title, modifier,
-        fill = bc.text.copy(alpha = if (isDisabled) 0.3f else 1f), outline = null, tint = bc.bg,
+        fill = if (isDisabled) Tide.colors.ink.copy(alpha = 0.12f) else Tide.colors.primary, outline = null,
+        tint = if (isDisabled) Tide.colors.ink.copy(alpha = 0.38f) else Tide.colors.onPrimary,
         enabled = !isDisabled, isLoading = isLoading, dimmed = 1f, iconRes = leadingIconRes, onClick = onClick,
     )
 }
 
-/** Outline pill. */
+/** M3 outlined button. */
 @Composable
 fun BSecondaryButton(
     title: String,
@@ -254,17 +247,17 @@ fun BSecondaryButton(
 ) {
     BPill(
         title, modifier,
-        fill = null, outline = bc.borderSoft, tint = bc.text,
+        fill = null, outline = bc.borderSoft, tint = Tide.colors.primary,
         enabled = !isDisabled, isLoading = isLoading, dimmed = if (isDisabled) 0.4f else 1f, onClick = onClick,
     )
 }
 
-/** Text-only action with a 48dp hit target. */
+/** M3 text button with a 48dp hit target. */
 @Composable
 fun BGhostButton(
     title: String,
     modifier: Modifier = Modifier,
-    color: Color = LocalBrutalColors.current.text,
+    color: Color = Tide.colors.primary,
     onClick: () -> Unit,
 ) {
     Box(
@@ -276,7 +269,7 @@ fun BGhostButton(
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(text = title, style = TideType.sans(15.sp, FontWeight.Medium), color = color)
+        Text(text = title, style = TideType.sans(14.sp, FontWeight.SemiBold), color = color, textAlign = TextAlign.Center)
     }
 }
 
@@ -291,7 +284,7 @@ fun BDestructiveButton(
 ) {
     BPill(
         title, modifier,
-        fill = bc.error, outline = null, tint = Color.White,
+        fill = bc.error, outline = null, tint = Tide.colors.onError,
         enabled = true, isLoading = isLoading, dimmed = 1f, onClick = onClick,
     )
 }
@@ -305,12 +298,12 @@ fun BSmallActionButton(
     onClick: () -> Unit,
     bc: BrutalColors = LocalBrutalColors.current,
 ) {
-    val fg = if (isDestructive) bc.error else bc.text
+    val fg = if (isDestructive) bc.error else Tide.colors.primary
     Box(
         modifier = Modifier
-            .heightIn(min = 36.dp)
+            .heightIn(min = 40.dp)
             .clip(CircleShape)
-            .border(1.dp, if (isDestructive) bc.error.copy(alpha = 0.35f) else bc.borderSoft, CircleShape)
+            .border(1.dp, bc.borderSoft, CircleShape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .alpha(if (enabled) 1f else 0.4f)
             .padding(horizontal = 14.dp, vertical = 8.dp),
@@ -340,15 +333,15 @@ fun BTextField(
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            textStyle = TideType.sans(16.sp, FontWeight.Medium).copy(color = bc.text),
+            textStyle = TideType.body.copy(color = bc.text),
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             singleLine = true,
             keyboardOptions = keyboardOptions,
-            cursorBrush = SolidColor(bc.text),
+            cursorBrush = SolidColor(tide.primary),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(tide.card, Tide.fieldShape)
-                .border(if (isFocused) 1.5.dp else 1.dp, if (isFocused) bc.text else bc.border, Tide.fieldShape)
+                .heightIn(min = 56.dp)
+                .border(if (isFocused) 2.dp else 1.dp, if (isFocused) tide.primary else bc.borderSoft, Tide.fieldShape)
                 .onFocusChanged { isFocused = it.isFocused }
                 .padding(horizontal = 16.dp, vertical = 15.dp),
         ) { innerTextField ->

@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"追蹤規則已更新。請檢閱並暫存 .gitattributes 和所選檔案，然後提交。"</string>
     <string name="lfs_uploads_authenticated" formatted="false">"上傳 · 獨立的加密憑證"</string>
     <string name="lfs_uploads_public" formatted="false">"上傳 · 公開存取"</string>
+    <string name="m3_editor_preview" formatted="false">"預覽"</string>
+    <string name="m3_editor_write" formatted="false">"編寫"</string>
+    <string name="m3_md_bold" formatted="false">"粗體"</string>
+    <string name="m3_md_checklist" formatted="false">"檢查清單項目"</string>
+    <string name="m3_md_code" formatted="false">"行內程式碼"</string>
+    <string name="m3_md_heading" formatted="false">"標題"</string>
+    <string name="m3_md_italic" formatted="false">"斜體"</string>
+    <string name="m3_md_link" formatted="false">"連結到筆記"</string>
+    <string name="m3_open_in_editor" formatted="false">"在編輯器中開啟"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"透過 Google Play 一次性購買。無需訂閱。"</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"使用你的 Google Play 帳戶付款"</string>
+    <string name="m3_pick_a_file" formatted="false">"選擇一個檔案以查看其變更。"</string>
     <string name="modified" formatted="false">"已修改"</string>
     <string name="move_action" formatted="false">"移動工作副本"</string>
     <string name="move_cancelled" formatted="false">"已取消移動。原始工作副本已保留。"</string>

@@ -235,7 +235,7 @@ class RepositoryCallbackTransportTest {
         assertEquals(com.bontecou.syncmd.automation.ShortcutRunState.COMPLETE, runs.latest(status.grant.scope.id)!!.state)
         assertEquals(RepositoryActionOutcome.STATUS, runs.latest(status.grant.scope.id)!!.outcome)
         context.startActivity(Intent(context, MainActivity::class.java).setAction(Intent.ACTION_MAIN).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
+        awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
         compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-last-run-${push.grant.scope.id}"))
         compose.onNodeWithTag("callback-last-run-${push.grant.scope.id}").assertIsDisplayed().assertTextEquals(context.getString(R.string.callback_background_busy))
         val capture = File(context.filesDir, "parity-evidence/callback-background-busy.png").apply { parentFile!!.mkdirs() }
@@ -333,7 +333,7 @@ class RepositoryCallbackTransportTest {
         } else {
             com.bontecou.syncmd.automation.BackgroundCallbackDelivery.discard(result.id)
             context.startActivity(Intent(context, MainActivity::class.java).setAction(Intent.ACTION_MAIN).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
+            awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
             compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-last-run-${issued.grant.scope.id}"))
             compose.onNodeWithTag("callback-last-run-${issued.grant.scope.id}").assertIsDisplayed().assertTextEquals(context.getString(when(action) {
                 "status" -> R.string.repository_actions_status_ready; "pull" -> R.string.repository_actions_pulled; else -> R.string.repository_actions_pushed
@@ -396,7 +396,7 @@ class RepositoryCallbackTransportTest {
     }
     @Test fun intentExtrasCannotInjectRequestsAndInvalidUrlNeverOffersExecution() {
         context.startActivity(Intent(context, MainActivity::class.java).putExtra("callback_url", url("push")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
-        awaitTag("open-repository-actions"); compose.onAllNodesWithTag("callback-screen").assertCountEquals(0)
+        awaitTag("home-more"); compose.onAllNodesWithTag("callback-screen").assertCountEquals(0)
         val before = head()
         awaitMainResumed()
         onActivity { it.startActivity(view("syncmd://x-callback-url/push?repo=A&repo=B&x-success=javascript%3Aalert%281%29")) }
@@ -435,7 +435,8 @@ class RepositoryCallbackTransportTest {
         }
         invoke(); val second = awaitDelivered(nonce, 2); assertEquals(newer, second.getQueryParameter("sha")); assertEquals(newer, model!!.state.value.result!!.head)
         device.executeShellCommand("input keyevent KEYCODE_BACK"); awaitTag("callback-screen")
-        compose.onNodeWithTag("callback-close").performClick(); awaitTag("open-repository-actions")
+        compose.onNodeWithTag("callback-close").performClick(); awaitTag("home-more")
+        compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions")
         compose.onNodeWithTag("open-repository-actions").performClick()
         compose.waitUntil(10_000) {
             compose.onAllNodesWithTag("repository-actions-screen").fetchSemanticsNodes().isNotEmpty() &&

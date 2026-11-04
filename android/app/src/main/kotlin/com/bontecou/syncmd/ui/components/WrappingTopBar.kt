@@ -1,7 +1,9 @@
 package com.bontecou.syncmd.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,33 +16,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.ui.theme.Tide
 import com.bontecou.syncmd.ui.theme.TideCircleButton
 import com.bontecou.syncmd.ui.theme.TideType
 
 /**
- * Tide screen header: a circular back button over a large left-aligned title.
+ * M3 top app bar: a back icon button beside a start-aligned 22/500 title.
  * The title wraps, so translated titles grow with system text size.
  */
 @Composable
 fun WrappingTopBar(title: String, backLabel: String, onBack: (() -> Unit)?, backEnabled: Boolean = true,
     modifier: Modifier = Modifier, titleModifier: Modifier = Modifier, backModifier: Modifier = Modifier) {
-    Column(
+    Row(
         modifier.fillMaxWidth().background(Tide.colors.paper).statusBarsPadding()
-            .padding(start = Tide.gutter, end = Tide.gutter, top = 8.dp, bottom = 10.dp)
+            .heightIn(min = 64.dp)
+            .padding(start = if (onBack != null) 4.dp else 20.dp, end = 16.dp, top = 8.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (onBack != null) {
             TideCircleButton(backLabel, onBack, backModifier, enabled = backEnabled) {
-                Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, modifier = Modifier.size(20.dp))
+                Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, modifier = Modifier.size(24.dp))
             }
         }
         Text(
             title,
-            style = TideType.display(30.sp),
+            style = TideType.title,
             color = Tide.colors.ink,
-            modifier = titleModifier.padding(start = 4.dp, top = if (onBack != null) 14.dp else 4.dp).semantics { heading() },
+            modifier = titleModifier.weight(1f).padding(start = if (onBack != null) 4.dp else 0.dp, top = 10.dp, bottom = 10.dp).semantics { heading() },
         )
     }
 }

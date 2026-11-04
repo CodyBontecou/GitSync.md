@@ -94,8 +94,8 @@ class LfsLockManagementDeviceTest {
             compose.onNodeWithText("LFS lock fixture", substring = false).performScrollTo().performClick()
             awaitText(root.name)
             compose.onNode(hasScrollAction()).performScrollToNode(hasText("Commit & Push"))
-            compose.onNodeWithText("Commit & Push", substring = false).performScrollTo().performClick()
-            awaitText("REPOSITORY STATUS")
+            compose.onNodeWithTag("vault-tab-git").performClick()
+            awaitText("Repository Status")
             compose.onNodeWithTag("git-actions").performScrollToNode(hasTestTag("open-lfs"))
             compose.onNodeWithTag("open-lfs").performClick()
             fun scroll(tag: String) { compose.onNodeWithTag("lfs-screen").performScrollToNode(hasTestTag(tag)) }

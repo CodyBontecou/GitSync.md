@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Spårningsreglerna har uppdaterats. Granska och lägg .gitattributes och de valda filerna i indexet och skapa sedan en commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Uppladdningar · separata krypterade inloggningsuppgifter"</string>
     <string name="lfs_uploads_public" formatted="false">"Uppladdningar · offentlig åtkomst"</string>
+    <string name="m3_editor_preview" formatted="false">"Förhandsvisning"</string>
+    <string name="m3_editor_write" formatted="false">"Skriv"</string>
+    <string name="m3_md_bold" formatted="false">"Fet"</string>
+    <string name="m3_md_checklist" formatted="false">"Checklistpunkt"</string>
+    <string name="m3_md_code" formatted="false">"Kod i rad"</string>
+    <string name="m3_md_heading" formatted="false">"Rubrik"</string>
+    <string name="m3_md_italic" formatted="false">"Kursiv"</string>
+    <string name="m3_md_link" formatted="false">"Länk till en anteckning"</string>
+    <string name="m3_open_in_editor" formatted="false">"Öppna i redigeraren"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Engångsköp via Google Play. Ingen prenumeration."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Betalas med ditt Google Play-konto"</string>
+    <string name="m3_pick_a_file" formatted="false">"Välj en fil för att se dess ändringar."</string>
     <string name="modified" formatted="false">"Ändrad"</string>
     <string name="move_action" formatted="false">"Flytta arbetskopia"</string>
     <string name="move_cancelled" formatted="false">"Flytten avbröts. Den ursprungliga arbetskopian behölls."</string>

@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Trackingregels bijgewerkt. Controleer .gitattributes en de geselecteerde bestanden, voeg ze toe aan de index en maak daarna een commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Uploads · afzonderlijk versleutelde aanmeldgegevens"</string>
     <string name="lfs_uploads_public" formatted="false">"Uploads · openbare toegang"</string>
+    <string name="m3_editor_preview" formatted="false">"Voorbeeld"</string>
+    <string name="m3_editor_write" formatted="false">"Schrijven"</string>
+    <string name="m3_md_bold" formatted="false">"Vet"</string>
+    <string name="m3_md_checklist" formatted="false">"Checklistitem"</string>
+    <string name="m3_md_code" formatted="false">"Inline code"</string>
+    <string name="m3_md_heading" formatted="false">"Kop"</string>
+    <string name="m3_md_italic" formatted="false">"Cursief"</string>
+    <string name="m3_md_link" formatted="false">"Link naar een notitie"</string>
+    <string name="m3_open_in_editor" formatted="false">"Openen in editor"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Eenmalige aankoop via Google Play. Geen abonnement."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Betaald met je Google Play-account"</string>
+    <string name="m3_pick_a_file" formatted="false">"Kies een bestand om de wijzigingen te zien."</string>
     <string name="modified" formatted="false">"Gewijzigd"</string>
     <string name="move_action" formatted="false">"Werkkopie verplaatsen"</string>
     <string name="move_cancelled" formatted="false">"Verplaatsing geannuleerd. De oorspronkelijke werkkopie is bewaard."</string>

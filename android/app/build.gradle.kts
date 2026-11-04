@@ -149,6 +149,8 @@ dependencies {
     implementation(libs.billing)
     implementation("com.google.firebase:firebase-messaging:25.0.1")
     implementation("androidx.work:work-runtime-ktx:2.9.1")
+    // Foldable posture and hinge bounds (FoldingFeature) for the adaptive layouts.
+    implementation("androidx.window:window:1.5.1")
     androidTestImplementation("androidx.work:work-testing:2.9.1")
     
     // Compose

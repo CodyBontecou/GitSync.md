@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Regole di tracciamento aggiornate. Esamina e aggiungi allo staging .gitattributes e i file selezionati, quindi crea un commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Caricamenti · credenziali cifrate separate"</string>
     <string name="lfs_uploads_public" formatted="false">"Caricamenti · accesso pubblico"</string>
+    <string name="m3_editor_preview" formatted="false">"Anteprima"</string>
+    <string name="m3_editor_write" formatted="false">"Scrivi"</string>
+    <string name="m3_md_bold" formatted="false">"Grassetto"</string>
+    <string name="m3_md_checklist" formatted="false">"Voce di checklist"</string>
+    <string name="m3_md_code" formatted="false">"Codice in linea"</string>
+    <string name="m3_md_heading" formatted="false">"Titolo"</string>
+    <string name="m3_md_italic" formatted="false">"Corsivo"</string>
+    <string name="m3_md_link" formatted="false">"Link a una nota"</string>
+    <string name="m3_open_in_editor" formatted="false">"Apri nell’editor"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Acquisto una tantum tramite Google Play. Nessun abbonamento."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Pagato con il tuo account Google Play"</string>
+    <string name="m3_pick_a_file" formatted="false">"Scegli un file per vederne le modifiche."</string>
     <string name="modified" formatted="false">"Modificato"</string>
     <string name="move_action" formatted="false">"Sposta copia di lavoro"</string>
     <string name="move_cancelled" formatted="false">"Spostamento annullato. La copia di lavoro originale è stata conservata."</string>

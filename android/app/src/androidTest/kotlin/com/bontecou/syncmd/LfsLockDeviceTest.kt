@@ -92,8 +92,8 @@ class LfsLockDeviceTest {
             compose.onNodeWithText("LFS lock fixture", substring = false).performScrollTo().performClick()
             awaitText(root.name)
             compose.onNode(hasScrollAction()).performScrollToNode(hasText("Commit & Push"))
-            compose.onNodeWithText("Commit & Push", substring = false).performScrollTo().performClick()
-            awaitText("REPOSITORY STATUS")
+            compose.onNodeWithTag("vault-tab-git").performClick()
+            awaitText("Repository Status")
             compose.onNodeWithTag("git-actions").performScrollToNode(hasText("Push current branch"))
             compose.waitUntil(10_000) { compose.onAllNodes(hasText("Push current branch") and isEnabled()).fetchSemanticsNodes().size == 1 }
             compose.onNodeWithText("Push current branch", substring = false).performClick()

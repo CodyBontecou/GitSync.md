@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -79,57 +80,69 @@ fun UnlockSheet(unlock: AppUnlock, vaultName: String?, onDismiss: () -> Unit) {
       androidx.compose.runtime.CompositionLocalProvider(LocalContext provides context, LocalConfiguration provides parentConfiguration,
           LocalLayoutDirection provides parentDirection, LocalDensity provides parentDensity) {
         val c = Tide.colors
-        Box(Modifier.fillMaxSize().background(Color(0xFF111113).copy(alpha = 0.55f)), contentAlignment = Alignment.BottomCenter) {
+        // M3 board "P3 · Unlock sheet — Google Play": a modal bottom sheet on the surface.
+        Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.32f)), contentAlignment = Alignment.BottomCenter) {
             Column(
-                Modifier.widthIn(max = 560.dp).fillMaxWidth()
-                    .background(c.heroBg, RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                Modifier.widthIn(max = 640.dp).fillMaxWidth()
+                    .background(c.card, RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                     .padding(bottom = bars.calculateBottomPadding()).verticalScroll(rememberScrollState())
-                    .padding(horizontal = 24.dp, vertical = 20.dp).testTag("unlock-sheet"),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
+                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp).testTag("unlock-sheet"),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                Box(Modifier.fillMaxWidth().padding(top = 16.dp), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(width = 32.dp, height = 4.dp).background(c.lineSoft, RoundedCornerShape(2.dp)))
+                }
                 val closeLabel = stringResource(R.string.paywall_close)
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     Box(Modifier.size(48.dp).clip(CircleShape).clickable(enabled = !busy, role = Role.Button, onClick = dismiss)
                         .semantics { contentDescription = closeLabel }.testTag("unlock-close"), contentAlignment = Alignment.Center) {
-                        Text("×", color = c.heroMeta, style = TideType.sans(26.sp))
+                        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_close, tint = c.inkMid)
                     }
                 }
-                Text(stringResource(R.string.paywall_unlock_title), color = c.heroText, style = TideType.sans(30.sp, FontWeight.SemiBold).copy(lineHeight = 34.sp),
+                val title = stringResource(R.string.paywall_unlock_title).split('\n', limit = 2)
+                Text(androidx.compose.ui.text.buildAnnotatedString {
+                    append(title[0])
+                    if (title.size > 1) { append('\n'); withStyle(androidx.compose.ui.text.SpanStyle(color = c.inkMid)) { append(title[1]) } }
+                }, color = c.ink, style = com.bontecou.syncmd.ui.theme.TideType.display(32.sp).copy(lineHeight = 38.sp),
                     modifier = Modifier.semantics { heading() }.testTag("unlock-title"))
                 Text(stringResource(if (vaultName != null) R.string.paywall_unlock_subtitle_vault else R.string.paywall_unlock_subtitle),
-                    color = c.heroMeta, style = TideType.sans(15.sp).copy(lineHeight = 21.sp))
-                UnlockPoint(stringResource(R.string.paywall_point_clone_title), stringResource(R.string.paywall_point_clone_body))
-                UnlockPoint(stringResource(R.string.paywall_point_signin_title), stringResource(R.string.paywall_point_signin_body))
-                UnlockPoint(stringResource(R.string.paywall_point_again_title), stringResource(R.string.paywall_point_again_body))
-                Row(Modifier.fillMaxWidth().padding(top = 6.dp), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(price ?: stringResource(R.string.paywall_price_fallback), color = c.heroText, style = TideType.sans(28.sp, FontWeight.SemiBold),
-                        modifier = Modifier.testTag("unlock-price"))
-                    Text(stringResource(R.string.paywall_price_note), color = c.heroMeta, style = TideType.mono(12.sp), modifier = Modifier.padding(bottom = 5.dp))
+                    color = c.inkMid, style = TideType.sans(15.sp).copy(lineHeight = 22.sp))
+                Column(Modifier.padding(top = 6.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    UnlockPoint(stringResource(R.string.paywall_point_clone_title), stringResource(R.string.paywall_point_clone_body))
+                    UnlockPoint(stringResource(R.string.paywall_point_signin_title), stringResource(R.string.paywall_point_signin_body))
+                    UnlockPoint(stringResource(R.string.paywall_point_again_title), stringResource(R.string.paywall_point_again_body))
+                }
+                Row(Modifier.fillMaxWidth().padding(top = 8.dp).background(c.well, RoundedCornerShape(16.dp)).padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    Column(Modifier.weight(1f)) {
+                        Text(price ?: stringResource(R.string.paywall_price_fallback), color = c.ink, style = TideType.display(28.sp).copy(lineHeight = 34.sp),
+                            modifier = Modifier.testTag("unlock-price"))
+                        Text(stringResource(R.string.paywall_price_note), color = c.inkMid, style = TideType.sans(12.sp))
+                    }
+                    Text(stringResource(R.string.m3_paywall_paid_with_play), color = c.inkMid, style = TideType.sans(12.sp).copy(lineHeight = 16.sp),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.End, modifier = Modifier.widthIn(max = 160.dp))
                 }
                 when (val state = purchase) {
-                    UnlockPurchase.Pending -> Text(stringResource(R.string.paywall_pending), color = c.heroText, style = TideType.sans(14.sp),
+                    UnlockPurchase.Pending -> Text(stringResource(R.string.paywall_pending), color = c.ink, style = TideType.sans(14.sp),
                         modifier = Modifier.testTag("unlock-pending"))
-                    is UnlockPurchase.Failed -> Text(state.message.asString(), color = Color(0xFFFF8A80), style = TideType.sans(14.sp),
+                    is UnlockPurchase.Failed -> Text(state.message.asString(), color = c.danger, style = TideType.sans(14.sp),
                         modifier = Modifier.testTag("unlock-error"))
                     else -> Unit
                 }
                 val buyLabel = vaultName?.let { stringResource(R.string.paywall_buy_vault, it) } ?: stringResource(R.string.paywall_buy)
-                Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(CircleShape).background(c.heroText.copy(alpha = if (busy) 0.5f else 1f))
-                    .clickable(enabled = !busy, role = Role.Button) { context.findActivity()?.let { activity -> scope.launch { unlock.buy(activity) } } }
-                    .padding(horizontal = 20.dp, vertical = 16.dp).testTag("unlock-buy"), contentAlignment = Alignment.Center) {
-                    Text(buyLabel, color = c.heroBg, style = TideType.sans(16.sp, FontWeight.SemiBold))
-                }
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.paywall_restore), color = c.heroText, style = TideType.sans(14.sp, FontWeight.Medium),
+                com.bontecou.syncmd.ui.theme.TidePrimaryButton(buyLabel, onClick = { context.findActivity()?.let { activity -> scope.launch { unlock.buy(activity) } } },
+                    enabled = !busy, loading = purchase == UnlockPurchase.Purchasing, modifier = Modifier.testTag("unlock-buy"))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.paywall_restore), color = c.primary, style = TideType.sans(14.sp, FontWeight.SemiBold),
                         modifier = Modifier.heightIn(min = 48.dp).clickable(enabled = !busy, role = Role.Button) { scope.launch { unlock.restore() } }
-                            .padding(vertical = 14.dp).testTag("unlock-restore"))
-                    Text(stringResource(R.string.paywall_terms), color = c.heroMeta, style = TideType.sans(14.sp),
+                            .padding(horizontal = 12.dp, vertical = 14.dp).testTag("unlock-restore"))
+                    Text(stringResource(R.string.paywall_terms), color = c.primary, style = TideType.sans(14.sp, FontWeight.SemiBold),
                         modifier = Modifier.heightIn(min = 48.dp).clickable(role = Role.Button) {
                             runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_URL))) }
-                        }.padding(vertical = 14.dp).testTag("unlock-terms"))
+                        }.padding(horizontal = 12.dp, vertical = 14.dp).testTag("unlock-terms"))
                 }
-                Text(stringResource(R.string.paywall_bought_before), color = c.heroMeta, style = TideType.sans(12.sp).copy(lineHeight = 17.sp))
-                Spacer(Modifier.padding(bottom = 4.dp))
+                Text(stringResource(R.string.paywall_bought_before), color = c.inkMid, style = TideType.sans(12.sp).copy(lineHeight = 16.sp),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.fillMaxWidth())
             }
         }
       }
@@ -140,10 +153,10 @@ fun UnlockSheet(unlock: AppUnlock, vaultName: String?, onDismiss: () -> Unit) {
 private fun UnlockPoint(title: String, body: String) {
     val c = Tide.colors
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Box(Modifier.padding(top = 7.dp).size(6.dp).background(c.synced, CircleShape))
+        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_check, tint = c.synced, size = 20.dp, modifier = Modifier.padding(top = 1.dp))
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(title, color = c.heroText, style = TideType.sans(15.sp, FontWeight.SemiBold))
-            Text(body, color = c.heroMeta, style = TideType.sans(13.sp).copy(lineHeight = 18.sp))
+            Text(title, color = c.ink, style = TideType.sans(15.sp, FontWeight.SemiBold))
+            Text(body, color = c.inkMid, style = TideType.sans(13.sp).copy(lineHeight = 18.sp))
         }
     }
 }

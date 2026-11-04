@@ -123,6 +123,8 @@ fun GitScreen(
     branchVM  : BranchViewModel  = hiltViewModel(),
     conflictVM: ConflictViewModel= hiltViewModel(),
     historyVM : HistoryViewModel = hiltViewModel(),
+    showNavigation: Boolean = false,
+    onSelectTab: (com.bontecou.syncmd.ui.components.VaultTab) -> Unit = {},
 ) {
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
         pullVM.setRepositoryPath(repositoryPath)
@@ -240,7 +242,7 @@ fun GitScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(c.paper)
-            .navigationBarsPadding()
+            .then(if (showNavigation) Modifier else Modifier.navigationBarsPadding())
     ) {
         // ── Top bar ───────────────────────────────────────────────────────
         TideTopBar(
@@ -251,12 +253,7 @@ fun GitScreen(
             onBack = onNavigateBack,
             backLabel = gitLabel(stringResource(R.string.ui_done_283e91eb)),
             center = {
-                Text(
-                    stringResource(R.string.tide_git_tools),
-                    style = TideType.sans(15.sp, FontWeight.SemiBold),
-                    color = c.ink,
-                    maxLines = 1,
-                )
+                com.bontecou.syncmd.ui.theme.TideTopBarTitle(stringResource(R.string.tide_git_tools), "${java.io.File(repositoryPath).name} → $branchLabel")
             },
         )
         Box(
@@ -417,11 +414,10 @@ fun GitScreen(
                         Box(
                             Modifier
                                 .fillMaxWidth()
-                                .background(c.card, Tide.fieldShape)
-                                .border(1.5.dp, c.ink, Tide.fieldShape)
-                                .padding(horizontal = 16.dp, vertical = 14.dp)
+                                .border(1.dp, c.lineSoft, Tide.fieldShape)
+                                .padding(horizontal = 16.dp, vertical = 16.dp)
                         ) {
-                            val messageStyle = TideType.sans(17.sp, FontWeight.Medium)
+                            val messageStyle = TideType.body
                             if (commitMessage.isEmpty()) {
                                 Text(
                                     text = stringResource(R.string.ui_commit_message_a4b361b7),
@@ -433,7 +429,7 @@ fun GitScreen(
                                 value = commitMessage,
                                 onValueChange = { diffVM.setCommitMessage(it) },
                                 textStyle = messageStyle.copy(color = c.ink),
-                                cursorBrush = SolidColor(c.ink),
+                                cursorBrush = SolidColor(c.primary),
                                 minLines = 3,
                                 maxLines = 5,
                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -778,6 +774,8 @@ fun GitScreen(
                 }
             }
         }
+        if (showNavigation) com.bontecou.syncmd.ui.components.VaultNavigationBar(com.bontecou.syncmd.ui.components.VaultTab.GIT, onSelectTab,
+            changes = changeCount.takeIf { it > 0 })
     }
 
     // ── Manual conflict resolution sheet ──────────────────────────────────
@@ -886,20 +884,20 @@ private fun GitPill(
 ) {
     val c = Tide.colors
     val fill = when (style) {
-        GitPillStyle.FILLED -> c.ink
-        GitPillStyle.SUCCESS -> c.synced
+        GitPillStyle.FILLED -> c.primary
+        GitPillStyle.SUCCESS -> c.okContainer
         else -> Color.Transparent
     }
     val border = when (style) {
         GitPillStyle.OUTLINE -> c.lineSoft
-        GitPillStyle.DANGER -> c.danger.copy(alpha = 0.35f)
+        GitPillStyle.DANGER -> c.lineSoft
         else -> null
     }
     val fg = when (style) {
-        GitPillStyle.FILLED -> c.paper
-        GitPillStyle.SUCCESS -> Color.White
+        GitPillStyle.FILLED -> c.onPrimary
+        GitPillStyle.SUCCESS -> c.onOkContainer
         GitPillStyle.DANGER -> c.danger
-        GitPillStyle.OUTLINE -> c.ink
+        GitPillStyle.OUTLINE -> c.primary
     }
     Box(
         modifier
@@ -919,8 +917,8 @@ private fun GitPill(
         Box(
             Modifier
                 .then(if (wide) Modifier.fillMaxWidth() else Modifier)
-                .heightIn(min = 38.dp)
-                .alpha(if (enabled || loading) 1f else 0.4f)
+                .heightIn(min = 40.dp)
+                .alpha(if (enabled || loading) 1f else 0.38f)
                 .background(fill, CircleShape)
                 .then(if (border != null) Modifier.border(1.dp, border, CircleShape) else Modifier)
                 .padding(horizontal = 14.dp),
@@ -968,9 +966,8 @@ private fun GitField(
         modifier = modifier
             .heightIn(min = 48.dp)
             .alpha(if (enabled) 1f else 0.5f)
-            .background(c.paper, shape)
-            .border(1.dp, c.line, shape)
-            .padding(horizontal = 14.dp, vertical = 12.dp),
+            .border(1.dp, c.lineSoft, RoundedCornerShape(4.dp))
+            .padding(horizontal = 16.dp, vertical = 14.dp),
         contentAlignment = Alignment.CenterStart,
     ) {
         if (value.isEmpty()) {
@@ -1018,19 +1015,25 @@ private fun GitEmptyLine(text: String) {
 
 @Composable
 private fun GitRowIcon(glyph: String) {
-    Box(
-        Modifier.size(30.dp).background(Tide.colors.well, RoundedCornerShape(9.dp)).clearAndSetSemantics {},
-        contentAlignment = Alignment.Center,
-    ) { Text(glyph, style = TideType.sans(14.sp, FontWeight.SemiBold), color = Tide.colors.ink) }
+    val icon = when (glyph) {
+        "↓", "⤓" -> R.drawable.ic_m3_arrow_downward
+        "↕" -> R.drawable.ic_m3_sync
+        "⇄" -> R.drawable.ic_m3_branch
+        "◫" -> R.drawable.ic_m3_storage
+        else -> R.drawable.ic_m3_info
+    }
+    Box(Modifier.size(24.dp).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
+        com.bontecou.syncmd.ui.theme.TideIcon(icon, tint = Tide.colors.inkMid)
+    }
 }
 
 // ─── Sub-composables ──────────────────────────────────────────────────────────
 
 @Composable
 private fun GitHeader(meta: String, headline: String) {
+    // The vault → branch line lives in the top app bar subtitle.
     Column(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(meta, style = TideType.mono(12.sp), color = Tide.colors.inkMid, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        TideDisplay(headline, size = 30.sp)
+        TideDisplay(headline, size = 28.sp)
     }
 }
 
@@ -1047,38 +1050,41 @@ private fun GitStatusCard(
     val c = Tide.colors
     Column(Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TideSectionLabel(stringResource(R.string.ui_repository_status_64c67cd2), Modifier.padding(horizontal = 4.dp))
-        TideCard {
+        TideCard(color = c.primaryContainer, padding = 20.dp) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        TideSectionLabel(stringResource(R.string.ui_branch_52656e81))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        TideSectionLabel(stringResource(R.string.ui_branch_52656e81), color = c.onPrimaryContainer)
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_branch, tint = c.onPrimaryContainer, size = 22.dp)
                         Text(
                             branchName,
-                            style = TideType.mono(22.sp, FontWeight.SemiBold),
-                            color = c.ink,
+                            style = TideType.mono(24.sp, FontWeight.SemiBold),
+                            color = c.onPrimaryContainer,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
+                        }
                     }
                     if (detached) TidePill(stringResource(R.string.tide_git_detached), c.ahead, c.ahead.copy(alpha = 0.12f))
                 }
                 if (loaded && headText != null && syncText != null) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(headText, style = TideType.mono(12.sp), color = c.inkMid, modifier = Modifier.testTag("git-status-head"))
-                        Text("  ·  " + stringResource(R.string.ui_last_sync_a0d540dd) + " ", style = TideType.mono(12.sp), color = c.inkFaint)
-                        Text(syncText, style = TideType.mono(12.sp), color = c.inkMid, modifier = Modifier.weight(1f, fill = false).testTag("git-status-sync"),
+                        Text(headText, style = TideType.mono(12.sp), color = c.onPrimaryContainer, modifier = Modifier.testTag("git-status-head"))
+                        Text("  ·  " + stringResource(R.string.ui_last_sync_a0d540dd) + " ", style = TideType.mono(12.sp), color = c.onPrimaryContainer)
+                        Text(syncText, style = TideType.mono(12.sp), color = c.onPrimaryContainer, modifier = Modifier.weight(1f, fill = false).testTag("git-status-sync"),
                             maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 } else {
-                    TidePulse(color = c.inkFaint)
+                    TidePulse(color = c.onPrimaryContainer)
                 }
-                TideHairline()
+                Box(Modifier.fillMaxWidth().height(1.dp).background(c.onPrimaryContainer.copy(alpha = 0.16f)))
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text(gitLabel(stringResource(R.string.ui_local_changes_4d25c7d4)), style = TideType.sans(14.sp), color = c.inkMid, modifier = Modifier.weight(1f))
+                    Text(gitLabel(stringResource(R.string.ui_local_changes_4d25c7d4)), style = TideType.sans(14.sp), color = c.onPrimaryContainer, modifier = Modifier.weight(1f))
                     Text(
                         if (changeCount > 0) stringResource(R.string.ui_1_s_files_ddef923b, changeCount.toString()) else stringResource(R.string.ui_none_dc937b59),
                         style = TideType.mono(13.sp, FontWeight.SemiBold),
-                        color = if (changeCount > 0) c.ahead else c.inkMid,
+                        color = c.onPrimaryContainer,
                     )
                 }
             }

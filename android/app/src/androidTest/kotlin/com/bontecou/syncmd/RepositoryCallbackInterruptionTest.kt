@@ -153,7 +153,7 @@ class RepositoryCallbackInterruptionTest {
             val before=state(); assertEquals(data.getInt("receives"),before.getInt("receives"))
             assertEquals(if(mode=="before-remote") data.getString("initial") else data.getString("commit"),before.getString("head"))
             activity=ActivityScenario.launch(Intent(app,MainActivity::class.java))
-            awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
+            awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
             compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-last-run-$grantId"))
             compose.onNodeWithTag("callback-last-run-$grantId").assertTextEquals(app.getString(if(mode=="after-result") R.string.repository_actions_pushed else R.string.shortcut_background_interrupted))
             assertEquals(before.getInt("receives"),state().getInt("receives")); assertEquals(data.getString("commit"),head(root(id)))

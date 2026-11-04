@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Seurantasäännöt päivitettiin. Tarkista .gitattributes ja valitut tiedostot, lisää ne indeksiin ja tee sitten commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Lähetykset · erilliset salatut tunnistetiedot"</string>
     <string name="lfs_uploads_public" formatted="false">"Lähetykset · julkinen käyttö"</string>
+    <string name="m3_editor_preview" formatted="false">"Esikatselu"</string>
+    <string name="m3_editor_write" formatted="false">"Kirjoita"</string>
+    <string name="m3_md_bold" formatted="false">"Lihavointi"</string>
+    <string name="m3_md_checklist" formatted="false">"Tarkistuslistan kohta"</string>
+    <string name="m3_md_code" formatted="false">"Rivinsisäinen koodi"</string>
+    <string name="m3_md_heading" formatted="false">"Otsikko"</string>
+    <string name="m3_md_italic" formatted="false">"Kursivointi"</string>
+    <string name="m3_md_link" formatted="false">"Linkki muistiinpanoon"</string>
+    <string name="m3_open_in_editor" formatted="false">"Avaa editorissa"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Kertaosto Google Playn kautta. Ei tilausta."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Maksetaan Google Play -tililläsi"</string>
+    <string name="m3_pick_a_file" formatted="false">"Valitse tiedosto nähdäksesi sen muutokset."</string>
     <string name="modified" formatted="false">"Muokattu"</string>
     <string name="move_action" formatted="false">"Siirrä työkopio"</string>
     <string name="move_cancelled" formatted="false">"Siirto peruttu. Alkuperäinen työkopio säilytettiin."</string>

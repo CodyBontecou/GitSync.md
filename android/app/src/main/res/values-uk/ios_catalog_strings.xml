@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Правила відстеження оновлено. Перегляньте .gitattributes і вибрані файли, додайте їх до індексу, а потім створіть коміт."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Надсилання · окремі зашифровані облікові дані"</string>
     <string name="lfs_uploads_public" formatted="false">"Надсилання · публічний доступ"</string>
+    <string name="m3_editor_preview" formatted="false">"Перегляд"</string>
+    <string name="m3_editor_write" formatted="false">"Текст"</string>
+    <string name="m3_md_bold" formatted="false">"Жирний"</string>
+    <string name="m3_md_checklist" formatted="false">"Пункт списку завдань"</string>
+    <string name="m3_md_code" formatted="false">"Вбудований код"</string>
+    <string name="m3_md_heading" formatted="false">"Заголовок"</string>
+    <string name="m3_md_italic" formatted="false">"Курсив"</string>
+    <string name="m3_md_link" formatted="false">"Посилання на нотатку"</string>
+    <string name="m3_open_in_editor" formatted="false">"Відкрити в редакторі"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Одноразова покупка через Google Play. Без підписки."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Оплата через ваш обліковий запис Google Play"</string>
+    <string name="m3_pick_a_file" formatted="false">"Виберіть файл, щоб побачити його зміни."</string>
     <string name="modified" formatted="false">"Змінено"</string>
     <string name="move_action" formatted="false">"Перемістити робочу копію"</string>
     <string name="move_cancelled" formatted="false">"Переміщення скасовано. Початкову робочу копію збережено."</string>

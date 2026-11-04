@@ -46,6 +46,7 @@ import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.git.DiscardReview
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
 import com.bontecou.syncmd.ui.theme.Tide
+import com.bontecou.syncmd.ui.theme.TideIcon
 import com.bontecou.syncmd.ui.theme.TideHairline
 import com.bontecou.syncmd.ui.theme.TideModalIcon
 import com.bontecou.syncmd.ui.theme.TideType
@@ -92,31 +93,35 @@ private fun RevertReviewSheet(
         !singleFile -> R.string.ui_revert_all_changes_06b0eb3d
         else -> R.string.ui_revert_changes_5b36e77f
     })
-    BoxWithConstraints(modifier.fillMaxSize().systemBarsPadding().padding(10.dp), contentAlignment = Alignment.BottomCenter) {
+    // M3 alert dialog (board "19 · Discard changes — dialog"): centered, icon over a centered title.
+    BoxWithConstraints(modifier.fillMaxSize().systemBarsPadding().padding(24.dp), contentAlignment = Alignment.Center) {
         // Dimmed backdrop: tapping outside cancels.
         Box(Modifier.matchParentSize().clickable(indication = null,
             interactionSource = remember { MutableInteractionSource() }, onClick = onDismiss).clearAndSetSemantics {})
         // One bounded list keeps every path and both actions reachable, even in landscape at large text.
         LazyColumn(
             Modifier.widthIn(max = 560.dp).fillMaxWidth().heightIn(max = maxHeight)
-                .clip(RoundedCornerShape(Tide.radiusSheet)).background(c.paper)
+                .clip(RoundedCornerShape(Tide.radiusSheet)).background(c.containerHigh)
                 .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {}
                 .testTag("discard-review"),
-            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 16.dp),
+            contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 20.dp),
         ) {
             item(key = "title") {
-                Column(Modifier.fillMaxWidth()) {
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
-                        TideModalIcon(glyph = "↩", tint = if (keepsWorkingFiles) c.ahead else c.danger)
-                        Box(Modifier.weight(1f))
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(48.dp))
+                        Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                            TideModalIcon(tint = if (keepsWorkingFiles) c.ahead else c.danger)
+                        }
                         Box(
                             Modifier.size(48.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onDismiss)
                                 .semantics { contentDescription = cancel }.testTag("discard-review-close"),
                             contentAlignment = Alignment.Center,
-                        ) { Text("✕", style = TideType.sans(16.sp), color = c.inkMid) }
+                        ) { TideIcon(com.bontecou.syncmd.R.drawable.ic_m3_close, tint = c.inkMid, size = 20.dp) }
                     }
-                    Text(title, Modifier.padding(top = 14.dp).testTag("discard-review-title"),
-                        style = TideType.display(26.sp), color = c.ink)
+                    Text(title, Modifier.padding(top = 8.dp).testTag("discard-review-title"),
+                        style = TideType.sans(24.sp).copy(lineHeight = 32.sp), color = c.ink,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                 }
             }
             item(key = "count") {
@@ -144,7 +149,7 @@ private fun RevertReviewSheet(
                     index == paths.lastIndex -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
                     else -> RoundedCornerShape(0.dp)
                 }
-                Column(Modifier.padding(top = if (index == 0) 16.dp else 0.dp).fillMaxWidth().clip(shape).background(c.card)
+                Column(Modifier.padding(top = if (index == 0) 16.dp else 0.dp).fillMaxWidth().clip(shape).background(c.container)
                     .padding(horizontal = 16.dp)) {
                     if (index > 0) TideHairline()
                     Text(path, Modifier.fillMaxWidth().padding(vertical = 11.dp).testTag("discard-review-path:$path"),
@@ -172,7 +177,7 @@ private fun RevertReviewSheet(
                         Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(CircleShape)
                             .clickable(role = Role.Button, onClick = onDismiss).testTag("discard-review-cancel"),
                         contentAlignment = Alignment.Center,
-                    ) { Text(cancel, style = TideType.sans(15.sp, FontWeight.Medium), color = c.ink) }
+                    ) { Text(cancel, style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.primary) }
                 }
             }
         }

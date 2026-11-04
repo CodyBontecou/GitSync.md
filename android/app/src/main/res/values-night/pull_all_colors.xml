@@ -1,4 +1,7 @@
 <resources>
-    <color name="pull_all_widget_background">#1C1B1F</color>
-    <color name="pull_all_widget_text">#E6E1E5</color>
+    <color name="pull_all_widget_background">#1B1B1F</color>
+    <color name="pull_all_widget_text">#E5E2E1</color>
+    <color name="pull_all_widget_text_variant">#C8C5CD</color>
+    <color name="pull_all_widget_tonal">#2440B8</color>
+    <color name="pull_all_widget_on_tonal">#DEE1FF</color>
 </resources>

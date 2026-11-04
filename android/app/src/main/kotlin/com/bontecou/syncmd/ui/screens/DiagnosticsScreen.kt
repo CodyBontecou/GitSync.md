@@ -241,22 +241,8 @@ private fun DiagnosticLogRow(entry: DiagnosticEntry, locale: Locale, first: Bool
 
 @Composable
 private fun DiagnosticsChip(label: String, count: Int?, dot: Color?, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val c = Tide.colors
-    Row(
-        modifier
-            .heightIn(min = 48.dp)
-            .clip(CircleShape)
-            .then(if (selected) Modifier.background(c.ink, CircleShape) else Modifier.border(1.dp, c.line, CircleShape))
-            .clickable(role = Role.Tab, onClick = onClick)
-            .semantics { this.selected = selected }
-            .padding(horizontal = 15.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        if (dot != null) Box(Modifier.size(7.dp).background(dot, CircleShape))
-        Text(label, style = TideType.sans(14.sp, FontWeight.Medium), color = if (selected) c.paper else c.ink)
-        if (count != null) Text("$count", style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (selected) c.paper else c.danger)
-    }
+    // M3 filter chip (board "21 · Debug log").
+    com.bontecou.syncmd.ui.theme.TideFilterChip(label, selected, onClick, modifier, count = count, dot = dot)
 }
 
 @Composable

@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.BuildConfig
 import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.theme.TidePill
 import com.bontecou.syncmd.storage.CloneStorage
 import com.bontecou.syncmd.ui.theme.BSecondaryButton
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
@@ -370,23 +371,23 @@ private fun SettingsHeader(onBack: () -> Unit) {
     val backLabel = stringResource(R.string.ui_back_639807a2)
     Row(
         Modifier.fillMaxWidth().background(c.paper).statusBarsPadding()
-            .padding(start = Tide.gutter, end = Tide.gutter, top = 8.dp, bottom = 10.dp),
+            .heightIn(min = 64.dp).padding(start = 4.dp, end = Tide.gutter, top = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Box(
-            Modifier.size(48.dp).testTag("settings-back-button").clip(CircleShape).background(c.card, CircleShape)
+            Modifier.size(48.dp).testTag("settings-back-button").clip(CircleShape)
                 .clickable(role = Role.Button, onClick = onBack)
                 .semantics { contentDescription = backLabel },
             contentAlignment = Alignment.Center,
         ) {
-            Text(com.bontecou.syncmd.ui.util.navigationArrow(forward = false), modifier = Modifier.testTag("settings-back-arrow"),
-                style = TideType.sans(18.sp, FontWeight.SemiBold), color = c.ink)
+            Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, tint = c.ink,
+                modifier = Modifier.size(24.dp).testTag("settings-back-arrow"))
         }
         Text(
             stringResource(R.string.ui_settings_02f6ea12),
             modifier = Modifier.weight(1f).testTag("settings-title").semantics { heading() },
-            style = TideType.display(34.sp),
+            style = TideType.title,
             color = c.ink,
         )
     }
@@ -412,7 +413,7 @@ private fun SettingsAccountCard(account: SettingsAccount?, onLogin: () -> Unit, 
                             color = c.inkFaint, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
-                Text("✓ " + stringResource(R.string.tide_settings_signed_in), style = TideType.metaStrong, color = c.synced)
+                TidePill(stringResource(R.string.tide_settings_signed_in), c.synced, c.synced.copy(alpha = 0.12f))
             }
             SettingsAreaSeparator()
             Row(
@@ -434,8 +435,8 @@ private fun SettingsAccountCard(account: SettingsAccount?, onLogin: () -> Unit, 
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Box(Modifier.size(46.dp).background(c.ink, CircleShape), contentAlignment = Alignment.Center) {
-                Icon(painterResource(R.drawable.ic_github), contentDescription = null, tint = c.paper, modifier = Modifier.size(22.dp))
+            Box(Modifier.size(46.dp).background(c.tertiaryContainer, CircleShape), contentAlignment = Alignment.Center) {
+                Icon(painterResource(R.drawable.ic_github), contentDescription = null, tint = c.onTertiaryContainer, modifier = Modifier.size(22.dp))
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 Text(stringResource(R.string.guide_login), style = TideType.sans(17.sp, FontWeight.SemiBold), color = c.ink)
@@ -528,7 +529,7 @@ private fun shortenClonePath(path: String): String {
 
 internal enum class SettingsAccessory { NONE, CHEVRON, EXTERNAL }
 
-/** Mono caps section label over a white card; uppercases in the current locale. */
+/** M3 list section: a primary sentence-case header over a 28dp tonal container. */
 @Composable
 internal fun SettingsAreaSection(
     title: String?,
@@ -537,20 +538,19 @@ internal fun SettingsAreaSection(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val c = Tide.colors
-    val locale = LocalConfiguration.current.locales[0]
     Column(modifier.fillMaxWidth()) {
         if (title != null) {
             Text(
-                title.uppercase(locale),
+                title,
                 modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 8.dp).semantics { heading() },
                 style = TideType.section,
-                color = c.inkFaint,
+                color = c.primary,
             )
         }
         val shape = RoundedCornerShape(Tide.radiusCard)
         Column(Modifier.fillMaxWidth().clip(shape).background(c.card, shape), content = content)
         if (footer != null) {
-            Text(footer, style = TideType.sans(12.5.sp), color = c.inkFaint,
+            Text(footer, style = TideType.sans(12.sp).copy(lineHeight = 16.sp), color = c.inkMid,
                 modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp))
         }
     }
@@ -559,7 +559,7 @@ internal fun SettingsAreaSection(
 /** Hairline between rows in a grouped card, inset 18dp like iOS. */
 @Composable
 internal fun SettingsAreaSeparator() {
-    Box(Modifier.padding(horizontal = 18.dp).fillMaxWidth().height(1.dp).background(Tide.colors.line))
+    Box(Modifier.fillMaxWidth().height(1.dp).background(Tide.colors.line))
 }
 
 /** Label/value row (iOS AppSettingsRow): sentence-case title, optional subtitle, mono value, accessory. */
@@ -583,21 +583,21 @@ internal fun SettingsAreaRow(
     Row(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
+            .heightIn(min = 56.dp)
             .then(if (onClick != null) Modifier.clickable(enabled = enabled, role = Role.Button, onClick = onClick) else Modifier)
-            .alpha(if (enabled) 1f else 0.45f)
-            .padding(horizontal = 18.dp, vertical = 14.dp),
+            .alpha(if (enabled) 1f else 0.38f)
+            .padding(horizontal = 20.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        leading?.invoke()
+        if (leading != null) androidx.compose.runtime.CompositionLocalProvider(androidx.compose.material3.LocalContentColor provides c.inkMid) { leading() }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(title, style = TideType.body, color = titleTint)
             if (subtitle != null) {
                 Text(
                     subtitle,
-                    style = if (subtitleIsPath) TideType.mono(11.sp).copy(textDirection = TextDirection.Ltr) else TideType.sans(12.5.sp),
-                    color = if (subtitleIsPath) c.inkFaint else c.inkMid,
+                    style = if (subtitleIsPath) TideType.mono(12.sp).copy(textDirection = TextDirection.Ltr) else TideType.sans(14.sp).copy(lineHeight = 20.sp),
+                    color = c.inkMid,
                 )
             }
         }
@@ -615,7 +615,7 @@ internal fun SettingsAreaRow(
         trailing?.invoke(this)
         when (accessory) {
             SettingsAccessory.CHEVRON -> TideChevron()
-            SettingsAccessory.EXTERNAL -> Text("↗", style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.inkFaint)
+            SettingsAccessory.EXTERNAL -> Icon(painterResource(R.drawable.ic_m3_open_in_new), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(20.dp))
             SettingsAccessory.NONE -> Unit
         }
     }
@@ -640,13 +640,13 @@ internal fun SettingsAreaSwitchRow(
             .heightIn(min = 56.dp)
             .then(if (tag != null) Modifier.testTag(tag) else Modifier)
             .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onChange)
-            .padding(horizontal = if (padded) 18.dp else 0.dp, vertical = 10.dp),
+            .padding(horizontal = if (padded) 20.dp else 0.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Column(Modifier.weight(1f).alpha(if (enabled) 1f else 0.45f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(label, style = TideType.body, color = c.ink)
-            if (subtitle != null) Text(subtitle, style = TideType.sans(12.5.sp), color = c.inkMid)
+            if (subtitle != null) Text(subtitle, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = c.inkMid)
         }
         Switch(checked, onCheckedChange = null, enabled = enabled, colors = tideSwitchColors())
     }
@@ -666,12 +666,12 @@ internal fun SettingsAreaPill(
 ) {
     val c = Tide.colors
     val (fill, outline, tint) = when (style) {
-        SettingsPillStyle.INK -> Triple(c.ink, null, c.paper)
-        SettingsPillStyle.OUTLINE -> Triple(null, c.lineSoft, c.ink)
-        SettingsPillStyle.DANGER_OUTLINE -> Triple(null, c.line, c.danger)
-        SettingsPillStyle.BEHIND -> Triple(null, c.lineSoft, c.behind)
+        SettingsPillStyle.INK -> Triple(c.primary, null, c.onPrimary)
+        SettingsPillStyle.OUTLINE -> Triple(null, c.lineSoft, c.primary)
+        SettingsPillStyle.DANGER_OUTLINE -> Triple(null, c.lineSoft, c.danger)
+        SettingsPillStyle.BEHIND -> Triple(null, c.lineSoft, c.primary)
         SettingsPillStyle.DANGER_TEXT -> Triple(null, null, c.danger)
-        SettingsPillStyle.TEXT -> Triple(null, null, c.ink)
+        SettingsPillStyle.TEXT -> Triple(null, null, c.primary)
     }
     Box(
         modifier
@@ -692,11 +692,11 @@ internal fun SettingsAreaPill(
 @Composable
 internal fun SettingsAreaAvatar(name: String, size: Dp = 46.dp) {
     val c = Tide.colors
-    Box(Modifier.size(size).background(c.ink, CircleShape), contentAlignment = Alignment.Center) {
+    Box(Modifier.size(size).background(c.tertiaryContainer, CircleShape), contentAlignment = Alignment.Center) {
         Text(
             name.trim().removePrefix("@").firstOrNull()?.uppercaseChar()?.toString() ?: "?",
             style = TideType.sans((size.value * 0.4f).sp, FontWeight.SemiBold),
-            color = c.paper,
+            color = c.onTertiaryContainer,
         )
     }
 }
@@ -706,8 +706,8 @@ internal fun SettingsAreaAvatar(name: String, size: Dp = 46.dp) {
 internal fun SettingsAreaProgress(modifier: Modifier = Modifier) {
     LinearProgressIndicator(
         modifier.fillMaxWidth().clip(CircleShape),
-        color = Tide.colors.ink,
-        trackColor = Tide.colors.well,
+        color = Tide.colors.primary,
+        trackColor = Tide.colors.primaryContainer,
     )
 }
 
@@ -721,16 +721,16 @@ internal fun SettingsAreaNotice(
     action: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     val c = Tide.colors
-    val shape = RoundedCornerShape(18.dp)
+    val shape = RoundedCornerShape(16.dp)
     val neutral = tint == c.ink
+    val (fill, ink) = if (neutral) c.well to c.inkMid else (c.containerFor(tint) ?: (tint.copy(alpha = 0.12f) to tint))
     Column(
         modifier.fillMaxWidth()
-            .background(if (neutral) c.card else tint.copy(alpha = 0.09f), shape)
-            .border(1.dp, if (neutral) c.line else tint.copy(alpha = 0.22f), shape)
+            .background(fill, shape)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text(text, textModifier, style = TideType.sans(13.5.sp, FontWeight.Medium), color = if (neutral) c.inkMid else tint)
+        Text(text, textModifier, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = ink)
         action?.invoke(this)
     }
 }

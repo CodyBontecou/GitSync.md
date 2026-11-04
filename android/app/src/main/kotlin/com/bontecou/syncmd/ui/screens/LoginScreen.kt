@@ -227,10 +227,10 @@ private fun LoginWelcomeContent(
             )
             Spacer(Modifier.height(12.dp))
             Column(Modifier.semantics(mergeDescendants = true) { heading() }) {
-                val headline = TideType.display(44.sp).copy(letterSpacing = (-0.045).em)
+                val headline = TideType.display(40.sp).copy(lineHeight = 46.sp)
                 Text(stringResource(R.string.tide_onboarding_headline_notes), style = headline, color = c.heroText)
                 Text(stringResource(R.string.tide_onboarding_headline_git), style = headline, color = c.heroText)
-                Text(stringResource(R.string.tide_onboarding_headline_step), style = headline, color = c.heroMeta.copy(alpha = 0.75f))
+                Text(stringResource(R.string.tide_onboarding_headline_step), style = headline, color = c.heroBehind)
             }
             Text(
                 stringResource(R.string.tide_onboarding_welcome_body),

@@ -19,7 +19,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -32,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
@@ -86,6 +94,8 @@ fun FilesScreen(
     onOpenFile: (String) -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: FilesViewModel = hiltViewModel(),
+    showNavigation: Boolean = false,
+    onSelectTab: (com.bontecou.syncmd.ui.components.VaultTab) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
     val locale = LocalConfiguration.current.locales[0]
@@ -93,6 +103,7 @@ fun FilesScreen(
     var newItem by remember { mutableStateOf<Boolean?>(null) }
     var renameItem by remember { mutableStateOf<RepositoryFile?>(null) }
     var menuOpen by remember { mutableStateOf(false) }
+    val newLabel = stringResource(R.string.ui_new_18fdd549)
     LaunchedEffect(repositoryPath, directory) { viewModel.open(repositoryPath, directory) }
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) { viewModel.open(repositoryPath, directory) }
     Scaffold(
@@ -107,26 +118,36 @@ fun FilesScreen(
                 center = {
                     Text(
                         directory.substringAfterLast('/').ifEmpty { stringResource(R.string.publication_files) },
-                        style = TideType.sans(17.sp, FontWeight.SemiBold),
+                        style = TideType.title,
                         color = c.ink,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.testTag("files-title").semantics { heading() },
                     )
                 },
-                actions = {
-                    Box {
-                        TideCircleButton(
-                            stringResource(R.string.ui_new_18fdd549), { menuOpen = true },
-                            Modifier.testTag("files-new"), size = 48.dp, enabled = !state.isMutating,
-                        ) { Text("+", style = TideType.sans(22.sp, FontWeight.Medium).copy(lineHeight = 22.sp), color = c.ink) }
-                        DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                            DropdownMenuItem(text = { Text(stringResource(R.string.ui_new_file_44dedd0f), style = TideType.body) }, onClick = { menuOpen = false; newItem = false })
-                            DropdownMenuItem(text = { Text(stringResource(R.string.ui_new_folder_cf28f49e), style = TideType.body) }, onClick = { menuOpen = false; newItem = true })
-                        }
-                    }
-                },
             )
+        },
+        bottomBar = {
+            if (showNavigation) com.bontecou.syncmd.ui.components.VaultNavigationBar(com.bontecou.syncmd.ui.components.VaultTab.FILES, onSelectTab)
+        },
+        floatingActionButton = {
+            // M3 FAB: new note or folder in this directory.
+            Box {
+                val fabShape = RoundedCornerShape(16.dp)
+                Box(
+                    Modifier.size(56.dp).shadow(6.dp, fabShape).clip(fabShape).background(c.primaryContainer)
+                        .clickable(enabled = !state.isMutating, role = Role.Button) { menuOpen = true }
+                        .testTag("files-new")
+                        .semantics { contentDescription = newLabel },
+                    contentAlignment = Alignment.Center,
+                ) { com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_edit, tint = c.onPrimaryContainer.copy(alpha = if (state.isMutating) 0.38f else 1f)) }
+                DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }, modifier = Modifier.background(c.container)) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.ui_new_file_44dedd0f), style = TideType.sans(14.sp)) },
+                        leadingIcon = { com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_file, size = 20.dp) }, onClick = { menuOpen = false; newItem = false })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.ui_new_folder_cf28f49e), style = TideType.sans(14.sp)) },
+                        leadingIcon = { com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_folder, size = 20.dp) }, onClick = { menuOpen = false; newItem = true })
+                }
+            }
         },
     ) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
@@ -150,7 +171,7 @@ fun FilesScreen(
             }
             LazyColumn(
                 Modifier.fillMaxSize().testTag("files-list"),
-                contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 6.dp, bottom = 32.dp),
+                contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 6.dp, bottom = 96.dp),
             ) {
                 itemsIndexed(state.entries, key = { _, entry -> entry.path }) { index, entry ->
                     FileRow(
@@ -173,10 +194,14 @@ fun FilesScreen(
         }
     }
     newItem?.let { folder ->
+        // M3 board "20 · New file — dialog": where it goes, and Note / Folder in one dialog.
         FilenameDialog(
             title = stringResource(if (folder) R.string.ui_new_folder_cf28f49e else R.string.ui_new_file_44dedd0f),
             initialValue = if (folder) "" else "untitled.md",
             onDismiss = { newItem = null },
+            subject = (repositoryPath.substringAfterLast('/') + "/" + directory.trim('/')).trimEnd('/') + "/",
+            kind = folder,
+            onKind = { newItem = it },
             onConfirm = { name -> newItem = null; viewModel.create(name, folder, onOpenFile) },
         )
     }
@@ -188,21 +213,29 @@ fun FilesScreen(
     }
 }
 
-/** Outline pill that wraps rather than clipping long translations. */
+/** M3 filter/assist chip that wraps rather than clipping long translations. */
 @Composable
 private fun FilesPill(title: String, onClick: () -> Unit, enabled: Boolean, tag: String, selected: Boolean = false) {
     val c = Tide.colors
+    val shape = RoundedCornerShape(8.dp)
     Box(
         Modifier
             .heightIn(min = 48.dp)
-            .clip(CircleShape)
-            .then(if (selected) Modifier.background(c.ink, CircleShape) else Modifier.border(1.dp, c.lineSoft, CircleShape))
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
-            .testTag(tag)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .testTag(tag),
         contentAlignment = Alignment.Center,
     ) {
-        Text(title, style = TideType.sans(14.sp, FontWeight.Medium), color = (if (selected) c.paper else c.ink).copy(alpha = if (enabled) 1f else 0.4f))
+        Row(
+            Modifier.heightIn(min = 32.dp).clip(shape)
+                .then(if (selected) Modifier.background(c.secondaryContainer, shape) else Modifier.border(1.dp, c.line, shape))
+                .padding(start = if (selected) 8.dp else 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            val ink = (if (selected) c.onSecondaryContainer else c.inkMid).copy(alpha = if (enabled) 1f else 0.38f)
+            if (selected) com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_check, tint = ink, size = 18.dp)
+            Text(title, style = TideType.sans(14.sp, FontWeight.Medium), color = ink)
+        }
     }
 }
 
@@ -210,7 +243,7 @@ private fun FilesPill(title: String, onClick: () -> Unit, enabled: Boolean, tag:
 private fun FilesProgress(visible: Boolean) {
     val c = Tide.colors
     Box(Modifier.fillMaxWidth().height(2.dp)) {
-        if (visible) LinearProgressIndicator(Modifier.fillMaxWidth().height(2.dp), color = c.ink, trackColor = c.line)
+        if (visible) LinearProgressIndicator(Modifier.fillMaxWidth().height(2.dp), color = c.primary, trackColor = c.primaryContainer)
     }
 }
 
@@ -222,13 +255,12 @@ private fun FilesErrorCard(message: String) {
         Modifier
             .padding(horizontal = Tide.gutter, vertical = 10.dp)
             .fillMaxWidth()
-            .background(c.danger.copy(alpha = 0.10f), shape)
-            .border(1.dp, c.danger.copy(alpha = 0.25f), shape)
+            .background(c.errorContainer, shape)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Text("!", style = TideType.mono(15.sp, FontWeight.SemiBold), color = c.danger)
-        Text(message, style = TideType.sans(14.sp, FontWeight.Medium), color = c.danger, modifier = Modifier.weight(1f).testTag("files-error"))
+        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_info, tint = c.onErrorContainer, size = 20.dp)
+        Text(message, style = TideType.sans(14.sp), color = c.onErrorContainer, modifier = Modifier.weight(1f).testTag("files-error"))
     }
 }
 
@@ -240,8 +272,8 @@ private fun FilesEmptyState() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Box(Modifier.size(56.dp).background(c.well, RoundedCornerShape(18.dp)), contentAlignment = Alignment.Center) {
-            FileGlyph(isDirectory = true, tint = c.inkMid, size = 24.dp)
+        Box(Modifier.size(56.dp).background(c.primaryContainer, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+            com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_folder, tint = c.onPrimaryContainer)
         }
         TideDisplay(stringResource(R.string.ui_empty_folder_ca1fd454), size = 26.sp)
         Text(stringResource(R.string.ui_create_a_file_or_folder_using_new_655c5596), style = TideType.meta, color = c.inkFaint, textAlign = TextAlign.Center)
@@ -277,17 +309,18 @@ private fun FileRow(
                 .fillMaxWidth()
                 .clickable(enabled = enabled, onClick = onOpen)
                 .testTag(rowTag)
-                .heightIn(min = 60.dp)
+                .heightIn(min = 64.dp)
                 .padding(start = 16.dp, end = 6.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Box(Modifier.size(34.dp).background(c.well, RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-                FileGlyph(isDirectory, if (isDirectory) c.ink else c.inkMid)
+            Box(Modifier.size(40.dp).background(if (isDirectory) c.primaryContainer else c.containerHigh, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+                com.bontecou.syncmd.ui.theme.TideIcon(if (isDirectory) R.drawable.ic_m3_folder else R.drawable.ic_m3_file,
+                    tint = if (isDirectory) c.onPrimaryContainer else c.inkMid)
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(name, style = TideType.body, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                Text(detail, style = TideType.mono(11.sp).let { if (isDirectory) it else it.copy(textDirection = TextDirection.Ltr) }, color = c.inkFaint)
+                Text(detail, style = TideType.sans(13.sp).let { if (isDirectory) it else it.copy(textDirection = TextDirection.Ltr) }, color = c.inkMid)
             }
             Box(
                 Modifier
@@ -299,10 +332,10 @@ private fun FileRow(
                     .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(stringResource(R.string.ui_rename_3064d79a), style = TideType.sans(14.sp, FontWeight.Medium), color = c.inkMid.copy(alpha = if (enabled) 1f else 0.4f))
+                Text(stringResource(R.string.ui_rename_3064d79a), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.primary.copy(alpha = if (enabled) 1f else 0.38f))
             }
         }
-        if (!last) Box(Modifier.padding(start = 62.dp).fillMaxWidth().height(1.dp).background(c.line))
+        if (!last) Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
     }
 }
 
@@ -377,7 +410,7 @@ fun FileEditorScreen(
     LaunchedEffect(message) { message?.let { snackbar.showSnackbar(it) } }
     Scaffold(
         modifier = Modifier.testTag("file-editor-screen").imePadding(),
-        containerColor = c.card,
+        containerColor = c.paper,
         contentColor = c.ink,
         snackbarHost = {
             SnackbarHost(snackbar) { data ->
@@ -415,7 +448,31 @@ fun FileEditorScreen(
                 state.isLoading -> EditorLoading()
                 document == null -> EditorUnavailable(onRetry = { viewModel.reload() })
                 document.content == null -> EditorReadOnly(document.unavailableReason?.let { stringResource(it.resourceId) }.orEmpty())
-                else -> HighlightedFileEditor(document.path, state.draft, !state.isSaving, viewModel::updateDraft, compact = compactEditing)
+                else -> {
+                    val markdown = isMarkdownPath(document.path)
+                    var preview by rememberSaveable(document.path) { mutableStateOf(false) }
+                    val field = remember(document.path) { mutableStateOf(androidx.compose.ui.text.input.TextFieldValue(state.draft)) }
+                    if (markdown && !compactEditing) {
+                        // M3 board "06 · Editor": Write / Preview for notes.
+                        com.bontecou.syncmd.ui.theme.TideSegmented(
+                            listOf(stringResource(R.string.m3_editor_write), stringResource(R.string.m3_editor_preview)),
+                            selectedIndex = if (preview) 1 else 0,
+                            onSelect = { preview = it == 1 },
+                            modifier = Modifier.padding(horizontal = Tide.gutter).testTag("editor-mode"),
+                        )
+                    }
+                    Box(Modifier.weight(1f).fillMaxWidth()) {
+                        if (markdown && preview) MarkdownPreview(state.draft, Modifier.testTag("editor-preview"))
+                        else HighlightedFileEditor(document.path, state.draft, !state.isSaving, viewModel::updateDraft, compact = compactEditing, field = field)
+                    }
+                    if (markdown && !preview && !state.isSaving) {
+                        MarkdownToolbar(onInsert = { prefix, suffix, linePrefix ->
+                            val updated = insertMarkdown(field.value, prefix, suffix, linePrefix)
+                            field.value = updated
+                            viewModel.updateDraft(updated.text)
+                        })
+                    }
+                }
             }
         }
     }
@@ -449,9 +506,10 @@ fun FileEditorScreen(
                     onClick = { confirmLeave = false; viewModel.save(onNavigateBack) })
             },
             dismissButton = {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    BGhostButton(stringResource(R.string.ui_keep_editing_e76fd2ad), Modifier.fillMaxWidth().testTag("file-leave-keep"), onClick = { confirmLeave = false })
-                    BGhostButton(stringResource(R.string.ui_discard_eb1a70e3), Modifier.fillMaxWidth().testTag("file-leave-discard"), color = c.danger,
+                // M3 dialog text actions side by side, so all three actions fit a landscape phone.
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    BGhostButton(stringResource(R.string.ui_keep_editing_e76fd2ad), Modifier.weight(1f).testTag("file-leave-keep"), onClick = { confirmLeave = false })
+                    BGhostButton(stringResource(R.string.ui_discard_eb1a70e3), Modifier.weight(1f).testTag("file-leave-discard"), color = c.danger,
                         onClick = { confirmLeave = false; onNavigateBack() })
                 }
             },
@@ -490,17 +548,18 @@ private fun EditorHeader(
     menu: @Composable () -> Unit,
 ) {
     val c = Tide.colors
-    Column(Modifier.fillMaxWidth().background(c.card).statusBarsPadding()) {
+    // M3 small top app bar (board "06 · Editor").
+    Column(Modifier.fillMaxWidth().background(c.paper).statusBarsPadding()) {
         Row(
-            Modifier.fillMaxWidth().padding(start = Tide.gutter, end = 10.dp, top = 8.dp, bottom = 6.dp),
+            Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(start = 4.dp, end = 4.dp, top = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            TideCircleButton(stringResource(R.string.publication_back), onBack, Modifier.testTag("file-editor-back"), size = 48.dp, filled = false, enabled = backEnabled) {
-                Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, modifier = Modifier.size(20.dp))
+            TideCircleButton(stringResource(R.string.publication_back), onBack, Modifier.testTag("file-editor-back"), size = 48.dp, enabled = backEnabled) {
+                Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, modifier = Modifier.size(24.dp))
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
-                Text(filename, style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                Text(filename, style = TideType.title, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.testTag("file-editor-title").semantics { heading() })
                 if (!compact) FilePathLine(path, "file-editor-path", inline = true)
             }
@@ -509,25 +568,26 @@ private fun EditorHeader(
                     Modifier
                         .heightIn(min = 48.dp)
                         .clip(CircleShape)
-                        .then(if (dirty) Modifier.background(if (saveEnabled) c.ink else c.ink.copy(alpha = 0.4f), CircleShape) else Modifier)
+                        .then(if (dirty) Modifier.background(if (saveEnabled) c.primary else c.ink.copy(alpha = 0.12f), CircleShape) else Modifier)
                         .clickable(enabled = saveEnabled, role = Role.Button, onClick = onSave)
                         .testTag("file-save")
                         .padding(horizontal = 16.dp),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(stringResource(R.string.ui_save_1509f561), style = TideType.sans(14.sp, FontWeight.SemiBold), color = if (dirty) c.paper else c.inkFaint)
+                    Text(stringResource(R.string.ui_save_1509f561), style = TideType.sans(14.sp, FontWeight.SemiBold),
+                        color = if (dirty && saveEnabled) c.onPrimary else c.inkMid)
                 }
             }
             Box {
-                TideCircleButton(stringResource(R.string.ui_more_d47d7cb0), onMore, Modifier.testTag("file-editor-more"), size = 48.dp, filled = false, enabled = moreEnabled) {
-                    Text("•••", style = TideType.mono(13.sp, FontWeight.SemiBold), color = c.ink)
+                TideCircleButton(stringResource(R.string.ui_more_d47d7cb0), onMore, Modifier.testTag("file-editor-more"), size = 48.dp, enabled = moreEnabled) {
+                    com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_more_vert, tint = c.inkMid)
                 }
                 menu()
             }
         }
         if (status != null) {
             Row(
-                Modifier.padding(start = Tide.gutter + 58.dp, end = Tide.gutter, bottom = 8.dp),
+                Modifier.padding(start = 56.dp, end = Tide.gutter, bottom = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
@@ -590,8 +650,17 @@ private fun FilePathLine(path: String, tag: String, inline: Boolean = false) {
 }
 
 @Composable
-private fun HighlightedFileEditor(path: String, content: String, enabled: Boolean, onChange: (String) -> Unit, compact: Boolean = false) {
+private fun HighlightedFileEditor(path: String, content: String, enabled: Boolean, onChange: (String) -> Unit, compact: Boolean = false,
+    field: androidx.compose.runtime.MutableState<androidx.compose.ui.text.input.TextFieldValue> =
+        remember(path) { mutableStateOf(androidx.compose.ui.text.input.TextFieldValue(content)) }) {
     val c = Tide.colors
+    // The draft lives in the view model; keep the field (text + selection) in step with it so the
+    // markdown toolbar can insert at the cursor.
+    if (field.value.text != content) {
+        val end = content.length
+        field.value = field.value.copy(text = content,
+            selection = androidx.compose.ui.text.TextRange(field.value.selection.start.coerceAtMost(end), field.value.selection.end.coerceAtMost(end)))
+    }
     var highlightedContent by remember { mutableStateOf("") }
     var tokens by remember { mutableStateOf<List<SyntaxToken>>(emptyList()) }
     LaunchedEffect(path, content) {
@@ -619,28 +688,153 @@ private fun HighlightedFileEditor(path: String, content: String, enabled: Boolea
         }
     }
     BasicTextField(
-        value = content,
-        onValueChange = onChange,
+        value = field.value,
+        onValueChange = { value -> val changed = value.text != field.value.text; field.value = value; if (changed) onChange(value.text) },
         readOnly = !enabled,
         visualTransformation = transformation,
         textStyle = TideType.mono(14.sp).copy(lineHeight = 22.sp, color = c.ink, textDirection = TextDirection.ContentOrLtr),
         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(autoCorrect = false, capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.None),
-        cursorBrush = androidx.compose.ui.graphics.SolidColor(c.ink),
+        cursorBrush = androidx.compose.ui.graphics.SolidColor(c.primary),
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = if (compact) 4.dp else 18.dp).testTag("file-editor-input"),
     )
+}
+
+internal fun isMarkdownPath(path: String) = path.substringAfterLast('.', "").lowercase() in setOf("md", "markdown", "mdown", "mkd")
+
+/** Wraps the selection (or inserts at the cursor) with [prefix]/[suffix]; [linePrefix] goes at the start of the line. */
+internal fun insertMarkdown(value: androidx.compose.ui.text.input.TextFieldValue, prefix: String, suffix: String, linePrefix: Boolean):
+    androidx.compose.ui.text.input.TextFieldValue {
+    val text = value.text
+    val start = value.selection.min
+    val end = value.selection.max
+    return if (linePrefix) {
+        val lineStart = text.lastIndexOf('\n', (start - 1).coerceAtLeast(0)).let { if (start == 0) 0 else it + 1 }
+        val updated = text.substring(0, lineStart) + prefix + text.substring(lineStart)
+        value.copy(text = updated, selection = androidx.compose.ui.text.TextRange(start + prefix.length, end + prefix.length))
+    } else {
+        val updated = text.substring(0, start) + prefix + text.substring(start, end) + suffix + text.substring(end)
+        value.copy(text = updated, selection = androidx.compose.ui.text.TextRange(start + prefix.length, end + prefix.length))
+    }
+}
+
+/** Markdown keys above the keyboard (board "06 · Editor"): heading, bold, italic, checklist, link, code. */
+@Composable
+private fun MarkdownToolbar(onInsert: (String, String, Boolean) -> Unit) {
+    val c = Tide.colors
+    val keys = listOf(
+        Triple("#", R.string.m3_md_heading) { onInsert("# ", "", true) },
+        Triple("B", R.string.m3_md_bold) { onInsert("**", "**", false) },
+        Triple("I", R.string.m3_md_italic) { onInsert("_", "_", false) },
+        Triple("☐", R.string.m3_md_checklist) { onInsert("- [ ] ", "", true) },
+        Triple("[[", R.string.m3_md_link) { onInsert("[[", "]]", false) },
+        Triple("</>", R.string.m3_md_code) { onInsert("`", "`", false) },
+    )
+    Row(
+        Modifier.fillMaxWidth().background(c.container).navigationBarsPadding().padding(horizontal = 8.dp, vertical = 4.dp)
+            .horizontalScroll(rememberScrollState()).testTag("editor-markdown-toolbar"),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        keys.forEach { (glyph, label, action) ->
+            val description = stringResource(label)
+            Box(
+                Modifier.size(48.dp).clip(RoundedCornerShape(12.dp)).clickable(role = Role.Button, onClick = action)
+                    .semantics { contentDescription = description },
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(glyph, style = TideType.mono(15.sp, FontWeight.SemiBold).copy(
+                    fontStyle = if (glyph == "I") androidx.compose.ui.text.font.FontStyle.Italic else androidx.compose.ui.text.font.FontStyle.Normal),
+                    color = c.ink)
+            }
+        }
+    }
+}
+
+/** Read-only markdown preview: headings, checklists, bullets, quotes, code and inline emphasis. */
+@Composable
+internal fun MarkdownPreview(markdown: String, modifier: Modifier = Modifier) {
+    val c = Tide.colors
+    var inCode = false
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        markdown.lines().forEach { raw ->
+            val line = raw.trimEnd()
+            when {
+                line.trimStart().startsWith("```") -> inCode = !inCode
+                inCode -> Text(line, style = TideType.mono(13.sp), color = c.ink,
+                    modifier = Modifier.fillMaxWidth().background(c.well).padding(horizontal = 10.dp, vertical = 2.dp))
+                line.isBlank() -> Spacer(Modifier.height(4.dp))
+                line.startsWith("#") -> {
+                    val level = line.takeWhile { it == '#' }.length.coerceIn(1, 6)
+                    val size = when (level) { 1 -> 26.sp; 2 -> 22.sp; 3 -> 18.sp; else -> 16.sp }
+                    Text(inlineMarkdown(line.drop(level).trim(), c), style = TideType.sans(size, FontWeight.SemiBold), color = c.ink,
+                        modifier = Modifier.padding(top = 8.dp).semantics { heading() })
+                }
+                Regex("^\\s*[-*] \\[( |x|X)] ").containsMatchIn(line) -> {
+                    val done = Regex("\\[(x|X)]").containsMatchIn(line.substringBefore("]") + "]")
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Box(Modifier.size(18.dp).clip(RoundedCornerShape(4.dp))
+                            .then(if (done) Modifier.background(c.primary) else Modifier.border(2.dp, c.inkMid, RoundedCornerShape(4.dp))),
+                            contentAlignment = Alignment.Center) {
+                            if (done) com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_check, tint = c.onPrimary, size = 14.dp)
+                        }
+                        Text(inlineMarkdown(line.substringAfter("] "), c), style = TideType.body, color = if (done) c.inkMid else c.ink)
+                    }
+                }
+                Regex("^\\s*[-*+] ").containsMatchIn(line) -> Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("•", style = TideType.body, color = c.inkMid)
+                    Text(inlineMarkdown(line.trimStart().drop(2), c), style = TideType.body, color = c.ink)
+                }
+                line.startsWith(">") -> Row(Modifier.height(androidx.compose.foundation.layout.IntrinsicSize.Min)) {
+                    Box(Modifier.width(3.dp).fillMaxHeight().background(c.line))
+                    Text(inlineMarkdown(line.drop(1).trim(), c), style = TideType.body, color = c.inkMid, modifier = Modifier.padding(start = 12.dp))
+                }
+                else -> Text(inlineMarkdown(line, c), style = TideType.body, color = c.ink)
+            }
+        }
+    }
+}
+
+/** **bold**, _italic_ / *italic*, `code` and [[wiki links]] as styled spans. */
+private fun inlineMarkdown(text: String, c: com.bontecou.syncmd.ui.theme.TideColors): AnnotatedString {
+    val pattern = Regex("\\*\\*(.+?)\\*\\*|`(.+?)`|\\[\\[(.+?)]]|(?<![\\w*])[_*](.+?)[_*](?![\\w*])")
+    val builder = AnnotatedString.Builder()
+    var index = 0
+    pattern.findAll(text).forEach { match ->
+        builder.append(text.substring(index, match.range.first))
+        val (value, style) = when {
+            match.groups[1] != null -> match.groupValues[1] to SpanStyle(fontWeight = FontWeight.SemiBold)
+            match.groups[2] != null -> match.groupValues[2] to SpanStyle(fontFamily = com.bontecou.syncmd.ui.theme.TideFonts.Mono, background = c.well)
+            match.groups[3] != null -> match.groupValues[3] to SpanStyle(color = c.primary)
+            else -> match.groupValues[4] to SpanStyle(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
+        }
+        builder.pushStyle(style); builder.append(value); builder.pop()
+        index = match.range.last + 1
+    }
+    builder.append(text.substring(index))
+    return builder.toAnnotatedString()
 }
 
 // ─── Sheets ─────────────────────────────────────────────────────────────────
 
 @Composable
-private fun FilenameDialog(title: String, initialValue: String, onDismiss: () -> Unit, subject: String? = null, onConfirm: (String) -> Unit) {
+private fun FilenameDialog(title: String, initialValue: String, onDismiss: () -> Unit, subject: String? = null,
+    kind: Boolean? = null, onKind: (Boolean) -> Unit = {}, onConfirm: (String) -> Unit) {
     var name by remember(title, initialValue) { mutableStateOf(initialValue) }
     val c = Tide.colors
     TideDialog(
         onDismissRequest = onDismiss,
         modifier = Modifier.semantics { paneTitle = title },
         content = {
-            TideDisplay(title, size = 26.sp, modifier = Modifier.testTag("filename-title"))
+            Text(title, style = TideType.sans(24.sp).copy(lineHeight = 32.sp), color = c.ink,
+                modifier = Modifier.semantics { heading() }.testTag("filename-title"))
+            if (kind != null) {
+                com.bontecou.syncmd.ui.theme.TideSegmented(
+                    listOf(stringResource(R.string.ui_new_file_44dedd0f), stringResource(R.string.ui_new_folder_cf28f49e)),
+                    selectedIndex = if (kind) 1 else 0,
+                    onSelect = { onKind(it == 1) },
+                    modifier = Modifier.padding(top = 12.dp).testTag("filename-kind"),
+                )
+            }
             OutlinedTextField(
                 value = name, onValueChange = { name = it }, singleLine = true,
                 label = { Text(stringResource(R.string.ui_name_dcd1d522)) },

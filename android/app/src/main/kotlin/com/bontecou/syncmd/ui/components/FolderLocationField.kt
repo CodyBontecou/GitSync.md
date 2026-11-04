@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -144,7 +145,7 @@ internal fun AddVaultHeadline(
     modifier: Modifier = Modifier,
     muted: String? = null,
     subtitle: String? = null,
-    size: TextUnit = 34.sp,
+    size: TextUnit = 32.sp,
     titleModifier: Modifier = Modifier,
     subtitleModifier: Modifier = Modifier,
 ) {
@@ -152,9 +153,9 @@ internal fun AddVaultHeadline(
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Column {
             Text(title, modifier = titleModifier.semantics { heading() }, style = TideType.display(size), color = c.ink)
-            if (muted != null) Text(muted, style = TideType.display(size), color = c.inkFaint)
+            if (muted != null) Text(muted, style = TideType.display(size), color = c.inkMid)
         }
-        if (subtitle != null) Text(subtitle, modifier = subtitleModifier, style = TideType.sans(15.sp).copy(lineHeight = 21.sp), color = c.inkMid)
+        if (subtitle != null) Text(subtitle, modifier = subtitleModifier, style = TideType.body, color = c.inkMid)
     }
 }
 
@@ -163,17 +164,31 @@ internal fun AddVaultHeadline(
 internal fun AddVaultSectionLabel(title: String, modifier: Modifier = Modifier, trailing: String? = null) {
     Row(modifier.fillMaxWidth().padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         TideSectionLabel(title, Modifier.weight(1f))
-        if (trailing != null) Text(trailing, style = TideType.section, color = Tide.colors.inkFaint)
+        if (trailing != null) Text(trailing, style = TideType.meta, color = Tide.colors.inkMid)
     }
 }
 
 /** Rounded tinted glyph tile used at the start of choice rows and dialogs. */
 @Composable
-internal fun AddVaultIconTile(glyph: String, tint: Color = Tide.colors.ink, background: Color = Tide.colors.well, size: Dp = 36.dp) {
+internal fun AddVaultIconTile(glyph: String, tint: Color = Tide.colors.onPrimaryContainer, background: Color = Tide.colors.primaryContainer, size: Dp = 40.dp) {
+    // Material icon for the familiar glyphs; anything else stays a text glyph.
+    val icon = when (glyph) {
+        "↓", "⤓" -> com.bontecou.syncmd.R.drawable.ic_m3_arrow_downward
+        "↑" -> com.bontecou.syncmd.R.drawable.ic_m3_arrow_upward
+        "▶" -> com.bontecou.syncmd.R.drawable.ic_m3_file
+        "▤" -> com.bontecou.syncmd.R.drawable.ic_m3_storage
+        "⑂", "⎇" -> com.bontecou.syncmd.R.drawable.ic_m3_branch
+        "⌁", "⚿", "🔑" -> com.bontecou.syncmd.R.drawable.ic_m3_lock
+        "→" -> com.bontecou.syncmd.R.drawable.ic_m3_chevron_right
+        else -> null
+    }
     Box(
-        Modifier.size(size).background(background, RoundedCornerShape(size / 3)).clearAndSetSemantics {},
+        Modifier.size(size).background(background, RoundedCornerShape(12.dp)).clearAndSetSemantics {},
         contentAlignment = Alignment.Center,
-    ) { Text(glyph, style = TideType.sans((size.value * 0.42f).sp, FontWeight.SemiBold), color = tint) }
+    ) {
+        if (icon != null) com.bontecou.syncmd.ui.theme.TideIcon(icon, tint = tint, size = size * 0.6f)
+        else Text(glyph, style = TideType.sans((size.value * 0.42f).sp, FontWeight.SemiBold), color = tint)
+    }
 }
 
 /** Selectable pill (auth method, account). Keeps FilterChip's selected/disabled semantics. */
@@ -183,21 +198,29 @@ internal fun AddVaultChoiceChip(label: String, selected: Boolean, onClick: () ->
     Box(
         modifier
             .heightIn(min = 48.dp)
-            .clip(CircleShape)
-            .then(if (selected) Modifier.background(c.ink, CircleShape) else Modifier.border(1.dp, c.lineSoft, CircleShape))
             .selectable(selected = selected, enabled = enabled, role = Role.Checkbox, onClick = onClick)
-            .alpha(if (enabled) 1f else 0.4f)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .alpha(if (enabled) 1f else 0.38f),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, style = TideType.sans(14.sp, if (selected) FontWeight.SemiBold else FontWeight.Medium),
-            color = if (selected) c.paper else c.ink, textAlign = TextAlign.Center)
+        // M3 filter chip: 8dp corners; selected is tonal with a check.
+        val shape = RoundedCornerShape(8.dp)
+        Row(
+            Modifier.heightIn(min = 32.dp).clip(shape)
+                .then(if (selected) Modifier.background(c.secondaryContainer, shape) else Modifier.border(1.dp, c.line, shape))
+                .padding(start = if (selected) 8.dp else 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            if (selected) com.bontecou.syncmd.ui.theme.TideIcon(com.bontecou.syncmd.R.drawable.ic_m3_check, tint = c.onSecondaryContainer, size = 18.dp)
+            Text(label, style = TideType.sans(14.sp, FontWeight.Medium),
+                color = if (selected) c.onSecondaryContainer else c.inkMid, textAlign = TextAlign.Center)
+        }
     }
 }
 
 /** Body-copy footnote (13/400, faint). */
 @Composable
-internal fun AddVaultFootnote(text: String, modifier: Modifier = Modifier, color: Color = Tide.colors.inkFaint) {
+internal fun AddVaultFootnote(text: String, modifier: Modifier = Modifier, color: Color = Tide.colors.inkMid) {
     Text(text, modifier = modifier.fillMaxWidth().padding(horizontal = 4.dp), style = TideType.sans(13.sp).copy(lineHeight = 18.sp), color = color)
 }
 
@@ -212,10 +235,12 @@ internal fun AddVaultNote(text: String, tone: TideBannerTone, modifier: Modifier
         TideBannerTone.SYNCED -> c.synced
         TideBannerTone.NEUTRAL -> c.inkMid
     }
-    Row(modifier.fillMaxWidth().padding(horizontal = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Box(Modifier.padding(top = 6.dp).size(7.dp).background(tint, CircleShape))
-        Text(text, textModifier.weight(1f), style = TideType.sans(14.sp, FontWeight.Medium).copy(lineHeight = 19.sp),
-            color = if (tone == TideBannerTone.NEUTRAL) c.ink else tint)
+    // Tonal info box (M3 boards use 16dp containers for these notes).
+    val (fill, ink) = if (tone == TideBannerTone.NEUTRAL) c.well to c.inkMid else (c.containerFor(tint) ?: (tint.copy(alpha = 0.12f) to tint))
+    Row(modifier.fillMaxWidth().background(fill, RoundedCornerShape(16.dp)).padding(horizontal = 14.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        com.bontecou.syncmd.ui.theme.TideIcon(com.bontecou.syncmd.R.drawable.ic_m3_info, tint = ink, size = 20.dp)
+        Text(text, textModifier.weight(1f), style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = ink)
     }
 }
 
@@ -225,8 +250,8 @@ internal fun AddVaultProgress(modifier: Modifier = Modifier, onHero: Boolean = f
     val c = Tide.colors
     LinearProgressIndicator(
         modifier.fillMaxWidth().height(3.dp).clip(CircleShape),
-        color = if (onHero) c.heroText else c.ink,
-        trackColor = if (onHero) c.heroLine else c.line,
+        color = if (onHero) c.heroText else c.primary,
+        trackColor = if (onHero) c.heroLine else c.primaryContainer,
     )
 }
 
@@ -235,7 +260,7 @@ internal fun AddVaultProgress(modifier: Modifier = Modifier, onHero: Boolean = f
 internal fun AddVaultBusyLine(text: String, modifier: Modifier = Modifier, onHero: Boolean = false) {
     val c = Tide.colors
     Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        TidePulse(color = if (onHero) c.heroText else c.ink)
+        TidePulse(color = if (onHero) c.heroText else c.primary)
         Text(text, style = TideType.sans(15.sp, FontWeight.Medium), color = if (onHero) c.heroMeta else c.inkMid)
     }
 }
@@ -247,7 +272,7 @@ internal fun AddVaultTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    color: Color = Tide.colors.ink,
+    color: Color = Tide.colors.primary,
 ) {
     Box(
         modifier
@@ -259,7 +284,7 @@ internal fun AddVaultTextButton(
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, style = TideType.sans(15.sp, FontWeight.Medium), color = color, textAlign = TextAlign.Center)
+        Text(label, style = TideType.sans(14.sp, FontWeight.SemiBold), color = color, textAlign = TextAlign.Center)
     }
 }
 

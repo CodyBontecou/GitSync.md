@@ -152,7 +152,7 @@ class RepositoryShortcutLauncherTest {
                 { "Fixture" to "fixture@example.invalid" }, catalog::requireCurrent, credentialRevision = credentials::recordVersion)
             val service = RepositoryShortcutService(context, runner, auth, credentials); backend = service
             assertTrue(service.supported())
-            scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)); awaitTag("open-repository-actions")
+            scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)); awaitTag("home-more")
             val saved = service.prepare(runner.review(catalog.snapshot().single()), action, "Reviewed launcher action", background)
             record = saved; label = service.info(saved).shortLabel.toString()
             scenario!!.onActivity { assertTrue(service.requestPin(saved)) }
@@ -304,7 +304,7 @@ class RepositoryShortcutLauncherTest {
                 assertFalse(runs.claim(result.id, saved.id))
                 // Opening the app afterward only reviews the persisted result; it cannot replay the action.
                 scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
-                awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick()
+                awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick()
                 awaitTag("repository-actions-screen")
                 var review: RepositoryActionsViewModel? = null
                 scenario!!.onActivity { review = ViewModelProvider(it)[RepositoryActionsViewModel::class.java] }

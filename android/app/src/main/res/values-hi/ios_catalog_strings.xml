@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"ट्रैकिंग नियम अपडेट किए गए। .gitattributes और चुनी गई फ़ाइलों की समीक्षा करके उन्हें स्टेज करें, फिर कमिट करें।"</string>
     <string name="lfs_uploads_authenticated" formatted="false">"अपलोड · अलग एन्क्रिप्ट किए गए क्रेडेंशियल"</string>
     <string name="lfs_uploads_public" formatted="false">"अपलोड · सार्वजनिक ऐक्सेस"</string>
+    <string name="m3_editor_preview" formatted="false">"पूर्वावलोकन"</string>
+    <string name="m3_editor_write" formatted="false">"लिखें"</string>
+    <string name="m3_md_bold" formatted="false">"बोल्ड"</string>
+    <string name="m3_md_checklist" formatted="false">"चेकलिस्ट आइटम"</string>
+    <string name="m3_md_code" formatted="false">"इनलाइन कोड"</string>
+    <string name="m3_md_heading" formatted="false">"शीर्षक"</string>
+    <string name="m3_md_italic" formatted="false">"इटैलिक"</string>
+    <string name="m3_md_link" formatted="false">"किसी नोट का लिंक"</string>
+    <string name="m3_open_in_editor" formatted="false">"एडिटर में खोलें"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Google Play से एक बार की ख़रीदारी। कोई सदस्यता नहीं।"</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"आपके Google Play खाते से भुगतान"</string>
+    <string name="m3_pick_a_file" formatted="false">"बदलाव देखने के लिए कोई फ़ाइल चुनें।"</string>
     <string name="modified" formatted="false">"संशोधित"</string>
     <string name="move_action" formatted="false">"कार्यशील प्रति ले जाएँ"</string>
     <string name="move_cancelled" formatted="false">"स्थानांतरण रद्द किया गया। मूल कार्यशील प्रति रखी गई।"</string>

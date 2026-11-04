@@ -6,9 +6,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
-// ─── Tide Typography ─────────────────────────────────────────────────────────
-// Geist for words, Geist Mono for git facts. Tide tops out at semibold and
-// keeps display sizes tightly tracked; labels are sentence case, mono, small.
+// ─── Material 3 type scale ───────────────────────────────────────────────────
+// Roboto for words (the system sans), a monospace face for git facts. Labels stay
+// sentence case; weights top out at 600 like the GitSync.md Material 3 design.
 
 private fun sans(size: Int, line: Int, weight: FontWeight, tracking: Double = 0.0) = TextStyle(
     fontFamily = TideFonts.Sans,
@@ -18,37 +18,24 @@ private fun sans(size: Int, line: Int, weight: FontWeight, tracking: Double = 0.
     letterSpacing = tracking.em,
 )
 
-private fun mono(size: Double, line: Int, weight: FontWeight, tracking: Double = 0.0) = TextStyle(
-    fontFamily = TideFonts.Mono,
-    fontWeight = weight,
-    fontSize = size.sp,
-    lineHeight = line.sp,
-    letterSpacing = tracking.em,
-)
-
 val Typography = Typography(
-    // Display — state headlines ("1 vault needs you.")
-    displayLarge   = sans(56, 60, FontWeight.SemiBold, -0.035),
-    displayMedium  = sans(44, 48, FontWeight.SemiBold, -0.035),
-    displaySmall   = sans(34, 38, FontWeight.SemiBold, -0.035),
+    displayLarge   = sans(57, 64, FontWeight.Normal, -0.0044),
+    displayMedium  = sans(45, 52, FontWeight.Normal),
+    displaySmall   = sans(36, 44, FontWeight.Normal),
 
-    // Headline — screen titles
-    headlineLarge  = sans(34, 38, FontWeight.SemiBold, -0.035),
-    headlineMedium = sans(26, 30, FontWeight.SemiBold, -0.03),
-    headlineSmall  = sans(21, 26, FontWeight.SemiBold, -0.02),
+    headlineLarge  = sans(32, 40, FontWeight.Normal),
+    headlineMedium = sans(28, 36, FontWeight.Normal),
+    headlineSmall  = sans(24, 32, FontWeight.Normal),
 
-    // Title — vault names, sheet titles, row headings
-    titleLarge     = sans(19, 24, FontWeight.SemiBold, -0.01),
-    titleMedium    = sans(16, 22, FontWeight.SemiBold),
-    titleSmall     = sans(15, 20, FontWeight.SemiBold),
+    titleLarge     = sans(22, 28, FontWeight.Medium),
+    titleMedium    = sans(16, 24, FontWeight.Medium, 0.009),
+    titleSmall     = sans(14, 20, FontWeight.Medium, 0.007),
 
-    // Body — reading copy
-    bodyLarge      = sans(16, 23, FontWeight.Normal),
-    bodyMedium     = sans(15, 21, FontWeight.Normal),
-    bodySmall      = sans(13, 18, FontWeight.Normal),
+    bodyLarge      = sans(16, 24, FontWeight.Normal, 0.031),
+    bodyMedium     = sans(14, 20, FontWeight.Normal, 0.018),
+    bodySmall      = sans(12, 16, FontWeight.Normal, 0.033),
 
-    // Label — buttons use sans; small labels are mono git facts
-    labelLarge     = sans(15, 20, FontWeight.SemiBold),
-    labelMedium    = mono(12.0, 16, FontWeight.Medium),
-    labelSmall     = mono(11.0, 15, FontWeight.Medium, 0.02),
+    labelLarge     = sans(14, 20, FontWeight.SemiBold, 0.007),
+    labelMedium    = sans(12, 16, FontWeight.SemiBold, 0.042),
+    labelSmall     = sans(11, 16, FontWeight.Medium, 0.045),
 )

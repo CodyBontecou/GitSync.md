@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material 3 layouts: diff bottom bar and the empty detail pane on tablets and foldables. -->
+    <string name="m3_open_in_editor">Open in editor</string>
+    <string name="m3_pick_a_file">Pick a file to see its changes.</string>
+    <!-- Paywall: Google Play wording from the Material 3 check-first boards. -->
+    <string name="m3_paywall_one_time_play">One-time purchase through Google Play. No subscription.</string>
+    <string name="m3_paywall_paid_with_play">Paid with your Google Play account</string>
+    <!-- Editor: Write / Preview for notes, and the markdown key labels for accessibility. -->
+    <string name="m3_editor_write">Write</string>
+    <string name="m3_editor_preview">Preview</string>
+    <string name="m3_md_heading">Heading</string>
+    <string name="m3_md_bold">Bold</string>
+    <string name="m3_md_italic">Italic</string>
+    <string name="m3_md_checklist">Checklist item</string>
+    <string name="m3_md_link">Link to a note</string>
+    <string name="m3_md_code">Inline code</string>
+</resources>

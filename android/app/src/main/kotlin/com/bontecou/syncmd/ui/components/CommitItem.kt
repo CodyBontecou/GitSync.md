@@ -132,7 +132,7 @@ fun CommitItem(
 @Composable
 private fun CommitDetailLabel(text: String) {
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0] ?: java.util.Locale.getDefault()
-    Text(text.trimEnd(':').uppercase(locale), style = TideType.section, color = Tide.colors.inkFaint)
+    Text(text.trimEnd(':'), style = TideType.section, color = Tide.colors.primary)
 }
 
 @Composable

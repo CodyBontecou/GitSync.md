@@ -511,6 +511,26 @@
    "count": 1
   },
   {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "Add Nov 1 daily note",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "Draft speaker tagging idea",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "Merge draft/pipeline into main",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "vault backup",
+   "count": 1
+  },
+  {
    "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsFileSummary.kt",
    "text": "$size · $cache",
    "count": 1
@@ -596,11 +616,6 @@
    "count": 1
   },
   {
-   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt",
-   "text": "${changes.size}",
-   "count": 1
-  },
-  {
    "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt",
    "text": "$badge",
    "count": 1
@@ -608,11 +623,6 @@
   {
    "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Tide.kt",
    "text": "$badge",
-   "count": 1
-  },
-  {
-   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Tide.kt",
-   "text": "$count",
    "count": 1
   },
   {

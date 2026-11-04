@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"İzleme kuralları güncellendi. .gitattributes ve seçili dosyaları inceleyip hazırlama alanına ekleyin, ardından commit oluşturun."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Yüklemeler · ayrı şifrelenmiş kimlik bilgileri"</string>
     <string name="lfs_uploads_public" formatted="false">"Yüklemeler · herkese açık erişim"</string>
+    <string name="m3_editor_preview" formatted="false">"Önizleme"</string>
+    <string name="m3_editor_write" formatted="false">"Yaz"</string>
+    <string name="m3_md_bold" formatted="false">"Kalın"</string>
+    <string name="m3_md_checklist" formatted="false">"Kontrol listesi öğesi"</string>
+    <string name="m3_md_code" formatted="false">"Satır içi kod"</string>
+    <string name="m3_md_heading" formatted="false">"Başlık"</string>
+    <string name="m3_md_italic" formatted="false">"İtalik"</string>
+    <string name="m3_md_link" formatted="false">"Bir nota bağlantı"</string>
+    <string name="m3_open_in_editor" formatted="false">"Düzenleyicide aç"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Google Play üzerinden tek seferlik satın alma. Abonelik yok."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Google Play hesabınızla ödenir"</string>
+    <string name="m3_pick_a_file" formatted="false">"Değişikliklerini görmek için bir dosya seçin."</string>
     <string name="modified" formatted="false">"Değiştirildi"</string>
     <string name="move_action" formatted="false">"Çalışma kopyasını taşı"</string>
     <string name="move_cancelled" formatted="false">"Taşıma iptal edildi. Orijinal çalışma kopyası korundu."</string>

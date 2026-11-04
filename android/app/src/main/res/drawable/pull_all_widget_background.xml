@@ -1,4 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="@color/pull_all_widget_background" />
-    <corners android:radius="16dp" />
+    <!-- Material 3 large widget shape (system widgets use 28dp on Android 12+). -->
+    <corners android:radius="28dp" />
 </shape>

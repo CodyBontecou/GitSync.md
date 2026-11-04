@@ -8079,6 +8079,66 @@
       "arguments": 0
     },
     {
+      "name": "m3_open_in_editor",
+      "source": "Open in editor",
+      "arguments": 0
+    },
+    {
+      "name": "m3_pick_a_file",
+      "source": "Pick a file to see its changes.",
+      "arguments": 0
+    },
+    {
+      "name": "m3_paywall_one_time_play",
+      "source": "One-time purchase through Google Play. No subscription.",
+      "arguments": 0
+    },
+    {
+      "name": "m3_paywall_paid_with_play",
+      "source": "Paid with your Google Play account",
+      "arguments": 0
+    },
+    {
+      "name": "m3_editor_write",
+      "source": "Write",
+      "arguments": 0
+    },
+    {
+      "name": "m3_editor_preview",
+      "source": "Preview",
+      "arguments": 0
+    },
+    {
+      "name": "m3_md_heading",
+      "source": "Heading",
+      "arguments": 0
+    },
+    {
+      "name": "m3_md_bold",
+      "source": "Bold",
+      "arguments": 0
+    },
+    {
+      "name": "m3_md_italic",
+      "source": "Italic",
+      "arguments": 0
+    },
+    {
+      "name": "m3_md_checklist",
+      "source": "Checklist item",
+      "arguments": 0
+    },
+    {
+      "name": "m3_md_link",
+      "source": "Link to a note",
+      "arguments": 0
+    },
+    {
+      "name": "m3_md_code",
+      "source": "Inline code",
+      "arguments": 0
+    },
+    {
       "name": "tide_home_state_synced",
       "source": "Synced %1$s",
       "arguments": 1
@@ -10121,6 +10181,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "الرفع · وصول عام"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "معاينة"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "كتابة"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "غامق"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "عنصر قائمة تحقق"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "تعليمات برمجية مضمّنة"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "عنوان"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "مائل"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "رابط إلى ملاحظة"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "فتح في المحرر"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "شراء لمرة واحدة عبر Google Play. بلا اشتراك."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "يُدفع بحساب Google Play الخاص بك"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "اختر ملفًا لعرض تغييراته."
       },
       {
         "name": "modified",
@@ -16789,6 +16897,54 @@
         "source": "Uploads · offentlig adgang"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Forhåndsvisning"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Skriv"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Fed"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Tjeklistepunkt"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Indlejret kode"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Overskrift"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Kursiv"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Link til en note"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Åbn i editor"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Engangskøb via Google Play. Intet abonnement."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Betales med din Google Play-konto"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Vælg en fil for at se dens ændringer."
+      },
+      {
         "name": "modified",
         "source": "Ændret"
       },
@@ -23453,6 +23609,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Uploads · öffentlicher Zugriff"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Vorschau"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Schreiben"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Fett"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Checklistenpunkt"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Inline-Code"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Überschrift"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Kursiv"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Link zu einer Notiz"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Im Editor öffnen"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Einmaliger Kauf über Google Play. Kein Abo."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Bezahlt mit deinem Google-Play-Konto"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Wähle eine Datei, um ihre Änderungen zu sehen."
       },
       {
         "name": "modified",
@@ -30121,6 +30325,54 @@
         "source": "Subidas · acceso público"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Vista previa"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Escribir"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Negrita"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Elemento de lista de tareas"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Código en línea"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Encabezado"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Cursiva"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Enlace a una nota"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Abrir en el editor"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Compra única a través de Google Play. Sin suscripción."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Se paga con tu cuenta de Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Elige un archivo para ver sus cambios."
+      },
+      {
         "name": "modified",
         "source": "Modificado"
       },
@@ -36785,6 +37037,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Lähetykset · julkinen käyttö"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Esikatselu"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Kirjoita"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Lihavointi"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Tarkistuslistan kohta"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Rivinsisäinen koodi"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Otsikko"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Kursivointi"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Linkki muistiinpanoon"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Avaa editorissa"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Kertaosto Google Playn kautta. Ei tilausta."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Maksetaan Google Play -tililläsi"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Valitse tiedosto nähdäksesi sen muutokset."
       },
       {
         "name": "modified",
@@ -43453,6 +43753,54 @@
         "source": "Envois · accès public"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Aperçu"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Écrire"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Gras"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Élément de liste de contrôle"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Code en ligne"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Titre"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Italique"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Lien vers une note"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Ouvrir dans l’éditeur"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Achat unique via Google Play. Sans abonnement."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Payé avec votre compte Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Choisissez un fichier pour voir ses modifications."
+      },
+      {
         "name": "modified",
         "source": "Modifié"
       },
@@ -50117,6 +50465,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "העלאות · גישה ציבורית"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "תצוגה מקדימה"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "כתיבה"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "מודגש"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "פריט ברשימת משימות"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "קוד מוטבע"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "כותרת"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "נטוי"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "קישור לפתק"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "פתיחה בעורך"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "רכישה חד-פעמית דרך Google Play. ללא מינוי."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "התשלום דרך חשבון Google Play שלך"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "בחרו קובץ כדי לראות את השינויים בו."
       },
       {
         "name": "modified",
@@ -56785,6 +57181,54 @@
         "source": "अपलोड · सार्वजनिक ऐक्सेस"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "पूर्वावलोकन"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "लिखें"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "बोल्ड"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "चेकलिस्ट आइटम"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "इनलाइन कोड"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "शीर्षक"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "इटैलिक"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "किसी नोट का लिंक"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "एडिटर में खोलें"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Google Play से एक बार की ख़रीदारी। कोई सदस्यता नहीं।"
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "आपके Google Play खाते से भुगतान"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "बदलाव देखने के लिए कोई फ़ाइल चुनें।"
+      },
+      {
         "name": "modified",
         "source": "संशोधित"
       },
@@ -63449,6 +63893,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Feltöltések · nyilvános hozzáférés"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Előnézet"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Írás"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Félkövér"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Ellenőrzőlista-elem"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Szövegközi kód"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Címsor"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Dőlt"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Hivatkozás jegyzetre"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Megnyitás szerkesztőben"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Egyszeri vásárlás a Google Playen. Nincs előfizetés."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "A Google Play-fiókoddal fizetsz"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Válassz egy fájlt a módosításai megtekintéséhez."
       },
       {
         "name": "modified",
@@ -70117,6 +70609,54 @@
         "source": "Unggahan · akses publik"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Pratinjau"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Tulis"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Tebal"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Item daftar periksa"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Kode sebaris"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Judul"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Miring"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Tautan ke catatan"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Buka di editor"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Pembelian satu kali melalui Google Play. Tanpa langganan."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Dibayar dengan akun Google Play Anda"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Pilih file untuk melihat perubahannya."
+      },
+      {
         "name": "modified",
         "source": "Diubah"
       },
@@ -76781,6 +77321,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Caricamenti · accesso pubblico"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Anteprima"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Scrivi"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Grassetto"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Voce di checklist"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Codice in linea"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Titolo"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Corsivo"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Link a una nota"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Apri nell’editor"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Acquisto una tantum tramite Google Play. Nessun abbonamento."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Pagato con il tuo account Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Scegli un file per vederne le modifiche."
       },
       {
         "name": "modified",
@@ -83449,6 +84037,54 @@
         "source": "アップロード · 公開アクセス"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "プレビュー"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "書く"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "太字"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "チェックリスト項目"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "インラインコード"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "見出し"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "斜体"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "ノートへのリンク"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "エディタで開く"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Google Play での買い切り購入。サブスクリプションなし。"
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Google Play アカウントで支払い"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "ファイルを選ぶと変更内容が表示されます。"
+      },
+      {
         "name": "modified",
         "source": "変更"
       },
@@ -90113,6 +90749,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "업로드 · 공개 접근"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "미리보기"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "쓰기"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "굵게"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "체크리스트 항목"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "인라인 코드"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "제목"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "기울임꼴"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "노트 링크"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "편집기에서 열기"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Google Play를 통한 일회성 구매. 구독 없음."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Google Play 계정으로 결제"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "파일을 선택하면 변경 사항이 표시됩니다."
       },
       {
         "name": "modified",
@@ -96781,6 +97465,54 @@
         "source": "Opplastinger · offentlig tilgang"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Forhåndsvisning"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Skriv"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Fet"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Sjekklistepunkt"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Innebygd kode"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Overskrift"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Kursiv"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Lenke til et notat"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Åpne i redigeringsprogram"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Engangskjøp via Google Play. Ingen abonnement."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Betales med Google Play-kontoen din"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Velg en fil for å se endringene i den."
+      },
+      {
         "name": "modified",
         "source": "Endret"
       },
@@ -103445,6 +104177,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Uploads · openbare toegang"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Voorbeeld"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Schrijven"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Vet"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Checklistitem"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Inline code"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Kop"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Cursief"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Link naar een notitie"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Openen in editor"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Eenmalige aankoop via Google Play. Geen abonnement."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Betaald met je Google Play-account"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Kies een bestand om de wijzigingen te zien."
       },
       {
         "name": "modified",
@@ -110113,6 +110893,54 @@
         "source": "Wysyłanie · dostęp publiczny"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Podgląd"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Pisz"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Pogrubienie"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Element listy kontrolnej"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Kod w tekście"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Nagłówek"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Kursywa"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Link do notatki"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Otwórz w edytorze"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Jednorazowy zakup w Google Play. Bez subskrypcji."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Płatność kontem Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Wybierz plik, aby zobaczyć jego zmiany."
+      },
+      {
         "name": "modified",
         "source": "Zmodyfikowano"
       },
@@ -116777,6 +117605,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Uploads · acesso público"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Pré-visualização"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Escrever"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Negrito"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Item de checklist"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Código embutido"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Título"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Itálico"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Link para uma nota"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Abrir no editor"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Compra única pelo Google Play. Sem assinatura."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Pago com sua conta do Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Escolha um arquivo para ver as alterações."
       },
       {
         "name": "modified",
@@ -123445,6 +124321,54 @@
         "source": "Отправка · публичный доступ"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Просмотр"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Текст"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Жирный"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Пункт списка задач"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Встроенный код"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Заголовок"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Курсив"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Ссылка на заметку"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Открыть в редакторе"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Разовая покупка через Google Play. Без подписки."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Оплата через ваш аккаунт Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Выберите файл, чтобы увидеть его изменения."
+      },
+      {
         "name": "modified",
         "source": "Изменено"
       },
@@ -130109,6 +131033,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Uppladdningar · offentlig åtkomst"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Förhandsvisning"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Skriv"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Fet"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Checklistpunkt"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Kod i rad"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Rubrik"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Kursiv"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Länk till en anteckning"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Öppna i redigeraren"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Engångsköp via Google Play. Ingen prenumeration."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Betalas med ditt Google Play-konto"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Välj en fil för att se dess ändringar."
       },
       {
         "name": "modified",
@@ -136777,6 +137749,54 @@
         "source": "อัปโหลด · การเข้าถึงสาธารณะ"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "ดูตัวอย่าง"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "เขียน"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "ตัวหนา"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "รายการเช็กลิสต์"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "โค้ดในบรรทัด"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "หัวเรื่อง"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "ตัวเอียง"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "ลิงก์ไปยังโน้ต"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "เปิดในตัวแก้ไข"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "ซื้อครั้งเดียวผ่าน Google Play ไม่มีการสมัครสมาชิก"
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "ชำระด้วยบัญชี Google Play ของคุณ"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "เลือกไฟล์เพื่อดูการเปลี่ยนแปลง"
+      },
+      {
         "name": "modified",
         "source": "แก้ไขแล้ว"
       },
@@ -143441,6 +144461,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Yüklemeler · herkese açık erişim"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Önizleme"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Yaz"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Kalın"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Kontrol listesi öğesi"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Satır içi kod"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Başlık"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "İtalik"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Bir nota bağlantı"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Düzenleyicide aç"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Google Play üzerinden tek seferlik satın alma. Abonelik yok."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Google Play hesabınızla ödenir"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Değişikliklerini görmek için bir dosya seçin."
       },
       {
         "name": "modified",
@@ -150109,6 +151177,54 @@
         "source": "Надсилання · публічний доступ"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "Перегляд"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Текст"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "Жирний"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Пункт списку завдань"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Вбудований код"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Заголовок"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "Курсив"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Посилання на нотатку"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Відкрити в редакторі"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Одноразова покупка через Google Play. Без підписки."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Оплата через ваш обліковий запис Google Play"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Виберіть файл, щоб побачити його зміни."
+      },
+      {
         "name": "modified",
         "source": "Змінено"
       },
@@ -156773,6 +157889,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "Tải lên · truy cập công khai"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "Xem trước"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "Viết"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "In đậm"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "Mục danh sách kiểm tra"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "Mã nội dòng"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "Tiêu đề"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "In nghiêng"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "Liên kết đến ghi chú"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "Mở trong trình soạn thảo"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "Mua một lần qua Google Play. Không cần đăng ký."
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "Thanh toán bằng tài khoản Google Play của bạn"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "Chọn một tệp để xem các thay đổi."
       },
       {
         "name": "modified",
@@ -163441,6 +164605,54 @@
         "source": "上传 · 公开访问"
       },
       {
+        "name": "m3_editor_preview",
+        "source": "预览"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "编写"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "粗体"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "清单项"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "行内代码"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "标题"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "斜体"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "链接到笔记"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "在编辑器中打开"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "通过 Google Play 一次性购买。无需订阅。"
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "使用你的 Google Play 账号付款"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "选择一个文件以查看其更改。"
+      },
+      {
         "name": "modified",
         "source": "已修改"
       },
@@ -170105,6 +171317,54 @@
       {
         "name": "lfs_uploads_public",
         "source": "上傳 · 公開存取"
+      },
+      {
+        "name": "m3_editor_preview",
+        "source": "預覽"
+      },
+      {
+        "name": "m3_editor_write",
+        "source": "編寫"
+      },
+      {
+        "name": "m3_md_bold",
+        "source": "粗體"
+      },
+      {
+        "name": "m3_md_checklist",
+        "source": "檢查清單項目"
+      },
+      {
+        "name": "m3_md_code",
+        "source": "行內程式碼"
+      },
+      {
+        "name": "m3_md_heading",
+        "source": "標題"
+      },
+      {
+        "name": "m3_md_italic",
+        "source": "斜體"
+      },
+      {
+        "name": "m3_md_link",
+        "source": "連結到筆記"
+      },
+      {
+        "name": "m3_open_in_editor",
+        "source": "在編輯器中開啟"
+      },
+      {
+        "name": "m3_paywall_one_time_play",
+        "source": "透過 Google Play 一次性購買。無需訂閱。"
+      },
+      {
+        "name": "m3_paywall_paid_with_play",
+        "source": "使用你的 Google Play 帳戶付款"
+      },
+      {
+        "name": "m3_pick_a_file",
+        "source": "選擇一個檔案以查看其變更。"
       },
       {
         "name": "modified",

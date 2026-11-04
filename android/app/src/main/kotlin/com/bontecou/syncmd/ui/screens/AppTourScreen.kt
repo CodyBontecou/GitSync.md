@@ -65,8 +65,11 @@ fun AppTourScreen(page: Int, busy: Boolean, error: Boolean, replay: Boolean, onP
             backLabel = stringResource(R.string.guide_back),
             backModifier = Modifier.testTag("tour-back"),
             center = {
-                Text(stringResource(R.string.guide_title), style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.ink,
-                    modifier = Modifier.testTag("tour-title"))
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    com.bontecou.syncmd.ui.theme.TideWordmark(size = 18.sp)
+                    Text(stringResource(R.string.guide_title), style = TideType.sans(14.sp, FontWeight.Medium), color = c.inkMid,
+                        modifier = Modifier.testTag("tour-title"))
+                }
             },
         )
     }) { padding ->
@@ -103,21 +106,24 @@ private val tourBodies = listOf(R.string.guide_clone_body, R.string.guide_edit_b
 private fun TourPage(index: Int, busy: Boolean, error: Boolean, replay: Boolean, onFinish: (GuideTarget) -> Unit) {
     val c = Tide.colors
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = Tide.gutter, vertical = 12.dp)) {
-        Text(stringResource(R.string.guide_step, index + 1), style = TideType.mono(12.sp, FontWeight.Medium), color = c.inkFaint,
+        Text(stringResource(R.string.guide_step, index + 1), style = TideType.section, color = c.primary,
             modifier = Modifier.padding(start = 4.dp).testTag("tour-step-$index"))
         if (index < 3) TourVignette(index, Modifier.padding(top = 16.dp))
-        Text(stringResource(tourTitles[index]), style = TideType.display(34.sp), color = c.ink,
+        Text(stringResource(tourTitles[index]), style = TideType.display(36.sp).copy(lineHeight = 44.sp), color = c.ink,
             modifier = Modifier.padding(start = 4.dp, top = 22.dp).testTag("tour-page-title-$index"))
         Text(stringResource(tourBodies[index]), style = TideType.sans(16.sp).copy(lineHeight = 23.sp), color = c.inkMid,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 12.dp).testTag("tour-page-body-$index"))
         if (error) TideBanner(stringResource(R.string.guide_save_error), Modifier.padding(top = 18.dp), tone = TideBannerTone.DANGER)
         if (index == 3 && !replay) {
-            TideCard(Modifier.padding(top = 22.dp), padding = 0.dp) {
-                val choices = listOf(GuideTarget.LOGIN to R.string.guide_login, GuideTarget.URL to R.string.guide_url,
+            // M3 board "10 · Onboarding": GitHub as the filled action, the other ways in as a list.
+            TidePrimaryButton(stringResource(R.string.guide_login), onClick = { onFinish(GuideTarget.LOGIN) }, enabled = !busy,
+                icon = painterResource(R.drawable.ic_github), modifier = Modifier.padding(top = 22.dp).testTag("tour-start-LOGIN"))
+            TideCard(Modifier.padding(top = 12.dp), padding = 0.dp) {
+                val choices = listOf(GuideTarget.URL to R.string.guide_url,
                     GuideTarget.SAMPLE to R.string.guide_sample, GuideTarget.STORAGE to R.string.guide_storage,
                     GuideTarget.HOME to R.string.guide_home)
                 choices.forEachIndexed { i, (target, label) ->
-                    if (i > 0) TideHairline(Modifier.padding(start = 66.dp))
+                    if (i > 0) TideHairline()
                     TourChoiceRow(target, stringResource(label), enabled = !busy) { onFinish(target) }
                 }
             }
@@ -139,20 +145,17 @@ private fun TourChoiceRow(target: GuideTarget, label: String, enabled: Boolean, 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        if (target == GuideTarget.LOGIN) {
-            Box(Modifier.size(36.dp).background(c.ink, androidx.compose.foundation.shape.RoundedCornerShape(12.dp)).clearAndSetSemantics {},
-                contentAlignment = Alignment.Center) {
-                Icon(painterResource(R.drawable.ic_github), contentDescription = null, tint = c.paper, modifier = Modifier.size(18.dp))
-            }
-        } else AddVaultIconTile(when (target) {
-            GuideTarget.URL -> "↓"
-            GuideTarget.SAMPLE -> "▶"
-            GuideTarget.STORAGE -> "▤"
-            else -> "→"
-        })
-        Text(label, style = TideType.sans(16.sp, FontWeight.SemiBold), color = c.ink, modifier = Modifier.weight(1f))
-        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = null, tint = c.inkFaint,
-            modifier = Modifier.size(16.dp).rotate(180f))
+        Box(Modifier.size(40.dp).background(c.primaryContainer, androidx.compose.foundation.shape.RoundedCornerShape(12.dp)).clearAndSetSemantics {},
+            contentAlignment = Alignment.Center) {
+            com.bontecou.syncmd.ui.theme.TideIcon(when (target) {
+                GuideTarget.URL -> R.drawable.ic_m3_link
+                GuideTarget.SAMPLE -> R.drawable.ic_m3_file
+                GuideTarget.STORAGE -> R.drawable.ic_m3_storage
+                else -> R.drawable.ic_m3_arrow_upward
+            }, tint = c.onPrimaryContainer)
+        }
+        Text(label, style = TideType.body, color = c.ink, modifier = Modifier.weight(1f))
+        com.bontecou.syncmd.ui.theme.TideChevron()
     }
 }
 
@@ -163,7 +166,7 @@ private fun TourPageDots(current: Int, count: Int, modifier: Modifier = Modifier
     Row(modifier.clearAndSetSemantics {}, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         repeat(count) { i ->
             val width by animateDpAsState(if (i == current) 22.dp else 7.dp, label = "dot$i")
-            Box(Modifier.height(7.dp).width(width).background(if (i == current) c.ink else c.lineSoft, CircleShape))
+            Box(Modifier.height(8.dp).width(width).background(if (i == current) c.primary else c.line, CircleShape))
         }
     }
 }

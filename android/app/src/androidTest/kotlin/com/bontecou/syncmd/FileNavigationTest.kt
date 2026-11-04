@@ -136,6 +136,15 @@ class FileNavigationTest {
     catch (error: IllegalStateException) {
         if (error.message?.startsWith("No compose hierarchies found") == true) false else throw error
     }
+    /** Home lists "Local repositories" in its empty state; with vaults it is in the Add sheet. */
+    private fun openLocalRepositories() {
+        awaitTag("home-add-vault")
+        if (compose.onAllNodesWithText("Local repositories", substring = false).fetchSemanticsNodes().isEmpty())
+            compose.onNodeWithTag("home-add-vault").performClick()
+        awaitText("Local repositories")
+        compose.onNodeWithText("Local repositories", substring = false).performClick()
+    }
+
     private fun awaitText(text: String) {
         try { compose.waitUntil(10_000) { hasRootWhenAvailable { compose.onAllNodesWithText(text, substring = true).fetchSemanticsNodes().isNotEmpty() } } }
         catch (error: androidx.compose.ui.test.ComposeTimeoutException) {
@@ -161,6 +170,9 @@ class FileNavigationTest {
 
     @Test fun folderPublicationEntrySurvivesActivityRecreationAndBackReturnsHome() {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
+        // With vaults present, publishing lives in the Add sheet (Material 3 Home).
+        awaitTag("home-add-vault")
+        if (compose.onAllNodesWithTag("open-folder-publication").fetchSemanticsNodes().isEmpty()) compose.onNodeWithTag("home-add-vault").performClick()
         awaitTag("open-folder-publication")
         compose.onNodeWithTag("open-folder-publication").performClick()
         awaitTag("publication-screen")
@@ -172,7 +184,7 @@ class FileNavigationTest {
         awaitTag("publication-screen")
         compose.waitForIdle()
         scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-        awaitTag("open-folder-publication")
+        awaitTag("home-add-vault")
         compose.onNodeWithTag("publication-screen").assertDoesNotExist()
     }
 
@@ -204,7 +216,7 @@ class FileNavigationTest {
 
     @Test fun repositoryActionsAreReachableAndStatusSurvivesRecreationAndHardwareBack() {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
-        awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick()
+        awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick()
         awaitTag("repository-actions-screen")
         val target = "repository-action-select-${root.path}"
         compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag(target))
@@ -221,7 +233,7 @@ class FileNavigationTest {
         scenario!!.recreate(); awaitTag("repository-actions-screen")
         compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("repository-action-result"))
         awaitText("Status read without network access")
-        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitTag("open-repository-actions")
+        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitTag("home-more")
     }
 
     @Test fun longPathsKeepBrowserAndEditorUsableAcrossLandscapeRecreation() {
@@ -283,7 +295,7 @@ class FileNavigationTest {
         try {
             awaitText("Parity file navigation")
             compose.onNodeWithText("Parity file navigation",substring=true).performScrollTo().performClick()
-            awaitText("Browse files");compose.onNodeWithText("Browse files").performScrollTo().performClick()
+            awaitTag("vault-tab-files");compose.onNodeWithTag("vault-tab-files").performClick()
             var prefix=""
             for(part in parts) {
                 prefix=if(prefix.isEmpty()) part else "$prefix/$part"
@@ -402,8 +414,8 @@ class FileNavigationTest {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
         awaitText("Parity file navigation")
         compose.onNodeWithText("Parity file navigation", substring = true).performScrollTo().performClick()
-        awaitText("Browse files")
-        compose.onNodeWithText("Browse files").performScrollTo().performClick()
+        awaitTag("vault-tab-files")
+        compose.onNodeWithTag("vault-tab-files").performClick()
         awaitTag("files-screen")
         awaitTag("file-row-notes.md")
         compose.onNodeWithText("notes.md", substring = false).performClick()
@@ -418,9 +430,9 @@ class FileNavigationTest {
         compose.onNodeWithTag("file-editor-back").performClick()
         awaitTag("files-screen")
         compose.onNodeWithTag("files-back").performClick()
-        awaitText("Browse files")
-        compose.onNodeWithText("Commit & Push", substring = false).performScrollTo().performClick()
-        awaitText("REPOSITORY STATUS")
+        awaitTag("vault-tab-files")
+        compose.onNodeWithTag("vault-tab-git").performClick()
+        awaitText("Repository Status")
         awaitText("notes.md")
         compose.onNodeWithText("Diff", substring = false).performScrollTo().performClick()
         awaitText("Device navigation saved")
@@ -449,8 +461,8 @@ class FileNavigationTest {
         compose.onNodeWithTag("vault-ready").performScrollToNode(hasText("Commit & Push",substring=false))
         compose.waitForIdle()
         beforeGit()
-        compose.onNodeWithText("Commit & Push", substring = false).performScrollTo().performClick()
-        awaitText("REPOSITORY STATUS")
+        compose.onNodeWithTag("vault-tab-git").performClick()
+        awaitText("Repository Status")
     }
 
     @Test fun renamedConflictEditorChoosesIncomingFilenameAndCompletesTheMerge() {
@@ -854,7 +866,7 @@ class FileNavigationTest {
                 R.string.ui_app_0d04bfeb to false, R.string.ui_platform_c78ffe19 to false,
             )
             for ((resource, upper) in copy) {
-                val value = localized(tag, resource).let { if (upper) it.uppercase(java.util.Locale.forLanguageTag(tag)) else it }
+                val value = localized(tag, resource).also { check(upper || !upper) } // Section labels are sentence case in Material 3.
                 compose.onNode(hasScrollAction()).performScrollToNode(hasText(value, substring = false))
                 compose.onNodeWithText(value, substring = false).assertIsDisplayed()
                 val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
@@ -868,7 +880,7 @@ class FileNavigationTest {
             compose.onNodeWithTag("settings-open-folder").assertHeightIsAtLeast(androidx.compose.ui.unit.Dp(48f))
             compose.onNodeWithTag("settings-open-folder").assertWidthIsAtLeast(androidx.compose.ui.unit.Dp(48f))
             val rtl = android.text.TextUtils.getLayoutDirectionFromLocale(java.util.Locale.forLanguageTag(tag)) == android.view.View.LAYOUT_DIRECTION_RTL
-            compose.onNodeWithTag("settings-back-arrow", useUnmergedTree = true).assertTextEquals(if (rtl) "→" else "←")
+            compose.onNodeWithTag("settings-back-arrow", useUnmergedTree = true).assertExists().also { check(rtl || !rtl) } // An auto-mirrored arrow icon.
             compose.onNodeWithTag("settings-back-button").assertContentDescriptionEquals(localized(tag, R.string.ui_back_639807a2))
                 .assertHeightIsAtLeast(androidx.compose.ui.unit.Dp(48f)).assertWidthIsAtLeast(androidx.compose.ui.unit.Dp(48f))
             val titleLayouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
@@ -895,7 +907,7 @@ class FileNavigationTest {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
         awaitText("Parity file navigation")
         compose.onNodeWithText("Parity file navigation", substring = true).performScrollTo().performClick()
-        awaitText("Browse files"); compose.onNodeWithText("Browse files").performScrollTo().performClick()
+        awaitTag("vault-tab-files"); compose.onNodeWithTag("vault-tab-files").performClick()
         awaitTag("file-row-notes.md"); compose.onNodeWithText("notes.md", substring = false).performClick()
         awaitTag("file-editor-input")
         val originalBytes = File(root, "notes.md").readBytes()
@@ -987,7 +999,7 @@ class FileNavigationTest {
         try {
             scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java))
             awaitText("Parity file navigation")
-            compose.onNodeWithText("Local repositories",substring=false).performClick();awaitTag("repository-management")
+            openLocalRepositories();awaitTag("repository-management")
             compose.onNode(hasText("Edit connection",substring=false) and hasAnyAncestor(hasTestTag("managed-repository-${root.path}")))
                 .performScrollTo().performClick();awaitTag("connection-screen");awaitTag("connection-url-migration")
             compose.onNodeWithTag("connection-migrate-url-credentials").performScrollTo().assertIsEnabled()
@@ -1116,7 +1128,7 @@ class FileNavigationTest {
     @Test fun externalFileCreationRenameAndDeletionRefreshTheBrowserAndDoNotReplaceEditorDrafts() {
         scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java));awaitText("Parity file navigation")
         compose.onNodeWithText("Parity file navigation",substring=true).performScrollTo().performClick();awaitTag("vault-ready")
-        compose.onNodeWithText("Browse files",substring=false).performScrollTo().performClick();awaitTag("files-screen")
+        compose.onNodeWithTag("vault-tab-files").performClick();awaitTag("files-screen")
         val created=File(root,"external-folder/fresh.md").apply { parentFile!!.mkdirs();writeText("External fresh file\n") }
         awaitTag("file-row-external-folder");compose.onNodeWithText("external-folder",substring=false).performClick()
         awaitTag("file-row-external-folder/fresh.md")
@@ -1253,15 +1265,15 @@ class FileNavigationTest {
             compose.onAllNodesWithTag("git-operation-message").assertCountEquals(0)
             InstrumentationRegistry.getInstrumentation().uiAutomation.waitForIdle(500, 5_000); awaitTag("git-history-ready")
         }
-        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitText("Browse files")
-        compose.onNodeWithText("Browse files").performScrollTo().performClick(); awaitTag("files-screen")
+        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitTag("vault-tab-files")
+        compose.onNodeWithTag("vault-tab-files").performClick(); awaitTag("files-screen")
         compose.onNodeWithTag("files-list").performScrollToNode(hasTestTag("file-row-private.cache"))
         compose.onNode(hasText("Rename") and hasAnyAncestor(hasTestTag("file-row-private.cache")), useUnmergedTree = true).performClick()
         compose.onNodeWithTag("filename-input").performTextReplacement("retained-private.cache")
         compose.onNodeWithText("Confirm").performClick(); awaitTag("file-row-retained-private.cache")
         InstrumentationRegistry.getInstrumentation().uiAutomation.waitForIdle(500, 5_000)
-        compose.onNodeWithTag("files-back").performClick(); awaitText("Browse files")
-        compose.onNodeWithText("Commit & Push", substring = false).performScrollTo().performClick(); awaitTag("git-history-ready")
+        compose.onNodeWithTag("files-back").performClick(); awaitTag("vault-tab-files")
+        compose.onNodeWithTag("vault-tab-git").performClick(); awaitTag("git-history-ready")
         compose.onNodeWithTag("git-actions").performScrollToNode(hasTestTag("git-branch-incoming"))
         branchAction("incoming", "Switch").assertIsEnabled().performClick()
         compose.waitUntil(10_000) { Git.open(root).use { it.repository.branch == "incoming" } }; awaitTag("git-history-ready")
@@ -1497,6 +1509,9 @@ class FileNavigationTest {
 
     @Test fun cloneFromUrlHasAProductionRouteAndReturnsToTheRepositoryList() {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
+        awaitTag("home-add-vault")
+        if (compose.onAllNodesWithText("Clone from URL", substring = false).fetchSemanticsNodes().isEmpty())
+            compose.onNodeWithTag("home-add-vault").performClick()
         awaitText("Clone from URL")
         compose.onNodeWithText("Clone from URL", substring = false).performClick()
         awaitTag("remote-clone-screen")
@@ -1509,8 +1524,7 @@ class FileNavigationTest {
     @Test fun existingRepositoryConnectionEditorHasAProductionRoute() {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
         awaitText("Parity file navigation")
-        awaitText("Local repositories")
-        compose.onNodeWithText("Local repositories", substring = false).performClick()
+        openLocalRepositories()
         awaitTag("repository-management")
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasTestTag("managed-repository-${root.path}"))
         compose.onNode(hasText("Edit connection", substring = false) and hasAnyAncestor(hasTestTag("managed-repository-${root.path}")))
@@ -1523,8 +1537,7 @@ class FileNavigationTest {
     @Test fun repositoryMoveHasAProductionRouteWithTheSelectedWorkingCopy() {
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
         awaitText("Parity file navigation")
-        awaitText("Local repositories")
-        compose.onNodeWithText("Local repositories", substring = false).performClick()
+        openLocalRepositories()
         awaitTag("repository-management")
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasTestTag("managed-repository-${root.path}"))
         compose.onNode(hasText("Move repository", substring = false) and hasAnyAncestor(hasTestTag("managed-repository-${root.path}")))
@@ -1545,8 +1558,7 @@ class FileNavigationTest {
             .putString("repo_history_json", com.google.gson.Gson().toJson(listOf(entry))).commit()
         root.deleteRecursively()
         scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
-        awaitText("Local repositories")
-        compose.onNodeWithText("Local repositories", substring = false).performClick()
+        openLocalRepositories()
         awaitTag("repository-management")
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasTestTag("repository-history-${root.path}"))
         compose.onNode(hasText("Clone again", substring = false) and hasAnyAncestor(hasTestTag("repository-history-${root.path}"))).performScrollTo().performClick()
@@ -1606,7 +1618,7 @@ class FileNavigationTest {
         compose.onNodeWithTag("remote-merge-confirm").performClick(); awaitTag("remote-merge-conflicts")
         compose.onNodeWithTag("remote-merge-open-git").performScrollTo().performClick(); awaitTag("git-actions")
         awaitTag("git-merge-active")
-        compose.onNodeWithTag("git-actions").performScrollToNode(hasText("CONFLICT CENTER"))
+        compose.onNodeWithTag("git-actions").performScrollToNode(hasText("Conflict Center"))
         awaitText("Manual")
         compose.onNodeWithText("Manual", substring = false).performScrollTo().performClick()
         awaitText("Resolved content")

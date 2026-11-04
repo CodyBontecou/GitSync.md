@@ -2,6 +2,7 @@ package com.bontecou.syncmd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -63,22 +64,45 @@ fun ConflictViewer(
 
         ConflictFilenameChoices(conflict, resolutionPath, enabled, onResolutionPathChange)
 
-        GitWorkVersionCard(
-            yours = true,
-            label = stringResource(R.string.tide_merge_yours),
-            content = if (conflict.hasCurrentVersion) conflict.currentContent else null,
-            deletedNote = stringResource(R.string.conflict_current_deleted),
-            blobByteCount = conflict.currentByteCount,
-            textAvailable = !conflict.isBinaryOrTooLarge,
-        )
-        GitWorkVersionCard(
-            yours = false,
-            label = stringResource(R.string.tide_merge_theirs),
-            content = if (conflict.hasIncomingVersion) conflict.incomingContent else null,
-            deletedNote = stringResource(R.string.conflict_incoming_deleted),
-            blobByteCount = conflict.incomingByteCount,
-            textAvailable = !conflict.isBinaryOrTooLarge,
-        )
+        // Tablets and unfolded foldables (Material 3 board "Tablet · conflict, side by side"):
+        // yours and theirs sit next to each other; a vertical hinge falls in the gap between them.
+        val adaptive = com.bontecou.syncmd.ui.util.rememberAdaptiveInfo()
+        val density = androidx.compose.ui.platform.LocalDensity.current
+        val hingeGap = adaptive.verticalSplit?.let { with(density) { (it.right - it.left).toDp() } } ?: 0.dp
+        val yoursCard: @Composable (Modifier) -> Unit = { m ->
+            Box(m) {
+                GitWorkVersionCard(
+                    yours = true,
+                    label = stringResource(R.string.tide_merge_yours),
+                    content = if (conflict.hasCurrentVersion) conflict.currentContent else null,
+                    deletedNote = stringResource(R.string.conflict_current_deleted),
+                    blobByteCount = conflict.currentByteCount,
+                    textAvailable = !conflict.isBinaryOrTooLarge,
+                )
+            }
+        }
+        val theirsCard: @Composable (Modifier) -> Unit = { m ->
+            Box(m) {
+                GitWorkVersionCard(
+                    yours = false,
+                    label = stringResource(R.string.tide_merge_theirs),
+                    content = if (conflict.hasIncomingVersion) conflict.incomingContent else null,
+                    deletedNote = stringResource(R.string.conflict_incoming_deleted),
+                    blobByteCount = conflict.incomingByteCount,
+                    textAvailable = !conflict.isBinaryOrTooLarge,
+                )
+            }
+        }
+        if (adaptive.isMedium) {
+            Row(Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(maxOf(12.dp, hingeGap))) {
+                yoursCard(Modifier.weight(1f))
+                theirsCard(Modifier.weight(1f))
+            }
+        } else {
+            yoursCard(Modifier.fillMaxWidth())
+            theirsCard(Modifier.fillMaxWidth())
+        }
         val baseContent = conflict.baseContent
         if (baseContent != null && baseContent.isNotBlank()) {
             GitWorkVersionCard(yours = null, label = stringResource(R.string.ui_base_7b47361a), content = baseContent, deletedNote = "",

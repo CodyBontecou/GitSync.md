@@ -202,7 +202,7 @@ class LocalizationTest {
         compose.runOnIdle { locale.value = "ar" }; compose.onNodeWithText(context("ar").getString(R.string.guide_continue)).assertIsDisplayed()
         capture("localization-ar-dark-xl.png")
         compose.onNodeWithTag("localized-primary").performClick(); assertEquals(2, clicks.value)
-        compose.runOnIdle { locale.value = "tr" }; compose.onNodeWithText("İ", substring = false).assertIsDisplayed()
+        compose.runOnIdle { locale.value = "tr" }; compose.onNodeWithText("i", substring = false).assertIsDisplayed() // Material 3 section headers keep sentence case; no caps transform.
         capture("localization-tr-light-xl.png")
         compose.runOnIdle { locale.value = "it" }
         val label = context("it").getString(R.string.ui_no_stashes_found_ace2fa6f)

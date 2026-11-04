@@ -85,7 +85,7 @@ internal fun VaultOpsSheet(
         properties = properties,
         text = {
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(title, style = TideType.display(26.sp), color = Tide.colors.ink,
+                Text(title, style = TideType.sans(24.sp).copy(lineHeight = 32.sp), color = Tide.colors.ink,
                     modifier = titleModifier.semantics { heading() })
                 content?.invoke(this)
             }
@@ -129,8 +129,8 @@ internal fun VaultOpsFact(label: String?, value: String, modifier: Modifier = Mo
 internal fun VaultOpsHeading(text: String, modifier: Modifier = Modifier) {
     Text(
         text,
-        style = TideType.sans(17.sp, FontWeight.SemiBold),
-        color = Tide.colors.ink,
+        style = TideType.section,
+        color = Tide.colors.primary,
         modifier = modifier.padding(start = 4.dp, top = 6.dp).semantics { heading() },
     )
 }
@@ -154,20 +154,20 @@ internal fun VaultOpsButton(
     style: VaultOpsButtonStyle = VaultOpsButtonStyle.PRIMARY,
 ) {
     val c = Tide.colors
-    val fill = if (style == VaultOpsButtonStyle.DANGER) c.danger else c.ink
-    val tint = if (style == VaultOpsButtonStyle.DANGER) Color.White else c.paper
+    val fill = if (style == VaultOpsButtonStyle.DANGER) c.danger else c.primary
+    val tint = if (style == VaultOpsButtonStyle.DANGER) c.onError else c.onPrimary
     Box(
         modifier
             .fillMaxWidth()
             .heightIn(min = 56.dp)
             .clip(CircleShape)
-            .background(fill.copy(alpha = if (enabled) 1f else 0.3f), CircleShape)
+            .background(if (enabled) fill else c.ink.copy(alpha = 0.12f), CircleShape)
             .clickable(enabled = enabled && !loading, role = Role.Button, onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
         if (loading) CircularProgressIndicator(Modifier.size(20.dp), color = tint, strokeWidth = 2.dp)
-        else Text(title, style = TideType.button, color = tint, textAlign = TextAlign.Center)
+        else Text(title, style = TideType.button, color = if (enabled) tint else c.ink.copy(alpha = 0.38f), textAlign = TextAlign.Center)
     }
 }
 
@@ -178,21 +178,21 @@ internal fun VaultOpsOutlineButton(title: String, onClick: () -> Unit, modifier:
     Box(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
+            .heightIn(min = 48.dp)
             .clip(CircleShape)
-            .border(1.dp, if (danger) c.danger.copy(alpha = 0.3f) else c.lineSoft, CircleShape)
+            .border(1.dp, c.lineSoft, CircleShape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .alpha(if (enabled) 1f else 0.4f)
             .padding(horizontal = 20.dp, vertical = 10.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = if (danger) c.danger else c.ink, textAlign = TextAlign.Center)
+        Text(title, style = TideType.sans(14.sp, FontWeight.SemiBold), color = if (danger) c.danger else c.primary, textAlign = TextAlign.Center)
     }
 }
 
 /** Text action with a 48dp target (Cancel, Dismiss). */
 @Composable
-internal fun VaultOpsTextButton(title: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, color: Color = Tide.colors.ink) {
+internal fun VaultOpsTextButton(title: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, color: Color = Tide.colors.primary) {
     Box(
         modifier
             .heightIn(min = 48.dp)
@@ -203,7 +203,7 @@ internal fun VaultOpsTextButton(title: String, onClick: () -> Unit, modifier: Mo
             .padding(horizontal = 14.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(title, style = TideType.sans(15.sp, FontWeight.Medium), color = color, textAlign = TextAlign.Center)
+        Text(title, style = TideType.sans(14.sp, FontWeight.SemiBold), color = color, textAlign = TextAlign.Center)
     }
 }
 

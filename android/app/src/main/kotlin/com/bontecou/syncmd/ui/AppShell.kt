@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
@@ -35,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import com.bontecou.syncmd.ui.util.awaitResumedNavigationEntry
 import com.bontecou.syncmd.ui.util.onResumedSource
+import androidx.compose.foundation.layout.Row
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -121,6 +123,7 @@ object Routes {
     const val OBSIDIAN = "obsidian"
     const val PUSH_SYNC = "push-sync"
     const val BACKGROUND_SYNC = "background-sync"
+    const val HISTORY = "history"
 }
 
 /**
@@ -251,6 +254,25 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         }
     }
 
+    val adaptive = com.bontecou.syncmd.ui.util.rememberAdaptiveInfo()
+    val selectedIdentity = registeredRepositories.firstOrNull { it.path == selectedRepository }?.displayIdentity()
+    // Changes · Files · History · Git are siblings under the vault: switching keeps one vault entry below them.
+    val openTab: (com.bontecou.syncmd.ui.components.VaultTab) -> Unit = { tab ->
+        when (tab) {
+            com.bontecou.syncmd.ui.components.VaultTab.CHANGES -> navController.onResumedSource {
+                if (!navController.popBackStack(Routes.VAULT, inclusive = false)) navController.navigate(Routes.VAULT)
+            }
+            com.bontecou.syncmd.ui.components.VaultTab.FILES -> navController.navigateSafe(Routes.FILES) { popUpTo(Routes.VAULT); launchSingleTop = true }
+            com.bontecou.syncmd.ui.components.VaultTab.HISTORY -> navController.navigateSafe(Routes.HISTORY) { popUpTo(Routes.VAULT); launchSingleTop = true }
+            com.bontecou.syncmd.ui.components.VaultTab.GIT -> navController.navigateSafe(Routes.GIT) { popUpTo(Routes.VAULT); launchSingleTop = true }
+        }
+    }
+    val openPullAll: () -> Unit = { navController.navigateSafe(Routes.PULL_ALL); pullAll.open() }
+    val openSettings: () -> Unit = { navController.navigateSafe(Routes.SETTINGS) }
+    val railFrame: @Composable (com.bontecou.syncmd.ui.components.VaultTab?, @Composable () -> Unit) -> Unit = { tab, content ->
+        com.bontecou.syncmd.ui.components.VaultRailFrame(adaptive, tab, openTab, openPullAll, openSettings, content)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -292,6 +314,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     onPublishFolder = { navController.navigateSafe(Routes.PUBLISH) },
                     onPullAll = { navController.navigateSafe(Routes.PULL_ALL); pullAll.open() },
                     onRepositoryActions = { navController.navigateSafe(Routes.REPOSITORY_ACTIONS) },
+                    signInIssue = sessionError?.asString(),
+                    onSignIn = { githubViewModel.authManager.clearSessionError(); navController.navigateSafe(Routes.LOGIN) },
+                    onDismissSignInIssue = githubViewModel.authManager::clearSessionError,
                 )
             }
 
@@ -380,24 +405,80 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
 
             // ── Vault (single repo overview) ──────────────────────────────
             composable(Routes.VAULT) {
-                VaultScreen(
-                    repositoryPath  = selectedRepository,
-                    showDebugInfo   = appSettings.showDebugInfo,
-                    repositoryName = registeredRepositories.firstOrNull { it.path == selectedRepository }?.displayIdentity()?.name,
-                    repositoryOwner = registeredRepositories.firstOrNull { it.path == selectedRepository }?.displayIdentity()?.owner,
-                    remoteUrl = registeredRepositories.firstOrNull { it.path == selectedRepository }?.remoteUrl,
-                    onOpenConnection = { navController.navigateSafe("${Routes.CONNECTION}/${Uri.encode(selectedRepository)}") },
-                    onEditAuthor = { navController.navigateSafe("${Routes.AUTHOR}/${Uri.encode(selectedRepository)}") },
-                    onMoveRepository = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(selectedRepository)}") },
-                    onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
-                    onOpenGit       = { navController.navigateSafe(Routes.GIT) },
-                    onOpenFiles     = { navController.navigateSafe(Routes.FILES) },
-                    onOpenDiff      = { filePath ->
-                        val encoded = Uri.encode(filePath)
-                        navController.navigateSafe("${Routes.DIFF}/$encoded")
-                    },
-                    onNavigateBack  = { navController.popBackStackSafe() },
-                )
+                // List-detail on tablets and foldables: the file picked in Changes opens beside the list.
+                var selectedFile by rememberSaveable(selectedRepository) { mutableStateOf<String?>(null) }
+                // Bumped when the commit sheet closes: staging or committing changes which layer the pane should show.
+                var detailRevision by remember { mutableStateOf(0) }
+                val twoPane = adaptive.isMedium
+                val openEditor: (String) -> Unit = { navController.navigateSafe("${Routes.EDITOR}/${Uri.encode(it)}") }
+                val vault: @Composable () -> Unit = {
+                    VaultScreen(
+                        repositoryPath  = selectedRepository,
+                        showDebugInfo   = appSettings.showDebugInfo,
+                        repositoryName = selectedIdentity?.name,
+                        repositoryOwner = selectedIdentity?.owner,
+                        remoteUrl = registeredRepositories.firstOrNull { it.path == selectedRepository }?.remoteUrl,
+                        onOpenConnection = { navController.navigateSafe("${Routes.CONNECTION}/${Uri.encode(selectedRepository)}") },
+                        onEditAuthor = { navController.navigateSafe("${Routes.AUTHOR}/${Uri.encode(selectedRepository)}") },
+                        onMoveRepository = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(selectedRepository)}") },
+                        onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
+                        onOpenGit       = { navController.navigateSafe(Routes.GIT) },
+                        onOpenFiles     = { navController.navigateSafe(Routes.FILES) },
+                        onOpenDiff      = { filePath ->
+                            if (twoPane) selectedFile = filePath
+                            else navController.navigateSafe("${Routes.DIFF}/${Uri.encode(filePath)}")
+                        },
+                        onNavigateBack  = { navController.popBackStackSafe() },
+                        showNavigation = !twoPane,
+                        onSelectTab = openTab,
+                        selectedFile = selectedFile.takeIf { twoPane },
+                        onCommitSheetClosed = { detailRevision++ },
+                    )
+                }
+                val detail: @Composable () -> Unit = {
+                    val file = selectedFile
+                    if (file == null) com.bontecou.syncmd.ui.components.VaultDetailPlaceholder()
+                    else androidx.compose.runtime.key(file, detailRevision) {
+                        DiffScreen(
+                            repositoryPath = selectedRepository,
+                            filePath = file,
+                            onNavigateBack = { selectedFile = null },
+                            onOpenEditor = { openEditor(file) },
+                            showBack = false,
+                        )
+                    }
+                }
+                when {
+                    !twoPane -> vault()
+                    // Half-opened like a laptop: the diff above the fold, the vault and its commit actions below.
+                    adaptive.isTabletop -> railFrame(com.bontecou.syncmd.ui.components.VaultTab.CHANGES) {
+                        com.bontecou.syncmd.ui.util.HingeAwareColumn(adaptive, top = detail, bottom = vault)
+                    }
+                    adaptive.isExpanded -> railFrame(com.bontecou.syncmd.ui.components.VaultTab.CHANGES) {
+                        androidx.compose.foundation.layout.Row(Modifier.fillMaxSize()) {
+                            com.bontecou.syncmd.ui.components.VaultListPane(registeredRepositories, selectedRepository,
+                                onSelect = { path -> selectedFile = null; settingsViewModel.setRepositoryPath(path) {} })
+                            Box(Modifier.weight(1f)) {
+                                com.bontecou.syncmd.ui.util.HingeAwareRow(adaptive, 380.dp, first = vault, second = detail)
+                            }
+                        }
+                    }
+                    else -> railFrame(com.bontecou.syncmd.ui.components.VaultTab.CHANGES) {
+                        com.bontecou.syncmd.ui.util.HingeAwareRow(adaptive, 360.dp, first = vault, second = detail)
+                    }
+                }
+            }
+
+            composable(Routes.HISTORY) {
+                railFrame(com.bontecou.syncmd.ui.components.VaultTab.HISTORY) {
+                    com.bontecou.syncmd.ui.screens.HistoryScreen(
+                        repositoryPath = selectedRepository,
+                        repositoryName = selectedIdentity?.name ?: selectedRepository.substringAfterLast('/'),
+                        onNavigateBack = { navController.popBackStackSafe() },
+                        showNavigation = !adaptive.isMedium,
+                        onSelectTab = openTab,
+                    )
+                }
             }
 
             // ── Git control (all git operations) ─────────────────────────
@@ -411,6 +492,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 com.bontecou.syncmd.ui.screens.RemoteMergeScreen(entry.arguments?.getString("path").orEmpty(), onBack = { navController.popBackStackSafe() })
             }
             composable(Routes.GIT) {
+              railFrame(com.bontecou.syncmd.ui.components.VaultTab.GIT) {
                 GitScreen(
                     repositoryPath = selectedRepository,
                     showDebugInfo  = appSettings.showDebugInfo,
@@ -422,7 +504,10 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         val encoded = Uri.encode(filePath)
                         navController.navigateSafe("${Routes.DIFF}/$encoded?staged=$staged")
                     },
+                    showNavigation = !adaptive.isMedium,
+                    onSelectTab = openTab,
                 )
+              }
             }
 
             // ── File diff viewer ──────────────────────────────────────────
@@ -432,35 +517,60 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     navArgument("staged") { type = NavType.StringType; defaultValue = "auto" }),
             ) { backStackEntry ->
                 val filePath = backStackEntry.arguments?.getString("filePath") ?: ""
-                DiffScreen(
-                    repositoryPath = selectedRepository,
-                    filePath       = filePath,
-                    staged = backStackEntry.arguments?.getString("staged")?.toBooleanStrictOrNull(),
-                    onNavigateBack = { navController.popBackStackSafe() },
-                )
+                val diff: @Composable () -> Unit = {
+                    DiffScreen(
+                        repositoryPath = selectedRepository,
+                        filePath       = filePath,
+                        staged = backStackEntry.arguments?.getString("staged")?.toBooleanStrictOrNull(),
+                        onNavigateBack = { navController.popBackStackSafe() },
+                        onOpenEditor = { navController.navigateSafe("${Routes.EDITOR}/${Uri.encode(filePath)}") },
+                    )
+                }
+                railFrame(null) {
+                    if (adaptive.isTabletop) {
+                        // Tabletop: read the diff above the fold, commit with the Git tools below it.
+                        com.bontecou.syncmd.ui.util.HingeAwareColumn(adaptive, top = diff, bottom = {
+                            GitScreen(
+                                repositoryPath = selectedRepository,
+                                showDebugInfo = appSettings.showDebugInfo,
+                                onNavigateBack = { navController.popBackStackSafe() },
+                                onOpenLfs = { navController.navigateSafe("${Routes.LFS}/${Uri.encode(selectedRepository)}") },
+                                onOpenRebase = { navController.navigateSafe("${Routes.REBASE}/${Uri.encode(selectedRepository)}") },
+                                onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
+                                onOpenDiff = { path, staged -> navController.navigateSafe("${Routes.DIFF}/${Uri.encode(path)}?staged=$staged") },
+                            )
+                        })
+                    } else diff()
+                }
             }
 
             composable(
                 route = "${Routes.FILES}?directory={directory}",
                 arguments = listOf(navArgument("directory") { type = NavType.StringType; defaultValue = "" }),
             ) { entry ->
+              railFrame(com.bontecou.syncmd.ui.components.VaultTab.FILES) {
                 FilesScreen(
                     repositoryPath = selectedRepository,
                     directory = entry.arguments?.getString("directory").orEmpty(),
                     onOpenDirectory = { navController.navigateSafe("${Routes.FILES}?directory=${Uri.encode(it)}") },
                     onOpenFile = { navController.navigateSafe("${Routes.EDITOR}/${Uri.encode(it)}") },
                     onNavigateBack = { navController.popBackStackSafe() },
+                    showNavigation = !adaptive.isMedium,
+                    onSelectTab = openTab,
                 )
+              }
             }
             composable(
                 route = "${Routes.EDITOR}/{filePath}",
                 arguments = listOf(navArgument("filePath") { type = NavType.StringType }),
             ) { entry ->
+              railFrame(com.bontecou.syncmd.ui.components.VaultTab.FILES) {
                 FileEditorScreen(
                     repositoryPath = selectedRepository,
                     filePath = entry.arguments?.getString("filePath").orEmpty(),
                     onNavigateBack = { navController.popBackStackSafe() },
                 )
+              }
             }
 
             // ── Settings ──────────────────────────────────────────────────
@@ -590,7 +700,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             confirmButton = { com.bontecou.syncmd.ui.theme.BPrimaryButton(stringResource(R.string.notes_acknowledge),
                 Modifier.heightIn(min = 48.dp).testTag("notes-acknowledge"), onClick = guide::notesSeen) })
     }
-    if (sessionError != null && navigationEntry?.destination?.route != Routes.LOGIN) {
+    // Home shows a session problem inline (board "24 · Sign-in expired"); elsewhere it stays a dialog.
+    if (sessionError != null && navigationEntry?.destination?.route != Routes.LOGIN && navigationEntry?.destination?.route != Routes.REPOS) {
         com.bontecou.syncmd.ui.theme.TideDialog(onDismissRequest = githubViewModel.authManager::clearSessionError,
             icon = { com.bontecou.syncmd.ui.theme.TideModalIcon(tint = com.bontecou.syncmd.ui.theme.Tide.colors.ahead) },
             title = stringResource(R.string.ui_github_sign_in_a2e50311),

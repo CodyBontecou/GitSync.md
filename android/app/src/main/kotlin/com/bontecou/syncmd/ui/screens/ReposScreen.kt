@@ -35,10 +35,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -80,6 +76,17 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import com.bontecou.syncmd.ui.theme.TideChevron
+import com.bontecou.syncmd.ui.theme.TideHero
 import com.bontecou.syncmd.services.git.RepositoryOverview
 import com.bontecou.syncmd.ui.components.RepositoryOverviewState
 import com.bontecou.syncmd.ui.components.headCommitText
@@ -133,6 +140,10 @@ fun ReposScreen(
     onPublishFolder: () -> Unit = {},
     onPullAll: () -> Unit = {},
     onRepositoryActions: () -> Unit = {},
+    /** A GitHub session problem (board "24 · Sign-in expired"), shown on Home with a sign-in action. */
+    signInIssue: String? = null,
+    onSignIn: () -> Unit = onAddRepo,
+    onDismissSignInIssue: () -> Unit = {},
 ) {
     val allRepos   by settingsViewModel.allRepositories.collectAsState()
     val isLoggedIn by githubViewModel.isLoggedIn.collectAsState()
@@ -160,6 +171,9 @@ fun ReposScreen(
         onPublishFolder = onPublishFolder,
         onPullAll = onPullAll,
         onRepositoryActions = onRepositoryActions,
+        signInIssue = signInIssue,
+        onSignIn = onSignIn,
+        onDismissSignInIssue = onDismissSignInIssue,
     )
 }
 
@@ -185,104 +199,165 @@ private fun ReposHomeContent(
     onPublishFolder: () -> Unit,
     onPullAll: () -> Unit,
     onRepositoryActions: () -> Unit,
+    signInIssue: String? = null,
+    onSignIn: () -> Unit = onAddRepo,
+    onDismissSignInIssue: () -> Unit = {},
 ) {
     val c = Tide.colors
-    Column(Modifier.fillMaxSize().background(c.paper)) {
-        HomeTopBar(isLoggedIn = isLoggedIn, onSignIn = onAddRepo, onNavigateToSettings = onNavigateToSettings)
-
-        if (vaults.isEmpty()) {
-            HomeEmptyState(
+    var adding by rememberSaveable { mutableStateOf(false) }
+    Box(Modifier.fillMaxSize().background(c.paper)) {
+        Column(Modifier.fillMaxSize()) {
+            HomeTopBar(
                 isLoggedIn = isLoggedIn,
                 signedInLogin = signedInLogin,
-                gitHubRepoCount = gitHubRepoCount,
-                onAddRepo = onAddRepo,
-                onCloneFromUrl = onCloneFromUrl,
-                onManageRepositories = onManageRepositories,
-                onPublishFolder = onPublishFolder,
-                modifier = Modifier.weight(1f),
+                onSignIn = onAddRepo,
+                onAdd = { adding = true },
+                onNavigateToSettings = onNavigateToSettings,
+                onPullAll = onPullAll,
+                onRepositoryActions = onRepositoryActions,
             )
-            // Bottom tools stay on screen so every entry point is reachable.
             Column(
-                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = Tide.gutter, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                HomeToolStrip(
-                    listOf(
-                        HomeTool(stringResource(R.string.pull_all_title), "open-pull-all", onPullAll),
-                        HomeTool(stringResource(R.string.repository_actions_title), "open-repository-actions", onRepositoryActions),
-                    )
-                )
-                TidePrimaryButton(stringResource(R.string.tide_home_add_first), onAddRepo)
-            }
-        } else {
-            var filter by rememberSaveable { mutableStateOf(HomeFilter.ALL) }
-            val attention = vaults.count { it.needsAttention }
-            val shown = if (filter == HomeFilter.ATTENTION) vaults.filter { it.needsAttention } else vaults
-
-            Column(
-                Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())
-                    .padding(horizontal = Tide.gutter).padding(top = 8.dp, bottom = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                HomeHeader(vaults, Modifier.padding(horizontal = 4.dp))
-                TideChipRow(Modifier.padding(top = 10.dp, bottom = 6.dp)) {
-                    TideFilterChip(stringResource(R.string.tide_home_filter_all), filter == HomeFilter.ALL,
-                        onClick = { filter = HomeFilter.ALL }, count = vaults.size)
-                    TideFilterChip(stringResource(R.string.tide_home_filter_attention), filter == HomeFilter.ATTENTION,
-                        onClick = { filter = HomeFilter.ATTENTION }, count = attention,
-                        dot = if (attention > 0) c.ahead else null)
-                }
-                if (shown.isEmpty()) {
-                    TideCard {
-                        Text(stringResource(R.string.tide_home_empty_filter_title), style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.ink)
-                        Spacer(Modifier.height(4.dp))
-                        Text(stringResource(R.string.tide_home_empty_filter_detail), style = TideType.meta, color = c.inkFaint)
-                    }
-                }
-                shown.forEach { vault ->
-                    key(vault.repo.path) {
-                        HomeVaultCard(
-                            vault = vault,
-                            onClick = { onRepoSelected(vault.repo.path) },
-                            onRemove = { onRepoRemoved(vault.repo.path) },
+                Column(Modifier.widthIn(max = 720.dp).fillMaxWidth().padding(horizontal = Tide.gutter).padding(top = 8.dp)) {
+                    if (signInIssue != null) HomeSignInIssue(signInIssue, onSignIn, onDismissSignInIssue)
+                    if (vaults.isEmpty()) {
+                        HomeEmptyState(
+                            isLoggedIn = isLoggedIn,
+                            signedInLogin = signedInLogin,
+                            gitHubRepoCount = gitHubRepoCount,
+                            onAddRepo = onAddRepo,
+                            onCloneFromUrl = onCloneFromUrl,
+                            onManageRepositories = onManageRepositories,
+                            onPublishFolder = onPublishFolder,
                         )
+                    } else {
+                        var filter by rememberSaveable { mutableStateOf(HomeFilter.ALL) }
+                        val attention = vaults.count { it.needsAttention }
+                        val shown = if (filter == HomeFilter.ATTENTION) vaults.filter { it.needsAttention } else vaults
+                        HomeHeader(vaults)
+                        TideChipRow(Modifier.padding(top = 8.dp)) {
+                            TideFilterChip(stringResource(R.string.tide_home_filter_all), filter == HomeFilter.ALL,
+                                onClick = { filter = HomeFilter.ALL }, count = vaults.size)
+                            TideFilterChip(stringResource(R.string.tide_home_filter_attention), filter == HomeFilter.ATTENTION,
+                                onClick = { filter = HomeFilter.ATTENTION }, count = attention,
+                                dot = if (attention > 0) c.ahead else null)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        if (shown.isEmpty()) {
+                            TideCard {
+                                Text(stringResource(R.string.tide_home_empty_filter_title), style = TideType.sans(16.sp, FontWeight.Medium), color = c.ink)
+                                Spacer(Modifier.height(4.dp))
+                                Text(stringResource(R.string.tide_home_empty_filter_detail), style = TideType.sans(14.sp), color = c.inkMid)
+                            }
+                        } else {
+                            HomeVaultList(shown, onRepoSelected, onRepoRemoved)
+                        }
                     }
+                    // Room for the floating action button.
+                    Spacer(Modifier.height(112.dp))
                 }
             }
+        }
+        HomeFab(
+            empty = vaults.isEmpty(),
+            onPullAll = onPullAll,
+            onAddFirst = onAddRepo,
+            modifier = Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(end = 16.dp, bottom = 24.dp),
+        )
+    }
+    if (adding) {
+        AddVaultSheet(
+            isLoggedIn = isLoggedIn,
+            gitHubRepoCount = gitHubRepoCount,
+            onDismiss = { adding = false },
+            onAddRepo = { adding = false; onAddRepo() },
+            onCloneFromUrl = { adding = false; onCloneFromUrl() },
+            onManageRepositories = { adding = false; onManageRepositories() },
+            onPublishFolder = { adding = false; onPublishFolder() },
+        )
+    }
+}
 
-            Column(
-                Modifier.fillMaxWidth().background(c.paper).navigationBarsPadding()
-                    .padding(horizontal = Tide.gutter, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                HomeToolStrip(
-                    listOf(
-                        HomeTool(stringResource(R.string.guide_url), null, onCloneFromUrl),
-                        HomeTool(stringResource(R.string.publication_title), "open-folder-publication", onPublishFolder),
-                        HomeTool(stringResource(R.string.ui_local_repositories_ddcf4270), null, onManageRepositories),
-                        HomeTool(stringResource(R.string.repository_actions_title), "open-repository-actions", onRepositoryActions),
-                    )
-                )
-                HomeBottomBar(onPullAll = onPullAll, onAddRepo = onAddRepo)
+/** Error-container card: sync is paused until the GitHub session is renewed; local notes are untouched. */
+@Composable
+private fun HomeSignInIssue(message: String, onSignIn: () -> Unit, onDismiss: () -> Unit) {
+    val c = Tide.colors
+    Column(
+        Modifier.fillMaxWidth().padding(bottom = 12.dp).background(c.errorContainer, Tide.heroShape).padding(20.dp)
+            .semantics { liveRegion = androidx.compose.ui.semantics.LiveRegionMode.Polite }.testTag("home-sign-in-issue"),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Icon(painterResource(R.drawable.ic_m3_lock), contentDescription = null, tint = c.onErrorContainer, modifier = Modifier.size(20.dp))
+            Text(stringResource(R.string.ui_github_sign_in_a2e50311), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onErrorContainer,
+                modifier = Modifier.semantics { heading() })
+        }
+        Text(message, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = c.onErrorContainer)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.heightIn(min = 40.dp).clip(CircleShape).background(c.danger).clickable(role = Role.Button, onClick = onSignIn)
+                .padding(horizontal = 24.dp).testTag("home-sign-in-renew"), contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.guide_login), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onError)
             }
+            BGhostButton(stringResource(R.string.ui_dismiss_48845bff), color = c.onErrorContainer, onClick = onDismiss)
         }
     }
 }
 
 // ─── Top bar ──────────────────────────────────────────────────────────────────
 
+/** gitsync.md wordmark, Add, overflow (Pull All, Repository actions) and the account avatar → Settings. */
 @Composable
-private fun HomeTopBar(isLoggedIn: Boolean, onSignIn: () -> Unit, onNavigateToSettings: () -> Unit) {
+private fun HomeTopBar(
+    isLoggedIn: Boolean,
+    signedInLogin: String?,
+    onSignIn: () -> Unit,
+    onAdd: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onPullAll: () -> Unit,
+    onRepositoryActions: () -> Unit,
+) {
+    val c = Tide.colors
+    var menu by remember { mutableStateOf(false) }
     TideTopBar(
         center = { TideWordmark() },
         actions = {
             if (!isLoggedIn) {
-                TideCircleButton(stringResource(R.string.guide_login), onSignIn, size = 48.dp, filled = false) {
-                    Icon(painterResource(R.drawable.ic_github), contentDescription = null, modifier = Modifier.size(20.dp))
+                TideCircleButton(stringResource(R.string.guide_login), onSignIn) {
+                    Icon(painterResource(R.drawable.ic_github), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(22.dp))
                 }
             }
-            TideCircleButton(stringResource(R.string.ui_app_settings_da645334), onNavigateToSettings, Modifier.testTag("open-settings"), size = 48.dp) {
-                Icon(Icons.Filled.Settings, contentDescription = null, modifier = Modifier.size(20.dp))
+            TideCircleButton(stringResource(R.string.ui_add_repository_33da2ac1), onAdd, Modifier.testTag("home-add-vault")) {
+                Icon(painterResource(R.drawable.ic_m3_add), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(24.dp))
+            }
+            Box {
+                TideCircleButton(stringResource(R.string.ui_more_d47d7cb0), { menu = true }, Modifier.testTag("home-more")) {
+                    Icon(painterResource(R.drawable.ic_m3_more_vert), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(24.dp))
+                }
+                DropdownMenu(expanded = menu, onDismissRequest = { menu = false }, modifier = Modifier.background(c.container)) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.pull_all_title), style = TideType.sans(14.sp)) },
+                        leadingIcon = { Icon(painterResource(R.drawable.ic_m3_arrow_downward), contentDescription = null, modifier = Modifier.size(20.dp)) },
+                        onClick = { menu = false; onPullAll() },
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.repository_actions_title), style = TideType.sans(14.sp)) },
+                        leadingIcon = { Icon(painterResource(R.drawable.ic_m3_sync), contentDescription = null, modifier = Modifier.size(20.dp)) },
+                        onClick = { menu = false; onRepositoryActions() },
+                        modifier = Modifier.testTag("open-repository-actions"),
+                    )
+                }
+            }
+            TideCircleButton(stringResource(R.string.ui_app_settings_da645334), onNavigateToSettings, Modifier.testTag("open-settings")) {
+                val initials = signedInLogin?.filter { it.isLetterOrDigit() }?.take(2)?.uppercase()
+                if (isLoggedIn && !initials.isNullOrEmpty()) {
+                    Box(Modifier.size(32.dp).background(c.tertiaryContainer, CircleShape), contentAlignment = Alignment.Center) {
+                        Text(initials, style = TideType.sans(13.sp, FontWeight.SemiBold), color = c.onTertiaryContainer)
+                    }
+                } else {
+                    Icon(painterResource(R.drawable.ic_m3_settings), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(24.dp))
+                }
             }
         },
     )
@@ -290,7 +365,7 @@ private fun HomeTopBar(isLoggedIn: Boolean, onSignIn: () -> Unit, onNavigateToSe
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-/** "1 vault\nneeds you." / "3 vaults\non this phone." plus a mono meta line. */
+/** Inverse hero: "1 vault needs you." (the second line in push orange) over a mono meta line. */
 @Composable
 private fun HomeHeader(vaults: List<HomeVault>, modifier: Modifier = Modifier) {
     val c = Tide.colors
@@ -302,17 +377,47 @@ private fun HomeHeader(vaults: List<HomeVault>, modifier: Modifier = Modifier) {
     val parts = mutableListOf(stringResource(R.string.tide_home_meta_ready, ready))
     if (checking > 0) parts += stringResource(R.string.tide_home_meta_checking, checking)
     if (attention > 0) parts += stringResource(R.string.tide_home_meta_unreadable, attention)
-    Column(modifier.semantics(mergeDescendants = true) { heading() }, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        TideDisplay(headline)
-        Text(parts.joinToString(" · "), style = TideType.mono(12.sp), color = c.inkMid)
+    val lines = headline.split('\n', limit = 2)
+    TideHero(modifier.semantics(mergeDescendants = true) { heading() }.testTag("home-hero")) {
+        Text(
+            buildAnnotatedString {
+                append(lines[0])
+                if (lines.size > 1) {
+                    append(' ')
+                    withStyle(SpanStyle(color = if (attention > 0) c.heroAhead else c.heroMeta)) { append(lines[1]) }
+                }
+            },
+            style = TideType.display(28.sp).copy(lineHeight = 34.sp),
+            color = c.heroText,
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(parts.joinToString(" · "), style = TideType.meta, color = c.heroMeta)
     }
 }
 
-// ─── Vault card ───────────────────────────────────────────────────────────────
+// ─── Vault list ───────────────────────────────────────────────────────────────
+
+/** One M3 list in a 28dp tonal container; rows separated by outline-variant dividers. */
+@Composable
+private fun HomeVaultList(vaults: List<HomeVault>, onRepoSelected: (String) -> Unit, onRepoRemoved: (String) -> Unit) {
+    val c = Tide.colors
+    Column(Modifier.fillMaxWidth().clip(Tide.cardShape).background(c.card)) {
+        vaults.forEachIndexed { index, vault ->
+            key(vault.repo.path) {
+                if (index > 0) TideHairline()
+                HomeVaultRow(
+                    vault = vault,
+                    onClick = { onRepoSelected(vault.repo.path) },
+                    onRemove = { onRepoRemoved(vault.repo.path) },
+                )
+            }
+        }
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
-private fun HomeVaultCard(
+private fun HomeVaultRow(
     vault: HomeVault,
     onClick: () -> Unit,
     onRemove: () -> Unit,
@@ -320,19 +425,18 @@ private fun HomeVaultCard(
     val c = Tide.colors
     val repo = vault.repo
     val scope = rememberCoroutineScope()
-    var showMenu    by remember { mutableStateOf(false) }
     var showConfirm by remember { mutableStateOf(false) }
     val offsetX     = remember { Animatable(0f) }
-    val shape = Tide.cardShape
+    val removeLabel = stringResource(R.string.ui_remove_repository_fc68168b)
 
-    Box(Modifier.fillMaxWidth().clip(shape)) {
-        // Danger well revealed as the card slides left.
-        Box(Modifier.matchParentSize().background(c.danger, shape), contentAlignment = Alignment.CenterEnd) {
+    Box(Modifier.fillMaxWidth()) {
+        // Error well revealed as the row slides left.
+        Box(Modifier.matchParentSize().background(c.danger), contentAlignment = Alignment.CenterEnd) {
             Text(stringResource(R.string.ui_remove_c3812fc4), modifier = Modifier.padding(end = 24.dp),
-                style = TideType.sans(15.sp, FontWeight.SemiBold), color = Color.White)
+                style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onError)
         }
 
-        Column(
+        Row(
             Modifier
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .pointerInput(repo.path) {
@@ -355,69 +459,43 @@ private fun HomeVaultCard(
                     )
                 }
                 .fillMaxWidth()
-                .clip(shape)
-                .background(c.card, shape)
+                .background(c.card)
                 .testTag("repo-card-${repo.path}")
-                .combinedClickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onClick,
-                    onLongClick = { showConfirm = true },
-                )
-                .padding(start = 18.dp, end = 6.dp, top = 12.dp, bottom = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .combinedClickable(onClick = onClick, onLongClick = { showConfirm = true })
+                .semantics { customActions = listOf(CustomAccessibilityAction(removeLabel) { showConfirm = true; true }) }
+                .heightIn(min = 72.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Column(Modifier.weight(1f).padding(top = 6.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    Text(repo.displayIdentity().name, style = TideType.title.copy(letterSpacing = (-0.4).sp), color = c.ink,
-                        maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text(repoDisplayPath(repo), style = TideType.meta.copy(textDirection = TextDirection.Ltr), color = c.inkFaint,
-                        maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-                Box(Modifier.padding(top = 10.dp)) { HomeVaultPill(vault.overview) }
-                Box {
-                    Box(
-                        Modifier.size(48.dp).clip(CircleShape).clickable { showMenu = true },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.ui_more_d47d7cb0),
-                            tint = c.inkMid, modifier = Modifier.size(20.dp))
-                    }
-                    DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.ui_remove_repository_fc68168b), style = TideType.body, color = c.danger) },
-                            onClick = { showMenu = false; showConfirm = true },
-                        )
-                    }
-                }
-            }
-
-            Column(Modifier.padding(end = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            HomeVaultLead(repo.displayIdentity().name, vault.overview)
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(repo.displayIdentity().name, style = TideType.sans(16.sp, FontWeight.Medium).copy(lineHeight = 24.sp), color = c.ink,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis)
                 when (val loaded = vault.overview) {
-                    is RepositoryOverviewState.Loaded -> FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalArrangement = Arrangement.spacedBy(2.dp),
-                    ) {
+                    is RepositoryOverviewState.Loaded -> FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(loaded.overview.branch, Modifier.testTag("repo-overview-branch"),
-                            style = TideType.metaStrong.copy(textDirection = TextDirection.Ltr), color = c.inkMid)
-                        Text("·", style = TideType.meta, color = c.inkFaint)
+                            style = TideType.meta.copy(textDirection = TextDirection.Ltr), color = c.inkMid, maxLines = 1)
+                        Text("·", style = TideType.meta, color = c.inkMid)
                         Text(headCommitText(loaded.overview.headCommit), Modifier.testTag("repo-overview-head"),
-                            style = TideType.meta, color = c.inkFaint)
-                        Text("·", style = TideType.meta, color = c.inkFaint)
+                            style = TideType.meta, color = c.inkMid, maxLines = 1)
+                        Text("·", style = TideType.meta, color = c.inkMid)
                         Text(recordedSyncText(loaded.overview.lastSyncAt), Modifier.testTag("repo-overview-sync"),
-                            style = TideType.meta, color = c.inkFaint)
+                            style = TideType.meta, color = c.inkMid, maxLines = 1)
                     }
                     RepositoryOverviewState.Loading -> Row(verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        TidePulse(color = c.inkFaint)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TidePulse(color = c.inkMid)
                         Text(stringResource(R.string.ui_loading_repository_15b79262), Modifier.testTag("repo-overview-unavailable"),
                             style = TideType.meta, color = c.inkMid)
                     }
                     RepositoryOverviewState.Unavailable -> Text(stringResource(R.string.repository_metadata_unavailable),
                         Modifier.testTag("repo-overview-unavailable"), style = TideType.meta, color = c.danger)
                 }
-                HomeVaultRail(vault.overview, remoteHostLabel(repo))
+                Text(repoDisplayPath(repo) + " · " + remoteHostLabel(repo), style = TideType.meta.copy(textDirection = TextDirection.Ltr),
+                    color = c.inkMid, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
+            HomeVaultPill(vault.overview)
         }
     }
 
@@ -426,7 +504,7 @@ private fun HomeVaultCard(
         TideDialog(
             onDismissRequest = { showConfirm = false },
             icon = { TideModalIcon() },
-            title = stringResource(R.string.ui_remove_repository_fc68168b),
+            title = removeLabel,
             text = {
                 Text(stringResource(R.string.ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d, displayName),
                     modifier = Modifier.testTag("repo-remove-body"))
@@ -438,6 +516,20 @@ private fun HomeVaultCard(
                 BGhostButton(stringResource(R.string.repository_actions_cancel), Modifier.fillMaxWidth(), onClick = { showConfirm = false })
             },
         )
+    }
+}
+
+/** 40dp circle with the vault's initial, toned by what the home read could say. */
+@Composable
+private fun HomeVaultLead(name: String, state: RepositoryOverviewState) {
+    val c = Tide.colors
+    val (fill, ink) = when (state) {
+        RepositoryOverviewState.Unavailable -> c.errorContainer to c.onErrorContainer
+        RepositoryOverviewState.Loading -> c.well to c.inkMid
+        is RepositoryOverviewState.Loaded -> if (state.overview.headCommit == null) c.well to c.inkMid else c.okContainer to c.onOkContainer
+    }
+    Box(Modifier.size(40.dp).background(fill, CircleShape).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
+        Text(name.firstOrNull { it.isLetterOrDigit() }?.toString() ?: "·", style = TideType.sans(16.sp, FontWeight.SemiBold), color = ink)
     }
 }
 
@@ -453,7 +545,7 @@ private fun HomeVaultPill(state: RepositoryOverviewState) {
             when {
                 state.overview.headCommit == null -> TidePill(stringResource(R.string.repository_no_commits), c.inkMid, c.well)
                 time == null -> TidePill(stringResource(R.string.tide_home_state_never_synced), c.inkMid, c.well)
-                else -> TidePill(stringResource(R.string.tide_home_state_synced, relativeTime(time)), c.ink, c.well)
+                else -> TidePill(stringResource(R.string.tide_home_state_synced, relativeTime(time)), c.synced, c.synced.copy(alpha = 0.12f))
             }
         }
     }
@@ -463,83 +555,101 @@ private fun relativeTime(time: Long): String =
     DateUtils.getRelativeTimeSpanString(time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS,
         DateUtils.FORMAT_ABBREV_RELATIVE).toString()
 
-/**
- * Phone ── sync point ── Remote. The home read has no ahead/behind counts, so
- * the rail draws no commit dots: a solid ring once read, dashed while
- * checking, danger when the working copy can't be read. Visual only — the
- * pill already says the state.
- */
+// ─── Floating action ──────────────────────────────────────────────────────────
+
+/** M3 extended FAB: Pull All once there are vaults, "Add your first vault" before. */
 @Composable
-private fun HomeVaultRail(state: RepositoryOverviewState, remoteLabel: String) {
+private fun HomeFab(empty: Boolean, onPullAll: () -> Unit, onAddFirst: () -> Unit, modifier: Modifier = Modifier) {
     val c = Tide.colors
-    val ring = when (state) {
-        RepositoryOverviewState.Unavailable -> c.danger
-        RepositoryOverviewState.Loading -> c.inkFaint
-        is RepositoryOverviewState.Loaded -> c.ink
-    }
-    val dashed = state is RepositoryOverviewState.Loading
-    Row(Modifier.fillMaxWidth().clearAndSetSemantics {}, verticalAlignment = Alignment.CenterVertically) {
-        Text(stringResource(R.string.tide_home_rail_phone), style = TideType.mono(10.5.sp), color = c.inkFaint)
-        Box(Modifier.weight(1f).height(18.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.Center) {
-            Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
-            Box(
-                Modifier.size(14.dp).background(c.card, CircleShape).drawBehind {
-                    val stroke = 2.dp.toPx()
-                    drawCircle(ring, radius = size.minDimension / 2 - stroke / 2,
-                        style = Stroke(stroke, pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(4f, 3f)) else null))
-                }
-            )
-        }
-        Text(remoteLabel, style = TideType.mono(10.5.sp), color = c.inkFaint, maxLines = 1)
-    }
-}
-
-// ─── Bottom bar & tools ───────────────────────────────────────────────────────
-
-@Composable
-private fun HomeBottomBar(onPullAll: () -> Unit, onAddRepo: () -> Unit) {
-    val c = Tide.colors
-    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-        TidePrimaryButton(
-            title = stringResource(R.string.pull_all_title),
-            onClick = onPullAll,
-            modifier = Modifier.weight(1f).testTag("open-pull-all"),
-            icon = painterResource(R.drawable.ic_pull_all),
-        )
-        Box(
-            Modifier.size(60.dp).clip(CircleShape).background(c.card, CircleShape).border(1.dp, c.lineSoft, CircleShape)
-                .clickable(onClick = onAddRepo),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.ui_add_repository_33da2ac1), tint = c.ink,
-                modifier = Modifier.size(24.dp))
-        }
-    }
-}
-
-private data class HomeTool(val label: String, val tag: String?, val onClick: () -> Unit)
-
-/** Secondary entry points as one quiet card of equal tiles; labels wrap. */
-@Composable
-private fun HomeToolStrip(tools: List<HomeTool>) {
-    val c = Tide.colors
-    val shape = RoundedCornerShape(18.dp)
+    val shape = RoundedCornerShape(16.dp)
+    val (fill, ink) = if (empty) c.primary to c.onPrimary else c.primaryContainer to c.onPrimaryContainer
     Row(
-        Modifier.fillMaxWidth().height(IntrinsicSize.Min).heightIn(min = 56.dp).clip(shape).background(c.card, shape),
+        modifier
+            .heightIn(min = 56.dp)
+            .shadow(6.dp, shape)
+            .clip(shape)
+            .background(fill)
+            .clickable(role = Role.Button, onClick = if (empty) onAddFirst else onPullAll)
+            .testTag(if (empty) "home-add-first" else "open-pull-all")
+            .padding(start = 16.dp, end = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        tools.forEachIndexed { index, tool ->
-            if (index > 0) Box(Modifier.width(1.dp).height(28.dp).background(c.line))
-            Box(
-                Modifier.weight(1f).fillMaxHeight().heightIn(min = 56.dp)
-                    .then(if (tool.tag != null) Modifier.testTag(tool.tag) else Modifier)
-                    .clickable(onClick = tool.onClick)
-                    .padding(horizontal = 6.dp, vertical = 8.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(tool.label, style = TideType.sans(13.sp, FontWeight.Medium), color = c.ink, textAlign = TextAlign.Center)
-            }
+        Icon(painterResource(if (empty) R.drawable.ic_m3_add else R.drawable.ic_m3_arrow_downward), contentDescription = null,
+            tint = ink, modifier = Modifier.size(24.dp))
+        Text(stringResource(if (empty) R.string.tide_home_add_first else R.string.pull_all_title), style = TideType.sans(15.sp, FontWeight.SemiBold), color = ink)
+    }
+}
+
+// ─── Add a vault ──────────────────────────────────────────────────────────────
+
+/** Bottom sheet listing every way to bring a vault in (GitHub, URL, on this phone, publish a folder). */
+@Composable
+private fun AddVaultSheet(
+    isLoggedIn: Boolean,
+    gitHubRepoCount: Int,
+    onDismiss: () -> Unit,
+    onAddRepo: () -> Unit,
+    onCloneFromUrl: () -> Unit,
+    onManageRepositories: () -> Unit,
+    onPublishFolder: () -> Unit,
+) {
+    TideDialog(
+        onDismissRequest = onDismiss,
+        sheet = true,
+        title = stringResource(R.string.ui_add_repository_33da2ac1),
+        modifier = Modifier.testTag("home-add-sheet"),
+        confirmButton = { BGhostButton(stringResource(R.string.repository_actions_cancel), Modifier.fillMaxWidth(), onClick = onDismiss) },
+    ) {
+        HomeStartList(isLoggedIn, gitHubRepoCount, onAddRepo, onCloneFromUrl, onManageRepositories, onPublishFolder)
+    }
+}
+
+@Composable
+private fun HomeStartList(
+    isLoggedIn: Boolean,
+    gitHubRepoCount: Int,
+    onAddRepo: () -> Unit,
+    onCloneFromUrl: () -> Unit,
+    onManageRepositories: () -> Unit,
+    onPublishFolder: () -> Unit,
+) {
+    val c = Tide.colors
+    Column(Modifier.fillMaxWidth().clip(Tide.cardShape).background(if (c.isDark) c.container else c.card)) {
+        HomeStartRow(R.drawable.ic_m3_branch, stringResource(R.string.tide_home_start_github),
+            when {
+                isLoggedIn && gitHubRepoCount > 0 -> pluralStringResource(R.plurals.tide_home_start_github_count, gitHubRepoCount, gitHubRepoCount)
+                isLoggedIn -> stringResource(R.string.tide_home_start_github_signed_in)
+                else -> stringResource(R.string.tide_home_start_github_signed_out)
+            }, null, onAddRepo)
+        TideHairline()
+        HomeStartRow(R.drawable.ic_m3_link, stringResource(R.string.guide_url), stringResource(R.string.tide_home_start_url_detail), null, onCloneFromUrl)
+        TideHairline()
+        HomeStartRow(R.drawable.ic_m3_phone, stringResource(R.string.ui_local_repositories_ddcf4270), stringResource(R.string.tide_home_start_local_detail), null, onManageRepositories)
+        TideHairline()
+        HomeStartRow(R.drawable.ic_m3_publish, stringResource(R.string.publication_title), stringResource(R.string.tide_home_start_publish_detail),
+            "open-folder-publication", onPublishFolder)
+    }
+}
+
+@Composable
+private fun HomeStartRow(icon: Int, title: String, subtitle: String, tag: String?, onClick: () -> Unit) {
+    val c = Tide.colors
+    Row(
+        Modifier.fillMaxWidth().heightIn(min = 72.dp).clickable(role = Role.Button, onClick = onClick)
+            .then(if (tag != null) Modifier.testTag(tag) else Modifier)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Box(Modifier.size(40.dp).background(c.primaryContainer, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+            Icon(painterResource(icon), contentDescription = null, tint = c.onPrimaryContainer, modifier = Modifier.size(24.dp))
         }
+        Column(Modifier.weight(1f)) {
+            Text(title, style = TideType.body, color = c.ink)
+            Text(subtitle, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = c.inkMid)
+        }
+        TideChevron()
     }
 }
 
@@ -557,80 +667,48 @@ private fun HomeEmptyState(
     modifier: Modifier = Modifier,
 ) {
     val c = Tide.colors
-    Column(
-        modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = Tide.gutter).padding(bottom = 16.dp),
-    ) {
-        Column(Modifier.padding(horizontal = 4.dp).padding(top = 14.dp).semantics(mergeDescendants = true) { heading() },
-            verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            TideDisplay(stringResource(R.string.tide_home_empty_title))
-            if (isLoggedIn && !signedInLogin.isNullOrBlank()) {
-                Text(stringResource(R.string.tide_home_signed_in_as, signedInLogin), style = TideType.mono(12.sp), color = c.inkMid)
+    Column(modifier.fillMaxWidth()) {
+        TideHero(Modifier.testTag("home-hero")) {
+            Column(Modifier.semantics(mergeDescendants = true) { heading() }) {
+                Text(stringResource(R.string.tide_home_empty_title), style = TideType.display(28.sp).copy(lineHeight = 34.sp), color = c.heroText)
+                if (isLoggedIn && !signedInLogin.isNullOrBlank()) {
+                    Text(stringResource(R.string.tide_home_signed_in_as, signedInLogin), style = TideType.meta, color = c.heroMeta,
+                        modifier = Modifier.padding(top = 4.dp))
+                }
             }
+            HomeEmptyRail(Modifier.padding(top = 20.dp))
         }
-
-        HomeEmptyRail(Modifier.padding(top = 26.dp))
-
         TideSectionLabel(stringResource(R.string.tide_home_start_with), Modifier.padding(start = 4.dp, top = 24.dp, bottom = 8.dp))
-        TideCard(padding = 0.dp) {
-            Column(Modifier.padding(horizontal = 18.dp)) {
-                TideRow(
-                    title = stringResource(R.string.tide_home_start_github),
-                    subtitle = when {
-                        isLoggedIn && gitHubRepoCount > 0 -> pluralStringResource(R.plurals.tide_home_start_github_count, gitHubRepoCount, gitHubRepoCount)
-                        isLoggedIn -> stringResource(R.string.tide_home_start_github_signed_in)
-                        else -> stringResource(R.string.tide_home_start_github_signed_out)
-                    },
-                    accessory = TideAccessory.CHEVRON,
-                    onClick = onAddRepo,
-                )
-                TideHairline()
-                TideRow(stringResource(R.string.guide_url), subtitle = stringResource(R.string.tide_home_start_url_detail),
-                    accessory = TideAccessory.CHEVRON, onClick = onCloneFromUrl)
-                TideHairline()
-                TideRow(stringResource(R.string.ui_local_repositories_ddcf4270), subtitle = stringResource(R.string.tide_home_start_local_detail),
-                    accessory = TideAccessory.CHEVRON, onClick = onManageRepositories)
-                TideHairline()
-                TideRow(stringResource(R.string.publication_title), Modifier.testTag("open-folder-publication"),
-                    subtitle = stringResource(R.string.tide_home_start_publish_detail),
-                    accessory = TideAccessory.CHEVRON, onClick = onPublishFolder)
-            }
-        }
+        HomeStartList(isLoggedIn, gitHubRepoCount, onAddRepo, onCloneFromUrl, onManageRepositories, onPublishFolder)
     }
 }
 
-/** Dashed, empty sync rail: nothing on either side, a dashed sync point. */
+/** Dashed, empty sync rail inside the hero: Phone ┄┄┄ Remote, "nothing to sync". */
 @Composable
 private fun HomeEmptyRail(modifier: Modifier = Modifier) {
     val c = Tide.colors
     val description = stringResource(R.string.tide_home_empty_rail_description)
-    val dashed = c.lineSoft
-    val faint = c.inkFaint
-    Box(
-        modifier.fillMaxWidth().height(140.dp)
-            .drawBehind {
-                val r = Tide.radiusHero.toPx()
-                drawRoundRect(dashed, cornerRadius = CornerRadius(r, r),
-                    style = Stroke(1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(18f, 12f))))
-                val y = size.height / 2
-                val inset = 24.dp.toPx()
-                drawLine(dashed, Offset(inset, y), Offset(size.width - inset, y), strokeWidth = 1.dp.toPx())
-            }
-            .clearAndSetSemantics { contentDescription = description },
-        contentAlignment = Alignment.Center,
-    ) {
-        Row(Modifier.fillMaxWidth().padding(horizontal = 24.dp).offset(y = (-26).dp)) {
-            Text(stringResource(R.string.tide_home_rail_phone), style = TideType.mono(11.sp), color = faint)
+    val line = c.heroLine
+    val ring = c.heroMeta
+    Column(modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = description }) {
+        Row(Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.tide_home_rail_phone), style = TideType.mono(11.sp), color = c.heroMeta)
             Spacer(Modifier.weight(1f))
-            Text(stringResource(R.string.upstream_remote), style = TideType.mono(11.sp), color = faint)
+            Text(stringResource(R.string.upstream_remote), style = TideType.mono(11.sp), color = c.heroMeta)
         }
         Box(
-            Modifier.size(28.dp).background(c.paper, CircleShape).drawBehind {
+            Modifier.fillMaxWidth().padding(top = 6.dp).height(14.dp).drawBehind {
                 val stroke = 2.dp.toPx()
-                drawCircle(faint, radius = size.minDimension / 2 - stroke / 2,
-                    style = Stroke(stroke, pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 7f))))
+                val r = 7.dp.toPx()
+                val y = size.height / 2
+                drawLine(line, Offset(r * 2, y), Offset(size.width - r * 2, y), strokeWidth = stroke,
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 8f)))
+                drawCircle(ring, radius = r - stroke / 2, center = Offset(r, y), style = Stroke(stroke))
+                drawCircle(ring, radius = r - stroke / 2, center = Offset(size.width - r, y), style = Stroke(stroke))
             }
         )
-        Text(stringResource(R.string.tide_home_empty_rail_nothing), Modifier.offset(y = 34.dp), style = TideType.mono(11.sp), color = faint)
+        Text(stringResource(R.string.tide_home_empty_rail_nothing), Modifier.fillMaxWidth().padding(top = 8.dp),
+            style = TideType.mono(11.sp), color = c.heroMeta, textAlign = TextAlign.Center)
     }
 }
 

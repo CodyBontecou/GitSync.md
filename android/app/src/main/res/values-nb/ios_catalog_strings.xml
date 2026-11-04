@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"Sporingsreglene er oppdatert. Gå gjennom og legg .gitattributes og de valgte filene til i indeksen, og lag deretter en commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"Opplastinger · separat kryptert påloggingsinformasjon"</string>
     <string name="lfs_uploads_public" formatted="false">"Opplastinger · offentlig tilgang"</string>
+    <string name="m3_editor_preview" formatted="false">"Forhåndsvisning"</string>
+    <string name="m3_editor_write" formatted="false">"Skriv"</string>
+    <string name="m3_md_bold" formatted="false">"Fet"</string>
+    <string name="m3_md_checklist" formatted="false">"Sjekklistepunkt"</string>
+    <string name="m3_md_code" formatted="false">"Innebygd kode"</string>
+    <string name="m3_md_heading" formatted="false">"Overskrift"</string>
+    <string name="m3_md_italic" formatted="false">"Kursiv"</string>
+    <string name="m3_md_link" formatted="false">"Lenke til et notat"</string>
+    <string name="m3_open_in_editor" formatted="false">"Åpne i redigeringsprogram"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Engangskjøp via Google Play. Ingen abonnement."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Betales med Google Play-kontoen din"</string>
+    <string name="m3_pick_a_file" formatted="false">"Velg en fil for å se endringene i den."</string>
     <string name="modified" formatted="false">"Endret"</string>
     <string name="move_action" formatted="false">"Flytt arbeidskopi"</string>
     <string name="move_cancelled" formatted="false">"Flytting avbrutt. Den opprinnelige arbeidskopien ble beholdt."</string>

@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"追跡ルールを更新しました。.gitattributes と選択したファイルを確認してステージし、コミットしてください。"</string>
     <string name="lfs_uploads_authenticated" formatted="false">"アップロード · 個別の暗号化された認証情報"</string>
     <string name="lfs_uploads_public" formatted="false">"アップロード · 公開アクセス"</string>
+    <string name="m3_editor_preview" formatted="false">"プレビュー"</string>
+    <string name="m3_editor_write" formatted="false">"書く"</string>
+    <string name="m3_md_bold" formatted="false">"太字"</string>
+    <string name="m3_md_checklist" formatted="false">"チェックリスト項目"</string>
+    <string name="m3_md_code" formatted="false">"インラインコード"</string>
+    <string name="m3_md_heading" formatted="false">"見出し"</string>
+    <string name="m3_md_italic" formatted="false">"斜体"</string>
+    <string name="m3_md_link" formatted="false">"ノートへのリンク"</string>
+    <string name="m3_open_in_editor" formatted="false">"エディタで開く"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"Google Play での買い切り購入。サブスクリプションなし。"</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Google Play アカウントで支払い"</string>
+    <string name="m3_pick_a_file" formatted="false">"ファイルを選ぶと変更内容が表示されます。"</string>
     <string name="modified" formatted="false">"変更"</string>
     <string name="move_action" formatted="false">"作業コピーを移動"</string>
     <string name="move_cancelled" formatted="false">"移動をキャンセルしました。元の作業コピーは保持されています。"</string>

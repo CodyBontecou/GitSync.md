@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -82,6 +83,10 @@ fun DiffScreen(
     onNavigateBack: () -> Unit,
     staged: Boolean? = null,
     diffVM: DiffViewModel = hiltViewModel(),
+    /** Opens the file in the editor (Material 3 diff board: "Open in editor"). */
+    onOpenEditor: (() -> Unit)? = null,
+    /** False inside a list-detail pane, where the list stays beside the diff. */
+    showBack: Boolean = true,
 ) {
     LaunchedEffect(repositoryPath, filePath, staged) {
         if (repositoryPath.isNotBlank()) {
@@ -118,6 +123,8 @@ fun DiffScreen(
             isReverting = isReverting,
             onBack = onNavigateBack,
             onDiscard = { diffVM.requestDiscard(filePath) },
+            onOpenEditor = onOpenEditor,
+            showBack = showBack,
         )
 
         if (diffError != null && selectedFileDiff != null) {
@@ -152,6 +159,8 @@ private fun DiffContent(
     isReverting: Boolean,
     onBack: () -> Unit,
     onDiscard: () -> Unit,
+    onOpenEditor: (() -> Unit)? = null,
+    showBack: Boolean = true,
 ) {
     val c = Tide.colors
     val filename = filePath.substringAfterLast('/').ifEmpty { filePath }
@@ -163,16 +172,10 @@ private fun DiffContent(
 
     Column(Modifier.fillMaxSize()) {
         TideTopBar(
-            onBack = onBack,
+            onBack = if (showBack) onBack else null,
             backLabel = stringResource(R.string.publication_back),
             center = {
-                Text(
-                    if (directory.isBlank()) "/" else "$directory/",
-                    style = TideType.mono(12.sp),
-                    color = c.inkMid,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                com.bontecou.syncmd.ui.theme.TideTopBarTitle(filename, if (directory.isBlank()) "/" else "$directory/")
             },
         )
 
@@ -210,9 +213,16 @@ private fun DiffContent(
                 enabled = !isReverting && !isLoading,
                 loading = isReverting,
                 fill = false,
-                height = 56.dp,
+                height = 48.dp,
             )
-            Spacer(Modifier.weight(1f))
+            if (onOpenEditor != null && fileDiff?.isBinary != true) {
+                Spacer(Modifier.width(12.dp))
+                com.bontecou.syncmd.ui.theme.TidePrimaryButton(
+                    stringResource(R.string.m3_open_in_editor), onOpenEditor,
+                    Modifier.weight(1f).testTag("diff-open-editor"),
+                    icon = androidx.compose.ui.res.painterResource(R.drawable.ic_m3_edit),
+                )
+            } else Spacer(Modifier.weight(1f))
         }
     }
 }
@@ -222,7 +232,6 @@ private fun DiffHeader(filename: String, fileDiff: FileDiff?, staged: Boolean?, 
     val c = Tide.colors
     Column(Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 14.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        TideDisplay(filename, size = 26.sp)
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
             fileDiff?.let { GitWorkStatusPill(it.status) }
             val isStaged = fileDiff?.isStaged == true || staged == true

@@ -27,6 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.pluralStringResource
@@ -120,19 +124,20 @@ private fun RepoPickerContent(
             TideTopBar(
                 onBack = onBack,
                 backLabel = stringResource(R.string.publication_back),
+                center = { com.bontecou.syncmd.ui.theme.TideTopBarTitle(stringResource(R.string.tide_onboarding_picker_title)) },
                 actions = {
-                    TideOutlineButton(stringResource(R.string.ui_github_accounts_653cf0c5), onClick = onManageAccounts, height = 44.dp)
+                    TideCircleButton(stringResource(R.string.ui_github_accounts_653cf0c5), onManageAccounts) {
+                        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_person, tint = c.inkMid)
+                    }
                     TideCircleButton(stringResource(R.string.ui_refresh_0e916101), onRefresh) {
-                        Text("↻", style = TideType.sans(18.sp, FontWeight.SemiBold), modifier = Modifier.clearAndSetSemantics {})
+                        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_sync, tint = c.inkMid)
                     }
                 },
             )
 
             Column(Modifier.fillMaxWidth().padding(horizontal = Tide.gutter), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.tide_onboarding_picker_title), style = TideType.display(34.sp), color = c.ink,
-                    modifier = Modifier.padding(start = 4.dp, top = 4.dp))
-                if (login != null) RepositoryPickerIdentity(login, repos.size, Modifier.padding(start = 4.dp))
-                RepoSearchField(searchQuery, onSearch, Modifier.padding(top = 10.dp))
+                RepoSearchField(searchQuery, onSearch, Modifier.padding(top = 4.dp))
+                if (login != null) RepositoryPickerIdentity(login, repos.size, Modifier.padding(start = 4.dp, top = 4.dp))
                 if (error != null) TideBanner(error, tone = TideBannerTone.DANGER)
             }
 
@@ -161,10 +166,16 @@ private fun RepoPickerContent(
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 16.dp, bottom = 24.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        items(repos, key = { it.id }) { repo ->
-                            RepoPickerRow(repo = repo, onClick = { onRepoSelected(repo) })
+                        itemsIndexed(repos, key = { _, it -> it.id }) { index, repo ->
+                            val r = Tide.radiusCard
+                            val shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                                topStart = if (index == 0) r else 0.dp, topEnd = if (index == 0) r else 0.dp,
+                                bottomStart = if (index == repos.lastIndex) r else 0.dp, bottomEnd = if (index == repos.lastIndex) r else 0.dp)
+                            Column(Modifier.fillMaxWidth().clip(shape).background(c.card)) {
+                                if (index > 0) com.bontecou.syncmd.ui.theme.TideHairline()
+                                RepoPickerRow(repo = repo, onClick = { onRepoSelected(repo) })
+                            }
                         }
                         item { Box(Modifier.navigationBarsPadding()) }
                     }
@@ -181,28 +192,28 @@ private fun RepoSearchField(query: String, onQuery: (String) -> Unit, modifier: 
     Row(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
-            .background(c.card, Tide.fieldShape)
-            .border(if (focused) 1.5.dp else 1.dp, if (focused) c.ink else c.lineSoft, Tide.fieldShape)
+            .heightIn(min = 56.dp)
+            .background(c.containerHigh, CircleShape)
+            .border(if (focused) 2.dp else 0.dp, if (focused) c.primary else Color.Transparent, CircleShape)
             .padding(start = 16.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Text("⌕", style = TideType.sans(17.sp), color = c.inkFaint, modifier = Modifier.clearAndSetSemantics {})
+        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_search, tint = c.inkMid)
         Box(Modifier.weight(1f)) {
-            if (query.isEmpty()) Text(stringResource(R.string.ui_search_repositories_243865a1), style = TideType.sans(15.sp), color = c.inkFaint)
+            if (query.isEmpty()) Text(stringResource(R.string.ui_search_repositories_243865a1), style = TideType.body, color = c.inkMid)
             BasicTextField(
                 value = query,
                 onValueChange = onQuery,
-                textStyle = TideType.sans(15.sp, FontWeight.Medium).copy(color = c.ink),
+                textStyle = TideType.body.copy(color = c.ink),
                 singleLine = true,
-                cursorBrush = SolidColor(c.ink),
+                cursorBrush = SolidColor(c.primary),
                 modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused },
             )
         }
         if (query.isNotEmpty()) {
             TideCircleButton(stringResource(R.string.tide_onboarding_picker_clear), { onQuery("") }, size = 40.dp, filled = false) {
-                Text("✕", style = TideType.sans(13.sp), color = c.inkMid, modifier = Modifier.clearAndSetSemantics {})
+                com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_close, tint = c.inkMid, size = 20.dp)
             }
         }
     }
@@ -212,12 +223,12 @@ private fun RepoSearchField(query: String, onQuery: (String) -> Unit, modifier: 
 @Composable
 private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
     val c = Tide.colors
-    TideCard(padding = 16.dp, onClick = onClick) {
+    TideCard(padding = 16.dp, radius = 0.dp, onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = repo.name,
-                    style = TideType.sans(17.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr),
+                    style = TideType.sans(16.sp, FontWeight.Medium).copy(textDirection = TextDirection.Ltr),
                     color = c.ink,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

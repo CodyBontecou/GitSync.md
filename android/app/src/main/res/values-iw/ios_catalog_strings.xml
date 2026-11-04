@@ -509,6 +509,18 @@
     <string name="lfs_tracking_updated" formatted="false">"כללי המעקב עודכנו. יש לבדוק את .gitattributes ואת הקבצים שנבחרו, להוסיף אותם לאינדקס ואז ליצור commit."</string>
     <string name="lfs_uploads_authenticated" formatted="false">"העלאות · פרטי הזדהות מוצפנים נפרדים"</string>
     <string name="lfs_uploads_public" formatted="false">"העלאות · גישה ציבורית"</string>
+    <string name="m3_editor_preview" formatted="false">"תצוגה מקדימה"</string>
+    <string name="m3_editor_write" formatted="false">"כתיבה"</string>
+    <string name="m3_md_bold" formatted="false">"מודגש"</string>
+    <string name="m3_md_checklist" formatted="false">"פריט ברשימת משימות"</string>
+    <string name="m3_md_code" formatted="false">"קוד מוטבע"</string>
+    <string name="m3_md_heading" formatted="false">"כותרת"</string>
+    <string name="m3_md_italic" formatted="false">"נטוי"</string>
+    <string name="m3_md_link" formatted="false">"קישור לפתק"</string>
+    <string name="m3_open_in_editor" formatted="false">"פתיחה בעורך"</string>
+    <string name="m3_paywall_one_time_play" formatted="false">"רכישה חד-פעמית דרך Google Play. ללא מינוי."</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"התשלום דרך חשבון Google Play שלך"</string>
+    <string name="m3_pick_a_file" formatted="false">"בחרו קובץ כדי לראות את השינויים בו."</string>
     <string name="modified" formatted="false">"שונה"</string>
     <string name="move_action" formatted="false">"העברת עותק העבודה"</string>
     <string name="move_cancelled" formatted="false">"ההעברה בוטלה. עותק העבודה המקורי נשמר."</string>
