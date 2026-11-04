@@ -2,8 +2,10 @@ import SwiftUI
 
 /// "Pick a repo" — the GitHub step of the add-a-vault flow (Tide).
 ///
-/// Tapping Clone clones straight from the picker into the default save
-/// location with the signed-in GitHub account, showing a progress card. A
+/// Tapping Clone first runs a metadata-only check (RepoPreflightView:
+/// access, branch, size, LFS, `.obsidian`), then clones straight from the
+/// picker into the default save location with the signed-in GitHub account,
+/// showing a progress card. A
 /// long press offers "Customize before cloning", which hands the repo back
 /// to the remote form (branch, sign-in method, location).
 struct RepoPickerView: View {
@@ -31,6 +33,15 @@ struct RepoPickerView: View {
     @State private var cloning: InlineClone? = nil
     @State private var cloneTask: Task<Void, Never>? = nil
     @State private var isVisible = false
+
+    /// Repo being checked before an inline clone (check-first step).
+    @State private var preflightTarget: PreflightTarget? = nil
+
+    private struct PreflightTarget: Hashable {
+        let repo: GitHubRepo
+        static func == (lhs: Self, rhs: Self) -> Bool { lhs.repo.id == rhs.repo.id }
+        func hash(into hasher: inout Hasher) { hasher.combine(repo.id) }
+    }
 
     private enum Tab: Hashable { case yours, orgs, starred }
     private enum LoadState: Equatable { case idle, loading, loaded, failed(String) }
@@ -124,16 +135,9 @@ struct RepoPickerView: View {
                             .padding(.top, 16)
 
                         if state.isSignedIn {
-                            AddVaultSegmented(
-                                options: [
-                                    .init(value: Tab.yours, title: String(localized: "Yours")),
-                                    .init(value: Tab.orgs, title: String(localized: "Orgs")),
-                                    .init(value: Tab.starred, title: String(localized: "Starred")),
-                                ],
-                                selection: $tab
-                            )
-                            .padding(.top, 14)
-                            .accessibilityIdentifier("repoPicker.tabs")
+                            tabChips
+                                .padding(.top, 14)
+                                .accessibilityIdentifier("repoPicker.tabs")
                         }
 
                         listContent
@@ -171,6 +175,26 @@ struct RepoPickerView: View {
             }
             .onAppear { isVisible = true }
             .onDisappear { isVisible = false }
+            .navigationDestination(item: $preflightTarget) { target in
+                let repo = target.repo
+                RepoPreflightView(
+                    repo: repo,
+                    destination: destinationLabel(folderName: Self.availableFolderName(
+                        repo.name,
+                        in: state.resolvedDefaultSaveURL ?? AppState.appDocumentsDirectory
+                    )),
+                    onClone: {
+                        preflightTarget = nil
+                        cloneDirectly(repo)
+                    },
+                    onCustomize: {
+                        preflightTarget = nil
+                        customize(repo)
+                    },
+                    onPickAnother: { preflightTarget = nil }
+                )
+                .toolbar(.hidden, for: .navigationBar)
+            }
         }
     }
 
@@ -209,6 +233,49 @@ struct RepoPickerView: View {
         .frame(minHeight: 46)
         .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.well))
         .padding(.horizontal, Tide.gutter)
+    }
+
+    // MARK: - Tabs
+
+    /// Yours · Orgs · Starred as chips: ink fill on the selected one.
+    private var tabChips: some View {
+        HStack(spacing: 8) {
+            ForEach([Tab.yours, .orgs, .starred], id: \.self) { value in
+                let isSelected = tab == value
+                Button {
+                    tab = value
+                } label: {
+                    Text(Self.title(for: value))
+                        .font(TideFont.sans(13, .medium, relativeTo: .footnote))
+                        .foregroundStyle(isSelected ? Tide.paper : Tide.ink)
+                        .lineLimit(1)
+                        .padding(.horizontal, 13)
+                        .frame(height: 32)
+                        .background {
+                            if isSelected {
+                                Capsule().fill(Tide.ink)
+                            } else {
+                                Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1)
+                            }
+                        }
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, Tide.gutter)
+        .accessibilityElement(children: .contain)
+    }
+
+    private static func title(for tab: Tab) -> String {
+        switch tab {
+        case .yours: return String(localized: "Yours")
+        case .orgs: return String(localized: "Orgs")
+        case .starred: return String(localized: "Starred")
+        }
     }
 
     // MARK: - List
@@ -250,7 +317,8 @@ struct RepoPickerView: View {
                     repoGroup(
                         title: String(localized: "Looks like notes · \(notes.count)"),
                         repos: notes,
-                        added: added
+                        added: added,
+                        emphasized: true
                     )
                 }
                 if !others.isEmpty {
@@ -275,13 +343,13 @@ struct RepoPickerView: View {
         }
     }
 
-    private func repoGroup(title: String, trailing: String? = nil, repos: [GitHubRepo], added: Set<String>) -> some View {
+    private func repoGroup(title: String, trailing: String? = nil, repos: [GitHubRepo], added: Set<String>, emphasized: Bool = false) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             AddVaultSectionLabel(title: title, trailing: trailing)
             AddVaultCard {
                 LazyVStack(spacing: 0) {
                     ForEach(repos) { repo in
-                        repoRow(repo, isAdded: added.contains(repo.fullName.lowercased()))
+                        repoRow(repo, isAdded: added.contains(repo.fullName.lowercased()), emphasized: emphasized)
                         if repo.id != repos.last?.id {
                             AddVaultHairline()
                         }
@@ -291,12 +359,13 @@ struct RepoPickerView: View {
         }
     }
 
-    private func repoRow(_ repo: GitHubRepo, isAdded: Bool) -> some View {
+    /// `emphasized` rows (notes-like repos) get the filled ink Clone pill.
+    private func repoRow(_ repo: GitHubRepo, isAdded: Bool, emphasized: Bool = false) -> some View {
         let isCloningThis = cloning?.name == repo.name && cloning?.finished == false
         return Button {
             // A second copy of an added repo needs a deliberate location:
             // send it through the form instead of cloning inline.
-            if isAdded { customize(repo) } else { cloneDirectly(repo) }
+            if isAdded { customize(repo) } else { checkThenClone(repo) }
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -331,7 +400,7 @@ struct RepoPickerView: View {
                     }
                     .foregroundStyle(Tide.synced)
                 } else {
-                    AddVaultPillLabel(title: String(localized: "Clone"))
+                    AddVaultPillLabel(title: String(localized: "Clone"), filled: emphasized)
                         .opacity(isCloneBlocked ? 0.4 : 1)
                 }
             }
@@ -465,6 +534,31 @@ struct RepoPickerView: View {
         dismiss()
     }
 
+    /// Inline clones run the metadata-only pre-clone check first. Without the
+    /// defaults an inline clone needs, `cloneDirectly` sends the repo to the
+    /// remote form instead, so skip the check there.
+    private func checkThenClone(_ repo: GitHubRepo) {
+        guard !isCloneBlocked else { return }
+        if canCloneInline {
+            preflightTarget = PreflightTarget(repo: repo)
+        } else {
+            cloneDirectly(repo)
+        }
+    }
+
+    private var canCloneInline: Bool {
+        state.isSignedIn && !state.isDemoMode
+            && !state.pat.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !state.defaultAuthorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !state.defaultAuthorEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func destinationLabel(folderName: String) -> String {
+        let destinationParent = state.resolvedDefaultSaveURL.map { "Files › \(RepoDiscoveryView.friendlyLocation(for: $0))" }
+            ?? String(localized: "Files › On My iPhone › GitSync.md").forThisDevice
+        return "\(destinationParent) › \(folderName)"
+    }
+
     /// Clones `repo` right here: GitHub sign-in, default branch, default save
     /// location, default author. Missing defaults fall back to the remote
     /// form so nothing is guessed.
@@ -496,12 +590,10 @@ struct RepoPickerView: View {
         RepositoryHistoryStore.shared.recordRepoAdded(identifier: repo.htmlURL.lowercased())
         state.addRepo(config)
 
-        let destinationParent = state.resolvedDefaultSaveURL.map { "Files › \(RepoDiscoveryView.friendlyLocation(for: $0))" }
-            ?? String(localized: "Files › On My iPhone › GitSync.md").forThisDevice
         cloning = InlineClone(
             repoID: config.id,
             name: repo.name,
-            destination: "\(destinationParent) › \(folderName)",
+            destination: destinationLabel(folderName: folderName),
             totalBytes: repo.sizeInBytes
         )
 

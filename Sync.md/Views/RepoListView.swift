@@ -28,6 +28,12 @@ struct RepoListView: View {
     /// the three-column workspace: vaults, files, file.
     @State private var detailWidth: CGFloat = 0
     @State private var homeFilter: HomeFilter = .all
+    /// Board "DuoHome": the rail's Activity button opens the debug log.
+    @State private var showActivityLog = false
+    /// Board "Main": the magnifier in the top bar filters vaults by name.
+    @State private var isSearching = false
+    @State private var searchText = ""
+    @FocusState private var searchFieldFocused: Bool
 
     private var isSplit: Bool { horizontalSizeClass == .regular }
 
@@ -51,7 +57,11 @@ struct RepoListView: View {
                                 .padding(.top, 8)
                                 .padding(.bottom, 4)
                         }
-                        repoList
+                        if showsWorkspaceSidebar {
+                            workspaceSidebarList
+                        } else {
+                            repoList
+                        }
                         homeBottomBar
                             .padding(.horizontal, Tide.gutter)
                             .padding(.vertical, 12)
@@ -110,11 +120,31 @@ struct RepoListView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
+                ToolbarItem(placement: .topBarLeading) {
                     (Text("gitsync").foregroundStyle(Tide.ink)
                         + Text(".md").foregroundStyle(Tide.behind))
                         .font(TideFont.mono(14, .semibold, relativeTo: .headline))
                         .accessibilityLabel("GitSync.md")
+                        .padding(.leading, 4)
+                }
+
+                if !state.visibleRepos.isEmpty {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                            toggleSearch()
+                        } label: {
+                            Image(systemName: isSearching ? "xmark" : "magnifyingglass")
+                                .font(.system(size: 17, weight: .medium))
+                                .foregroundStyle(Tide.ink)
+                                .frame(width: 44, height: 44)
+                                .accessibilityHidden(true)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(isSearching
+                            ? String(localized: "Close search")
+                            : String(localized: "Search vaults"))
+                        .accessibilityIdentifier("home.search")
+                    }
                 }
 
                 ToolbarItem(placement: .primaryAction) {
@@ -268,8 +298,18 @@ struct RepoListView: View {
     private func adaptiveNavigation<Home: View>(@ViewBuilder _ home: () -> Home) -> some View {
         if isSplit {
             NavigationSplitView {
-                home()
-                    .navigationSplitViewColumnWidth(min: 300, ideal: 360, max: 420)
+                HStack(spacing: 0) {
+                    if !showsWorkspaceSidebar {
+                        splitSectionRail
+                        Rectangle().fill(Tide.line).frame(width: 1).ignoresSafeArea()
+                    }
+                    home()
+                }
+                .navigationSplitViewColumnWidth(
+                    min: showsWorkspaceSidebar ? 260 : 340,
+                    ideal: showsWorkspaceSidebar ? 280 : 400,
+                    max: showsWorkspaceSidebar ? 320 : 480
+                )
             } detail: {
                 NavigationStack(path: $detailPath) {
                     splitDetail
@@ -321,6 +361,146 @@ struct RepoListView: View {
 
     /// Detail-column width from which the files tree gets its own column.
     private static let workspaceMinWidth: CGFloat = 800
+
+    /// Board "iPad": with the three-column workspace showing, the sidebar is
+    /// a slim VAULTS list rather than the full Home.
+    private var showsWorkspaceSidebar: Bool {
+        guard isSplit, let repoID = selectedRepoID, let repo = state.repo(id: repoID) else { return false }
+        return detailWidth >= Self.workspaceMinWidth && repo.isCloned
+            && state.hasLocalRepositoryAccess(repoID: repoID)
+    }
+
+    // MARK: - Split sidebar (regular width)
+
+    /// Board "DuoHome": the slim section rail beside Home — Vaults, Add vault,
+    /// Activity (the debug log) and Settings.
+    private var splitSectionRail: some View {
+        VStack(spacing: 6) {
+            railButton(systemImage: "square.stack", label: String(localized: "Vaults"), selected: true) {
+                detailPath = NavigationPath()
+            }
+            railButton(systemImage: "plus", label: String(localized: "Add vault")) {
+                handleAddRepoTapped()
+            }
+            railButton(systemImage: "waveform.path.ecg", label: String(localized: "Activity")) {
+                showActivityLog = true
+            }
+            Spacer(minLength: 0)
+            railButton(systemImage: "gearshape", label: String(localized: "App Settings")) {
+                showAppSettings = true
+            }
+        }
+        .padding(.vertical, 12)
+        .frame(width: 64)
+        .background(Tide.paper.ignoresSafeArea())
+        .sheet(isPresented: $showActivityLog) {
+            NavigationStack {
+                DebugLogView()
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button(String(localized: "Done")) { showActivityLog = false }
+                        }
+                    }
+            }
+        }
+    }
+
+    private func railButton(systemImage: String, label: String, selected: Bool = false,
+                            action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(selected ? Tide.paper : Tide.inkMid)
+                .frame(width: 44, height: 44)
+                .background(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(selected ? Tide.ink : Color.clear))
+                .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+
+    /// Board "iPad": "VAULTS" then one row per vault with its state glyph
+    /// (↑3, ↓2, ✓); the picked vault is the ink row.
+    private var workspaceSidebarList: some View {
+        let repos = pinnedFirst(state.visibleRepos)
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 4) {
+                TideSectionLabel(title: String(localized: "Vaults"))
+                    .padding(.horizontal, 8)
+                    .padding(.top, 10)
+                    .padding(.bottom, 6)
+                ForEach(repos) { repo in
+                    sidebarVaultRow(repo)
+                        .contextMenu { repoContextMenu(repo) }
+                }
+            }
+            .padding(.horizontal, 14)
+            .padding(.bottom, 8)
+        }
+        .scrollIndicators(.hidden)
+    }
+
+    private func sidebarVaultRow(_ repo: RepoConfig) -> some View {
+        let selected = selectedRepoID == repo.id
+        let glyph = sidebarGlyph(repo)
+        return Button {
+            selectedRepoID = repo.id
+            detailPath = NavigationPath()
+        } label: {
+            HStack(spacing: 8) {
+                Text(repo.displayName)
+                    .font(TideFont.sans(15, selected ? .semibold : .medium, relativeTo: .subheadline))
+                    .foregroundStyle(selected ? Tide.heroText : Tide.ink)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                pinGlyph(repo)
+                Spacer(minLength: 6)
+                if isSyncing(repo) {
+                    ProgressView()
+                        .controlSize(.mini)
+                        .tint(selected ? Tide.heroText : Tide.ink)
+                } else {
+                    Text(glyph.text)
+                        .font(TideFont.mono(11.5, .semibold))
+                        .foregroundStyle(selected ? glyph.onInk : glyph.tint)
+                        .lineLimit(1)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 11)
+            .frame(minHeight: 44)
+            .background(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(selected ? Tide.heroBg : Color.clear))
+            .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(repo.displayName), \(glyph.spoken)")
+        .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
+    }
+
+    /// Short state glyph for a sidebar row, plus its tints on paper and on ink.
+    private func sidebarGlyph(_ repo: RepoConfig) -> (text: String, tint: Color, onInk: Color, spoken: String) {
+        if !repo.isCloned {
+            return ("↓", Tide.inkFaint, Tide.heroMeta, String(localized: "Not cloned"))
+        }
+        if state.authExpiredRepoIDs.contains(repo.id) {
+            return (TideActivityState.paused.headline, Tide.inkMid, Tide.heroMeta, TideActivityState.paused.headline)
+        }
+        let syncState = tideState(for: repo)
+        switch syncState {
+        case .inSync:
+            return ("✓", Tide.synced, Tide.heroSynced, syncState.headline)
+        case .ahead(let n):
+            return ("↑\(n)", Tide.ahead, Tide.heroAhead, syncState.headline)
+        case .behind(let n):
+            return (n > 0 ? "↓\(n)" : "↓", Tide.behind, Tide.heroBehind, syncState.headline)
+        case .diverged(let local, let remote):
+            return (remote > 0 ? "↑\(local) ↓\(remote)" : "↑\(local) ↓", Tide.ahead, Tide.heroAhead, syncState.headline)
+        }
+    }
 
     /// Keeps the detail column pointed at a vault that still exists,
     /// preferring one that needs attention.
@@ -530,15 +710,25 @@ struct RepoListView: View {
         let attentionAll = repos.filter { needsAttention($0) }
         let quietAll = repos.filter { !needsAttention($0) }
         let pinnedCount = repos.filter(\.isPinned).count
-        let attention: [RepoConfig]
-        let quiet: [RepoConfig]
+        var attention: [RepoConfig]
+        var quiet: [RepoConfig]
         switch homeFilter {
         case .all: attention = attentionAll; quiet = quietAll
         case .attention: attention = attentionAll; quiet = []
         case .pinned: attention = attentionAll.filter(\.isPinned); quiet = quietAll.filter(\.isPinned)
         }
+        let query = activeSearchQuery
+        if !query.isEmpty {
+            attention = attention.filter { matchesSearch($0, query: query) }
+            quiet = quiet.filter { matchesSearch($0, query: query) }
+        }
         return ScrollView {
             VStack(alignment: .leading, spacing: 10) {
+                if isSearching {
+                    searchField
+                        .padding(.bottom, 6)
+                }
+
                 homeHeader(attentionCount: attentionAll.count, quietCount: quietAll.count)
                     .padding(.horizontal, 4)
 
@@ -576,7 +766,7 @@ struct RepoListView: View {
                     .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
                 }
 
-                if !ghosts.isEmpty && homeFilter == .all {
+                if !ghosts.isEmpty && homeFilter == .all && query.isEmpty {
                     TideSectionLabel(title: String(localized: "Previously Cloned"))
                         .padding(.top, 12)
                         .padding(.horizontal, 4)
@@ -595,6 +785,16 @@ struct RepoListView: View {
     private var emptyFilterCard: some View {
         TideCard {
             VStack(alignment: .leading, spacing: 4) {
+                if !activeSearchQuery.isEmpty {
+                    Text(String(localized: "No vaults match “\(activeSearchQuery)”"))
+                        .font(TideFont.sans(15, .semibold))
+                        .foregroundStyle(Tide.ink)
+                    Text(homeFilter == .all
+                         ? String(localized: "Search looks at vault names, repos and branches.")
+                         : String(localized: "Try the All filter."))
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkFaint)
+                } else {
                 Text(homeFilter == .pinned
                      ? String(localized: "Nothing pinned yet")
                      : String(localized: "Nothing needs you"))
@@ -605,8 +805,73 @@ struct RepoListView: View {
                      : String(localized: "Every vault is in sync."))
                     .font(TideFont.meta)
                     .foregroundStyle(Tide.inkFaint)
+                }
             }
         }
+    }
+
+    // MARK: - Search
+
+    private var activeSearchQuery: String {
+        isSearching ? searchText.trimmingCharacters(in: .whitespacesAndNewlines) : ""
+    }
+
+    private func toggleSearch() {
+        withAnimation(.easeOut(duration: 0.15)) {
+            isSearching.toggle()
+        }
+        if isSearching {
+            searchFieldFocused = true
+        } else {
+            searchText = ""
+            searchFieldFocused = false
+        }
+    }
+
+    /// Vault display name, repo name, owner/repo or branch.
+    private func matchesSearch(_ repo: RepoConfig, query: String) -> Bool {
+        let fields = [
+            repo.displayName,
+            repo.repoName,
+            repo.ownerName.map { "\($0)/\(repo.repoName)" } ?? "",
+            repo.gitState.branch,
+        ]
+        return fields.contains { $0.localizedStandardContains(query) }
+    }
+
+    private var searchField: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(Tide.inkFaint)
+                .accessibilityHidden(true)
+            TextField(String(localized: "Search vaults"), text: $searchText)
+                .font(TideFont.sans(16, relativeTo: .body))
+                .foregroundStyle(Tide.ink)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                .submitLabel(.search)
+                .focused($searchFieldFocused)
+                .accessibilityIdentifier("home.searchField")
+            if !searchText.isEmpty {
+                Button {
+                    searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 15))
+                        .foregroundStyle(Tide.inkFaint)
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(String(localized: "Clear search"))
+            }
+        }
+        .padding(.leading, 16)
+        .padding(.trailing, searchText.isEmpty ? 16 : 0)
+        .frame(minHeight: 48)
+        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Tide.card))
+        .transition(.move(edge: .top).combined(with: .opacity))
     }
 
     /// "All 5 · Attention 1 · Pinned" filter chips.

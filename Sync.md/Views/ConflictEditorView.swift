@@ -186,13 +186,7 @@ struct ConflictEditorView: View {
             // Wide layouts (iPad, iPhone Duo open): one bar decides the whole file.
             if horizontalSizeClass == .regular, usesHunks, !showManualEditor, !showResolved,
                !showResolveConfirm, detail != nil, !canResolve {
-                HStack(spacing: 10) {
-                    outlinePill(String(localized: "Keep mine")) { chooseAll(.ours) }
-                    outlinePill(String(localized: "Keep both")) { chooseAll(.both) }
-                    outlinePill(String(localized: "Keep theirs")) { chooseAll(.theirs) }
-                }
-                .padding(.horizontal, Tide.gutter)
-                .padding(.bottom, 8)
+                wholeFileChoiceBar
             }
             if canResolve, !showResolved, !showResolveConfirm, detail != nil {
                 Button {
@@ -657,6 +651,50 @@ struct ConflictEditorView: View {
     private var combinedText: String {
         let ours = oursText.hasSuffix("\n") ? oursText : oursText + "\n"
         return ours + "\n" + theirsText
+    }
+
+    /// Board "DuoConflict": the ink bar that decides the whole file —
+    /// "Keep mine" in the push tint, "Keep both" filled, "Keep theirs" in the pull tint.
+    private var wholeFileChoiceBar: some View {
+        HStack(spacing: 10) {
+            Text(String(localized: "Pick a side, or keep both and tidy up after."))
+                .font(TideFont.sans(14, relativeTo: .subheadline))
+                .foregroundStyle(Tide.heroMeta)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            barChoice(String(localized: "Keep mine"), fg: Color(hex: 0xFFB088), border: Color(hex: 0x5A3220)) {
+                chooseAll(.ours)
+            }
+            barChoice(String(localized: "Keep both"), fg: Tide.heroBg, fill: Tide.heroText) {
+                chooseAll(.both)
+            }
+            barChoice(String(localized: "Keep theirs"), fg: Color(hex: 0xAFC0FF), border: Color(hex: 0x2A3566)) {
+                chooseAll(.theirs)
+            }
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 14)
+        .padding(.bottom, 14)
+        .background(Tide.heroBg.ignoresSafeArea(edges: .bottom))
+        .overlay(alignment: .top) { Rectangle().fill(Tide.heroBorder).frame(height: 1) }
+    }
+
+    private func barChoice(_ title: String, fg: Color, fill: Color = .clear, border: Color = .clear,
+                           action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                .foregroundStyle(fg)
+                .lineLimit(1)
+                .fixedSize()
+                .padding(.horizontal, 18)
+                .frame(minHeight: 46)
+                .background(Capsule().fill(fill))
+                .overlay(Capsule().strokeBorder(border, lineWidth: 1))
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .disabled(state.isSyncing)
     }
 
     private func outlinePill(_ title: String, action: @escaping () -> Void) -> some View {

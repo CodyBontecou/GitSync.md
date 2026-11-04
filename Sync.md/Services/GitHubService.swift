@@ -777,3 +777,183 @@ extension GitHubService {
         return emails.first(where: { $0.primary })?.email ?? emails.first?.email
     }
 }
+
+// MARK: - Pre-clone check
+
+/// What GitSync.md learns about a GitHub repository before cloning it, from
+/// metadata only (repository, tree and `.gitattributes`); no note contents
+/// are downloaded.
+struct GitHubRepoPreflight: Equatable, Sendable {
+    /// `nil` when GitHub did not report permissions for this token.
+    var canPush: Bool?
+    var defaultBranch: String
+    var sizeInBytes: Int64?
+    /// Files on the default branch; `nil` for an empty repository.
+    var fileCount: Int?
+    /// GitHub truncated the tree listing, so `fileCount` is a lower bound.
+    var fileCountIsPartial: Bool = false
+    /// Files matching a `filter=lfs` rule in `.gitattributes`.
+    var lfsFileCount: Int = 0
+    var hasObsidianFolder: Bool = false
+    var hasObsidianGitPlugin: Bool = false
+    var isEmpty: Bool = false
+
+    /// The check found nothing that would stop a normal two-way sync.
+    var isReady: Bool { canPush != false }
+}
+
+extension GitHubService {
+
+    private struct PreflightRepoResponse: Decodable {
+        struct Permissions: Decodable {
+            let push: Bool?
+            let maintain: Bool?
+            let admin: Bool?
+        }
+        let defaultBranch: String?
+        let size: Int?
+        let permissions: Permissions?
+
+        enum CodingKeys: String, CodingKey {
+            case size, permissions
+            case defaultBranch = "default_branch"
+        }
+    }
+
+    private struct PreflightTreeResponse: Decodable {
+        let tree: [GitTreeEntry]
+        let truncated: Bool?
+    }
+
+    /// Runs the pre-clone check for `owner/name`. `onRepository` reports the
+    /// first answer (access, branch, size) before the tree is listed.
+    static func preflight(
+        owner: String,
+        name: String,
+        token: String,
+        onRepository: (@MainActor @Sendable (GitHubRepoPreflight) -> Void)? = nil
+    ) async throws -> GitHubRepoPreflight {
+        let (repoData, repoStatus) = try await preflightGET(["repos", owner, name], token: token)
+        try throwIfPreflightFailed(status: repoStatus, data: repoData)
+        let repoInfo = try JSONDecoder().decode(PreflightRepoResponse.self, from: repoData)
+        let branch = repoInfo.defaultBranch ?? "main"
+        let permissions = repoInfo.permissions
+        var result = GitHubRepoPreflight(
+            canPush: permissions.map { ($0.push ?? false) || ($0.maintain ?? false) || ($0.admin ?? false) },
+            defaultBranch: branch,
+            sizeInBytes: repoInfo.size.flatMap { $0 > 0 ? Int64($0) * 1024 : nil }
+        )
+        if let onRepository { await onRepository(result) }
+
+        let (treeData, treeStatus) = try await preflightGET(
+            ["repos", owner, name, "git", "trees", branch],
+            query: [URLQueryItem(name: "recursive", value: "1")],
+            token: token
+        )
+        // 409 / 404 on the tree: an empty repository with no commits yet.
+        if treeStatus == 409 || treeStatus == 404 {
+            result.isEmpty = true
+            result.fileCount = 0
+            return result
+        }
+        try throwIfPreflightFailed(status: treeStatus, data: treeData)
+        let tree = try JSONDecoder().decode(PreflightTreeResponse.self, from: treeData)
+
+        var patterns: [String] = []
+        if let attributes = tree.tree.first(where: { $0.path == ".gitattributes" && $0.type == "blob" }) {
+            let (blobData, blobStatus) = try await preflightGET(
+                ["repos", owner, name, "git", "blobs", attributes.sha], token: token
+            )
+            if (200...299).contains(blobStatus),
+               let blob = try? JSONDecoder().decode(GitBlob.self, from: blobData),
+               blob.encoding == "base64",
+               let decoded = Data(base64Encoded: blob.content, options: .ignoreUnknownCharacters),
+               let text = String(data: decoded, encoding: .utf8) {
+                patterns = lfsPatterns(fromGitAttributes: text)
+            }
+        }
+        applyTree(tree.tree, truncated: tree.truncated ?? false, lfsPatterns: patterns, to: &result)
+        return result
+    }
+
+    /// Fills file count, LFS and Obsidian facts from a recursive tree listing.
+    static func applyTree(
+        _ entries: [GitTreeEntry],
+        truncated: Bool,
+        lfsPatterns: [String],
+        to result: inout GitHubRepoPreflight
+    ) {
+        let blobs = entries.filter { $0.type == "blob" }
+        result.fileCount = blobs.count
+        result.fileCountIsPartial = truncated
+        result.isEmpty = entries.isEmpty
+        result.hasObsidianFolder = entries.contains { $0.path == ".obsidian" || $0.path.hasPrefix(".obsidian/") }
+        result.hasObsidianGitPlugin = entries.contains {
+            $0.path == ".obsidian/plugins/obsidian-git" || $0.path.hasPrefix(".obsidian/plugins/obsidian-git/")
+        }
+        guard !lfsPatterns.isEmpty else {
+            result.lfsFileCount = 0
+            return
+        }
+        result.lfsFileCount = blobs.filter { matchesLFSPattern(path: $0.path, patterns: lfsPatterns) }.count
+    }
+
+    /// Patterns from `.gitattributes` lines that set `filter=lfs`.
+    static func lfsPatterns(fromGitAttributes text: String) -> [String] {
+        text.split(whereSeparator: \.isNewline).compactMap { rawLine in
+            let line = rawLine.trimmingCharacters(in: .whitespaces)
+            guard !line.isEmpty, !line.hasPrefix("#") else { return nil }
+            let fields = line.split(whereSeparator: { $0 == " " || $0 == "\t" }).map(String.init)
+            guard let pattern = fields.first, fields.dropFirst().contains("filter=lfs") else { return nil }
+            return pattern
+        }
+    }
+
+    /// gitattributes-style match: a pattern without a slash matches the file
+    /// name at any depth; one with a slash matches the path from the root.
+    static func matchesLFSPattern(path: String, patterns: [String]) -> Bool {
+        let fileName = (path as NSString).lastPathComponent
+        return patterns.contains { rawPattern in
+            var pattern = rawPattern
+            if pattern.hasPrefix("/") { pattern.removeFirst() }
+            if pattern.hasSuffix("/**") {
+                let prefix = String(pattern.dropLast(3))
+                return path.hasPrefix(prefix + "/")
+            }
+            if pattern.contains("/") {
+                return fnmatch(pattern, path, 0) == 0
+            }
+            return fnmatch(pattern, fileName, 0) == 0
+        }
+    }
+
+    private static func throwIfPreflightFailed(status: Int, data: Data) throws {
+        guard !(200...299).contains(status) else { return }
+        throw repositoryLookupError(statusCode: status, headers: [:], body: data)
+    }
+
+    private static func preflightGET(
+        _ pathSegments: [String],
+        query: [URLQueryItem] = [],
+        token: String
+    ) async throws -> (Data, Int) {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.github.com"
+        let allowed = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
+        components.percentEncodedPath = "/" + pathSegments
+            .map { $0.addingPercentEncoding(withAllowedCharacters: allowed) ?? $0 }
+            .joined(separator: "/")
+        if !query.isEmpty { components.queryItems = query }
+        guard let url = components.url else { throw GitHubError.invalidURL }
+        var req = URLRequest(url: url)
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        req.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        let (data, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubError.apiError(0, String(localized: "Invalid response"))
+        }
+        return (data, http.statusCode)
+    }
+}

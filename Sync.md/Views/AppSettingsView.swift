@@ -95,7 +95,6 @@ struct AppSettingsView: View {
                                 AppSettingsRow(
                                     title: String(localized: "Push notifications from GitHub"),
                                     value: pushNotificationsOn ? String(localized: "on") : String(localized: "off"),
-                                    valueTint: pushNotificationsOn ? Tide.synced : Tide.inkMid,
                                     accessory: .chevron
                                 )
                             }

@@ -94,6 +94,11 @@ struct VaultWatchView: View {
 
     private var header: some View {
         HStack(spacing: 8) {
+            (Text(verbatim: "gitsync").foregroundStyle(Tide.ink)
+                + Text(verbatim: ".md").foregroundStyle(Tide.behind))
+                .font(TideFont.mono(12, .semibold))
+                .fixedSize()
+            Spacer(minLength: 8)
             Circle()
                 .fill(Tide.synced)
                 .frame(width: 7, height: 7)
@@ -103,7 +108,6 @@ struct VaultWatchView: View {
                 .foregroundStyle(Tide.inkFaint)
                 .lineLimit(1)
                 .truncationMode(.middle)
-            Spacer(minLength: 0)
         }
         .padding(.horizontal, 4)
         .accessibilityElement(children: .ignore)

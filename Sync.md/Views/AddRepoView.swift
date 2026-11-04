@@ -206,7 +206,7 @@ struct AddRepoView: View {
             HStack(spacing: 10) {
                 Circle().fill(Tide.behind).frame(width: 8, height: 8)
                     .accessibilityHidden(true)
-                Text(String(localized: "Resume publishing \(record.folderName)"))
+                Text("Resume publishing \(Text(verbatim: record.folderName).fontWeight(.semibold))")
                     .font(TideFont.sans(14, relativeTo: .subheadline))
                     .foregroundStyle(Tide.ink)
                     .lineLimit(1)

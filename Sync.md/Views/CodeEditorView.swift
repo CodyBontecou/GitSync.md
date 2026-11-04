@@ -150,20 +150,50 @@ struct CodeEditorView: UIViewRepresentable {
             debounce = item
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: item)
         }
+
+        func textViewDidChangeSelection(_ textView: UITextView) {
+            (textView as? GutterTextView)?.updateCursorLine(active: textView.isFirstResponder)
+        }
+
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            (textView as? GutterTextView)?.updateCursorLine(active: true)
+        }
+
+        func textViewDidEndEditing(_ textView: UITextView) {
+            (textView as? GutterTextView)?.updateCursorLine(active: false)
+        }
     }
 }
 
 // MARK: - Line-number gutter
 
 /// UITextView that draws right-aligned line numbers (one per logical line,
-/// not per wrapped fragment) in its leading inset, plus a green bar beside
-/// lines that differ from the last commit.
+/// not per wrapped fragment) in its leading inset, plus a green bar and tint
+/// behind lines that differ from the last commit and a blue bar and tint
+/// behind the line the cursor is on.
 final class GutterTextView: UITextView {
     var showsLineNumbers = true {
         didSet { if showsLineNumbers != oldValue { refreshGutter() } }
     }
     var changedLines: Set<Int> = [] {
         didSet { if changedLines != oldValue { setNeedsDisplay() } }
+    }
+    /// 1-based line holding the cursor while editing; nil when not editing.
+    private(set) var cursorLine: Int? {
+        didSet { if cursorLine != oldValue { setNeedsDisplay() } }
+    }
+
+    /// Recomputes `cursorLine` from the selection.
+    func updateCursorLine(active: Bool) {
+        guard active, showsLineNumbers else {
+            cursorLine = nil
+            return
+        }
+        let ns = (text ?? "") as NSString
+        let location = min(selectedRange.location, ns.length)
+        cursorLine = ns.substring(to: location).utf16.reduce(into: 1) { count, unit in
+            if unit == 0x0A { count += 1 }
+        }
     }
 
     private static let baseInset: CGFloat = 12
@@ -241,15 +271,29 @@ final class GutterTextView: UITextView {
             .font: numberFont,
             .foregroundColor: UIColor(Tide.inkFaint)
         ]
-        let markerColor = UIColor(Tide.synced)
+        let changedColor = UIColor(Tide.synced)
+        let cursorColor = UIColor(Tide.behind)
         let numberRight = Self.baseInset + gutterWidth - 10
+
+        /// Row tint + leading bar for every fragment of a changed or current line.
+        func drawRowMarker(_ number: Int, lineRect: CGRect) {
+            let color: UIColor
+            if number == cursorLine {
+                color = cursorColor
+            } else if changedLines.contains(number) {
+                color = changedColor
+            } else {
+                return
+            }
+            let y = lineRect.minY + inset.top
+            color.withAlphaComponent(0.07).setFill()
+            UIBezierPath(rect: CGRect(x: 0, y: y, width: bounds.width, height: lineRect.height)).fill()
+            color.setFill()
+            UIBezierPath(rect: CGRect(x: 2, y: y, width: 3, height: lineRect.height)).fill()
+        }
 
         func drawNumber(_ number: Int, lineRect: CGRect) {
             let y = lineRect.minY + inset.top
-            if changedLines.contains(number) {
-                markerColor.setFill()
-                UIBezierPath(rect: CGRect(x: 2, y: y, width: 3, height: lineRect.height)).fill()
-            }
             let label = String(number) as NSString
             let size = label.size(withAttributes: attributes)
             let baselineOffset = max(0, (lineRect.height - size.height) / 2)
@@ -257,7 +301,9 @@ final class GutterTextView: UITextView {
         }
 
         guard ns.length > 0 else {
-            drawNumber(1, lineRect: CGRect(x: 0, y: 0, width: 1, height: numberFont.lineHeight * 1.25))
+            let rect = CGRect(x: 0, y: 0, width: 1, height: numberFont.lineHeight * 1.25)
+            drawRowMarker(1, lineRect: rect)
+            drawNumber(1, lineRect: rect)
             return
         }
 
@@ -281,6 +327,7 @@ final class GutterTextView: UITextView {
         layout.enumerateLineFragments(forGlyphRange: glyphRange) { lineRect, _, _, fragmentGlyphs, _ in
             let charIndex = layout.characterIndexForGlyph(at: fragmentGlyphs.location)
             let startsLine = charIndex == 0 || ns.character(at: charIndex - 1) == 0x0A
+            drawRowMarker(lineNumber, lineRect: lineRect)
             if startsLine {
                 // Count lines skipped between the first visible character and here.
                 drawNumber(lineNumber, lineRect: lineRect)
@@ -294,6 +341,7 @@ final class GutterTextView: UITextView {
 
         let extra = layout.extraLineFragmentRect
         if !extra.isEmpty, extra.maxY >= visible.minY, extra.minY <= visible.maxY {
+            drawRowMarker(lineNumber, lineRect: extra)
             drawNumber(lineNumber, lineRect: extra)
         }
     }

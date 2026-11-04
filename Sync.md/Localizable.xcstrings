@@ -5272,6 +5272,7 @@
       },
       "shouldTranslate": false
     },
+    "%@, %@": {},
     "%@, %@ %@": {
       "localizations": {
         "ar": {
@@ -20868,6 +20869,7 @@
         }
       }
     },
+    "ACCESS": {},
     "ADD REPOSITORY": {
       "localizations": {
         "ar": {
@@ -24438,6 +24440,7 @@
       },
       "extractionState": "stale"
     },
+    "Activity": {},
     "Add %lld Repositor%@": {
       "localizations": {
         "ar": {
@@ -53150,6 +53153,7 @@
         }
       }
     },
+    "Check again": {},
     "Check for changes": {
       "localizations": {
         "ar": {
@@ -54074,6 +54078,7 @@
         }
       }
     },
+    "Checking": {},
     "Checking App Store…": {
       "localizations": {
         "ar": {
@@ -54698,6 +54703,8 @@
         }
       }
     },
+    "Checking this repo.": {},
+    "Checking…": {},
     "Checklist item": {
       "localizations": {
         "ar": {
@@ -60886,6 +60893,7 @@
         }
       }
     },
+    "Clone anyway": {},
     "Clone complete! (%lld files)": {
       "comment": "Sync progress message after a successful clone. %lld is the number of files.",
       "localizations": {
@@ -61978,6 +61986,7 @@
         }
       }
     },
+    "Clone to pull only": {},
     "Clone uses your GitHub account and the default save location. Long-press a repo to pick a branch, sign-in method or folder first.": {
       "localizations": {
         "ar": {
@@ -62440,6 +62449,7 @@
         }
       }
     },
+    "Clones to": {},
     "Cloning %@": {
       "localizations": {
         "ar": {
@@ -63378,6 +63388,7 @@
         }
       }
     },
+    "Close search": {},
     "Code": {
       "localizations": {
         "ar": {
@@ -82133,6 +82144,7 @@
         }
       }
     },
+    "Couldn’t check this repo.": {},
     "Counting notes and history…": {
       "localizations": {
         "ar": {
@@ -87093,6 +87105,7 @@
       },
       "extractionState": "stale"
     },
+    "Default branch": {},
     "Default save": {
       "localizations": {
         "ar": {
@@ -97778,6 +97791,7 @@
         }
       }
     },
+    "Empty repo — your first commit starts its history": {},
     "Enable Background Sync": {
       "localizations": {
         "ar": {
@@ -100567,6 +100581,7 @@
         }
       }
     },
+    "Everything checks out. One clone and it’s here with its full history.": {},
     "Everything else": {
       "localizations": {
         "ar": {
@@ -102115,6 +102130,7 @@
         }
       }
     },
+    "FILES": {},
     "FULL": {
       "localizations": {
         "ar": {
@@ -112229,6 +112245,7 @@
         }
       }
     },
+    "Full history, pulled straight from GitHub.": {},
     "GIT": {
       "localizations": {
         "ar": {
@@ -112385,6 +112402,7 @@
       "shouldTranslate": false,
       "extractionState": "stale"
     },
+    "GIT LFS": {},
     "GIT TRACKING REMOVED": {
       "localizations": {
         "ar": {
@@ -115944,6 +115962,7 @@
         }
       }
     },
+    "Git LFS files": {},
     "Git LFS server did not provide a download action for %@.": {
       "localizations": {
         "ar": {
@@ -119970,6 +119989,7 @@
         }
       }
     },
+    "GitHub can’t find this repo for your account. It may have moved or your access changed.": {},
     "GitHub connection could not be verified. Please try again.": {
       "localizations": {
         "ar": {
@@ -120432,6 +120452,7 @@
         }
       }
     },
+    "GitHub didn’t accept your sign-in. Sign in again, then check again.": {},
     "GitHub event wakes use only opaque identifiers — never repository names, contents, paths, or credentials. Everything manual stays included with the app you already own.": {
       "localizations": {
         "ar": {
@@ -120741,6 +120762,7 @@
         }
       }
     },
+    "GitHub is rate-limiting requests right now. Wait a minute, then check again.": {},
     "GitHub may have created the repository before the response was lost. Check its current state before continuing. A matching repository requires your explicit approval.": {
       "localizations": {
         "ar": {
@@ -123208,6 +123230,7 @@
         }
       }
     },
+    "GitSync.md can read this repo but can’t push to it. Ask the owner for write access, or clone it to pull only.": {},
     "GitSync.md forgets the token for %@ on this device. Your vaults and their files stay where they are.": {
       "localizations": {
         "ar": {
@@ -142525,6 +142548,7 @@
         }
       }
     },
+    "Long-press Clone to pick a branch, sign-in method or folder first.": {},
     "Long-press a vault and choose Pin to top.": {
       "localizations": {
         "ar": {
@@ -143913,6 +143937,7 @@
         }
       }
     },
+    "Making sure GitSync.md can sync this repo before anything is downloaded.": {},
     "Manage": {
       "localizations": {
         "ar": {
@@ -154304,6 +154329,7 @@
         }
       }
     },
+    "No .obsidian folder — it still syncs as plain files": {},
     "No Authentication": {
       "localizations": {
         "ar": {
@@ -161589,6 +161615,7 @@
         }
       }
     },
+    "No vaults match “%@”": {},
     "No vaults yet.": {
       "localizations": {
         "ar": {
@@ -165925,6 +165952,8 @@
         }
       }
     },
+    "Nothing was downloaded. Clone only appears as the main action once the repo passes.": {},
+    "Nothing was downloaded. You can check again, or clone without the check.": {},
     "Notification device registered %@": {
       "localizations": {
         "ar": {
@@ -167166,6 +167195,7 @@
       },
       "shouldTranslate": false
     },
+    "Obsidian Git plugin found": {},
     "Obsidian could not connect. Check that this repository is signed in and its connection request has not expired.": {
       "localizations": {
         "ar": {
@@ -167320,6 +167350,8 @@
         }
       }
     },
+    "Obsidian vault": {},
+    "Obsidian vault found": {},
     "Obsidian, Working Copy…": {
       "localizations": {
         "ar": {
@@ -169640,6 +169672,7 @@
       },
       "extractionState": "stale"
     },
+    "One thing to fix first.": {},
     "Only .git directly inside the selected folder is removed. Local On My iPhone folders only.": {
       "localizations": {
         "ar": {
@@ -170102,6 +170135,7 @@
         }
       }
     },
+    "Only metadata is read. No notes are downloaded until you clone.": {},
     "Only on this iPhone": {
       "localizations": {
         "ar": {
@@ -172420,6 +172454,7 @@
         }
       }
     },
+    "Open repo on GitHub": {},
     "Open repository in Files app": {
       "localizations": {
         "ar": {
@@ -175980,6 +176015,7 @@
       },
       "extractionState": "stale"
     },
+    "Passed": {},
     "Passphrase": {
       "localizations": {
         "ar": {
@@ -178308,6 +178344,7 @@
         }
       }
     },
+    "Pick a side, or keep both and tidy up after.": {},
     "Pick a vault.": {
       "localizations": {
         "ar": {
@@ -178462,6 +178499,7 @@
         }
       }
     },
+    "Pick another repo": {},
     "Pick from GitHub": {
       "comment": "Button title to pick a repository from the user's GitHub account",
       "localizations": {
@@ -182831,6 +182869,7 @@
         }
       }
     },
+    "Problem": {},
     "Progress": {
       "localizations": {
         "ar": {
@@ -197855,6 +197894,7 @@
         }
       }
     },
+    "Read & write access": {},
     "Reading status…": {
       "localizations": {
         "ar": {
@@ -198009,6 +198049,7 @@
         }
       }
     },
+    "Ready to clone.": {},
     "Ready to publish.": {
       "localizations": {
         "ar": {
@@ -220165,6 +220206,7 @@
       },
       "extractionState": "stale"
     },
+    "SIZE": {},
     "SSH Host Key Changed": {
       "localizations": {
         "ar": {
@@ -225423,6 +225465,7 @@
         }
       }
     },
+    "Search looks at vault names, repos and branches.": {},
     "Search repositories": {
       "localizations": {
         "ar": {
@@ -225577,6 +225620,7 @@
         }
       }
     },
+    "Search vaults": {},
     "Section %lld of %lld": {
       "localizations": {
         "ar": {
@@ -231331,6 +231375,7 @@
         }
       }
     },
+    "Sign in to GitHub to check this repo.": {},
     "Sign in to see your repos": {
       "localizations": {
         "ar": {
@@ -232885,6 +232930,7 @@
         }
       }
     },
+    "Size & file count": {},
     "Skip": {
       "localizations": {
         "ar": {
@@ -261960,6 +262006,7 @@
         }
       }
     },
+    "Try the All filter.": {},
     "Turn Background Sync on or off.": {
       "localizations": {
         "ar": {
@@ -272054,6 +272101,7 @@
         }
       }
     },
+    "Vaults": {},
     "Version": {
       "comment": "Row label for the app version number",
       "localizations": {
@@ -278084,6 +278132,7 @@
         }
       }
     },
+    "Write access": {},
     "YOUR REPOS, ON YOUR IPHONE": {
       "localizations": {
         "ar": {
@@ -279473,6 +279522,7 @@
       },
       "extractionState": "stale"
     },
+    "Your GitHub account has read-only access to %@. Pulls work; commits made here stay on this device until someone with write access adds you.": {},
     "Your Name": {
       "comment": "Placeholder text for author name field",
       "localizations": {
@@ -281637,6 +281687,7 @@
         }
       }
     },
+    "Your vault is ready.": {},
     "Yours": {
       "localizations": {
         "ar": {
@@ -281791,6 +281842,7 @@
         }
       }
     },
+    "You’re offline. Connect to the internet, then check again.": {},
     "Zipping Git history…": {
       "localizations": {
         "ar": {
@@ -285972,6 +286024,7 @@
         }
       }
     },
+    "checking…": {},
     "clean": {
       "localizations": {
         "ar": {
@@ -288910,6 +288963,7 @@
         }
       }
     },
+    "editing": {},
     "errors · 7d": {
       "localizations": {
         "ar": {
@@ -295715,6 +295769,7 @@
         }
       }
     },
+    "measuring": {},
     "merge": {
       "localizations": {
         "ar": {
@@ -296491,6 +296546,7 @@
         }
       }
     },
+    "needs access": {},
     "needs attention": {
       "localizations": {
         "ar": {
@@ -298802,6 +298858,7 @@
         }
       }
     },
+    "not checked": {},
     "not downloaded": {
       "localizations": {
         "ar": {
@@ -298956,6 +299013,7 @@
         }
       }
     },
+    "not found": {},
     "not synced yet": {
       "localizations": {
         "ar": {
@@ -300188,6 +300246,7 @@
         }
       }
     },
+    "ok": {},
     "on": {
       "localizations": {
         "ar": {
@@ -303744,6 +303803,9 @@
         }
       }
     },
+    "read only": {},
+    "read · write": {},
+    "ready": {},
     "refine": {
       "localizations": {
         "ar": {
@@ -305752,6 +305814,7 @@
         }
       }
     },
+    "saving…": {},
     "scanned %@": {
       "localizations": {
         "ar": {
@@ -311936,6 +311999,7 @@
         }
       }
     },
+    "unknown": {},
     "untracked": {
       "localizations": {
         "ar": {

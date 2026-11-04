@@ -67,6 +67,16 @@ struct FileEditorView: View {
         return folder.isEmpty ? vault : "\(vault) / \(folder)"
     }
 
+    /// "VoxVault / daily · saved" — beside the commit panel (board "DuoEditor")
+    /// the floating saved pill is hidden, so the save state rides the subtitle.
+    private var editorSubtitle: String {
+        guard showsCommitPanel, !isBinary else { return locationLine }
+        let status = isSaving
+            ? String(localized: "saving…")
+            : (isDirty ? String(localized: "editing") : String(localized: "saved"))
+        return locationLine.isEmpty ? status : "\(locationLine) · \(status)"
+    }
+
     /// True when git sees this file as changed since the last commit.
     private var hasUncommittedChanges: Bool {
         guard let rel = relativePath?.precomposedStringWithCanonicalMapping else { return false }
@@ -190,8 +200,8 @@ struct FileEditorView: View {
                     .foregroundStyle(Tide.ink)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                if !locationLine.isEmpty {
-                    Text(locationLine)
+                if !editorSubtitle.isEmpty {
+                    Text(editorSubtitle)
                         .font(TideFont.mono(11))
                         .foregroundStyle(Tide.inkFaint)
                         .lineLimit(1)
