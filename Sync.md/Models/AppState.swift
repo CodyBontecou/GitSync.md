@@ -361,6 +361,48 @@ final class AppState {
         remoteCredentials(for: repo).transportPayload
     }
 
+    // MARK: - Home & Vault insights
+
+    /// When change detection last completed for any vault ("checked 2 min ago").
+    var lastStatusCheckDate: Date? = nil
+    /// Fetch time, LFS size and upstream ahead/behind per vault.
+    var vaultMetaByRepo: [UUID: VaultRepositoryMeta] = [:]
+    /// When `vaultMetaByRepo[id].lfsBytes` was last measured (it walks a directory).
+    var vaultLFSMeasuredAt: [UUID: Date] = [:]
+    /// `+added / −deleted` per changed path (NFC keys) for the Changes tab.
+    var workingLineStatsByRepo: [UUID: [String: GitLineStats]] = [:]
+    /// Commit OID → branch/tag labels for the History rail.
+    var commitRefLabelsByRepo: [UUID: [String: [GitRefLabel]]] = [:]
+    /// Commit OID → parent and file counts for the History rail.
+    var commitExtrasByRepo: [UUID: [String: GitCommitExtras]] = [:]
+    /// Home "Sync all" run in progress.
+    var isSyncingAllVaults = false
+    var syncAllProgressText: String? = nil
+
+    // MARK: - Sync States (progress, sign-in, rejection, offline, feedback)
+    // Behavior lives in AppState+SyncStates.swift.
+
+    /// Structured progress of the foreground push/pull/sync/clone.
+    var syncActivity: SyncActivity? = nil
+    /// GitHub-token vaults whose last sync failed authentication.
+    var authExpiredRepoIDs: Set<UUID> = []
+    var authExpiredAt: Date? = nil
+    /// Non-fast-forward push rejections awaiting a decision, per vault.
+    var pushRejectionByRepo: [UUID: PushRejectionState] = [:]
+    var isOffline: Bool = false
+    var lastOnlineAt: Date? = nil
+    /// Vaults that tried to sync while offline; replayed when back online.
+    var offlineQueue: [UUID: OfflineQueuedOperation] = [:]
+    var currentToast: TideToastItem? = nil
+    /// Background runs since the app was last in the foreground.
+    var backgroundRunSummary: BackgroundRunSummary? = nil
+    /// Vaults whose Background Sync stopped and need the user (merge etc.).
+    var backgroundStoppedRepoIDs: [UUID] = []
+    var backgroundStopReasons: [UUID: RepoAssistAttention] = [:]
+    /// Set to open a vault from Home banners, toasts and state rows.
+    var vaultNavigationRequest: UUID? = nil
+    @ObservationIgnored var syncStateRuntime = SyncStateRuntime()
+
     // MARK: - Dependencies
 
     private let gitRepositoryFactory: (URL) -> any GitRepositoryProtocol
@@ -808,9 +850,9 @@ final class AppState {
         guard let repo = repo(id: repoID) else { return "" }
         if repo.customVaultBookmarkData != nil { return String(localized: "Folder access unavailable — reconnect the original folder") }
         if let relativePath = repo.customVaultRelativePath {
-            return String(localized: "On My iPhone › GitSync.md › \(relativePath)")
+            return String(localized: "On My iPhone › GitSync.md › \(relativePath)").forThisDevice
         }
-        return String(localized: "On My iPhone › GitSync.md › \(repo.vaultFolderName)")
+        return String(localized: "On My iPhone › GitSync.md › \(repo.vaultFolderName)").forThisDevice
     }
 
     func isUsingCustomLocation(for repoID: UUID) -> Bool {
@@ -1053,6 +1095,7 @@ final class AppState {
                     syncStateByRepo[repoID] = info.syncState
                     diffByRepo[repoID] = .empty
                 }
+                lastStatusCheckDate = Date()
 
                 let elapsed = Date().timeIntervalSince(startedAt)
                 if elapsed > 2 {
@@ -2043,11 +2086,11 @@ final class AppState {
         syncingRepoID = nil
     }
 
-    private func markRepositoryMutated(repoID: UUID) {
+    func markRepositoryMutated(repoID: UUID) {
         repoMutationGeneration[repoID, default: 0] += 1
     }
 
-    private func withCheckoutMutation<T>(repoID: UUID, operation: () async throws -> T) async rethrows -> T {
+    func withCheckoutMutation<T>(repoID: UUID, operation: () async throws -> T) async rethrows -> T {
         markRepositoryMutated(repoID: repoID)
         defer { markRepositoryMutated(repoID: repoID) }
         return try await operation()
@@ -2421,6 +2464,16 @@ final class AppState {
             return
         }
 
+        if isOffline && !isDemoMode {
+            showToast(TideToastItem(
+                kind: .error,
+                title: String(localized: "You're offline"),
+                detail: String(localized: "Connect to clone \(repos[idx].displayName)."),
+                action: nil
+            ))
+            return
+        }
+
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Preparing to clone...")
@@ -2488,7 +2541,13 @@ final class AppState {
 
             syncProgress = String(localized: "Cloning repository...")
             DebugLogger.shared.info("clone", "Starting clone", detail: cloneURL)
-            let result = try await gitService.clone(remoteURL: cloneURL, pat: authPayload(for: repo))
+            beginSyncActivity(repoID: repoID, kind: .clone)
+            let clonePayload = authPayload(for: repo)
+            let result = try await runCancellableThrowing {
+                try await gitService.clone(remoteURL: cloneURL, pat: clonePayload)
+            }
+            finishSyncActivity(repoID: repoID, success: true)
+            didSyncSuccessfully(repoID: repoID)
 
             // No credential is written here. The companion can request an
             // encrypted, one-time import when this folder is opened as a vault.
@@ -2534,7 +2593,11 @@ final class AppState {
             }
 
 
+        } catch is CancellationError {
+            finishSyncActivity(repoID: repoID, success: false)
+            syncProgress = String(localized: "Cancelled")
         } catch {
+            finishSyncActivity(repoID: repoID, success: false)
             if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .clone) {
                 showError(message: error.localizedDescription, category: "clone")
             }
@@ -2570,6 +2633,9 @@ final class AppState {
             showError(message: message)
             return .unavailable(message: message)
         }
+        if queueIfOffline(repoID: repoID, operation: .pull) {
+            return .unavailable(message: String(localized: "You're offline. This vault will check for changes when you're back online."))
+        }
 
         isSyncing = true
         syncingRepoID = repoID
@@ -2598,15 +2664,27 @@ final class AppState {
         let repo = repos[idx]
         let vaultDir = vaultURL(for: repoID)
         let gitService = gitRepositoryFactory(vaultDir)
-        DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)")
+        DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)", repo: repo.displayName)
         // The runner may fast-forward the checkout. Invalidate any status scan
         // that began before fetch/checkout starts; successful updates advance it
         // again below after the working copy is coherent.
         markRepositoryMutated(repoID: repoID)
-        let result = await RepositoryPullRunner().run(
-            repository: gitService,
-            credentials: authPayload(for: repo)
-        )
+        beginSyncActivity(repoID: repoID, kind: .pull)
+        let previousSHA = repo.gitState.commitSHA
+        let pullCredentials = authPayload(for: repo)
+        let result = await runCancellable {
+            await RepositoryPullRunner().run(
+                repository: gitService,
+                credentials: pullCredentials
+            )
+        }
+        switch result {
+        case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .cancelled, .failed:
+            finishSyncActivity(repoID: repoID, success: false)
+        default:
+            finishSyncActivity(repoID: repoID, success: true)
+        }
+        didFinishPull(repoID: repoID, result: result, previousSHA: previousSHA)
 
         switch result {
         case .updated(_, let commitSHA):
@@ -2665,7 +2743,13 @@ final class AppState {
                 )
             }
             setPullOutcome(repoID: repoID, kind: .failed, message: message)
-            if trustError == nil { showError(message: message, category: "pull") }
+            if trustError == nil {
+                if isGitHubTokenVault(repo), Self.isAuthenticationFailure(message) {
+                    markAuthExpired(repoIDs: [repoID])
+                } else {
+                    showError(message: message, category: "pull")
+                }
+            }
 
         case .cancelled:
             // A refresh interrupted by SwiftUI or cancelled while queued behind
@@ -2694,6 +2778,9 @@ final class AppState {
     func pushOnly(repoID: UUID, message: String? = nil) async -> RepositoryPushResult {
         guard let repo = repo(id: repoID) else {
             return .failed(message: String(localized: "Repository not found"))
+        }
+        if queueIfOffline(repoID: repoID, operation: .push) {
+            return .blocked(message: String(localized: "You're offline. Changes will push when you're back online."))
         }
 
         isSyncing = true
@@ -2731,12 +2818,18 @@ final class AppState {
         // status scan that began before staging starts; success advances the
         // published state again below after the working copy is coherent.
         markRepositoryMutated(repoID: repoID)
-        let result = await RepositoryPushRunner().run(
-            serialized: serialized,
-            repo: repo,
-            credentials: authPayload(for: repo),
-            message: message
-        )
+        beginSyncActivity(repoID: repoID, kind: .commitAndPush)
+        let pushCredentials = authPayload(for: repo)
+        let result = await runCancellable {
+            await RepositoryPushRunner().run(
+                serialized: serialized,
+                repo: repo,
+                credentials: pushCredentials,
+                message: message
+            )
+        }
+        finishSyncActivity(repoID: repoID, success: result.didPush || result == .noChanges)
+        classifyPushResult(repoID: repoID, result: result)
 
         if let commitSHA = result.finalLocalCommitSHA {
             if let currentIndex = repoIndex(id: repoID) {
@@ -2764,6 +2857,10 @@ final class AppState {
                 push: nil,
                 message: String(localized: "Repository not found")
             )
+        }
+        if queueIfOffline(repoID: repoID, operation: .sync) {
+            let message = String(localized: "You're offline. This vault will sync when you're back online.")
+            return RepositorySyncResult(outcome: .blocked, pull: nil, push: nil, message: message)
         }
         if isDemoMode {
             let fakeSHA = String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(40)).lowercased()
@@ -2795,16 +2892,32 @@ final class AppState {
         syncProgress = String(localized: "Checking for updates...")
         defer { isSyncing = false; syncingRepoID = nil }
         markRepositoryMutated(repoID: repoID)
-
-        let result = await RepositoryReconciliationRunner().run(
-            serialized: serialized,
-            repo: repo,
-            credentials: authPayload(for: repo),
-            expectedBranch: repo.branch,
-            allowsPull: true,
-            allowsPush: true,
-            message: message
-        )
+        beginSyncActivity(repoID: repoID, kind: .sync)
+        let previousSHA = repo.gitState.commitSHA
+        let syncCredentials = authPayload(for: repo)
+        let result = await runCancellable {
+            await RepositoryReconciliationRunner().run(
+                serialized: serialized,
+                repo: repo,
+                credentials: syncCredentials,
+                expectedBranch: repo.branch,
+                allowsPull: true,
+                allowsPush: true,
+                message: message
+            )
+        }
+        switch result.outcome {
+        case .upToDate, .pulled, .pushed, .pulledAndPushed:
+            finishSyncActivity(repoID: repoID, success: true)
+        default:
+            finishSyncActivity(repoID: repoID, success: false)
+        }
+        if let push = result.push, push.didPush || result.pull == nil {
+            classifyPushResult(repoID: repoID, result: push)
+        } else if let pull = result.pull {
+            didFinishPull(repoID: repoID, result: pull, previousSHA: previousSHA)
+            if let push = result.push { classifyPushResult(repoID: repoID, result: push) }
+        }
         if let sha = result.finalLocalCommitSHA, !sha.isEmpty, let index = repoIndex(id: repoID) {
             repos[index].gitState.commitSHA = sha
             if result.outcome == .upToDate || result.didTransferData {
@@ -3039,19 +3152,25 @@ final class AppState {
             return true
         }
 
+        if queueIfOffline(repoID: repoID, operation: .push) { return false }
         let credentials = authPayload(for: repo)
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Pushing committed changes...")
         defer { isSyncing = false; syncingRepoID = nil }
+        beginSyncActivity(repoID: repoID, kind: .push)
 
         do {
             let serialized = try serializedRepository(repoID: repoID)
-            let info = try await serialized.withLease { repository in
-                guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
-                try await repository.pushCurrentBranch(pat: credentials)
-                return try? await repository.repoInfo()
+            let info = try await runCancellableThrowing {
+                try await serialized.withLease { repository in
+                    guard repository.hasGitDirectory else { throw LocalGitError.notCloned }
+                    try await repository.pushCurrentBranch(pat: credentials)
+                    return try? await repository.repoInfo()
+                }
             }
+            let sentCommits = syncActivity?.commitsToSend ?? 1
+            finishSyncActivity(repoID: repoID, success: true)
 
             if let currentIndex = repoIndex(id: repoID) {
                 if let info {
@@ -3068,9 +3187,15 @@ final class AppState {
             detectChanges(repoID: repoID)
             await loadBranches(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
+            didFinishPush(repoID: repoID, commitSHA: info?.commitSHA ?? repo.gitState.commitSHA, commits: sentCommits)
             requestReviewIfNeeded()
             return true
+        } catch is CancellationError {
+            finishSyncActivity(repoID: repoID, success: false)
+            syncProgress = String(localized: "Cancelled")
+            return false
         } catch {
+            finishSyncActivity(repoID: repoID, success: false)
             if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCurrentBranch) {
                 showError(message: error.localizedDescription, category: "push")
             }
@@ -3102,6 +3227,10 @@ final class AppState {
             }
         }
 
+        if isOffline && !isDemoMode {
+            return await commitOfflineAndQueue(repoID: repoID, message: message)
+        }
+
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Preparing changes...")
@@ -3129,13 +3258,19 @@ final class AppState {
             let commitMsg = message.isEmpty ? String(localized: "Update from GitSync.md") : message
 
             syncProgress = String(localized: "Committing and pushing...")
-            DebugLogger.shared.info("push", "Starting commit & push", detail: "message: \(commitMsg)")
-            let result = try await gitService.commitAndPush(
-                message: commitMsg,
-                authorName: repo.authorName,
-                authorEmail: repo.authorEmail,
-                pat: authPayload(for: repo)
-            )
+            DebugLogger.shared.info("push", "Starting commit & push", detail: "message: \(commitMsg)", repo: repo.displayName)
+            beginSyncActivity(repoID: repoID, kind: .commitAndPush)
+            let pushCredentials = authPayload(for: repo)
+            let result = try await runCancellableThrowing {
+                try await gitService.commitAndPush(
+                    message: commitMsg,
+                    authorName: repo.authorName,
+                    authorEmail: repo.authorEmail,
+                    pat: pushCredentials
+                )
+            }
+            let sentCommits = syncActivity?.commitsToSend ?? 1
+            finishSyncActivity(repoID: repoID, success: true)
 
             if let currentIndex = repoIndex(id: repoID) {
                 repos[currentIndex].gitState.commitSHA = result.commitSHA
@@ -3145,13 +3280,26 @@ final class AppState {
             }
             detectChanges(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
-            DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)")
+            DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)", repo: repo.displayName)
+            didFinishPush(repoID: repoID, commitSHA: result.commitSHA, commits: sentCommits)
             requestReviewIfNeeded()
 
             try? await Task.sleep(for: .seconds(1))
             return true
         } catch {
-            if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCommit(message: message)) {
+            finishSyncActivity(repoID: repoID, success: false)
+            if let saved = error as? LocalCommitSavedNotPushedError {
+                // The commit exists locally even though publication failed.
+                if let currentIndex = repoIndex(id: repoID) {
+                    repos[currentIndex].gitState.commitSHA = saved.commitSHA
+                    saveRepos()
+                }
+                clearCommitHistoryCache(for: repoID)
+                detectChanges(repoID: repoID)
+            }
+            if error is CancellationError {
+                syncProgress = String(localized: "Cancelled")
+            } else if !handleSSHHostKeyTrustIfNeeded(error, repoID: repoID, operation: .pushCommit(message: message)) {
                 showError(message: error.localizedDescription, category: "push")
             }
         }
@@ -3983,11 +4131,15 @@ final class AppState {
 
     // MARK: - Pull Outcome State
 
-    private func setPullOutcome(repoID: UUID, kind: PullOutcomeKind, message: String) {
+    func setPullOutcome(repoID: UUID, kind: PullOutcomeKind, message: String) {
         pullOutcomeByRepo[repoID] = PullOutcomeState(kind: kind, message: message, date: Date())
+        // Failures are already logged by showError; record the rest per vault.
+        if kind != .failed {
+            DebugLogger.shared.info("pull", message, repo: repo(id: repoID)?.displayName)
+        }
     }
 
-    private func clearCommitHistoryCache(for repoID: UUID) {
+    func clearCommitHistoryCache(for repoID: UUID) {
         commitHistoryByRepo.removeValue(forKey: repoID)
         commitHistoryHasMoreByRepo.removeValue(forKey: repoID)
         commitDetailByRepo.removeValue(forKey: repoID)
@@ -3995,10 +4147,20 @@ final class AppState {
 
     // MARK: - Error Handling
 
-    private func showError(message: String, category: String = "general") {
+    func showError(message: String, category: String = "general") {
+        // Count every sync failure toward the vault's "errors · 7d", even the
+        // ones that become dedicated states below.
+        let failingRepo = syncingRepoID.flatMap { repo(id: $0) }
+        if let failingRepo { RepoErrorJournal.record(repoID: failingRepo.id) }
+        // Sign-in expiry, push rejection, offline and unreachable-host errors
+        // during a sync become dedicated states/toasts instead of an alert.
+        if interceptSyncError(message: message, category: category) {
+            DebugLogger.shared.warning(category, message, repo: failingRepo?.displayName)
+            return
+        }
         lastError = message
         showError = true
-        DebugLogger.shared.error(category, message)
+        DebugLogger.shared.error(category, message, repo: failingRepo?.displayName)
     }
 
     // MARK: - Demo Mode
@@ -4035,7 +4197,12 @@ final class AppState {
         // Write sample markdown files to the vault directory
         createDemoFiles(for: demoRepo)
 
-        // Set a fake change count so the reviewer can see the push UI
+        // Two pending edits so the reviewer can see the Changes list and
+        // the push UI (the demo vault has no real git history).
+        statusEntriesByRepo[demoRepo.id] = [
+            GitStatusEntry(path: "notes/ideas.md", indexStatus: nil, workTreeStatus: .modified),
+            GitStatusEntry(path: "notes/meeting-2026-02-10.md", indexStatus: nil, workTreeStatus: .untracked),
+        ]
         changeCounts[demoRepo.id] = 2
     }
 

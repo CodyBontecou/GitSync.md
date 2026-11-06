@@ -153,6 +153,35 @@ struct SyncMDAppShortcutsProvider: AppShortcutsProvider {
             shortTitle: "Pull & Push",
             systemImageName: "arrow.triangle.2.circlepath.circle.fill"
         )
+
+        AppShortcut(
+            intent: SyncAllRepositoriesIntent(),
+            phrases: [
+                "Pull and push everything in \(.applicationName)",
+                "Sync everything in \(.applicationName)"
+            ],
+            shortTitle: "Sync All",
+            systemImageName: "arrow.triangle.2.circlepath"
+        )
+
+        AppShortcut(
+            intent: RepositoryStatusIntent(),
+            phrases: [
+                "Check \(\.$repository) in \(.applicationName)",
+                "What changed in \(\.$repository) in \(.applicationName)"
+            ],
+            shortTitle: "Repo Status",
+            systemImageName: "info.circle"
+        )
+
+        AppShortcut(
+            intent: OpenRepositoryIntent(),
+            phrases: [
+                "Open \(\.$repository) in \(.applicationName)"
+            ],
+            shortTitle: "Open Repo",
+            systemImageName: "folder"
+        )
     }
 
     static var shortcutTileColor: ShortcutTileColor = .blue

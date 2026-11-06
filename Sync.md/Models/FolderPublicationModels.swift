@@ -18,6 +18,71 @@ struct FolderPublicationFile: Codable, Sendable, Equatable, Identifiable {
     }
 }
 
+/// Grouped view of a folder review: included files, Git-ignored entries,
+/// files over the size limit, and files left out.
+struct FolderReviewSummary: Equatable {
+    static let maximumFileBytes: Int64 = 10 * 1024 * 1024
+    private static let noteAndImageExtensions: Set<String> = [
+        "md", "markdown", "txt", "canvas", "base",
+        "png", "jpg", "jpeg", "gif", "webp", "heic", "svg", "pdf"
+    ]
+
+    let includedCount: Int
+    let includedBytes: Int64
+    /// `true` when every included file is a note or an image.
+    let includedAreNotesAndImages: Bool
+    /// Top-level names of Git-ignored entries (".DS_Store", ".trash/").
+    let ignoredNames: [String]
+    let ignoredCount: Int
+    /// Non-ignored files larger than 10 MiB.
+    let oversized: [FolderPublicationFile]
+    /// Sensitive-looking files that are not selected.
+    let sensitiveExcludedCount: Int
+    /// Other non-ignored, size-eligible files the user unchecked.
+    let otherExcludedCount: Int
+
+    init(files: [FolderPublicationFile], selectedPaths: Set<String>) {
+        let included = files.filter { !$0.isIgnored && selectedPaths.contains($0.path) }
+        includedCount = included.count
+        includedBytes = included.reduce(Int64(0)) { $0 + $1.size }
+        includedAreNotesAndImages = !included.isEmpty && included.allSatisfy {
+            Self.noteAndImageExtensions.contains(URL(fileURLWithPath: $0.path).pathExtension.lowercased())
+        }
+
+        let ignored = files.filter(\.isIgnored)
+        ignoredCount = ignored.count
+        var names: [String] = []
+        for file in ignored {
+            let components = file.path.split(separator: "/", omittingEmptySubsequences: true)
+            guard let first = components.first else { continue }
+            let name = components.count > 1 ? "\(first)/" : String(first)
+            if !names.contains(name) { names.append(name) }
+        }
+        ignoredNames = names
+
+        oversized = files.filter { !$0.isIgnored && $0.size > Self.maximumFileBytes }
+        let unselected = files.filter {
+            !$0.isIgnored && $0.size <= Self.maximumFileBytes && !selectedPaths.contains($0.path)
+        }
+        sensitiveExcludedCount = unselected.filter(\.isSensitive).count
+        otherExcludedCount = unselected.filter { !$0.isSensitive }.count
+    }
+
+    /// "61 notes & images" or "12 files".
+    var includedTitle: String {
+        includedAreNotesAndImages
+            ? String(localized: "\(includedCount) notes & images")
+            : String(localized: "\(includedCount) files")
+    }
+
+    /// ".DS_Store, .trash/" (first three names, then "+N").
+    var ignoredTitle: String {
+        let shown = ignoredNames.prefix(3).joined(separator: ", ")
+        let remaining = ignoredNames.count - 3
+        return remaining > 0 ? "\(shown) +\(remaining)" : shown
+    }
+}
+
 struct FolderInspection: Sendable {
     let files: [FolderPublicationFile]
     let warnings: [String]

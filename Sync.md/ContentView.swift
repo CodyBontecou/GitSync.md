@@ -29,6 +29,7 @@ struct ContentView: View {
             }
         }
         .animation(.spring(duration: 0.35, bounce: 0.12), value: state.isBackgroundSyncing)
+        .overlay { TideToastHost() }
         .onAppear {
             #if DEBUG
             if MarketingCapture.usesSeededData {

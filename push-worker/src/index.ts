@@ -1,4 +1,5 @@
 import { sendApns, type ApnsConfig } from "./apns";
+import { FcmSender, FCM_TOKEN_RE, fcmConfigurationIsPresent } from "./fcm";
 import {
   exchangeGitHubOAuthCode,
   githubAppConfigurationIsPresent,
@@ -13,6 +14,7 @@ import {
 
 export interface Env extends GitHubAppEnv {
   REGISTRY: KVNamespace;
+  FCM_SERVICE_ACCOUNT_JSON?: string;
   GITHUB_APP_WEBHOOK_SECRET: string;
   APNS_KEY_P8: string;
   APNS_KEY_ID: string;
@@ -23,6 +25,7 @@ export interface Env extends GitHubAppEnv {
 }
 
 interface DeviceRecord {
+  platform?: "android";
   token: string;
   environment: "development" | "production";
   repos: string[];
@@ -81,8 +84,9 @@ const MAX_WEBHOOK_BYTES = 10 * 1024 * 1024;
 
 export function parseRegisterRequest(body: unknown): DeviceRecord | null {
   if (typeof body !== "object" || body === null) return null;
-  const { token, environment, repos, deviceSecret } = body as Record<string, unknown>;
-  if (typeof token !== "string" || !DEVICE_TOKEN_RE.test(token)) return null;
+  const { token, environment, repos, deviceSecret, platform } = body as Record<string, unknown>;
+  if (platform !== undefined && platform !== "ios" && platform !== "android") return null;
+  if (typeof token !== "string" || !(platform === "android" ? FCM_TOKEN_RE : DEVICE_TOKEN_RE).test(token)) return null;
   if (environment !== "development" && environment !== "production") return null;
   if (typeof deviceSecret !== "string" || !DEVICE_SECRET_RE.test(deviceSecret)) return null;
   if (!Array.isArray(repos) || repos.length > 200) return null;
@@ -100,6 +104,7 @@ export function parseRegisterRequest(body: unknown): DeviceRecord | null {
     }
   }
   return {
+    ...(platform === "android" ? { platform: "android" as const } : {}),
     token,
     environment,
     repos: normalized,
@@ -117,7 +122,8 @@ export function parseStoredDeviceRecord(raw: string): DeviceRecord | null {
   }
   if (typeof parsed !== "object" || parsed === null) return null;
   const value = parsed as Record<string, unknown>;
-  if (typeof value.token !== "string" || !DEVICE_TOKEN_RE.test(value.token)) return null;
+  if (value.platform !== undefined && value.platform !== "android") return null;
+  if (typeof value.token !== "string" || !(value.platform === "android" ? FCM_TOKEN_RE : DEVICE_TOKEN_RE).test(value.token)) return null;
   if (value.environment !== "development" && value.environment !== "production") return null;
   if (!Array.isArray(value.repos) || value.repos.length > 200) return null;
   const repos: string[] = [];
@@ -146,6 +152,7 @@ export function parseStoredDeviceRecord(raw: string): DeviceRecord | null {
     }
   }
   return {
+    ...(value.platform === "android" ? { platform: "android" as const } : {}),
     token: value.token,
     environment: value.environment,
     repos,
@@ -412,6 +419,7 @@ async function handleRegister(env: Env, request: Request): Promise<Response> {
   const deviceSecret = (parsed as Record<string, unknown> | null)?.deviceSecret;
   const record = parseRegisterRequest(parsed);
   if (!record || typeof deviceSecret !== "string") return json(400, { error: "invalid registration" });
+  if (record.platform === "android" && !fcmConfigurationIsPresent(env.FCM_SERVICE_ACCOUNT_JSON)) return json(503, { error: "android push unavailable" });
 
   const existingRaw = await env.REGISTRY.get(`device:${deviceSecret}`);
   const existing = existingRaw ? parseStoredDeviceRecord(existingRaw) : null;
@@ -852,6 +860,7 @@ async function handleGithubWebhook(env: Env, request: Request, ctx: ExecutionCon
     ? deliveryHeader
     : summary.headSHA ?? crypto.randomUUID();
   const collapseTtl = parseInt(env.NOTIFY_COLLAPSE_SECONDS || "120", 10);
+  const fcmSender = new FcmSender(env.FCM_SERVICE_ACCOUNT_JSON);
   const apnsConfig: ApnsConfig = {
     keyP8: env.APNS_KEY_P8,
     keyId: env.APNS_KEY_ID,
@@ -946,13 +955,28 @@ async function handleGithubWebhook(env: Env, request: Request, ctx: ExecutionCon
           // Branch-scoped throttling prevents an unrelated feature-branch push
           // from suppressing the configured branch's wake. Reuse the bounded
           // hash so even maximum-length refs stay within KV's key limit.
-          const throttleKey = `notif:${apnsCollapseID}:${device.token}`;
+          const throttleKey = device.platform === "android"
+            ? `notif:fcm:${apnsCollapseID}:${await collapseID(device.token, "fcm")}`
+            : `notif:${apnsCollapseID}:${device.token}`;
           if (await env.REGISTRY.get(throttleKey)) {
             deliverySummary.throttled += 1;
             return;
           }
           const text = notificationText(summary.repoFullName!, summary.commitCount);
           try {
+            if (device.platform === "android") {
+              const delivered = await fcmSender.send({ token: device.token, environment: device.environment,
+                title: text.title, body: text.body, collapseId: apnsCollapseID,
+                repo: summary.repoFullName!, branch: summary.branch!, hint: hintID,
+                ...(summary.headSHA ? { head: summary.headSHA } : {}) });
+              if (delivered.ok) {
+                deliverySummary.accepted += 1;
+                await env.REGISTRY.put(throttleKey, "1", { expirationTtl: collapseTtl });
+              } else if (delivered.unregistered) {
+                await deleteDevice(env, secret, device); deliverySummary.pruned += 1;
+              } else deliverySummary.rejected += 1;
+              return;
+            }
             const response = await sendApns(apnsConfig, {
               token: device.token,
               environment: device.environment,
