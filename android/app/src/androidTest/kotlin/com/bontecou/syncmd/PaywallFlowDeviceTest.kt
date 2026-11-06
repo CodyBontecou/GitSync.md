@@ -93,8 +93,9 @@ class PaywallFlowDeviceTest {
         compose.onNodeWithTag("start-check").performClick()
         compose.waitUntil(5_000) { compose.onAllNodesWithTag("vault-check-clone").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("vault-check-headline").assertTextContains(context.getString(R.string.paywall_check_headline_ready))
-        compose.onNodeWithTag("vault-check-detail-access").assertTextEquals(context.getString(R.string.paywall_check_read_write))
-        compose.onNodeWithTag("vault-check-footnote").assertTextEquals(context.getString(R.string.paywall_foot_locked))
+        compose.onNodeWithTag("vault-check-stats").assertExists()
+        compose.onNodeWithText(context.getString(R.string.add_check_access_rw)).assertExists()
+        compose.onNodeWithTag("vault-check-footnote").assertTextEquals(context.getString(R.string.add_check_note_ready))
         compose.onNodeWithText(context.getString(R.string.paywall_price_once, "€9,99"), substring = true).assertExists()
         compose.onNodeWithTag("vault-check-clone").performClick()
         compose.onNodeWithTag("unlock-sheet").assertExists()

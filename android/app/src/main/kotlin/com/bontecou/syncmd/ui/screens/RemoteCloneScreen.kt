@@ -2,6 +2,13 @@ package com.bontecou.syncmd.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -57,7 +64,6 @@ import com.bontecou.syncmd.ui.theme.M3ListCard
 import com.bontecou.syncmd.ui.theme.M3Note
 import com.bontecou.syncmd.ui.theme.M3NoteTone
 import com.bontecou.syncmd.ui.theme.M3SectionLabel
-import com.bontecou.syncmd.ui.theme.M3Segmented
 import com.bontecou.syncmd.ui.theme.M3SettingsRow
 import com.bontecou.syncmd.ui.theme.M3TextField
 import com.bontecou.syncmd.ui.theme.M3TonalButton
@@ -157,7 +163,9 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
         location, auth == RemoteAuth.SAVED, ssh()) }
     checkTarget?.let { target ->
         VaultCheckScreen(target, locked = !unlocked, price = price,
-            onClone = { detail -> gate.require(target.name, detail) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null })
+            onClone = { detail -> gate.require(target.name, detail) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null },
+            clonesTo = runCatching { com.bontecou.syncmd.ui.components.addVaultFriendlyPath(context,
+                com.bontecou.syncmd.storage.RepositoryLocations(context).summary(location).path + "/" + target.name, " › ") }.getOrNull())
     }
     val testAndClone: () -> Unit = {
         testError = null; notice = null
@@ -199,11 +207,12 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
             if (remote?.isNativeGit == true) M3Note(stringResource(R.string.git_native_public_only), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("remote-native-public-hint"), tone = M3NoteTone.Muted)
 
             M3SectionLabel(stringResource(R.string.add_sign_in_with), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp))
-            M3Segmented(options3.map { stringResource(it.label) }, options3.indexOf(auth), { index ->
-                auth = options3[index]; testError = null
+            RemoteAuthSegmented(options3, auth, { option ->
+                auth = option; testError = null
                 if (auth != RemoteAuth.TOKEN) secret = ""
                 if (auth != RemoteAuth.SSH) { privateKey = ""; passphrase = ""; publicKey = "" }
-            }, Modifier.padding(horizontal = 16.dp).testTag("remote-auth"), enabled = !locked && remote?.usesNoNetworkCredentials != true, role = androidx.compose.ui.semantics.Role.RadioButton)
+            }, enabled = { option -> !locked && (remote?.usesNoNetworkCredentials != true || option == RemoteAuth.NONE) },
+                modifier = Modifier.padding(horizontal = 16.dp).testTag("remote-auth"))
             when (auth) {
                 RemoteAuth.SSH -> if (otherKey) {
                     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
@@ -292,6 +301,35 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
                     (auth != RemoteAuth.GITHUB || accounts.any { it.connected && it.id == accountId }))
         }
     }
+}
+
+/** Board 14's segmented "Sign in with" (M3Segmented's look) with a tag and enabled state per option. */
+@Composable
+private fun RemoteAuthSegmented(options: List<RemoteAuth>, selected: RemoteAuth?, onSelect: (RemoteAuth) -> Unit, enabled: (RemoteAuth) -> Boolean,
+    modifier: Modifier = Modifier) {
+    val c = M3.colors
+    val shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp)
+    Row(modifier.fillMaxWidth().heightIn(min = 40.dp).height(androidx.compose.foundation.layout.IntrinsicSize.Min).clip(shape).border(1.dp, c.outline, shape)) {
+        options.forEachIndexed { index, option ->
+            val on = option == selected
+            val active = enabled(option)
+            if (index > 0) androidx.compose.foundation.layout.Box(Modifier.width(1.dp).fillMaxHeight().background(c.outline))
+            Row(Modifier.weight(1f).heightIn(min = 40.dp).then(if (on) Modifier.background(c.sc) else Modifier)
+                .selectable(on, enabled = active, role = androidx.compose.ui.semantics.Role.RadioButton) { onSelect(option) }
+                .alpha(if (active) 1f else 0.38f).padding(horizontal = 8.dp).testTag("remote-auth-${option.tag}"),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                val ink = if (on) c.onSc else c.on
+                if (on) { com.bontecou.syncmd.ui.theme.M3Icon(R.drawable.ic_m3_check, tint = ink, size = 18.dp); Spacer(Modifier.width(6.dp)) }
+                Text(stringResource(option.label), style = M3Type.button.copy(fontWeight = if (on) FontWeight.SemiBold else FontWeight.Medium), color = ink, maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+            }
+        }
+    }
+}
+
+/** Test tags kept from the earlier auth chips. */
+private val RemoteAuth.tag: String get() = when (this) {
+    RemoteAuth.SSH -> "ssh"; RemoteAuth.TOKEN -> "basic"; RemoteAuth.NONE -> "public"; RemoteAuth.GITHUB -> "github"; RemoteAuth.SAVED -> "saved"
 }
 
 private val RemoteAuth.label: Int get() = when (this) {

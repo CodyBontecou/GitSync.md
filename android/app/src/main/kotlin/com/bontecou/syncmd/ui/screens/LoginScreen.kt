@@ -277,11 +277,11 @@ private fun LoginTokenContent(
             colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = Color.Transparent, unfocusedContainerColor = Color.Transparent,
                 focusedBorderColor = c.primary, unfocusedBorderColor = c.primary, errorBorderColor = c.error, focusedLabelColor = c.primary,
                 unfocusedLabelColor = c.primary, errorLabelColor = c.error, cursorColor = c.primary, focusedTextColor = c.on, unfocusedTextColor = c.on),
-            modifier = Modifier.fillMaxWidth().padding(top = 32.dp).testTag("login-token-field"))
+            modifier = Modifier.fillMaxWidth().padding(top = 32.dp).testTag("login-pat-token"))
         M3Button(stringResource(R.string.add_token_create), onCreateToken, Modifier.padding(top = 8.dp), style = M3ButtonStyle.Text, icon = R.drawable.ic_m3_open_in_new)
         Text(stringResource(R.string.add_token_scopes), style = M3Type.bodySmall, color = c.onVar, modifier = Modifier.padding(horizontal = 4.dp))
         Spacer(Modifier.weight(1f).heightIn(min = 24.dp))
-        M3Button(stringResource(R.string.add_token_sign_in), onSubmit, Modifier.fillMaxWidth().testTag("login-token-submit"), size = M3ButtonSize.Hero,
+        M3Button(stringResource(R.string.add_token_sign_in), onSubmit, Modifier.fillMaxWidth().testTag("login-pat-submit"), size = M3ButtonSize.Hero,
             enabled = token.isNotBlank(), loading = isLoading)
     }
 }
@@ -308,7 +308,7 @@ private fun LoginConnectedContent(login: String?, name: String?, error: String?,
             }
         }
         Spacer(Modifier.weight(1f))
-        M3Button(stringResource(R.string.add_done), onDone, Modifier.fillMaxWidth().testTag("login-done"), size = M3ButtonSize.Hero)
+        M3Button(stringResource(R.string.add_done), onDone, Modifier.fillMaxWidth().testTag("account-login-done"), size = M3ButtonSize.Hero)
     }
 }
 
