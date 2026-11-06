@@ -103,7 +103,8 @@ fun ConflictPane(
     val androidContext = LocalContext.current
 
     val conflict: Conflict? = conflicts.firstOrNull { it.filePath == filePath } ?: conflicts.firstOrNull()
-    LaunchedEffect(conflict?.filePath, ready) { if (ready && conflict?.filePath != filePath) onShowing(conflict?.filePath) }
+    // Follow the next conflicted file; once none is left the merge-commit effect below closes the pane.
+    LaunchedEffect(conflict?.filePath, ready) { val next = conflict?.filePath; if (ready && next != null && next != filePath) onShowing(next) }
     var total by rememberSaveable(repositoryPath) { mutableIntStateOf(0) }
     LaunchedEffect(conflicts.size, resolved.size) { total = maxOf(total, conflicts.size + resolved.size) }
     var abort by remember { mutableStateOf(false) }
