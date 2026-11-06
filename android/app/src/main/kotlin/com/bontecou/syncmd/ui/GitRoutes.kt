@@ -22,8 +22,8 @@ object GitRoutes {
     const val REMOTE = "git-remote"
     const val CONFLICT = "git-conflict"
     const val MANAGE = "git-manage"
-    /** Owned by the LFS area; registered here only as a placeholder until its LargeFiles screen lands. */
-    const val LARGE_FILES = "largeFiles"
+    /** The LFS area registers this route in AppShell (Routes.LARGE_FILES). */
+    const val LARGE_FILES = Routes.LARGE_FILES
 }
 
 /** Open a Git destination for [path]. */
@@ -74,10 +74,6 @@ fun NavGraphBuilder.gitRoutes(navController: NavController, settings: SettingsVi
             onOpenVault = { navController.openGit(GitDestination.Changes, path) },
             onNavigate = { navController.openGit(it, path) },
             onRemoved = { navController.onResumedSource { if (!navController.popBackStack(Routes.REPOS, inclusive = false)) navController.navigate(Routes.REPOS) } })
-    }
-    pathRoute(GitRoutes.LARGE_FILES) { path ->
-        // Placeholder until the LFS area's LargeFiles screen replaces this route: the existing LFS screen.
-        com.bontecou.syncmd.ui.screens.LfsScreen(path, onBack = { back() })
     }
 }
 

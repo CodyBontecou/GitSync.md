@@ -240,8 +240,7 @@ fun GitScreen(
     }
 
     discardReview?.takeIf { it.filePath == null }?.let { review ->
-        // TODO(merge): use onConfirmDiscard overload — RevertConfirmDialog(review, onConfirmDiscard = { diffVM.confirmDiscard(review, stashFirst = it) }, onDismiss = …)
-        RevertConfirmDialog(review = review, onConfirm = { diffVM.confirmDiscard(review) }, onDismiss = { diffVM.dismissDiscard(review) })
+        RevertConfirmDialog(review, onConfirmDiscard = { diffVM.confirmDiscard(review, stashFirst = it) }, onDismiss = { diffVM.dismissDiscard(review) })
     }
     val error = pullError.takeIf { pullContext != null } ?: diffError
     if (error != null) {

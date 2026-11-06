@@ -144,8 +144,8 @@ fun DiffScreen(
     discardReview?.takeIf { it.filePath == current }?.let { review ->
         RevertConfirmDialog(
             review = review,
-            onConfirm = {
-                diffVM.confirmDiscard(review, onComplete = {
+            onConfirmDiscard = { stashFirst ->
+                diffVM.confirmDiscard(review, stashFirst = stashFirst, onComplete = {
                     // Move on to the next changed file when there is one; otherwise leave.
                     val rest = paths.filter { it != current }
                     if (rest.isEmpty()) onNavigateBack() else current = rest[index.coerceIn(0, rest.lastIndex)]
