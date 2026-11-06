@@ -11363,3 +11363,33 @@ final class VaultWatchTests: XCTestCase {
         XCTAssertEqual(names, ["", "/daily", "/ideas", "/ideas/drafts"])
     }
 }
+
+// MARK: - App unlock
+
+final class AppUnlockTests: XCTestCase {
+    func testBuildsBeforeTheFreeCutoffCountAsPaidAppPurchases() {
+        XCTAssertTrue(AppUnlock.isPaidAppVersion("1"))
+        XCTAssertTrue(AppUnlock.isPaidAppVersion("202608291050"))
+        XCTAssertTrue(AppUnlock.isPaidAppVersion(String(AppUnlock.firstFreeBuild - 1)))
+    }
+
+    func testFreeBuildsAndSandboxReceiptsDoNotUnlock() {
+        XCTAssertFalse(AppUnlock.isPaidAppVersion(String(AppUnlock.firstFreeBuild)))
+        XCTAssertFalse(AppUnlock.isPaidAppVersion(String(AppUnlock.firstFreeBuild + 1)))
+        // The sandbox and Xcode StoreKit testing report "1.0".
+        XCTAssertFalse(AppUnlock.isPaidAppVersion("1.0"))
+        XCTAssertFalse(AppUnlock.isPaidAppVersion(""))
+    }
+
+    @MainActor
+    func testCachedUnlockSurvivesRelaunch() throws {
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: "AppUnlockTests"))
+        defaults.removePersistentDomain(forName: "AppUnlockTests")
+        defer { defaults.removePersistentDomain(forName: "AppUnlockTests") }
+
+        XCTAssertFalse(AppUnlock(defaults: defaults).isUnlocked)
+
+        defaults.set(AppUnlock.Reason.paidAppPurchase.rawValue, forKey: "appUnlock.reason")
+        XCTAssertTrue(AppUnlock(defaults: defaults).isUnlocked)
+    }
+}
