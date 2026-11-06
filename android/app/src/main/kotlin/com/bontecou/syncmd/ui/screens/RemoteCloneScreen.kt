@@ -88,7 +88,7 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
     val cloneNow = { viewModel.clone(url, name, branch, authenticated, username, secret, if (useGithub) accountId else null, location, useSaved, if (useSsh) Credentials.Ssh(privateKey, passphrase, publicKey) else null) }
     checkTarget?.let { target ->
         VaultCheckScreen(target, locked = !unlocked, price = price,
-            onClone = { gate.require(target.name) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null })
+            onClone = { detail -> gate.require(target.name, detail) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null })
     }
     BackHandler(!state.busy) { if (viewModel.cancelRecovery()) onBack() }
     BackHandler(state.busy) { /* Keep the operation's ViewModel alive until safe clone publication finishes. */ }

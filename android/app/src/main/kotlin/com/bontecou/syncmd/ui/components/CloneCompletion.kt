@@ -15,6 +15,7 @@ import androidx.lifecycle.withStateAtLeast
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.repositories.CompletedClone
 import com.bontecou.syncmd.ui.theme.*
+import androidx.compose.ui.res.pluralStringResource
 import com.bontecou.syncmd.ui.viewmodels.RepositoryHistoryEntry
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
 import kotlinx.coroutines.CancellationException
@@ -32,6 +33,7 @@ fun CloneCompletion(completed: CompletedClone, name: String, settings: SettingsV
     val reviewCallback by rememberUpdatedState(onReviewLfs)
     val lfsDecision = remember(completed) { CompletableDeferred<Boolean>() }
     var lfsAttention by remember(completed) { mutableStateOf(false) }
+    var lfsFiles by remember(completed) { mutableStateOf<List<CloneLfsRow>>(emptyList()) }
     var attempt by remember(completed) { mutableStateOf(0) }
     var busy by remember(completed) { mutableStateOf(true) }
     var failed by remember(completed) { mutableStateOf(false) }
@@ -41,13 +43,15 @@ fun CloneCompletion(completed: CompletedClone, name: String, settings: SettingsV
         busy = true; failed = false
         try {
             settings.registerCompletedClone(completed, name, alias, historyEntry)
-            val needsLfsReview = try {
+            val pending = try {
                 withContext(Dispatchers.IO) {
-                    com.bontecou.syncmd.services.git.lfs.LfsRepository().inspect(completed.path).any { !it.hydrated }
+                    com.bontecou.syncmd.services.git.lfs.LfsRepository().inspect(completed.path).filter { !it.hydrated }
                 }
             } catch (cancelled: CancellationException) { throw cancelled
-            } catch (_: Exception) { true }
+            } catch (_: Exception) { null }
+            val needsLfsReview = pending == null || pending.isNotEmpty()
             val reviewLfs = if (needsLfsReview) {
+                lfsFiles = cloneLfsRows(pending.orEmpty().map { it.path to it.pointer.size })
                 lfsAttention = true; busy = false
                 lfsDecision.await()
             } else false
@@ -63,34 +67,61 @@ fun CloneCompletion(completed: CompletedClone, name: String, settings: SettingsV
         catch (_: Exception) { delivered = false; failed = true }
         finally { busy = false }
     }
-    CloneCompletionContent(busy = busy, lfsAttention = lfsAttention && !failed && !delivered, failed = failed,
+    CloneCompletionContent(name = name, busy = busy, lfsAttention = lfsAttention && !failed && !delivered, lfsFiles = lfsFiles, failed = failed,
         canReviewLfs = reviewCallback != null,
         onReviewLfs = { lfsDecision.complete(true) }, onContinue = { lfsDecision.complete(false) },
         onRetry = { if (!busy) { busy = true; failed = false; attempt++ } })
 }
 
-/** Stateless finish-up states: registering, Git LFS needs review, registration failed. */
+/** One line of the LFS review list: a file and its size, or a folder and how many files wait in it. */
+data class CloneLfsRow(val path: String, val size: Long?, val count: Int = 1)
+
+/** Folders holding three or more pending files collapse to "covers/ · 6 files" (board Cloning "lfs"). */
+internal fun cloneLfsRows(files: List<Pair<String, Long>>, limit: Int = 5): List<CloneLfsRow> {
+    val byFolder = files.groupBy { it.first.substringBeforeLast('/', "") }
+    val rows = byFolder.flatMap { (folder, items) ->
+        if (folder.isNotEmpty() && items.size >= 3) listOf(CloneLfsRow("$folder/", null, items.size))
+        else items.map { CloneLfsRow(it.first, it.second) }
+    }.sortedBy { it.path.lowercase() }
+    return rows.take(limit)
+}
+
+/** Stateless finish-up states (board Cloning): finishing, Git LFS needs review, registration failed. */
 @Composable
-private fun CloneCompletionContent(busy: Boolean, lfsAttention: Boolean, failed: Boolean, canReviewLfs: Boolean,
+private fun CloneCompletionContent(name: String, busy: Boolean, lfsAttention: Boolean, lfsFiles: List<CloneLfsRow>, failed: Boolean, canReviewLfs: Boolean,
     onReviewLfs: () -> Unit, onContinue: () -> Unit, onRetry: () -> Unit) {
-    Column(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        if (busy) AddVaultBusyLine(stringResource(R.string.ui_finishing_up_13f4f85a), Modifier.padding(horizontal = 4.dp))
+    val c = M3.colors
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(0.dp)) {
+        if (busy) {
+            AddVaultBusy(stringResource(R.string.add_clone_finishing), Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp))
+            Text(stringResource(R.string.add_clone_finishing_body, name), style = M3Type.bodySmall, color = c.onVar,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 6.dp))
+        }
         if (lfsAttention) {
-            TideCard {
-                AddVaultNote(stringResource(R.string.clone_lfs_attention), TideBannerTone.AHEAD, textModifier = Modifier.testTag("clone-lfs-attention"))
-                Spacer(Modifier.height(16.dp))
-                if (canReviewLfs) {
-                    BPrimaryButton(stringResource(R.string.clone_lfs_review), modifier = Modifier.testTag("clone-lfs-review"), onClick = onReviewLfs)
-                    Spacer(Modifier.height(10.dp))
+            M3ListCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp).testTag("clone-lfs-card")) {
+                Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    AddVaultInlineIssue(stringResource(R.string.add_clone_lfs), Modifier.testTag("clone-lfs-attention"), icon = R.drawable.ic_m3_cloud_download, tint = c.tertiary)
+                    if (lfsFiles.isNotEmpty()) M3ListCard(color = c.surface, radius = 16.dp) {
+                        lfsFiles.forEachIndexed { index, row ->
+                            Row(Modifier.fillMaxWidth().m3TopDivider(index > 0, c.outlineVar).padding(horizontal = 14.dp, vertical = 10.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                Text(row.path, style = M3Type.meta, color = c.on, modifier = Modifier.weight(1f), maxLines = 1,
+                                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                                Text(row.size?.let(::addVaultSize) ?: pluralStringResource(R.plurals.add_clone_lfs_files, row.count, row.count), style = M3Type.meta, color = c.onVar)
+                            }
+                        }
+                    }
+                    if (canReviewLfs) M3FilledButton(stringResource(R.string.add_clone_lfs_review), onReviewLfs, Modifier.fillMaxWidth().testTag("clone-lfs-review"))
+                    M3OutlinedButton(stringResource(R.string.add_clone_continue), onContinue, Modifier.fillMaxWidth().testTag("clone-lfs-continue"))
                 }
-                BSecondaryButton(stringResource(R.string.guide_continue), modifier = Modifier.testTag("clone-lfs-continue"), onClick = onContinue)
             }
         }
         if (failed) {
-            TideCard {
-                AddVaultNote(stringResource(R.string.clone_registration_failed), TideBannerTone.DANGER, textModifier = Modifier.testTag("clone-registration-error"))
-                Spacer(Modifier.height(16.dp))
-                BPrimaryButton(stringResource(R.string.ui_add_cloned_repository_f84b64e8), modifier = Modifier.testTag("clone-registration-retry"), onClick = onRetry)
+            M3ListCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+                Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    AddVaultInlineIssue(stringResource(R.string.add_clone_register_failed), Modifier.testTag("clone-registration-error"))
+                    M3FilledButton(stringResource(R.string.add_clone_register_retry), onRetry, Modifier.fillMaxWidth().testTag("clone-registration-retry"))
+                }
             }
         }
     }
@@ -98,8 +129,9 @@ private fun CloneCompletionContent(busy: Boolean, lfsAttention: Boolean, failed:
 
 @Composable
 private fun CompletionPreview(busy: Boolean, lfs: Boolean, failed: Boolean) {
-    Box(Modifier.background(Tide.colors.paper).padding(vertical = 16.dp)) {
-        CloneCompletionContent(busy, lfs, failed, canReviewLfs = true, {}, {}, {})
+    Box(Modifier.background(M3.colors.surface).padding(vertical = 16.dp)) {
+        CloneCompletionContent("reading-vault", busy, lfs, cloneLfsRows(listOf("attachments/reading-map.pdf" to 18_000_000L, "audio/ch3-notes.m4a" to 42_000_000L) +
+            (1..6).map { "covers/$it.jpg" to 1L }), failed, canReviewLfs = true, {}, {}, {})
     }
 }
 

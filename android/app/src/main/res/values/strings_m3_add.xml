@@ -317,6 +317,8 @@
     <string name="add_check_lfs_none">none</string>
     <string name="add_check_lfs_used">in use</string>
     <string name="add_check_unknown">—</string>
+    <string name="add_check_measuring">measuring</string>
+    <string name="add_check_ok">ok</string>
     <string name="add_check_obsidian_found">Obsidian vault found</string>
     <string name="add_check_obsidian_git">Obsidian Git plugin configured</string>
     <string name="add_check_no_obsidian">No .obsidian/ folder yet</string>
