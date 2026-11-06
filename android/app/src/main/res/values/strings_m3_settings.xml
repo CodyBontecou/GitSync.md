@@ -322,4 +322,63 @@ you sleep.</string>
         <item quantity="other">%1$d local changes on this phone</item>
     </plurals>
     <string name="settings_m3_push_open_vault">Open vault</string>
+
+    <!-- Shortcuts -->
+    <string name="settings_m3_sc_title">Widget &amp; shortcuts</string>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="one">Pull All widget · %1$d shortcut</item>
+        <item quantity="other">Pull All widget · %1$d shortcuts</item>
+    </plurals>
+    <string name="settings_m3_sc_requested">Shortcut requested. Approve it in your launcher, then tap Refresh below to check it.</string>
+    <string name="settings_m3_sc_pull_all_title">Pull All, without opening the app</string>
+    <string name="settings_m3_sc_pull_all">Pull All</string>
+    <string name="settings_m3_sc_ff_only">Fetch and fast-forward only</string>
+    <string name="settings_m3_sc_pull_all_repos">Pull all repositories</string>
+    <string name="settings_m3_sc_widget_lead">Widget:</string>
+    <string name="settings_m3_sc_widget_how">long-press your home screen › Widgets › GitSync.md.</string>
+    <string name="settings_m3_sc_tile_lead">Tile:</string>
+    <string name="settings_m3_sc_tile_how">pull down Quick Settings › Edit › drag in Pull All.</string>
+    <string name="settings_m3_sc_pull_all_note">Each tap pulls every vault once. Nothing is committed or pushed. Results wait in Pull All.</string>
+    <string name="settings_m3_sc_open_pull_all">Open Pull All</string>
+    <string name="settings_m3_sc_open_pull_all_sub">Pull every vault now and see each result</string>
+    <string name="settings_m3_sc_new_title">New shortcut for one vault</string>
+    <string name="settings_m3_sc_branch_reviewed">Branch %1$s · reviewed %2$s</string>
+    <string name="settings_m3_sc_upstream">Upstream %1$s / %2$s</string>
+    <string name="settings_m3_sc_review_again">Review again</string>
+    <string name="settings_m3_sc_action">Action</string>
+    <string name="settings_m3_sc_status">Read status</string>
+    <string name="settings_m3_sc_status_sub">No network. Shows what changed.</string>
+    <string name="settings_m3_sc_pull">Pull</string>
+    <string name="settings_m3_sc_pull_sub">Fetch and fast-forward only</string>
+    <string name="settings_m3_sc_push">Commit &amp; push</string>
+    <string name="settings_m3_sc_push_sub">Commits every change, then uploads</string>
+    <string name="settings_m3_sc_sync">Sync</string>
+    <string name="settings_m3_sc_sync_sub">Pull first, then commit &amp; push</string>
+    <string name="settings_m3_sc_writes">Stages every change, commits if needed, then uploads. Conflicts, split history or a remote that moved first stop it, and a failed upload keeps the new commit.</string>
+    <string name="settings_m3_sc_launcher">Launcher shortcuts</string>
+    <string name="settings_m3_sc_refresh">Refresh</string>
+    <string name="settings_m3_sc_no_shortcuts">No launcher shortcuts yet. Pick a vault and an action above.</string>
+    <string name="settings_m3_sc_item_title">%1$s: %2$s</string>
+    <string name="settings_m3_sc_pinned">Pinned</string>
+    <string name="settings_m3_sc_waiting">Waiting for launcher</string>
+    <string name="settings_m3_sc_revoked">Revoked</string>
+    <string name="settings_m3_sc_runs_closed">Runs without opening GitSync.md</string>
+    <string name="settings_m3_sc_runs_open">Opens GitSync.md, then runs once</string>
+    <string name="settings_m3_sc_revoke">Revoke</string>
+    <string name="settings_m3_sc_links">Authorized links</string>
+    <string name="settings_m3_sc_no_links">No authorized links. Apps like Obsidian or Shortcuts can ask for one.</string>
+    <string name="settings_m3_sc_authorized">Authorized</string>
+    <string name="settings_m3_sc_link_identity">Link %1$s · created %2$s</string>
+    <string name="settings_m3_sc_branch">branch %1$s</string>
+    <string name="settings_m3_sc_returns_to">returns to %1$s</string>
+    <string name="settings_m3_sc_link_private">Anyone with this link can run it. Keep it private.</string>
+    <string name="settings_m3_sc_revoke_link">Revoke link</string>
+    <string name="settings_m3_sc_clear_results">Clear saved results</string>
+    <string name="settings_m3_sc_clear">Clear</string>
+    <string name="settings_m3_sc_run_once">Run once now</string>
+    <string name="settings_m3_sc_background_sub">Results land here and in a notification</string>
+    <string name="settings_m3_sc_pin_consent">Each tap runs this once, without asking again. It stays tied to %1$s, branch %2$s and this account. If any of those change, the shortcut stops and you make a new one. Revoke it here any time.</string>
+    <string name="settings_m3_sc_pin_writes">Commits with “%1$s” and uploads every change on each tap.</string>
+    <string name="settings_m3_sc_revoke_title">Revoke this shortcut?</string>
+    <string name="settings_m3_sc_revoke_body">It stops running Git actions. Its icon may stay on your home screen, greyed out, until you remove it. A new shortcut needs approval again.</string>
 </resources>
