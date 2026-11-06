@@ -30,7 +30,6 @@ import org.junit.Assert.*
 import java.io.File
 import java.util.UUID
 import java.util.Locale
-import java.text.NumberFormat
 
 /** Scoped logs; never clears the installed app's diagnostic history. */
 class DiagnosticsScreenTest {
@@ -50,10 +49,22 @@ class DiagnosticsScreenTest {
         if (::vm.isInitialized) instrumentation.runOnMainSync { ViewModelStore().apply { put("diagnostics", vm); clear() } }
         root.deleteRecursively()
     }
-    private fun seed() {
-        logs.store.append(DiagnosticEntry(operation = DiagnosticOperation.PULL, outcome = DiagnosticOutcome.COMPLETED))
-        logs.store.append(DiagnosticEntry(operation = DiagnosticOperation.BRANCH, outcome = DiagnosticOutcome.ATTENTION, reason = DiagnosticReason.LFS_CONTENTS))
-        logs.store.append(DiagnosticEntry(operation = DiagnosticOperation.PUSH, outcome = DiagnosticOutcome.STOPPED, reason = DiagnosticReason.LFS_LOCK))
+    /** INFO pull, WARNING branch, ERROR push. */
+    private data class Seeded(val pull: DiagnosticEntry, val branch: DiagnosticEntry, val push: DiagnosticEntry)
+    private fun seed(): Seeded {
+        val seeded = Seeded(DiagnosticEntry(operation = DiagnosticOperation.PULL, outcome = DiagnosticOutcome.COMPLETED),
+            DiagnosticEntry(operation = DiagnosticOperation.BRANCH, outcome = DiagnosticOutcome.ATTENTION, reason = DiagnosticReason.LFS_CONTENTS),
+            DiagnosticEntry(operation = DiagnosticOperation.PUSH, outcome = DiagnosticOutcome.STOPPED, reason = DiagnosticReason.LFS_LOCK))
+        logs.store.append(seeded.pull); logs.store.append(seeded.branch); logs.store.append(seeded.push)
+        return seeded
+    }
+    private fun row(entry: DiagnosticEntry) = compose.onNodeWithTag("diagnostic-entry-${entry.id}", useUnmergedTree = true)
+    /** The top bar subtitle replaced the old "N shown · M stored" line: "3 entries · 1 error in 24h". */
+    private fun assertStored(stored: Int, errorsToday: Int, resources: android.content.res.Resources = context.resources) {
+        val subtitle = resources.getQuantityString(R.plurals.settings_m3_entries, stored, stored) + " · " +
+            resources.getQuantityString(R.plurals.settings_m3_debug_errors_day, errorsToday, errorsToday)
+        compose.waitUntil(5_000) { compose.onAllNodes(hasText(subtitle) and hasAnyAncestor(hasTestTag("diagnostics-title")), useUnmergedTree = true)
+            .fetchSemanticsNodes().isNotEmpty() }
     }
     private fun show() {
         vm = DiagnosticsViewModel(logs)
@@ -96,13 +107,17 @@ class DiagnosticsScreenTest {
         } finally { previous?.recycle() }
     }
     @Test fun liveSeverityFilterCopiesOnlyVisibleEntriesAndSurvivesStoreRestart() {
-        seed(); show()
-        compose.onNodeWithTag("diagnostics-filter-ERROR").performScrollTo().performClick()
-        compose.onNodeWithTag("diagnostics-count").performScrollTo().assertTextEquals("1 shown · 3 stored")
-        logs.store.append(DiagnosticEntry(operation = DiagnosticOperation.FETCH, outcome = DiagnosticOutcome.COMPLETED))
-        compose.onNodeWithTag("diagnostics-count").assertTextEquals("1 shown · 4 stored")
+        val seeded = seed(); show()
+        compose.onNodeWithTag("diagnostics-filter-ERROR").performScrollTo().performClick().assertIsSelected()
+        row(seeded.push).assertIsDisplayed(); row(seeded.pull).assertDoesNotExist(); row(seeded.branch).assertDoesNotExist()
+        compose.onNode(hasText(context.getString(R.string.settings_m3_debug_error)) and hasAnyAncestor(hasTestTag("diagnostic-entry-${seeded.push.id}")), useUnmergedTree = true)
+            .assertIsDisplayed()
+        assertStored(3, 1)
+        val fetch = DiagnosticEntry(operation = DiagnosticOperation.FETCH, outcome = DiagnosticOutcome.COMPLETED)
+        logs.store.append(fetch)
+        assertStored(4, 1); row(fetch).assertDoesNotExist(); row(seeded.push).assertIsDisplayed()
         capture("diagnostics-filter-light.png")
-        compose.onNodeWithTag("diagnostics-copy").performScrollTo().performClick()
+        compose.onNodeWithTag("diagnostics-copy").performClick()
         compose.waitUntil(10_000) { !vm.busy.value }
         var copied = ""
         instrumentation.runOnMainSync { copied = (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).primaryClip!!.getItemAt(0).text.toString() }
@@ -110,22 +125,25 @@ class DiagnosticsScreenTest {
         val fresh = DiagnosticStore(root); fresh.load(); assertEquals(4, fresh.entries.value.size)
     }
     @Test fun clearRequiresConfirmationAndClearsHiddenEntriesAtLargeText() {
-        seed(); dark.value = true; show()
+        val seeded = seed(); dark.value = true; show()
         compose.onNodeWithTag("diagnostics-filter-WARNING").performScrollTo().performClick()
-        compose.onNodeWithTag("diagnostics-clear").performScrollTo().performClick()
-        compose.onNodeWithText("Cancel", substring = false).performClick()
+        row(seeded.branch).assertIsDisplayed(); row(seeded.pull).assertDoesNotExist(); row(seeded.push).assertDoesNotExist()
+        compose.onNodeWithTag("diagnostics-clear").performClick()
+        compose.onNodeWithTag("diagnostics-cancel-clear").assertTextEquals("Cancel").performClick()
         assertEquals(3, logs.store.entries.value.size)
         compose.onNodeWithTag("diagnostics-clear").performClick()
         capture("diagnostics-clear-dark-xl.png")
         compose.onNodeWithTag("diagnostics-confirm-clear").performClick()
         compose.waitUntil(10_000) { !vm.busy.value && logs.store.entries.value.isEmpty() }
-        compose.onNodeWithTag("diagnostics-count").performScrollTo().assertTextEquals("0 shown · 0 stored")
+        assertStored(0, 0)
+        compose.onNodeWithTag("diagnostics-empty").performScrollTo().assertTextEquals(context.getString(R.string.diagnostics_empty))
+        compose.onNodeWithTag("diagnostics-clear").assertIsNotEnabled()
         capture("diagnostics-empty-dark-xl.png")
         val fresh = DiagnosticStore(root); fresh.load(); assertTrue(fresh.entries.value.isEmpty())
     }
     @Test fun nativeShareChooserCanBeCancelledAndReturnsToTheLog() {
         seed(); show()
-        compose.onNodeWithTag("diagnostics-share").performScrollTo().performClick()
+        compose.onNodeWithTag("diagnostics-share").performClick()
         val device = UiDevice.getInstance(instrumentation)
         val chooserPackage = context.packageManager.resolveActivity(Intent(Intent.ACTION_CHOOSER), 0)!!.activityInfo.packageName
         compose.waitUntil(10_000) { device.currentPackageName == chooserPackage }
@@ -138,11 +156,14 @@ class DiagnosticsScreenTest {
         show()
         compose.onNodeWithTag("diagnostics-storage-problem").performScrollTo().assertIsDisplayed()
         assertEquals("broken private file not displayed", File(root, "events.json").readText())
-        compose.onNodeWithTag("diagnostics-clear").performScrollTo().performClick()
+        compose.onNodeWithTag("diagnostics-clear").assertIsEnabled().performClick()
+        compose.onNodeWithTag("diagnostics-clear-text").assertTextEquals(context.getString(R.string.diagnostics_clear_recovery))
         compose.onNodeWithTag("diagnostics-confirm-clear").performClick()
         compose.waitUntil(10_000) { !vm.busy.value && !logs.store.storageProblem.value }
-        logs.store.append(DiagnosticEntry(operation = DiagnosticOperation.CLONE, outcome = DiagnosticOutcome.COMPLETED))
-        compose.onNodeWithTag("diagnostics-count").performScrollTo().assertTextEquals("1 shown · 1 stored")
+        compose.onNodeWithTag("diagnostics-storage-problem").assertDoesNotExist()
+        val clone = DiagnosticEntry(operation = DiagnosticOperation.CLONE, outcome = DiagnosticOutcome.COMPLETED)
+        logs.store.append(clone)
+        assertStored(1, 0); row(clone).performScrollTo().assertIsDisplayed()
     }
 
     @Test fun everyLocaleRetainsFeedbackAndReviewsAllFilteredRecordsBeforeClearingAtLargeText() {
@@ -158,13 +179,14 @@ class DiagnosticsScreenTest {
             val copy = (0 until rows.length()).map { rows.getJSONObject(it) }
                 .associate { it.getString("name") to it.getString("source") }
             compose.runOnIdle { reviewLocale.value = tag; vm.copied() }
-            compose.onNodeWithTag("diagnostics-screen").performScrollToNode(hasTestTag("diagnostics-notice"))
-            compose.onNodeWithTag("diagnostics-notice").assertTextEquals(copy.getValue("diagnostics_copied"))
+            compose.onNodeWithTag("diagnostics-notice").performScrollTo().assertTextEquals(copy.getValue("diagnostics_copied"))
             compose.onNodeWithTag("diagnostics-filter-ERROR").performScrollTo().performClick()
-            compose.onNodeWithTag("diagnostics-count").performScrollTo().assertTextEquals(String.format(locale,
-                copy.getValue("ui_1_s_shown_2_s_stored_c5d98835"), NumberFormat.getIntegerInstance(locale).format(1),
-                NumberFormat.getIntegerInstance(locale).format(3)))
-            compose.onNodeWithTag("diagnostics-clear").performScrollTo().performClick()
+            // The stored count moved to the top bar subtitle; its Material 3 plurals are not translated yet, so
+            // expect whatever the locale's resources resolve (English fallback).
+            val localized = context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+                setLocales(LocaleList.forLanguageTags(tag)) }).resources
+            assertStored(3, 1, localized)
+            compose.onNodeWithTag("diagnostics-clear").performClick()
             val consent = String.format(locale, copy.getValue("diagnostics_clear_entries"), 3)
             compose.onNodeWithTag("diagnostics-clear-text").assertTextEquals(consent).performScrollTo().assertIsDisplayed()
             val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
@@ -176,8 +198,7 @@ class DiagnosticsScreenTest {
             compose.onNodeWithTag("diagnostics-clear").performClick()
             compose.onNodeWithTag("diagnostics-confirm-clear").performClick()
             compose.waitUntil(10_000) { !vm.busy.value && logs.store.entries.value.isEmpty() }
-            compose.onNodeWithTag("diagnostics-screen").performScrollToNode(hasTestTag("diagnostics-notice"))
-            compose.onNodeWithTag("diagnostics-notice").assertTextEquals(copy.getValue("diagnostics_cleared"))
+            compose.onNodeWithTag("diagnostics-notice").performScrollTo().assertTextEquals(copy.getValue("diagnostics_cleared"))
             assertTrue(DiagnosticStore(root).apply { load() }.entries.value.isEmpty())
             assertSame(sameModel, vm)
             seed()

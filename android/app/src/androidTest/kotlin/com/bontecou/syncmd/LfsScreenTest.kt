@@ -54,6 +54,13 @@ class LfsScreenTest {
         compose.waitUntil(10_000) { model.state.value.plan != null || model.state.value.error != null }
         assertNull(model.state.value.error)
     }
+    /** The Large files list is lazy: scroll [tag] into composition before acting on it. */
+    private fun item(tag: String): SemanticsNodeInteraction {
+        compose.onNodeWithTag("lfs-list").performScrollToNode(hasTestTag(tag))
+        return compose.onNodeWithTag(tag)
+    }
+    private fun cancel() = compose.onNodeWithText(context.getString(R.string.lfs_m3_cancel), substring = false).performClick()
+    private fun dismissError() = compose.onNodeWithTag("lfs-error-ok").performClick()
     private fun capture(name: String) {
         androidx.test.espresso.Espresso.closeSoftKeyboard(); compose.waitForIdle()
         val evidence = File(context.getExternalFilesDir(null), "parity-evidence").apply { mkdirs() }
@@ -80,8 +87,8 @@ class LfsScreenTest {
         val file = File(root, "large.dat")
         java.io.RandomAccessFile(file,"rw").use { it.setLength(10L * 1024 * 1024 + 1) }
         show()
-        compose.onNodeWithTag("lfs-review-extensions").performScrollTo().assertIsNotEnabled()
-        compose.onNodeWithTag("lfs-track").performScrollTo().assertIsEnabled().performClick()
+        item("lfs-review-extensions").assertIsNotEnabled()
+        item("lfs-track").assertIsEnabled().performClick()
         compose.onNodeWithTag("lfs-confirm-tracking").performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.notice != null }
         assertNull(model.state.value.error)
@@ -101,21 +108,23 @@ class LfsScreenTest {
         val head = Git.open(root).use { it.repository.resolve("HEAD") }
         val dark = InstrumentationRegistry.getArguments().getString("extensionDark") == "true"
         show(dark = dark, large = dark)
-        compose.onNodeWithTag("lfs-select-sibling.PDF").performScrollTo().assertIsOn().performClick().assertIsOff()
+        item("lfs-select-sibling.PDF").assertIsOn().performClick().assertIsOff()
         fun openReview() {
-            compose.onNodeWithTag("lfs-review-extensions").performScrollTo().assertIsEnabled().performClick()
+            item("lfs-review-extensions").assertIsEnabled().performClick()
             compose.waitUntil(10_000) { model.state.value.extensionReview != null || model.state.value.error != null }
             assertNull(model.state.value.error)
             val review = model.state.value.extensionReview!!
             assertEquals(setOf("selected.pdf"), review.selected)
             assertEquals(setOf("legacy.pdf", "selected.pdf", "sibling.PDF"), review.affected.map { it.path }.toSet())
             compose.onNodeWithTag("lfs-extension-patterns").performScrollTo().assertTextContains("*.pdf", substring = true)
-            compose.onNodeWithTag("lfs-extension-affected").performScrollTo().assertTextContains("legacy.pdf", substring = true)
-                .assertTextContains("sibling.PDF", substring = true)
+            compose.onNodeWithTag("lfs-extension-affected").performScrollTo()
+            listOf("legacy.pdf", "selected.pdf", "sibling.PDF").forEach { path ->
+                compose.onNode(hasText(path) and hasAnyAncestor(hasTestTag("lfs-extension-affected")), useUnmergedTree = true).assertExists()
+            }
         }
         openReview()
         captureSettled(if (dark) "lfs-extensions-dark-xl.png" else "lfs-extensions-light.png")
-        compose.onNodeWithText("Cancel", substring = false).performClick()
+        cancel()
         assertEquals(originalRules, attrs.readText())
         assertArrayEquals(index, File(root, ".git/index").readBytes())
         openReview()
@@ -125,7 +134,7 @@ class LfsScreenTest {
         compose.onNodeWithTag("lfs-error").assertTextContains("Reload and review extension tracking again", substring = true)
         assertEquals(originalRules, attrs.readText())
         assertArrayEquals(index, File(root, ".git/index").readBytes())
-        compose.onNodeWithText("OK", substring = false).performClick()
+        dismissError()
         openReview()
         compose.onNodeWithTag("lfs-confirm-extensions").performSemanticsAction(SemanticsActions.OnClick) { click -> click(); click() }
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.notice != null }
@@ -151,10 +160,10 @@ class LfsScreenTest {
         val pdf = File(root, "guide [draft]*名.pdf"); val data = byteArrayOf(0, 1, 2, 3, 4); pdf.writeBytes(data)
         val index = File(root, ".git/index").readBytes()
         show()
-        compose.onNodeWithTag("lfs-track").performScrollTo().performClick()
-        compose.onNodeWithText("Cancel", substring = false).performClick()
+        item("lfs-track").performClick()
+        cancel()
         assertFalse(File(root, ".gitattributes").exists())
-        compose.onNodeWithTag("lfs-track").performScrollTo().performClick()
+        item("lfs-track").performClick()
         compose.onNodeWithTag("lfs-confirm-tracking").performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.notice != null }
         assertNull(model.state.value.error)
@@ -165,7 +174,8 @@ class LfsScreenTest {
         assertTrue(LocalGitRepository().getStatus(root.path).getOrThrow().isEmpty())
         instrumentation.runOnMainSync { model.load(root.path) }
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.files.size == 1 }
-        compose.onNodeWithText("File contents available").performScrollTo().assertExists()
+        compose.onNodeWithTag("lfs-list").performScrollToNode(hasTestTag("lfs-object-${pdf.name}"))
+        compose.onNode(hasText(context.getString(R.string.lfs_file_available)) and hasAnyAncestor(hasTestTag("lfs-object-${pdf.name}")), useUnmergedTree = true).assertExists()
         capture("lfs-tracked-light.png")
     }
     @Test fun cachedHydrationWorksAtLargeFontAndExternalEditsAreKept() = runBlocking {
@@ -176,8 +186,7 @@ class LfsScreenTest {
         LocalDiffRepository().stageAll(root.path).getOrThrow()
         LocalDiffRepository().commit(root.path, "Pointer fixture", "Fixture", "fixture@example.invalid").getOrThrow()
         show(dark = true, large = true)
-        compose.onNodeWithTag("lfs-screen").performScrollToNode(hasTestTag("lfs-download"))
-        compose.onNodeWithTag("lfs-download").assertIsDisplayed().assertIsEnabled().performClick()
+        item("lfs-download").assertIsDisplayed().assertIsEnabled().performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && (model.state.value.files.singleOrNull()?.hydrated == true || model.state.value.error != null) }
         assertNull("Cached LFS hydration failed", model.state.value.error)
         assertTrue("Cached contents must be restored", model.state.value.files.singleOrNull()?.hydrated == true)
@@ -185,11 +194,9 @@ class LfsScreenTest {
         assertTrue(LocalGitRepository().getStatus(root.path).getOrThrow().isEmpty())
         capture("lfs-downloaded-dark-xl.png")
         file.writeText("External edited content\n")
-        compose.onNodeWithTag("lfs-screen").performScrollToNode(hasTestTag("lfs-reload"))
         compose.onNodeWithTag("lfs-reload").assertIsDisplayed().performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.files.singleOrNull()?.modified == true }
-        compose.onNodeWithTag("lfs-screen").performScrollToNode(hasTestTag("lfs-download"))
-        compose.onNodeWithTag("lfs-download").assertIsDisplayed().assertIsNotEnabled()
+        item("lfs-download").assertIsDisplayed().assertIsNotEnabled()
         assertEquals("External edited content\n", file.readText())
     }
     @Test fun unapprovedCustomEndpointStopsBeforeTransferringAndKeepsThePointer() = runBlocking {
@@ -203,10 +210,10 @@ class LfsScreenTest {
         LocalDiffRepository().stageAll(root.path).getOrThrow()
         val index = File(root, ".git/index").readBytes()
         show()
-        compose.onNodeWithTag("lfs-download").performScrollTo().performClick()
+        item("lfs-download").performClick()
         compose.waitUntil(10_000) { model.state.value.error != null }
         compose.onNodeWithTag("lfs-error").assertTextContains("needs approval", substring = true)
-        compose.onNodeWithText("OK", substring = false).performClick()
+        dismissError()
         assertArrayEquals(pointer.bytes(), asset.readBytes())
         assertArrayEquals(index, File(root, ".git/index").readBytes())
     }
@@ -215,15 +222,15 @@ class LfsScreenTest {
         val pdf = File(root, "guide.pdf"); pdf.writeText("Original reviewed PDF")
         show()
         pdf.writeText("External newer PDF")
-        compose.onNodeWithTag("lfs-track").performScrollTo().performClick()
+        item("lfs-track").performClick()
         compose.onNodeWithTag("lfs-confirm-tracking").performClick()
         compose.waitUntil(10_000) { model.state.value.error != null }
         assertFalse(File(root, ".gitattributes").exists())
         assertEquals("External newer PDF", pdf.readText())
-        compose.onNodeWithText("OK", substring = false).performClick()
-        compose.onNodeWithTag("lfs-reload").performScrollTo().performClick()
+        dismissError()
+        compose.onNodeWithTag("lfs-reload").assertIsEnabled().performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.error == null }
-        compose.onNodeWithTag("lfs-regular-git").performScrollTo().performClick()
+        item("lfs-regular-git").performClick()
         compose.onNodeWithTag("lfs-confirm-tracking").performClick()
         compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.notice != null }
         LocalDiffRepository().stageAll(root.path).getOrThrow()

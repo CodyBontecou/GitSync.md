@@ -156,6 +156,12 @@ fun VaultScreen(
     val loadedStatus by viewModel.status.collectAsState()
     val status = loadedStatus?.takeIf { requestContext != null && it.repoPath == repositoryPath }
     val isLoading by viewModel.isLoading.collectAsState()
+    // "Commit & push" launcher shortcut: open this vault's commit sheet once it has loaded.
+    val shortcutCommit by com.bontecou.syncmd.automation.VaultShortcutRequests.pendingCommit.collectAsState()
+    LaunchedEffect(shortcutCommit, requestContext != null) {
+        if (shortcutCommit == repositoryPath && requestContext != null &&
+            com.bontecou.syncmd.automation.VaultShortcutRequests.consumeCommit(repositoryPath)) committing = true
+    }
     val loadedError = viewModel.errorText.collectAsState().value?.asString()
     val errorMessage = loadedError.takeIf { requestContext != null }
     val loadedAttention by viewModel.attention.collectAsState()

@@ -90,37 +90,6 @@
         "zh-Hans": "无法打开语言设置。",
         "zh-Hant": "無法開啟語言設定。"
       }
-    },
-    "ui_stage_all_d1ce47c8": {
-      "source": "Stage All",
-      "comment": "Git: add every change to the index for a commit; never a theatrical stage/floor.",
-      "localizations": {
-        "ar": "تجهيز كل التغييرات",
-        "da": "Klargør alle ændringer",
-        "de": "Alle Änderungen vormerken",
-        "es": "Preparar todos los cambios",
-        "fi": "Valmistele kaikki muutokset",
-        "fr": "Indexer toutes les modifications",
-        "he": "הכנת כל השינויים לקומיט",
-        "hi": "सभी बदलाव स्टेज करें",
-        "hu": "Minden változás előkészítése",
-        "id": "Siapkan semua perubahan",
-        "it": "Aggiungi tutte le modifiche all’indice",
-        "ja": "すべての変更をステージ",
-        "ko": "모든 변경 사항 스테이징",
-        "nb": "Klargjør alle endringer",
-        "nl": "Alle wijzigingen klaarzetten",
-        "pl": "Przygotuj wszystkie zmiany",
-        "pt-BR": "Preparar todas as alterações",
-        "ru": "Добавить все изменения в индекс",
-        "sv": "Förbered alla ändringar",
-        "th": "เตรียมการเปลี่ยนแปลงทั้งหมด",
-        "tr": "Tüm değişiklikleri hazırlama alanına ekle",
-        "uk": "Додати всі зміни до індексу",
-        "vi": "Đưa tất cả thay đổi vào vùng chuẩn bị",
-        "zh-Hans": "暂存所有更改",
-        "zh-Hant": "暫存所有變更"
-      }
     }
   }
 }

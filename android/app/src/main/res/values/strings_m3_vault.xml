@@ -20,8 +20,6 @@
     <string name="vault_m3_latest_commit">Latest commit</string>
     <string name="vault_m3_check_for_changes">Check for changes</string>
     <string name="vault_m3_vault_settings">Vault settings</string>
-    <string name="vault_m3_more">More</string>
-    <string name="vault_m3_back_to_vaults">Back to vaults</string>
 
     <!-- Syncing (board 22) -->
     <string name="vault_m3_pushing">Pushing…</string>
@@ -74,7 +72,6 @@
     <!-- Notification -->
     <string name="vault_m3_notify_channel">Vault sync</string>
     <string name="vault_m3_notify_title">%1$s · %2$s</string>
-    <string name="vault_m3_notify_done">Sync finished</string>
 
     <!-- Push rejected (board 25) -->
     <string name="vault_m3_rejected_kicker">Push didn’t go through</string>
@@ -115,7 +112,6 @@
     <string name="vault_m3_push_right_after">Push right after</string>
     <string name="vault_m3_as_author">as %1$s · %2$s</string>
     <string name="vault_m3_commit_locally">Commit locally</string>
-    <string name="vault_m3_nothing_staged">Check at least one file to commit.</string>
 
     <!-- Discard dialog (board 19) -->
     <plurals name="vault_m3_discard_title">
@@ -132,7 +128,6 @@
     <string name="vault_m3_effect_revert">revert</string>
     <string name="vault_m3_effect_unstage">unstage</string>
     <string name="vault_m3_stash_first">Stash a copy first, just in case</string>
-    <string name="vault_m3_stash_message">Copy saved before discarding</string>
     <string name="vault_m3_keep_them">Keep them</string>
     <plurals name="vault_m3_discard_n">
         <item quantity="one">Discard %d</item>
@@ -151,5 +146,4 @@
     <string name="vault_m3_yesterday">Yesterday</string>
 
     <!-- Vault settings placeholder (replaced by the settings builder) -->
-    <string name="vault_m3_settings_placeholder">Settings for this vault are on their way.</string>
 </resources>

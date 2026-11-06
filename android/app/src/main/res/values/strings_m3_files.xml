@@ -42,7 +42,6 @@
     <string name="newfile_m3_title_note">New note</string>
     <string name="newfile_m3_title_folder">New folder</string>
     <string name="newfile_m3_in">in %1$s</string>
-    <string name="newfile_m3_type">Type</string>
     <string name="newfile_m3_note">Note</string>
     <string name="newfile_m3_folder">Folder</string>
     <string name="newfile_m3_file_name">File name</string>
@@ -68,7 +67,6 @@
     <string name="editor_m3_not_saved">Not saved</string>
     <string name="editor_m3_vault_ahead">%1$s ↑%2$d</string>
     <string name="editor_m3_markdown">Markdown</string>
-    <string name="editor_m3_mode">Mode</string>
     <string name="editor_m3_md_heading">Heading</string>
     <string name="editor_m3_md_task">Task</string>
     <string name="editor_m3_md_link">Link</string>
@@ -83,7 +81,6 @@
     <string name="diff_m3_changes">Changes</string>
     <string name="diff_m3_whole_file">Whole file</string>
     <string name="diff_m3_preview">Preview</string>
-    <string name="diff_m3_view">View</string>
     <string name="diff_m3_position">%1$s · %2$d of %3$d</string>
     <string name="diff_m3_discard">Discard</string>
     <string name="diff_m3_previous">Previous file</string>

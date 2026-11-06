@@ -59,6 +59,12 @@ class CloneLanguageTest {
         val node=compose.onNodeWithTag(tag,useUnmergedTree=true)
         node.performScrollTo().assertTextEquals(context.getString(id)).assertIsDisplayed();fits(node,label)
     }
+    /** The floating label inside the text field tagged [field] (Material 3 fields carry no label tag of their own). */
+    private fun checkFieldLabel(context:Context,id:Int,field:String,label:String) {
+        compose.onNodeWithTag(field).performScrollTo()
+        val node=compose.onNode(hasText(context.getString(id),substring=false) and hasAnyAncestor(hasTestTag(field)),useUnmergedTree=true)
+        node.assertIsDisplayed();fits(node,label)
+    }
     private fun capture(name:String) {
         compose.waitForIdle()
         val file=File(app.filesDir,"parity-evidence/$name.png").apply { parentFile!!.mkdirs() }
@@ -133,18 +139,22 @@ class CloneLanguageTest {
                 compose.runOnUiThread { session=Session(context,settings,vm,entry,tag,kind) }
                 compose.waitUntil(10000) { compose.onAllNodesWithTag("remote-clone-screen").fetchSemanticsNodes().isNotEmpty() && (entry==null || vm.history.value.defaults!=null || vm.history.value.error!=null) }
                 assertNull(vm.history.value.error)
-                checkText(context,R.string.ui_connect_to_a_public_or_private_https_or_ss_03fd12f0,"$tag/$kind intro")
+                checkText(context,R.string.add_remote_intro,"$tag/$kind intro")
                 if(kind=="fresh") {
-                    for((resource,label) in listOf(R.string.ui_repository_url_c83db013 to "remote-url-label",R.string.ui_name_in_gitsync_md_893ad211 to "remote-name-label",R.string.ui_branch_optional_e9dedf99 to "remote-branch-label")) checkLabel(context,resource,label,"$tag/$label")
-                    checkText(context,R.string.ui_leave_blank_to_use_the_server_s_default_br_077388af,"$tag default branch")
-                    compose.onNodeWithTag("remote-auth-public").performScrollTo().assertTextEquals(context.getString(R.string.ui_public_access_03e7db61)).performClick()
-                    checkText(context,R.string.ui_gitsync_md_will_not_provide_credentials_fo_103df88f,"$tag public scope")
-                    compose.onNodeWithTag("remote-auth-basic").performScrollTo().assertTextEquals(context.getString(R.string.ui_username_token_7375b2ff)).performClick()
-                    checkLabel(context,R.string.ui_username_e3b89e9d,"remote-username-label","$tag username")
-                    checkLabel(context,R.string.ui_token_or_password_d6e43f8a,"remote-secret-label","$tag token label")
+                    checkFieldLabel(context,R.string.add_remote_label,"remote-url","$tag/remote-url-label")
+                    // Sign in with: None / Token / SSH key segments (board 14), each with its scope line.
+                    compose.onNodeWithTag("remote-auth-public").performScrollTo().assertTextEquals(context.getString(R.string.add_auth_none)).performClick()
+                    compose.onNodeWithTag("remote-auth-public").assertIsSelected()
+                    checkText(context,R.string.add_none_hint,"$tag public scope")
+                    compose.onNodeWithTag("remote-auth-basic").performScrollTo().assertTextEquals(context.getString(R.string.add_auth_token)).performClick()
+                    checkFieldLabel(context,R.string.add_token_user,"remote-username","$tag username")
+                    checkFieldLabel(context,R.string.add_token_secret,"remote-secret","$tag token label")
                     compose.onNodeWithTag("remote-secret").assert(SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Password))
-                    checkText(context,R.string.ui_saved_credentials_are_encrypted_on_this_de_a97385dd,"$tag credential scope")
-                    compose.onNodeWithTag("remote-auth-ssh").performScrollTo().performClick()
+                    checkText(context,R.string.add_token_hint,"$tag credential scope")
+                    compose.onNodeWithTag("remote-auth-ssh").performScrollTo().assertTextEquals(context.getString(R.string.add_auth_ssh)).performClick()
+                    checkText(context,R.string.add_key_hint,"$tag device key scope")
+                    // "Use another…" opens the pasted-key fields.
+                    compose.onNodeWithTag("remote-key-other").performScrollTo().assertTextEquals(context.getString(R.string.add_key_other)).performClick()
                     checkText(context,R.string.ui_include_the_ssh_username_in_the_address_gi_beb09b5a,"$tag SSH address")
                     checkLabel(context,R.string.ui_ssh_private_key_0e92a613,"ssh-private-key-label","$tag key")
                     compose.onNodeWithTag("ssh-private-key").assert(SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Password))
@@ -154,27 +164,35 @@ class CloneLanguageTest {
                     checkLabel(context,R.string.ui_key_passphrase_optional_eb84a9d2,"ssh-passphrase-label","$tag passphrase")
                     checkLabel(context,R.string.ui_matching_public_key_optional_2ca984f0,"ssh-public-key-label","$tag public key")
                     checkText(context,R.string.ui_keys_are_encrypted_on_this_device_and_used_cb039887,"$tag SSH scope")
-                    checkLabel(context,R.string.clone_location_title,"clone-location-title","$tag clone location")
+                    // Name, branch and folder live behind the "Name, branch and folder" row.
+                    compose.onNodeWithTag("remote-options").performScrollTo().performClick()
+                    checkFieldLabel(context,R.string.ui_name_in_gitsync_md_893ad211,"remote-name","$tag/remote-name-label")
+                    checkFieldLabel(context,R.string.ui_branch_optional_e9dedf99,"remote-branch","$tag/remote-branch-label")
+                    checkText(context,R.string.ui_leave_blank_to_use_the_server_s_default_br_077388af,"$tag default branch")
+                    checkText(context,R.string.add_clone_location,"$tag clone location")
                     compose.onNodeWithTag("clone-location-path").performScrollTo().assertTextEquals(context.getString(R.string.clone_location_reconnect))
-                    compose.onNodeWithTag("device-folder-picker").performScrollTo().assertTextEquals(context.getString(R.string.ui_choose_another_folder_b50df380)).performClick()
+                    compose.onNodeWithTag("device-folder-picker").performScrollTo().assertTextEquals(context.getString(R.string.add_clone_choose_folder)).performClick()
                     compose.waitForIdle()
-                    compose.onNodeWithText(context.getString(R.string.ui_allow_local_folder_access_0b2888fb)).assertIsDisplayed()
-                    fits(text(context,R.string.ui_gitsync_md_needs_shared_storage_access_to_f1b339ea),"$tag folder consent")
+                    compose.onNodeWithTag("add-access-dialog").assertIsDisplayed()
+                    fits(text(context,R.string.add_access_title),"$tag folder consent title")
+                    fits(text(context,R.string.add_access_body),"$tag folder consent")
                     if(tag in listOf("ar","de","ja")) capture("clone-consent-$tag")
-                    compose.onNodeWithText(context.getString(R.string.publication_cancel)).performClick()
-                    compose.onNodeWithTag("clone-location-app").performScrollTo().assertTextEquals(context.getString(R.string.ui_use_app_storage_d199e8e0)).performClick()
-                    compose.onNodeWithTag("clone-location-default").performScrollTo().assertTextEquals(context.getString(R.string.ui_use_saved_default_3bb7260d)).performClick()
+                    compose.onNode(hasText(context.getString(R.string.add_access_cancel),substring=false) and hasAnyAncestor(hasTestTag("add-access-dialog"))).performClick()
+                    compose.onNodeWithTag("add-access-dialog").assertDoesNotExist()
+                    compose.onNodeWithTag("clone-location-app").performScrollTo().assertTextEquals(context.getString(R.string.add_clone_app_storage)).performClick()
+                    compose.onNodeWithTag("clone-location-default").performScrollTo().assertTextEquals(context.getString(R.string.add_clone_saved_default)).performClick()
                     if(tag in listOf("ar","de","ja")) { compose.onNodeWithTag("remote-auth-ssh").performScrollTo();capture("clone-ssh-$tag") }
                 } else if(kind=="saved") {
                     checkText(context,R.string.ui_clone_again_review_the_previous_branch_and_33cba147,"$tag history scope")
-                    compose.onNodeWithTag("remote-auth-saved").performScrollTo().assertTextEquals(context.getString(R.string.ui_use_saved_connection_21052734)).assertIsSelected()
-                    checkText(context,R.string.ui_the_encrypted_connection_is_reused_only_fo_a43b4975,"$tag saved scope")
+                    compose.onNodeWithTag("remote-auth-saved").performScrollTo().assertTextEquals(context.getString(R.string.add_auth_saved)).assertIsSelected()
+                    checkText(context,R.string.add_saved_hint,"$tag saved scope")
                 } else {
                     checkText(context,R.string.ui_the_previous_github_account_is_disconnecte_628a1f8c,"$tag disconnected account")
-                    checkText(context,R.string.ui_use_a_github_com_https_address_the_clone_k_6466d7b7,"$tag account scope")
-                    compose.onNodeWithTag("remote-clone").performScrollTo().assertIsNotEnabled()
+                    compose.onNodeWithTag("remote-auth-github").performScrollTo().assertTextEquals(context.getString(R.string.add_auth_github)).assertIsSelected()
+                    checkText(context,R.string.add_github_hint,"$tag account scope")
+                    compose.onNodeWithTag("remote-clone").assertIsNotEnabled()
                     compose.onNodeWithTag("remote-account-github:202").performScrollTo().performClick()
-                    compose.onNodeWithTag("remote-clone").performScrollTo().assertIsEnabled()
+                    compose.onNodeWithTag("remote-clone").assertIsEnabled()
                 }
                 assertEquals(0,attempts.get()); assertNull(vm.state.value.path)
                 instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","clone_locale=$tag; form=$kind; transport_calls=0\n") })

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.text.TextLayoutResult
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
+import com.bontecou.syncmd.localization.resourceId
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.ui.screens.FilesScreen
 import com.bontecou.syncmd.ui.screens.FileEditorScreen
@@ -107,21 +109,73 @@ class FilesLanguageTest {
                     assertArrayEquals(config,File(root,".git/config").readBytes())
                     assertArrayEquals(index,File(root,".git/index").readBytes());assertArrayEquals(hiddenBytes,hidden.readBytes())
                 }
-                fun newItem(id:Int) {
-                    compose.onNodeWithTag("files-new").performClick();visible(R.string.ui_new_file_44dedd0f);visible(R.string.ui_new_folder_cf28f49e)
-                    compose.onNodeWithText(text(id)).performClick()
+                fun visibleText(value:String,label:String,scope:String?=null) {
+                    val matcher=if(scope==null) hasText(value) else hasText(value) and hasAnyAncestor(hasTestTag(scope))
+                    compose.waitUntil(10_000) { compose.onAllNodes(matcher,useUnmergedTree=true).fetchSemanticsNodes(atLeastOneRootRequired=false).isNotEmpty() }
+                    val node=compose.onNode(matcher,useUnmergedTree=true)
+                    node.assertIsDisplayed();fits(node,"$tag $label")
                 }
-                fun confirmName(value:String,original:String?=null) {
-                    fits(compose.onNodeWithTag("filename-title"),"$tag complete filename title")
-                    if(original!=null)compose.onNodeWithTag("filename-original").performScrollTo().assertTextEquals(original)
+                fun visibleIn(scope:String,id:Int,vararg args:Any)=visibleText(text(id,*args),activity.resources.getResourceEntryName(id),scope)
+                /** M3 dialogs carry their tag on the panel; the title is its heading text. */
+                fun dialogTitle(scope:String,id:Int) {
+                    val matcher=hasText(text(id)) and SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Heading) and hasAnyAncestor(hasTestTag(scope))
+                    compose.waitUntil(10_000) { compose.onAllNodes(matcher,useUnmergedTree=true).fetchSemanticsNodes(atLeastOneRootRequired=false).isNotEmpty() }
+                    val node=compose.onNode(matcher,useUnmergedTree=true)
+                    node.assertIsDisplayed();fits(node,"$tag complete ${activity.resources.getResourceEntryName(id)}")
+                }
+                /** The FAB opens "New note"; its Note | Folder switch turns it into "New folder". */
+                fun newItem(folder:Boolean) {
+                    compose.onNodeWithTag("files-new").performClick()
+                    dialogTitle("filename-dialog",R.string.newfile_m3_title_note)
+                    visibleIn("filename-kind",R.string.newfile_m3_note);visibleIn("filename-kind",R.string.newfile_m3_folder)
+                    if(folder) {
+                        compose.onNode(hasText(text(R.string.newfile_m3_folder)) and hasAnyAncestor(hasTestTag("filename-kind")),useUnmergedTree=true).performClick()
+                        dialogTitle("filename-dialog",R.string.newfile_m3_title_folder)
+                    }
+                    visibleIn("filename-cancel",R.string.publication_cancel);visibleIn("filename-confirm",R.string.newfile_m3_create_open)
+                }
+                fun createNamed(value:String) {
                     compose.onNodeWithTag("filename-input").performScrollTo().performTextReplacement(value)
-                    if(original!=null)compose.onNodeWithTag("filename-original").performScrollTo().assertTextEquals(original)
-                    compose.onNodeWithText(text(R.string.ui_confirm_eebdd24a)).performClick()
+                    compose.onNodeWithTag("filename-confirm").assertIsEnabled().performClick()
                 }
                 fun menu(id:Int) {
                     compose.onNodeWithTag("file-editor-more").performClick()
                     visible(R.string.ui_reload_from_disk_d4288839);visible(R.string.ui_rename_file_e3526ab6);visible(R.string.ui_delete_file_28e18dc9)
                     compose.onNodeWithText(text(id)).performClick()
+                }
+                fun overflow() {
+                    compose.onNodeWithTag("files-more").performClick()
+                    compose.waitUntil(10_000) { compose.onAllNodesWithTag("files-hidden-toggle").fetchSemanticsNodes(atLeastOneRootRequired=false).isNotEmpty() }
+                }
+                fun closeOverflowWithRefresh() {
+                    visible(R.string.ui_refresh_0e916101);compose.onNodeWithText(text(R.string.ui_refresh_0e916101)).performClick()
+                    await { !browser.state.value.isLoading }
+                }
+                fun rowActions(path:String) {
+                    compose.onNodeWithTag("file-row-$path").performTouchInput { longClick() }
+                    compose.waitUntil(10_000) { compose.onAllNodesWithTag("file-action-rename").fetchSemanticsNodes(atLeastOneRootRequired=false).isNotEmpty() }
+                }
+                fun expectedStatus():String {
+                    val st=editor.state.value
+                    return when {
+                        st.saveFailed && st.isDirty -> text(R.string.editor_m3_not_saved)
+                        st.isDirty || st.autosaving || st.isSaving -> text(R.string.editor_m3_saving)
+                        st.linesChanged>0 -> text(R.string.editor_m3_saved_changed,activity.resources.getQuantityString(R.plurals.editor_m3_lines_changed,st.linesChanged,st.linesChanged))
+                        else -> text(R.string.editor_m3_saved)
+                    }
+                }
+                fun status(expected:Int) {
+                    compose.waitUntil(10_000) {
+                        val shown=compose.onAllNodesWithTag("file-editor-status").fetchSemanticsNodes().singleOrNull()
+                            ?.config?.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.joinToString("") { it.text }
+                        shown==expectedStatus()
+                    }
+                    val shown=expectedStatus()
+                    when(expected) {
+                        R.string.editor_m3_saved -> assertTrue("$tag status: $shown",shown==text(R.string.editor_m3_saved) || shown.startsWith(text(R.string.editor_m3_saved_changed,"").trimEnd()))
+                        else -> assertEquals(text(expected),shown)
+                    }
+                    fits(compose.onNodeWithTag("file-editor-status"),"$tag status ${activity.resources.getResourceEntryName(expected)}")
                 }
                 fun capture(name:String) {
                     compose.waitForIdle()
@@ -129,85 +183,122 @@ class FilesLanguageTest {
                 }
                 attach();await { !browser.state.value.isLoading }
                 assertTrue(browser.state.value.entries.isEmpty())
-                visible(R.string.publication_files);visible(R.string.ui_empty_folder_ca1fd454);visible(R.string.ui_create_a_file_or_folder_using_new_655c5596)
-                visible(R.string.files_show_hidden);visible(R.string.ui_refresh_0e916101)
-                newItem(R.string.ui_new_folder_cf28f49e)
-                compose.onNodeWithText(text(R.string.publication_cancel)).performClick()
+                // Empty vault: the empty state, the breadcrumb's item count and the overflow's labels.
+                visible(R.string.ui_empty_folder_ca1fd454);visible(R.string.ui_create_a_file_or_folder_using_new_655c5596)
+                visibleText(activity.resources.getQuantityString(R.plurals.files_m3_items,0,0),"files_m3_items")
+                overflow();visibleIn("files-hidden-toggle",R.string.files_show_hidden);closeOverflowWithRefresh()
+                newItem(folder=true)
+                compose.onNodeWithTag("filename-cancel").performClick()
                 assertFalse(File(root,"Drafts").exists());stableGit()
-                newItem(R.string.ui_new_folder_cf28f49e);confirmName("Drafts")
+                newItem(folder=true);createNamed("Drafts")
                 await { !browser.state.value.isLoading && browser.state.value.entries.any { it.path=="Drafts" } }
-                val folderLabel=compose.onNode(hasText(text(R.string.files_folder),substring=true) and
-                    hasAnyAncestor(hasTestTag("file-row-Drafts")),useUnmergedTree=true)
+                assertTrue(File(root,"Drafts").isDirectory)
+                // A folder's meta line is its item count once read, "Folder" until then.
+                val folderLabels=listOf(text(R.string.files_folder),activity.resources.getQuantityString(R.plurals.files_m3_items,0,0))
+                fun folderLabel()=folderLabels.map { compose.onNode(hasText(it) and hasAnyAncestor(hasTestTag("file-row-Drafts")),useUnmergedTree=true) }
                 compose.waitUntil(10_000) {
-                    try { folderLabel.assertIsDisplayed();true } catch(_:AssertionError) { false }
+                    folderLabel().any { label -> try { label.assertIsDisplayed();true } catch(_:AssertionError) { false } }
                 }
-                folderLabel.assertIsDisplayed();fits(folderLabel,"$tag folder label")
+                val shownLabel=folderLabel().first { label -> try { label.assertIsDisplayed();true } catch(_:AssertionError) { false } }
+                fits(shownLabel,"$tag folder label")
                 val folderName=compose.onNode(hasText("Drafts") and hasAnyAncestor(hasTestTag("file-row-Drafts")),useUnmergedTree=true)
                 folderName.assertIsDisplayed();fits(folderName,"$tag folder name")
-                val renameLabel=compose.onNode(hasText(text(R.string.ui_rename_3064d79a)) and hasAnyAncestor(hasTestTag("file-row-Drafts")),useUnmergedTree=true)
-                renameLabel.assertIsDisplayed();fits(renameLabel,"$tag rename action")
-                val actionBounds=compose.onNodeWithTag("file-rename-Drafts").fetchSemanticsNode().boundsInRoot
+                // Rename lives in the row's long-press menu.
+                rowActions("Drafts")
+                visibleIn("file-action-rename",R.string.files_m3_rename)
+                val actionBounds=compose.onNodeWithTag("file-action-rename").fetchSemanticsNode().boundsInRoot
                 val density=activity.resources.displayMetrics.density
                 assertTrue(actionBounds.width>=48*density-1 && actionBounds.height>=48*density-1)
+                compose.onNodeWithTag("file-action-rename").performClick()
+                dialogTitle("filename-title",R.string.ui_rename_3064d79a)
+                compose.onNodeWithTag("filename-original").performScrollTo().assertTextEquals("Drafts")
+                compose.onNodeWithTag("filename-cancel").performClick()
+                assertTrue(File(root,"Drafts").isDirectory);stableGit()
                 if(folderOnly) { capture("folder");stableGit();scenario!!.close();scenario=null;continue }
-                val file="notes-日本語.md";newItem(R.string.ui_new_file_44dedd0f);confirmName(file)
+                val file="notes-日本語.md";newItem(folder=false);createNamed(file.removeSuffix(".md"))
                 await { editor.state.value.document?.path==file && !editor.state.value.isLoading }
                 compose.onNodeWithTag("file-editor-input").assertTextEquals("")
+                status(R.string.editor_m3_saved)
+                // Edits autosave to disk; saving never stages or commits.
                 val draft="# Draft $tag\n日本語 and İstanbul\nملاحظة عربية\n"
                 compose.onNodeWithTag("file-editor-input").performTextReplacement(draft)
-                compose.onNodeWithTag("file-editor-status").assertTextEquals(text(R.string.file_unsaved_changes));fits(compose.onNodeWithTag("file-editor-status"),"$tag unsaved status")
+                await { !editor.state.value.isDirty && !editor.state.value.autosaving && !editor.state.value.isSaving }
+                assertNull(editor.state.value.error);assertEquals(draft,File(root,file).readText())
+                status(R.string.editor_m3_saved);stableGit()
+                menu(R.string.ui_rename_file_e3526ab6)
+                dialogTitle("filename-title",R.string.ui_rename_file_e3526ab6)
+                compose.onNodeWithTag("filename-original").performScrollTo().assertTextEquals(file)
+                val renamed="renamed-日本語.md"
+                compose.onNodeWithTag("filename-input").performScrollTo().performTextReplacement(renamed)
+                compose.onNodeWithTag("filename-original").performScrollTo().assertTextEquals(file)
+                visibleIn("filename-confirm",R.string.ui_rename_3064d79a)
+                compose.onNodeWithTag("filename-confirm").performClick()
+                await { editor.state.value.document?.path==renamed && !editor.state.value.isSaving }
+                assertFalse(File(root,file).exists());assertEquals(draft,File(root,renamed).readText())
+                assertEquals(FileEditorMessage.RENAMED,editor.state.value.message)
+                compose.onNodeWithTag("file-editor-input").assertTextEquals(draft)
+                visible(R.string.file_renamed);stableGit()
+                // Another app changes the file: autosave stops and keeps the unsaved draft.
+                val external="External $tag\n";File(root,renamed).writeText(external)
+                val unsaved=draft+"Unsaved line\n"
+                compose.onNodeWithTag("file-editor-input").performTextReplacement(unsaved)
+                await { editor.state.value.saveFailed && editor.state.value.error!=null }
+                assertEquals(com.bontecou.syncmd.services.files.RepositoryFileIssue.EXTERNAL_CHANGE,editor.state.value.error)
+                compose.onNodeWithTag("file-error-reason").assertTextEquals(text(com.bontecou.syncmd.services.files.RepositoryFileIssue.EXTERNAL_CHANGE.resourceId))
+                fits(compose.onNodeWithTag("file-error-reason"),"$tag external change")
+                visible(R.string.ui_keep_editing_e76fd2ad);compose.onNodeWithText(text(R.string.ui_keep_editing_e76fd2ad)).performClick()
+                await { editor.state.value.error==null }
+                status(R.string.editor_m3_not_saved)
+                assertEquals(external,File(root,renamed).readText())
                 compose.onNodeWithTag("file-editor-back").performClick()
-                compose.onNodeWithTag("file-unsaved-title").assertTextEquals(text(R.string.file_save_title)).assertIsDisplayed()
-                compose.onNodeWithTag("file-unsaved-name").performScrollTo().assertTextEquals(file)
-                fits(compose.onNodeWithTag("file-unsaved-title"),"$tag complete unsaved title")
+                dialogTitle("file-unsaved-title",R.string.file_save_title)
+                compose.onNodeWithTag("file-unsaved-name").performScrollTo().assertTextEquals(renamed)
                 visible(R.string.ui_your_edits_have_not_been_saved_625899a4)
                 visible(R.string.publication_save_close);visible(R.string.ui_keep_editing_e76fd2ad);visible(R.string.ui_discard_eb1a70e3)
-                assertEquals("",File(root,file).readText());stableGit()
+                assertEquals(external,File(root,renamed).readText());stableGit()
                 if(tag in listOf("ar","de","ja"))capture("unsaved")
                 compose.onNodeWithTag("file-leave-keep").performClick()
                 val retained=editor;val oldActivity=activity
                 scenario!!.recreate();attach();assertNotSame(oldActivity,activity);assertSame(retained,editor)
-                compose.onNodeWithTag("file-editor-input").assertTextEquals(draft)
+                compose.onNodeWithTag("file-editor-input").assertTextEquals(unsaved)
                 val layouts=mutableListOf<TextLayoutResult>()
                 compose.onNodeWithTag("file-editor-input").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
                 assertEquals(androidx.compose.ui.text.style.ResolvedTextDirection.Ltr,layouts.single().getParagraphDirection(0))
-                assertEquals(androidx.compose.ui.text.style.ResolvedTextDirection.Rtl,layouts.single().getParagraphDirection(draft.indexOf("ملاحظة")))
-                menu(R.string.ui_rename_file_e3526ab6);val renamed="renamed-日本語.md";confirmName(renamed,original=file)
-                await { editor.state.value.document?.path==renamed && !editor.state.value.isSaving }
-                assertFalse(File(root,file).exists());assertEquals("",File(root,renamed).readText())
-                assertEquals(FileEditorMessage.RENAMED,editor.state.value.message)
-                compose.onNodeWithTag("file-editor-input").assertTextEquals(draft)
-                visible(R.string.file_renamed);stableGit()
+                assertEquals(androidx.compose.ui.text.style.ResolvedTextDirection.Rtl,layouts.single().getParagraphDirection(unsaved.indexOf("ملاحظة")))
                 menu(R.string.ui_reload_from_disk_d4288839)
-                compose.onNodeWithTag("file-confirm-title").assertTextEquals(text(R.string.file_reload_title));fits(compose.onNodeWithTag("file-confirm-title"),"$tag complete reload title")
+                dialogTitle("file-confirm-title",R.string.file_reload_title)
                 compose.onNodeWithTag("file-confirm-subject").performScrollTo().assertTextEquals(renamed)
                 visible(R.string.file_reload_body);visible(R.string.background_reload)
                 compose.onNodeWithTag("file-confirm-cancel").performClick()
-                compose.onNodeWithTag("file-editor-input").assertTextEquals(draft);assertEquals("",File(root,renamed).readText())
+                compose.onNodeWithTag("file-editor-input").assertTextEquals(unsaved);assertEquals(external,File(root,renamed).readText())
                 menu(R.string.ui_delete_file_28e18dc9)
-                compose.onNodeWithTag("file-confirm-title").assertTextEquals(text(R.string.file_delete_title));fits(compose.onNodeWithTag("file-confirm-title"),"$tag complete delete title")
+                dialogTitle("file-confirm-title",R.string.file_delete_title)
                 compose.onNodeWithTag("file-confirm-subject").performScrollTo().assertTextEquals(renamed)
-                visible(R.string.file_delete_body);visible(R.string.ui_delete_e2d0a549)
+                visible(R.string.file_delete_body);visibleIn("file-confirm-accept",R.string.ui_delete_e2d0a549)
                 compose.onNodeWithTag("file-confirm-cancel").performClick()
-                assertTrue(File(root,renamed).isFile);compose.onNodeWithTag("file-editor-input").assertTextEquals(draft)
-                compose.onNodeWithTag("file-save").performClick()
-                await { !editor.state.value.isSaving && !editor.state.value.isDirty }
-                assertNull(editor.state.value.error);assertEquals(draft,File(root,renamed).readText());assertEquals(FileEditorMessage.SAVED,editor.state.value.message)
-                visible(R.string.file_saved)
-                val expectedSize=java.text.NumberFormat.getIntegerInstance(activity.resources.configuration.locales[0]).format(File(root,renamed).length())+" B"
-                compose.onNodeWithTag("file-editor-status").assertTextEquals(expectedSize)
-                stableGit();compose.onNodeWithTag("file-editor-back").performClick()
+                assertTrue(File(root,renamed).isFile);compose.onNodeWithTag("file-editor-input").assertTextEquals(unsaved)
+                // Reload takes the other app's version; the next edit saves over it on Back.
+                menu(R.string.ui_reload_from_disk_d4288839);compose.onNodeWithTag("file-confirm-accept").performClick()
+                await { !editor.state.value.isLoading && !editor.state.value.isDirty && editor.state.value.draft==external }
+                compose.onNodeWithTag("file-editor-input").assertTextEquals(external)
+                compose.onNodeWithTag("file-editor-input").performTextReplacement(draft)
+                compose.onNodeWithTag("file-editor-back").performClick()
                 await { !browser.state.value.isLoading && browser.state.value.entries.any { it.path==renamed } }
-                compose.onNodeWithTag("file-rename-$renamed").performClick()
-                compose.onNodeWithTag("filename-title").assertTextEquals(text(R.string.ui_rename_3064d79a));fits(compose.onNodeWithTag("filename-title"),"$tag complete rename title")
+                compose.onNodeWithTag("file-editor-screen").assertDoesNotExist()
+                assertNull(editor.state.value.error);assertEquals(draft,File(root,renamed).readText());stableGit()
+                rowActions(renamed);compose.onNodeWithTag("file-action-rename").performClick()
+                dialogTitle("filename-title",R.string.ui_rename_3064d79a)
                 compose.onNodeWithTag("filename-original").performScrollTo().assertTextEquals(renamed)
-                compose.onNodeWithText(text(R.string.publication_cancel)).performClick()
-                compose.onNodeWithTag("files-hidden-toggle").performClick()
-                await { browser.state.value.entries.any { it.path==hidden.name } };visible(R.string.files_hide_hidden)
-                compose.onNodeWithTag("files-hidden-toggle").performClick()
-                await { !browser.state.value.isLoading && browser.state.value.entries.none { it.path==hidden.name } };visible(R.string.files_show_hidden)
-                val info=compose.onNode(hasText(expectedSize+" · Git: ?") and hasAnyAncestor(hasTestTag("file-row-$renamed")),useUnmergedTree=true)
-                info.assertIsDisplayed()
+                compose.onNodeWithTag("filename-cancel").performClick()
+                overflow();visibleIn("files-hidden-toggle",R.string.files_show_hidden);compose.onNodeWithTag("files-hidden-toggle").performClick()
+                await { browser.state.value.entries.any { it.path==hidden.name } }
+                overflow();visibleIn("files-hidden-toggle",R.string.files_hide_hidden);compose.onNodeWithTag("files-hidden-toggle").performClick()
+                await { !browser.state.value.isLoading && browser.state.value.entries.none { it.path==hidden.name } }
+                overflow();visibleIn("files-hidden-toggle",R.string.files_show_hidden);closeOverflowWithRefresh()
+                // The meta line's size uses the locale's digits and reads left to right.
+                val expectedSize=text(R.string.vault_l10n_size_bytes,java.text.NumberFormat.getIntegerInstance(activity.resources.configuration.locales[0]).format(File(root,renamed).length()))
+                val info=compose.onNode(hasText(expectedSize,substring=true) and hasAnyAncestor(hasTestTag("file-row-$renamed")),useUnmergedTree=true)
+                compose.waitUntil(10_000) { try { info.assertIsDisplayed();true } catch(_:AssertionError) { false } }
                 val infoLayouts=mutableListOf<TextLayoutResult>()
                 info.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(infoLayouts) }
                 assertTrue("File metadata must read left to right in $tag",infoLayouts.isNotEmpty() && infoLayouts.all {
@@ -215,7 +306,7 @@ class FilesLanguageTest {
                 })
                 if(tag in listOf("ar","de","ja"))capture("browser")
                 stableGit();scenario!!.close();scenario=null
-                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","files_locale=$tag; states=empty,create-cancel,folder,file,unsaved,recreated-draft,renamed-draft,reload-cancel,delete-cancel,saved,browser-rename-cancel,hidden; font_scale=1.6; git_writes=0\n") })
+                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","files_locale=$tag; states=empty,create-cancel,folder,row-rename-cancel,file,autosaved,renamed,external-change-kept,unsaved,recreated-draft,reload-cancel,delete-cancel,reload,saved-on-back,browser-rename-cancel,hidden; font_scale=1.6; git_writes=0\n") })
             }
         } finally {
             scenario?.close();manager.applicationLocales=original;assertEquals(systemBefore,manager.systemLocales)

@@ -27,63 +27,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_create_new_branch_bf815ec6",
-      "source": "Create New Branch",
-      "arguments": 0
-    },
-    {
-      "name": "ui_branch_name_06f6bb71",
-      "source": "Branch name",
-      "arguments": 0
-    },
-    {
-      "name": "ui_e_g_feature_new_ui_76d6dd27",
-      "source": "e.g., feature/new-ui",
-      "arguments": 0
-    },
-    {
-      "name": "ui_start_from_eb3f51dc",
-      "source": "Start from",
-      "arguments": 0
-    },
-    {
-      "name": "ui_choose_start_point_3071447f",
-      "source": "Choose start point",
-      "arguments": 0
-    },
-    {
-      "name": "ui_create_4759498a",
-      "source": "Create",
-      "arguments": 0
-    },
-    {
       "name": "publication_cancel",
       "source": "Cancel",
-      "arguments": 0
-    },
-    {
-      "name": "ui_merge_branch_into_1_s_88a0ca2d",
-      "source": "Merge Branch into %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_select_source_branch_to_merge_c3dbf949",
-      "source": "Select source branch to merge:",
-      "arguments": 0
-    },
-    {
-      "name": "ui_merge_strategy_69ea53c4",
-      "source": "Merge strategy:",
-      "arguments": 0
-    },
-    {
-      "name": "ui_strategy_6b27710d",
-      "source": "Strategy",
-      "arguments": 0
-    },
-    {
-      "name": "ui_choose_strategy_95d66200",
-      "source": "Choose strategy",
       "arguments": 0
     },
     {
@@ -92,53 +37,13 @@
       "arguments": 0
     },
     {
-      "name": "ui_delete_branch_00339d48",
-      "source": "Delete Branch?",
-      "arguments": 0
-    },
-    {
-      "name": "ui_delete_branch_1_s_bbe46386",
-      "source": "Delete branch \"%1$s\"?",
-      "arguments": 1
-    },
-    {
       "name": "ui_delete_e2d0a549",
       "source": "Delete",
       "arguments": 0
     },
     {
-      "name": "ui_no_branches_available_7f5adec5",
-      "source": "No branches available",
-      "arguments": 0
-    },
-    {
-      "name": "ui_tracking_1_s_b83cf9b3",
-      "source": "Tracking: %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_switch_to_branch_278b039a",
-      "source": "Switch to branch",
-      "arguments": 0
-    },
-    {
-      "name": "ui_delete_branch_1c3f98e5",
-      "source": "Delete branch",
-      "arguments": 0
-    },
-    {
       "name": "ui_revert_commit_a2d355f7",
       "source": "Revert commit",
-      "arguments": 0
-    },
-    {
-      "name": "ui_message_f5394f72",
-      "source": "Message:",
-      "arguments": 0
-    },
-    {
-      "name": "ui_metadata_b17f2c85",
-      "source": "Metadata:",
       "arguments": 0
     },
     {
@@ -162,102 +67,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_no_conflicts_found_d356b17b",
-      "source": "No conflicts found",
-      "arguments": 0
-    },
-    {
-      "name": "ui_conflict_d79910c7",
-      "source": "Conflict",
-      "arguments": 0,
-      "original_source": "CONFLICT",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_ours_1_s_bytes_e7da423a",
-      "source": "Ours: %1$s bytes",
-      "arguments": 1
-    },
-    {
-      "name": "ui_theirs_1_s_bytes_70028ef3",
-      "source": "Theirs: %1$s bytes",
-      "arguments": 1
-    },
-    {
-      "name": "ui_resolved_fea6a678",
-      "source": "Resolved",
-      "arguments": 0,
-      "original_source": "RESOLVED",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_resolve_conflict_ff598c8a",
-      "source": "Resolve Conflict",
-      "arguments": 0
-    },
-    {
-      "name": "ui_file_1_s_9fdb0f6d",
-      "source": "File: %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_using_strategy_1_s_6c76b5ef",
-      "source": "Using strategy: %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_this_will_keep_your_version_of_the_file_a9475bb6",
-      "source": "This will keep your version of the file.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_this_will_use_the_incoming_version_of_the_96940ba5",
-      "source": "This will use the incoming version of the file.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_this_will_use_your_manually_edited_content_86084831",
-      "source": "This will use your manually edited content.",
-      "arguments": 0
-    },
-    {
       "name": "ui_confirm_eebdd24a",
       "source": "Confirm",
-      "arguments": 0
-    },
-    {
-      "name": "ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a",
-      "source": "All conflicts have been resolved. Proceed with merge completion?",
-      "arguments": 0
-    },
-    {
-      "name": "ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3",
-      "source": "There are still %1$s unresolved conflicts.",
-      "arguments": 1
-    },
-    {
-      "name": "ui_please_resolve_all_conflicts_before_comple_9be0a6e5",
-      "source": "Please resolve all conflicts before completing the merge.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_complete_merge_385cc51b",
-      "source": "Complete Merge",
-      "arguments": 0
-    },
-    {
-      "name": "ui_abort_merge_8821f613",
-      "source": "Abort Merge",
-      "arguments": 0
-    },
-    {
-      "name": "ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49",
-      "source": "Are you sure you want to abort this merge?",
-      "arguments": 0
-    },
-    {
-      "name": "ui_this_will_discard_all_progress_and_return_a2f7aabf",
-      "source": "This will discard all progress and return the repository to its pre-merge state.",
       "arguments": 0
     },
     {
@@ -311,16 +122,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_warning_e981ddae",
-      "source": "Warning",
-      "arguments": 0
-    },
-    {
-      "name": "ui_info_170322a3",
-      "source": "Info",
-      "arguments": 0
-    },
-    {
       "name": "ui_unstage_033f86f9",
       "source": "Unstage",
       "arguments": 0
@@ -361,133 +162,13 @@
       "arguments": 0
     },
     {
-      "name": "ui_repository_13d6ff07",
-      "source": "Repository",
-      "arguments": 0
-    },
-    {
-      "name": "ui_git_remote_91593664",
-      "source": "Git remote",
-      "arguments": 0
-    },
-    {
-      "name": "ui_lfs_endpoint_02a55a73",
-      "source": "LFS endpoint",
-      "arguments": 0
-    },
-    {
-      "name": "ui_verify_this_address_with_the_repository_ow_e6a8ca84",
-      "source": "Verify this address with the repository owner. Approval applies only to this repository, Git remote, LFS endpoint and transfer direction on this device.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_endpoint_authentication_1841e2be",
-      "source": "Endpoint authentication",
-      "arguments": 0
-    },
-    {
-      "name": "ui_use_saved_endpoint_credentials_2f2000f7",
-      "source": "Use saved endpoint credentials",
-      "arguments": 0
-    },
-    {
-      "name": "ui_public_access_03e7db61",
-      "source": "Public access",
-      "arguments": 0
-    },
-    {
-      "name": "ui_separate_username_and_token_f8a9a3b9",
-      "source": "Separate username and token",
-      "arguments": 0
-    },
-    {
       "name": "ui_lfs_endpoint_username_4a49e1f5",
       "source": "LFS endpoint username",
       "arguments": 0
     },
     {
-      "name": "ui_lfs_endpoint_token_or_password_e069890b",
-      "source": "LFS endpoint token or password",
-      "arguments": 0
-    },
-    {
-      "name": "ui_your_git_sign_in_is_not_shared_with_this_s_8fbab830",
-      "source": "Your Git sign-in is not shared with this server. Separate endpoint credentials are encrypted on this device. Manage or revoke approvals in Settings → LFS endpoint approvals.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_lfs_endpoint_approvals_4a5953cd",
-      "source": "LFS endpoint approvals",
-      "arguments": 0
-    },
-    {
-      "name": "ui_add_repository_33da2ac1",
-      "source": "Add Repository",
-      "arguments": 0
-    },
-    {
-      "name": "publication_name",
-      "source": "Repository name",
-      "arguments": 0
-    },
-    {
-      "name": "ui_e_g_myproject_e18eb00a",
-      "source": "e.g., MyProject",
-      "arguments": 0
-    },
-    {
-      "name": "ui_repository_path_037711af",
-      "source": "Repository path",
-      "arguments": 0
-    },
-    {
-      "name": "ui_path_to_repo_b9d23344",
-      "source": "/path/to/repo",
-      "arguments": 0
-    },
-    {
-      "name": "ui_alias_optional_0d402abb",
-      "source": "Alias (optional)",
-      "arguments": 0
-    },
-    {
-      "name": "ui_e_g_prod_7d4c667a",
-      "source": "e.g., prod",
-      "arguments": 0
-    },
-    {
-      "name": "ui_enter_the_full_path_to_your_git_repository_f926e25c",
-      "source": "Enter the full path to your Git repository.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_add_9fd728c6",
-      "source": "Add",
-      "arguments": 0
-    },
-    {
-      "name": "ui_select_repository_64bd6444",
-      "source": "Select Repository",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_repositories_saved_add_one_in_settings_16062236",
-      "source": "No repositories saved. Add one in Settings.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_alias_1_s_e7e8c040",
-      "source": "Alias: %1$s",
-      "arguments": 1
-    },
-    {
       "name": "ui_remove_c3812fc4",
       "source": "Remove",
-      "arguments": 0
-    },
-    {
-      "name": "guide_done",
-      "source": "Done",
       "arguments": 0
     },
     {
@@ -496,31 +177,9 @@
       "arguments": 0
     },
     {
-      "name": "ui_remove_this_repository_and_delete_its_loca_5533c124",
-      "source": "Remove this repository and delete its local files from this device? Your GitHub repo is not affected.",
-      "arguments": 0
-    },
-    {
       "name": "ui_all_local_changes_to_this_file_will_be_per_0919f539",
       "source": "All local changes to this file will be permanently discarded.",
       "arguments": 0
-    },
-    {
-      "name": "ui_and_1_s_more_f93ea742",
-      "source": "and %1$s more…",
-      "arguments": 1
-    },
-    {
-      "name": "ui_this_cannot_be_undone_b545dd16",
-      "source": "This cannot be undone.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_cancel_ad8d6985",
-      "source": "Cancel",
-      "arguments": 0,
-      "original_source": "CANCEL",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
       "name": "ui_include_the_ssh_username_in_the_address_gi_beb09b5a",
@@ -548,68 +207,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_previously_trusted_1_s_df583fd2",
-      "source": "Previously trusted: %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_a_changed_key_can_indicate_impersonation_v_fa1697a1",
-      "source": "A changed key can indicate impersonation. Verify the new fingerprint with the server owner before replacing trust.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_compare_this_fingerprint_with_the_server_o_69b2eaae",
-      "source": "Compare this fingerprint with the server owner's published SSH host key before trusting it.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f",
-      "source": "Approval is saved on this device and the waiting connection continues. Cancel leaves the server untrusted.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_ssh_server_trust_e17d5257",
-      "source": "SSH server trust",
-      "arguments": 0
-    },
-    {
       "name": "ui_no_stashes_found_ace2fa6f",
       "source": "No stashes found",
-      "arguments": 0
-    },
-    {
-      "name": "ui_apply_stash_008c67fe",
-      "source": "Apply stash",
-      "arguments": 0
-    },
-    {
-      "name": "ui_pop_stash_2adc4302",
-      "source": "Pop stash",
-      "arguments": 0
-    },
-    {
-      "name": "ui_drop_stash_969bf549",
-      "source": "Drop stash",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_tags_found_8a6dd503",
-      "source": "No tags found",
-      "arguments": 0
-    },
-    {
-      "name": "ui_commit_84da95ea",
-      "source": "Commit:",
-      "arguments": 0
-    },
-    {
-      "name": "ui_delete_tag_365635aa",
-      "source": "Delete tag",
-      "arguments": 0
-    },
-    {
-      "name": "ui_github_accounts_653cf0c5",
-      "source": "GitHub accounts",
       "arguments": 0
     },
     {
@@ -623,23 +222,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_use_for_browsing_f4b0d6df",
-      "source": "Use for browsing",
-      "arguments": 0
-    },
-    {
-      "name": "ui_remove_sign_in_ae9ee617",
-      "source": "Remove sign-in",
-      "arguments": 0
-    },
-    {
       "name": "ui_no_connected_accounts_local_repositories_r_cf41e629",
       "source": "No connected accounts. Local repositories remain available.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_add_github_account_ed4d4d4c",
-      "source": "Add GitHub account",
       "arguments": 0
     },
     {
@@ -663,16 +247,6 @@
       "arguments": 0
     },
     {
-      "name": "publication_author",
-      "source": "Author name",
-      "arguments": 0
-    },
-    {
-      "name": "publication_email",
-      "source": "Author email",
-      "arguments": 0
-    },
-    {
       "name": "ui_save_author_1c24b32a",
       "source": "Save author",
       "arguments": 0
@@ -681,35 +255,6 @@
       "name": "ui_reload_author_18a711d8",
       "source": "Reload author",
       "arguments": 0
-    },
-    {
-      "name": "ui_clone_repository_e8fa94ab",
-      "source": "Clone repository",
-      "arguments": 0
-    },
-    {
-      "name": "ui_cloning_repository_c9d2441e",
-      "source": "Cloning repository",
-      "arguments": 0
-    },
-    {
-      "name": "ui_finishing_up_13f4f85a",
-      "source": "Finishing up",
-      "arguments": 0
-    },
-    {
-      "name": "ui_clone_failed_958e3f3a",
-      "source": "Clone failed",
-      "arguments": 0,
-      "original_source": "CLONE FAILED",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_retry_e464c660",
-      "source": "Retry",
-      "arguments": 0,
-      "original_source": "RETRY",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
       "name": "ui_repository_connection_1188001b",
@@ -802,39 +347,9 @@
       "arguments": 0
     },
     {
-      "name": "ui_diagnostics_268f14bb",
-      "source": "Diagnostics",
-      "arguments": 0
-    },
-    {
-      "name": "ui_recent_operation_outcomes_on_this_device_t_2a52131b",
-      "source": "Recent operation outcomes on this device. The log keeps up to 500 entries. Credentials, repository addresses, file paths and file contents are excluded.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_copy_visible_29e7587c",
-      "source": "Copy visible",
-      "arguments": 0
-    },
-    {
-      "name": "ui_share_visible_4fcf9b94",
-      "source": "Share visible",
-      "arguments": 0
-    },
-    {
-      "name": "ui_clear_all_29a390f9",
-      "source": "Clear all",
-      "arguments": 0
-    },
-    {
       "name": "ui_some_diagnostics_could_not_be_read_or_save_19e3372d",
       "source": "Some diagnostics could not be read or saved. Existing data was kept. Clear the log to restart recording.",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_shown_2_s_stored_c5d98835",
-      "source": "%1$s shown · %2$s stored",
-      "arguments": 2
     },
     {
       "name": "ui_clear_all_diagnostics_e2d6a185",
@@ -854,49 +369,8 @@
       "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
-      "name": "ui_revert_c8d62872",
-      "source": "↩  Revert",
-      "arguments": 0,
-      "original_source": "↩  REVERT",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_loading_diff_3944c704",
-      "source": "Loading diff…",
-      "arguments": 0
-    },
-    {
-      "name": "ui_added_b4561641",
-      "source": "Added",
-      "arguments": 0,
-      "original_source": "ADDED",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_removed_70fa71f8",
-      "source": "Removed",
-      "arguments": 0,
-      "original_source": "REMOVED",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_revert_changes_5b36e77f",
-      "source": "Revert Changes",
-      "arguments": 0
-    },
-    {
-      "name": "ui_new_18fdd549",
-      "source": "New",
-      "arguments": 0
-    },
-    {
       "name": "ui_new_file_44dedd0f",
       "source": "New file",
-      "arguments": 0
-    },
-    {
-      "name": "ui_new_folder_cf28f49e",
-      "source": "New folder",
       "arguments": 0
     },
     {
@@ -918,11 +392,6 @@
       "name": "ui_rename_3064d79a",
       "source": "Rename",
       "arguments": 0
-    },
-    {
-      "name": "ui_rename_1_s_9b09e088",
-      "source": "Rename %1$s",
-      "arguments": 1
     },
     {
       "name": "ui_save_1509f561",
@@ -970,11 +439,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_save_changes_to_1_s_4cb0cf65",
-      "source": "Save changes to %1$s?",
-      "arguments": 1
-    },
-    {
       "name": "ui_your_edits_have_not_been_saved_625899a4",
       "source": "Your edits have not been saved.",
       "arguments": 0
@@ -990,45 +454,14 @@
       "arguments": 0
     },
     {
-      "name": "ui_reload_1_s_873e324f",
-      "source": "Reload %1$s?",
-      "arguments": 1
-    },
-    {
       "name": "ui_delete_1_s_6474596f",
       "source": "Delete %1$s?",
       "arguments": 1
     },
     {
-      "name": "ui_name_dcd1d522",
-      "source": "Name",
-      "arguments": 0
-    },
-    {
-      "name": "ui_git_b084246d",
-      "source": "Git",
-      "arguments": 0,
-      "original_source": "GIT",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_done_283e91eb",
-      "source": "Done",
-      "arguments": 0,
-      "original_source": "DONE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
       "name": "ui_debug_info_697b4941",
       "source": "Debug Info",
       "arguments": 0
-    },
-    {
-      "name": "ui_debug_0ffd43f5",
-      "source": "Debug",
-      "arguments": 0,
-      "original_source": "DEBUG",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
       "name": "ui_repo_path_a3f06032",
@@ -1043,11 +476,6 @@
     {
       "name": "staged",
       "source": "Staged",
-      "arguments": 0
-    },
-    {
-      "name": "ui_repository_status_64c67cd2",
-      "source": "Repository Status",
       "arguments": 0
     },
     {
@@ -1066,91 +494,9 @@
       "arguments": 0
     },
     {
-      "name": "ui_local_changes_4d25c7d4",
-      "source": "Local changes",
-      "arguments": 0,
-      "original_source": "LOCAL CHANGES",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_1_s_files_ddef923b",
-      "source": "%1$s files",
-      "arguments": 1
-    },
-    {
-      "name": "ui_none_dc937b59",
-      "source": "None",
-      "arguments": 0
-    },
-    {
-      "name": "branch_screen",
-      "source": "Branches",
-      "arguments": 0
-    },
-    {
-      "name": "ui_new_branch_name_3fb60017",
-      "source": "new-branch-name",
-      "arguments": 0
-    },
-    {
-      "name": "ui_create_fde9c501",
-      "source": "Create",
-      "arguments": 0,
-      "original_source": "CREATE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_conflict_center_e9f65d36",
-      "source": "Conflict Center",
-      "arguments": 0
-    },
-    {
-      "name": "ui_merge_fc2b737d",
-      "source": "Merge",
-      "arguments": 0,
-      "original_source": "MERGE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198",
-      "source": "All conflicts resolved. Complete or abort the merge.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_merge_commit_message_2132e189",
-      "source": "Merge commit message",
-      "arguments": 0
-    },
-    {
-      "name": "ui_complete_894981ff",
-      "source": "Complete",
-      "arguments": 0,
-      "original_source": "COMPLETE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_abort_merge_5af7a9ac",
-      "source": "✕  Abort merge",
-      "arguments": 0,
-      "original_source": "✕  ABORT MERGE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_stage_all_d1ce47c8",
-      "source": "Stage All",
-      "arguments": 0
-    },
-    {
       "name": "ui_no_local_changes_56319dc5",
       "source": "No local changes",
       "arguments": 0
-    },
-    {
-      "name": "ui_revert_all_changes_416c8713",
-      "source": "↩  Revert all changes",
-      "arguments": 0,
-      "original_source": "↩  REVERT ALL CHANGES",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
       "name": "ui_commit_message_a4b361b7",
@@ -1158,40 +504,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_commit_push_94e9650a",
-      "source": "Commit & Push",
-      "arguments": 0
-    },
-    {
       "name": "stash_screen",
       "source": "Stash",
-      "arguments": 0
-    },
-    {
-      "name": "ui_stash_message_optional_7b463cf6",
-      "source": "Stash message (optional)…",
-      "arguments": 0
-    },
-    {
-      "name": "ui_save_c210bfdf",
-      "source": "Save",
-      "arguments": 0,
-      "original_source": "SAVE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_no_local_changes_to_stash_0beb8393",
-      "source": "No local changes to stash",
-      "arguments": 0
-    },
-    {
-      "name": "ui_tags_1331275b",
-      "source": "Tags",
-      "arguments": 0
-    },
-    {
-      "name": "ui_tag_name_e_g_v1_0_0_16aa5a68",
-      "source": "tag-name (e.g. v1.0.0)",
       "arguments": 0
     },
     {
@@ -1205,23 +519,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_git_lfs_tracking_and_downloads_0ec019bf",
-      "source": "Git LFS · Tracking and downloads",
-      "arguments": 0
-    },
-    {
-      "name": "ui_pull_with_rebase_resume_rebase_035aaf45",
-      "source": "Pull with rebase / Resume rebase",
-      "arguments": 0
-    },
-    {
       "name": "pull_screen",
       "source": "Pull",
-      "arguments": 0
-    },
-    {
-      "name": "ui_fetch_and_apply_remote_changes_399278ae",
-      "source": "Fetch and apply remote changes",
       "arguments": 0
     },
     {
@@ -1230,134 +529,8 @@
       "arguments": 1
     },
     {
-      "name": "ui_use_ours_4bec9877",
-      "source": "Use ours",
-      "arguments": 0
-    },
-    {
-      "name": "ui_use_theirs_352c4272",
-      "source": "Use theirs",
-      "arguments": 0
-    },
-    {
-      "name": "ui_push_blocked_by_lfs_locks_e4e28836",
-      "source": "Push blocked by LFS locks",
-      "arguments": 0
-    },
-    {
-      "name": "ui_revert_all_changes_06b0eb3d",
-      "source": "Revert All Changes",
-      "arguments": 0
-    },
-    {
-      "name": "ui_current_e3cc57e1",
-      "source": "Current",
-      "arguments": 0,
-      "original_source": "CURRENT",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_switch_39921a74",
-      "source": "Switch",
-      "arguments": 0
-    },
-    {
-      "name": "ui_resolved_5be3c2c8",
-      "source": "Resolved",
-      "arguments": 0
-    },
-    {
-      "name": "ui_ours_ab658c14",
-      "source": "Ours",
-      "arguments": 0,
-      "original_source": "OURS",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_theirs_691ef727",
-      "source": "Theirs",
-      "arguments": 0,
-      "original_source": "THEIRS",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_manual_7c8107bd",
-      "source": "Manual",
-      "arguments": 0,
-      "original_source": "MANUAL",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_from_1_s_40f7d611",
-      "source": "From %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_binary_file_2c7ccf98",
-      "source": "Binary file",
-      "arguments": 0
-    },
-    {
-      "name": "ui_diff_b6aeb797",
-      "source": "Diff",
-      "arguments": 0,
-      "original_source": "DIFF",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_apply_2cbf6555",
-      "source": "Apply",
-      "arguments": 0,
-      "original_source": "APPLY",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_pop_52e740ad",
-      "source": "Pop",
-      "arguments": 0,
-      "original_source": "POP",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_push_792aac67",
-      "source": "Push",
-      "arguments": 0,
-      "original_source": "PUSH",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd",
-      "source": "Review the separate LFS servers allowed for your repositories. Revoking an approval stops future transfers in that direction; operations already in progress may finish.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_approved_custom_lfs_endpoints_e7c9b85a",
-      "source": "No approved custom LFS endpoints",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reset_all_lfs_endpoint_approvals_e6d5c6c6",
-      "source": "Reset all LFS endpoint approvals",
-      "arguments": 0
-    },
-    {
-      "name": "ui_revoke_87e6d00b",
-      "source": "Revoke",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reset_all_lfs_endpoint_approvals_d20616d7",
-      "source": "Reset all LFS endpoint approvals?",
-      "arguments": 0
-    },
-    {
       "name": "ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e",
       "source": "Remove all custom endpoint approvals and their saved credentials on this device. Each endpoint and transfer direction will need a new review.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reset_approvals_79eec91d",
-      "source": "Reset approvals",
       "arguments": 0
     },
     {
@@ -1381,85 +554,13 @@
       "arguments": 0
     },
     {
-      "name": "ui_git_lfs_keeps_large_file_contents_outside_4b4afd49",
-      "source": "Git LFS keeps large file contents outside Git history. Commits store small pointers; clone and pull download the contents, and push uploads objects before publishing commits.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reload_lfs_state_046eb2f5",
-      "source": "Reload LFS state",
-      "arguments": 0
-    },
-    {
-      "name": "ui_tracking_review_8d316853",
-      "source": "Tracking review",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf",
-      "source": "No new binary or large files need a tracking choice.",
-      "arguments": 0
-    },
-    {
       "name": "ui_1_s_bytes_81cdb385",
       "source": "%1$s bytes",
       "arguments": 1
     },
     {
-      "name": "ui_track_selected_files_with_lfs_77617dd9",
-      "source": "Track selected files with LFS",
-      "arguments": 0
-    },
-    {
-      "name": "ui_keep_selected_files_in_regular_git_7de351fc",
-      "source": "Keep selected files in regular Git",
-      "arguments": 0
-    },
-    {
-      "name": "ui_this_changes_gitattributes_files_and_the_s_686aaa3b",
-      "source": "This changes .gitattributes. Files and the staged index stay in place until you stage your changes.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_tracked_objects_a265fdb0",
-      "source": "Tracked objects",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_lfs_pointers_in_the_current_index_612c2995",
-      "source": "No LFS pointers in the current index.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_download_missing_file_contents_f54939ee",
-      "source": "Download missing file contents",
-      "arguments": 0
-    },
-    {
-      "name": "ui_git_lfs_needs_attention_01f551e1",
-      "source": "Git LFS needs attention",
-      "arguments": 0
-    },
-    {
       "name": "ui_apply_tracking_choice_47a2e187",
       "source": "Apply tracking choice",
-      "arguments": 0
-    },
-    {
-      "name": "ui_sync_7dcad682",
-      "source": "Sync",
-      "arguments": 0,
-      "original_source": "SYNC",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_md_70cbd51e",
-      "source": ".MD",
-      "arguments": 0
-    },
-    {
-      "name": "ui_any_repo_synced_to_your_android_d15779c7",
-      "source": "ANY REPO. SYNCED TO YOUR ANDROID.",
       "arguments": 0
     },
     {
@@ -1470,50 +571,9 @@
       "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
-      "name": "ui_ghp_ff475c83",
-      "source": "ghp_...",
-      "arguments": 0
-    },
-    {
-      "name": "ui_personal_access_token_702ef4a0",
-      "source": "Personal access token",
-      "arguments": 0,
-      "original_source": "PERSONAL ACCESS TOKEN",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_create_a_pat_on_github_baa86691",
-      "source": "Create a PAT on GitHub →",
-      "arguments": 0,
-      "original_source": "CREATE A PAT ON GITHUB →",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
       "name": "guide_login",
       "source": "Sign in with GitHub",
       "arguments": 0
-    },
-    {
-      "name": "ui_or_7175517a",
-      "source": "or",
-      "arguments": 0
-    },
-    {
-      "name": "ui_personal_access_token_5572fccc",
-      "source": "Personal Access Token",
-      "arguments": 0
-    },
-    {
-      "name": "ui_github_account_connected_ccc5f749",
-      "source": "GitHub account connected",
-      "arguments": 0
-    },
-    {
-      "name": "ui_download_location_7cc4e69d",
-      "source": "Download location",
-      "arguments": 0,
-      "original_source": "DOWNLOAD LOCATION",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
       "name": "guide_continue",
@@ -1531,23 +591,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_reviewed_destination_7173c3da",
-      "source": "Reviewed destination",
-      "arguments": 0
-    },
-    {
-      "name": "ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d",
-      "source": "This crosses storage volumes. GitSync.md will verify the copied contents and retain the original in Move recoveries until you remove it.",
-      "arguments": 0
-    },
-    {
       "name": "ui_the_folder_can_move_directly_on_this_stora_7b29fabb",
       "source": "The folder can move directly on this storage volume.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_an_interrupted_move_needs_recovery_all_rec_38aefacd",
-      "source": "An interrupted move needs recovery. All recognized copies are kept until it finishes.",
       "arguments": 0
     },
     {
@@ -1591,11 +636,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f",
-      "source": "During rebase, upstream is Git's ours side; the replayed local commit is theirs.",
-      "arguments": 0
-    },
-    {
       "name": "ui_upstream_deleted_this_file_40765116",
       "source": "Upstream deleted this file.",
       "arguments": 0
@@ -1623,11 +663,6 @@
     {
       "name": "ui_continue_rebase_7a14e965",
       "source": "Continue rebase",
-      "arguments": 0
-    },
-    {
-      "name": "ui_skip_current_commit_370b7166",
-      "source": "Skip current commit…",
       "arguments": 0
     },
     {
@@ -1676,16 +711,6 @@
       "arguments": 0
     },
     {
-      "name": "guide_url",
-      "source": "Clone from URL",
-      "arguments": 0
-    },
-    {
-      "name": "ui_connect_to_a_public_or_private_https_or_ss_03fd12f0",
-      "source": "Connect to a public or private HTTPS or SSH repository on GitHub, GitLab, Bitbucket or your own Git server.",
-      "arguments": 0
-    },
-    {
       "name": "ui_clone_again_review_the_previous_branch_and_33cba147",
       "source": "Clone again · review the previous branch and connection before starting.",
       "arguments": 0
@@ -1716,21 +741,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_username_token_7375b2ff",
-      "source": "Username + token",
-      "arguments": 0
-    },
-    {
-      "name": "ui_use_saved_connection_21052734",
-      "source": "Use saved connection",
-      "arguments": 0
-    },
-    {
-      "name": "ui_the_encrypted_connection_is_reused_only_fo_a43b4975",
-      "source": "The encrypted connection is reused only for its original repository address. Change authentication explicitly to use another address.",
-      "arguments": 0
-    },
-    {
       "name": "publication_accounts",
       "source": "GitHub account",
       "arguments": 0
@@ -1741,43 +751,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_use_a_github_com_https_address_the_clone_k_6466d7b7",
-      "source": "Use a github.com HTTPS address. The clone keeps the selected account even if you switch browsing accounts.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_token_or_password_d6e43f8a",
-      "source": "Token or password",
-      "arguments": 0
-    },
-    {
-      "name": "ui_saved_credentials_are_encrypted_on_this_de_a97385dd",
-      "source": "Saved credentials are encrypted on this device and used only for this repository's HTTPS address.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_gitsync_md_will_not_provide_credentials_fo_103df88f",
-      "source": "GitSync.md will not provide credentials for this repository.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_cloning_and_preparing_the_working_copy_90548a33",
-      "source": "Cloning and preparing the working copy…",
-      "arguments": 0
-    },
-    {
-      "name": "ui_add_cloned_repository_f84b64e8",
-      "source": "Add cloned repository",
-      "arguments": 0
-    },
-    {
       "name": "ui_back_aceb696a",
       "source": "← Back",
-      "arguments": 0
-    },
-    {
-      "name": "ui_search_repositories_243865a1",
-      "source": "Search repositories…",
       "arguments": 0
     },
     {
@@ -1786,124 +761,14 @@
       "arguments": 0
     },
     {
-      "name": "ui_no_repositories_a6e9ff91",
-      "source": "No Repositories",
-      "arguments": 0
-    },
-    {
-      "name": "ui_sign_in_75606a00",
-      "source": "Sign in",
-      "arguments": 0,
-      "original_source": "SIGN IN",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_clone_a_github_repository_or_reconnect_a_l_dd9aa7e0",
-      "source": "Clone a GitHub repository or reconnect a local working copy.",
-      "arguments": 0
-    },
-    {
       "name": "ui_local_repositories_ddcf4270",
       "source": "Local repositories",
       "arguments": 0
     },
     {
-      "name": "ui_add_repository_e2be0a30",
-      "source": "Add repository",
-      "arguments": 0,
-      "original_source": "ADD REPOSITORY",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_remove_5fdf0b2b",
-      "source": "Remove",
-      "arguments": 0,
-      "original_source": "REMOVE",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
       "name": "ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d",
       "source": "Remove \"%1$s\"?\n\nThis removes it from GitSync.md. All local files and Git history stay on this device, and you can reconnect it later. Your remote repository is not affected.",
       "arguments": 1
-    },
-    {
-      "name": "ui_no_repository_aec5972a",
-      "source": "No repository",
-      "arguments": 0,
-      "original_source": "NO REPOSITORY",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_connect_a_github_repository_to_start_synci_0e1f2ea6",
-      "source": "Connect a GitHub repository to start syncing.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_full_version_no_subscription_8fe42d1c",
-      "source": "Full version · no subscription",
-      "arguments": 0,
-      "original_source": "FULL VERSION · NO SUBSCRIPTION",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_connect_with_github_6f2b4e53",
-      "source": "Connect with GitHub",
-      "arguments": 0
-    },
-    {
-      "name": "ui_add_local_repository_b8323c70",
-      "source": "Add Local Repository",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reconnect_working_copies_already_stored_by_76634d9e",
-      "source": "Reconnect working copies already stored by GitSync.md. Removing an entry keeps its files; deleting a managed clone and removing Git tracking are separate choices.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_scan_app_folders_12ed3a77",
-      "source": "Scan app folders",
-      "arguments": 0
-    },
-    {
-      "name": "ui_scan_a_device_folder_995756f2",
-      "source": "Scan a device folder",
-      "arguments": 0
-    },
-    {
-      "name": "ui_discovered_repositories_059a8e8d",
-      "source": "Discovered repositories",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_working_copies_found_in_the_scanned_fol_904c5b06",
-      "source": "No working copies found in the scanned folders.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_the_scan_reached_its_depth_or_folder_limit_9b655557",
-      "source": "The scan reached its depth or folder limit. Some folders were not scanned.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_already_added_253b22d7",
-      "source": "Already added",
-      "arguments": 0
-    },
-    {
-      "name": "ui_add_selected_repositories_d05e3c53",
-      "source": "Add selected repositories",
-      "arguments": 0
-    },
-    {
-      "name": "ui_added_repositories_400f05cb",
-      "source": "Added repositories",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_repositories_added_yet_74c8565e",
-      "source": "No repositories added yet.",
-      "arguments": 0
     },
     {
       "name": "ui_open_ed077f3d",
@@ -1963,11 +828,6 @@
     {
       "name": "ui_recovery_needs_attention_recognized_workin_89ce1116",
       "source": "Recovery needs attention. Recognized working copies are kept.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_previously_added_627f4765",
-      "source": "Previously added",
       "arguments": 0
     },
     {
@@ -2036,55 +896,13 @@
       "arguments": 1
     },
     {
-      "name": "ui_working_files_stay_in_place_local_branches_a0748350",
-      "source": "Working files stay in place. Local branches, commits, stashes, remotes and history will be disconnected from this folder.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_keep_a_verified_metadata_backup_5e821b62",
-      "source": "Keep a verified metadata backup",
-      "arguments": 0
-    },
-    {
-      "name": "ui_without_a_backup_local_git_history_is_perm_bcb5c492",
-      "source": "Without a backup, local Git history is permanently deleted. This cannot be undone.",
-      "arguments": 0
-    },
-    {
       "name": "ui_remove_tracking_4b40d72c",
       "source": "Remove tracking",
       "arguments": 0
     },
     {
-      "name": "ui_settings_02f6ea12",
-      "source": "Settings",
-      "arguments": 0,
-      "original_source": "SETTINGS",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
       "name": "ui_loading_dc380888",
       "source": "Loading",
-      "arguments": 0
-    },
-    {
-      "name": "ui_browse_repos_e9c9d50c",
-      "source": "Browse Repos",
-      "arguments": 0
-    },
-    {
-      "name": "ui_sign_out_0b184bc5",
-      "source": "Sign Out",
-      "arguments": 0
-    },
-    {
-      "name": "ui_connect_your_github_account_to_browse_and_b692e428",
-      "source": "Connect your GitHub account to browse and sync repositories.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_license_c011d609",
-      "source": "License",
       "arguments": 0
     },
     {
@@ -2093,33 +911,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_choose_clone_storage_81f04f23",
-      "source": "Choose clone storage",
-      "arguments": 0
-    },
-    {
-      "name": "ui_dark_theme_6f2a0915",
-      "source": "Dark Theme",
-      "arguments": 0
-    },
-    {
-      "name": "ui_override_system_appearance_2685888c",
-      "source": "Override system appearance",
-      "arguments": 0
-    },
-    {
-      "name": "ui_show_debug_information_6e8abf80",
-      "source": "Show debug information",
-      "arguments": 0
-    },
-    {
       "name": "ui_about_4efca0d1",
       "source": "About",
-      "arguments": 0
-    },
-    {
-      "name": "ui_privacy_policy_506ff394",
-      "source": "Privacy Policy",
       "arguments": 0
     },
     {
@@ -2130,90 +923,6 @@
     {
       "name": "ui_platform_c78ffe19",
       "source": "Platform",
-      "arguments": 0
-    },
-    {
-      "name": "ui_version_dd167905",
-      "source": "Version",
-      "arguments": 0
-    },
-    {
-      "name": "ui_gitsync_md_full_version_dde459ca",
-      "source": "Gitsync.md Full Version",
-      "arguments": 0
-    },
-    {
-      "name": "ui_9_99_one_time_purchase_via_google_play_fa8e82bc",
-      "source": "One-time purchase via Google Play",
-      "arguments": 0,
-      "original_source": "$9.99 one-time purchase via Google Play",
-      "source_review": "Removed the fixed dollar price from the installed paid-app license card; Google Play handles the purchase. No price or currency is asserted here."
-    },
-    {
-      "name": "ui_all_features_are_included_after_installing_a88c124e",
-      "source": "All features are included after installing the paid app. No subscriptions or in-app purchases.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_clone_directory_157fc791",
-      "source": "Clone Directory",
-      "arguments": 0
-    },
-    {
-      "name": "ui_default_for_new_clones_each_clone_can_use_f0929c99",
-      "source": "Default for new clones. Each clone can use another folder.",
-      "arguments": 0,
-      "original_source": "DEFAULT FOR NEW CLONES. EACH CLONE CAN USE ANOTHER FOLDER.",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d",
-      "source": "Trusted server fingerprints are saved on this device. Forgetting a server requires verification the next time you connect. Repository private keys stay saved.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_no_trusted_ssh_servers_df52a7ed",
-      "source": "No trusted SSH servers",
-      "arguments": 0
-    },
-    {
-      "name": "ui_forget_server_e43c85d4",
-      "source": "Forget server",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reset_all_ssh_server_trust_3b8a05a5",
-      "source": "Reset all SSH server trust",
-      "arguments": 0
-    },
-    {
-      "name": "ui_forget_ssh_server_d5c91f0a",
-      "source": "Forget SSH server?",
-      "arguments": 0
-    },
-    {
-      "name": "ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8",
-      "source": "%1$s:%2$s will require fingerprint verification before connecting again.",
-      "arguments": 2
-    },
-    {
-      "name": "ui_forget_a6bd489d",
-      "source": "Forget",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reset_all_ssh_server_trust_4917ea5f",
-      "source": "Reset all SSH server trust?",
-      "arguments": 0
-    },
-    {
-      "name": "ui_every_ssh_server_will_require_fingerprint_b985f6b6",
-      "source": "Every SSH server will require fingerprint verification before connecting again. This also removes damaged trust entries.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_reset_trust_b9be3a3c",
-      "source": "Reset trust",
       "arguments": 0
     },
     {
@@ -2252,11 +961,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_loading_repository_15b79262",
-      "source": "Loading repository",
-      "arguments": 0
-    },
-    {
       "name": "ui_no_repository_555da78f",
       "source": "No Repository",
       "arguments": 0
@@ -2264,21 +968,6 @@
     {
       "name": "ui_go_back_and_select_a_repository_c3eedd39",
       "source": "Go back and select a repository.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_now_ed5eb9a3",
-      "source": "now",
-      "arguments": 0
-    },
-    {
-      "name": "ui_browse_files_c8bb105f",
-      "source": "Browse files",
-      "arguments": 0
-    },
-    {
-      "name": "ui_read_and_edit_files_in_this_repository_3ecfad78",
-      "source": "Read and edit files in this repository",
       "arguments": 0
     },
     {
@@ -2297,33 +986,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_repo_health_ed3e070f",
-      "source": "Repo Health",
-      "arguments": 0
-    },
-    {
-      "name": "ui_changed_2a6141e4",
-      "source": "Changed",
-      "arguments": 0
-    },
-    {
-      "name": "ui_changed_files_cdf024ce",
-      "source": "Changed Files",
-      "arguments": 0
-    },
-    {
       "name": "ui_open_in_files_e1d250d0",
       "source": "Open in Files",
-      "arguments": 0
-    },
-    {
-      "name": "ui_fetch_remote_changes_b7ba6b06",
-      "source": "Fetch remote changes",
-      "arguments": 0
-    },
-    {
-      "name": "ui_push_local_changes_to_remote_54e75f8c",
-      "source": "Push local changes to remote",
       "arguments": 0
     }
   ]

@@ -241,6 +241,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 if (isLoggedIn) { githubViewModel.loadUserAndRepos(); navController.navigateSafe(Routes.REPO_PICKER) } else navController.navigateSafe(Routes.LOGIN)
             com.bontecou.syncmd.automation.VaultShortcutActivity.HOME -> navController.popBackStack(Routes.REPOS, inclusive = false)
             else -> if (path != null) settingsViewModel.setRepositoryPath(path) {
+                if (request.action == com.bontecou.syncmd.automation.VaultShortcutActivity.COMMIT)
+                    com.bontecou.syncmd.automation.VaultShortcutRequests.requestCommit(path)
                 navController.navigateSafe(Routes.VAULT)
                 if (request.action == com.bontecou.syncmd.automation.VaultShortcutActivity.CHANGES)
                     navController.navigateSafe(Routes.HISTORY) { popUpTo(Routes.VAULT); launchSingleTop = true }

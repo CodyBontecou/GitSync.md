@@ -24,13 +24,11 @@
     <string name="m3home_filter_all">All %1$d</string>
     <string name="m3home_filter_attention">Attention %1$d</string>
     <string name="m3home_filter_pinned">Pinned</string>
-    <string name="m3home_filter_label">Filter vaults</string>
     <string name="m3home_filter_empty_attention">Nothing needs you. Every vault is in sync.</string>
     <string name="m3home_filter_empty_pinned">No pinned vaults yet. Long-press a vault and choose Pin to top.</string>
 
     <!-- Pinned card -->
     <string name="m3home_pinned">Pinned</string>
-    <string name="m3home_pinned_rail">%1$s on this phone, %2$s</string>
     <string name="m3home_rail_phone">Phone</string>
     <string name="m3home_rail_github">GitHub</string>
     <string name="m3home_rail_remote">Remote</string>

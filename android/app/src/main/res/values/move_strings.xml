@@ -2,17 +2,11 @@
 <!-- Repository move, restore, removal and import feedback. Paths and names are formatter arguments. -->
 <resources>
     <string name="move_title_restore">Restore recovery copy</string>
-    <string name="move_intro">Move this entire working copy, including Git history, staged changes and unsaved files on disk. Its account and author settings move with it.</string>
     <string name="move_intro_restore">Restore the retained original as a separate repository. The current working copy stays in place.</string>
-    <string name="move_progress_moving">Moving and saving repository settings…</string>
     <string name="move_progress_reviewing">Reviewing files and Git metadata…</string>
-    <string name="move_action">Move working copy</string>
-    <string name="move_confirm_title">Move this working copy?</string>
     <string name="move_confirm_title_restore">Restore this recovery copy?</string>
     <string name="move_confirm_action">Move</string>
     <string name="move_confirm_action_restore">Restore</string>
-    <string name="move_confirm_retained">The original will be retained as a recovery copy.</string>
-    <string name="move_confirm_guidance">Choose an unused destination and keep other apps from changing these folders while the move finishes.</string>
     <string name="move_error_stale_review">Repository move review changed. Review the destination again before moving it.</string>
     <string name="move_error_finish_pending">Finish the pending move first</string>
     <string name="move_error_recovery_added">The recovery copy is already added. Move it from its repository entry.</string>

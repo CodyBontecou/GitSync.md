@@ -178,7 +178,8 @@ private fun RevertReviewSheet(
                     if (index > 0) M3Divider()
                     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(path, Modifier.weight(1f).padding(vertical = 10.dp).testTag("discard-review-path:$path"),
-                            style = M3Type.meta.copy(textDirection = TextDirection.Ltr), color = c.on, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            // The full path, wrapped: a discard review must show exactly what it removes.
+                            style = M3Type.meta.copy(textDirection = TextDirection.Ltr), color = c.on)
                         effects[path]?.let { effect ->
                             Text(effectText(effect), Modifier.padding(start = 8.dp).testTag("discard-review-effect:$path"), style = M3Type.caption, color = c.onVar)
                         }

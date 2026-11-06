@@ -1,6 +1,5 @@
 <resources>
     <string name="upstream_title">Upstream branch</string>
-    <string name="upstream_body">Set the sync target for this local branch. Files, commits and saved connections stay unchanged.</string>
     <string name="upstream_local_branch">Local branch: %1$s</string>
     <string name="upstream_remote">Remote</string>
     <string name="upstream_branch">Branch</string>

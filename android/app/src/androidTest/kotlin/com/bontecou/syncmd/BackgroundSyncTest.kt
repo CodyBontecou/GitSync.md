@@ -39,7 +39,11 @@ class BackgroundSyncTest {
     private val models = mutableListOf<BackgroundSyncViewModel>(); private var schedules = 0; private var requests = 0; private var stops = 0
     @Before fun setup() {
         prefix = "background-native-${UUID.randomUUID()}-"; workspace = File(app.filesDir, prefix).canonicalFile.apply { mkdir() }
-        host = object : ContextWrapper(app) { override fun getSharedPreferences(name: String, mode: Int) = app.getSharedPreferences(prefix + name, mode) }
+        // applicationContext is the fixture too, so the worker's run history and the global "Only when" switches stay prefixed.
+        host = object : ContextWrapper(app) {
+            override fun getSharedPreferences(name: String, mode: Int) = app.getSharedPreferences(prefix + name, mode)
+            override fun getApplicationContext(): Context = this
+        }
         bare = File(workspace, "remote.git"); seed = File(workspace, "seed"); root = File(workspace, "Notes")
         Git.init().setDirectory(bare).setBare(true).setInitialBranch("main").call().close()
         Git.init().setDirectory(seed).setInitialBranch("main").call().close()
@@ -59,7 +63,7 @@ class BackgroundSyncTest {
     }
     @After fun cleanup() {
         compose.runOnIdle { shown.value = null; models.forEach { ViewModelStore().apply { put("fixture", it); clear() } } }
-        workspace.deleteRecursively(); listOf("sync_md_prefs", "background_sync").forEach { app.deleteSharedPreferences(prefix + it) }
+        workspace.deleteRecursively(); listOf("sync_md_prefs", "background_sync", "background_runs", "background_sync_globals").forEach { app.deleteSharedPreferences(prefix + it) }
     }
     private fun commit(folder: File, text: String) = Git.open(folder).use { git ->
         File(folder, "note.md").writeText(text); git.add().addFilepattern(".").call()
@@ -72,11 +76,11 @@ class BackgroundSyncTest {
     }
     private fun model(): BackgroundSyncViewModel {
         lateinit var model: BackgroundSyncViewModel
-        compose.runOnIdle { model = BackgroundSyncViewModel(backend, { schedules++ }, { requests++ }, { stops++ }); models += model; shown.value = model }
+        compose.runOnIdle { model = BackgroundSyncViewModel(backend, { schedules++ }, { requests++ }, { stops++ }, defaults = BackgroundConditionDefaults(host)); models += model; shown.value = model }
         ready(model); return model
     }
     private fun ready(model: BackgroundSyncViewModel) { compose.waitUntil(10_000) { model.state.value.ready && !model.state.value.busy } }
-    private fun scroll(tag: String) { compose.onNodeWithTag("background-screen").performScrollToNode(hasTestTag(tag)) }
+    private fun scroll(tag: String) { compose.onNodeWithTag(tag).performScrollTo() }
     private fun capture(name: String) {
         compose.waitForIdle(); androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).waitForIdle()
         val folder = File(app.filesDir, "parity-evidence").apply { mkdirs() }
@@ -107,12 +111,26 @@ class BackgroundSyncTest {
         }
         fun worker() = TestListenableWorkerBuilder.from(host, BackgroundSyncWorker::class.java).setWorkerFactory(factory).build()
         assertEquals(ListenableWorker.Result.success(), worker().doWork()); assertEquals(incoming, head())
+        val history = BackgroundRunHistory(host)
+        history.runs().first().vaults.single().let { assertEquals(BackgroundHealthKind.UPDATED, it.kind); assertTrue(it.pulled > 0); assertFalse(it.pushed) }
         File(root, "note.md").writeText("Approved native draft")
         backend.modes(false, true, store.read().generation)
         assertEquals(ListenableWorker.Result.success(), worker().doWork()); assertEquals(head(), head(bare)); assertNotEquals(incoming, head())
+        history.runs().first().vaults.single().let { assertTrue(it.pushed); assertEquals(0, it.pulled) }
         val published = head(); backend.modes(false, false, store.read().generation)
         File(root, "note.md").writeText("New unconsented draft")
         assertEquals(ListenableWorker.Result.success(), worker().doWork()); assertEquals(published, head(bare)); assertEquals(published, head())
+        // An inactive pass does nothing, so it records nothing either.
+        assertEquals(2, history.runs().size)
+    }
+    @Test fun passReportsPulledOnlyWhenItFastForwardedToRemoteCommits() = runBlocking<Unit> {
+        include(); backend.modes(true, false, store.read().generation)
+        val incoming = commit(seed, "Pulled by the pass"); publish()
+        backend.run().single().let { assertTrue(it.pulled); assertEquals(BackgroundHealthKind.UPDATED, it.health.kind); assertEquals(incoming, it.health.head) }
+        assertEquals(incoming, head())
+        backend.run().single().let { assertFalse(it.pulled); assertEquals(BackgroundHealthKind.UP_TO_DATE, it.health.kind) }
+        backend.modes(false, true, store.read().generation); File(root, "note.md").writeText("Published, not pulled")
+        backend.run().single().let { assertFalse(it.pulled); assertEquals(head(), head(bare)) }
     }
     @Test fun conditionsAndExclusionAreRecheckedBeforeARealNativeCommit() = runBlocking<Unit> {
         include(true, true); backend.modes(false, true, store.read().generation)
@@ -136,16 +154,23 @@ class BackgroundSyncTest {
         compose.runOnIdle { dark.value = true }; scroll("background-push"); compose.onNodeWithTag("background-push").performClick()
         compose.onNodeWithTag("background-confirm-push").assertIsDisplayed(); capture("background-publish-dark-xl.png")
         compose.onNodeWithTag("background-confirm-push").performClick(); ready(model); assertTrue(store.read().push)
-        scroll("background-include-${root.path}"); compose.onNodeWithTag("background-include-${root.path}").performClick()
+        // "Only when" is global now: set it on the main screen, then the reviewed inclusion takes it.
+        compose.onNodeWithTag("background-wifi").performScrollTo().performClick(); ready(model)
+        compose.onNodeWithTag("background-power").performScrollTo().performClick(); ready(model)
+        compose.onNodeWithTag("background-wifi").assertIsOn(); compose.onNodeWithTag("background-power").assertIsOn()
+        assertTrue(store.read().policies.isEmpty())
+        scroll("background-include-${root.path}"); compose.onNodeWithTag("background-include-${root.path}").assertIsOff().performClick()
         compose.waitUntil(10_000) { model.state.value.review != null && !model.state.value.busy }
-        compose.onNodeWithTag("background-wifi").performScrollTo().performClick()
-        compose.onNodeWithTag("background-power").performScrollTo().performClick()
         compose.onNodeWithTag("background-confirm-include").assertIsDisplayed(); capture("background-review-dark-xl.png")
         compose.onNodeWithTag("background-confirm-include").performClick(); ready(model)
         assertTrue(store.read().active); assertTrue(store.read().policies.values.single().wifiOnly); assertTrue(store.read().policies.values.single().externalPowerOnly)
         compose.onNodeWithTag("background-run").performClick(); ready(model); assertEquals(1, requests)
-        scroll("background-exclude-${root.path}"); compose.onNodeWithTag("background-exclude-${root.path}").performClick(); ready(model)
-        assertFalse(store.read().active); assertEquals(3, schedules)
+        // The same include switch turns inclusion back off.
+        scroll("background-include-${root.path}"); compose.onNodeWithTag("background-include-${root.path}").assertIsOn().performClick(); ready(model)
+        compose.onNodeWithTag("background-include-${root.path}").assertIsOff()
+        assertFalse(store.read().active); assertFalse(store.read().policies.values.single().included)
+        // publish, Wi-Fi, charging, include, exclude
+        assertEquals(5, schedules)
     }
     @Test fun nativeCorruptStoreResetSupportsCancelAndKeepsRepositoryDataAtLargeText() {
         val before = head(); check(host.getSharedPreferences("background_sync", 0).edit().putString("state", "broken").commit())

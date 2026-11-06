@@ -22,6 +22,8 @@ import com.bontecou.syncmd.data.models.Credentials
 import com.bontecou.syncmd.services.git.*
 import com.bontecou.syncmd.ui.screens.RebaseScreen
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
+import com.bontecou.syncmd.ui.viewmodels.DiffViewModel
+import com.bontecou.syncmd.ui.viewmodels.GitWorkspaceViewModel
 import com.bontecou.syncmd.ui.viewmodels.RebaseViewModel
 import org.eclipse.jgit.api.Git
 import org.junit.Rule
@@ -48,6 +50,11 @@ class RebaseLanguageTest {
         val node=compose.onNodeWithText(context.getString(id),useUnmergedTree=true)
         if(scroll)node.performScrollTo()
         node.assertIsDisplayed();fits(node,context.resources.getResourceEntryName(id))
+    }
+    private fun shown(value:String,label:String,scroll:Boolean=true) {
+        val node=compose.onNodeWithText(value,useUnmergedTree=true)
+        if(scroll)node.performScrollTo()
+        node.assertIsDisplayed();fits(node,label)
     }
     private fun capture(name:String) {
         compose.waitForIdle();instrumentation.uiAutomation.waitForIdle(500,5_000)
@@ -83,6 +90,7 @@ class RebaseLanguageTest {
                 manager.applicationLocales=LocaleList.forLanguageTags(tag)
                 scenario=ActivityScenario.launch(android.content.Intent(app,ComponentActivity::class.java))
                 lateinit var context:Context;lateinit var activity:ComponentActivity;lateinit var model:RebaseViewModel
+                lateinit var workspaceModel:GitWorkspaceViewModel;lateinit var diffModel:DiffViewModel
                 fun attach() {
                     scenario!!.onActivity { current ->
                         activity=current;captureView=current.window.decorView
@@ -91,21 +99,32 @@ class RebaseLanguageTest {
                         context=current.createConfigurationContext(config)
                         val factory=object:ViewModelProvider.Factory {
                             @Suppress("UNCHECKED_CAST") override fun <T:ViewModel> create(type:Class<T>):T {
-                                require(type==RebaseViewModel::class.java)
-                                return RebaseViewModel(RepositoryRebase(credentials={_,url->check(File(java.net.URI(url)).canonicalFile==bare);Credentials.None},author={"Fixture" to "fixture@example.invalid"}),LocalConflictRepository()) as T
+                                // The screen's read-only workspace facts and its push action; no push is ever started here.
+                                val authors=com.bontecou.syncmd.security.RepositoryAuthors(com.bontecou.syncmd.services.github.GitHubAuthManager(app),
+                                    com.bontecou.syncmd.security.RepositoryCredentialStore(app))
+                                return when(type) {
+                                    RebaseViewModel::class.java -> RebaseViewModel(RepositoryRebase(credentials={_,url->check(File(java.net.URI(url)).canonicalFile==bare);Credentials.None},author={"Fixture" to "fixture@example.invalid"}),LocalConflictRepository())
+                                    GitWorkspaceViewModel::class.java -> GitWorkspaceViewModel(com.bontecou.syncmd.services.git.lfs.LfsRepository(),authors)
+                                    DiffViewModel::class.java -> DiffViewModel(DiffService(LocalDiffRepository()),PushService(LocalRemoteRepository(),LocalBranchRepository(),LocalHistoryRepository()),
+                                        BranchService(LocalBranchRepository()),authors)
+                                    else -> error("Unexpected view model $type")
+                                } as T
                             }
                         }
-                        model=ViewModelProvider(current,factory)[RebaseViewModel::class.java]
+                        val provider=ViewModelProvider(current,factory)
+                        model=provider[RebaseViewModel::class.java];workspaceModel=provider[GitWorkspaceViewModel::class.java];diffModel=provider[DiffViewModel::class.java]
                         current.setContent {
                             CompositionLocalProvider(LocalContext provides context,LocalConfiguration provides config,
                                 LocalLayoutDirection provides if(tag in listOf("ar","he"))LayoutDirection.Rtl else LayoutDirection.Ltr) {
-                                SyncMdTheme(darkTheme=tag in listOf("ar","he","ja")) { RebaseScreen(root.path,{},model) }
+                                SyncMdTheme(darkTheme=tag in listOf("ar","he","ja")) { RebaseScreen(root.path,{},model,workspaceModel,diffModel) }
                             }
                         }
                     }
                 }
                 attach();compose.waitUntil(10_000) { model.state.value.path==root.path && !model.state.value.busy }
-                fits(compose.onNodeWithTag("rebase-title"),"$tag rebase title")
+                // The top bar title is the screen's heading (the initial hero kicker repeats the same words).
+                fits(compose.onNode(hasText(context.getString(R.string.ui_pull_with_rebase_6d25f1e0),substring=false)
+                    and SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Heading),useUnmergedTree=true),"$tag rebase title")
                 val back=compose.onNodeWithContentDescription(context.getString(R.string.publication_back)).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
                 val density=context.resources.displayMetrics.density
                 assertTrue("Small Back target: $tag",back.width>=48*density-1 && back.height>=48*density-1)
@@ -117,8 +136,10 @@ class RebaseLanguageTest {
                     compose.onNodeWithTag("rebase-review").performScrollTo().performClick()
                     compose.waitUntil(10_000) { !model.state.value.busy && model.state.value.error!=null }
                     assertEquals(problem,model.state.value.problem)
-                    compose.onNodeWithTag("rebase-error").performScrollTo().assertTextEquals(context.getString(resource)).assertIsDisplayed()
-                    fits(compose.onNodeWithTag("rebase-error"),"$tag $problem")
+                    compose.onNodeWithTag("rebase-error").performScrollTo().assertIsDisplayed()
+                    // The note is an icon + text row; its text node carries the localized recovery copy.
+                    val error=compose.onNode(hasText(context.getString(resource),substring=false) and hasAnyAncestor(hasTestTag("rebase-error")),useUnmergedTree=true)
+                    error.assertIsDisplayed();fits(error,"$tag $problem")
                     assertArrayEquals(index,File(root,".git/index").readBytes());assertArrayEquals(config,File(root,".git/config").readBytes())
                     assertArrayEquals(working,File(root,"notes.md").readBytes());assertEquals(currentHead,head(root));assertEquals(upstream,head(bare))
                 }
@@ -145,17 +166,22 @@ class RebaseLanguageTest {
                 compose.onNodeWithTag("rebase-review").performScrollTo().performClick()
                 compose.waitUntil(10_000) { model.state.value.plan!=null || model.state.value.error!=null };assertNull(model.state.value.error);assertNull(model.state.value.problem)
                 assertEquals(1,model.state.value.plan!!.ahead);assertEquals(1,model.state.value.plan!!.behind)
-                compose.onNodeWithTag("rebase-counts").performScrollTo().assertTextEquals(RebaseQuantityExpectations.counts(tag,1,1))
+                // Board GitRebase review hero: the localized commit counts and the "put N commits on top" headline.
+                shown(context.getString(R.string.ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8,"1","1"),"$tag counts")
+                shown(context.resources.getQuantityString(R.plurals.git_m3_rebase_put_on_top,1,1),"$tag review headline")
                 compose.onNodeWithTag("rebase-begin").performScrollTo().performClick()
-                text(context,R.string.rebase_begin_title,false);text(context,R.string.rebase_begin_body)
+                text(context,R.string.git_m3_rebase_begin_title,false)
+                shown(context.resources.getQuantityString(R.plurals.git_m3_rebase_begin_body,1,1),"$tag begin body")
                 if(tag in listOf("ar","de","ja"))capture("begin-$tag")
                 compose.onNodeWithText(context.getString(R.string.publication_cancel)).performClick()
                 assertEquals(local,head(root));assertEquals(upstream,head(bare));assertFalse(File(root,".git/rebase-merge").exists())
                 compose.onNodeWithTag("rebase-begin").performScrollTo().performClick();compose.onNodeWithTag("rebase-confirm").performClick()
                 compose.waitUntil(15_000) { !model.state.value.busy && (model.state.value.status!=null || model.state.value.error!=null) }
                 assertNull(model.state.value.error);assertEquals("STOPPED",model.state.value.status);assertNotNull(model.state.value.session)
-                text(context,R.string.rebase_status_conflicts)
-                text(context,R.string.ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f)
+                text(context,R.string.git_m3_rebase_conflicts_headline)
+                // Which side is which: the sides note names the upstream and the replayed commit.
+                shown(context.getString(R.string.git_m3_rebase_sides_note).replace("%1\$s",context.getString(R.string.ui_upstream_94adc696))
+                    .replace("%2\$s",context.getString(R.string.git_m3_replayed_commit)),"$tag sides")
                 text(context,R.string.rebase_use_upstream);text(context,R.string.rebase_use_local)
                 val work=File(root,"notes.md").readBytes();val index=File(root,".git/index").readBytes();val paused=head(root)
                 compose.onNodeWithText(context.getString(R.string.ui_edit_resolution_9a6cda88)).performScrollTo().performClick()
@@ -177,15 +203,22 @@ class RebaseLanguageTest {
                 compose.onNodeWithText(context.getString(R.string.publication_cancel)).performClick()
                 compose.onNodeWithText(context.getString(R.string.ui_discard_draft_cb30147e)).performClick()
                 compose.waitUntil { model.state.value.selected==null }
-                for((action,title,body) in listOf(Triple("skip",R.string.rebase_skip_title,R.string.rebase_skip_body),Triple("abort",R.string.rebase_abort_title,R.string.rebase_abort_body))) {
-                    compose.onNodeWithTag("rebase-$action").performScrollTo().performClick();text(context,title,false);text(context,body)
+                val session=requireNotNull(model.state.value.session)
+                val branch=session.branch?.removePrefix("refs/heads/") ?: workspaceModel.state.value.summary?.branch ?: "—"
+                // The skip body names the stopped commit once the workspace facts have read it, else the generic copy.
+                fun skipBody()=workspaceModel.state.value.rebase?.stopped?.let { context.getString(R.string.git_m3_rebase_skip_body,"${it.shortId} ${it.title}") }
+                    ?: context.getString(R.string.rebase_skip_body)
+                fun abortBody()=context.getString(R.string.git_m3_rebase_abort_body,branch,session.originalHead?.take(7) ?: "—")
+                for((action,title,body) in listOf(Triple("skip",R.string.git_m3_rebase_skip_title,::skipBody),Triple("abort",R.string.git_m3_rebase_abort_title,::abortBody))) {
+                    compose.onNodeWithTag("rebase-$action").performScrollTo().performClick();compose.waitForIdle()
+                    text(context,title,false);shown(body(),"$tag $action body")
                     compose.onNodeWithText(context.getString(R.string.publication_cancel)).performClick()
                     assertArrayEquals(work,File(root,"notes.md").readBytes());assertArrayEquals(index,File(root,".git/index").readBytes());assertEquals(paused,head(root));assertEquals(upstream,head(bare))
                 }
                 compose.onNodeWithTag("rebase-abort").performScrollTo().performClick();compose.onNodeWithTag("rebase-confirm").performClick()
                 compose.waitUntil(15_000) { !model.state.value.busy && model.state.value.status=="ABORTED" }
                 assertNull(model.state.value.error);assertNull(model.state.value.session)
-                text(context,R.string.rebase_status_aborted)
+                text(context,R.string.git_m3_rebase_aborted_headline)
                 assertEquals(local,head(root));assertEquals(upstream,head(bare));assertEquals("Local text 日本語\n",File(root,"notes.md").readText())
                 Git.open(root).use { assertTrue(it.status().call().isClean);assertEquals("main",it.repository.branch) }
                 instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","rebase_locale=$tag; states=dirty,missing-upstream,detached,active-operation,review,conflict,draft,recreated-draft,skip,abort; font_scale=1.6; remote_pushes=0\n") })

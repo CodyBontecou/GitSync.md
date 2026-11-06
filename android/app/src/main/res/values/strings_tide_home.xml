@@ -2,46 +2,12 @@
 <!-- Tide redesign copy for Home (vault list) and Pull All. English only. -->
 <resources>
     <!-- Home headline -->
-    <plurals name="tide_home_headline_attention">
-        <item quantity="one">%d vault\nneeds you.</item>
-        <item quantity="other">%d vaults\nneed you.</item>
-    </plurals>
-    <plurals name="tide_home_headline_ready">
-        <item quantity="one">%d vault\non this phone.</item>
-        <item quantity="other">%d vaults\non this phone.</item>
-    </plurals>
-    <string name="tide_home_meta_ready">%d ready</string>
-    <string name="tide_home_meta_checking">%d checking</string>
-    <string name="tide_home_meta_unreadable">%d unreadable</string>
 
     <!-- Filters -->
-    <string name="tide_home_filter_all">All</string>
-    <string name="tide_home_filter_attention">Attention</string>
-    <string name="tide_home_empty_filter_title">Nothing needs you</string>
-    <string name="tide_home_empty_filter_detail">Every vault on this phone could be read.</string>
 
     <!-- Vault card state pills -->
     <string name="tide_home_state_checking">Checking…</string>
     <string name="tide_home_state_unreadable">Needs a look</string>
-    <string name="tide_home_state_synced">Synced %1$s</string>
-    <string name="tide_home_state_never_synced">Never synced</string>
-    <string name="tide_home_rail_phone">Phone</string>
 
     <!-- Empty state -->
-    <string name="tide_home_empty_title">No vaults yet.</string>
-    <string name="tide_home_signed_in_as">signed in as @%1$s</string>
-    <string name="tide_home_empty_rail_nothing">nothing to sync</string>
-    <string name="tide_home_empty_rail_description">An empty sync rail waiting for its first vault</string>
-    <string name="tide_home_start_with">Start with</string>
-    <string name="tide_home_start_github">Clone from GitHub</string>
-    <plurals name="tide_home_start_github_count">
-        <item quantity="one">%d repo available</item>
-        <item quantity="other">%d repos available</item>
-    </plurals>
-    <string name="tide_home_start_github_signed_in">pick one of your repositories</string>
-    <string name="tide_home_start_github_signed_out">sign in, then pick a repository</string>
-    <string name="tide_home_start_url_detail">any Git remote, public or private</string>
-    <string name="tide_home_start_local_detail">find clones already on this phone</string>
-    <string name="tide_home_start_publish_detail">turns a folder into a new repository</string>
-    <string name="tide_home_add_first">Add your first vault</string>
 </resources>

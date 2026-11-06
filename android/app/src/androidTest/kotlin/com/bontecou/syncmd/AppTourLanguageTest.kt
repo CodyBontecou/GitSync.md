@@ -14,18 +14,22 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Test
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Assert.*
 import java.io.File
 
-/** Actual application-locale recreation and all four production pages, with owned preferences restored. */
+/**
+ * Actual application-locale recreation over first run (the single OnboardingScreen) and the "How it works"
+ * replay (Settings › Help › How it works), with owned preferences restored. Material 3 copy is English-only
+ * for now, so expected text is whatever the activity's localized resources resolve (English fallback).
+ */
 @SdkSuppress(minSdkVersion = 33)
-@Ignore("The four-page first-run tour was replaced by the single OnboardingScreen (M3 board 10); this locale walk needs rewriting for it.")
 class AppTourLanguageTest {
     @get:Rule val compose = createEmptyComposeRule()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val context get() = instrumentation.targetContext
+    private val choices = listOf("onboarding-github" to R.string.m3home_onboarding_github,
+        "onboarding-other-host" to R.string.m3home_onboarding_other, "onboarding-demo" to R.string.m3home_onboarding_demo)
     private fun restore(prefs: SharedPreferences, original: Map<String, *>) {
         val edit = prefs.edit().clear()
         original.forEach { (key,value) -> when(value) {
@@ -39,18 +43,18 @@ class AppTourLanguageTest {
         assertEquals("Changed preference keys",expected.keys,actual.keys)
         expected.forEach { (key,value) -> assertTrue("Preference changed: $key",value==actual[key]) }
     }
-    private fun awaitPage(page: Int) = compose.waitUntil(10_000) {
-        context.getSharedPreferences("app_guide",0).getInt("page",-1)==page &&
-            compose.onAllNodes(hasTestTag(if(page==3) "tour-start-HOME" else "tour-next") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
+    private fun awaitTag(tag: String) = compose.waitUntil(10_000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
+    private fun awaitOnboarding() = compose.waitUntil(10_000) {
+        compose.onAllNodes(hasTestTag("onboarding-github") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
     }
-    private fun fits(tag: String, label: String) {
-        val node = compose.onNodeWithTag(tag, useUnmergedTree = true)
+    /** No visual overflow; [checkHeight] also requires the parent not to clip a single-line label vertically. */
+    private fun fits(node: SemanticsNodeInteraction, label: String, checkHeight: Boolean = true) {
         val layouts = mutableListOf<TextLayoutResult>()
         node.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
         assertTrue("Missing layout: $label", layouts.isNotEmpty())
         assertTrue("Text overflow: $label", layouts.all { !it.hasVisualOverflow })
         val bounds = node.fetchSemanticsNode().boundsInRoot
-        assertTrue("Parent clips text: $label; bounds=$bounds layout=${layouts.single().size}", layouts.single().size.height <= bounds.height + 1)
+        if (checkHeight) assertTrue("Parent clips text: $label; bounds=$bounds layout=${layouts.first().size}", layouts.all { it.size.height <= bounds.height + 1 })
     }
     private fun capture(scenario: ActivityScenario<MainActivity>, name: String) {
         compose.waitForIdle()
@@ -63,7 +67,21 @@ class AppTourLanguageTest {
         val file=File(context.filesDir,"parity-evidence/$name.png").apply { parentFile!!.mkdirs() }
         file.outputStream().use { requireNotNull(instrumentation.uiAutomation.takeScreenshot()).compress(android.graphics.Bitmap.CompressFormat.PNG,100,it) }
     }
-    @Test fun localizedCloneChoiceOpensReadableUrlFormAndBackCannotReenterCompletedTour() {
+    private fun firstRun(guide: SharedPreferences) = check(guide.edit().clear().putBoolean("initialized",true).putBoolean("completed",false)
+        .putInt("page",0).putInt("notes_seen",BuildConfig.VERSION_CODE).commit())
+    /** Onboarding copy and every way in, as the localized activity resolves them, without overflow. */
+    private fun assertOnboardingReadable(current: android.content.Context, tag: String) {
+        val headline = current.getString(R.string.m3home_onboarding_headline)
+        fits(compose.onNode(hasText(headline, substring = true) and isHeading(), useUnmergedTree = true).assertIsDisplayed(), "$tag / onboarding headline", false)
+        fits(compose.onNode(hasText(current.getString(R.string.m3home_onboarding_body)) and hasAnyAncestor(hasTestTag("onboarding")), useUnmergedTree = true)
+            .performScrollTo(), "$tag / onboarding body", false)
+        choices.forEach { (choice, resource) ->
+            val button = compose.onNodeWithTag(choice)
+            button.performScrollTo().assertIsDisplayed().assertIsEnabled().assertTextEquals(current.getString(resource))
+            fits(button, "$tag / $choice", false)
+        }
+    }
+    @Test fun localizedOtherHostChoiceOpensReadableCloneFormAndBackCannotReenterOnboarding() {
         val guide=context.getSharedPreferences("app_guide",0); val originalGuide=guide.all.toMap()
         val prefs=context.getSharedPreferences("sync_md_prefs",0); val originalPrefs=prefs.all.toMap()
         val manager=context.getSystemService(LocaleManager::class.java)
@@ -75,22 +93,23 @@ class AppTourLanguageTest {
             for(index in 0 until locales.size()) {
                 val tag=locales[index].toLanguageTag(); if(tag=="en") continue
                 manager.applicationLocales=LocaleList.forLanguageTags(tag)
-                check(guide.edit().clear().putBoolean("initialized",true).putBoolean("completed",false)
-                    .putInt("page",3).putInt("notes_seen",BuildConfig.VERSION_CODE).commit())
-                scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java)); awaitPage(3)
+                firstRun(guide)
+                scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java)); awaitTag("onboarding"); awaitOnboarding()
                 var current:android.content.Context?=null; scenario.onActivity { current=it }
-                compose.onNodeWithTag("tour-start-URL").performScrollTo().assertIsDisplayed()
-                    .assertTextEquals(checkNotNull(current).getString(R.string.guide_url)).performClick()
-                compose.waitUntil(10_000) { compose.onAllNodesWithTag("remote-clone-screen").fetchSemanticsNodes().isNotEmpty() }
-                compose.onNodeWithText(checkNotNull(current).getString(R.string.add_remote_title)).assertIsDisplayed()
-                fits("remote-clone-title","$tag / clone URL title")
-                if(tag in listOf("ar","fi","ja")) capture(scenario,"tour-clone-$tag")
-                compose.onNodeWithContentDescription(checkNotNull(current).getString(R.string.publication_back))
+                val localized=checkNotNull(current)
+                assertEquals(tag,localized.resources.configuration.locales[0].toLanguageTag())
+                compose.onNodeWithTag("onboarding-other-host").performScrollTo().assertIsDisplayed()
+                    .assertTextEquals(localized.getString(R.string.m3home_onboarding_other)).performClick()
+                awaitTag("remote-clone-screen")
+                val title=compose.onNode(hasText(localized.getString(R.string.add_remote_title)) and hasAnyAncestor(hasTestTag("remote-clone-title")),useUnmergedTree=true)
+                title.assertIsDisplayed(); fits(title,"$tag / clone URL title")
+                if(tag in listOf("ar","fi","ja")) capture(scenario,"onboarding-clone-$tag")
+                compose.onNodeWithContentDescription(localized.getString(R.string.publication_back))
                     .assertIsDisplayed().assertIsEnabled().performClick()
                 compose.waitUntil(10_000) { compose.onAllNodesWithTag("remote-clone-screen").fetchSemanticsNodes().isEmpty() }
-                assertTrue(guide.getBoolean("completed",false)); compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
+                assertTrue(guide.getBoolean("completed",false)); compose.onAllNodesWithTag("onboarding").assertCountEquals(0)
                 assertPreferences(originalPrefs,prefs.all)
-                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","tour_clone_locale=$tag; completed=true; back_reentry=false\n") })
+                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","onboarding_clone_locale=$tag; completed=true; back_reentry=false\n") })
                 scenario.close(); scenario=null; checked++
             }
             assertEquals(25,checked)
@@ -102,93 +121,75 @@ class AppTourLanguageTest {
             }
         }
     }
-    @Test fun actualLanguageChangesPreserveTourProgressAndKeepAllPagesAndSetupChoicesReadable() {
+    @Test fun actualLanguageChangesKeepFirstRunPendingAndOnboardingAndHowItWorksReadable() {
         val guide=context.getSharedPreferences("app_guide",0); val originalGuide=guide.all.toMap()
         val prefs=context.getSharedPreferences("sync_md_prefs",0); val originalPrefs=prefs.all.toMap()
         val manager=context.getSystemService(LocaleManager::class.java)
         val before=manager.applicationLocales; val systemBefore=manager.systemLocales
         var scenario: ActivityScenario<MainActivity>?=null
+        fun recreateIn(tag: String): android.content.Context {
+            val active=requireNotNull(scenario)
+            var old:MainActivity?=null; active.onActivity { old=it }
+            manager.applicationLocales=LocaleList.forLanguageTags(tag)
+            compose.waitUntil(15_000) {
+                var ready=false
+                active.onActivity { ready=it!==old && it.resources.configuration.locales[0].toLanguageTag()==tag && it.lifecycle.currentState==Lifecycle.State.RESUMED }
+                ready
+            }
+            var localized:android.content.Context?=null; active.onActivity { localized=it }
+            val current=checkNotNull(localized)
+            val systemScale=android.provider.Settings.System.getFloat(context.contentResolver,"font_scale",1f)
+            assertEquals("Actual system text scale: $tag",systemScale,current.resources.configuration.fontScale,0.01f)
+            return current
+        }
         try {
-            manager.applicationLocales=LocaleList.forLanguageTags("en")
-            check(guide.edit().clear().putBoolean("initialized",true).putBoolean("completed",false)
-                .putInt("page",1).putInt("notes_seen",BuildConfig.VERSION_CODE).commit())
-            scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java)); awaitPage(1)
             val locales=requireNotNull(LocaleConfig(context).supportedLocales)
+            // Phase 1: first run stays pending (and on Onboarding) across every real language change.
+            manager.applicationLocales=LocaleList.forLanguageTags("en")
+            firstRun(guide)
+            scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java)); awaitTag("onboarding"); awaitOnboarding()
             var checked=0
             for(index in 0 until locales.size()) {
                 val tag=locales[index].toLanguageTag(); if(tag=="en") continue
-                var old:MainActivity?=null; scenario.onActivity { old=it }
-                manager.applicationLocales=LocaleList.forLanguageTags(tag)
-                compose.waitUntil(15_000) {
-                    var ready=false
-                    scenario.onActivity { ready=it!==old && it.resources.configuration.locales[0].toLanguageTag()==tag && it.lifecycle.currentState==Lifecycle.State.RESUMED }
-                    ready
-                }
-                compose.waitUntil(10_000) {
-                    var loaded=false
-                    scenario.onActivity { loaded=!androidx.lifecycle.ViewModelProvider(it)[com.bontecou.syncmd.ui.viewmodels.SettingsViewModel::class.java].isLoading.value }
-                    loaded
-                }
-                val dark=tag in listOf("ar","he")
-                scenario.onActivity {
-                    val settings=androidx.lifecycle.ViewModelProvider(it)[com.bontecou.syncmd.ui.viewmodels.SettingsViewModel::class.java]
-                    if(settings.appSettings.value.isDarkTheme!=dark) settings.updateSettings(settings.appSettings.value.copy(isDarkTheme=dark))
-                }
-                compose.waitUntil(10_000) {
-                    var ready=false
-                    scenario.onActivity { ready=androidx.lifecycle.ViewModelProvider(it)[com.bontecou.syncmd.ui.viewmodels.SettingsViewModel::class.java].appSettings.value.isDarkTheme==dark }
-                    ready
-                }
-                awaitPage(1) // Mid-tour progress must survive the real locale recreation.
-                scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitPage(0)
-                var localized:android.content.Context?=null; scenario.onActivity { localized=it }
-                val current=checkNotNull(localized)
-                val systemScale=android.provider.Settings.System.getFloat(context.contentResolver,"font_scale",1f)
-                assertEquals("Actual system text scale: $tag",systemScale,current.resources.configuration.fontScale,0.01f)
-                val titles=listOf(R.string.guide_clone_title,R.string.guide_edit_title,R.string.guide_git_title,R.string.guide_start_title)
-                val bodies=listOf(R.string.guide_clone_body,R.string.guide_edit_body,R.string.guide_git_body,R.string.guide_start_body)
-                compose.onNodeWithTag("tour-title",useUnmergedTree=true).assertTextEquals(current.getString(R.string.guide_title))
-                fits("tour-title","$tag / app title")
-                for(page in 0..3) {
-                    awaitPage(page)
-                    fits("tour-title","$tag / page $page / app title")
-                    if(page>0) {
-                        compose.onNodeWithTag("tour-back").assertContentDescriptionEquals(current.getString(R.string.guide_back))
-                        val title=compose.onNodeWithTag("tour-title",useUnmergedTree=true).fetchSemanticsNode().boundsInRoot
-                        val back=compose.onNodeWithTag("tour-back").fetchSemanticsNode().boundsInRoot
-                        val rtl=current.resources.configuration.layoutDirection==android.view.View.LAYOUT_DIRECTION_RTL
-                        assertTrue("Back/title overlap: $tag",if(rtl) title.right<=back.left else back.right<=title.left)
-                    }
-                    if(tag=="fi" && page==1) capture(scenario,"tour-header-fi")
-                    compose.onNodeWithTag("tour-step-$page").assertTextEquals(current.getString(R.string.guide_step,page+1))
-                    for((part,resource) in listOf("title" to titles[page],"body" to bodies[page])) {
-                        compose.onNodeWithTag("tour-page-$part-$page").performScrollTo().assertTextEquals(current.getString(resource)).assertIsDisplayed()
-                        fits("tour-page-$part-$page","$tag / page $page / $part")
-                    }
-                    compose.onNodeWithTag("tour-skip").assertIsDisplayed().assertTextEquals(current.getString(R.string.guide_skip))
-                    if(page<3) compose.onNodeWithTag("tour-next").assertTextEquals(current.getString(R.string.guide_continue)).assertIsDisplayed().performClick()
-                }
-                val choices=listOf("LOGIN" to R.string.guide_login,"URL" to R.string.guide_url,"SAMPLE" to R.string.guide_sample,"STORAGE" to R.string.guide_storage,"HOME" to R.string.guide_home)
-                choices.forEach { (target,resource) ->
-                    val button=compose.onNodeWithTag("tour-start-$target")
-                    button.performScrollTo().assertIsDisplayed().assertIsEnabled().assertTextEquals(current.getString(resource))
-                    val layouts=mutableListOf<TextLayoutResult>()
-                    button.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
-                    assertTrue("Setup label clips: $tag / $target",layouts.isNotEmpty() && layouts.all { !it.hasVisualOverflow })
-                }
-                if(tag in listOf("ar","de","ja")) capture(scenario,"tour-setup-$tag")
-                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","tour_locale=$tag; pages=4; choices=5; system_font=$systemScale; dark=$dark\n") })
-                // Leave the next language change at page 1, so recreation proves restoration again.
-                for(page in 2 downTo 1) { scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitPage(page) }
-                assertFalse(guide.getBoolean("completed",true)); checked++
+                val current=recreateIn(tag)
+                awaitTag("onboarding"); awaitOnboarding()
+                assertOnboardingReadable(current,tag)
+                if(tag in listOf("ar","de","ja")) capture(requireNotNull(scenario),"onboarding-$tag")
+                assertFalse(guide.getBoolean("completed",true))
+                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","onboarding_locale=$tag; choices=${choices.size}; completed=false\n") })
+                checked++
             }
             assertEquals(25,checked)
-            // Production theme updates also persist the currently loaded interval/debug defaults.
-            // Those exact values are expected; all repository/account/selection values must stay unchanged.
-            val expectedPrefs=originalPrefs.filterKeys { it!="is_dark_theme" }.toMutableMap()
-            expectedPrefs["auto_fetch_interval"]=originalPrefs["auto_fetch_interval"] ?: 3600000L
-            expectedPrefs["show_debug_info"]=originalPrefs["show_debug_info"] ?: false
-            assertPreferences(expectedPrefs,prefs.all.filterKeys { it!="is_dark_theme" })
+            requireNotNull(scenario).close(); scenario=null
+            // Phase 2: How it works (Settings › Help) survives each recreation and keeps all four steps readable.
+            manager.applicationLocales=LocaleList.forLanguageTags("en")
+            check(guide.edit().putBoolean("completed",true).remove("pending").commit())
+            scenario=ActivityScenario.launch(Intent(context,MainActivity::class.java))
+            awaitTag("open-settings"); compose.onNodeWithTag("open-settings").performClick()
+            awaitTag("settings-help"); compose.onNodeWithTag("settings-help").performScrollTo().performClick()
+            awaitTag("open-tour"); compose.onNodeWithTag("open-tour").performScrollTo().performClick()
+            awaitTag("how-it-works-step-0")
+            val titles=listOf(R.string.guide_clone_title,R.string.guide_edit_title,R.string.guide_git_title,R.string.guide_start_title)
+            val bodies=listOf(R.string.guide_clone_body,R.string.guide_edit_body,R.string.guide_git_body,R.string.guide_start_body)
+            checked=0
+            for(index in 0 until locales.size()) {
+                val tag=locales[index].toLanguageTag(); if(tag=="en") continue
+                val current=recreateIn(tag)
+                awaitTag("how-it-works-step-0") // The open help view is saved state; recreation must not drop it.
+                for(step in 0..3) {
+                    val stepTag="how-it-works-step-$step"
+                    for((label,value) in listOf("step" to current.getString(R.string.guide_step,step+1),"title" to current.getString(titles[step]),"body" to current.getString(bodies[step]))) {
+                        val node=compose.onNode(hasText(value) and hasAnyAncestor(hasTestTag(stepTag)),useUnmergedTree=true).performScrollTo().assertIsDisplayed()
+                        fits(node,"$tag / step $step / $label",false)
+                    }
+                }
+                if(tag=="fi") capture(requireNotNull(scenario),"how-it-works-fi")
+                assertTrue(guide.getBoolean("completed",false))
+                instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","how_it_works_locale=$tag; steps=4\n") })
+                checked++
+            }
+            assertEquals(25,checked)
+            assertPreferences(originalPrefs,prefs.all)
         } finally {
             try { scenario?.close() } finally {
                 manager.applicationLocales=before

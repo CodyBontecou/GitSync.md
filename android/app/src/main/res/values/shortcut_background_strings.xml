@@ -8,6 +8,5 @@
     <string name="shortcut_background_attention">Shortcut needs attention. Open repository actions to review its state before trying again.</string>
     <string name="shortcut_background_interrupted">Execution was interrupted. It will not run again automatically. Review the repository before tapping again.</string>
     <string name="shortcut_results_unavailable">Saved shortcut results cannot be read. Authorization remains separate.</string>
-    <string name="shortcut_results_clear">Clear automation results</string>
     <string name="shortcut_results_clear_scope">Delete the saved launcher shortcut and callback execution results. Their authorizations remain unchanged. Interrupted actions will not run again automatically.</string>
 </resources>

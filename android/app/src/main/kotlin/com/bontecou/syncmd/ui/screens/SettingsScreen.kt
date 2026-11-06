@@ -261,7 +261,7 @@ private fun SettingsContent(account: SettingsAccount?, summary: SettingsSummary,
     val c = M3.colors
     Column(Modifier.fillMaxSize().background(c.surface).testTag("settings-screen")) {
         M3TopBar(stringResource(R.string.settings_m3_title), onBack = actions.back, backLabel = stringResource(R.string.ui_back_639807a2),
-            modifier = Modifier.testTag("settings-title"))
+            backTestTag = "settings-back-button", titleTestTag = "settings-title")
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).navigationBarsPadding()) {
             SettingsAccountCard(account, onOpen = actions.account, onLogin = actions.login)
 

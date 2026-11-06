@@ -69,6 +69,7 @@ import com.bontecou.syncmd.services.files.SyntaxKind
 import com.bontecou.syncmd.services.files.SyntaxToken
 import com.bontecou.syncmd.ui.components.FileLeadingTile
 import com.bontecou.syncmd.ui.components.FilesBreadcrumbs
+import com.bontecou.syncmd.ui.components.FilesSyncStatus
 import com.bontecou.syncmd.ui.components.LfsFetchButton
 import com.bontecou.syncmd.ui.components.VaultTab
 import com.bontecou.syncmd.ui.components.fileAgeLabel
@@ -125,8 +126,15 @@ fun FilesScreen(
     vaultName: String? = null,
     /** Opens the commit log of a file or folder. */
     onOpenHistory: (String) -> Unit = {},
+    /** The vault's real sync (fetch, then fast-forward); null in hosts without Hilt, which only refresh the list. */
+    syncViewModel: com.bontecou.syncmd.ui.viewmodels.VaultSyncViewModel? = rememberVaultSyncViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    LaunchedEffect(repositoryPath) { if (repositoryPath.isNotBlank()) syncViewModel?.setRepositoryPath(repositoryPath) }
+    val syncRun = syncViewModel?.run?.collectAsState()?.value?.takeIf { it.path == repositoryPath }
+    // Results are shown here only for a sync started from this tab; the Changes tab shows its own.
+    var syncRequested by rememberSaveable(repositoryPath) { mutableStateOf(false) }
+    LaunchedEffect(syncRun?.result) { if (syncRun?.result != null) viewModel.refresh() }
     val c = M3.colors
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -157,9 +165,11 @@ fun FilesScreen(
                 subtitle = subtitle,
                 onBack = onNavigateBack,
                 modifier = Modifier.testTag("files-title"),
+                backTestTag = "files-back",
                 actions = {
-                    M3IconButton(R.drawable.ic_m3_sync, stringResource(R.string.files_m3_check_for_changes), { viewModel.refresh() },
-                        Modifier.testTag("files-refresh"), enabled = !state.isLoading && !state.isMutating)
+                    M3IconButton(R.drawable.ic_m3_sync, stringResource(R.string.files_m3_check_for_changes), {
+                        if (syncViewModel != null) { syncRequested = true; syncViewModel.fetchAndFastForward() } else viewModel.refresh()
+                    }, Modifier.testTag("files-refresh"), enabled = !state.isLoading && !state.isMutating && syncRun?.running != true)
                     Box {
                         M3IconButton(R.drawable.ic_m3_more_vert, stringResource(R.string.ui_more_d47d7cb0), { overflow = true }, Modifier.testTag("files-more"))
                         M3DropdownMenu(expanded = overflow, onDismissRequest = { overflow = false }) {
@@ -183,6 +193,8 @@ fun FilesScreen(
             FilesBreadcrumbs(name, directory, state.entries.size.takeIf { !state.isLoading || state.entries.isNotEmpty() },
                 onOpen = { if (it != directory) onOpenDirectory(it) })
             FilesProgress(state.isLoading || state.isMutating)
+            FilesSyncStatus(syncRun?.takeIf { it.running || syncRequested }, onCancel = { syncViewModel?.cancel() },
+                onDismiss = { syncRequested = false; syncViewModel?.dismiss() })
             state.error?.let { error ->
                 M3Note(stringResource(error.resourceId), Modifier.padding(horizontal = 16.dp, vertical = 8.dp).testTag("files-error"), tone = M3NoteTone.Warn)
             }
@@ -513,6 +525,8 @@ fun FileEditorScreen(
                 subtitle = if (compactEditing) null else if (folder.isEmpty()) vault else stringResource(R.string.editor_m3_subtitle, vault, folder),
                 onBack = { leave() },
                 modifier = Modifier.testTag("file-editor-title"),
+                titleTestTag = "file-editor-name",
+                backTestTag = "file-editor-back",
                 actions = {
                     M3TopBarTextAction(stringResource(R.string.editor_m3_commit), {
                         if (viewModel.state.value.isDirty) viewModel.save { committing = true } else committing = true

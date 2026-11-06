@@ -81,13 +81,15 @@ class RemoteConnectionTest {
         compose.setContent { SyncMdTheme(darkTheme = false) { RemoteCloneScreen(settings, {}, { navigated = true }, vm) } }
         compose.onNodeWithTag("remote-auth-basic").performScrollTo().performClick()
         field("remote-url", url)
+        openOptions()
         field("remote-name", "Local clone fixture")
         field("remote-branch", "sample-branch")
+        // A local file address switches the sign-in to "None" and disables every network credential.
         compose.onNodeWithTag("remote-auth-basic").assertIsNotEnabled()
         compose.onNodeWithTag("remote-auth-ssh").assertIsNotEnabled()
-        compose.onNodeWithTag("remote-clone").assertIsNotEnabled()
+        compose.onNodeWithTag("remote-normalized-url", useUnmergedTree = true).assertTextContains(context.getString(R.string.add_remote_file), substring = true)
         compose.onNodeWithTag("remote-file-hint").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithTag("remote-auth-public").performScrollTo().assertTextContains("Local access").performClick()
+        compose.onNodeWithTag("remote-auth-public").performScrollTo().assertIsSelected().assertTextContains(context.getString(R.string.add_auth_none)).performClick()
         capture("file-clone-light.png")
         compose.onNodeWithTag("remote-clone").performScrollTo().assertIsEnabled().performClick()
         compose.waitUntil(15_000) { vm.state.value.path != null || vm.state.value.error != null }
@@ -216,11 +218,13 @@ class RemoteConnectionTest {
         compose.setContent { SyncMdTheme(darkTheme = false) { RemoteCloneScreen(settings, {}, { navigated = true }, vm) } }
         compose.onNodeWithTag("remote-auth-basic").performScrollTo().performClick()
         field("remote-url", url)
+        openOptions()
         field("remote-name", "Native Git fixture")
         field("remote-branch", "sample-branch")
+        // git:// switches the sign-in to "None" and disables every network credential.
         compose.onNodeWithTag("remote-auth-basic").assertIsNotEnabled()
         compose.onNodeWithTag("remote-auth-ssh").assertIsNotEnabled()
-        compose.onNodeWithTag("remote-clone").assertIsNotEnabled()
+        compose.onNodeWithTag("remote-auth-public").assertIsSelected()
         compose.onNodeWithTag("remote-native-public-hint").performScrollTo().assertIsDisplayed()
         capture("native-git-light.png")
         // Calls bypassing the UI must also fail before any network or saved-policy mutation.
@@ -270,6 +274,24 @@ class RemoteConnectionTest {
         compose.waitForIdle()
     }
 
+    /** Name and branch sit behind the collapsed "Name, branch and folder" row. */
+    private fun openOptions() {
+        compose.waitForIdle()
+        if (compose.onAllNodesWithTag("remote-name").fetchSemanticsNodes().isEmpty())
+            compose.onNodeWithTag("remote-options").performScrollTo().performClick()
+        compose.waitUntil(5_000) { compose.onAllNodesWithTag("remote-name").fetchSemanticsNodes().size == 1 }
+    }
+
+    /**
+     * "Test & clone" first runs `git ls-remote` against the real address, which a synthetic host
+     * (git.example, github.com/fixture) cannot answer. Forms using one prove the button is ready and
+     * then hand the same values to the clone it would start; real-endpoint forms press the button.
+     */
+    private fun assertCloneReady() {
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
+        compose.onNodeWithTag("remote-clone").assertIsEnabled()
+    }
+
     private fun capture(name: String) {
         androidx.test.espresso.Espresso.closeSoftKeyboard()
         compose.waitForIdle()
@@ -299,7 +321,7 @@ class RemoteConnectionTest {
             val vm=RemoteCloneViewModel(LocalGitRepository(),store,context,com.bontecou.syncmd.services.github.GitHubAuthManager(context)).also { models+=it }
             val settings=SettingsViewModel(context).also { models+=it };var returned=false
             compose.setContent { SyncMdTheme { RemoteCloneScreen(settings,{}, { returned=true },vm) } }
-            field("remote-url",server.url);field("remote-name","HTTP fixture");field("remote-branch","sample-branch")
+            field("remote-url",server.url);openOptions();field("remote-name","HTTP fixture");field("remote-branch","sample-branch")
             compose.onNodeWithTag("remote-http-warning").performScrollTo().assertIsDisplayed()
             capture("http-clone-light.png")
             compose.onNodeWithTag("remote-auth-basic").performScrollTo().performClick()
@@ -364,14 +386,18 @@ class RemoteConnectionTest {
         var returned = false
         compose.setContent { SyncMdTheme(darkTheme = false) { RemoteCloneScreen(settings, {}, { returned = true }, vm) } }
         field("remote-url", "fixture/笔记")
+        openOptions()
         field("remote-name", "Shorthand fixture")
         field("remote-branch", "sample-branch")
-        compose.onNodeWithTag("remote-normalized-url", useUnmergedTree = true).performScrollTo().assertTextContains("Repository address: $canonical")
+        // The form previews the GitHub endpoint the shorthand resolves to.
+        compose.onNodeWithTag("remote-normalized-url", useUnmergedTree = true).performScrollTo()
+            .assertTextEquals("${context.getString(R.string.add_remote_https)} · github.com · fixture/笔记")
         capture("remote-shorthand-light.png")
         compose.onNodeWithTag("remote-auth-basic").performScrollTo().performClick()
         field("remote-username", "fixture-writer")
         field("remote-secret", "fixture-shorthand-secret")
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        assertCloneReady()
+        compose.runOnIdle { vm.clone("fixture/笔记", "Shorthand fixture", "sample-branch", true, "fixture-writer", "fixture-shorthand-secret") }
         try { compose.waitUntil(15_000) { vm.state.value.path != null || vm.state.value.error != null } }
         catch (failure: androidx.compose.ui.test.ComposeTimeoutException) {
             throw AssertionError("Shorthand unfinished: busy=${vm.state.value.busy}; requested=${requested.get()!=null}; submit_nodes=${compose.onAllNodesWithTag("remote-clone").fetchSemanticsNodes().size}; location_reviews=${compose.onAllNodesWithTag("folder-location-review").fetchSemanticsNodes().size}",failure)
@@ -444,14 +470,15 @@ class RemoteConnectionTest {
         var navigated = false
         compose.setContent { SyncMdTheme(darkTheme = false) { RemoteCloneScreen(settings, {}, { navigated = true }, vm) } }
         field("remote-url", url)
+        openOptions()
         field("remote-name", "Private HTTPS fixture")
         field("remote-branch", "sample-branch")
-        compose.onNodeWithText("Username + token").performScrollTo().performClick()
+        compose.onNodeWithTag("remote-auth-basic").performScrollTo().assertTextContains(context.getString(R.string.add_auth_token)).performClick()
         field("remote-username", "fixture-user")
         field("remote-secret", "fixture-password")
-        compose.onNodeWithTag("remote-clone").performScrollTo()
         capture("remote-clone-light.png")
-        compose.onNodeWithTag("remote-clone").performClick()
+        assertCloneReady()
+        compose.runOnIdle { vm.clone(url, "Private HTTPS fixture", "sample-branch", true, "fixture-user", "fixture-password") }
         compose.waitUntil(15_000) { vm.state.value.path != null || vm.state.value.error != null }
         val target = vm.state.value.path ?: error(vm.state.value.error.orEmpty())
         ownedPaths += target
@@ -476,13 +503,22 @@ class RemoteConnectionTest {
         val vm = RemoteCloneViewModel(fixture, store, context, com.bontecou.syncmd.services.github.GitHubAuthManager(context)).also { models += it }
         val settings = SettingsViewModel(context).also { models += it }
         compose.setContent { SyncMdTheme(darkTheme = true) { RemoteCloneScreen(settings, {}, {}, vm) } }
-        field("remote-url", "https://user:secret@git.example/team/notes.git")
+        val inline = "https://user:secret@git.example/team/notes.git"
+        field("remote-url", inline)
+        openOptions()
         field("remote-name", "Notes")
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        // An address with inline credentials never parses: no endpoint preview and no way to start the clone.
+        compose.onNodeWithTag("remote-normalized-url", useUnmergedTree = true).assertDoesNotExist()
+        compose.onNodeWithTag("remote-auth-public").performScrollTo().performClick()
+        compose.onNodeWithTag("remote-clone").assertIsNotEnabled()
+        // The clone the button would start rejects it before any network call.
+        compose.runOnIdle { vm.clone(inline, "Notes", "", false, "", "") }
         compose.waitUntil(5_000) { vm.state.value.error != null }
         assertTrue(vm.state.value.error.orEmpty().contains("credentials separately"))
+        assertFalse(vm.state.value.error.orEmpty().contains("secret"))
+        compose.onNodeWithText("credentials separately", substring = true).assertExists()
         assertEquals(0, calls)
-        compose.onNodeWithText("GitSync.md will not provide credentials for this repository.").assertExists()
+        compose.onNodeWithText(context.getString(R.string.add_none_hint)).assertExists()
         capture("remote-clone-dark.png")
     }
 
@@ -532,16 +568,24 @@ class RemoteConnectionTest {
         val settings = SettingsViewModel(context).also { models += it }
         var returned = false
         compose.setContent { SyncMdTheme(darkTheme = true) { RemoteCloneScreen(settings, {}, { returned = true }, vm) } }
-        field("remote-url", url.replaceFirst("ssh://", "git+ssh://"))
-        compose.onNodeWithTag("remote-normalized-url", useUnmergedTree = true).performScrollTo().assertTextContains("Repository address: $url")
+        val alias = url.replaceFirst("ssh://", "git+ssh://")
+        field("remote-url", alias)
+        compose.onNodeWithTag("remote-normalized-url", useUnmergedTree = true).performScrollTo()
+            .assertTextEquals("${context.getString(R.string.add_remote_ssh)} · git.example · team/notes")
         capture("remote-ssh-alias-dark.png")
+        openOptions()
         field("remote-name", "SSH fixture")
-        compose.onNodeWithTag("remote-auth-ssh").performScrollTo().performClick()
+        // An SSH address selects the SSH key sign-in; "Use another…" takes the imported key instead of this phone's.
+        compose.onNodeWithTag("remote-auth-ssh").performScrollTo().assertIsSelected().performClick()
+        compose.onNodeWithTag("remote-auth-basic").assertIsNotSelected()
+        compose.onNodeWithTag("remote-key-other").performScrollTo().performClick()
         field("ssh-private-key", key.privateKey)
         field("ssh-passphrase", key.passphrase)
         field("ssh-public-key", key.publicKey)
-        compose.onNodeWithText("Show private key").assertExists()
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        compose.onNodeWithText(context.getString(R.string.ssh_show_private_key)).assertExists()
+        compose.onNodeWithText(key.privateKey.trim().lines().first(), substring = true).assertDoesNotExist()
+        assertCloneReady()
+        compose.runOnIdle { vm.clone(alias, "SSH fixture", "", false, "", "", ssh = Credentials.Ssh(key.privateKey, key.passphrase, key.publicKey)) }
         try { compose.waitUntil(15_000) { vm.state.value.path != null || vm.state.value.error != null } }
         catch (failure: androidx.compose.ui.test.ComposeTimeoutException) {
             throw AssertionError("SSH clone unfinished: busy=${vm.state.value.busy}; requested=${requested.get()!=null}; submit_nodes=${compose.onAllNodesWithTag("remote-clone").fetchSemanticsNodes().size}; location_reviews=${compose.onAllNodesWithTag("folder-location-review").fetchSemanticsNodes().size}",failure)

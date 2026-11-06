@@ -92,14 +92,8 @@
     <string name="account_save_connection_failed">Could not save the connection</string>
     <string name="account_load_author_failed">Could not load author identity</string>
     <string name="account_save_author_failed">Could not save author identity</string>
-    <string name="account_signing_in">Signing in…</string>
-    <string name="account_opening_sample">Opening sample…</string>
-    <string name="account_try_sample">Try sample repository</string>
-    <string name="account_sample_hint">Try real Git operations offline. No account needed.</string>
-    <string name="account_sign_in">Sign In</string>
     <string name="account_choose_storage">Choose storage in Settings</string>
     <string name="account_no_matching_repositories">No repositories match \"%1$s\"</string>
-    <string name="account_no_repositories_found">No repositories found for this account.</string>
     <string name="account_updated_just_now">just now</string>
     <plurals name="account_updated_minutes">
         <item quantity="one">%1$dm ago</item>

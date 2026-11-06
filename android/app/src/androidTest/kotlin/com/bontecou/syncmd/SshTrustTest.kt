@@ -143,38 +143,39 @@ class SshTrustTest {
             }
         }
         for (tag in tags) {
-            val rows = expected.getJSONArray(tag)
-            val copy = (0 until rows.length()).map { rows.getJSONObject(it) }
-                .associate { it.getString("name") to it.getString("source") }
+            // The M3 trust copy is new (English-only until translated): each locale must render its own resource,
+            // which falls back to English for keys without a translation.
+            val res = context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+                setLocales(LocaleList.forLanguageTags(tag)) })
             compose.runOnIdle { localeTag.value = tag }
             val changed = verify(key(1)); pending()
-            compose.onNodeWithTag("ssh-trust-review-title").assertTextEquals(copy.getValue("ssh_trust_changed_title"))
+            compose.onNode(hasText(res.getString(R.string.ssh_m3_changed_title), substring = false) and hasAnyAncestor(hasTestTag("ssh-trust-review-title")))
+                .assertIsDisplayed()
             compose.onNodeWithTag("ssh-presented-address").assertTextEquals("git.example:2222")
             compose.onNodeWithTag("ssh-presented-fingerprint").assertTextEquals(key(1).fingerprint)
-            for (name in listOf("ui_previously_trusted_1_s_df583fd2", "ui_a_changed_key_can_indicate_impersonation_v_fa1697a1", "ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f")) {
-                val text = if (name == "ui_previously_trusted_1_s_df583fd2")
-                    String.format(Locale.forLanguageTag(tag), copy.getValue(name), key().fingerprint) else copy.getValue(name)
+            for ((name, text) in listOf("ssh_m3_previous" to res.getString(R.string.ssh_m3_previous, key().fingerprint),
+                    "ssh_m3_changed_warning" to res.getString(R.string.ssh_m3_changed_warning), "ssh_m3_saved" to res.getString(R.string.ssh_m3_saved))) {
                 val node = compose.onNodeWithText(text, substring = false)
                 node.performScrollTo().assertIsDisplayed()
                 val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
                 node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
                 assertTrue("SSH review clipped: $tag / $name", layouts.isNotEmpty() && layouts.all { !it.hasVisualOverflow })
             }
-            compose.onNodeWithTag("ssh-trust-approve").assertTextContains(copy.getValue("ssh_trust_replace")).assertHeightIsAtLeast(48.dp)
-            compose.onNodeWithTag("ssh-trust-reject").assertHeightIsAtLeast(48.dp).performClick()
+            // M3 dialog actions are Medium (40dp) pills by design; Compose hit-testing extends their touch target to 48dp.
+            compose.onNodeWithTag("ssh-trust-approve").assertTextContains(res.getString(R.string.ssh_m3_replace)).assertHeightIsAtLeast(com.bontecou.syncmd.ui.theme.M3ButtonSize.Medium.height)
+            compose.onNodeWithTag("ssh-trust-reject").assertHeightIsAtLeast(com.bontecou.syncmd.ui.theme.M3ButtonSize.Medium.height).performClick()
             assertFalse(changed.get(5, TimeUnit.SECONDS))
             compose.waitUntil(5_000) { trust.challenge.value == null }
             compose.onNodeWithTag("ssh-trust-forget-git.example:2222").performScrollTo().performClick()
-            compose.onNodeWithTag("ssh-trust-forget-body").assertTextEquals(String.format(Locale.forLanguageTag(tag),
-                copy.getValue("ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8"), "git.example", "2222"))
+            compose.onNodeWithTag("ssh-trust-forget-body").assertTextEquals(res.getString(R.string.ssh_m3_forget_body, "git.example:2222"))
                 .performScrollTo().assertIsDisplayed()
-            compose.onNodeWithTag("ssh-trust-forget-confirm").assertHeightIsAtLeast(48.dp)
-            compose.onNodeWithTag("ssh-trust-forget-cancel").assertHeightIsAtLeast(48.dp).performClick()
+            compose.onNodeWithTag("ssh-trust-forget-confirm").assertHeightIsAtLeast(com.bontecou.syncmd.ui.theme.M3ButtonSize.Medium.height)
+            compose.onNodeWithTag("ssh-trust-forget-cancel").assertHeightIsAtLeast(com.bontecou.syncmd.ui.theme.M3ButtonSize.Medium.height).performClick()
             compose.onNodeWithTag("ssh-trust-reset").performScrollTo().performClick()
-            compose.onNodeWithTag("ssh-trust-reset-body").assertTextEquals(copy.getValue("ui_every_ssh_server_will_require_fingerprint_b985f6b6"))
+            compose.onNodeWithTag("ssh-trust-reset-body").assertTextEquals(res.getString(R.string.ssh_m3_reset_body))
                 .performScrollTo().assertIsDisplayed()
-            compose.onNodeWithTag("ssh-trust-reset-confirm").assertHeightIsAtLeast(48.dp)
-            compose.onNodeWithTag("ssh-trust-reset-cancel").assertHeightIsAtLeast(48.dp).performClick()
+            compose.onNodeWithTag("ssh-trust-reset-confirm").assertHeightIsAtLeast(com.bontecou.syncmd.ui.theme.M3ButtonSize.Medium.height)
+            compose.onNodeWithTag("ssh-trust-reset-cancel").assertHeightIsAtLeast(com.bontecou.syncmd.ui.theme.M3ButtonSize.Medium.height).performClick()
             assertEquals(pins, scoped.getSharedPreferences("ssh_known_hosts", Context.MODE_PRIVATE).all)
             SshHostKeyStore(scoped).verify(key())
             assertTrue(runCatching { SshHostKeyStore(scoped).verify(key(1)) }.exceptionOrNull() is SshTrustRequired)

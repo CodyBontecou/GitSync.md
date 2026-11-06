@@ -48,11 +48,9 @@
     <string name="account_no_backup_folder" formatted="false">"На томі сховища цього репозиторію немає папки резервних копій застосунку. Вашу робочу копію збережено."</string>
     <string name="account_no_matching_repositories">"Немає репозиторіїв, що відповідають «%1$s»"</string>
     <string name="account_no_remote" formatted="false">"Віддалений репозиторій не налаштовано"</string>
-    <string name="account_no_repositories_found" formatted="false">"Для цього облікового запису репозиторіїв не знайдено."</string>
     <string name="account_no_url_credentials" formatted="false">"Немає підтримуваних облікових даних у URL для перенесення"</string>
     <string name="account_not_authenticated" formatted="false">"Не автентифіковано — спершу увійдіть."</string>
     <string name="account_open_connection_failed" formatted="false">"Не вдалося відкрити підключення"</string>
-    <string name="account_opening_sample" formatted="false">"Відкриття прикладу…"</string>
     <string name="account_prepare_sign_in_failed" formatted="false">"Не вдалося підготувати безпечний вхід у GitHub. Повторіть спробу, коли сховище буде доступне."</string>
     <string name="account_previous_address_missing" formatted="false">"Попередню віддалену адресу не записано. Перевірте цю запропоновану URL GitHub і виберіть автентифікацію перед клонуванням."</string>
     <string name="account_previous_connection_unavailable" formatted="false">"Попереднє підключення неможливо відновити. Перегляньте URL і явно виберіть автентифікацію; наявні файли та збережені облікові дані збережено."</string>
@@ -69,7 +67,6 @@
     <string name="account_repository_name_length" formatted="false">"Введіть назву репозиторію довжиною 1–120 символів"</string>
     <string name="account_review_github_connection" formatted="false">"Перегляньте підключення облікового запису GitHub"</string>
     <string name="account_review_interrupted_clone" formatted="false">"Перегляньте перерваний клон, перш ніж починати інший. Його файли збережено."</string>
-    <string name="account_sample_hint" formatted="false">"Спробуйте справжні операції Git офлайн. Обліковий запис не потрібен."</string>
     <string name="account_save_author_failed" formatted="false">"Не вдалося зберегти дані автора"</string>
     <string name="account_save_connection_failed" formatted="false">"Не вдалося зберегти підключення"</string>
     <string name="account_save_sign_in_failed" formatted="false">"Не вдалося безпечно зберегти вхід у GitHub. Повторіть спробу, коли сховище буде доступне."</string>
@@ -85,42 +82,29 @@
     <string name="account_session_recovery_failed" formatted="false">"Не вдалося відновити захищене сховище GitHub. Спробуйте увійти ще раз, коли сховище буде доступне."</string>
     <string name="account_session_save_failed" formatted="false">"Не вдалося зберегти захищене сховище GitHub. Спробуйте увійти ще раз."</string>
     <string name="account_session_verify_failed" formatted="false">"Не вдалося перевірити захищене сховище GitHub. Спробуйте увійти ще раз."</string>
-    <string name="account_sign_in" formatted="false">"Увійти"</string>
     <string name="account_sign_in_before_account_access" formatted="false">"Увійдіть у GitHub, перш ніж вибирати доступ через обліковий запис"</string>
     <string name="account_sign_in_failed" formatted="false">"Не вдалося увійти"</string>
     <string name="account_sign_in_repository_account" formatted="false">"Увійдіть в обліковий запис GitHub цього репозиторію"</string>
     <string name="account_sign_in_unverified" formatted="false">"Не вдалося перевірити вхід у GitHub. Почніть вхід заново."</string>
     <string name="account_sign_out_failed" formatted="false">"Не вдалося безпечно вийти. Повторіть спробу, коли сховище буде доступне."</string>
-    <string name="account_signing_in" formatted="false">"Вхід…"</string>
     <string name="account_ssh_not_approved" formatted="false">"Ключ SSH-хоста не схвалено. Повторіть спробу, коли зможете перевірити відбиток сервера."</string>
     <string name="account_ssh_requires_ssh_address" formatted="false">"Ключі SSH можна використовувати лише з SSH-адресами репозиторіїв"</string>
     <string name="account_ssh_trust_unreadable" formatted="false">"Не вдається відкрити збережену довіру SSH. Перегляньте довіру до SSH-серверів у Налаштуваннях."</string>
     <string name="account_storage_attention" formatted="false">"Захищене сховище GitHub потребує уваги. Наявні облікові дані збережено; спробуйте увійти ще раз."</string>
     <string name="account_token_empty" formatted="false">"Токен не може бути порожнім"</string>
     <string name="account_token_invalid">"Токен GitHub недійсний або протермінований (HTTP %1$d)"</string>
-    <string name="account_try_sample" formatted="false">"Спробувати приклад репозиторію"</string>
     <string name="account_updated_just_now" formatted="false">"щойно"</string>
     <string name="account_valid_branch" formatted="false">"Введіть допустиму назву гілки"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
-    <string name="background_active" formatted="false">"Для доданих репозиторіїв заплановано фонові перевірки."</string>
     <string name="background_allow_push" formatted="false">"Дозволити автопублікацію"</string>
-    <string name="background_attempt">"Остання перевірка: %1$s"</string>
-    <string name="background_attention" formatted="false">"Потрібна перевірка. Відкрийте репозиторій для обробки локальних змін, розбіжності, відсутньої upstream-гілки чи збереженого коміту, що очікує надсилання."</string>
     <string name="background_binding">"Лише гілка %1$s, що відстежує %2$s/%3$s. Зміна гілки, папки, з’єднання чи облікового запису потребує нової перевірки."</string>
     <string name="background_changed" formatted="false">"Папка, гілка чи з’єднання змінилися. Перевірте знову."</string>
     <string name="background_current" formatted="false">"Актуально"</string>
     <string name="background_empty" formatted="false">"Локальні репозиторії не зареєстровано."</string>
     <string name="background_error" formatted="false">"Не вдалося завершити дію. Перезавантажте та перевірте поточний репозиторій і налаштування."</string>
-    <string name="background_exclude" formatted="false">"Виключити з фонової синхронізації"</string>
-    <string name="background_excluded" formatted="false">"Виключено"</string>
-    <string name="background_failed" formatted="false">"З’єднання, автентифікація, довіра чи доступ до файлів потребують уваги. Відкрийте репозиторій і повторіть спробу там."</string>
     <string name="background_forget" formatted="false">"Вилучити збережене правило"</string>
-    <string name="background_inactive" formatted="false">"Фонові перевірки вимкнено. Увімкніть режим і додайте принаймні один репозиторій."</string>
     <string name="background_include" formatted="false">"Додати репозиторій"</string>
-    <string name="background_included" formatted="false">"Додано"</string>
     <string name="background_never" formatted="false">"Ще не перевірено"</string>
-    <string name="background_open" formatted="false">"Відкрити репозиторій"</string>
-    <string name="background_power" formatted="false">"Лише зовнішня живлення"</string>
     <string name="background_pull" formatted="false">"Автоматично отримувати віддалені зміни"</string>
     <string name="background_push" formatted="false">"Автоматично створювати коміти й надсилати локальні зміни"</string>
     <string name="background_push_confirm" formatted="false">"Дозволити автоматичну публікацію?"</string>
@@ -129,24 +113,16 @@
     <string name="background_reload" formatted="false">"Завантажити знову"</string>
     <string name="background_reset" formatted="false">"Скинути фонову синхронізацію"</string>
     <string name="background_reset_detail" formatted="false">"Нечитабельні налаштування фонової синхронізації не дозволяють роботу. Скидання вилучає лише її збережені правила та стани й вимикає обидва автоматичні режими. Файли репозиторіїв, облікові записи й інші функції синхронізації зберігаються. Перевірте кожен репозиторій перед повторним додаванням."</string>
-    <string name="background_review" formatted="false">"Перевірити й додати"</string>
-    <string name="background_review_again" formatted="false">"Перевірити налаштування"</string>
     <string name="background_run" formatted="false">"Перевірити зараз"</string>
     <string name="background_running" formatted="false">"Перевірка репозиторіїв…"</string>
-    <string name="background_schedule" formatted="false">"Android планує перевірки приблизно кожні 15 хвилин або пізніше залежно від з’єднання, батареї та системних обмежень. Перевірити зараз запитує ранішу перевірку. Примусова зупинка застосунку блокує фонову роботу до його наступного відкриття."</string>
-    <string name="background_scope" formatted="false">"Додавайте репозиторій після перевірки його поточної гілки та з’єднання. Автоматичне отримання завантажує зміни й виконує fast-forward, якщо це безпечно. Автоматичне надсилання створює коміти з локальних змін і завантажує їх. Розбіжні історії, вхідні зміни за наявності локальних правок і змінені з’єднання потребують перевірки."</string>
     <string name="background_stop" formatted="false">"Зупинити перевірку"</string>
     <string name="background_stopped" formatted="false">"Перевірку зупинено"</string>
-    <string name="background_title" formatted="false">"Фонова синхронізація"</string>
-    <string name="background_transfer">"Останнє передавання: %1$s"</string>
     <string name="background_unavailable" formatted="false">"Цю робочу копію більше не зареєстровано. Під’єднайте її знову й повторно перевірте правило."</string>
     <string name="background_updated" formatted="false">"Зміни синхронізовано"</string>
     <string name="background_wait_network" formatted="false">"Очікування з’єднання з Інтернетом"</string>
     <string name="background_wait_power" formatted="false">"Очікування зовнішнього живлення"</string>
     <string name="background_wait_wifi" formatted="false">"Очікування Wi-Fi"</string>
-    <string name="background_wifi" formatted="false">"Тільки Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"Робоча копія перебуває на іншій гілці. Поверніться на попередню або перевірте знову."</string>
-    <string name="branch_screen" formatted="false">"Гілки"</string>
     <string name="callback_action" formatted="false">"Запитана дія"</string>
     <string name="callback_authorized_scope" formatted="false">"Авторизовані посилання виконують збережену дію без повторного запиту. Змінені або відкликані посилання зупиняються тут. Керуйте дозволами в розділі Дії з репозиторієм → Авторизовані посилання."</string>
     <string name="callback_auto_return" formatted="false">"Повернутися автоматично після цього запуску"</string>
@@ -175,7 +151,6 @@
     <string name="callback_grant_disabled" formatted="false">"Дозвіл відкликано"</string>
     <string name="callback_grant_enabled" formatted="false">"Дозволено для майбутніх запусків"</string>
     <string name="callback_grant_forget" formatted="false">"Забути відкликане посилання"</string>
-    <string name="callback_grant_identity">"Посилання %1$s · Створено %2$s"</string>
     <string name="callback_grant_manage" formatted="false">"Авторизовані посилання"</string>
     <string name="callback_grant_refresh" formatted="false">"Оновити авторизовані посилання"</string>
     <string name="callback_grant_reset" formatted="false">"Скинути авторизовані посилання"</string>
@@ -204,9 +179,6 @@
     <string name="callback_success_destination">"У разі успіху: %1$s"</string>
     <string name="callback_title" formatted="false">"Запит автоматизації"</string>
     <string name="callback_unknown_action" formatted="false">"Невідома дія"</string>
-    <string name="clone_completed_title" formatted="false">"Клонований"</string>
-    <string name="clone_lfs_attention" formatted="false">"Клонування завершено. Деякі файли Git LFS ще потрібно перевірити або завантажити. Клон і локальні зміни збережено."</string>
-    <string name="clone_lfs_review" formatted="false">"Перевірити Git LFS"</string>
     <string name="clone_location_reconnect" formatted="false">"Папку потрібно підключити знову"</string>
     <string name="clone_location_title" formatted="false">"Розташування клону"</string>
     <string name="clone_recovery_added" formatted="false">"Клонований репозиторій додано"</string>
@@ -217,12 +189,9 @@
     <string name="clone_recovery_damaged" formatted="false">"Неможливо прочитати ці дані відновлення. Ви можете відхилити відновлення та вручну підключити завершену папку."</string>
     <string name="clone_recovery_dismiss" formatted="false">"Відхилити відновлення"</string>
     <string name="clone_recovery_dismissed" formatted="false">"Відновлення відхилено. Файли репозиторію та збережені підключення збережено."</string>
-    <string name="clone_recovery_ready" formatted="false">"Перевірте папку й підключення, а потім повторіть додавання цього клону. Наявні файли зберігаються."</string>
     <string name="clone_recovery_refresh" formatted="false">"Оновити відновлення клонів"</string>
     <string name="clone_recovery_retry" formatted="false">"Повторити додавання клону"</string>
     <string name="clone_recovery_review_needed" formatted="false">"Деякі перервані клонування потребують перевірки в розділі Локальні репозиторії. Їхні файли збережено."</string>
-    <string name="clone_recovery_staging">"Тимчасова копія: %1$s"</string>
-    <string name="clone_recovery_title" formatted="false">"Перервані клонування"</string>
     <string name="clone_recovery_unavailable" formatted="false">"Відновлення клону недоступне. Перевірте сховище застосунку та спробуйте ще раз."</string>
     <string name="clone_recovery_unreadable" formatted="false">"Дані відновлення клону нечитабельні"</string>
     <string name="clone_registration_failed" formatted="false">"Не вдалося додати клонований репозиторій. Його файли збережено. Повторіть додавання або знову підключіть його папку через Локальні репозиторії."</string>
@@ -277,12 +246,6 @@
     <string name="diagnostics_reason_unknown" formatted="false">"Дію зупинено. Перевірте стан репозиторію та налаштування з’єднання."</string>
     <string name="diagnostics_share_title" formatted="false">"Поділитися діагностикою"</string>
     <string name="diagnostics_warnings" formatted="false">"Попередження"</string>
-    <string name="dialogs_branch_type_local" formatted="false">"локальна"</string>
-    <string name="dialogs_branch_type_remote" formatted="false">"віддалена"</string>
-    <string name="dialogs_branch_type_tracking" formatted="false">"відстежувальна"</string>
-    <string name="dialogs_branch_type_unknown" formatted="false">"невідомо"</string>
-    <string name="dialogs_commit_collapse" formatted="false">"Згорнути"</string>
-    <string name="dialogs_commit_expand" formatted="false">"Розгорнути"</string>
     <string name="dialogs_error_branch_exists">"Гілка «%1$s» уже існує.\n\nВиберіть іншу назву."</string>
     <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"Неможливо видалити поточну гілку.\n\nСпершу перейдіть на іншу гілку."</string>
     <string name="dialogs_error_commit_failed">"Не вдалося створити коміт: %1$s"</string>
@@ -295,9 +258,6 @@
     <string name="dialogs_error_repository_not_found">"Репозиторій не знайдено за шляхом: %1$s\n\nПеревірте шлях і повторіть спробу."</string>
     <string name="dialogs_error_title" formatted="false">"Помилка"</string>
     <string name="dialogs_info_title" formatted="false">"Інформація"</string>
-    <string name="dialogs_merge_strategy_fast_forward_description" formatted="false">"Зливати, лише якщо джерело безпосередньо попереду. Зберігає лінійну історію."</string>
-    <string name="dialogs_merge_strategy_prefer_ff_description" formatted="false">"Fast-forward, якщо можливо, інакше створити коміт злиття."</string>
-    <string name="dialogs_merge_strategy_recursive_description" formatted="false">"Завжди створювати коміт злиття, навіть якщо можливий fast-forward."</string>
     <string name="dialogs_success_title" formatted="false">"Готово"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Невідомо"</string>
     <string name="dialogs_warning_title" formatted="false">"Попередження"</string>
@@ -329,7 +289,6 @@
     <string name="file_renamed" formatted="false">"Перейменовано"</string>
     <string name="file_save_title" formatted="false">"Зберегти зміни?"</string>
     <string name="file_saved" formatted="false">"Збережено"</string>
-    <string name="file_unsaved_changes" formatted="false">"Незбережені зміни"</string>
     <string name="files_folder" formatted="false">"Папка"</string>
     <string name="files_hide_hidden" formatted="false">"Сховати приховані файли"</string>
     <string name="files_show_hidden" formatted="false">"Показати приховані файли"</string>
@@ -338,7 +297,6 @@
     <string name="folder_settings_unavailable" formatted="false">"Налаштування сховища Android недоступні. Сховище застосунку залишається доступним."</string>
     <string name="folder_unusable" formatted="false">"Не вдалося використати цю папку"</string>
     <string name="git_fetch" formatted="false">"– Загрузка"</string>
-    <string name="git_fetch_detail" formatted="false">"Перевірте віддалену сторінку на нові коміті"</string>
     <string name="git_native_public_only" formatted="false">"Власний протокол Git підтримує лише публічний доступ. Для автентифікації використовуйте HTTPS або SSH."</string>
     <string name="gitops_action_failed" formatted="false">"Git не вдалося виконати цю дію"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Не вдалося завершити дію з гілкою"</string>
@@ -405,64 +363,35 @@
     <string name="guide_clone_body" formatted="false">"Клонуйте репозиторії GitHub, загальнодоступні репозиторії, репозиторії на власному сервері або через SSH. Кожна робоча копія зберігає власне з’єднання та гілку."</string>
     <string name="guide_clone_title" formatted="false">"Ваші репозиторії на Android"</string>
     <string name="guide_continue" formatted="false">"Продовжити"</string>
-    <string name="guide_done" formatted="false">"Готово"</string>
     <string name="guide_edit_body" formatted="false">"Переглядайте та редагуйте файли тут або виберіть папку на пристрої для іншого редактора, наприклад Obsidian. Перед клонуванням перевірте доступ до папки в налаштуваннях."</string>
     <string name="guide_edit_title" formatted="false">"Редагуйте там, де працюєте"</string>
     <string name="guide_git_body" formatted="false">"Переглядайте відмінності, додавайте вибрані зміни до індексу та створюйте локальні коміти. Надсилайте їх, коли будете готові. Гілки, історія, теги, розв’язання конфліктів і Git LFS доступні на екрані репозиторію."</string>
     <string name="guide_git_title" formatted="false">"Перевіряйте перед публікацією"</string>
-    <string name="guide_home" formatted="false">"Продовжити без облікового запису"</string>
     <string name="guide_login" formatted="false">"Увійти через GitHub"</string>
-    <string name="guide_sample" formatted="false">"Спробувати автономний приклад"</string>
     <string name="guide_save_error" formatted="false">"Не вдалося зберегти перебіг огляду. Ви можете продовжити; наступного разу огляд може з’явитися знову."</string>
-    <string name="guide_skip" formatted="false">"Пропустити огляд"</string>
     <string name="guide_start_body" formatted="false">"Підключіть обліковий запис, клонуйте за URL або спробуйте автономний приклад. Також зараз можна вибрати місце зберігання."</string>
     <string name="guide_start_title" formatted="false">"Виберіть, із чого почати"</string>
     <string name="guide_step">"Крок %1$d із 4"</string>
-    <string name="guide_storage" formatted="false">"Вибрати місце зберігання"</string>
-    <string name="guide_title" formatted="false">"Огляд застосунку"</string>
-    <string name="guide_url" formatted="false">"Клонувати за URL"</string>
-    <string name="help_community" formatted="false">"– Приєднуйтесь до нашого Discord-каналу"</string>
     <string name="help_copy_email" formatted="false">"Копіювати адресу підтримки"</string>
     <string name="help_email_copied" formatted="false">"Адресу підтримки скопійовано"</string>
     <string name="help_feedback" formatted="false">"Надіслати відгук"</string>
     <string name="help_open_failed" formatted="false">"Жоден застосунок не може відкрити це посилання. Можна скопіювати адресу підтримки."</string>
     <string name="help_title" formatted="false">"— Допомога"</string>
-    <string name="help_tour" formatted="false">"Показ туру додатка"</string>
     <string name="history_screen" formatted="false">"Історія"</string>
-    <string name="history_tag_annotation" formatted="false">"Анотаційне повідомлення (необов\'язкове)"</string>
     <string name="http_transport_warning" formatted="false">"HTTP не зашифровано. Дані репозиторію, введене ім’я користувача або токен можуть бути прочитані під час передавання. За можливості використовуйте HTTPS."</string>
     <string name="language_settings_legacy" formatted="false">"До Android 13 застосунок використовує мову пристрою."</string>
     <string name="language_settings_title" formatted="false">"Мова"</string>
     <string name="language_settings_unavailable" formatted="false">"Не вдалося відкрити налаштування мови."</string>
-    <string name="lfs_action_refresh_required" formatted="false">"Дію завершено, але не вдалося завантажити оновлений стан LFS. Оновіть стан LFS перед наступною дією."</string>
-    <string name="lfs_allow_downloads" formatted="false">"Дозволити завантаження"</string>
-    <string name="lfs_allow_uploads" formatted="false">"Дозволити надсилання"</string>
     <string name="lfs_cache_missing" formatted="false">"Немає в кеші"</string>
     <string name="lfs_cache_verified" formatted="false">"Перевірений кеш"</string>
-    <string name="lfs_consent_download_body" formatted="false">"Цей репозиторій запитує дозвіл завантажувати вміст файлів з окремого сервера LFS."</string>
-    <string name="lfs_consent_download_title" formatted="false">"Дозволити завантаження LFS?"</string>
-    <string name="lfs_consent_upload_body" formatted="false">"Цей репозиторій запитує дозвіл надсилати вміст файлів на окремий сервер LFS."</string>
-    <string name="lfs_consent_upload_title" formatted="false">"Дозволити надсилання LFS?"</string>
-    <string name="lfs_downloads_authenticated" formatted="false">"Завантаження · окремі зашифровані облікові дані"</string>
-    <string name="lfs_downloads_public" formatted="false">"Завантаження · публічний доступ"</string>
     <string name="lfs_error_authentication" formatted="false">"Спосіб авторизації більше не відповідає цій перевірці. Скасуйте дію й знову перевірте кінцеву точку."</string>
-    <string name="lfs_error_changed" formatted="false">"Схвалення кінцевих точок LFS змінилися під час перевірки. Перезавантажте схвалення й знову перевірте операцію."</string>
     <string name="lfs_error_credentials" formatted="false">"Введіть дійсні окремі ім’я користувача та токен або пароль кінцевої точки LFS."</string>
     <string name="lfs_error_damaged" formatted="false">"Збережені схвалення кінцевих точок LFS потребують перевірки. Скиньте їх у налаштуваннях перед повторною спробою."</string>
     <string name="lfs_error_recovery" formatted="false">"Не вдалося зберегти відновлення схвалень кінцевих точок LFS. Скиньте схвалення в налаштуваннях перед повторною спробою."</string>
     <string name="lfs_error_reset" formatted="false">"Не вдалося скинути схвалення кінцевих точок LFS. Перевірте збережені схвалення перед повторною спробою."</string>
     <string name="lfs_error_revoke" formatted="false">"Не вдалося відкликати схвалення кінцевої точки LFS. Перезавантажте збережені схвалення перед повторною спробою."</string>
     <string name="lfs_error_save" formatted="false">"Не вдалося зберегти схвалення кінцевої точки LFS. Перевірте збережені схвалення перед повторною спробою."</string>
-    <string name="lfs_extensions_apply" formatted="false">"Застосувати правила"</string>
-    <string name="lfs_extensions_cancel" formatted="false">"Скасувати"</string>
-    <string name="lfs_extensions_commit" formatted="false">"Застосування правил змінює лише .gitattributes. Вміст файлів, індекс і коміти залишаються без змін. Додайте відповідні файли до індексу, щоб перетворити їхній вміст у Git на вказівники LFS."</string>
     <string name="lfs_extensions_exact_fallback" formatted="false">"Вибрані великі файли з невідомими розширеннями зберігають правила для точного шляху."</string>
-    <string name="lfs_extensions_existing" formatted="false">"Наявні правила відстеження можуть виключати відповідні файли. Наявні файли з явно вибраним способом відстеження зберігають цей вибір."</string>
-    <string name="lfs_extensions_limits" formatted="false">"Ігноровані файли залишаються ігнорованими. Обмеження сховища та пропускної здатності LFS залежать від вашого Git-хостингу."</string>
-    <string name="lfs_extensions_repository">"Репозиторій: %1$s · %2$s"</string>
-    <string name="lfs_extensions_review" formatted="false">"Переглянути відповідні розширення…"</string>
-    <string name="lfs_extensions_scope" formatted="false">"Ці правила охоплюють наявні та майбутні відповідні файли у вкладених папках. Регістр символів має значення."</string>
-    <string name="lfs_extensions_title" formatted="false">"Відстежувати відповідні розширення?"</string>
     <string name="lfs_extensions_updated" formatted="false">"Правила відстеження розширень оновлено. Перегляньте .gitattributes і файли, яких стосуються зміни, та додайте їх до індексу перед комітом."</string>
     <string name="lfs_file_available" formatted="false">"Вміст файлу доступний"</string>
     <string name="lfs_file_local_edits" formatted="false">"Локальні зміни · зберігаються під час завантаження"</string>
@@ -470,12 +399,10 @@
     <string name="lfs_local_edits_kept" formatted="false">"Локальні зміни збережено."</string>
     <string name="lfs_lock_candidates_empty" formatted="false">"В індексі немає незаблокованих файлів з атрибутом lockable. Додайте правила lockable до .gitattributes й оновіть список."</string>
     <string name="lfs_lock_create_action" formatted="false">"Заблокувати файл"</string>
-    <string name="lfs_lock_create_heading" formatted="false">"Створити блокування"</string>
     <string name="lfs_lock_create_review">"Заблокувати %1$s…"</string>
     <string name="lfs_lock_create_title" formatted="false">"Заблокувати цей файл?"</string>
     <string name="lfs_lock_force_action" formatted="false">"Зняти примусово"</string>
     <string name="lfs_lock_force_review" formatted="false">"Зняти примусово…"</string>
-    <string name="lfs_lock_force_title" formatted="false">"Примусово зняти блокування іншого власника?"</string>
     <string name="lfs_lock_ours" formatted="false">"Належить вашому поточному підключенню"</string>
     <string name="lfs_lock_owner_missing" formatted="false">"Сервер не надав даних"</string>
     <string name="lfs_lock_release_action" formatted="false">"Зняти"</string>
@@ -493,42 +420,16 @@
     <string name="lfs_locks_server">"Сервер LFS: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Блокування сервера"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Цей сервер не підтримує блокування Git LFS."</string>
-    <string name="lfs_locks_verified" formatted="false">"Власника перевірено поточним підключенням"</string>
-    <string name="lfs_revoke_download_body">"Майбутнє завантаження з %1$s потребуватиме нової перевірки. Дозвіл і збережені облікові дані для надсилань залишаються."</string>
-    <string name="lfs_revoke_download_title" formatted="false">"Відкликати дозвіл на завантаження?"</string>
-    <string name="lfs_revoke_downloads" formatted="false">"Відкликати завантаження"</string>
-    <string name="lfs_revoke_upload_body">"Майбутнє надсилання до %1$s потребуватиме нової перевірки. Дозвіл і збережені облікові дані для завантажень залишаються."</string>
-    <string name="lfs_revoke_upload_title" formatted="false">"Відкликати дозвіл на надсилання?"</string>
-    <string name="lfs_revoke_uploads" formatted="false">"Відкликати надсилання"</string>
-    <string name="lfs_ssh_authorization" formatted="false">"Авторизація від SSH"</string>
-    <string name="lfs_ssh_http_review" formatted="false">"Дозвольте цій HTTP-адресі отримувати короткочасну авторизацію від перевіреного SSH-сервера. Приватний ключ SSH залишається на цьому пристрої. Авторизацію можна прочитати під час передавання; вона ніколи не зберігається разом із цим дозволом."</string>
-    <string name="lfs_tracking_git_body" formatted="false">"Додайте явні правила звичайного Git для перевірених файлів. Вміст файлів зберігатиметься в комітах Git. Файли розміром понад 100 MiB і надалі потребують LFS."</string>
-    <string name="lfs_tracking_git_title" formatted="false">"Використовувати звичайний Git для вибраних файлів?"</string>
-    <string name="lfs_tracking_lfs_body" formatted="false">"Додайте правила LFS для точних шляхів перевірених файлів. Обмеження сховища й пропускної здатності LFS залежать від Git-хостингу. Перегляньте зміни та додайте їх до індексу перед комітом."</string>
-    <string name="lfs_tracking_lfs_title" formatted="false">"Використовувати LFS для вибраних файлів?"</string>
     <string name="lfs_tracking_updated" formatted="false">"Правила відстеження оновлено. Перегляньте .gitattributes і вибрані файли, додайте їх до індексу, а потім створіть коміт."</string>
-    <string name="lfs_uploads_authenticated" formatted="false">"Надсилання · окремі зашифровані облікові дані"</string>
-    <string name="lfs_uploads_public" formatted="false">"Надсилання · публічний доступ"</string>
     <string name="m3_editor_preview" formatted="false">"Перегляд"</string>
     <string name="m3_editor_write" formatted="false">"Текст"</string>
-    <string name="m3_md_bold" formatted="false">"Жирний"</string>
-    <string name="m3_md_checklist" formatted="false">"Пункт списку завдань"</string>
-    <string name="m3_md_code" formatted="false">"Вбудований код"</string>
-    <string name="m3_md_heading" formatted="false">"Заголовок"</string>
-    <string name="m3_md_italic" formatted="false">"Курсив"</string>
-    <string name="m3_md_link" formatted="false">"Посилання на нотатку"</string>
     <string name="m3_open_in_editor" formatted="false">"Відкрити в редакторі"</string>
-    <string name="m3_paywall_one_time_play" formatted="false">"Одноразова покупка через Google Play. Без підписки."</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"Оплата через ваш обліковий запис Google Play"</string>
     <string name="m3_pick_a_file" formatted="false">"Виберіть файл, щоб побачити його зміни."</string>
     <string name="modified" formatted="false">"Змінено"</string>
-    <string name="move_action" formatted="false">"Перемістити робочу копію"</string>
     <string name="move_cancelled" formatted="false">"Переміщення скасовано. Початкову робочу копію збережено."</string>
     <string name="move_confirm_action" formatted="false">"Перемістити"</string>
     <string name="move_confirm_action_restore" formatted="false">"Відновити"</string>
-    <string name="move_confirm_guidance" formatted="false">"Виберіть невикористане місце призначення й не дозволяйте іншим застосункам змінювати ці папки до завершення переміщення."</string>
-    <string name="move_confirm_retained" formatted="false">"Оригінал буде збережено як резервну копію."</string>
-    <string name="move_confirm_title" formatted="false">"Перемістити цю робочу копію?"</string>
     <string name="move_confirm_title_restore" formatted="false">"Відновити цю резервну копію?"</string>
     <string name="move_done" formatted="false">"Репозиторій переміщено"</string>
     <string name="move_done_retained" formatted="false">"Репозиторій переміщено. Оригінал збережено в розділі «Відновлення переміщень»."</string>
@@ -541,9 +442,7 @@
     <string name="move_error_settings_changed" formatted="false">"Налаштування репозиторію змінено. Перевірте відновлення переміщення, перш ніж продовжити."</string>
     <string name="move_error_settings_review" formatted="false">"Налаштування переміщення потребують перевірки; усі робочі копії збережено"</string>
     <string name="move_error_stale_review" formatted="false">"Перевірку переміщення змінено. Перевірте призначення ще раз перед переміщенням."</string>
-    <string name="move_intro" formatted="false">"Перемістіть усю робочу копію, зокрема історію Git, підготовлені зміни й незбережені файли на диску. Налаштування облікового запису та автора переносяться разом із нею."</string>
     <string name="move_intro_restore" formatted="false">"Відновіть збережений оригінал як окремий репозиторій. Поточна робоча копія залишається на місці."</string>
-    <string name="move_progress_moving" formatted="false">"Переміщення та збереження налаштувань репозиторію…"</string>
     <string name="move_progress_reviewing" formatted="false">"Перевірка файлів і метаданих Git…"</string>
     <string name="move_recovered_name">"%1$s (відновлено)"</string>
     <string name="move_recovery_attention">"Відновлення переміщення потребує уваги: %1$s"</string>
@@ -555,36 +454,21 @@
     <string name="notes_connections_title" formatted="false">"Підключення та сховище"</string>
     <string name="notes_files_body" formatted="false">"Перевіряйте відстеження Git LFS, завантажуйте відсутній вміст і переглядайте попередження про блокування сервера. Діагностика веде локальний журнал обмеженого розміру з фільтруванням під час копіювання й поширення."</string>
     <string name="notes_files_title" formatted="false">"Великі файли та діагностика"</string>
-    <string name="notes_notice_title" formatted="false">"Що нового"</string>
-    <string name="notes_title" formatted="false">"Примітки до випуску"</string>
     <string name="notes_version">"Android %1$s · збірка %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Переглядайте й редагуйте файли, перевіряйте проіндексовані та непроіндексовані зміни, створюйте локальні коміти, надсилайте наявні коміти й працюйте з гілками, історією, тегами та rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Робота з репозиторієм"</string>
-    <string name="obsidian_empty" formatted="false">"Додайте або клонуйте локальний репозиторій перед підготовкою підключення до Obsidian."</string>
-    <string name="obsidian_error" formatted="false">"Obsidian не вдалося підключитися. Перевірте доступ до папки, початкову віддалену адресу GitHub HTTPS та вибраний для репозиторію обліковий запис GitHub, а потім підготуйте нове підключення."</string>
-    <string name="obsidian_forget" formatted="false">"Забути підключення"</string>
-    <string name="obsidian_forget_scope" formatted="false">"Заблокувати майбутню передачу облікових даних для цієї папки? Уже імпортовані до Obsidian облікові дані залишаться там. За потреби видаліть або відкличте їх окремо. Робоча копія залишиться на місці."</string>
     <string name="obsidian_forgotten" formatted="false">"Майбутні передачі вимкнено. Підготуйте нове підключення, щоб знову підключити цю папку."</string>
     <string name="obsidian_interrupted" formatted="false">"Підключення зупинено. Запити не повторюватимуться автоматично. Перед новою спробою в Obsidian підготуйте нове підключення."</string>
-    <string name="obsidian_prepare" formatted="false">"Підготувати підключення до Obsidian"</string>
-    <string name="obsidian_prepared" formatted="false">"Підключення підготовлено. Відкрийте цю папку в Obsidian і запустіть GitSync.md Connect: Connect this vault. Новий запит замінює будь-яке старе підключення, що очікує."</string>
-    <string name="obsidian_ready" formatted="false">"Зашифровані облікові дані готові для Obsidian."</string>
-    <string name="obsidian_requirements" formatted="false">"Використовуйте ту саму папку пристрою, що й для сховища Obsidian. Увімкніть плагіни спільноти Git і GitSync.md Connect в Obsidian. Для HTTPS-репозиторіїв GitHub потрібен підключений обліковий запис GitHub, вибраний у розділі Підключення репозиторію. Підготовка підключення не змінює файли або історію Git."</string>
     <string name="obsidian_return" formatted="false">"Повернутися до Obsidian"</string>
-    <string name="obsidian_return_failed" formatted="false">"Не вдалося відкрити Obsidian. Увімкніть GitSync.md Connect в Obsidian й знову спробуйте повернутися."</string>
-    <string name="obsidian_scope" formatted="false">"Підключіть Obsidian Git за допомогою вибраного для цього репозиторію облікового запису GitHub. Облікові дані шифруються для супутнього плагіна й не потрапляють до посилань callback."</string>
     <string name="obsidian_title" formatted="false">"Підключення Obsidian"</string>
     <string name="paywall_bought_before" formatted="false">"Уже купували GitSync.md? Тоді його вже розблоковано. Якщо ні, торкніться «Відновити покупку»."</string>
     <string name="paywall_buy" formatted="false">"Розблокувати GitSync.md"</string>
     <string name="paywall_buy_vault">"Розблокувати й клонувати %1$s"</string>
-    <string name="paywall_check_again" formatted="false">"Перевірити ще раз"</string>
     <string name="paywall_check_branch_missing">"%1$s не знайдено"</string>
     <string name="paywall_check_branch_missing_detail">"Гілки %1$s немає в цьому віддаленому репозиторії. Перевірте назву гілки, а потім перевірте ще раз."</string>
     <string name="paywall_check_cant_connect" formatted="false">"немає з’єднання"</string>
     <string name="paywall_check_confirm_key" formatted="false">"підтвердьте ключ під час клонування"</string>
     <string name="paywall_check_connected" formatted="false">"підключено"</string>
-    <string name="paywall_check_headline_checking" formatted="false">"Перевіряємо\nваше сховище."</string>
-    <string name="paywall_check_headline_readonly" formatted="false">"Спершу треба\nдещо виправити."</string>
     <string name="paywall_check_headline_ready" formatted="false">"Ваше сховище\nготове."</string>
     <string name="paywall_check_headline_unreachable" formatted="false">"Не вдається зв’язатися\nз репозиторієм."</string>
     <string name="paywall_check_lfs_none" formatted="false">"немає"</string>
@@ -593,25 +477,11 @@
     <string name="paywall_check_on_clone" formatted="false">"перевіряється під час клонування"</string>
     <string name="paywall_check_read_only" formatted="false">"лише читання"</string>
     <string name="paywall_check_read_write" formatted="false">"читання · запис"</string>
-    <string name="paywall_check_sub_checking" formatted="false">"Переконуємося, що GitSync.md може синхронізувати цей репозиторій, перш ніж ви щось оплатите."</string>
-    <string name="paywall_check_sub_readonly" formatted="false">"GitSync.md може читати цей репозиторій, але не може надсилати в нього зміни. Попросіть власника про доступ на запис, а потім перевірте ще раз."</string>
-    <string name="paywall_check_sub_ready" formatted="false">"Усе гаразд. Один клон — і Obsidian відкриє його з повною історією."</string>
-    <string name="paywall_check_sub_ready_readonly" formatted="false">"Його буде клоновано лише для читання. Pull працює, але push буде відхилено."</string>
-    <string name="paywall_check_title" formatted="false">"Перевірка сховища"</string>
-    <string name="paywall_check_vault" formatted="false">"Перевірити сховище"</string>
-    <string name="paywall_checking_button" formatted="false">"Перевірка…"</string>
-    <string name="paywall_clone_vault" formatted="false">"Клонувати сховище"</string>
     <string name="paywall_close" formatted="false">"Закрити"</string>
-    <string name="paywall_continue_read_only" formatted="false">"Продовжити лише для читання"</string>
     <string name="paywall_error_purchase_failed" formatted="false">"Google Play не вдалося завершити покупку. Спробуйте ще раз за мить."</string>
     <string name="paywall_error_store_unavailable" formatted="false">"Google Play зараз недоступний. Спробуйте ще раз за мить."</string>
-    <string name="paywall_foot_blocked_locked" formatted="false">"Ви нічого не сплатили. Розблокування з’явиться, лише коли сховище пройде перевірку."</string>
     <string name="paywall_foot_blocked_unlocked" formatted="false">"Нічого не завантажено."</string>
-    <string name="paywall_foot_locked" formatted="false">"Читаються лише метадані. Нотатки не завантажуються до розблокування."</string>
-    <string name="paywall_foot_unlocked">"Читаються лише метадані. Нічого не завантажується, доки ви не торкнетеся «%1$s»."</string>
-    <string name="paywall_one_time_line" formatted="false">"Одноразова покупка. Без підписки."</string>
     <string name="paywall_pending" formatted="false">"Очікування схвалення. Сховище буде додано, щойно покупку буде завершено."</string>
-    <string name="paywall_pick_another" formatted="false">"Вибрати інший репозиторій"</string>
     <string name="paywall_pill_checking" formatted="false">"перевірка…"</string>
     <string name="paywall_pill_needs_access" formatted="false">"потрібен доступ"</string>
     <string name="paywall_pill_ready" formatted="false">"готово"</string>
@@ -632,10 +502,7 @@
     <string name="paywall_row_checking" formatted="false">"перевірка"</string>
     <string name="paywall_row_lfs" formatted="false">"Файли Git LFS"</string>
     <string name="paywall_row_obsidian" formatted="false">"Сховище Obsidian"</string>
-    <string name="paywall_row_obsidian_git" formatted="false">"Плагін Obsidian Git налаштовано"</string>
     <string name="paywall_row_size" formatted="false">"Розмір і кількість файлів"</string>
-    <string name="paywall_settings_title" formatted="false">"Повний доступ до GitSync.md"</string>
-    <string name="paywall_settings_unlocked" formatted="false">"Розблоковано"</string>
     <string name="paywall_terms" formatted="false">"Умови"</string>
     <string name="paywall_unlock_subtitle" formatted="false">"Розблокуйте, щоб додати сховище. Далі роботу може взяти на себе плагін Obsidian Git."</string>
     <string name="paywall_unlock_subtitle_vault" formatted="false">"Розблокуйте, щоб клонувати сховище в Obsidian. Далі роботу може взяти на себе плагін Obsidian Git."</string>
@@ -647,119 +514,48 @@
     <string name="publication_adopt" formatted="false">"Використати репозиторій"</string>
     <string name="publication_adopt_title" formatted="false">"Використати цей репозиторій?"</string>
     <string name="publication_adopt_warning">"У GitHub є %1$s/%2$s (%3$s), ідентифікатор репозиторію %4$d. Збіг назви не доводить, що його створила ця спроба. Використати цей порожній репозиторій для збереженого коміту?\n\n%5$s"</string>
-    <string name="publication_author" formatted="false">"Ім\'я автора"</string>
     <string name="publication_back" formatted="false">"Назад"</string>
     <string name="publication_cancel" formatted="false">"Скасувати"</string>
-    <string name="publication_check_destination" formatted="false">"Перевірити початкове призначення"</string>
-    <string name="publication_choose" formatted="false">"Вибрати папку"</string>
-    <string name="publication_commit">"Збережений коміт: %1$s"</string>
-    <string name="publication_destination">"Призначення: %1$s/%2$s"</string>
-    <string name="publication_discard" formatted="false">"Відхилити збережену перевірку"</string>
     <string name="publication_discard_close" formatted="false">"Вийти без збереження змін"</string>
     <string name="publication_discard_title" formatted="false">"Відхилити цю перевірку?"</string>
     <string name="publication_discard_warning" formatted="false">"Видалити ці збережені рішення перевірки та незбережені зміни? Робочі файли залишаться недоторканими. Підготовка й публікація для цієї перевірки ще не почалися."</string>
-    <string name="publication_email" formatted="false">"Ел. пошта автора"</string>
-    <string name="publication_file_ignored" formatted="false">"ігнорується"</string>
-    <string name="publication_file_large" formatted="false">"понад 10 МіБ"</string>
-    <string name="publication_file_regular" formatted="false">"Звичайний файл"</string>
-    <string name="publication_file_sensitive" formatted="false">"Конфіденційна назва файлу"</string>
-    <string name="publication_file_size">"%1$s · %2$s"</string>
     <string name="publication_file_unsupported" formatted="false">"Непідтримуване перетворення вмісту"</string>
-    <string name="publication_files" formatted="false">"Файли"</string>
     <string name="publication_finish" formatted="false">"Завершити налаштування"</string>
-    <string name="publication_folder" formatted="false">"Початкова папка"</string>
     <string name="publication_include" formatted="false">"Додати файл"</string>
     <string name="publication_leave_title" formatted="false">"Зберегти перевірку?"</string>
     <string name="publication_leave_warning" formatted="false">"Зміни облікового запису, автора, повідомлення або призначення не збережено."</string>
-    <string name="publication_limits" formatted="false">"Файли залишаються в початковій папці. Перша публікація підтримує звичайні файли до 10 MiB кожен, 10 000 вибраних файлів і загалом 256 MiB. Git не зберігає порожні папки."</string>
-    <string name="publication_manage_accounts" formatted="false">"Керувати обліковими записами"</string>
-    <string name="publication_message" formatted="false">"Повідомлення першого коміту"</string>
-    <string name="publication_name" formatted="false">"Назва репозиторію"</string>
-    <string name="publication_none" formatted="false">"Збережених публікацій ще немає."</string>
-    <string name="publication_open" formatted="false">"Відкрити репозиторій"</string>
-    <string name="publication_pending_help" formatted="false">"Підготовлений поступ залишається збереженим під час виходу. Повторно підключіть ту саму папку в збереженому розташуванні, якщо Android відкличе доступ."</string>
-    <string name="publication_phase_completed" formatted="false">"Опубліковано"</string>
-    <string name="publication_phase_creation_unknown" formatted="false">"Створення репозиторію потребує перевірки"</string>
-    <string name="publication_phase_prepared" formatted="false">"Локальний commit підготовлено"</string>
     <string name="publication_phase_preparing" formatted="false">"Продовжити локальну підготовку"</string>
-    <string name="publication_phase_published" formatted="false">"Коміт опубліковано; налаштування очікується"</string>
-    <string name="publication_phase_push_unknown" formatted="false">"Результат завантаження потребує узгодження"</string>
-    <string name="publication_phase_remote" formatted="false">"Репозиторій створено; завантаження очікується"</string>
-    <string name="publication_phase_review" formatted="false">"Перевірити файли й призначення"</string>
-    <string name="publication_prepare" formatted="false">"Підготувати локальний коміт"</string>
     <string name="publication_prepare_title" formatted="false">"Підготувати цей знімок?"</string>
     <string name="publication_prepare_warning" formatted="false">"Буде створено метадані Git і локальний коміт лише з вибраними файлами. Робочі файли залишаються на місці. Виключені файли отримують локальні правила ігнорування. Репозиторій GitHub ще не створюється. Вибір файлів, автор і обліковий запис фіксуються з початком підготовки. Назву й видимість можна змінювати до початку створення репозиторію."</string>
-    <string name="publication_private" formatted="false">"Приватний репозиторій"</string>
-    <string name="publication_private_detail" formatted="false">"Його можуть читати лише люди, яким ви надали доступ."</string>
     <string name="publication_private_label" formatted="false">"приватний"</string>
-    <string name="publication_public_confirm" formatted="false">"Вибрати публічний"</string>
-    <string name="publication_public_detail" formatted="false">"Будь-хто може читати вибрані файли й історію."</string>
     <string name="publication_public_label" formatted="false">"– публічний"</string>
-    <string name="publication_public_title" formatted="false">"Зробити цей репозиторій публічним?"</string>
-    <string name="publication_public_warning" formatted="false">"Будь-хто зможе читати опубліковані файли. Перевірте, чи вибір не містить секретів, особистої інформації та файлів, якими не можна ділитися."</string>
-    <string name="publication_publish" formatted="false">"Опублікувати в GitHub"</string>
-    <string name="publication_publish_title" formatted="false">"Опублікувати цей збережений коміт?"</string>
-    <string name="publication_publish_warning">"Створити %1$s/%2$s із видимістю %3$s і завантажити збережений перший коміт? Залиште застосунок відкритим. Повторна спроба перевірить і узгодить стан цього призначення без створення іншого коміту."</string>
-    <string name="publication_reconnect" formatted="false">"Повторно підключити початкову папку"</string>
-    <string name="publication_refresh" formatted="false">"Оновити файли"</string>
-    <string name="publication_reload" formatted="false">"Перезавантажити збережений поступ"</string>
-    <string name="publication_retry_upload" formatted="false">"Перевірити й повторити збережене завантаження"</string>
-    <string name="publication_save" formatted="false">"Зберегти перевірку"</string>
     <string name="publication_save_close" formatted="false">"Зберегти й вийти"</string>
     <string name="publication_save_destination" formatted="false">"Зберегти призначення"</string>
-    <string name="publication_saved" formatted="false">"Збережений прогрес"</string>
-    <string name="publication_scope" formatted="false">"Виберіть локальну папку, перевірте файли й підготуйте локальний коміт. Публікація потім створить репозиторій у вашому особистому обліковому записі GitHub і завантажить цей збережений коміт."</string>
-    <string name="publication_selected">"Вибрано: %1$d · %2$s"</string>
     <string name="publication_sensitive_title" formatted="false">"Додати конфіденційний файл?"</string>
     <string name="publication_sensitive_warning">"%1$s може містити облікові дані або приватну інформацію. Додавайте його лише після перевірки вмісту. Опублікована історія Git може зберегти його навіть після видалення."</string>
-    <string name="publication_sign_in" formatted="false">"Увійдіть у підтверджений обліковий запис GitHub, щоб вибрати папку. Збережений поступ залишається доступним нижче."</string>
-    <string name="publication_stop" formatted="false">"Зупинити операцію"</string>
     <string name="publication_stopping" formatted="false">"Безпечне зупинення…"</string>
-    <string name="publication_title" formatted="false">"Опублікувати папку"</string>
-    <string name="publication_unknown" formatted="false">"GitHub міг створити репозиторій. Перевірте початкове призначення. Нове створення заблоковано, доки ви явно не погодитеся використати відповідний порожній репозиторій."</string>
-    <string name="publication_upload" formatted="false">"Продовжити збережену публікацію"</string>
     <string name="publication_work_adopt" formatted="false">"Перевірка переглянутого репозиторію…"</string>
     <string name="publication_work_check" formatted="false">"Перевірка початкового призначення…"</string>
-    <string name="publication_work_create" formatted="false">"Створення репозиторію GitHub…"</string>
     <string name="publication_work_inspect" formatted="false">"Перевірка папки…"</string>
     <string name="publication_work_load" formatted="false">"Читання збереженого поступу…"</string>
-    <string name="publication_work_prepare" formatted="false">"Підготовка локального знімка…"</string>
     <string name="publication_work_reconnect" formatted="false">"Перевірка доступу до папки…"</string>
     <string name="publication_work_refresh" formatted="false">"Оновлення перевірки файлів…"</string>
-    <string name="publication_work_register" formatted="false">"Завершення налаштування репозиторію…"</string>
     <string name="publication_work_save" formatted="false">"Збереження перевірки…"</string>
-    <string name="publication_work_upload" formatted="false">"Завантаження збереженого коміту…"</string>
-    <string name="pull_all_again" formatted="false">"Отримати все знову"</string>
     <string name="pull_all_attention" formatted="false">"Pull завершено; частину вмісту LFS ще потрібно завантажити. Відкрийте Git LFS для повтору."</string>
     <string name="pull_all_back" formatted="false">"Назад"</string>
     <string name="pull_all_background_attention" formatted="false">"Отримати все потребує уваги. Торкніться, щоб переглянути збережене зведення."</string>
     <string name="pull_all_background_busy" formatted="false">"Отримати все вже виконується. Відкрийте Отримати все, щоб зупинити виконання чи переглянути перебіг."</string>
-    <string name="pull_all_background_clear" formatted="false">"Очистити фонове зведення"</string>
-    <string name="pull_all_background_clear_scope" formatted="false">"Видаляє останнє фонове зведення Отримати все. Вміст і налаштування репозиторіїв не змінюються. Перервана робота не перезапуститься автоматично."</string>
     <string name="pull_all_background_complete" formatted="false">"Отримати все завершено. Перегляньте збережене зведення."</string>
-    <string name="pull_all_background_control_failed" formatted="false">"Не вдалося змінити фонову дію. Оновіть цей екран і спробуйте знову."</string>
     <string name="pull_all_background_counts">"Оновлено: %1$d · Актуально: %2$d · LFS потребує уваги: %3$d · Заблоковано: %4$d · Помилки: %5$d"</string>
-    <string name="pull_all_background_failed" formatted="false">"Отримати все зупинено з помилкою. Деякі pull могли завершитися. Перед новим запуском перевірте зведення та стан репозиторіїв."</string>
-    <string name="pull_all_background_interrupted" formatted="false">"Отримати все перервано й не перезапуститься автоматично. Pull міг завершитися до переривання. Перед новим запуском перевірте стан репозиторіїв."</string>
     <string name="pull_all_background_running" formatted="false">"Отримати все виконується без відкриття застосунку. Виберіть Зупинити, щоб не запускати решту репозиторіїв."</string>
     <string name="pull_all_background_title" formatted="false">"Отримати все у фоні"</string>
-    <string name="pull_all_background_unreadable" formatted="false">"Збережене фонове зведення не читається, його збережено. Явно очистьте його перед новим фоновим запуском."</string>
-    <string name="pull_all_blocked" formatted="false">"Збережено без змін. Перед повтором створіть коміт або stash локальних змін, завершіть активну операцію Git чи налаштуйте upstream-гілку."</string>
     <string name="pull_all_current" formatted="false">"Немає вхідних змін"</string>
     <string name="pull_all_empty" formatted="false">"Немає локальних репозиторіїв для отримання змін. Спочатку клонуйте або імпортуйте репозиторій."</string>
     <string name="pull_all_failed" formatted="false">"Не вдалося запустити Отримати все. Перевірте налаштування репозиторіїв і спробуйте знову."</string>
-    <string name="pull_all_item_failed" formatted="false">"Не вдалося безпечно виконати pull. Перевірте з’єднання й доступ до сховища, а потім елементи керування Git щодо розбіжної історії чи інших потреб відновлення."</string>
-    <string name="pull_all_not_run" formatted="false">"Не запускалося"</string>
     <string name="pull_all_progress">"Перевірено репозиторіїв: %1$d / %2$d"</string>
-    <string name="pull_all_running" formatted="false">"Отримання…"</string>
-    <string name="pull_all_scope" formatted="false">"Отримує оновлення й виконує fast-forward для всіх доданих локальних репозиторіїв. Отримати все не додає ваші зміни до індексу, не створює комітів і не надсилає зміни через push."</string>
     <string name="pull_all_stop" formatted="false">"Зупинити отримання"</string>
-    <string name="pull_all_stopped" formatted="false">"Зупинено. Уже розпочатий pull міг завершитися. Перед повтором перевірте Git-стан репозиторію; решта репозиторіїв не запускалися."</string>
     <string name="pull_all_stopping" formatted="false">"Зупинка після поточної операції…"</string>
-    <string name="pull_all_system_help" formatted="false">"Для швидкого доступу додайте віджет Отримати все на головний екран або плитку GitSync.md Отримати все до швидких налаштувань. Обидва виконують один прохід без відкриття застосунку. Потім відкрийте Отримати все, щоб переглянути збережене зведення; виберіть Отримати все знову для нового запуску."</string>
     <string name="pull_all_title" formatted="false">"Отримати все"</string>
-    <string name="pull_all_updated" formatted="false">"Оновлено з віддаленого репозиторію"</string>
-    <string name="pull_all_widget_button" formatted="false">"Отримати всі репозиторії"</string>
     <string name="pull_all_widget_description" formatted="false">"Отримує оновлення й виконує fast-forward усіх локальних репозиторіїв без відкриття GitSync.md."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Лише отримання й fast-forward"</string>
     <string name="pull_screen" formatted="false">"Pull"</string>
@@ -770,7 +566,6 @@
     <string name="push_existing" formatted="false">"Застосунок GitHub уже встановлено?"</string>
     <string name="push_existing_account" formatted="false">"Ім’я користувача або організація GitHub"</string>
     <string name="push_existing_connect" formatted="false">"Під’єднати наявне встановлення"</string>
-    <string name="push_existing_scope" formatted="false">"Під’єднайте наявне встановлення, увійшовши як власник облікового запису або один із власників організації. Його доступ до репозиторіїв не зміниться."</string>
     <string name="push_failed" formatted="false">"Синхронізація через push-сповіщення не змогла завершити цю дію. Перевірте сповіщення, мережеве з’єднання та доступ до GitHub, а потім оновіть підключення. Локальні файли збережено."</string>
     <string name="push_link" formatted="false">"Підключити GitHub"</string>
     <string name="push_manage_github" formatted="false">"Керувати на GitHub"</string>
@@ -778,7 +573,6 @@
     <string name="push_no_match" formatted="false">"Немає доступної робочої копії, що відповідає цьому репозиторію GitHub і відстежуваній віддаленій гілці. Перевірте підключення, гілку та доступ до папки."</string>
     <string name="push_notification">"Гілка GitHub %1$s змінилася. Торкніться, щоб перевірити цю робочу копію."</string>
     <string name="push_open_failed" formatted="false">"Не вдалося відкрити це посилання. Перевірте браузер або налаштування Android і спробуйте знову."</string>
-    <string name="push_open_repository" formatted="false">"Відкрити репозиторій"</string>
     <string name="push_open_settings" formatted="false">"Відкрити налаштування сповіщень"</string>
     <string name="push_owner" formatted="false">"Увійдіть як власник особистого облікового запису або організації, щоб підключити цю інсталяцію."</string>
     <string name="push_permission" formatted="false">"Дозвольте сповіщення в налаштуваннях Android перед увімкненням синхронізації через push-сповіщення."</string>
@@ -788,7 +582,6 @@
     <string name="push_result">"Перевірено: %1$d · Оновлено: %2$d · Потребують перевірки: %3$d"</string>
     <string name="push_result_current" formatted="false">"Уже актуально"</string>
     <string name="push_result_review" formatted="false">"Потребує перевірки перед оновленням"</string>
-    <string name="push_result_updated" formatted="false">"Оновлено з налаштованої upstream-гілки"</string>
     <string name="push_scope" formatted="false">"Підключіть застосунок GitHub від GitSync.md, щоб отримувати оновлення репозиторіїв. Відповідні робочі копії без локальних змін можуть отримувати оновлення та виконувати fast-forward у фоні. Торкніться сповіщення, щоб перевірити знову. Синхронізація через push-сповіщення ніколи не створює комітів, не надсилає змін і не перемикає гілки; локальні зміни та розбіжні історії потребують вашої перевірки."</string>
     <string name="push_selected_repositories" formatted="false">"Вибрані репозиторії"</string>
     <string name="push_stopped" formatted="false">"Цю перевірку зупинено. Дії, вже передані до Git, могли завершитися; перевірте репозиторій перед повторною спробою."</string>
@@ -797,59 +590,22 @@
     <string name="push_unavailable" formatted="false">"Push-сповіщення недоступні в цій збірці."</string>
     <string name="push_unlink" formatted="false">"Видалити підключення"</string>
     <string name="push_unlink_scope" formatted="false">"Видалити маршрутизацію синхронізації через push-сповіщення для цієї інсталяції GitHub на цьому пристрої? Це не видаляє застосунок GitHub. Скористайтеся пунктом Керувати на GitHub, щоб змінити його доступ до репозиторіїв або видалити його."</string>
-    <string name="rebase_abort_body" formatted="false">"Відновлює початкову гілку й коміт. Зміни відстежуваних файлів і розв’язання конфліктів, зроблені під час цього перебазування, буде відкинуто."</string>
-    <string name="rebase_abort_title" formatted="false">"Скасувати це перебазування?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"Прийняти локальне видалення"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"Прийняти видалення у відстежуваній гілці"</string>
-    <string name="rebase_begin_body" formatted="false">"Локальні коміти буде перенесено на перевірену відстежувану гілку, і вони можуть отримати нові ідентифікатори. Перебазування виконується локально; надсилання залишається окремою дією."</string>
-    <string name="rebase_begin_title" formatted="false">"Переписати локальні коміти?"</string>
-    <string name="rebase_checkout_blocked_summary" formatted="false">"Перемикання файлів заблоковано. Перемістіть перелічені файли в безпечне місце, оновіть стан і повторіть цей коміт. Уже перенесений прогрес буде збережено."</string>
-    <string name="rebase_checkout_more_paths">"Ще %1$d заблокованих шляхів не показано."</string>
-    <string name="rebase_checkout_retry" formatted="false">"Повторити заблокований коміт"</string>
     <string name="rebase_checkout_review_required" formatted="false">"Дані відновлення перемикання змінилися або не читаються. Перевірте локальну роботу перед використанням інструмента Git або скасуванням перебазування."</string>
-    <string name="rebase_detached" formatted="false">"Перебазування з відокремленим HEAD"</string>
     <string name="rebase_problem_active_operation" formatted="false">"Завершіть поточну операцію Git перед початком перебазування."</string>
     <string name="rebase_problem_local_branch" formatted="false">"Перейдіть на локальну гілку перед перебазуванням."</string>
     <string name="rebase_problem_local_changes" formatted="false">"Створіть коміт з усіма локальними змінами або збережіть їх у stash перед перебазуванням."</string>
     <string name="rebase_problem_upstream" formatted="false">"Налаштуйте відстежувану віддалену гілку перед перебазуванням."</string>
     <string name="rebase_skip_body" formatted="false">"Виключає поточний коміт із перенесення. Перевірте його зміни перед пропуском: це може прибрати локальну роботу з підсумкової історії."</string>
-    <string name="rebase_skip_title" formatted="false">"Пропустити цей локальний коміт?"</string>
-    <string name="rebase_status_aborted" formatted="false">"Перебазування скасовано"</string>
-    <string name="rebase_status_conflicts" formatted="false">": команда «rebase» має конфлікти — вирішіть їх, а потім продовжте процес rebase."</string>
-    <string name="rebase_status_format">"Перебазування: %1$s"</string>
-    <string name="rebase_status_success" formatted="false">": переоблік бази успішно завершено."</string>
     <string name="rebase_use_local" formatted="false">"Використати локальний коміт"</string>
     <string name="rebase_use_upstream" formatted="false">"Використати відстежувану гілку"</string>
     <string name="remote_address_formats" formatted="false">": використовуйте HTTP/HTTPS. SSH, git://, file://, або власник/репозиторій."</string>
-    <string name="remote_merge_author">"Автор злиття: %1$s &lt;%2$s&gt;"</string>
-    <string name="remote_merge_confirm_local" formatted="false">"Злити перевірені коміти?"</string>
-    <string name="remote_merge_confirm_local_body">"Оновлює %1$s перевіреним комітом із %2$s. Може бути створено коміт злиття. Нічого не надсилається."</string>
-    <string name="remote_merge_confirm_push" formatted="false">"Злити й опублікувати у відстежуваній гілці?"</string>
-    <string name="remote_merge_confirm_push_body">"Оновлює %1$s, а потім надсилає її коміти до %2$s за перевіреною адресою надсилання. Конфлікти зупиняють публікацію. Невдале або непідтверджене надсилання зберігає локальний результат Git для явної повторної спроби."</string>
     <string name="remote_merge_counts">"Локальні коміти: %1$d · Вхідні коміти: %2$d"</string>
-    <string name="remote_merge_current" formatted="false">"Обидві гілки актуальні."</string>
     <string name="remote_merge_destination">"До локальної гілки: %1$s"</string>
-    <string name="remote_merge_fetch_address">"Адреса отримання: %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Завершення дії Git…"</string>
     <string name="remote_merge_incoming_oid">"Вхідний коміт: %1$s"</string>
-    <string name="remote_merge_local" formatted="false">"Злити локально"</string>
     <string name="remote_merge_local_oid">"Локальний коміт: %1$s"</string>
-    <string name="remote_merge_local_result" formatted="false">"Результат локальний. Надсилання залишається окремою дією."</string>
-    <string name="remote_merge_no_incoming" formatted="false">"Немає вхідних комітів. Локальні коміти все ще можна надіслати явно."</string>
-    <string name="remote_merge_open_git" formatted="false">"Повернутися до Git"</string>
-    <string name="remote_merge_publish" formatted="false">"Злити й надіслати"</string>
-    <string name="remote_merge_push_address">"Адреса надсилання: %1$s"</string>
-    <string name="remote_merge_push_blocked" formatted="false">"Поки залишаються конфлікти, нічого не надіслано."</string>
-    <string name="remote_merge_push_confirmed" formatted="false">"Віддалений репозиторій підтвердив цей коміт."</string>
-    <string name="remote_merge_push_unconfirmed" formatted="false">"Надсилання не підтверджено. Локальний результат Git збережено. Повторна спроба надсилає той самий коміт без нового злиття або коміту."</string>
-    <string name="remote_merge_refresh" formatted="false">"Оновити стан репозиторію"</string>
-    <string name="remote_merge_result_conflicts" formatted="false">"Злиття призупинено через конфлікти. Відкрийте Git, розв’яжіть і додайте до індексу кожен файл, а потім завершіть або перервіть злиття."</string>
-    <string name="remote_merge_result_current" formatted="false">"Злиття не знадобилося."</string>
-    <string name="remote_merge_result_ff" formatted="false">"Локальну гілку просунуто методом fast-forward."</string>
-    <string name="remote_merge_result_merged" formatted="false">"Коміт злиття збережено локально."</string>
-    <string name="remote_merge_retry" formatted="false">"Повторити надсилання збереженого коміту"</string>
-    <string name="remote_merge_review" formatted="false">"Отримати й перевірити злиття"</string>
-    <string name="remote_merge_scope" formatted="false">"Отримайте й перевірте налаштовану відстежувану гілку. Наявні коміти зберігають ідентифікатори; розбіжні історії створюють коміт злиття. Конфлікти можуть потребувати ручного розв’язання."</string>
     <string name="remote_merge_title" formatted="false">"Злити з віддаленою гілкою"</string>
     <string name="remote_merge_upstream">"З відстежуваної гілки: %1$s"</string>
     <string name="remote_normalized_target">"Адреса репозиторію: %1$s"</string>
@@ -872,8 +628,6 @@
     <string name="repository_actions_pushed" formatted="false">"Коміт надіслано"</string>
     <string name="repository_actions_reload" formatted="false">"Перезавантажити репозиторії"</string>
     <string name="repository_actions_remote_missing" formatted="false">"Налаштована відстежувана гілка відсутня на сервері. Перевірте елементи керування Git."</string>
-    <string name="repository_actions_review" formatted="false">"Перевірити поточний стан"</string>
-    <string name="repository_actions_run" formatted="false">"Виконати дію"</string>
     <string name="repository_actions_scope" formatted="false">"Виберіть локальний репозиторій і перевірте його поточну гілку перед виконанням дії."</string>
     <string name="repository_actions_stale" formatted="false">"Ця перевірка або згода вже не актуальна. Перевірте поточний стан репозиторію й знову підтвердьте дію."</string>
     <string name="repository_actions_status" formatted="false">"Прочитати стан"</string>
@@ -933,173 +687,56 @@
     <string name="shortcut_background_interrupted" formatted="false">"Виконання перервано. Воно не повториться автоматично. Перевірте репозиторій перед новим натисканням."</string>
     <string name="shortcut_background_option" formatted="false">"Виконувати без відкриття GitSync.md"</string>
     <string name="shortcut_background_running" formatted="false">"Дія ярлика виконується"</string>
-    <string name="shortcut_results_clear" formatted="false">"Очистити результати автоматизації"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Видаліть збережені результати виконання ярликів і зворотних викликів. Їхні дозволи залишаться незмінними. Перервані дії не повторяться автоматично."</string>
     <string name="shortcut_results_unavailable" formatted="false">"Не вдалося прочитати збережені результати ярликів. Дозвіл зберігається окремо."</string>
     <string name="ssh_hide_private_key" formatted="false">"Приховати закритий ключ"</string>
     <string name="ssh_show_private_key" formatted="false">"Показати закритий ключ"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"Ключ SSH-сервера змінився"</string>
-    <string name="ssh_trust_connect" formatted="false">"Довіряти й під’єднатися"</string>
     <string name="ssh_trust_error_changed" formatted="false">"Довіра SSH змінилася під час перевірки. Перегляньте поточний запис сервера й повторіть підключення."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Збережена довіра SSH потребує перевірки. Скиньте довіру до SSH-серверів у налаштуваннях перед повторною спробою."</string>
     <string name="ssh_trust_error_recovery" formatted="false">"Не вдалося зберегти відновлення довіри SSH. Перевірте довіру до SSH-серверів у налаштуваннях перед повторною спробою."</string>
     <string name="ssh_trust_error_remove" formatted="false">"Не вдалося видалити довіру до SSH-сервера. Перевірте поточний запис сервера перед повторною спробою."</string>
     <string name="ssh_trust_error_reset" formatted="false">"Не вдалося очистити довіру до SSH-серверів. Перевірте збережені записи перед повторною спробою."</string>
-    <string name="ssh_trust_error_save" formatted="false">"Не вдалося зберегти довіру до SSH-сервера. Повторно перевірте відбиток перед новою спробою."</string>
-    <string name="ssh_trust_replace" formatted="false">"Замінити довіру й під’єднатися"</string>
-    <string name="ssh_trust_verify_title" formatted="false">"Перевірити SSH-сервер"</string>
     <string name="staged" formatted="false">"підготовлено"</string>
     <string name="stash_screen" formatted="false">"Сховок"</string>
-    <string name="status_screen" formatted="false">"Стан"</string>
     <string name="storage_app_saved" formatted="false">"Нові клони використовуватимуть сховище застосунку"</string>
     <string name="storage_default_saved" formatted="false">"Типове місце клонування збережено"</string>
-    <string name="tide_git_annotated" formatted="false">"анотований"</string>
     <string name="tide_git_branch_operation" formatted="false">"Операція з гілкою"</string>
-    <string name="tide_git_commit_locally" formatted="false">"Створити локальний коміт"</string>
     <string name="tide_git_committing" formatted="false">"Створення коміту…"</string>
-    <string name="tide_git_detached" formatted="false">"Від\'єднаний HEAD"</string>
-    <string name="tide_git_force_delete" formatted="false">"Примусове видалення (небезпечно)"</string>
-    <string name="tide_git_force_delete_detail" formatted="false">"Примусове видалення видаляє гілку, навіть якщо її не злито."</string>
     <string name="tide_git_git_operation" formatted="false">"Операція Git"</string>
-    <string name="tide_git_headline_choose" formatted="false">"Виберіть зміни для коміту"</string>
-    <string name="tide_git_headline_complete_merge" formatted="false">"– повне об\'єднання"</string>
-    <string name="tide_git_headline_nothing" formatted="false">"Немає змін для коміту"</string>
-    <string name="tide_git_hint_message" formatted="false">"Введіть повідомлення коміту"</string>
-    <string name="tide_git_hint_stage" formatted="false">"Додайте хоча б один файл до індексу для коміту"</string>
-    <string name="tide_git_included" formatted="false">"Включено"</string>
-    <string name="tide_git_lightweight" formatted="false">"легкий"</string>
-    <string name="tide_git_local_only" formatted="false">"лише локально"</string>
-    <string name="tide_git_message" formatted="false">"Повідомлення"</string>
-    <string name="tide_git_normal_delete" formatted="false">"Звичайне видалення"</string>
-    <string name="tide_git_normal_delete_detail" formatted="false">"Видаляє гілку, лише якщо її повністю злито."</string>
-    <string name="tide_git_push_current" formatted="false">"– галузь з推送ним струмом"</string>
-    <string name="tide_git_pushing" formatted="false">"Надсилання…"</string>
-    <string name="tide_git_remote" formatted="false">"Віддалений репозиторій"</string>
-    <string name="tide_git_resolve_and_stage" formatted="false">"Розв’язати й додати до індексу"</string>
-    <string name="tide_git_resolving" formatted="false">"Розв’язання…"</string>
-    <string name="tide_git_status_added" formatted="false">"додано"</string>
-    <string name="tide_git_status_changed" formatted="false">"Змінено"</string>
-    <string name="tide_git_status_copied" formatted="false">"скопійовано"</string>
-    <string name="tide_git_status_deleted" formatted="false">"видалено"</string>
-    <string name="tide_git_status_modified" formatted="false">"змінено"</string>
-    <string name="tide_git_status_renamed" formatted="false">"перейменовано"</string>
-    <string name="tide_git_status_type_changed" formatted="false">"тип змінено"</string>
-    <string name="tide_git_strategy_ff" formatted="false">"Лише fast-forward"</string>
-    <string name="tide_git_strategy_prefer_ff" formatted="false">"Fast-forward, якщо можливо"</string>
-    <string name="tide_git_strategy_recursive" formatted="false">"Завжди використовувати коміт злиття"</string>
-    <string name="tide_git_tools" formatted="false">"Інструменти Git"</string>
-    <string name="tide_git_unstaged" formatted="false">"Не в індексі"</string>
-    <string name="tide_home_add_first" formatted="false">"Додайте перше сховище"</string>
-    <string name="tide_home_empty_filter_detail" formatted="false">"Усі сховища на цьому телефоні вдалося прочитати."</string>
-    <string name="tide_home_empty_filter_title" formatted="false">"Ніщо не потребує уваги"</string>
-    <string name="tide_home_empty_rail_description" formatted="false">"Порожня смуга синхронізації чекає на перше сховище"</string>
-    <string name="tide_home_empty_rail_nothing" formatted="false">"нічого синхронізувати"</string>
-    <string name="tide_home_empty_title" formatted="false">"Сховищ поки немає."</string>
-    <string name="tide_home_filter_all" formatted="false">"Усе"</string>
-    <string name="tide_home_filter_attention" formatted="false">"Потребують уваги"</string>
-    <string name="tide_home_meta_checking">"Перевіряється: %1$d"</string>
-    <string name="tide_home_meta_ready">"Готово: %1$d"</string>
-    <string name="tide_home_meta_unreadable">"Не читається: %1$d"</string>
-    <string name="tide_home_rail_phone" formatted="false">"Телефон"</string>
-    <string name="tide_home_signed_in_as">"вхід виконано як @%1$s"</string>
-    <string name="tide_home_start_github" formatted="false">"Клонувати з GitHub"</string>
-    <string name="tide_home_start_github_signed_in" formatted="false">"виберіть один зі своїх репозиторіїв"</string>
-    <string name="tide_home_start_github_signed_out" formatted="false">"увійдіть, а потім виберіть репозиторій"</string>
-    <string name="tide_home_start_local_detail" formatted="false">"знайдіть клони, які вже є на цьому телефоні"</string>
-    <string name="tide_home_start_publish_detail" formatted="false">"перетворює папку на новий репозиторій"</string>
-    <string name="tide_home_start_url_detail" formatted="false">"будь-який віддалений репозиторій Git, публічний чи приватний"</string>
-    <string name="tide_home_start_with" formatted="false">"Почніть із"</string>
     <string name="tide_home_state_checking" formatted="false">"Перевіряється…"</string>
-    <string name="tide_home_state_never_synced" formatted="false">"Ще не синхронізовано"</string>
-    <string name="tide_home_state_synced">"Синхронізований %1$s"</string>
     <string name="tide_home_state_unreadable" formatted="false">"Потрібна перевірка"</string>
-    <string name="tide_merge_ahead_headline" formatted="false">"У віддаленому репозиторії немає нового."</string>
-    <string name="tide_merge_ahead_kicker" formatted="false">"Лише ваші"</string>
-    <string name="tide_merge_behind_headline" formatted="false">"У віддаленому репозиторії є коміти, яких у вас немає."</string>
-    <string name="tide_merge_behind_kicker" formatted="false">"Нове на віддаленому боці"</string>
-    <string name="tide_merge_both_moved" formatted="false">"Обидві сторони змінилися"</string>
     <string name="tide_merge_conflict_deleted_headline" formatted="false">"На одній стороні видалено, на іншій змінено."</string>
     <string name="tide_merge_conflict_headline" formatted="false">"Обидві сторони змінили цей файл."</string>
-    <string name="tide_merge_conflict_list_count">"Розв’язано: %1$d із %2$d"</string>
     <string name="tide_merge_conflict_pick" formatted="false">"Виберіть версію для збереження або відредагуйте результат вручну."</string>
     <string name="tide_merge_conflict_renamed_headline" formatted="false">"Перейменовано двома різними способами."</string>
     <string name="tide_merge_conflict_result" formatted="false">"РЕЗУЛЬТАТ"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">"– саме це виконується на етапі."</string>
-    <string name="tide_merge_conflict_unresolved" formatted="false">"Не розв’язано"</string>
     <string name="tide_merge_diff_added" formatted="false">"Додано"</string>
     <string name="tide_merge_diff_binary_body" formatted="false">"Двійковий вміст не можна показати як текст."</string>
     <string name="tide_merge_diff_changed" formatted="false">"Змінено"</string>
     <string name="tide_merge_diff_copied" formatted="false">"Скопійовано"</string>
     <string name="tide_merge_diff_deleted" formatted="false">"Видалено"</string>
-    <string name="tide_merge_diff_discard" formatted="false">"Відхилити"</string>
-    <string name="tide_merge_diff_empty_body" formatted="false">"Для цієї зміни немає порівняння рядок за рядком."</string>
-    <string name="tide_merge_diff_empty_title" formatted="false">"Немає текстових змін"</string>
-    <string name="tide_merge_diff_error_title" formatted="false">"Не вдалося завантажити це порівняння"</string>
     <string name="tide_merge_diff_hunk_line">"рядок %1$d"</string>
     <string name="tide_merge_diff_line_added">"Додано: %1$s"</string>
     <string name="tide_merge_diff_line_removed">"Видалено: %1$s"</string>
     <string name="tide_merge_diff_modified" formatted="false">"Змінено"</string>
     <string name="tide_merge_diff_renamed" formatted="false">"Перейменовано"</string>
-    <string name="tide_merge_diff_staged" formatted="false">"підготовлено"</string>
-    <string name="tide_merge_diff_stats_a11y">"Додано рядків: %1$d, видалено рядків: %2$d"</string>
     <string name="tide_merge_diff_summary">"Файли: %1$d · +%2$d −%3$d"</string>
     <string name="tide_merge_diff_type_changed" formatted="false">"тип змінено"</string>
-    <string name="tide_merge_diff_unstaged" formatted="false">"Не в індексі"</string>
-    <string name="tide_merge_in_sync_headline" formatted="false">"Уже актуально."</string>
-    <string name="tide_merge_in_sync_kicker" formatted="false">"Синхронізовано"</string>
-    <string name="tide_merge_merge_complete_title" formatted="false">"Завершити злиття?"</string>
-    <string name="tide_merge_merge_done_headline" formatted="false">"Зміни іншої сторони включено."</string>
-    <string name="tide_merge_merge_done_kicker" formatted="false">"Злито"</string>
-    <string name="tide_merge_merge_initial" formatted="false">"Отримайте зміни, перевірте, потім злийте."</string>
-    <string name="tide_merge_merge_kicker" formatted="false">"Злити"</string>
-    <string name="tide_merge_merge_paused_headline" formatted="false">"Деякі файли змінилися з обох сторін."</string>
-    <string name="tide_merge_merge_paused_kicker" formatted="false">"Злиття призупинено"</string>
-    <string name="tide_merge_merge_unresolved_title" formatted="false">"Залишилися нерозв’язані конфлікти"</string>
-    <string name="tide_merge_moved_on" formatted="false">"Віддалений репозиторій змінився, поки ви писали."</string>
     <string name="tide_merge_ours_filename" formatted="false">"Наше"</string>
-    <string name="tide_merge_plan_section" formatted="false">"Перевірений план"</string>
-    <string name="tide_merge_rebase_aborted_headline" formatted="false">"Повернення до початкового стану."</string>
-    <string name="tide_merge_rebase_blocked_headline" formatted="false">"Rebase очікує на заблокований checkout."</string>
-    <string name="tide_merge_rebase_conflicts_headline" formatted="false">"Rebase зупинився на файлах, змінених з обох сторін."</string>
-    <string name="tide_merge_rebase_done_headline" formatted="false">"Rebase завершено."</string>
-    <string name="tide_merge_rebase_initial" formatted="false">"Спочатку отримайте зміни, потім вирішуйте."</string>
-    <string name="tide_merge_rebase_kicker" formatted="false">"Rebase"</string>
     <string name="tide_merge_rebase_ready_headline" formatted="false">"Перевірте цей крок перед продовженням."</string>
-    <string name="tide_merge_result_section" formatted="false">"РЕЗУЛЬТАТ"</string>
     <string name="tide_merge_side_deleted" formatted="false">"видалено"</string>
     <string name="tide_merge_theirs" formatted="false">"Їхнє"</string>
     <string name="tide_merge_theirs_count">"З віддаленого: ↓%1$d"</string>
     <string name="tide_merge_theirs_filename" formatted="false">"Їхнє"</string>
     <string name="tide_merge_upstream_loading" formatted="false">"Читання налаштувань гілки…"</string>
     <string name="tide_merge_upstream_section" formatted="false">"Відстеження"</string>
-    <string name="tide_merge_upstream_set">"Відстежується %1$s/%2$s"</string>
     <string name="tide_merge_upstream_unset" formatted="false">"Upstream не задано"</string>
-    <string name="tide_merge_upstream_unset_body" formatted="false">"Pull і push не матимуть цілі, доки ви не виберете upstream."</string>
     <string name="tide_merge_yours" formatted="false">"Ваша версія"</string>
     <string name="tide_merge_yours_count">"Локальні: ↑%1$d"</string>
-    <string name="tide_onboarding_clone_failed" formatted="false">"Не вдалося клонувати"</string>
-    <string name="tide_onboarding_create_pat" formatted="false">"Створити PAT на GitHub ↗"</string>
-    <string name="tide_onboarding_headline_git" formatted="false">"Справжній Git."</string>
-    <string name="tide_onboarding_headline_notes" formatted="false">"Ваші нотатки."</string>
-    <string name="tide_onboarding_headline_step" formatted="false">"Завжди разом."</string>
-    <string name="tide_onboarding_hide_token" formatted="false">"Приховати"</string>
-    <string name="tide_onboarding_illustration" formatted="false">"Нотатки на телефоні й коміти на GitHub зустрічаються в одній точці синхронізації"</string>
-    <string name="tide_onboarding_pat_subtitle" formatted="false">"Вставте токен GitHub із доступом до репозиторіїв."</string>
     <string name="tide_onboarding_picker_clear" formatted="false">"Очистити пошук"</string>
     <string name="tide_onboarding_picker_no_matches" formatted="false">"Немає збігів"</string>
-    <string name="tide_onboarding_picker_title" formatted="false">"Виберіть репозиторій"</string>
-    <string name="tide_onboarding_publication_step">"Крок %1$d із 3"</string>
-    <string name="tide_onboarding_rail_device" formatted="false">"цей телефон"</string>
-    <string name="tide_onboarding_save_muted" formatted="false">"за замовчуванням."</string>
-    <string name="tide_onboarding_save_subtitle" formatted="false">"Виберіть іншу папку під час клонування або задайте типову в налаштуваннях."</string>
-    <string name="tide_onboarding_save_title" formatted="false">"Місце збереження"</string>
-    <string name="tide_onboarding_show_token" formatted="false">"Показати"</string>
-    <string name="tide_onboarding_welcome_body" formatted="false">"Клонуйте будь-який репозиторій, пишіть в Obsidian чи іншому застосунку та синхронізуйте одним дотиком."</string>
     <string name="tide_settings_not_signed_in" formatted="false">"Вхід не виконано"</string>
-    <string name="tide_settings_off" formatted="false">"вимк."</string>
-    <string name="tide_settings_on" formatted="false">"увімк."</string>
-    <string name="tide_settings_section_new_clones" formatted="false">"Нові клони"</string>
-    <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
     <string name="tide_settings_sign_out_message">"GitSync.md забуде токен на цьому пристрої (%1$s). Репозиторії та їхні файли залишаться на місці."</string>
     <string name="tide_settings_sign_out_title" formatted="false">"Вийти з GitHub?"</string>
     <string name="tide_settings_signed_in" formatted="false">"вхід виконано"</string>
@@ -1118,173 +755,80 @@
     <string name="tide_vault_files_section" formatted="false">"Файли"</string>
     <string name="tide_vault_from_remote">"З віддаленого: ↓%1$d"</string>
     <string name="tide_vault_git" formatted="false">"GIT"</string>
-    <string name="tide_vault_headline_ahead">"До надсилання: %1$d"</string>
     <string name="tide_vault_headline_behind">"Нових на віддаленому боці: %1$d"</string>
-    <string name="tide_vault_headline_in_sync" formatted="false">"Синхронізовано"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Не вдалося прочитати це сховище."</string>
-    <string name="tide_vault_latest_commit" formatted="false">"Останній коміт"</string>
     <string name="tide_vault_more" formatted="false">"Інші параметри сховища"</string>
     <string name="tide_vault_moved_on" formatted="false">"Віддалений репозиторій змінився, поки ви писали."</string>
     <string name="tide_vault_no_changes_body" formatted="false">"Зміни з Obsidian з’являться тут."</string>
     <string name="tide_vault_no_changes_title" formatted="false">"На цьому телефоні немає змін"</string>
     <string name="tide_vault_reading" formatted="false">"Читання цього сховища…"</string>
-    <string name="tide_vault_remote_current" formatted="false">"У віддаленому репозиторії немає нових комітів"</string>
-    <string name="tide_vault_remote_new" formatted="false">"У віддаленому репозиторії є нові коміти"</string>
-    <string name="tide_vault_remote_not_checked" formatted="false">"Віддалений репозиторій не перевірено"</string>
     <string name="tide_vault_resolve" formatted="false">"Розв\'язання"</string>
     <string name="tide_vault_sub_ahead" formatted="false">"Коміт створено, ще не надіслано"</string>
-    <string name="tide_vault_sub_behind" formatted="false">"Виконайте pull, щоб оновити цей телефон"</string>
     <string name="tide_vault_sub_empty" formatted="false">"Додайте нотатку, а потім створіть коміт тут."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"На цьому телефоні нічого не очікує"</string>
-    <string name="tide_vault_syncing" formatted="false">"Синхронізація..."</string>
     <string name="tide_vault_yours">"Локальні: ↑%1$d"</string>
     <string name="tracking_metadata_size">"Метадані Git: %1$s"</string>
-    <string name="tracking_remove_backup_body" formatted="false">"GitSync.md перевірить копію та ZIP-архів, збереже початкові метадані в резервній копії й від’єднає цю папку. Робочі файли залишаться на місці."</string>
-    <string name="tracking_remove_backup_title" formatted="false">"Вимкнути Git і зберегти резервну копію?"</string>
-    <string name="tracking_remove_permanent_body" formatted="false">"Буде видалено лише перевірені метадані .git. Робочі файли залишаться, але локальну історію Git неможливо буде відновити без іншої копії."</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Видалити історію Git назавжди?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"Перевірені дані змінилися. Скасуйте дію й перевірте вимкнення Git знову."</string>
     <string name="tracking_removed_backup">"Відстеження Git вилучено. Перевірена резервна копія: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Відстеження Git вилучено. Робочі файли збережено."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nУсі робочі файли та локальна історія Git залишаться на цьому пристрої. Ви зможете підключити папку знову пізніше."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nЦе назавжди видалить клон, яким керує застосунок, включно з ненадісланими комітами, змінами в stash і незбереженими файлами. Віддалений репозиторій не зміниться."</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"Для %1$s:%2$s потрібна перевірка відбитка перед наступним з’єднанням."</string>
     <string name="ui_1_s_bytes_81cdb385">"Байти: %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"Символи: %1$s"</string>
-    <string name="ui_1_s_files_ddef923b">"Файлів: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Рядки: %1$s, байти: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s локальних комітів · %2$s комітів відстежуваної гілки"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"Показано: %1$s · збережено: %2$s"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Одноразова покупка через Google Play"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"Зміна ключа може свідчити про підміну. Перевірте новий відбиток у власника сервера перед заміною довіри."</string>
-    <string name="ui_abort_merge_5af7a9ac" formatted="false">"✕  Скасувати злиття"</string>
-    <string name="ui_abort_merge_8821f613" formatted="false">"Скасувати злиття"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Скасувати rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Про застосунок"</string>
-    <string name="ui_add_9fd728c6" formatted="false">"додати"</string>
-    <string name="ui_add_cloned_repository_f84b64e8" formatted="false">"Додати клонований репозиторій"</string>
-    <string name="ui_add_github_account_ed4d4d4c" formatted="false">"Додати GitHub — рахунок"</string>
-    <string name="ui_add_local_repository_b8323c70" formatted="false">"Додати локальний репозиторій"</string>
-    <string name="ui_add_repository_33da2ac1" formatted="false">"Додати репозиторій"</string>
-    <string name="ui_add_repository_e2be0a30" formatted="false">"Додати репозиторій"</string>
-    <string name="ui_add_selected_repositories_d05e3c53" formatted="false">"Додати вибрані репозиторії"</string>
-    <string name="ui_added_b4561641" formatted="false">"Додано"</string>
-    <string name="ui_added_repositories_400f05cb" formatted="false">"Додані репозиторії"</string>
-    <string name="ui_alias_1_s_e7e8c040">"Псевдонім: %1$s"</string>
-    <string name="ui_alias_optional_0d402abb" formatted="false">"Псевдонім (необов’язково)"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Усі розв’язання конфліктів додано до індексу. Продовжуйте перенесення комітів. Якщо Git повідомляє NOTHING_TO_COMMIT, вирішіть, чи потрібно пропустити порожній коміт."</string>
-    <string name="ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a" formatted="false">"Усі конфлікти розв’язано. Завершити злиття?"</string>
-    <string name="ui_all_conflicts_resolved_complete_or_abort_t_9a4e2198" formatted="false">"Усі конфлікти вирішено. Завершіть або скасуйте злиття."</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Після встановлення платного застосунку доступні всі функції. Без підписок і покупок у застосунку."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Усі локальні зміни в цьому файлі будуть під час виконання постійно видалені."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Дозволити доступ до локальних папок"</string>
-    <string name="ui_already_added_253b22d7" formatted="false">"Уже додано"</string>
-    <string name="ui_an_interrupted_move_needs_recovery_all_rec_38aefacd" formatted="false">"Перерване переміщення потребує відновлення. Усі розпізнані копії зберігаються до його завершення."</string>
-    <string name="ui_and_1_s_more_f93ea742">"та %1$s – докладніше..."</string>
-    <string name="ui_any_repo_synced_to_your_android_d15779c7" formatted="false">"БУДЬ-ЯКИЙ РЕПОЗИТОРІЙ. СИНХРОНІЗОВАНО З ANDROID."</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Застосунок"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Налаштування застосунку"</string>
-    <string name="ui_apply_2cbf6555" formatted="false">"Застосувати"</string>
-    <string name="ui_apply_stash_008c67fe" formatted="false">"Застосувати stash"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Застосувати вибір відстеження"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Схвалення зберігається на цьому пристрої, а з’єднання, що очікує, продовжується. Скасування залишає сервер без довіри."</string>
-    <string name="ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49" formatted="false">"Справді перервати це злиття?"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Аутентифікація"</string>
     <string name="ui_back_639807a2" formatted="false">"НАЗАД"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Назад"</string>
     <string name="ui_back_f645ed02" formatted="false">"←  НАЗАД"</string>
     <string name="ui_backup_1_s_6ad01ca6">"Резервна копія: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"База"</string>
-    <string name="ui_binary_file_2c7ccf98" formatted="false">"– бінарний файл"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Двійковий, великий або LFS-файл: виберіть одну сторону повністю."</string>
     <string name="ui_branch_52656e81" formatted="false">"Гілка"</string>
-    <string name="ui_branch_name_06f6bb71" formatted="false">"Назва гілки"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Гілка (необов’язково)"</string>
-    <string name="ui_browse_files_c8bb105f" formatted="false">": Перегляд файлів"</string>
-    <string name="ui_browse_repos_e9c9d50c" formatted="false">"Переглянути репозиторії"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Перегляд із цим обліковим записом"</string>
-    <string name="ui_cancel_ad8d6985" formatted="false">"Скасувати"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Скасувати незавершене переміщення"</string>
-    <string name="ui_changed_2a6141e4" formatted="false">"Змінено"</string>
-    <string name="ui_changed_files_cdf024ce" formatted="false">"Змінені файли"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Зміни"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Виберіть підключений обліковий запис для цього репозиторію."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Вибрати папку на пристрої"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Виберіть спосіб автентифікації перед клонуванням."</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Вибрати іншу папку"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Вибрати сховище клонів"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Виберіть локальне або підключене сховище. Хмарні постачальники документів не надають файлової системи, яку може використовувати цей рушій Git."</string>
-    <string name="ui_choose_start_point_3071447f" formatted="false">"Виберіть початкову точку"</string>
-    <string name="ui_choose_strategy_95d66200" formatted="false">"Виберіть стратегію"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Виберіть обліковий запис для перегляду GitHub. Кожен репозиторій зберігає призначений запис; змініть його в розділі «Підключення репозиторію»."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Виберіть типову папку для нових клонів. Наявні репозиторії залишаться на поточних місцях."</string>
-    <string name="ui_clear_all_29a390f9" formatted="false">"Очистити все"</string>
     <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"Очистити всю діагностику?"</string>
     <string name="ui_clear_log_a8858ac7" formatted="false">"Очистити журнал"</string>
-    <string name="ui_clone_a_github_repository_or_reconnect_a_l_dd9aa7e0" formatted="false">"Клонуйте репозиторій GitHub або повторно підключіть локальну робочу копію."</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"Клонувати знову"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Клонувати знову · перед початком перевірте попередню гілку та з’єднання."</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"Каталог клонування"</string>
-    <string name="ui_clone_failed_958e3f3a" formatted="false">"Помилка клонування"</string>
-    <string name="ui_clone_repository_e8fa94ab" formatted="false">"Клонувати репозиторій"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Сховище клонів"</string>
-    <string name="ui_cloning_and_preparing_the_working_copy_90548a33" formatted="false">"Клонування та підготовка робочої копії…"</string>
-    <string name="ui_cloning_repository_c9d2441e" formatted="false">"Клонування репозиторію"</string>
-    <string name="ui_commit_84da95ea" formatted="false">"Commit:"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Автор commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Повідомлення коміту…"</string>
-    <string name="ui_commit_push_94e9650a" formatted="false">"Commit &amp; Push"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
-    <string name="ui_compare_this_fingerprint_with_the_server_o_69b2eaae" formatted="false">"Порівняйте цей відбиток з опублікованим власником SSH-ключем хоста, перш ніж довіряти йому."</string>
-    <string name="ui_complete_894981ff" formatted="false">"Завершити"</string>
-    <string name="ui_complete_merge_385cc51b" formatted="false">"– повне об\'єднання"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Підтвердити"</string>
-    <string name="ui_conflict_center_e9f65d36" formatted="false">"Центр конфліктів"</string>
-    <string name="ui_conflict_d79910c7" formatted="false">"Конфлікт"</string>
-    <string name="ui_connect_a_github_repository_to_start_synci_0e1f2ea6" formatted="false">"Підключіть репозиторій GitHub, щоб почати синхронізацію."</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"Підключіть загальнодоступний або приватний HTTPS- чи SSH-репозиторій на GitHub, GitLab, Bitbucket або власному Git-сервері."</string>
-    <string name="ui_connect_with_github_6f2b4e53" formatted="false">"Підключити через GitHub"</string>
-    <string name="ui_connect_your_github_account_to_browse_and_b692e428" formatted="false">"Підключіть обліковий запис GitHub для перегляду й синхронізації репозиторіїв."</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Продовжити переоблік"</string>
-    <string name="ui_copy_visible_29e7587c" formatted="false">"Копіювати видимі"</string>
-    <string name="ui_create_4759498a" formatted="false">"Створити"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Створіть файл або папку за допомогою кнопки «Створити»."</string>
-    <string name="ui_create_a_pat_on_github_baa86691" formatted="false">"Створити PAT на GitHub →"</string>
-    <string name="ui_create_fde9c501" formatted="false">"Створити"</string>
-    <string name="ui_create_new_branch_bf815ec6" formatted="false">"Створити нову гілку"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Поточна типова папка"</string>
-    <string name="ui_current_e3cc57e1" formatted="false">"Поточна"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Поточна окрема адреса push: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"Темна тема"</string>
-    <string name="ui_debug_0ffd43f5" formatted="false">"Налагодження"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Налагоджувальна інформація"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Типове місце для нових клонів. Кожен клон може використовувати іншу папку."</string>
     <string name="ui_delete_1_s_6474596f">"Видалити «%1$s»?"</string>
-    <string name="ui_delete_branch_00339d48" formatted="false">"Видалити гілку?"</string>
-    <string name="ui_delete_branch_1_s_bbe46386">"Видалити гілку \"%1$s\"?"</string>
-    <string name="ui_delete_branch_1c3f98e5" formatted="false">"Видалити гілку"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Видалити"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Видалити файл"</string>
     <string name="ui_delete_local_files_09697434" formatted="false">"Ви хочете видалити локальні файли?"</string>
     <string name="ui_delete_local_files_20424441" formatted="false">": Видалення локальних файлів"</string>
-    <string name="ui_delete_tag_365635aa" formatted="false">"Видалити тег"</string>
     <string name="ui_destination_1_s_0df94639">"Призначення: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Батьківська папка призначення"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"Діагностика"</string>
-    <string name="ui_diff_b6aeb797" formatted="false">"Різниця"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Відкинути чернетку"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Відхилити"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Відкинути чернетку розв’язання?"</string>
-    <string name="ui_discovered_repositories_059a8e8d" formatted="false">"Знайдені репозиторії"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Закрити"</string>
-    <string name="ui_done_283e91eb" formatted="false">"Готово"</string>
-    <string name="ui_download_location_7cc4e69d" formatted="false">"Місце завантаження"</string>
-    <string name="ui_download_missing_file_contents_f54939ee" formatted="false">"Завантажити відсутній вміст файлів"</string>
-    <string name="ui_drop_stash_969bf549" formatted="false">"Видалити stash"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Під час перебазування відстежувана гілка — це сторона ours у Git, а локальний коміт, що переноситься, — theirs."</string>
-    <string name="ui_e_g_feature_new_ui_76d6dd27" formatted="false">"наприклад, feature/new-ui"</string>
-    <string name="ui_e_g_myproject_e18eb00a" formatted="false">"наприклад, MyProject"</string>
-    <string name="ui_e_g_prod_7d4c667a" formatted="false">"наприклад, prod"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Редагувати автора коміту"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Редагувати з’єднання"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Редагувати розв’язання"</string>
@@ -1292,147 +836,64 @@
     <string name="ui_email_969ccbd3" formatted="false">"Ел. пошта"</string>
     <string name="ui_empty_folder_ca1fd454" formatted="false">"Порожня папка"</string>
     <string name="ui_enable_access_9d7caf64" formatted="false">"Увімкнути доступ"</string>
-    <string name="ui_endpoint_authentication_1841e2be" formatted="false">"Автентифікація кінцевої точки"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Введіть облікові дані знову або виберіть публічний доступ для нової адреси."</string>
-    <string name="ui_enter_the_full_path_to_your_git_repository_f926e25c" formatted="false">"Введіть повний шлях до свого репозиторію Git."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Помилка"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Для кожного SSH-сервера потрібна перевірка відбитка перед наступним з’єднанням. Пошкоджені записи довіри також буде видалено."</string>
-    <string name="ui_fetch_and_apply_remote_changes_399278ae" formatted="false">"Отримати та застосувати віддалені зміни"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Отримати дані й перевірити перебазування"</string>
-    <string name="ui_fetch_remote_changes_b7ba6b06" formatted="false">"Отримати віддалені зміни"</string>
-    <string name="ui_file_1_s_9fdb0f6d">"Файл: %1$s"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Не вдалося виконати операцію з файлом"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"Завершити відновлення переміщення"</string>
-    <string name="ui_finishing_up_13f4f85a" formatted="false">"Завершення"</string>
-    <string name="ui_forget_a6bd489d" formatted="false">"Забути"</string>
-    <string name="ui_forget_server_e43c85d4" formatted="false">"Забути сервер"</string>
-    <string name="ui_forget_ssh_server_d5c91f0a" formatted="false">"Забути SSH-сервер?"</string>
-    <string name="ui_from_1_s_40f7d611">" з %1$s"</string>
-    <string name="ui_full_version_no_subscription_8fe42d1c" formatted="false">"ПОВНА ВЕРСІЯ · БЕЗ ПЕРЕДПЛАТИ"</string>
-    <string name="ui_ghp_ff475c83" formatted="false">"ghp_..."</string>
-    <string name="ui_git_b084246d" formatted="false">"GIT"</string>
-    <string name="ui_git_lfs_keeps_large_file_contents_outside_4b4afd49" formatted="false">"Git LFS зберігає вміст великих файлів поза історією Git. Коміти містять невеликі вказівники; клонування та pull завантажують вміст, а push надсилає об’єкти перед публікацією комітів."</string>
-    <string name="ui_git_lfs_needs_attention_01f551e1" formatted="false">"Git LFS потребує уваги"</string>
-    <string name="ui_git_lfs_tracking_and_downloads_0ec019bf" formatted="false">"Git LFS · Відстеження й завантаження"</string>
-    <string name="ui_git_remote_91593664" formatted="false">"Віддалений репозиторій Git"</string>
-    <string name="ui_github_account_connected_ccc5f749" formatted="false">"Обліковий запис GitHub підключено"</string>
-    <string name="ui_github_accounts_653cf0c5" formatted="false">"Облікові записи GitHub"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub – вход\nУ"</string>
-    <string name="ui_gitsync_md_full_version_dde459ca" formatted="false">"Повна версія Gitsync.md"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md потрібен доступ до спільного сховища для керування справжніми робочими копіями Git у папках пристрою. Виберіть потрібні папки після ввімкнення доступу в налаштуваннях Android."</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md не надаватиме облікових даних для цього репозиторію."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Поверніться та виберіть репозиторій."</string>
     <string name="ui_hash_a9106914" formatted="false">"Хеш"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Я розумію, що інший власник і далі може редагувати цей файл."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Укажіть ім’я користувача SSH в адресі: git@host:team/repo.git або ssh://git@host:2222/team/repo.git."</string>
-    <string name="ui_info_170322a3" formatted="false">"Info"</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"Зберегти перевірену резервну копію метаданих"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Продовжити редагування"</string>
-    <string name="ui_keep_selected_files_in_regular_git_7de351fc" formatted="false">"Залишити вибрані файли у звичайному Git"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Парольна фраза ключа (необов’язково)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Ключі зашифровані на цьому пристрої й використовуються лише для збереженої адреси репозиторію. Перевірте відбиток сервера під час першого підключення."</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"Остання синхронізація"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Залиште порожнім, щоб використовувати типову гілку сервера."</string>
-    <string name="ui_lfs_endpoint_02a55a73" formatted="false">"Кінцева точка LFS"</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"Дозволи для кінцевих точок LFS"</string>
-    <string name="ui_lfs_endpoint_token_or_password_e069890b" formatted="false">"Токен або пароль кінцевої точки LFS"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"Ім’я користувача кінцевої точки LFS"</string>
-    <string name="ui_license_c011d609" formatted="false">"Ліцензія"</string>
     <string name="ui_loading_dc380888" formatted="false">"Завантаження"</string>
-    <string name="ui_loading_diff_3944c704" formatted="false">"Завантаження різниці"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"Завантаження репозиторіїв"</string>
-    <string name="ui_loading_repository_15b79262" formatted="false">"Завантаження репозиторію"</string>
-    <string name="ui_local_changes_4d25c7d4" formatted="false">"Локальні зміни"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"Локальні репозиторії"</string>
     <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"Керування обліковими записами GitHub"</string>
-    <string name="ui_manual_7c8107bd" formatted="false">"ВРУЧНУ"</string>
     <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Відповідний відкритий ключ (необов’язково)"</string>
-    <string name="ui_md_70cbd51e" formatted="false">".MD"</string>
     <string name="ui_merge_8851aaa7" formatted="false">"Злити"</string>
-    <string name="ui_merge_branch_into_1_s_88a0ca2d">"Злити гілку в %1$s"</string>
-    <string name="ui_merge_commit_message_2132e189" formatted="false">": повідомлення про об\'єднання комітів"</string>
-    <string name="ui_merge_fc2b737d" formatted="false">"Злити"</string>
-    <string name="ui_merge_strategy_69ea53c4" formatted="false">"Стратегія злиття:"</string>
-    <string name="ui_message_f5394f72" formatted="false">"Повідомлення:"</string>
-    <string name="ui_metadata_b17f2c85" formatted="false">"Метадані:"</string>
     <string name="ui_more_d47d7cb0" formatted="false">"Більше"</string>
     <string name="ui_move_recoveries_90731b9e" formatted="false">"Відновлення переміщень"</string>
     <string name="ui_move_repository_1c4a6083" formatted="false">"Перемістити репозиторій"</string>
-    <string name="ui_name_dcd1d522" formatted="false">"Ім\'я"</string>
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Назва в GitSync.md"</string>
-    <string name="ui_new_18fdd549" formatted="false">"Створити"</string>
-    <string name="ui_new_branch_name_3fb60017" formatted="false">"new-branch-name"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Нові коміти в цьому репозиторії використовуватимуть це ім’я та електронну адресу. Наявні коміти зберігають початкового автора."</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"– Новий файл"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"Нова папка"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Новий токен або пароль"</string>
-    <string name="ui_no_approved_custom_lfs_endpoints_e7c9b85a" formatted="false">"Немає схвалених власних кінцевих точок LFS"</string>
-    <string name="ui_no_branches_available_7f5adec5" formatted="false">"Немає доступних гілок"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Немає змін для показу"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Коміти не знайдено"</string>
-    <string name="ui_no_conflicts_found_d356b17b" formatted="false">"Конфлікти не знайдено"</string>
     <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Немає підключених облікових записів. Локальні репозиторії залишаються доступними."</string>
-    <string name="ui_no_lfs_pointers_in_the_current_index_612c2995" formatted="false">"У поточному індексі немає вказівників LFS."</string>
     <string name="ui_no_local_changes_56319dc5" formatted="false">"Немає локальних змін"</string>
-    <string name="ui_no_local_changes_to_stash_0beb8393" formatted="false">"Немає локальних змін для сховку"</string>
-    <string name="ui_no_new_binary_or_large_files_need_a_tracki_8935ebaf" formatted="false">"Немає нових двійкових або великих файлів, для яких треба вибрати спосіб відстеження."</string>
-    <string name="ui_no_repositories_a6e9ff91" formatted="false">"Немає репозиторіїв"</string>
-    <string name="ui_no_repositories_added_yet_74c8565e" formatted="false">"Репозиторії ще не додано."</string>
-    <string name="ui_no_repositories_saved_add_one_in_settings_16062236" formatted="false">"Немає збережених репозиторіїв. Додайте репозиторій у налаштуваннях."</string>
     <string name="ui_no_repository_555da78f" formatted="false">"Немає репозиторію"</string>
-    <string name="ui_no_repository_aec5972a" formatted="false">"НЕМАЄ РЕПОЗИТОРІЮ"</string>
     <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Відкладені зміни не знайдено"</string>
-    <string name="ui_no_tags_found_8a6dd503" formatted="false">"Теги не знайдено"</string>
     <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"Немає тегів у цьому репозиторії"</string>
-    <string name="ui_no_trusted_ssh_servers_df52a7ed" formatted="false">"Немає довірених SSH-серверів"</string>
-    <string name="ui_no_working_copies_found_in_the_scanned_fol_904c5b06" formatted="false">"У перевірених папках робочих копій не знайдено."</string>
-    <string name="ui_none_dc937b59" formatted="false">"Немає"</string>
-    <string name="ui_now_ed5eb9a3" formatted="false">"зараз"</string>
     <string name="ui_ok_565339bc" formatted="false">"OK"</string>
     <string name="ui_open_ed077f3d" formatted="false">"Відкрити"</string>
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Відкрити Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Відкрити у файлах"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Відкриття файлу…"</string>
-    <string name="ui_or_7175517a" formatted="false">"або"</string>
-    <string name="ui_ours_1_s_bytes_e7da423a">"Наша версія: %1$s байт"</string>
-    <string name="ui_ours_ab658c14" formatted="false">"Наше"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"Перевизначити вигляд системи"</string>
     <string name="ui_owner_1_s_599ca9ce">"Власник: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Батьки (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Шлях"</string>
-    <string name="ui_path_to_repo_b9d23344" formatted="false">"/path/to/repo"</string>
-    <string name="ui_personal_access_token_5572fccc" formatted="false">"Personal Access Token"</string>
-    <string name="ui_personal_access_token_702ef4a0" formatted="false">"– особистий доступний токен"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Платформа"</string>
-    <string name="ui_please_resolve_all_conflicts_before_comple_9be0a6e5" formatted="false">"Розв’яжіть усі конфлікти перед завершенням злиття."</string>
-    <string name="ui_pop_52e740ad" formatted="false">"Витягнути"</string>
-    <string name="ui_pop_stash_2adc4302" formatted="false">"Застосувати й видалити stash"</string>
-    <string name="ui_previously_added_627f4765" formatted="false">"Додані раніше"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"Раніше довірений відбиток: %1$s"</string>
-    <string name="ui_privacy_policy_506ff394" formatted="false">"Політика конфіденційності"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"Публічний доступ"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Підтягування з перерахуванням"</string>
-    <string name="ui_pull_with_rebase_resume_rebase_035aaf45" formatted="false">"Pull із перебазуванням / продовжити перебазування"</string>
-    <string name="ui_push_792aac67" formatted="false">"Надіслати"</string>
-    <string name="ui_push_blocked_by_lfs_locks_e4e28836" formatted="false">"Push заблоковано блокуваннями LFS"</string>
-    <string name="ui_push_local_changes_to_remote_54e75f8c" formatted="false">"Надіслати локальні зміни на сервер"</string>
-    <string name="ui_read_and_edit_files_in_this_repository_3ecfad78" formatted="false">"Читання й редагування файлів цього репозиторію"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Триває перебазування"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Перебазувати на перевірену гілку"</string>
-    <string name="ui_recent_operation_outcomes_on_this_device_t_2a52131b" formatted="false">"Останні результати операцій на цьому пристрої. Журнал зберігає до 500 записів. Облікові дані, адреси репозиторіїв, шляхи та вміст файлів не включаються."</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Перепідключити"</string>
-    <string name="ui_reconnect_working_copies_already_stored_by_76634d9e" formatted="false">"Повторно підключіть робочі копії, уже збережені GitSync.md. Прибирання запису зберігає файли; видалення керованого клону та вимкнення Git — окремі дії."</string>
     <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"Відновлення потребує уваги. Розпізнані робочі копії зберігаються."</string>
     <string name="ui_refresh_0e916101" formatted="false">"Оновити"</string>
     <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Оновити стан перебазування"</string>
-    <string name="ui_reload_1_s_873e324f">"Завантажити %1$s знову?"</string>
     <string name="ui_reload_author_18a711d8" formatted="false">"Перезавантажити автора"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Перезавантажити з’єднання"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Завантажити знову з диска"</string>
-    <string name="ui_reload_lfs_state_046eb2f5" formatted="false">"Оновити стан LFS"</string>
     <string name="ui_remove_1_s_e4dd7c24">"Видалити %1$s?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"Прибрати «%1$s»?\n\nЦе прибере його з GitSync.md. Усі локальні файли й історія Git залишаться на цьому пристрої, і ви зможете підключити його знову пізніше. Віддалений репозиторій не зміниться."</string>
-    <string name="ui_remove_5fdf0b2b" formatted="false">"Видалити"</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Видаліть усі схвалення власних кінцевих точок і їхні збережені облікові дані на цьому пристрої. Кожна точка й напрямок передавання потребуватимуть нової перевірки."</string>
     <string name="ui_remove_c3812fc4" formatted="false">"Видалити"</string>
     <string name="ui_remove_credentials_1b0700a3" formatted="false">"Видалити облікові дані"</string>
@@ -1444,141 +905,58 @@
     <string name="ui_remove_repository_fc68168b" formatted="false">"Прибрати репозиторій"</string>
     <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"Видалити збережені облікові дані"</string>
     <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Видалити збережені облікові дані?"</string>
-    <string name="ui_remove_sign_in_ae9ee617" formatted="false">"Видалити дані входу"</string>
     <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Видалити збережений оригінал?"</string>
-    <string name="ui_remove_this_repository_and_delete_its_loca_5533c124" formatted="false">"Вилучити цей репозиторій і видалити його локальні файли з пристрою? Ваш репозиторій на GitHub не зміниться."</string>
     <string name="ui_remove_tracking_4b40d72c" formatted="false">"Вимкнути Git"</string>
-    <string name="ui_removed_70fa71f8" formatted="false">"Видалено"</string>
-    <string name="ui_rename_1_s_9b09e088">"Перейменувати %1$s"</string>
     <string name="ui_rename_3064d79a" formatted="false">"— Змінити назву"</string>
     <string name="ui_rename_file_e3526ab6" formatted="false">": Змінити назву файлу"</string>
     <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Локальний коміт, що переноситься"</string>
     <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Переносить локальні коміти на налаштовану відстежувану гілку. Ідентифікатори локальних комітів можуть змінитися. Наявна структура злиттів зберігається. Нічого не надсилається."</string>
-    <string name="ui_repo_health_ed3e070f" formatted="false">"Стан репозиторію"</string>
     <string name="ui_repo_path_a3f06032" formatted="false">"Шлях до репозиторію"</string>
     <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Для репозиторіїв, призначених цьому обліковому запису, потрібно буде ввійти знову або вибрати інший запис у розділі «Підключення репозиторію». Локальні файли й коміти зберігаються."</string>
-    <string name="ui_repository_13d6ff07" formatted="false">"Репозиторій"</string>
     <string name="ui_repository_connection_1188001b" formatted="false">"Підключення репозиторію"</string>
     <string name="ui_repository_operation_failed_f1152917" formatted="false">"Операція з репозиторієм не вдалася"</string>
-    <string name="ui_repository_path_037711af" formatted="false">"Шлях до репозиторію"</string>
-    <string name="ui_repository_status_64c67cd2" formatted="false">"Стан репозиторію"</string>
     <string name="ui_repository_url_c83db013" formatted="false">"URL репозиторію"</string>
-    <string name="ui_reset_all_lfs_endpoint_approvals_d20616d7" formatted="false">"Скинути всі схвалення кінцевих точок LFS?"</string>
-    <string name="ui_reset_all_lfs_endpoint_approvals_e6d5c6c6" formatted="false">"Скинути всі схвалення кінцевих точок LFS"</string>
-    <string name="ui_reset_all_ssh_server_trust_3b8a05a5" formatted="false">"Скинути всю довіру SSH"</string>
-    <string name="ui_reset_all_ssh_server_trust_4917ea5f" formatted="false">"Скинути всю довіру SSH?"</string>
-    <string name="ui_reset_approvals_79eec91d" formatted="false">"Скинути схвалення"</string>
-    <string name="ui_reset_trust_b9be3a3c" formatted="false">"Скинути довіру"</string>
     <string name="ui_resolve_1_s_94accfee">"Розв’язати %1$s"</string>
     <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Розв’язати й додати до індексу"</string>
-    <string name="ui_resolve_conflict_ff598c8a" formatted="false">": Розв\'язання конфлікту"</string>
-    <string name="ui_resolved_5be3c2c8" formatted="false">"Вирішено"</string>
     <string name="ui_resolved_content_69213720" formatted="false">"Результат розв’язання"</string>
     <string name="ui_resolved_contents_55ceff37" formatted="false">"Вміст після розв’язання"</string>
-    <string name="ui_resolved_fea6a678" formatted="false">"ВИРІШЕНО"</string>
     <string name="ui_resolving_1_s_5e8ada92">"Розв’язання: %1$s"</string>
     <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Відновити як окремий репозиторій"</string>
     <string name="ui_retained_original_1_s_61bc9b73">"Збережений оригінал: %1$s"</string>
     <string name="ui_retry_942087cc" formatted="false">"Запуск повторно"</string>
-    <string name="ui_retry_e464c660" formatted="false">"Запуск повторно"</string>
     <string name="ui_return_to_repositories_c97a4463" formatted="false">"Повернутися до репозиторіїв"</string>
-    <string name="ui_revert_all_changes_06b0eb3d" formatted="false">"Скасувати всі зміни"</string>
-    <string name="ui_revert_all_changes_416c8713" formatted="false">"↩  Скасувати всі зміни"</string>
-    <string name="ui_revert_c8d62872" formatted="false">"↩  Скасувати"</string>
-    <string name="ui_revert_changes_5b36e77f" formatted="false">"Скасувати зміни"</string>
     <string name="ui_revert_commit_a2d355f7" formatted="false">"Скасувати коміт через revert"</string>
     <string name="ui_review_destination_59808b00" formatted="false">"Перевірити призначення"</string>
     <string name="ui_review_restored_folder_66729a70" formatted="false">"Перевірити відновлену папку"</string>
-    <string name="ui_review_the_separate_lfs_servers_allowed_fo_dd9404dd" formatted="false">"Перевірте окремі сервери LFS, дозволені для ваших репозиторіїв. Відкликання дозволу зупиняє майбутнє передавання в цьому напрямку; поточні операції можуть завершитися."</string>
-    <string name="ui_reviewed_destination_7173c3da" formatted="false">"Перевірене призначення"</string>
-    <string name="ui_revoke_87e6d00b" formatted="false">"Відкликати"</string>
     <string name="ui_save_1509f561" formatted="false">"Зберегти"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Зберегти автора"</string>
-    <string name="ui_save_c210bfdf" formatted="false">"Зберегти"</string>
-    <string name="ui_save_changes_to_1_s_4cb0cf65">"Зберегти зміни в %1$s?"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Зберегти з’єднання"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"Збережені облікові дані зашифровані на цьому пристрої й використовуються лише для HTTPS-адреси цього репозиторію."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Після збереження ця адреса використовуватиметься і для fetch, і для push. Потім виконайте fetch, щоб оновити віддалений стан."</string>
-    <string name="ui_scan_a_device_folder_995756f2" formatted="false">"Сканувати папку пристрою"</string>
-    <string name="ui_scan_app_folders_12ed3a77" formatted="false">"Сканувати папки застосунку"</string>
-    <string name="ui_search_repositories_243865a1" formatted="false">"Пошук репозиторіїв…"</string>
-    <string name="ui_select_repository_64bd6444" formatted="false">"Виберіть репозиторій"</string>
-    <string name="ui_select_source_branch_to_merge_c3dbf949" formatted="false">"Виберіть вихідну гілку для злиття:"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Вибрана папка"</string>
-    <string name="ui_separate_username_and_token_f8a9a3b9" formatted="false">"Окремі ім’я користувача й токен"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"Налаштування"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Поділитися архівом резервної копії"</string>
-    <string name="ui_share_visible_4fcf9b94" formatted="false">"Поділитися видимими"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"Показувати налагоджувальну інформацію"</string>
-    <string name="ui_sign_in_75606a00" formatted="false">"Увійти"</string>
-    <string name="ui_sign_out_0b184bc5" formatted="false">"Вийти"</string>
-    <string name="ui_skip_current_commit_370b7166" formatted="false">"Пропустити поточний коміт…"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Не вдалося прочитати або зберегти частину діагностики. Наявні дані збережено. Очистьте журнал, щоб відновити записування."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH – приватний ключ"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Довіра до SSH-серверів"</string>
-    <string name="ui_stage_all_d1ce47c8" formatted="false">"Додати всі зміни до індексу"</string>
     <string name="ui_stage_de838855" formatted="false">"Підготувати"</string>
-    <string name="ui_start_from_eb3f51dc" formatted="false">"Почати з"</string>
-    <string name="ui_stash_message_optional_7b463cf6" formatted="false">"повідомлення «Stash» (необов\'язково) …"</string>
-    <string name="ui_strategy_6b27710d" formatted="false">"Стратегія"</string>
-    <string name="ui_switch_39921a74" formatted="false">"Перемкнути"</string>
-    <string name="ui_switch_to_branch_278b039a" formatted="false">"Перейти на гілку"</string>
-    <string name="ui_sync_7dcad682" formatted="false">"SYNC"</string>
-    <string name="ui_tag_name_e_g_v1_0_0_16aa5a68" formatted="false">"tag-name (e.g. v1.0.0)"</string>
-    <string name="ui_tags_1331275b" formatted="false">"Теги"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Активна папка призначення залишиться на місці. GitSync.md перевірить, що збережений оригінал не містить пізніших змін, перш ніж назавжди видалити його файли та історію Git."</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Зашифроване з’єднання повторно використовується лише для початкової адреси репозиторію. Явно змініть автентифікацію, щоб використовувати іншу адресу."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Папку можна перемістити безпосередньо в межах цього тому."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Попередній обліковий запис GitHub від’єднано. Виберіть підключений обліковий запис або інший спосіб автентифікації."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Локальний коміт, що переноситься, видаляє цей файл."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Перевірені дані змінилися. Скасуйте дію й оновіть блокування сервера."</string>
-    <string name="ui_the_scan_reached_its_depth_or_folder_limit_9b655557" formatted="false">"Досягнуто обмеження глибини або кількості папок. Деякі папки не було перевірено."</string>
-    <string name="ui_theirs_1_s_bytes_70028ef3">"Їхня версія: %1$s байт"</string>
-    <string name="ui_theirs_691ef727" formatted="false">"Їхнє"</string>
-    <string name="ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3">"Нерозв’язані конфлікти: %1$s."</string>
-    <string name="ui_this_cannot_be_undone_b545dd16" formatted="false">"Цього неможливо скасувати."</string>
-    <string name="ui_this_changes_gitattributes_files_and_the_s_686aaa3b" formatted="false">"Це змінює .gitattributes. Файли та індекс залишаються незмінними, доки ви не додасте зміни до індексу."</string>
-    <string name="ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d" formatted="false">"Переміщення між томами сховища. GitSync.md перевірить скопійований вміст і зберігатиме оригінал у розділі «Відновлення переміщень», доки ви його не вилучите."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Цей запис історії недоступний."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Це зніме блокування іншого підключення. Узгодьте дію з власником, перш ніж продовжити."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Цей репозиторій використовуватиме публічний доступ, доки ви знову не виберете автентифікацію. Ваш обліковий запис GitHub, у який виконано вхід, не використовуватиметься для нього. Адреси fetch і push залишаться без змін."</string>
-    <string name="ui_this_will_discard_all_progress_and_return_a2f7aabf" formatted="false">"Увесь поступ буде відкинуто, а репозиторій повернеться до стану перед злиттям."</string>
-    <string name="ui_this_will_keep_your_version_of_the_file_a9475bb6" formatted="false">"Буде збережено вашу версію файлу."</string>
-    <string name="ui_this_will_use_the_incoming_version_of_the_96940ba5" formatted="false">"Буде використано вхідну версію файлу."</string>
-    <string name="ui_this_will_use_your_manually_edited_content_86084831" formatted="false">"Буде використано вміст, відредагований вручну."</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"токен або пароль"</string>
-    <string name="ui_track_selected_files_with_lfs_77617dd9" formatted="false">"Відстежувати вибрані файли через LFS"</string>
-    <string name="ui_tracked_objects_a265fdb0" formatted="false">"Відстежувані об’єкти"</string>
-    <string name="ui_tracking_1_s_b83cf9b3">"Відстеження: %1$s"</string>
-    <string name="ui_tracking_review_8d316853" formatted="false">"Перевірка відстеження"</string>
-    <string name="ui_trusted_server_fingerprints_are_saved_on_t_2ceb562d" formatted="false">"Відбитки довірених серверів зберігаються на цьому пристрої. Якщо забути сервер, під час наступного з’єднання потрібна перевірка. Приватні ключі репозиторіїв залишаються збереженими."</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Не вдалося відкрити файл"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"Скасувати підготовку"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Оновіть адресу або автентифікацію цієї робочої копії. Локальні файли, коміти й підготовлені зміни залишаться на місці."</string>
     <string name="ui_upstream_94adc696" formatted="false">"Відстежувана гілка"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Відстежувана гілка видалила цей файл."</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"Використовуйте HTTPS-адресу на github.com. Клон зберігає вибраний обліковий запис, навіть якщо ви змінюєте обліковий запис для перегляду репозиторіїв."</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"Використати сховище застосунку"</string>
-    <string name="ui_use_for_browsing_f4b0d6df" formatted="false">"Використовувати для перегляду"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Використовувати для нових клонів"</string>
-    <string name="ui_use_ours_4bec9877" formatted="false">"— використовуйте наші рішення"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"Використати збережене з’єднання"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Використати збережений типовий варіант"</string>
-    <string name="ui_use_saved_endpoint_credentials_2f2000f7" formatted="false">"Використати збережені облікові дані кінцевої точки"</string>
-    <string name="ui_use_theirs_352c4272" formatted="false">"використовують їхні ресурси"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Ім\'я користувача"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"Ім’я користувача + токен"</string>
-    <string name="ui_using_strategy_1_s_6c76b5ef">"Використана стратегія: %1$s"</string>
-    <string name="ui_verify_this_address_with_the_repository_ow_e6a8ca84" formatted="false">"Перевірте цю адресу у власника репозиторію. Схвалення діє лише для цього репозиторію, віддаленого репозиторію Git, кінцевої точки LFS і напрямку передавання на цьому пристрої."</string>
-    <string name="ui_version_dd167905" formatted="false">"Версія"</string>
-    <string name="ui_warning_e981ddae" formatted="false">"Попередження"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"Без резервної копії локальну історію Git буде видалено назавжди. Цю дію неможливо скасувати."</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"Робочі файли залишаться на місці. Локальні гілки, коміти, стеші, віддалені репозиторії та історію буде від’єднано від цієї папки."</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Ваші зміни не збережено."</string>
-    <string name="ui_your_git_sign_in_is_not_shared_with_this_s_8fbab830" formatted="false">"Ваші дані входу Git не передаються цьому серверу. Окремі облікові дані кінцевої точки шифруються на цьому пристрої. Керуйте схваленнями або відкликайте їх у Налаштування → Схвалення кінцевих точок LFS."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Ненадісланий текст буде відкинуто. Робочий файл залишиться без змін."</string>
     <string name="untracked" formatted="false">"Не відстежено"</string>
-    <string name="upstream_body" formatted="false">"Задайте ціль синхронізації для цієї локальної гілки. Файли, коміти й збережені підключення не зміняться."</string>
     <string name="upstream_branch" formatted="false">"Гілка"</string>
     <string name="upstream_local_branch">"Локальна гілка: %1$s"</string>
     <string name="upstream_remote" formatted="false">"Віддалений репозиторій"</string>
@@ -1608,7 +986,6 @@
     <string name="vault_l10n_device_storage" formatted="false">"Сховище пристрою"</string>
     <string name="vault_l10n_enable_shared_storage" formatted="false">"Увімкніть доступ до спільного сховища, а потім виберіть папку ще раз. Сховище застосунку залишається доступним і без цього дозволу."</string>
     <string name="vault_l10n_enable_shared_storage_before" formatted="false">"Увімкніть доступ до спільного сховища, перш ніж вибирати папку"</string>
-    <string name="vault_l10n_files_git_status">"Git: %1$s"</string>
     <string name="vault_l10n_folder_access_removed" formatted="false">"Доступ до папки було відкликано. Виберіть цю папку ще раз, перш ніж продовжити."</string>
     <string name="vault_l10n_folder_access_save_failed" formatted="false">"Не вдалося зберегти доступ до папки"</string>
     <string name="vault_l10n_folder_cloud_provider" formatted="false">"Виберіть папку на цьому пристрої або на під’єднаному томі сховища. Цей рушій Git не може напряму працювати з хмарним постачальником документів."</string>
@@ -1664,11 +1041,6 @@
     <string name="vault_l10n_size_bytes">"%1$s Б"</string>
     <string name="vault_l10n_size_kb">"%1$s КБ"</string>
     <string name="vault_l10n_size_mb">"%1$s МБ"</string>
-    <string name="vault_l10n_status_conflict" formatted="false">"конфлікт"</string>
-    <string name="vault_l10n_status_staged" formatted="false">"підготовлено"</string>
-    <string name="vault_l10n_status_staged_deletion" formatted="false">"підготовлене видалення"</string>
-    <string name="vault_l10n_status_staged_unstaged" formatted="false">"підготовлено + не підготовлено"</string>
-    <string name="vault_l10n_status_untracked" formatted="false">"не відстежується"</string>
     <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Спочатку виберіть папку"</string>
     <string name="vault_l10n_storage_location_changed" formatted="false">"Це місце зберігання змінилося. Виберіть папку ще раз."</string>
     <string name="vault_l10n_storage_needs_attention" formatted="false">"Сховище потребує уваги"</string>
@@ -1726,12 +1098,6 @@
         <item quantity="many">"+%1$s -%2$s рядків"</item>
         <item quantity="other">"+%1$s -%2$s рядка"</item>
     </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d файл"</item>
-        <item quantity="few">"%1$d файли"</item>
-        <item quantity="many">"%1$d файлів"</item>
-        <item quantity="other">"%1$d файла"</item>
-    </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Злиття зупинено: %1$s (%2$d конфлікт)"</item>
         <item quantity="few">"Злиття зупинено: %1$s (%2$d конфлікти)"</item>
@@ -1743,12 +1109,6 @@
         <item quantity="few">"Завантажено %1$d об’єкти."</item>
         <item quantity="many">"Завантажено %1$d об’єктів."</item>
         <item quantity="other">"Завантажено %1$d об’єкта."</item>
-    </plurals>
-    <plurals name="lfs_extensions_affected">
-        <item quantity="one">"%1$d наявний файл використовуватиме LFS після додавання до індексу"</item>
-        <item quantity="few">"%1$d наявні файли використовуватимуть LFS після додавання до індексу"</item>
-        <item quantity="many">"%1$d наявних файлів використовуватимуть LFS після додавання до індексу"</item>
-        <item quantity="other">"%1$d наявних файлів використовуватимуть LFS після додавання до індексу"</item>
     </plurals>
     <plurals name="lfs_extensions_more">
         <item quantity="one">"І ще %1$d наявний файл. Перегляньте зміни Git перед створенням коміту."</item>
@@ -1780,12 +1140,6 @@
         <item quantity="many">"%1$s файлів із метаданими Git · %2$s"</item>
         <item quantity="other">"%1$s файлу з метаданими Git · %2$s"</item>
     </plurals>
-    <plurals name="paywall_check_files">
-        <item quantity="one">"%1$d файл"</item>
-        <item quantity="few">"%1$d файли"</item>
-        <item quantity="many">"%1$d файлів"</item>
-        <item quantity="other">"%1$d файлу"</item>
-    </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"Ще %1$d заблокований шлях не показано."</item>
         <item quantity="few">"Ще %1$d заблоковані шляхи не показано."</item>
@@ -1815,42 +1169,6 @@
         <item quantity="few">"· %1$d репозиторії"</item>
         <item quantity="many">"· %1$d репозиторіїв"</item>
         <item quantity="other">"· %1$d репозиторію"</item>
-    </plurals>
-    <plurals name="tide_git_conflicts_to_resolve">
-        <item quantity="one">"%1$d конфлікт потрібно вирішити"</item>
-        <item quantity="few">"%1$d конфлікти потрібно вирішити"</item>
-        <item quantity="many">"%1$d конфліктів потрібно вирішити"</item>
-        <item quantity="other">"%1$d конфлікту потрібно вирішити"</item>
-    </plurals>
-    <plurals name="tide_git_files_staged">
-        <item quantity="one">"Підготовлено %1$d файл"</item>
-        <item quantity="few">"Підготовлено %1$d файли"</item>
-        <item quantity="many">"Підготовлено %1$d файлів"</item>
-        <item quantity="other">"Підготовлено %1$d файла"</item>
-    </plurals>
-    <plurals name="tide_git_headline_commit">
-        <item quantity="one">"Створити коміт: %1$d файл"</item>
-        <item quantity="few">"Створити коміт: %1$d файли"</item>
-        <item quantity="many">"Створити коміт: %1$d файлів"</item>
-        <item quantity="other">"Створити коміт: %1$d файла"</item>
-    </plurals>
-    <plurals name="tide_home_headline_attention">
-        <item quantity="one">"%1$d сховище\nпотребує уваги."</item>
-        <item quantity="few">"%1$d сховища\nпотребують уваги."</item>
-        <item quantity="many">"%1$d сховищ\nпотребують уваги."</item>
-        <item quantity="other">"%1$d сховища\nпотребують уваги."</item>
-    </plurals>
-    <plurals name="tide_home_headline_ready">
-        <item quantity="one">"%1$d сховище\nна цьому телефоні."</item>
-        <item quantity="few">"%1$d сховища\nна цьому телефоні."</item>
-        <item quantity="many">"%1$d сховищ\nна цьому телефоні."</item>
-        <item quantity="other">"%1$d сховища\nна цьому телефоні."</item>
-    </plurals>
-    <plurals name="tide_home_start_github_count">
-        <item quantity="one">"Доступний %1$d репозиторій"</item>
-        <item quantity="few">"Доступні %1$d репозиторії"</item>
-        <item quantity="many">"Доступно %1$d репозиторіїв"</item>
-        <item quantity="other">"Доступно %1$d репозиторію"</item>
     </plurals>
     <plurals name="tide_vault_changes_on_phone">
         <item quantity="one">"зміна на цьому телефоні"</item>

@@ -27,7 +27,6 @@
     <string name="callback_grant_return">Return results automatically to the reviewed destinations</string>
     <string name="callback_copy_authorized">Authorize and copy link</string>
     <string name="callback_link_copied">Authorized link %1$s copied. Keep it private and paste it into your automation. Its token cannot be recovered later; create another link if needed.</string>
-    <string name="callback_grant_identity">Link %1$s · Created %2$s</string>
     <string name="callback_authorized_scope">Authorized links run the saved action without another prompt. Changed or revoked links stop here. Manage permissions in Repository actions → Authorized links.</string>
     <string name="callback_link_failed">The authorized link could not be copied. Review the repository again, and check Authorized links before retrying.</string>
     <string name="callback_grant_manage">Authorized links</string>

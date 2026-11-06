@@ -2,7 +2,6 @@
 <!-- Vault overflow actions, Fetch and the iOS local-changes resolution. Most English matches the iOS catalog. -->
 <resources>
     <string name="git_fetch">Fetch</string>
-    <string name="git_fetch_detail">Check remote for new commits</string>
     <string name="vault_repository_fallback">Repository</string>
     <string name="vault_open_in_files_failed">Could not open this folder in Files.</string>
     <string name="vault_copy_url">Copy repository URL</string>

@@ -139,6 +139,9 @@ class PullAllBackgroundTransportTest {
     @get:Rule val compose = createEmptyComposeRule()
     private lateinit var fixture: PullAllBackgroundFixture
     @Before fun setup() { fixture = PullAllBackgroundFixture() }
+    private fun awaitTag(tag: String) = compose.waitUntil(10_000) {
+        try { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() } catch (_: IllegalStateException) { false }
+    }
     @After fun cleanup() { if (::fixture.isInitialized) fixture.close() }
     @Test fun actualWidgetPendingIntentRunsTheServiceWithoutMainAndReviewDoesNotPullAgain() {
         fixture.clickWidget(); val run = fixture.awaitFinished(); fixture.assertHeadlessAndSafe(run)
@@ -162,7 +165,7 @@ class PullAllBackgroundTransportTest {
     }
     @Test fun productionStopCancelsAQueuedRepositoryLeaseWithoutStartingGitOrAnotherBatch(): Unit = runBlocking {
         fixture.context.startActivity(Intent(fixture.context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        compose.waitUntil(10_000) { try { compose.onAllNodesWithTag("open-pull-all").fetchSemanticsNodes().isNotEmpty() } catch (_: IllegalStateException) { false } }
+        awaitTag("open-settings")
         val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
         val blocker = CoroutineScope(Dispatchers.IO).launch { RepositoryOperationCoordinator.withRepository(fixture.clean.path) { entered.complete(Unit); release.await() } }
         val index = File(fixture.clean, ".git/index").readBytes()
@@ -172,7 +175,11 @@ class PullAllBackgroundTransportTest {
             compose.waitUntil(10_000) { fixture.runs.latest()?.state == BackgroundPullState.RUNNING }
             val run = fixture.runs.latest()!!
             fixture.clickWidget(); fixture.device.waitForIdle(); assertEquals(run.id, fixture.runs.latest()!!.id)
-            compose.onNodeWithTag("open-pull-all").performClick()
+            // Pull All lives under Settings -> Shortcuts & links on the M3 home.
+            compose.onNode(hasClickAction() and !hasTestTag("home-add-vault") and
+                (hasTestTag("open-settings") or hasAnyAncestor(hasTestTag("open-settings")))).performClick()
+            awaitTag("settings-shortcuts"); compose.onNodeWithTag("settings-shortcuts").performScrollTo().performClick()
+            awaitTag("shortcuts-open-pull-all"); compose.onNodeWithTag("shortcuts-open-pull-all").performScrollTo().performClick()
             compose.waitUntil(10_000) { compose.onAllNodesWithTag("pull-all-background-stop").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("pull-all-background-stop").performClick()
             compose.waitUntil(10_000) { fixture.runs.latest()?.state == BackgroundPullState.INTERRUPTED }
@@ -213,7 +220,8 @@ class PullAllTileTransportTest {
         var tile: UiObject2? = null
         repeat(6) {
             if (tile == null) {
-                tile = fixture.device.wait(Until.findObject(By.text("Pull All")), 2_000) ?: fixture.device.findObject(By.descContains("Pull All"))
+                val label = fixture.context.getString(R.string.tile_m3_pull_all)
+                tile = fixture.device.wait(Until.findObject(By.text(label)), 2_000) ?: fixture.device.findObject(By.descContains(label))
                 if (tile == null) {
                     val pager = fixture.instrumentation.uiAutomation.rootInActiveWindow
                         ?.findAccessibilityNodeInfosByViewId("com.android.systemui:id/qs_pager")?.singleOrNull()

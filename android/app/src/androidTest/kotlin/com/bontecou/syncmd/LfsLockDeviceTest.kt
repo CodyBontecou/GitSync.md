@@ -93,18 +93,23 @@ class LfsLockDeviceTest {
             // The Material 3 vault titles the repository by its catalog name; wait for its tab bar.
             compose.waitUntil(10_000) { compose.onAllNodesWithTag("vault-tab-git").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("vault-tab-git").performClick()
-            awaitText("Repository Status")
-            compose.onNodeWithTag("git-actions").performScrollToNode(hasText("Push current branch"))
-            compose.waitUntil(10_000) { compose.onAllNodes(hasText("Push current branch") and isEnabled()).fetchSemanticsNodes().size == 1 }
-            compose.onNodeWithText("Push current branch", substring = false).performClick()
-            compose.waitUntil(15_000) { compose.onAllNodesWithTag("lfs-lock-error").fetchSemanticsNodes().isNotEmpty() }
-            compose.onNodeWithTag("lfs-lock-error").assertTextContains("asset.bin", substring = true)
-            compose.onNodeWithTag("lfs-lock-error").assertTextContains("Fixture teammate", substring = true)
-            compose.onNodeWithTag("lfs-lock-error").assertTextContains("local commits were kept", substring = true)
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-history-ready").fetchSemanticsNodes().isNotEmpty() }
+            // Pushing lives on the Git tab's Remote screen: its hero offers "Push N commits" while ahead.
+            compose.onNodeWithTag("git-open-remote").performScrollTo().performClick()
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-remote-screen").fetchSemanticsNodes().isNotEmpty() }
+            fun push() {
+                compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("git-remote-push") and isEnabled()).fetchSemanticsNodes().size == 1 }
+                compose.onNodeWithTag("git-remote-push").performScrollTo().performClick()
+            }
+            push()
+            compose.waitUntil(15_000) { compose.onAllNodesWithTag("git-operation-message").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("git-operation-message").assertTextContains("asset.bin", substring = true)
+            compose.onNodeWithTag("git-operation-message").assertTextContains("Fixture teammate", substring = true)
+            compose.onNodeWithTag("git-operation-message").assertTextContains("local commits were kept", substring = true)
             val dark = args.getString("lockDark") == "true"
             capture(if (dark) "lfs-lock-blocked-dark-xl.png" else "lfs-lock-blocked-light.png")
             if (dark) {
-                compose.onNodeWithTag("lfs-lock-error").performTouchInput { swipeUp() }
+                compose.onNodeWithTag("git-operation-message").performTouchInput { swipeUp() }
                 capture("lfs-lock-blocked-dark-xl-scrolled.png")
             }
             assertEquals(remoteBefore, remoteHead())
@@ -113,15 +118,18 @@ class LfsLockDeviceTest {
             assertArrayEquals(bytes, File(root, "asset.bin").readBytes())
             val blockedCounts = fixtureCounts()
             assertEquals(0, blockedCounts.getInt("uploads")); assertEquals(2, blockedCounts.getInt("lockChecks"))
-            compose.onNodeWithText("OK", substring = false).performClick()
+            compose.onNodeWithText(context.getString(R.string.ui_ok_565339bc), substring = false).performClick()
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-operation-message").fetchSemanticsNodes().isEmpty() }
             val locks = LfsRepository(credentialResolver = { _, selected -> check(selected == url); credentials })
             // Fixture-only explicit force operation; ordinary unlock must respect the foreign owner.
             assertTrue(runCatching { locks.unlock(root.path, "asset-lock", ref = "refs/heads/main") }.exceptionOrNull() is LfsHttpStatusException)
             assertEquals("asset.bin", locks.unlock(root.path, "asset-lock", force = true, ref = "refs/heads/main")!!.path)
-            compose.onNodeWithTag("git-actions").performScrollToNode(hasText("Push current branch"))
-            compose.waitUntil(10_000) { compose.onAllNodes(hasText("Push current branch") and isEnabled()).fetchSemanticsNodes().size == 1 }
-            compose.onNodeWithText("Push current branch", substring = false).performClick()
-            awaitText("Branch pushed")
+            // The same retained commit is still ahead, so the hero still offers the push.
+            push()
+            // The Remote screen has no success toast; the hero settles once the remote holds the commit.
+            compose.waitUntil(30_000) { remoteHead() == local }
+            compose.waitUntil(15_000) { compose.onAllNodesWithTag("git-remote-push").fetchSemanticsNodes().isEmpty() }
+            compose.onNodeWithTag("git-operation-message").assertDoesNotExist()
             assertEquals(local, remoteHead())
             assertEquals(local, GitLfs.open(root).use { it.repository.resolve("HEAD") })
             assertTrue(LocalGitRepository().getStatus(root.path).getOrThrow().isEmpty())

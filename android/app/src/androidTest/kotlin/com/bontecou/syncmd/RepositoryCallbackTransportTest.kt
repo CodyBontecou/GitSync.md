@@ -124,6 +124,14 @@ class RepositoryCallbackTransportTest {
         try { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
         catch (e: IllegalStateException) { if (e.message.orEmpty().startsWith("No compose hierarchies found")) false else throw e }
     }
+    /** Home -> Settings -> Shortcuts & links (Repository actions). The avatar or gear button opens Settings. */
+    private fun openShortcuts() {
+        awaitTag("open-settings")
+        compose.onNode(hasClickAction() and !hasTestTag("home-add-vault") and
+            (hasTestTag("open-settings") or hasAnyAncestor(hasTestTag("open-settings")))).performClick()
+        awaitTag("settings-shortcuts"); compose.onNodeWithTag("settings-shortcuts").performScrollTo().performClick()
+        awaitTag("repository-actions-screen")
+    }
     private fun launch(url: String) {
         val intent = view(url)
         assertEquals(MainActivity::class.java.name, context.packageManager.resolveActivity(intent, 0)!!.activityInfo.name)
@@ -235,9 +243,8 @@ class RepositoryCallbackTransportTest {
         assertEquals(com.bontecou.syncmd.automation.ShortcutRunState.COMPLETE, runs.latest(status.grant.scope.id)!!.state)
         assertEquals(RepositoryActionOutcome.STATUS, runs.latest(status.grant.scope.id)!!.outcome)
         context.startActivity(Intent(context, MainActivity::class.java).setAction(Intent.ACTION_MAIN).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
-        compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-last-run-${push.grant.scope.id}"))
-        compose.onNodeWithTag("callback-last-run-${push.grant.scope.id}").assertIsDisplayed().assertTextEquals(context.getString(R.string.callback_background_busy))
+        openShortcuts()
+        compose.onNodeWithTag("callback-last-run-${push.grant.scope.id}").performScrollTo().assertIsDisplayed().assertTextEquals(context.getString(R.string.callback_background_busy))
         val capture = File(context.filesDir, "parity-evidence/callback-background-busy.png").apply { parentFile!!.mkdirs() }
         assertTrue(device.takeScreenshot(capture))
     }
@@ -333,9 +340,8 @@ class RepositoryCallbackTransportTest {
         } else {
             com.bontecou.syncmd.automation.BackgroundCallbackDelivery.discard(result.id)
             context.startActivity(Intent(context, MainActivity::class.java).setAction(Intent.ACTION_MAIN).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
-            compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-last-run-${issued.grant.scope.id}"))
-            compose.onNodeWithTag("callback-last-run-${issued.grant.scope.id}").assertIsDisplayed().assertTextEquals(context.getString(when(action) {
+            openShortcuts()
+            compose.onNodeWithTag("callback-last-run-${issued.grant.scope.id}").performScrollTo().assertIsDisplayed().assertTextEquals(context.getString(when(action) {
                 "status" -> R.string.repository_actions_status_ready; "pull" -> R.string.repository_actions_pulled; else -> R.string.repository_actions_pushed
             }))
             assertEquals(result.id, runs.latest(issued.grant.scope.id)!!.id)
@@ -396,7 +402,7 @@ class RepositoryCallbackTransportTest {
     }
     @Test fun intentExtrasCannotInjectRequestsAndInvalidUrlNeverOffersExecution() {
         context.startActivity(Intent(context, MainActivity::class.java).putExtra("callback_url", url("push")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
-        awaitTag("home-more"); compose.onAllNodesWithTag("callback-screen").assertCountEquals(0)
+        awaitTag("open-settings"); compose.onAllNodesWithTag("callback-screen").assertCountEquals(0)
         val before = head()
         awaitMainResumed()
         onActivity { it.startActivity(view("syncmd://x-callback-url/push?repo=A&repo=B&x-success=javascript%3Aalert%281%29")) }
@@ -435,23 +441,22 @@ class RepositoryCallbackTransportTest {
         }
         invoke(); val second = awaitDelivered(nonce, 2); assertEquals(newer, second.getQueryParameter("sha")); assertEquals(newer, model!!.state.value.result!!.head)
         device.executeShellCommand("input keyevent KEYCODE_BACK"); awaitTag("callback-screen")
-        compose.onNodeWithTag("callback-close").performClick(); awaitTag("home-more")
-        compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions")
-        compose.onNodeWithTag("open-repository-actions").performClick()
+        compose.onNodeWithTag("callback-close").performClick(); openShortcuts()
         compose.waitUntil(10_000) {
             compose.onAllNodesWithTag("repository-actions-screen").fetchSemanticsNodes().isNotEmpty() &&
                 RepositoryCallbackGrantStore(context).records().single().scope.enabled
         }
-        compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-grant-${grant.scope.id}"))
-        compose.onNodeWithText("Revoke link", substring = false).performScrollTo().performClick()
+        compose.onNodeWithTag("callback-grant-${grant.scope.id}").performScrollTo()
+        compose.onNode(hasText(context.getString(R.string.settings_m3_sc_revoke_link)) and hasAnyAncestor(hasTestTag("callback-grant-${grant.scope.id}")))
+            .performScrollTo().performClick()
         compose.onNodeWithTag("callback-grant-revoke-confirm").performClick()
         compose.waitUntil(10_000) { !RepositoryCallbackGrantStore(context).records().single().scope.enabled }
         invoke(); awaitTag("callback-screen")
         compose.waitUntil(10_000) { model!!.state.value.phase == RepositoryCallbackViewModel.Phase.DONE }
         assertFalse(model!!.state.value.authorized); assertNull(model!!.state.value.result); assertEquals("2", count(nonce)); assertEquals(newer, head())
         compose.onNodeWithTag("callback-close").performClick(); awaitTag("repository-actions-screen")
-        compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasText("Forget revoked link"))
-        compose.onNodeWithText("Forget revoked link", substring = false).performClick()
+        compose.onNode(hasText(context.getString(R.string.callback_grant_forget)) and hasAnyAncestor(hasTestTag("callback-grant-${grant.scope.id}")))
+            .performScrollTo().performClick()
         compose.waitUntil(10_000) { RepositoryCallbackGrantStore(context).records().isEmpty() }
     }
 }

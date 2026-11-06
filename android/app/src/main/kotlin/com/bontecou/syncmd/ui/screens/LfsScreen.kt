@@ -71,7 +71,7 @@ fun LfsScreen(path: String, onBack: () -> Unit, model: LfsViewModel = hiltViewMo
             M3IconButton(R.drawable.ic_m3_sync, stringResource(R.string.lfs_m3_reload), { model.load(path) },
                 Modifier.testTag("lfs-reload"), enabled = !state.busy)
         }
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 32.dp)) {
+        LazyColumn(Modifier.fillMaxSize().testTag("lfs-list"), contentPadding = PaddingValues(bottom = 32.dp)) {
             item(key = "tabs") {
                 LfsTabs(listOf(stringResource(R.string.lfs_m3_tab_files) to state.files.size.toString(),
                     stringResource(R.string.lfs_m3_tab_locks) to locks?.size?.toString()), tab, { tab = it },

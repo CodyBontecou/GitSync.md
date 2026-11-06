@@ -112,6 +112,11 @@ android {
     }
     
     packaging {
+        // Google Play requires 16 KB page-size support: keep .so files uncompressed so
+        // AGP (8.5.1+) aligns them on 16 KB boundaries inside the APK.
+        jniLibs {
+            useLegacyPackaging = false
+        }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             // JGit ships duplicate licence/notice files

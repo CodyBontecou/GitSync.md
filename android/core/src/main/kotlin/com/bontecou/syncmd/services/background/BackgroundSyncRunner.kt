@@ -39,7 +39,8 @@ data class BackgroundConfiguration(val generation: Long = 0, val pull: Boolean =
     init { require(generation >= 0 && policies.size <= 1000 && policies.all { (path, policy) -> path == policy.target.path }) }
     val active get() = (pull || push) && policies.values.any { it.included }
 }
-data class BackgroundRunResult(val policy: BackgroundPolicy, val health: BackgroundHealth)
+/** [pulled] is true when this pass fast-forwarded the checkout to commits fetched from the remote. */
+data class BackgroundRunResult(val policy: BackgroundPolicy, val health: BackgroundHealth, val pulled: Boolean = false)
 
 /** No merge, force push or branch switching. Revocation and changing conditions are checked at mutation boundaries. */
 class BackgroundSyncRunner(private val actions: RepositoryActionRunner, private val catalog: () -> List<PullAllTarget>,
@@ -73,7 +74,7 @@ class BackgroundSyncRunner(private val actions: RepositoryActionRunner, private 
                 val at = now()
                 val health = BackgroundHealth(kind, at, if (success) at else policy.health.succeededAt,
                     if (transfer) at else policy.health.transferredAt, result?.head ?: policy.health.head, result?.outcome, result?.problem)
-                record(initial.generation, policy, health); results += BackgroundRunResult(policy, health)
+                record(initial.generation, policy, health); results += BackgroundRunResult(policy, health, result?.pullUpdated == true)
             }
             try {
                 consent()

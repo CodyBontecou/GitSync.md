@@ -15,73 +15,9 @@
       "android_source": "Use this repository?",
       "localizations_sha256": "54d7697aeadaf378b4f4c9e7ef6e009a0b848ee65f29748c5fc0fe9343deeb8c"
     },
-    "publication_choose": {
-      "android_source": "Choose a folder",
-      "localizations_sha256": "edf7467fa4e299d03099a12f4d6851f47ba95ebcbb707d0d406dd61d253570f0"
-    },
-    "publication_file_ignored": {
-      "android_source": "Ignored",
-      "localizations_sha256": "fc04efe52c41999698b90450240e8df2810a819f42cb4bd78befaca75a9880b1"
-    },
-    "publication_file_large": {
-      "android_source": "Over 10 MiB",
-      "localizations_sha256": "8bd1cff4611462d995dda99867868d6dc58c39d4226545f6c12462be1eef67dd"
-    },
-    "publication_file_size": {
-      "android_source": "%1$s · %2$s",
-      "localizations_sha256": "bcd4bdb08cc41ccc7b41d30ce3b0d8f34c0b4897955cd46488b8294aef0665e4"
-    },
-    "publication_name": {
-      "android_source": "Repository name",
-      "localizations_sha256": "d9d2249b54d91a37e8147eeee2bcff97ac12efdae85e0fc945c12b1c28275ea7"
-    },
-    "publication_open": {
-      "android_source": "Open repository",
-      "localizations_sha256": "e6755744e4c0c91be9c83122705e1b27aabd4b9a37fc48a9f5e633457bdf0ba2"
-    },
-    "publication_phase_completed": {
-      "android_source": "Published",
-      "localizations_sha256": "bad72623b120a72f941ead750c0d302bb838a38124d7a4653dead476e03b247c"
-    },
-    "publication_phase_prepared": {
-      "android_source": "Local commit prepared",
-      "localizations_sha256": "4a5bf3087c11e1346f10a20f303bc387203567fd6f7327f5053f36ecbeb08b7c"
-    },
-    "publication_saved": {
-      "android_source": "Saved progress",
-      "localizations_sha256": "4178eaf789a6a5bd63b81e7a73828d9c35eadbc16fbe51e3fee43ff6d32d079b"
-    },
-    "publication_title": {
-      "android_source": "Publish a folder",
-      "localizations_sha256": "3c7611f035b91d9f11db393f5eb9daf0ae6d6ec134f8adfb19693df50a196c14"
-    },
-    "publication_work_register": {
-      "android_source": "Finishing repository setup…",
-      "localizations_sha256": "b608193bd47b8ecd311e42cf287fed47235b6919dcbbc46473415309cee499e3"
-    },
-    "ui_1_s_files_ddef923b": {
-      "android_source": "%1$s files",
-      "localizations_sha256": "a6d95f5b163ac20644bde0f7535278047a39f34865fcf946de32db6a0e709d4b"
-    },
-    "ui_add_9fd728c6": {
-      "android_source": "Add",
-      "localizations_sha256": "1eb7b6e2d1eb9db81a599cc4d30719a13a7062615490d9330d012ffa23dcc678"
-    },
-    "ui_delete_branch_00339d48": {
-      "android_source": "Delete Branch?",
-      "localizations_sha256": "3915ac4e222c9e4da11aacfd0b3d3b99c6226dc62177929b211950a2126cce3c"
-    },
     "ui_dismiss_48845bff": {
       "android_source": "Dismiss",
       "localizations_sha256": "c4157595d6a94243464f37fc602669227304d1b64ffe8d34a42a2fff54667706"
-    },
-    "ui_from_1_s_40f7d611": {
-      "android_source": "From %1$s",
-      "localizations_sha256": "69294d26df2722934c04cdbfb82ae234d20f4ea45b504d7ec5ab712b40703b37"
-    },
-    "ui_now_ed5eb9a3": {
-      "android_source": "now",
-      "localizations_sha256": "322c4dbac78e75d2d6b4ebd6ebe278c4654651ad65bc70d1f6dc0133bbbaa175"
     },
     "ui_reconnect_bf8a9eab": {
       "android_source": "Reconnect",
@@ -90,10 +26,6 @@
     "ui_remove_git_tracking_d3e1065f": {
       "android_source": "Remove Git tracking",
       "localizations_sha256": "b8f874c254fe20723da172a88c84681fac821089a4cfd26a99f5442e9952d93a"
-    },
-    "ui_switch_to_branch_278b039a": {
-      "android_source": "Switch to branch",
-      "localizations_sha256": "3cbd2f5b7e201282cd160d0dcf6cf9c84c2356db608d8f012ab056f33ea8d007"
     }
   }
 }

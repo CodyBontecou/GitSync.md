@@ -1,3 +1,0 @@
-<resources>
-    <string name="lfs_action_refresh_required">The action completed, but updated LFS state could not be loaded. Reload LFS state before another action.</string>
-</resources>

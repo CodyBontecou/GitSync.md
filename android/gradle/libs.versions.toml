@@ -4,7 +4,7 @@ kotlin = "1.9.21"
 coroutines = "1.8.1"
 
 # Android
-androidGradlePlugin = "8.2.0"
+androidGradlePlugin = "8.5.2"
 androidMinSdk = "28"
 androidTargetSdk = "36"
 androidCompileSdk = "36"

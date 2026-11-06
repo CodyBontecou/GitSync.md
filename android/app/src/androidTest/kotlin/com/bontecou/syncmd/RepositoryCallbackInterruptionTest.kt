@@ -77,6 +77,15 @@ class RepositoryCallbackInterruptionTest {
         app.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("syncmd://authorized-callback/$token"))
             .addCategory(Intent.CATEGORY_BROWSABLE).setPackage(app.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
+    /** Home -> Settings -> Shortcuts & links (Repository actions). The avatar or gear button opens Settings. */
+    private fun openShortcuts() {
+        awaitTag("open-settings")
+        compose.onNode(hasClickAction() and !hasTestTag("home-add-vault") and
+            (hasTestTag("open-settings") or hasAnyAncestor(hasTestTag("open-settings")))).performClick()
+        awaitTag("settings-shortcuts"); compose.onNodeWithTag("settings-shortcuts").performScrollTo().performClick()
+        awaitTag("repository-actions-screen")
+    }
+
     private fun awaitTag(tag:String)=compose.waitUntil(10000) {
         try { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
         catch(error:IllegalStateException) { if(error.message.orEmpty().startsWith("No compose hierarchies found")) false else throw error }
@@ -153,9 +162,8 @@ class RepositoryCallbackInterruptionTest {
             val before=state(); assertEquals(data.getInt("receives"),before.getInt("receives"))
             assertEquals(if(mode=="before-remote") data.getString("initial") else data.getString("commit"),before.getString("head"))
             activity=ActivityScenario.launch(Intent(app,MainActivity::class.java))
-            awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick(); awaitTag("repository-actions-screen")
-            compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("callback-last-run-$grantId"))
-            compose.onNodeWithTag("callback-last-run-$grantId").assertTextEquals(app.getString(if(mode=="after-result") R.string.repository_actions_pushed else R.string.shortcut_background_interrupted))
+            openShortcuts()
+            compose.onNodeWithTag("callback-last-run-$grantId").performScrollTo().assertTextEquals(app.getString(if(mode=="after-result") R.string.repository_actions_pushed else R.string.shortcut_background_interrupted))
             assertEquals(before.getInt("receives"),state().getInt("receives")); assertEquals(data.getString("commit"),head(root(id)))
             assertEquals(oldRun,runs.latest(grantId)!!.id)
             activity.close(); activity=null

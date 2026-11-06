@@ -5,7 +5,6 @@
     <string name="files_show_hidden">Show hidden files</string>
     <string name="files_hide_hidden">Hide hidden files</string>
     <string name="files_folder">Folder</string>
-    <string name="file_unsaved_changes">Unsaved changes</string>
     <string name="file_reload_body">This replaces your unsaved edits with the file on disk.</string>
     <string name="file_delete_body">The file will be removed from this device. Git will show it as a deletion if it was tracked.</string>
     <string name="file_saved">Saved</string>

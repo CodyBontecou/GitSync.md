@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Shared dialog and list component copy (ui/components). -->
 <resources>
-    <string name="dialogs_merge_strategy_fast_forward_description">Only merge if source is directly ahead. Preserves linear history.</string>
-    <string name="dialogs_merge_strategy_recursive_description">Always create a merge commit, even if fast-forward is possible.</string>
-    <string name="dialogs_merge_strategy_prefer_ff_description">Fast-forward if possible, otherwise create a merge commit.</string>
-    <string name="dialogs_branch_type_local">local</string>
-    <string name="dialogs_branch_type_remote">remote</string>
-    <string name="dialogs_branch_type_tracking">tracking</string>
-    <string name="dialogs_branch_type_unknown">unknown</string>
-    <string name="dialogs_commit_collapse">Collapse</string>
-    <string name="dialogs_commit_expand">Expand</string>
     <string name="dialogs_timestamp_unknown">Unknown</string>
     <string name="dialogs_error_title">Error</string>
     <string name="dialogs_warning_title">Warning</string>
