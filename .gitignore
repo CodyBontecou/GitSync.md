@@ -48,6 +48,7 @@ screenshots/
 !site/screenshots/
 site/screenshots/*
 !site/screenshots/*-660.webp
+!android/play-store-screenshots/screenshots/
 
 # App Store metadata
 metadata/
