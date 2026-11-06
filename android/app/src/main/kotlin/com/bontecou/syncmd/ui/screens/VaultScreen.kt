@@ -682,7 +682,7 @@ private fun VaultChanges(changes: List<GitStatusEntry>, counts: Map<String, File
 internal fun changeBadge(entry: GitStatusEntry): Pair<String, M3Tone> = when {
     entry.isConflicted -> "!" to M3Tone.Warn
     entry.isDeleted -> "D" to M3Tone.Warn
-    entry.kind == GitFileStatusKind.UNTRACKED -> "A" to M3Tone.Ok
+    entry.isNew -> "A" to M3Tone.Ok
     else -> "M" to M3Tone.Ahead
 }
 

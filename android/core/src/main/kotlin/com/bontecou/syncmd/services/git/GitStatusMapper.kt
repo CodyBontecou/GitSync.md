@@ -14,6 +14,7 @@ internal fun Status.toStatusEntries(): List<GitStatusEntry> {
             path in untracked -> GitFileStatusKind.UNTRACKED
             else -> GitFileStatusKind.MODIFIED
         }, hasStagedChanges = path in staged, hasUnstagedChanges = path in unstaged,
-            isDeleted = path in removed || path in missing, isConflicted = path in conflicting)
+            isDeleted = path in removed || path in missing, isConflicted = path in conflicting,
+            isNew = path in added || path in untracked)
     }
 }

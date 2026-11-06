@@ -10,6 +10,8 @@ data class GitStatusEntry(
     val hasUnstagedChanges: Boolean = kind != GitFileStatusKind.STAGED,
     val isDeleted: Boolean = false,
     val isConflicted: Boolean = false,
+    /** A file Git doesn't have yet: untracked, or staged as added. */
+    val isNew: Boolean = kind == GitFileStatusKind.UNTRACKED,
 )
 
 /**
