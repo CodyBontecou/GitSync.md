@@ -66,6 +66,43 @@ class CloneViewModel @Inject constructor(
     private val _cloneState = MutableStateFlow<CloneState>(CloneState.Idle)
     val cloneState: StateFlow<CloneState> = _cloneState.asStateFlow()
 
+    /** GitHub's facts about the repository for the hero ("main · private · 4.0 MB"); null until read. */
+    data class RepoInfo(val branch: String?, val isPrivate: Boolean?, val sizeBytes: Long?)
+    private val _info = MutableStateFlow<RepoInfo?>(null)
+    val info: StateFlow<RepoInfo?> = _info.asStateFlow()
+    /** The running clone's JGit progress plus the bytes received so far. */
+    private val _progress = MutableStateFlow<com.bontecou.syncmd.services.git.TransferProgressUpdate?>(null)
+    val progress: StateFlow<com.bontecou.syncmd.services.git.TransferProgressUpdate?> = _progress.asStateFlow()
+    /** The finished working copy ("main · 214 files · 4.0 MB"), counted without `.git`. */
+    data class ClonedStats(val branch: String?, val files: Int, val bytes: Long)
+    private val _stats = MutableStateFlow<ClonedStats?>(null)
+    val stats: StateFlow<ClonedStats?> = _stats.asStateFlow()
+    /** Where the clone goes; set when it starts. */
+    private val _destination = MutableStateFlow<String?>(null)
+    val destination: StateFlow<String?> = _destination.asStateFlow()
+
+    /** Reads branch, visibility and size from GitHub (metadata only). */
+    fun loadInfo(repoFullName: String) {
+        if (_info.value != null) return
+        val parts = repoFullName.split('/')
+        if (parts.size != 2) return
+        val token = runCatching { authManager.captureActiveAccount() }.getOrNull()?.token ?: return
+        viewModelScope.launch {
+            runCatching { com.bontecou.syncmd.services.github.GitHubApiService.repoAccess(token, parts[0], parts[1]) }
+                .onFailure { if (it is CancellationException) throw it }
+                .getOrNull()?.let { _info.value = RepoInfo(it.defaultBranch, it.isPrivate, it.sizeKilobytes?.times(1024)) }
+        }
+    }
+
+    private fun clonedStats(path: String): ClonedStats {
+        val root = File(path)
+        var files = 0; var bytes = 0L
+        root.walkTopDown().onEnter { it == root || it.name != ".git" && !java.nio.file.Files.isSymbolicLink(it.toPath()) }
+            .filter { it.isFile }.forEach { files++; bytes += it.length() }
+        val head = runCatching { File(root, ".git/HEAD").readText().trim() }.getOrNull()
+        return ClonedStats(head?.takeIf { it.startsWith("ref: refs/heads/") }?.removePrefix("ref: refs/heads/"), files, bytes)
+    }
+
     private val publications = com.bontecou.syncmd.storage.clonePublications(context)
     @Volatile private var ownedPublication: String? = null
     private fun claimPublication(id: String): Boolean = try {
@@ -165,7 +202,8 @@ class CloneViewModel @Inject constructor(
                 return@launch
             }
 
-            val result = cloneWithRetry(
+            _destination.value = localPath; _progress.value = null
+            val result = withContext(com.bontecou.syncmd.services.git.TransferProgress { _progress.value = it }) { cloneWithRetry(
                 cloneUrl = cloneUrl,
                 localPath = localPath,
                 token = token,
@@ -173,7 +211,8 @@ class CloneViewModel @Inject constructor(
                 debugLoggingEnabled = debugLoggingEnabled,
                 requireCurrent = { check(generation.get() == id) { "Clone request changed" } },
                 publicationId = publicationId, repository = repoFullName,
-            )
+            ) }
+            if (result.isSuccess) runCatching { _stats.value = clonedStats(result.getOrThrow().path) }
 
             publish(id, if (result.isSuccess) {
                 debugLog(

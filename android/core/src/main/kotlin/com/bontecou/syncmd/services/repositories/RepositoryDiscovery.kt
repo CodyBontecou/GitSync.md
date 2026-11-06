@@ -44,10 +44,12 @@ class RepositoryDiscovery {
         val queue = java.util.ArrayDeque<Pair<File, Int>>()
         roots.forEach { queue.add(File(it).canonicalFile to 0) }
         var truncated = false
+        val progress = currentCoroutineContext()[com.bontecou.syncmd.services.git.DiscoveryProgress]
         while (queue.isNotEmpty()) {
             currentCoroutineContext().ensureActive()
             val (folder, depth) = queue.removeFirst()
             if (!visited.add(folder.path)) continue
+            if (progress != null && visited.size % 8 == 1) runCatching { progress.report(visited.size) }
             if (visited.size > maxDirectories) { truncated = true; break }
             if (!folder.exists()) continue
             if (Files.isSymbolicLink(folder.toPath()) || !folder.isDirectory) continue
@@ -65,6 +67,7 @@ class RepositoryDiscovery {
             if (depth == maxDepth) { if (directories.isNotEmpty()) truncated = true; continue }
             directories.sortedBy { it.name.lowercase() }.forEach { queue.add(it to depth + 1) }
         }
+        progress?.let { runCatching { it.report(visited.size) } }
         DiscoveryResult(found.values.toList(), warnings, truncated)
     }
 

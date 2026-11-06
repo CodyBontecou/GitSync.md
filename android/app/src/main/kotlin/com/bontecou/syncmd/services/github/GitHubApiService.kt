@@ -28,7 +28,11 @@ data class GitHubRepo(
     val updatedAt: String?,
     val ownerLogin: String,
     val language: String?,
-    val stargazersCount: Int
+    val stargazersCount: Int,
+    /** GitHub's repository size (KB, objects on disk); null when unknown (older cache). */
+    val sizeKilobytes: Long? = null,
+    /** Last push, ISO-8601; the picker's age falls back to [updatedAt]. */
+    val pushedAt: String? = null,
 )
 
 /** An HTTP failure from the GitHub API; the UI maps [status] to localized copy. */
@@ -39,7 +43,7 @@ class GitHubApiException(val status: Int) : IllegalStateException(
 }
 
 /** What the free vault check learns about a GitHub repository before anything is cloned. */
-data class GitHubRepoAccess(val canPush: Boolean?, val defaultBranch: String?, val sizeKilobytes: Long?)
+data class GitHubRepoAccess(val canPush: Boolean?, val defaultBranch: String?, val sizeKilobytes: Long?, val isPrivate: Boolean? = null)
 
 data class GitHubTreeSummary(val fileCount: Int, val hasObsidian: Boolean, val hasObsidianGit: Boolean,
     val gitattributesSha: String?, val truncated: Boolean)
@@ -101,7 +105,9 @@ object GitHubApiService : GitHubClient, GitHubVaultClient {
                     updatedAt = j.optString("updated_at").ifEmpty { null },
                     ownerLogin = j.getJSONObject("owner").getString("login"),
                     language = j.optString("language").ifEmpty { null },
-                    stargazersCount = j.optInt("stargazers_count", 0)
+                    stargazersCount = j.optInt("stargazers_count", 0),
+                    sizeKilobytes = j.optLong("size", -1).takeIf { it >= 0 },
+                    pushedAt = j.optString("pushed_at").takeIf { it.isNotEmpty() && it != "null" },
                 )
             }
             if (arr.length() < 100) break
@@ -131,6 +137,7 @@ object GitHubApiService : GitHubClient, GitHubVaultClient {
             canPush = json.optJSONObject("permissions")?.takeIf { it.has("push") }?.getBoolean("push"),
             defaultBranch = json.optString("default_branch").ifEmpty { null },
             sizeKilobytes = json.optLong("size", -1).takeIf { it >= 0 },
+            isPrivate = if (json.has("private")) json.optBoolean("private") else null,
         )
     }
 
