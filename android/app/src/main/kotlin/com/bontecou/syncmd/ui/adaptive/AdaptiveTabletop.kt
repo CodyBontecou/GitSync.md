@@ -136,6 +136,16 @@ fun InlineCommitForm(
             entries.all { it.isBinary },
         )
     }
+    // The board opens with every change included: stage all once when nothing is staged yet.
+    // A caller that staged a selection first (e.g. "Commit this file") keeps that selection.
+    var includedAll by rememberSaveable(repositoryPath) { mutableStateOf(false) }
+    LaunchedEffect(diff, isLoading) {
+        val loaded = diff ?: return@LaunchedEffect
+        if (!includedAll && !isLoading && loaded.files.isNotEmpty()) {
+            includedAll = true
+            if (loaded.files.none { it.isStaged }) diffVM.stageAll()
+        }
+    }
     val staged = files.count { it.staged }
     val canCommit = staged > 0 && message.isNotBlank() && !isLoading && !running
     InlineCommitFormContent(
