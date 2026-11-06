@@ -3,6 +3,10 @@ package com.bontecou.syncmd.ui.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
@@ -132,4 +136,46 @@ object LfsSizes {
     fun format(bytes: Long): String { val u = unit(bytes.coerceAtLeast(0)); return "${number(bytes.coerceAtLeast(0), u)} ${units[u]}" }
     /** "15 / 38 MB": both values in the total's unit. */
     fun progress(done: Long, total: Long): String { val u = unit(total.coerceAtLeast(0)); return "${number(done.coerceAtLeast(0), u)} / ${number(total.coerceAtLeast(0), u)} ${units[u]}" }
+}
+
+/** Error-container note for plain-HTTP LFS endpoints: 13/18 text, 12/14 padding, 16dp corners. */
+@Composable
+internal fun LfsHttpWarning(modifier: Modifier = Modifier) {
+    val c = M3.colors
+    Row(modifier.fillMaxWidth().background(c.ec, RoundedCornerShape(16.dp)).padding(horizontal = 14.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        M3Icon(R.drawable.ic_m3_warning, tint = c.onEc, size = 20.dp)
+        Text(androidx.compose.ui.res.stringResource(R.string.lfs_m3_http_warning), style = M3Type.bodySmall, color = c.onEc, modifier = Modifier.weight(1f))
+    }
+}
+
+/**
+ * Alert dialog with a 48dp icon tile above a centered 24/32 title (SSH server review): cHigh,
+ * 28dp corners, 24dp padding, 24dp from the screen edges, actions end-aligned 20dp below.
+ */
+@Composable
+internal fun LfsTileDialog(
+    onDismissRequest: () -> Unit,
+    @DrawableRes icon: Int,
+    tileContainer: Color,
+    tileContent: Color,
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+    actions: @Composable RowScope.() -> Unit,
+) {
+    val c = M3.colors
+    androidx.compose.ui.window.Dialog(onDismissRequest, androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
+        Column(modifier.padding(24.dp).widthIn(min = 280.dp, max = 560.dp).fillMaxWidth().background(c.cHigh, RoundedCornerShape(28.dp)).padding(24.dp)
+            .semantics { paneTitle = title }) {
+            Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState())) {
+                LfsIconTile(icon, tileContainer, tileContent, Modifier.align(Alignment.CenterHorizontally))
+                Text(title, style = M3Type.dialogTitle, color = c.on, textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp))
+                content()
+            }
+            Row(Modifier.fillMaxWidth().padding(top = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                verticalAlignment = Alignment.CenterVertically, content = actions)
+        }
+    }
 }
