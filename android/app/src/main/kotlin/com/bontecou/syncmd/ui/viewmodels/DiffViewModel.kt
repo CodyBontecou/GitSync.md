@@ -289,5 +289,17 @@ class DiffViewModel @Inject constructor(
         if (mutationRunning || _discardReview.value !== review) return
         mutate(discard = true, onComplete = onComplete) { diffService.discardReviewed(it, review).getOrThrow() }
     }
+    /**
+     * Confirms a reviewed discard; with [stashFirst] every local change is first saved as a stash
+     * entry ([stashMessage]), so the discarded edits can be applied again from Stashes.
+     */
+    fun confirmDiscard(review: DiscardReview, stashFirst: Boolean, stashMessage: String = "Copy saved before discarding", onComplete: () -> Unit = {}) {
+        if (!stashFirst) return confirmDiscard(review, onComplete)
+        if (mutationRunning || _discardReview.value !== review) return
+        mutate(discard = true, onComplete = onComplete) { path ->
+            val author = runCatching { authors.resolve(path) }.getOrNull()
+            diffService.stashThenDiscard(path, review, stashMessage, author).getOrThrow()
+        }
+    }
     fun clearError() { _errorMessage.value = null; _lockedPaths.value = null }
 }

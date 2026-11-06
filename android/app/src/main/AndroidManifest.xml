@@ -34,6 +34,7 @@
 
         <service android:name="com.bontecou.syncmd.automation.PullAllRunService" android:exported="false" android:foregroundServiceType="dataSync" android:stopWithTask="false" />
         <service android:name="com.bontecou.syncmd.automation.RepositoryShortcutRunService" android:exported="false" android:foregroundServiceType="dataSync" android:stopWithTask="false" />
+        <service android:name="com.bontecou.syncmd.sync.VaultSyncService" android:exported="false" android:foregroundServiceType="dataSync" android:stopWithTask="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

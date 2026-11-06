@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Vault › Changes (board 02) -->
+    <string name="vault_m3_tap_for_diff">tap a file to see the diff</string>
+    <string name="vault_m3_remote_no_new">Remote has no new commits</string>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="one">Remote has %d new commit</item>
+        <item quantity="other">Remote has %d new commits</item>
+    </plurals>
+    <string name="vault_m3_remote_not_checked">Remote not checked yet</string>
+    <string name="vault_m3_no_upstream">No upstream branch</string>
+    <string name="vault_m3_fetched_ago">fetched %1$s</string>
+    <string name="vault_m3_just_now">just now</string>
+    <string name="vault_m3_minutes_ago">%1$dm ago</string>
+    <string name="vault_m3_hours_ago">%1$dh ago</string>
+    <string name="vault_m3_days_ago">%1$dd ago</string>
+    <string name="vault_m3_commit_push">Commit &amp; push</string>
+    <string name="vault_m3_push">Push</string>
+    <string name="vault_m3_pull">Pull</string>
+    <string name="vault_m3_latest_commit">Latest commit</string>
+    <string name="vault_m3_check_for_changes">Check for changes</string>
+    <string name="vault_m3_vault_settings">Vault settings</string>
+    <string name="vault_m3_more">More</string>
+    <string name="vault_m3_back_to_vaults">Back to vaults</string>
+
+    <!-- Syncing (board 22) -->
+    <string name="vault_m3_pushing">Pushing…</string>
+    <string name="vault_m3_pulling">Pulling…</string>
+    <string name="vault_m3_committing">Committing…</string>
+    <string name="vault_m3_checking">Checking…</string>
+    <string name="vault_m3_cancel">Cancel</string>
+    <string name="vault_m3_commits_sent">%1$d of %2$d commits sent</string>
+    <string name="vault_m3_objects_received">%1$d of %2$d objects received</string>
+    <string name="vault_m3_objects_sent">%1$d of %2$d objects sent</string>
+    <string name="vault_m3_checking_remote">Checking %1$s for new commits</string>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="one">Uploading %d LFS file</item>
+        <item quantity="other">Uploading %d LFS files</item>
+    </plurals>
+    <string name="vault_m3_preparing">Preparing…</string>
+    <string name="vault_m3_time_left">~%1$s left</string>
+    <string name="vault_m3_seconds">%1$ds</string>
+    <string name="vault_m3_minutes">%1$dm</string>
+    <string name="vault_m3_upload_progress">Upload progress</string>
+    <string name="vault_m3_download_progress">Download progress</string>
+    <string name="vault_m3_steps">Steps</string>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="one">Commit %d file</item>
+        <item quantity="other">Commit %d files</item>
+    </plurals>
+    <string name="vault_m3_step_check">Check %1$s for new commits</string>
+    <string name="vault_m3_step_upload">Upload to %1$s</string>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="one">Upload %1$d LFS file · %2$s</item>
+        <item quantity="other">Upload %1$d LFS files · %2$s</item>
+    </plurals>
+    <string name="vault_m3_step_download">Download from %1$s</string>
+    <string name="vault_m3_step_update">Update files</string>
+    <string name="vault_m3_step_merge">Merge %1$s</string>
+    <string name="vault_m3_step_branch">Create branch %1$s</string>
+    <string name="vault_m3_step_none">none</string>
+    <string name="vault_m3_leave_note">You can leave this screen. The sync keeps going and shows its progress in a notification.</string>
+    <string name="vault_m3_remote_generic">the remote</string>
+
+    <!-- Sync results -->
+    <string name="vault_m3_sync_failed">Sync stopped</string>
+    <string name="vault_m3_sync_cancelled">Sync cancelled. Anything already committed stays on this phone.</string>
+    <string name="vault_m3_pushed_to">Pushed to %1$s</string>
+    <string name="vault_m3_pulled">Up to date with %1$s</string>
+    <string name="vault_m3_branch_pushed">Pushed your commits to the new branch %1$s</string>
+    <string name="vault_m3_merge_conflicts">Pulling found conflicts. Resolve them, then push.</string>
+    <string name="vault_m3_dismiss">Dismiss</string>
+
+    <!-- Notification -->
+    <string name="vault_m3_notify_channel">Vault sync</string>
+    <string name="vault_m3_notify_title">%1$s · %2$s</string>
+    <string name="vault_m3_notify_done">Sync finished</string>
+
+    <!-- Push rejected (board 25) -->
+    <string name="vault_m3_rejected_kicker">Push didn’t go through</string>
+    <string name="vault_m3_chip_yours">↑%1$d yours</string>
+    <string name="vault_m3_chip_theirs">↓%1$d from %2$s · %3$s</string>
+    <string name="vault_m3_chip_theirs_plain">↓%1$d from the remote</string>
+    <string name="vault_m3_no_overlap_title">No overlap found</string>
+    <string name="vault_m3_no_overlap_body">Your edits and theirs touch different files, so this should merge cleanly.</string>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="one">%d file changed on both sides</item>
+        <item quantity="other">%d files changed on both sides</item>
+    </plurals>
+    <string name="vault_m3_overlap_body">Both sides edited the same files. Pulling may stop at a conflict for you to resolve.</string>
+    <string name="vault_m3_who_yours">yours</string>
+    <string name="vault_m3_who_theirs">theirs</string>
+    <string name="vault_m3_who_both">both</string>
+    <string name="vault_m3_pull_then_push">Pull theirs, then push</string>
+    <string name="vault_m3_review_first">Review first</string>
+    <string name="vault_m3_push_branch">Push to a branch</string>
+
+    <!-- Commit sheet (board 08) -->
+    <plurals name="vault_m3_commit_title">
+        <item quantity="one">Commit %d file</item>
+        <item quantity="other">Commit %d files</item>
+    </plurals>
+    <string name="vault_m3_message">Message</string>
+    <string name="vault_m3_suggested">Suggested from the diff</string>
+    <string name="vault_m3_suggest_backup">vault backup: %1$s</string>
+    <string name="vault_m3_suggest_update">Update %1$s</string>
+    <string name="vault_m3_suggest_add">Add %1$s</string>
+    <string name="vault_m3_suggest_delete">Delete %1$s</string>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="one">Update %d file</item>
+        <item quantity="other">Update %d files</item>
+    </plurals>
+    <string name="vault_m3_included">Included</string>
+    <string name="vault_m3_deleted_path">%1$s (deleted)</string>
+    <string name="vault_m3_push_right_after">Push right after</string>
+    <string name="vault_m3_as_author">as %1$s · %2$s</string>
+    <string name="vault_m3_commit_locally">Commit locally</string>
+    <string name="vault_m3_nothing_staged">Check at least one file to commit.</string>
+
+    <!-- Discard dialog (board 19) -->
+    <plurals name="vault_m3_discard_title">
+        <item quantity="one">Discard %d change?</item>
+        <item quantity="other">Discard %d changes?</item>
+    </plurals>
+    <string name="vault_m3_discard_body">These files go back to how they were in %1$s. Edits made on this phone since then are gone for good.</string>
+    <string name="vault_m3_effect_delete">delete new file</string>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="one">−%d line</item>
+        <item quantity="other">−%d lines</item>
+    </plurals>
+    <string name="vault_m3_effect_restore">restore</string>
+    <string name="vault_m3_effect_revert">revert</string>
+    <string name="vault_m3_effect_unstage">unstage</string>
+    <string name="vault_m3_stash_first">Stash a copy first, just in case</string>
+    <string name="vault_m3_stash_message">Copy saved before discarding</string>
+    <string name="vault_m3_keep_them">Keep them</string>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="one">Discard %d</item>
+        <item quantity="other">Discard %d</item>
+    </plurals>
+
+    <!-- History (board 04) -->
+    <string name="vault_m3_only_on_phone">Only on this phone</string>
+    <string name="vault_m3_remote_is_here">%1$s is here</string>
+    <plurals name="vault_m3_file_count">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
+    <string name="vault_m3_merge">merge</string>
+    <string name="vault_m3_today">Today</string>
+    <string name="vault_m3_yesterday">Yesterday</string>
+
+    <!-- Vault settings placeholder (replaced by the settings builder) -->
+    <string name="vault_m3_settings_placeholder">Settings for this vault are on their way.</string>
+</resources>

@@ -128,6 +128,8 @@ object Routes {
     const val LARGE_FILES = "largeFiles"
     const val LFS_ENDPOINTS_M3 = "lfsEndpoints"
     const val SSH_HOSTS = "sshHosts"
+    /** Vault settings for one vault: `vaultSettings/{repo}` (repo = Uri-encoded working-copy path). */
+    const val VAULT_SETTINGS = "vaultSettings"
 }
 
 /**
@@ -458,6 +460,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         onSelectTab = openTab,
                         selectedFile = selectedFile.takeIf { twoPane },
                         onCommitSheetClosed = { detailRevision++ },
+                        onOpenVaultSettings = { navController.navigateSafe("${Routes.VAULT_SETTINGS}/${Uri.encode(selectedRepository)}") },
                     )
                 }
                 val detail: @Composable () -> Unit = {
@@ -503,8 +506,30 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         onNavigateBack = { navController.popBackStackSafe() },
                         showNavigation = !adaptive.isMedium,
                         onSelectTab = openTab,
+                        repositoryOwner = selectedIdentity?.owner,
+                        onOpenVaultSettings = { navController.navigateSafe("${Routes.VAULT_SETTINGS}/${Uri.encode(selectedRepository)}") },
                     )
                 }
+            }
+
+            // ── Vault settings (placeholder until the Vault settings board lands) ──
+            composable("${Routes.VAULT_SETTINGS}/{repo}", arguments = listOf(navArgument("repo") { type = NavType.StringType })) { entry ->
+                val repo = entry.arguments?.getString("repo").orEmpty()
+                val context = androidx.compose.ui.platform.LocalContext.current
+                val remote = registeredRepositories.firstOrNull { it.path == repo }?.remoteUrl
+                com.bontecou.syncmd.ui.screens.VaultSettingsPlaceholderScreen(
+                    repositoryName = selectedIdentity?.name?.takeIf { repo == selectedRepository } ?: repo.substringAfterLast('/'),
+                    onBack = { navController.popBackStackSafe() },
+                    onOpenInFiles = { com.bontecou.syncmd.ui.util.FilesAppLauncher.openFolder(context, repo) },
+                    onCopyUrl = remote?.takeIf { it.isNotBlank() }?.let { url -> {
+                        val shareable = com.bontecou.syncmd.ui.screens.shareableRemoteUrl(url)
+                        context.getSystemService(android.content.ClipboardManager::class.java)
+                            ?.setPrimaryClip(android.content.ClipData.newPlainText(shareable, shareable))
+                    } },
+                    onOpenConnection = { navController.navigateSafe("${Routes.CONNECTION}/${Uri.encode(repo)}") },
+                    onEditAuthor = { navController.navigateSafe("${Routes.AUTHOR}/${Uri.encode(repo)}") },
+                    onMoveRepository = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(repo)}") },
+                )
             }
 
             // ── Git control (all git operations) ─────────────────────────

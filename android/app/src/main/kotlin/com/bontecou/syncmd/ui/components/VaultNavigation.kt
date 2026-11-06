@@ -64,60 +64,10 @@ private fun VaultTab.label(): String = stringResource(
     }
 )
 
-/** Active indicator pill with the icon and an optional count badge. */
+/** M3 navigation bar at the bottom of a vault on phones (design: Changes · Files · History · Git, change count on Changes). */
 @Composable
-private fun TabIndicator(tab: VaultTab, selected: Boolean, badge: Int?) {
-    val c = Tide.colors
-    Box(
-        Modifier.size(width = 64.dp, height = 32.dp)
-            .then(if (selected) Modifier.background(c.secondaryContainer, RoundedCornerShape(16.dp)) else Modifier),
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(painterResource(tab.icon), contentDescription = null, tint = if (selected) c.onSecondaryContainer else c.inkMid,
-            modifier = Modifier.size(24.dp))
-        if (badge != null && badge > 0) {
-            Box(
-                Modifier.align(Alignment.TopStart).offset(x = 36.dp).heightIn(min = 16.dp).widthIn(min = 16.dp)
-                    .background(c.danger, CircleShape).padding(horizontal = 4.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(if (badge > 99) "99+" else "$badge", style = TideType.sans(11.sp, FontWeight.SemiBold).copy(lineHeight = 16.sp), color = c.onError)
-            }
-        }
-    }
-}
-
-/** M3 navigation bar at the bottom of a vault on phones. */
-@Composable
-fun VaultNavigationBar(selected: VaultTab, onSelect: (VaultTab) -> Unit, modifier: Modifier = Modifier, changes: Int? = null) {
-    val c = Tide.colors
-    Row(
-        modifier.fillMaxWidth().background(c.container).navigationBarsPadding().height(80.dp).testTag("vault-navigation"),
-    ) {
-        VaultTab.values().forEach { tab ->
-            val on = tab == selected
-            Column(
-                Modifier.weight(1f).fillMaxHeight()
-                    .clickable(role = Role.Tab) { if (!on) onSelect(tab) }
-                    .semantics { this.selected = on }
-                    .testTag(tab.tag)
-                    .padding(top = 12.dp, bottom = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                TabIndicator(tab, on, if (tab == VaultTab.CHANGES) changes else null)
-                Text(
-                    tab.label(),
-                    style = TideType.sans(12.sp, if (on) FontWeight.Bold else FontWeight.Medium).copy(lineHeight = 16.sp),
-                    color = if (on) c.ink else c.inkMid,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
-    }
-}
+fun VaultNavigationBar(selected: VaultTab, onSelect: (VaultTab) -> Unit, modifier: Modifier = Modifier, changes: Int? = null) =
+    com.bontecou.syncmd.ui.theme.M3VaultNavigationBar(selected, onSelect, modifier, changes)
 
 /**
  * M3 navigation rail for tablets and the foldable inner display: a sync action
@@ -133,9 +83,9 @@ fun VaultNavigationRail(
     topAction: (@Composable () -> Unit)? = null,
     bottomAction: (@Composable () -> Unit)? = null,
 ) {
-    val c = Tide.colors
+    val c = com.bontecou.syncmd.ui.theme.M3.colors
     Column(
-        modifier.width(if (wide) 96.dp else 80.dp).fillMaxHeight().background(c.container)
+        modifier.width(if (wide) 96.dp else 80.dp).fillMaxHeight().background(c.c)
             .statusBarsPadding().navigationBarsPadding().padding(vertical = 16.dp).testTag("vault-navigation-rail"),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -151,19 +101,11 @@ fun VaultNavigationRail(
         ) {
             VaultTab.values().forEach { tab ->
                 val on = tab == selected
-                Column(
-                    Modifier.width(if (wide) 88.dp else 72.dp).clip(RoundedCornerShape(16.dp))
-                        .clickable(role = Role.Tab) { if (!on) onSelect(tab) }
-                        .semantics { this.selected = on }
-                        .testTag(tab.tag)
-                        .padding(vertical = 4.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    TabIndicator(tab, on, if (tab == VaultTab.CHANGES) changes else null)
-                    Text(tab.label(), style = TideType.sans(12.sp, if (on) FontWeight.Bold else FontWeight.Medium).copy(lineHeight = 16.sp),
-                        color = if (on) c.ink else c.inkMid, maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
-                }
+                com.bontecou.syncmd.ui.theme.M3NavigationRailItem(
+                    tab.label(), tab.icon, on, onClick = { if (!on) onSelect(tab) },
+                    modifier = Modifier.testTag(tab.tag), width = if (wide) 88.dp else 72.dp,
+                    badge = if (tab == VaultTab.CHANGES && changes != null && changes > 0) (if (changes > 99) "99+" else "$changes") else null,
+                )
             }
         }
         bottomAction?.invoke()

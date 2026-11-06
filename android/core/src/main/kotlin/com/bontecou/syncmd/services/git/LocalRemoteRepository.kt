@@ -103,7 +103,8 @@ class LocalRemoteRepository(
         RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.PUSH) {
             try {
                 com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(repoPath)).use { git ->
-                    pushRefs(git, remote, listOf(RefSpec("refs/heads/$branch:refs/heads/$remoteBranch")), force)
+                    pushRefs(git, remote, listOf(RefSpec("refs/heads/$branch:refs/heads/$remoteBranch")), force,
+                        currentTransferSink(), kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job])
 
                     Result.success(Unit)
                 }
@@ -137,7 +138,8 @@ class LocalRemoteRepository(
             }
         }
 
-    private fun pushRefs(git: Git, remote: String, specs: List<RefSpec>, force: Boolean = false) {
+    private fun pushRefs(git: Git, remote: String, specs: List<RefSpec>, force: Boolean = false,
+        progress: TransferProgressSink? = null, job: kotlinx.coroutines.Job? = null) {
         val expected = specs.associate { spec ->
             val oid = git.repository.exactRef(spec.source)?.objectId
                 ?: error("Local ref is missing: ${spec.source}")
@@ -147,8 +149,10 @@ class LocalRemoteRepository(
         val command = git.push().setRemote(remote).setRefSpecs(pinnedSpecs).setForce(force).setTimeout(30)
         val auth = RemoteAuthentication.provider(git.repository, remote, true, tokenProvider, credentialResolver)
         command.setRefLeaseSpecs(com.bontecou.syncmd.services.git.lfs.LfsPushLocks.prepare(git.repository, expected, auth))
+        progress?.phase(TransferPhase.LFS_UPLOAD)
         com.bontecou.syncmd.services.git.lfs.LfsRepository.uploadBeforePush(git.repository, expected.values, auth, specs.singleOrNull()?.destination)
         command.setCredentialsProvider(auth).setTransportConfigCallback(auth)
+        if (progress != null) command.setProgressMonitor(progress.monitor(job))
         val results = command.call().toList()
         check(results.isNotEmpty()) { "Remote did not acknowledge the push" }
         for (result in results) {
@@ -156,6 +160,8 @@ class LocalRemoteRepository(
                 val update = result.remoteUpdates.singleOrNull { it.remoteName == destination }
                     ?: error("Remote did not acknowledge $destination")
                 check(update.newObjectId == oid) { "Push target changed for $destination; refresh and retry" }
+                if (update.status in PushRejectedException.REJECTIONS) throw PushRejectedException(
+                    destination, update.status, "Push rejected for $destination: ${update.message ?: update.status.name}")
                 check(update.status == RemoteRefUpdate.Status.OK || update.status == RemoteRefUpdate.Status.UP_TO_DATE) {
                     "Push rejected for $destination: ${update.message ?: update.status.name}"
                 }
@@ -170,7 +176,9 @@ class LocalRemoteRepository(
                     val fetchCommand = git.fetch().setRemote(remote)
                     val auth = RemoteAuthentication.provider(git.repository, remote, false, tokenProvider, credentialResolver)
                     fetchCommand.setCredentialsProvider(auth).setTransportConfigCallback(auth)
+                    fetchCommand.setProgressMonitor(currentTransferMonitor())
                     fetchCommand.call()
+                    RepositoryFetchActivity.record(git.repository)
                     Result.success(Unit)
                 }
             } catch (e: Exception) {

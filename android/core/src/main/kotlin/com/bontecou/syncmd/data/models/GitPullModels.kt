@@ -13,6 +13,8 @@ data class RepositoryStatus(
     val allChanges: List<GitStatusEntry> = emptyList(),
     val headCommit: String? = null,
     val lastSyncAt: Long? = null,
+    /** When this phone last fetched from the remote (epoch ms); null when never recorded. */
+    val lastFetchAt: Long? = null,
 ) {
     /**
      * Total number of files with changes
