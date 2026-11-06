@@ -35,19 +35,25 @@ import androidx.window.layout.WindowLayoutInfo
 
 /**
  * Window facts the adaptive layouts need: the width class from the GitSync.md
- * Material 3 boards (phone, foldable inner / small tablet, tablet) and, on a
- * foldable, where the hinge or fold is so no pane is drawn across it.
+ * Material 3 boards (phone, foldable inner / small tablet, tablet), the posture of a
+ * foldable and, on a foldable, where the hinge or fold is so no pane is drawn across it.
  */
 @Immutable
 data class AdaptiveInfo(
     val widthDp: Int,
     val heightDp: Int,
     val fold: FoldInfo? = null,
+    /** The activity shares the screen with another app (split screen, freeform). */
+    val multiWindow: Boolean = false,
+    /** The device folds (it has a hinge angle sensor), whether or not it is folded now. */
+    val foldable: Boolean = false,
+    /** Smallest side of the whole display in dp, not of this window. */
+    val displaySmallestDp: Int = minOf(widthDp, heightDp),
 ) {
     /** Foldable inner display, small tablet, landscape phone: navigation rail + list-detail. */
-    val isMedium get() = widthDp >= 600
-    /** Full tablet: rail, vault list, changes and detail side by side. */
-    val isExpanded get() = widthDp >= 1100
+    val isMedium get() = widthDp >= MEDIUM_DP
+    /** Full tablet (board "Tablet"): rail, vault list, changes and detail side by side. */
+    val isExpanded get() = widthDp >= EXPANDED_DP
     /**
      * A horizontal fold that matters: half-opened like a laptop, or a separating hinge. Emulators
      * (and some devices) report a half-opened hinge as FLAT + separating, so both count.
@@ -55,7 +61,31 @@ data class AdaptiveInfo(
     val isTabletop get() = fold?.let { !it.vertical && (it.halfOpened || it.separating) } == true
     /** A vertical hinge or fold that splits the window into two panes. */
     val verticalSplit get() = fold?.takeIf { it.vertical && (it.separating || it.halfOpened) }
+    /** The copy says "this tablet" on tablets and "this phone" on phones and foldables (boards Tablet vs Fold*). */
+    val isTabletDevice get() = !foldable && displaySmallestDp >= MEDIUM_DP
+
+    /** Which of the adaptive boards this window gets. */
+    val layout: AdaptiveLayout get() = when {
+        // Half-open with the fold across the window: diff above, commit below (FoldTabletop).
+        isTabletop -> AdaptiveLayout.Tabletop
+        // A narrow window beside another app on a large screen (FoldSplit).
+        multiWindow && widthDp < MEDIUM_DP && (foldable || displaySmallestDp >= MEDIUM_DP) -> AdaptiveLayout.Split
+        // Folded: the cover display reports no folding feature, so a compact window on a foldable is the cover (FoldCover).
+        foldable && fold == null && !multiWindow && widthDp < MEDIUM_DP -> AdaptiveLayout.Cover
+        isExpanded -> AdaptiveLayout.Expanded
+        isMedium -> AdaptiveLayout.Medium
+        else -> AdaptiveLayout.Phone
+    }
+
+    companion object {
+        const val MEDIUM_DP = 600
+        /** Three panes from here (the Tablet board's `wide`), not 1100. */
+        const val EXPANDED_DP = 1000
+    }
 }
+
+/** The adaptive boards: phone screens, the foldable cover, split screen, tabletop, foldable inner / small tablet, tablet. */
+enum class AdaptiveLayout { Phone, Cover, Split, Tabletop, Medium, Expanded }
 
 /** Fold bounds in window pixels. */
 @Immutable
@@ -105,7 +135,22 @@ fun rememberAdaptiveInfo(): AdaptiveInfo {
             value = info.toFold()
         }
     }
-    return AdaptiveInfo(configuration.screenWidthDp, configuration.screenHeightDp, fold)
+    val foldable = remember(context) {
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R &&
+            context.packageManager.hasSystemFeature(android.content.pm.PackageManager.FEATURE_SENSOR_HINGE_ANGLE)
+    }
+    // Entering or leaving split screen is a configuration change, so these re-read with it.
+    val multiWindow = activity?.isInMultiWindowMode == true
+    val displaySmallest = remember(activity, configuration) {
+        activity?.let { host ->
+            runCatching {
+                val bounds = androidx.window.layout.WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(host).bounds
+                val density = host.resources.displayMetrics.density
+                (minOf(bounds.width(), bounds.height()) / density).toInt()
+            }.getOrNull()
+        } ?: configuration.smallestScreenWidthDp
+    }
+    return AdaptiveInfo(configuration.screenWidthDp, configuration.screenHeightDp, fold, multiWindow, foldable, displaySmallest)
 }
 
 /**

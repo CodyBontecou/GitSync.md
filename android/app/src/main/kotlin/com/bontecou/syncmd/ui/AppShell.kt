@@ -308,8 +308,14 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
     val openSettings: () -> Unit = { navController.navigateSafe(Routes.SETTINGS) }
     // "Resume publishing" on Add a vault opens this saved publication in Publish a folder.
     var publishResume by rememberSaveable { mutableStateOf<String?>(null) }
+    // Tablet / foldable rail: Sync all with every vault's push count, and the signed-in avatar at the foot.
+    val githubUser by githubViewModel.user.collectAsState()
+    val avatarInitials = githubUser?.login?.filter { it.isLetterOrDigit() }?.take(2)?.uppercase()?.takeIf { isLoggedIn && it.isNotEmpty() }
+    val railChrome: @Composable () -> com.bontecou.syncmd.ui.components.RailChrome = {
+        com.bontecou.syncmd.ui.adaptive.rememberRailChrome(registeredRepositories, avatarInitials, openSettings)
+    }
     val railFrame: @Composable (com.bontecou.syncmd.ui.components.VaultTab?, @Composable () -> Unit) -> Unit = { tab, content ->
-        com.bontecou.syncmd.ui.components.VaultRailFrame(adaptive, tab, openTab, openPullAll, openSettings, content)
+        com.bontecou.syncmd.ui.components.VaultRailFrame(adaptive, tab, openTab, railChrome, content)
     }
 
     Box(
@@ -325,6 +331,16 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         ) {
             // ── Repo list (home) ──────────────────────────────────────────
             composable(Routes.REPOS) {
+              // Folded: the cover display gets its own Home (board FoldCover); sign-in problems and an empty list keep the phone Home.
+              if (adaptive.layout == com.bontecou.syncmd.ui.util.AdaptiveLayout.Cover && registeredRepositories.isNotEmpty() && sessionError == null) {
+                com.bontecou.syncmd.ui.adaptive.CoverHome(
+                    repositories = registeredRepositories,
+                    avatarInitials = avatarInitials,
+                    onOpenVault = { path -> settingsViewModel.setRepositoryPath(path) { navController.navigateSafe(Routes.VAULT) } },
+                    onAddVault = { navController.navigateSafe(Routes.ADD_VAULT) },
+                    onAccount = { navController.navigateSafe(Routes.SETTINGS) },
+                )
+              } else
                 ReposScreen(
                     settingsViewModel   = settingsViewModel,
                     githubViewModel     = githubViewModel,
@@ -503,14 +519,25 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
 
             // ── Vault (single repo overview) ──────────────────────────────
             composable(Routes.VAULT) {
-                // List-detail on tablets and foldables: the file picked in Changes opens beside the list.
-                var selectedFile by rememberSaveable(selectedRepository) { mutableStateOf<String?>(null) }
-                // Bumped when the commit sheet closes: staging or committing changes which layer the pane should show.
-                var detailRevision by remember { mutableStateOf(0) }
-                val twoPane = adaptive.isMedium
                 val openEditor: (String) -> Unit = { navController.navigateSafe("${Routes.EDITOR}/${Uri.encode(it)}") }
-                val vault: @Composable () -> Unit = {
-                    VaultScreen(
+                when (adaptive.layout) {
+                    // Tablets, the foldable inner display, tabletop and split screen (boards Tablet*, Fold*).
+                    com.bontecou.syncmd.ui.util.AdaptiveLayout.Medium, com.bontecou.syncmd.ui.util.AdaptiveLayout.Expanded,
+                    com.bontecou.syncmd.ui.util.AdaptiveLayout.Tabletop, com.bontecou.syncmd.ui.util.AdaptiveLayout.Split ->
+                        com.bontecou.syncmd.ui.adaptive.AdaptiveVault(
+                            info = adaptive,
+                            repositoryPath = selectedRepository,
+                            vaultName = selectedIdentity?.name ?: selectedRepository.substringAfterLast('/'),
+                            owner = selectedIdentity?.owner,
+                            repositories = registeredRepositories,
+                            onSelectVault = { path -> settingsViewModel.setRepositoryPath(path) {} },
+                            chrome = railChrome,
+                            onSelectTab = openTab,
+                            onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
+                            onOpenDiffScreen = { navController.navigateSafe("${Routes.DIFF}/${Uri.encode(it)}") },
+                            onOpenEditorScreen = openEditor,
+                        )
+                    else -> VaultScreen(
                         repositoryPath  = selectedRepository,
                         showDebugInfo   = appSettings.showDebugInfo,
                         repositoryName = selectedIdentity?.name,
@@ -522,50 +549,11 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
                         onOpenGit       = { navController.navigateSafe(Routes.GIT) },
                         onOpenFiles     = { navController.navigateSafe(Routes.FILES) },
-                        onOpenDiff      = { filePath ->
-                            if (twoPane) selectedFile = filePath
-                            else navController.navigateSafe("${Routes.DIFF}/${Uri.encode(filePath)}")
-                        },
+                        onOpenDiff      = { filePath -> navController.navigateSafe("${Routes.DIFF}/${Uri.encode(filePath)}") },
                         onNavigateBack  = { navController.popBackStackSafe() },
-                        showNavigation = !twoPane,
                         onSelectTab = openTab,
-                        selectedFile = selectedFile.takeIf { twoPane },
-                        onCommitSheetClosed = { detailRevision++ },
                         onOpenVaultSettings = { navController.navigateSafe("${Routes.VAULT_SETTINGS}/${Uri.encode(selectedRepository)}") },
                     )
-                }
-                val detail: @Composable () -> Unit = {
-                    val file = selectedFile
-                    if (file == null) com.bontecou.syncmd.ui.components.VaultDetailPlaceholder()
-                    else androidx.compose.runtime.key(file, detailRevision) {
-                        DiffScreen(
-                            repositoryPath = selectedRepository,
-                            filePath = file,
-                            onNavigateBack = { selectedFile = null },
-                            onOpenEditor = { openEditor(file) },
-                            showBack = false,
-                            onOpenEditorFor = openEditor,
-                        )
-                    }
-                }
-                when {
-                    !twoPane -> vault()
-                    // Half-opened like a laptop: the diff above the fold, the vault and its commit actions below.
-                    adaptive.isTabletop -> railFrame(com.bontecou.syncmd.ui.components.VaultTab.CHANGES) {
-                        com.bontecou.syncmd.ui.util.HingeAwareColumn(adaptive, top = detail, bottom = vault)
-                    }
-                    adaptive.isExpanded -> railFrame(com.bontecou.syncmd.ui.components.VaultTab.CHANGES) {
-                        androidx.compose.foundation.layout.Row(Modifier.fillMaxSize()) {
-                            com.bontecou.syncmd.ui.components.VaultListPane(registeredRepositories, selectedRepository,
-                                onSelect = { path -> selectedFile = null; settingsViewModel.setRepositoryPath(path) {} })
-                            Box(Modifier.weight(1f)) {
-                                com.bontecou.syncmd.ui.util.HingeAwareRow(adaptive, 380.dp, first = vault, second = detail)
-                            }
-                        }
-                    }
-                    else -> railFrame(com.bontecou.syncmd.ui.components.VaultTab.CHANGES) {
-                        com.bontecou.syncmd.ui.util.HingeAwareRow(adaptive, 360.dp, first = vault, second = detail)
-                    }
                 }
             }
 
