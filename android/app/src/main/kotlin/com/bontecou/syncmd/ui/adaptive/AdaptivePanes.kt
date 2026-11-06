@@ -3,6 +3,8 @@ package com.bontecou.syncmd.ui.adaptive
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -136,7 +138,7 @@ internal fun DetailFooter(content: @Composable RowScope.() -> Unit) {
 internal fun CompactSegmented(options: List<String>, selected: Int, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
     val c = M3.colors
     val shape = RoundedCornerShape(18.dp)
-    Row(modifier.heightIn(min = 36.dp).clip(shape).border(1.dp, c.outline, shape).testTag("pane-view")) {
+    Row(modifier.height(IntrinsicSize.Min).heightIn(min = 36.dp).clip(shape).border(1.dp, c.outline, shape).testTag("pane-view")) {
         options.forEachIndexed { index, label ->
             val on = index == selected
             if (index > 0) Box(Modifier.width(1.dp).heightIn(min = 36.dp).fillMaxHeight().background(c.outline))
