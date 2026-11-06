@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 /** Account-owned publications: a delayed response cannot repopulate another session's profile or repos. */
 @HiltViewModel
-class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, private val api: GitHubClient) : ViewModel() {
+class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, private val api: GitHubClient,
+    private val signInStatus: GitHubSignInStatus? = null) : ViewModel() {
     val isLoggedIn = authManager.token.map { !it.isNullOrBlank() }.stateIn(viewModelScope, SharingStarted.Eagerly, authManager.isLoggedIn)
     private val _user = MutableStateFlow<GitHubUser?>(null)
     val user = _user.asStateFlow()
@@ -96,7 +97,12 @@ class GitHubViewModel @Inject constructor(val authManager: GitHubAuthManager, pr
         loadJob = viewModelScope.launch {
             fun current() = id == request && authManager.getToken() == token && authManager.sessionRevision.value == revision
             try {
-                val user = api.fetchUser(token)
+                val user = try { api.fetchUser(token) } catch (e: GitHubApiException) {
+                    // Home's "GitHub sign-in expired" state: the saved token itself was refused.
+                    if (e.isUnauthorized) signInStatus?.markExpired(token, authManager.activeAccountId())
+                    throw e
+                }
+                signInStatus?.markWorking(token)
                 if (!current()) return@launch
                 val email = user.email ?: api.fetchPrimaryEmail(token)
                 if (!current()) return@launch
