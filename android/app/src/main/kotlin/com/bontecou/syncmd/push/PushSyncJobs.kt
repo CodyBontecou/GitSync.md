@@ -73,7 +73,11 @@ class PushEventWorker @JvmOverloads constructor(context: Context, parameters: Wo
         PushRuntime.ready.await()
         val id = inputData.getString("event") ?: error("Missing event")
         val service = overrideBackend ?: backend(applicationContext)
-        if (service.store.event(id) != null) service.reconcile(id)
+        if (service.store.event(id) != null) {
+            val before = BackgroundPullNotifications.heads(applicationContext)
+            val results = service.reconcile(id)
+            runCatching { BackgroundPullNotifications.afterPull(applicationContext, id, results, before) }
+        }
         Result.success()
     } catch (cancelled: CancellationException) { throw cancelled }
     catch (_: Exception) { if (runAttemptCount < 3) Result.retry() else Result.failure() }

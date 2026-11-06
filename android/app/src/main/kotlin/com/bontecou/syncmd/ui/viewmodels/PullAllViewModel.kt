@@ -20,22 +20,34 @@ import javax.inject.Inject
 @HiltViewModel
 class PullAllViewModel(private val snapshot: () -> List<PullAllTarget>, private val runner: PullAllRunner,
     private val background: (() -> BackgroundPullRun?)? = null, private val cancelBackground: (String) -> Unit = {},
-    private val clearBackground: () -> Unit = {}) : ViewModel() {
+    private val clearBackground: () -> Unit = {}, private val details: () -> Map<String, String> = { emptyMap() }) : ViewModel() {
     @Inject constructor(@ApplicationContext context: Context, pull: PullRepository) : this(
         PullAllCatalog(context)::snapshot, PullAllRunner(pull, PullAllCatalog(context)::requireCurrent),
         PullAllBackgroundRuns(context)::latest, { id -> context.startService(PullAllRunService.stopIntent(context, id)); Unit },
-        PullAllBackgroundRuns(context)::clear)
+        PullAllBackgroundRuns(context)::clear, PullAllCatalog(context)::details)
     data class State(val busy: Boolean = false, val started: Boolean = false, val targets: List<PullAllTarget> = emptyList(),
         val current: String? = null, val results: List<PullAllResult> = emptyList(), val stopped: Boolean = false,
         val stopping: Boolean = false, val failed: Boolean = false, val background: BackgroundPullRun? = null,
-        val backgroundUnavailable: Boolean = false, val backgroundControlFailed: Boolean = false)
+        val backgroundUnavailable: Boolean = false, val backgroundControlFailed: Boolean = false,
+        /** Vaults a run would pull right now, for "Pull all · 5 vaults"; null until read. */
+        val vaults: Int? = null,
+        /** "main · CodyBontecou/VoxVault" per vault path. */
+        val details: Map<String, String> = emptyMap())
     private val mutable = MutableStateFlow(State())
     val state = mutable.asStateFlow()
     private var job: Job? = null
     private var opening: Job? = null
     private var backgroundRead = 0L
     private data class BackgroundRead(val revision: Long, val result: Result<BackgroundPullRun?>)
-    init { if (background != null) viewModelScope.launch { PullAllBackgroundRuns.changes.collectLatest { loadBackground() } } }
+    init {
+        if (background != null) viewModelScope.launch { PullAllBackgroundRuns.changes.collectLatest { loadBackground() } }
+        refreshCatalog()
+    }
+    /** Re-read how many vaults Pull All covers and their branch/remote lines. */
+    fun refreshCatalog() { viewModelScope.launch {
+        val read = withContext(Dispatchers.IO) { runCatching { snapshot().size to details() } }.getOrNull() ?: return@launch
+        mutable.value = mutable.value.copy(vaults = read.first, details = read.second)
+    } }
     private suspend fun loadBackground(): BackgroundRead {
         val source = background ?: return BackgroundRead(backgroundRead, Result.success(null))
         val generation = ++backgroundRead
@@ -87,7 +99,8 @@ class PullAllViewModel(private val snapshot: () -> List<PullAllTarget>, private 
                     mutable.value = mutable.value.copy(started = false)
                     return@launch
                 }
-                mutable.value = mutable.value.copy(targets = targets)
+                val lines = withContext(Dispatchers.IO) { runCatching(details).getOrDefault(mutable.value.details) }
+                mutable.value = mutable.value.copy(targets = targets, vaults = targets.size, details = lines)
                 runner.run(targets, onStart = { target ->
                     mutable.value = mutable.value.copy(current = target.path)
                 }, onResult = { result ->

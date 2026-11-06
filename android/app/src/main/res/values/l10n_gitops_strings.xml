@@ -49,7 +49,7 @@
     <string name="gitops_lfs_locks_denied">The server rejected access to its lock list. Check the repository connection and push permissions.</string>
     <string name="gitops_lfs_locks_check_failed">Could not check server locks. Refresh before another change.</string>
     <string name="gitops_lfs_locks_unavailable">Could not check server locks. Check connection and repository state, then refresh before another change.</string>
-    <string name="gitops_lfs_extensions_review_failed">Could not review extension tracking. Reload and check existing attributes, conflicts and file access before trying again.</string>
+    <string name="gitops_lfs_extensions_review_failed">Couldn’t review extension tracking. Reload, then check existing attributes, conflicts and file access before trying again.</string>
     <string name="gitops_lfs_failed">Could not complete Git LFS. Check the connection and current tracking state, then reload and retry. Your local files and commits were kept.</string>
     <string name="gitops_status_refresh_failed">Could not refresh repository status</string>
     <string name="gitops_pull_incomplete">Pull did not complete</string>

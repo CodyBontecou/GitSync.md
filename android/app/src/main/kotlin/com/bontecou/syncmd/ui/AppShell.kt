@@ -124,6 +124,10 @@ object Routes {
     const val PUSH_SYNC = "push-sync"
     const val BACKGROUND_SYNC = "background-sync"
     const val HISTORY = "history"
+    /** Board routes other screens link to: largeFiles/{repo} (URI-encoded vault path), lfsEndpoints, sshHosts. */
+    const val LARGE_FILES = "largeFiles"
+    const val LFS_ENDPOINTS_M3 = "lfsEndpoints"
+    const val SSH_HOSTS = "sshHosts"
 }
 
 /**
@@ -208,6 +212,27 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         if (!com.bontecou.syncmd.automation.RepositoryShortcutRequests.consume(request)) return@LaunchedEffect
         if (navController.currentDestination?.route != Routes.REPOSITORY_ACTIONS) navController.navigateSafe(Routes.REPOSITORY_ACTIONS)
         repositoryActions.runShortcut(request.id)
+    }
+
+    // Keep widgets and per-vault launcher shortcuts in step with the vault list.
+    LaunchedEffect(registeredRepositories) { com.bontecou.syncmd.automation.VaultWidgets.refresh(context) }
+    // Launcher shortcuts, widget rows and "See changes" open a vault (or Add a vault) in the app.
+    val vaultShortcut by com.bontecou.syncmd.automation.VaultShortcutRequests.pending.collectAsState()
+    LaunchedEffect(vaultShortcut) {
+        val request = vaultShortcut ?: return@LaunchedEffect
+        navController.awaitResumedNavigationEntry()
+        if (!com.bontecou.syncmd.automation.VaultShortcutRequests.consume(request)) return@LaunchedEffect
+        val path = request.path
+        when (request.action) {
+            com.bontecou.syncmd.automation.VaultShortcutActivity.ADD ->
+                if (isLoggedIn) { githubViewModel.loadUserAndRepos(); navController.navigateSafe(Routes.REPO_PICKER) } else navController.navigateSafe(Routes.LOGIN)
+            com.bontecou.syncmd.automation.VaultShortcutActivity.HOME -> navController.popBackStack(Routes.REPOS, inclusive = false)
+            else -> if (path != null) settingsViewModel.setRepositoryPath(path) {
+                navController.navigateSafe(Routes.VAULT)
+                if (request.action == com.bontecou.syncmd.automation.VaultShortcutActivity.CHANGES)
+                    navController.navigateSafe(Routes.HISTORY) { popUpTo(Routes.VAULT); launchSingleTop = true }
+            }
+        }
     }
 
     LaunchedEffect(callbackIncoming) {
@@ -616,6 +641,15 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             }
             composable(Routes.LFS_ENDPOINTS) {
                 com.bontecou.syncmd.ui.screens.LfsEndpointsScreen(onBack = { navController.popBackStackSafe() })
+            }
+            composable(Routes.LFS_ENDPOINTS_M3) {
+                com.bontecou.syncmd.ui.screens.LfsEndpointsScreen(onBack = { navController.popBackStackSafe() })
+            }
+            composable(Routes.SSH_HOSTS) {
+                com.bontecou.syncmd.ui.screens.SshTrustScreen(onBack = { navController.popBackStackSafe() })
+            }
+            composable("${Routes.LARGE_FILES}/{repo}", arguments = listOf(navArgument("repo") { type = NavType.StringType })) { entry ->
+                com.bontecou.syncmd.ui.screens.LfsScreen(entry.arguments?.getString("repo").orEmpty(), onBack = { navController.popBackStackSafe() })
             }
             composable(Routes.DIAGNOSTICS) {
                 com.bontecou.syncmd.ui.screens.DiagnosticsScreen(onBack = { navController.popBackStackSafe() })

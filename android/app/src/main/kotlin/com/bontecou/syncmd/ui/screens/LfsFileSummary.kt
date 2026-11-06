@@ -1,67 +1,80 @@
 package com.bontecou.syncmd.ui.screens
 
-import android.text.format.Formatter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.git.lfs.LfsFileInfo
 import com.bontecou.syncmd.services.git.lfs.LfsPointer
-import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TidePill
-import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.components.LfsMono
+import com.bontecou.syncmd.ui.components.LfsSizes
+import com.bontecou.syncmd.ui.theme.*
 
-/** Resolve presentation from the current UI locale; stored Git/LFS state stays language-independent. */
+private val imageTypes = setOf("png", "jpg", "jpeg", "gif", "webp", "heic", "svg", "psd", "tif", "tiff", "bmp")
+private val audioTypes = setOf("m4a", "mp3", "wav", "aac", "flac", "ogg", "opus", "aiff")
+
+/**
+ * One tracked LFS object (board "Large files" › Tracked files): a 40dp tile toned by state (ok =
+ * contents here, muted = pointer only, ahead = local edits), the mono path, the state badge, the
+ * size and cache line, and a lock glyph when the server holds a lock on it.
+ */
 @Composable
-internal fun LfsFileSummary(file: LfsFileInfo) {
-    val c = Tide.colors
-    Text(file.path, style = TideType.mono(13.sp, androidx.compose.ui.text.font.FontWeight.Medium).copy(textDirection = TextDirection.Ltr), color = c.ink)
-    val size = Formatter.formatFileSize(LocalContext.current, file.pointer.size)
-    val cache = stringResource(if (file.cached) R.string.lfs_cache_verified else R.string.lfs_cache_missing)
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        // Orange = edited here, green = contents on this device, quiet = pointer only.
-        val (fg, bg) = when {
-            file.modified -> c.ahead to c.ahead.copy(alpha = 0.12f)
-            file.hydrated -> c.synced to c.synced.copy(alpha = 0.12f)
-            else -> c.inkMid to c.well
-        }
-        TidePill(stringResource(when {
+internal fun RowScope.LfsFileSummary(file: LfsFileInfo, locked: Boolean = false) {
+    val c = M3.colors
+    val tone = when { file.modified -> M3Tone.Ahead; file.hydrated -> M3Tone.Ok; else -> M3Tone.Muted }
+    val (bg, fg) = tone.colors()
+    val extension = file.path.substringAfterLast('.', "").lowercase()
+    M3LeadingTile(when (extension) { in imageTypes -> R.drawable.ic_m3_image; in audioTypes -> R.drawable.ic_m3_audio_file; else -> R.drawable.ic_m3_file },
+        container = bg, content = fg)
+    Column(Modifier.weight(1f)) {
+        Text(file.path, style = LfsMono.copy(fontWeight = FontWeight.Medium), color = c.on, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        M3Badge(stringResource(when {
             file.modified -> R.string.lfs_file_local_edits
             file.hydrated -> R.string.lfs_file_available
-            else -> R.string.lfs_file_pointer
-        }), fg, bg, Modifier.testTag("lfs-file-state"))
+            else -> R.string.lfs_m3_state_pointer
+        }), tone, Modifier.padding(top = 4.dp).testTag("lfs-file-state"))
+        Text("${LfsSizes.format(file.pointer.size)} · ${stringResource(if (file.cached) R.string.lfs_m3_cache_verified else R.string.lfs_m3_cache_missing)}",
+            style = M3Type.meta, color = c.onVar, modifier = Modifier.padding(top = 4.dp).testTag("lfs-file-storage"))
     }
-    Text("$size · $cache", style = TideType.meta, color = c.inkFaint, modifier = Modifier.testTag("lfs-file-storage"))
+    if (locked) M3Icon(R.drawable.ic_m3_lock, tint = c.onVar, size = 20.dp, contentDescription = stringResource(R.string.lfs_m3_locked))
+}
+
+/** Compatibility entry point: the summary laid out in its own row. */
+@Composable
+internal fun LfsFileSummary(file: LfsFileInfo) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) { LfsFileSummary(file, false) }
 }
 
 @Composable
 private fun LfsFileSummaryPreviewContent() {
-    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    M3ListCard(Modifier.padding(16.dp)) {
         listOf(
-            LfsFileInfo("assets/diagram.psd", LfsPointer("a".repeat(64), 48_000_000), hydrated = true, cached = true, modified = false, lockable = true),
-            LfsFileInfo("audio/interview.wav", LfsPointer("b".repeat(64), 120_000_000), hydrated = false, cached = false, modified = false, lockable = false),
-            LfsFileInfo("video/cut.mov", LfsPointer("c".repeat(64), 900_000_000), hydrated = true, cached = true, modified = true, lockable = false),
-        ).forEach { Column(verticalArrangement = Arrangement.spacedBy(6.dp)) { LfsFileSummary(it) } }
+            LfsFileInfo("attachments/whiteboard.png", LfsPointer("a".repeat(64), 1_200_000), hydrated = true, cached = true, modified = false, lockable = true),
+            LfsFileInfo("audio/field-recording.m4a", LfsPointer("b".repeat(64), 38_000_000), hydrated = false, cached = false, modified = false, lockable = false),
+            LfsFileInfo("attachments/diagram.psd", LfsPointer("c".repeat(64), 8_800_000), hydrated = true, cached = true, modified = true, lockable = true),
+        ).forEachIndexed { i, file ->
+            Row(Modifier.m3TopDivider(i > 0, M3.colors.outlineVar).padding(horizontal = 16.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) { LfsFileSummary(file, locked = i != 1) }
+        }
     }
 }
 
-@Preview(name = "LFS files · light", showBackground = true)
+@Preview(name = "LFS files · light", showBackground = true, backgroundColor = 0xFFFBF8F3)
 @Composable
 private fun LfsFileSummaryLight() = SyncMdTheme(darkTheme = false) { LfsFileSummaryPreviewContent() }
 
-@Preview(name = "LFS files · dark", showBackground = true, backgroundColor = 0xFF111114)
+@Preview(name = "LFS files · dark", showBackground = true, backgroundColor = 0xFF131316)
 @Composable
 private fun LfsFileSummaryDark() = SyncMdTheme(darkTheme = true) { LfsFileSummaryPreviewContent() }

@@ -168,7 +168,7 @@ class PullAllScreenTest {
         compose.runOnIdle { dark.value = true; large.value = true }
         compose.onNodeWithText("Dirty notes 東京").performScrollTo().assertIsDisplayed(); screenshot("pull-all-background-summary-dark-xl.png")
         compose.onNodeWithTag("pull-all-background-clear").performScrollTo().performClick()
-        compose.onNodeWithText(app.getString(R.string.repository_actions_cancel), substring = false).performClick(); assertNotNull(store.latest())
+        compose.onNodeWithText(app.getString(R.string.lfs_m3_cancel), substring = false).performClick(); assertNotNull(store.latest())
         compose.onNodeWithTag("pull-all-background-clear").performScrollTo().performClick()
         compose.onNodeWithTag("pull-all-background-clear-confirm").performClick()
         compose.waitUntil(10_000) { model.state.value.background == null }; assertNull(store.latest()); assertEquals(0, calls)
@@ -291,7 +291,7 @@ class PullAllScreenTest {
         models += model; compose.runOnIdle { shown.value = model }
         compose.waitUntil(10_000) { model.state.value.background?.id == history.id }
         assertFalse(model.state.value.started)
-        compose.onNodeWithTag("pull-all-start").assertTextEquals(app.getString(R.string.pull_all_again)).performClick()
+        compose.onNodeWithTag("pull-all-start").assertTextEquals(app.getString(R.string.pullall_m3_again)).performClick()
         finished(model)
         assertEquals(listOf(PullAllOutcome.UP_TO_DATE), model.state.value.results.map { it.outcome })
         assertEquals(history.id, model.state.value.background?.id)
@@ -527,14 +527,14 @@ class PullAllScreenTest {
         compose.runOnIdle { model.open() }; compose.waitUntil(10_000) { model.state.value.backgroundUnavailable }
         assertFalse(model.state.value.started)
         compose.onNodeWithTag("pull-all-background-clear").performScrollTo().performClick()
-        compose.onNodeWithText(app.getString(R.string.repository_actions_cancel), substring = false).performClick(); assertEquals(7, prefs.getInt("latest", 0))
+        compose.onNodeWithText(app.getString(R.string.lfs_m3_cancel), substring = false).performClick(); assertEquals(7, prefs.getInt("latest", 0))
         compose.onNodeWithTag("pull-all-background-clear").performScrollTo().performClick(); compose.onNodeWithTag("pull-all-background-clear-confirm").performClick()
         compose.waitUntil(10_000) { !model.state.value.backgroundUnavailable }; assertNull(store.latest()); assertFalse(model.state.value.started)
         val partial = store.reserve(); assertTrue(store.claim(partial.id)); store.targets(partial.id, 2)
         store.result(partial.id, PullAllResult(PullAllTarget("/not-persisted", "Completed before failure"), PullAllOutcome.UPDATED))
         store.finish(partial.id, BackgroundPullState.FAILED)
         compose.waitUntil(10_000) { model.state.value.background?.state == BackgroundPullState.FAILED }
-        compose.onNodeWithText(app.getString(R.string.pull_all_background_failed)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(app.getString(R.string.pullall_m3_failed)).performScrollTo().assertIsDisplayed()
         assertEquals(1, model.state.value.background!!.checked); assertFalse(model.state.value.started)
     }
 

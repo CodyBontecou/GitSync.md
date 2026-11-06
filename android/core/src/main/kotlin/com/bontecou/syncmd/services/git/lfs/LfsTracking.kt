@@ -18,6 +18,8 @@ class LfsTrackingPlan internal constructor(
     val path: String, val head: String?, val indexRevision: String?, val attributesRevision: String?,
     candidates: List<LfsTrackingCandidate>, val branch: String?,
     internal val checkout: CheckoutProtection.Snapshot,
+    /** Candidate paths Git doesn't track yet (new files), as opposed to changed tracked files. */
+    val untracked: Set<String> = emptySet(),
 ) {
     val candidates: List<LfsTrackingCandidate> = java.util.Collections.unmodifiableList(candidates.toList())
 }
@@ -33,7 +35,8 @@ class LfsTracking {
             CheckoutProtection.verify(git, checkout)
             if (revision(File(git.repository.workTree.canonicalFile, ".gitattributes")) != attributes) throw LfsExtensionReviewChanged()
             LfsTrackingPlan(git.repository.workTree.canonicalPath, checkout.head,
-                checkout.index, attributes, candidates, checkout.branch, checkout)
+                checkout.index, attributes, candidates, checkout.branch, checkout,
+                untracked = candidates.map { it.path }.filter { it in status.untracked }.toSet())
         }
     }
     suspend fun decide(plan: LfsTrackingPlan, selected: Set<String>, useLfs: Boolean) = RepositoryOperationCoordinator.withRepository(plan.path) {
