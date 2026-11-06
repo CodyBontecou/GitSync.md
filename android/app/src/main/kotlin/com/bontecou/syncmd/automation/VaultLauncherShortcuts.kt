@@ -24,6 +24,12 @@ object VaultShortcutRequests {
     val pending = mutable.asStateFlow()
     internal fun request(request: VaultShortcutRequest) { mutable.value = request }
     fun consume(request: VaultShortcutRequest): Boolean = mutable.compareAndSet(request, null)
+
+    private val commit = MutableStateFlow<String?>(null)
+    /** The vault whose commit sheet a "Commit & push" shortcut asked for; the Vault screen opens it once. */
+    val pendingCommit = commit.asStateFlow()
+    fun requestCommit(path: String) { commit.value = path }
+    fun consumeCommit(path: String): Boolean = commit.compareAndSet(path, null)
 }
 
 /**
