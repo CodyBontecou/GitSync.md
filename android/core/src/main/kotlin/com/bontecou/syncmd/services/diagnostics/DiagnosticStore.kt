@@ -17,6 +17,10 @@ import java.util.UUID
 /** One process-owned, bounded atomic file. Invalid files remain untouched until an explicit clear. */
 class DiagnosticStore(private val directory: File, private val limit: Int = 500, private val byteLimit: Int = 256 * 1024) {
     init { require(limit in 1..500 && byteLimit in 1024..256 * 1024) }
+    /** Copy of [export] limited to the given entries (Debug log › "Copy visible entries"). */
+    fun export(entries: List<DiagnosticEntry>): String = entries.joinToString("\n") { line(it) }
+    private fun line(it: DiagnosticEntry) = "[${Instant.ofEpochMilli(it.time)}] [${it.level}]${if (it.background) " [BG]" else ""} [${it.operation}] ${it.outcome}" +
+        if (it.reason == DiagnosticReason.NONE) "" else " · ${it.reason}"
     private val file get() = File(directory, "events.json")
     private var loaded = false
     private var unreadable = false
@@ -47,8 +51,11 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
                 require(UUID.fromString(id).toString() == id && ids.add(id))
                 val time = row.get("time").asLong
                 require(time in 0..253402300799999L)
+                val vault = row.get("vault")?.takeIf { !it.isJsonNull }?.asString
+                require(vault == null || vault.matches(Regex("[0-9a-f]{16}")))
                 DiagnosticEntry(id, time, DiagnosticOperation.valueOf(row.get("operation").asString),
-                    DiagnosticOutcome.valueOf(row.get("outcome").asString), DiagnosticReason.valueOf(row.get("reason").asString))
+                    DiagnosticOutcome.valueOf(row.get("outcome").asString), DiagnosticReason.valueOf(row.get("reason").asString),
+                    vault, row.get("background")?.takeIf { !it.isJsonNull }?.asBoolean ?: false)
             }
         } catch (_: Exception) { unreadable = true; _storageProblem.value = true }
     }
@@ -62,7 +69,7 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
     }
     @Synchronized fun clear() { persist(emptyList()); unreadable = false; loaded = true }
     fun export(level: DiagnosticLevel? = null): String = entries.value.filter { level == null || it.level == level }
-        .joinToString("\n") { "[${Instant.ofEpochMilli(it.time)}] [${it.level}] [${it.operation}] ${it.outcome}" +
+        .joinToString("\n") { "[${Instant.ofEpochMilli(it.time)}] [${it.level}]${if (it.background) " [BG]" else ""} [${it.operation}] ${it.outcome}" +
             if (it.reason == DiagnosticReason.NONE) "" else " · ${it.reason}" }
 
     private fun safeDirectory() {
@@ -75,6 +82,8 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
         add("entries", JsonArray().apply { entries.forEach { entry -> add(JsonObject().apply {
             addProperty("id", entry.id); addProperty("time", entry.time); addProperty("operation", entry.operation.name)
             addProperty("outcome", entry.outcome.name); addProperty("reason", entry.reason.name)
+            entry.vault?.let { addProperty("vault", it) }
+            if (entry.background) addProperty("background", true)
         }) } })
     }.toString().toByteArray(Charsets.UTF_8)
     private fun persist(next: List<DiagnosticEntry>) {

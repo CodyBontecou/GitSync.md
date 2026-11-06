@@ -6,8 +6,14 @@ enum class DiagnosticOperation { APP, CLONE, FETCH, PULL, PUSH, STAGE, UNSTAGE, 
 enum class DiagnosticLevel { INFO, WARNING, ERROR }
 enum class DiagnosticOutcome { STARTED, COMPLETED, STOPPED, ATTENTION, CANCELLED }
 enum class DiagnosticReason { NONE, LOCAL_CHANGES, LFS_CONTENTS, LFS_LOCK, TRUST_REQUIRED, CANCELLED, NETWORK, STORAGE, REVIEW_REQUIRED, UNKNOWN }
+/**
+ * [vault] is a one-way key of the vault's folder ([Diagnostics.vaultKey]), never its name or path, so the
+ * debug log can say which vault an entry belongs to without storing either. [background] marks work
+ * Background Sync ran with the app closed.
+ */
 data class DiagnosticEntry(val id: String = UUID.randomUUID().toString(), val time: Long = System.currentTimeMillis(),
-    val operation: DiagnosticOperation, val outcome: DiagnosticOutcome, val reason: DiagnosticReason = DiagnosticReason.NONE) {
+    val operation: DiagnosticOperation, val outcome: DiagnosticOutcome, val reason: DiagnosticReason = DiagnosticReason.NONE,
+    val vault: String? = null, val background: Boolean = false) {
     val level: DiagnosticLevel get() = when (outcome) {
         DiagnosticOutcome.STOPPED -> DiagnosticLevel.ERROR
         DiagnosticOutcome.ATTENTION, DiagnosticOutcome.CANCELLED -> DiagnosticLevel.WARNING
@@ -15,17 +21,33 @@ data class DiagnosticEntry(val id: String = UUID.randomUUID().toString(), val ti
     }
 }
 
+/** Coroutine context marking Background Sync work, so its entries get the BG badge. */
+class DiagnosticScope(val background: Boolean) : kotlin.coroutines.AbstractCoroutineContextElement(Key) {
+    companion object Key : kotlin.coroutines.CoroutineContext.Key<DiagnosticScope>
+}
+
 /** Only typed facts enter diagnostics: never exception text, paths, credentials, URLs or Git output. */
 object Diagnostics {
+    /** One-way key for a vault folder: the first 16 hex digits of SHA-256 over its canonical path. */
+    fun vaultKey(path: String): String {
+        val canonical = runCatching { java.io.File(path).canonicalPath }.getOrDefault(path)
+        return java.security.MessageDigest.getInstance("SHA-256").digest(canonical.toByteArray(Charsets.UTF_8))
+            .take(8).joinToString("") { "%02x".format(it.toInt() and 255) }
+    }
     @Volatile private var sink: ((DiagnosticEntry) -> Unit)? = null
     fun install(writer: ((DiagnosticEntry) -> Unit)?): ((DiagnosticEntry) -> Unit)? {
         val previous = sink; sink = writer; return previous
     }
-    fun record(operation: DiagnosticOperation, outcome: DiagnosticOutcome, reason: DiagnosticReason = DiagnosticReason.NONE) {
-        runCatching { sink?.invoke(DiagnosticEntry(operation = operation, outcome = outcome, reason = reason)) }
+    fun record(operation: DiagnosticOperation, outcome: DiagnosticOutcome, reason: DiagnosticReason = DiagnosticReason.NONE,
+        vault: String? = null, background: Boolean = false) {
+        runCatching { sink?.invoke(DiagnosticEntry(operation = operation, outcome = outcome, reason = reason, vault = vault, background = background)) }
     }
-    suspend fun <T> track(operation: DiagnosticOperation?, action: suspend () -> T): T {
+    suspend fun <T> track(operation: DiagnosticOperation?, action: suspend () -> T): T = track(operation, null, action)
+    suspend fun <T> track(operation: DiagnosticOperation?, vault: String?, action: suspend () -> T): T {
         if (operation == null) return action()
+        val background = kotlinx.coroutines.currentCoroutineContext()[DiagnosticScope]?.background == true
+        fun record(operation: DiagnosticOperation, outcome: DiagnosticOutcome, reason: DiagnosticReason = DiagnosticReason.NONE) =
+            record(operation, outcome, reason, vault, background)
         return run {
             record(operation, DiagnosticOutcome.STARTED)
             try {

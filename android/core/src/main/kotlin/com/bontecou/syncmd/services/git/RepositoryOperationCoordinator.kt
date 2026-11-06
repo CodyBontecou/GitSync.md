@@ -30,7 +30,8 @@ object RepositoryOperationCoordinator {
 
     suspend fun <T> withRepository(path: String, diagnostic: com.bontecou.syncmd.services.diagnostics.DiagnosticOperation? = null,
         operation: suspend () -> T): T = withRepositories(listOf(path)) {
-        com.bontecou.syncmd.services.diagnostics.Diagnostics.track(diagnostic) {
+        com.bontecou.syncmd.services.diagnostics.Diagnostics.track(diagnostic,
+            if (diagnostic != null) com.bontecou.syncmd.services.diagnostics.Diagnostics.vaultKey(path) else null) {
             try {
                 operation().also { result ->
                     currentCoroutineContext().ensureActive()

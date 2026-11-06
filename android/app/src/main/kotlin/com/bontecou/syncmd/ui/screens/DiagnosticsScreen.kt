@@ -5,27 +5,18 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,229 +26,206 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.R
-import com.bontecou.syncmd.services.diagnostics.*
-import com.bontecou.syncmd.ui.components.WrappingTopBar
-import com.bontecou.syncmd.ui.theme.BDestructiveButton
-import com.bontecou.syncmd.ui.theme.BGhostButton
+import com.bontecou.syncmd.services.diagnostics.DiagnosticEntry
+import com.bontecou.syncmd.services.diagnostics.DiagnosticLevel
+import com.bontecou.syncmd.services.diagnostics.DiagnosticOperation
+import com.bontecou.syncmd.services.diagnostics.DiagnosticOutcome
+import com.bontecou.syncmd.services.diagnostics.DiagnosticReason
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3BottomActionBar
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ChipRow
+import com.bontecou.syncmd.ui.theme.M3Dialog
+import com.bontecou.syncmd.ui.theme.M3DialogAction
+import com.bontecou.syncmd.ui.theme.M3FilledButton
+import com.bontecou.syncmd.ui.theme.M3FilterChip
+import com.bontecou.syncmd.ui.theme.M3IndeterminateProgressBar
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3Tag
+import com.bontecou.syncmd.ui.theme.M3TextButton
+import com.bontecou.syncmd.ui.theme.M3Tone
+import com.bontecou.syncmd.ui.theme.M3TopBar
+import com.bontecou.syncmd.ui.theme.M3TopBarTextAction
+import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideDialog
-import com.bontecou.syncmd.ui.theme.TideModalIcon
-import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.theme.m3GroupedItem
+import com.bontecou.syncmd.ui.theme.m3TopDivider
 import com.bontecou.syncmd.ui.viewmodels.DiagnosticsViewModel
 import java.text.DateFormat
-import java.text.NumberFormat
 import java.util.Date
 import java.util.Locale
 
-// iOS DebugLogView — summary, filter chips, one card of mono log lines, copy/share pills.
+// ─── Debug log (board 21) ───────────────────────────────────────────────────
 
+/** Level chips: All, Warnings, "Errors 2". */
+internal enum class DebugFilter { ALL, WARNINGS, ERRORS }
+
+/**
+ * [vaultNames] maps [com.bontecou.syncmd.services.diagnostics.Diagnostics.vaultKey] to the vault's
+ * name, so rows read "09:42:18 · VoxVault" while the log itself stores no names.
+ */
 @Composable
-fun DiagnosticsScreen(onBack: () -> Unit, model: DiagnosticsViewModel = hiltViewModel()) {
+fun DiagnosticsScreen(onBack: () -> Unit, model: DiagnosticsViewModel = hiltViewModel(), vaultNames: Map<String, String> = emptyMap()) {
     val entries by model.store.entries.collectAsState()
     val problem by model.store.storageProblem.collectAsState()
     val busy by model.busy.collectAsState()
     val error by model.error.collectAsState()
     val notice by model.notice.collectAsState()
-    var filter by remember { mutableStateOf<DiagnosticLevel?>(null) }
+    var filter by remember { mutableStateOf(DebugFilter.ALL) }
     var confirmClear by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val shareTitle = stringResource(R.string.diagnostics_share_title)
+    val visible = visibleEntries(entries, filter)
     DiagnosticsContent(
-        entries = entries, problem = problem, busy = busy, error = error, notice = notice, filter = filter,
+        entries = entries, visible = visible, problem = problem, busy = busy, error = error, notice = notice, filter = filter, vaultNames = vaultNames,
         onBack = onBack,
         onFilter = { filter = it },
         onCopy = {
-            model.export(filter) { text ->
+            model.exportVisible(visible) { text ->
                 (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(shareTitle, text))
                 model.copied()
             }
         },
         onShare = {
-            model.export(filter) { text -> context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"; putExtra(Intent.EXTRA_TEXT, text); putExtra(Intent.EXTRA_SUBJECT, shareTitle)
-            }, shareTitle)) }
+            model.exportVisible(visible) { text ->
+                runCatching { context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"; putExtra(Intent.EXTRA_TEXT, text); putExtra(Intent.EXTRA_SUBJECT, shareTitle)
+                }, shareTitle)) }
+            }
         },
         onClear = { confirmClear = true },
     )
-    if (confirmClear) TideDialog(
+    if (confirmClear) M3Dialog(
         onDismissRequest = { confirmClear = false },
-        icon = { TideModalIcon() },
         title = stringResource(R.string.ui_clear_all_diagnostics_e2d6a185),
-        text = {
+        icon = R.drawable.ic_m3_delete, iconTint = M3.colors.error,
+        content = {
             Column(Modifier.testTag("diagnostics-clear-body")) {
                 Text(if (problem) stringResource(R.string.diagnostics_clear_recovery)
                     else stringResource(R.string.diagnostics_clear_entries, entries.size), modifier = Modifier.testTag("diagnostics-clear-text"))
             }
         },
-        confirmButton = {
-            BDestructiveButton(stringResource(R.string.ui_clear_log_a8858ac7), Modifier.testTag("diagnostics-confirm-clear"),
-                onClick = { confirmClear = false; model.clear() })
-        },
-        dismissButton = {
-            BGhostButton(stringResource(R.string.publication_cancel), Modifier.fillMaxWidth().testTag("diagnostics-cancel-clear"),
-                onClick = { confirmClear = false })
-        },
-    )
+    ) {
+        M3DialogAction(stringResource(R.string.publication_cancel), { confirmClear = false }, Modifier.testTag("diagnostics-cancel-clear"))
+        M3DialogAction(stringResource(R.string.ui_clear_log_a8858ac7), { confirmClear = false; model.clear() }, Modifier.testTag("diagnostics-confirm-clear"),
+            destructive = true)
+    }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+private fun visibleEntries(entries: List<DiagnosticEntry>, filter: DebugFilter) = entries.filter {
+    when (filter) {
+        DebugFilter.ALL -> true
+        DebugFilter.WARNINGS -> it.level == DiagnosticLevel.WARNING
+        DebugFilter.ERRORS -> it.level == DiagnosticLevel.ERROR
+    }
+}.asReversed()
+
 @Composable
 private fun DiagnosticsContent(
     entries: List<DiagnosticEntry>,
+    visible: List<DiagnosticEntry>,
     problem: Boolean,
     busy: Boolean,
     error: Int?,
     notice: Int?,
-    filter: DiagnosticLevel?,
+    filter: DebugFilter,
+    vaultNames: Map<String, String>,
     onBack: () -> Unit,
-    onFilter: (DiagnosticLevel?) -> Unit,
+    onFilter: (DebugFilter) -> Unit,
     onCopy: () -> Unit,
     onShare: () -> Unit,
     onClear: () -> Unit,
 ) {
-    val c = Tide.colors
-    val visible = entries.filter { filter == null || it.level == filter }.asReversed()
+    val c = M3.colors
     val locale = LocalConfiguration.current.locales[0]
-    val numbers = remember(locale) { NumberFormat.getIntegerInstance(locale) }
     val errorCount = entries.count { it.level == DiagnosticLevel.ERROR }
-    Scaffold(containerColor = c.paper, topBar = {
-        WrappingTopBar(title = stringResource(R.string.ui_diagnostics_268f14bb),
-            backLabel = stringResource(R.string.publication_back), onBack = onBack,
-            backModifier = Modifier.testTag("diagnostics-back"), titleModifier = Modifier.testTag("diagnostics-title"))
-    }) { padding ->
-        LazyColumn(
-            Modifier.fillMaxSize().padding(padding).testTag("diagnostics-screen"),
-            contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 0.dp, bottom = 32.dp),
-        ) {
-            item(key = "count") {
-                Text(stringResource(R.string.ui_1_s_shown_2_s_stored_c5d98835, numbers.format(visible.size), numbers.format(entries.size)),
-                    modifier = Modifier.padding(horizontal = 4.dp).testTag("diagnostics-count"),
-                    style = TideType.mono(12.sp), color = c.inkMid)
-            }
-            item(key = "intro") {
-                Text(stringResource(R.string.ui_recent_operation_outcomes_on_this_device_t_2a52131b),
-                    Modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp), style = TideType.sans(14.sp), color = c.inkMid)
-            }
-            item(key = "filters") {
-                FlowRow(Modifier.padding(top = 14.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    (listOf<DiagnosticLevel?>(null) + DiagnosticLevel.values()).forEach { level ->
-                        DiagnosticsChip(
-                            label = level?.label() ?: stringResource(R.string.diagnostics_all),
-                            count = if (level == DiagnosticLevel.ERROR && errorCount > 0) errorCount else null,
-                            dot = level?.tint(),
-                            selected = filter == level,
-                            onClick = { onFilter(level) },
-                            modifier = Modifier.testTag("diagnostics-filter-${level?.name ?: "ALL"}"),
-                        )
-                    }
+    val dayAgo = System.currentTimeMillis() - 24 * 60 * 60 * 1000L
+    val recentErrors = entries.count { it.level == DiagnosticLevel.ERROR && it.time >= dayAgo }
+    Column(Modifier.fillMaxSize().background(c.surface).testTag("diagnostics-screen")) {
+        M3TopBar(stringResource(R.string.settings_m3_debug_log),
+            subtitle = pluralStringResource(R.plurals.settings_m3_entries, entries.size, entries.size) + " · " +
+                pluralStringResource(R.plurals.settings_m3_debug_errors_day, recentErrors, recentErrors),
+            onBack = onBack, modifier = Modifier.testTag("diagnostics-title")) {
+            M3TopBarTextAction(stringResource(R.string.settings_m3_debug_clear), onClear, Modifier.testTag("diagnostics-clear"), destructive = true,
+                enabled = !busy && (entries.isNotEmpty() || problem))
+        }
+        LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(bottom = 32.dp)) {
+            item(key = "chips") {
+                M3ChipRow(contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 4.dp)) {
+                    M3FilterChip(stringResource(R.string.diagnostics_all), filter == DebugFilter.ALL, { onFilter(DebugFilter.ALL) },
+                        Modifier.testTag("diagnostics-filter-ALL"), showCheck = false)
+                    M3FilterChip(stringResource(R.string.diagnostics_warnings), filter == DebugFilter.WARNINGS, { onFilter(DebugFilter.WARNINGS) },
+                        Modifier.testTag("diagnostics-filter-WARNING"), showCheck = false)
+                    M3FilterChip(if (errorCount > 0) stringResource(R.string.settings_m3_debug_errors_count, errorCount) else stringResource(R.string.diagnostics_errors),
+                        filter == DebugFilter.ERRORS, { onFilter(DebugFilter.ERRORS) }, Modifier.testTag("diagnostics-filter-ERROR"), showCheck = false)
                 }
             }
-            item(key = "actions") {
-                FlowRow(Modifier.padding(top = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    SettingsAreaPill(stringResource(R.string.ui_copy_visible_29e7587c), onCopy, Modifier.testTag("diagnostics-copy"),
-                        enabled = !busy && visible.isNotEmpty())
-                    SettingsAreaPill(stringResource(R.string.ui_share_visible_4fcf9b94), onShare, Modifier.testTag("diagnostics-share"),
-                        style = SettingsPillStyle.INK, enabled = !busy && visible.isNotEmpty())
-                    SettingsAreaPill(stringResource(R.string.ui_clear_all_29a390f9), onClear, Modifier.testTag("diagnostics-clear"),
-                        style = SettingsPillStyle.DANGER_TEXT, enabled = !busy && (entries.isNotEmpty() || problem))
-                }
-            }
-            if (busy) item(key = "busy") { SettingsAreaProgress(Modifier.padding(top = 10.dp)) }
+            if (busy) item(key = "busy") { M3IndeterminateProgressBar(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp)) }
             if (problem) item(key = "problem") {
-                SettingsAreaNotice(stringResource(R.string.ui_some_diagnostics_could_not_be_read_or_save_19e3372d), Modifier.padding(top = 10.dp),
-                    tint = c.danger, textModifier = Modifier.testTag("diagnostics-storage-problem"))
+                M3Note(stringResource(R.string.ui_some_diagnostics_could_not_be_read_or_save_19e3372d), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)
+                    .testTag("diagnostics-storage-problem"), tone = M3NoteTone.Warn)
             }
-            error?.let { item(key = "error") {
-                SettingsAreaNotice(stringResource(it), Modifier.padding(top = 10.dp), tint = c.danger, textModifier = Modifier.testTag("diagnostics-error"))
-            } }
-            notice?.let { item(key = "notice") {
-                SettingsAreaNotice(stringResource(it), Modifier.padding(top = 10.dp), tint = c.synced, textModifier = Modifier.testTag("diagnostics-notice"))
-            } }
-            item(key = "gap") { Box(Modifier.height(12.dp)) }
+            error?.let { item(key = "error") { M3Note(stringResource(it), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("diagnostics-error"), tone = M3NoteTone.Warn) } }
+            notice?.let { item(key = "notice") { M3Note(stringResource(it), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("diagnostics-notice"), tone = M3NoteTone.Ok) } }
+            item(key = "gap") { Spacer(Modifier.height(12.dp)) }
             if (visible.isEmpty()) item(key = "empty") {
-                val shape = RoundedCornerShape(Tide.radiusCard)
-                Column(Modifier.fillMaxWidth().clip(shape).background(c.card, shape).padding(horizontal = 16.dp, vertical = 36.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(if (entries.isEmpty()) R.string.diagnostics_empty else R.string.diagnostics_filtered_empty),
-                        modifier = Modifier.testTag("diagnostics-empty"),
-                        style = TideType.sans(14.sp, FontWeight.Medium), color = c.inkMid, textAlign = TextAlign.Center)
-                }
+                Text(stringResource(if (entries.isEmpty()) R.string.diagnostics_empty else R.string.diagnostics_filtered_empty),
+                    Modifier.padding(horizontal = 16.dp).m3GroupedItem(0, 1, c.cLow).padding(horizontal = 20.dp, vertical = 28.dp).fillMaxWidth().testTag("diagnostics-empty"),
+                    style = M3Type.bodyMedium.copy(textAlign = androidx.compose.ui.text.style.TextAlign.Center), color = c.onVar)
             }
             itemsIndexed(visible, key = { _, entry -> entry.id }) { index, entry ->
-                DiagnosticLogRow(entry, locale, first = index == 0, last = index == visible.lastIndex)
+                DebugLogRow(entry, locale, vaultNames, Modifier.padding(horizontal = 16.dp).m3GroupedItem(index, visible.size, c.cLow), divider = index > 0)
             }
+        }
+        M3BottomActionBar {
+            M3FilledButton(stringResource(R.string.settings_m3_debug_share), onShare, Modifier.fillMaxWidth().testTag("diagnostics-share"), size = M3ButtonSize.XLarge,
+                icon = R.drawable.ic_m3_share, enabled = !busy && visible.isNotEmpty())
+            M3TextButton(stringResource(R.string.settings_m3_debug_copy), onCopy, Modifier.align(Alignment.CenterHorizontally).testTag("diagnostics-copy"),
+                enabled = !busy && visible.isNotEmpty())
         }
     }
 }
 
-/** One mono log line inside a continuous card; error rows get a red wash. */
+/** "09:42:18 · VoxVault" + level tag (INFO muted, WARN tertiary, ERROR error, BG primary), then the mono message. */
 @Composable
-private fun DiagnosticLogRow(entry: DiagnosticEntry, locale: Locale, first: Boolean, last: Boolean) {
-    val c = Tide.colors
-    val radius = Tide.radiusCard
-    val shape = RoundedCornerShape(
-        topStart = if (first) radius else 0.dp, topEnd = if (first) radius else 0.dp,
-        bottomStart = if (last) radius else 0.dp, bottomEnd = if (last) radius else 0.dp,
-    )
-    val isError = entry.level == DiagnosticLevel.ERROR
-    Column(Modifier.fillMaxWidth().testTag("diagnostic-entry-${entry.id}").clip(shape).background(c.card, shape)) {
-        SelectionContainer {
-            Column(
-                Modifier.fillMaxWidth()
-                    .background(if (isError) c.danger.copy(alpha = 0.08f) else Color.Transparent)
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM, locale).format(Date(entry.time)),
-                        Modifier.weight(1f), style = TideType.mono(11.5.sp), color = if (isError) c.danger else c.inkFaint)
-                    Text(entry.level.label(), style = TideType.mono(11.5.sp, FontWeight.SemiBold), color = entry.level.tint())
+private fun DebugLogRow(entry: DiagnosticEntry, locale: Locale, vaultNames: Map<String, String>, modifier: Modifier, divider: Boolean) {
+    val c = M3.colors
+    val now = System.currentTimeMillis()
+    val time = DateFormat.getTimeInstance(DateFormat.MEDIUM, locale).format(Date(entry.time))
+    val when_ = if (now - entry.time < 24 * 60 * 60 * 1000L) time else stringResource(R.string.settings_m3_debug_day_time,
+        DateFormat.getDateInstance(DateFormat.SHORT, locale).format(Date(entry.time)), DateFormat.getTimeInstance(DateFormat.SHORT, locale).format(Date(entry.time)))
+    val source = when {
+        entry.vault != null -> vaultNames[entry.vault] ?: stringResource(R.string.settings_m3_debug_removed_vault)
+        entry.background -> stringResource(R.string.settings_m3_debug_background)
+        else -> stringResource(R.string.settings_m3_debug_app)
+    }
+    val message = listOf(entry.operation.label(), entry.outcome.label(), entry.reason.label()).filter { it.isNotEmpty() }.joinToString(" · ")
+    SelectionContainer(modifier.testTag("diagnostic-entry-${entry.id}")) {
+        Column(Modifier.fillMaxWidth().m3TopDivider(divider, c.outlineVar).padding(horizontal = 20.dp, vertical = 12.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("$when_ · $source", Modifier.weight(1f), style = M3Type.meta.copy(textDirection = TextDirection.ContentOrLtr), color = c.onVar, maxLines = 1)
+                if (entry.background) M3Tag(stringResource(R.string.settings_m3_debug_bg), tone = M3Tone.Behind)
+                when (entry.level) {
+                    DiagnosticLevel.ERROR -> M3Tag(stringResource(R.string.settings_m3_debug_error), tone = M3Tone.Warn)
+                    DiagnosticLevel.WARNING -> M3Tag(stringResource(R.string.settings_m3_debug_warn), tone = M3Tone.Ahead)
+                    DiagnosticLevel.INFO -> if (!entry.background) M3Tag(stringResource(R.string.settings_m3_debug_info_tag), tone = M3Tone.Muted)
                 }
-                Text("${entry.operation.label()} · ${entry.outcome.label()}", style = TideType.mono(12.5.sp, FontWeight.Medium),
-                    color = if (isError) c.danger else c.ink)
-                if (entry.reason != DiagnosticReason.NONE) Text(entry.reason.label(), style = TideType.mono(11.sp), color = c.inkMid)
             }
+            Text(message, Modifier.padding(top = 4.dp), style = M3Type.code, color = c.on)
         }
-        if (!last) Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
     }
 }
-
-@Composable
-private fun DiagnosticsChip(label: String, count: Int?, dot: Color?, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    // M3 filter chip (board "21 · Debug log").
-    com.bontecou.syncmd.ui.theme.TideFilterChip(label, selected, onClick, modifier, count = count, dot = dot)
-}
-
-@Composable
-private fun DiagnosticLevel.tint(): Color = when (this) {
-    DiagnosticLevel.INFO -> Tide.colors.synced
-    DiagnosticLevel.WARNING -> Tide.colors.ahead
-    DiagnosticLevel.ERROR -> Tide.colors.danger
-}
-
-@Composable
-private fun DiagnosticLevel.label(): String = stringResource(when (this) {
-    DiagnosticLevel.INFO -> R.string.ui_info_170322a3
-    DiagnosticLevel.WARNING -> R.string.diagnostics_warnings
-    DiagnosticLevel.ERROR -> R.string.diagnostics_errors
-})
 
 @Composable
 private fun DiagnosticOperation.label(): String = stringResource(when (this) {
@@ -306,23 +274,22 @@ private fun DiagnosticReason.label(): String = if (this == DiagnosticReason.NONE
 // ─── Previews ───────────────────────────────────────────────────────────────
 
 private val previewEntries = listOf(
-    DiagnosticEntry(operation = DiagnosticOperation.CLONE, outcome = DiagnosticOutcome.COMPLETED),
-    DiagnosticEntry(operation = DiagnosticOperation.PULL, outcome = DiagnosticOutcome.ATTENTION, reason = DiagnosticReason.LOCAL_CHANGES),
-    DiagnosticEntry(operation = DiagnosticOperation.PUSH, outcome = DiagnosticOutcome.STOPPED, reason = DiagnosticReason.NETWORK),
+    DiagnosticEntry(operation = DiagnosticOperation.COMMIT, outcome = DiagnosticOutcome.COMPLETED, vault = "0000000000000001"),
+    DiagnosticEntry(operation = DiagnosticOperation.PUSH, outcome = DiagnosticOutcome.STOPPED, reason = DiagnosticReason.NETWORK, vault = "0000000000000001"),
+    DiagnosticEntry(operation = DiagnosticOperation.PULL, outcome = DiagnosticOutcome.COMPLETED, vault = "0000000000000002", background = true),
+    DiagnosticEntry(operation = DiagnosticOperation.FETCH, outcome = DiagnosticOutcome.COMPLETED, vault = "0000000000000002"),
 )
+private val previewNames = mapOf("0000000000000001" to "notes", "0000000000000002" to "VoxVault")
 
 @Composable
-private fun DiagnosticsPreview(entries: List<DiagnosticEntry>, busy: Boolean = false, problem: Boolean = false, filter: DiagnosticLevel? = null, notice: Int? = null) =
-    DiagnosticsContent(entries, problem, busy, null, notice, filter, {}, {}, {}, {}, {})
+private fun DiagnosticsPreview(entries: List<DiagnosticEntry>, filter: DebugFilter = DebugFilter.ALL, problem: Boolean = false) =
+    DiagnosticsContent(entries, visibleEntries(entries, filter), problem, false, null, null, filter, previewNames, {}, {}, {}, {}, {})
 
-@Preview(name = "Diagnostics · entries", heightDp = 1000)
-@Composable private fun DiagnosticsEntriesPreview() = SyncMdTheme(darkTheme = false) { DiagnosticsPreview(previewEntries, notice = R.string.diagnostics_copied) }
+@Preview(name = "21 · Debug log", heightDp = 915)
+@Composable private fun DiagnosticsEntriesPreview() = SyncMdTheme(darkTheme = false) { DiagnosticsPreview(previewEntries) }
 
-@Preview(name = "Diagnostics · entries · dark", heightDp = 1000)
-@Composable private fun DiagnosticsEntriesDarkPreview() = SyncMdTheme(darkTheme = true) { DiagnosticsPreview(previewEntries, filter = DiagnosticLevel.ERROR) }
+@Preview(name = "21 · Debug log · errors · dark", heightDp = 915)
+@Composable private fun DiagnosticsEntriesDarkPreview() = SyncMdTheme(darkTheme = true) { DiagnosticsPreview(previewEntries, DebugFilter.ERRORS) }
 
-@Preview(name = "Diagnostics · empty")
-@Composable private fun DiagnosticsEmptyPreview() = SyncMdTheme(darkTheme = false) { DiagnosticsPreview(emptyList()) }
-
-@Preview(name = "Diagnostics · running, unreadable · dark")
-@Composable private fun DiagnosticsBusyDarkPreview() = SyncMdTheme(darkTheme = true) { DiagnosticsPreview(emptyList(), busy = true, problem = true) }
+@Preview(name = "Debug log · empty, unreadable")
+@Composable private fun DiagnosticsEmptyPreview() = SyncMdTheme(darkTheme = false) { DiagnosticsPreview(emptyList(), problem = true) }

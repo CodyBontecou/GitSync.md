@@ -63,7 +63,7 @@ class RemoteMergeScreenTest {
             CompositionLocalProvider(LocalContext provides localized, LocalConfiguration provides localized.resources.configuration,
                 LocalLayoutDirection provides direction, LocalDensity provides Density(density.density, if (dark.value) 1.6f else 1f)) {
                 SyncMdTheme(darkTheme = dark.value) {
-                    active.value?.let { model -> key(model) { RemoteMergeScreen(root.path, { backs++ }, model) } }
+                    active.value?.let { model -> key(model) { com.bontecou.syncmd.ui.screens.RemoteMergeFlow(root.path, { backs++ }, {}, model) } }
                 }
             }
         }

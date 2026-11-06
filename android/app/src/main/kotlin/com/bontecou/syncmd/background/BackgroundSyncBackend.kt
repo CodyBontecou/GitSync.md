@@ -45,6 +45,10 @@ class BackgroundSyncBackend(val store: BackgroundSyncStore, private val catalog:
     }
     fun forget(path: String, generation: Long) = store.configure(generation) { it.copy(policies = it.policies - path) }
     fun modes(pull: Boolean, push: Boolean, generation: Long) = store.configure(generation) { it.copy(pull = pull, push = push) }
+    /** "Only when" applies to every vault: rewrite each policy's Wi-Fi and charging condition. */
+    fun conditions(wifiOnly: Boolean, externalPowerOnly: Boolean, generation: Long) = store.configure(generation) { state ->
+        state.copy(policies = state.policies.mapValues { (_, policy) -> policy.copy(wifiOnly = wifiOnly, externalPowerOnly = externalPowerOnly) })
+    }
     suspend fun run() = flight.withLock {
         BackgroundSyncRunner(actions, catalog::snapshot, store::read, conditions, store::record,
             connectionRevision = { connectionRevision(it, accountBinding(it.target.path)) }).run()

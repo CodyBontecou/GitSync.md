@@ -44,7 +44,7 @@ class BackgroundSyncWorker @JvmOverloads constructor(context: Context, parameter
     override suspend fun doWork(): Result = try {
         PushRuntime.ready.await()
         val backend = overrideBackend ?: EntryPointAccessors.fromApplication(applicationContext, BackgroundSyncEntryPoint::class.java).background()
-        backend.run(); Result.success()
+        backend.runAndRecord(BackgroundRunHistory(applicationContext)); Result.success()
     } catch (cancelled: CancellationException) { throw cancelled }
     catch (_: Exception) { Result.failure() }
 }

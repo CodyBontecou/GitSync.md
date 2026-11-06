@@ -136,7 +136,7 @@ class BackgroundSyncTest {
         compose.runOnIdle { dark.value = true }; scroll("background-push"); compose.onNodeWithTag("background-push").performClick()
         compose.onNodeWithTag("background-confirm-push").assertIsDisplayed(); capture("background-publish-dark-xl.png")
         compose.onNodeWithTag("background-confirm-push").performClick(); ready(model); assertTrue(store.read().push)
-        scroll("background-review-${root.path}"); compose.onNodeWithTag("background-review-${root.path}").performClick()
+        scroll("background-include-${root.path}"); compose.onNodeWithTag("background-include-${root.path}").performClick()
         compose.waitUntil(10_000) { model.state.value.review != null && !model.state.value.busy }
         compose.onNodeWithTag("background-wifi").performScrollTo().performClick()
         compose.onNodeWithTag("background-power").performScrollTo().performClick()

@@ -7,6 +7,7 @@ import com.bontecou.syncmd.data.models.*
 import com.bontecou.syncmd.domain.repository.HistoryRepository
 import com.bontecou.syncmd.domain.repository.RemoteRepository
 import com.bontecou.syncmd.services.git.*
+import com.bontecou.syncmd.ui.util.RepositorySelection
 import com.bontecou.syncmd.ui.viewmodels.HistoryViewModel
 import kotlinx.coroutines.*
 import org.junit.*
@@ -139,7 +140,7 @@ class HistoryViewModelTest {
         repository.applying = { _, _ -> writes.incrementAndGet(); Result.success(Unit) }
         repository.popping = repository.applying; repository.dropping = repository.applying
         val model = model(repository); ready(model)
-        val actions = listOf(model::stashApply, model::stashPop, model::stashDrop)
+        val actions = listOf<(RepositorySelection, Stash) -> Unit>({ s, r -> model.stashApply(s, r) }, { s, r -> model.stashPop(s, r) }, { s, r -> model.stashDrop(s, r) })
         for (action in actions) {
             val row = main { model.state.value.stashes.single() }; version++
             main { action(model.state.value.selection!!, row) }
@@ -152,7 +153,7 @@ class HistoryViewModelTest {
         repository.listingTags = { path -> Result.success(listOf(tag(path).copy(isAnnotated = true, message = "Same annotation", refObjectId = "tag-$version"))) }
         repository.deleting = { _, _ -> writes.incrementAndGet(); Result.success(Unit) }
         val model = model(repository) { _, _ -> writes.incrementAndGet(); Result.success(Unit) }; ready(model)
-        for (action in listOf(model::pushTag, model::deleteTag)) {
+        for (action in listOf<(RepositorySelection, Tag) -> Unit>({ s, r -> model.pushTag(s, r) }, { s, r -> model.deleteTag(s, r) })) {
             val row = main { model.state.value.tags.single() }; version++
             main { action(model.state.value.selection!!, row) }
             await { !model.state.value.isLoading && model.state.value.errorMessage?.resolve(instrumentation.targetContext)?.contains("Tag changed") == true }

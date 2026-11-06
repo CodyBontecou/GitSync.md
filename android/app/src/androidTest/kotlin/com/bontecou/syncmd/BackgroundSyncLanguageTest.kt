@@ -147,7 +147,7 @@ class BackgroundSyncLanguageTest {
                 }
                 fun openPublish() { toggle("background-push",R.string.background_push);compose.onNodeWithTag("background-confirm-push").assertIsDisplayed();dialog(R.string.background_push_detail) }
                 fun openReview() {
-                    click("background-review-${root.path}");compose.waitUntil(10_000) { model.state.value.review!=null };compose.onNodeWithTag("background-confirm-include").assertIsDisplayed()
+                    click("background-include-${root.path}");compose.waitUntil(10_000) { model.state.value.review!=null };compose.onNodeWithTag("background-confirm-include").assertIsDisplayed()
                     val plan=requireNotNull(model.state.value.review)
                     val binding=activity.getString(R.string.background_binding,plan.branch,plan.remote,plan.remoteBranch)
                     fits(compose.onNode(hasText(binding) and hasAnyAncestor(isDialog()),useUnmergedTree=true).performScrollTo(),"$tag/review-binding",true)
