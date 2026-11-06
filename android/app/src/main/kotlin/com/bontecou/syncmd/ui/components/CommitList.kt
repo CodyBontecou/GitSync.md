@@ -36,15 +36,15 @@ fun CommitList(
     var expandedCommitHash by remember { mutableStateOf<String?>(null) }
 
     if (commits.isEmpty()) {
-        TideCard(modifier.padding(16.dp)) {
-            Text(stringResource(R.string.ui_no_commits_found_64ccb533), style = TideType.body, color = Tide.colors.inkMid)
+        com.bontecou.syncmd.ui.theme.M3ListCard(modifier.padding(16.dp)) {
+            Text(stringResource(R.string.ui_no_commits_found_64ccb533), style = com.bontecou.syncmd.ui.theme.M3Type.bodyMedium,
+                color = com.bontecou.syncmd.ui.theme.M3.colors.onVar, modifier = Modifier.padding(20.dp))
         }
         return
     }
 
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(commits) { commit ->
             CommitItem(
@@ -53,7 +53,8 @@ fun CommitList(
                 onToggleExpand = {
                     expandedCommitHash = if (expandedCommitHash == commit.hash) null else commit.hash
                 },
-                onRevertClick = { onRevertCommit(commit.hash) }
+                onRevertClick = { onRevertCommit(commit.hash) },
+                lastInList = commit == commits.last(),
             )
         }
     }

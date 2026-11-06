@@ -13,16 +13,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -30,180 +32,216 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bontecou.syncmd.R
+import com.bontecou.syncmd.services.git.DiscardEffect
 import com.bontecou.syncmd.services.git.DiscardReview
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3CheckboxRow
+import com.bontecou.syncmd.ui.theme.M3Divider
+import com.bontecou.syncmd.ui.theme.M3Icon
+import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideIcon
-import com.bontecou.syncmd.ui.theme.TideHairline
-import com.bontecou.syncmd.ui.theme.TideModalIcon
-import com.bontecou.syncmd.ui.theme.TideType
 
 /**
- * Tide "Discard changes" sheet (iOS RevertConfirmModal): danger tile, a
- * plain-language headline, what happens, every affected path on a card, then
- * a red Discard pill and a quiet Cancel.
+ * M3 alert dialog "Discard 3 changes?" (board "19 · Discard changes — dialog"): a delete icon over
+ * the centered title, what the files go back to, every reviewed path with what discarding does to
+ * it ("delete new file", "−8 lines", "restore"), "Stash a copy first, just in case", then Keep them
+ * and a red Discard N.
  *
- * The displayed immutable review is the authority passed to confirmation,
- * including every full path.
+ * The displayed immutable review is the authority passed to confirmation, including every full
+ * path. This overload has no stash option; use the one taking `onConfirmDiscard` to offer it.
  */
 @Composable
+fun RevertConfirmDialog(review: DiscardReview, onConfirm: () -> Unit, onDismiss: () -> Unit) =
+    RevertConfirmDialogHost(review, stashSupported = false, onConfirm = { onConfirm() }, onDismiss = onDismiss)
+
+/**
+ * The discard dialog with "Stash a copy first, just in case" (checked by default when the review
+ * allows a stash). [onConfirmDiscard] receives that choice; pass it on as
+ * `DiffViewModel.confirmDiscard(review, stashFirst = it)`, which really stashes before discarding.
+ */
+@Composable
+fun RevertConfirmDialog(review: DiscardReview, onConfirmDiscard: (stashFirst: Boolean) -> Unit, onDismiss: () -> Unit) =
+    RevertConfirmDialogHost(review, stashSupported = true, onConfirm = onConfirmDiscard, onDismiss = onDismiss)
+
+@Composable
 @OptIn(ExperimentalComposeUiApi::class)
-fun RevertConfirmDialog(review: DiscardReview, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+private fun RevertConfirmDialogHost(review: DiscardReview, stashSupported: Boolean, onConfirm: (Boolean) -> Unit, onDismiss: () -> Unit) {
+    val canStash = stashSupported && review.canStash
+    var stash by rememberSaveable(review) { mutableStateOf(canStash) }
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
         RevertReviewSheet(
             keepsWorkingFiles = review.keepsWorkingFiles,
             singleFile = review.filePath != null,
             abandonsOperation = review.abandonsOperation,
             paths = review.paths,
-            onConfirm = onConfirm,
+            effects = review.effects,
+            baseCommit = review.baseCommit,
+            canStash = canStash,
+            stash = stash,
+            onStashChange = { stash = it },
+            onConfirm = { onConfirm(stash && canStash) },
             onDismiss = onDismiss,
             modifier = Modifier.semantics { testTagsAsResourceId = true },
         )
     }
 }
 
-/** Stateless sheet body, shared by the dialog and its previews. */
+/** Stateless dialog body, shared by the dialog and its previews. */
 @Composable
 private fun RevertReviewSheet(
     keepsWorkingFiles: Boolean,
     singleFile: Boolean,
     abandonsOperation: Boolean,
     paths: List<String>,
+    effects: Map<String, DiscardEffect>,
+    baseCommit: String?,
+    canStash: Boolean,
+    stash: Boolean,
+    onStashChange: (Boolean) -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val c = Tide.colors
-    val cancel = stringResource(R.string.publication_cancel)
-    val title = stringResource(when {
-        keepsWorkingFiles -> R.string.discard_clear_staging
-        !singleFile -> R.string.ui_revert_all_changes_06b0eb3d
-        else -> R.string.ui_revert_changes_5b36e77f
-    })
-    // M3 alert dialog (board "19 · Discard changes — dialog"): centered, icon over a centered title.
-    BoxWithConstraints(modifier.fillMaxSize().systemBarsPadding().padding(24.dp), contentAlignment = Alignment.Center) {
-        // Dimmed backdrop: tapping outside cancels.
+    val c = M3.colors
+    val title = when {
+        keepsWorkingFiles -> stringResource(R.string.discard_clear_staging)
+        else -> pluralStringResource(R.plurals.vault_m3_discard_title, paths.size, paths.size)
+    }
+    BoxWithConstraints(modifier.fillMaxSize().background(c.scrim).systemBarsPadding().padding(24.dp), contentAlignment = Alignment.Center) {
+        // Scrim: tapping outside keeps the changes.
         Box(Modifier.matchParentSize().clickable(indication = null,
             interactionSource = remember { MutableInteractionSource() }, onClick = onDismiss).clearAndSetSemantics {})
         // One bounded list keeps every path and both actions reachable, even in landscape at large text.
         LazyColumn(
-            Modifier.widthIn(max = 560.dp).fillMaxWidth().heightIn(max = maxHeight)
-                .clip(RoundedCornerShape(Tide.radiusSheet)).background(c.containerHigh)
+            Modifier.widthIn(min = 280.dp, max = 560.dp).fillMaxWidth().heightIn(max = maxHeight)
+                .clip(RoundedCornerShape(28.dp)).background(c.cHigh)
                 .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {}
+                .semantics { paneTitle = title }
                 .testTag("discard-review"),
-            contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 20.dp),
+            contentPadding = PaddingValues(24.dp),
         ) {
             item(key = "title") {
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(48.dp))
-                        Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                            TideModalIcon(tint = if (keepsWorkingFiles) c.ahead else c.danger)
-                        }
-                        Box(
-                            Modifier.size(48.dp).clip(CircleShape).clickable(role = Role.Button, onClick = onDismiss)
-                                .semantics { contentDescription = cancel }.testTag("discard-review-close"),
-                            contentAlignment = Alignment.Center,
-                        ) { TideIcon(com.bontecou.syncmd.R.drawable.ic_m3_close, tint = c.inkMid, size = 20.dp) }
-                    }
-                    Text(title, Modifier.padding(top = 8.dp).testTag("discard-review-title"),
-                        style = TideType.sans(24.sp).copy(lineHeight = 32.sp), color = c.ink,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    M3Icon(R.drawable.ic_m3_delete, tint = if (keepsWorkingFiles) c.tertiary else c.error)
+                    Text(title, Modifier.padding(top = 16.dp).testTag("discard-review-title").semantics { heading() },
+                        style = M3Type.dialogTitle, color = c.on, textAlign = TextAlign.Center)
                 }
             }
-            item(key = "count") {
-                Text(pluralStringResource(R.plurals.discard_review_files, paths.size, paths.size),
-                    Modifier.padding(top = 10.dp).testTag("discard-review-count"),
-                    style = TideType.mono(12.sp, FontWeight.SemiBold), color = if (keepsWorkingFiles) c.ahead else c.danger)
-            }
             item(key = "scope") {
-                Text(stringResource(when {
-                    keepsWorkingFiles -> R.string.discard_review_unborn
-                    singleFile -> R.string.ui_all_local_changes_to_this_file_will_be_per_0919f539
-                    else -> R.string.discard_review_all
-                }), Modifier.padding(top = 6.dp).testTag("discard-review-scope"), style = TideType.copy, color = c.inkMid)
+                val body = when {
+                    keepsWorkingFiles -> buildAnnotatedString { append(stringResource(R.string.discard_review_unborn)) }
+                    baseCommit != null -> {
+                        val template = stringResource(R.string.vault_m3_discard_body, "\u0000")
+                        buildAnnotatedString {
+                            append(template.substringBefore('\u0000'))
+                            withStyle(SpanStyle(fontFamily = M3Type.meta.fontFamily, color = c.on)) { append(baseCommit) }
+                            append(template.substringAfter('\u0000'))
+                        }
+                    }
+                    else -> buildAnnotatedString { append(stringResource(if (singleFile) R.string.ui_all_local_changes_to_this_file_will_be_per_0919f539 else R.string.discard_review_all)) }
+                }
+                Text(body, Modifier.padding(top = 16.dp).testTag("discard-review-scope"), style = M3Type.bodyMedium, color = c.onVar)
             }
             if (abandonsOperation) item(key = "operation") {
                 Text(stringResource(R.string.discard_review_operation), Modifier.padding(top = 8.dp).testTag("discard-review-operation"),
-                    style = TideType.sans(14.sp, FontWeight.Medium), color = c.danger)
+                    style = M3Type.bodyMedium, color = c.error)
             }
-            // Paths read as one white card of hairline-separated mono rows.
+            // Paths and their effects read as one inset card of mono rows.
             itemsIndexed(paths, key = { _, path -> "path:$path" }) { index, path ->
-                val r = 18.dp
+                val r = 12.dp
                 val shape = when {
                     paths.size == 1 -> RoundedCornerShape(r)
                     index == 0 -> RoundedCornerShape(topStart = r, topEnd = r)
                     index == paths.lastIndex -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
                     else -> RoundedCornerShape(0.dp)
                 }
-                Column(Modifier.padding(top = if (index == 0) 16.dp else 0.dp).fillMaxWidth().clip(shape).background(c.container)
-                    .padding(horizontal = 16.dp)) {
-                    if (index > 0) TideHairline()
-                    Text(path, Modifier.fillMaxWidth().padding(vertical = 11.dp).testTag("discard-review-path:$path"),
-                        style = TideType.mono(12.5.sp).copy(textDirection = TextDirection.Ltr), color = c.ink)
+                Column(Modifier.padding(top = if (index == 0) 16.dp else 0.dp).fillMaxWidth().clip(shape).background(c.surface)) {
+                    if (index > 0) M3Divider()
+                    Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(path, Modifier.weight(1f).padding(vertical = 10.dp).testTag("discard-review-path:$path"),
+                            style = M3Type.meta.copy(textDirection = TextDirection.Ltr), color = c.on, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                        effects[path]?.let { effect ->
+                            Text(effectText(effect), Modifier.padding(start = 8.dp).testTag("discard-review-effect:$path"), style = M3Type.caption, color = c.onVar)
+                        }
+                    }
                 }
             }
             if (paths.isEmpty()) item(key = "empty") {
-                Text(stringResource(R.string.discard_review_empty), Modifier.padding(top = 16.dp), style = TideType.copy, color = c.inkMid)
+                Text(stringResource(R.string.discard_review_empty), Modifier.padding(top = 16.dp), style = M3Type.bodyMedium, color = c.onVar)
             }
-            if (!keepsWorkingFiles) item(key = "warning") {
-                Text(stringResource(R.string.ui_this_cannot_be_undone_b545dd16), Modifier.padding(top = 12.dp),
-                    style = TideType.meta, color = c.danger)
+            if (canStash) item(key = "stash") {
+                M3CheckboxRow(stringResource(R.string.vault_m3_stash_first), stash, onStashChange,
+                    Modifier.padding(top = 12.dp).testTag("discard-review-stash"), contentPadding = PaddingValues(0.dp))
             }
             item(key = "actions") {
-                Column(Modifier.fillMaxWidth().padding(top = 18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    GitWorkPill(
-                        if (keepsWorkingFiles) stringResource(R.string.discard_clear_staging) else title,
-                        onClick = onConfirm,
-                        modifier = Modifier.testTag("discard-review-confirm"),
-                        style = if (keepsWorkingFiles) GitWorkPillStyle.PRIMARY else GitWorkPillStyle.DANGER,
-                        enabled = paths.isNotEmpty(),
-                        height = 56.dp,
-                    )
-                    Box(
-                        Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(CircleShape)
-                            .clickable(role = Role.Button, onClick = onDismiss).testTag("discard-review-cancel"),
-                        contentAlignment = Alignment.Center,
-                    ) { Text(cancel, style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.primary) }
+                Row(Modifier.fillMaxWidth().padding(top = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.heightIn(min = 48.dp).testTag("discard-review-cancel"), contentAlignment = Alignment.Center) {
+                        M3Button(stringResource(R.string.vault_m3_keep_them), onDismiss, style = M3ButtonStyle.Text, size = M3ButtonSize.Medium)
+                    }
+                    Box(Modifier.heightIn(min = 48.dp).testTag("discard-review-confirm"), contentAlignment = Alignment.Center) {
+                        M3Button(
+                            if (keepsWorkingFiles) stringResource(R.string.discard_clear_staging)
+                            else pluralStringResource(R.plurals.vault_m3_discard_n, paths.size, paths.size),
+                            onConfirm,
+                            style = if (keepsWorkingFiles) M3ButtonStyle.Filled else M3ButtonStyle.Danger,
+                            size = M3ButtonSize.Medium,
+                            enabled = paths.isNotEmpty(),
+                        )
+                    }
                 }
             }
         }
     }
 }
 
+@Composable
+private fun effectText(effect: DiscardEffect): String = when (effect.kind) {
+    DiscardEffect.Kind.DELETE_NEW_FILE -> stringResource(R.string.vault_m3_effect_delete)
+    DiscardEffect.Kind.RESTORE -> stringResource(R.string.vault_m3_effect_restore)
+    DiscardEffect.Kind.UNSTAGE -> stringResource(R.string.vault_m3_effect_unstage)
+    DiscardEffect.Kind.REVERT -> if (effect.linesLost > 0) pluralStringResource(R.plurals.vault_m3_effect_lines, effect.linesLost, effect.linesLost)
+        else stringResource(R.string.vault_m3_effect_revert)
+}
+
 // ─── Previews ───────────────────────────────────────────────────────────────
 
-@Preview(name = "Discard · one file · light", heightDp = 640) @Composable
-private fun DiscardOneLight() = SyncMdTheme(darkTheme = false) {
-    Box(Modifier.background(Tide.colors.ink.copy(alpha = 0.3f))) {
-        RevertReviewSheet(false, true, false, listOf("ideas/launch-plan.md"), {}, {})
-    }
+private val previewEffects = mapOf(
+    "daily/2026-11-01.md" to DiscardEffect(DiscardEffect.Kind.DELETE_NEW_FILE, 42),
+    "ideas/voice-memo-pipeline.md" to DiscardEffect(DiscardEffect.Kind.REVERT, 8),
+    "old-inbox.md" to DiscardEffect(DiscardEffect.Kind.RESTORE),
+)
+
+@Preview(name = "Discard · all · light", heightDp = 720) @Composable
+private fun DiscardAllLight() = SyncMdTheme(darkTheme = false) {
+    RevertReviewSheet(false, false, false, previewEffects.keys.toList(), previewEffects, "a41c9e2", true, true, {}, {}, {})
 }
 
 @Preview(name = "Discard · all · dark", heightDp = 720) @Composable
 private fun DiscardAllDark() = SyncMdTheme(darkTheme = true) {
-    RevertReviewSheet(false, false, true, listOf("notes/today.md", "ideas/launch-plan.md", "assets/cover.png"), {}, {})
+    RevertReviewSheet(false, false, true, previewEffects.keys.toList(), previewEffects, "a41c9e2", false, false, {}, {}, {})
 }
 
 @Preview(name = "Discard · clear staging", heightDp = 640) @Composable
 private fun DiscardUnborn() = SyncMdTheme(darkTheme = false) {
-    RevertReviewSheet(true, false, false, listOf("new.md"), {}, {})
-}
-
-@Preview(name = "Discard · empty", heightDp = 520) @Composable
-private fun DiscardEmpty() = SyncMdTheme(darkTheme = false) {
-    RevertReviewSheet(false, false, false, emptyList(), {}, {})
+    RevertReviewSheet(true, false, false, listOf("new.md"), mapOf("new.md" to DiscardEffect(DiscardEffect.Kind.UNSTAGE)), null, false, false, {}, {}, {})
 }
