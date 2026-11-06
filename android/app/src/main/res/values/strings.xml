@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gitsync.md</string>
+    <string name="status_screen">Status</string>
+    <string name="pull_screen">Pull</string>
+    <string name="commit_screen">Commit</string>
+    <string name="branch_screen">Branches</string>
+    <string name="history_screen">History</string>
+    <string name="stash_screen">Stash</string>
+    <string name="modified">Modified</string>
+    <string name="staged">Staged</string>
+    <string name="untracked">Untracked</string>
+
+    <string name="guide_title">App tour</string>
+    <string name="guide_back">Back</string>
+    <string name="guide_continue">Continue</string>
+    <string name="guide_skip">Skip tour</string>
+    <string name="guide_done">Done</string>
+    <string name="guide_step">Step %1$d of 4</string>
+    <string name="guide_clone_title">Your repositories, on Android</string>
+    <string name="guide_clone_body">Clone GitHub, public, self-hosted or SSH repositories. Each working copy keeps its own connection and branch.</string>
+    <string name="guide_edit_title">Edit where you work</string>
+    <string name="guide_edit_body">Browse and edit files here, or choose a device folder for another editor such as Obsidian. Review folder access in Settings before cloning.</string>
+    <string name="guide_git_title">Review before publishing</string>
+    <string name="guide_git_body">Inspect diffs, stage selected changes and commit locally. Push when you are ready. Branches, history, tags, conflict resolution and Git LFS are available from the repository screen.</string>
+    <string name="guide_start_title">Choose how to start</string>
+    <string name="guide_start_body">Connect an account, clone a URL, or try the offline sample. You can also choose a storage location now.</string>
+    <string name="guide_login">Sign in with GitHub</string>
+    <string name="guide_url">Clone from URL</string>
+    <string name="guide_sample">Try offline sample</string>
+    <string name="guide_storage">Choose storage</string>
+    <string name="guide_home">Continue without an account</string>
+    <string name="guide_save_error">Tour progress could not be saved. You can continue; the tour may appear again next time.</string>
+    <string name="help_title">Help</string>
+    <string name="help_tour">Show app tour</string>
+    <string name="help_feedback">Send feedback</string>
+    <string name="help_community">Join our Discord</string>
+    <string name="help_copy_email">Copy support email</string>
+    <string name="help_email_copied">Support email copied</string>
+    <string name="help_open_failed">No app could open this link. You can copy the support email instead.</string>
+    <string name="notes_title">Release notes</string>
+    <string name="notes_version">Android %1$s · build %2$d</string>
+    <string name="notes_workflow_title">Repository workflow</string>
+    <string name="notes_workflow_body">Browse and edit files, review staged and unstaged diffs, commit locally, push existing commits, and work with branches, history, tags and rebase.</string>
+    <string name="notes_connections_title">Connections and storage</string>
+    <string name="notes_connections_body">Manage GitHub accounts and repository author identity. Connect over HTTPS or SSH, choose clone storage, reconnect local copies, and review repository moves or removal.</string>
+    <string name="notes_files_title">Large files and diagnostics</string>
+    <string name="notes_files_body">Review Git LFS tracking, download missing contents and inspect server lock warnings. Diagnostics keeps a bounded local log with filtered copy and sharing.</string>
+    <string name="notes_notice_title">What’s new</string>
+    <string name="notes_acknowledge">Got it</string>
+    <string name="lfs_extensions_review">Review matching extensions…</string>
+    <string name="lfs_extensions_title">Track matching extensions?</string>
+    <string name="lfs_extensions_repository">Repository: %1$s · %2$s</string>
+    <string name="lfs_extensions_scope">These rules cover current and future matching files in subfolders. Matching is case-sensitive.</string>
+    <string name="lfs_extensions_exact_fallback">Selected large files with unknown extensions keep exact-path rules.</string>
+    <plurals name="lfs_extensions_affected">
+        <item quantity="one">%1$d current file will use LFS when staged</item>
+        <item quantity="other">%1$d current files will use LFS when staged</item>
+    </plurals>
+    <plurals name="lfs_extensions_more">
+        <item quantity="one">And %1$d more current file. Review Git changes before committing.</item>
+        <item quantity="other">And %1$d more current files. Review Git changes before committing.</item>
+    </plurals>
+    <plurals name="lfs_extensions_retained">
+        <item quantity="one">%1$d current file retains its explicit tracking choice.</item>
+        <item quantity="other">%1$d current files retain their explicit tracking choices.</item>
+    </plurals>
+    <string name="lfs_extensions_existing">Existing tracking rules can exclude matching files. Current files with an explicit tracking choice keep it.</string>
+    <string name="lfs_extensions_commit">Applying rules changes only .gitattributes. File contents, the staged index and commits stay in place. Stage affected files to convert their Git contents to LFS pointers.</string>
+    <string name="lfs_extensions_limits">Ignored files stay ignored. LFS storage and bandwidth limits depend on your Git host.</string>
+    <string name="lfs_extensions_apply">Apply rules</string>
+    <string name="lfs_extensions_cancel">Cancel</string>
+</resources>

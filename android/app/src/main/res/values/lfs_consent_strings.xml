@@ -1,0 +1,18 @@
+<resources>
+    <string name="lfs_consent_upload_title">"Allow LFS uploads?"</string>
+    <string name="lfs_consent_download_title">"Allow LFS downloads?"</string>
+    <string name="lfs_consent_upload_body">"This repository requests permission to send file contents to a separate LFS server."</string>
+    <string name="lfs_consent_download_body">"This repository requests permission to download file contents from a separate LFS server."</string>
+    <string name="lfs_allow_uploads">"Allow uploads"</string>
+    <string name="lfs_allow_downloads">"Allow downloads"</string>
+    <string name="lfs_revoke_uploads">"Revoke uploads"</string>
+    <string name="lfs_revoke_downloads">"Revoke downloads"</string>
+    <string name="lfs_revoke_upload_title">"Revoke upload approval?"</string>
+    <string name="lfs_revoke_download_title">"Revoke download approval?"</string>
+    <string name="lfs_revoke_upload_body">"Future uploads to %1$s will require a new review. The approval and saved credentials for downloads stay in place."</string>
+    <string name="lfs_revoke_download_body">"Future downloads from %1$s will require a new review. The approval and saved credentials for uploads stay in place."</string>
+    <string name="lfs_downloads_authenticated">"Downloads · separate encrypted credentials"</string>
+    <string name="lfs_downloads_public">"Downloads · public access"</string>
+    <string name="lfs_uploads_authenticated">"Uploads · separate encrypted credentials"</string>
+    <string name="lfs_uploads_public">"Uploads · public access"</string>
+</resources>

@@ -1,0 +1,10 @@
+{
+  "verified_at": "2026-11-02T18:18:07.726518+00:00",
+  "serial": "2C061FDH200CJN",
+  "phone_fixture": "/storage/emulated/0/Android/media/md.gitsync.md/repos/custom/discard-review-check-20261102",
+  "head": "353bd21bb14a19dac1441e3b0ef04c45f74e4ffe",
+  "exact_final_readback": "/tmp/syncmd-discard-cleanup-verified-y5j_22s3/fixture",
+  "owned_checkout_removed": true,
+  "app_catalog_removed_visibly": true,
+  "push_sync_unlinked": false
+}

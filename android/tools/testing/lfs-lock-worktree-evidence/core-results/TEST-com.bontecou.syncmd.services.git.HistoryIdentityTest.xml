@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.HistoryIdentityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:16" hostname="MacBook-Pro.local" time="0.533">
+  <properties/>
+  <testcase name="tag inventories retain the exact annotated object identity" classname="com.bontecou.syncmd.services.git.HistoryIdentityTest" time="0.093"/>
+  <testcase name="malformed stash drop cannot silently delete index zero" classname="com.bontecou.syncmd.services.git.HistoryIdentityTest" time="0.392"/>
+  <testcase name="popping the older stash preserves newest and applies the selected contents" classname="com.bontecou.syncmd.services.git.HistoryIdentityTest" time="0.047"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

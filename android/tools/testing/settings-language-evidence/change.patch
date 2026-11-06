@@ -1,0 +1,2019 @@
+--- before/app/src/androidTest/assets/localization_expected.json
++++ after/app/src/androidTest/assets/localization_expected.json
+@@ -5958,6 +5958,51 @@
+       "arguments": 1
+     },
+     {
++      "name": "tide_settings_signed_in",
++      "source": "signed in",
++      "arguments": 0
++    },
++    {
++      "name": "tide_settings_not_signed_in",
++      "source": "Not signed in",
++      "arguments": 0
++    },
++    {
++      "name": "tide_settings_section_new_clones",
++      "source": "New clones",
++      "arguments": 0
++    },
++    {
++      "name": "tide_settings_sign_out_title",
++      "source": "Sign out of GitHub?",
++      "arguments": 0
++    },
++    {
++      "name": "tide_settings_sign_out_message",
++      "source": "GitSync.md forgets the token for %1$s on this device. Your repositories and their files stay where they are.",
++      "arguments": 1
++    },
++    {
++      "name": "tide_settings_this_account",
++      "source": "this GitHub account",
++      "arguments": 0
++    },
++    {
++      "name": "tide_settings_version_line",
++      "source": "GitSync.md %1$s (%2$d)",
++      "arguments": 2
++    },
++    {
++      "name": "tide_settings_on",
++      "source": "on",
++      "arguments": 0
++    },
++    {
++      "name": "tide_settings_off",
++      "source": "off",
++      "arguments": 0
++    },
++    {
+       "name": "tide_home_state_synced",
+       "source": "Synced %1$s",
+       "arguments": 1
+@@ -8902,8 +8947,44 @@
+         "source": "استنسخ أي مستودع، واكتب في Obsidian أو أي تطبيق آخر، وزامن بنقرة واحدة."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "لم يتم تسجيل الدخول"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "معطّل"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "مفعّل"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "نسخ مستنسخة جديدة"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "يزيل GitSync.md الرمز الخاص بـ⁨%1$s⁩ من هذا الجهاز. تبقى مستودعاتك وملفاتها في مكانها."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "تسجيل الخروج من GitHub؟"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "تم تسجيل الدخول"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "حساب GitHub هذا"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "⁦GitSync.md %1$s (%2$d)⁩"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -13472,8 +13553,44 @@
+         "source": "Klon et repository, skriv i Obsidian eller en anden app, og synkroniser med ét tryk."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Ikke logget ind"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "fra"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "til"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nye kloner"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md glemmer tokenet til %1$s på denne enhed. Dine repositories og deres filer bliver, hvor de er."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Log ud af GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "logget ind"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "denne GitHub-konto"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -18042,8 +18159,44 @@
+         "source": "Klone ein Repository, schreibe in Obsidian oder einer anderen App und synchronisiere mit einem Tippen."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Nicht angemeldet"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "aus"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "ein"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Neue Klone"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md vergisst das Token für %1$s auf diesem Gerät. Deine Repositorys und ihre Dateien bleiben an ihrem Ort."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Von GitHub abmelden?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "angemeldet"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "dieses GitHub-Konto"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -22612,8 +22765,44 @@
+         "source": "Clona cualquier repositorio, escribe en Obsidian o en otra app y sincroniza con un toque."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Sin sesión iniciada"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "desactivado"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "activado"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nuevos clones"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md olvida el token de %1$s en este dispositivo. Tus repositorios y sus archivos permanecen donde están."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "¿Cerrar sesión en GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "sesión iniciada"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "esta cuenta de GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -27182,8 +27371,44 @@
+         "source": "Kloonaa mikä tahansa tietovarasto, kirjoita Obsidianissa tai muussa sovelluksessa ja synkronoi yhdellä napautuksella."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Ei kirjautunut"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "pois"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "päällä"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Uudet kloonit"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md unohtaa tällä laitteella käytettävän tokenin (%1$s). Tietovarastosi ja niiden tiedostot pysyvät paikoillaan."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Kirjaudutaanko ulos GitHubista?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "kirjautunut sisään"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "tämä GitHub-tili"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -31752,8 +31977,44 @@
+         "source": "Clonez un dépôt, écrivez dans Obsidian ou une autre app et synchronisez en un geste."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Non connecté"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "désactivé"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "activé"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nouveaux clones"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md oublie le jeton de %1$s sur cet appareil. Vos dépôts et leurs fichiers restent à leur emplacement."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Se déconnecter de GitHub ?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "connecté"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "ce compte GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -36322,8 +36583,44 @@
+         "source": "אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "לא מחובר"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "כבוי"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "פעיל"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "עותקים משוכפלים חדשים"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md ישכח את האסימון של ⁨%1$s⁩ במכשיר הזה. המאגרים והקבצים שלהם יישארו במקומם."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "לצאת מ-GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "מחובר"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "חשבון GitHub הזה"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "⁦GitSync.md %1$s (%2$d)⁩"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -40892,8 +41189,44 @@
+         "source": "कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।"
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "साइन इन नहीं है"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "बंद"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "चालू"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "नए क्लोन"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md इस डिवाइस पर टोकन भूल जाएगा (%1$s)। आपकी रिपॉज़िटरी और उनकी फ़ाइलें वहीं रहेंगी।"
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "GitHub से साइन आउट करें?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "साइन इन किया हुआ"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "यह GitHub खाता"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -45462,8 +45795,44 @@
+         "source": "Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Nincs bejelentkezve"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "ki"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "be"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Új klónok"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "A GitSync.md elfelejti az ezen az eszközön használt tokent (%1$s). A tárolóid és a fájljaik a helyükön maradnak."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Kijelentkezel a GitHubból?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "bejelentkezve"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "ez a GitHub-fiók"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -50032,8 +50401,44 @@
+         "source": "Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Belum masuk"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "nonaktif"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "aktif"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Klon baru"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md melupakan token untuk %1$s di perangkat ini. Repositori dan berkasnya tetap di tempatnya."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Keluar dari GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "sudah masuk"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "akun GitHub ini"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -54602,8 +55007,44 @@
+         "source": "Clona qualsiasi repository, scrivi in Obsidian o in un’altra app e sincronizza con un tocco."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Accesso non effettuato"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "disattivo"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "attivo"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nuovi cloni"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md dimentica il token di %1$s su questo dispositivo. I repository e i relativi file restano dove sono."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Uscire da GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "accesso effettuato"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "questo account GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -59172,8 +59613,44 @@
+         "source": "リポジトリをクローンし、Obsidian などのアプリで書いて、ワンタップで同期できます。"
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "未ログイン"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "オフ"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "オン"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "新しいクローン"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "このデバイス上の %1$s のトークンを GitSync.md から削除します。リポジトリとそのファイルは元の場所に残ります。"
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "GitHub からログアウトしますか？"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "ログイン済み"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "この GitHub アカウント"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -63742,8 +64219,44 @@
+         "source": "어떤 저장소든 클론하고 Obsidian이나 다른 앱에서 작성한 뒤 한 번의 탭으로 동기화하세요."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "로그인하지 않음"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "꺼짐"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "켜짐"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "새 클론"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "이 기기에서 GitSync.md가 %1$s의 토큰을 삭제합니다. 저장소와 파일은 원래 위치에 그대로 남습니다."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "GitHub에서 로그아웃할까요?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "로그인됨"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "이 GitHub 계정"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -68312,8 +68825,44 @@
+         "source": "Klon et repository, skriv i Obsidian eller en annen app, og synkroniser med ett trykk."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Ikke logget inn"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "av"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "på"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nye kloner"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md glemmer tokenet til %1$s på denne enheten. Repositoriene og filene deres blir der de er."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Logg ut av GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "logget inn"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "denne GitHub-kontoen"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -72882,8 +73431,44 @@
+         "source": "Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Niet ingelogd"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "uit"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "aan"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nieuwe klonen"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md vergeet het token voor %1$s op dit apparaat. Je repositories en hun bestanden blijven waar ze zijn."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Uitloggen bij GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "ingelogd"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "dit GitHub-account"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -77452,8 +78037,44 @@
+         "source": "Sklonuj dowolne repozytorium, pisz w Obsidianie lub innej aplikacji i synchronizuj jednym stuknięciem."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Nie zalogowano"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "wyłączone"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "włączone"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nowe klony"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md zapomni token na tym urządzeniu (%1$s). Repozytoria i ich pliki pozostaną na miejscu."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Wylogować się z GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "zalogowano"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "to konto GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -82022,8 +82643,44 @@
+         "source": "Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Não conectado"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "desativado"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "ativado"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Novos clones"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md esquece o token de %1$s neste dispositivo. Seus repositórios e arquivos permanecem onde estão."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Sair do GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "conectado"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "esta conta do GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -86592,8 +87249,44 @@
+         "source": "Клонируйте любой репозиторий, пишите в Obsidian или другом приложении и синхронизируйте одним касанием."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Вход не выполнен"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "выкл."
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "вкл."
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Новые клоны"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md забудет токен на этом устройстве (%1$s). Репозитории и их файлы останутся на месте."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Выйти из GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "вход выполнен"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "эта учётная запись GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -91162,8 +91855,44 @@
+         "source": "Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Inte inloggad"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "av"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "på"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Nya kloner"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md glömmer token för %1$s på den här enheten. Dina arkiv och deras filer blir kvar där de är."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Logga ut från GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "inloggad"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "det här GitHub-kontot"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -95732,8 +96461,44 @@
+         "source": "โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "ยังไม่ได้ลงชื่อเข้าใช้"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "ปิด"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "เปิด"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "สำเนาโคลนใหม่"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md จะลืมโทเค็นของ %1$s บนอุปกรณ์นี้ ที่เก็บและไฟล์ของคุณจะยังอยู่ที่เดิม"
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "ลงชื่อออกจาก GitHub หรือไม่?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "ลงชื่อเข้าใช้แล้ว"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "บัญชี GitHub นี้"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -100302,8 +101067,44 @@
+         "source": "İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Giriş yapılmadı"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "kapalı"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "açık"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Yeni klonlar"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md bu cihazda %1$s için kayıtlı token’ı unutur. Depolarınız ve dosyaları oldukları yerde kalır."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "GitHub’dan çıkış yapılsın mı?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "giriş yapıldı"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "bu GitHub hesabı"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -104872,8 +105673,44 @@
+         "source": "Клонуйте будь-який репозиторій, пишіть в Obsidian чи іншому застосунку та синхронізуйте одним дотиком."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Вхід не виконано"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "вимк."
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "увімк."
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Нові клони"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md забуде токен на цьому пристрої (%1$s). Репозиторії та їхні файли залишаться на місці."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Вийти з GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "вхід виконано"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "цей обліковий запис GitHub"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -109442,8 +110279,44 @@
+         "source": "Clone bất kỳ kho nào, viết trong Obsidian hoặc ứng dụng khác và đồng bộ bằng một lần chạm."
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "Chưa đăng nhập"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "tắt"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "bật"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "Bản clone mới"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md quên token của %1$s trên thiết bị này. Kho lưu trữ và các tệp vẫn ở nguyên vị trí."
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "Đăng xuất khỏi GitHub?"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "đã đăng nhập"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "tài khoản GitHub này"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -114012,8 +114885,44 @@
+         "source": "克隆任意仓库，在 Obsidian 或其他应用中书写，轻点即可同步。"
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "未登录"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "关"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "开"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "新克隆"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md 将从此设备移除 %1$s 的令牌。仓库及其文件仍保留在原处。"
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "退出 GitHub 登录？"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "已登录"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "此 GitHub 账户"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -118582,8 +119491,44 @@
+         "source": "複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"
+       },
+       {
++        "name": "tide_settings_not_signed_in",
++        "source": "未登入"
++      },
++      {
++        "name": "tide_settings_off",
++        "source": "關"
++      },
++      {
++        "name": "tide_settings_on",
++        "source": "開"
++      },
++      {
++        "name": "tide_settings_section_new_clones",
++        "source": "新的複製項目"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
++      },
++      {
++        "name": "tide_settings_sign_out_message",
++        "source": "GitSync.md 將從此裝置移除 %1$s 的權杖。儲存庫及其檔案仍保留在原處。"
++      },
++      {
++        "name": "tide_settings_sign_out_title",
++        "source": "登出 GitHub？"
++      },
++      {
++        "name": "tide_settings_signed_in",
++        "source": "已登入"
++      },
++      {
++        "name": "tide_settings_this_account",
++        "source": "此 GitHub 帳號"
++      },
++      {
++        "name": "tide_settings_version_line",
++        "source": "GitSync.md %1$s (%2$d)"
+       },
+       {
+         "name": "tide_vault_check_for_changes",
+@@ -120264,15 +121209,6 @@
+     "tide_merge_upstream_unset_body",
+     "tide_merge_yours",
+     "tide_merge_yours_count",
+-    "tide_settings_not_signed_in",
+-    "tide_settings_off",
+-    "tide_settings_on",
+-    "tide_settings_section_new_clones",
+-    "tide_settings_sign_out_message",
+-    "tide_settings_sign_out_title",
+-    "tide_settings_signed_in",
+-    "tide_settings_this_account",
+-    "tide_settings_version_line",
+     "ui_1_s_2_s_lines_59b29a56",
+     "ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527",
+     "ui_1_s_bytes_2_s_bb252a3c",
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt
+@@ -163,7 +163,7 @@
+     )
+ 
+     signOutReview?.let { review ->
+-        val subject = review.login?.let { "@$it" } ?: stringResource(R.string.tide_settings_this_account)
++        val subject = review.login?.let { "\u2066@$it\u2069" } ?: stringResource(R.string.tide_settings_this_account)
+         TideConfirmDialog(
+             title = stringResource(R.string.tide_settings_sign_out_title),
+             message = stringResource(R.string.tide_settings_sign_out_message, subject),
+--- before/app/src/main/res/values-ar/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ar/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"مكان الحفظ"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"إظهار"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"استنسخ أي مستودع، واكتب في Obsidian أو أي تطبيق آخر، وزامن بنقرة واحدة."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"لم يتم تسجيل الدخول"</string>
++    <string name="tide_settings_off" formatted="false">"معطّل"</string>
++    <string name="tide_settings_on" formatted="false">"مفعّل"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"نسخ مستنسخة جديدة"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"يزيل GitSync.md الرمز الخاص بـ⁨%1$s⁩ من هذا الجهاز. تبقى مستودعاتك وملفاتها في مكانها."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"تسجيل الخروج من GitHub؟"</string>
++    <string name="tide_settings_signed_in" formatted="false">"تم تسجيل الدخول"</string>
++    <string name="tide_settings_this_account" formatted="false">"حساب GitHub هذا"</string>
++    <string name="tide_settings_version_line">"⁦GitSync.md %1$s (%2$d)⁩"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"التحقق من التغييرات"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"توقفت عملية Git مؤقتًا. حلّ كل ملف متعارض للمتابعة."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"تغيّر الطرفان"</string>
+--- before/app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml
++++ after/app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"默认保存"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"显示"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"克隆任意仓库，在 Obsidian 或其他应用中书写，轻点即可同步。"</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"未登录"</string>
++    <string name="tide_settings_off" formatted="false">"关"</string>
++    <string name="tide_settings_on" formatted="false">"开"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"新克隆"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md 将从此设备移除 %1$s 的令牌。仓库及其文件仍保留在原处。"</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"退出 GitHub 登录？"</string>
++    <string name="tide_settings_signed_in" formatted="false">"已登录"</string>
++    <string name="tide_settings_this_account" formatted="false">"此 GitHub 账户"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"检查更改"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git 操作已暂停。请解决每个冲突文件以继续。"</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"两端均有更改"</string>
+--- before/app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml
++++ after/app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"預設儲存"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"顯示"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"未登入"</string>
++    <string name="tide_settings_off" formatted="false">"關"</string>
++    <string name="tide_settings_on" formatted="false">"開"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"新的複製項目"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md 將從此裝置移除 %1$s 的權杖。儲存庫及其檔案仍保留在原處。"</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"登出 GitHub？"</string>
++    <string name="tide_settings_signed_in" formatted="false">"已登入"</string>
++    <string name="tide_settings_this_account" formatted="false">"此 GitHub 帳號"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"檢查變更"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git 操作已暫停。請解決每個衝突檔案以繼續。"</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"兩端皆有變更"</string>
+--- before/app/src/main/res/values-da/ios_catalog_strings.xml
++++ after/app/src/main/res/values-da/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Standardplacering"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Vis"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Klon et repository, skriv i Obsidian eller en anden app, og synkroniser med ét tryk."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Ikke logget ind"</string>
++    <string name="tide_settings_off" formatted="false">"fra"</string>
++    <string name="tide_settings_on" formatted="false">"til"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nye kloner"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md glemmer tokenet til %1$s på denne enhed. Dine repositories og deres filer bliver, hvor de er."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Log ud af GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"logget ind"</string>
++    <string name="tide_settings_this_account" formatted="false">"denne GitHub-konto"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Søg efter ændringer"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-handlingen er sat på pause. Løs alle filer med konflikter for at fortsætte."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Begge sider ændret"</string>
+--- before/app/src/main/res/values-de/ios_catalog_strings.xml
++++ after/app/src/main/res/values-de/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Standardort"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Anzeigen"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Klone ein Repository, schreibe in Obsidian oder einer anderen App und synchronisiere mit einem Tippen."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Nicht angemeldet"</string>
++    <string name="tide_settings_off" formatted="false">"aus"</string>
++    <string name="tide_settings_on" formatted="false">"ein"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Neue Klone"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md vergisst das Token für %1$s auf diesem Gerät. Deine Repositorys und ihre Dateien bleiben an ihrem Ort."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Von GitHub abmelden?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"angemeldet"</string>
++    <string name="tide_settings_this_account" formatted="false">"dieses GitHub-Konto"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Auf Änderungen prüfen"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Der Git-Vorgang ist pausiert. Löse die Konflikte in jeder betroffenen Datei, um fortzufahren."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Beide Seiten geändert"</string>
+--- before/app/src/main/res/values-es/ios_catalog_strings.xml
++++ after/app/src/main/res/values-es/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Ubicación"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Mostrar"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Clona cualquier repositorio, escribe en Obsidian o en otra app y sincroniza con un toque."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Sin sesión iniciada"</string>
++    <string name="tide_settings_off" formatted="false">"desactivado"</string>
++    <string name="tide_settings_on" formatted="false">"activado"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nuevos clones"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md olvida el token de %1$s en este dispositivo. Tus repositorios y sus archivos permanecen donde están."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"¿Cerrar sesión en GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"sesión iniciada"</string>
++    <string name="tide_settings_this_account" formatted="false">"esta cuenta de GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Comprobar cambios"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"La operación de Git está en pausa. Resuelve cada archivo en conflicto para continuar."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Ambos lados cambiaron"</string>
+--- before/app/src/main/res/values-fi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-fi/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Oletusarvoinen"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Näytä"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Kloonaa mikä tahansa tietovarasto, kirjoita Obsidianissa tai muussa sovelluksessa ja synkronoi yhdellä napautuksella."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Ei kirjautunut"</string>
++    <string name="tide_settings_off" formatted="false">"pois"</string>
++    <string name="tide_settings_on" formatted="false">"päällä"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Uudet kloonit"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md unohtaa tällä laitteella käytettävän tokenin (%1$s). Tietovarastosi ja niiden tiedostot pysyvät paikoillaan."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Kirjaudutaanko ulos GitHubista?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"kirjautunut sisään"</string>
++    <string name="tide_settings_this_account" formatted="false">"tämä GitHub-tili"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Tarkista muutokset"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-toiminto on keskeytynyt. Ratkaise jokaisen ristiriitaisen tiedoston ristiriidat jatkaaksesi."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Molemmat puolet muuttuivat"</string>
+--- before/app/src/main/res/values-fr/ios_catalog_strings.xml
++++ after/app/src/main/res/values-fr/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Emplacement"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Afficher"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Clonez un dépôt, écrivez dans Obsidian ou une autre app et synchronisez en un geste."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Non connecté"</string>
++    <string name="tide_settings_off" formatted="false">"désactivé"</string>
++    <string name="tide_settings_on" formatted="false">"activé"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nouveaux clones"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md oublie le jeton de %1$s sur cet appareil. Vos dépôts et leurs fichiers restent à leur emplacement."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Se déconnecter de GitHub ?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"connecté"</string>
++    <string name="tide_settings_this_account" formatted="false">"ce compte GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Rechercher des modifications"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"L’opération Git est en pause. Résolvez chaque fichier en conflit pour continuer."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Les deux côtés ont changé"</string>
+--- before/app/src/main/res/values-hi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-hi/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"डिफ़ॉल्ट सेव"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"दिखाएँ"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।"</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"साइन इन नहीं है"</string>
++    <string name="tide_settings_off" formatted="false">"बंद"</string>
++    <string name="tide_settings_on" formatted="false">"चालू"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"नए क्लोन"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md इस डिवाइस पर टोकन भूल जाएगा (%1$s)। आपकी रिपॉज़िटरी और उनकी फ़ाइलें वहीं रहेंगी।"</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"GitHub से साइन आउट करें?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"साइन इन किया हुआ"</string>
++    <string name="tide_settings_this_account" formatted="false">"यह GitHub खाता"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"बदलाव जाँचें"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git कार्रवाई रुकी हुई है। जारी रखने के लिए हर विरोध वाली फ़ाइल को सुलझाएँ।"</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"दोनों ओर बदलाव हुए"</string>
+--- before/app/src/main/res/values-hu/ios_catalog_strings.xml
++++ after/app/src/main/res/values-hu/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Alapértelmezett"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Megjelenítés"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Nincs bejelentkezve"</string>
++    <string name="tide_settings_off" formatted="false">"ki"</string>
++    <string name="tide_settings_on" formatted="false">"be"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Új klónok"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"A GitSync.md elfelejti az ezen az eszközön használt tokent (%1$s). A tárolóid és a fájljaik a helyükön maradnak."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Kijelentkezel a GitHubból?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"bejelentkezve"</string>
++    <string name="tide_settings_this_account" formatted="false">"ez a GitHub-fiók"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Módosítások keresése"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"A Git-művelet szünetel. A folytatáshoz oldd fel az összes érintett fájl ütközéseit."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Mindkét oldal változott"</string>
+--- before/app/src/main/res/values-in/ios_catalog_strings.xml
++++ after/app/src/main/res/values-in/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Lokasi penyimpanan"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Tampilkan"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Belum masuk"</string>
++    <string name="tide_settings_off" formatted="false">"nonaktif"</string>
++    <string name="tide_settings_on" formatted="false">"aktif"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Klon baru"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md melupakan token untuk %1$s di perangkat ini. Repositori dan berkasnya tetap di tempatnya."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Keluar dari GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"sudah masuk"</string>
++    <string name="tide_settings_this_account" formatted="false">"akun GitHub ini"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Periksa perubahan"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Operasi Git dijeda. Selesaikan setiap berkas yang berkonflik untuk melanjutkan."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Kedua sisi berubah"</string>
+--- before/app/src/main/res/values-it/ios_catalog_strings.xml
++++ after/app/src/main/res/values-it/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Posizione di salvataggio"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Mostra"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Clona qualsiasi repository, scrivi in Obsidian o in un’altra app e sincronizza con un tocco."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Accesso non effettuato"</string>
++    <string name="tide_settings_off" formatted="false">"disattivo"</string>
++    <string name="tide_settings_on" formatted="false">"attivo"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nuovi cloni"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md dimentica il token di %1$s su questo dispositivo. I repository e i relativi file restano dove sono."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Uscire da GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"accesso effettuato"</string>
++    <string name="tide_settings_this_account" formatted="false">"questo account GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Controlla modifiche"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"L’operazione Git è in pausa. Risolvi ogni file in conflitto per continuare."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Entrambi i lati sono cambiati"</string>
+--- before/app/src/main/res/values-iw/ios_catalog_strings.xml
++++ after/app/src/main/res/values-iw/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"מיקום שמירה"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"הצגה"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"לא מחובר"</string>
++    <string name="tide_settings_off" formatted="false">"כבוי"</string>
++    <string name="tide_settings_on" formatted="false">"פעיל"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"עותקים משוכפלים חדשים"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md ישכח את האסימון של ⁨%1$s⁩ במכשיר הזה. המאגרים והקבצים שלהם יישארו במקומם."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"לצאת מ-GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"מחובר"</string>
++    <string name="tide_settings_this_account" formatted="false">"חשבון GitHub הזה"</string>
++    <string name="tide_settings_version_line">"⁦GitSync.md %1$s (%2$d)⁩"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"בדיקת שינויים"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"פעולת Git מושהית. פתור את ההתנגשויות בכל קובץ כדי להמשיך."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"שני הצדדים השתנו"</string>
+--- before/app/src/main/res/values-ja/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ja/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"既定の保存"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"表示"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"リポジトリをクローンし、Obsidian などのアプリで書いて、ワンタップで同期できます。"</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"未ログイン"</string>
++    <string name="tide_settings_off" formatted="false">"オフ"</string>
++    <string name="tide_settings_on" formatted="false">"オン"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"新しいクローン"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"このデバイス上の %1$s のトークンを GitSync.md から削除します。リポジトリとそのファイルは元の場所に残ります。"</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"GitHub からログアウトしますか？"</string>
++    <string name="tide_settings_signed_in" formatted="false">"ログイン済み"</string>
++    <string name="tide_settings_this_account" formatted="false">"この GitHub アカウント"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"変更を確認"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Gitの操作は一時停止中です。競合のある各ファイルを解決して続行してください。"</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"両側で変更あり"</string>
+--- before/app/src/main/res/values-ko/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ko/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"기본 저장"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"표시"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"어떤 저장소든 클론하고 Obsidian이나 다른 앱에서 작성한 뒤 한 번의 탭으로 동기화하세요."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"로그인하지 않음"</string>
++    <string name="tide_settings_off" formatted="false">"꺼짐"</string>
++    <string name="tide_settings_on" formatted="false">"켜짐"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"새 클론"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"이 기기에서 GitSync.md가 %1$s의 토큰을 삭제합니다. 저장소와 파일은 원래 위치에 그대로 남습니다."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"GitHub에서 로그아웃할까요?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"로그인됨"</string>
++    <string name="tide_settings_this_account" formatted="false">"이 GitHub 계정"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"변경 사항 확인"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git 작업이 일시 중지되었습니다. 계속하려면 충돌한 각 파일을 해결하세요."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"양쪽에 변경 사항 있음"</string>
+--- before/app/src/main/res/values-nb/ios_catalog_strings.xml
++++ after/app/src/main/res/values-nb/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Standard"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Vis"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Klon et repository, skriv i Obsidian eller en annen app, og synkroniser med ett trykk."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Ikke logget inn"</string>
++    <string name="tide_settings_off" formatted="false">"av"</string>
++    <string name="tide_settings_on" formatted="false">"på"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nye kloner"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md glemmer tokenet til %1$s på denne enheten. Repositoriene og filene deres blir der de er."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Logg ut av GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"logget inn"</string>
++    <string name="tide_settings_this_account" formatted="false">"denne GitHub-kontoen"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Se etter endringer"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-handlingen er satt på pause. Løs alle filer med konflikter for å fortsette."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Begge sider endret"</string>
+--- before/app/src/main/res/values-nl/ios_catalog_strings.xml
++++ after/app/src/main/res/values-nl/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Standaard"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Tonen"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Niet ingelogd"</string>
++    <string name="tide_settings_off" formatted="false">"uit"</string>
++    <string name="tide_settings_on" formatted="false">"aan"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nieuwe klonen"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md vergeet het token voor %1$s op dit apparaat. Je repositories en hun bestanden blijven waar ze zijn."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Uitloggen bij GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"ingelogd"</string>
++    <string name="tide_settings_this_account" formatted="false">"dit GitHub-account"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Controleren op wijzigingen"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"De Git-bewerking is gepauzeerd. Los elk conflicterend bestand op om verder te gaan."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Beide kanten gewijzigd"</string>
+--- before/app/src/main/res/values-pl/ios_catalog_strings.xml
++++ after/app/src/main/res/values-pl/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Domyślna lokalizacja"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Pokaż"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Sklonuj dowolne repozytorium, pisz w Obsidianie lub innej aplikacji i synchronizuj jednym stuknięciem."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Nie zalogowano"</string>
++    <string name="tide_settings_off" formatted="false">"wyłączone"</string>
++    <string name="tide_settings_on" formatted="false">"włączone"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nowe klony"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md zapomni token na tym urządzeniu (%1$s). Repozytoria i ich pliki pozostaną na miejscu."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Wylogować się z GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"zalogowano"</string>
++    <string name="tide_settings_this_account" formatted="false">"to konto GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Sprawdź zmiany"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Operacja Git jest wstrzymana. Rozwiąż konflikty w każdym pliku, aby kontynuować."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Obie strony się zmieniły"</string>
+--- before/app/src/main/res/values-pt-rBR/ios_catalog_strings.xml
++++ after/app/src/main/res/values-pt-rBR/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Local de salvamento"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Mostrar"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Não conectado"</string>
++    <string name="tide_settings_off" formatted="false">"desativado"</string>
++    <string name="tide_settings_on" formatted="false">"ativado"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Novos clones"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md esquece o token de %1$s neste dispositivo. Seus repositórios e arquivos permanecem onde estão."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Sair do GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"conectado"</string>
++    <string name="tide_settings_this_account" formatted="false">"esta conta do GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Verificar alterações"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"A operação do Git está pausada. Resolva cada arquivo em conflito para continuar."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Os dois lados mudaram"</string>
+--- before/app/src/main/res/values-ru/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ru/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Место сохранения"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Показать"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Клонируйте любой репозиторий, пишите в Obsidian или другом приложении и синхронизируйте одним касанием."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Вход не выполнен"</string>
++    <string name="tide_settings_off" formatted="false">"выкл."</string>
++    <string name="tide_settings_on" formatted="false">"вкл."</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Новые клоны"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md забудет токен на этом устройстве (%1$s). Репозитории и их файлы останутся на месте."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Выйти из GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"вход выполнен"</string>
++    <string name="tide_settings_this_account" formatted="false">"эта учётная запись GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Проверить изменения"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Операция Git приостановлена. Разрешите конфликты в каждом файле, чтобы продолжить."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Обе стороны изменились"</string>
+--- before/app/src/main/res/values-sv/ios_catalog_strings.xml
++++ after/app/src/main/res/values-sv/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Standardplats"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Visa"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Inte inloggad"</string>
++    <string name="tide_settings_off" formatted="false">"av"</string>
++    <string name="tide_settings_on" formatted="false">"på"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Nya kloner"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md glömmer token för %1$s på den här enheten. Dina arkiv och deras filer blir kvar där de är."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Logga ut från GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"inloggad"</string>
++    <string name="tide_settings_this_account" formatted="false">"det här GitHub-kontot"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Sök efter ändringar"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-åtgärden är pausad. Lös varje filkonflikt för att fortsätta."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Båda sidor ändrades"</string>
+--- before/app/src/main/res/values-th/ios_catalog_strings.xml
++++ after/app/src/main/res/values-th/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"ตำแหน่งบันทึก"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"แสดง"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"ยังไม่ได้ลงชื่อเข้าใช้"</string>
++    <string name="tide_settings_off" formatted="false">"ปิด"</string>
++    <string name="tide_settings_on" formatted="false">"เปิด"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"สำเนาโคลนใหม่"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md จะลืมโทเค็นของ %1$s บนอุปกรณ์นี้ ที่เก็บและไฟล์ของคุณจะยังอยู่ที่เดิม"</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"ลงชื่อออกจาก GitHub หรือไม่?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"ลงชื่อเข้าใช้แล้ว"</string>
++    <string name="tide_settings_this_account" formatted="false">"บัญชี GitHub นี้"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"ตรวจหาการเปลี่ยนแปลง"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"การดำเนินการ Git หยุดชั่วคราว แก้ไขไฟล์ที่ขัดแย้งแต่ละไฟล์เพื่อดำเนินการต่อ"</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"ทั้งสองฝั่งมีการเปลี่ยนแปลง"</string>
+--- before/app/src/main/res/values-tr/ios_catalog_strings.xml
++++ after/app/src/main/res/values-tr/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Varsayılan kayıt"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Göster"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Giriş yapılmadı"</string>
++    <string name="tide_settings_off" formatted="false">"kapalı"</string>
++    <string name="tide_settings_on" formatted="false">"açık"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Yeni klonlar"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md bu cihazda %1$s için kayıtlı token’ı unutur. Depolarınız ve dosyaları oldukları yerde kalır."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"GitHub’dan çıkış yapılsın mı?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"giriş yapıldı"</string>
++    <string name="tide_settings_this_account" formatted="false">"bu GitHub hesabı"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Değişiklikleri denetle"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git işlemi duraklatıldı. Devam etmek için çakışan her dosyayı çözün."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"İki taraf da değişti"</string>
+--- before/app/src/main/res/values-uk/ios_catalog_strings.xml
++++ after/app/src/main/res/values-uk/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Місце збереження"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Показати"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Клонуйте будь-який репозиторій, пишіть в Obsidian чи іншому застосунку та синхронізуйте одним дотиком."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Вхід не виконано"</string>
++    <string name="tide_settings_off" formatted="false">"вимк."</string>
++    <string name="tide_settings_on" formatted="false">"увімк."</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Нові клони"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md забуде токен на цьому пристрої (%1$s). Репозиторії та їхні файли залишаться на місці."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Вийти з GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"вхід виконано"</string>
++    <string name="tide_settings_this_account" formatted="false">"цей обліковий запис GitHub"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Перевірити зміни"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Операцію Git призупинено. Вирішіть конфлікти в кожному файлі, щоб продовжити."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Обидві сторони змінилися"</string>
+--- before/app/src/main/res/values-vi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-vi/ios_catalog_strings.xml
+@@ -734,7 +734,16 @@
+     <string name="tide_onboarding_save_title" formatted="false">"Vị trí lưu"</string>
+     <string name="tide_onboarding_show_token" formatted="false">"Hiện"</string>
+     <string name="tide_onboarding_welcome_body" formatted="false">"Clone bất kỳ kho nào, viết trong Obsidian hoặc ứng dụng khác và đồng bộ bằng một lần chạm."</string>
++    <string name="tide_settings_not_signed_in" formatted="false">"Chưa đăng nhập"</string>
++    <string name="tide_settings_off" formatted="false">"tắt"</string>
++    <string name="tide_settings_on" formatted="false">"bật"</string>
++    <string name="tide_settings_section_new_clones" formatted="false">"Bản clone mới"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
++    <string name="tide_settings_sign_out_message">"GitSync.md quên token của %1$s trên thiết bị này. Kho lưu trữ và các tệp vẫn ở nguyên vị trí."</string>
++    <string name="tide_settings_sign_out_title" formatted="false">"Đăng xuất khỏi GitHub?"</string>
++    <string name="tide_settings_signed_in" formatted="false">"đã đăng nhập"</string>
++    <string name="tide_settings_this_account" formatted="false">"tài khoản GitHub này"</string>
++    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Kiểm tra thay đổi"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Thao tác Git đã tạm dừng. Giải quyết từng tệp xung đột để tiếp tục."</string>
+     <string name="tide_vault_eyebrow_both_moved" formatted="false">"Cả hai phía đã thay đổi"</string>
+--- before/tools/localization/README.md
++++ after/tools/localization/README.md
+@@ -6,8 +6,8 @@
+ 
+ Coverage is intentionally explicit: the complete current base inventory contains
+ 1,288 translatable string keys and nineteen plural resources. Each non-English
+-locale has 1,142 translated string keys and all nineteen translated plural resources;
+-146 strings remain untranslated. All three tools share discovery
++locale has 1,151 translated string keys and all nineteen translated plural resources;
++137 strings remain untranslated. All three tools share discovery
+ of every XML filename under base `values`, including `strings_*.xml` and arbitrary
+ names. Style entries do not count as strings. Coverage still does not include all
+ raw conditional/model/default copy, and native/linguistic acceptance remains open.
+--- before/tools/localization/android_workflow_overrides.json
++++ after/tools/localization/android_workflow_overrides.json
+@@ -28650,6 +28650,278 @@
+         "zh-Hans": "第 %1$d 步，共 3 步",
+         "zh-Hant": "第 %1$d 步，共 3 步"
+       }
++    },
++    "tide_settings_signed_in": {
++      "source": "signed in",
++      "localizations": {
++        "ar": "تم تسجيل الدخول",
++        "da": "logget ind",
++        "de": "angemeldet",
++        "es": "sesión iniciada",
++        "fi": "kirjautunut sisään",
++        "fr": "connecté",
++        "he": "מחובר",
++        "hi": "साइन इन किया हुआ",
++        "hu": "bejelentkezve",
++        "id": "sudah masuk",
++        "it": "accesso effettuato",
++        "ja": "ログイン済み",
++        "ko": "로그인됨",
++        "nb": "logget inn",
++        "nl": "ingelogd",
++        "pl": "zalogowano",
++        "pt-BR": "conectado",
++        "ru": "вход выполнен",
++        "sv": "inloggad",
++        "th": "ลงชื่อเข้าใช้แล้ว",
++        "tr": "giriş yapıldı",
++        "uk": "вхід виконано",
++        "vi": "đã đăng nhập",
++        "zh-Hans": "已登录",
++        "zh-Hant": "已登入"
++      }
++    },
++    "tide_settings_not_signed_in": {
++      "source": "Not signed in",
++      "localizations": {
++        "ar": "لم يتم تسجيل الدخول",
++        "da": "Ikke logget ind",
++        "de": "Nicht angemeldet",
++        "es": "Sin sesión iniciada",
++        "fi": "Ei kirjautunut",
++        "fr": "Non connecté",
++        "he": "לא מחובר",
++        "hi": "साइन इन नहीं है",
++        "hu": "Nincs bejelentkezve",
++        "id": "Belum masuk",
++        "it": "Accesso non effettuato",
++        "ja": "未ログイン",
++        "ko": "로그인하지 않음",
++        "nb": "Ikke logget inn",
++        "nl": "Niet ingelogd",
++        "pl": "Nie zalogowano",
++        "pt-BR": "Não conectado",
++        "ru": "Вход не выполнен",
++        "sv": "Inte inloggad",
++        "th": "ยังไม่ได้ลงชื่อเข้าใช้",
++        "tr": "Giriş yapılmadı",
++        "uk": "Вхід не виконано",
++        "vi": "Chưa đăng nhập",
++        "zh-Hans": "未登录",
++        "zh-Hant": "未登入"
++      }
++    },
++    "tide_settings_section_new_clones": {
++      "source": "New clones",
++      "localizations": {
++        "ar": "نسخ مستنسخة جديدة",
++        "da": "Nye kloner",
++        "de": "Neue Klone",
++        "es": "Nuevos clones",
++        "fi": "Uudet kloonit",
++        "fr": "Nouveaux clones",
++        "he": "עותקים משוכפלים חדשים",
++        "hi": "नए क्लोन",
++        "hu": "Új klónok",
++        "id": "Klon baru",
++        "it": "Nuovi cloni",
++        "ja": "新しいクローン",
++        "ko": "새 클론",
++        "nb": "Nye kloner",
++        "nl": "Nieuwe klonen",
++        "pl": "Nowe klony",
++        "pt-BR": "Novos clones",
++        "ru": "Новые клоны",
++        "sv": "Nya kloner",
++        "th": "สำเนาโคลนใหม่",
++        "tr": "Yeni klonlar",
++        "uk": "Нові клони",
++        "vi": "Bản clone mới",
++        "zh-Hans": "新克隆",
++        "zh-Hant": "新的複製項目"
++      }
++    },
++    "tide_settings_sign_out_title": {
++      "source": "Sign out of GitHub?",
++      "localizations": {
++        "ar": "تسجيل الخروج من GitHub؟",
++        "da": "Log ud af GitHub?",
++        "de": "Von GitHub abmelden?",
++        "es": "¿Cerrar sesión en GitHub?",
++        "fi": "Kirjaudutaanko ulos GitHubista?",
++        "fr": "Se déconnecter de GitHub ?",
++        "he": "לצאת מ-GitHub?",
++        "hi": "GitHub से साइन आउट करें?",
++        "hu": "Kijelentkezel a GitHubból?",
++        "id": "Keluar dari GitHub?",
++        "it": "Uscire da GitHub?",
++        "ja": "GitHub からログアウトしますか？",
++        "ko": "GitHub에서 로그아웃할까요?",
++        "nb": "Logg ut av GitHub?",
++        "nl": "Uitloggen bij GitHub?",
++        "pl": "Wylogować się z GitHub?",
++        "pt-BR": "Sair do GitHub?",
++        "ru": "Выйти из GitHub?",
++        "sv": "Logga ut från GitHub?",
++        "th": "ลงชื่อออกจาก GitHub หรือไม่?",
++        "tr": "GitHub’dan çıkış yapılsın mı?",
++        "uk": "Вийти з GitHub?",
++        "vi": "Đăng xuất khỏi GitHub?",
++        "zh-Hans": "退出 GitHub 登录？",
++        "zh-Hant": "登出 GitHub？"
++      }
++    },
++    "tide_settings_sign_out_message": {
++      "source": "GitSync.md forgets the token for %1$s on this device. Your repositories and their files stay where they are.",
++      "localizations": {
++        "ar": "يزيل GitSync.md الرمز الخاص بـ⁨%1$s⁩ من هذا الجهاز. تبقى مستودعاتك وملفاتها في مكانها.",
++        "da": "GitSync.md glemmer tokenet til %1$s på denne enhed. Dine repositories og deres filer bliver, hvor de er.",
++        "de": "GitSync.md vergisst das Token für %1$s auf diesem Gerät. Deine Repositorys und ihre Dateien bleiben an ihrem Ort.",
++        "es": "GitSync.md olvida el token de %1$s en este dispositivo. Tus repositorios y sus archivos permanecen donde están.",
++        "fi": "GitSync.md unohtaa tällä laitteella käytettävän tokenin (%1$s). Tietovarastosi ja niiden tiedostot pysyvät paikoillaan.",
++        "fr": "GitSync.md oublie le jeton de %1$s sur cet appareil. Vos dépôts et leurs fichiers restent à leur emplacement.",
++        "he": "GitSync.md ישכח את האסימון של ⁨%1$s⁩ במכשיר הזה. המאגרים והקבצים שלהם יישארו במקומם.",
++        "hi": "GitSync.md इस डिवाइस पर टोकन भूल जाएगा (%1$s)। आपकी रिपॉज़िटरी और उनकी फ़ाइलें वहीं रहेंगी।",
++        "hu": "A GitSync.md elfelejti az ezen az eszközön használt tokent (%1$s). A tárolóid és a fájljaik a helyükön maradnak.",
++        "id": "GitSync.md melupakan token untuk %1$s di perangkat ini. Repositori dan berkasnya tetap di tempatnya.",
++        "it": "GitSync.md dimentica il token di %1$s su questo dispositivo. I repository e i relativi file restano dove sono.",
++        "ja": "このデバイス上の %1$s のトークンを GitSync.md から削除します。リポジトリとそのファイルは元の場所に残ります。",
++        "ko": "이 기기에서 GitSync.md가 %1$s의 토큰을 삭제합니다. 저장소와 파일은 원래 위치에 그대로 남습니다.",
++        "nb": "GitSync.md glemmer tokenet til %1$s på denne enheten. Repositoriene og filene deres blir der de er.",
++        "nl": "GitSync.md vergeet het token voor %1$s op dit apparaat. Je repositories en hun bestanden blijven waar ze zijn.",
++        "pl": "GitSync.md zapomni token na tym urządzeniu (%1$s). Repozytoria i ich pliki pozostaną na miejscu.",
++        "pt-BR": "GitSync.md esquece o token de %1$s neste dispositivo. Seus repositórios e arquivos permanecem onde estão.",
++        "ru": "GitSync.md забудет токен на этом устройстве (%1$s). Репозитории и их файлы останутся на месте.",
++        "sv": "GitSync.md glömmer token för %1$s på den här enheten. Dina arkiv och deras filer blir kvar där de är.",
++        "th": "GitSync.md จะลืมโทเค็นของ %1$s บนอุปกรณ์นี้ ที่เก็บและไฟล์ของคุณจะยังอยู่ที่เดิม",
++        "tr": "GitSync.md bu cihazda %1$s için kayıtlı token’ı unutur. Depolarınız ve dosyaları oldukları yerde kalır.",
++        "uk": "GitSync.md забуде токен на цьому пристрої (%1$s). Репозиторії та їхні файли залишаться на місці.",
++        "vi": "GitSync.md quên token của %1$s trên thiết bị này. Kho lưu trữ và các tệp vẫn ở nguyên vị trí.",
++        "zh-Hans": "GitSync.md 将从此设备移除 %1$s 的令牌。仓库及其文件仍保留在原处。",
++        "zh-Hant": "GitSync.md 將從此裝置移除 %1$s 的權杖。儲存庫及其檔案仍保留在原處。"
++      },
++      "notes": "Arabic/Hebrew use FSI/PDI around the subject, which may be a literal LTR handle or translated RTL fallback. Settings separately bounds literal @login with LRI/PDI."
++    },
++    "tide_settings_this_account": {
++      "source": "this GitHub account",
++      "localizations": {
++        "ar": "حساب GitHub هذا",
++        "da": "denne GitHub-konto",
++        "de": "dieses GitHub-Konto",
++        "es": "esta cuenta de GitHub",
++        "fi": "tämä GitHub-tili",
++        "fr": "ce compte GitHub",
++        "he": "חשבון GitHub הזה",
++        "hi": "यह GitHub खाता",
++        "hu": "ez a GitHub-fiók",
++        "id": "akun GitHub ini",
++        "it": "questo account GitHub",
++        "ja": "この GitHub アカウント",
++        "ko": "이 GitHub 계정",
++        "nb": "denne GitHub-kontoen",
++        "nl": "dit GitHub-account",
++        "pl": "to konto GitHub",
++        "pt-BR": "esta conta do GitHub",
++        "ru": "эта учётная запись GitHub",
++        "sv": "det här GitHub-kontot",
++        "th": "บัญชี GitHub นี้",
++        "tr": "bu GitHub hesabı",
++        "uk": "цей обліковий запис GitHub",
++        "vi": "tài khoản GitHub này",
++        "zh-Hans": "此 GitHub 账户",
++        "zh-Hant": "此 GitHub 帳號"
++      }
++    },
++    "tide_settings_version_line": {
++      "source": "GitSync.md %1$s (%2$d)",
++      "localizations": {
++        "ar": "⁦GitSync.md %1$s (%2$d)⁩",
++        "da": "GitSync.md %1$s (%2$d)",
++        "de": "GitSync.md %1$s (%2$d)",
++        "es": "GitSync.md %1$s (%2$d)",
++        "fi": "GitSync.md %1$s (%2$d)",
++        "fr": "GitSync.md %1$s (%2$d)",
++        "he": "⁦GitSync.md %1$s (%2$d)⁩",
++        "hi": "GitSync.md %1$s (%2$d)",
++        "hu": "GitSync.md %1$s (%2$d)",
++        "id": "GitSync.md %1$s (%2$d)",
++        "it": "GitSync.md %1$s (%2$d)",
++        "ja": "GitSync.md %1$s (%2$d)",
++        "ko": "GitSync.md %1$s (%2$d)",
++        "nb": "GitSync.md %1$s (%2$d)",
++        "nl": "GitSync.md %1$s (%2$d)",
++        "pl": "GitSync.md %1$s (%2$d)",
++        "pt-BR": "GitSync.md %1$s (%2$d)",
++        "ru": "GitSync.md %1$s (%2$d)",
++        "sv": "GitSync.md %1$s (%2$d)",
++        "th": "GitSync.md %1$s (%2$d)",
++        "tr": "GitSync.md %1$s (%2$d)",
++        "uk": "GitSync.md %1$s (%2$d)",
++        "vi": "GitSync.md %1$s (%2$d)",
++        "zh-Hans": "GitSync.md %1$s (%2$d)",
++        "zh-Hant": "GitSync.md %1$s (%2$d)"
++      },
++      "notes": "Brand/version/build data stay literal. Arabic/Hebrew bound the whole line with LRI/PDI; preserve both String and integer arguments."
++    },
++    "tide_settings_on": {
++      "source": "on",
++      "localizations": {
++        "ar": "مفعّل",
++        "da": "til",
++        "de": "ein",
++        "es": "activado",
++        "fi": "päällä",
++        "fr": "activé",
++        "he": "פעיל",
++        "hi": "चालू",
++        "hu": "be",
++        "id": "aktif",
++        "it": "attivo",
++        "ja": "オン",
++        "ko": "켜짐",
++        "nb": "på",
++        "nl": "aan",
++        "pl": "włączone",
++        "pt-BR": "ativado",
++        "ru": "вкл.",
++        "sv": "på",
++        "th": "เปิด",
++        "tr": "açık",
++        "uk": "увімк.",
++        "vi": "bật",
++        "zh-Hans": "开",
++        "zh-Hant": "開"
++      }
++    },
++    "tide_settings_off": {
++      "source": "off",
++      "localizations": {
++        "ar": "معطّل",
++        "da": "fra",
++        "de": "aus",
++        "es": "desactivado",
++        "fi": "pois",
++        "fr": "désactivé",
++        "he": "כבוי",
++        "hi": "बंद",
++        "hu": "ki",
++        "id": "nonaktif",
++        "it": "disattivo",
++        "ja": "オフ",
++        "ko": "꺼짐",
++        "nb": "av",
++        "nl": "uit",
++        "pl": "wyłączone",
++        "pt-BR": "desativado",
++        "ru": "выкл.",
++        "sv": "av",
++        "th": "ปิด",
++        "tr": "kapalı",
++        "uk": "вимк.",
++        "vi": "tắt",
++        "zh-Hans": "关",
++        "zh-Hant": "關"
++      }
+     }
+   },
+   "plurals": {
+--- before/tools/localization/coverage.json
++++ after/tools/localization/coverage.json
+@@ -28,7 +28,7 @@
+     "zh-Hant"
+   ],
+   "base_strings": 1288,
+-  "translated_per_language": 1142,
++  "translated_per_language": 1151,
+   "mapped": {
+     "account_removal_subject": "android_overrides",
+     "background_active": "android_overrides",
+@@ -764,7 +764,16 @@
+     "tide_onboarding_save_title": "android_overrides",
+     "tide_onboarding_show_token": "android_overrides",
+     "tide_onboarding_welcome_body": "android_overrides",
++    "tide_settings_not_signed_in": "android_overrides",
++    "tide_settings_off": "android_overrides",
++    "tide_settings_on": "android_overrides",
++    "tide_settings_section_new_clones": "android_overrides",
+     "tide_settings_section_sync": "SYNC",
++    "tide_settings_sign_out_message": "android_overrides",
++    "tide_settings_sign_out_title": "android_overrides",
++    "tide_settings_signed_in": "android_overrides",
++    "tide_settings_this_account": "android_overrides",
++    "tide_settings_version_line": "android_overrides",
+     "tide_vault_check_for_changes": "android_overrides",
+     "tide_vault_conflict_detail": "android_overrides",
+     "tide_vault_eyebrow_both_moved": "android_overrides",
+@@ -1222,15 +1231,6 @@
+     "tide_merge_upstream_unset_body",
+     "tide_merge_yours",
+     "tide_merge_yours_count",
+-    "tide_settings_not_signed_in",
+-    "tide_settings_off",
+-    "tide_settings_on",
+-    "tide_settings_section_new_clones",
+-    "tide_settings_sign_out_message",
+-    "tide_settings_sign_out_title",
+-    "tide_settings_signed_in",
+-    "tide_settings_this_account",
+-    "tide_settings_version_line",
+     "ui_1_s_2_s_lines_59b29a56",
+     "ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527",
+     "ui_1_s_bytes_2_s_bb252a3c",

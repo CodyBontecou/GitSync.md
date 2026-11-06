@@ -1,0 +1,36 @@
+<resources>
+    <string name="push_title">Push Sync</string>
+    <string name="push_enable">Notify when GitHub changes</string>
+    <string name="push_scope">Connect the GitSync.md GitHub App to receive repository updates. Matching clean working copies can fetch and fast-forward in the background. Tap a notification to check again. Push Sync never commits, uploads changes or switches branches; local changes and diverged histories need your review.</string>
+    <string name="push_unavailable">Push notifications are not available in this build.</string>
+    <string name="push_permission">Allow notifications in Android Settings before enabling Push Sync.</string>
+    <string name="push_open_settings">Open notification settings</string>
+    <string name="push_registered">Notification device registered.</string>
+    <string name="push_registration_pending">Notification registration is pending. Refresh when connected.</string>
+    <string name="push_link">Connect GitHub</string>
+    <string name="push_refresh">Refresh connection</string>
+    <string name="push_no_connections">Connect a GitHub account or organization to choose which repositories may send updates.</string>
+    <string name="push_owner">Sign in as the personal-account owner or an organization owner to connect that installation.</string>
+    <string name="push_cancelled">GitHub connection was cancelled.</string>
+    <string name="push_stopped">This check stopped. Work already sent to Git may have finished; review the repository before retrying.</string>
+    <string name="push_failed">Push Sync could not complete this action. Check notifications, connectivity and GitHub access, then refresh. Local files were kept.</string>
+    <string name="push_suspended">GitHub access is suspended</string>
+    <string name="push_all_repositories">All repositories, including future repositories</string>
+    <string name="push_selected_repositories">Selected repositories</string>
+    <string name="push_manage_github">Manage on GitHub</string>
+    <string name="push_unlink">Remove connection</string>
+    <string name="push_unlink_scope">Remove Push Sync routing for this GitHub installation on this device? This does not uninstall the GitHub App. Use Manage on GitHub to change its repository access or uninstall it.</string>
+    <string name="push_result">Checked: %1$d · Updated: %2$d · Need review: %3$d</string>
+    <string name="push_channel">Repository updates</string>
+    <string name="push_no_match">No accessible checkout matches this GitHub repository and upstream branch. Review its connection, branch and folder access.</string>
+    <string name="push_open_failed">This link could not be opened. Check the browser or Android settings and try again.</string>
+    <string name="push_open_repository">Open repository</string>
+    <string name="push_result_updated">Updated from the configured upstream</string>
+    <string name="push_result_current">Already up to date</string>
+    <string name="push_result_review">Needs review before it can update</string>
+    <string name="push_notification">GitHub branch %1$s changed. Tap to check this working copy.</string>
+    <string name="push_existing">Already installed the GitHub App?</string>
+    <string name="push_existing_account">GitHub username or organization</string>
+    <string name="push_existing_scope">Connect an existing installation by signing in as the account owner or an organization owner. Its repository access stays unchanged.</string>
+    <string name="push_existing_connect">Connect existing installation</string>
+</resources>

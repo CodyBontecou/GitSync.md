@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tide redesign copy for the Git tools screen (GitScreen + branch/tag/stash components). English only. -->
+<resources>
+    <string name="tide_git_tools">Git tools</string>
+    <string name="tide_git_headline_complete_merge">Complete merge</string>
+    <plurals name="tide_git_headline_commit">
+        <item quantity="one">Commit %d file</item>
+        <item quantity="other">Commit %d files</item>
+    </plurals>
+    <string name="tide_git_headline_choose">Choose what to commit</string>
+    <string name="tide_git_headline_nothing">Nothing to commit</string>
+    <string name="tide_git_message">Message</string>
+    <string name="tide_git_included">Included</string>
+    <plurals name="tide_git_files_staged">
+        <item quantity="one">%d file staged</item>
+        <item quantity="other">%d files staged</item>
+    </plurals>
+    <plurals name="tide_git_conflicts_to_resolve">
+        <item quantity="one">%d conflict to resolve</item>
+        <item quantity="other">%d conflicts to resolve</item>
+    </plurals>
+    <string name="tide_git_hint_stage">Stage at least one file to commit</string>
+    <string name="tide_git_hint_message">Enter a commit message</string>
+    <string name="tide_git_commit_locally">Commit locally</string>
+    <string name="tide_git_committing">Committing…</string>
+    <string name="tide_git_push_current">Push current branch</string>
+    <string name="tide_git_pushing">Pushing…</string>
+    <string name="tide_git_unstaged">Unstaged</string>
+    <string name="tide_git_status_added">added</string>
+    <string name="tide_git_status_modified">modified</string>
+    <string name="tide_git_status_deleted">deleted</string>
+    <string name="tide_git_status_renamed">renamed</string>
+    <string name="tide_git_status_copied">copied</string>
+    <string name="tide_git_status_type_changed">type changed</string>
+    <string name="tide_git_status_changed">changed</string>
+    <string name="tide_git_detached">Detached HEAD</string>
+    <string name="tide_git_local_only">local only</string>
+    <string name="tide_git_remote">Remote</string>
+    <string name="tide_git_resolve_and_stage">Resolve and stage</string>
+    <string name="tide_git_resolving">Resolving…</string>
+    <string name="tide_git_branch_operation">Branch operation</string>
+    <string name="tide_git_git_operation">Git operation</string>
+    <string name="tide_git_annotated">annotated</string>
+    <string name="tide_git_lightweight">light</string>
+    <string name="tide_git_force_delete">Force delete (unsafe)</string>
+    <string name="tide_git_normal_delete">Normal delete</string>
+    <string name="tide_git_force_delete_detail">Force deletion removes the branch even if it isn\'t merged.</string>
+    <string name="tide_git_normal_delete_detail">Only deletes the branch if it\'s fully merged.</string>
+    <string name="tide_git_strategy_ff">Fast-forward only</string>
+    <string name="tide_git_strategy_recursive">Always merge commit</string>
+    <string name="tide_git_strategy_prefer_ff">Fast-forward if possible</string>
+</resources>

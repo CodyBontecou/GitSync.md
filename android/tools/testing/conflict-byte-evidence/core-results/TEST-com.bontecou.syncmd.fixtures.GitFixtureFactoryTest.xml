@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:33" hostname="MacBook-Pro.local" time="0.982">
+  <properties/>
+  <testcase name="createConflictedRepo has merge marker files" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.079"/>
+  <testcase name="multiple repos can be created without collision" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.231"/>
+  <testcase name="createCleanRepo repos are actually clean" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.078"/>
+  <testcase name="createDivergedRepo exists and has git directory" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.129"/>
+  <testcase name="createConflictedRepo exists and has git directory" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.091"/>
+  <testcase name="cleanup removes all created repos" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.162"/>
+  <testcase name="createCleanRepo returns valid repo path" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.072"/>
+  <testcase name="createDirtyRepo has uncommitted changes" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.069"/>
+  <testcase name="createDirtyRepo includes a test file" classname="com.bontecou.syncmd.fixtures.GitFixtureFactoryTest" time="0.071"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

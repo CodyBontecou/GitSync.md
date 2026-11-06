@@ -1,0 +1,443 @@
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt
+@@ -319,8 +319,8 @@
+         try {
+             withTimeout(10_000) { while (settings.allRepositories.value.isEmpty()) delay(10) }
+             instrumentation.runOnMainSync { settings.prepareMove(root.path, RepositoryLocations.APP) }
+-            withTimeout(10_000) { while (settings.moveReview.value == null && settings.errorMessage.value == null) delay(10) }
+-            assertNull(settings.errorMessage.value); val move = settings.moveReview.value!!.plan
++            withTimeout(10_000) { while (settings.moveReview.value == null && settings.moveReviewError.value == null && settings.errorMessage.value == null) delay(10) }
++            assertNull(settings.errorMessage.value); assertNull(settings.moveReviewError.value); val move = settings.moveReview.value!!.plan
+             instrumentation.runOnMainSync { settings.moveReviewed(settings.moveReview.value!!) }
+             try { withTimeout(15_000) { while (settings.destructiveBusy.value) delay(10) } }
+             catch (timeout: TimeoutCancellationException) {
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveColdStartTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveColdStartTest.kt
+@@ -74,7 +74,7 @@
+             await { model.selectedRepository.value == named.path }
+             val connection = ObsidianConnections(context, auth, credentials).prepare(named.path)
+             instrumentation.runOnMainSync { model.prepareMove(named.path, RepositoryLocations.APP) }
+-            await { model.moveReview.value != null || model.errorMessage.value != null }; assertNull(model.errorMessage.value)
++            await { model.moveReview.value != null || model.moveReviewError.value != null || model.errorMessage.value != null }; assertNull(model.errorMessage.value); assertNull(model.moveReviewError.value)
+             val review = model.moveReview.value!!
+             assertTrue(review.plan.copyRequired)
+             val moves = AndroidRepositoryServices.moves(context)
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt
+@@ -143,8 +143,8 @@
+     }
+     private fun review(model: SettingsViewModel, source: File): RepositoryMoveReview {
+         instrumentation.runOnMainSync { model.prepareMove(source.path, RepositoryLocations.APP) }
+-        compose.waitUntil(10_000) { model.moveReview.value != null || model.errorMessage.value != null }
+-        assertNull(model.errorMessage.value)
++        compose.waitUntil(10_000) { model.moveReview.value != null || model.moveReviewError.value != null || model.errorMessage.value != null }
++        assertNull(model.errorMessage.value); assertNull(model.moveReviewError.value)
+         return model.moveReview.value!!.also { externalPaths += File(it.plan.destination); externalPaths += it.plan.stagingOwner }
+     }
+     private fun bindAccount(source: File): GitHubAuthManager {
+@@ -512,8 +512,8 @@
+         var returned = false
+         show { MoveRepositoryScreen(source.path, settings = model, onBack = { returned = true }) }
+         compose.onNodeWithTag("move-review").performScrollTo().performClick()
+-        compose.waitUntil(10_000) { model.moveReview.value != null || model.errorMessage.value != null }
+-        assertNull(model.errorMessage.value)
++        compose.waitUntil(10_000) { model.moveReview.value != null || model.moveReviewError.value != null || model.errorMessage.value != null }
++        assertNull(model.errorMessage.value); assertNull(model.moveReviewError.value)
+         val reviewed = model.moveReview.value!!; externalPaths += File(reviewed.plan.destination); externalPaths += reviewed.plan.stagingOwner
+         capture("move-review-light")
+         compose.runOnIdle { dark.value = true; large.value = true }
+@@ -533,8 +533,8 @@
+         val destination = File(locations.resolve(RepositoryLocations.APP).path, source.name).also { externalPaths += it; it.mkdirs() }
+         File(destination, "someone-elses.md").writeText("Retain me")
+         instrumentation.runOnMainSync { model.prepareMove(source.path, RepositoryLocations.APP) }
+-        compose.waitUntil(10_000) { model.errorMessage.value != null }
+-        assertTrue(model.errorMessage.value.orEmpty().contains("already exists"))
++        compose.waitUntil(10_000) { model.moveReviewError.value != null }
++        assertTrue(model.moveReviewError.value.orEmpty().contains("already exists"))
+         assertEquals("Retain me", File(destination, "someone-elses.md").readText())
+         assertTrue(source.exists()); assertEquals(source.path, model.allRepositories.value.single().path)
+     }
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutDeviceTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutDeviceTest.kt
+@@ -211,8 +211,8 @@
+         try {
+             withTimeout(10_000) { while (settings.allRepositories.value.isEmpty()) delay(10) }
+             instrumentation.runOnMainSync { settings.prepareMove(root.path, RepositoryLocations.APP) }
+-            withTimeout(10_000) { while (settings.moveReview.value == null && settings.errorMessage.value == null) delay(10) }
+-            assertNull(settings.errorMessage.value); val move = settings.moveReview.value!!.plan
++            withTimeout(10_000) { while (settings.moveReview.value == null && settings.moveReviewError.value == null && settings.errorMessage.value == null) delay(10) }
++            assertNull(settings.errorMessage.value); assertNull(settings.moveReviewError.value); val move = settings.moveReview.value!!.plan
+             val destination = move.destination
+             movedFixtures += File(destination)
+             movedFixtures += move.recoveryOwner
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt
+@@ -10,6 +10,7 @@
+ import androidx.compose.runtime.saveable.rememberSaveable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.platform.testTag
++import androidx.compose.ui.platform.LocalLifecycleOwner
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextDirection
+@@ -44,13 +45,21 @@
+     val journals by settings.moveJournals.collectAsState()
+     val busy by settings.isLoading.collectAsState()
+     val destructive by settings.destructiveBusy.collectAsState()
+-    val error by settings.errorMessage.collectAsState()
++    val sharedError by settings.errorMessage.collectAsState()
++    val preparationError by settings.moveReviewError.collectAsState()
++    val error = preparationError ?: sharedError
+     var location by rememberSaveable(path, recoveryId) { mutableStateOf<String?>(null) }
+     var confirming by remember { mutableStateOf<com.bontecou.syncmd.storage.RepositoryMoveReview?>(null) }
++    val routeId = rememberSaveable(path, recoveryId) { java.util.UUID.randomUUID().toString() }
+     val screenOwner = remember(settings, path, recoveryId) { Any() }
++    val lifecycleOwner = LocalLifecycleOwner.current
++    val latestOnBack by rememberUpdatedState(onBack)
+     DisposableEffect(settings, screenOwner) {
+-        settings.openMoveReview(screenOwner)
++        settings.openMoveReview(screenOwner, routeId)
+         onDispose { settings.closeMoveReview(screenOwner) }
++    }
++    LaunchedEffect(settings, screenOwner, lifecycleOwner) {
++        settings.deliverMoveCompletion(screenOwner, lifecycleOwner.lifecycle) { latestOnBack() }
+     }
+     val current = review?.takeIf { if (recoveryId == null) it.plan.source == path else it.metadata.restoringRecoveryId == recoveryId }
+     val pendingSource = if (recoveryId == null) path else journals.firstOrNull { it.plan.id == recoveryId }?.plan?.recovery?.path ?: current?.plan?.source
+@@ -108,7 +117,7 @@
+     if (confirmation != null) VaultOpsSheet(onDismissRequest = { confirming = null },
+         title = if (recoveryId == null) "Move this working copy?" else "Restore this recovery copy?",
+         icon = { TideModalIcon(glyph = "→", tint = c.ink) },
+-        confirmButton = { VaultOpsButton(if (recoveryId == null) "Move" else "Restore", { confirming = null; settings.moveReviewed(confirmation, screenOwner, onBack) }, Modifier.testTag("move-final-confirm")) },
++        confirmButton = { VaultOpsButton(if (recoveryId == null) "Move" else "Restore", { confirming = null; settings.moveReviewed(confirmation, screenOwner) }, Modifier.testTag("move-final-confirm")) },
+         dismissButton = { VaultOpsTextButton(stringResource(R.string.publication_cancel), { confirming = null }, Modifier.fillMaxWidth()) }) {
+         Text(stringResource(R.string.ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527, (confirmation.plan.destination).toString(),
+             (if (confirmation.plan.copyRequired) "The original will be retained as a recovery copy. " else "").toString()))
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewState.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewState.kt
+@@ -1,19 +1,36 @@
+ package com.bontecou.syncmd.ui.viewmodels
+ 
+ import com.bontecou.syncmd.storage.RepositoryMoveReview
++import androidx.lifecycle.Lifecycle
++import androidx.lifecycle.repeatOnLifecycle
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
++import kotlinx.coroutines.withContext
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
++import kotlinx.coroutines.flow.collect
+ 
+ /** Atomic screen/request ownership. Accepted filesystem work survives its screen; navigation does not. */
+ internal class MoveReviewState {
+     private val lock = Any()
+     private var screen: Any? = null
++    private var route: String? = null
++    private var executingRoute: String? = null
+     private var request: Any = Any()
+     private var executing: RepositoryMoveReview? = null
++    private var completed: RepositoryMoveReview? = null
+     private val mutableReview = MutableStateFlow<RepositoryMoveReview?>(null)
+     val review = mutableReview.asStateFlow()
++    private val mutableError = MutableStateFlow<String?>(null)
++    val error = mutableError.asStateFlow()
++    data class Completion(val routeId: String, val review: RepositoryMoveReview)
++    private val mutableCompletion = MutableStateFlow<Completion?>(null)
++    val completion = mutableCompletion.asStateFlow()
+ 
+-    fun open(owner: Any) = synchronized(lock) {
++    fun open(owner: Any, routeId: String = java.util.UUID.randomUUID().toString()) = synchronized(lock) {
++        if (route != routeId) mutableCompletion.value = null
++        route = routeId
+         screen = owner
+         invalidatePending()
+     }
+@@ -26,30 +43,65 @@
+     fun begin(owner: Any? = null): Any? = synchronized(lock) {
+         if (executing != null || (owner != null && screen !== owner)) return@synchronized null
+         invalidatePending()
++        mutableCompletion.value = null
+         request
+     }
+     fun isRequestCurrent(token: Any): Boolean = synchronized(lock) { request === token && executing == null }
+     fun publish(token: Any, value: RepositoryMoveReview): Boolean = synchronized(lock) {
+         if (request !== token || executing != null) return@synchronized false
+         mutableReview.value = value
++        mutableError.value = null
++        true
++    }
++    fun fail(token: Any, message: String): Boolean = synchronized(lock) {
++        if (request !== token || executing != null) return@synchronized false
++        mutableError.value = message
+         true
+     }
+     fun clear(owner: Any? = null) = synchronized(lock) {
+-        if (owner == null || screen === owner) invalidatePending()
++        if (owner == null || screen === owner) {
++            invalidatePending()
++            mutableCompletion.value = null
++        }
+     }
+     fun claim(value: RepositoryMoveReview, owner: Any? = null): Boolean = synchronized(lock) {
+         if (executing != null || mutableReview.value !== value || (owner != null && screen !== owner)) return@synchronized false
+         executing = value
++        completed = null
++        executingRoute = if (owner == null) null else route
++        mutableCompletion.value = null
+         request = Any()
+         true
+     }
+     fun finish(value: RepositoryMoveReview) = synchronized(lock) {
+-        if (executing === value) executing = null
++        if (executing === value) { executing = null; executingRoute = null }
+         if (mutableReview.value === value) mutableReview.value = null
++    }
++    fun complete(value: RepositoryMoveReview): Boolean = synchronized(lock) {
++        val target = executingRoute
++        if (executing !== value || completed === value || target == null || route != target) return@synchronized false
++        completed = value
++        mutableCompletion.value = Completion(target, value)
++        true
++    }
++    /** Called synchronously by a resumed screen; consuming the exact receipt prevents replay. */
++    fun consume(owner: Any, value: Completion): Boolean = synchronized(lock) {
++        if (screen !== owner || route != value.routeId || mutableCompletion.value !== value) return@synchronized false
++        mutableCompletion.value = null
++        true
++    }
++    suspend fun deliver(owner: Any, lifecycle: Lifecycle, onReady: () -> Unit): Unit = withContext(Dispatchers.Main.immediate) {
++        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
++            completion.collect { value ->
++                currentCoroutineContext().ensureActive()
++                if (value != null && lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED) && consume(owner, value)) onReady()
++            }
++        }
+     }
+     fun ownsScreen(owner: Any): Boolean = synchronized(lock) { screen === owner }
+     private fun invalidatePending() {
+         request = Any()
++        mutableError.value = null
+         if (executing == null) mutableReview.value = null
+     }
+ }
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
+@@ -59,6 +59,8 @@
+     private val locations = com.bontecou.syncmd.storage.RepositoryLocations(context)
+     private val moveReviews = MoveReviewState()
+     val moveReview = moveReviews.review
++    val moveReviewError = moveReviews.error
++    internal val moveCompletion = moveReviews.completion
+     private val _moveJournals = MutableStateFlow<List<RepositoryMoveJournal>>(emptyList())
+     val moveJournals = _moveJournals.asStateFlow()
+     private val _selectedRepository = MutableStateFlow("")
+@@ -228,7 +230,7 @@
+         persist(repos, history, selected, pending)
+     }
+ 
+-    private fun mutate(action: suspend () -> Unit, onSuccess: () -> Unit = {}, destructive: Boolean = false, onFinally: () -> Unit = {}) {
++    private fun mutate(action: suspend () -> Unit, onSuccess: () -> Unit = {}, destructive: Boolean = false, onFinally: () -> Unit = {}, onError: ((Exception) -> Unit)? = null) {
+         if (destructive && _destructiveBusy.value) return
+         if (destructive) _destructiveBusy.value = true
+         viewModelScope.launch {
+@@ -237,13 +239,14 @@
+                 withContext(Dispatchers.IO) {
+                     persistence.withLock {
+                         _isLoading.value = true
+-                        _errorMessage.value = null
++                        if (onError == null) _errorMessage.value = null
+                         try { readState(); action() } finally { _isLoading.value = false }
+                     }
+                 }
+                 onSuccess()
+             } catch (e: CancellationException) { throw e
+-            } catch (e: Exception) { _errorMessage.value = e.message ?: "Repository operation failed"
++            } catch (e: Exception) {
++                if (onError != null) onError(e) else _errorMessage.value = e.message ?: "Repository operation failed"
+             } finally {
+                 if (destructive) _destructiveBusy.value = false
+                 onFinally()
+@@ -483,15 +486,17 @@
+     fun prepareMove(path: String, selection: String?, screenOwner: Any? = null) {
+         if (_destructiveBusy.value) return
+         val owner = moveReviews.begin(screenOwner) ?: return
++        _errorMessage.value = null
+         mutate({
+             if (!moveReviews.isRequestCurrent(owner)) return@mutate
+             val original = _allRepositories.value.firstOrNull { it.path == canonical(path) } ?: error("Repository is no longer added")
+             prepareMoveNow(original, selection, null, owner)
+-        })
++        }, onError = { moveReviews.fail(owner, it.message ?: "Repository operation failed") })
+     }
+     fun prepareRecoveryRestore(id: String, selection: String?, screenOwner: Any? = null) {
+         if (_destructiveBusy.value) return
+         val owner = moveReviews.begin(screenOwner) ?: return
++        _errorMessage.value = null
+         mutate({
+             if (!moveReviews.isRequestCurrent(owner)) return@mutate
+             val journal = moves.read(id)
+@@ -501,7 +506,7 @@
+             val restored = previous.copy(name = "${previous.name} (recovered)", alias = previous.alias.takeIf { it.isNotBlank() }?.let { "$it (recovered)" }.orEmpty(),
+                 path = journal.plan.recovery.path, dateAdded = System.currentTimeMillis(), managedStorage = false)
+             prepareMoveNow(restored, selection, id, owner, File(journal.plan.source).name)
+-        })
++        }, onError = { moveReviews.fail(owner, it.message ?: "Repository operation failed") })
+     }
+     private suspend fun prepareMoveNow(original: SavedRepository, selection: String?, restoringId: String?, owner: Any, folderName: String = File(original.path).name) {
+         require(moves.journals().none { it.phase !in listOf(RepositoryMovePhase.COMMITTED, RepositoryMovePhase.DISCARDING_RECOVERY) &&
+@@ -516,7 +521,9 @@
+             if (plan.copyRequired) credentials.recordVersion(plan.recovery.path) else null, restoringId)
+         moveReviews.publish(owner, com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata))
+     }
+-    fun openMoveReview(owner: Any) { moveReviews.open(owner) }
++    fun openMoveReview(owner: Any, routeId: String) { moveReviews.open(owner, routeId) }
++    internal suspend fun deliverMoveCompletion(owner: Any, lifecycle: androidx.lifecycle.Lifecycle, onReady: () -> Unit) =
++        moveReviews.deliver(owner, lifecycle, onReady)
+     fun closeMoveReview(owner: Any) { moveReviews.close(owner) }
+     fun clearMoveReview(owner: Any? = null) { moveReviews.clear(owner) }
+     fun moveReviewed(review: com.bontecou.syncmd.storage.RepositoryMoveReview, screenOwner: Any? = null, onReady: () -> Unit = {}) {
+@@ -534,7 +541,9 @@
+             } finally {
+                 reloadMoveJournals()
+             }
+-        }, { if (screenOwner == null || moveReviews.ownsScreen(screenOwner)) onReady() }, destructive = true,
++        }, {
++            if (screenOwner == null) onReady() else moveReviews.complete(review)
++        }, destructive = true,
+             onFinally = { moveReviews.finish(review) })
+     }
+     fun resumeMove(id: String) = mutate({
+--- before/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveCompletionDeliveryTest.kt
++++ after/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveCompletionDeliveryTest.kt
+@@ -0,0 +1,130 @@
++package com.bontecou.syncmd.ui.viewmodels
++
++import androidx.lifecycle.Lifecycle
++import androidx.lifecycle.LifecycleOwner
++import androidx.lifecycle.LifecycleRegistry
++import com.bontecou.syncmd.services.repositories.RepositoryMove
++import com.bontecou.syncmd.storage.RepositoryMoveMetadata
++import com.bontecou.syncmd.storage.RepositoryMoveReview
++import kotlinx.coroutines.*
++import kotlinx.coroutines.test.UnconfinedTestDispatcher
++import kotlinx.coroutines.test.resetMain
++import kotlinx.coroutines.test.setMain
++import org.eclipse.jgit.api.Git
++import org.junit.*
++import org.junit.Assert.*
++import org.junit.rules.TemporaryFolder
++import java.io.File
++
++/** Actual AndroidX LifecycleRegistry/repeatOnLifecycle, production receipt/error owner and real Git preparation. */
++@OptIn(ExperimentalCoroutinesApi::class)
++class MoveCompletionDeliveryTest {
++    @get:Rule val temporary = TemporaryFolder()
++    @Before fun setup() { Dispatchers.setMain(UnconfinedTestDispatcher()) }
++    @After fun cleanup() { Dispatchers.resetMain() }
++    private class ActivityOwner : LifecycleOwner {
++        val registry = LifecycleRegistry.createUnsafe(this)
++        override val lifecycle: Lifecycle get() = registry
++        init { registry.currentState = Lifecycle.State.CREATED }
++    }
++    private suspend fun reviewed(): RepositoryMoveReview {
++        val source = temporary.newFolder().canonicalFile
++        Git.init().setDirectory(source).setInitialBranch("main").call().use { git ->
++            File(source, "README.md").writeText("Generated completion fixture\n")
++            git.add().addFilepattern(".").call()
++            git.commit().setMessage("Fixture").setAuthor("Fixture", "fixture@example.invalid").call()
++        }
++        return RepositoryMoveReview(RepositoryMove(temporary.newFolder()).prepare(source.path, temporary.newFolder().path, temporary.newFolder().path),
++            RepositoryMoveMetadata(SavedRepository("Fixture", source.path, dateAdded = 123L), null, "main", null, null, null))
++    }
++    private suspend fun <T> listening(state: MoveReviewState, owner: Any, activity: ActivityOwner, onReady: () -> Unit, block: suspend () -> T): T = coroutineScope {
++        val job = launch(Dispatchers.Main.immediate) { state.deliver(owner, activity.lifecycle, onReady) }
++        try { block() } finally { job.cancelAndJoin() }
++    }
++    private suspend fun accepted(state: MoveReviewState, owner: Any): RepositoryMoveReview {
++        val value = reviewed(); assertTrue(state.publish(state.begin(owner)!!, value)); assertTrue(state.claim(value, owner)); return value
++    }
++    @Test fun completionWaitsForResumeAndDoesNotReplayOnLaterResume(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); val activity = ActivityOwner(); var calls = 0
++        state.open(owner, "route"); val value = accepted(state, owner)
++        activity.registry.currentState = Lifecycle.State.STARTED
++        listening(state, owner, activity, { calls++ }) {
++            assertTrue(state.complete(value)); state.finish(value); yield(); assertEquals(0, calls)
++            activity.registry.currentState = Lifecycle.State.RESUMED; yield(); assertEquals(1, calls)
++            activity.registry.currentState = Lifecycle.State.STARTED
++            activity.registry.currentState = Lifecycle.State.RESUMED; yield(); assertEquals(1, calls)
++        }
++    }
++    @Test fun completionDuringBackgroundWaitsForForeground(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); val activity = ActivityOwner(); var calls = 0
++        state.open(owner, "route"); val value = accepted(state, owner)
++        activity.registry.currentState = Lifecycle.State.RESUMED
++        listening(state, owner, activity, { calls++ }) {
++            activity.registry.currentState = Lifecycle.State.CREATED
++            state.complete(value); state.finish(value); yield(); assertEquals(0, calls)
++            activity.registry.currentState = Lifecycle.State.RESUMED; yield(); assertEquals(1, calls)
++        }
++    }
++    @Test fun replacementOwnerForSavedRouteCanReceivePendingCompletion(): Unit = runBlocking {
++        val state = MoveReviewState(); val old = Any(); val replacement = Any(); val activity = ActivityOwner(); var calls = 0
++        state.open(old, "saved-route"); val value = accepted(state, old); state.close(old)
++        assertTrue(state.complete(value)); state.finish(value)
++        state.open(replacement, "saved-route"); activity.registry.currentState = Lifecycle.State.RESUMED
++        listening(state, replacement, activity, { calls++ }) { yield(); assertEquals(1, calls) }
++    }
++    @Test fun completionBetweenRecreatedOwnersRemainsBoundToSavedRoute(): Unit = runBlocking {
++        val state = MoveReviewState(); val old = Any(); val replacement = Any()
++        state.open(old, "saved-route"); val value = accepted(state, old); state.close(old); state.open(replacement, "saved-route")
++        assertTrue(state.complete(value)); state.finish(value)
++        val receipt = state.completion.value!!; assertFalse(state.consume(old, receipt)); assertTrue(state.consume(replacement, receipt))
++    }
++    @Test fun aDifferentRouteCannotReceiveAnOldExecutionCompletion(): Unit = runBlocking {
++        val state = MoveReviewState(); val old = Any(); val replacement = Any()
++        state.open(old, "old-route"); val value = accepted(state, old); state.close(old); state.open(replacement, "new-route")
++        assertFalse(state.complete(value)); state.finish(value); assertNull(state.completion.value)
++    }
++    @Test fun openingDifferentRouteDropsAlreadyPendingCompletion(): Unit = runBlocking {
++        val state = MoveReviewState(); val old = Any(); val replacement = Any()
++        state.open(old, "old-route"); val value = accepted(state, old); state.complete(value); state.finish(value)
++        val receipt = state.completion.value!!; state.close(old); state.open(replacement, "new-route")
++        assertFalse(state.consume(replacement, receipt)); assertNull(state.completion.value)
++    }
++    @Test fun copiedReceiptAndRepeatedCompletionCannotReplayNavigation(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); state.open(owner, "route"); val value = accepted(state, owner)
++        assertTrue(state.complete(value)); val receipt = state.completion.value!!
++        assertFalse(state.consume(owner, receipt.copy())); assertTrue(state.consume(owner, receipt))
++        assertFalse(state.complete(value)); assertFalse(state.consume(owner, receipt)); state.finish(value)
++    }
++    @Test fun destroyedLifecycleDoesNotConsumeCompletion(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); val activity = ActivityOwner(); var calls = 0
++        state.open(owner, "route"); val value = accepted(state, owner)
++        listening(state, owner, activity, { calls++ }) {
++            activity.registry.currentState = Lifecycle.State.DESTROYED; state.complete(value); state.finish(value)
++            yield(); assertEquals(0, calls); assertNotNull(state.completion.value)
++        }
++    }
++    @Test fun cancelledCollectorLeavesReceiptForNextResumedCollector(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); val activity = ActivityOwner(); var calls = 0
++        state.open(owner, "route"); val value = accepted(state, owner)
++        listening(state, owner, activity, { calls++ }) { /* Cancel before completion. */ }
++        state.complete(value); state.finish(value); assertEquals(0, calls)
++        activity.registry.currentState = Lifecycle.State.RESUMED
++        listening(state, owner, activity, { calls++ }) { yield(); assertEquals(1, calls) }
++    }
++    @Test fun staleFailureCannotOverwriteNewRequestError(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); state.open(owner, "route")
++        val old = state.begin(owner)!!; val latest = state.begin(owner)!!
++        assertTrue(state.fail(latest, "Current failure")); assertFalse(state.fail(old, "Old failure"))
++        assertEquals("Current failure", state.error.value)
++    }
++    @Test fun departedScreenFailureCannotAppearOnReplacement(): Unit = runBlocking {
++        val state = MoveReviewState(); val old = Any(); val replacement = Any(); state.open(old, "route")
++        val request = state.begin(old)!!; state.close(old); state.open(replacement, "route")
++        assertFalse(state.fail(request, "Old failure")); assertNull(state.error.value)
++    }
++    @Test fun successfulReviewClearsItsRequestErrorAndClaimRevokesLateFailure(): Unit = runBlocking {
++        val state = MoveReviewState(); val owner = Any(); state.open(owner, "route"); val request = state.begin(owner)!!
++        assertTrue(state.fail(request, "Failure")); val value = reviewed(); assertTrue(state.publish(request, value)); assertNull(state.error.value)
++        assertTrue(state.claim(value, owner)); assertFalse(state.fail(request, "Late failure")); assertNull(state.error.value)
++    }
++}

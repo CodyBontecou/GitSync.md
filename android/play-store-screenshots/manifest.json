@@ -1,0 +1,57 @@
+{
+  "styleReference": "aso-tool/.asc/aso/screenshots-editorial-v1 / en-US",
+  "locale": "en-US",
+  "source": "Fresh real Android emulator captures in light mode; rectangular crops and uniform scaling only; original UI unchanged.",
+  "sources": [
+    {
+      "name": "vault.png",
+      "sha256": "9c8a9c54333d42f4776d566771d201352c28699452b25b849ae0a5f252b2404d"
+    },
+    {
+      "name": "git.png",
+      "sha256": "fe50f573e4de57719c8b2f5ffdc97fee06d68395353fb0e7a808bbc3c2fd38bd"
+    },
+    {
+      "name": "diff.png",
+      "sha256": "716b753650de645e996520651ded200fad4f1b3ed4be63d7155de4e920ec52b8"
+    }
+  ],
+  "files": [
+    {
+      "name": "phone-screenshots/01-clone-real-repos-1080x1920.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 139108
+    },
+    {
+      "name": "phone-screenshots/02-repo-health-1080x1920.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 122797
+    },
+    {
+      "name": "phone-screenshots/03-git-control-1080x1920.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 129342
+    },
+    {
+      "name": "phone-screenshots/04-line-by-line-diff-1080x1920.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 126280
+    },
+    {
+      "name": "phone-screenshots/05-ready-to-push-1080x1920.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 133921
+    },
+    {
+      "name": "feature-graphic.png",
+      "width": 1024,
+      "height": 500,
+      "bytes": 62273
+    }
+  ]
+}

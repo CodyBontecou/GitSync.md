@@ -1,0 +1,180 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Prerequisite: GitSync Git screen on registered generated discard-review-check-20261102 fixture; prepared ten changed paths, one staged note and retained ignored file."
+    },
+    {
+      "type": "text",
+      "text": "Running e2e test \"pixel-discard-dialog-ids-20261102\" on 2C061FDH200CJN (35 steps)"
+    },
+    {
+      "type": "text",
+      "text": "[1] ✓ run discard-open-all-review.yaml (0.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[2] ✓   await visible \"GIT\" role=StaticText (0.9s)"
+    },
+    {
+      "type": "text",
+      "text": "[3] ✓   idle (1.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[4] ✓   scroll-to \"↩  REVERT ALL CHANGES\" (1.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[5] ✓   tap \"↩  REVERT ALL CHANGES\" (1.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[6] ✓   stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[7] ✓   await visible id=discard-review (1.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[8] ✓   idle (1.7s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[9] ✓ await visible \"10 files\" id=discard-review-count (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[10] ✓ await visible id=discard-review-path:long-reviewed-folder-name/another-reviewed-folder-name/notes_日本語.md (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[11] ✓ tap id=discard-review-close (0.6s)"
+    },
+    {
+      "type": "text",
+      "text": "[12] ✓ idle (2.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[13] ✓ stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[14] ✓ await visible \"GIT\" role=StaticText (1.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[15] ✓ idle (2.0s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[16] ✓ run discard-note-selector-probe.yaml (0.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[17] ✓   assert visible \"DIFF\" next (/^note\\.md$/ role=StaticText after (\"long-reviewed-folder-name/another-reviewed-folder-name/notes_日本語.md\" role=StaticText)) (0.4s)"
+    },
+    {
+      "type": "text",
+      "text": "[18] ✓   tap \"DIFF\" next (/^note\\.md$/ role=StaticText after (\"long-reviewed-folder-name/another-reviewed-folder-name/notes_日本語.md\" role=StaticText)) (0.9s)"
+    },
+    {
+      "type": "text",
+      "text": "[19] ✓   idle (2.6s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[20] ✓   stop-all-simulator-servers (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[21] ✓   await visible \"NOTE.MD · UNSTAGED\" role=StaticText (1.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[22] ✓   idle (1.7s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[23] ✓ tap \"↩  REVERT\" (0.7s)"
+    },
+    {
+      "type": "text",
+      "text": "[24] ✓ stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[25] ✓ await visible \"1 file\" id=discard-review-count (1.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[26] ✓ await visible id=discard-review-confirm (0.7s)"
+    },
+    {
+      "type": "text",
+      "text": "[27] ✓ run discard-confirm-by-id.yaml (0.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[28] ✓   assert visible id=discard-review-confirm (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[29] ✓   tap id=discard-review-confirm (1.3s)"
+    },
+    {
+      "type": "text",
+      "text": "[30] ✓   idle (1.0s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[31] ✓   stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[32] ✗   await visible \"GIT\" role=StaticText (8.0s) — no element matched selector text=\"GIT\" role=\"StaticText\""
+    },
+    {
+      "type": "text",
+      "text": "    screen: /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/simserver-tHVGmQ/media/305419000-1793643366311.png"
+    },
+    {
+      "type": "text",
+      "text": "[33] ·   idle"
+    },
+    {
+      "type": "text",
+      "text": "[34] · run discard-open-all-review.yaml"
+    },
+    {
+      "type": "text",
+      "text": "[35] · run discard-confirm-by-id.yaml"
+    },
+    {
+      "type": "text",
+      "text": "FAIL — 31 passed, 1 failed, 0 errored, 3 skipped (34.7s)"
+    }
+  ]
+}

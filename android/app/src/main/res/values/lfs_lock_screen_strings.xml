@@ -1,0 +1,21 @@
+<resources>
+    <string name="lfs_locks_title">Server locks</string>
+    <string name="lfs_locks_intro">Check server ownership before changing locks. Locking changes server metadata; local files, staged changes and commits stay in place.</string>
+    <string name="lfs_locks_check">Check lock ownership</string>
+    <string name="lfs_locks_list">List locks with read access</string>
+    <string name="lfs_locks_remote">Remote: %1$s</string>
+    <string name="lfs_locks_server">LFS server: %1$s</string>
+    <string name="lfs_locks_verified">Ownership verified with the current connection</string>
+    <string name="lfs_locks_read_only">Read-only list · ownership has not been verified</string>
+    <string name="lfs_locks_unsupported">This server does not support Git LFS locks.</string>
+    <string name="lfs_locks_empty">No server locks on this branch.</string>
+    <string name="lfs_lock_unverified">Ownership unverified</string>
+    <string name="lfs_lock_ours">Owned by your current connection</string>
+    <string name="lfs_lock_theirs">Owned by another connection</string>
+    <string name="lfs_lock_release_review">Release lock…</string>
+    <string name="lfs_lock_force_review">Force release…</string>
+    <string name="lfs_lock_create_heading">Create a lock</string>
+    <string name="lfs_lock_candidates_empty">No unlocked, indexed files marked lockable are available. Add lockable rules to .gitattributes and refresh to review them.</string>
+    <string name="lfs_lock_create_review">Lock %1$s…</string>
+    <string name="lfs_locks_refreshed">Server locks refreshed.</string>
+</resources>

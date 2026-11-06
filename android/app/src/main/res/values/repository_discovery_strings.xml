@@ -1,0 +1,8 @@
+<resources>
+    <string name="repository_discovery_branch_unknown">Detached or unborn HEAD</string>
+    <string name="repository_discovery_dirty">Local changes</string>
+    <string name="repository_discovery_clean">Clean</string>
+    <string name="repository_history_tracking_removed">Git tracking removed · working files kept</string>
+    <string name="repository_history_files_deleted">Local files deleted</string>
+    <string name="repository_history_files_kept">Local files kept</string>
+</resources>

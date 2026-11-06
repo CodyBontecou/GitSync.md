@@ -1,0 +1,44 @@
+{
+  "keys": [
+    "ui_alias_optional_0d402abb",
+    "ui_e_g_myproject_e18eb00a",
+    "ui_e_g_prod_7d4c667a",
+    "ui_enter_the_full_path_to_your_git_repository_f926e25c",
+    "ui_no_repositories_saved_add_one_in_settings_16062236",
+    "ui_no_repository_555da78f",
+    "ui_go_back_and_select_a_repository_c3eedd39",
+    "ui_repository_operation_failed_f1152917"
+  ],
+  "verified_values": 200,
+  "formatted_values": 0,
+  "unformatted_values": 200,
+  "literal_examples_preserved": true,
+  "arabic_hebrew_examples_isolated": true,
+  "production_references": {
+    "ui_alias_optional_0d402abb": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryDialogs.kt:95"
+    ],
+    "ui_e_g_myproject_e18eb00a": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryDialogs.kt:74"
+    ],
+    "ui_e_g_prod_7d4c667a": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryDialogs.kt:96"
+    ],
+    "ui_enter_the_full_path_to_your_git_repository_f926e25c": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryDialogs.kt:103"
+    ],
+    "ui_no_repositories_saved_add_one_in_settings_16062236": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryDialogs.kt:158"
+    ],
+    "ui_no_repository_555da78f": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:586"
+    ],
+    "ui_go_back_and_select_a_repository_c3eedd39": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:587"
+    ],
+    "ui_repository_operation_failed_f1152917": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/AppShell.kt:599",
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryManagementScreen.kt:293"
+    ]
+  }
+}

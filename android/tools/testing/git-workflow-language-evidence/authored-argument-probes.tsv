@@ -1,0 +1,18 @@
+ar	ui_1_s_characters_bde60398	الأحرف: ⁨%1$s⁩
+ar	ui_1_s_lines_2_s_bytes_c30a0cd1	الأسطر: ⁨%1$s⁩، البايتات: ⁨%2$s⁩
+ar	ui_file_1_s_9fdb0f6d	الملف: ⁨%1$s⁩
+ar	ui_resolving_1_s_5e8ada92	جارٍ حلّ التعارض: ⁨%1$s⁩
+ar	ui_ours_1_s_bytes_e7da423a	نسختنا: ⁨%1$s⁩ بايت
+ar	ui_theirs_1_s_bytes_70028ef3	نسختهم: ⁨%1$s⁩ بايت
+ar	ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3	التعارضات التي لم تُحلّ بعد: ⁨%1$s⁩.
+ar	ui_using_strategy_1_s_6c76b5ef	الاستراتيجية المستخدمة: ⁨%1$s⁩
+ar	ui_parents_1_s_914efbd0	الآباء (⁨%1$s⁩)
+he	ui_1_s_characters_bde60398	תווים: ⁨%1$s⁩
+he	ui_1_s_lines_2_s_bytes_c30a0cd1	שורות: ⁨%1$s⁩, בתים: ⁨%2$s⁩
+he	ui_file_1_s_9fdb0f6d	קובץ: ⁨%1$s⁩
+he	ui_resolving_1_s_5e8ada92	פתרון: ⁨%1$s⁩
+he	ui_ours_1_s_bytes_e7da423a	הגרסה שלנו: ⁨%1$s⁩ בתים
+he	ui_theirs_1_s_bytes_70028ef3	הגרסה שלהם: ⁨%1$s⁩ בתים
+he	ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3	התנגשויות שטרם נפתרו: ⁨%1$s⁩.
+he	ui_using_strategy_1_s_6c76b5ef	אסטרטגיה בשימוש: ⁨%1$s⁩
+he	ui_parents_1_s_914efbd0	הורים (⁨%1$s⁩)

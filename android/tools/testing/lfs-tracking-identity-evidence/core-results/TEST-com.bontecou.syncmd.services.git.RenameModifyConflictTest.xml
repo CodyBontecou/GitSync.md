@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RenameModifyConflictTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:46" hostname="MacBook-Pro.local" time="0.637">
+  <properties/>
+  <testcase name="overlapping edits become one complete content conflict at the renamed path" classname="com.bontecou.syncmd.services.git.RenameModifyConflictTest" time="0.128"/>
+  <testcase name="independent edits follow a rename on either branch or the same renamed destination" classname="com.bontecou.syncmd.services.git.RenameModifyConflictTest" time="0.182"/>
+  <testcase name="reviewed remote rename edit publishes exactly the resulting merge commit" classname="com.bontecou.syncmd.services.git.RenameModifyConflictTest" time="0.1"/>
+  <testcase name="content edits and a changed executable mode survive the detected rename together" classname="com.bontecou.syncmd.services.git.RenameModifyConflictTest" time="0.061"/>
+  <testcase name="ignored incoming rename destinations are preserved before any checkout" classname="com.bontecou.syncmd.services.git.RenameModifyConflictTest" time="0.054"/>
+  <testcase name="an unchanged binary rename carries the other side bytes without text conversion" classname="com.bontecou.syncmd.services.git.RenameModifyConflictTest" time="0.112"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

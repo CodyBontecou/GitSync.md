@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RebaseRenameTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:56:03" hostname="MacBook-Pro.local" time="3.794">
+  <properties/>
+  <testcase name="continuing after an earlier conflict uses rename semantics for the next replayed commit" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.211"/>
+  <testcase name="abort split rename replay restores the original local name and retains an unrelated draft" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.17"/>
+  <testcase name="linked replay provenance is not followed to invent rename relationships" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.144"/>
+  <testcase name="replay rename versus deletion always pauses and preserves explicit keep or delete choices" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.676"/>
+  <testcase name="abort preserves an ignored original filename introduced during author resolution" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.163"/>
+  <testcase name="persisted single parent cherry picks use their parent to group split renames" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.19"/>
+  <testcase name="author resolution cannot redirect replay or introduce an ignored file overwrite" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.267"/>
+  <testcase name="renamed replay content conflicts retain complete stages and continue in a new service" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.335"/>
+  <testcase name="split replay renames form one logical conflict with upstream ours and replayed theirs" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.181"/>
+  <testcase name="already integrated upstream leaves an ignored replacement of a deleted ancestor alone" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.079"/>
+  <testcase name="a later picked commit uses its exact parent after an earlier commit was rewritten" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.2"/>
+  <testcase name="unverified replay metadata never guesses a split rename grouping" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.302"/>
+  <testcase name="the initial upstream checkout preserves an ignored rename destination" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.138"/>
+  <testcase name="continuation preserves a working edit introduced by author resolution" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.183"/>
+  <testcase name="independent replay edits follow either renamed side or equal destinations without publishing" classname="com.bontecou.syncmd.services.git.RebaseRenameTest" time="0.554"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

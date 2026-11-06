@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tide Vault screen (state hero, changes, latest commit). -->
+    <string name="tide_vault_more">More vault options</string>
+    <string name="tide_vault_git">Git</string>
+    <string name="tide_vault_reading">Reading this vault…</string>
+    <string name="tide_vault_syncing">Syncing…</string>
+    <string name="tide_vault_eyebrow_in_sync">In sync</string>
+    <string name="tide_vault_eyebrow_ready_to_commit">Ready to commit</string>
+    <string name="tide_vault_eyebrow_ready_to_push">Ready to push</string>
+    <string name="tide_vault_eyebrow_new_on_remote">New on remote</string>
+    <string name="tide_vault_eyebrow_both_moved">Both sides moved</string>
+    <string name="tide_vault_eyebrow_conflict">Conflict</string>
+    <string name="tide_vault_eyebrow_unreadable">Couldn\'t read</string>
+    <string name="tide_vault_eyebrow_empty">Empty repository</string>
+    <string name="tide_vault_headline_in_sync">In sync</string>
+    <string name="tide_vault_headline_ahead">%1$d to push</string>
+    <string name="tide_vault_headline_behind">%1$d new on remote</string>
+    <string name="tide_vault_headline_unreadable">Couldn\'t read this vault.</string>
+    <string name="tide_vault_moved_on">The remote moved on while you were writing.</string>
+    <string name="tide_vault_sub_in_sync">Nothing waiting on this phone</string>
+    <string name="tide_vault_sub_ahead">Committed, not pushed yet</string>
+    <string name="tide_vault_sub_behind">Pull to bring this phone up to date</string>
+    <string name="tide_vault_sub_empty">Add a note, then commit it from here.</string>
+    <plurals name="tide_vault_changes_on_phone">
+        <item quantity="one">change on this phone</item>
+        <item quantity="other">changes on this phone</item>
+    </plurals>
+    <plurals name="tide_vault_conflicts_to_resolve">
+        <item quantity="one">conflict to resolve</item>
+        <item quantity="other">conflicts to resolve</item>
+    </plurals>
+    <string name="tide_vault_conflict_detail">The Git operation paused. Resolve each conflicted file to continue.</string>
+    <string name="tide_vault_remote_not_checked">Remote not checked</string>
+    <string name="tide_vault_remote_current">Remote has no new commits</string>
+    <string name="tide_vault_remote_new">Remote has new commits</string>
+    <string name="tide_vault_yours">↑%1$d yours</string>
+    <string name="tide_vault_from_remote">↓%1$d from remote</string>
+    <string name="tide_vault_check_for_changes">Check for changes</string>
+    <string name="tide_vault_resolve">Resolve</string>
+    <string name="tide_vault_no_changes_title">No changes on this phone</string>
+    <string name="tide_vault_no_changes_body">Edits you make in Obsidian show up here.</string>
+    <string name="tide_vault_latest_commit">Latest commit</string>
+    <string name="tide_vault_files_section">Files</string>
+</resources>

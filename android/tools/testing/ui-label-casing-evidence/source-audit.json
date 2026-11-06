@@ -1,0 +1,21 @@
+{
+  "changed_inputs": [
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/components/BranchList.kt",
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt",
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RebaseQuantities.kt",
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/components/StashList.kt",
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt"
+  ],
+  "app_locale_uppercase_sites": [
+    "CommitDetailLabel",
+    "GitWorkStateHero",
+    "HeroEyebrow"
+  ],
+  "authored_resource_labels_preserved": [
+    "ui_current_e3cc57e1",
+    "ui_apply_2cbf6555",
+    "ui_pop_52e740ad"
+  ],
+  "source_and_native_instrumentation_execution": false,
+  "technical_key_normalization_changed": false
+}

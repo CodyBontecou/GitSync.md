@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obsidian_title">Obsidian connections</string>
+    <string name="obsidian_empty">Add or clone a local repository before preparing an Obsidian connection.</string>
+    <string name="obsidian_scope">Connect Obsidian Git using this repository’s selected GitHub account. Credentials are encrypted for the companion and stay out of callback links.</string>
+    <string name="obsidian_requirements">Use the same device folder as your Obsidian vault. Enable the Git and GitSync.md Connect community plugins in Obsidian. HTTPS GitHub repositories need a connected GitHub account selected in Repository connection. Preparing a connection does not change your files or Git history.</string>
+    <string name="obsidian_prepare">Prepare Obsidian connection</string>
+    <string name="obsidian_prepared">Connection prepared. Open this folder in Obsidian, then run GitSync.md Connect: Connect this vault. A new request replaces any older pending connection.</string>
+    <string name="obsidian_ready">Encrypted credentials are ready for Obsidian.</string>
+    <string name="obsidian_error">Obsidian could not connect. Check folder access, the original GitHub HTTPS remote and the repository’s selected GitHub account, then prepare a new connection.</string>
+    <string name="obsidian_interrupted">Connection stopped. No request will replay automatically. Prepare a new connection before retrying in Obsidian.</string>
+    <string name="obsidian_return">Return to Obsidian</string>
+    <string name="obsidian_return_failed">Obsidian could not be opened. Enable GitSync.md Connect in Obsidian, then try returning again.</string>
+    <string name="obsidian_forget">Forget connection</string>
+    <string name="obsidian_forget_scope">Block future credential handoffs for this folder? Credentials already imported into Obsidian remain there. Remove or revoke those separately if needed. Your working copy stays in place.</string>
+    <string name="obsidian_forgotten">Future handoffs are disabled. Prepare a new connection to reconnect this folder.</string>
+</resources>

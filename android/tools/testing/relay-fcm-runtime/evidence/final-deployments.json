@@ -1,0 +1,165 @@
+[
+  {
+    "id": "b29f2365-a216-46fb-a448-56a9796b569d",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "50771ae1-9339-40e7-8ceb-7a226d20f9de",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-09-10T14:38:26.291955Z"
+  },
+  {
+    "id": "3088c379-e71d-437d-893d-712064257073",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "c312a026-1ec3-4387-983f-4ed385fab5b1",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-09-10T15:17:08.386357Z"
+  },
+  {
+    "id": "6394979c-6a8e-4fd1-a4df-da95f770d412",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "82f71dac-6419-4e71-9da3-33a75c41b05b",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-09-10T15:19:26.128537Z"
+  },
+  {
+    "id": "16df03a6-03e8-413d-a7cf-f34f5ca58ea0",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "604150d2-ed79-4dcc-80b8-24e1c9e70cf0",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-28T21:01:49.578486Z"
+  },
+  {
+    "id": "4e55d789-ea33-47dd-b3e3-842f41278098",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "d4c6cf29-0ac9-4232-bec9-fdfb57bc49db",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-02T12:29:01.176067Z"
+  },
+  {
+    "id": "df1442b0-9c5d-4c81-9b35-62ec430f08a4",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "c66933bc-682a-44f6-bcd7-ae300b73e81c",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-02T12:49:31.989308Z"
+  },
+  {
+    "id": "0f1a9311-b8eb-4344-9bc8-69d5c0591189",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "59f56919-7ceb-49ec-9354-f00c90090f7f",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-02T12:57:40.897073Z"
+  },
+  {
+    "id": "4c1ec5e7-ca6f-46d9-8c3f-be1e14be6d22",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/message": "Fix FCM fetch receiver and reject redirects in Workers runtime",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "a6771028-f3d1-40aa-80d8-f821f436433c",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-02T16:31:46.672857Z"
+  },
+  {
+    "id": "ca7d0972-cbe7-4a51-b012-e7515b0c4ed3",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/message": "Report exact bounded FCM sender failure codes",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "0fba6a32-2f5c-44a5-866e-dbde3e2ce188",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-02T16:35:23.055134Z"
+  },
+  {
+    "id": "496abf6b-253e-4002-805d-c8e23a2aac61",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "bontecouc@gmail.com",
+    "annotations": {
+      "workers/message": "Accept relay-produced branch collapse IDs in FCM sender",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "1eb9d62a-4beb-4440-9f59-8a9ca1d345a6",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-02T16:37:34.462153Z"
+  }
+]

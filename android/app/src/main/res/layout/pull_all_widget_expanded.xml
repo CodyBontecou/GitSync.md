@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pull_all_widget_button" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:gravity="center" android:padding="16dp" android:minHeight="192dp"
+    android:background="@drawable/pull_all_widget_background" android:contentDescription="@string/pull_all_widget_description"
+    android:focusable="true" android:clickable="true">
+    <!-- Material 3 tonal button on the surface (board "29 · Widgets"); the whole widget runs Pull All. -->
+    <TextView android:id="@+id/pull_all_widget_label" android:layout_width="match_parent" android:layout_height="wrap_content" android:importantForAccessibility="no"
+        android:minHeight="44dp" android:gravity="center" android:paddingStart="12dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp"
+        android:background="@drawable/pull_all_widget_tonal" android:drawableStart="@drawable/ic_widget_pull" android:drawablePadding="8dp"
+        android:text="@string/pull_all_title" android:textSize="16sp" android:fontFamily="sans-serif-medium" android:textColor="@color/pull_all_widget_on_tonal" />
+    <TextView android:id="@+id/pull_all_widget_subtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:importantForAccessibility="no"
+        android:layout_marginTop="8dp" android:gravity="center" android:text="@string/pull_all_widget_subtitle" android:textSize="12sp" android:textColor="@color/pull_all_widget_text_variant" />
+</LinearLayout>

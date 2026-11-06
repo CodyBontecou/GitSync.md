@@ -1,0 +1,249 @@
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt
+@@ -13,6 +13,10 @@
+ import androidx.compose.ui.text.input.PasswordVisualTransformation
+ import androidx.compose.ui.unit.dp
+ import androidx.hilt.navigation.compose.hiltViewModel
++import androidx.lifecycle.Lifecycle
++import androidx.compose.ui.platform.LocalLifecycleOwner
++import androidx.lifecycle.repeatOnLifecycle
++import kotlinx.coroutines.awaitCancellation
+ import com.bontecou.syncmd.security.RepositoryCredentialStore.Choice
+ import com.bontecou.syncmd.services.git.GitRemote
+ import com.bontecou.syncmd.data.models.Credentials
+@@ -48,6 +52,9 @@
+     val accounts by viewModel.accounts.collectAsState()
+     var selectedAccount by remember { mutableStateOf<String?>(null) }
+     val catalogBusy by settings.isLoading.collectAsState()
++    val lifecycleOwner = LocalLifecycleOwner.current
++    val latestOnBack by rememberUpdatedState(onBack)
++    var metadataRetry by remember(path, state.requestId) { mutableIntStateOf(0) }
+     var url by remember { mutableStateOf("") }
+     var username by remember { mutableStateOf("") }
+     var secret by remember { mutableStateOf("") }
+@@ -74,8 +81,14 @@
+                 else Choice.PUBLIC
+         }
+     }
+-    LaunchedEffect(state.requestId, state.saved) {
+-        if (state.saved && viewModel.state.value === state) { secret = ""; privateKey = ""; passphrase = ""; publicKey = ""; settings.refreshRepositoryMetadata(path, onBack) }
++    LaunchedEffect(path, state.requestId, state.saved, metadataRetry, lifecycleOwner) {
++        if (state.saved && viewModel.state.value === state) {
++            secret = ""; privateKey = ""; passphrase = ""; publicKey = ""
++            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
++                viewModel.finishSaved(state, path, settings::refreshRepositoryMetadata) { latestOnBack() }
++                awaitCancellation()
++            }
++        }
+     }
+     BackHandler(state.busy && state.plan != null) { /* Finish the checked config/credential transaction. */ }
+     val c = Tide.colors
+@@ -203,7 +216,7 @@
+                     loading = state.busy, modifier = Modifier.padding(top = 4.dp).testTag("connection-save"))
+                 if (state.summary?.hasAnyCredentials == true) AddVaultTextButton(stringResource(R.string.ui_remove_saved_credentials_31ce2de8), onClick = { forget = state }, enabled = !state.busy && !state.saved,
+                     color = c.danger, modifier = Modifier.fillMaxWidth())
+-                if (state.saved) TideOutlineButton(stringResource(R.string.ui_return_to_repositories_c97a4463), onClick = { settings.refreshRepositoryMetadata(path, onBack) }, enabled = !catalogBusy,
++                if (state.saved) TideOutlineButton(stringResource(R.string.ui_return_to_repositories_c97a4463), onClick = { if (viewModel.state.value === state) metadataRetry++ }, enabled = !catalogBusy,
+                     modifier = Modifier.fillMaxWidth())
+             } ?: state.error?.let { error ->
+                 AddVaultNote(error, TideBannerTone.DANGER)
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ConnectionViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ConnectionViewModel.kt
+@@ -12,6 +12,8 @@
+ import dagger.hilt.android.lifecycle.HiltViewModel
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.launch
+@@ -37,7 +39,11 @@
+     private val connection = RepositoryConnection()
+     private val migration = com.bontecou.syncmd.services.repositories.RemoteCredentialMigration()
+     @Volatile private var generation = 0L
++    private var requestedPath: String? = null
++    private var completingSave: State? = null
++    private var deliveredSave: State? = null
+     fun load(path: String) {
++        requestedPath = path
+         val request = ++generation
+         _state.value = State(requestId = request)
+         viewModelScope.launch {
+@@ -109,6 +115,24 @@
+             }
+         }
+     }
++    /** Called by the resumed screen, so leaving it cancels refresh and delivery together. */
++    suspend fun finishSaved(review: State, path: String, refreshMetadata: suspend (String) -> Boolean, onReady: () -> Unit) {
++        if (_state.value !== review || requestedPath != path || !review.saved || review.busy ||
++            completingSave === review || deliveredSave === review) return
++        val repositoryPath = review.plan?.path ?: return
++        completingSave = review
++        try {
++            if (!refreshMetadata(repositoryPath)) return
++            // Persistence may finish after cancellation, a reload, or another repository selection.
++            currentCoroutineContext().ensureActive()
++            if (_state.value !== review || requestedPath != path || deliveredSave === review) return
++            deliveredSave = review
++            onReady()
++        } finally {
++            if (completingSave === review) completingSave = null
++        }
++    }
++
+     private fun perform(current: State, action: suspend () -> Unit) {
+         if (_state.value !== current || current.busy || current.saved) return
+         val request = generation
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
+@@ -441,14 +441,32 @@
+         _operationMessage.value = if (deletion != null) "Local clone deleted" else "Repository removed from the app. Local files were kept."
+     }, destructive = deletion != null)
+ 
+-    fun refreshRepositoryMetadata(path: String, onReady: () -> Unit = {}) = mutate({
+-        val info = discovery.inspect(path)
+-        val repos = _allRepositories.value.map { repo ->
+-            if (canonical(repo.path) == info.path) repo.copy(remoteUrl = info.remoteUrl, branch = info.branch) else repo
+-        }
+-        require(repos.any { canonical(it.path) == info.path }) { "Repository is no longer added" }
+-        persist(repos, _repositoryHistory.value, _selectedRepository.value)
+-    }, onReady)
++    /** The visible caller owns cancellation and navigation; persistence never retains a route callback. */
++    suspend fun refreshRepositoryMetadata(path: String): Boolean {
++        initialLoad.await()
++        return try {
++            withContext(Dispatchers.IO) {
++                persistence.withLock {
++                    _isLoading.value = true
++                    _errorMessage.value = null
++                    try {
++                        readState()
++                        val info = discovery.inspect(path)
++                        val repos = _allRepositories.value.map { repo ->
++                            if (canonical(repo.path) == info.path) repo.copy(remoteUrl = info.remoteUrl, branch = info.branch) else repo
++                        }
++                        require(repos.any { canonical(it.path) == info.path }) { "Repository is no longer added" }
++                        persist(repos, _repositoryHistory.value, _selectedRepository.value)
++                    } finally { _isLoading.value = false }
++                }
++            }
++            true
++        } catch (e: CancellationException) { throw e
++        } catch (e: Exception) {
++            _errorMessage.value = e.message ?: "Repository operation failed"
++            false
++        }
++    }
+ 
+     fun scanLocalRepositories() = mutate({ _discoveryResult.value = discovery.scan(CloneStorage.discoveryRoots(context)) })
+     fun scanChosenFolder(uri: android.net.Uri) = mutate({
+--- before/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/ConnectionConsentOwnershipTest.kt
++++ after/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/ConnectionConsentOwnershipTest.kt
+@@ -210,6 +210,106 @@
+         assertEquals(otherBefore, contents(second))
+         confirm(); settled(); assertEquals(1, mutations().size)
+     }
++    private suspend fun saved(root: File): ConnectionViewModel.State {
++        loaded(root)
++        val review = model.state.value
++        model.save(review, "https://example.invalid/${root.name}-saved.git", RepositoryCredentialStore.Choice.PUBLIC, "", "", null)
++        settled()
++        assertTrue(model.state.value.saved)
++        assertNull(model.state.value.error)
++        return model.state.value
++    }
++
++    @Test fun unsavedConnectionCannotRefreshOrReturn(): Unit = runBlocking {
++        loaded(first)
++        model.finishSaved(model.state.value, first.path, { fail("Unsaved refresh"); true }) { fail("Unsaved return") }
++    }
++
++    @Test fun anotherRouteCannotDeliverSavedConnection(): Unit = runBlocking {
++        val review = saved(first)
++        model.finishSaved(review, second.path, { fail("Wrong route refresh"); true }) { fail("Wrong route return") }
++    }
++
++    @Test fun staleSavedCallbackCannotStartRefresh(): Unit = runBlocking {
++        val review = saved(first)
++        loaded(first)
++        model.finishSaved(review, first.path, { fail("Old review refresh"); true }) { fail("Old review return") }
++    }
++
++    @Test fun delayedMetadataRefreshCannotReturnFromAnotherConnection(): Unit = runBlocking { staleCompletion(second) }
++    @Test fun delayedMetadataRefreshCannotReturnAfterSameFolderReload(): Unit = runBlocking { staleCompletion(first) }
++    private suspend fun staleCompletion(target: File) = coroutineScope {
++        val review = saved(first)
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        val paths = mutableListOf<String>(); var deliveries = 0
++        val completion = launch(start = CoroutineStart.UNDISPATCHED) {
++            model.finishSaved(review, first.path, { paths += it; entered.complete(Unit); release.await(); true }) { deliveries++ }
++        }
++        entered.await()
++        loaded(target)
++        val before = contents(first); val otherBefore = contents(second)
++        release.complete(Unit); completion.join()
++        assertEquals(listOf(first.path), paths); assertEquals(0, deliveries)
++        assertEquals(before, contents(first)); assertEquals(otherBefore, contents(second))
++        assertEquals(target.path, model.state.value.plan!!.path)
++    }
++
++    @Test fun cancelledScreenCannotReturnEvenIfRefreshSwallowsCancellationAndCanRetry(): Unit = runBlocking {
++        val review = saved(first)
++        val entered = CompletableDeferred<Unit>(); var deliveries = 0
++        val completion = launch(start = CoroutineStart.UNDISPATCHED) {
++            model.finishSaved(review, first.path, {
++                entered.complete(Unit)
++                try { awaitCancellation() } catch (_: CancellationException) { true }
++            }) { deliveries++ }
++        }
++        entered.await(); completion.cancelAndJoin()
++        assertEquals(0, deliveries)
++        model.finishSaved(review, first.path, { true }) { deliveries++ }
++        assertEquals(1, deliveries)
++    }
++
++    @Test fun failedMetadataRefreshKeepsSavedConnectionForRetry(): Unit = runBlocking {
++        val review = saved(first)
++        val before = contents(first); var attempts = 0; var deliveries = 0
++        model.finishSaved(review, first.path, { attempts++; false }) { deliveries++ }
++        assertEquals(0, deliveries); assertSame(review, model.state.value)
++        model.finishSaved(review, first.path, { attempts++; true }) { deliveries++ }
++        assertEquals(2, attempts); assertEquals(1, deliveries)
++        assertEquals(before, contents(first)); assertEquals(1, mutations().size)
++    }
++
++    @Test fun duplicateCompletionRefreshesAndReturnsOnlyOnce(): Unit = runBlocking {
++        val review = saved(first)
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        var attempts = 0; var deliveries = 0
++        val completion = launch(start = CoroutineStart.UNDISPATCHED) {
++            model.finishSaved(review, first.path, { attempts++; entered.complete(Unit); release.await(); true }) { deliveries++ }
++        }
++        entered.await()
++        model.finishSaved(review, first.path, { attempts++; true }) { deliveries++ }
++        assertEquals(1, attempts); assertEquals(0, deliveries)
++        release.complete(Unit); completion.join()
++        model.finishSaved(review, first.path, { attempts++; true }) { deliveries++ }
++        assertEquals(1, attempts); assertEquals(1, deliveries)
++        assertSame(review, model.state.value)
++    }
++
++    @Test fun newSavedConnectionCanReturnWhileOldRefreshIsPending(): Unit = runBlocking {
++        val firstReview = saved(first)
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        val returned = mutableListOf<String>()
++        val oldCompletion = launch(start = CoroutineStart.UNDISPATCHED) {
++            model.finishSaved(firstReview, first.path, { entered.complete(Unit); release.await(); true }) { returned += first.path }
++        }
++        entered.await()
++        val nextReview = saved(second)
++        model.finishSaved(nextReview, second.path, { assertEquals(second.path, it); true }) { returned += second.path }
++        release.complete(Unit); oldCompletion.join()
++        assertEquals(listOf(second.path), returned)
++        assertSame(nextReview, model.state.value)
++    }
++
+     @Test fun currentMigrationPublishesOnlyReviewedCleanEndpointsOnce(): Unit = runBlocking {
+         embedded(first); loaded(first); val confirm = reviewedAction(true)
+         val before = contents(first); val otherBefore = contents(second)

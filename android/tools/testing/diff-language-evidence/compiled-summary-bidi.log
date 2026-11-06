@@ -1,0 +1,2 @@
+Six JDK Bidi probes preserve LTR signed diff totals at zero, small and Int.MAX_VALUE counts, including Arabic digits.
+No Android/Compose rendering executed.

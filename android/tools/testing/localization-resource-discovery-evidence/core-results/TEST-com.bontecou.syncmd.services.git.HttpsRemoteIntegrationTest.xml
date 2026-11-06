@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.HttpsRemoteIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:53:51" hostname="MacBook-Pro.local" time="3.2">
+  <properties/>
+  <testcase name="HTTPS clone fetch pull and push authenticate while redirects and untrusted TLS fail closed" classname="com.bontecou.syncmd.services.git.HttpsRemoteIntegrationTest" time="1.956"/>
+  <testcase name="HTTP clone fetch pull push rebase and credential refresh stay inside the selected repository" classname="com.bontecou.syncmd.services.git.HttpsRemoteIntegrationTest" time="1.244"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 4:53:52 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit5763017848802809077/https-fixture/.gitsync-clone-11163669920693154619
+Nov 02, 2026 4:53:52 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit5763017848802809077/https-fixture/.gitsync-clone-2643919926537502936
+Nov 02, 2026 4:53:52 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=feature/notes commit=98e105b4db89824001552cef3467be9dd14fdbe9
+Nov 02, 2026 4:53:52 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 4:53:52 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/feature/notes (98e105b)
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit5763017848802809077/https-fixture/.gitsync-clone-3016979164001540960
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=feature/notes commit=bcf9b71fce3cf8d16be70d7cf481e9ec89e07a4d
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 4 files, skipped 0
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/feature/notes (bcf9b71)
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit5763017848802809077/https-fixture/.gitsync-clone-6753224879290691851
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit15822725426960984827/https-fixture/.gitsync-clone-16505225533544420897
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=feature/notes commit=46e7b806c44282c4bed597904cfc001f18445c4f
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 4:53:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/feature/notes (46e7b80)
+Nov 02, 2026 4:53:54 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit15822725426960984827/https-fixture/.gitsync-clone-10879337932003187185
+Nov 02, 2026 4:53:54 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=feature/notes commit=025fdaa5f98ec15abf005357bf1a07a95644792e
+Nov 02, 2026 4:53:54 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 4 files, skipped 0
+Nov 02, 2026 4:53:54 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/feature/notes (025fdaa)
+Nov 02, 2026 4:53:54 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit15822725426960984827/https-fixture/.gitsync-clone-12538933795038324947
+]]></system-err>
+</testsuite>

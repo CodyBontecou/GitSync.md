@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "strings": {
+    "ui_revert_all_changes_416c8713": {
+      "source": "↩  Revert all changes",
+      "ios_key": "Revert All Changes",
+      "ios_source": "Revert All Changes",
+      "prefix": {
+        "default": "↩  ",
+        "ar": "↪  ",
+        "he": "↪  "
+      },
+      "suffix": "",
+      "reason": "Equivalent action/status; only decorative symbols, terminal punctuation or filename quote style differ. RTL navigation symbols are mirrored."
+    },
+    "ui_abort_merge_5af7a9ac": {
+      "source": "✕  Abort merge",
+      "ios_key": "Abort Merge",
+      "ios_source": "Abort Merge",
+      "prefix": "✕  ",
+      "suffix": "",
+      "reason": "Equivalent action/status; only decorative symbols, terminal punctuation or filename quote style differ. RTL navigation symbols are mirrored."
+    },
+    "ui_revert_c8d62872": {
+      "source": "↩  Revert",
+      "ios_key": "Revert",
+      "ios_source": "Revert",
+      "prefix": {
+        "default": "↩  ",
+        "ar": "↪  ",
+        "he": "↪  "
+      },
+      "suffix": "",
+      "reason": "Equivalent action/status; only decorative symbols, terminal punctuation or filename quote style differ. RTL navigation symbols are mirrored."
+    },
+    "ui_commit_84da95ea": {
+      "source": "Commit:",
+      "ios_key": "Commit",
+      "ios_source": "Commit",
+      "prefix": "",
+      "suffix": ":",
+      "reason": "Equivalent action/status; only decorative symbols, terminal punctuation or filename quote style differ. RTL navigation symbols are mirrored."
+    },
+    "ui_loading_diff_3944c704": {
+      "source": "Loading diff…",
+      "ios_key": "Loading diff",
+      "ios_source": "Loading diff",
+      "prefix": "",
+      "suffix": "",
+      "reason": "Equivalent action/status; only decorative symbols, terminal punctuation or filename quote style differ. RTL navigation symbols are mirrored."
+    }
+  }
+}

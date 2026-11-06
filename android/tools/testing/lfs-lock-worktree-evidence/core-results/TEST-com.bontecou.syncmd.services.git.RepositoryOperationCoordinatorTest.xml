@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryOperationCoordinatorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:34" hostname="MacBook-Pro.local" time="0.02">
+  <properties/>
+  <testcase name="canonical aliases share the same lock across callers" classname="com.bontecou.syncmd.services.git.RepositoryOperationCoordinatorTest" time="0.008"/>
+  <testcase name="cancelled waiter does not unlock the active operation" classname="com.bontecou.syncmd.services.git.RepositoryOperationCoordinatorTest" time="0.004"/>
+  <testcase name="nested calls on the same coroutine do not deadlock" classname="com.bontecou.syncmd.services.git.RepositoryOperationCoordinatorTest" time="0.002"/>
+  <testcase name="different repositories can run independently" classname="com.bontecou.syncmd.services.git.RepositoryOperationCoordinatorTest" time="0.003"/>
+  <testcase name="child coroutine cannot inherit authorization to bypass the lock" classname="com.bontecou.syncmd.services.git.RepositoryOperationCoordinatorTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

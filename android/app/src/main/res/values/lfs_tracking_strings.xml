@@ -1,0 +1,10 @@
+<resources>
+    <string name="lfs_tracking_lfs_title">Use LFS for selected files?</string>
+    <string name="lfs_tracking_git_title">Use regular Git for selected files?</string>
+    <string name="lfs_tracking_lfs_body">Add exact-path LFS rules for the reviewed files. LFS storage and bandwidth limits depend on your Git host. Review and stage these changes before committing.</string>
+    <string name="lfs_tracking_git_body">Add explicit regular-Git rules for the reviewed files. File contents will be stored in Git commits. Files above 100 MiB still require LFS.</string>
+    <plurals name="lfs_tracking_files">
+        <item quantity="one">%1$d file</item>
+        <item quantity="other">%1$d files</item>
+    </plurals>
+</resources>

@@ -1,0 +1,2 @@
+Six authored Arabic/Hebrew handle probes: @ and login remain LTR; all six unbounded originals put @ at an RTL level.
+JDK Bidi only: no Android/Compose rendering executed.

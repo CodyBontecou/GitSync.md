@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:27" hostname="MacBook-Pro.local" time="1.259">
+  <properties/>
+  <testcase name="fast forward only divergence does not perform a speculative checkout" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.08"/>
+  <testcase name="head change during author resolution is kept without applying the incoming merge" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.044"/>
+  <testcase name="merge rejects untracked local edits even when unrelated to incoming paths" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.04"/>
+  <testcase name="ignored collision created during author resolution cannot be overwritten" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.044"/>
+  <testcase name="an identical replacement folder cannot inherit a pending merge" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.072"/>
+  <testcase name="three way merge preserves an ignored replacement for an unchanged incoming deleted path" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.09"/>
+  <testcase name="ignored file prefix survives checkout of an incoming directory" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.046"/>
+  <testcase name="ignored file prefix survives merge of an incoming directory" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.044"/>
+  <testcase name="an active merge session is preserved instead of switching or merging again" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.084"/>
+  <testcase name="unrelated ignored contents do not block a safe switch or merge" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.099"/>
+  <testcase name="assume valid index changes during author resolution cannot hide edits from the guard" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.044"/>
+  <testcase name="ignored directory contents survive branch merging" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.045"/>
+  <testcase name="configuration changes during author resolution are kept without merging" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.041"/>
+  <testcase name="source ref change during author resolution requires a new merge review" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.04"/>
+  <testcase name="an already up to date merge does not touch an ignored locally deleted path" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.08"/>
+  <testcase name="unrelated ignored data still permits persistent text conflicts" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.058"/>
+  <testcase name="ignored directory contents survive branch switching" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.04"/>
+  <testcase name="ignored file collision blocks branch merging" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.043"/>
+  <testcase name="reviewed remote merge allows an ignored replacement that its result does not checkout" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.097"/>
+  <testcase name="branch switch during author resolution cannot merge into the replacement branch" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.042"/>
+  <testcase name="ignored file collision blocks branch switching" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.045"/>
+  <testcase name="merge rejects tracked local edits before changing refs or index" classname="com.bontecou.syncmd.services.git.BranchCheckoutProtectionTest" time="0.04"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

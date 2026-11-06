@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" tests="28" skipped="0" failures="0" errors="0" timestamp="2026-11-02T23:56:54" hostname="MacBook-Pro.local" time="1.585">
+  <properties/>
+  <testcase name="failedMetadataRefreshKeepsSavedConnectionForRetry" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.29"/>
+  <testcase name="currentSavePublishesOnlyReviewedConfigOnce" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.043"/>
+  <testcase name="queuedRemovalRejectsRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.036"/>
+  <testcase name="delayedMetadataRefreshCannotReturnFromAnotherConnection" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.044"/>
+  <testcase name="oldDialogCannotRemoveAnotherRepositoriesCredentials" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.033"/>
+  <testcase name="changedConfigBlocksReviewedMigration" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.042"/>
+  <testcase name="changedGitConfigBlocksRemoval" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.035"/>
+  <testcase name="currentMigrationPublishesOnlyReviewedCleanEndpointsOnce" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.041"/>
+  <testcase name="cancelledScreenCannotReturnEvenIfRefreshSwallowsCancellationAndCanRetry" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.032"/>
+  <testcase name="staleSaveCallbackRejectsSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.049"/>
+  <testcase name="queuedSaveRejectsSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.062"/>
+  <testcase name="sameFolderReloadRevokesOldDialog" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.046"/>
+  <testcase name="queuedSaveRejectsRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.055"/>
+  <testcase name="currentConsentRemovesOnlyReviewedCredentialAssignment" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.053"/>
+  <testcase name="staleMigrationCallbackRejectsSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.073"/>
+  <testcase name="unsavedConnectionCannotRefreshOrReturn" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.03"/>
+  <testcase name="anotherRouteCannotDeliverSavedConnection" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.03"/>
+  <testcase name="staleMigrationCallbackCannotTargetAnotherRepository" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.033"/>
+  <testcase name="staleSavedCallbackCannotStartRefresh" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.057"/>
+  <testcase name="unchangedReloadPublishesDistinctReviewState" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.035"/>
+  <testcase name="duplicateCompletionRefreshesAndReturnsOnlyOnce" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.042"/>
+  <testcase name="staleSaveCallbackCannotTargetAnotherRepository" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.143"/>
+  <testcase name="newSavedConnectionCanReturnWhileOldRefreshIsPending" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.059"/>
+  <testcase name="changedConfigBlocksReviewedSave" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.039"/>
+  <testcase name="delayedMetadataRefreshCannotReturnAfterSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.046"/>
+  <testcase name="queuedMigrationRejectsSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.045"/>
+  <testcase name="queuedMigrationRejectsRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.046"/>
+  <testcase name="queuedRemovalRejectsSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.043"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>

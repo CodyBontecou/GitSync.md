@@ -1,0 +1,10 @@
+<resources>
+    <string name="lfs_error_damaged">"Saved LFS endpoint approvals need review. Reset them in Settings before retrying."</string>
+    <string name="lfs_error_changed">"LFS endpoint approvals changed during review. Reload the approvals and review the operation again."</string>
+    <string name="lfs_error_authentication">"The authorization method no longer matches this review. Cancel and review the endpoint again."</string>
+    <string name="lfs_error_credentials">"Enter a valid, separate LFS endpoint username and token or password."</string>
+    <string name="lfs_error_save">"Could not save the LFS endpoint approval. Review the saved approvals before retrying."</string>
+    <string name="lfs_error_recovery">"LFS endpoint approval recovery could not be saved. Reset approvals in Settings before retrying."</string>
+    <string name="lfs_error_revoke">"Could not revoke the LFS endpoint approval. Reload the saved approvals before retrying."</string>
+    <string name="lfs_error_reset">"Could not reset LFS endpoint approvals. Review the saved approvals before retrying."</string>
+</resources>
