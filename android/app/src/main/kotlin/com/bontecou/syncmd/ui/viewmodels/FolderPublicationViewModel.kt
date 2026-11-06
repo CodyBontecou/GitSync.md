@@ -36,6 +36,9 @@ class FolderPublicationViewModel(
         val busy get() = work != null
         val record get() = records.singleOrNull { it.id == selected }
     }
+    /** The upload's JGit progress while [PublicationWork.UPLOAD] runs ("1.4 MB / 2.3 MB"). */
+    private val _upload = MutableStateFlow<com.bontecou.syncmd.services.git.TransferProgressUpdate?>(null)
+    val upload = _upload.asStateFlow()
     private val mutable = MutableStateFlow(State(selected = saved["publication.id"]))
     val state = mutable.asStateFlow()
     private var job: Job? = null
@@ -125,7 +128,9 @@ class FolderPublicationViewModel(
             fun step(work: PublicationWork) { mutable.value = mutable.value.copy(work = work) }
             if (record.phase == FolderPublicationPhase.PREPARED) record = runtime.coordinator.create(record, runtime.token(record))
             if (record.phase in setOf(FolderPublicationPhase.REMOTE_CREATED, FolderPublicationPhase.PUSH_UNKNOWN)) {
-                step(PublicationWork.UPLOAD); record = runtime.coordinator.push(record, runtime.token(record))
+                step(PublicationWork.UPLOAD); _upload.value = null
+                val pushing = record
+                record = withContext(com.bontecou.syncmd.services.git.TransferProgress { _upload.value = it }) { runtime.coordinator.push(pushing, runtime.token(pushing)) }
             }
             require(record.phase in setOf(FolderPublicationPhase.PUBLISHED, FolderPublicationPhase.COMPLETED))
             step(PublicationWork.REGISTER)

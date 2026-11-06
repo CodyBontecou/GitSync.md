@@ -82,15 +82,17 @@ class CloneViewModel @Inject constructor(
     val destination: StateFlow<String?> = _destination.asStateFlow()
 
     /** Reads branch, visibility and size from GitHub (metadata only). */
-    fun loadInfo(repoFullName: String) {
-        if (_info.value != null) return
+    private var infoFor: String? = null
+    fun loadInfo(repoFullName: String, known: RepoInfo? = null) {
+        if (infoFor == repoFullName && _info.value != null) return
+        infoFor = repoFullName; _info.value = known
         val parts = repoFullName.split('/')
         if (parts.size != 2) return
         val token = runCatching { authManager.captureActiveAccount() }.getOrNull()?.token ?: return
         viewModelScope.launch {
             runCatching { com.bontecou.syncmd.services.github.GitHubApiService.repoAccess(token, parts[0], parts[1]) }
                 .onFailure { if (it is CancellationException) throw it }
-                .getOrNull()?.let { _info.value = RepoInfo(it.defaultBranch, it.isPrivate, it.sizeKilobytes?.times(1024)) }
+                .getOrNull()?.let { if (infoFor == repoFullName) _info.value = RepoInfo(it.defaultBranch, it.isPrivate, it.sizeKilobytes?.times(1024)) }
         }
     }
 

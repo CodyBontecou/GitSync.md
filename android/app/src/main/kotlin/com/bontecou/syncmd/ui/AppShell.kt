@@ -124,6 +124,8 @@ object Routes {
     const val PUSH_SYNC = "push-sync"
     const val BACKGROUND_SYNC = "background-sync"
     const val HISTORY = "history"
+    /** Board 12 · Add a vault (full screen). */
+    const val ADD_VAULT = "addVault"
 }
 
 /**
@@ -269,6 +271,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
     }
     val openPullAll: () -> Unit = { navController.navigateSafe(Routes.PULL_ALL); pullAll.open() }
     val openSettings: () -> Unit = { navController.navigateSafe(Routes.SETTINGS) }
+    // "Resume publishing" on Add a vault opens this saved publication in Publish a folder.
+    var publishResume by rememberSaveable { mutableStateOf<String?>(null) }
     val railFrame: @Composable (com.bontecou.syncmd.ui.components.VaultTab?, @Composable () -> Unit) -> Unit = { tab, content ->
         com.bontecou.syncmd.ui.components.VaultRailFrame(adaptive, tab, openTab, openPullAll, openSettings, content)
     }
@@ -298,6 +302,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         }
                         settingsViewModel.setRepositoryPath(resolvedPath) { navController.navigateSafe(Routes.VAULT) }
                     },
+                    // TODO(m3 merge): ReposScreen's AddVaultSheet should be replaced by navigating to Routes.ADD_VAULT (AddVaultScreen).
                     onAddRepo = {
                         if (isLoggedIn) {
                             githubViewModel.loadUserAndRepos()
@@ -320,8 +325,25 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 )
             }
 
+            composable(Routes.ADD_VAULT) {
+                com.bontecou.syncmd.ui.screens.AddVaultScreen(settingsViewModel, githubViewModel,
+                    onClose = { navController.popBackStackSafe() },
+                    onOpen = { target ->
+                        when (target) {
+                            com.bontecou.syncmd.ui.screens.AddVaultTarget.GitHub ->
+                                if (isLoggedIn) { githubViewModel.loadUserAndRepos(); navController.navigateSafe(Routes.REPO_PICKER) } else navController.navigateSafe(Routes.LOGIN)
+                            com.bontecou.syncmd.ui.screens.AddVaultTarget.LocalClones, com.bontecou.syncmd.ui.screens.AddVaultTarget.ScannedFolder ->
+                                navController.navigateSafe(Routes.LOCAL)
+                            com.bontecou.syncmd.ui.screens.AddVaultTarget.Publish -> { publishResume = null; navController.navigateSafe(Routes.PUBLISH) }
+                            is com.bontecou.syncmd.ui.screens.AddVaultTarget.Resume -> { publishResume = target.id; navController.navigateSafe(Routes.PUBLISH) }
+                            is com.bontecou.syncmd.ui.screens.AddVaultTarget.GitHubRepo -> navController.navigateSafe("${Routes.CLONE}/${Uri.encode(target.fullName)}")
+                            is com.bontecou.syncmd.ui.screens.AddVaultTarget.Remote -> navController.navigateSafe("${Routes.REMOTE_CLONE}?url=${Uri.encode(target.url)}")
+                        }
+                    })
+            }
             composable(Routes.PUBLISH) {
                 com.bontecou.syncmd.ui.screens.FolderPublicationScreen(
+                    resume = publishResume,
                     onBack = { navController.popBackStackSafe() },
                     onManageAccounts = { navController.navigateSafe(Routes.ACCOUNTS) },
                     register = { settingsViewModel.registerPublication(it, "github:${it.account.id}") },
@@ -355,8 +377,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     }
                 })
             }
-            composable(Routes.REMOTE_CLONE) {
+            composable("${Routes.REMOTE_CLONE}?url={url}", arguments = listOf(navArgument("url") { type = NavType.StringType; defaultValue = "" })) { entry ->
                 com.bontecou.syncmd.ui.screens.RemoteCloneScreen(settingsViewModel,
+                    initialUrl = entry.arguments?.getString("url")?.takeIf { it.isNotEmpty() },
                     onBack = { navController.popBackStackSafe() },
                     onSuccess = { navController.navigateSafe(Routes.REPOS) { popUpTo(Routes.REPOS) { inclusive = false } } },
                     onReviewLfs = { path -> navController.navigateSafe("${Routes.LFS}/${Uri.encode(path)}") { popUpTo(Routes.REPOS) { inclusive = false } } })
@@ -400,6 +423,9 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     onMoveRepository = { path -> navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(path)}") },
                     onRestoreMoveRecovery = { id -> navController.navigateSafe("${Routes.MOVE}?recovery=$id") },
                     onCloneRepository = { path -> navController.navigateSafe("${Routes.HISTORY_CLONE}/${Uri.encode(path)}") },
+                    onCloneFromGitHub = {
+                        if (isLoggedIn) { githubViewModel.loadUserAndRepos(); navController.navigateSafe(Routes.REPO_PICKER) } else navController.navigateSafe(Routes.LOGIN)
+                    },
                 )
             }
 
@@ -661,6 +687,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         navController.navigateSafe("${Routes.CLONE}/$encoded")
                     },
                     onNavigateBack = { navController.popBackStackSafe() },
+                    onCloned = { navController.navigateSafe(Routes.REPOS) { popUpTo(Routes.REPOS) { inclusive = false } } },
+                    onReviewLfs = { path -> navController.navigateSafe("${Routes.LFS}/${Uri.encode(path)}") { popUpTo(Routes.REPOS) { inclusive = false } } },
                 )
             }
 
@@ -681,6 +709,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     },
                     onCancel          = { navController.popBackStackSafe() },
                     onReviewLfs       = { path -> navController.navigateSafe("${Routes.LFS}/${Uri.encode(path)}") { popUpTo(Routes.REPOS) { inclusive = false } } },
+                    onSignIn          = { navController.navigateSafe(Routes.LOGIN) },
                 )
             }
         }

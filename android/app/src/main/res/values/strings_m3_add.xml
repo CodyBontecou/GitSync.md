@@ -82,6 +82,8 @@
     <string name="add_key_copied">Public key copied</string>
     <string name="add_key_other">Use another…</string>
     <string name="add_key_this_phone">Use this phone’s key</string>
+    <string name="add_ssh_import_key">Import key file</string>
+    <string name="add_ssh_import_failed">Couldn’t read that key file.</string>
     <string name="add_key_hint">Add the public key to your host once. The private key stays on this phone.</string>
     <string name="add_key_failed">Couldn’t make a key on this phone. Use another key instead.</string>
     <string name="add_token_user">Username</string>

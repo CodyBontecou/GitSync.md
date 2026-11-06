@@ -1,200 +1,326 @@
 package com.bontecou.syncmd.ui.screens
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bontecou.syncmd.data.models.Credentials
-import com.bontecou.syncmd.ui.components.SshKeyFields
-import com.bontecou.syncmd.ui.components.AddVaultBusyLine
-import com.bontecou.syncmd.ui.components.AddVaultChoiceChip
-import com.bontecou.syncmd.ui.components.AddVaultFootnote
-import com.bontecou.syncmd.ui.components.AddVaultMonoLtr
-import com.bontecou.syncmd.ui.components.AddVaultNote
-import com.bontecou.syncmd.ui.components.AddVaultProgress
-import com.bontecou.syncmd.ui.components.AddVaultSectionLabel
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideBannerTone
-import com.bontecou.syncmd.ui.theme.TidePrimaryButton
-import com.bontecou.syncmd.ui.theme.TideType
-import com.bontecou.syncmd.ui.theme.tideFieldColors
 import com.bontecou.syncmd.R
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDirection
-import androidx.compose.ui.unit.sp
+import com.bontecou.syncmd.data.models.Credentials
+import com.bontecou.syncmd.services.git.GitRemote
+import com.bontecou.syncmd.services.git.SshKeyGenerator
+import com.bontecou.syncmd.ui.components.AddVaultCloneHero
+import com.bontecou.syncmd.ui.components.AddVaultLocationCard
+import com.bontecou.syncmd.ui.components.SshKeyFields
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3BottomActionBar
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3CodeBlock
+import com.bontecou.syncmd.ui.theme.M3FilterChip
+import com.bontecou.syncmd.ui.theme.M3LeadingTile
+import com.bontecou.syncmd.ui.theme.M3ListCard
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3SectionLabel
+import com.bontecou.syncmd.ui.theme.M3Segmented
+import com.bontecou.syncmd.ui.theme.M3SettingsRow
+import com.bontecou.syncmd.ui.theme.M3TextField
+import com.bontecou.syncmd.ui.theme.M3TonalButton
+import com.bontecou.syncmd.ui.theme.M3TopBar
+import com.bontecou.syncmd.ui.theme.M3Type
+import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.RemoteCloneViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-/** A pushed form: credentials stay in memory until the user explicitly starts a clone. */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+/** How "Any Git host" signs in (board 14's segmented control, plus the GitHub account and saved connection when they apply). */
+private enum class RemoteAuth { SSH, TOKEN, NONE, GITHUB, SAVED }
+
+/**
+ * Board 14 · Any Git host: a remote URL with its parsed "SSH · host · owner/repo" summary, Sign in with
+ * SSH key (this phone's Ed25519 key, or another one) / Token / None, and "Test & clone", which runs
+ * `git ls-remote` with those credentials before cloning. Credentials stay in memory until a clone starts.
+ */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess: () -> Unit,
-    viewModel: RemoteCloneViewModel = hiltViewModel(), historyEntry: com.bontecou.syncmd.ui.viewmodels.RepositoryHistoryEntry? = null, onReviewLfs: ((String) -> Unit)? = null) {
-    var url by remember { mutableStateOf("") }
+    viewModel: RemoteCloneViewModel = hiltViewModel(), historyEntry: com.bontecou.syncmd.ui.viewmodels.RepositoryHistoryEntry? = null,
+    onReviewLfs: ((String) -> Unit)? = null, initialUrl: String? = null) {
+    var url by remember { mutableStateOf(initialUrl.orEmpty()) }
     var name by remember { mutableStateOf("") }
+    var nameEdited by remember { mutableStateOf(false) }
     var branch by remember { mutableStateOf("") }
-    var useSsh by remember { mutableStateOf(false) }
+    var auth by remember { mutableStateOf<RemoteAuth?>(null) }
+    var otherKey by remember { mutableStateOf(false) }
     var privateKey by remember { mutableStateOf("") }
     var passphrase by remember { mutableStateOf("") }
     var publicKey by remember { mutableStateOf("") }
-    var authenticated by remember { mutableStateOf(false) }
-    var useGithub by remember { mutableStateOf(false) }
-    var useSaved by remember { mutableStateOf(false) }
-    var authenticationReviewed by remember { mutableStateOf(historyEntry == null) }
+    var username by remember { mutableStateOf("") }
+    var secret by remember { mutableStateOf("") }
+    var options by rememberSaveable { mutableStateOf(false) }
+    var testError by remember { mutableStateOf<String?>(null) }
+    var notice by remember { mutableStateOf<String?>(null) }
+    var copied by remember { mutableStateOf(false) }
     val historyState by viewModel.history.collectAsState()
     LaunchedEffect(historyEntry) { historyEntry?.let {
-        url = it.repository.remoteUrl.orEmpty(); name = it.repository.name; branch = it.repository.branch.orEmpty()
-        authenticationReviewed = false
+        url = it.repository.remoteUrl.orEmpty(); name = it.repository.name; nameEdited = true; branch = it.repository.branch.orEmpty()
+        auth = null
         viewModel.loadHistory(it)
     } }
     LaunchedEffect(historyState.defaults) { historyState.defaults?.let {
-        url = it.url; name = it.name; branch = it.branch
-        useSaved = it.auth == RemoteCloneViewModel.HistoryAuth.SAVED
-        useGithub = it.auth == RemoteCloneViewModel.HistoryAuth.GITHUB
-        authenticationReviewed = it.auth != RemoteCloneViewModel.HistoryAuth.REVIEW
+        url = it.url; name = it.name; nameEdited = true; branch = it.branch
+        auth = when (it.auth) {
+            RemoteCloneViewModel.HistoryAuth.SAVED -> RemoteAuth.SAVED
+            RemoteCloneViewModel.HistoryAuth.GITHUB -> RemoteAuth.GITHUB
+            RemoteCloneViewModel.HistoryAuth.PUBLIC -> RemoteAuth.NONE
+            RemoteCloneViewModel.HistoryAuth.REVIEW -> null
+        }
     } }
     val accounts by viewModel.accounts.collectAsState()
     var accountId by remember { mutableStateOf(viewModel.activeAccountId()) }
     LaunchedEffect(historyState.defaults) { historyState.defaults?.let { accountId = it.accountId } }
-    var username by remember { mutableStateOf("") }
-    var secret by remember { mutableStateOf("") }
     var location by rememberSaveable { mutableStateOf<String?>(null) }
-    val context = LocalContext.current
     val state by viewModel.state.collectAsState()
-    val registering by settings.isLoading.collectAsState()
-    val plainHttp = url.trim().startsWith("http://", ignoreCase = true)
-    val localFile = url.trim().startsWith("file:", ignoreCase = true)
-    val noNetworkCredentials = localFile || url.trim().startsWith("git://", ignoreCase = true)
-    val nativeGit = url.trim().startsWith("git://", ignoreCase = true)
-    val normalizedUrl = runCatching { com.bontecou.syncmd.services.git.GitRemote.parseInput(url).url }.getOrNull()?.takeIf { it != url.trim() }
-    val locked = state.busy || state.path != null || historyState.busy
+    val testing by viewModel.testing.collectAsState()
+    val progress by viewModel.progress.collectAsState()
+    val deviceKey by viewModel.deviceKey.collectAsState()
+    val deviceKeyFailed by viewModel.deviceKeyFailed.collectAsState()
+    val remote = remember(url) { runCatching { GitRemote.parseInput(url) }.getOrNull() }
+    val github = remote != null && remote.isHttps && remote.host == "github.com" && remote.port == 443
+    val hasGithubAccount = accounts.any { it.connected }
+    val savedAvailable = historyState.defaults?.auth == RemoteCloneViewModel.HistoryAuth.SAVED
+    // The name is the repository's own unless edited; display names never form a path.
+    LaunchedEffect(url) {
+        if (!nameEdited) name = remote?.let { repoNameOf(it.url) }.orEmpty()
+        testError = null
+        // Keep the sign-in compatible with the address: keys for SSH, tokens for HTTP(S).
+        if (remote != null && historyState.defaults == null) auth = when {
+            remote.usesNoNetworkCredentials -> RemoteAuth.NONE
+            remote.isSsh && auth != RemoteAuth.SSH -> RemoteAuth.SSH
+            !remote.isSsh && (auth == RemoteAuth.SSH || auth == null) -> if (github && hasGithubAccount) RemoteAuth.GITHUB else RemoteAuth.NONE
+            !github && auth == RemoteAuth.GITHUB -> RemoteAuth.NONE
+            else -> auth
+        }
+    }
+    LaunchedEffect(auth, otherKey) { if (auth == RemoteAuth.SSH && !otherKey) viewModel.ensureDeviceKey() }
+    LaunchedEffect(copied) { if (copied) { delay(2000); copied = false } }
+    val locked = state.busy || state.path != null || historyState.busy || testing
     val gate = com.bontecou.syncmd.ui.util.rememberUnlockGate()
     val unlocked by gate.isUnlocked.collectAsState()
     val price by gate.price.collectAsState()
     var checkTarget by remember { mutableStateOf<com.bontecou.syncmd.billing.VaultTarget?>(null) }
-    val scope = androidx.compose.runtime.rememberCoroutineScope()
-    val cloneNow = { viewModel.clone(url, name, branch, authenticated, username, secret, if (useGithub) accountId else null, location, useSaved, if (useSsh) Credentials.Ssh(privateKey, passphrase, publicKey) else null) }
+    val scope = rememberCoroutineScope()
+    val clipboard = LocalClipboardManager.current
+    val context = LocalContext.current
+    fun ssh(): Credentials.Ssh? = when {
+        auth != RemoteAuth.SSH -> null
+        otherKey -> Credentials.Ssh(privateKey, passphrase, publicKey)
+        else -> deviceKey?.credentials
+    }
+    val cloneNow = { viewModel.clone(url, name, branch, auth == RemoteAuth.TOKEN, username, secret, if (auth == RemoteAuth.GITHUB) accountId else null,
+        location, auth == RemoteAuth.SAVED, ssh()) }
     checkTarget?.let { target ->
         VaultCheckScreen(target, locked = !unlocked, price = price,
             onClone = { detail -> gate.require(target.name, detail) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null })
     }
+    val testAndClone: () -> Unit = {
+        testError = null; notice = null
+        scope.launch {
+            val target = viewModel.vaultTarget(url, name, branch, auth == RemoteAuth.TOKEN, username, secret, if (auth == RemoteAuth.GITHUB) accountId else null,
+                auth == RemoteAuth.SAVED, ssh()) ?: return@launch
+            when (val result = viewModel.test(target)) {
+                is RemoteCloneViewModel.TestResult.Failed -> testError = result.message.resolve(context)
+                else -> {
+                    if (result == RemoteCloneViewModel.TestResult.HostKeyReview) notice = context.getString(R.string.add_test_host_key)
+                    // With the paywall on, every URL clone continues into the free vault check (as on iOS).
+                    if (gate.paywallEnabled) checkTarget = target else cloneNow()
+                }
+            }
+        }
+    }
     BackHandler(!state.busy) { if (viewModel.cancelRecovery()) onBack() }
     BackHandler(state.busy) { /* Keep the operation's ViewModel alive until safe clone publication finishes. */ }
     LaunchedEffect(state.path) { if (state.path != null) { secret = ""; privateKey = ""; passphrase = ""; publicKey = "" } }
-    val c = Tide.colors
-    Scaffold(containerColor = c.paper, topBar = {
-        com.bontecou.syncmd.ui.components.WrappingTopBar(
-            title = stringResource(R.string.guide_url),
-            backLabel = stringResource(R.string.publication_back),
-            onBack = { if (viewModel.cancelRecovery()) onBack() }, backEnabled = !state.busy,
-            titleModifier = Modifier.testTag("remote-clone-title"), backModifier = Modifier.testTag("remote-clone-back"))
-    }) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState())
-            .padding(horizontal = Tide.gutter).padding(top = 4.dp, bottom = 20.dp).testTag("remote-clone-screen"), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            if (!localFile) Text(stringResource(R.string.ui_connect_to_a_public_or_private_https_or_ss_03fd12f0),
-                style = TideType.sans(15.sp).copy(lineHeight = 21.sp), color = c.inkMid, modifier = Modifier.padding(horizontal = 4.dp))
-            if (historyEntry != null) AddVaultNote(stringResource(R.string.ui_clone_again_review_the_previous_branch_and_33cba147), TideBannerTone.BEHIND)
-            if (historyState.busy) AddVaultProgress()
-            historyState.error?.let { AddVaultNote(it, TideBannerTone.DANGER) }
-            historyState.notice?.let { AddVaultNote(it, TideBannerTone.NEUTRAL) }
+    val c = M3.colors
+    val options3 = listOfNotNull(RemoteAuth.SSH, RemoteAuth.TOKEN, RemoteAuth.NONE,
+        RemoteAuth.GITHUB.takeIf { github && (hasGithubAccount || auth == RemoteAuth.GITHUB) }, RemoteAuth.SAVED.takeIf { savedAvailable })
+    Column(Modifier.fillMaxSize().background(c.surface).testTag("remote-clone-screen")) {
+        M3TopBar(stringResource(R.string.add_remote_title), Modifier.testTag("remote-clone-title"),
+            onBack = if (state.busy) null else ({ if (viewModel.cancelRecovery()) onBack() }))
+        Column(Modifier.weight(1f).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+            Text(stringResource(R.string.add_remote_intro), style = M3Type.body, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 4.dp))
+            if (historyEntry != null) M3Note(stringResource(R.string.ui_clone_again_review_the_previous_branch_and_33cba147), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp))
+            historyState.error?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Warn) }
+            historyState.notice?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Muted) }
+            M3TextField(url, { url = it }, stringResource(R.string.add_remote_label), Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp).testTag("remote-url"),
+                placeholder = stringResource(R.string.add_remote_placeholder), mono = true, enabled = !locked,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrect = false))
+            remote?.let { r ->
+                Text(remoteSummary(r), style = M3Type.meta, color = c.onVar, modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 4.dp).testTag("remote-normalized-url"))
+            }
+            if (remote?.isPlainHttp == true) M3Note(stringResource(R.string.http_transport_warning), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("remote-http-warning"), tone = M3NoteTone.Warn)
+            if (remote?.isLocalFile == true) M3Note(stringResource(R.string.file_clone_guidance), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("remote-file-hint"), tone = M3NoteTone.Muted)
+            if (remote?.isNativeGit == true) M3Note(stringResource(R.string.git_native_public_only), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("remote-native-public-hint"), tone = M3NoteTone.Muted)
 
-            // ── Remote ────────────────────────────────────────────────────
-            OutlinedTextField(url, { url = it }, enabled = !locked, label = { Text(stringResource(R.string.ui_repository_url_c83db013), modifier = Modifier.testTag("remote-url-label")) },
-                placeholder = { Text("https://git.example.com/team/notes.git", style = AddVaultMonoLtr) }, singleLine = true,
-                supportingText = {
-                    Column {
-                        Text(stringResource(R.string.remote_address_formats))
-                        normalizedUrl?.let { Text(stringResource(R.string.remote_normalized_target, it), style = AddVaultMonoLtr, modifier = Modifier.testTag("remote-normalized-url")) }
+            M3SectionLabel(stringResource(R.string.add_sign_in_with), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp))
+            M3Segmented(options3.map { stringResource(it.label) }, options3.indexOf(auth), { index ->
+                auth = options3[index]; testError = null
+                if (auth != RemoteAuth.TOKEN) secret = ""
+                if (auth != RemoteAuth.SSH) { privateKey = ""; passphrase = ""; publicKey = "" }
+            }, Modifier.padding(horizontal = 16.dp).testTag("remote-auth"), enabled = !locked && remote?.usesNoNetworkCredentials != true, role = androidx.compose.ui.semantics.Role.RadioButton)
+            when (auth) {
+                RemoteAuth.SSH -> if (otherKey) {
+                    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+                        SshKeyFields(privateKey, { privateKey = it }, passphrase, { passphrase = it }, publicKey, { publicKey = it }, !locked)
+                        M3Button(stringResource(R.string.add_key_this_phone), { otherKey = false; privateKey = ""; passphrase = ""; publicKey = "" },
+                            Modifier.padding(top = 4.dp).testTag("remote-key-this-phone"), style = M3ButtonStyle.Text, enabled = !locked)
                     }
-                },
-                textStyle = TideType.mono(14.sp).copy(textDirection = TextDirection.Ltr), colors = tideFieldColors(), shape = Tide.fieldShape,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), modifier = Modifier.fillMaxWidth().testTag("remote-url"))
-            OutlinedTextField(name, { name = it }, enabled = !locked, label = { Text(stringResource(R.string.ui_name_in_gitsync_md_893ad211), modifier = Modifier.testTag("remote-name-label")) }, singleLine = true,
-                colors = tideFieldColors(), shape = Tide.fieldShape, modifier = Modifier.fillMaxWidth().testTag("remote-name"))
-            OutlinedTextField(branch, { branch = it }, enabled = !locked, label = { Text(stringResource(R.string.ui_branch_optional_e9dedf99), modifier = Modifier.testTag("remote-branch-label")) },
-                supportingText = { Text(stringResource(R.string.ui_leave_blank_to_use_the_server_s_default_br_077388af)) }, singleLine = true,
-                textStyle = TideType.mono(14.sp).copy(textDirection = TextDirection.Ltr), colors = tideFieldColors(), shape = Tide.fieldShape,
-                modifier = Modifier.fillMaxWidth().testTag("remote-branch"))
-            if (plainHttp) AddVaultNote(stringResource(R.string.http_transport_warning), TideBannerTone.DANGER, textModifier = Modifier.testTag("remote-http-warning"))
-            if (localFile) AddVaultFootnote(stringResource(R.string.file_clone_guidance), Modifier.testTag("remote-file-hint"))
-            if (nativeGit) AddVaultFootnote(stringResource(R.string.git_native_public_only), Modifier.testTag("remote-native-public-hint"))
-
-            // ── Authentication ────────────────────────────────────────────
-            AddVaultSectionLabel(stringResource(R.string.ui_authentication_66880d2d), Modifier.padding(top = 8.dp))
-            if (!authenticationReviewed && !historyState.busy) AddVaultNote(stringResource(R.string.ui_choose_an_authentication_method_before_clo_c89124ba), TideBannerTone.AHEAD)
-            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                AddVaultChoiceChip(stringResource(if (localFile) R.string.file_local_access else R.string.ui_public_access_03e7db61),
-                    selected = authenticationReviewed && !authenticated && !useGithub && !useSaved && !useSsh,
-                    onClick = { useSsh = false; privateKey = ""; passphrase = ""; publicKey = ""; authenticated = false; useGithub = false; useSaved = false; authenticationReviewed = true; secret = "" },
-                    enabled = !locked, modifier = Modifier.testTag("remote-auth-public"))
-                AddVaultChoiceChip(stringResource(R.string.ui_username_token_7375b2ff), selected = authenticated,
-                    onClick = { useSsh = false; privateKey = ""; passphrase = ""; publicKey = ""; authenticated = true; useGithub = false; useSaved = false; authenticationReviewed = true },
-                    enabled = !locked && !noNetworkCredentials, modifier = Modifier.testTag("remote-auth-basic"))
-                AddVaultChoiceChip(stringResource(R.string.ui_ssh_private_key_0e92a613), selected = useSsh,
-                    onClick = { useSsh = true; authenticated = false; useGithub = false; useSaved = false; authenticationReviewed = true; secret = "" },
-                    enabled = !locked && !noNetworkCredentials, modifier = Modifier.testTag("remote-auth-ssh"))
-                if (historyState.defaults?.auth == RemoteCloneViewModel.HistoryAuth.SAVED) AddVaultChoiceChip(stringResource(R.string.ui_use_saved_connection_21052734), selected = useSaved,
-                    onClick = { useSsh = false; privateKey = ""; passphrase = ""; publicKey = ""; useSaved = true; useGithub = false; authenticated = false; authenticationReviewed = true; secret = "" },
-                    enabled = !locked && !noNetworkCredentials, modifier = Modifier.testTag("remote-auth-saved"))
-                if (accounts.any { it.connected } || useGithub) AddVaultChoiceChip(stringResource(R.string.publication_accounts), selected = useGithub,
-                    onClick = { useSsh = false; privateKey = ""; passphrase = ""; publicKey = ""; useGithub = true; useSaved = false; authenticated = false; authenticationReviewed = true; secret = "" },
-                    enabled = !locked && !noNetworkCredentials, modifier = Modifier.testTag("remote-auth-github"))
-            }
-            if (useSsh) SshKeyFields(privateKey, { privateKey = it }, passphrase, { passphrase = it }, publicKey, { publicKey = it }, !locked)
-            if (historyState.defaults?.auth == RemoteCloneViewModel.HistoryAuth.SAVED && useSaved)
-                AddVaultFootnote(stringResource(R.string.ui_the_encrypted_connection_is_reused_only_fo_a43b4975))
-            if (useGithub) {
-                if (accounts.none { it.connected && it.id == accountId }) AddVaultNote(stringResource(R.string.ui_the_previous_github_account_is_disconnecte_628a1f8c), TideBannerTone.DANGER)
-                FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    accounts.filter { it.connected }.forEach { account ->
-                        AddVaultChoiceChip(account.login?.let { "@$it" } ?: stringResource(R.string.publication_accounts), selected = accountId == account.id,
-                            onClick = { accountId = account.id }, enabled = !locked, modifier = Modifier.testTag("remote-account-${account.id}"))
+                } else {
+                    M3ListCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp).testTag("remote-device-key")) {
+                        Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                M3LeadingTile(R.drawable.ic_m3_key)
+                                Column {
+                                    Text(stringResource(R.string.add_key_title), style = M3Type.bodyStrong, color = c.on)
+                                    deviceKey?.let { Text(stringResource(R.string.add_key_meta, SshKeyGenerator.shortFingerprint(it.fingerprint)), style = M3Type.meta, color = c.onVar,
+                                        modifier = Modifier.testTag("remote-key-fingerprint")) }
+                                }
+                            }
+                            when {
+                                deviceKey != null -> M3CodeBlock(SshKeyGenerator.shortPublicKey(deviceKey!!.publicKey), Modifier.padding(top = 14.dp), color = c.on, lineHeight = 18)
+                                deviceKeyFailed -> M3Note(stringResource(R.string.add_key_failed), Modifier.padding(top = 14.dp), tone = M3NoteTone.Warn)
+                                else -> com.bontecou.syncmd.ui.theme.M3IndeterminateProgressBar(Modifier.padding(top = 14.dp))
+                            }
+                            Row(Modifier.padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                M3TonalButton(stringResource(if (copied) R.string.add_key_copied else R.string.add_key_copy), {
+                                    deviceKey?.let { clipboard.setText(AnnotatedString(it.publicKey)); copied = true }
+                                }, Modifier.testTag("remote-key-copy"), enabled = deviceKey != null)
+                                M3Button(stringResource(R.string.add_key_other), { otherKey = true }, Modifier.testTag("remote-key-other"), style = M3ButtonStyle.Text, enabled = !locked)
+                            }
+                        }
                     }
+                    Text(stringResource(R.string.add_key_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp))
                 }
-                AddVaultFootnote(stringResource(R.string.ui_use_a_github_com_https_address_the_clone_k_6466d7b7))
+                RemoteAuth.TOKEN -> Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    M3TextField(username, { username = it }, stringResource(R.string.add_token_user), Modifier.testTag("remote-username"), enabled = !locked)
+                    androidx.compose.material3.OutlinedTextField(secret, { secret = it }, label = { Text(stringResource(R.string.add_token_secret)) }, enabled = !locked, singleLine = true,
+                        visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), textStyle = M3Type.code.copy(color = c.on),
+                        colors = com.bontecou.syncmd.ui.components.sshFieldColors(), shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp),
+                        modifier = Modifier.fillMaxWidth().testTag("remote-secret"))
+                    Text(stringResource(R.string.add_token_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(horizontal = 4.dp))
+                }
+                RemoteAuth.GITHUB -> Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
+                    if (accounts.none { it.connected && it.id == accountId }) M3Note(stringResource(R.string.ui_the_previous_github_account_is_disconnecte_628a1f8c), tone = M3NoteTone.Warn)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        accounts.filter { it.connected }.forEach { account ->
+                            M3FilterChip(account.login?.let { "@$it" } ?: stringResource(R.string.publication_accounts), accountId == account.id, { accountId = account.id },
+                                Modifier.testTag("remote-account-${account.id}"), enabled = !locked, role = androidx.compose.ui.semantics.Role.RadioButton)
+                        }
+                    }
+                    Text(stringResource(R.string.add_github_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(horizontal = 4.dp))
+                }
+                RemoteAuth.SAVED -> Text(stringResource(R.string.add_saved_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp))
+                RemoteAuth.NONE -> Text(stringResource(R.string.add_none_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp))
+                null -> if (!historyState.busy) M3Note(stringResource(R.string.ui_choose_an_authentication_method_before_clo_c89124ba),
+                    Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Ahead)
             }
-            if (authenticated) {
-                OutlinedTextField(username, { username = it }, enabled = !locked, label = { Text(stringResource(R.string.ui_username_e3b89e9d), modifier = Modifier.testTag("remote-username-label")) }, singleLine = true,
-                    colors = tideFieldColors(), shape = Tide.fieldShape, modifier = Modifier.fillMaxWidth().testTag("remote-username"))
-                OutlinedTextField(secret, { secret = it }, enabled = !locked, label = { Text(stringResource(R.string.ui_token_or_password_d6e43f8a), modifier = Modifier.testTag("remote-secret-label")) }, singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    colors = tideFieldColors(), shape = Tide.fieldShape, modifier = Modifier.fillMaxWidth().testTag("remote-secret"))
-                AddVaultFootnote(stringResource(R.string.ui_saved_credentials_are_encrypted_on_this_de_a97385dd))
-            } else if (!useGithub && !useSaved && !useSsh) AddVaultFootnote(stringResource(R.string.ui_gitsync_md_will_not_provide_credentials_fo_103df88f))
 
-            // ── Where it lives ────────────────────────────────────────────
-            Box(Modifier.padding(top = 8.dp)) { com.bontecou.syncmd.ui.components.FolderLocationField(location, { location = it }, enabled = !locked) }
-            state.error?.let { AddVaultNote(it, TideBannerTone.DANGER, textModifier = Modifier.testTag("remote-error")) }
-            if (state.busy) {
-                AddVaultProgress()
-                AddVaultBusyLine(stringResource(R.string.ui_cloning_and_preparing_the_working_copy_90548a33))
+            // Name, branch and folder: the repo's own name, the server's default branch and the saved default folder unless changed.
+            M3ListCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)) {
+                M3SettingsRow(stringResource(R.string.add_more_options), Modifier.testTag("remote-options"),
+                    subtitle = stringResource(R.string.add_more_options_meta, name.ifBlank { "—" }, branch.ifBlank { stringResource(R.string.add_default_branch) }),
+                    onClick = { options = !options }, chevron = true)
             }
-            if (state.path != null) {
-                state.completed?.let { completed ->
-                    com.bontecou.syncmd.ui.components.CloneCompletion(completed, state.name, settings,
-                        historyEntry = historyEntry, onReviewLfs = onReviewLfs, onRegistered = onSuccess)
-                }
-            } else TidePrimaryButton(stringResource(if (gate.paywallEnabled) R.string.paywall_check_vault else R.string.ui_clone_repository_e8fa94ab), onClick = {
-                    // With the paywall on, every URL clone starts with the free vault check (as on iOS).
-                    if (!gate.paywallEnabled) cloneNow()
-                    else scope.launch { viewModel.vaultTarget(url, name, branch, authenticated, username, secret, if (useGithub) accountId else null, useSaved,
-                        if (useSsh) Credentials.Ssh(privateKey, passphrase, publicKey) else null)?.let { checkTarget = it } }
-                },
-                enabled = !locked && (!noNetworkCredentials || !authenticated && !useSsh && !useSaved && !useGithub) && authenticationReviewed && url.isNotBlank() && name.isNotBlank() && (!useSsh || privateKey.isNotBlank()) && (!useGithub || accounts.any { it.connected && it.id == accountId }),
-                loading = state.busy, modifier = Modifier.padding(top = 4.dp).testTag("remote-clone"))
-            Spacer(Modifier.height(16.dp))
+            if (options) Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                M3TextField(name, { name = it; nameEdited = true }, stringResource(R.string.ui_name_in_gitsync_md_893ad211), Modifier.testTag("remote-name"), enabled = !locked)
+                M3TextField(branch, { branch = it }, stringResource(R.string.ui_branch_optional_e9dedf99), Modifier.testTag("remote-branch"), mono = true, enabled = !locked,
+                    supportingText = stringResource(R.string.ui_leave_blank_to_use_the_server_s_default_br_077388af))
+                AddVaultLocationCard(location, { location = it }, name.ifBlank { "repo" }, enabled = !locked)
+            }
+            (testError ?: state.error)?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp).testTag("remote-error"), tone = M3NoteTone.Warn) }
+            notice?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), tone = M3NoteTone.Muted) }
+            if (state.busy || state.path != null) AddVaultCloneHero(remote?.let { repoPathOf(it) } ?: name, remote?.host, cloned = state.path != null,
+                cloning = state.busy, progress = progress, totalBytes = null, modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp))
+            if (state.path != null) state.completed?.let { completed ->
+                com.bontecou.syncmd.ui.components.CloneCompletion(completed, state.name, settings, historyEntry = historyEntry, onReviewLfs = onReviewLfs, onRegistered = onSuccess)
+            }
+            Spacer(Modifier.height(8.dp))
+        }
+        if (state.path == null) M3BottomActionBar {
+            M3Button(stringResource(if (testing) R.string.add_testing else R.string.add_test_clone), testAndClone, Modifier.fillMaxWidth().testTag("remote-clone"),
+                size = M3ButtonSize.XLarge, loading = testing || state.busy,
+                enabled = !locked && auth != null && remote != null && name.isNotBlank() &&
+                    (auth != RemoteAuth.SSH || (if (otherKey) privateKey.isNotBlank() else deviceKey != null)) &&
+                    (auth != RemoteAuth.TOKEN || username.isNotBlank() && secret.isNotEmpty()) &&
+                    (auth != RemoteAuth.GITHUB || accounts.any { it.connected && it.id == accountId }))
         }
     }
+}
+
+private val RemoteAuth.label: Int get() = when (this) {
+    RemoteAuth.SSH -> R.string.add_auth_ssh
+    RemoteAuth.TOKEN -> R.string.add_auth_token
+    RemoteAuth.NONE -> R.string.add_auth_none
+    RemoteAuth.GITHUB -> R.string.add_auth_github
+    RemoteAuth.SAVED -> R.string.add_auth_saved
+}
+
+/** "owner/repo" from a normalized remote address. */
+private fun repoPathOf(url: String): String = runCatching {
+    val path = if (url.contains("://")) java.net.URI(url).path else url.substringAfter(':')
+    path.trim('/').removeSuffix(".git")
+}.getOrDefault(url)
+
+private fun repoPathOf(remote: GitRemote): String = repoPathOf(remote.url)
+
+private fun repoNameOf(url: String): String = repoPathOf(url).substringAfterLast('/').take(120)
+
+/** "SSH · gitea.home.lan · cody/recipes". */
+@Composable
+private fun remoteSummary(remote: GitRemote): String {
+    val transport = stringResource(when {
+        remote.isSsh -> R.string.add_remote_ssh
+        remote.isNativeGit -> R.string.add_remote_git
+        remote.isLocalFile -> R.string.add_remote_file
+        remote.isPlainHttp -> R.string.add_remote_http
+        else -> R.string.add_remote_https
+    })
+    return listOf(transport, remote.host, repoPathOf(remote)).filter { it.isNotBlank() }.joinToString(" · ")
 }
