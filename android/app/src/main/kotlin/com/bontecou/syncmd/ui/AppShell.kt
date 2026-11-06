@@ -445,6 +445,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                             onNavigateBack = { selectedFile = null },
                             onOpenEditor = { openEditor(file) },
                             showBack = false,
+                            onOpenEditorFor = openEditor,
                         )
                     }
                 }
@@ -524,6 +525,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         staged = backStackEntry.arguments?.getString("staged")?.toBooleanStrictOrNull(),
                         onNavigateBack = { navController.popBackStackSafe() },
                         onOpenEditor = { navController.navigateSafe("${Routes.EDITOR}/${Uri.encode(filePath)}") },
+                        onOpenEditorFor = { navController.navigateSafe("${Routes.EDITOR}/${Uri.encode(it)}") },
                     )
                 }
                 railFrame(null) {
@@ -557,8 +559,17 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     onNavigateBack = { navController.popBackStackSafe() },
                     showNavigation = !adaptive.isMedium,
                     onSelectTab = openTab,
+                    vaultName = selectedIdentity?.name,
+                    onOpenHistory = { navController.navigateSafe("${com.bontecou.syncmd.ui.screens.FILE_HISTORY_ROUTE}/${Uri.encode(it)}") },
                 )
               }
+            }
+            composable(
+                route = "${com.bontecou.syncmd.ui.screens.FILE_HISTORY_ROUTE}/{filePath}",
+                arguments = listOf(navArgument("filePath") { type = NavType.StringType }),
+            ) { entry ->
+                com.bontecou.syncmd.ui.screens.FileHistoryScreen(selectedRepository, entry.arguments?.getString("filePath").orEmpty(),
+                    onNavigateBack = { navController.popBackStackSafe() })
             }
             composable(
                 route = "${Routes.EDITOR}/{filePath}",
@@ -569,6 +580,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     repositoryPath = selectedRepository,
                     filePath = entry.arguments?.getString("filePath").orEmpty(),
                     onNavigateBack = { navController.popBackStackSafe() },
+                    vaultName = selectedIdentity?.name,
                 )
               }
             }

@@ -9,10 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -25,293 +24,287 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.width
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.R
-import com.bontecou.syncmd.data.models.FileDiff
-import com.bontecou.syncmd.data.models.UnifiedDiffResult
-import com.bontecou.syncmd.ui.components.GitWorkDiffLineRow
-import com.bontecou.syncmd.ui.components.GitWorkDiffRow
-import com.bontecou.syncmd.ui.components.GitWorkDiffKind
-import com.bontecou.syncmd.ui.components.GitWorkPill
-import com.bontecou.syncmd.ui.components.GitWorkPillStyle
-import com.bontecou.syncmd.ui.components.GitWorkStatusPill
-import com.bontecou.syncmd.ui.components.GitWorkWorking
+import com.bontecou.syncmd.services.files.FileInsights
+import com.bontecou.syncmd.services.files.WorkingFileDiff
+import com.bontecou.syncmd.services.files.WorkingLine
+import com.bontecou.syncmd.services.files.WorkingLineKind
 import com.bontecou.syncmd.ui.components.RevertConfirmDialog
-import com.bontecou.syncmd.ui.components.gitWorkDiffRows
-import com.bontecou.syncmd.ui.components.gitWorkPreviewDiff
-import com.bontecou.syncmd.ui.theme.BPrimaryButton
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3BottomToolbar
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3Dialog
+import com.bontecou.syncmd.ui.theme.M3DialogAction
+import com.bontecou.syncmd.ui.theme.M3IconButton
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3Segmented
+import com.bontecou.syncmd.ui.theme.M3Spinner
+import com.bontecou.syncmd.ui.theme.M3TextButton
+import com.bontecou.syncmd.ui.theme.M3TopBar
+import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideCard
-import com.bontecou.syncmd.ui.theme.TideDialog
-import com.bontecou.syncmd.ui.theme.TideDisplay
-import com.bontecou.syncmd.ui.theme.TidePill
-import com.bontecou.syncmd.ui.theme.TideTopBar
-import com.bontecou.syncmd.ui.theme.TideType
 import com.bontecou.syncmd.ui.util.asString
 import com.bontecou.syncmd.ui.viewmodels.DiffViewModel
+import com.bontecou.syncmd.ui.viewmodels.WorkingDiffViewModel
 
-// ─── Screen ──────────────────────────────────────────────────────────────────
+// ─── Diff (board 07) ────────────────────────────────────────────────────────
 
 /**
- * Full-screen diff for a single file — mirrors iOS Tide FileDiffView.
- *
- * Shows a folder caption in the top bar, the filename as the headline with
- * status / staged pills and "+N −M", then the diff on a white card: hunk
- * bands, green additions and red removals with changed words tinted. The
- * Discard pill opens [RevertConfirmDialog].
+ * One changed file compared with its last commit: "+8 −3 vs last commit a41c9e2", Changes /
+ * Whole file / Preview, "folder/ · i of n" with previous and next file, and a footer with
+ * Discard (this file only, through the reviewed discard) and Open in editor.
  */
 @Composable
 fun DiffScreen(
     repositoryPath: String,
     filePath: String,
     onNavigateBack: () -> Unit,
+    /** True compares the last commit with the staged index (Git tools); otherwise with the working copy. */
     staged: Boolean? = null,
     diffVM: DiffViewModel = hiltViewModel(),
-    /** Opens the file in the editor (Material 3 diff board: "Open in editor"). */
+    /** Opens the file in the editor ("Open in editor"). */
     onOpenEditor: (() -> Unit)? = null,
     /** False inside a list-detail pane, where the list stays beside the diff. */
     showBack: Boolean = true,
+    /** Opens a given file in the editor; used after moving to another file with previous / next. */
+    onOpenEditorFor: ((String) -> Unit)? = null,
+    workingVM: WorkingDiffViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(repositoryPath, filePath, staged) {
-        if (repositoryPath.isNotBlank()) {
-            diffVM.setRepositoryPath(repositoryPath)
-            if (filePath.isNotBlank()) diffVM.selectFile(filePath, staged)
-        }
-    }
+    var current by rememberSaveable(filePath) { mutableStateOf(filePath) }
+    LaunchedEffect(repositoryPath) { if (repositoryPath.isNotBlank()) diffVM.setRepositoryPath(repositoryPath) }
+    LaunchedEffect(repositoryPath, current, staged) { workingVM.load(repositoryPath, current, staged) }
 
-    val isLoading        by diffVM.isLoading.collectAsState()
-    val selectedFileDiff by diffVM.selectedFileDiff.collectAsState()
+    val working by workingVM.state.collectAsState()
+    val changes by diffVM.diff.collectAsState()
     val diffError = diffVM.errorMessage.collectAsState().value?.asString()
-
     val discardReview by diffVM.discardReview.collectAsState()
     val reviewingDiscard by diffVM.isReviewingDiscard.collectAsState()
     val discarding by diffVM.isDiscarding.collectAsState()
     val isReverting = reviewingDiscard || discarding
-    DisposableEffect(repositoryPath, filePath) { onDispose { diffVM.dismissDiscard() } }
+    DisposableEffect(repositoryPath, current) { onDispose { diffVM.dismissDiscard() } }
 
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
         // A periodic read must not close a frozen review. Confirmation revalidates its exact revision.
         if (!isReverting) {
             diffVM.refreshRepositoryPath(repositoryPath)
-            if (filePath.isNotBlank()) diffVM.selectFile(filePath, staged)
+            workingVM.load(repositoryPath, current, staged)
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(Tide.colors.paper).navigationBarsPadding()) {
-        DiffContent(
-            filePath = filePath,
-            staged = staged,
-            isLoading = isLoading,
-            result = selectedFileDiff,
-            error = diffError,
-            isReverting = isReverting,
-            onBack = onNavigateBack,
-            onDiscard = { diffVM.requestDiscard(filePath) },
-            onOpenEditor = onOpenEditor,
-            showBack = showBack,
-        )
+    // The files on this phone that differ from the last commit, in the Changes order.
+    val paths = changes?.files?.map { it.filePath }?.distinct().orEmpty()
+    val index = paths.indexOf(current)
+    val openEditor: (() -> Unit)? = when {
+        onOpenEditorFor != null -> { { onOpenEditorFor(current) } }
+        current == filePath -> onOpenEditor
+        else -> null
+    }
 
-        if (diffError != null && selectedFileDiff != null) {
-            TideDialog(
-                onDismissRequest = diffVM::clearError,
-                title = stringResource(R.string.ui_error_54a0e8c1),
-                text = {
-                    Text(diffError, Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()).testTag("diff-operation-error"))
-                },
-                confirmButton = { BPrimaryButton(stringResource(R.string.ui_ok_565339bc), onClick = diffVM::clearError) },
-            )
-        }
-        // ── Revert confirm dialog ──────────────────────────────────────────
-        discardReview?.takeIf { it.filePath == filePath }?.let { review ->
-            RevertConfirmDialog(
-                review = review,
-                onConfirm = { diffVM.confirmDiscard(review, onComplete = onNavigateBack) },
-                onDismiss = { diffVM.dismissDiscard(review) },
-            )
-        }
+    DiffContent(
+        filePath = current,
+        position = if (index >= 0 && paths.size > 1) index to paths.size else null,
+        loading = working.loading && working.diff == null,
+        failed = working.failed,
+        diff = working.diff?.takeIf { working.path == current },
+        isReverting = isReverting,
+        showBack = showBack,
+        onBack = onNavigateBack,
+        onPrevious = { if (index > 0) current = paths[index - 1] },
+        onNext = { if (index >= 0 && index < paths.lastIndex) current = paths[index + 1] },
+        onDiscard = { diffVM.requestDiscard(current) },
+        onOpenEditor = openEditor,
+    )
+
+    if (diffError != null) {
+        M3Dialog(
+            onDismissRequest = diffVM::clearError,
+            title = stringResource(R.string.ui_error_54a0e8c1),
+            content = { Text(diffError, Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()).testTag("diff-operation-error")) },
+        ) { M3DialogAction(stringResource(R.string.ui_ok_565339bc), diffVM::clearError) }
+    }
+    discardReview?.takeIf { it.filePath == current }?.let { review ->
+        RevertConfirmDialog(
+            review = review,
+            onConfirm = {
+                diffVM.confirmDiscard(review, onComplete = {
+                    // Move on to the next changed file when there is one; otherwise leave.
+                    val rest = paths.filter { it != current }
+                    if (rest.isEmpty()) onNavigateBack() else current = rest[index.coerceIn(0, rest.lastIndex)]
+                })
+            },
+            onDismiss = { diffVM.dismissDiscard(review) },
+        )
     }
 }
 
-/** Stateless body of the diff screen, one branch per load state. */
+private enum class DiffView { CHANGES, WHOLE, PREVIEW }
+
+/** Stateless body of the diff screen. */
 @Composable
 private fun DiffContent(
     filePath: String,
-    staged: Boolean?,
-    isLoading: Boolean,
-    result: UnifiedDiffResult?,
-    error: String?,
+    position: Pair<Int, Int>?,
+    loading: Boolean,
+    failed: Boolean,
+    diff: WorkingFileDiff?,
     isReverting: Boolean,
+    showBack: Boolean,
     onBack: () -> Unit,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
     onDiscard: () -> Unit,
-    onOpenEditor: (() -> Unit)? = null,
-    showBack: Boolean = true,
+    onOpenEditor: (() -> Unit)?,
 ) {
-    val c = Tide.colors
+    val c = M3.colors
     val filename = filePath.substringAfterLast('/').ifEmpty { filePath }
-    val directory = filePath.substringBeforeLast('/', "")
-    val fileDiff = result?.files?.firstOrNull()
-    val rows = remember(result) { fileDiff?.let(::gitWorkDiffRows) ?: emptyList() }
-    val added = rows.count { it.kind == GitWorkDiffKind.ADDED }
-    val removed = rows.count { it.kind == GitWorkDiffKind.REMOVED }
+    val directory = filePath.substringBeforeLast('/', "").let { if (it.isEmpty()) "/" else "$it/" }
+    val markdown = isMarkdownPath(filePath)
+    var view by rememberSaveable(filePath) { mutableStateOf(DiffView.CHANGES) }
+    if (!markdown && view == DiffView.PREVIEW) view = DiffView.CHANGES
 
-    Column(Modifier.fillMaxSize()) {
-        TideTopBar(
+    Column(Modifier.fillMaxSize().background(c.surface)) {
+        M3TopBar(
+            title = filename,
+            subtitle = position?.let { (i, n) -> stringResource(R.string.diff_m3_position, directory, i + 1, n) } ?: directory,
             onBack = if (showBack) onBack else null,
-            backLabel = stringResource(R.string.publication_back),
-            center = {
-                com.bontecou.syncmd.ui.theme.TideTopBarTitle(filename, if (directory.isBlank()) "/" else "$directory/")
+            modifier = Modifier.testTag("diff-title"),
+            actions = {
+                if (position != null) {
+                    M3IconButton(R.drawable.ic_m3_chevron_left, stringResource(R.string.diff_m3_previous), onPrevious,
+                        Modifier.testTag("diff-previous"), enabled = position.first > 0)
+                    M3IconButton(R.drawable.ic_m3_chevron_right, stringResource(R.string.diff_m3_next), onNext,
+                        Modifier.testTag("diff-next"), enabled = position.first < position.second - 1)
+                }
             },
         )
-
-        LazyColumn(Modifier.weight(1f).fillMaxWidth(), contentPadding = PaddingValues(bottom = 24.dp)) {
-            item(key = "header") {
-                DiffHeader(filename, fileDiff, staged, added, removed, showStats = rows.isNotEmpty())
+        if (diff != null && !diff.binary) {
+            val a11y = stringResource(R.string.diff_m3_stats_a11y, diff.added, diff.removed)
+            val against = diff.headShortHash?.let { stringResource(R.string.diff_m3_vs_last_commit, it) } ?: stringResource(R.string.diff_m3_vs_nothing)
+            Row(
+                Modifier.padding(start = 20.dp, end = 20.dp, top = 4.dp).clearAndSetSemantics { contentDescription = "$a11y, $against" }.testTag("diff-stats"),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val style = M3Type.code.copy(textDirection = TextDirection.Ltr)
+                Text("+${diff.added}", style = style.copy(fontWeight = FontWeight.SemiBold), color = c.addInk)
+                Text("−${diff.removed}", style = style.copy(fontWeight = FontWeight.SemiBold), color = c.delInk)
+                Text(against, style = style, color = c.onVar)
             }
+        }
+        val options = buildList {
+            add(stringResource(R.string.diff_m3_changes)); add(stringResource(R.string.diff_m3_whole_file))
+            if (markdown) add(stringResource(R.string.diff_m3_preview))
+        }
+        M3Segmented(options, view.ordinal, { view = DiffView.values()[it] }, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("diff-view"))
+
+        Box(Modifier.weight(1f).fillMaxWidth()) {
             when {
-                isLoading -> item(key = "loading") {
-                    GitWorkWorking(stringResource(R.string.ui_loading_diff_3944c704),
-                        Modifier.padding(horizontal = Tide.gutter, vertical = 20.dp))
+                loading -> Box(Modifier.fillMaxWidth().padding(top = 48.dp), contentAlignment = Alignment.Center) { M3Spinner(size = 24.dp, color = c.onVar) }
+                failed || diff == null -> DiffNote(stringResource(R.string.diff_m3_load_failed), M3NoteTone.Warn)
+                diff.binary -> DiffNote(stringResource(R.string.diff_m3_binary), M3NoteTone.Muted)
+                view == DiffView.PREVIEW -> {
+                    if (diff.newText == null) DiffNote(stringResource(R.string.diff_m3_deleted), M3NoteTone.Muted)
+                    else MarkdownPreview(diff.newText.orEmpty(), Modifier.testTag("diff-preview"), changedLines = diff.changedLines)
                 }
-                rows.isEmpty() -> item(key = "empty") {
-                    val (title, body) = when {
-                        error != null -> stringResource(R.string.tide_merge_diff_error_title) to error
-                        fileDiff?.isBinary == true -> stringResource(R.string.ui_binary_file_2c7ccf98) to
-                            stringResource(R.string.tide_merge_diff_binary_body)
-                        else -> stringResource(R.string.tide_merge_diff_empty_title) to stringResource(R.string.tide_merge_diff_empty_body)
-                    }
-                    DiffStateCard(title, body, danger = error != null)
+                else -> {
+                    val rows = if (view == DiffView.CHANGES) diff.changes else diff.whole
+                    if (rows.isEmpty()) DiffNote(stringResource(if (diff.deleted) R.string.diff_m3_deleted else R.string.diff_m3_no_changes), M3NoteTone.Muted)
+                    else LazyColumn(Modifier.fillMaxSize().testTag("diff-lines"), contentPadding = PaddingValues(top = 16.dp, bottom = 24.dp)) { diffCard(rows) }
                 }
-                else -> diffCard(rows)
             }
         }
 
-        // ── Bottom bar: one quiet, destructive escape ─────────────────────
-        Row(
-            Modifier.fillMaxWidth().background(c.paper).padding(horizontal = Tide.gutter, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            GitWorkPill(
-                title = stringResource(R.string.tide_merge_diff_discard),
-                onClick = onDiscard,
-                style = GitWorkPillStyle.DANGER_OUTLINE,
-                enabled = !isReverting && !isLoading,
-                loading = isReverting,
-                fill = false,
-                height = 48.dp,
-            )
-            if (onOpenEditor != null && fileDiff?.isBinary != true) {
-                Spacer(Modifier.width(12.dp))
-                com.bontecou.syncmd.ui.theme.TidePrimaryButton(
-                    stringResource(R.string.m3_open_in_editor), onOpenEditor,
-                    Modifier.weight(1f).testTag("diff-open-editor"),
-                    icon = androidx.compose.ui.res.painterResource(R.drawable.ic_m3_edit),
-                )
-            } else Spacer(Modifier.weight(1f))
-        }
-    }
-}
-
-@Composable
-private fun DiffHeader(filename: String, fileDiff: FileDiff?, staged: Boolean?, added: Int, removed: Int, showStats: Boolean) {
-    val c = Tide.colors
-    Column(Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-            fileDiff?.let { GitWorkStatusPill(it.status) }
-            val isStaged = fileDiff?.isStaged == true || staged == true
-            if (fileDiff != null || staged != null) {
-                TidePill(
-                    stringResource(if (isStaged) R.string.tide_merge_diff_staged else R.string.tide_merge_diff_unstaged),
-                    if (isStaged) c.synced else c.ahead,
-                    (if (isStaged) c.synced else c.ahead).copy(alpha = 0.12f),
-                )
-            }
-        }
-        if (showStats) {
-            val a11y = stringResource(R.string.tide_merge_diff_stats_a11y, added, removed)
-            Row(Modifier.clearAndSetSemantics { contentDescription = a11y }, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("+$added", style = TideType.mono(12.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr), color = if (added > 0) c.synced else c.inkFaint)
-                Text("−$removed", style = TideType.mono(12.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr), color = if (removed > 0) c.danger else c.inkFaint)
+        M3BottomToolbar {
+            M3TextButton(stringResource(R.string.diff_m3_discard), onDiscard, Modifier.testTag("diff-discard"),
+                enabled = !isReverting && !loading && diff != null, destructive = true)
+            Spacer(Modifier.weight(1f))
+            if (onOpenEditor != null && diff?.binary != true && diff?.deleted != true) {
+                M3Button(stringResource(R.string.m3_open_in_editor), onOpenEditor, Modifier.testTag("diff-open-editor"),
+                    style = M3ButtonStyle.PrimaryContainer, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_edit, shape = RoundedCornerShape(16.dp))
             }
         }
     }
 }
 
 @Composable
-private fun DiffStateCard(title: String, body: String, danger: Boolean) {
-    val c = Tide.colors
-    TideCard(Modifier.padding(horizontal = Tide.gutter)) {
-        Text(title, style = TideType.sans(15.sp, FontWeight.SemiBold), color = if (danger) c.danger else c.ink)
-        Spacer(Modifier.height(4.dp))
-        Text(body, style = TideType.meta, color = c.inkFaint)
-    }
+private fun DiffNote(text: String, tone: M3NoteTone) {
+    M3Note(text, Modifier.padding(horizontal = 16.dp, vertical = 16.dp).testTag("diff-state"), tone = tone)
 }
 
-/** Lines laid out as one rounded white card spread across lazy items. */
-private fun LazyListScope.diffCard(rows: List<GitWorkDiffRow>) {
-    val last = rows.lastIndex
+/** The lines as one 16dp-cornered cLow card spread across lazy items: mono 13/22, number, sign, text. */
+private fun LazyListScope.diffCard(rows: List<WorkingLine>) {
     itemsIndexed(rows) { index, row ->
-        val r = Tide.radiusCard
+        val c = M3.colors
+        val r = 16.dp
         val shape = when {
-            last == 0 -> RoundedCornerShape(r)
+            rows.size == 1 -> RoundedCornerShape(r)
             index == 0 -> RoundedCornerShape(topStart = r, topEnd = r)
-            index == last -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
+            index == rows.lastIndex -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
             else -> RoundedCornerShape(0.dp)
         }
-        Box(
-            Modifier.padding(horizontal = Tide.gutter).fillMaxWidth().clip(shape).background(Tide.colors.card)
-                .padding(top = if (index == 0 && row.kind != GitWorkDiffKind.HUNK) 8.dp else 0.dp,
-                    bottom = if (index == last) 8.dp else 0.dp),
-        ) { GitWorkDiffLineRow(row) }
+        val (bg, ink) = when (row.kind) {
+            WorkingLineKind.ADDED -> c.addBg to c.addInk
+            WorkingLineKind.REMOVED -> c.delBg to c.delInk
+            WorkingLineKind.HUNK -> c.cHighest to c.onVar
+            WorkingLineKind.CONTEXT -> c.cLow to c.on
+        }
+        val number = when (row.kind) {
+            WorkingLineKind.HUNK -> "@@"
+            WorkingLineKind.REMOVED -> ""
+            else -> row.newNumber?.toString().orEmpty()
+        }
+        val text = when (row.kind) {
+            WorkingLineKind.HUNK -> if (row.text.isBlank()) stringResource(R.string.diff_m3_hunk_line, row.newNumber ?: 1)
+                else stringResource(R.string.diff_m3_hunk, row.text, row.newNumber ?: 1)
+            else -> row.text.ifEmpty { " " }
+        }
+        val sign = when (row.kind) { WorkingLineKind.ADDED -> "+"; WorkingLineKind.REMOVED -> "−"; else -> "" }
+        val style = M3Type.code.copy(lineHeight = 22.sp, textDirection = TextDirection.Ltr)
+        Row(
+            Modifier.padding(horizontal = 16.dp).fillMaxWidth().background(c.cLow, shape).background(bg, shape)
+                .padding(top = 1.dp, bottom = 1.dp, end = 12.dp),
+        ) {
+            Text(number, style = style.copy(fontSize = 11.sp), color = c.onVar, textAlign = TextAlign.End, maxLines = 1,
+                modifier = Modifier.width(30.dp).padding(end = 8.dp))
+            Text(sign, style = style.copy(fontWeight = FontWeight.SemiBold), color = ink, modifier = Modifier.width(16.dp))
+            Text(text, style = if (row.kind == WorkingLineKind.HUNK) style.copy(fontSize = 12.sp) else style, color = ink, modifier = Modifier.weight(1f))
+        }
     }
 }
 
 // ─── Previews ───────────────────────────────────────────────────────────────
 
+private val previewDiff = FileInsights.compare(
+    "ideas/voice-memo-pipeline.md",
+    "# Voice memo pipeline\n\n## Steps\n1. Record in Voice Memos\n2. Transcribe by hand\n3. Paste into daily note\n\n## Open questions\n- Where do audio files live?\n- Is LFS worth it?\n- Share with Sam?\n",
+    "# Voice memo pipeline\n\n## Steps\n1. Record in Voice Memos\n2. Whisper → transcript.md\n3. Tag speakers (A/B)\n4. Link from the daily note\n\n## Open questions\n- Where do audio files live?\n- LFS for anything over 5 MB ✓\n- Speaker names from contacts?\n- Share with Sam?\n",
+    headShortHash = "a41c9e2",
+)
+
 @Composable
-private fun DiffPreview(isLoading: Boolean = false, result: UnifiedDiffResult? = null, error: String? = null, reverting: Boolean = false) {
-    Box(Modifier.fillMaxSize().background(Tide.colors.paper)) {
-        DiffContent("ideas/launch-plan.md", null, isLoading, result, error, reverting, {}, {})
-    }
+private fun DiffPreview(diff: WorkingFileDiff?, loading: Boolean = false) {
+    DiffContent("ideas/voice-memo-pipeline.md", 1 to 3, loading, false, diff, false, true, {}, {}, {}, {}, {})
 }
 
-private val previewSingle = gitWorkPreviewDiff.copy(files = gitWorkPreviewDiff.files.take(1))
-private val previewBinary = gitWorkPreviewDiff.copy(files = gitWorkPreviewDiff.files.drop(1))
-private val previewEmpty = gitWorkPreviewDiff.copy(files = listOf(gitWorkPreviewDiff.files.first().copy(hunks = emptyList())))
-
-@Preview(name = "Diff · lines · light", heightDp = 640) @Composable
-private fun DiffLinesLight() = SyncMdTheme(darkTheme = false) { DiffPreview(result = previewSingle) }
-
-@Preview(name = "Diff · lines · dark", heightDp = 640) @Composable
-private fun DiffLinesDark() = SyncMdTheme(darkTheme = true) { DiffPreview(result = previewSingle) }
-
-@Preview(name = "Diff · loading", heightDp = 400) @Composable
-private fun DiffLoading() = SyncMdTheme(darkTheme = false) { DiffPreview(isLoading = true) }
-
-@Preview(name = "Diff · binary · dark", heightDp = 400) @Composable
-private fun DiffBinaryDark() = SyncMdTheme(darkTheme = true) { DiffPreview(result = previewBinary) }
-
-@Preview(name = "Diff · empty", heightDp = 400) @Composable
-private fun DiffEmpty() = SyncMdTheme(darkTheme = false) { DiffPreview(result = previewEmpty) }
-
-@Preview(name = "Diff · error", heightDp = 400) @Composable
-private fun DiffError() = SyncMdTheme(darkTheme = false) { DiffPreview(error = "Could not read the index.") }
-
-@Preview(name = "Diff · reverting · dark", heightDp = 640) @Composable
-private fun DiffReverting() = SyncMdTheme(darkTheme = true) { DiffPreview(result = previewSingle, reverting = true) }
+@Preview(name = "Diff · light", heightDp = 800) @Composable private fun DiffLight() = SyncMdTheme(darkTheme = false) { DiffPreview(previewDiff) }
+@Preview(name = "Diff · dark", heightDp = 800) @Composable private fun DiffDark() = SyncMdTheme(darkTheme = true) { DiffPreview(previewDiff) }
+@Preview(name = "Diff · loading", heightDp = 400) @Composable private fun DiffLoading() = SyncMdTheme { DiffPreview(null, loading = true) }

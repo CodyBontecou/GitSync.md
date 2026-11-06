@@ -3,4 +3,5 @@
     <files-path name="internal-git-backups" path="git-backups/" />
     <external-files-path name="external-git-backups" path="git-backups/" />
     <external-media-path name="media-git-backups" path="git-backups/" />
+    <cache-path name="open-in" path="open-in/" />
 </paths>

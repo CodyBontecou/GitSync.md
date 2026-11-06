@@ -74,15 +74,19 @@ class FilesScreenTest {
             }
         }
         waitFor("file-row-notes.md")
-        compose.onNodeWithContentDescription("New").performClick()
-        compose.onNodeWithText("New file", substring = false).performClick()
-        compose.onNodeWithTag("filename-input").performTextReplacement("new note.md")
-        compose.onNodeWithText("Confirm").performClick()
+        compose.onNodeWithContentDescription("New file").performClick()
+        // A name that already exists is refused inline.
+        compose.onNodeWithTag("filename-input").performTextReplacement("notes")
+        compose.onNodeWithText("notes.md already exists", substring = true).assertIsDisplayed()
+        compose.onNodeWithTag("filename-confirm").assertIsNotEnabled()
+        compose.onNodeWithTag("filename-input").performTextReplacement("new note")
+        compose.onNodeWithText("Create & open").performClick()
         compose.waitUntil(10_000) { opened.get() == "new note.md" }
         waitFor("file-row-new note.md")
-        compose.onNode(hasText("Rename") and hasAnyAncestor(hasTestTag("file-row-new note.md")), useUnmergedTree = true).performClick()
+        compose.onNodeWithTag("file-row-new note.md").performTouchInput { longClick() }
+        compose.onNodeWithTag("file-action-rename").performClick()
         compose.onNodeWithTag("filename-input").performTextReplacement("renamed.md")
-        compose.onNodeWithText("Confirm").performClick()
+        compose.onNodeWithTag("filename-confirm").performClick()
         waitFor("file-row-renamed.md")
         assertFalse(File(root, "new note.md").exists())
         assertTrue(File(root, "renamed.md").exists())
@@ -91,22 +95,21 @@ class FilesScreenTest {
         capture("files-light")
     }
 
-    @Test fun editorGuardsUnsavedBackAndSavesExactContent() {
+    @Test fun editorAutosavesAndBackSavesExactContent() {
         val closed = AtomicInteger()
         val viewModel = FileEditorViewModel(SavedStateHandle())
         compose.setContent { SyncMdTheme(darkTheme = false) { FileEditorScreen(root.path, "notes.md", { closed.incrementAndGet() }, viewModel) } }
         waitFor("file-editor-input")
         val draft = "# Edited on Android\n\nUnicode: 안녕하세요 🌱\n"
         compose.onNodeWithTag("file-editor-input").performTextReplacement(draft)
-        compose.onNodeWithContentDescription("Back").performClick()
-        compose.onNodeWithText("Save changes?").assertIsDisplayed()
-        compose.onNodeWithText("Keep editing").performClick()
-        assertEquals(0, closed.get())
-        compose.onNodeWithTag("file-save").performClick()
-        compose.waitUntil(10_000) { !viewModel.state.value.isSaving && !viewModel.state.value.isDirty }
+        compose.waitUntil(10_000) { !viewModel.state.value.isDirty && !viewModel.state.value.autosaving }
         assertEquals(draft, File(root, "notes.md").readText())
+        compose.onNodeWithText("Saved", substring = true).assertIsDisplayed()
+        // Back right after typing writes the draft first, then leaves.
+        compose.onNodeWithTag("file-editor-input").performTextReplacement(draft + "More\n")
         compose.onNodeWithContentDescription("Back").performClick()
-        assertEquals(1, closed.get())
+        compose.waitUntil(10_000) { closed.get() == 1 }
+        assertEquals(draft + "More\n", File(root, "notes.md").readText())
     }
 
     @Test fun renameKeepsUnsavedDraftAndRestoresTheNewPath() {
@@ -116,18 +119,16 @@ class FilesScreenTest {
         compose.setContent { SyncMdTheme { FileEditorScreen(root.path, "notes.md", {}, viewModel) } }
         waitFor("file-editor-input")
         compose.onNodeWithTag("file-editor-input").performTextReplacement("Draft survives rename")
+        compose.waitUntil(10_000) { !viewModel.state.value.isDirty }
         compose.onNodeWithContentDescription("More").performClick()
         compose.onNodeWithText("Rename file").performClick()
         compose.onNodeWithTag("filename-input").performTextReplacement("renamed draft.md")
-        compose.onNodeWithText("Confirm").performClick()
+        compose.onNodeWithTag("filename-confirm").performClick()
         compose.waitUntil(10_000) { !viewModel.state.value.isSaving && viewModel.state.value.document?.path == "renamed draft.md" }
         assertFalse(File(root, "notes.md").exists())
-        assertEquals(original, File(root, "renamed draft.md").readText())
-        assertEquals("Draft survives rename", viewModel.state.value.draft)
-        assertTrue(viewModel.state.value.isDirty)
-        compose.onNodeWithTag("file-save").performClick()
-        compose.waitUntil(10_000) { !viewModel.state.value.isSaving && !viewModel.state.value.isDirty }
+        assertNotEquals(original, File(root, "renamed draft.md").readText())
         assertEquals("Draft survives rename", File(root, "renamed draft.md").readText())
+        assertEquals("Draft survives rename", viewModel.state.value.draft)
         val restored = FileEditorViewModel(savedState)
         compose.runOnIdle { restored.open(root.path, "notes.md") }
         compose.waitUntil(10_000) { !restored.state.value.isLoading }
@@ -140,8 +141,8 @@ class FilesScreenTest {
         compose.setContent { SyncMdTheme { FileEditorScreen(root.path, "notes.md", {}, viewModel) } }
         waitFor("file-editor-input")
         compose.onNodeWithTag("file-editor-input").performTextReplacement("My unsaved draft")
+        // Another app writes before the autosave runs; the autosave must not overwrite it.
         File(root, "notes.md").writeText("Newer content from another app")
-        compose.onNodeWithTag("file-save").performClick()
         compose.waitUntil(10_000) { viewModel.state.value.error != null }
         compose.onNodeWithText("File operation failed").assertIsDisplayed()
         assertEquals("Newer content from another app", File(root, "notes.md").readText())
@@ -187,9 +188,9 @@ class FilesScreenTest {
         compose.runOnIdle { dark.value = true }
         capture("editor-dark")
         compose.runOnIdle { scale.value = 1.6f }
-        compose.onNodeWithText("Save", substring = false).assertIsDisplayed()
+        compose.onNodeWithText("Commit", substring = false).assertIsDisplayed()
         compose.onNodeWithContentDescription("Back").assertIsDisplayed()
         capture("editor-dark-large-font")
-        assertTrue(viewModel.state.value.isDirty)
+        assertEquals("# Notes\n\nA file editor with syntax highlighting.\n\n- Keep the cursor stable\n- Save to the working tree\n", viewModel.state.value.draft)
     }
 }
