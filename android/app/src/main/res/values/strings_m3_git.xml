@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material 3 Git tab, its deeper screens (Branches, Stashes, Tags, Remote, Rebase, Manage vault) and the conflict screen. -->
+<resources>
+    <!-- Shared -->
+    <string name="git_m3_github">GitHub</string>
+    <string name="git_m3_the_remote">the remote</string>
+    <string name="git_m3_ago_now">just now</string>
+    <string name="git_m3_ago_minutes">%1$dm ago</string>
+    <string name="git_m3_ago_hours">%1$dh ago</string>
+    <string name="git_m3_ago_days">%1$dd ago</string>
+    <string name="git_m3_age_minutes">%1$dm</string>
+    <string name="git_m3_age_hours">%1$dh</string>
+    <string name="git_m3_age_days">%1$dd</string>
+    <string name="git_m3_ahead">%1$d ahead</string>
+    <string name="git_m3_behind">%1$d behind</string>
+    <string name="git_m3_cancel">Cancel</string>
+    <string name="git_m3_ok">OK</string>
+    <string name="git_m3_subtitle">%1$s · %2$s</string>
+
+    <!-- Git tab -->
+    <string name="git_m3_check_changes">Check for changes</string>
+    <string name="git_m3_vault_settings">Vault settings</string>
+    <string name="git_m3_current_branch">Current branch</string>
+    <string name="git_m3_switch">Switch</string>
+    <string name="git_m3_vs">vs %1$s</string>
+    <string name="git_m3_no_upstream">local only · no upstream</string>
+    <string name="git_m3_detached">Detached at %1$s</string>
+    <string name="git_m3_workspace">Workspace</string>
+    <string name="git_m3_connection">Connection</string>
+    <string name="git_m3_branches">Branches</string>
+    <string name="git_m3_stashes">Stashes</string>
+    <string name="git_m3_tags">Tags</string>
+    <string name="git_m3_lfs">Large files (LFS)</string>
+    <string name="git_m3_lfs_value">%1$s · %2$d locked</string>
+    <string name="git_m3_lfs_none">Not used</string>
+    <string name="git_m3_remote">Remote</string>
+    <string name="git_m3_commit_as">Commit as</string>
+    <string name="git_m3_saved_in">Saved in</string>
+    <string name="git_m3_none">None</string>
+    <string name="git_m3_not_set">Not set</string>
+    <string name="git_m3_discard">Discard changes</string>
+    <string name="git_m3_stop_tracking">Stop tracking…</string>
+    <string name="git_m3_merge_in_progress">Merge in progress</string>
+    <string name="git_m3_merge_ready">All conflicts resolved. Finish the merge.</string>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">%1$d conflict to resolve.</item>
+        <item quantity="other">%1$d conflicts to resolve.</item>
+    </plurals>
+    <string name="git_m3_resolve">Resolve</string>
+    <string name="git_m3_rebase_in_progress">Rebase in progress</string>
+    <string name="git_m3_rebase_step">Stopped on commit %1$d of %2$d.</string>
+    <string name="git_m3_rebase_stopped">The rebase is waiting for you.</string>
+    <string name="git_m3_open_rebase">Open rebase</string>
+    <!-- Branches -->
+    <string name="git_m3_refresh_branches">Refresh branches</string>
+    <string name="git_m3_tracking">tracking %1$s</string>
+    <string name="git_m3_local_only">local only</string>
+    <string name="git_m3_new_branch">New branch</string>
+    <string name="git_m3_branch_name">Branch name</string>
+    <string name="git_m3_branch_placeholder">e.g. draft/winter</string>
+    <string name="git_m3_create">Create</string>
+    <string name="git_m3_starts_from">starts from %1$s on %2$s · you stay on %2$s</string>
+    <string name="git_m3_on_this_phone">On this phone</string>
+    <string name="git_m3_only_on">Only on %1$s</string>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">%1$d change isn’t committed yet. Commit or stash it before you switch branches.</item>
+        <item quantity="other">%1$d changes aren’t committed yet. Commit or stash them before you switch branches.</item>
+    </plurals>
+    <string name="git_m3_current">Current</string>
+    <string name="git_m3_merge_into">Merge into %1$s</string>
+    <string name="git_m3_delete_branch_cd">Delete branch %1$s</string>
+    <string name="git_m3_remote_pill">remote</string>
+    <string name="git_m3_fetch_hint">to see new branches pushed from your other devices.</string>
+    <string name="git_m3_from">From</string>
+    <string name="git_m3_how">How</string>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">%1$d commit %2$s doesn’t have</item>
+        <item quantity="other">%1$d commits %2$s doesn’t have</item>
+    </plurals>
+    <string name="git_m3_nothing_new">nothing %1$s doesn’t have</string>
+    <string name="git_m3_strategy_prefer">Fast-forward if possible</string>
+    <string name="git_m3_strategy_ff">Fast-forward only</string>
+    <string name="git_m3_strategy_always">Always merge commit</string>
+    <string name="git_m3_strategy_prefer_help">Moves %1$s forward when it can. Otherwise creates a merge commit.</string>
+    <string name="git_m3_strategy_ff_help">Only merges when %1$s is directly ahead of %2$s. Keeps history in a straight line.</string>
+    <string name="git_m3_strategy_always_help">Creates a merge commit even when %1$s could just move forward.</string>
+    <string name="git_m3_merge_pause_note">If both branches changed the same file, the merge pauses so you can pick what to keep in Git.</string>
+    <string name="git_m3_merge_named">Merge %1$s</string>
+    <string name="git_m3_delete_branch_title">Delete branch?</string>
+    <string name="git_m3_delete_branch_body">Deletes %1$s on this phone. GitHub isn’t touched.</string>
+    <string name="git_m3_delete_normal">Normal</string>
+    <string name="git_m3_delete_force">Force</string>
+    <string name="git_m3_delete_normal_help">Only deletes the branch if its commits are already merged.</string>
+    <string name="git_m3_delete_force_help">Force deletes the branch even if its commits were never merged. They can be lost.</string>
+    <string name="git_m3_delete">Delete</string>
+    <string name="git_m3_cant_switch_title">Can’t switch yet</string>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">Switching to %1$s would replace the files on this phone. Your %2$d uncommitted change needs a safe place first.</item>
+        <item quantity="other">Switching to %1$s would replace the files on this phone. Your %2$d uncommitted changes need a safe place first.</item>
+    </plurals>
+    <string name="git_m3_cant_switch_note">Untracked files the other branch would overwrite also block the switch. Nothing has changed yet.</string>
+    <string name="git_m3_stash_changes">Stash changes</string>
+    <string name="git_m3_commit_first">Commit first</string>
+    <string name="git_m3_stay_on">Stay on %1$s</string>
+    <string name="git_m3_more_files">%1$d more</string>
+</resources>

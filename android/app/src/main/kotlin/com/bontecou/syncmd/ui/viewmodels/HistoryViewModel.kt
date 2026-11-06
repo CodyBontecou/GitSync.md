@@ -102,12 +102,12 @@ class HistoryViewModel @Inject constructor(private val historyService: HistorySe
         val result = historyService.stash(path, message.ifBlank { null }).getOrThrow()
         check(result.success) { result.message }
     }
-    fun stashApply(expected: RepositorySelection, stash: Stash) = changeStash(expected, stash, historyService::stashApply)
-    fun stashPop(expected: RepositorySelection, stash: Stash) = changeStash(expected, stash, historyService::stashPop)
-    fun stashDrop(expected: RepositorySelection, stash: Stash) = changeStash(expected, stash, historyService::stashDrop)
-    private fun changeStash(expected: RepositorySelection, stash: Stash, action: suspend (String, String) -> Result<Unit>) {
+    fun stashApply(expected: RepositorySelection, stash: Stash, onSuccess: () -> Unit = {}) = changeStash(expected, stash, historyService::stashApply, onSuccess)
+    fun stashPop(expected: RepositorySelection, stash: Stash, onSuccess: () -> Unit = {}) = changeStash(expected, stash, historyService::stashPop, onSuccess)
+    fun stashDrop(expected: RepositorySelection, stash: Stash, onSuccess: () -> Unit = {}) = changeStash(expected, stash, historyService::stashDrop, onSuccess)
+    private fun changeStash(expected: RepositorySelection, stash: Stash, action: suspend (String, String) -> Result<Unit>, onSuccess: () -> Unit = {}) {
         if (_state.value.stashes.none { it === stash }) return
-        mutate(expected) { path, fresh ->
+        mutate(expected, onSuccess) { path, fresh ->
             // stash@{n} is positional: a newly added/dropped entry must not retarget an old row.
             gitOpsCheck(fresh.stashes.firstOrNull { it.id == stash.id } == stash, R.string.gitops_stash_changed)
             action(path, stash.id).getOrThrow()
@@ -121,11 +121,11 @@ class HistoryViewModel @Inject constructor(private val historyService: HistorySe
             historyService.createTag(path, name, target, annotated, message).getOrThrow()
         }
     }
-    fun pushTag(expected: RepositorySelection, tag: Tag) = changeTag(expected, tag) { path -> pushService.pushTag(path, tag.name) }
-    fun deleteTag(expected: RepositorySelection, tag: Tag) = changeTag(expected, tag) { path -> historyService.deleteTag(path, tag.name) }
-    private fun changeTag(expected: RepositorySelection, tag: Tag, action: suspend (String) -> Result<Unit>) {
+    fun pushTag(expected: RepositorySelection, tag: Tag, onSuccess: () -> Unit = {}) = changeTag(expected, tag, onSuccess) { path -> pushService.pushTag(path, tag.name) }
+    fun deleteTag(expected: RepositorySelection, tag: Tag, onSuccess: () -> Unit = {}) = changeTag(expected, tag, onSuccess) { path -> historyService.deleteTag(path, tag.name) }
+    private fun changeTag(expected: RepositorySelection, tag: Tag, onSuccess: () -> Unit = {}, action: suspend (String) -> Result<Unit>) {
         if (_state.value.tags.none { it === tag }) return
-        mutate(expected) { path, fresh ->
+        mutate(expected, onSuccess) { path, fresh ->
             gitOpsCheck(fresh.tags.firstOrNull { it.name == tag.name } == tag, R.string.gitops_tag_changed)
             action(path).getOrThrow()
         }
