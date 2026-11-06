@@ -29,6 +29,11 @@ class DiagnosticsViewModel @Inject constructor(logs: AppDiagnostics) : ViewModel
         val text = store.export(level)
         withContext(Dispatchers.Main) { deliver(text) }
     }
+    /** Exactly the rows on screen (Debug log › "Copy visible entries" and "Share diagnostics"). */
+    fun exportVisible(entries: List<com.bontecou.syncmd.services.diagnostics.DiagnosticEntry>, deliver: (String) -> Unit) = run {
+        val text = store.export(entries)
+        withContext(Dispatchers.Main) { deliver(text) }
+    }
     fun copied() { _notice.value = R.string.diagnostics_copied }
     private fun run(action: suspend () -> Unit) {
         if (_busy.value) return

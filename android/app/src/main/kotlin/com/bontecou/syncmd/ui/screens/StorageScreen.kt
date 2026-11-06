@@ -3,41 +3,51 @@ package com.bontecou.syncmd.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.ui.components.DeviceFolderButton
-import com.bontecou.syncmd.ui.components.WrappingTopBar
-import com.bontecou.syncmd.ui.theme.BPrimaryButton
-import com.bontecou.syncmd.ui.theme.BSecondaryButton
+import com.bontecou.syncmd.ui.components.SettingsFolderCard
+import com.bontecou.syncmd.ui.components.SettingsHint
+import com.bontecou.syncmd.ui.components.SettingsIntro
+import com.bontecou.syncmd.ui.components.folderCrumbs
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3Chevron
+import com.bontecou.syncmd.ui.theme.M3Group
+import com.bontecou.syncmd.ui.theme.M3Icon
+import com.bontecou.syncmd.ui.theme.M3IndeterminateProgressBar
+import com.bontecou.syncmd.ui.theme.M3ListRow
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3TopBar
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.viewmodels.SavedRepository
 import com.bontecou.syncmd.ui.viewmodels.StorageViewModel
 
+// ─── Save new clones in (board Storage: storage · chosen; the move states live in MoveRepositoryScreen) ──
+
 @Composable
-fun StorageScreen(onBack: () -> Unit, viewModel: StorageViewModel = hiltViewModel()) {
+fun StorageScreen(onBack: () -> Unit, viewModel: StorageViewModel = hiltViewModel(), repositories: List<SavedRepository> = emptyList(),
+    onMove: (String) -> Unit = {}) {
     val state by viewModel.state.collectAsState()
     StorageContent(
         currentPath = state.current?.path,
@@ -48,11 +58,13 @@ fun StorageScreen(onBack: () -> Unit, viewModel: StorageViewModel = hiltViewMode
             StorageViewModel.Message.APP_STORAGE_SAVED -> R.string.storage_app_saved
         }) },
         error = state.error,
+        repositories = repositories,
         onBack = onBack,
         onUseDefault = viewModel::useDefault,
         onUseAppStorage = viewModel::useAppStorage,
-        folderButton = {
-            DeviceFolderButton(stringResource(R.string.ui_choose_a_device_folder_d00b7daf), !state.busy, viewModel::choose, viewModel::showError)
+        onMove = onMove,
+        folderButton = { modifier ->
+            DeviceFolderButton(stringResource(R.string.ui_choose_a_device_folder_d00b7daf), !state.busy, viewModel::choose, viewModel::showError, modifier = modifier)
         },
     )
 }
@@ -64,90 +76,64 @@ private fun StorageContent(
     busy: Boolean,
     message: String?,
     error: String?,
+    repositories: List<SavedRepository>,
     onBack: () -> Unit,
     onUseDefault: () -> Unit,
     onUseAppStorage: () -> Unit,
-    folderButton: @Composable () -> Unit,
+    onMove: (String) -> Unit,
+    folderButton: @Composable (Modifier) -> Unit,
 ) {
-    val c = Tide.colors
-    Scaffold(modifier = Modifier.testTag("storage-screen"), containerColor = c.paper, topBar = {
-        WrappingTopBar(stringResource(R.string.ui_clone_storage_47cafc8a), stringResource(R.string.publication_back), onBack,
-            titleModifier = Modifier.testTag("storage-title"))
-    }) { padding ->
-        Column(
-            Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())
-                .padding(start = Tide.gutter, end = Tide.gutter, top = 4.dp, bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Text(stringResource(R.string.ui_choose_the_default_folder_for_new_clones_e_9782dc64),
-                modifier = Modifier.padding(horizontal = 4.dp), style = TideType.copy, color = c.inkMid)
-
-            StorageFolderCard(stringResource(R.string.ui_current_default_d914f86e), currentPath, "storage-default-path", c.synced)
-            if (busy) SettingsAreaProgress()
-            folderButton()
-
-            if (chosenPath != null) {
-                StorageFolderCard(stringResource(R.string.ui_selected_folder_0cf59bef), chosenPath, "storage-selected-path", c.ahead) {
-                    BPrimaryButton(stringResource(R.string.ui_use_for_new_clones_be174c95), Modifier.testTag("storage-save-default"),
-                        isDisabled = busy, onClick = onUseDefault)
+    val c = M3.colors
+    Column(Modifier.fillMaxSize().background(c.surface).testTag("storage-screen")) {
+        M3TopBar(stringResource(R.string.settings_m3_save_clones_in), onBack = onBack, modifier = Modifier.testTag("storage-title"))
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).navigationBarsPadding()) {
+            SettingsIntro(stringResource(R.string.settings_m3_storage_intro))
+            SettingsFolderCard(stringResource(R.string.ui_current_default_d914f86e), c.ok, currentPath, pathModifier = Modifier.testTag("storage-default-path"))
+            Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                folderButton(Modifier.weight(1f))
+                M3Button(stringResource(R.string.ui_use_app_storage_d199e8e0), onUseAppStorage, Modifier.testTag("storage-use-app"),
+                    style = M3ButtonStyle.Outlined, size = M3ButtonSize.Large, enabled = !busy)
+            }
+            if (busy) M3IndeterminateProgressBar(Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp))
+            if (chosenPath != null) SettingsFolderCard(stringResource(R.string.ui_selected_folder_0cf59bef), c.tertiary, chosenPath,
+                pathModifier = Modifier.testTag("storage-selected-path")) {
+                M3Button(stringResource(R.string.ui_use_for_new_clones_be174c95), onUseDefault, Modifier.fillMaxWidth().testTag("storage-save-default"),
+                    size = M3ButtonSize.Medium, enabled = !busy)
+            }
+            message?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("storage-message"), tone = M3NoteTone.Ok) }
+            error?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Warn) }
+            SettingsHint(stringResource(R.string.settings_m3_storage_hint))
+            if (repositories.isNotEmpty()) {
+                Spacer(Modifier.height(4.dp))
+                M3Group(stringResource(R.string.settings_m3_storage_move_title)) {
+                    repositories.forEachIndexed { index, repo ->
+                        M3ListRow(repo.alias.ifBlank { repo.name }, Modifier.testTag("storage-move-${repo.path}"), meta = folderCrumbs(repo.path),
+                            leading = { M3Icon(R.drawable.ic_m3_folder) }, trailing = { M3Chevron() },
+                            onClick = { onMove(repo.path) }, divider = index > 0, enabled = !busy && !repo.path.startsWith("github://"),
+                            contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 16.dp, top = 8.dp, bottom = 8.dp))
+                    }
                 }
             }
-            BSecondaryButton(stringResource(R.string.ui_use_app_storage_d199e8e0), Modifier.testTag("storage-use-app"),
-                isDisabled = busy, onClick = onUseAppStorage)
-
-            message?.let { SettingsAreaNotice(it, tint = c.synced, textModifier = Modifier.testTag("storage-message")) }
-            error?.let { SettingsAreaNotice(it, tint = c.danger) }
-
-            Text(stringResource(R.string.ui_choose_local_device_or_attached_storage_cl_69bc112f),
-                modifier = Modifier.padding(horizontal = 4.dp), style = TideType.sans(12.5.sp), color = c.inkFaint)
+            Spacer(Modifier.height(32.dp))
         }
-    }
-}
-
-/** Card with a small label, a dot and the folder path in mono (always left to right). */
-@Composable
-private fun StorageFolderCard(
-    label: String,
-    path: String?,
-    tag: String,
-    dot: Color,
-    action: (@Composable ColumnScope.() -> Unit)? = null,
-) {
-    val c = Tide.colors
-    val shape = RoundedCornerShape(Tide.radiusCard)
-    Column(
-        Modifier.fillMaxWidth().clip(shape).background(c.card, shape).padding(horizontal = 18.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        Text(label, style = TideType.sans(13.sp, FontWeight.SemiBold), color = dot)
-        if (path != null) {
-            Text(path, modifier = Modifier.testTag(tag), style = TideType.mono(13.sp).copy(textDirection = TextDirection.Ltr), color = c.ink)
-        }
-        if (action != null) Column(Modifier.padding(top = 8.dp), content = action)
     }
 }
 
 // ─── Previews ───────────────────────────────────────────────────────────────
 
-@Preview(name = "Storage · app default")
+private val previewRepos = listOf(SavedRepository("VoxVault", "/storage/emulated/0/Documents/Obsidian/VoxVault"),
+    SavedRepository("health-md", "/storage/emulated/0/Documents/GitSync.md/health-md"))
+
+@Preview(name = "Storage · storage", heightDp = 915)
 @Composable private fun StorageDefaultPreview() = SyncMdTheme(darkTheme = false) {
-    StorageContent("/data/user/0/com.bontecou.syncmd/files/repos", null, false, null, null, {}, {}, {}) {
-        BSecondaryButton("Choose a device folder", onClick = {})
+    StorageContent("/storage/emulated/0/Documents/Obsidian", null, false, null, null, previewRepos, {}, {}, {}, {}) {
+        M3Button("Choose a device folder", {}, it, style = M3ButtonStyle.Tonal, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_folder)
     }
 }
 
-@Preview(name = "Storage · folder chosen · dark")
+@Preview(name = "Storage · chosen · dark", heightDp = 915)
 @Composable private fun StorageChosenDarkPreview() = SyncMdTheme(darkTheme = true) {
-    StorageContent("/data/user/0/com.bontecou.syncmd/files/repos", "/storage/emulated/0/Documents/Vaults", false,
-        "New clones will use this folder.", null, {}, {}, {}) { BSecondaryButton("Choose a device folder", onClick = {}) }
-}
-
-@Preview(name = "Storage · busy with error")
-@Composable private fun StorageErrorPreview() = SyncMdTheme(darkTheme = false) {
-    StorageContent(null, null, true, null, "Folder access was not granted.", {}, {}, {}) { BSecondaryButton("Choose a device folder", onClick = {}) }
-}
-
-@Preview(name = "Storage · busy with error · dark")
-@Composable private fun StorageErrorDarkPreview() = SyncMdTheme(darkTheme = true) {
-    StorageContent(null, null, true, null, "Folder access was not granted.", {}, {}, {}) { BSecondaryButton("Choose a device folder", onClick = {}) }
+    StorageContent("/storage/emulated/0/Documents/Obsidian", "/storage/3A1F-0E22/Vaults", false, null, null, previewRepos, {}, {}, {}, {}) {
+        M3Button("Choose a device folder", {}, it, style = M3ButtonStyle.Tonal, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_folder)
+    }
 }

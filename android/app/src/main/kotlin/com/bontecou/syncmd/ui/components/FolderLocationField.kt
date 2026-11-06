@@ -39,6 +39,18 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.storage.RepositoryLocations
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3Dialog
+import com.bontecou.syncmd.ui.theme.M3DialogAction
+import com.bontecou.syncmd.ui.theme.M3IndeterminateProgressBar
+import com.bontecou.syncmd.ui.theme.M3LeadingTile
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3TextButton
+import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.BGhostButton
 import com.bontecou.syncmd.ui.theme.BPrimaryButton
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
@@ -56,10 +68,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/** How a [DeviceFolderButton] draws: tonal pill with a folder icon (default), filled primary, or a full-width tonal 40dp. */
+enum class DeviceFolderButtonStyle { TONAL, PRIMARY, TONAL_COMPACT }
+
 /** Native permission/settings + folder-picker handoff. Permission alone never selects a folder. */
 @Composable
 fun DeviceFolderButton(label: String, enabled: Boolean = true, onFolder: (Uri) -> Unit, onError: (String) -> Unit, initialUri: Uri? = null,
-    primary: Boolean = false) {
+    primary: Boolean = false, modifier: Modifier = Modifier, style: DeviceFolderButtonStyle = if (primary) DeviceFolderButtonStyle.PRIMARY else DeviceFolderButtonStyle.TONAL) {
     val context = LocalContext.current
     var explain by remember { mutableStateOf(false) }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri -> uri?.let(onFolder) }
@@ -74,40 +89,53 @@ fun DeviceFolderButton(label: String, enabled: Boolean = true, onFolder: (Uri) -
         if (RepositoryLocations.hasSharedStorageAccess(context)) openPicker() else onError(context.getString(com.bontecou.syncmd.R.string.folder_access_not_enabled))
     }
     val choose = { if (RepositoryLocations.hasSharedStorageAccess(context)) openPicker() else explain = true }
-    if (primary) TidePrimaryButton(label, onClick = choose, enabled = enabled, modifier = Modifier.testTag("device-folder-picker"))
-    else TideOutlineButton(label, onClick = choose, enabled = enabled, height = 48.dp, modifier = Modifier.testTag("device-folder-picker"))
-    if (explain) TideDialog(onDismissRequest = { explain = false },
-        icon = { AddVaultIconTile("⌂", size = 48.dp) },
+    when (style) {
+        DeviceFolderButtonStyle.PRIMARY -> M3Button(label, choose, modifier.fillMaxWidth().testTag("device-folder-picker"), M3ButtonStyle.Filled, M3ButtonSize.Large,
+            icon = com.bontecou.syncmd.R.drawable.ic_m3_folder, enabled = enabled)
+        DeviceFolderButtonStyle.TONAL -> M3Button(label, choose, modifier.testTag("device-folder-picker"), M3ButtonStyle.Tonal, M3ButtonSize.Large,
+            icon = com.bontecou.syncmd.R.drawable.ic_m3_folder, enabled = enabled)
+        DeviceFolderButtonStyle.TONAL_COMPACT -> M3Button(label, choose, modifier.fillMaxWidth().testTag("device-folder-picker"), M3ButtonStyle.Tonal, M3ButtonSize.Medium,
+            icon = com.bontecou.syncmd.R.drawable.ic_m3_folder, enabled = enabled)
+    }
+    if (explain) M3Dialog(onDismissRequest = { explain = false },
         title = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_allow_local_folder_access_0b2888fb),
-        text = { Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_gitsync_md_needs_shared_storage_access_to_f1b339ea)) },
-        confirmButton = { BPrimaryButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_enable_access_9d7caf64), onClick = {
+        icon = com.bontecou.syncmd.R.drawable.ic_m3_folder,
+        text = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_gitsync_md_needs_shared_storage_access_to_f1b339ea)) {
+        M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.publication_cancel), { explain = false })
+        M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_enable_access_9d7caf64), {
             explain = false
             if (Build.VERSION.SDK_INT >= 30) {
                 val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:${context.packageName}"))
                 runCatching { settings.launch(intent) }.recoverCatching { settings.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)) }
                     .onFailure { onError(context.getString(com.bontecou.syncmd.R.string.folder_settings_unavailable)) }
             } else permissions.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-        }) },
-        dismissButton = { BGhostButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.publication_cancel), Modifier.fillMaxWidth(), onClick = { explain = false }) })
+        }, filled = true)
+    }
 }
 
-/** Null means the saved default; APP explicitly chooses app storage for just this clone. */
+/**
+ * Destination folder card (Move vault › "Into", Clone › location): pc folder tile, 16/500 title, mono path,
+ * a full-width tonal "Choose another folder", then "Use app storage" / "Use saved default" text buttons.
+ * Null means the saved default; APP explicitly chooses app storage for just this clone.
+ */
 @Composable
 fun FolderLocationField(selection: String?, onSelection: (String?) -> Unit, enabled: Boolean = true, title: String? = null) {
     val context = LocalContext.current
+    val c = M3.colors
     val locations = remember(context) { RepositoryLocations(context) }
     val scope = rememberCoroutineScope()
     var error by remember { mutableStateOf<String?>(null) }
     var saving by remember { mutableStateOf(false) }
     val label = runCatching { locations.summary(selection).path }.getOrElse { context.getString(com.bontecou.syncmd.R.string.clone_location_reconnect) }
-    TideCard(padding = 16.dp) {
+    val shape = RoundedCornerShape(28.dp)
+    Column(Modifier.fillMaxWidth().background(c.cLow, shape).padding(horizontal = 20.dp, vertical = 16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            AddVaultIconTile("▤")
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            M3LeadingTile(com.bontecou.syncmd.R.drawable.ic_m3_folder)
+            Column(Modifier.weight(1f)) {
                 Text(title ?: androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.clone_location_title),
                     modifier = Modifier.testTag("clone-location-title").semantics { heading() },
-                    style = TideType.sans(16.sp, FontWeight.SemiBold), color = Tide.colors.ink)
-                Text(label, style = AddVaultMonoLtr, color = Tide.colors.inkMid, modifier = Modifier.testTag("clone-location-path"))
+                    style = M3Type.bodyStrong, color = c.on)
+                Text(label, style = M3Type.meta.copy(textDirection = TextDirection.Ltr), color = c.onVar, modifier = Modifier.testTag("clone-location-path"))
             }
         }
         Spacer(Modifier.height(14.dp))
@@ -121,15 +149,16 @@ fun FolderLocationField(selection: String?, onSelection: (String?) -> Unit, enab
                 } catch (e: Exception) { error = e.message ?: context.getString(com.bontecou.syncmd.R.string.folder_unusable)
                 } finally { saving = false }
             }
-        }, onError = { error = it }, initialUri = runCatching { locations.selectedFolders().firstOrNull()?.uri?.let(Uri::parse) }.getOrNull())
+        }, onError = { error = it }, initialUri = runCatching { locations.selectedFolders().firstOrNull()?.uri?.let(Uri::parse) }.getOrNull(),
+            style = DeviceFolderButtonStyle.TONAL_COMPACT)
         Row(Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            if (selection != RepositoryLocations.APP) AddVaultTextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_use_app_storage_d199e8e0),
+            if (selection != RepositoryLocations.APP) M3TextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_use_app_storage_d199e8e0),
                 onClick = { onSelection(RepositoryLocations.APP); error = null }, enabled = enabled && !saving, modifier = Modifier.testTag("clone-location-app"))
-            if (selection != null) AddVaultTextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_use_saved_default_3bb7260d),
+            if (selection != null) M3TextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_use_saved_default_3bb7260d),
                 onClick = { onSelection(null); error = null }, enabled = enabled && !saving, modifier = Modifier.testTag("clone-location-default"))
         }
-        if (saving) AddVaultProgress(Modifier.padding(top = 8.dp))
-        error?.let { AddVaultNote(it, TideBannerTone.DANGER, Modifier.padding(top = 8.dp)) }
+        if (saving) M3IndeterminateProgressBar(Modifier.padding(top = 8.dp))
+        error?.let { M3Note(it, Modifier.padding(top = 8.dp), tone = M3NoteTone.Warn) }
     }
 }
 

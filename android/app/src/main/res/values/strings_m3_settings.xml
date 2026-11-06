@@ -69,4 +69,174 @@
     <string name="settings_m3_author_changed">This author was changed outside GitSync.md, maybe by Git on your Mac. Reload to see what it says now.</string>
     <string name="settings_m3_author_save">Save author</string>
     <string name="settings_m3_author_save_note">Saving closes this page. Nothing is committed.</string>
+
+    <!-- Storage -->
+    <string name="settings_m3_storage_intro">Pick the folder new clones go into. Vaults you already have stay where they are.</string>
+    <string name="settings_m3_storage_hint">Phone storage and SD cards work. Cloud folders such as Google Drive can’t hold a Git repository.</string>
+    <string name="settings_m3_storage_move_title">Move a vault you already have</string>
+    <string name="settings_m3_move_title">Move vault</string>
+    <string name="settings_m3_move_intro">Moves the whole vault: files, Git history and staged changes. Its account and commit author move with it.</string>
+    <string name="settings_m3_move_from">From</string>
+    <string name="settings_m3_move_into">Into</string>
+    <string name="settings_m3_move_will_move_to">Will move to</string>
+    <string name="settings_m3_move_copy_note">This crosses to another storage volume, so GitSync.md copies and checks every file, then keeps the original under Move recoveries until you remove it.</string>
+    <string name="settings_m3_move_progress">Moving and saving vault settings…</string>
+    <string name="settings_m3_move_interrupted">A move was interrupted. Every copy we found is kept until you finish it.</string>
+    <string name="settings_m3_move_finish_meta">Picks up where it stopped</string>
+    <string name="settings_m3_move_cancel_meta">Leaves the vault in its old folder</string>
+    <string name="settings_m3_move_moving_button">Moving… keep GitSync.md open</string>
+    <string name="settings_m3_move_action">Move vault</string>
+    <string name="settings_m3_move_confirm_title">Move this vault?</string>
+    <string name="settings_m3_move_confirm_retained">The original stays as a recovery copy.</string>
+    <string name="settings_m3_move_confirm_guidance">Keep Obsidian and other apps out of both folders until the move finishes.</string>
+
+    <!-- AboutHelp -->
+    <string name="settings_m3_how_title">How GitSync works</string>
+    <string name="settings_m3_how_subtitle">A two-minute look at the basics</string>
+    <string name="settings_m3_how_count">4 things to know</string>
+    <string name="settings_m3_whats_new">What’s new</string>
+    <string name="settings_m3_whats_new_subtitle">Release notes for %1$s</string>
+    <string name="settings_m3_whats_new_hint">This also pops up once after an update. You can always find it here.</string>
+    <string name="settings_m3_feedback_subtitle">Opens your email app</string>
+    <string name="settings_m3_license">License</string>
+    <string name="settings_m3_license_subtitle">One-time purchase via Google Play</string>
+    <string name="settings_m3_privacy_policy">Privacy policy</string>
+    <string name="settings_m3_how_start">Start from here</string>
+    <string name="settings_m3_how_clone_url">Clone from URL</string>
+    <string name="settings_m3_how_sample">Try the offline sample</string>
+    <string name="settings_m3_how_storage">Choose storage</string>
+    <string name="settings_m3_done">Done</string>
+    <string name="settings_m3_how_headline">Your phone and GitHub,</string>
+    <string name="settings_m3_how_accent">kept in step.</string>
+    <string name="settings_m3_how_phone">Phone</string>
+    <string name="settings_m3_how_github">GitHub</string>
+    <string name="settings_m3_how_step_of">%1$d of %2$d</string>
+    <string name="settings_m3_how_step1_title">Your vaults, on Android</string>
+    <string name="settings_m3_how_step1_body">Clone from GitHub, any Git host or over SSH. Each vault keeps its own connection and branch.</string>
+    <string name="settings_m3_how_step2_title">Edit where you like</string>
+    <string name="settings_m3_how_step2_body">Write here, or keep the vault in a device folder and use Obsidian. Check folder access in Settings before you clone.</string>
+    <string name="settings_m3_how_step3_title">Review, then publish</string>
+    <string name="settings_m3_how_step3_body">See the diff, pick what to stage and commit on the phone. Push when you’re ready. Branches, history, tags, conflicts and LFS live in the vault.</string>
+    <string name="settings_m3_how_step4_title">Let it catch up</string>
+    <string name="settings_m3_how_step4_body">Background Sync pulls on a schedule. Push Sync pulls when GitHub changes. Neither commits for you unless you say so.</string>
+
+    <!-- 21 · Debug log -->
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="one">%1$d error in 24h</item>
+        <item quantity="other">%1$d errors in 24h</item>
+    </plurals>
+    <string name="settings_m3_debug_clear">Clear</string>
+    <string name="settings_m3_debug_errors_count">Errors %1$d</string>
+    <string name="settings_m3_debug_share">Share diagnostics</string>
+    <string name="settings_m3_debug_copy">Copy visible entries</string>
+    <string name="settings_m3_debug_day_time">%1$s %2$s</string>
+    <string name="settings_m3_debug_removed_vault">removed vault</string>
+    <string name="settings_m3_debug_background">background</string>
+    <string name="settings_m3_debug_app">app</string>
+    <string name="settings_m3_debug_bg">BG</string>
+    <string name="settings_m3_debug_error">ERROR</string>
+    <string name="settings_m3_debug_warn">WARN</string>
+    <string name="settings_m3_debug_info_tag">INFO</string>
+
+    <!-- 17 · Background Sync -->
+    <plurals name="settings_m3_bg_included">
+        <item quantity="one">%1$d vault included</item>
+        <item quantity="other">%1$d vaults included</item>
+    </plurals>
+    <string name="settings_m3_bg_intro">Android schedules checks about every 15 minutes or later, depending on connectivity, battery and system restrictions. Best effort, never real time.</string>
+    <string name="settings_m3_bg_modes">Modes</string>
+    <string name="settings_m3_bg_pull_sub">Fast-forward only</string>
+    <string name="settings_m3_bg_push_sub">Stops if the remote moved first</string>
+    <string name="settings_m3_bg_only_when">Only when</string>
+    <string name="settings_m3_bg_wifi">On Wi-Fi</string>
+    <string name="settings_m3_bg_charging">Charging</string>
+    <string name="settings_m3_push_title">Push Sync</string>
+    <string name="settings_m3_bg_nudge">Get a nudge when GitHub changes</string>
+    <string name="settings_m3_bg_nudge_sub">Opt-in. The pull can start right away.</string>
+    <string name="settings_m3_bg_connect">Connect</string>
+    <string name="settings_m3_bg_vaults">Vaults</string>
+    <string name="settings_m3_bg_vault_missing">Folder no longer added. Forget it or add the vault again.</string>
+    <string name="settings_m3_bg_vault_not_included">Not included</string>
+    <string name="settings_m3_bg_include_cd">Include %1$s in Background Sync</string>
+    <string name="settings_m3_bg_never">It will never</string>
+    <string name="settings_m3_never_force">Force-push</string>
+    <string name="settings_m3_never_rebase">Rebase or merge</string>
+    <string name="settings_m3_never_switch">Switch branches</string>
+    <string name="settings_m3_never_resolve">Resolve conflicts</string>
+    <string name="settings_m3_never_overwrite">Overwrite edits</string>
+    <string name="settings_m3_never_send">Send your files to us</string>
+    <string name="settings_m3_bg_recent">Recent runs</string>
+    <string name="settings_m3_bg_no_runs">No runs yet. Android starts the first check within about 15 minutes.</string>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="one">%1$d vault, nothing new</item>
+        <item quantity="other">%1$d vaults, nothing new</item>
+    </plurals>
+    <string name="settings_m3_bg_run_pushed">↑ pushed</string>
+    <string name="settings_m3_bg_run_local_edits">%1$s skipped: local edits</string>
+    <string name="settings_m3_bg_run_review">%1$s needs review</string>
+    <string name="settings_m3_bg_run_wifi">%1$s waiting for Wi-Fi</string>
+    <string name="settings_m3_bg_run_power">%1$s waiting for charging</string>
+    <string name="settings_m3_bg_run_offline">%1$s waiting for a connection</string>
+    <string name="settings_m3_bg_run_failed">%1$s couldn’t sync</string>
+    <string name="settings_m3_bg_run_skipped">%1$s skipped: %2$s</string>
+    <string name="settings_m3_bg_attention_short">Needs review</string>
+    <string name="settings_m3_bg_failed_short">Couldn’t sync</string>
+    <string name="settings_m3_bg_conditions_apply">Runs %1$s, like every included vault.</string>
+    <string name="settings_m3_bg_cond_both">only on Wi-Fi while charging</string>
+    <string name="settings_m3_bg_cond_wifi">only on Wi-Fi</string>
+    <string name="settings_m3_bg_cond_charging">only while charging</string>
+    <string name="settings_m3_bg_cond_any">on any connection</string>
+
+    <!-- 18 · Upgrade -->
+    <string name="settings_m3_close">Close</string>
+    <string name="settings_m3_upgrade_title">Sync while
+you sleep.</string>
+    <string name="settings_m3_upgrade_body">Open Obsidian in the morning and everything is already there.</string>
+    <string name="settings_m3_perk_pull_title">Pull in the background</string>
+    <string name="settings_m3_perk_pull_body">Fast-forward only. Anything unusual waits for you.</string>
+    <string name="settings_m3_perk_push_title">Commit &amp; push edits</string>
+    <string name="settings_m3_perk_push_body">Off by default. You choose which vaults publish.</string>
+    <string name="settings_m3_perk_nudge_title">Instant pulls with Push Sync</string>
+    <string name="settings_m3_perk_nudge_body">A GitHub push nudges the app within seconds.</string>
+    <string name="settings_m3_upgrade_pull">Pull in the background</string>
+    <string name="settings_m3_upgrade_push">Also commit &amp; push my edits</string>
+    <string name="settings_m3_upgrade_note">Included with GitSync.md. Android decides when background work runs; it’s best effort. Battery saver can delay it.</string>
+    <string name="settings_m3_upgrade_turn_on">Turn on Background Sync</string>
+    <string name="settings_m3_not_now">Not now</string>
+    <string name="settings_m3_how_it_works">How it works</string>
+    <string name="settings_m3_upgrade_illustration">Locked phone pulling and pushing with GitHub overnight</string>
+    <string name="settings_m3_upgrade_locked_phone">locked phone</string>
+    <string name="settings_m3_upgrade_last_run">%1$s · pulled %2$d · pushed %3$d</string>
+
+    <!-- 16 · Vault settings -->
+    <string name="settings_m3_vault_title">Vault settings</string>
+    <string name="settings_m3_vault_health">Health</string>
+    <string name="settings_m3_vault_health_good">good</string>
+    <string name="settings_m3_vault_health_attention">needs a look</string>
+    <string name="settings_m3_vault_files">files</string>
+    <string name="settings_m3_vault_lfs">LFS</string>
+    <string name="settings_m3_vault_errors">errors · 7d</string>
+    <string name="settings_m3_vault_last_check">last background check %1$s · %2$s</string>
+    <string name="settings_m3_vault_check_ok">ok</string>
+    <string name="settings_m3_vault_no_check">no background check yet</string>
+    <string name="settings_m3_vault_group">This vault</string>
+    <string name="settings_m3_vault_include">Include in Background Sync</string>
+    <string name="settings_m3_vault_include_sub">Only branch %1$s, tracking %2$s/%3$s</string>
+    <string name="settings_m3_vault_include_review">Reviews the branch and remote first</string>
+    <string name="settings_m3_vault_include_title">Include in Background Sync?</string>
+    <string name="settings_m3_vault_pin">Pin to top of Home</string>
+    <string name="settings_m3_vault_display_name">Display name</string>
+    <string name="settings_m3_vault_display_name_hint">Leave empty to use the vault’s own name.</string>
+    <string name="settings_m3_vault_folder">Folder</string>
+    <string name="settings_m3_vault_shortcut">Add launcher shortcut</string>
+    <string name="settings_m3_vault_shortcut_sub">Pull or commit &amp; push in one tap</string>
+    <string name="settings_m3_vault_stop_tracking">Stop tracking — keep files</string>
+    <string name="settings_m3_vault_remove_delete">Remove vault &amp; delete files…</string>
+    <string name="settings_m3_vault_remove">Remove vault…</string>
+    <string name="settings_m3_vault_remove_title">Remove this vault?</string>
+    <string name="settings_m3_vault_remove_kept">GitSync.md stops showing it. The folder isn’t managed by GitSync.md, so its files and Git history stay where they are.</string>
+    <string name="settings_m3_vault_remove_action">Remove</string>
+    <string name="settings_m3_vault_delete_title">Remove vault &amp; delete files?</string>
+    <string name="settings_m3_vault_delete_body">Deletes this folder, its files and its Git history from this phone. Anything not pushed to GitHub is lost.</string>
+    <string name="settings_m3_vault_delete_action">Delete</string>
 </resources>
