@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remote_merge_title">Merge with remote</string>
-    <string name="remote_merge_scope">Fetch and review the configured upstream. Existing commits keep their IDs; diverged histories create a merge commit. Conflicts may need manual resolution.</string>
     <string name="remote_merge_destination">Into local branch: %1$s</string>
     <string name="remote_merge_upstream">From upstream: %1$s</string>
     <string name="remote_merge_counts">Local commits: %1$d · Incoming commits: %2$d</string>
     <string name="remote_merge_local_oid">Local commit: %1$s</string>
     <string name="remote_merge_incoming_oid">Incoming commit: %1$s</string>
-    <string name="remote_merge_push_address">Push address: %1$s</string>
-    <string name="remote_merge_confirm_local">Merge the reviewed commits?</string>
-    <string name="remote_merge_confirm_push">Merge and publish to upstream?</string>
-    <string name="remote_merge_confirm_local_body">Updates %1$s with the reviewed %2$s commit. A merge commit may be created. Nothing is pushed.</string>
-    <string name="remote_merge_confirm_push_body">Updates %1$s, then pushes its commits to %2$s at the reviewed push address. Conflicts stop publishing. A failed or unconfirmed push keeps the local Git result for explicit retry.</string>
     <string name="remote_merge_in_flight">Completing the Git action…</string>
 </resources>

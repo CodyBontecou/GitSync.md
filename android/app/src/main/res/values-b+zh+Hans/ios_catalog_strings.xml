@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"刚刚"</string>
     <string name="account_valid_branch" formatted="false">"请输入有效的分支名称"</string>
     <string name="automation_shortcut_label">"%1$s：%2$s"</string>
-    <string name="background_active" formatted="false">"已为纳入的仓库安排后台检查。"</string>
     <string name="background_allow_push" formatted="false">"允许自动发布"</string>
-    <string name="background_attempt">"上次检查：%1$s"</string>
-    <string name="background_attention" formatted="false">"需要审核。请打开仓库，处理本地更改、历史分叉、缺少上游分支或等待上传的已保存提交。"</string>
     <string name="background_binding">"仅限跟踪 %2$s/%3$s 的 %1$s 分支。分支、文件夹、连接或账户变更后需要重新审核。"</string>
     <string name="background_changed" formatted="false">"文件夹、分支或连接已变更。请重新审核。"</string>
     <string name="background_current" formatted="false">"已是最新"</string>
     <string name="background_empty" formatted="false">"尚未注册本地仓库。"</string>
     <string name="background_error" formatted="false">"无法完成此操作。请重新加载并审核当前仓库和设置。"</string>
-    <string name="background_excluded" formatted="false">"排除"</string>
-    <string name="background_failed" formatted="false">"连接、身份验证、信任或文件访问需要处理。请打开仓库并在那里重试。"</string>
     <string name="background_forget" formatted="false">"移除已保存的策略"</string>
-    <string name="background_inactive" formatted="false">"后台检查已关闭。请启用一种模式并纳入至少一个仓库。"</string>
     <string name="background_include" formatted="false">"纳入此仓库"</string>
-    <string name="background_included" formatted="false">"已纳入"</string>
     <string name="background_never" formatted="false">"尚未检查"</string>
-    <string name="background_open" formatted="false">"打开仓库"</string>
-    <string name="background_power" formatted="false">"仅外部电源供电"</string>
     <string name="background_pull" formatted="false">"自动拉取远程更改"</string>
     <string name="background_push" formatted="false">"自动提交并推送本地更改"</string>
     <string name="background_push_confirm" formatted="false">"允许自动发布？"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"无法读取的后台同步设置不能授权工作。重置只会移除其已保存的策略和状态，并关闭两种自动模式。仓库文件、账户及其他同步功能都会保留。请在重新纳入前审核每个仓库。"</string>
     <string name="background_run" formatted="false">"立即检查"</string>
     <string name="background_running" formatted="false">"正在检查仓库…"</string>
-    <string name="background_schedule" formatted="false">"Android 会根据连接、电池和系统限制，大约每15分钟或更晚安排检查。“立即检查”会请求提前检查。强行停止应用后，后台工作将暂停，直到再次打开应用。"</string>
-    <string name="background_scope" formatted="false">"请先审核仓库的当前分支和连接，再将其纳入。自动拉取会获取更改，并在安全时执行快进。自动推送会根据本地更改创建提交并上传。历史分叉、有本地编辑时收到的更改以及连接变更都需要审核。"</string>
     <string name="background_stop" formatted="false">"停止检查"</string>
     <string name="background_stopped" formatted="false">"检查已停止"</string>
-    <string name="background_title" formatted="false">"后台同步"</string>
-    <string name="background_transfer">"上次传输：%1$s"</string>
     <string name="background_unavailable" formatted="false">"此工作副本已取消注册。请重新连接并再次审核其策略。"</string>
     <string name="background_updated" formatted="false">"更改已同步"</string>
     <string name="background_wait_network" formatted="false">"正在等待互联网连接"</string>
     <string name="background_wait_power" formatted="false">"正在等待外部电源"</string>
     <string name="background_wait_wifi" formatted="false">"正在等待 Wi-Fi"</string>
-    <string name="background_wifi" formatted="false">"仅支持 Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"工作副本位于其他分支。请切回原分支或重新审核。"</string>
-    <string name="branch_screen" formatted="false">"分支"</string>
     <string name="callback_action" formatted="false">"请求的操作"</string>
     <string name="callback_authorized_scope" formatted="false">"授权链接会直接执行保存的操作，无需再次确认。已更改或撤销的链接会在此停止。请在“仓库操作”→“已授权的链接”中管理权限。"</string>
     <string name="callback_auto_return" formatted="false">"本次运行后自动返回"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"已重命名"</string>
     <string name="file_save_title" formatted="false">"保存更改？"</string>
     <string name="file_saved" formatted="false">"已保存"</string>
-    <string name="file_unsaved_changes" formatted="false">"未保存的更改"</string>
     <string name="files_folder" formatted="false">"文件夹"</string>
     <string name="files_hide_hidden" formatted="false">"隐藏隐藏文件"</string>
     <string name="files_show_hidden" formatted="false">"显示隐藏文件"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"在工作的位置编辑"</string>
     <string name="guide_git_body" formatted="false">"查看差异、暂存所选更改并在本地提交。准备好后再推送。仓库页面提供分支、历史记录、标签、冲突解决和 Git LFS 功能。"</string>
     <string name="guide_git_title" formatted="false">"发布前先检查"</string>
-    <string name="guide_home" formatted="false">"不登录账户，继续使用"</string>
     <string name="guide_login" formatted="false">"使用 GitHub 登录"</string>
-    <string name="guide_sample" formatted="false">"试用离线示例"</string>
     <string name="guide_save_error" formatted="false">"无法保存导览进度。你可以继续，但下次可能会再次显示导览。"</string>
-    <string name="guide_skip" formatted="false">"跳过导览"</string>
     <string name="guide_start_body" formatted="false">"连接账户、从 URL 克隆，或试用离线示例。你也可以立即选择存储位置。"</string>
     <string name="guide_start_title" formatted="false">"选择开始方式"</string>
     <string name="guide_step">"第 %1$d 步，共 4 步"</string>
-    <string name="guide_storage" formatted="false">"选择存储位置"</string>
-    <string name="guide_title" formatted="false">"应用导览"</string>
-    <string name="guide_url" formatted="false">"从 URL 克隆"</string>
     <string name="help_copy_email" formatted="false">"复制支持邮箱"</string>
     <string name="help_email_copied" formatted="false">"已复制支持邮箱"</string>
     <string name="help_feedback" formatted="false">"发送反馈"</string>
     <string name="help_open_failed" formatted="false">"没有应用能够打开此链接。你可以复制支持邮箱地址。"</string>
     <string name="help_title" formatted="false">"帮助"</string>
-    <string name="help_tour" formatted="false">"查看应用导览"</string>
     <string name="history_screen" formatted="false">"历史记录"</string>
     <string name="http_transport_warning" formatted="false">"HTTP 未加密。仓库数据以及你输入的用户名或令牌可能在传输过程中被读取。请尽可能使用 HTTPS。"</string>
     <string name="language_settings_legacy" formatted="false">"在 Android 13 之前，此应用使用设备语言。"</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"连接与存储"</string>
     <string name="notes_files_body" formatted="false">"检查 Git LFS 跟踪，下载缺失内容并查看服务器锁定警告。诊断会保留大小受限的本地日志，支持复制和分享筛选后的内容。"</string>
     <string name="notes_files_title" formatted="false">"大文件与诊断"</string>
-    <string name="notes_title" formatted="false">"发行说明"</string>
     <string name="notes_version">"Android %1$s · 构建 %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"浏览和编辑文件，检查已暂存及未暂存的差异，在本地提交，推送现有提交，并使用分支、历史、标签和变基功能。"</string>
     <string name="notes_workflow_title" formatted="false">"仓库工作流程"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"放弃此检查结果？"</string>
     <string name="publication_discard_warning" formatted="false">"移除这些保存的检查选择和未保存的编辑？工作文件不会受到影响。此检查尚未开始准备或发布。"</string>
     <string name="publication_file_unsupported" formatted="false">"不支持的内容转换"</string>
-    <string name="publication_files" formatted="false">"文件"</string>
     <string name="publication_finish" formatted="false">"完成设置"</string>
     <string name="publication_include" formatted="false">"包含文件"</string>
     <string name="publication_leave_title" formatted="false">"保存检查结果？"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"此构建版本不支持推送通知。"</string>
     <string name="push_unlink" formatted="false">"移除连接"</string>
     <string name="push_unlink_scope" formatted="false">"移除此设备上这个 GitHub 安装项的推送通知同步路由？这不会卸载 GitHub App。请使用“在 GitHub 上管理”更改其仓库访问权限或卸载它。"</string>
-    <string name="rebase_abort_body" formatted="false">"恢复原始分支和提交。此次变基期间对受跟踪文件的编辑及冲突解决结果将被放弃。"</string>
-    <string name="rebase_abort_title" formatted="false">"中止此次变基？"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"接受本地删除"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"接受上游删除"</string>
-    <string name="rebase_begin_body" formatted="false">"本地提交将在已检查的上游之上重放，并可能获得新的 ID。变基在本地进行，推送仍需单独操作。"</string>
-    <string name="rebase_begin_title" formatted="false">"重写本地提交？"</string>
     <string name="rebase_checkout_review_required" formatted="false">"检出恢复信息已更改或无法读取。使用 Git 工具或中止变基前，请检查本地工作。"</string>
     <string name="rebase_problem_active_operation" formatted="false">"开始变基前，请先完成正在进行的 Git 操作。"</string>
     <string name="rebase_problem_local_branch" formatted="false">"变基前，请切换到本地分支。"</string>
     <string name="rebase_problem_local_changes" formatted="false">"变基前，请提交所有本地更改，或将其保存到 stash。"</string>
     <string name="rebase_problem_upstream" formatted="false">"变基前，请配置远程跟踪分支。"</string>
     <string name="rebase_skip_body" formatted="false">"将当前提交从重放中移除。跳过前请检查其更改，这可能会从最终历史中移除本地工作。"</string>
-    <string name="rebase_skip_title" formatted="false">"跳过此本地提交？"</string>
-    <string name="rebase_status_aborted" formatted="false">"变基已中止"</string>
-    <string name="rebase_status_conflicts" formatted="false">"：重基线操作存在冲突——请先解决这些冲突，再继续执行重基线操作"</string>
     <string name="rebase_use_local" formatted="false">"使用本地提交"</string>
     <string name="rebase_use_upstream" formatted="false">"使用上游版本"</string>
     <string name="remote_address_formats" formatted="false">"：请使用HTTP/HTTPS。 SSH, git://, file://, 或所有者/存储库。"</string>
-    <string name="remote_merge_confirm_local" formatted="false">"合并已检查的提交？"</string>
-    <string name="remote_merge_confirm_local_body">"使用来自 %2$s 的已检查提交更新 %1$s。可能会创建合并提交。不会推送任何内容。"</string>
-    <string name="remote_merge_confirm_push" formatted="false">"合并并发布到上游？"</string>
-    <string name="remote_merge_confirm_push_body">"更新 %1$s，然后将其提交推送到已检查的推送地址上的 %2$s。冲突会阻止发布。推送失败或未确认时，将保留本地 Git 结果，以供手动重试。"</string>
     <string name="remote_merge_counts">"本地提交：%1$d · 传入提交：%2$d"</string>
     <string name="remote_merge_destination">"合入本地分支：%1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"正在完成 Git 操作…"</string>
     <string name="remote_merge_incoming_oid">"传入提交：%1$s"</string>
     <string name="remote_merge_local_oid">"本地提交：%1$s"</string>
-    <string name="remote_merge_push_address">"推送地址：%1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"获取并检查配置的上游。现有提交保留其 ID；分叉的历史会创建合并提交。冲突可能需要手动解决。"</string>
     <string name="remote_merge_title" formatted="false">"与远程合并"</string>
     <string name="remote_merge_upstream">"来自上游：%1$s"</string>
     <string name="remote_normalized_target">"仓库地址：%1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"无法读取已保存的快捷方式结果。授权单独保留。"</string>
     <string name="ssh_hide_private_key" formatted="false">"隐藏私钥"</string>
     <string name="ssh_show_private_key" formatted="false">"显示私钥"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"SSH 服务器密钥已更改"</string>
     <string name="ssh_trust_error_changed" formatted="false">"检查期间 SSH 信任已更改。请检查当前服务器记录并重试连接。"</string>
     <string name="ssh_trust_error_damaged" formatted="false">"已保存的 SSH 信任需要检查。重试前请在设置中重置 SSH 服务器信任。"</string>
     <string name="ssh_trust_error_recovery" formatted="false">"无法保存 SSH 信任恢复。重试前请在设置中检查 SSH 服务器信任。"</string>
     <string name="ssh_trust_error_remove" formatted="false">"无法移除 SSH 服务器信任。重试前请检查当前服务器记录。"</string>
     <string name="ssh_trust_error_reset" formatted="false">"无法清空 SSH 服务器信任。重试前请检查已保存的记录。"</string>
-    <string name="ssh_trust_replace" formatted="false">"替换信任并连接"</string>
     <string name="staged" formatted="false">"已暂存"</string>
     <string name="stash_screen" formatted="false">"暂存区"</string>
     <string name="storage_app_saved" formatted="false">"新克隆将使用应用存储"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"本地：↑%1$d"</string>
     <string name="tracking_metadata_size">"Git 元数据：%1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"永久移除 Git 历史记录？"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"审阅信息已更改。请取消并重新审阅跟踪移除操作。"</string>
     <string name="tracking_removed_backup">"已移除 Git 跟踪。已验证的备份：%1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"已移除 Git 跟踪。工作文件已保留。"</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\n所有工作文件和本地 Git 历史记录都将保留在此设备上。你可以稍后重新连接此文件夹。"</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\n这将永久删除此应用管理的克隆，包括未推送的提交、暂存于 stash 的更改和未保存的文件。远程仓库不会更改。"</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"再次连接 %1$s:%2$s 前需要验证指纹。"</string>
     <string name="ui_1_s_bytes_81cdb385">"字节数：%1$s"</string>
     <string name="ui_1_s_characters_bde60398">"字符数：%1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行数：%1$s，字节数：%2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s 个本地提交 · %2$s 个上游提交"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"显示 %1$s · 已保存 %2$s"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"通过 Google Play 一次性购买"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"密钥更改可能意味着身份冒用。替换信任前，请与服务器所有者核实新指纹。"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"中止变基…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"关于"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"所有冲突解决结果均已暂存。请继续重放提交。如果 Git 报告 NOTHING_TO_COMMIT，请检查是否应跳过空提交。"</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"安装付费应用后即可使用所有功能。没有订阅或应用内购买。"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"：对本文件的所有本地修改都将永久丢失。"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"允许访问本地文件夹"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"应用"</string>
     <string name="ui_app_settings_da645334" formatted="false">"应用设置"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"应用跟踪选项"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"批准将保存在此设备上，等待中的连接将继续。取消将不会信任服务器。"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"认证"</string>
     <string name="ui_back_639807a2" formatted="false">"返回"</string>
     <string name="ui_back_aceb696a" formatted="false">"← 返回"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"选择设备上的文件夹"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"克隆前请选择认证方式。"</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"选择其他文件夹"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"选择克隆存储位置"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"请选择设备本地存储或已连接的存储设备。云文档提供程序不提供此 Git 引擎可用的文件系统。"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"选择用于浏览 GitHub 的账户。每个仓库都会保留其指定账户；可在“仓库连接”中更改。"</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"选择新克隆的默认文件夹。现有仓库将保留在当前位置。"</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"清空日志"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"重新克隆"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"重新克隆 · 开始前请检查之前的分支和连接设置。"</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"克隆目录"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"克隆存储位置"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"提交作者"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"提交信息…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"提交 SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"确认"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"连接 GitHub、GitLab、Bitbucket 或你自己的 Git 服务器上的公共或私有 HTTPS 或 SSH 仓库。"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"继续重基线"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"使用“新建”创建文件或文件夹。"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"当前默认文件夹"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"当前单独的推送地址：%1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"深色主题"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"调试信息"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"新克隆的默认位置。每个克隆都可以使用其他文件夹。"</string>
     <string name="ui_delete_1_s_6474596f">"删除“%1$s”？"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"删除"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"删除文件"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"删除本地文件"</string>
     <string name="ui_destination_1_s_0df94639">"目标位置：%1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"目标父文件夹"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"诊断"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"放弃草稿"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"放弃"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"放弃解决方案草稿？"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"关闭"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"变基期间，上游是 Git 的 ours 一方，重放的本地提交是 theirs 一方。"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"编辑提交作者"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"编辑连接"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"编辑解决方案"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"启用访问权限"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"请为新地址重新输入凭据，或选择公开访问。"</string>
     <string name="ui_error_54a0e8c1" formatted="false">"错误"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"再次连接每个 SSH 服务器前都需要验证指纹。这也会移除损坏的信任记录。"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"获取并检查变基"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"文件操作失败"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"完成移动恢复"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub 登录"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md 需要共享存储访问权限，才能管理设备文件夹中的实际 Git 工作副本。在 Android 设置中启用访问权限后，选择要使用的文件夹。"</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md 不会为此仓库提供凭据。"</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"返回并选择一个仓库。"</string>
     <string name="ui_hash_a9106914" formatted="false">"哈希"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"我了解其他所有者可能仍在编辑此文件。"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"请在地址中包含 SSH 用户名：git@host:team/repo.git 或 ssh://git@host:2222/team/repo.git。"</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"保留经过验证的元数据备份"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"继续编辑"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"密钥口令（可选）"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"密钥在此设备上加密，仅用于已保存的仓库地址。首次连接时请核验服务器指纹。"</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"上次同步"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"留空以使用服务器的默认分支。"</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"LFS 端点授权"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS 端点用户名"</string>
-    <string name="ui_license_c011d609" formatted="false">"许可证"</string>
     <string name="ui_loading_dc380888" formatted="false">"正在加载"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"正在加载仓库"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"本地仓库"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"在 GitSync.md 中的名称"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"此仓库中的新提交将使用此姓名和邮箱。现有提交将保留原作者。"</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"新文件"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"新建文件夹"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"新令牌或密码"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"没有可显示的更改"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"未找到提交"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"打开 Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"打开文件"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"正在打开文件…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"覆盖系统外观设置"</string>
     <string name="ui_owner_1_s_599ca9ce">"所有者：%1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"父提交 (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"路径"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"平台"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"之前信任的指纹：%1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"公共访问"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"重置基准值下的拉取"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"正在变基"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"变基到已检查的上游"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"保存"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"保存作者"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"保存连接"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"保存的凭据在此设备上加密，仅用于此仓库的 HTTPS 地址。"</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"保存后，获取和推送都会使用此地址。之后请执行获取以刷新远程状态。"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"所选文件夹"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"设置"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"共享备份归档"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"显示调试信息"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"无法读取或保存部分诊断。现有数据已保留。清空日志以重新开始记录。"</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH 私钥"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH 服务器信任设置"</string>
     <string name="ui_stage_de838855" formatted="false">"暂存"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"正在使用的目标文件夹将保留。GitSync.md 会先检查保留的原始副本是否没有后续编辑，再永久移除其文件和 Git 历史记录。"</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"加密连接仅对原始仓库地址复用。要使用其他地址，请明确更改认证方式。"</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"此文件夹可在当前存储卷上直接移动。"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"之前的 GitHub 账户已断开连接。请选择已连接的账户或其他认证方式。"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"重放的本地提交会删除此文件。"</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"此历史记录不可用。"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"这会移除其他连接的锁定。请在继续前与所有者协调。"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"此仓库将使用公开访问，直到你重新选择身份验证方式。你已登录的 GitHub 账号不会用于此仓库。获取和推送地址保持不变。"</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"令牌或密码"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"无法打开文件"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"取消暂存"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"更新此工作副本的地址或身份验证方式。本地文件、提交和已暂存的更改将保留。"</string>
     <string name="ui_upstream_94adc696" formatted="false">"上游"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"上游已删除此文件。"</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"请使用 github.com 的 HTTPS 地址。即使切换浏览仓库时使用的账户，克隆仍保留所选账户。"</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"使用应用存储空间"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"用于新克隆"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"使用已保存的连接"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"使用已保存的默认设置"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"用户名"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"用户名 + 令牌"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"没有备份时，本地 Git 历史记录将被永久删除。此操作无法撤销。"</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"工作文件将保留在原处。本地分支、提交、stash、远程仓库和历史记录将与此文件夹断开连接。"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"你的编辑尚未保存。"</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"尚未提交的文本将被放弃。工作文件保持不变。"</string>
     <string name="untracked" formatted="false">"未跟踪"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s 行"</item>
         <item quantity="other">"+%1$s -%2$s 行"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d 个文件"</item>
-        <item quantity="other">"%1$d 个文件"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"合并已停止：%1$s（%2$d 个冲突）"</item>

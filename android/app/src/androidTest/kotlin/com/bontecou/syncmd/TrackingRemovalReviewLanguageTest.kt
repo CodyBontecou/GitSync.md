@@ -46,9 +46,15 @@ class TrackingRemovalReviewLanguageTest {
             val plan = runBlocking { GitTrackingRemoval().prepare(root.path) }; val before = contents()
             val expected = JSONObject(InstrumentationRegistry.getInstrumentation().context.assets.open("localization_expected.json").bufferedReader().use { it.readText() }).getJSONObject("locales")
             val languages = expected.keys().asSequence().toList().sorted(); assertEquals(25, languages.size)
-            fun text(language: String, key: String): String {
-                val rows = expected.getJSONArray(language)
-                return (0 until rows.length()).map { rows.getJSONObject(it) }.single { it.getString("name") == key }.getString("source")
+            // The rendered copy is the localized resource for the locale (new Material 3 strings are English-only and
+            // fall back); where the catalog expectation lists the key, the resource must also match the catalog.
+            fun text(language: String, id: Int): String {
+                val configuration = Configuration(app.resources.configuration).apply { setLocales(LocaleList.forLanguageTags(language)) }
+                val resource = app.createConfigurationContext(configuration).getString(id)
+                val rows = expected.getJSONArray(language); val key = app.resources.getResourceEntryName(id)
+                (0 until rows.length()).map { rows.getJSONObject(it) }.firstOrNull { it.getString("name") == key }
+                    ?.let { assertEquals("$language/$key", it.getString("source"), resource) }
+                return resource
             }
             val frame = mutableStateOf(Frame(languages.first(), true))
             val continued = mutableListOf<TrackingRemovalRequest>(); var cancelled = 0; var toggles = 0
@@ -70,19 +76,20 @@ class TrackingRemovalReviewLanguageTest {
                 } }
                 for (language in languages) for (backup in listOf(true, false)) {
                     compose.runOnIdle { frame.value = Frame(language, backup) }
-                    compose.onNodeWithTag("tracking-review-title").assertTextEquals(text(language, "ui_remove_git_tracking_1f8255d9"))
+                    compose.onNodeWithTag("tracking-review-title").assertTextEquals(text(language, R.string.ui_remove_git_tracking_1f8255d9))
                     compose.onNodeWithTag("tracking-review-path").performScrollTo().assertTextEquals(root.path)
                     val config = Configuration(app.resources.configuration).apply { setLocales(LocaleList.forLanguageTags(language)) }
                     val size = Formatter.formatFileSize(app.createConfigurationContext(config), plan.metadataBytes)
-                    compose.onNodeWithTag("tracking-review-size").performScrollTo().assertTextEquals(String.format(Locale.forLanguageTag(language), text(language, "tracking_metadata_size"), size))
-                    compose.onNodeWithTag("tracking-review-scope").performScrollTo().assertTextEquals(text(language, "ui_working_files_stay_in_place_local_branches_a0748350"))
-                    compose.onNodeWithTag("tracking-review-backup").performScrollTo().assertTextEquals(text(language, "ui_keep_a_verified_metadata_backup_5e821b62"))
+                    compose.onNodeWithTag("tracking-review-size").performScrollTo().assertTextEquals(String.format(Locale.forLanguageTag(language), text(language, R.string.tracking_metadata_size), size))
+                    compose.onNodeWithTag("tracking-review-scope").performScrollTo().assertTextEquals(text(language, R.string.git_m3_tracking_review_body))
+                    // The backup control is now a switch row (label + supporting line); its label carries the copy.
+                    compose.onNodeWithTag("tracking-review-backup-label", useUnmergedTree = true).performScrollTo().assertTextEquals(text(language, R.string.git_m3_keep_backup))
                     val toggleBefore = toggles
                     val checkbox = compose.onNodeWithTag("tracking-review-backup").performScrollTo().assertHeightIsAtLeast(48.dp)
                     if (backup) checkbox.assertIsOn() else checkbox.assertIsOff()
                     checkbox.performClick()
                     if (backup) checkbox.assertIsOff() else checkbox.assertIsOn()
-                    if (backup) compose.onNodeWithTag("tracking-review-warning").performScrollTo().assertTextEquals(text(language, "ui_without_a_backup_local_git_history_is_perm_bcb5c492"))
+                    if (backup) compose.onNodeWithTag("tracking-review-warning").performScrollTo().assertTextEquals(text(language, R.string.git_m3_no_backup_warning))
                     else compose.onNodeWithTag("tracking-review-warning").assertDoesNotExist()
                     compose.runOnIdle { assertEquals(toggleBefore + 1, toggles); frame.value = frame.value.copy(busy = true) }
                     compose.onNodeWithTag("tracking-review-backup").performScrollTo().assertIsNotEnabled().performClick()

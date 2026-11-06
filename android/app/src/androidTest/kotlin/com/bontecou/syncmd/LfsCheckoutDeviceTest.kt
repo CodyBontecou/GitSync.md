@@ -45,15 +45,16 @@ class LfsCheckoutDeviceTest {
         val oldTls = HttpsURLConnection.getDefaultSSLSocketFactory()
         var scenario: ActivityScenario<MainActivity>? = null
         fun awaitText(text: String) = compose.waitUntil(15_000) { compose.onAllNodesWithText(text, substring = true).fetchSemanticsNodes().isNotEmpty() }
+        /** On the Branches screen (Git tab › Branches): switch with the branch row's own Switch button. */
         fun switch(name: String) {
-            compose.onNodeWithTag("git-actions").performScrollToNode(hasText(context.getString(R.string.branch_screen)))
             compose.waitUntil(15_000) { compose.onAllNodesWithTag("git-branch-$name").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("git-branch-$name").performScrollTo()
-            val button = hasText("Switch") and hasAnyAncestor(hasTestTag("git-branch-$name"))
+            val button = hasTestTag("git-branch-switch-$name")
             compose.waitUntil(15_000) { compose.onAllNodes(button and isEnabled()).fetchSemanticsNodes().size == 1 }
-            compose.onNode(button).performClick()
+            compose.onNode(button).performScrollTo().performClick()
+            val current = context.getString(R.string.git_m3_current)
             compose.waitUntil(15_000) {
-                compose.onAllNodes(hasText("Current") and hasAnyAncestor(hasTestTag("git-branch-$name"))).fetchSemanticsNodes().size == 1
+                compose.onAllNodes(hasText(current) and hasAnyAncestor(hasTestTag("git-branch-$name"))).fetchSemanticsNodes().size == 1
             }
         }
         fun capture(name: String) {
@@ -101,7 +102,9 @@ class LfsCheckoutDeviceTest {
             // The Material 3 vault titles the repository by its catalog name; wait for its tab bar.
             compose.waitUntil(10_000) { compose.onAllNodesWithTag("vault-tab-git").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("vault-tab-git").performClick()
-            awaitText("Repository Status")
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-history-ready").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("git-open-branches").performScrollTo().performClick()
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-branches-screen").fetchSemanticsNodes().isNotEmpty() }
             switch("assets")
             assertArrayEquals(bytes, File(root, "asset.bin").readBytes())
             assertTrue(LocalGitRepository().getStatus(root.path).getOrThrow().isEmpty())
@@ -114,15 +117,20 @@ class LfsCheckoutDeviceTest {
             assertArrayEquals(pointer.bytes(), File(root, "asset.bin").readBytes())
             assertEquals(branchHead, GitLfs.open(root).use { it.repository.resolve("HEAD") })
             capture(if (args.getString("checkoutDark") == "true") "lfs-checkout-attention-dark-xl.png" else "lfs-checkout-attention-light.png")
-            compose.onNodeWithText("OK", substring = false).performClick()
+            compose.onNodeWithText(context.getString(R.string.ui_ok_565339bc), substring = false).performClick()
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-operation-message").fetchSemanticsNodes().isEmpty() }
             store.save(root.path, url, credentials)
+            // Large files is a Git tab row (Workspace › Large files); go back from Branches to reach it.
+            androidx.test.espresso.Espresso.pressBack()
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("git-actions").fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("git-actions").performScrollToNode(hasTestTag("open-lfs"))
             compose.onNodeWithTag("open-lfs").performClick()
             compose.waitUntil(10_000) { compose.onAllNodesWithTag("lfs-screen").fetchSemanticsNodes().isNotEmpty() }
-            compose.onNodeWithTag("lfs-screen").performScrollToNode(hasTestTag("lfs-download"))
+            compose.waitUntil(10_000) { compose.onAllNodesWithTag("lfs-object-asset.bin").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("lfs-list").performScrollToNode(hasTestTag("lfs-download"))
             compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("lfs-download") and isEnabled()).fetchSemanticsNodes().size == 1 }
             compose.onNodeWithTag("lfs-download").performClick()
-            awaitText("File contents available")
+            awaitText(context.getString(R.string.lfs_file_available))
             assertArrayEquals(bytes, File(root, "asset.bin").readBytes())
             assertEquals(branchHead, GitLfs.open(root).use { it.repository.resolve("HEAD") })
             assertTrue(LocalGitRepository().getStatus(root.path).getOrThrow().isEmpty())

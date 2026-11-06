@@ -4,8 +4,4 @@
     <string name="discard_review_operation">This also abandons the active Git operation.</string>
     <string name="discard_review_empty">There are no changes to discard.</string>
     <string name="discard_clear_staging">Clear staging</string>
-    <plurals name="discard_review_files">
-        <item quantity="one">%1$d file</item>
-        <item quantity="other">%1$d files</item>
-    </plurals>
 </resources>

@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"vừa xong"</string>
     <string name="account_valid_branch" formatted="false">"Nhập tên nhánh hợp lệ"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
-    <string name="background_active" formatted="false">"Đã lên lịch kiểm tra nền cho các kho được đưa vào."</string>
     <string name="background_allow_push" formatted="false">"Cho phép tự động xuất bản"</string>
-    <string name="background_attempt">"Lần kiểm tra cuối: %1$s"</string>
-    <string name="background_attention" formatted="false">"Cần xem xét. Mở kho để xử lý thay đổi cục bộ, phân kỳ, thiếu nhánh upstream hoặc commit đã lưu đang chờ tải lên."</string>
     <string name="background_binding">"Chỉ nhánh %1$s, theo dõi %2$s/%3$s. Thay đổi nhánh, thư mục, kết nối hoặc tài khoản cần được xem xét lại."</string>
     <string name="background_changed" formatted="false">"Thư mục, nhánh hoặc kết nối đã đổi. Hãy xem xét lại."</string>
     <string name="background_current" formatted="false">"Đã cập nhật"</string>
     <string name="background_empty" formatted="false">"Chưa đăng ký kho cục bộ nào."</string>
     <string name="background_error" formatted="false">"Không thể hoàn tất thao tác này. Tải lại và xem xét kho cùng cài đặt hiện tại."</string>
-    <string name="background_excluded" formatted="false">"Bị loại trừ"</string>
-    <string name="background_failed" formatted="false">"Kết nối, xác thực, độ tin cậy hoặc quyền truy cập tệp cần được xử lý. Mở kho và thử lại tại đó."</string>
     <string name="background_forget" formatted="false">"Xóa chính sách đã lưu"</string>
-    <string name="background_inactive" formatted="false">"Kiểm tra nền đang tắt. Bật một chế độ và đưa vào ít nhất một kho."</string>
     <string name="background_include" formatted="false">"Đưa kho này vào"</string>
-    <string name="background_included" formatted="false">"Đã đưa vào"</string>
     <string name="background_never" formatted="false">"Chưa kiểm tra"</string>
-    <string name="background_open" formatted="false">"Mở kho"</string>
-    <string name="background_power" formatted="false">"Chỉ sử dụng nguồn điện bên ngoài"</string>
     <string name="background_pull" formatted="false">"Tự động kéo thay đổi từ xa"</string>
     <string name="background_push" formatted="false">"Tự động tạo commit và đẩy thay đổi cục bộ"</string>
     <string name="background_push_confirm" formatted="false">"Cho phép tự động xuất bản?"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"Cài đặt đồng bộ nền không đọc được không thể cho phép hoạt động. Đặt lại chỉ xóa chính sách và trạng thái đã lưu của tính năng này, đồng thời tắt cả hai chế độ tự động. Tệp của kho, tài khoản và các tính năng đồng bộ khác được giữ nguyên. Xem xét từng kho trước khi đưa vào lại."</string>
     <string name="background_run" formatted="false">"Kiểm tra ngay"</string>
     <string name="background_running" formatted="false">"Đang kiểm tra kho…"</string>
-    <string name="background_schedule" formatted="false">"Android lên lịch kiểm tra khoảng mỗi 15 phút hoặc muộn hơn, tùy kết nối, pin và giới hạn hệ thống. Kiểm tra ngay yêu cầu kiểm tra sớm hơn. Buộc dừng ứng dụng sẽ ngăn hoạt động nền cho đến khi bạn mở lại."</string>
-    <string name="background_scope" formatted="false">"Đưa kho vào sau khi xem xét nhánh và kết nối hiện tại. Kéo tự động lấy thay đổi và tiến nhanh bằng fast-forward khi an toàn. Đẩy tự động tạo commit từ thay đổi cục bộ rồi tải lên. Lịch sử phân kỳ, thay đổi đến khi có chỉnh sửa cục bộ và kết nối đã đổi cần được xem xét."</string>
     <string name="background_stop" formatted="false">"Dừng kiểm tra"</string>
     <string name="background_stopped" formatted="false">"Đã dừng kiểm tra"</string>
-    <string name="background_title" formatted="false">"Đồng bộ trong nền"</string>
-    <string name="background_transfer">"Lần truyền cuối: %1$s"</string>
     <string name="background_unavailable" formatted="false">"Bản làm việc này không còn được đăng ký. Kết nối lại và xem xét lại chính sách của nó."</string>
     <string name="background_updated" formatted="false">"Đã đồng bộ thay đổi"</string>
     <string name="background_wait_network" formatted="false">"Đang chờ kết nối Internet"</string>
     <string name="background_wait_power" formatted="false">"Đang chờ nguồn điện ngoài"</string>
     <string name="background_wait_wifi" formatted="false">"Đang chờ Wi-Fi"</string>
-    <string name="background_wifi" formatted="false">"Chỉ hỗ trợ Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"Bản làm việc đang ở nhánh khác. Chuyển về nhánh trước hoặc xem xét lại."</string>
-    <string name="branch_screen" formatted="false">"Nhánh"</string>
     <string name="callback_action" formatted="false">"Thao tác được yêu cầu"</string>
     <string name="callback_authorized_scope" formatted="false">"Liên kết được ủy quyền chạy thao tác đã lưu mà không hỏi lại. Liên kết đã thay đổi hoặc bị thu hồi sẽ dừng ở đây. Quản lý quyền trong Thao tác kho → Liên kết được cấp quyền."</string>
     <string name="callback_auto_return" formatted="false">"Tự động quay lại sau lần chạy này"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"Đã đổi tên"</string>
     <string name="file_save_title" formatted="false">"Lưu thay đổi?"</string>
     <string name="file_saved" formatted="false">"Đã lưu"</string>
-    <string name="file_unsaved_changes" formatted="false">"Thay đổi chưa lưu"</string>
     <string name="files_folder" formatted="false">"Thư mục"</string>
     <string name="files_hide_hidden" formatted="false">"Ẩn tệp ẩn"</string>
     <string name="files_show_hidden" formatted="false">"Hiện tệp ẩn"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"Chỉnh sửa ngay nơi bạn làm việc"</string>
     <string name="guide_git_body" formatted="false">"Kiểm tra khác biệt, đưa các thay đổi đã chọn vào vùng chờ và tạo commit cục bộ. Đẩy lên khi bạn sẵn sàng. Nhánh, lịch sử, thẻ, giải quyết xung đột và Git LFS có trong màn hình kho lưu trữ."</string>
     <string name="guide_git_title" formatted="false">"Xem lại trước khi xuất bản"</string>
-    <string name="guide_home" formatted="false">"Tiếp tục không cần tài khoản"</string>
     <string name="guide_login" formatted="false">"Đăng nhập với GitHub"</string>
-    <string name="guide_sample" formatted="false">"Thử mẫu ngoại tuyến"</string>
     <string name="guide_save_error" formatted="false">"Không thể lưu tiến trình giới thiệu. Bạn có thể tiếp tục; phần giới thiệu có thể xuất hiện lại vào lần sau."</string>
-    <string name="guide_skip" formatted="false">"Bỏ qua giới thiệu"</string>
     <string name="guide_start_body" formatted="false">"Kết nối tài khoản, sao chép từ URL hoặc thử mẫu ngoại tuyến. Bạn cũng có thể chọn vị trí lưu trữ ngay bây giờ."</string>
     <string name="guide_start_title" formatted="false">"Chọn cách bắt đầu"</string>
     <string name="guide_step">"Bước %1$d/4"</string>
-    <string name="guide_storage" formatted="false">"Chọn nơi lưu trữ"</string>
-    <string name="guide_title" formatted="false">"Giới thiệu ứng dụng"</string>
-    <string name="guide_url" formatted="false">"Sao chép từ URL"</string>
     <string name="help_copy_email" formatted="false">"Sao chép email hỗ trợ"</string>
     <string name="help_email_copied" formatted="false">"Đã sao chép email hỗ trợ"</string>
     <string name="help_feedback" formatted="false">"Gửi phản hồi"</string>
     <string name="help_open_failed" formatted="false">"Không có ứng dụng nào mở được liên kết này. Bạn có thể sao chép email hỗ trợ."</string>
     <string name="help_title" formatted="false">"Trợ giúp"</string>
-    <string name="help_tour" formatted="false">"Xem tour ứng dụng"</string>
     <string name="history_screen" formatted="false">"Lịch sử"</string>
     <string name="http_transport_warning" formatted="false">"HTTP không được mã hóa. Dữ liệu kho cùng tên người dùng hoặc mã token bạn nhập có thể bị đọc khi truyền. Hãy dùng HTTPS nếu có."</string>
     <string name="language_settings_legacy" formatted="false">"Trước Android 13, ứng dụng này sử dụng ngôn ngữ của thiết bị."</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"Kết nối và bộ nhớ"</string>
     <string name="notes_files_body" formatted="false">"Xem xét theo dõi Git LFS, tải nội dung còn thiếu và kiểm tra cảnh báo khóa máy chủ. Chẩn đoán giữ nhật ký cục bộ có giới hạn, hỗ trợ sao chép và chia sẻ nội dung đã lọc."</string>
     <string name="notes_files_title" formatted="false">"Tệp lớn và chẩn đoán"</string>
-    <string name="notes_title" formatted="false">"Ghi chú phát hành"</string>
     <string name="notes_version">"Android %1$s · bản dựng %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Duyệt và chỉnh sửa tệp, xem xét khác biệt đã và chưa đưa vào vùng chuẩn bị, tạo commit cục bộ, đẩy commit hiện có và làm việc với nhánh, lịch sử, thẻ và rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Quy trình làm việc với kho"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"Bỏ bản xem xét này?"</string>
     <string name="publication_discard_warning" formatted="false">"Xóa các lựa chọn xem xét đã lưu và các chỉnh sửa chưa lưu này? Các tệp làm việc không bị thay đổi. Chưa bắt đầu chuẩn bị hoặc xuất bản cho bản xem xét này."</string>
     <string name="publication_file_unsupported" formatted="false">"Không hỗ trợ chuyển đổi nội dung"</string>
-    <string name="publication_files" formatted="false">"Tệp"</string>
     <string name="publication_finish" formatted="false">"Hoàn tất thiết lập"</string>
     <string name="publication_include" formatted="false">"Bao gồm tệp"</string>
     <string name="publication_leave_title" formatted="false">"Lưu bản xem xét?"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"Thông báo đẩy không khả dụng trong bản dựng này."</string>
     <string name="push_unlink" formatted="false">"Xóa kết nối"</string>
     <string name="push_unlink_scope" formatted="false">"Xóa định tuyến đồng bộ qua thông báo đẩy cho lượt cài đặt GitHub này trên thiết bị này? Thao tác này không gỡ ứng dụng GitHub. Dùng Quản lý trên GitHub để thay đổi quyền truy cập kho lưu trữ hoặc gỡ ứng dụng."</string>
-    <string name="rebase_abort_body" formatted="false">"Khôi phục nhánh và commit ban đầu. Các chỉnh sửa tệp được theo dõi và cách giải quyết xung đột thực hiện trong rebase này sẽ bị bỏ."</string>
-    <string name="rebase_abort_title" formatted="false">"Hủy rebase này?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"Chấp nhận xóa cục bộ"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"Chấp nhận xóa từ upstream"</string>
-    <string name="rebase_begin_body" formatted="false">"Các commit cục bộ sẽ được áp dụng lại lên upstream đã xem xét và có thể nhận ID mới. Rebase diễn ra cục bộ; push vẫn là thao tác riêng."</string>
-    <string name="rebase_begin_title" formatted="false">"Viết lại các commit cục bộ?"</string>
     <string name="rebase_checkout_review_required" formatted="false">"Dữ liệu khôi phục checkout đã thay đổi hoặc không đọc được. Kiểm tra công việc cục bộ trước khi dùng công cụ Git hoặc hủy rebase."</string>
     <string name="rebase_problem_active_operation" formatted="false">"Hoàn tất thao tác Git đang chạy trước khi bắt đầu rebase."</string>
     <string name="rebase_problem_local_branch" formatted="false">"Chuyển sang nhánh cục bộ trước khi rebase."</string>
     <string name="rebase_problem_local_changes" formatted="false">"Commit hoặc lưu tất cả thay đổi cục bộ vào stash trước khi rebase."</string>
     <string name="rebase_problem_upstream" formatted="false">"Cấu hình nhánh upstream từ xa trước khi rebase."</string>
     <string name="rebase_skip_body" formatted="false">"Loại commit hiện tại khỏi quá trình áp dụng lại. Xem xét các thay đổi trước khi bỏ qua; thao tác này có thể xóa công việc cục bộ khỏi lịch sử kết quả."</string>
-    <string name="rebase_skip_title" formatted="false">"Bỏ qua commit cục bộ này?"</string>
-    <string name="rebase_status_aborted" formatted="false">"Đã hủy rebase"</string>
-    <string name="rebase_status_conflicts" formatted="false">": Thao tác rebase phát sinh xung đột — hãy giải quyết các xung đột này trước, sau đó tiếp tục thao tác rebase."</string>
     <string name="rebase_use_local" formatted="false">"Dùng commit cục bộ"</string>
     <string name="rebase_use_upstream" formatted="false">"Dùng upstream"</string>
     <string name="remote_address_formats" formatted="false">": Sử dụng HTTP/HTTPS, SSH, git://, file://, hoặc chủ sở hữu/repo."</string>
-    <string name="remote_merge_confirm_local" formatted="false">"Hợp nhất các commit đã xem xét?"</string>
-    <string name="remote_merge_confirm_local_body">"Cập nhật %1$s bằng commit đã xem xét từ %2$s. Có thể tạo commit hợp nhất. Không đẩy nội dung nào."</string>
-    <string name="remote_merge_confirm_push" formatted="false">"Hợp nhất và xuất bản lên nhánh thượng nguồn?"</string>
-    <string name="remote_merge_confirm_push_body">"Cập nhật %1$s rồi đẩy các commit của nhánh đó tới %2$s tại địa chỉ đẩy đã xem xét. Xung đột sẽ dừng xuất bản. Lần đẩy thất bại hoặc chưa được xác nhận sẽ giữ kết quả Git cục bộ để bạn chủ động thử lại."</string>
     <string name="remote_merge_counts">"Commit cục bộ: %1$d · Commit đưa vào: %2$d"</string>
     <string name="remote_merge_destination">"Vào nhánh cục bộ: %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Đang hoàn tất thao tác Git…"</string>
     <string name="remote_merge_incoming_oid">"Commit đưa vào: %1$s"</string>
     <string name="remote_merge_local_oid">"Commit cục bộ: %1$s"</string>
-    <string name="remote_merge_push_address">"Địa chỉ đẩy: %1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"Tìm nạp và xem xét nhánh thượng nguồn đã cấu hình. Commit hiện có giữ nguyên ID; lịch sử phân kỳ sẽ tạo commit hợp nhất. Xung đột có thể cần giải quyết thủ công."</string>
     <string name="remote_merge_title" formatted="false">"Hợp nhất với nhánh từ xa"</string>
     <string name="remote_merge_upstream">"Từ nhánh thượng nguồn: %1$s"</string>
     <string name="remote_normalized_target">"Địa chỉ kho: %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"Không thể đọc kết quả lối tắt đã lưu. Quyền được giữ riêng biệt."</string>
     <string name="ssh_hide_private_key" formatted="false">"Ẩn khóa riêng tư"</string>
     <string name="ssh_show_private_key" formatted="false">"Hiện khóa riêng tư"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"Khóa máy chủ SSH đã thay đổi"</string>
     <string name="ssh_trust_error_changed" formatted="false">"Độ tin cậy SSH thay đổi trong lúc xem xét. Hãy xem lại mục máy chủ hiện tại rồi thử kết nối lại."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Cần xem lại độ tin cậy SSH đã lưu. Hãy đặt lại độ tin cậy máy chủ SSH trong Cài đặt trước khi thử lại."</string>
     <string name="ssh_trust_error_recovery" formatted="false">"Không thể lưu việc khôi phục độ tin cậy SSH. Hãy xem lại độ tin cậy máy chủ SSH trong Cài đặt trước khi thử lại."</string>
     <string name="ssh_trust_error_remove" formatted="false">"Không thể xóa độ tin cậy máy chủ SSH. Hãy xem lại mục máy chủ hiện tại trước khi thử lại."</string>
     <string name="ssh_trust_error_reset" formatted="false">"Không thể xóa toàn bộ độ tin cậy máy chủ SSH. Hãy xem lại các mục đã lưu trước khi thử lại."</string>
-    <string name="ssh_trust_replace" formatted="false">"Thay thế độ tin cậy và kết nối"</string>
     <string name="staged" formatted="false">"đã chuẩn bị"</string>
     <string name="stash_screen" formatted="false">"Kho tạm"</string>
     <string name="storage_app_saved" formatted="false">"Các bản sao mới sẽ dùng bộ nhớ ứng dụng"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"Cục bộ: ↑%1$d"</string>
     <string name="tracking_metadata_size">"Siêu dữ liệu Git: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Xóa vĩnh viễn lịch sử Git?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"Thông tin đã xem xét đã thay đổi. Hãy hủy và xem xét lại việc gỡ theo dõi."</string>
     <string name="tracking_removed_backup">"Đã xóa theo dõi Git. Bản sao lưu đã xác minh: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Đã xóa theo dõi Git. Các tệp làm việc vẫn được giữ."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTất cả tệp làm việc và lịch sử Git cục bộ sẽ vẫn ở trên thiết bị này. Bạn có thể kết nối lại thư mục sau."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nThao tác này xóa vĩnh viễn bản sao do ứng dụng quản lý, bao gồm các commit chưa đẩy, thay đổi trong stash và tệp chưa lưu. Kho lưu trữ từ xa không thay đổi."</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s sẽ yêu cầu xác minh dấu vân tay trước khi kết nối lại."</string>
     <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"Ký tự: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Dòng: %1$s, byte: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commit cục bộ · %2$s commit upstream"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s hiển thị · %2$s đã lưu"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Mua một lần qua Google Play"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"Khóa thay đổi có thể là dấu hiệu mạo danh. Xác minh dấu vân tay mới với chủ máy chủ trước khi thay thế độ tin cậy."</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Hủy rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Giới thiệu"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Tất cả cách giải quyết xung đột đã được đưa vào vùng chờ. Tiếp tục áp dụng lại các commit. Nếu Git báo NOTHING_TO_COMMIT, hãy xem có nên bỏ qua commit rỗng hay không."</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Mọi tính năng đều được bao gồm sau khi cài đặt ứng dụng trả phí. Không có gói đăng ký hoặc mua hàng trong ứng dụng."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Tất cả thay đổi cục bộ đối với tệp này sẽ bị xóa vĩnh viễn."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Cho phép truy cập thư mục cục bộ"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Ứng dụng"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Cài đặt ứng dụng"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Áp dụng lựa chọn theo dõi"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Phê duyệt được lưu trên thiết bị này và kết nối đang chờ sẽ tiếp tục. Hủy sẽ không tin cậy máy chủ."</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Xác thực"</string>
     <string name="ui_back_639807a2" formatted="false">"QUAY LẠI"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Quay lại"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Chọn thư mục trên thiết bị"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Chọn phương thức xác thực trước khi sao chép."</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Chọn thư mục khác"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Chọn nơi lưu bản sao"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Chọn bộ nhớ cục bộ hoặc bộ nhớ được kết nối. Nhà cung cấp tài liệu đám mây không cung cấp hệ thống tệp mà bộ máy Git này có thể dùng."</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Chọn tài khoản để duyệt GitHub. Mỗi kho lưu trữ vẫn giữ tài khoản đã chỉ định; thay đổi trong Kết nối kho lưu trữ."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Chọn thư mục mặc định cho các bản sao mới. Các kho hiện có vẫn giữ nguyên vị trí."</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"Xóa nhật ký"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"Sao chép lại"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Sao chép lại · xem lại nhánh và kết nối trước đó trước khi bắt đầu."</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"Thư mục sao chép"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Bộ nhớ cho bản sao"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Tác giả commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Nội dung commit…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Xác nhận"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"Kết nối kho HTTPS hoặc SSH công khai hay riêng tư trên GitHub, GitLab, Bitbucket hoặc máy chủ Git của bạn."</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Tiếp tục Rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Tạo tệp hoặc thư mục bằng nút Mới."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Thư mục mặc định hiện tại"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Địa chỉ push riêng hiện tại: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"Giao diện tối"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Thông tin gỡ lỗi"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Mặc định cho bản sao mới. Mỗi bản sao có thể dùng thư mục khác."</string>
     <string name="ui_delete_1_s_6474596f">"Xóa \"%1$s\"?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Xóa"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Xóa tệp"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Xóa các tệp cục bộ"</string>
     <string name="ui_destination_1_s_0df94639">"Đích: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Thư mục cha của đích"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"Chẩn đoán"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Bỏ bản nháp"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Hủy thay đổi"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Bỏ bản nháp giải quyết xung đột?"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Bỏ qua"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Trong quá trình rebase, upstream là phía ours của Git; commit cục bộ được áp dụng lại là theirs."</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Sửa tác giả commit"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Sửa kết nối"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Sửa cách giải quyết"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"Bật quyền truy cập"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Nhập lại thông tin xác thực hoặc chọn quyền truy cập công khai cho địa chỉ mới."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Lỗi"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Mỗi máy chủ SSH sẽ yêu cầu xác minh dấu vân tay trước khi kết nối lại. Thao tác này cũng xóa các mục độ tin cậy bị hỏng."</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Tải về và xem xét rebase"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Thao tác với tệp thất bại"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"Hoàn tất khôi phục di chuyển"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub – Đăng nhập"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md cần quyền truy cập bộ nhớ dùng chung để quản lý các bản làm việc Git thực trong thư mục của thiết bị. Chọn thư mục muốn dùng sau khi bật quyền truy cập trong Cài đặt Android."</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md sẽ không cung cấp thông tin xác thực cho kho này."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Quay lại và chọn một kho."</string>
     <string name="ui_hash_a9106914" formatted="false">"Mã băm"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Tôi hiểu rằng chủ sở hữu khác có thể vẫn đang chỉnh sửa tệp này."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Thêm tên người dùng SSH vào địa chỉ: git@host:team/repo.git hoặc ssh://git@host:2222/team/repo.git."</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"Giữ bản sao lưu siêu dữ liệu đã xác minh"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Tiếp tục chỉnh sửa"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Cụm mật khẩu của khóa (không bắt buộc)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Các khóa được mã hóa trên thiết bị này và chỉ dùng cho địa chỉ kho đã lưu. Xác minh dấu vân tay máy chủ khi kết nối lần đầu."</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"Lần đồng bộ cuối"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Để trống để sử dụng nhánh mặc định của máy chủ."</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"Phê duyệt điểm cuối LFS"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"Tên người dùng điểm cuối LFS"</string>
-    <string name="ui_license_c011d609" formatted="false">"Giấy phép"</string>
     <string name="ui_loading_dc380888" formatted="false">"Đang tải"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"Đang tải các kho"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"Kho lưu trữ cục bộ"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Tên trong GitSync.md"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Các commit mới trong kho này sẽ dùng tên và email này. Các commit hiện có giữ nguyên tác giả ban đầu."</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"Tệp mới"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"Thư mục mới"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Token hoặc mật khẩu mới"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Không có thay đổi để hiển thị"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Không tìm thấy commit"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Mở Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Mở trong Tệp"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Đang mở tệp…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"Ghi đè giao diện hệ thống"</string>
     <string name="ui_owner_1_s_599ca9ce">"Chủ sở hữu: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Cha (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Đường dẫn"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Nền tảng"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"Dấu vân tay đã tin cậy trước đây: %1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"Truy cập công khai"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Thu hút với cơ chế tái định giá"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Đang rebase"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase lên upstream đã xem xét"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"Lưu"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Lưu tác giả"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Lưu kết nối"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"Thông tin xác thực đã lưu được mã hóa trên thiết bị này và chỉ dùng cho địa chỉ HTTPS của kho này."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Khi lưu, địa chỉ này sẽ được dùng cho cả fetch và push. Sau đó chạy fetch để làm mới trạng thái từ xa."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Thư mục đã chọn"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"Cài đặt"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Chia sẻ tệp lưu trữ bản sao lưu"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"Hiện thông tin gỡ lỗi"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Không thể đọc hoặc lưu một số dữ liệu chẩn đoán. Dữ liệu hiện có đã được giữ lại. Hãy xóa nhật ký để bắt đầu ghi lại."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH – Chìa khóa riêng"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Tin cậy máy chủ SSH"</string>
     <string name="ui_stage_de838855" formatted="false">"Chuẩn bị"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Đích đang hoạt động vẫn được giữ nguyên. GitSync.md kiểm tra bản gốc được giữ lại không có chỉnh sửa về sau trước khi xóa vĩnh viễn các tệp và lịch sử Git của bản gốc."</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Kết nối được mã hóa chỉ được dùng lại cho địa chỉ gốc của kho. Hãy chủ động đổi phương thức xác thực để sử dụng địa chỉ khác."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Có thể di chuyển thư mục trực tiếp trên ổ lưu trữ này."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Tài khoản GitHub trước đó đã ngắt kết nối. Chọn tài khoản đang kết nối hoặc phương thức xác thực khác."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Commit cục bộ được áp dụng lại sẽ xóa tệp này."</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Mục lịch sử này không khả dụng."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Thao tác này gỡ khóa của kết nối khác. Hãy trao đổi với chủ sở hữu trước khi tiếp tục."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Kho lưu trữ này sẽ dùng quyền truy cập công khai cho đến khi bạn chọn lại phương thức xác thực. Tài khoản GitHub bạn đã đăng nhập sẽ không được dùng cho kho này. Địa chỉ fetch và push vẫn giữ nguyên."</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">": mã token hoặc mật khẩu"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Không thể mở tệp"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"Bỏ chuẩn bị"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Cập nhật địa chỉ hoặc phương thức xác thực cho bản sao làm việc này. Tệp cục bộ, commit và thay đổi trong staging vẫn giữ nguyên."</string>
     <string name="ui_upstream_94adc696" formatted="false">"Upstream"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Upstream đã xóa tệp này."</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"Dùng địa chỉ HTTPS trên github.com. Bản sao vẫn giữ tài khoản đã chọn ngay cả khi bạn đổi tài khoản để duyệt kho."</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"Dùng bộ nhớ ứng dụng"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Dùng cho bản sao mới"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"Dùng kết nối đã lưu"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Dùng mặc định đã lưu"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Tên người dùng"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"Tên người dùng + token"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"Không có bản sao lưu, lịch sử Git cục bộ sẽ bị xóa vĩnh viễn. Không thể hoàn tác."</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"Các tệp làm việc vẫn ở nguyên vị trí. Nhánh cục bộ, commit, stash, kho từ xa và lịch sử sẽ bị ngắt kết nối khỏi thư mục này."</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Các chỉnh sửa của bạn chưa được lưu."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Văn bản chưa gửi sẽ bị bỏ. Tệp làm việc không thay đổi."</string>
     <string name="untracked" formatted="false">"Chưa theo dõi"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s dòng"</item>
         <item quantity="other">"+%1$s -%2$s dòng"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d tệp"</item>
-        <item quantity="other">"%1$d tệp"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge đã dừng: %1$s (%2$d xung đột)"</item>

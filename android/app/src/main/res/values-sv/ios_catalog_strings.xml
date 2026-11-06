@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"just nu"</string>
     <string name="account_valid_branch" formatted="false">"Ange ett giltigt grennamn"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
-    <string name="background_active" formatted="false">"Bakgrundskontroller är schemalagda för inkluderade arkiv."</string>
     <string name="background_allow_push" formatted="false">"Tillåt automatisk publicering"</string>
-    <string name="background_attempt">"Senaste kontroll: %1$s"</string>
-    <string name="background_attention" formatted="false">"Behöver granskas. Öppna arkivet för att hantera lokala ändringar, historik som gått isär, saknad upstream eller en sparad incheckning som väntar på uppladdning."</string>
     <string name="background_binding">"Endast grenen %1$s som följer %2$s/%3$s. Ändrad gren, mapp, anslutning eller konto kräver ny granskning."</string>
     <string name="background_changed" formatted="false">"Mapp, gren eller anslutning ändrad. Granska igen."</string>
     <string name="background_current" formatted="false">"Uppdaterad"</string>
     <string name="background_empty" formatted="false">"Inga lokala arkiv är registrerade."</string>
     <string name="background_error" formatted="false">"Det gick inte att slutföra åtgärden. Läs in igen och granska aktuellt arkiv och inställningar."</string>
-    <string name="background_excluded" formatted="false">"Utlämnat"</string>
-    <string name="background_failed" formatted="false">"Anslutning, autentisering, tillit eller filåtkomst behöver åtgärdas. Öppna arkivet och försök där igen."</string>
     <string name="background_forget" formatted="false">"Ta bort sparad regel"</string>
-    <string name="background_inactive" formatted="false">"Bakgrundskontroller är avstängda. Aktivera ett läge och inkludera minst ett arkiv."</string>
     <string name="background_include" formatted="false">"Inkludera detta arkiv"</string>
-    <string name="background_included" formatted="false">"Inkluderat"</string>
     <string name="background_never" formatted="false">"Inte kontrollerat ännu"</string>
-    <string name="background_open" formatted="false">"Öppna arkiv"</string>
-    <string name="background_power" formatted="false">"Endast extern ström"</string>
     <string name="background_pull" formatted="false">"Hämta fjärrändringar automatiskt"</string>
     <string name="background_push" formatted="false">"Checka in och skicka lokala ändringar automatiskt"</string>
     <string name="background_push_confirm" formatted="false">"Tillåt automatisk publicering?"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"Oläsbara inställningar för bakgrundssynkronisering kan inte godkänna arbete. Återställning tar bara bort sparade regler och status och stänger av båda automatiska lägena. Arkivfiler, konton och andra synkroniseringsfunktioner behålls. Granska varje arkiv innan du inkluderar det igen."</string>
     <string name="background_run" formatted="false">"Kontrollera nu"</string>
     <string name="background_running" formatted="false">"Kontrollerar arkiv…"</string>
-    <string name="background_schedule" formatted="false">"Android schemalägger kontroller ungefär var 15:e minut eller senare, beroende på anslutning, batteri och systembegränsningar. Kontrollera nu begär en tidigare kontroll. Tvångsstopp av appen förhindrar bakgrundsarbete tills du öppnar den igen."</string>
-    <string name="background_scope" formatted="false">"Inkludera ett arkiv efter att du granskat dess aktuella gren och anslutning. Automatisk pull hämtar ändringar och gör fast-forward när det är säkert. Automatisk push skapar incheckningar av lokala ändringar och laddar upp dem. Historik som gått isär, inkommande ändringar tillsammans med lokala redigeringar och ändrade anslutningar kräver granskning."</string>
     <string name="background_stop" formatted="false">"Stoppa kontroll"</string>
     <string name="background_stopped" formatted="false">"Kontroll stoppad"</string>
-    <string name="background_title" formatted="false">"Synkronisering i bakgrunden"</string>
-    <string name="background_transfer">"Senaste överföring: %1$s"</string>
     <string name="background_unavailable" formatted="false">"Den här arbetskopian är inte längre registrerad. Återanslut den och granska regeln igen."</string>
     <string name="background_updated" formatted="false">"Ändringar synkroniserade"</string>
     <string name="background_wait_network" formatted="false">"Väntar på en internetanslutning"</string>
     <string name="background_wait_power" formatted="false">"Väntar på extern ström"</string>
     <string name="background_wait_wifi" formatted="false">"Väntar på Wi-Fi"</string>
-    <string name="background_wifi" formatted="false">"Endast Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"Arbetskopian är på en annan gren. Byt tillbaka eller granska igen."</string>
-    <string name="branch_screen" formatted="false">"Grenar"</string>
     <string name="callback_action" formatted="false">"Begärd åtgärd"</string>
     <string name="callback_authorized_scope" formatted="false">"Auktoriserade länkar utför den sparade åtgärden utan att fråga igen. Ändrade eller återkallade länkar stoppas här. Hantera behörigheter i Åtgärder för arkiv → Auktoriserade länkar."</string>
     <string name="callback_auto_return" formatted="false">"Återvänd automatiskt efter den här körningen"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"Namn ändrat"</string>
     <string name="file_save_title" formatted="false">"Spara ändringar?"</string>
     <string name="file_saved" formatted="false">"Sparat"</string>
-    <string name="file_unsaved_changes" formatted="false">"Osparade ändringar"</string>
     <string name="files_folder" formatted="false">"Mapp"</string>
     <string name="files_hide_hidden" formatted="false">"Dölj dolda filer"</string>
     <string name="files_show_hidden" formatted="false">"Visa dolda filer"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"Redigera där du arbetar"</string>
     <string name="guide_git_body" formatted="false">"Granska skillnader, lägg valda ändringar i staging och skapa lokala commits. Pusha när du är redo. Grenar, historik, taggar, konfliktlösning och Git LFS finns på repositoryskärmen."</string>
     <string name="guide_git_title" formatted="false">"Granska före publicering"</string>
-    <string name="guide_home" formatted="false">"Fortsätt utan konto"</string>
     <string name="guide_login" formatted="false">"Logga in med GitHub"</string>
-    <string name="guide_sample" formatted="false">"Prova offlineexempel"</string>
     <string name="guide_save_error" formatted="false">"Rundturens förlopp kunde inte sparas. Du kan fortsätta; rundturen kan visas igen nästa gång."</string>
-    <string name="guide_skip" formatted="false">"Hoppa över rundturen"</string>
     <string name="guide_start_body" formatted="false">"Anslut ett konto, klona från en URL eller prova offlineexemplet. Du kan också välja lagringsplats nu."</string>
     <string name="guide_start_title" formatted="false">"Välj hur du vill börja"</string>
     <string name="guide_step">"Steg %1$d av 4"</string>
-    <string name="guide_storage" formatted="false">"Välj lagring"</string>
-    <string name="guide_title" formatted="false">"Rundtur i appen"</string>
-    <string name="guide_url" formatted="false">"Klona från URL"</string>
     <string name="help_copy_email" formatted="false">"Kopiera supportens e-postadress"</string>
     <string name="help_email_copied" formatted="false">"Supportens e-postadress har kopierats"</string>
     <string name="help_feedback" formatted="false">"Skicka feedback"</string>
     <string name="help_open_failed" formatted="false">"Ingen app kunde öppna den här länken. Du kan kopiera supportens e-postadress i stället."</string>
     <string name="help_title" formatted="false">"Hjälp"</string>
-    <string name="help_tour" formatted="false">"Visa apptours"</string>
     <string name="history_screen" formatted="false">"Historik"</string>
     <string name="http_transport_warning" formatted="false">"HTTP är inte krypterat. Arkivdata och användarnamn eller token du anger kan läsas under överföringen. Använd HTTPS när det finns tillgängligt."</string>
     <string name="language_settings_legacy" formatted="false">"Före Android 13 använder den här appen enhetens språk."</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"Anslutningar och lagring"</string>
     <string name="notes_files_body" formatted="false">"Granska Git LFS-spårning, hämta saknat innehåll och kontrollera varningar om serverlås. Diagnostik för en begränsad lokal logg med filtrerad kopiering och delning."</string>
     <string name="notes_files_title" formatted="false">"Stora filer och diagnostik"</string>
-    <string name="notes_title" formatted="false">"Versionsinformation"</string>
     <string name="notes_version">"Android %1$s · bygge %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Bläddra bland och redigera filer, granska diffar i och utanför staging, gör lokala committar, pusha befintliga committar och arbeta med grenar, historik, taggar och rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Arbetsflöde för arkiv"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"Kasta den här granskningen?"</string>
     <string name="publication_discard_warning" formatted="false">"Ta bort dessa sparade granskningsval och osparade ändringar? Arbetsfilerna förblir orörda. Förberedelse och publicering har inte startat för den här granskningen."</string>
     <string name="publication_file_unsupported" formatted="false">"Innehållskonvertering stöds inte"</string>
-    <string name="publication_files" formatted="false">"Filer"</string>
     <string name="publication_finish" formatted="false">"Slutför konfigurationen"</string>
     <string name="publication_include" formatted="false">"Inkludera fil"</string>
     <string name="publication_leave_title" formatted="false">"Spara granskningen?"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"Push-aviseringar är inte tillgängliga i den här versionen."</string>
     <string name="push_unlink" formatted="false">"Ta bort anslutning"</string>
     <string name="push_unlink_scope" formatted="false">"Ta bort routningen för push-synkronisering för den här GitHub-installationen på den här enheten? GitHub-appen avinstalleras inte. Använd Hantera på GitHub för att ändra dess arkivåtkomst eller avinstallera den."</string>
-    <string name="rebase_abort_body" formatted="false">"Återställer den ursprungliga grenen och commiten. Ändringar i spårade filer och konfliktlösningar som gjorts under denna ombasering kastas."</string>
-    <string name="rebase_abort_title" formatted="false">"Avbryta denna ombasering?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"Godkänn lokal borttagning"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"Godkänn borttagning från upstream"</string>
-    <string name="rebase_begin_body" formatted="false">"Lokala commits spelas upp på granskad upstream igen och kan få nya ID:n. Ombasering sker lokalt; push är fortfarande en separat åtgärd."</string>
-    <string name="rebase_begin_title" formatted="false">"Skriva om lokala commits?"</string>
     <string name="rebase_checkout_review_required" formatted="false">"Återställningen av utcheckningen har ändrats eller kan inte läsas. Granska ditt lokala arbete innan du använder ett Git-verktyg eller avbryter ombaseringen."</string>
     <string name="rebase_problem_active_operation" formatted="false">"Slutför den aktiva Git-åtgärden innan du startar en rebase."</string>
     <string name="rebase_problem_local_branch" formatted="false">"Byt till en lokal gren före rebase."</string>
     <string name="rebase_problem_local_changes" formatted="false">"Skapa en commit eller spara alla lokala ändringar i en stash före rebase."</string>
     <string name="rebase_problem_upstream" formatted="false">"Konfigurera en fjärrgren att följa före rebase."</string>
     <string name="rebase_skip_body" formatted="false">"Utesluter aktuell commit från återspelningen. Granska ändringarna innan du hoppar över; detta kan ta bort lokalt arbete från den resulterande historiken."</string>
-    <string name="rebase_skip_title" formatted="false">"Hoppa över denna lokala commit?"</string>
-    <string name="rebase_status_aborted" formatted="false">"Ombasering avbruten"</string>
-    <string name="rebase_status_conflicts" formatted="false">": Rebase-förloppet har konflikter – lös dessa först och fortsätt sedan med rebase-processen."</string>
     <string name="rebase_use_local" formatted="false">"Använd lokal commit"</string>
     <string name="rebase_use_upstream" formatted="false">"Använd upstream"</string>
     <string name="remote_address_formats" formatted="false">"Använd HTTP/HTTPS, SSH, git://, file://, eller ägare/repo."</string>
-    <string name="remote_merge_confirm_local" formatted="false">"Slå samman de granskade committarna?"</string>
-    <string name="remote_merge_confirm_local_body">"Uppdaterar %1$s med den granskade committen från %2$s. En merge-commit kan skapas. Inget pushas."</string>
-    <string name="remote_merge_confirm_push" formatted="false">"Slå samman och publicera till upstream?"</string>
-    <string name="remote_merge_confirm_push_body">"Uppdaterar %1$s och pushar sedan dess committar till %2$s på den granskade pushadressen. Konflikter stoppar publiceringen. En misslyckad eller obekräftad push behåller det lokala Git-resultatet för ett uttryckligt nytt försök."</string>
     <string name="remote_merge_counts">"Lokala committar: %1$d · Inkommande committar: %2$d"</string>
     <string name="remote_merge_destination">"Till lokal gren: %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Slutför Git-åtgärden…"</string>
     <string name="remote_merge_incoming_oid">"Inkommande commit: %1$s"</string>
     <string name="remote_merge_local_oid">"Lokal commit: %1$s"</string>
-    <string name="remote_merge_push_address">"Pushadress: %1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"Hämta och granska konfigurerad upstream. Befintliga committar behåller sina ID:n; åtskilda historiker skapar en merge-commit. Konflikter kan behöva lösas manuellt."</string>
     <string name="remote_merge_title" formatted="false">"Slå samman med fjärrgren"</string>
     <string name="remote_merge_upstream">"Från upstream: %1$s"</string>
     <string name="remote_normalized_target">"Arkivets adress: %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"Sparade genvägsresultat kan inte läsas. Behörigheten hanteras separat."</string>
     <string name="ssh_hide_private_key" formatted="false">"Dölj privat nyckel"</string>
     <string name="ssh_show_private_key" formatted="false">"Visa privat nyckel"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"SSH-serverns nyckel har ändrats"</string>
     <string name="ssh_trust_error_changed" formatted="false">"SSH-tilliten ändrades under granskningen. Granska den aktuella serverposten och försök ansluta igen."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Sparad SSH-tillit behöver granskas. Återställ SSH-servertillit i Inställningar innan du försöker igen."</string>
     <string name="ssh_trust_error_recovery" formatted="false">"Återställningen av SSH-tillit kunde inte sparas. Granska SSH-servertillit i Inställningar innan du försöker igen."</string>
     <string name="ssh_trust_error_remove" formatted="false">"Kunde inte ta bort SSH-servertillit. Granska den aktuella serverposten innan du försöker igen."</string>
     <string name="ssh_trust_error_reset" formatted="false">"Kunde inte rensa SSH-servertillit. Granska de sparade posterna innan du försöker igen."</string>
-    <string name="ssh_trust_replace" formatted="false">"Ersätt tillit och anslut"</string>
     <string name="staged" formatted="false">"förberedd"</string>
     <string name="stash_screen" formatted="false">"Gömma"</string>
     <string name="storage_app_saved" formatted="false">"Nya kloner använder appens lagring"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"↑%1$d lokalt"</string>
     <string name="tracking_metadata_size">"Git-metadata: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Ta bort Git-historiken permanent?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"De granskade uppgifterna har ändrats. Avbryt och granska borttagningen av spårning igen."</string>
     <string name="tracking_removed_backup">"Git-spårning borttagen. Verifierad säkerhetskopia: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Git-spårning borttagen. Arbetsfiler behölls."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlla arbetsfiler och den lokala Git-historiken finns kvar på den här enheten. Du kan ansluta mappen igen senare."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDetta raderar den här apphanterade klonen permanent, inklusive commits som inte har pushats, stashar och osparade filer. Fjärrarkivet ändras inte."</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s kommer att kräva verifiering av fingeravtryck före nästa anslutning."</string>
     <string name="ui_1_s_bytes_81cdb385">"Byte: %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"Tecken: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Rader: %1$s, byte: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s lokala commits · %2$s upstream-commits"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s visas · %2$s sparade"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Engångsköp via Google Play"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"En ändrad nyckel kan tyda på identitetsförfalskning. Verifiera det nya fingeravtrycket med serverns ägare innan du ersätter tilliten."</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Avbryt rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Om"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Alla konfliktlösningar är förberedda. Fortsätt spela upp commits igen. Om Git rapporterar NOTHING_TO_COMMIT, granska om den tomma commiten ska hoppas över."</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Alla funktioner ingår efter installation av den betalda appen. Inga prenumerationer eller köp i appen."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Alla lokala ändringar i denna fil kommer permanent att avskiljas."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Tillåt åtkomst till lokala mappar"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Appinställningar"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Använd spårningsval"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Godkännandet sparas på den här enheten och den väntande anslutningen fortsätter. Avbryt lämnar servern utan tillit."</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Autentisering"</string>
     <string name="ui_back_639807a2" formatted="false">"TILLBAKA"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Tillbaka"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Välj en mapp på enheten"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Välj en autentiseringsmetod innan du klonar."</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Välj en annan mapp"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Välj lagringsplats för kloner"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Välj lokal eller ansluten lagring. Molndokumentleverantörer tillhandahåller inte ett filsystem som denna Git-motor kan använda."</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Välj kontot som används för att bläddra på GitHub. Varje arkiv behåller sitt tilldelade konto; ändra det under Arkivanslutning."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Välj standardmapp för nya kloner. Befintliga arkiv behåller sin nuvarande plats."</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"Rensa logg"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"Klona igen"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Klona igen · granska den tidigare grenen och anslutningen innan du börjar."</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"Kloningsmapp"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Lagring av kloner"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Commit-författare"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit-meddelande…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Bekräfta"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"Anslut till ett offentligt eller privat HTTPS- eller SSH-repository på GitHub, GitLab, Bitbucket eller din egen Git-server."</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Fortsätt rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Skapa en fil eller mapp med Ny."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Nuvarande standard"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Nuvarande separata pushadress: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"Mörkt tema"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Felsökningsinformation"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Standardplats för nya kloner. Varje klon kan använda en annan mapp."</string>
     <string name="ui_delete_1_s_6474596f">"Ta bort ”%1$s”?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Ta bort"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Ta bort fil"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Ta bort lokala filer"</string>
     <string name="ui_destination_1_s_0df94639">"Mål: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Överordnad målmapp"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnostik"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Kasta utkast"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Förkasta"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Kasta lösningsutkastet?"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Stäng"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Under ombasering är upstream Gits ours-sida; den återspelade lokala commiten är theirs."</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Redigera commitförfattare"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Redigera anslutning"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Redigera lösning"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"Aktivera åtkomst"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Ange inloggningsuppgifterna igen eller välj offentlig åtkomst för den nya adressen."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Fel"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Varje SSH-server kommer att kräva verifiering av fingeravtryck före nästa anslutning. Detta tar även bort skadade tillitsposter."</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Hämta och granska ombasering"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Filåtgärden misslyckades"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"Slutför återställning av flytt"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub Anslutning"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md behöver åtkomst till delad lagring för att hantera riktiga Git-arbetskopior i enhetens mappar. Välj de mappar du vill använda efter att du har aktiverat åtkomst i Android-inställningarna."</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md lämnar inte ut inloggningsuppgifter för detta repository."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Gå tillbaka och välj ett arkiv."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Jag förstår att en annan ägare fortfarande kan redigera denna fil."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Ta med SSH-användarnamnet i adressen: git@host:team/repo.git eller ssh://git@host:2222/team/repo.git."</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"Behåll en verifierad säkerhetskopia av metadata"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Fortsätt redigera"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Nyckelns lösenfras (valfri)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Nycklar krypteras på den här enheten och används bara för den sparade repositoryadressen. Verifiera serverns fingeravtryck vid den första anslutningen."</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"Senaste synk"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Lämna tomt för att använda serverns standardgren."</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"Godkännanden av LFS-slutpunkter"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"Användarnamn för LFS-ändpunkt"</string>
-    <string name="ui_license_c011d609" formatted="false">"Licens"</string>
     <string name="ui_loading_dc380888" formatted="false">"Läser in"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"Läser in repositories"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"Lokala arkiv"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Namn i GitSync.md"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Nya commits i det här arkivet använder det här namnet och den här e-postadressen. Befintliga commits behåller sin ursprungliga författare."</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"– Ny fil"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"Ny mapp"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Ny token eller nytt lösenord"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Inga ändringar att visa"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Inga incheckningar hittades"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Öppna Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Öppna i filer"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Öppnar fil…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"Åsidosätt systemets utseende"</string>
     <string name="ui_owner_1_s_599ca9ce">"Ägare: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Föräldrar (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Sökväg"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Plattform"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"Tidigare betrott: %1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"Offentlig åtkomst"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Tvinga med ombasering"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Ombasering pågår"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Ombasera på granskad upstream"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"Spara"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Spara författare"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Spara anslutning"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"Sparade inloggningsuppgifter krypteras på den här enheten och används bara för detta repositorys HTTPS-adress."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"När du sparar används den här adressen för både fetch och push. Kör fetch efteråt för att uppdatera fjärrstatus."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Vald mapp"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"Inställningar"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Dela säkerhetskopiearkiv"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"Visa felsökningsinformation"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Viss diagnostik kunde inte läsas eller sparas. Befintliga data behölls. Rensa loggen för att börja registrera igen."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Privat nyckel"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Förtroende för SSH-servrar"</string>
     <string name="ui_stage_de838855" formatted="false">"Förbered"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Det aktiva målet finns kvar. GitSync.md kontrollerar att det sparade originalet inte har några senare ändringar innan dess filer och Git-historik tas bort permanent."</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Den krypterade anslutningen återanvänds bara för repositoryets ursprungliga adress. Ändra autentiseringen uttryckligen för att använda en annan adress."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Mappen kan flyttas direkt på den här lagringsvolymen."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Det tidigare GitHub-kontot är frånkopplat. Välj ett anslutet konto eller en annan autentiseringsmetod."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Den återspelade lokala commiten tar bort denna fil."</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Den här historikposten är inte tillgänglig."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Detta tar bort en annan anslutnings lås. Kom överens med ägaren innan du fortsätter."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Det här arkivet använder offentlig åtkomst tills du väljer autentisering igen. Ditt inloggade GitHub-konto används inte för det. Adresserna för fetch och push förblir oförändrade."</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"-token eller lösenord"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Kan inte öppna filen"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"Ta bort förberedelse"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Uppdatera adressen eller autentiseringen för den här arbetskopian. Lokala filer, commits och ändringar i staging finns kvar."</string>
     <string name="ui_upstream_94adc696" formatted="false">"Upstream"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Upstream tog bort denna fil."</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"Använd en HTTPS-adress på github.com. Klonen behåller det valda kontot även om du byter konto för att bläddra bland repositories."</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"Använd appens lagring"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Använd för nya kloner"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"Använd sparad anslutning"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Använd sparat standardval"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Användarnamn"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"Användarnamn + token"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"Utan säkerhetskopia raderas lokal Git-historik permanent. Detta kan inte ångras."</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"Arbetsfilerna finns kvar. Lokala grenar, commits, stashar, fjärrlager och historik kopplas från den här mappen."</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Dina ändringar har inte sparats."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Texten du inte skickat in kastas. Arbetsfilen förblir oförändrad."</string>
     <string name="untracked" formatted="false">"Ospårad"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s rad"</item>
         <item quantity="other">"+%1$s -%2$s rader"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d fil"</item>
-        <item quantity="other">"%1$d filer"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge stoppad: %1$s (%2$d konflikt)"</item>

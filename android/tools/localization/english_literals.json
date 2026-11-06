@@ -162,18 +162,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_public_access_03e7db61",
-      "source": "Public access",
-      "arguments": 0
-    },
-    {
       "name": "ui_lfs_endpoint_username_4a49e1f5",
       "source": "LFS endpoint username",
-      "arguments": 0
-    },
-    {
-      "name": "ui_lfs_endpoint_approvals_4a5953cd",
-      "source": "LFS endpoint approvals",
       "arguments": 0
     },
     {
@@ -214,26 +204,6 @@
     {
       "name": "ui_keys_are_encrypted_on_this_device_and_used_cb039887",
       "source": "Keys are encrypted on this device and used only for the saved repository address. Verify the server fingerprint when connecting for the first time.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_previously_trusted_1_s_df583fd2",
-      "source": "Previously trusted: %1$s",
-      "arguments": 1
-    },
-    {
-      "name": "ui_a_changed_key_can_indicate_impersonation_v_fa1697a1",
-      "source": "A changed key can indicate impersonation. Verify the new fingerprint with the server owner before replacing trust.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f",
-      "source": "Approval is saved on this device and the waiting connection continues. Cancel leaves the server untrusted.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_ssh_server_trust_e17d5257",
-      "source": "SSH server trust",
       "arguments": 0
     },
     {
@@ -377,19 +347,9 @@
       "arguments": 0
     },
     {
-      "name": "ui_diagnostics_268f14bb",
-      "source": "Diagnostics",
-      "arguments": 0
-    },
-    {
       "name": "ui_some_diagnostics_could_not_be_read_or_save_19e3372d",
       "source": "Some diagnostics could not be read or saved. Existing data was kept. Clear the log to restart recording.",
       "arguments": 0
-    },
-    {
-      "name": "ui_1_s_shown_2_s_stored_c5d98835",
-      "source": "%1$s shown · %2$s stored",
-      "arguments": 2
     },
     {
       "name": "ui_clear_all_diagnostics_e2d6a185",
@@ -411,11 +371,6 @@
     {
       "name": "ui_new_file_44dedd0f",
       "source": "New file",
-      "arguments": 0
-    },
-    {
-      "name": "ui_new_folder_cf28f49e",
-      "source": "New folder",
       "arguments": 0
     },
     {
@@ -536,11 +491,6 @@
     {
       "name": "ui_last_sync_a0d540dd",
       "source": "Last Sync",
-      "arguments": 0
-    },
-    {
-      "name": "branch_screen",
-      "source": "Branches",
       "arguments": 0
     },
     {
@@ -686,11 +636,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f",
-      "source": "During rebase, upstream is Git's ours side; the replayed local commit is theirs.",
-      "arguments": 0
-    },
-    {
       "name": "ui_upstream_deleted_this_file_40765116",
       "source": "Upstream deleted this file.",
       "arguments": 0
@@ -766,16 +711,6 @@
       "arguments": 0
     },
     {
-      "name": "guide_url",
-      "source": "Clone from URL",
-      "arguments": 0
-    },
-    {
-      "name": "ui_connect_to_a_public_or_private_https_or_ss_03fd12f0",
-      "source": "Connect to a public or private HTTPS or SSH repository on GitHub, GitLab, Bitbucket or your own Git server.",
-      "arguments": 0
-    },
-    {
       "name": "ui_clone_again_review_the_previous_branch_and_33cba147",
       "source": "Clone again · review the previous branch and connection before starting.",
       "arguments": 0
@@ -806,21 +741,6 @@
       "arguments": 0
     },
     {
-      "name": "ui_username_token_7375b2ff",
-      "source": "Username + token",
-      "arguments": 0
-    },
-    {
-      "name": "ui_use_saved_connection_21052734",
-      "source": "Use saved connection",
-      "arguments": 0
-    },
-    {
-      "name": "ui_the_encrypted_connection_is_reused_only_fo_a43b4975",
-      "source": "The encrypted connection is reused only for its original repository address. Change authentication explicitly to use another address.",
-      "arguments": 0
-    },
-    {
       "name": "publication_accounts",
       "source": "GitHub account",
       "arguments": 0
@@ -828,26 +748,6 @@
     {
       "name": "ui_the_previous_github_account_is_disconnecte_628a1f8c",
       "source": "The previous GitHub account is disconnected. Select a connected account or choose another authentication method.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_use_a_github_com_https_address_the_clone_k_6466d7b7",
-      "source": "Use a github.com HTTPS address. The clone keeps the selected account even if you switch browsing accounts.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_token_or_password_d6e43f8a",
-      "source": "Token or password",
-      "arguments": 0
-    },
-    {
-      "name": "ui_saved_credentials_are_encrypted_on_this_de_a97385dd",
-      "source": "Saved credentials are encrypted on this device and used only for this repository's HTTPS address.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_gitsync_md_will_not_provide_credentials_fo_103df88f",
-      "source": "GitSync.md will not provide credentials for this repository.",
       "arguments": 0
     },
     {
@@ -996,31 +896,9 @@
       "arguments": 1
     },
     {
-      "name": "ui_working_files_stay_in_place_local_branches_a0748350",
-      "source": "Working files stay in place. Local branches, commits, stashes, remotes and history will be disconnected from this folder.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_keep_a_verified_metadata_backup_5e821b62",
-      "source": "Keep a verified metadata backup",
-      "arguments": 0
-    },
-    {
-      "name": "ui_without_a_backup_local_git_history_is_perm_bcb5c492",
-      "source": "Without a backup, local Git history is permanently deleted. This cannot be undone.",
-      "arguments": 0
-    },
-    {
       "name": "ui_remove_tracking_4b40d72c",
       "source": "Remove tracking",
       "arguments": 0
-    },
-    {
-      "name": "ui_settings_02f6ea12",
-      "source": "Settings",
-      "arguments": 0,
-      "original_source": "SETTINGS",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
     },
     {
       "name": "ui_loading_dc380888",
@@ -1028,33 +906,8 @@
       "arguments": 0
     },
     {
-      "name": "ui_license_c011d609",
-      "source": "License",
-      "arguments": 0
-    },
-    {
       "name": "ui_app_settings_da645334",
       "source": "App Settings",
-      "arguments": 0
-    },
-    {
-      "name": "ui_choose_clone_storage_81f04f23",
-      "source": "Choose clone storage",
-      "arguments": 0
-    },
-    {
-      "name": "ui_dark_theme_6f2a0915",
-      "source": "Dark Theme",
-      "arguments": 0
-    },
-    {
-      "name": "ui_override_system_appearance_2685888c",
-      "source": "Override system appearance",
-      "arguments": 0
-    },
-    {
-      "name": "ui_show_debug_information_6e8abf80",
-      "source": "Show debug information",
       "arguments": 0
     },
     {
@@ -1070,40 +923,6 @@
     {
       "name": "ui_platform_c78ffe19",
       "source": "Platform",
-      "arguments": 0
-    },
-    {
-      "name": "ui_9_99_one_time_purchase_via_google_play_fa8e82bc",
-      "source": "One-time purchase via Google Play",
-      "arguments": 0,
-      "original_source": "$9.99 one-time purchase via Google Play",
-      "source_review": "Removed the fixed dollar price from the installed paid-app license card; Google Play handles the purchase. No price or currency is asserted here."
-    },
-    {
-      "name": "ui_all_features_are_included_after_installing_a88c124e",
-      "source": "All features are included after installing the paid app. No subscriptions or in-app purchases.",
-      "arguments": 0
-    },
-    {
-      "name": "ui_clone_directory_157fc791",
-      "source": "Clone Directory",
-      "arguments": 0
-    },
-    {
-      "name": "ui_default_for_new_clones_each_clone_can_use_f0929c99",
-      "source": "Default for new clones. Each clone can use another folder.",
-      "arguments": 0,
-      "original_source": "DEFAULT FOR NEW CLONES. EACH CLONE CAN USE ANOTHER FOLDER.",
-      "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
-    },
-    {
-      "name": "ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8",
-      "source": "%1$s:%2$s will require fingerprint verification before connecting again.",
-      "arguments": 2
-    },
-    {
-      "name": "ui_every_ssh_server_will_require_fingerprint_b985f6b6",
-      "source": "Every SSH server will require fingerprint verification before connecting again. This also removes damaged trust entries.",
       "arguments": 0
     },
     {

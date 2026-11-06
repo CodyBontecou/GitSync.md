@@ -14,7 +14,6 @@
     <string name="publication_sensitive_title">Include sensitive file?</string>
     <string name="publication_sensitive_warning">%1$s may contain credentials or private information. Include it only after checking its contents. Published Git history may retain it after deletion.</string>
     <string name="publication_include">Include file</string>
-    <string name="publication_files">Files</string>
     <string name="publication_file_unsupported">Unsupported content conversion</string>
     <string name="publication_cancel">Cancel</string>
     <string name="publication_discard_title">Discard this review?</string>

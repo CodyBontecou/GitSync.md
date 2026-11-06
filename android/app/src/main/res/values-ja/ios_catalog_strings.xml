@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"たった今"</string>
     <string name="account_valid_branch" formatted="false">"有効なブランチ名を入力してください"</string>
     <string name="automation_shortcut_label">"%1$s：%2$s"</string>
-    <string name="background_active" formatted="false">"対象リポジトリのバックグラウンド確認を予約済みです。"</string>
     <string name="background_allow_push" formatted="false">"自動公開を許可"</string>
-    <string name="background_attempt">"最終確認：%1$s"</string>
-    <string name="background_attention" formatted="false">"確認が必要です。リポジトリを開いて、ローカルの変更、履歴の分岐、未設定の上流ブランチ、アップロード待ちの保存済みコミットを解決してください。"</string>
     <string name="background_binding">"%2$s/%3$s を追跡するブランチ %1$s のみが対象です。ブランチ、フォルダ、接続、アカウントを変更した場合は再確認が必要です。"</string>
     <string name="background_changed" formatted="false">"フォルダ、ブランチ、接続が変更されました。再確認してください。"</string>
     <string name="background_current" formatted="false">"最新"</string>
     <string name="background_empty" formatted="false">"ローカルリポジトリは登録されていません。"</string>
     <string name="background_error" formatted="false">"この操作を完了できませんでした。再読み込みして現在のリポジトリと設定を確認してください。"</string>
-    <string name="background_excluded" formatted="false">"除外"</string>
-    <string name="background_failed" formatted="false">"接続、認証、信頼設定、ファイルへのアクセスに対応が必要です。リポジトリを開いて、そこで再試行してください。"</string>
     <string name="background_forget" formatted="false">"保存したポリシーを削除"</string>
-    <string name="background_inactive" formatted="false">"バックグラウンド確認は無効です。モードを有効にして、少なくとも1つのリポジトリを含めてください。"</string>
     <string name="background_include" formatted="false">"このリポジトリを含める"</string>
-    <string name="background_included" formatted="false">"対象"</string>
     <string name="background_never" formatted="false">"未確認"</string>
-    <string name="background_open" formatted="false">"リポジトリを開く"</string>
-    <string name="background_power" formatted="false">"外部電源のみ"</string>
     <string name="background_pull" formatted="false">"リモートの変更を自動でプル"</string>
     <string name="background_push" formatted="false">"ローカルの変更を自動でコミットしてプッシュ"</string>
     <string name="background_push_confirm" formatted="false">"自動公開を許可しますか？"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"読み取れないバックグラウンド同期の設定では処理を許可できません。リセットでは保存したポリシーと状態のみを削除し、両方の自動モードを無効にします。リポジトリのファイル、アカウント、他の同期機能は維持されます。再び含める前に各リポジトリを確認してください。"</string>
     <string name="background_run" formatted="false">"今すぐ確認"</string>
     <string name="background_running" formatted="false">"リポジトリを確認中…"</string>
-    <string name="background_schedule" formatted="false">"Android は接続状況、バッテリー、システムの制限に応じて、約15分ごと、またはそれ以降に確認を実行します。「今すぐ確認」は早めの確認を要求します。アプリを強制停止すると、再び開くまでバックグラウンド処理は実行されません。"</string>
-    <string name="background_scope" formatted="false">"現在のブランチと接続を確認してからリポジトリを含めてください。自動プルは変更を取得し、安全な場合に fast-forward します。自動プッシュはローカルの変更からコミットを作成してアップロードします。分岐した履歴、ローカルの編集がある状態で届いた変更、変更された接続は確認が必要です。"</string>
     <string name="background_stop" formatted="false">"確認を停止"</string>
     <string name="background_stopped" formatted="false">"確認を停止しました"</string>
-    <string name="background_title" formatted="false">"バックグラウンド同期"</string>
-    <string name="background_transfer">"最終転送：%1$s"</string>
     <string name="background_unavailable" formatted="false">"この作業コピーは登録されていません。再接続してポリシーを再確認してください。"</string>
     <string name="background_updated" formatted="false">"変更を同期しました"</string>
     <string name="background_wait_network" formatted="false">"インターネット接続を待機中"</string>
     <string name="background_wait_power" formatted="false">"外部電源を待機中"</string>
     <string name="background_wait_wifi" formatted="false">"Wi-Fi 接続を待機中"</string>
-    <string name="background_wifi" formatted="false">"Wi-Fiのみ"</string>
     <string name="background_wrong_branch" formatted="false">"作業コピーは別のブランチにあります。元に戻すか、再確認してください。"</string>
-    <string name="branch_screen" formatted="false">"ブランチ"</string>
     <string name="callback_action" formatted="false">"リクエストされた操作"</string>
     <string name="callback_authorized_scope" formatted="false">"認可済みリンクは、再確認せずに保存済みの操作を実行します。変更または取り消されたリンクはここで停止します。権限は「リポジトリの操作」→「許可済みリンク」で管理できます。"</string>
     <string name="callback_auto_return" formatted="false">"この実行後に自動で戻る"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"名前を変更しました"</string>
     <string name="file_save_title" formatted="false">"変更を保存しますか？"</string>
     <string name="file_saved" formatted="false">"保存しました"</string>
-    <string name="file_unsaved_changes" formatted="false">"未保存の変更"</string>
     <string name="files_folder" formatted="false">"フォルダ"</string>
     <string name="files_hide_hidden" formatted="false">"隠しファイルを非表示"</string>
     <string name="files_show_hidden" formatted="false">"隠しファイルを表示"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"作業する場所で編集"</string>
     <string name="guide_git_body" formatted="false">"差分を確認し、選択した変更をステージしてローカルでコミットできます。準備ができたらプッシュしてください。ブランチ、履歴、タグ、競合の解決、Git LFSはリポジトリ画面から利用できます。"</string>
     <string name="guide_git_title" formatted="false">"公開する前に確認"</string>
-    <string name="guide_home" formatted="false">"アカウントなしで続ける"</string>
     <string name="guide_login" formatted="false">"GitHub でサインイン"</string>
-    <string name="guide_sample" formatted="false">"オフラインのサンプルを試す"</string>
     <string name="guide_save_error" formatted="false">"ガイドの進行状況を保存できませんでした。このまま続けられますが、次回ガイドが再び表示される場合があります。"</string>
-    <string name="guide_skip" formatted="false">"ガイドをスキップ"</string>
     <string name="guide_start_body" formatted="false">"アカウントを接続するか、URLからクローンするか、オフラインのサンプルをお試しください。保存先も今すぐ選択できます。"</string>
     <string name="guide_start_title" formatted="false">"始め方を選択"</string>
     <string name="guide_step">"ステップ %1$d / 4"</string>
-    <string name="guide_storage" formatted="false">"保存先を選択"</string>
-    <string name="guide_title" formatted="false">"アプリの使い方"</string>
-    <string name="guide_url" formatted="false">"URLからクローン"</string>
     <string name="help_copy_email" formatted="false">"サポートのメールアドレスをコピー"</string>
     <string name="help_email_copied" formatted="false">"サポートのメールアドレスをコピーしました"</string>
     <string name="help_feedback" formatted="false">"フィードバックを送信"</string>
     <string name="help_open_failed" formatted="false">"このリンクを開けるアプリがありません。サポートのメールアドレスをコピーできます。"</string>
     <string name="help_title" formatted="false">"ヘルプ"</string>
-    <string name="help_tour" formatted="false">"アプリツアーを表示"</string>
     <string name="history_screen" formatted="false">"履歴"</string>
     <string name="http_transport_warning" formatted="false">"HTTP は暗号化されていません。リポジトリのデータや入力したユーザー名、トークンは転送中に読み取られる可能性があります。利用できる場合は HTTPS を使用してください。"</string>
     <string name="language_settings_legacy" formatted="false">"Android 13 より前では、このアプリはデバイスの言語を使用します。"</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"接続とストレージ"</string>
     <string name="notes_files_body" formatted="false">"Git LFS の追跡を確認し、不足している内容をダウンロードして、サーバーロックの警告を確認できます。診断では容量を制限したローカルログを保持し、フィルタした内容のコピーや共有ができます。"</string>
     <string name="notes_files_title" formatted="false">"大きなファイルと診断"</string>
-    <string name="notes_title" formatted="false">"リリースノート"</string>
     <string name="notes_version">"Android %1$s · ビルド %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"ファイルの閲覧・編集、ステージ済み・未ステージの差分の確認、ローカルでのコミット、既存コミットのプッシュ、ブランチ・履歴・タグ・リベースの操作ができます。"</string>
     <string name="notes_workflow_title" formatted="false">"リポジトリのワークフロー"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"この確認内容を破棄しますか？"</string>
     <string name="publication_discard_warning" formatted="false">"保存済みの確認内容と未保存の編集を削除しますか？ 作業ファイルは変更されません。この確認内容について、準備や公開はまだ開始していません。"</string>
     <string name="publication_file_unsupported" formatted="false">"未対応の内容変換"</string>
-    <string name="publication_files" formatted="false">"ファイル"</string>
     <string name="publication_finish" formatted="false">"設定を完了"</string>
     <string name="publication_include" formatted="false">"ファイルを追加"</string>
     <string name="publication_leave_title" formatted="false">"確認内容を保存しますか？"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"このビルドではプッシュ通知を利用できません。"</string>
     <string name="push_unlink" formatted="false">"接続を削除"</string>
     <string name="push_unlink_scope" formatted="false">"このデバイスで、このGitHubインストールのプッシュ通知による同期の配信設定を削除しますか？GitHub Appはアンインストールされません。「GitHubで管理」でリポジトリへのアクセスを変更したり、アプリをアンインストールしたりできます。"</string>
-    <string name="rebase_abort_body" formatted="false">"元のブランチとコミットを復元します。このリベース中に行った追跡対象ファイルの編集と競合の解決内容は破棄されます。"</string>
-    <string name="rebase_abort_title" formatted="false">"このリベースを中止しますか？"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"ローカルでの削除を採用"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"上流での削除を採用"</string>
-    <string name="rebase_begin_body" formatted="false">"確認済みの上流にローカルコミットを再適用します。新しい ID が付く場合があります。リベースはローカルで行い、プッシュは別の操作です。"</string>
-    <string name="rebase_begin_title" formatted="false">"ローカルコミットを書き換えますか？"</string>
     <string name="rebase_checkout_review_required" formatted="false">"チェックアウトの復旧情報が変更されたか、読み取れません。Git ツールを使うかリベースを中止する前に、ローカルの作業を確認してください。"</string>
     <string name="rebase_problem_active_operation" formatted="false">"リベースを始める前に、進行中の Git 操作を完了してください。"</string>
     <string name="rebase_problem_local_branch" formatted="false">"リベースする前にローカルブランチに切り替えてください。"</string>
     <string name="rebase_problem_local_changes" formatted="false">"リベースする前に、すべてのローカル変更をコミットするかスタッシュに保存してください。"</string>
     <string name="rebase_problem_upstream" formatted="false">"リベースする前に、追跡先のリモートブランチを設定してください。"</string>
     <string name="rebase_skip_body" formatted="false">"現在のコミットを再適用から除外します。スキップする前に変更内容を確認してください。結果の履歴からローカルの作業が失われる可能性があります。"</string>
-    <string name="rebase_skip_title" formatted="false">"このローカルコミットをスキップしますか？"</string>
-    <string name="rebase_status_aborted" formatted="false">"リベースを中止しました"</string>
-    <string name="rebase_status_conflicts" formatted="false">"：再ベースアップでコンフリクトが発生しました。これらのコンフリクトを解決した後、再ベースアップを継続してください。"</string>
     <string name="rebase_use_local" formatted="false">"ローカルコミットを使用"</string>
     <string name="rebase_use_upstream" formatted="false">"上流を使用"</string>
     <string name="remote_address_formats" formatted="false">"：HTTP/HTTPSを使用してください。 SSH, git://, file://, または所有者/リポジトリ。"</string>
-    <string name="remote_merge_confirm_local" formatted="false">"確認済みのコミットをマージしますか？"</string>
-    <string name="remote_merge_confirm_local_body">"%1$s を %2$s の確認済みコミットで更新します。マージコミットを作成する場合があります。プッシュは行いません。"</string>
-    <string name="remote_merge_confirm_push" formatted="false">"マージして上流ブランチに公開しますか？"</string>
-    <string name="remote_merge_confirm_push_body">"%1$s を更新してから、確認済みのプッシュ先アドレスにある %2$s へコミットをプッシュします。競合がある場合は公開を停止します。プッシュに失敗した場合や確認できない場合、ローカルの Git の結果は保持され、明示的に再試行できます。"</string>
     <string name="remote_merge_counts">"ローカルコミット：%1$d · 取り込むコミット：%2$d"</string>
     <string name="remote_merge_destination">"ローカルブランチへ：%1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Git 操作を完了中…"</string>
     <string name="remote_merge_incoming_oid">"取り込むコミット：%1$s"</string>
     <string name="remote_merge_local_oid">"ローカルコミット：%1$s"</string>
-    <string name="remote_merge_push_address">"プッシュ先アドレス：%1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"設定済みの上流ブランチを取得して確認します。既存のコミットの ID は変わりません。履歴が分岐している場合はマージコミットを作成します。競合は手動での解決が必要な場合があります。"</string>
     <string name="remote_merge_title" formatted="false">"リモートとマージ"</string>
     <string name="remote_merge_upstream">"上流ブランチから：%1$s"</string>
     <string name="remote_normalized_target">"リポジトリのアドレス: %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"保存済みのショートカットの結果を読み取れません。承認は別に管理されています。"</string>
     <string name="ssh_hide_private_key" formatted="false">"秘密鍵を隠す"</string>
     <string name="ssh_show_private_key" formatted="false">"秘密鍵を表示"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"SSH サーバーの鍵が変更されました"</string>
     <string name="ssh_trust_error_changed" formatted="false">"確認中に SSH の信頼情報が変更されました。現在のサーバー情報を確認し、接続を再試行してください。"</string>
     <string name="ssh_trust_error_damaged" formatted="false">"保存済みの SSH 信頼情報を確認してください。再試行する前に設定で SSH サーバーの信頼をリセットしてください。"</string>
     <string name="ssh_trust_error_recovery" formatted="false">"SSH 信頼情報の復旧を保存できませんでした。再試行する前に設定で SSH サーバーの信頼を確認してください。"</string>
     <string name="ssh_trust_error_remove" formatted="false">"SSH サーバーの信頼を削除できませんでした。再試行する前に現在のサーバー情報を確認してください。"</string>
     <string name="ssh_trust_error_reset" formatted="false">"SSH サーバーの信頼を消去できませんでした。再試行する前に保存済みの情報を確認してください。"</string>
-    <string name="ssh_trust_replace" formatted="false">"信頼を置き換えて接続"</string>
     <string name="staged" formatted="false">"ステージ済"</string>
     <string name="stash_screen" formatted="false">"スタッシュ"</string>
     <string name="storage_app_saved" formatted="false">"新しいクローンにはアプリのストレージを使用します"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"ローカル: ↑%1$d"</string>
     <string name="tracking_metadata_size">"Git メタデータ: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git 履歴を完全に削除しますか？"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"確認内容が変わりました。キャンセルして Git 管理の解除をもう一度確認してください。"</string>
     <string name="tracking_removed_backup">"Git の追跡を解除しました。検証済みバックアップ: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Git の追跡を解除しました。作業ファイルは保持されています。"</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nすべての作業ファイルとローカルのGit履歴はこのデバイスに残ります。フォルダは後で再接続できます。"</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nこのアプリが管理するクローンを完全に削除します。未プッシュのコミット、スタッシュ、未保存のファイルも含まれます。リモートリポジトリは変更されません。"</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s への次回接続前にフィンガープリントの確認が必要になります。"</string>
     <string name="ui_1_s_bytes_81cdb385">"バイト数：%1$s"</string>
     <string name="ui_1_s_characters_bde60398">"文字数：%1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行数：%1$s、バイト数：%2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"ローカルのコミット %1$s 件 · 上流のコミット %2$s 件"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"表示：%1$s · 保存：%2$s"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Google Play での買い切り購入"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"鍵の変更はなりすましの可能性があります。信頼を置き換える前に、新しいフィンガープリントをサーバー所有者に確認してください。"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"リベースを中止…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"アプリについて"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"すべての競合の解決内容がステージされています。コミットの再適用を続けてください。Git が NOTHING_TO_COMMIT を報告した場合は、空のコミットをスキップするか確認してください。"</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"有料アプリのインストール後はすべての機能を利用できます。サブスクリプションやアプリ内購入はありません。"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"：このファイルに対するすべてのローカル変更は、永続的に削除されます。"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"ローカルフォルダへのアクセスを許可"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"アプリ"</string>
     <string name="ui_app_settings_da645334" formatted="false">"アプリ設定"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"追跡方法を適用"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"承認はこの端末に保存され、待機中の接続が続行されます。キャンセルするとサーバーは信頼されません。"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"認証"</string>
     <string name="ui_back_639807a2" formatted="false">"戻る"</string>
     <string name="ui_back_aceb696a" formatted="false">"← 戻る"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"デバイス上のフォルダを選択"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"クローンする前に認証方法を選択してください。"</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"別のフォルダを選択"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"クローンの保存先を選択"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"デバイス内または接続されたストレージを選択してください。クラウドのドキュメントプロバイダは、このGitエンジンが使用できるファイルシステムを提供していません。"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"GitHubの閲覧に使うアカウントを選択します。各リポジトリに割り当てられたアカウントは保持されます。「リポジトリ接続」で変更できます。"</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"新しいクローンの既定のフォルダを選択します。既存のリポジトリの保存先は変更されません。"</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"ログを消去"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"再クローン"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"再クローン · 開始前に以前のブランチと接続設定を確認してください。"</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"クローン先ディレクトリ"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"クローンの保存先"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"コミット作成者"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"コミットメッセージ…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"コミット SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"確認"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"GitHub、GitLab、Bitbucket、または独自のGitサーバーにある、公開・非公開のHTTPSまたはSSHリポジトリに接続します。"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"リベースを続行"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"「新規」からファイルまたはフォルダを作成します。"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"現在の既定の保存先"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"現在の個別プッシュアドレス: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"ダークテーマ"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"デバッグ情報"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"新しいクローンの既定の保存先です。クローンごとに別のフォルダを使用できます。"</string>
     <string name="ui_delete_1_s_6474596f">"「%1$s」を削除しますか？"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"削除"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"ファイルを削除"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"：ローカルファイルの削除"</string>
     <string name="ui_destination_1_s_0df94639">"移動先: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"移動先の親フォルダー"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"診断"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"下書きを破棄"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"破棄"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"解決内容の下書きを破棄しますか？"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"閉じる"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"リベース中は、上流が Git の ours 側、再適用されるローカルコミットが theirs 側です。"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"コミットの作成者を編集"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"接続を編集"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"解決内容を編集"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"アクセスを有効にする"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"新しいアドレスの認証情報を再入力するか、公開アクセスを選択してください。"</string>
     <string name="ui_error_54a0e8c1" formatted="false">"エラー"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"すべての SSH サーバーは次回接続前にフィンガープリントの確認が必要になります。破損した信頼情報も削除されます。"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"フェッチしてリベースを確認"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"ファイル操作に失敗しました"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"移動の復旧を完了"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub ログイン"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.mdがデバイスのフォルダで実際のGit作業コピーを管理するには、共有ストレージへのアクセスが必要です。Androidの設定でアクセスを有効にしてから、使いたいフォルダを選択してください。"</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.mdはこのリポジトリに認証情報を提供しません。"</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"戻ってリポジトリを選択してください。"</string>
     <string name="ui_hash_a9106914" formatted="false">"ハッシュ"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"別の所有者がまだこのファイルを編集している可能性があることを理解しました。"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"アドレスにSSHユーザー名を含めてください：git@host:team/repo.git または ssh://git@host:2222/team/repo.git。"</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"検証済みのメタデータのバックアップを保持"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"編集を続ける"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"鍵のパスフレーズ（任意）"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"鍵はこのデバイス上で暗号化され、保存済みのリポジトリアドレスにのみ使われます。初回接続時にサーバーのフィンガープリントを確認してください。"</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"最終同期"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"サーバーのデフォルトブランチを使う場合は空欄にしてください。"</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"LFS エンドポイントの承認"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS エンドポイントのユーザー名"</string>
-    <string name="ui_license_c011d609" formatted="false">"ライセンス"</string>
     <string name="ui_loading_dc380888" formatted="false">"読み込み中"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"リポジトリを読み込み中"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"ローカルリポジトリ"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"GitSync.mdでの名前"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"このリポジトリの新しいコミットには、この名前とメールアドレスが使われます。既存のコミットの作成者は変わりません。"</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"新規ファイル"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"新しいフォルダ"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"新しいトークンまたはパスワード"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"表示する変更はありません"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"コミットが見つかりません"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS を開く"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"：ファイルで開く"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"ファイルを開いています…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"システムの外観設定を上書き"</string>
     <string name="ui_owner_1_s_599ca9ce">"所有者: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"親 (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"パス"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"プラットフォーム"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"以前に信頼したフィンガープリント：%1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"公開アクセス"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"リベースしてプル"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"リベース中"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"確認済みの上流にリベース"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"保存"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"作成者を保存"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"接続を保存"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"保存済みの認証情報はこのデバイス上で暗号化され、このリポジトリのHTTPSアドレスにのみ使われます。"</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"保存すると、このアドレスをフェッチとプッシュの両方に使用します。その後フェッチを実行してリモートの状態を更新してください。"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"選択したフォルダ"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"設定"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"バックアップアーカイブを共有"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"デバッグ情報を表示"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"一部の診断を読み取りまたは保存できませんでした。既存のデータは保持されました。ログを消去すると記録を再開できます。"</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH 私鍵"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH サーバーの信頼設定"</string>
     <string name="ui_stage_de838855" formatted="false">"ステージ"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"使用中の移動先はそのまま残ります。GitSync.mdは、保持した元のコピーに移動後の編集がないことを確認してから、そのファイルとGit履歴を完全に削除します。"</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"暗号化された接続は、元のリポジトリアドレスにのみ再利用されます。別のアドレスを使う場合は、認証方法を明示的に変更してください。"</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"このストレージボリューム上でフォルダーを直接移動できます。"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"以前のGitHubアカウントは接続されていません。接続済みのアカウントか、別の認証方法を選択してください。"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"再適用されるローカルコミットはこのファイルを削除します。"</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"この履歴項目は利用できません。"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"別の接続のロックを削除します。続行する前に所有者と調整してください。"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"認証方法を再度選ぶまで、このリポジトリは公開アクセスを使用します。ログイン中のGitHubアカウントは使用されません。フェッチとプッシュのアドレスは変更されません。"</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"トークンまたはパスワード"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"ファイルを開けません"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"ステージ解除"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"この作業コピーのアドレスまたは認証方法を更新します。ローカルファイル、コミット、ステージ済みの変更はそのまま残ります。"</string>
     <string name="ui_upstream_94adc696" formatted="false">"上流"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"上流でこのファイルが削除されています。"</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"github.comのHTTPSアドレスを使ってください。閲覧用のアカウントを切り替えても、クローンには選択したアカウントが保持されます。"</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"アプリのストレージを使う"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"新しいクローンに使用"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"保存済みの接続を使う"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"保存済みのデフォルトを使う"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"ユーザー名"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"ユーザー名＋トークン"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"バックアップがないと、ローカルの Git 履歴は完全に削除されます。この操作は取り消せません。"</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"作業ファイルはそのまま残ります。ローカルブランチ、コミット、スタッシュ、リモート、履歴はこのフォルダーから切り離されます。"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"編集内容は保存されていません。"</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"未送信のテキストは破棄されます。作業ファイルは変更されません。"</string>
     <string name="untracked" formatted="false">"未追跡"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s 行"</item>
         <item quantity="other">"+%1$s -%2$s 行"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d ファイル"</item>
-        <item quantity="other">"%1$d ファイル"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"マージ停止: %1$s（コンフリクト %2$d 件）"</item>

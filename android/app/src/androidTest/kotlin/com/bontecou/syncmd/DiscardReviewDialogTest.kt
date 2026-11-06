@@ -67,20 +67,31 @@ class DiscardReviewDialogTest {
                         LocalLayoutDirection provides if (language in listOf("ar", "he")) LayoutDirection.Rtl else LayoutDirection.Ltr,
                         LocalDensity provides Density(density.density, 1.6f)) {
                         SyncMdTheme(darkTheme = language in listOf("ar", "he", "ja")) {
+                            // The production discard dialogs (Git tab, Diff) use the stash-first variant.
                             if (showing.value) RevertConfirmDialog(review,
-                                onConfirm = { confirmed++; showing.value = false }, onDismiss = { cancelled++; showing.value = false })
+                                onConfirmDiscard = { confirmed++; showing.value = false }, onDismiss = { cancelled++; showing.value = false })
                         }
                     }
                 } }
-                compose.onNodeWithTag("discard-review-title").assertIsDisplayed(); fits("discard-review-title")
-                compose.onNodeWithTag("discard-review-count").assertTextEquals(localized.resources.getQuantityString(R.plurals.discard_review_files, review.paths.size, review.paths.size))
-                compose.onNodeWithTag("discard-review-scope").assertTextEquals(localized.getString(R.string.discard_review_all))
+                // The M3 dialog states the count in its title ("Discard 36 changes?").
+                compose.onNodeWithTag("discard-review-title").assertIsDisplayed()
+                    .assertTextEquals(localized.resources.getQuantityString(R.plurals.vault_m3_discard_title, review.paths.size, review.paths.size))
+                fits("discard-review-title")
+                val base = review.baseCommit
+                compose.onNodeWithTag("discard-review-scope").assertTextEquals(
+                    if (base != null) localized.getString(R.string.vault_m3_discard_body, base) else localized.getString(R.string.discard_review_all))
                 val last = paths.last()
                 compose.onNodeWithTag("discard-review").performScrollToNode(hasTestTag("discard-review-path:$last"))
                 compose.onNodeWithTag("discard-review-path:$last").assertTextEquals(last).assertIsDisplayed(); fits("discard-review-path:$last")
+                // Discard stashes a copy first by default whenever the review allows it.
+                assertTrue(review.canStash)
+                compose.onNodeWithTag("discard-review").performScrollToNode(hasTestTag("discard-review-stash"))
+                compose.onNodeWithTag("discard-review-stash").assertIsOn()
                 compose.onNodeWithTag("discard-review").performScrollToNode(hasTestTag("discard-review-confirm"))
-                compose.onNodeWithTag("discard-review-confirm").assertIsEnabled().assertHeightIsAtLeast(48.dp)
-                compose.onNodeWithTag("discard-review-cancel").assertHeightIsAtLeast(48.dp).performClick()
+                compose.onNode(hasClickAction() and hasAnyAncestor(hasTestTag("discard-review-confirm"))).assertIsEnabled()
+                compose.onNodeWithTag("discard-review-confirm").assertHeightIsAtLeast(48.dp)
+                compose.onNodeWithTag("discard-review-cancel").assertHeightIsAtLeast(48.dp)
+                compose.onNode(hasClickAction() and hasAnyAncestor(hasTestTag("discard-review-cancel"))).performClick()
                 compose.onNodeWithTag("discard-review").assertDoesNotExist()
                 assertEquals(1, cancelled); assertEquals(0, confirmed)
                 assertArrayEquals(index, File(root, ".git/index").readBytes())
@@ -102,13 +113,19 @@ class DiscardReviewDialogTest {
             assertTrue(review.keepsWorkingFiles)
             var confirmed = false
             scenario = ActivityScenario.launch(android.content.Intent(app, ComponentActivity::class.java))
+            var stashed: Boolean? = null
             scenario.onActivity { activity -> activity.setContent { SyncMdTheme {
-                RevertConfirmDialog(review, onConfirm = { confirmed = true }, onDismiss = {})
+                RevertConfirmDialog(review, onConfirmDiscard = { confirmed = true; stashed = it }, onDismiss = {})
             } } }
+            compose.onNodeWithTag("discard-review-title").assertTextEquals(app.getString(R.string.discard_clear_staging))
             compose.onNodeWithTag("discard-review-scope").assertTextEquals(app.getString(R.string.discard_review_unborn))
+            // Without a commit there is nothing to stash from, so the dialog offers no stash copy.
+            assertFalse(review.canStash)
+            compose.onNodeWithTag("discard-review-stash").assertDoesNotExist()
             compose.onNodeWithTag("discard-review").performScrollToNode(hasTestTag("discard-review-confirm"))
-            compose.onNodeWithTag("discard-review-confirm").assert(hasText(app.getString(R.string.discard_clear_staging))).assertIsDisplayed().performClick()
-            assertTrue(confirmed)
+            compose.onNode(hasText(app.getString(R.string.discard_clear_staging)) and hasClickAction() and hasAnyAncestor(hasTestTag("discard-review-confirm")))
+                .assertIsDisplayed().performClick()
+            assertTrue(confirmed); assertEquals(false, stashed)
             runBlocking { service.discardReviewed(root.path, review).getOrThrow() }
             assertEquals("Keep new\n", File(root, "new.md").readText())
             Git.open(root).use { assertEquals(0, it.repository.readDirCache().entryCount); assertNull(it.repository.resolve("HEAD")) }

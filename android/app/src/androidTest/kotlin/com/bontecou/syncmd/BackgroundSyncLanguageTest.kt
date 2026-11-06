@@ -81,6 +81,8 @@ class BackgroundSyncLanguageTest {
                 val prefix=workspace.name+"-$tag-"
                 val host=object:ContextWrapper(app) {
                     override fun getSharedPreferences(name:String,mode:Int)=app.getSharedPreferences((prefix+name).also { preferences+=it },mode)
+                    // Keeps the global "Only when" switches (BackgroundConditionDefaults) in owned preferences.
+                    override fun getApplicationContext():android.content.Context=this
                 }
                 val catalogPrefs=host.getSharedPreferences("sync_md_prefs",0)
                 fun register(enabled:Boolean) {
@@ -99,7 +101,7 @@ class BackgroundSyncLanguageTest {
                     @Suppress("UNCHECKED_CAST") override fun <T:ViewModel> create(modelClass:Class<T>):T {
                         require(modelClass==BackgroundSyncViewModel::class.java)
                         return BackgroundSyncViewModel(backend,{ schedules++ },{ requests++;work.value=listOf(WorkInfo(UUID.randomUUID(),WorkInfo.State.ENQUEUED,emptySet())) },
-                            { stops++;work.value=emptyList() },work) as T
+                            { stops++;work.value=emptyList() },work,defaults=BackgroundConditionDefaults(host)) as T
                     }
                 }
                 lateinit var activity:ComponentActivity;lateinit var model:BackgroundSyncViewModel
@@ -110,19 +112,17 @@ class BackgroundSyncLanguageTest {
                 assertEquals(tag,activity.resources.configuration.locales[0].toLanguageTag());assertEquals(1.6f,activity.resources.configuration.fontScale,.01f)
                 fun text(id:Int)=activity.getString(id)
                 fun idle()=compose.waitUntil(15_000) { model.state.value.ready&&!model.state.value.busy }
-                fun scroll(matcher:SemanticsMatcher)=compose.onNodeWithTag("background-screen").performScrollToNode(matcher)
                 fun show(id:Int,paragraph:Boolean=false) {
                     val bottom=id in listOf(R.string.background_queued,R.string.background_running)
-                    if(!bottom) scroll(hasText(text(id)))
                     val node=compose.onNodeWithText(text(id),useUnmergedTree=true)
                     fits(if(bottom) node else node.performScrollTo(),"$tag/${app.resources.getResourceEntryName(id)}",paragraph)
                 }
-                fun click(tagName:String) { scroll(hasTestTag(tagName));compose.onNodeWithTag(tagName).performScrollTo().assertIsDisplayed().performClick();idle() }
-                fun labelClick(id:Int) { scroll(hasText(text(id)));compose.onNodeWithText(text(id)).performScrollTo().performClick();idle() }
+                fun click(tagName:String) { compose.onNodeWithTag(tagName).performScrollTo().assertIsDisplayed().performClick();idle() }
+                fun labelClick(id:Int) { compose.onNodeWithText(text(id)).performScrollTo().performClick();idle() }
                 fun toggle(tagName:String,label:Int) {
-                    if(tagName !in listOf("background-wifi","background-power")) scroll(hasTestTag(tagName))
                     val node=compose.onNodeWithTag(tagName).performScrollTo()
-                    node.assertHeightIsAtLeast(48.dp).assertWidthIsAtLeast(48.dp).assert(SemanticsMatcher.expectValue(SemanticsProperties.Role,Role.Switch)).assertTextEquals(text(label))
+                    // The whole settings row is the switch; its merged text is the title (and subtitle, when there is one).
+                    node.assertHeightIsAtLeast(48.dp).assertWidthIsAtLeast(48.dp).assert(SemanticsMatcher.expectValue(SemanticsProperties.Role,Role.Switch)).assertTextContains(text(label))
                     fits(compose.onNode(hasText(text(label)) and hasAnyAncestor(hasTestTag(tagName)),useUnmergedTree=true),"$tag/$tagName")
                     node.performClick();idle()
                 }
@@ -147,8 +147,14 @@ class BackgroundSyncLanguageTest {
                 }
                 fun openPublish() { toggle("background-push",R.string.background_push);compose.onNodeWithTag("background-confirm-push").assertIsDisplayed();dialog(R.string.background_push_detail) }
                 fun openReview() {
+                    compose.onNodeWithTag("background-include-${root.path}").assertIsOff()
                     click("background-include-${root.path}");compose.waitUntil(10_000) { model.state.value.review!=null };compose.onNodeWithTag("background-confirm-include").assertIsDisplayed()
                     val plan=requireNotNull(model.state.value.review)
+                    // The review states the global "Only when" conditions the vault will take.
+                    val state=model.state.value
+                    val condition=text(when { state.wifiOnly&&state.chargingOnly->R.string.settings_m3_bg_cond_both; state.wifiOnly->R.string.settings_m3_bg_cond_wifi
+                        state.chargingOnly->R.string.settings_m3_bg_cond_charging; else->R.string.settings_m3_bg_cond_any })
+                    fits(compose.onNode(hasText(activity.getString(R.string.settings_m3_bg_conditions_apply,condition)) and hasAnyAncestor(isDialog()),useUnmergedTree=true).performScrollTo(),"$tag/review-conditions",true)
                     val binding=activity.getString(R.string.background_binding,plan.branch,plan.remote,plan.remoteBranch)
                     fits(compose.onNode(hasText(binding) and hasAnyAncestor(isDialog()),useUnmergedTree=true).performScrollTo(),"$tag/review-binding",true)
                     val path=compose.onNode(hasText(root.path) and hasAnyAncestor(isDialog()),useUnmergedTree=true).performScrollTo()
@@ -168,8 +174,11 @@ class BackgroundSyncLanguageTest {
                 }
                 val states=mutableListOf<String>();fun done(name:String) { stable();states+=name }
                 idle()
-                fits(compose.onNode(hasText(text(R.string.background_title)) and !hasAnyAncestor(hasTestTag("background-screen")),useUnmergedTree=true),"$tag/title")
-                show(R.string.background_scope,true);show(R.string.background_schedule,true);show(R.string.background_inactive,true);compose.onNodeWithTag("background-run").assertIsNotEnabled();done("ready")
+                fun row()=compose.onNodeWithTag("background-row-${root.path}").performScrollTo()
+                fun meta(value:String) { row().assertTextContains(value,substring=true)
+                    compose.onNode(hasText(value,substring=true) and hasAnyAncestor(hasTestTag("background-row-${root.path}")),useUnmergedTree=true).assertIsDisplayed() }
+                fits(compose.onNode(hasText(text(R.string.settings_m3_background_sync)) and isHeading(),useUnmergedTree=true),"$tag/title")
+                show(R.string.settings_m3_bg_intro,true);meta(text(R.string.settings_m3_bg_vault_not_included));compose.onNodeWithTag("background-run").assertIsNotEnabled();done("ready")
                 toggle("background-pull",R.string.background_pull);assertTrue(store.read().pull);assertFalse(store.read().push);done("pull-enabled")
                 toggle("background-pull",R.string.background_pull);assertFalse(store.read().pull);done("pull-disabled")
                 openPublish();cancel();assertFalse(store.read().push);done("publish-cancelled")
@@ -182,33 +191,38 @@ class BackgroundSyncLanguageTest {
                 }
                 compose.onNodeWithTag("background-confirm-push").performClick();idle();assertTrue(store.read().push);assertFalse(store.read().active);done("publish-enabled")
                 openReview();cancel();assertTrue(store.read().policies.isEmpty());done("review-cancelled")
-                openReview();toggle("background-wifi",R.string.background_wifi);toggle("background-power",R.string.background_power);done("review-options")
-                recreate();compose.onAllNodesWithTag("background-confirm-include").assertCountEquals(0);assertTrue(store.read().policies.isEmpty());done("recreated-review-dismissed")
-                openReview();toggle("background-wifi",R.string.background_wifi);toggle("background-power",R.string.background_power)
+                // "Only when" is global (main screen), so it is set before the review rather than inside it.
+                toggle("background-wifi",R.string.settings_m3_bg_wifi);toggle("background-power",R.string.settings_m3_bg_charging)
+                compose.onNodeWithTag("background-wifi").assertIsOn();compose.onNodeWithTag("background-power").assertIsOn();assertTrue(store.read().policies.isEmpty())
+                openReview();done("review-options")
+                recreate();compose.onAllNodesWithTag("background-confirm-include").assertCountEquals(0);assertTrue(store.read().policies.isEmpty())
+                compose.onNodeWithTag("background-wifi").assertIsOn();compose.onNodeWithTag("background-power").assertIsOn();done("recreated-review-dismissed")
+                openReview()
                 compose.onNodeWithTag("background-confirm-include").performClick();idle()
                 assertTrue(store.read().active);assertTrue(store.read().policies[root.path]!!.wifiOnly);assertTrue(store.read().policies[root.path]!!.externalPowerOnly)
-                show(R.string.background_active,true);show(R.string.background_included)
-                scroll(hasText(root.path));val path=compose.onNodeWithText(root.path,useUnmergedTree=true).performScrollTo();fits(path,"$tag/path",true)
-                val pathLayouts=mutableListOf<TextLayoutResult>();path.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(pathLayouts) };assertEquals(ResolvedTextDirection.Ltr,pathLayouts.single().getParagraphDirection(0));done("included")
+                fits(compose.onNode(hasText(activity.resources.getQuantityString(R.plurals.settings_m3_bg_included,1,1)),useUnmergedTree=true),"$tag/included-count")
+                compose.onNodeWithTag("background-include-${root.path}").performScrollTo().assertIsOn();meta(text(R.string.background_never));done("included")
                 compose.onNodeWithTag("background-run").performClick();idle();compose.waitUntil(10_000) { model.state.value.queued };show(R.string.background_queued,true);assertEquals(1,requests);done("queued")
                 compose.runOnIdle { work.value=listOf(WorkInfo(UUID.randomUUID(),WorkInfo.State.RUNNING,emptySet())) };compose.waitUntil(10_000) { model.state.value.running };show(R.string.background_running);done("running")
                 compose.onNodeWithTag("background-stop").performClick();idle();compose.waitUntil(10_000) { !model.state.value.running&&!model.state.value.queued };assertEquals(1,stops);done("work-stopped")
-                val healthLabels=listOf(R.string.background_never,R.string.background_wait_network,R.string.background_wait_wifi,R.string.background_wait_power,R.string.background_wrong_branch,R.string.background_changed,R.string.background_unavailable,R.string.background_current,R.string.background_updated,R.string.background_attention,R.string.background_failed,R.string.background_stopped)
+                val healthLabels=listOf(R.string.background_never,R.string.background_wait_network,R.string.background_wait_wifi,R.string.background_wait_power,R.string.background_wrong_branch,R.string.background_changed,R.string.background_unavailable,R.string.background_current,R.string.background_updated,R.string.settings_m3_bg_attention_short,R.string.settings_m3_bg_failed_short,R.string.background_stopped)
+                assertEquals(BackgroundHealthKind.entries.size,healthLabels.size)
                 for((index,kind) in BackgroundHealthKind.entries.withIndex()) {
                     val state=store.read();val policy=state.policies[root.path]!!;store.record(state.generation,policy,BackgroundHealth(kind,1_735_689_600_000L,1_735_689_600_000L,1_735_689_600_000L))
                     compose.waitUntil(10_000) { !model.state.value.busy&&model.state.value.rows.single().policy?.health?.kind==kind }
-                    scroll(hasTestTag("background-health-${root.path}"));fits(compose.onNodeWithTag("background-health-${root.path}").performScrollTo().assertTextEquals(text(healthLabels[index])),"$tag/health-$kind",true)
-                    val date=java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT,java.text.DateFormat.SHORT,java.util.Locale.forLanguageTag(tag)).format(java.util.Date(1_735_689_600_000L))
-                    for(id in listOf(R.string.background_attempt,R.string.background_transfer)) { val value=activity.getString(id,date);scroll(hasText(value));fits(compose.onNodeWithText(value,useUnmergedTree=true).performScrollTo(),"$tag/date",true) }
-                    done("health-${kind.name}")
+                    // The vault row's one-line meta reads "<health> · <when>".
+                    meta(text(healthLabels[index]));done("health-${kind.name}")
                 }
-                labelClick(R.string.background_open);assertEquals(root.path,opened);done("repository-opened")
-                click("background-exclude-${root.path}");assertFalse(store.read().active);show(R.string.background_excluded);done("excluded")
+                click("background-row-${root.path}");assertEquals(root.path,opened);done("repository-opened")
+                click("background-include-${root.path}");assertFalse(store.read().active);assertFalse(store.read().policies[root.path]!!.included)
+                compose.onNodeWithTag("background-include-${root.path}").assertIsOff();done("excluded")
                 openReview();compose.onNodeWithTag("background-confirm-include").performClick();idle();assertTrue(store.read().active);done("included-again")
-                register(false);compose.runOnIdle { model.reload() };idle();compose.waitUntil(10_000) { model.state.value.rows.singleOrNull()?.available==false };show(R.string.background_unavailable,true);done("unavailable")
+                register(false);compose.runOnIdle { model.reload() };idle();compose.waitUntil(10_000) { model.state.value.rows.singleOrNull()?.available==false }
+                meta(text(R.string.settings_m3_bg_vault_missing));compose.onAllNodesWithTag("background-include-${root.path}").assertCountEquals(0);done("unavailable")
                 labelClick(R.string.background_forget);assertTrue(store.read().policies.isEmpty());done("forgotten")
                 show(R.string.background_empty);done("empty")
-                register(true);check(host.getSharedPreferences("background_sync",0).edit().putString("state","owned unreadable state").commit());compose.runOnIdle { model.reload() };idle();assertNotNull(model.state.value.recovery);show(R.string.background_reset_detail,true);done("corrupt")
+                register(true);check(host.getSharedPreferences("background_sync",0).edit().putString("state","owned unreadable state").commit());compose.runOnIdle { model.reload() };idle();assertNotNull(model.state.value.recovery)
+                fits(compose.onNode(hasText(text(R.string.background_reset_detail)) and !hasAnyAncestor(isDialog()),useUnmergedTree=true).performScrollTo(),"$tag/reset-detail",true);done("corrupt")
                 fun openReset() { click("background-reset");compose.onNodeWithTag("background-confirm-reset").assertIsDisplayed();dialog(R.string.background_reset_detail) }
                 openReset();cancel();assertNotNull(store.recoveryVersion());done("reset-cancelled")
                 openReset();recreate();compose.onAllNodesWithTag("background-confirm-reset").assertCountEquals(0);assertNotNull(store.recoveryVersion());done("recreated-reset-dismissed")
@@ -219,8 +233,10 @@ class BackgroundSyncLanguageTest {
                 openReset();compose.onNodeWithTag("background-confirm-reset").performClick();idle();assertNull(store.recoveryVersion());assertFalse(store.read().pull);assertFalse(store.read().push);assertTrue(store.read().policies.isEmpty());done("reset-confirmed")
                 openPublish();val current=store.read();store.configure(current.generation) { it };compose.waitUntil(10_000) { model.state.value.configuration.generation>current.generation&&!model.state.value.busy }
                 compose.onNodeWithTag("background-confirm-push").performClick();idle();assertTrue(model.state.value.failed);assertFalse(store.read().push);show(R.string.background_error,true);done("stale-publish-rejected")
-                labelClick(R.string.background_reload);assertFalse(model.state.value.failed);assertEquals(1,model.state.value.rows.size);done("reloaded")
-                compose.onNode(hasText(text(R.string.pull_all_back)) or hasContentDescription(text(R.string.pull_all_back))).assertWidthIsAtLeast(48.dp).assertHeightIsAtLeast(48.dp).performClick();assertTrue(backed);done("back")
+                // No Reload button any more: returning to the screen (ON_RESUME) reloads it.
+                requireNotNull(scenario).moveToState(androidx.lifecycle.Lifecycle.State.STARTED);requireNotNull(scenario).moveToState(androidx.lifecycle.Lifecycle.State.RESUMED);idle()
+                compose.waitUntil(10_000) { !model.state.value.failed };assertEquals(1,model.state.value.rows.size);compose.onAllNodesWithTag("background-error").assertCountEquals(0);done("reloaded")
+                compose.onNode(hasContentDescription(text(R.string.publication_back))).assertWidthIsAtLeast(48.dp).assertHeightIsAtLeast(48.dp).performClick();assertTrue(backed);done("back")
                 assertEquals(1,requests);assertEquals(1,stops);assertTrue(schedules>=5)
                 instrumentation.sendStatus(2,android.os.Bundle().apply { putString("stream","background_locale=$tag; states=${states.joinToString(",")}; font_scale=1.6; app_git_writes=0; external_calls=0\n") })
                 scenario.close();scenario=null

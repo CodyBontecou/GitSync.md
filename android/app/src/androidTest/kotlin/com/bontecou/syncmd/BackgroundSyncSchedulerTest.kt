@@ -27,7 +27,7 @@ class BackgroundSyncSchedulerTest {
         val work = WorkManager.getInstance(context)
         for (name in listOf(BackgroundSyncJobs.NOW, BackgroundSyncJobs.PERIODIC))
             require(work.getWorkInfosForUniqueWork(name).get(10, TimeUnit.SECONDS).all { it.state.isFinished })
-        val originals = listOf("sync_md_prefs", "background_sync").associateWith { context.getSharedPreferences(it, 0).all.toMap() }
+        val originals = listOf("sync_md_prefs", "background_sync", "background_runs").associateWith { context.getSharedPreferences(it, 0).all.toMap() }
         val workspace = File(context.filesDir, "background-scheduler-${UUID.randomUUID()}").canonicalFile.apply { check(mkdir()) }
         val bare = File(workspace, "remote.git"); val seed = File(workspace, "seed"); val root = File(workspace, "Notes")
         val credentials = RepositoryCredentialStore(context)
@@ -69,6 +69,9 @@ class BackgroundSyncSchedulerTest {
             assertEquals(head, Git.open(bare).use { it.repository.resolve("HEAD").name })
             assertEquals(2, Git.open(root).use { it.log().call().count() })
             assertEquals(com.bontecou.syncmd.services.background.BackgroundHealthKind.UPDATED, store.read().policies[root.path]?.health?.kind)
+            // The production worker records the pass for Background Sync › Recent runs: published, nothing pulled.
+            val run = BackgroundRunHistory(context).runs().first().vaults.single { it.path == root.path }
+            assertEquals(com.bontecou.syncmd.services.background.BackgroundHealthKind.UPDATED, run.kind); assertTrue(run.pushed); assertEquals(0, run.pulled)
             store.configure(store.read().generation) { it.copy(pull = false, push = false) }
             BackgroundSyncJobs.preferencesChanged(context)
             work.cancelUniqueWork(BackgroundSyncJobs.PERIODIC).result.get(10, TimeUnit.SECONDS)

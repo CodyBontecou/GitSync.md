@@ -3,17 +3,14 @@
     <string name="app_name">Gitsync.md</string>
     <string name="pull_screen">Pull</string>
     <string name="commit_screen">Commit</string>
-    <string name="branch_screen">Branches</string>
     <string name="history_screen">History</string>
     <string name="stash_screen">Stash</string>
     <string name="modified">Modified</string>
     <string name="staged">Staged</string>
     <string name="untracked">Untracked</string>
 
-    <string name="guide_title">App tour</string>
     <string name="guide_back">Back</string>
     <string name="guide_continue">Continue</string>
-    <string name="guide_skip">Skip tour</string>
     <string name="guide_step">Step %1$d of 4</string>
     <string name="guide_clone_title">Your repositories, on Android</string>
     <string name="guide_clone_body">Clone GitHub, public, self-hosted or SSH repositories. Each working copy keeps its own connection and branch.</string>
@@ -24,18 +21,12 @@
     <string name="guide_start_title">Choose how to start</string>
     <string name="guide_start_body">Connect an account, clone a URL, or try the offline sample. You can also choose a storage location now.</string>
     <string name="guide_login">Sign in with GitHub</string>
-    <string name="guide_url">Clone from URL</string>
-    <string name="guide_sample">Try offline sample</string>
-    <string name="guide_storage">Choose storage</string>
-    <string name="guide_home">Continue without an account</string>
     <string name="guide_save_error">Tour progress could not be saved. You can continue; the tour may appear again next time.</string>
     <string name="help_title">Help</string>
-    <string name="help_tour">Show app tour</string>
     <string name="help_feedback">Send feedback</string>
     <string name="help_copy_email">Copy support email</string>
     <string name="help_email_copied">Support email copied</string>
     <string name="help_open_failed">No app could open this link. You can copy the support email instead.</string>
-    <string name="notes_title">Release notes</string>
     <string name="notes_version">Android %1$s · build %2$d</string>
     <string name="notes_workflow_title">Repository workflow</string>
     <string name="notes_workflow_body">Browse and edit files, review staged and unstaged diffs, commit locally, push existing commits, and work with branches, history, tags and rebase.</string>

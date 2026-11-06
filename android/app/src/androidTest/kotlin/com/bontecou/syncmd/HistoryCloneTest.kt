@@ -105,6 +105,20 @@ class HistoryCloneTest {
         assertNull(vm.history.value.error)
         return vm.history.value.defaults!!
     }
+    /**
+     * "Test & clone" first probes the remote with ls-remote (RemoteRefs.list), which would contact github.com, so after
+     * the form has been checked the test sends the reviewed form's choice into the clone call the button makes once the
+     * probe passes (RemoteCloneScreen's cloneNow: GitHub account only for the GitHub segment, saved connection only for Saved).
+     */
+    private fun cloneAsReviewed(vm: RemoteCloneViewModel, accountId: String? = null) {
+        compose.onNodeWithTag("remote-clone").assertIsEnabled()
+        val reviewed = requireNotNull(vm.history.value.defaults)
+        instrumentation.runOnMainSync {
+            vm.clone(reviewed.url, reviewed.name, reviewed.branch, false, "", "",
+                if (reviewed.auth == RemoteCloneViewModel.HistoryAuth.GITHUB) accountId ?: reviewed.accountId else null, null,
+                useSavedHistoryConnection = reviewed.auth == RemoteCloneViewModel.HistoryAuth.SAVED)
+        }
+    }
     private fun finish(vm: RemoteCloneViewModel): File {
         compose.waitUntil(15_000) { vm.state.value.path != null || vm.state.value.error != null }
         assertNull(vm.state.value.error)
@@ -120,7 +134,7 @@ class HistoryCloneTest {
             SyncMdTheme { if (reviewed != null) RemoteCloneScreen(settings, {}, { delivered++ }, vm, reviewed) }
         }
         compose.waitUntil(10_000) { vm.history.value.defaults != null }
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        cloneAsReviewed(vm)
         compose.waitUntil(15_000) { delivered == 1 || vm.state.value.error != null }
         assertEquals(1, delivered); assertTrue(settings.repositoryHistory.value.isEmpty())
         assertEquals(1, settings.allRepositories.value.size)
@@ -136,9 +150,12 @@ class HistoryCloneTest {
         val vm = model { used = it }; var done = false
         compose.setContent { SyncMdTheme { RemoteCloneScreen(settings, {}, { done = true }, vm, entry) } }
         compose.waitUntil(10_000) { vm.history.value.defaults != null }
-        compose.onNodeWithTag("remote-branch").assertTextContains("notes-branch")
+        compose.onNodeWithTag("remote-options").performScrollTo().performClick()
+        compose.onNodeWithTag("remote-branch").performScrollTo().assertTextContains("notes-branch")
+        compose.onNodeWithTag("remote-auth-github").assertIsSelected()
         compose.onNodeWithTag("remote-account-github:101").assertIsSelected()
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        compose.onNodeWithTag("remote-account-github:202").assertIsNotSelected()
+        cloneAsReviewed(vm, "github:101")
         compose.waitUntil(15_000) { done || vm.state.value.error != null || settings.errorMessage.value != null }
         val target = finish(vm)
         assertTrue(done); assertNull(settings.errorMessage.value)
@@ -167,7 +184,7 @@ class HistoryCloneTest {
         compose.onNodeWithTag("remote-auth-saved").assertIsSelected()
         compose.onNodeWithTag("ssh-private-key").assertDoesNotExist()
         compose.onAllNodesWithText("android-fixture-passphrase", substring = true).assertCountEquals(0)
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        cloneAsReviewed(vm)
         val target = finish(vm)
         assertEquals(key, used)
         assertEquals(key, RepositoryCredentialStore(context).resolve(target.path, sshUrl))
@@ -191,7 +208,7 @@ class HistoryCloneTest {
         compose.runOnIdle { dark.value = true }
         compose.onNodeWithTag("remote-auth-saved").performScrollTo().assertIsSelected()
         capture("history-saved-connection-dark-xl")
-        compose.onNodeWithTag("remote-clone").performScrollTo().performClick()
+        cloneAsReviewed(vm)
         val target = finish(vm)
         assertEquals(Credentials.Basic("writer", "hidden-history-secret"), used)
         assertEquals(used, store.resolve(target.path, url))
@@ -216,7 +233,7 @@ class HistoryCloneTest {
         val entry = history(); val vm = model()
         compose.setContent { SyncMdTheme { RemoteCloneScreen(settings, {}, {}, vm, entry) } }
         compose.waitUntil(10_000) { vm.history.value.defaults != null }
-        compose.onNodeWithTag("remote-clone").performScrollTo().assertIsNotEnabled()
+        compose.onNodeWithTag("remote-clone").assertIsNotEnabled()
         compose.onNodeWithTag("remote-account-github:202").performScrollTo().performClick()
         compose.onNodeWithTag("remote-clone").assertIsEnabled()
         assertEquals("github:101", vm.history.value.defaults!!.accountId)

@@ -1,4 +1,3 @@
 <resources>
     <string name="tracking_remove_permanent_title">Permanently remove Git history?</string>
-    <string name="tracking_remove_review_changed">The review changed. Cancel and review tracking removal again.</string>
 </resources>

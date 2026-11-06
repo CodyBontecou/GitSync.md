@@ -46,9 +46,15 @@ class TrackingRemovalConsentLanguageTest {
             val before = contents()
             val expected = JSONObject(InstrumentationRegistry.getInstrumentation().context.assets.open("localization_expected.json").bufferedReader().use { it.readText() }).getJSONObject("locales")
             val languages = expected.keys().asSequence().toList().sorted(); assertEquals(25, languages.size)
-            fun text(language: String, key: String): String {
-                val rows = expected.getJSONArray(language)
-                return (0 until rows.length()).map { rows.getJSONObject(it) }.single { it.getString("name") == key }.getString("source")
+            // The rendered copy is the localized resource for the locale (new Material 3 strings are English-only and
+            // fall back); where the catalog expectation lists the key, the resource must also match the catalog.
+            fun text(language: String, id: Int): String {
+                val configuration = Configuration(app.resources.configuration).apply { setLocales(LocaleList.forLanguageTags(language)) }
+                val resource = app.createConfigurationContext(configuration).getString(id)
+                val rows = expected.getJSONArray(language); val key = app.resources.getResourceEntryName(id)
+                (0 until rows.length()).map { rows.getJSONObject(it) }.firstOrNull { it.getString("name") == key }
+                    ?.let { assertEquals("$language/$key", it.getString("source"), resource) }
+                return resource
             }
             val frame = mutableStateOf(Frame(languages.first(), true))
             val confirmed = mutableListOf<TrackingRemovalRequest>(); var cancelled = 0
@@ -70,14 +76,15 @@ class TrackingRemovalConsentLanguageTest {
                 } }
                 for (language in languages) for (backup in listOf(true, false)) {
                     compose.runOnIdle { frame.value = Frame(language, backup) }
-                    val mode = if (backup) "backup" else "permanent"
-                    compose.onNodeWithTag("tracking-final-title").assertTextEquals(text(language, "tracking_remove_${mode}_title"))
+                    compose.onNodeWithTag("tracking-final-title").assertTextEquals(text(language,
+                        if (backup) R.string.git_m3_tracking_backup_title else R.string.tracking_remove_permanent_title))
                     compose.onNodeWithTag("tracking-final-path").performScrollTo().assertTextEquals(root.path)
-                    compose.onNodeWithTag("tracking-final-scope").performScrollTo().assertTextEquals(text(language, "tracking_remove_${mode}_body"))
-                    compose.onNodeWithTag("tracking-final-confirm").assertTextEquals(text(language, "ui_remove_tracking_4b40d72c")).assertIsEnabled().assertHeightIsAtLeast(48.dp)
+                    compose.onNodeWithTag("tracking-final-scope").performScrollTo().assertTextEquals(text(language,
+                        if (backup) R.string.git_m3_tracking_backup_body else R.string.git_m3_tracking_permanent_body))
+                    compose.onNodeWithTag("tracking-final-confirm").assertTextEquals(text(language, R.string.ui_remove_tracking_4b40d72c)).assertIsEnabled().assertHeightIsAtLeast(48.dp)
                     val prior = confirmed.size
                     compose.runOnIdle { frame.value = frame.value.copy(valid = false) }
-                    compose.onNodeWithTag("tracking-final-stale").performScrollTo().assertTextEquals(text(language, "tracking_remove_review_changed"))
+                    compose.onNodeWithTag("tracking-final-stale").performScrollTo().assertTextEquals(text(language, R.string.git_m3_tracking_stale))
                     compose.onNodeWithTag("tracking-final-confirm").assertIsNotEnabled().performClick()
                     compose.runOnIdle { frame.value = frame.value.copy(valid = true, busy = true) }
                     compose.onNodeWithTag("tracking-final-confirm").assertIsNotEnabled().performClick()

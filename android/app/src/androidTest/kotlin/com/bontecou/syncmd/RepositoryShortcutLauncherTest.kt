@@ -42,6 +42,14 @@ class RepositoryShortcutLauncherTest {
         try { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
         catch (e: IllegalStateException) { if (e.message.orEmpty().startsWith("No compose hierarchies found")) false else throw e }
     }
+    /** Home -> Settings -> Shortcuts & links (Repository actions). The avatar or gear button opens Settings. */
+    private fun openShortcuts() {
+        awaitTag("open-settings")
+        compose.onNode(hasClickAction() and !hasTestTag("home-add-vault") and
+            (hasTestTag("open-settings") or hasAnyAncestor(hasTestTag("open-settings")))).performClick()
+        awaitTag("settings-shortcuts"); compose.onNodeWithTag("settings-shortcuts").performScrollTo().performClick()
+        awaitTag("repository-actions-screen")
+    }
     private fun node(texts: Set<String>, pkg: String, timeout: Long = 10_000): AccessibilityNodeInfo {
         val deadline = android.os.SystemClock.uptimeMillis() + timeout
         do {
@@ -152,7 +160,7 @@ class RepositoryShortcutLauncherTest {
                 { "Fixture" to "fixture@example.invalid" }, catalog::requireCurrent, credentialRevision = credentials::recordVersion)
             val service = RepositoryShortcutService(context, runner, auth, credentials); backend = service
             assertTrue(service.supported())
-            scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)); awaitTag("home-more")
+            scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)); awaitTag("open-settings")
             val saved = service.prepare(runner.review(catalog.snapshot().single()), action, "Reviewed launcher action", background)
             record = saved; label = service.info(saved).shortLabel.toString()
             scenario!!.onActivity { assertTrue(service.requestPin(saved)) }
@@ -304,14 +312,12 @@ class RepositoryShortcutLauncherTest {
                 assertFalse(runs.claim(result.id, saved.id))
                 // Opening the app afterward only reviews the persisted result; it cannot replay the action.
                 scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java))
-                awaitTag("home-more"); compose.onNodeWithTag("home-more").performClick(); awaitTag("open-repository-actions"); compose.onNodeWithTag("open-repository-actions").performClick()
-                awaitTag("repository-actions-screen")
+                openShortcuts()
                 var review: RepositoryActionsViewModel? = null
                 scenario!!.onActivity { review = ViewModelProvider(it)[RepositoryActionsViewModel::class.java] }
                 compose.waitUntil(10_000) { !review!!.state.value.busy && review!!.state.value.shortcutItems.any { it.record.id == saved.id } }
                 assertEquals(result.id, review!!.state.value.shortcutItems.single { it.record.id == saved.id }.lastRun!!.id)
-                compose.onNodeWithTag("repository-actions-screen").performScrollToNode(hasTestTag("shortcut-last-run-${saved.id}"))
-                compose.onNodeWithTag("shortcut-last-run-${saved.id}").assertIsDisplayed()
+                compose.onNodeWithTag("shortcut-last-run-${saved.id}").performScrollTo().assertIsDisplayed()
                 assertEquals(result.id, runs.latest(saved.id)!!.id)
                 assertEquals(localHead, Git.open(root).use { it.repository.resolve("HEAD").name })
                 return@runBlocking

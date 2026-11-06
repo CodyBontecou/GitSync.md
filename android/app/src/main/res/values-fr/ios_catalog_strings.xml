@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"à l’instant"</string>
     <string name="account_valid_branch" formatted="false">"Saisissez un nom de branche valide"</string>
     <string name="automation_shortcut_label">"%1$s : %2$s"</string>
-    <string name="background_active" formatted="false">"Des vérifications en arrière-plan sont programmées pour les dépôts inclus."</string>
     <string name="background_allow_push" formatted="false">"Autoriser la publication automatique"</string>
-    <string name="background_attempt">"Dernière vérification : %1$s"</string>
-    <string name="background_attention" formatted="false">"Vérification requise. Ouvrez le dépôt pour traiter les modifications locales, la divergence, l’absence de branche amont ou un commit enregistré en attente d’envoi."</string>
     <string name="background_binding">"Uniquement la branche %1$s, suivant %2$s/%3$s. Tout changement de branche, dossier, connexion ou compte exige une nouvelle vérification."</string>
     <string name="background_changed" formatted="false">"Dossier, branche ou connexion modifié. Vérifiez à nouveau."</string>
     <string name="background_current" formatted="false">"À jour"</string>
     <string name="background_empty" formatted="false">"Aucun dépôt local n’est enregistré."</string>
     <string name="background_error" formatted="false">"Impossible de terminer cette action. Rechargez et vérifiez le dépôt actuel et les réglages."</string>
-    <string name="background_excluded" formatted="false">"Exclus"</string>
-    <string name="background_failed" formatted="false">"La connexion, l’authentification, la confiance ou l’accès aux fichiers nécessite une intervention. Ouvrez le dépôt et réessayez depuis celui-ci."</string>
     <string name="background_forget" formatted="false">"Supprimer la règle enregistrée"</string>
-    <string name="background_inactive" formatted="false">"Les vérifications en arrière-plan sont désactivées. Activez un mode et incluez au moins un dépôt."</string>
     <string name="background_include" formatted="false">"Inclure ce dépôt"</string>
-    <string name="background_included" formatted="false">"Inclus"</string>
     <string name="background_never" formatted="false">"Pas encore vérifié"</string>
-    <string name="background_open" formatted="false">"Ouvrir le dépôt"</string>
-    <string name="background_power" formatted="false">"Alimentation externe uniquement"</string>
     <string name="background_pull" formatted="false">"Récupérer automatiquement les changements distants"</string>
     <string name="background_push" formatted="false">"Créer et envoyer automatiquement les commits locaux"</string>
     <string name="background_push_confirm" formatted="false">"Autoriser la publication automatique ?"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"Des réglages de synchro en arrière-plan illisibles ne peuvent autoriser aucun travail. La réinitialisation supprime uniquement ses règles et états enregistrés et désactive les deux modes automatiques. Les fichiers des dépôts, les comptes et les autres fonctions de synchro sont conservés. Vérifiez chaque dépôt avant de l’inclure à nouveau."</string>
     <string name="background_run" formatted="false">"Vérifier maintenant"</string>
     <string name="background_running" formatted="false">"Vérification des dépôts…"</string>
-    <string name="background_schedule" formatted="false">"Android programme les vérifications environ toutes les 15 minutes ou plus tard, selon la connexion, la batterie et les restrictions système. Vérifier maintenant demande une vérification plus tôt. Forcer l’arrêt de l’app bloque le travail en arrière-plan jusqu’à sa prochaine ouverture."</string>
-    <string name="background_scope" formatted="false">"Incluez un dépôt après avoir vérifié sa branche et sa connexion actuelles. Le pull automatique récupère les changements et avance en fast-forward si cela est sûr. Le push automatique crée des commits à partir des modifications locales et les envoie. Les historiques divergents, les changements entrants avec des modifications locales et les connexions modifiées nécessitent une vérification."</string>
     <string name="background_stop" formatted="false">"Arrêter la vérification"</string>
     <string name="background_stopped" formatted="false">"Vérification arrêtée"</string>
-    <string name="background_title" formatted="false">"Synchronisation en arrière-plan"</string>
-    <string name="background_transfer">"Dernier transfert : %1$s"</string>
     <string name="background_unavailable" formatted="false">"Cette copie de travail n’est plus enregistrée. Reconnectez-la et vérifiez à nouveau sa règle."</string>
     <string name="background_updated" formatted="false">"Changements synchronisés"</string>
     <string name="background_wait_network" formatted="false">"En attente d’une connexion Internet"</string>
     <string name="background_wait_power" formatted="false">"En attente d’une alimentation externe"</string>
     <string name="background_wait_wifi" formatted="false">"En attente de Wi-Fi"</string>
-    <string name="background_wifi" formatted="false">"Seulement Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"La copie de travail utilise une autre branche. Revenez à la précédente ou vérifiez à nouveau."</string>
-    <string name="branch_screen" formatted="false">"Branche\nConfiguration de"</string>
     <string name="callback_action" formatted="false">"Action demandée"</string>
     <string name="callback_authorized_scope" formatted="false">"Les liens autorisés exécutent l’action enregistrée sans nouvelle confirmation. Les liens modifiés ou révoqués sont arrêtés ici. Gérez les autorisations dans Actions du dépôt → Liens autorisés."</string>
     <string name="callback_auto_return" formatted="false">"Revenir automatiquement après cette exécution"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"Renommé"</string>
     <string name="file_save_title" formatted="false">"Enregistrer les modifications ?"</string>
     <string name="file_saved" formatted="false">"Enregistré"</string>
-    <string name="file_unsaved_changes" formatted="false">"Modifications non enregistrées"</string>
     <string name="files_folder" formatted="false">"Dossier"</string>
     <string name="files_hide_hidden" formatted="false">"Masquer les fichiers cachés"</string>
     <string name="files_show_hidden" formatted="false">"Afficher les fichiers cachés"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"Modifiez là où vous travaillez"</string>
     <string name="guide_git_body" formatted="false">"Examinez les différences, indexez les modifications sélectionnées et créez des commits locaux. Envoyez-les quand vous le souhaitez. Les branches, l’historique, les tags, la résolution des conflits et Git LFS sont accessibles depuis l’écran du dépôt."</string>
     <string name="guide_git_title" formatted="false">"Vérifiez avant de publier"</string>
-    <string name="guide_home" formatted="false">"Continuer sans compte"</string>
     <string name="guide_login" formatted="false">"Se connecter avec GitHub"</string>
-    <string name="guide_sample" formatted="false">"Essayer l’exemple hors ligne"</string>
     <string name="guide_save_error" formatted="false">"La progression de la visite n’a pas pu être enregistrée. Vous pouvez continuer ; la visite pourrait réapparaître la prochaine fois."</string>
-    <string name="guide_skip" formatted="false">"Passer la visite"</string>
     <string name="guide_start_body" formatted="false">"Connectez un compte, clonez depuis une URL ou essayez l’exemple hors ligne. Vous pouvez aussi choisir un emplacement de stockage maintenant."</string>
     <string name="guide_start_title" formatted="false">"Choisissez comment commencer"</string>
     <string name="guide_step">"Étape %1$d sur 4"</string>
-    <string name="guide_storage" formatted="false">"Choisir le stockage"</string>
-    <string name="guide_title" formatted="false">"Visite de l’application"</string>
-    <string name="guide_url" formatted="false">"Cloner depuis une URL"</string>
     <string name="help_copy_email" formatted="false">"Copier l’adresse e-mail du support"</string>
     <string name="help_email_copied" formatted="false">"Adresse e-mail du support copiée"</string>
     <string name="help_feedback" formatted="false">"Envoyer un commentaire"</string>
     <string name="help_open_failed" formatted="false">"Aucune application ne peut ouvrir ce lien. Vous pouvez copier l’adresse e-mail du support."</string>
     <string name="help_title" formatted="false">"URL INVALIDE"</string>
-    <string name="help_tour" formatted="false">"Afficher le tour d\'application"</string>
     <string name="history_screen" formatted="false">"Historique"</string>
     <string name="http_transport_warning" formatted="false">"HTTP n’est pas chiffré. Les données du dépôt et tout nom d’utilisateur ou jeton saisi peuvent être lus pendant le transfert. Utilisez HTTPS si possible."</string>
     <string name="language_settings_legacy" formatted="false">"Avant Android 13, cette application utilise la langue de l’appareil."</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"Connexions et stockage"</string>
     <string name="notes_files_body" formatted="false">"Vérifiez le suivi Git LFS, téléchargez les contenus manquants et consultez les avertissements de verrouillage du serveur. Les diagnostics conservent un journal local limité avec copie et partage filtrés."</string>
     <string name="notes_files_title" formatted="false">"Fichiers volumineux et diagnostics"</string>
-    <string name="notes_title" formatted="false">"Notes de version"</string>
     <string name="notes_version">"Android %1$s · build %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Parcourez et modifiez les fichiers, vérifiez les différences indexées ou non, créez des commits locaux, envoyez les commits existants et utilisez les branches, l’historique, les tags et le rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Flux de travail du dépôt"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"Abandonner cette vérification ?"</string>
     <string name="publication_discard_warning" formatted="false">"Supprimer ces choix de vérification enregistrés et les modifications non enregistrées ? Les fichiers de travail restent intacts. La préparation et la publication n’ont pas commencé pour cette vérification."</string>
     <string name="publication_file_unsupported" formatted="false">"Conversion du contenu non prise en charge"</string>
-    <string name="publication_files" formatted="false">"Fichiers"</string>
     <string name="publication_finish" formatted="false">"Terminer la configuration"</string>
     <string name="publication_include" formatted="false">"Inclure le fichier"</string>
     <string name="publication_leave_title" formatted="false">"Enregistrer votre vérification ?"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"Les notifications push ne sont pas disponibles dans cette version."</string>
     <string name="push_unlink" formatted="false">"Supprimer la connexion"</string>
     <string name="push_unlink_scope" formatted="false">"Supprimer le routage de synchronisation par notifications de cette installation GitHub sur cet appareil ? Cela ne désinstalle pas l’application GitHub. Utilisez Gérer sur GitHub pour modifier son accès aux dépôts ou la désinstaller."</string>
-    <string name="rebase_abort_body" formatted="false">"Restaure la branche et le commit d’origine. Les modifications des fichiers suivis et les résolutions de conflits effectuées pendant ce rebasage seront abandonnées."</string>
-    <string name="rebase_abort_title" formatted="false">"Abandonner ce rebasage ?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"Accepter la suppression locale"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"Accepter la suppression en amont"</string>
-    <string name="rebase_begin_body" formatted="false">"Les commits locaux seront rejoués sur l’amont vérifié et pourront recevoir de nouveaux identifiants. Le rebasage est local ; l’envoi reste une action distincte."</string>
-    <string name="rebase_begin_title" formatted="false">"Réécrire les commits locaux ?"</string>
     <string name="rebase_checkout_review_required" formatted="false">"Les données de récupération de l’extraction ont changé ou sont illisibles. Vérifiez votre travail local avant d’utiliser un outil Git ou d’abandonner le rebasage."</string>
     <string name="rebase_problem_active_operation" formatted="false">"Terminez l’opération Git en cours avant de lancer un rebase."</string>
     <string name="rebase_problem_local_branch" formatted="false">"Passez à une branche locale avant le rebase."</string>
     <string name="rebase_problem_local_changes" formatted="false">"Créez un commit ou un stash avec toutes les modifications locales avant le rebase."</string>
     <string name="rebase_problem_upstream" formatted="false">"Configurez une branche distante de suivi avant le rebase."</string>
     <string name="rebase_skip_body" formatted="false">"Exclut le commit actuel du rejeu. Vérifiez ses modifications avant de l’ignorer ; cela peut retirer du travail local de l’historique obtenu."</string>
-    <string name="rebase_skip_title" formatted="false">"Ignorer ce commit local ?"</string>
-    <string name="rebase_status_aborted" formatted="false">"Rebasage abandonné"</string>
-    <string name="rebase_status_conflicts" formatted="false">"Rebase a conflits-les résoudre, puis continuer rebase"</string>
     <string name="rebase_use_local" formatted="false">"Utiliser le commit local"</string>
     <string name="rebase_use_upstream" formatted="false">"Utiliser l’amont"</string>
     <string name="remote_address_formats" formatted="false">"Utilisez HTTP/HTTPS, SSH, git://, file://, ou propriétaire/repo."</string>
-    <string name="remote_merge_confirm_local" formatted="false">"Fusionner les commits vérifiés ?"</string>
-    <string name="remote_merge_confirm_local_body">"Met à jour %1$s avec le commit vérifié de %2$s. Un commit de fusion peut être créé. Rien n’est envoyé."</string>
-    <string name="remote_merge_confirm_push" formatted="false">"Fusionner et publier vers l’amont ?"</string>
-    <string name="remote_merge_confirm_push_body">"Met à jour %1$s, puis envoie ses commits vers %2$s à l’adresse d’envoi vérifiée. Les conflits arrêtent la publication. Un envoi échoué ou non confirmé conserve le résultat Git local pour une nouvelle tentative explicite."</string>
     <string name="remote_merge_counts">"Commits locaux : %1$d · Commits entrants : %2$d"</string>
     <string name="remote_merge_destination">"Vers la branche locale : %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Finalisation de l’action Git…"</string>
     <string name="remote_merge_incoming_oid">"Commit entrant : %1$s"</string>
     <string name="remote_merge_local_oid">"Commit local : %1$s"</string>
-    <string name="remote_merge_push_address">"Adresse d’envoi : %1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"Récupérez et vérifiez la branche amont configurée. Les commits existants gardent leurs identifiants ; des historiques divergents créent un commit de fusion. Les conflits peuvent nécessiter une résolution manuelle."</string>
     <string name="remote_merge_title" formatted="false">"Fusionner avec le distant"</string>
     <string name="remote_merge_upstream">"Depuis la branche amont : %1$s"</string>
     <string name="remote_normalized_target">"Adresse du dépôt : %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"Impossible de lire les résultats enregistrés des raccourcis. L’autorisation est gérée séparément."</string>
     <string name="ssh_hide_private_key" formatted="false">"Masquer la clé privée"</string>
     <string name="ssh_show_private_key" formatted="false">"Afficher la clé privée"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"La clé du serveur SSH a changé"</string>
     <string name="ssh_trust_error_changed" formatted="false">"La confiance SSH a changé pendant la vérification. Vérifiez l’entrée actuelle du serveur et réessayez la connexion."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"La confiance SSH enregistrée doit être vérifiée. Réinitialisez la confiance des serveurs SSH dans Réglages avant de réessayer."</string>
     <string name="ssh_trust_error_recovery" formatted="false">"Impossible d’enregistrer la récupération de confiance SSH. Vérifiez la confiance des serveurs SSH dans Réglages avant de réessayer."</string>
     <string name="ssh_trust_error_remove" formatted="false">"Impossible de supprimer la confiance du serveur SSH. Vérifiez son entrée actuelle avant de réessayer."</string>
     <string name="ssh_trust_error_reset" formatted="false">"Impossible d’effacer la confiance des serveurs SSH. Vérifiez les entrées enregistrées avant de réessayer."</string>
-    <string name="ssh_trust_replace" formatted="false">"Remplacer la confiance et connecter"</string>
     <string name="staged" formatted="false">"indexé"</string>
     <string name="stash_screen" formatted="false">"Remise"</string>
     <string name="storage_app_saved" formatted="false">"Les nouveaux clones utiliseront le stockage de l’application"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"↑%1$d en local"</string>
     <string name="tracking_metadata_size">"Métadonnées Git : %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Supprimer définitivement l’historique Git ?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"Les données examinées ont changé. Annulez et vérifiez à nouveau le retrait du suivi."</string>
     <string name="tracking_removed_backup">"Suivi Git supprimé. Sauvegarde vérifiée : %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Suivi Git supprimé. Les fichiers de travail ont été conservés."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTous les fichiers de travail et l’historique Git local resteront sur cet appareil. Vous pourrez reconnecter le dossier plus tard."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nCette action supprime définitivement ce clone géré par l’app, y compris les commits non envoyés, les changements mis de côté dans des stashes et les fichiers non enregistrés. Le dépôt distant reste inchangé."</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s nécessitera une vérification d’empreinte avant la prochaine connexion."</string>
     <string name="ui_1_s_bytes_81cdb385">"Octets : %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"Caractères : %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Lignes : %1$s, octets : %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commits locaux · %2$s commits en amont"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s affichées · %2$s enregistrées"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Achat unique via Google Play"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"Une clé modifiée peut indiquer une usurpation d’identité. Vérifiez la nouvelle empreinte auprès du propriétaire du serveur avant de remplacer la confiance."</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Annuler le rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"À propos"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Toutes les résolutions sont indexées. Continuez à rejouer les commits. Si Git indique NOTHING_TO_COMMIT, vérifiez s’il faut ignorer le commit vide."</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Toutes les fonctionnalités sont incluses après l’installation de l’application payante. Aucun abonnement ni achat intégré."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Toutes les modifications locales apportées à ce fichier seront définitivement supprimées."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Autoriser l’accès aux dossiers locaux"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Application"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Réglages de l\'app"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Appliquer le choix de suivi"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"L’approbation est enregistrée sur cet appareil et la connexion en attente reprend. Annuler laisse le serveur sans confiance."</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Auteur"</string>
     <string name="ui_back_639807a2" formatted="false">"RETOUR"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Retour"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Choisir un dossier sur cet appareil"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Choisissez une méthode d’authentification avant de cloner."</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Choisir un autre dossier"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Choisir le stockage des clones"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Choisissez un stockage local ou connecté à cet appareil. Les fournisseurs de documents cloud ne proposent pas de système de fichiers utilisable par ce moteur Git."</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Choisissez le compte utilisé pour parcourir GitHub. Chaque dépôt conserve son compte attribué ; modifiez-le dans Connexion du dépôt."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Choisissez le dossier par défaut des nouveaux clones. Les dépôts existants conservent leur emplacement actuel."</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"Effacer le journal"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"Cloner à nouveau"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Cloner à nouveau · vérifiez la branche et la connexion précédentes avant de commencer."</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"Dossier de clonage"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Stockage des clones"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Auteur du commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Message du commit…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"SHA du commit"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Confirmer"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"Connectez un dépôt HTTPS ou SSH public ou privé sur GitHub, GitLab, Bitbucket ou votre propre serveur Git."</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": Continuer la rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Créez un fichier ou un dossier avec Nouveau."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Dossier par défaut actuel"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Adresse de push distincte actuelle : %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"Thème sombre"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Informations de débogage"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Emplacement par défaut des nouveaux clones. Chaque clone peut utiliser un autre dossier."</string>
     <string name="ui_delete_1_s_6474596f">"Supprimer « %1$s » ?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Supprimer\nSupprimer &amp;quot;"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Supprimer le fichier"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Supprimer les fichiers locaux"</string>
     <string name="ui_destination_1_s_0df94639">"Destination : %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Dossier parent de destination"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnostic"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Abandonner le brouillon"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Abandonner"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Abandonner le brouillon de résolution ?"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Fermer"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Pendant un rebasage, l’amont correspond au côté ours de Git ; le commit local rejoué correspond à theirs."</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Modifier l’auteur du commit"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Modifier la connexion"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Modifier la résolution"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"Activer l’accès"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Saisissez à nouveau les identifiants ou choisissez l’accès public pour la nouvelle adresse."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Erreur"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Chaque serveur SSH nécessitera une vérification d’empreinte avant la prochaine connexion. Les entrées de confiance endommagées seront aussi supprimées."</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Récupérer et vérifier le rebasage"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Échec de l’opération sur le fichier"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"Terminer la récupération du déplacement"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub sign-in\nDétails sur"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md a besoin d’accéder au stockage partagé pour gérer de vraies copies de travail Git dans les dossiers de l’appareil. Choisissez les dossiers à utiliser après avoir activé l’accès dans les réglages Android."</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md ne fournira pas d’identifiants pour ce dépôt."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Revenez en arrière et sélectionnez un dépôt."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Je comprends qu’un autre propriétaire peut encore modifier ce fichier."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Incluez le nom d’utilisateur SSH dans l’adresse : git@host:team/repo.git ou ssh://git@host:2222/team/repo.git."</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"Garder une sauvegarde vérifiée des métadonnées"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Continuer à modifier"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Phrase secrète de la clé (facultatif)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Les clés sont chiffrées sur cet appareil et utilisées uniquement pour l’adresse enregistrée du dépôt. Vérifiez l’empreinte du serveur lors de la première connexion."</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"Dernière synchro"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Laissez vide pour utiliser la branche par défaut du serveur."</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"Autorisations des points de terminaison LFS"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"Nom d’utilisateur du point de terminaison LFS"</string>
-    <string name="ui_license_c011d609" formatted="false">"Licence"</string>
     <string name="ui_loading_dc380888" formatted="false">"Chargement"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"Chargement des dépôts"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"Dépôts locaux"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Nom dans GitSync.md"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Les nouveaux commits de ce dépôt utiliseront ce nom et cet e-mail. Les commits existants conservent leur auteur d’origine."</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"Nouveau fichier\nNouveau nom"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"Nouveau dossier"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Nouveau jeton ou mot de passe"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Aucune modification à afficher"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Aucun commit trouvé"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Ouvrir Git LFS"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Ouvrir dans des fichiers"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Ouverture du fichier…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"Remplacer l’apparence du système"</string>
     <string name="ui_owner_1_s_599ca9ce">"Propriétaire : %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Parents (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Chemin"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Plateforme"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"Empreinte précédemment approuvée : %1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"Accès public"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Tirer avec rebase"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebasage en cours"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebaser sur l’amont vérifié"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"Enregistrer"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Enregistrer l’auteur"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Enregistrer la connexion"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"Les identifiants enregistrés sont chiffrés sur cet appareil et utilisés uniquement pour l’adresse HTTPS de ce dépôt."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"L’enregistrement utilise cette adresse pour fetch et push. Exécutez ensuite fetch pour actualiser l’état distant."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Dossier sélectionné"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"Réglages"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Partager l’archive de sauvegarde"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"Afficher les informations de débogage"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Certains diagnostics n’ont pas pu être lus ou enregistrés. Les données existantes ont été conservées. Effacez le journal pour reprendre l’enregistrement."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Clé privée"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Confiance des serveurs SSH"</string>
     <string name="ui_stage_de838855" formatted="false">"Indexer"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"La destination active reste en place. GitSync.md vérifie que l’original conservé ne comporte aucune modification ultérieure avant de supprimer définitivement ses fichiers et son historique Git."</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"La connexion chiffrée est réutilisée uniquement pour l’adresse d’origine du dépôt. Changez explicitement l’authentification pour utiliser une autre adresse."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Le dossier peut être déplacé directement sur ce volume de stockage."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Le compte GitHub précédent est déconnecté. Sélectionnez un compte connecté ou une autre méthode d’authentification."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Le commit local rejoué supprime ce fichier."</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Cette entrée de l’historique n’est pas disponible."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Ceci supprime le verrou d’une autre connexion. Consultez son propriétaire avant de continuer."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Ce dépôt utilisera l’accès public jusqu’à ce que vous choisissiez à nouveau une authentification. Votre compte GitHub connecté ne sera pas utilisé pour ce dépôt. Les adresses de fetch et de push restent inchangées."</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">": jeton ou mot de passe"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Impossible d’ouvrir le fichier"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"Désindexer"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Modifiez l’adresse ou l’authentification de cette copie de travail. Les fichiers locaux, les commits et les modifications indexées restent en place."</string>
     <string name="ui_upstream_94adc696" formatted="false">"Amont"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"L’amont a supprimé ce fichier."</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"Utilisez une adresse HTTPS sur github.com. Le clone conserve le compte sélectionné même si vous changez de compte pour parcourir les dépôts."</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"Utiliser le stockage de l’application"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Utiliser pour les nouveaux clones"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"Utiliser la connexion enregistrée"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Utiliser le choix par défaut enregistré"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Nom d\'utilisateur"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"Nom d’utilisateur + jeton"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"Sans sauvegarde, l’historique Git local sera supprimé définitivement. Cette action est irréversible."</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"Les fichiers de travail restent en place. Les branches locales, commits, stashes, dépôts distants et historique seront déconnectés de ce dossier."</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Vos modifications n’ont pas été enregistrées."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Votre texte non soumis sera abandonné. Le fichier de travail restera inchangé."</string>
     <string name="untracked" formatted="false">"Non suivi"</string>
@@ -1163,11 +1089,6 @@
         <item quantity="one">"+%1$s -%2$s ligne"</item>
         <item quantity="many">"+%1$s -%2$s lignes"</item>
         <item quantity="other">"+%1$s -%2$s lignes"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d fichier"</item>
-        <item quantity="many">"%1$d fichiers"</item>
-        <item quantity="other">"%1$d fichiers"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Fusion interrompue : %1$s (%2$d conflit)"</item>

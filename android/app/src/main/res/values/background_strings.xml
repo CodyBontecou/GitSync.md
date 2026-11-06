@@ -1,7 +1,4 @@
 <resources>
-    <string name="background_title">Background Sync</string>
-    <string name="background_scope">Include a repository after reviewing its current branch and connection. Automatic pull fetches and fast-forwards when safe. Automatic push creates commits from local changes and uploads them. Diverged histories, incoming changes with local edits, and changed connections need review.</string>
-    <string name="background_schedule">Android schedules checks about every 15 minutes or later, depending on connectivity, battery and system restrictions. Run now requests an earlier check. Force-stopping the app prevents background work until you open it again.</string>
     <string name="background_pull">Automatically pull remote changes</string>
     <string name="background_push">Automatically commit and push local changes</string>
     <string name="background_push_confirm">Allow automatic publishing?</string>
@@ -11,16 +8,10 @@
     <string name="background_stop">Stop current check</string>
     <string name="background_running">Checking repositories…</string>
     <string name="background_queued">Check requested. Waiting for Android and a connection.</string>
-    <string name="background_active">Background checks are scheduled for included repositories.</string>
-    <string name="background_inactive">Background checks are off. Enable a mode and include at least one repository.</string>
     <string name="background_include">Include this repository</string>
     <string name="background_forget">Remove saved policy</string>
-    <string name="background_included">Included</string>
-    <string name="background_excluded">Excluded</string>
     <string name="background_unavailable">This checkout is no longer registered. Reconnect it and review its policy again.</string>
     <string name="background_binding">Only branch %1$s, tracking %2$s/%3$s. A branch, folder, connection or account change requires a fresh review.</string>
-    <string name="background_wifi">Wi-Fi only</string>
-    <string name="background_power">External power only</string>
     <string name="background_never">Not checked yet</string>
     <string name="background_wait_network">Waiting for an internet connection</string>
     <string name="background_wait_wifi">Waiting for Wi-Fi</string>
@@ -29,15 +20,10 @@
     <string name="background_changed">Folder, branch or connection changed. Review it again.</string>
     <string name="background_current">Up to date</string>
     <string name="background_updated">Changes synchronized</string>
-    <string name="background_attention">Needs review. Open the repository to resolve local changes, divergence, missing upstream or a saved commit awaiting upload.</string>
-    <string name="background_failed">Connection, authentication, trust or file access needs attention. Open the repository and retry there.</string>
     <string name="background_stopped">Check stopped</string>
-    <string name="background_attempt">Last check: %1$s</string>
-    <string name="background_transfer">Last transfer: %1$s</string>
     <string name="background_error">Could not complete this action. Reload and review the current repository and settings.</string>
     <string name="background_reset">Reset Background Sync settings</string>
     <string name="background_reset_detail">Unreadable Background Sync settings cannot authorize work. Reset removes only its saved policies and health, with both automatic modes off. Repository files, accounts and other sync features are kept. Review each repository again before including it.</string>
     <string name="background_reload">Reload</string>
     <string name="background_empty">No local repositories are registered.</string>
-    <string name="background_open">Open repository</string>
 </resources>

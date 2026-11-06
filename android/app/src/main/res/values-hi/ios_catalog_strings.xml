@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"अभी-अभी"</string>
     <string name="account_valid_branch" formatted="false">"मान्य ब्रांच नाम दर्ज करें"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
-    <string name="background_active" formatted="false">"शामिल रिपॉज़िटरी की पृष्ठभूमि जाँच निर्धारित है।"</string>
     <string name="background_allow_push" formatted="false">"स्वचालित प्रकाशन की अनुमति दें"</string>
-    <string name="background_attempt">"पिछली जाँच: %1$s"</string>
-    <string name="background_attention" formatted="false">"समीक्षा ज़रूरी है। स्थानीय बदलाव, अलग हुए इतिहास, गायब अपस्ट्रीम या अपलोड का इंतज़ार कर रहे सहेजे कमिट को हल करने के लिए रिपॉज़िटरी खोलें।"</string>
     <string name="background_binding">"केवल %1$s ब्रांच, जो %2$s/%3$s को ट्रैक करती है। ब्रांच, फ़ोल्डर, कनेक्शन या खाते में बदलाव होने पर नई समीक्षा ज़रूरी है।"</string>
     <string name="background_changed" formatted="false">"फ़ोल्डर, ब्रांच या कनेक्शन बदल गया। फिर समीक्षा करें।"</string>
     <string name="background_current" formatted="false">"अपडेटेड"</string>
     <string name="background_empty" formatted="false">"कोई स्थानीय रिपॉज़िटरी पंजीकृत नहीं है।"</string>
     <string name="background_error" formatted="false">"यह कार्रवाई पूरी नहीं हुई। फिर लोड करके मौजूदा रिपॉज़िटरी और सेटिंग की समीक्षा करें।"</string>
-    <string name="background_excluded" formatted="false">"बहिष्कृत"</string>
-    <string name="background_failed" formatted="false">"कनेक्शन, प्रमाणीकरण, भरोसे या फ़ाइल ऐक्सेस पर ध्यान देना ज़रूरी है। रिपॉज़िटरी खोलकर वहाँ दोबारा कोशिश करें।"</string>
     <string name="background_forget" formatted="false">"सहेजी गई नीति हटाएँ"</string>
-    <string name="background_inactive" formatted="false">"पृष्ठभूमि जाँच बंद है। एक मोड चालू करें और कम से कम एक रिपॉज़िटरी शामिल करें।"</string>
     <string name="background_include" formatted="false">"यह रिपॉज़िटरी शामिल करें"</string>
-    <string name="background_included" formatted="false">"शामिल"</string>
     <string name="background_never" formatted="false">"अभी तक जाँच नहीं हुई"</string>
-    <string name="background_open" formatted="false">"रिपॉज़िटरी खोलें"</string>
-    <string name="background_power" formatted="false">"केवल बाहरी बिजली"</string>
     <string name="background_pull" formatted="false">"रिमोट बदलाव अपने आप पुल करें"</string>
     <string name="background_push" formatted="false">"स्थानीय बदलाव अपने आप कमिट और पुश करें"</string>
     <string name="background_push_confirm" formatted="false">"अपने आप प्रकाशित करने की अनुमति दें?"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"पढ़ी न जा सकने वाली पृष्ठभूमि सिंक सेटिंग किसी काम की अनुमति नहीं दे सकतीं। रीसेट करने से सिर्फ़ उसकी सहेजी नीतियाँ और स्थिति हटती हैं और दोनों स्वचालित मोड बंद होते हैं। रिपॉज़िटरी की फ़ाइलें, खाते और दूसरी सिंक सुविधाएँ बनी रहती हैं। दोबारा शामिल करने से पहले हर रिपॉज़िटरी की समीक्षा करें।"</string>
     <string name="background_run" formatted="false">"अभी जाँचें"</string>
     <string name="background_running" formatted="false">"रिपॉज़िटरी जाँची जा रही हैं…"</string>
-    <string name="background_schedule" formatted="false">"Android कनेक्टिविटी, बैटरी और सिस्टम प्रतिबंधों के अनुसार लगभग हर 15 मिनट या बाद में जाँच निर्धारित करता है। अभी जाँचें से पहले जाँच का अनुरोध होता है। ऐप को ज़बरन रोकने पर दोबारा खोलने तक पृष्ठभूमि का काम रुक जाता है।"</string>
-    <string name="background_scope" formatted="false">"रिपॉज़िटरी की मौजूदा ब्रांच और कनेक्शन की समीक्षा करने के बाद उसे शामिल करें। स्वचालित पुल बदलाव लाता है और सुरक्षित होने पर fast-forward करता है। स्वचालित पुश स्थानीय बदलावों से कमिट बनाकर अपलोड करता है। अलग हुए इतिहास, स्थानीय संपादनों के साथ आने वाले बदलाव और बदले हुए कनेक्शन की समीक्षा ज़रूरी है।"</string>
     <string name="background_stop" formatted="false">"जाँच रोकें"</string>
     <string name="background_stopped" formatted="false">"जाँच रुक गई"</string>
-    <string name="background_title" formatted="false">"पृष्ठभूमि में सिंक"</string>
-    <string name="background_transfer">"पिछला ट्रांसफ़र: %1$s"</string>
     <string name="background_unavailable" formatted="false">"यह वर्किंग कॉपी अब पंजीकृत नहीं है। इसे फिर कनेक्ट करके इसकी नीति की दोबारा समीक्षा करें।"</string>
     <string name="background_updated" formatted="false">"बदलाव सिंक हो गए"</string>
     <string name="background_wait_network" formatted="false">"इंटरनेट कनेक्शन का इंतज़ार है"</string>
     <string name="background_wait_power" formatted="false">"बाहरी बिजली स्रोत की प्रतीक्षा"</string>
     <string name="background_wait_wifi" formatted="false">"Wi-Fi की प्रतीक्षा"</string>
-    <string name="background_wifi" formatted="false">"केवल Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"वर्किंग कॉपी दूसरी ब्रांच पर है। पिछली ब्रांच पर लौटें या फिर समीक्षा करें।"</string>
-    <string name="branch_screen" formatted="false">"शाखाएँ"</string>
     <string name="callback_action" formatted="false">"अनुरोधित कार्रवाई"</string>
     <string name="callback_authorized_scope" formatted="false">"अधिकृत लिंक बिना दोबारा पूछे सहेजी गई कार्रवाई चलाते हैं। बदले या रद्द किए गए लिंक यहीं रुक जाते हैं। अनुमतियाँ रिपॉज़िटरी कार्रवाइयाँ → अधिकृत लिंक में प्रबंधित करें।"</string>
     <string name="callback_auto_return" formatted="false">"इस बार चलने के बाद अपने आप वापस जाएँ"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"नाम बदला गया"</string>
     <string name="file_save_title" formatted="false">"बदलाव सेव करें?"</string>
     <string name="file_saved" formatted="false">"सेव हुआ"</string>
-    <string name="file_unsaved_changes" formatted="false">"बदलाव सेव नहीं हुए"</string>
     <string name="files_folder" formatted="false">"फ़ोल्डर"</string>
     <string name="files_hide_hidden" formatted="false">"छिपी फ़ाइलें छिपाएँ"</string>
     <string name="files_show_hidden" formatted="false">"छिपी फ़ाइलें दिखाएँ"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"जहाँ काम करें, वहीं संपादित करें"</string>
     <string name="guide_git_body" formatted="false">"अंतर देखें, चुने हुए बदलाव स्टेज करें और स्थानीय कमिट बनाएँ। तैयार होने पर पुश करें। ब्रांच, इतिहास, टैग, विरोधों का समाधान और Git LFS रिपॉज़िटरी स्क्रीन पर उपलब्ध हैं।"</string>
     <string name="guide_git_title" formatted="false">"प्रकाशित करने से पहले समीक्षा करें"</string>
-    <string name="guide_home" formatted="false">"बिना खाते के जारी रखें"</string>
     <string name="guide_login" formatted="false">"GitHub से साइन इन करें"</string>
-    <string name="guide_sample" formatted="false">"ऑफ़लाइन उदाहरण आज़माएँ"</string>
     <string name="guide_save_error" formatted="false">"परिचय की प्रगति सहेजी नहीं जा सकी। आप जारी रख सकते हैं; अगली बार परिचय फिर दिख सकता है।"</string>
-    <string name="guide_skip" formatted="false">"परिचय छोड़ें"</string>
     <string name="guide_start_body" formatted="false">"खाता कनेक्ट करें, URL से क्लोन करें या ऑफ़लाइन उदाहरण आज़माएँ। आप अभी स्टोरेज की जगह भी चुन सकते हैं।"</string>
     <string name="guide_start_title" formatted="false">"चुनें कि शुरुआत कैसे करें"</string>
     <string name="guide_step">"चरण %1$d / 4"</string>
-    <string name="guide_storage" formatted="false">"स्टोरेज चुनें"</string>
-    <string name="guide_title" formatted="false">"ऐप परिचय"</string>
-    <string name="guide_url" formatted="false">"URL से क्लोन करें"</string>
     <string name="help_copy_email" formatted="false">"सहायता का ईमेल पता कॉपी करें"</string>
     <string name="help_email_copied" formatted="false">"सहायता का ईमेल पता कॉपी हो गया"</string>
     <string name="help_feedback" formatted="false">"फ़ीडबैक भेजें"</string>
     <string name="help_open_failed" formatted="false">"कोई ऐप इस लिंक को नहीं खोल सका। आप सहायता का ईमेल पता कॉपी कर सकते हैं।"</string>
     <string name="help_title" formatted="false">"सहायता"</string>
-    <string name="help_tour" formatted="false">"– ऐप टूर देखें"</string>
     <string name="history_screen" formatted="false">"इतिहास"</string>
     <string name="http_transport_warning" formatted="false">"HTTP एन्क्रिप्टेड नहीं है। रिपॉज़िटरी का डेटा और आपके दर्ज किए गए उपयोगकर्ता नाम या टोकन को ट्रांसफ़र के दौरान पढ़ा जा सकता है। उपलब्ध होने पर HTTPS का उपयोग करें।"</string>
     <string name="language_settings_legacy" formatted="false">"Android 13 से पहले, यह ऐप डिवाइस की भाषा का उपयोग करता है।"</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"कनेक्शन और स्टोरेज"</string>
     <string name="notes_files_body" formatted="false">"Git LFS ट्रैकिंग की समीक्षा करें, लापता सामग्री डाउनलोड करें और सर्वर लॉक चेतावनियाँ देखें। डायग्नोस्टिक्स फ़िल्टर की गई कॉपी और साझाकरण के साथ सीमित स्थानीय लॉग रखता है।"</string>
     <string name="notes_files_title" formatted="false">"बड़ी फ़ाइलें और डायग्नोस्टिक्स"</string>
-    <string name="notes_title" formatted="false">"रिलीज़ नोट्स"</string>
     <string name="notes_version">"Android %1$s · बिल्ड %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"फ़ाइलें ब्राउज़ और संपादित करें, स्टेज किए गए और बिना स्टेज किए डिफ़ देखें, स्थानीय कमिट बनाएँ, मौजूदा कमिट पुश करें, और ब्रांच, हिस्ट्री, टैग व रीबेस के साथ काम करें।"</string>
     <string name="notes_workflow_title" formatted="false">"रिपॉज़िटरी वर्कफ़्लो"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"यह समीक्षा छोड़ें?"</string>
     <string name="publication_discard_warning" formatted="false">"ये सहेजे गए समीक्षा विकल्प और बिना सहेजे बदलाव हटाएँ? वर्किंग फ़ाइलें अछूती रहती हैं। इस समीक्षा के लिए तैयारी और प्रकाशन शुरू नहीं हुए हैं।"</string>
     <string name="publication_file_unsupported" formatted="false">"सामग्री रूपांतरण समर्थित नहीं"</string>
-    <string name="publication_files" formatted="false">"फ़ाइलें"</string>
     <string name="publication_finish" formatted="false">"सेटअप पूरा करें"</string>
     <string name="publication_include" formatted="false">"फ़ाइल शामिल करें"</string>
     <string name="publication_leave_title" formatted="false">"अपनी समीक्षा सहेजें?"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"इस बिल्ड में पुश सूचनाएँ उपलब्ध नहीं हैं।"</string>
     <string name="push_unlink" formatted="false">"कनेक्शन हटाएँ"</string>
     <string name="push_unlink_scope" formatted="false">"इस डिवाइस पर इस GitHub इंस्टॉलेशन के लिए पुश सूचनाओं से सिंक की रूटिंग हटाएँ? इससे GitHub ऐप अनइंस्टॉल नहीं होगा। रिपॉज़िटरी का ऐक्सेस बदलने या ऐप अनइंस्टॉल करने के लिए GitHub पर प्रबंधित करें का उपयोग करें।"</string>
-    <string name="rebase_abort_body" formatted="false">"मूल ब्रांच और कमिट को बहाल करता है। इस रीबेस के दौरान ट्रैक की गई फ़ाइलों में किए गए संपादन और विरोधों के समाधान हटा दिए जाएँगे।"</string>
-    <string name="rebase_abort_title" formatted="false">"यह रीबेस रद्द करें?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"स्थानीय विलोपन स्वीकारें"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"अपस्ट्रीम का विलोपन स्वीकारें"</string>
-    <string name="rebase_begin_body" formatted="false">"स्थानीय कमिट समीक्षित अपस्ट्रीम पर दोबारा लागू होंगे और उन्हें नए पहचानकर्ता मिल सकते हैं। रीबेस स्थानीय है; पुश एक अलग कार्रवाई रहेगी।"</string>
-    <string name="rebase_begin_title" formatted="false">"स्थानीय कमिट दोबारा लिखें?"</string>
     <string name="rebase_checkout_review_required" formatted="false">"चेकआउट पुनर्प्राप्ति बदल गई है या पढ़ी नहीं जा सकती। Git टूल इस्तेमाल करने या रीबेस रद्द करने से पहले अपना स्थानीय काम जाँचें।"</string>
     <string name="rebase_problem_active_operation" formatted="false">"रीबेस शुरू करने से पहले सक्रिय Git कार्रवाई पूरी करें।"</string>
     <string name="rebase_problem_local_branch" formatted="false">"रीबेस करने से पहले स्थानीय शाखा पर जाएँ।"</string>
     <string name="rebase_problem_local_changes" formatted="false">"रीबेस करने से पहले सभी स्थानीय बदलावों को कमिट करें या स्टैश में रखें।"</string>
     <string name="rebase_problem_upstream" formatted="false">"रीबेस करने से पहले दूरस्थ अपस्ट्रीम शाखा कॉन्फ़िगर करें।"</string>
     <string name="rebase_skip_body" formatted="false">"मौजूदा कमिट को दोबारा लागू किए जाने से बाहर करता है। छोड़ने से पहले उसके बदलावों की समीक्षा करें; इससे परिणामी इतिहास से स्थानीय काम हट सकता है।"</string>
-    <string name="rebase_skip_title" formatted="false">"यह स्थानीय कमिट छोड़ें?"</string>
-    <string name="rebase_status_aborted" formatted="false">"रीबेस रद्द हुआ"</string>
-    <string name="rebase_status_conflicts" formatted="false">": \'rebase\' के लिए संघर्ष हैं — इन्हें हल करें और फिर \'rebase\' प्रक्रिया जारी रखें।"</string>
     <string name="rebase_use_local" formatted="false">"स्थानीय कमिट इस्तेमाल करें"</string>
     <string name="rebase_use_upstream" formatted="false">"अपस्ट्रीम इस्तेमाल करें"</string>
     <string name="remote_address_formats" formatted="false">": HTTP/HTTPS का उपयोग करें। SSH, git://, file://, या मालिक/रिपॉजिटरी।"</string>
-    <string name="remote_merge_confirm_local" formatted="false">"समीक्षा किए गए कमिट मर्ज करें?"</string>
-    <string name="remote_merge_confirm_local_body">"%1$s को %2$s के समीक्षा किए गए कमिट से अपडेट करता है। मर्ज कमिट बन सकता है। कुछ भी पुश नहीं होता।"</string>
-    <string name="remote_merge_confirm_push" formatted="false">"मर्ज करके अपस्ट्रीम पर प्रकाशित करें?"</string>
-    <string name="remote_merge_confirm_push_body">"%1$s को अपडेट करता है, फिर उसके कमिट समीक्षा किए गए पुश पते पर %2$s में पुश करता है। कॉन्फ़्लिक्ट होने पर प्रकाशन रुकता है। विफल या अपुष्ट पुश स्थानीय Git परिणाम को स्पष्ट पुनः प्रयास के लिए सुरक्षित रखता है।"</string>
     <string name="remote_merge_counts">"स्थानीय कमिट: %1$d · आने वाले कमिट: %2$d"</string>
     <string name="remote_merge_destination">"स्थानीय ब्रांच में: %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Git कार्रवाई पूरी हो रही है…"</string>
     <string name="remote_merge_incoming_oid">"आने वाला कमिट: %1$s"</string>
     <string name="remote_merge_local_oid">"स्थानीय कमिट: %1$s"</string>
-    <string name="remote_merge_push_address">"पुश पता: %1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"कॉन्फ़िगर किए गए अपस्ट्रीम को फ़ेच करके समीक्षा करें। मौजूदा कमिट की आईडी नहीं बदलती; अलग हुई हिस्ट्री के लिए मर्ज कमिट बनता है। कॉन्फ़्लिक्ट को मैन्युअल रूप से हल करना पड़ सकता है।"</string>
     <string name="remote_merge_title" formatted="false">"रिमोट के साथ मर्ज करें"</string>
     <string name="remote_merge_upstream">"अपस्ट्रीम से: %1$s"</string>
     <string name="remote_normalized_target">"रिपॉज़िटरी का पता: %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"सहेजे गए शॉर्टकट नतीजे पढ़े नहीं जा सकते। अनुमति अलग से रखी जाती है।"</string>
     <string name="ssh_hide_private_key" formatted="false">"निजी कुंजी छिपाएँ"</string>
     <string name="ssh_show_private_key" formatted="false">"निजी कुंजी दिखाएँ"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"SSH सर्वर की कुंजी बदल गई"</string>
     <string name="ssh_trust_error_changed" formatted="false">"समीक्षा के दौरान SSH भरोसा बदल गया। सर्वर की मौजूदा प्रविष्टि की समीक्षा करें और फिर कनेक्ट करें।"</string>
     <string name="ssh_trust_error_damaged" formatted="false">"सहेजे गए SSH भरोसे की समीक्षा ज़रूरी है। दोबारा कोशिश करने से पहले सेटिंग में SSH सर्वर भरोसा रीसेट करें।"</string>
     <string name="ssh_trust_error_recovery" formatted="false">"SSH भरोसे की रिकवरी सहेजी नहीं जा सकी। दोबारा कोशिश करने से पहले सेटिंग में SSH सर्वर भरोसे की समीक्षा करें।"</string>
     <string name="ssh_trust_error_remove" formatted="false">"SSH सर्वर का भरोसा हटाया नहीं जा सका। दोबारा कोशिश करने से पहले सर्वर की मौजूदा प्रविष्टि की समीक्षा करें।"</string>
     <string name="ssh_trust_error_reset" formatted="false">"SSH सर्वर भरोसा साफ़ नहीं किया जा सका। दोबारा कोशिश करने से पहले सहेजी गई प्रविष्टियों की समीक्षा करें।"</string>
-    <string name="ssh_trust_replace" formatted="false">"भरोसा बदलें और कनेक्ट करें"</string>
     <string name="staged" formatted="false">"स्टेज्ड"</string>
     <string name="stash_screen" formatted="false">"स्टैश"</string>
     <string name="storage_app_saved" formatted="false">"नए क्लोन ऐप के स्टोरेज का इस्तेमाल करेंगे"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"↑%1$d स्थानीय"</string>
     <string name="tracking_metadata_size">"Git मेटाडेटा: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git इतिहास स्थायी रूप से हटाएँ?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"समीक्षा की जानकारी बदल गई है। रद्द करें और ट्रैकिंग हटाने की फिर समीक्षा करें।"</string>
     <string name="tracking_removed_backup">"Git ट्रैकिंग हटाई गई। सत्यापित बैकअप: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Git ट्रैकिंग हटाई गई। कार्यशील फ़ाइलें रखी गईं।"</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nसभी कार्य फ़ाइलें और स्थानीय Git इतिहास इस डिवाइस पर रहेंगे। आप फ़ोल्डर को बाद में फिर से जोड़ सकते हैं।"</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nइससे ऐप द्वारा प्रबंधित यह क्लोन स्थायी रूप से मिट जाएगा, जिसमें पुश न किए गए कमिट, स्टैश में रखे बदलाव और बिना सहेजी फ़ाइलें शामिल हैं। रिमोट रिपॉज़िटरी में कोई बदलाव नहीं होगा।"</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"फिर कनेक्ट करने से पहले %1$s:%2$s के फ़िंगरप्रिंट का सत्यापन ज़रूरी होगा।"</string>
     <string name="ui_1_s_bytes_81cdb385">"बाइट: %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"अक्षर: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"पंक्तियाँ: %1$s, बाइट: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s स्थानीय कमिट · %2$s अपस्ट्रीम कमिट"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s दिखाई गईं · %2$s सहेजी गईं"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Google Play से एक बार की खरीदारी"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"बदली हुई कुंजी पहचान की नकल का संकेत हो सकती है। भरोसा बदलने से पहले सर्वर के मालिक से नया फ़िंगरप्रिंट सत्यापित करें।"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"रीबेस रद्द करें…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"जानकारी"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"सभी विरोधों के समाधान स्टेज हो चुके हैं। कमिट दोबारा लागू करना जारी रखें। यदि Git NOTHING_TO_COMMIT बताए, तो जाँचें कि खाली कमिट को छोड़ना चाहिए या नहीं।"</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"सशुल्क ऐप इंस्टॉल करने के बाद सभी सुविधाएँ शामिल हैं। कोई सदस्यता या इन-ऐप खरीदारी नहीं।"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": इस फ़ाइल में किए गए सभी स्थानीय परिवर्तन स्थायी रूप से खारिज कर दिए जाएंगे।"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"स्थानीय फ़ोल्डर ऐक्सेस की अनुमति दें"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"ऐप"</string>
     <string name="ui_app_settings_da645334" formatted="false">"ऐप सेटिंग्स"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"ट्रैकिंग विकल्प लागू करें"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"मंज़ूरी इस डिवाइस पर सहेजी जाती है और इंतज़ार कर रहा कनेक्शन आगे बढ़ता है। रद्द करने पर सर्वर पर भरोसा नहीं किया जाता।"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"प्रमाणीकरण"</string>
     <string name="ui_back_639807a2" formatted="false">"वापस"</string>
     <string name="ui_back_aceb696a" formatted="false">"← वापस"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"डिवाइस का फ़ोल्डर चुनें"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"क्लोन करने से पहले प्रमाणीकरण का तरीका चुनें।"</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"दूसरा फ़ोल्डर चुनें"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"क्लोन का संग्रहण चुनें"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"डिवाइस का स्थानीय या उससे जुड़ा स्टोरेज चुनें। क्लाउड दस्तावेज़ प्रदाता ऐसा फ़ाइल सिस्टम नहीं देते जिसका यह Git इंजन इस्तेमाल कर सके।"</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"GitHub ब्राउज़ करने के लिए खाता चुनें। हर रिपॉज़िटरी अपना असाइन किया गया खाता रखती है; इसे रिपॉज़िटरी कनेक्शन में बदलें।"</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"नए क्लोन के लिए डिफ़ॉल्ट फ़ोल्डर चुनें। मौजूदा रिपॉज़िटरी अपनी वर्तमान जगह पर रहेंगी।"</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"लॉग साफ़ करें"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"फिर से क्लोन करें"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"फिर क्लोन करें · शुरू करने से पहले पिछली ब्रांच और कनेक्शन की समीक्षा करें।"</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"क्लोन डायरेक्टरी"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"क्लोन का स्टोरेज"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"कमिट लेखक"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit संदेश…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"पुष्टि करें"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"GitHub, GitLab, Bitbucket या अपने Git सर्वर पर सार्वजनिक या निजी HTTPS या SSH रिपॉज़िटरी कनेक्ट करें।"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": रीबेसिंग जारी रखें"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"नया विकल्प से फ़ाइल या फ़ोल्डर बनाएँ।"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"वर्तमान डिफ़ॉल्ट"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"मौजूदा अलग पुश पता: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"डार्क थीम"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"डिबग जानकारी"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"नए क्लोन के लिए डिफ़ॉल्ट। हर क्लोन किसी दूसरे फ़ोल्डर का उपयोग कर सकता है।"</string>
     <string name="ui_delete_1_s_6474596f">"क्या \"%1$s\" हटाएँ?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"– हटाएँ"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"फ़ाइल हटाएँ"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": स्थानीय फ़ाइलों को हटाएँ"</string>
     <string name="ui_destination_1_s_0df94639">"गंतव्य: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"गंतव्य का पैरेंट फ़ोल्डर"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"निदान"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"ड्राफ़्ट हटाएँ"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"छोड़ें"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"समाधान का ड्राफ़्ट हटाएँ?"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"खारिज करें"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"रीबेस के दौरान अपस्ट्रीम Git का ours पक्ष होता है; दोबारा लागू किया गया स्थानीय कमिट theirs होता है।"</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"कमिट लेखक संपादित करें"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"कनेक्शन संपादित करें"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"समाधान संपादित करें"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"ऐक्सेस चालू करें"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"नए पते के लिए क्रेडेंशियल फिर से दर्ज करें या सार्वजनिक पहुँच चुनें।"</string>
     <string name="ui_error_54a0e8c1" formatted="false">"त्रुटि"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"हर SSH सर्वर से फिर कनेक्ट करने से पहले फ़िंगरप्रिंट का सत्यापन ज़रूरी होगा। इससे खराब भरोसा प्रविष्टियाँ भी हटती हैं।"</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"फ़ेच करें और रीबेस की समीक्षा करें"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"फ़ाइल पर कार्रवाई विफल हुई"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"स्थानांतरण पुनर्प्राप्ति पूरी करें"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub साइन-इन"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"डिवाइस के फ़ोल्डरों में वास्तविक Git वर्किंग कॉपी प्रबंधित करने के लिए GitSync.md को साझा स्टोरेज की ऐक्सेस चाहिए। Android सेटिंग्स में ऐक्सेस चालू करने के बाद इस्तेमाल करने वाले फ़ोल्डर चुनें।"</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md इस रिपॉज़िटरी के लिए क्रेडेंशियल नहीं देगा।"</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"वापस जाएँ और एक रिपॉज़िटरी चुनें।"</string>
     <string name="ui_hash_a9106914" formatted="false">"हैश"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"मैं समझता हूँ कि दूसरा स्वामी अभी भी इस फ़ाइल को संपादित कर रहा हो सकता है।"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"पते में SSH उपयोगकर्ता नाम शामिल करें: git@host:team/repo.git या ssh://git@host:2222/team/repo.git।"</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"मेटाडेटा का सत्यापित बैकअप रखें"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"संपादन जारी रखें"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"कुंजी का पासफ़्रेज़ (वैकल्पिक)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"कुंजियाँ इस डिवाइस पर एन्क्रिप्ट की जाती हैं और केवल सहेजे गए रिपॉज़िटरी पते के लिए इस्तेमाल होती हैं। पहली बार कनेक्ट करते समय सर्वर का फ़िंगरप्रिंट सत्यापित करें।"</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"अंतिम सिंक"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"सर्वर की डिफ़ॉल्ट ब्रांच इस्तेमाल करने के लिए खाली छोड़ें।"</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"LFS एंडपॉइंट की स्वीकृतियाँ"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS एंडपॉइंट यूज़रनेम"</string>
-    <string name="ui_license_c011d609" formatted="false">"लाइसेंस"</string>
     <string name="ui_loading_dc380888" formatted="false">"लोड हो रहा है"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"रिपॉज़िटरी लोड हो रही हैं"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"स्थानीय रिपॉज़िटरी"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"GitSync.md में नाम"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"इस रिपॉज़िटरी के नए कमिट में यह नाम और ईमेल इस्तेमाल होंगे। मौजूदा कमिट में मूल लेखक बना रहेगा।"</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"– नया फ़ाइल"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"नया फ़ोल्डर"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"नया टोकन या पासवर्ड"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"दिखाने के लिए कोई बदलाव नहीं"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"कोई कमिट नहीं मिला"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS खोलें"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">": फ़ाइलों में खोलें"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"फ़ाइल खुल रही है…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"सिस्टम का रूप ओवरराइड करें"</string>
     <string name="ui_owner_1_s_599ca9ce">"स्वामी: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"पैरेंट (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"पथ"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"प्लैटफ़ॉर्म"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"पहले भरोसा किया गया फ़िंगरप्रिंट: %1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"सार्वजनिक ऐक्सेस"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": रीबेस के साथ पुल"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"रीबेस जारी है"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"समीक्षित अपस्ट्रीम पर रीबेस करें"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"सहेजें"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"लेखक सहेजें"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"कनेक्शन सहेजें"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"सहेजे गए क्रेडेंशियल इस डिवाइस पर एन्क्रिप्ट किए जाते हैं और केवल इस रिपॉज़िटरी के HTTPS पते के लिए इस्तेमाल होते हैं।"</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"सहेजने पर इसी पते का उपयोग फ़ेच और पुश दोनों के लिए होगा। रिमोट स्थिति अपडेट करने के लिए बाद में फ़ेच करें।"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"चुना गया फ़ोल्डर"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"सेटिंग्स"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"बैकअप संग्रह साझा करें"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"डिबग जानकारी दिखाएँ"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"कुछ निदान पढ़े या सहेजे नहीं जा सके। मौजूदा डेटा सुरक्षित रखा गया। दोबारा रिकॉर्डिंग शुरू करने के लिए लॉग साफ़ करें।"</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH : निजी कुंजी"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH सर्वर पर भरोसा"</string>
     <string name="ui_stage_de838855" formatted="false">"स्टेज करें"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"सक्रिय गंतव्य अपनी जगह पर रहेगा। फ़ाइलें और Git इतिहास स्थायी रूप से हटाने से पहले GitSync.md जाँचता है कि रखी गई मूल प्रति में बाद के संपादन नहीं हैं।"</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"एन्क्रिप्ट किया गया कनेक्शन केवल रिपॉज़िटरी के मूल पते के लिए दोबारा इस्तेमाल होता है। दूसरा पता इस्तेमाल करने के लिए प्रमाणीकरण को स्पष्ट रूप से बदलें।"</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"इस स्टोरेज वॉल्यूम पर फ़ोल्डर को सीधे ले जाया जा सकता है।"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"पिछला GitHub खाता डिस्कनेक्ट है। कोई कनेक्ट किया हुआ खाता या प्रमाणीकरण का दूसरा तरीका चुनें।"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"दोबारा लागू किया गया स्थानीय कमिट इस फ़ाइल को हटाता है।"</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"यह इतिहास प्रविष्टि उपलब्ध नहीं है।"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"इससे दूसरे कनेक्शन का लॉक हटता है। आगे बढ़ने से पहले उसके स्वामी से समन्वय करें।"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"जब तक आप फिर से प्रमाणीकरण नहीं चुनते, यह रिपॉज़िटरी सार्वजनिक पहुँच का उपयोग करेगी। इसके लिए आपके साइन इन किए गए GitHub खाते का उपयोग नहीं होगा। फ़ेच और पुश पते नहीं बदलेंगे।"</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"टोकन या पासवर्ड"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"फ़ाइल नहीं खुल सकी"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"अनस्टेज करें"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"इस कार्य प्रति का पता या प्रमाणीकरण बदलें। स्थानीय फ़ाइलें, कमिट और स्टेज किए गए बदलाव अपनी जगह पर रहेंगे।"</string>
     <string name="ui_upstream_94adc696" formatted="false">"अपस्ट्रीम"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"अपस्ट्रीम ने यह फ़ाइल हटा दी है।"</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"github.com का HTTPS पता इस्तेमाल करें। रिपॉज़िटरी देखने के लिए खाता बदलने पर भी क्लोन चुने हुए खाते को बनाए रखता है।"</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"ऐप का स्टोरेज इस्तेमाल करें"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"नए क्लोन के लिए इस्तेमाल करें"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"सहेजा हुआ कनेक्शन इस्तेमाल करें"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"सहेजा हुआ डिफ़ॉल्ट इस्तेमाल करें"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"यूज़रनेम"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"उपयोगकर्ता नाम + टोकन"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"बैकअप के बिना स्थानीय Git इतिहास स्थायी रूप से मिट जाएगा। इसे वापस नहीं किया जा सकता।"</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"काम की फ़ाइलें यथावत रहेंगी। स्थानीय ब्रांच, कमिट, स्टैश, रिमोट और इतिहास इस फ़ोल्डर से डिस्कनेक्ट हो जाएँगे।"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"आपके बदलाव सेव नहीं हुए हैं।"</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"आपका सबमिट नहीं किया गया पाठ हटा दिया जाएगा। कार्यशील फ़ाइल अपरिवर्तित रहेगी।"</string>
     <string name="untracked" formatted="false">"अनट्रैक्ड"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s पंक्ति"</item>
         <item quantity="other">"+%1$s -%2$s पंक्तियाँ"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d फ़ाइल"</item>
-        <item quantity="other">"%1$d फ़ाइलें"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"मर्ज रुका: %1$s (%2$d कॉन्फ़्लिक्ट)"</item>

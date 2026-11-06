@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"az önce"</string>
     <string name="account_valid_branch" formatted="false">"Geçerli bir dal adı girin"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
-    <string name="background_active" formatted="false">"Dahil edilen depolar için arka plan kontrolleri planlandı."</string>
     <string name="background_allow_push" formatted="false">"Otomatik yayımlamaya izin ver"</string>
-    <string name="background_attempt">"Son kontrol: %1$s"</string>
-    <string name="background_attention" formatted="false">"İnceleme gerekli. Yerel değişiklikleri, ayrışmayı, eksik upstream dalını veya yüklenmeyi bekleyen kayıtlı commit’i çözmek için depoyu açın."</string>
     <string name="background_binding">"Yalnızca %2$s/%3$s izleyen %1$s dalı. Dal, klasör, bağlantı veya hesap değişikliği yeni inceleme gerektirir."</string>
     <string name="background_changed" formatted="false">"Klasör, dal veya bağlantı değişti. Yeniden inceleyin."</string>
     <string name="background_current" formatted="false">"Güncel"</string>
     <string name="background_empty" formatted="false">"Kayıtlı yerel depo yok."</string>
     <string name="background_error" formatted="false">"Bu işlem tamamlanamadı. Yeniden yükleyip geçerli depoyu ve ayarları inceleyin."</string>
-    <string name="background_excluded" formatted="false">"Dışlanmıştır"</string>
-    <string name="background_failed" formatted="false">"Bağlantı, kimlik doğrulama, güven veya dosya erişimi ilgilenilmesini gerektiriyor. Depoyu açıp orada yeniden deneyin."</string>
     <string name="background_forget" formatted="false">"Kayıtlı ilkeyi kaldır"</string>
-    <string name="background_inactive" formatted="false">"Arka plan kontrolleri kapalı. Bir modu etkinleştirip en az bir depo dahil edin."</string>
     <string name="background_include" formatted="false">"Bu depoyu dahil et"</string>
-    <string name="background_included" formatted="false">"Dahil edildi"</string>
     <string name="background_never" formatted="false">"Henüz kontrol edilmedi"</string>
-    <string name="background_open" formatted="false">"Depoyu aç"</string>
-    <string name="background_power" formatted="false">"Sadece dış güç kaynağı"</string>
     <string name="background_pull" formatted="false">"Uzak değişiklikleri otomatik çek"</string>
     <string name="background_push" formatted="false">"Yerel değişiklikleri otomatik commit edip gönder"</string>
     <string name="background_push_confirm" formatted="false">"Otomatik yayımlamaya izin verilsin mi?"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"Okunamayan arka plan eşitleme ayarları çalışmaya izin veremez. Sıfırlama yalnızca kayıtlı ilke ve durumları kaldırır, iki otomatik modu da kapatır. Depo dosyaları, hesaplar ve diğer eşitleme özellikleri korunur. Her depoyu yeniden dahil etmeden önce inceleyin."</string>
     <string name="background_run" formatted="false">"Şimdi kontrol et"</string>
     <string name="background_running" formatted="false">"Depolar kontrol ediliyor…"</string>
-    <string name="background_schedule" formatted="false">"Android; bağlantı, pil ve sistem kısıtlamalarına bağlı olarak kontrolleri yaklaşık 15 dakikada bir veya daha geç planlar. Şimdi kontrol et daha erken kontrol ister. Uygulamayı zorla durdurmak, yeniden açana kadar arka plan çalışmasını engeller."</string>
-    <string name="background_scope" formatted="false">"Bir depoyu geçerli dalını ve bağlantısını inceledikten sonra dahil edin. Otomatik çekme, güvenli olduğunda değişiklikleri alır ve fast-forward uygular. Otomatik gönderme, yerel değişikliklerden commit oluşturup yükler. Ayrışan geçmişler, yerel düzenlemeler varken gelen değişiklikler ve değişmiş bağlantılar inceleme gerektirir."</string>
     <string name="background_stop" formatted="false">"Kontrolü durdur"</string>
     <string name="background_stopped" formatted="false">"Kontrol durduruldu"</string>
-    <string name="background_title" formatted="false">"Arka planda eşitleme"</string>
-    <string name="background_transfer">"Son aktarım: %1$s"</string>
     <string name="background_unavailable" formatted="false">"Bu çalışma kopyası artık kayıtlı değil. Yeniden bağlayıp ilkesini tekrar inceleyin."</string>
     <string name="background_updated" formatted="false">"Değişiklikler eşitlendi"</string>
     <string name="background_wait_network" formatted="false">"İnternet bağlantısı bekleniyor"</string>
     <string name="background_wait_power" formatted="false">"Harici güç kaynağı bekleniyor"</string>
     <string name="background_wait_wifi" formatted="false">"Wi-Fi bekleniyor"</string>
-    <string name="background_wifi" formatted="false">"Yalnızca Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"Çalışma kopyası başka bir dalda. Önceki dala dönün veya yeniden inceleyin."</string>
-    <string name="branch_screen" formatted="false">"Dallar"</string>
     <string name="callback_action" formatted="false">"İstenen işlem"</string>
     <string name="callback_authorized_scope" formatted="false">"Yetkilendirilmiş bağlantılar kaydedilen işlemi tekrar sormadan çalıştırır. Değiştirilen veya iptal edilen bağlantılar burada durur. İzinleri Depo işlemleri → Yetkilendirilmiş bağlantılar bölümünden yönetin."</string>
     <string name="callback_auto_return" formatted="false">"Bu çalıştırmadan sonra otomatik dön"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"Yeniden adlandırıldı"</string>
     <string name="file_save_title" formatted="false">"Değişiklikler kaydedilsin mi?"</string>
     <string name="file_saved" formatted="false">"Kaydedildi"</string>
-    <string name="file_unsaved_changes" formatted="false">"Kaydedilmemiş değişiklikler"</string>
     <string name="files_folder" formatted="false">"Klasör"</string>
     <string name="files_hide_hidden" formatted="false">"Gizli dosyaları gizle"</string>
     <string name="files_show_hidden" formatted="false">"Gizli dosyaları göster"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"Çalıştığınız yerde düzenleyin"</string>
     <string name="guide_git_body" formatted="false">"Farkları inceleyin, seçili değişiklikleri hazırlama alanına ekleyin ve yerel commit’ler oluşturun. Hazır olduğunuzda push yapın. Dallar, geçmiş, etiketler, çakışma çözümü ve Git LFS depo ekranında bulunur."</string>
     <string name="guide_git_title" formatted="false">"Yayımlamadan önce gözden geçirin"</string>
-    <string name="guide_home" formatted="false">"Hesap olmadan devam et"</string>
     <string name="guide_login" formatted="false">"GitHub ile giriş yap"</string>
-    <string name="guide_sample" formatted="false">"Çevrimdışı örneği dene"</string>
     <string name="guide_save_error" formatted="false">"Tur ilerlemesi kaydedilemedi. Devam edebilirsiniz; tur bir sonraki sefer yeniden görünebilir."</string>
-    <string name="guide_skip" formatted="false">"Turu atla"</string>
     <string name="guide_start_body" formatted="false">"Bir hesap bağlayın, URL’den klonlayın veya çevrimdışı örneği deneyin. Şimdi bir depolama konumu da seçebilirsiniz."</string>
     <string name="guide_start_title" formatted="false">"Nasıl başlayacağınızı seçin"</string>
     <string name="guide_step">"Adım %1$d / 4"</string>
-    <string name="guide_storage" formatted="false">"Depolama konumu seç"</string>
-    <string name="guide_title" formatted="false">"Uygulama turu"</string>
-    <string name="guide_url" formatted="false">"URL’den klonla"</string>
     <string name="help_copy_email" formatted="false">"Destek e-postasını kopyala"</string>
     <string name="help_email_copied" formatted="false">"Destek e-postası kopyalandı"</string>
     <string name="help_feedback" formatted="false">"Geri Bildirim Gönder"</string>
     <string name="help_open_failed" formatted="false">"Bu bağlantıyı açabilecek bir uygulama bulunamadı. Destek e-posta adresini kopyalayabilirsiniz."</string>
     <string name="help_title" formatted="false">"Yardım"</string>
-    <string name="help_tour" formatted="false">"Uygulama Turu"</string>
     <string name="history_screen" formatted="false">"Geçmiş"</string>
     <string name="http_transport_warning" formatted="false">"HTTP şifrelenmez. Depo verileri ve girdiğiniz kullanıcı adı veya belirteç aktarım sırasında okunabilir. Mümkün olduğunda HTTPS kullanın."</string>
     <string name="language_settings_legacy" formatted="false">"Android 13 öncesinde bu uygulama cihazın dilini kullanır."</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"Bağlantılar ve depolama"</string>
     <string name="notes_files_body" formatted="false">"Git LFS takibini inceleyin, eksik içeriği indirin ve sunucu kilidi uyarılarını kontrol edin. Tanılama, filtrelenmiş kopyalama ve paylaşma desteğiyle boyutu sınırlı yerel bir günlük tutar."</string>
     <string name="notes_files_title" formatted="false">"Büyük dosyalar ve tanılama"</string>
-    <string name="notes_title" formatted="false">"Sürüm notları"</string>
     <string name="notes_version">"Android %1$s · derleme %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Dosyalara göz atıp düzenleyin, hazırlanan ve hazırlanmayan farkları inceleyin, yerel commit oluşturun, mevcut commitleri gönderin; dallar, geçmiş, etiketler ve rebase ile çalışın."</string>
     <string name="notes_workflow_title" formatted="false">"Depo iş akışı"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"Bu inceleme atılsın mı?"</string>
     <string name="publication_discard_warning" formatted="false">"Bu kayıtlı inceleme seçimleri ve kaydedilmemiş düzenlemeler kaldırılsın mı? Çalışma dosyaları değişmez. Bu inceleme için hazırlık ve yayımlama başlamadı."</string>
     <string name="publication_file_unsupported" formatted="false">"Desteklenmeyen içerik dönüşümü"</string>
-    <string name="publication_files" formatted="false">"Dosyalar"</string>
     <string name="publication_finish" formatted="false">"Kurulumu tamamla"</string>
     <string name="publication_include" formatted="false">"Dosyayı ekle"</string>
     <string name="publication_leave_title" formatted="false">"İncelemeniz kaydedilsin mi?"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"Bu derlemede anlık bildirimler kullanılamıyor."</string>
     <string name="push_unlink" formatted="false">"Bağlantıyı kaldır"</string>
     <string name="push_unlink_scope" formatted="false">"Bu cihazda bu GitHub kurulumu için anlık bildirimlerle eşitleme yönlendirmesi kaldırılsın mı? Bu işlem GitHub uygulamasını kaldırmaz. Depo erişimini değiştirmek veya uygulamayı kaldırmak için GitHub’da yönet seçeneğini kullanın."</string>
-    <string name="rebase_abort_body" formatted="false">"Özgün dalı ve commit’i geri yükler. Bu rebase sırasında izlenen dosyalarda yapılan düzenlemeler ve çakışma çözümleri silinir."</string>
-    <string name="rebase_abort_title" formatted="false">"Bu rebase iptal edilsin mi?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"Yerel silmeyi kabul et"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"Upstream silmesini kabul et"</string>
-    <string name="rebase_begin_body" formatted="false">"Yerel commit’ler incelenen upstream üzerine yeniden uygulanır ve yeni kimlikler alabilir. Rebase yereldir; push ayrı bir işlem olarak kalır."</string>
-    <string name="rebase_begin_title" formatted="false">"Yerel commit’ler yeniden yazılsın mı?"</string>
     <string name="rebase_checkout_review_required" formatted="false">"Checkout kurtarma bilgileri değişti veya okunamıyor. Bir Git aracı kullanmadan ya da rebase’i iptal etmeden önce yerel çalışmanızı inceleyin."</string>
     <string name="rebase_problem_active_operation" formatted="false">"Rebase başlatmadan önce etkin Git işlemini tamamlayın."</string>
     <string name="rebase_problem_local_branch" formatted="false">"Rebase yapmadan önce yerel bir dala geçin."</string>
     <string name="rebase_problem_local_changes" formatted="false">"Rebase yapmadan önce tüm yerel değişiklikleri commit edin veya stash ile saklayın."</string>
     <string name="rebase_problem_upstream" formatted="false">"Rebase yapmadan önce uzak bir upstream dalı yapılandırın."</string>
     <string name="rebase_skip_body" formatted="false">"Geçerli commit’i yeniden uygulamadan çıkarır. Atlamadan önce değişikliklerini inceleyin; bu işlem yerel çalışmayı ortaya çıkan geçmişten kaldırabilir."</string>
-    <string name="rebase_skip_title" formatted="false">"Bu yerel commit atlansın mı?"</string>
-    <string name="rebase_status_aborted" formatted="false">"Rebase iptal edildi"</string>
-    <string name="rebase_status_conflicts" formatted="false">": Rebase işlemi çatışmaları içeriyor — bu çatışmaları çözün ve ardından rebase işlemine devam edin."</string>
     <string name="rebase_use_local" formatted="false">"Yerel commit’i kullan"</string>
     <string name="rebase_use_upstream" formatted="false">"Upstream’i kullan"</string>
     <string name="remote_address_formats" formatted="false">": HTTP/HTTPS kullanın, SSH, git://, file://, veya sahih/repo."</string>
-    <string name="remote_merge_confirm_local" formatted="false">"İncelenen commitler birleştirilsin mi?"</string>
-    <string name="remote_merge_confirm_local_body">"%1$s dalını %2$s dalından incelenen commit ile günceller. Bir birleştirme commiti oluşturulabilir. Hiçbir şey gönderilmez."</string>
-    <string name="remote_merge_confirm_push" formatted="false">"Birleştirilip upstream dalına yayımlansın mı?"</string>
-    <string name="remote_merge_confirm_push_body">"%1$s dalını günceller, ardından commitlerini incelenen gönderme adresindeki %2$s dalına gönderir. Çakışmalar yayımlamayı durdurur. Başarısız veya doğrulanmamış gönderme, açıkça yeniden denemek için yerel Git sonucunu korur."</string>
     <string name="remote_merge_counts">"Yerel commitler: %1$d · Gelen commitler: %2$d"</string>
     <string name="remote_merge_destination">"Yerel dala: %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Git işlemi tamamlanıyor…"</string>
     <string name="remote_merge_incoming_oid">"Gelen commit: %1$s"</string>
     <string name="remote_merge_local_oid">"Yerel commit: %1$s"</string>
-    <string name="remote_merge_push_address">"Gönderme adresi: %1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"Yapılandırılmış upstream dalını getirip inceleyin. Mevcut commitler kimliklerini korur; ayrışmış geçmişler bir birleştirme commiti oluşturur. Çakışmaların elle çözülmesi gerekebilir."</string>
     <string name="remote_merge_title" formatted="false">"Uzak dalla birleştir"</string>
     <string name="remote_merge_upstream">"Upstream dalından: %1$s"</string>
     <string name="remote_normalized_target">"Depo adresi: %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"Kaydedilmiş kısayol sonuçları okunamıyor. Yetkilendirme ayrı tutulur."</string>
     <string name="ssh_hide_private_key" formatted="false">"Özel anahtarı gizle"</string>
     <string name="ssh_show_private_key" formatted="false">"Özel anahtarı göster"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"SSH sunucusu anahtarı değişti"</string>
     <string name="ssh_trust_error_changed" formatted="false">"İnceleme sırasında SSH güveni değişti. Geçerli sunucu kaydını inceleyip bağlantıyı yeniden deneyin."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Kayıtlı SSH güveninin incelenmesi gerekiyor. Yeniden denemeden önce Ayarlar’dan SSH sunucusu güvenini sıfırlayın."</string>
     <string name="ssh_trust_error_recovery" formatted="false">"SSH güveni kurtarma işlemi kaydedilemedi. Yeniden denemeden önce Ayarlar’dan SSH sunucusu güvenini inceleyin."</string>
     <string name="ssh_trust_error_remove" formatted="false">"SSH sunucusu güveni kaldırılamadı. Yeniden denemeden önce geçerli sunucu kaydını inceleyin."</string>
     <string name="ssh_trust_error_reset" formatted="false">"SSH sunucusu güveni temizlenemedi. Yeniden denemeden önce kayıtlı girdileri inceleyin."</string>
-    <string name="ssh_trust_replace" formatted="false">"Güveni değiştir ve bağlan"</string>
     <string name="staged" formatted="false">"hazırlanmış"</string>
     <string name="stash_screen" formatted="false">"Sakla"</string>
     <string name="storage_app_saved" formatted="false">"Yeni klonlar uygulama depolamasını kullanacak"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"↑%1$d yerel"</string>
     <string name="tracking_metadata_size">"Git meta verileri: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git geçmişi kalıcı olarak kaldırılsın mı?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"İncelenen bilgiler değişti. İptal edip izleme kaldırmayı yeniden inceleyin."</string>
     <string name="tracking_removed_backup">"Git izlemesi kaldırıldı. Doğrulanmış yedek: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Git izlemesi kaldırıldı. Çalışma dosyaları korundu."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nTüm çalışma dosyaları ve yerel Git geçmişi bu cihazda kalacak. Klasörü daha sonra yeniden bağlayabilirsiniz."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nBu işlem, uygulamanın yönettiği bu klonu gönderilmemiş commitler, stash kayıtları ve kaydedilmemiş dosyalarla birlikte kalıcı olarak siler. Uzak depo değişmez."</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"%1$s:%2$s için yeniden bağlanmadan önce parmak izi doğrulaması gerekecek."</string>
     <string name="ui_1_s_bytes_81cdb385">"Bayt: %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"Karakter: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Satır: %1$s, bayt: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s yerel commit · %2$s upstream commit"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s gösterilen · %2$s kayıtlı"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Google Play üzerinden tek seferlik satın alma"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"Değişen bir anahtar kimliğe bürünme belirtisi olabilir. Güveni değiştirmeden önce yeni parmak izini sunucu sahibiyle doğrulayın."</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Rebase işlemini iptal et…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Hakkında"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Tüm çakışma çözümleri hazırlama alanında. Commit’leri yeniden uygulamaya devam edin. Git NOTHING_TO_COMMIT bildirirse boş commit’in atlanıp atlanmayacağını inceleyin."</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Ücretli uygulama yüklendikten sonra tüm özellikler dahildir. Abonelik veya uygulama içi satın alma yoktur."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Bu dosyaya ilişkin tüm yerel değişiklikler sonsuza kadar silinecektir."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Yerel klasör erişimine izin ver"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Uygulama"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Uygulama Ayarları"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"İzleme seçimini uygula"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Onay bu cihazda kaydedilir ve bekleyen bağlantı devam eder. İptal edildiğinde sunucuya güvenilmez."</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Kimlik Doğrulaması"</string>
     <string name="ui_back_639807a2" formatted="false">"GERİ"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Geri"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Cihazdan bir klasör seç"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Klonlamadan önce bir kimlik doğrulama yöntemi seçin."</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Başka bir klasör seç"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Klon depolama konumunu seç"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Yerel veya bağlı depolamayı seçin. Bulut belge sağlayıcıları bu Git motorunun kullanabileceği bir dosya sistemi sunmaz."</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"GitHub\'a göz atmak için kullanılacak hesabı seçin. Her depo atanmış hesabını korur; Depo bağlantısı bölümünden değiştirebilirsiniz."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Yeni klonlar için varsayılan klasörü seçin. Mevcut depolar geçerli konumlarında kalır."</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"Günlüğü temizle"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"Yeniden klonla"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Yeniden klonla · başlamadan önce önceki dalı ve bağlantıyı gözden geçirin."</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"Klon dizini"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Klon depolama alanı"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Commit Yazarı"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit mesajı…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Onayla"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"GitHub, GitLab, Bitbucket veya kendi Git sunucunuzdaki herkese açık ya da özel bir HTTPS veya SSH deposuna bağlanın."</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": Devam edilen Rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Yeni ile bir dosya veya klasör oluşturun."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Geçerli varsayılan"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Geçerli ayrı push adresi: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"Koyu tema"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Hata ayıklama bilgileri"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Yeni klonlar için varsayılan konum. Her klon başka bir klasör kullanabilir."</string>
     <string name="ui_delete_1_s_6474596f">"\"%1$s\" silinsin mi?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Sil"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Dosyayı sil"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": Yerel Dosyaları Silmek"</string>
     <string name="ui_destination_1_s_0df94639">"Hedef: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Hedef üst klasör"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"Tanılama"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Taslağı sil"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Vazgeç"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Çözüm taslağı silinsin mi?"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Kapat"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Rebase sırasında upstream, Git’in ours tarafıdır; yeniden uygulanan yerel commit ise theirs tarafıdır."</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Commit yazarını düzenle"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Bağlantıyı düzenle"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Çözümü düzenle"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"Erişimi etkinleştir"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Yeni adres için kimlik bilgilerini yeniden girin veya genel erişimi seçin."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Hata"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Her SSH sunucusu için yeniden bağlanmadan önce parmak izi doğrulaması gerekecek. Bu, hasarlı güven kayıtlarını da kaldırır."</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Getir ve rebase’i incele"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Dosya işlemi başarısız"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"Taşıma kurtarmasını tamamla"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub Giriş"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md, cihaz klasörlerinde gerçek Git çalışma kopyalarını yönetmek için paylaşılan depolama erişimine ihtiyaç duyar. Android Ayarları’nda erişimi etkinleştirdikten sonra kullanmak istediğiniz klasörleri seçin."</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md bu depo için kimlik bilgisi sağlamayacak."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Geri dönüp bir depo seçin."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Başka bir sahibin bu dosyayı hâlâ düzenliyor olabileceğini anlıyorum."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Adrese SSH kullanıcı adını ekleyin: git@host:team/repo.git veya ssh://git@host:2222/team/repo.git."</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"Doğrulanmış bir meta veri yedeği tut"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Düzenlemeye devam et"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Anahtar parolası (isteğe bağlı)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Anahtarlar bu cihazda şifrelenir ve yalnızca kayıtlı depo adresi için kullanılır. İlk bağlantıda sunucu parmak izini doğrulayın."</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"Son Eşitleme"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Sunucunun varsayılan dalını kullanmak için boş bırakın."</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"LFS uç noktası onayları"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS uç noktası kullanıcı adı"</string>
-    <string name="ui_license_c011d609" formatted="false">"Lisans"</string>
     <string name="ui_loading_dc380888" formatted="false">"Yükleniyor"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"Depolar yükleniyor"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"Yerel depolar"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"GitSync.md içindeki ad"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Bu depodaki yeni commit\'ler bu adı ve e-postayı kullanır. Mevcut commit\'ler asıl yazarını korur."</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"Yeni Dosya"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"Yeni klasör"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Yeni token veya parola"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Gösterilecek değişiklik yok"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Commit bulunamadı"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS aç"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"Dosyalara Açmak"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Dosya açılıyor…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"Sistem görünümünü geçersiz kıl"</string>
     <string name="ui_owner_1_s_599ca9ce">"Sahip: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Ebeveynler (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Yol"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"Önceden güvenilen: %1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"Herkese açık erişim"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Rebase ile çekme"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase sürüyor"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"İncelenen upstream üzerine rebase yap"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"Kaydet"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Yazarı kaydet"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Bağlantıyı kaydet"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"Kayıtlı kimlik bilgileri bu cihazda şifrelenir ve yalnızca bu deponun HTTPS adresi için kullanılır."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Kaydederken bu adres hem fetch hem de push için kullanılır. Ardından uzak durumu yenilemek için fetch çalıştırın."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Seçilen klasör"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"Ayarlar"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Yedek arşivini paylaş"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"Hata ayıklama bilgilerini göster"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Bazı tanılama verileri okunamadı veya kaydedilemedi. Mevcut veriler korundu. Yeniden kayıt başlatmak için günlüğü temizleyin."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Özel Anahtar"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"SSH sunucularına güven"</string>
     <string name="ui_stage_de838855" formatted="false">"Hazırla"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Etkin hedef yerinde kalır. GitSync.md, saklanan özgün kopyanın dosyalarını ve Git geçmişini kalıcı olarak kaldırmadan önce sonradan yapılan düzenlemeler içermediğini denetler."</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Şifrelenmiş bağlantı yalnızca deponun özgün adresi için yeniden kullanılır. Başka bir adres kullanmak için kimlik doğrulamayı açıkça değiştirin."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Klasör bu depolama biriminde doğrudan taşınabilir."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Önceki GitHub hesabının bağlantısı kesilmiş. Bağlı bir hesap veya başka bir kimlik doğrulama yöntemi seçin."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Yeniden uygulanan yerel commit bu dosyayı siler."</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Bu geçmiş kaydı kullanılamıyor."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Bu işlem başka bir bağlantının kilidini kaldırır. Devam etmeden önce sahibiyle görüşün."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Yeniden kimlik doğrulama seçeneği belirleyene kadar bu depo genel erişim kullanır. Oturum açtığınız GitHub hesabı bu depo için kullanılmaz. Fetch ve push adresleri değişmez."</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"token veya şifre"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Dosya açılamıyor"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"Hazırlığı geri al"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Bu çalışma kopyasının adresini veya kimlik doğrulamasını güncelleyin. Yerel dosyalar, commitler ve hazırlama alanındaki değişiklikler yerinde kalır."</string>
     <string name="ui_upstream_94adc696" formatted="false">"Upstream"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Upstream bu dosyayı sildi."</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"Bir github.com HTTPS adresi kullanın. Depolara göz atmak için hesap değiştirseniz bile klon seçilen hesabı korur."</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"Uygulama depolamasını kullan"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Yeni klonlar için kullan"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"Kayıtlı bağlantıyı kullan"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Kayıtlı varsayılanı kullan"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Kullanıcı Adı"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"Kullanıcı adı + token"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"Yedek olmadan yerel Git geçmişi kalıcı olarak silinir. Bu işlem geri alınamaz."</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"Çalışma dosyaları yerinde kalır. Yerel dallar, commitler, stashler, uzak depolar ve geçmişin bu klasörle bağlantısı kesilir."</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Düzenlemeleriniz kaydedilmedi."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Göndermediğiniz metin silinir. Çalışma dosyası değişmeden kalır."</string>
     <string name="untracked" formatted="false">"İzlenmeyen"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s satır"</item>
         <item quantity="other">"+%1$s -%2$s satır"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d dosya"</item>
-        <item quantity="other">"%1$d dosya"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge durdu: %1$s (%2$d çakışma)"</item>

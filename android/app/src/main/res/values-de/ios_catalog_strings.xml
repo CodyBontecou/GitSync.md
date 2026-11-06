@@ -96,24 +96,15 @@
     <string name="account_updated_just_now" formatted="false">"gerade eben"</string>
     <string name="account_valid_branch" formatted="false">"Gib einen gültigen Branch-Namen ein"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
-    <string name="background_active" formatted="false">"Hintergrundprüfungen sind für aufgenommene Repositorys geplant."</string>
     <string name="background_allow_push" formatted="false">"Erlauben"</string>
-    <string name="background_attempt">"Letzte Prüfung: %1$s"</string>
-    <string name="background_attention" formatted="false">"Prüfung erforderlich. Öffne das Repository, um lokale Änderungen, Divergenz, fehlenden Upstream oder einen gespeicherten Commit mit ausstehendem Upload zu klären."</string>
     <string name="background_binding">"Nur Branch %1$s mit Upstream %2$s/%3$s. Änderungen an Branch, Ordner, Verbindung oder Konto erfordern eine neue Prüfung."</string>
     <string name="background_changed" formatted="false">"Ordner, Branch oder Verbindung geändert. Erneut prüfen."</string>
     <string name="background_current" formatted="false">"Aktuell"</string>
     <string name="background_empty" formatted="false">"Keine lokalen Repositorys registriert."</string>
     <string name="background_error" formatted="false">"Aktion fehlgeschlagen. Lade neu und prüfe das aktuelle Repository und die Einstellungen."</string>
-    <string name="background_excluded" formatted="false">"Ausgeschlossen"</string>
-    <string name="background_failed" formatted="false">"Verbindung, Anmeldung, Vertrauen oder Dateizugriff prüfen. Öffne das Repository und versuche es dort erneut."</string>
     <string name="background_forget" formatted="false">"Gespeicherte Regel entfernen"</string>
-    <string name="background_inactive" formatted="false">"Hintergrundprüfungen sind aus. Aktiviere einen Modus und nimm mindestens ein Repository auf."</string>
     <string name="background_include" formatted="false">"Repository aufnehmen"</string>
-    <string name="background_included" formatted="false">"Aufgenommen"</string>
     <string name="background_never" formatted="false">"Noch nicht geprüft"</string>
-    <string name="background_open" formatted="false">"Repository öffnen"</string>
-    <string name="background_power" formatted="false">"Nur externe Stromversorgung"</string>
     <string name="background_pull" formatted="false">"Remote-Änderungen automatisch abrufen"</string>
     <string name="background_push" formatted="false">"Lokale Änderungen automatisch committen und pushen"</string>
     <string name="background_push_confirm" formatted="false">"Automatisch veröffentlichen?"</string>
@@ -124,20 +115,14 @@
     <string name="background_reset_detail" formatted="false">"Unlesbare Hintergrund-Sync-Einstellungen erlauben keine Arbeit. Zurücksetzen entfernt nur die gespeicherten Regeln und Zustände und schaltet beide automatischen Modi aus. Repository-Dateien, Konten und andere Sync-Funktionen bleiben erhalten. Prüfe jedes Repository vor der erneuten Aufnahme."</string>
     <string name="background_run" formatted="false">"Jetzt prüfen"</string>
     <string name="background_running" formatted="false">"Repositorys werden geprüft…"</string>
-    <string name="background_schedule" formatted="false">"Android plant Prüfungen etwa alle 15 Minuten oder später, abhängig von Verbindung, Akku und Systembeschränkungen. Jetzt prüfen fordert eine frühere Prüfung an. Nach einem erzwungenen Stopp läuft keine Hintergrundarbeit, bis du die App erneut öffnest."</string>
-    <string name="background_scope" formatted="false">"Nimm ein Repository erst nach Prüfung seines aktuellen Branches und seiner Verbindung auf. Automatisches Pull ruft Änderungen ab und führt sichere Fast-Forwards aus. Automatisches Push erstellt Commits aus lokalen Änderungen und lädt sie hoch. Auseinanderentwickelte Verläufe, eingehende Änderungen bei lokalen Bearbeitungen und geänderte Verbindungen müssen geprüft werden."</string>
     <string name="background_stop" formatted="false">"Prüfung stoppen"</string>
     <string name="background_stopped" formatted="false">"Prüfung gestoppt"</string>
-    <string name="background_title" formatted="false">"Synchronisierung im Hintergrund"</string>
-    <string name="background_transfer">"Letzte Übertragung: %1$s"</string>
     <string name="background_unavailable" formatted="false">"Diese Arbeitskopie ist nicht mehr registriert. Verbinde sie erneut und prüfe ihre Regel nochmals."</string>
     <string name="background_updated" formatted="false">"Änderungen synchronisiert"</string>
     <string name="background_wait_network" formatted="false">"Warten auf eine Internetverbindung"</string>
     <string name="background_wait_power" formatted="false">"Warte auf externe Stromversorgung"</string>
     <string name="background_wait_wifi" formatted="false">"Warte auf WLAN"</string>
-    <string name="background_wifi" formatted="false">"Nur Wi-Fi"</string>
     <string name="background_wrong_branch" formatted="false">"Die Arbeitskopie verwendet einen anderen Branch. Wechsle zurück oder prüfe sie erneut."</string>
-    <string name="branch_screen" formatted="false">"Filialen"</string>
     <string name="callback_action" formatted="false">"Angeforderte Aktion"</string>
     <string name="callback_authorized_scope" formatted="false">"Autorisierte Links führen die gespeicherte Aktion ohne erneute Nachfrage aus. Geänderte oder widerrufene Links werden hier gestoppt. Berechtigungen verwaltest du unter Repository-Aktionen → Autorisierte Links."</string>
     <string name="callback_auto_return" formatted="false">"Nach dieser Ausführung automatisch zurückkehren"</string>
@@ -304,7 +289,6 @@
     <string name="file_renamed" formatted="false">"Umbenannt"</string>
     <string name="file_save_title" formatted="false">"Änderungen speichern?"</string>
     <string name="file_saved" formatted="false">"Gespeichert"</string>
-    <string name="file_unsaved_changes" formatted="false">"Ungespeicherte Änderungen"</string>
     <string name="files_folder" formatted="false">"Ordner"</string>
     <string name="files_hide_hidden" formatted="false">"Versteckte Dateien ausblenden"</string>
     <string name="files_show_hidden" formatted="false">"Versteckte Dateien anzeigen"</string>
@@ -383,23 +367,16 @@
     <string name="guide_edit_title" formatted="false">"Dort bearbeiten, wo du arbeitest"</string>
     <string name="guide_git_body" formatted="false">"Prüfe Diffs, übernimm ausgewählte Änderungen in die Staging-Area und erstelle lokale Commits. Pushe, wenn du bereit bist. Branches, Verlauf, Tags, Konfliktlösung und Git LFS findest du auf der Repository-Seite."</string>
     <string name="guide_git_title" formatted="false">"Vor dem Veröffentlichen prüfen"</string>
-    <string name="guide_home" formatted="false">"Ohne Konto fortfahren"</string>
     <string name="guide_login" formatted="false">"Mit GitHub anmelden"</string>
-    <string name="guide_sample" formatted="false">"Offline-Beispiel ausprobieren"</string>
     <string name="guide_save_error" formatted="false">"Der Fortschritt der Tour konnte nicht gespeichert werden. Du kannst fortfahren; die Tour wird beim nächsten Mal möglicherweise erneut angezeigt."</string>
-    <string name="guide_skip" formatted="false">"Tour überspringen"</string>
     <string name="guide_start_body" formatted="false">"Verbinde ein Konto, klone über eine URL oder probiere das Offline-Beispiel aus. Du kannst jetzt auch einen Speicherort wählen."</string>
     <string name="guide_start_title" formatted="false">"Wähle deinen Einstieg"</string>
     <string name="guide_step">"Schritt %1$d von 4"</string>
-    <string name="guide_storage" formatted="false">"Speicherort wählen"</string>
-    <string name="guide_title" formatted="false">"App-Tour"</string>
-    <string name="guide_url" formatted="false">"Über URL klonen"</string>
     <string name="help_copy_email" formatted="false">"Support-E-Mail-Adresse kopieren"</string>
     <string name="help_email_copied" formatted="false">"Support-E-Mail-Adresse kopiert"</string>
     <string name="help_feedback" formatted="false">"Feedback senden"</string>
     <string name="help_open_failed" formatted="false">"Keine App konnte diesen Link öffnen. Du kannst stattdessen die Support-E-Mail-Adresse kopieren."</string>
     <string name="help_title" formatted="false">"Hilfe"</string>
-    <string name="help_tour" formatted="false">"App-Tour anzeigen"</string>
     <string name="history_screen" formatted="false">"Verlauf"</string>
     <string name="http_transport_warning" formatted="false">"HTTP ist unverschlüsselt. Repository-Daten sowie eingegebene Benutzernamen oder Tokens können bei der Übertragung gelesen werden. Verwende möglichst HTTPS."</string>
     <string name="language_settings_legacy" formatted="false">"Vor Android 13 verwendet diese App die Gerätesprache."</string>
@@ -477,7 +454,6 @@
     <string name="notes_connections_title" formatted="false">"Verbindungen und Speicher"</string>
     <string name="notes_files_body" formatted="false">"Prüfe Git-LFS-Tracking, lade fehlende Inhalte herunter und sieh dir Warnungen zu Serversperren an. Die Diagnose führt ein begrenztes lokales Protokoll mit gefiltertem Kopieren und Teilen."</string>
     <string name="notes_files_title" formatted="false">"Große Dateien und Diagnose"</string>
-    <string name="notes_title" formatted="false">"Versionshinweise"</string>
     <string name="notes_version">"Android %1$s · Build %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Durchsuche und bearbeite Dateien, prüfe gestagte und ungestagte Diffs, committe lokal, pushe vorhandene Commits und arbeite mit Branches, Verlauf, Tags und Rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Repository-Arbeitsablauf"</string>
@@ -544,7 +520,6 @@
     <string name="publication_discard_title" formatted="false">"Diese Prüfung verwerfen?"</string>
     <string name="publication_discard_warning" formatted="false">"Diese gespeicherten Prüfentscheidungen und ungespeicherten Änderungen entfernen? Arbeitsdateien bleiben unberührt. Vorbereitung und Veröffentlichung wurden für diese Prüfung noch nicht gestartet."</string>
     <string name="publication_file_unsupported" formatted="false">"Nicht unterstützte Inhaltskonvertierung"</string>
-    <string name="publication_files" formatted="false">"Dateien"</string>
     <string name="publication_finish" formatted="false">"Einrichtung abschließen"</string>
     <string name="publication_include" formatted="false">"Datei einschließen"</string>
     <string name="publication_leave_title" formatted="false">"Prüfung speichern?"</string>
@@ -615,35 +590,22 @@
     <string name="push_unavailable" formatted="false">"Push-Benachrichtigungen sind in diesem Build nicht verfügbar."</string>
     <string name="push_unlink" formatted="false">"Verbindung entfernen"</string>
     <string name="push_unlink_scope" formatted="false">"Push-Synchronisierungsrouting für diese GitHub-Installation auf diesem Gerät entfernen? Die GitHub-App wird dadurch nicht deinstalliert. Verwende Auf GitHub verwalten, um ihren Repository-Zugriff zu ändern oder sie zu deinstallieren."</string>
-    <string name="rebase_abort_body" formatted="false">"Stellt den ursprünglichen Branch und Commit wieder her. Änderungen an versionierten Dateien und Konfliktlösungen aus diesem Rebase werden verworfen."</string>
-    <string name="rebase_abort_title" formatted="false">"Diesen Rebase abbrechen?"</string>
     <string name="rebase_accept_local_deletion" formatted="false">"Lokale Löschung übernehmen"</string>
     <string name="rebase_accept_upstream_deletion" formatted="false">"Upstream-Löschung übernehmen"</string>
-    <string name="rebase_begin_body" formatted="false">"Lokale Commits werden auf dem geprüften Upstream wiederholt und können neue IDs erhalten. Rebase erfolgt lokal; Push bleibt eine separate Aktion."</string>
-    <string name="rebase_begin_title" formatted="false">"Lokale Commits umschreiben?"</string>
     <string name="rebase_checkout_review_required" formatted="false">"Die Checkout-Wiederherstellung wurde geändert oder ist nicht lesbar. Prüfe deine lokale Arbeit, bevor du ein Git-Werkzeug verwendest oder den Rebase abbrichst."</string>
     <string name="rebase_problem_active_operation" formatted="false">"Schließe den laufenden Git-Vorgang ab, bevor du ein Rebase startest."</string>
     <string name="rebase_problem_local_branch" formatted="false">"Wechsle vor dem Rebase zu einem lokalen Branch."</string>
     <string name="rebase_problem_local_changes" formatted="false">"Committe alle lokalen Änderungen oder sichere sie per Stash, bevor du ein Rebase startest."</string>
     <string name="rebase_problem_upstream" formatted="false">"Konfiguriere vor dem Rebase einen entfernten Upstream-Branch."</string>
     <string name="rebase_skip_body" formatted="false">"Entfernt den aktuellen Commit aus der Wiederholung. Prüfe seine Änderungen vor dem Überspringen; dabei kann lokale Arbeit aus dem resultierenden Verlauf entfernt werden."</string>
-    <string name="rebase_skip_title" formatted="false">"Diesen lokalen Commit überspringen?"</string>
-    <string name="rebase_status_aborted" formatted="false">"Rebase abgebrochen"</string>
-    <string name="rebase_status_conflicts" formatted="false">"Rebase hat Konflikte – lösen Sie diese und fahren Sie dann mit dem Rebase fort"</string>
     <string name="rebase_use_local" formatted="false">"Lokalen Commit verwenden"</string>
     <string name="rebase_use_upstream" formatted="false">"Upstream verwenden"</string>
     <string name="remote_address_formats" formatted="false">"Verwenden Sie HTTP/HTTPS, SSH, git://, file://, oder Besitzer/Repo."</string>
-    <string name="remote_merge_confirm_local" formatted="false">"Geprüfte Commits zusammenführen?"</string>
-    <string name="remote_merge_confirm_local_body">"Aktualisiert %1$s mit dem geprüften Commit aus %2$s. Dabei kann ein Merge-Commit entstehen. Es wird nichts gepusht."</string>
-    <string name="remote_merge_confirm_push" formatted="false">"Zusammenführen und im Upstream veröffentlichen?"</string>
-    <string name="remote_merge_confirm_push_body">"Aktualisiert %1$s und pusht dessen Commits anschließend an %2$s unter der geprüften Push-Adresse. Konflikte verhindern die Veröffentlichung. Bei fehlgeschlagenem oder unbestätigtem Push bleibt das lokale Git-Ergebnis für einen ausdrücklichen erneuten Versuch erhalten."</string>
     <string name="remote_merge_counts">"Lokale Commits: %1$d · Eingehende Commits: %2$d"</string>
     <string name="remote_merge_destination">"In lokalen Branch: %1$s"</string>
     <string name="remote_merge_in_flight" formatted="false">"Git-Aktion wird abgeschlossen…"</string>
     <string name="remote_merge_incoming_oid">"Eingehender Commit: %1$s"</string>
     <string name="remote_merge_local_oid">"Lokaler Commit: %1$s"</string>
-    <string name="remote_merge_push_address">"Push-Adresse: %1$s"</string>
-    <string name="remote_merge_scope" formatted="false">"Rufe den konfigurierten Upstream ab und prüfe ihn. Vorhandene Commits behalten ihre IDs; auseinanderentwickelte Verläufe erzeugen einen Merge-Commit. Konflikte müssen gegebenenfalls manuell gelöst werden."</string>
     <string name="remote_merge_title" formatted="false">"Mit Remote zusammenführen"</string>
     <string name="remote_merge_upstream">"Aus Upstream: %1$s"</string>
     <string name="remote_normalized_target">"Repository-Adresse: %1$s"</string>
@@ -729,13 +691,11 @@
     <string name="shortcut_results_unavailable" formatted="false">"Gespeicherte Verknüpfungsergebnisse sind nicht lesbar. Die Berechtigung wird getrennt verwaltet."</string>
     <string name="ssh_hide_private_key" formatted="false">"Privaten Schlüssel ausblenden"</string>
     <string name="ssh_show_private_key" formatted="false">"Privaten Schlüssel anzeigen"</string>
-    <string name="ssh_trust_changed_title" formatted="false">"SSH-Serverschlüssel geändert"</string>
     <string name="ssh_trust_error_changed" formatted="false">"Das SSH-Vertrauen hat sich während der Prüfung geändert. Den aktuellen Servereintrag prüfen und erneut verbinden."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Gespeichertes SSH-Vertrauen muss überprüft werden. Vor einem erneuten Versuch das SSH-Serververtrauen in den Einstellungen zurücksetzen."</string>
     <string name="ssh_trust_error_recovery" formatted="false">"Die Wiederherstellung des SSH-Vertrauens konnte nicht gespeichert werden. Vor einem erneuten Versuch das SSH-Serververtrauen in den Einstellungen prüfen."</string>
     <string name="ssh_trust_error_remove" formatted="false">"SSH-Serververtrauen konnte nicht entfernt werden. Vor einem erneuten Versuch den aktuellen Servereintrag prüfen."</string>
     <string name="ssh_trust_error_reset" formatted="false">"SSH-Serververtrauen konnte nicht gelöscht werden. Vor einem erneuten Versuch die gespeicherten Einträge prüfen."</string>
-    <string name="ssh_trust_replace" formatted="false">"Vertrauen ersetzen und verbinden"</string>
     <string name="staged" formatted="false">"bereitgestellt"</string>
     <string name="stash_screen" formatted="false">"Stash"</string>
     <string name="storage_app_saved" formatted="false">"Neue Klone verwenden den App-Speicher"</string>
@@ -809,29 +769,22 @@
     <string name="tide_vault_yours">"↑%1$d lokal"</string>
     <string name="tracking_metadata_size">"Git-Metadaten: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git-Verlauf dauerhaft entfernen?"</string>
-    <string name="tracking_remove_review_changed" formatted="false">"Die Überprüfung hat sich geändert. Brich ab und prüfe das Entfernen der Git-Verwaltung erneut."</string>
     <string name="tracking_removed_backup">"Git-Nachverfolgung entfernt. Geprüfte Sicherung: %1$s"</string>
     <string name="tracking_removed_files_kept" formatted="false">"Git-Nachverfolgung entfernt. Arbeitsdateien wurden beibehalten."</string>
     <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle Arbeitsdateien und der lokale Git-Verlauf bleiben auf diesem Gerät. Du kannst den Ordner später erneut verbinden."</string>
     <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDadurch wird dieser von der App verwaltete Klon dauerhaft gelöscht, einschließlich nicht gepushter Commits, Stashes und ungespeicherter Dateien. Das entfernte Repository bleibt unverändert."</string>
-    <string name="ui_1_s_2_s_will_require_fingerprint_verificat_12d632c8">"Für %1$s:%2$s muss vor der nächsten Verbindung der Fingerabdruck überprüft werden."</string>
     <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
     <string name="ui_1_s_characters_bde60398">"Zeichen: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Zeilen: %1$s, Bytes: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s lokale Commits · %2$s Upstream-Commits"</string>
-    <string name="ui_1_s_shown_2_s_stored_c5d98835">"%1$s angezeigt · %2$s gespeichert"</string>
-    <string name="ui_9_99_one_time_purchase_via_google_play_fa8e82bc" formatted="false">"Einmaliger Kauf über Google Play"</string>
-    <string name="ui_a_changed_key_can_indicate_impersonation_v_fa1697a1" formatted="false">"Ein geänderter Schlüssel kann auf Identitätsvortäuschung hinweisen. Den neuen Fingerabdruck mit dem Serverbetreiber prüfen, bevor das Vertrauen ersetzt wird."</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Rebase abbrechen…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Über"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Alle Konfliktlösungen sind vorgemerkt. Fahre mit der Wiederholung der Commits fort. Wenn Git NOTHING_TO_COMMIT meldet, prüfe, ob der leere Commit übersprungen werden soll."</string>
-    <string name="ui_all_features_are_included_after_installing_a88c124e" formatted="false">"Nach der Installation der kostenpflichtigen App sind alle Funktionen enthalten. Keine Abonnements oder In-App-Käufe."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Alle lokalen Änderungen an dieser Datei werden dauerhaft verworfen."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Zugriff auf lokale Ordner erlauben"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
     <string name="ui_app_settings_da645334" formatted="false">"App-Einstellungen"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Tracking-Auswahl anwenden"</string>
-    <string name="ui_approval_is_saved_on_this_device_and_the_w_de4ddf6f" formatted="false">"Die Freigabe wird auf diesem Gerät gespeichert und die wartende Verbindung fortgesetzt. Bei Abbruch bleibt der Server ohne Vertrauen."</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Authentifizierung"</string>
     <string name="ui_back_639807a2" formatted="false">"ZURÜCK"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Zurück"</string>
@@ -848,7 +801,6 @@
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Ordner auf dem Gerät auswählen"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Wähle vor dem Klonen eine Authentifizierungsmethode."</string>
     <string name="ui_choose_another_folder_b50df380" formatted="false">"Anderen Ordner wählen"</string>
-    <string name="ui_choose_clone_storage_81f04f23" formatted="false">"Speicherort für Klone wählen"</string>
     <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Wähle lokalen oder angeschlossenen Speicher. Cloud-Dokumentanbieter stellen kein Dateisystem bereit, das diese Git-Engine verwenden kann."</string>
     <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Wähle das Konto zum Durchsuchen von GitHub. Jedes Repository behält sein zugewiesenes Konto; ändere es unter Repository-Verbindung."</string>
     <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Wähle den Standardordner für neue Klone. Bestehende Repositorys behalten ihren aktuellen Speicherort."</string>
@@ -856,20 +808,16 @@
     <string name="ui_clear_log_a8858ac7" formatted="false">"Protokoll löschen"</string>
     <string name="ui_clone_again_e05eb495" formatted="false">"Erneut klonen"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Erneut klonen · Prüfe vor dem Start den bisherigen Branch und die Verbindung."</string>
-    <string name="ui_clone_directory_157fc791" formatted="false">"Klonverzeichnis"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Speicher für Klone"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Commit-Autor"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit-Nachricht …"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Bestätigen"</string>
-    <string name="ui_connect_to_a_public_or_private_https_or_ss_03fd12f0" formatted="false">"Verbinde ein öffentliches oder privates HTTPS- oder SSH-Repository auf GitHub, GitLab, Bitbucket oder deinem eigenen Git-Server."</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Rebase fortsetzen"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Erstelle über „Neu“ eine Datei oder einen Ordner."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Aktueller Standard"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Aktuelle separate Push-Adresse: %1$s"</string>
-    <string name="ui_dark_theme_6f2a0915" formatted="false">"Dunkles Design"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Debug-Informationen"</string>
-    <string name="ui_default_for_new_clones_each_clone_can_use_f0929c99" formatted="false">"Standard für neue Klone. Jeder Klon kann einen anderen Ordner verwenden."</string>
     <string name="ui_delete_1_s_6474596f">"„%1$s“ löschen?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Löschen"</string>
     <string name="ui_delete_file_28e18dc9" formatted="false">"Datei löschen"</string>
@@ -877,12 +825,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Lokale Dateien löschen"</string>
     <string name="ui_destination_1_s_0df94639">"Ziel: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Übergeordneter Zielordner"</string>
-    <string name="ui_diagnostics_268f14bb" formatted="false">"Diagnose"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Entwurf verwerfen"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Verwerfen"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Lösungsentwurf verwerfen?"</string>
     <string name="ui_dismiss_48845bff" formatted="false">"Schließen"</string>
-    <string name="ui_during_rebase_upstream_is_git_s_ours_side_9d2cb94f" formatted="false">"Beim Rebase ist Upstream die Git-Seite ours; der wiederholte lokale Commit ist theirs."</string>
     <string name="ui_edit_commit_author_443f376d" formatted="false">"Commit-Autor bearbeiten"</string>
     <string name="ui_edit_connection_047f9f95" formatted="false">"Verbindung bearbeiten"</string>
     <string name="ui_edit_resolution_9a6cda88" formatted="false">"Lösung bearbeiten"</string>
@@ -892,26 +838,21 @@
     <string name="ui_enable_access_9d7caf64" formatted="false">"Zugriff aktivieren"</string>
     <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Gib die Zugangsdaten erneut ein oder wähle öffentlichen Zugriff für die neue Adresse."</string>
     <string name="ui_error_54a0e8c1" formatted="false">"Fehler"</string>
-    <string name="ui_every_ssh_server_will_require_fingerprint_b985f6b6" formatted="false">"Für jeden SSH-Server muss vor der nächsten Verbindung der Fingerabdruck überprüft werden. Dabei werden auch beschädigte Vertrauenseinträge entfernt."</string>
     <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Abrufen und Rebase prüfen"</string>
     <string name="ui_file_operation_failed_f78a328b" formatted="false">"Dateiaktion fehlgeschlagen"</string>
     <string name="ui_finish_move_recovery_44113cea" formatted="false">"Wiederherstellung der Verschiebung abschließen"</string>
     <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub Anmeldung\nBei der"</string>
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md benötigt Zugriff auf den gemeinsamen Speicher, um echte Git-Arbeitskopien in Geräteordnern zu verwalten. Wähle die gewünschten Ordner, nachdem du den Zugriff in den Android-Einstellungen aktiviert hast."</string>
-    <string name="ui_gitsync_md_will_not_provide_credentials_fo_103df88f" formatted="false">"GitSync.md stellt für dieses Repository keine Zugangsdaten bereit."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Gehe zurück und wähle ein Repository aus."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Ich verstehe, dass ein anderer Besitzer diese Datei möglicherweise noch bearbeitet."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Gib den SSH-Benutzernamen in der Adresse an: git@host:team/repo.git oder ssh://git@host:2222/team/repo.git."</string>
-    <string name="ui_keep_a_verified_metadata_backup_5e821b62" formatted="false">"Geprüftes Metadaten-Backup behalten"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Weiter bearbeiten"</string>
     <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Schlüsselpassphrase (optional)"</string>
     <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Schlüssel sind auf diesem Gerät verschlüsselt und werden nur für die gespeicherte Repository-Adresse verwendet. Prüfe beim ersten Verbinden den Fingerabdruck des Servers."</string>
     <string name="ui_last_sync_a0d540dd" formatted="false">"Letzte Synchronisierung"</string>
     <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Leer lassen, um den Standardbranch des Servers zu verwenden."</string>
-    <string name="ui_lfs_endpoint_approvals_4a5953cd" formatted="false">"Freigaben für LFS-Endpunkte"</string>
     <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS-Endpunkt-Benutzername"</string>
-    <string name="ui_license_c011d609" formatted="false">"Lizenz"</string>
     <string name="ui_loading_dc380888" formatted="false">"Wird geladen"</string>
     <string name="ui_loading_repos_2f4f4a93" formatted="false">"Repositories werden geladen"</string>
     <string name="ui_local_repositories_ddcf4270" formatted="false">"Lokale Repositorys"</string>
@@ -924,7 +865,6 @@
     <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Name in GitSync.md"</string>
     <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Neue Commits in diesem Repository verwenden diesen Namen und diese E-Mail-Adresse. Bestehende Commits behalten ihren ursprünglichen Autor."</string>
     <string name="ui_new_file_44dedd0f" formatted="false">"Neue Datei"</string>
-    <string name="ui_new_folder_cf28f49e" formatted="false">"Neuer Ordner"</string>
     <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Neues Token oder Passwort"</string>
     <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Keine Änderungen anzuzeigen"</string>
     <string name="ui_no_commits_found_64ccb533" formatted="false">"Keine Commits gefunden"</string>
@@ -938,13 +878,10 @@
     <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS öffnen"</string>
     <string name="ui_open_in_files_e1d250d0" formatted="false">"In Dateien öffnen"</string>
     <string name="ui_opening_file_de0df916" formatted="false">"Datei wird geöffnet…"</string>
-    <string name="ui_override_system_appearance_2685888c" formatted="false">"Systemdarstellung überschreiben"</string>
     <string name="ui_owner_1_s_599ca9ce">"Besitzer: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Eltern (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Pfad"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Plattform"</string>
-    <string name="ui_previously_trusted_1_s_df583fd2">"Zuvor vertraut: %1$s"</string>
-    <string name="ui_public_access_03e7db61" formatted="false">"Öffentlicher Zugriff"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Ziehen mit Rebase"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase läuft"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase auf geprüftem Upstream"</string>
@@ -994,18 +931,13 @@
     <string name="ui_save_1509f561" formatted="false">"Sichern"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Autor speichern"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Verbindung speichern"</string>
-    <string name="ui_saved_credentials_are_encrypted_on_this_de_a97385dd" formatted="false">"Gespeicherte Zugangsdaten sind auf diesem Gerät verschlüsselt und werden nur für die HTTPS-Adresse dieses Repositories verwendet."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Beim Speichern wird diese Adresse für Fetch und Push verwendet. Führe danach Fetch aus, um den Remote-Status zu aktualisieren."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Ausgewählter Ordner"</string>
-    <string name="ui_settings_02f6ea12" formatted="false">"Einstellungen"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Sicherungsarchiv teilen"</string>
-    <string name="ui_show_debug_information_6e8abf80" formatted="false">"Debug-Informationen anzeigen"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Einige Diagnosedaten konnten nicht gelesen oder gespeichert werden. Vorhandene Daten wurden beibehalten. Zum erneuten Aufzeichnen das Protokoll löschen."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Privater Schlüssel"</string>
-    <string name="ui_ssh_server_trust_e17d5257" formatted="false">"Vertrauen in SSH-Server"</string>
     <string name="ui_stage_de838855" formatted="false">"Bereitstellen"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Das aktive Ziel bleibt bestehen. GitSync.md prüft, ob das aufbewahrte Original keine späteren Änderungen enthält, bevor dessen Dateien und Git-Verlauf dauerhaft entfernt werden."</string>
-    <string name="ui_the_encrypted_connection_is_reused_only_fo_a43b4975" formatted="false">"Die verschlüsselte Verbindung wird nur für ihre ursprüngliche Repository-Adresse wiederverwendet. Ändere die Authentifizierung ausdrücklich, um eine andere Adresse zu verwenden."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Der Ordner kann auf diesem Speichervolume direkt verschoben werden."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Das bisherige GitHub-Konto ist getrennt. Wähle ein verbundenes Konto oder eine andere Authentifizierungsmethode."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Der wiederholte lokale Commit löscht diese Datei."</string>
@@ -1013,21 +945,15 @@
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Dieser Verlaufseintrag ist nicht verfügbar."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Dies entfernt die Sperre einer anderen Verbindung. Stimme dich vor dem Fortfahren mit dem Besitzer ab."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Dieses Repository verwendet öffentlichen Zugriff, bis du erneut eine Authentifizierung auswählst. Dein angemeldetes GitHub-Konto wird dafür nicht verwendet. Die Adressen für Fetch und Push bleiben bestehen."</string>
-    <string name="ui_token_or_password_d6e43f8a" formatted="false">"Token oder Passwort"</string>
     <string name="ui_unable_to_open_file_2787a028" formatted="false">"Datei kann nicht geöffnet werden"</string>
     <string name="ui_unstage_033f86f9" formatted="false">"Zurücknehmen"</string>
     <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Aktualisiere die Adresse oder Authentifizierung dieser Arbeitskopie. Lokale Dateien, Commits und vorgemerkte Änderungen bleiben bestehen."</string>
     <string name="ui_upstream_94adc696" formatted="false">"Upstream"</string>
     <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Upstream hat diese Datei gelöscht."</string>
-    <string name="ui_use_a_github_com_https_address_the_clone_k_6466d7b7" formatted="false">"Verwende eine HTTPS-Adresse auf github.com. Der Klon behält das ausgewählte Konto, auch wenn du das Konto zum Durchsuchen wechselst."</string>
     <string name="ui_use_app_storage_d199e8e0" formatted="false">"App-Speicher verwenden"</string>
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Für neue Klone verwenden"</string>
-    <string name="ui_use_saved_connection_21052734" formatted="false">"Gespeicherte Verbindung verwenden"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Gespeicherten Standard verwenden"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Benutzername"</string>
-    <string name="ui_username_token_7375b2ff" formatted="false">"Benutzername + Token"</string>
-    <string name="ui_without_a_backup_local_git_history_is_perm_bcb5c492" formatted="false">"Ohne Backup wird der lokale Git-Verlauf dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden."</string>
-    <string name="ui_working_files_stay_in_place_local_branches_a0748350" formatted="false">"Arbeitsdateien bleiben unverändert. Lokale Branches, Commits, Stashes, Remotes und der Verlauf werden von diesem Ordner getrennt."</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Deine Änderungen wurden nicht gespeichert."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Dein nicht übermittelter Text wird verworfen. Die Arbeitsdatei bleibt unverändert."</string>
     <string name="untracked" formatted="false">"Unverfolgt"</string>
@@ -1155,10 +1081,6 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s Zeile"</item>
         <item quantity="other">"+%1$s -%2$s Zeilen"</item>
-    </plurals>
-    <plurals name="discard_review_files">
-        <item quantity="one">"%1$d Datei"</item>
-        <item quantity="other">"%1$d Dateien"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge angehalten: %1$s (%2$d Konflikt)"</item>
