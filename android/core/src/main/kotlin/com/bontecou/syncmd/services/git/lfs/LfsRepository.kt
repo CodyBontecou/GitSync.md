@@ -47,6 +47,12 @@ class LfsRepository(private val tokenProvider: (() -> String?)? = null,
             hydrate(git.repository, auth)
         }
     }
+    /** Download and check out only [files] (the Files tab's Fetch button). */
+    suspend fun hydrate(path: String, files: Set<String>): LfsHydrationResult = RepositoryOperationCoordinator.withRepository(path, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.LFS) {
+        GitLfs.open(File(path)).use { git ->
+            hydrate(git.repository, { RemoteAuthentication.provider(git.repository, "origin", false, tokenProvider, credentialResolver) }, files)
+        }
+    }
     companion object {
         private data class PointerFile(val path: String, val pointer: LfsPointer, val indexId: ObjectId)
         private fun pointers(repository: Repository): List<PointerFile> {

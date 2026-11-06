@@ -164,6 +164,15 @@ class RepositoryFiles {
             Files.delete(file.toPath())
         }
 
+    /** Removes an empty folder; anything inside it keeps the folder in place. */
+    suspend fun deleteEmptyFolder(rootPath: String, path: String) =
+        RepositoryOperationCoordinator.withRepository(rootPath) {
+            val folder = resolve(File(rootPath).canonicalFile, path)
+            requireFile(folder.isDirectory, RepositoryFileIssue.FOLDER_UNAVAILABLE)
+            // Files.delete refuses a non-empty directory, so nothing inside can be lost.
+            Files.delete(folder.toPath())
+        }
+
     private fun readDocument(file: File, path: String): FileDocument {
         requireFile(file.isFile, RepositoryFileIssue.FILE_UNAVAILABLE)
         if (file.length() > MAX_EDITOR_BYTES) {
