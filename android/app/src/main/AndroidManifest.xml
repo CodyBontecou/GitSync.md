@@ -69,8 +69,34 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/pull_all_widget_info" />
         </receiver>
         <service android:name="com.bontecou.syncmd.automation.PullAllTileService" android:exported="true"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE" android:icon="@drawable/ic_pull_all" android:label="@string/pull_all_title">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE" android:icon="@drawable/ic_m3_arrow_downward" android:label="@string/tile_m3_pull_all">
             <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+        </service>
+        <!-- Board 29: vault list and single-vault widgets, Background Sync tile, launcher shortcut trampoline. -->
+        <receiver android:name="com.bontecou.syncmd.automation.VaultListWidget" android:exported="false" android:label="@string/widget_m3_list_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/vault_list_widget_info" />
+        </receiver>
+        <receiver android:name="com.bontecou.syncmd.automation.VaultWidget" android:exported="false" android:label="@string/widget_m3_vault_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/vault_widget_info" />
+        </receiver>
+        <activity android:name="com.bontecou.syncmd.automation.VaultWidgetConfigureActivity" android:exported="true"
+            android:excludeFromRecents="true" android:theme="@style/Theme.SyncMd">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" /></intent-filter>
+        </activity>
+        <activity android:name="com.bontecou.syncmd.automation.VaultShortcutActivity" android:exported="false"
+            android:noHistory="true" android:excludeFromRecents="true" android:taskAffinity="" android:theme="@android:style/Theme.NoDisplay" />
+        <service android:name="com.bontecou.syncmd.automation.BackgroundSyncTileService" android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE" android:icon="@drawable/ic_m3_sync" android:label="@string/tile_m3_background_sync">
+            <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="true" />
         </service>
 
         <activity
@@ -82,6 +108,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
             <!-- GitHub OAuth callback deep link: syncmd://auth?token=XXX -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

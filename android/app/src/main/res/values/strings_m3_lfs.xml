@@ -219,4 +219,48 @@
     <string name="pullall_m3_start_failed">Pull all couldn’t start. Check your vault settings and try again.</string>
     <string name="pullall_m3_unreadable">The saved background summary can’t be read and was kept. Clear it before you start another background run.</string>
     <string name="pullall_m3_control_failed">That didn’t change. Reopen this screen and try again.</string>
+
+    <!-- Widgets, Quick Settings tiles, notification and launcher shortcuts (board 29) -->
+    <string name="widget_m3_list_name">Vaults</string>
+    <string name="widget_m3_list_description">Your vaults with what each has to push, and a Pull all button.</string>
+    <string name="widget_m3_vault_name">Vault</string>
+    <string name="widget_m3_vault_description">One vault and how many changes it has to push.</string>
+    <string name="widget_m3_in_sync">In sync</string>
+    <string name="widget_m3_pull_all_repositories">Pull all repositories</string>
+    <string name="widget_m3_no_vaults">No vaults yet. Open GitSync.md to add one.</string>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="one">change to push</item>
+        <item quantity="other">changes to push</item>
+    </plurals>
+    <string name="widget_m3_choose_vault">Choose a vault</string>
+    <string name="widget_m3_vault_widget">Vault widget</string>
+    <string name="widget_m3_vault_missing">This vault isn’t on this phone anymore.</string>
+    <string name="widget_m3_now">now</string>
+    <string name="widget_m3_minutes_ago">%1$dm ago</string>
+    <string name="widget_m3_hours_ago">%1$dh ago</string>
+    <string name="widget_m3_days_ago">%1$dd ago</string>
+    <string name="tile_m3_background_sync">Background Sync</string>
+    <string name="tile_m3_pull_all">Pull all</string>
+    <string name="tile_m3_modes">%1$s · %2$s</string>
+    <string name="tile_m3_pull_on">Pull on</string>
+    <string name="tile_m3_pull_off">Pull off</string>
+    <string name="tile_m3_push_on">Push on</string>
+    <string name="tile_m3_push_off">Push off</string>
+    <string name="notification_m3_updated">%1$s was updated</string>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="one">%1$d commit from %2$s pulled in the background.</item>
+        <item quantity="other">%1$d commits from %2$s pulled in the background.</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="one">%1$d commit pulled in the background.</item>
+        <item quantity="other">%1$d commits pulled in the background.</item>
+    </plurals>
+    <string name="notification_m3_pulled">New changes pulled in the background.</string>
+    <string name="notification_m3_see_changes">See changes</string>
+    <string name="notification_m3_open_obsidian">Open in Obsidian</string>
+    <string name="shortcut_m3_pull">%1$s: Pull</string>
+    <string name="shortcut_m3_commit_push">%1$s: Commit &amp; push</string>
+    <string name="shortcut_m3_pull_short">Pull</string>
+    <string name="shortcut_m3_commit_short">Commit &amp; push</string>
+    <string name="shortcut_m3_add_vault">Add a vault</string>
 </resources>

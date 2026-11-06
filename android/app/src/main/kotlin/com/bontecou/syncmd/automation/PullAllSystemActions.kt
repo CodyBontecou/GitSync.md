@@ -103,18 +103,26 @@ class PullAllWidget : AppWidgetProvider() {
     }
 }
 
+/** Quick Settings "Pull all": subtitle "N vaults"; a tap runs Pull all once in the background. */
 class PullAllTileService : TileService() {
     override fun onStartListening() {
         super.onStartListening()
-        qsTile?.apply { state = Tile.STATE_INACTIVE; label = getString(R.string.pull_all_title); updateTile() }
+        val vaults = runCatching { PullAllCatalog(this).snapshot().size }.getOrNull()
+        qsTile?.apply {
+            state = if (PullAllBackgroundRuns.isActive()) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+            label = getString(R.string.tile_m3_pull_all)
+            icon = android.graphics.drawable.Icon.createWithResource(this@PullAllTileService, R.drawable.ic_m3_arrow_downward)
+            if (Build.VERSION.SDK_INT >= 29) subtitle = vaults?.let { resources.getQuantityString(R.plurals.pullall_m3_vaults, it, it) }
+            updateTile()
+        }
     }
     override fun onClick() {
         super.onClick()
         unlockAndRun {
-            if (Build.VERSION.SDK_INT >= 34) startActivityAndCollapse(PullAllAction.pendingIntent(this))
+            if (Build.VERSION.SDK_INT >= 34) startActivityAndCollapse(PullAllAction.pendingIntent(this, "tile"))
             else {
                 @Suppress("DEPRECATION")
-                startActivityAndCollapse(PullAllAction.intent(this))
+                startActivityAndCollapse(PullAllAction.intent(this, "tile"))
             }
         }
     }

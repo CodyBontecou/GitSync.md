@@ -50,10 +50,12 @@ class PullAllRunService : Service() {
             if (!runs.claim(id)) { stopForeground(STOP_FOREGROUND_REMOVE); stopSelf(); return START_NOT_STICKY }
         } catch (_: Exception) { runCatching { runs.finish(id, BackgroundPullState.FAILED) }; stopSelf(); return START_NOT_STICKY }
         active = id
+        val only = intent.getStringExtra(ONLY)
         job = scope.launch {
             try {
                 val catalog = PullAllCatalog(this@PullAllRunService)
-                val targets = catalog.snapshot()
+                // A launcher "<Vault>: Pull" shortcut narrows the run to that one vault.
+                val targets = catalog.snapshot().filter { only == null || it.path == only }
                 runs.targets(id, targets.size)
                 PullAllRunner(pull, catalog::requireCurrent).run(targets, onResult = { result -> runs.result(id, result) })
                 runs.finish(id, BackgroundPullState.COMPLETE, retainOwnership = true)
@@ -64,6 +66,7 @@ class PullAllRunService : Service() {
                     active = null
                     stopForeground(STOP_FOREGROUND_REMOVE)
                     runCatching { if (runs.latest()?.id == id) getSystemService(NotificationManager::class.java).notify(NOTIFICATION, notification(id, false)) }
+                    VaultWidgets.refresh(this@PullAllRunService)
                     stopSelf()
                 }
             }
@@ -101,6 +104,7 @@ class PullAllRunService : Service() {
     }
     companion object {
         private const val CHANNEL = "pull-all-actions"; const val NOTIFICATION = 422
+        const val ONLY = "only_path"
         private const val STOP = "com.bontecou.syncmd.STOP_PULL_ALL"
         fun stopIntent(context: Context, id: String): Intent {
             require(java.util.UUID.fromString(id).toString() == id)

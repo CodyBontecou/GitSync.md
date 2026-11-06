@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Static launcher shortcut (board 29); per-vault Pull and Commit & push are published at runtime. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="add-vault" android:enabled="true" android:icon="@drawable/ic_shortcut_m3_add"
+        android:shortcutShortLabel="@string/shortcut_m3_add_vault" android:shortcutLongLabel="@string/shortcut_m3_add_vault">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.bontecou.syncmd.debug"
+            android:targetClass="com.bontecou.syncmd.automation.VaultShortcutActivity"
+            android:data="gitsync-internal://vault/add/">
+            <extra android:name="vault_action" android:value="add" />
+        </intent>
+    </shortcut>
+</shortcuts>
