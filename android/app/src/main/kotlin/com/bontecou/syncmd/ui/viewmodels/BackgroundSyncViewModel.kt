@@ -16,21 +16,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BackgroundSyncViewModel(val backend: BackgroundSyncBackend, private val reschedule: () -> Unit,
-    private val enqueueNow: () -> Unit, private val cancelRunning: () -> Unit, work: Flow<List<WorkInfo>> = flowOf(emptyList())) : ViewModel() {
+    private val enqueueNow: () -> Unit, private val cancelRunning: () -> Unit, work: Flow<List<WorkInfo>> = flowOf(emptyList()),
+    private val history: BackgroundRunHistory? = null, private val defaults: BackgroundConditionDefaults? = null) : ViewModel() {
     @Inject constructor(backend: BackgroundSyncBackend, @ApplicationContext context: Context) : this(backend,
         { BackgroundSyncJobs.preferencesChanged(context) }, { BackgroundSyncJobs.now(context) }, { BackgroundSyncJobs.stop(context) },
         combine(WorkManager.getInstance(context).getWorkInfosForUniqueWorkFlow(BackgroundSyncJobs.NOW),
-            WorkManager.getInstance(context).getWorkInfosForUniqueWorkFlow(BackgroundSyncJobs.PERIODIC)) { a, b -> a + b })
+            WorkManager.getInstance(context).getWorkInfosForUniqueWorkFlow(BackgroundSyncJobs.PERIODIC)) { a, b -> a + b },
+        BackgroundRunHistory(context), BackgroundConditionDefaults(context))
     data class Row(val target: PullAllTarget, val policy: BackgroundPolicy?, val available: Boolean)
     data class State(val ready: Boolean = false, val busy: Boolean = false, val configuration: BackgroundConfiguration = BackgroundConfiguration(),
         val rows: List<Row> = emptyList(), val review: RepositoryActionPlan? = null, val reviewGeneration: Long = 0,
-        val recovery: String? = null, val failed: Boolean = false, val running: Boolean = false, val queued: Boolean = false)
+        val recovery: String? = null, val failed: Boolean = false, val running: Boolean = false, val queued: Boolean = false,
+        val runs: List<BackgroundRun> = emptyList(), val wifiOnly: Boolean = false, val chargingOnly: Boolean = false) {
+        val includedCount get() = configuration.policies.values.count { it.included }
+    }
     private val mutable = MutableStateFlow(State()); val state = mutable.asStateFlow()
     private var operation: Job? = null
     private var reviewing = false
     init {
         reload()
         viewModelScope.launch { backend.store.changes.drop(1).collectLatest { mutable.filter { !it.busy }.first(); reload() } }
+        viewModelScope.launch { BackgroundRunHistory.changes.drop(1).collectLatest { loadRuns() } }
         viewModelScope.launch { work.collect { jobs -> mutable.value = mutable.value.copy(running = jobs.any { it.state == WorkInfo.State.RUNNING },
             queued = jobs.any { it.periodicityInfo == null && it.state in setOf(WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED) }) } }
     }
@@ -41,8 +47,33 @@ class BackgroundSyncViewModel(val backend: BackgroundSyncBackend, private val re
             configuration to (targets.map { Row(it, configuration.policies[it.path], true) } +
                 configuration.policies.values.filter { p -> targets.none { it.path == p.target.path } }.map { Row(it.target, it, false) })
         }
-        mutable.value = mutable.value.copy(configuration = configuration, rows = rows, recovery = null)
+        val conditions = withContext(Dispatchers.IO) {
+            val migrating = defaults != null && defaults.stored() == null
+            defaults?.read(backend.store)?.also { values ->
+                // First run with global conditions: every vault takes the same Wi-Fi and charging rule.
+                if (migrating && configuration.policies.values.any { it.wifiOnly != values.wifiOnly || it.externalPowerOnly != values.chargingOnly })
+                    runCatching { backend.conditions(values.wifiOnly, values.chargingOnly, configuration.generation); reschedule() }
+            }
+        }
+        mutable.value = mutable.value.copy(configuration = configuration, rows = rows, recovery = null,
+            wifiOnly = conditions?.wifiOnly ?: false, chargingOnly = conditions?.chargingOnly ?: false)
+        loadRuns()
     }
+    private suspend fun loadRuns() {
+        val runs = withContext(Dispatchers.IO) { history?.runs().orEmpty() }
+        mutable.value = mutable.value.copy(runs = runs)
+    }
+    /** "Only when": saves the global switches and applies them to every vault's policy. */
+    fun conditions(wifiOnly: Boolean, chargingOnly: Boolean) = launch {
+        withContext(Dispatchers.IO) {
+            defaults?.save(BackgroundConditionDefaults.Values(wifiOnly, chargingOnly))
+            val configuration = backend.store.read()
+            if (configuration.policies.isNotEmpty()) backend.conditions(wifiOnly, chargingOnly, configuration.generation)
+        }
+        reschedule(); load()
+    }
+    /** Include the reviewed vault with the global "Only when" conditions. */
+    fun includeReviewed() = include(mutable.value.wifiOnly, mutable.value.chargingOnly)
     fun modes(pull: Boolean, push: Boolean, generation: Long) = launch {
         withContext(Dispatchers.IO) { backend.modes(pull, push, generation) }; reschedule(); load()
     }

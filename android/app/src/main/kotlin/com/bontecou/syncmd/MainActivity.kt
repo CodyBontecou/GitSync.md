@@ -42,9 +42,7 @@ class MainActivity : ComponentActivity() {
         handlePushLinkIntent(intent, savedInstanceState == null)
 
         setContent {
-            val appSettings by settingsViewModel.appSettings.collectAsState()
-
-            SyncMdTheme(darkTheme = appSettings.isDarkTheme) {
+            SyncMdTheme(darkTheme = com.bontecou.syncmd.ui.theme.rememberAppDarkTheme(this)) {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     androidx.compose.runtime.CompositionLocalProvider(com.bontecou.syncmd.ui.util.LocalAppUnlock provides appUnlock) {
                         AppShell(settingsViewModel = settingsViewModel)
