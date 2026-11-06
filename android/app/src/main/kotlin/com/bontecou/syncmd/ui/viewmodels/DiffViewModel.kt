@@ -213,6 +213,10 @@ class DiffViewModel @Inject constructor(
     fun unstageFile(filePath: String) = mutate { diffService.unstageFile(it, filePath).getOrThrow() }
     fun stageAll() = mutate { diffService.stageAll(it).getOrThrow() }
     fun unstageAll() = mutate { diffService.unstageAll(it).getOrThrow() }
+    /** Stages [filePath] alone ("Commit this file" on tablets), then runs [onDone]. */
+    fun stageOnly(filePath: String, onDone: () -> Unit = {}) = mutate(onComplete = onDone) {
+        diffService.unstageAll(it).getOrThrow(); diffService.stageFile(it, filePath).getOrThrow()
+    }
     fun setCommitMessage(message: String) { _commitMessage.value = message }
 
     private fun commit(push: Boolean, branch: String = "", remote: String = "origin") {

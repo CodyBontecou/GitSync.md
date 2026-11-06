@@ -698,7 +698,7 @@ private fun lineStarts(text: String): IntArray {
  * last commit tinted with an addInk edge, and the cursor's line marked in primary.
  */
 @Composable
-private fun LineNumberedEditor(
+internal fun LineNumberedEditor(
     path: String,
     content: String,
     enabled: Boolean,

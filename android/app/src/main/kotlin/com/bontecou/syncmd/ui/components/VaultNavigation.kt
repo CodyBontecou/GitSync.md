@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -70,8 +71,8 @@ fun VaultNavigationBar(selected: VaultTab, onSelect: (VaultTab) -> Unit, modifie
     com.bontecou.syncmd.ui.theme.M3VaultNavigationBar(selected, onSelect, modifier, changes)
 
 /**
- * M3 navigation rail for tablets and the foldable inner display: a sync action
- * on top, the four vault places, and settings at the foot.
+ * M3 navigation rail for tablets and the foldable inner display (boards Tablet, Fold*): a sync
+ * action on top, the four vault places, and the account avatar at the foot, on the plain surface.
  */
 @Composable
 fun VaultNavigationRail(
@@ -85,8 +86,8 @@ fun VaultNavigationRail(
 ) {
     val c = com.bontecou.syncmd.ui.theme.M3.colors
     Column(
-        modifier.width(if (wide) 96.dp else 80.dp).fillMaxHeight().background(c.c)
-            .statusBarsPadding().navigationBarsPadding().padding(vertical = 16.dp).testTag("vault-navigation-rail"),
+        modifier.width(if (wide) 96.dp else 80.dp).fillMaxHeight().background(c.surface)
+            .statusBarsPadding().navigationBarsPadding().padding(vertical = 20.dp).testTag("vault-navigation-rail"),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (topAction != null) {
@@ -112,17 +113,19 @@ fun VaultNavigationRail(
     }
 }
 
-/** M3 FAB-style rail action (sync) — a 56dp tonal square. */
+/** M3 FAB-style rail action (sync): a 56dp pc square with the FAB shadow. */
 @Composable
-fun RailFab(contentDescription: String, @DrawableRes icon: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val c = Tide.colors
+fun RailFab(contentDescription: String, @DrawableRes icon: Int, onClick: () -> Unit, modifier: Modifier = Modifier, busy: Boolean = false) {
+    val c = com.bontecou.syncmd.ui.theme.M3.colors
+    val shape = RoundedCornerShape(16.dp)
     Box(
-        modifier.size(56.dp).clip(RoundedCornerShape(16.dp)).background(c.primaryContainer)
-            .clickable(role = Role.Button, onClick = onClick)
+        modifier.size(56.dp).shadow(3.dp, shape).clip(shape).background(c.pc)
+            .clickable(role = Role.Button, enabled = !busy, onClick = onClick)
             .semantics { this.contentDescription = contentDescription },
         contentAlignment = Alignment.Center,
     ) {
-        Icon(painterResource(icon), contentDescription = null, tint = c.onPrimaryContainer, modifier = Modifier.size(24.dp))
+        if (busy) com.bontecou.syncmd.ui.theme.M3Spinner(color = c.onPc, size = 22.dp)
+        else Icon(painterResource(icon), contentDescription = null, tint = c.onPc, modifier = Modifier.size(24.dp))
     }
 }
 
