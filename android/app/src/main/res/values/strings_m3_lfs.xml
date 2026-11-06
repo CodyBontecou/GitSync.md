@@ -160,4 +160,63 @@
     <string name="ssh_m3_trust">Trust and connect</string>
     <string name="ssh_m3_replace">Replace trust and connect</string>
     <string name="ssh_m3_error_save">Couldn’t save SSH server trust. Verify the fingerprint again before you retry.</string>
+
+    <!-- Pull all -->
+    <string name="pullall_m3_title">Pull all</string>
+    <string name="pullall_m3_scope">Fetch and fast-forward every vault on this phone. Pull all never stages, commits or pushes your changes.</string>
+    <string name="pullall_m3_widget_name">Pull all</string>
+    <string name="pullall_m3_widget_sub">Fetch and fast-forward only</string>
+    <string name="pullall_m3_tile_preview">GitSync.md\nPull all</string>
+    <string name="pullall_m3_surfaces">Widget and Quick Settings tile</string>
+    <string name="pullall_m3_help">Add the Pull all widget to your home screen, or the tile to Quick Settings. Both run once without opening the app. Come back here to see what happened.</string>
+    <string name="pullall_m3_background">Background pull all</string>
+    <string name="pullall_m3_when_source">%1$s · from the %2$s</string>
+    <string name="pullall_m3_source_widget">widget</string>
+    <string name="pullall_m3_source_tile">tile</string>
+    <string name="pullall_m3_source_shortcut">shortcut</string>
+    <string name="pullall_m3_complete">Pull all finished. Review the saved summary.</string>
+    <string name="pullall_m3_running">Pull all is running without opening the app. The rest stop when you tap Stop.</string>
+    <string name="pullall_m3_failed">Pull all stopped with an error. Some pulls may have finished. Check the summary and each vault before running it again.</string>
+    <string name="pullall_m3_interrupted">Pull all was interrupted and won’t restart on its own. A pull may have finished first. Check each vault before running it again.</string>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="one">%1$d of %2$d repository checked</item>
+        <item quantity="other">%1$d of %2$d repositories checked</item>
+    </plurals>
+    <string name="pullall_m3_counts">Updated %1$d · Current %2$d · LFS %3$d · Blocked %4$d · Failed %5$d</string>
+    <string name="pullall_m3_attention_lfs">Pulled. Some Git LFS files still need download.</string>
+    <string name="pullall_m3_attention_blocked">Kept unchanged. Commit or stash local changes first.</string>
+    <string name="pullall_m3_attention_failed">Couldn’t pull safely. Check the connection and folder access.</string>
+    <string name="pullall_m3_clear">Clear background summary</string>
+    <string name="pullall_m3_clear_title">Clear background summary?</string>
+    <string name="pullall_m3_clear_body">This deletes the latest background summary. Your vaults and settings stay as they are. Interrupted work won’t restart on its own.</string>
+    <string name="pullall_m3_clear_confirm">Clear summary</string>
+    <string name="pullall_m3_stopped">Stopped. A vault already being pulled may have finished, so check its status before retrying. The rest weren’t started.</string>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="one">%1$d of %2$d vault checked</item>
+        <item quantity="other">%1$d of %2$d vaults checked</item>
+    </plurals>
+    <string name="pullall_m3_updated">Updated from remote</string>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="one">Updated from remote · ↓%d commit</item>
+        <item quantity="other">Updated from remote · ↓%d commits</item>
+    </plurals>
+    <string name="pullall_m3_current">No incoming changes</string>
+    <string name="pullall_m3_lfs">Pulled. Some Git LFS files still need download. Open Git LFS to retry.</string>
+    <string name="pullall_m3_blocked">Kept unchanged. Commit or stash local changes, or finish the open Git operation, then retry.</string>
+    <string name="pullall_m3_item_failed">Couldn’t pull safely. Check the connection and folder access, then look at Git for divergence.</string>
+    <string name="pullall_m3_pulling">Pulling…</string>
+    <string name="pullall_m3_not_run">Not run</string>
+    <string name="pullall_m3_progress_cd">Pull all progress</string>
+    <string name="pullall_m3_stop">Stop pull all</string>
+    <string name="pullall_m3_stopping">Stopping after this vault…</string>
+    <string name="pullall_m3_start">Pull all</string>
+    <string name="pullall_m3_again">Pull all again</string>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="one">%d vault</item>
+        <item quantity="other">%d vaults</item>
+    </plurals>
+    <string name="pullall_m3_empty">No vaults to pull yet. Clone or add one first.</string>
+    <string name="pullall_m3_start_failed">Pull all couldn’t start. Check your vault settings and try again.</string>
+    <string name="pullall_m3_unreadable">The saved background summary can’t be read and was kept. Clear it before you start another background run.</string>
+    <string name="pullall_m3_control_failed">That didn’t change. Reopen this screen and try again.</string>
 </resources>

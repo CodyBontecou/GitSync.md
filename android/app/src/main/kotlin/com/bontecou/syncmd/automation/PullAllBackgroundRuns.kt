@@ -11,8 +11,10 @@ import java.util.UUID
 
 enum class BackgroundPullState { QUEUED, RUNNING, COMPLETE, FAILED, INTERRUPTED }
 data class BackgroundPullAttention(val name: String, val outcome: PullAllOutcome)
+/** Which system surface started a background run ("widget", "tile", "shortcut"); null for older summaries. */
 data class BackgroundPullRun(val id: String, val created: Long, val state: BackgroundPullState,
-    val total: Int = 0, val counts: Map<PullAllOutcome, Int> = emptyMap(), val attention: List<BackgroundPullAttention> = emptyList()) {
+    val total: Int = 0, val counts: Map<PullAllOutcome, Int> = emptyMap(), val attention: List<BackgroundPullAttention> = emptyList(),
+    val source: String? = null) {
     val checked get() = counts.values.sum()
     val busy get() = state == BackgroundPullState.QUEUED || state == BackgroundPullState.RUNNING
 }
@@ -21,10 +23,11 @@ data class BackgroundPullRun(val id: String, val created: Long, val state: Backg
  * Process-local admission is consumed before Git. Restoring preferences cannot resume a run. */
 class PullAllBackgroundRuns(context: Context) {
     private val prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-    fun reserve(): BackgroundPullRun = synchronized(lock) {
+    fun reserve(source: String? = null): BackgroundPullRun = synchronized(lock) {
         check(pending == null && active == null) { "Pull All is already running" }
         val old = read()
-        val run = BackgroundPullRun(UUID.randomUUID().toString(), maxOf(System.currentTimeMillis(), (old?.created ?: 0L) + 1), BackgroundPullState.QUEUED)
+        val run = BackgroundPullRun(UUID.randomUUID().toString(), maxOf(System.currentTimeMillis(), (old?.created ?: 0L) + 1), BackgroundPullState.QUEUED,
+            source = source?.takeIf { it in SOURCES })
         save(run); pending = run.id; changed(); run
     }
     fun claim(id: String): Boolean = synchronized(lock) {
@@ -96,7 +99,8 @@ class PullAllBackgroundRuns(context: Context) {
         }
         val total = j.get("total"); val created = j.get("created")
         require(total is Int && total in 0..10_000 && created is Number && created.toLong() > 0)
-        val run = BackgroundPullRun(string("id"), created.toLong(), BackgroundPullState.valueOf(string("state")), total, counts, attention)
+        val source = if (j.has("source")) string("source").also { require(it in SOURCES) } else null
+        val run = BackgroundPullRun(string("id"), created.toLong(), BackgroundPullState.valueOf(string("state")), total, counts, attention, source)
         require(UUID.fromString(run.id).toString() == run.id && run.checked <= total)
         require(run.state != BackgroundPullState.QUEUED || total == 0 && counts.isEmpty() && attention.isEmpty())
         require(run.state != BackgroundPullState.COMPLETE || run.checked == total)
@@ -122,9 +126,11 @@ class PullAllBackgroundRuns(context: Context) {
         put("schema", 1); put("id", run.id); put("created", run.created); put("state", run.state.name); put("total", run.total)
         put("counts", JSONObject().apply { run.counts.toSortedMap(compareBy { it.name }).forEach { (outcome, count) -> put(outcome.name, count) } })
         put("attention", JSONArray().apply { run.attention.forEach { put(JSONObject().put("name", it.name).put("outcome", it.outcome.name)) } })
+        run.source?.let { put("source", it) }
     }.toString()
     companion object {
         const val PREFERENCES = "pull_all_background_runs"
+        val SOURCES = setOf("widget", "tile", "shortcut")
         private val lock = Any(); private var pending: String? = null; private var active: String? = null
         private val mutable = MutableStateFlow(0L); val changes = mutable.asStateFlow()
         private fun changed() { mutable.value++ }

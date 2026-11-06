@@ -3,44 +3,25 @@ package com.bontecou.syncmd.ui.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,21 +34,10 @@ import com.bontecou.syncmd.automation.BackgroundPullState
 import com.bontecou.syncmd.services.automation.PullAllOutcome
 import com.bontecou.syncmd.services.automation.PullAllResult
 import com.bontecou.syncmd.services.automation.PullAllTarget
-import com.bontecou.syncmd.ui.components.WrappingTopBar
-import com.bontecou.syncmd.ui.theme.BDestructiveButton
-import com.bontecou.syncmd.ui.theme.BGhostButton
-import com.bontecou.syncmd.ui.theme.BPrimaryButton
-import com.bontecou.syncmd.ui.theme.BSecondaryButton
-import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideCard
-import com.bontecou.syncmd.ui.theme.TideDialog
-import com.bontecou.syncmd.ui.theme.TideHero
-import com.bontecou.syncmd.ui.theme.TidePulse
-import com.bontecou.syncmd.ui.theme.TideSectionLabel
-import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.theme.*
 import com.bontecou.syncmd.ui.viewmodels.PullAllViewModel
 
+/** Board "Pull all": idle explainer, the saved background summary, this run's per-vault results and one bottom action. */
 @Composable
 fun PullAllScreen(model: PullAllViewModel, onBack: () -> Unit) {
     val state by model.state.collectAsState()
@@ -78,6 +48,7 @@ fun PullAllScreen(model: PullAllViewModel, onBack: () -> Unit) {
         lifecycle.addObserver(observer)
         onDispose { lifecycle.removeObserver(observer); model.stop() }
     }
+    LaunchedEffect(model) { model.refreshCatalog() }
     BackHandler { model.stop(); onBack() }
     PullAllContent(
         state = state,
@@ -87,21 +58,14 @@ fun PullAllScreen(model: PullAllViewModel, onBack: () -> Unit) {
         onStopBackground = model::stopBackground,
         onRequestClear = { clearBackground = true },
     )
-    if (clearBackground) TideDialog(
-        onDismissRequest = { clearBackground = false },
-        title = stringResource(R.string.pull_all_background_clear),
-        text = { Text(stringResource(R.string.pull_all_background_clear_scope)) },
-        confirmButton = {
-            BDestructiveButton(stringResource(R.string.pull_all_background_clear), Modifier.testTag("pull-all-background-clear-confirm"),
-                onClick = { clearBackground = false; model.clearBackgroundSummary() })
-        },
-        dismissButton = {
-            BGhostButton(stringResource(R.string.repository_actions_cancel), Modifier.fillMaxWidth(), onClick = { clearBackground = false })
-        },
-    )
+    if (clearBackground) M3Dialog(onDismissRequest = { clearBackground = false }, title = stringResource(R.string.pullall_m3_clear_title),
+        icon = R.drawable.ic_m3_delete, iconTint = M3.colors.error, text = stringResource(R.string.pullall_m3_clear_body)) {
+        M3DialogAction(stringResource(R.string.lfs_m3_cancel), { clearBackground = false })
+        M3DialogAction(stringResource(R.string.pullall_m3_clear_confirm), { clearBackground = false; model.clearBackgroundSummary() },
+            Modifier.testTag("pull-all-background-clear-confirm"), destructive = true, filled = true)
+    }
 }
 
-/** Stateless Pull All: header, saved background run (dark hero), this run's vaults, one action at the bottom. */
 @Composable
 private fun PullAllContent(
     state: PullAllViewModel.State,
@@ -111,228 +75,222 @@ private fun PullAllContent(
     onStopBackground: () -> Unit,
     onRequestClear: () -> Unit,
 ) {
-    val c = Tide.colors
-    Column(Modifier.fillMaxSize().background(c.paper)) {
-        WrappingTopBar(title = stringResource(R.string.pull_all_title), backLabel = stringResource(R.string.pull_all_back), onBack = onBack)
-
-        LazyColumn(
-            Modifier.weight(1f).fillMaxWidth().testTag("pull-all-results"),
-            contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 4.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
+    val c = M3.colors
+    val idle = !state.started && state.background == null && !state.backgroundUnavailable
+    Column(Modifier.fillMaxSize().background(c.surface)) {
+        M3TopBar(stringResource(R.string.pullall_m3_title), onBack = onBack, backLabel = stringResource(R.string.pull_all_back))
+        LazyColumn(Modifier.weight(1f).fillMaxWidth().testTag("pull-all-results"), contentPadding = PaddingValues(bottom = 24.dp)) {
             item(key = "scope") {
-                Text(stringResource(R.string.pull_all_scope), Modifier.padding(horizontal = 4.dp), style = TideType.copy, color = c.inkMid)
+                Text(stringResource(R.string.pullall_m3_scope), style = M3Type.body, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 4.dp))
             }
-            item(key = "system-help") {
-                TideCard(padding = 16.dp) {
-                    Text(stringResource(R.string.pull_all_system_help), style = TideType.sans(13.sp), color = c.inkFaint)
-                }
-            }
+            if (idle) item(key = "system-help") { SystemSurfaces() }
             if (state.backgroundUnavailable) item(key = "background-unavailable") {
-                PullAllNotice(stringResource(R.string.pull_all_background_unreadable), tint = c.danger) {
-                    BSecondaryButton(stringResource(R.string.pull_all_background_clear), Modifier.testTag("pull-all-background-clear"), onClick = onRequestClear)
-                }
+                M3Note(stringResource(R.string.pullall_m3_unreadable), Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), tone = M3NoteTone.Warn,
+                    action = { M3Button(stringResource(R.string.pullall_m3_clear), onRequestClear, Modifier.testTag("pull-all-background-clear"),
+                        style = M3ButtonStyle.OutlinedContent, size = M3ButtonSize.Small) })
             }
             if (state.backgroundControlFailed) item(key = "background-control-failed") {
-                PullAllNotice(stringResource(R.string.pull_all_background_control_failed), tint = c.danger)
+                M3Note(stringResource(R.string.pullall_m3_control_failed), Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), tone = M3NoteTone.Warn)
             }
             state.background?.let { run -> item(key = "background-summary") { BackgroundRunHero(run, onRequestClear) } }
             if (state.stopped) item(key = "stopped") {
-                PullAllNotice(stringResource(R.string.pull_all_stopped), tint = c.ahead, live = true)
+                M3Note(stringResource(R.string.pullall_m3_stopped), Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                    .semantics { liveRegion = LiveRegionMode.Polite }, tone = M3NoteTone.Ahead, icon = R.drawable.ic_m3_stop)
             }
-            if (state.failed) item(key = "failed") { PullAllNotice(stringResource(R.string.pull_all_failed), tint = c.danger) }
+            if (state.failed) item(key = "failed") {
+                M3Note(stringResource(R.string.pullall_m3_start_failed), Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), tone = M3NoteTone.Warn)
+            }
             if (state.started && !state.busy && !state.failed && !state.stopped && state.targets.isEmpty()) item(key = "empty") {
-                PullAllNotice(stringResource(R.string.pull_all_empty), tint = c.inkMid)
+                M3Note(stringResource(R.string.pullall_m3_empty), Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), tone = M3NoteTone.Muted)
             }
-            if (state.started && state.targets.isNotEmpty()) item(key = "progress") {
-                Row(Modifier.padding(start = 4.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.pull_all_progress, state.results.size, state.targets.size),
-                        Modifier.weight(1f).semantics { liveRegion = LiveRegionMode.Polite },
-                        style = TideType.sans(20.sp, FontWeight.SemiBold), color = c.ink)
-                    if (state.busy) TidePulse(Modifier.padding(start = 12.dp))
+            if (state.started && state.targets.isNotEmpty()) {
+                item(key = "progress") {
+                    Row(Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text(pluralStringResource(R.plurals.pullall_m3_checked_vaults, state.targets.size, state.results.size, state.targets.size),
+                            Modifier.weight(1f).semantics { liveRegion = LiveRegionMode.Polite }, style = M3Type.title.copy(fontSize = 20.sp, fontWeight = FontWeight.SemiBold),
+                            color = c.on)
+                        if (state.busy) Box(Modifier.size(18.dp).background(c.pc, CircleShape), contentAlignment = Alignment.Center) {
+                            Box(Modifier.size(10.dp).background(c.primary, CircleShape))
+                        }
+                    }
+                }
+                itemsIndexed(state.targets, key = { _, it -> it.path }) { index, target ->
+                    val result = state.results.firstOrNull { it.target.path == target.path }
+                    PullAllTargetRow(target, state.details[target.path], result, state.current == target.path,
+                        Modifier.padding(horizontal = 16.dp).padding(top = if (index == 0) 8.dp else 0.dp)
+                            .m3GroupedItem(index, state.targets.size, c.cLow).m3TopDivider(index > 0, c.outlineVar))
                 }
             }
-            items(state.targets, key = { it.path }) { target ->
-                PullAllTargetRow(target, state.results.firstOrNull { it.target.path == target.path }?.outcome, state.current == target.path)
-            }
         }
-
-        Column(
-            Modifier.fillMaxWidth().background(c.paper).navigationBarsPadding().padding(horizontal = Tide.gutter, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            if (state.busy) {
-                LinearProgressIndicator(Modifier.fillMaxWidth().clip(CircleShape), color = c.ink, trackColor = c.well)
-                BSecondaryButton(stringResource(if (state.stopping) R.string.pull_all_stopping else R.string.pull_all_stop),
-                    Modifier.testTag("pull-all-stop"), isDisabled = state.stopping, onClick = onStop)
-            } else if (state.background?.busy == true) {
-                BSecondaryButton(stringResource(R.string.pull_all_stop), Modifier.testTag("pull-all-background-stop"), onClick = onStopBackground)
-            } else {
-                BPrimaryButton(stringResource(if (state.started || state.background != null) R.string.pull_all_again else R.string.pull_all_title),
-                    Modifier.testTag("pull-all-start"), leadingIconRes = R.drawable.ic_pull_all, onClick = onStart)
+        Column(Modifier.fillMaxWidth().background(c.surface).m3TopDivider(true, c.outlineVar).navigationBarsPadding()
+            .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 24.dp)) {
+            when {
+                state.busy -> {
+                    val fraction = if (state.targets.isEmpty()) 0f else state.results.size.toFloat() / state.targets.size
+                    M3ProgressBar(fraction, Modifier.padding(bottom = 12.dp), description = stringResource(R.string.pullall_m3_progress_cd))
+                    M3Button(stringResource(if (state.stopping) R.string.pullall_m3_stopping else R.string.pullall_m3_stop), onStop,
+                        Modifier.fillMaxWidth().testTag("pull-all-stop"), style = M3ButtonStyle.Outlined, size = M3ButtonSize.Hero,
+                        icon = R.drawable.ic_m3_stop, enabled = !state.stopping)
+                }
+                state.background?.busy == true -> M3Button(stringResource(R.string.pullall_m3_stop), onStopBackground,
+                    Modifier.fillMaxWidth().testTag("pull-all-background-stop"), style = M3ButtonStyle.Outlined, size = M3ButtonSize.Hero, icon = R.drawable.ic_m3_stop)
+                else -> M3FilledButton(stringResource(if (state.started || state.background != null) R.string.pullall_m3_again else R.string.pullall_m3_start), onStart,
+                    Modifier.fillMaxWidth().testTag("pull-all-start"), size = M3ButtonSize.Hero, icon = R.drawable.ic_m3_arrow_downward,
+                    trailingMeta = state.vaults?.let { pluralStringResource(R.plurals.pullall_m3_vaults, it, it) })
             }
         }
     }
 }
 
-/** Tinted paper notice: a status sentence with an optional action under it. */
+/** Idle: how the Pull all widget and Quick Settings tile look, and what they do. */
 @Composable
-private fun PullAllNotice(text: String, tint: Color, live: Boolean = false, action: (@Composable () -> Unit)? = null) {
-    val c = Tide.colors
-    val shape = Tide.cardShape
-    Column(
-        Modifier.fillMaxWidth()
-            .background(if (tint == c.inkMid) c.card else tint.copy(alpha = 0.10f), shape)
-            .border(1.dp, if (tint == c.inkMid) c.line else tint.copy(alpha = 0.25f), shape)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text(text, Modifier.then(if (live) Modifier.semantics { liveRegion = LiveRegionMode.Polite } else Modifier),
-            style = TideType.sans(15.sp, FontWeight.Medium), color = if (tint == c.inkMid) c.ink else tint)
-        action?.invoke()
+private fun SystemSurfaces() {
+    val c = M3.colors
+    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp).fillMaxWidth().background(c.cLow, M3.cardShape).padding(horizontal = 20.dp, vertical = 16.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(Modifier.width(128.dp).background(c.inv, RoundedCornerShape(20.dp)).padding(12.dp)) {
+                M3Icon(R.drawable.ic_m3_arrow_downward, tint = c.onInv)
+                Text(stringResource(R.string.pullall_m3_widget_name), style = M3Type.section.copy(lineHeight = 18.sp), color = c.onInv, modifier = Modifier.padding(top = 6.dp))
+                Text(stringResource(R.string.pullall_m3_widget_sub), style = M3Type.caption.copy(fontSize = 11.sp, lineHeight = 14.sp), color = c.invMeta,
+                    modifier = Modifier.padding(top = 2.dp))
+            }
+            Column(Modifier.weight(1f).align(Alignment.CenterVertically), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(Modifier.heightIn(min = 48.dp).background(c.pc, RoundedCornerShape(24.dp)).padding(horizontal = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    M3Icon(R.drawable.ic_m3_sync, tint = c.onPc, size = 20.dp)
+                    Text(stringResource(R.string.pullall_m3_tile_preview), style = M3Type.badge.copy(fontSize = 13.sp), color = c.onPc)
+                }
+                Text(stringResource(R.string.pullall_m3_surfaces), style = M3Type.caption.copy(fontSize = 11.sp, lineHeight = 14.sp), color = c.onVar)
+            }
+        }
+        Text(stringResource(R.string.pullall_m3_help), style = M3Type.bodySmall, color = c.onVar, modifier = Modifier.padding(top = 14.dp))
     }
 }
 
-/** The saved background run as a dark state hero — it is state, not a setting. */
+/** The saved background run as the inverse hero: when and from where, its state, counts, what needs attention. */
 @Composable
 private fun BackgroundRunHero(run: BackgroundPullRun, onRequestClear: () -> Unit) {
-    val c = Tide.colors
-    val stateTint = when (run.state) {
-        BackgroundPullState.QUEUED, BackgroundPullState.RUNNING -> c.heroBehind
-        BackgroundPullState.COMPLETE -> c.heroSynced
-        BackgroundPullState.FAILED -> c.heroDanger
-        BackgroundPullState.INTERRUPTED -> c.heroAhead
+    val c = M3.colors
+    val tint = when (run.state) {
+        BackgroundPullState.QUEUED, BackgroundPullState.RUNNING -> c.invBehind
+        BackgroundPullState.COMPLETE -> c.invOk
+        BackgroundPullState.FAILED -> c.invDanger
+        BackgroundPullState.INTERRUPTED -> c.invAhead
     }
-    TideHero(Modifier.testTag("pull-all-background-summary")) {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.pull_all_background_title), Modifier.weight(1f),
-                    style = TideType.sans(19.sp, FontWeight.SemiBold), color = c.heroText)
-                if (run.busy) TidePulse(color = c.heroText) else Box(Modifier.size(10.dp).background(stateTint, CircleShape))
-            }
-            Text(java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT).format(java.util.Date(run.created)),
-                style = TideType.mono(12.sp), color = c.heroMeta)
-            Text(stringResource(when (run.state) {
-                BackgroundPullState.QUEUED, BackgroundPullState.RUNNING -> R.string.pull_all_background_running
-                BackgroundPullState.COMPLETE -> R.string.pull_all_background_complete
-                BackgroundPullState.FAILED -> R.string.pull_all_background_failed
-                BackgroundPullState.INTERRUPTED -> R.string.pull_all_background_interrupted
-            }), Modifier.testTag("pull-all-background-state").semantics { liveRegion = LiveRegionMode.Polite },
-                style = TideType.sans(15.sp, FontWeight.Medium), color = stateTint)
-            Box(Modifier.fillMaxWidth().heightIn(min = 1.dp).background(c.heroLine))
-            Text(stringResource(R.string.pull_all_progress, run.checked, run.total), style = TideType.mono(12.sp, FontWeight.SemiBold), color = c.heroText)
-            Text(stringResource(R.string.pull_all_background_counts, run.counts[PullAllOutcome.UPDATED] ?: 0,
-                run.counts[PullAllOutcome.UP_TO_DATE] ?: 0, run.counts[PullAllOutcome.ATTENTION] ?: 0,
-                run.counts[PullAllOutcome.BLOCKED] ?: 0, run.counts[PullAllOutcome.FAILED] ?: 0),
-                style = TideType.mono(12.sp), color = c.heroMeta)
-            run.attention.forEach { attention ->
-                Column(Modifier.padding(top = 4.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(attention.name, style = TideType.sans(15.sp, FontWeight.SemiBold), color = c.heroText)
-                    Text(stringResource(when (attention.outcome) {
-                        PullAllOutcome.BLOCKED -> R.string.pull_all_blocked
-                        PullAllOutcome.ATTENTION -> R.string.pull_all_attention
-                        else -> R.string.pull_all_item_failed
-                    }), style = TideType.sans(13.sp), color = c.heroMeta)
-                }
-            }
-            if (!run.busy) {
-                Box(
-                    Modifier.padding(top = 6.dp).fillMaxWidth().heightIn(min = 52.dp).clip(CircleShape)
-                        .border(1.dp, c.heroLine, CircleShape)
-                        .testTag("pull-all-background-clear")
-                        .clickable(role = Role.Button, onClick = onRequestClear)
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(stringResource(R.string.pull_all_background_clear), style = TideType.sans(15.sp, FontWeight.SemiBold),
-                        color = c.heroText, textAlign = TextAlign.Center)
-                }
+    M3Hero(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp).testTag("pull-all-background-summary")) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(R.string.pullall_m3_background), style = M3Type.lead.copy(fontSize = 19.sp, fontWeight = FontWeight.SemiBold), color = c.onInv,
+                modifier = Modifier.weight(1f))
+            Box(Modifier.size(10.dp).background(tint, CircleShape))
+        }
+        val time = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT).format(java.util.Date(run.created))
+        val source = when (run.source) {
+            "widget" -> stringResource(R.string.pullall_m3_source_widget)
+            "tile" -> stringResource(R.string.pullall_m3_source_tile)
+            "shortcut" -> stringResource(R.string.pullall_m3_source_shortcut)
+            else -> null
+        }
+        Text(if (source != null) stringResource(R.string.pullall_m3_when_source, time, source) else time, style = M3Type.meta, color = c.invMeta,
+            modifier = Modifier.padding(top = 4.dp))
+        Text(stringResource(when (run.state) {
+            BackgroundPullState.QUEUED, BackgroundPullState.RUNNING -> R.string.pullall_m3_running
+            BackgroundPullState.COMPLETE -> R.string.pullall_m3_complete
+            BackgroundPullState.FAILED -> R.string.pullall_m3_failed
+            BackgroundPullState.INTERRUPTED -> R.string.pullall_m3_interrupted
+        }), style = M3Type.step.copy(fontWeight = FontWeight.Medium), color = tint,
+            modifier = Modifier.padding(top = 10.dp).testTag("pull-all-background-state").semantics { liveRegion = LiveRegionMode.Polite })
+        Box(Modifier.padding(vertical = 14.dp).fillMaxWidth().height(1.dp).background(c.invLine))
+        Text(pluralStringResource(R.plurals.pullall_m3_checked_repositories, run.total, run.checked, run.total), style = M3Type.metaStrong, color = c.onInv)
+        Text(stringResource(R.string.pullall_m3_counts, run.counts[PullAllOutcome.UPDATED] ?: 0, run.counts[PullAllOutcome.UP_TO_DATE] ?: 0,
+            run.counts[PullAllOutcome.ATTENTION] ?: 0, run.counts[PullAllOutcome.BLOCKED] ?: 0, run.counts[PullAllOutcome.FAILED] ?: 0),
+            style = M3Type.meta.copy(lineHeight = 18.sp), color = c.invMeta, modifier = Modifier.padding(top = 4.dp))
+        run.attention.forEach { attention ->
+            Column(Modifier.padding(top = 12.dp)) {
+                Text(attention.name, style = M3Type.step.copy(fontWeight = FontWeight.SemiBold), color = c.onInv)
+                Text(stringResource(when (attention.outcome) {
+                    PullAllOutcome.ATTENTION -> R.string.pullall_m3_attention_lfs
+                    PullAllOutcome.BLOCKED -> R.string.pullall_m3_attention_blocked
+                    else -> R.string.pullall_m3_attention_failed
+                }), style = M3Type.bodySmall, color = c.invMeta, modifier = Modifier.padding(top = 2.dp))
             }
         }
+        if (!run.busy) M3Button(stringResource(R.string.pullall_m3_clear), onRequestClear, Modifier.padding(top = 18.dp).fillMaxWidth().testTag("pull-all-background-clear"),
+            style = M3ButtonStyle.OutlinedOnHero, size = M3ButtonSize.Large)
     }
 }
 
-/** One vault in this run: status dot, name, mono path, and the outcome in its state colour. */
+/** One vault in this run: a toned circle, name, branch and remote, and the outcome in its state colour. */
 @Composable
-private fun PullAllTargetRow(target: PullAllTarget, outcome: PullAllOutcome?, running: Boolean) {
-    val c = Tide.colors
-    val (message, tint) = when (outcome) {
-        PullAllOutcome.UPDATED -> R.string.pull_all_updated to c.behind
-        PullAllOutcome.UP_TO_DATE -> R.string.pull_all_current to c.synced
-        PullAllOutcome.ATTENTION -> R.string.pull_all_attention to c.ahead
-        PullAllOutcome.BLOCKED -> R.string.pull_all_blocked to c.ahead
-        PullAllOutcome.FAILED -> R.string.pull_all_item_failed to c.danger
-        null -> if (running) R.string.pull_all_running to c.ink else R.string.pull_all_not_run to c.inkFaint
+private fun PullAllTargetRow(target: PullAllTarget, detail: String?, result: PullAllResult?, running: Boolean, modifier: Modifier) {
+    val c = M3.colors
+    val outcome = result?.outcome
+    data class Look(val tone: M3Tone, val icon: Int, val ink: Color)
+    val look = when (outcome) {
+        PullAllOutcome.UPDATED -> Look(M3Tone.Behind, R.drawable.ic_m3_arrow_downward, c.primary)
+        PullAllOutcome.UP_TO_DATE -> Look(M3Tone.Ok, R.drawable.ic_m3_check, c.ok)
+        PullAllOutcome.ATTENTION -> Look(M3Tone.Ahead, R.drawable.ic_m3_cloud_download, c.ahead)
+        PullAllOutcome.BLOCKED -> Look(M3Tone.Ahead, R.drawable.ic_m3_lock, c.ahead)
+        PullAllOutcome.FAILED -> Look(M3Tone.Warn, R.drawable.ic_m3_error, c.error)
+        null -> if (running) Look(M3Tone.Behind, R.drawable.ic_m3_sync, c.on) else Look(M3Tone.Muted, R.drawable.ic_m3_stop, c.onVar)
     }
-    TideCard {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(target.name, Modifier.weight(1f), style = TideType.title, color = c.ink)
-            if (running && outcome == null) TidePulse(Modifier.padding(start = 10.dp), color = c.inkMid)
-            else Box(Modifier.padding(start = 10.dp).size(10.dp).background(tint, CircleShape))
+    val message = when (outcome) {
+        PullAllOutcome.UPDATED -> if (result.commits > 0) pluralStringResource(R.plurals.pullall_m3_updated_commits, result.commits, result.commits)
+            else stringResource(R.string.pullall_m3_updated)
+        PullAllOutcome.UP_TO_DATE -> stringResource(R.string.pullall_m3_current)
+        PullAllOutcome.ATTENTION -> stringResource(R.string.pullall_m3_lfs)
+        PullAllOutcome.BLOCKED -> stringResource(R.string.pullall_m3_blocked)
+        PullAllOutcome.FAILED -> stringResource(R.string.pullall_m3_item_failed)
+        null -> stringResource(if (running) R.string.pullall_m3_pulling else R.string.pullall_m3_not_run)
+    }
+    val (bg, fg) = look.tone.colors()
+    Row(modifier.heightIn(min = 72.dp).padding(start = 16.dp, end = 20.dp, top = 14.dp, bottom = 14.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Box(Modifier.size(40.dp).background(bg, CircleShape), contentAlignment = Alignment.Center) { M3Icon(look.icon, tint = fg) }
+        Column(Modifier.weight(1f)) {
+            Text(target.name, style = M3Type.bodyStrong, color = c.on, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (!detail.isNullOrBlank()) Text(detail, style = M3Type.meta, color = c.onVar, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(message, style = M3Type.bodySmall.copy(fontWeight = if (running && outcome == null) FontWeight.SemiBold else FontWeight.Normal), color = look.ink,
+                modifier = Modifier.padding(top = 4.dp).testTag("pull-all-outcome-${target.path}"))
         }
-        Text(target.path, Modifier.padding(top = 3.dp), style = TideType.meta.copy(textDirection = TextDirection.Ltr), color = c.inkFaint)
-        Text(stringResource(message), Modifier.padding(top = 10.dp).testTag("pull-all-outcome-${target.path}"),
-            style = TideType.sans(14.sp, FontWeight.Medium), color = if (tint == c.inkFaint) c.inkMid else tint)
     }
 }
 
 // ─── Previews ────────────────────────────────────────────────────────────────
 
 private val previewTargets = listOf(
-    PullAllTarget("/data/repos/cody/notes", "Personal notes"),
-    PullAllTarget("/data/repos/cody/voxvault", "VoxVault"),
-    PullAllTarget("/data/repos/team/wiki", "Team wiki"),
-    PullAllTarget("/data/repos/team/site", "Site"),
+    PullAllTarget("/storage/Documents/VoxVault", "VoxVault"), PullAllTarget("/storage/Documents/notes", "notes"),
+    PullAllTarget("/storage/Documents/health-md", "health-md"), PullAllTarget("/storage/Documents/recipes", "recipes"),
+    PullAllTarget("/storage/Documents/reading-vault", "reading-vault"),
 )
+private val previewDetails = mapOf(previewTargets[0].path to "main · CodyBontecou/VoxVault", previewTargets[1].path to "main · CodyBontecou/notes",
+    previewTargets[2].path to "main · CodyBontecou/health-md", previewTargets[3].path to "main · gitea.home.lan", previewTargets[4].path to "main · CodyBontecou/reading-vault")
 
-private fun previewRun(state: BackgroundPullState) = BackgroundPullRun("preview", 1_735_689_600_000L, state, 8,
-    if (state == BackgroundPullState.QUEUED) emptyMap() else mapOf(PullAllOutcome.UPDATED to 2, PullAllOutcome.UP_TO_DATE to 3,
-        PullAllOutcome.ATTENTION to 1, PullAllOutcome.BLOCKED to 1, PullAllOutcome.FAILED to 1),
-    if (state == BackgroundPullState.QUEUED) emptyList() else listOf(BackgroundPullAttention("Team wiki", PullAllOutcome.BLOCKED)))
+private fun previewRun(state: BackgroundPullState) = BackgroundPullRun("preview", 1_793_966_520_000L, state, 5,
+    mapOf(PullAllOutcome.UPDATED to 2, PullAllOutcome.UP_TO_DATE to 1, PullAllOutcome.ATTENTION to 1, PullAllOutcome.BLOCKED to 1),
+    listOf(BackgroundPullAttention("health-md", PullAllOutcome.ATTENTION), BackgroundPullAttention("recipes", PullAllOutcome.BLOCKED)), source = "widget")
 
 @Composable
 private fun PreviewPullAll(state: PullAllViewModel.State, dark: Boolean) =
-    SyncMdTheme(darkTheme = dark) { PullAllContent(state, {}, {}, {}, {}, {}) }
+    SyncMdTheme(darkTheme = dark) { PullAllContent(state.copy(vaults = 5, details = previewDetails), {}, {}, {}, {}, {}) }
 
 private val previewResults = PullAllViewModel.State(started = true, targets = previewTargets, results = listOf(
-    PullAllResult(previewTargets[0], PullAllOutcome.UPDATED), PullAllResult(previewTargets[1], PullAllOutcome.UP_TO_DATE),
-    PullAllResult(previewTargets[2], PullAllOutcome.BLOCKED), PullAllResult(previewTargets[3], PullAllOutcome.FAILED)))
+    PullAllResult(previewTargets[0], PullAllOutcome.UPDATED, 2), PullAllResult(previewTargets[1], PullAllOutcome.UP_TO_DATE),
+    PullAllResult(previewTargets[2], PullAllOutcome.ATTENTION), PullAllResult(previewTargets[3], PullAllOutcome.BLOCKED),
+    PullAllResult(previewTargets[4], PullAllOutcome.FAILED)))
 
-@Preview(name = "Pull All · ready · light", heightDp = 800)
-@Composable private fun PreviewPullAllReady() = PreviewPullAll(PullAllViewModel.State(), dark = false)
+@Preview(name = "Pull all · idle", heightDp = 915)
+@Composable private fun PreviewPullAllIdle() = PreviewPullAll(PullAllViewModel.State(), dark = false)
 
-@Preview(name = "Pull All · running · dark", heightDp = 800)
+@Preview(name = "Pull all · running · dark", heightDp = 915)
 @Composable private fun PreviewPullAllRunning() = PreviewPullAll(PullAllViewModel.State(busy = true, started = true, targets = previewTargets,
-    current = previewTargets[1].path, results = listOf(PullAllResult(previewTargets[0], PullAllOutcome.UPDATED))), dark = true)
+    current = previewTargets[2].path, results = previewResults.results.take(2)), dark = true)
 
-@Preview(name = "Pull All · stopping · light", heightDp = 800)
-@Composable private fun PreviewPullAllStopping() = PreviewPullAll(PullAllViewModel.State(busy = true, stopping = true, started = true,
-    targets = previewTargets, current = previewTargets[0].path), dark = false)
+@Preview(name = "Pull all · results", heightDp = 915)
+@Composable private fun PreviewPullAllResults() = PreviewPullAll(previewResults, dark = false)
 
-@Preview(name = "Pull All · results · light", heightDp = 1000)
-@Composable private fun PreviewPullAllResultsLight() = PreviewPullAll(previewResults, dark = false)
+@Preview(name = "Pull all · stopped", heightDp = 915)
+@Composable private fun PreviewPullAllStopped() = PreviewPullAll(PullAllViewModel.State(started = true, stopped = true, targets = previewTargets,
+    results = previewResults.results.take(2)), dark = false)
 
-@Preview(name = "Pull All · results · dark", heightDp = 1000)
-@Composable private fun PreviewPullAllResultsDark() = PreviewPullAll(previewResults, dark = true)
-
-@Preview(name = "Pull All · stopped · light", heightDp = 800)
-@Composable private fun PreviewPullAllStopped() = PreviewPullAll(PullAllViewModel.State(started = true, stopped = true, targets = previewTargets.take(2)), dark = false)
-
-@Preview(name = "Pull All · empty & failed · dark", heightDp = 800)
-@Composable private fun PreviewPullAllEmpty() = PreviewPullAll(PullAllViewModel.State(started = true, failed = true), dark = true)
-
-@Preview(name = "Pull All · nothing to pull · light", heightDp = 800)
-@Composable private fun PreviewPullAllNothing() = PreviewPullAll(PullAllViewModel.State(started = true), dark = false)
-
-@Preview(name = "Pull All · background running · light", heightDp = 900)
-@Composable private fun PreviewPullAllBackgroundRunning() = PreviewPullAll(PullAllViewModel.State(background = previewRun(BackgroundPullState.RUNNING)), dark = false)
-
-@Preview(name = "Pull All · background complete · dark", heightDp = 1000)
-@Composable private fun PreviewPullAllBackgroundComplete() = PreviewPullAll(PullAllViewModel.State(background = previewRun(BackgroundPullState.COMPLETE)), dark = true)
-
-@Preview(name = "Pull All · background failed · light", heightDp = 1000)
-@Composable private fun PreviewPullAllBackgroundFailed() = PreviewPullAll(PullAllViewModel.State(background = previewRun(BackgroundPullState.FAILED),
-    backgroundControlFailed = true), dark = false)
-
-@Preview(name = "Pull All · summary unreadable · dark", heightDp = 800)
-@Composable private fun PreviewPullAllUnreadable() = PreviewPullAll(PullAllViewModel.State(backgroundUnavailable = true), dark = true)
+@Preview(name = "Pull all · background · dark", heightDp = 915)
+@Composable private fun PreviewPullAllBackground() = PreviewPullAll(PullAllViewModel.State(background = previewRun(BackgroundPullState.COMPLETE)), dark = true)

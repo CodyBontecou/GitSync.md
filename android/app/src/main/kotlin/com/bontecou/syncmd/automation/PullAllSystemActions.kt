@@ -32,7 +32,7 @@ class PullAllActionActivity : Activity() {
         if (savedInstanceState == null && intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY == 0) {
             try {
                 val runs = PullAllBackgroundRuns(this)
-                val run = runs.reserve()
+                val run = runs.reserve(intent.getStringExtra(PullAllAction.SOURCE))
                 try { startForegroundService(Intent(this, PullAllRunService::class.java).putExtra("run_id", run.id)) }
                 catch (failure: Exception) { runs.finish(run.id, BackgroundPullState.FAILED); throw failure }
             } catch (_: Exception) {
@@ -55,10 +55,12 @@ class PullAllReviewActivity : Activity() {
 }
 
 object PullAllAction {
-    fun intent(context: Context) = Intent(context, PullAllActionActivity::class.java)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    fun pendingIntent(context: Context): PendingIntent = PendingIntent.getActivity(context, 410,
-        intent(context), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    const val SOURCE = "source"
+    fun intent(context: Context, source: String = "widget") = Intent(context, PullAllActionActivity::class.java)
+        .putExtra(SOURCE, source).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    fun pendingIntent(context: Context, source: String = "widget"): PendingIntent = PendingIntent.getActivity(context,
+        when (source) { "tile" -> 411; "shortcut" -> 412; else -> 410 },
+        intent(context, source), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 }
 
 class PullAllWidget : AppWidgetProvider() {
