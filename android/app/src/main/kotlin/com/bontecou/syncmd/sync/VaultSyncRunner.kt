@@ -144,6 +144,35 @@ class VaultSyncRunner @Inject constructor(
         VaultSyncResult.Done(result.attention?.let(UiText::Raw) ?: UiText.res(R.string.vault_m3_pulled, run().target))
     }
 
+    /**
+     * The Files tab's sync: fetch, then fast-forward only when the vault is behind and nothing local
+     * is in the way (no uncommitted changes, no unpushed commits). Otherwise it stops and says why.
+     */
+    fun fetchAndFastForward(path: String) = start(path, VaultSyncKind.PULL, listOf(SyncStepId.DOWNLOAD, SyncStepId.UPDATE)) {
+        begin(SyncStepId.DOWNLOAD)
+        withContext(sink) { pullService.fetch(path).getOrThrow() }
+        val before = VaultInsights.overview(path)
+        val behind = before.behind ?: 0
+        done(SyncStepId.DOWNLOAD, behind.takeIf { it > 0 }?.let { "↓$it" }, none = behind == 0)
+        val inTheWay = when {
+            behind == 0 -> null
+            (before.ahead ?: 0) > 0 -> R.plurals.files_m3_sync_diverged
+            !pullService.isClean(path).getOrThrow() ->
+                R.plurals.files_m3_sync_local_changes
+            else -> null
+        }
+        if (behind == 0) {
+            done(SyncStepId.UPDATE, none = true)
+            return@start VaultSyncResult.Done(UiText.res(R.string.vault_m3_pulled, run().target))
+        }
+        if (inTheWay != null) return@start VaultSyncResult.Failed(UiText.plural(inTheWay, behind, behind, run().target))
+        begin(SyncStepId.UPDATE)
+        val result = withContext(sink) { pullService.pull(path).getOrThrow() }
+        if (!result.success) throw IllegalStateException(result.message.ifBlank { "Pull did not complete" })
+        done(SyncStepId.UPDATE, result.commitsApplied.takeIf { it > 0 }?.let { "↓$it" }, none = result.commitsApplied == 0)
+        VaultSyncResult.Done(result.attention?.let(UiText::Raw) ?: UiText.res(R.string.vault_m3_pulled, run().target))
+    }
+
     fun pullThenPush(path: String) = start(path, VaultSyncKind.PULL_THEN_PUSH,
         listOf(SyncStepId.DOWNLOAD, SyncStepId.MERGE, SyncStepId.UPLOAD)) {
         begin(SyncStepId.DOWNLOAD)

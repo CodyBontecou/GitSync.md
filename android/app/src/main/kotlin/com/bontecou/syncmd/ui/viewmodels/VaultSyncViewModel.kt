@@ -95,6 +95,7 @@ class VaultSyncViewModel @Inject constructor(
     fun commitAndPush(message: String, files: Int) = runner.commitAndPush(path.value, message, files)
     fun push() = runner.push(path.value)
     fun pull() = runner.pull(path.value)
+    fun fetchAndFastForward() = runner.fetchAndFastForward(path.value)
     fun pullThenPush() = runner.pullThenPush(path.value)
     fun pushToBranch() = runner.pushToBranch(path.value)
     fun cancel() = runner.cancel(path.value)
