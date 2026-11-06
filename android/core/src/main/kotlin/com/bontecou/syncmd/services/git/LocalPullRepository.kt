@@ -68,6 +68,7 @@ class LocalPullRepository(
                             allChanges    = allChanges,
                             headCommit    = head,
                             lastSyncAt    = RepositoryActivity.read(git.repository),
+                            lastFetchAt   = RepositoryFetchActivity.read(git.repository),
                         )
                     )
                 }
@@ -174,7 +175,9 @@ class LocalPullRepository(
                     val fetchCommand = git.fetch().setRemote(remote)
                     val auth = RemoteAuthentication.provider(git.repository, remote, false, tokenProvider, credentialResolver)
                     fetchCommand.setCredentialsProvider(auth).setTransportConfigCallback(auth)
+                    fetchCommand.setProgressMonitor(currentTransferMonitor())
                     fetchCommand.call()
+                    RepositoryFetchActivity.record(git.repository)
                     Result.success(Unit)
                 }
             } catch (e: Exception) {
@@ -267,7 +270,9 @@ class LocalPullRepository(
         kotlinx.coroutines.currentCoroutineContext().ensureActive()
         verifySnapshot(git, before)
         val fetched = git.fetch().setRemote(before.remote).setRefSpecs(RefSpec("+${before.remoteBranch}:${before.tracking}"))
-            .setTagOpt(TagOpt.NO_TAGS).setTimeout(30).setCredentialsProvider(auth).setTransportConfigCallback(auth).call()
+            .setTagOpt(TagOpt.NO_TAGS).setTimeout(30).setCredentialsProvider(auth).setTransportConfigCallback(auth)
+            .setProgressMonitor(currentTransferMonitor()).call()
+        RepositoryFetchActivity.record(git.repository)
         kotlinx.coroutines.currentCoroutineContext().ensureActive()
         verifySnapshot(git, before)
         val target = fetched.getAdvertisedRef(before.remoteBranch)?.objectId ?: error("The upstream branch no longer exists")

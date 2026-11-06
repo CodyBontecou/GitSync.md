@@ -12,6 +12,19 @@ class DiffService(private val diffRepository: DiffRepository) {
     suspend fun reviewDiscard(repoPath: String, filePath: String? = null) = diffRepository.reviewDiscard(repoPath, filePath)
     suspend fun discardReviewed(repoPath: String, review: DiscardReview) = diffRepository.discardReviewed(repoPath, review)
 
+    /**
+     * Saves a stash copy of every local change, then discards the reviewed scope. If the copy cannot
+     * be taken nothing is discarded; if the scope changed meanwhile the copy stays in Stashes.
+     */
+    suspend fun stashThenDiscard(repoPath: String, review: DiscardReview, message: String, author: Pair<String, String>?): Result<Unit> =
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.STASH) {
+            try {
+                val fresh = ReviewedDiscard.stashCopy(repoPath, review, message, author)
+                diffRepository.discardReviewed(repoPath, fresh)
+            } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled
+            } catch (failure: Exception) { Result.failure(failure) }
+        }
+
     suspend fun getDiff(repoPath: String): Result<UnifiedDiffResult> = diffRepository.getDiff(repoPath)
 
     /**

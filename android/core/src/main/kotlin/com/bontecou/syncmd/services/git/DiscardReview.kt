@@ -31,8 +31,20 @@ class DiscardReview internal constructor(
     val abandonsOperation: Boolean,
     internal val identity: CheckoutProtection.Snapshot,
     internal val revision: String,
+    effects: Map<String, DiscardEffect> = emptyMap(),
+    /** Abbreviated HEAD the files go back to; null on an unborn branch. */
+    val baseCommit: String? = null,
 ) {
     val paths: List<String> = Collections.unmodifiableList(ArrayList(paths))
+    /** What discarding does to each path, for the review ("delete new file", "−8 lines", "restore"). */
+    val effects: Map<String, DiscardEffect> = Collections.unmodifiableMap(LinkedHashMap(effects))
+    /** True when a stash copy can be taken first (a born branch with no operation in progress). */
+    val canStash: Boolean get() = !keepsWorkingFiles && !abandonsOperation && baseCommit != null
+}
+
+/** The effect of discarding one path. [linesLost] counts lines added since HEAD that go away. */
+data class DiscardEffect(val kind: Kind, val linesLost: Int = 0) {
+    enum class Kind { DELETE_NEW_FILE, REVERT, RESTORE, UNSTAGE }
 }
 
 /** Reviews and executes discard under the shared lease; never takes fresh, unreviewed deletion scope. */
@@ -56,8 +68,50 @@ internal object ReviewedDiscard {
             check(paths == paths(git, filePath, unborn)) { "Local changes changed. Review the discard again." }
             preflight(git, filePath, paths, unborn)
             return DiscardReview(root.path, filePath, paths, unborn,
-                filePath == null && git.repository.repositoryState != RepositoryState.SAFE, identity, revision)
+                filePath == null && git.repository.repositoryState != RepositoryState.SAFE, identity, revision,
+                effects(git, paths, unborn), git.repository.resolve("HEAD")?.abbreviate(7)?.name())
         }
+    }
+
+    private fun effects(git: Git, paths: List<String>, unborn: Boolean): Map<String, DiscardEffect> {
+        if (unborn) return paths.associateWith { DiscardEffect(DiscardEffect.Kind.UNSTAGE) }
+        val head = headEntries(git).keys
+        val counts = runCatching { VaultInsights.lineCounts(git.repository, paths) }.getOrDefault(emptyMap())
+        return paths.associateWith { path ->
+            val exists = Files.exists(File(git.repository.workTree, path).toPath(), NOFOLLOW_LINKS)
+            when {
+                path !in head -> DiscardEffect(DiscardEffect.Kind.DELETE_NEW_FILE, counts[path]?.added ?: 0)
+                !exists -> DiscardEffect(DiscardEffect.Kind.RESTORE)
+                else -> DiscardEffect(DiscardEffect.Kind.REVERT, counts[path]?.added ?: 0)
+            }
+        }
+    }
+
+    /**
+     * Saves every local change (untracked files included) as a stash entry, then puts the working
+     * tree and index back exactly as they were, so the reviewed discard can run on top of a copy.
+     * Returns a fresh review of the same scope; it fails, keeping the stash, if the scope changed.
+     */
+    suspend fun stashCopy(repoPath: String, review: DiscardReview, message: String, author: Pair<String, String>?): DiscardReview {
+        val context = currentCoroutineContext()
+        val root = File(repoPath).canonicalFile
+        check(root.path == review.repositoryPath) { "The selected repository changed. Review the discard again." }
+        check(review.canStash) { "A stash copy needs a commit and no Git operation in progress." }
+        com.bontecou.syncmd.services.git.lfs.GitLfs.open(root).use { git ->
+            CheckoutProtection.verify(git, review.identity)
+            check(revision(git, review.filePath) { context.ensureActive() } == review.revision &&
+                paths(git, review.filePath, false) == review.paths) {
+                "Local files or Git operation changed. All changes were kept; review the discard again."
+            }
+            val stash = git.stashCreate().setIncludeUntracked(true).setWorkingDirectoryMessage(message)
+            if (author != null) stash.setPerson(org.eclipse.jgit.lib.PersonIdent(author.first, author.second))
+            val saved = stash.call() ?: error("There was nothing to stash. All changes were kept.")
+            // Put everything back; the stash entry stays as the copy.
+            git.stashApply().setStashRef(saved.name).setRestoreIndex(true).setRestoreUntracked(true).call()
+        }
+        val fresh = review(repoPath, review.filePath)
+        check(fresh.paths == review.paths) { "Local changes changed while saving a copy. The copy is in Stashes; review the discard again." }
+        return fresh
     }
 
     suspend fun execute(repoPath: String, review: DiscardReview) {
