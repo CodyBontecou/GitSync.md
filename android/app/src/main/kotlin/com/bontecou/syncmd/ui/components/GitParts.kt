@@ -125,11 +125,12 @@ fun GitToneHero(
     content: Color,
     modifier: Modifier = Modifier,
     padding: Dp = 20.dp,
+    inset: Boolean = true,
     body: @Composable ColumnScope.() -> Unit,
 ) {
     val shape = RoundedCornerShape(28.dp)
     CompositionLocalProvider(LocalContentColor provides content) {
-        Column(modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp).fillMaxWidth().clip(shape).background(container, shape).padding(padding), content = body)
+        Column(modifier.then(if (inset) Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp) else Modifier).fillMaxWidth().clip(shape).background(container, shape).padding(padding), content = body)
     }
 }
 

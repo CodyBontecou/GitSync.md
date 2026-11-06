@@ -6,6 +6,7 @@ import com.bontecou.syncmd.services.git.GitCommitLine
 import com.bontecou.syncmd.services.git.GitConflictProvenance
 import com.bontecou.syncmd.services.git.GitRebaseProgress
 import com.bontecou.syncmd.services.git.GitStashDetail
+import com.bontecou.syncmd.services.git.GitTagDetail
 import com.bontecou.syncmd.services.git.GitWorkspaceDetails
 import com.bontecou.syncmd.services.git.GitWorkspaceSummary
 import com.bontecou.syncmd.services.git.lfs.LfsRepository
@@ -40,6 +41,7 @@ class GitWorkspaceViewModel @Inject constructor(
         val summary: GitWorkspaceSummary? = null,
         val stashes: List<GitStashDetail> = emptyList(),
         val commitTimes: Map<String, Long> = emptyMap(),
+        val tags: List<GitTagDetail> = emptyList(),
         val lfs: LfsUsage? = null,
         val author: String? = null,
         val provenance: Map<String, GitConflictProvenance> = emptyMap(),
@@ -54,7 +56,7 @@ class GitWorkspaceViewModel @Inject constructor(
     private var lockedFor: String? = null
 
     /** Re-read the summary for [path]. [tagTargets] are commit IDs whose times the Tags screen shows. */
-    fun load(path: String, tagTargets: Collection<String> = emptyList(), stashes: Boolean = false) {
+    fun load(path: String, tagTargets: Collection<String> = emptyList(), stashes: Boolean = false, tags: Boolean = false) {
         if (path.isBlank()) return
         val request = if (_state.value.path != path) {
             job?.cancel(); lockedFor = null
@@ -71,8 +73,9 @@ class GitWorkspaceViewModel @Inject constructor(
                         if (tagTargets.isNotEmpty()) GitWorkspaceDetails.commitTimes(path, tagTargets) else null,
                     )
                 }
+                val tagList = if (tags) withContext(Dispatchers.IO) { GitWorkspaceDetails.tags(path) } else null
                 if (request != generation) return@launch
-                _state.value = _state.value.copy(summary = summary, stashes = stashList ?: _state.value.stashes,
+                _state.value = _state.value.copy(summary = summary, stashes = stashList ?: _state.value.stashes, tags = tagList ?: _state.value.tags,
                     commitTimes = _state.value.commitTimes + times.orEmpty())
             } catch (e: CancellationException) { throw e
             } catch (_: Exception) { /* The screens keep their last facts; the owning view models report errors. */ }

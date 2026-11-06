@@ -52,6 +52,9 @@ data class GitWorkspaceSummary(
 /** A stash entry's provenance: "On draft/pipeline · 3f2a910 · 2 files". */
 data class GitStashDetail(val id: String, val commit: String, val branch: String?, val baseShort: String?, val files: Int, val time: Long)
 
+/** A tag's tagger (annotated only) and when it was made: the tag time, or the commit time for a light tag. */
+data class GitTagDetail(val name: String, val shortId: String, val tagger: String?, val time: Long)
+
 /** Who changed a conflicted file on each side, and what is being merged. */
 data class GitConflictProvenance(
     val source: String?,
@@ -145,6 +148,24 @@ object GitWorkspaceDetails {
                 }.getOrDefault(0)
                 GitStashDetail("stash@{$index}", stash.name, branch, base?.let { repo.newObjectReader().use { r -> r.abbreviate(it, 7).name() } },
                     files, stash.commitTime * 1000L)
+            }
+        }
+    }
+
+    /** Tagger and time for every tag, newest first. */
+    suspend fun tags(path: String): List<GitTagDetail> = RepositoryOperationCoordinator.withRepository(path) {
+        com.bontecou.syncmd.services.git.lfs.GitLfs.open(File(path)).use { git ->
+            val repo = git.repository
+            RevWalk(repo).use { walk ->
+                repo.refDatabase.getRefsByPrefix(Constants.R_TAGS).mapNotNull { ref ->
+                    runCatching {
+                        val any = walk.parseAny(ref.objectId)
+                        val tag = any as? org.eclipse.jgit.revwalk.RevTag
+                        val commit = walk.peel(any) as? RevCommit
+                        val time = tag?.taggerIdent?.`when`?.time ?: commit?.commitTime?.times(1000L) ?: 0L
+                        GitTagDetail(ref.name.removePrefix(Constants.R_TAGS), (commit ?: any).name.take(7), tag?.taggerIdent?.name, time)
+                    }.getOrNull()
+                }.sortedByDescending { it.time }
             }
         }
     }
