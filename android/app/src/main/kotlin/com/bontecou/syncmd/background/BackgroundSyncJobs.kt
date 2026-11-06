@@ -2,6 +2,7 @@ package com.bontecou.syncmd.background
 
 import android.content.Context
 import androidx.work.*
+import com.bontecou.syncmd.push.BackgroundPullNotifications
 import com.bontecou.syncmd.push.PushRuntime
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -44,7 +45,10 @@ class BackgroundSyncWorker @JvmOverloads constructor(context: Context, parameter
     override suspend fun doWork(): Result = try {
         PushRuntime.ready.await()
         val backend = overrideBackend ?: EntryPointAccessors.fromApplication(applicationContext, BackgroundSyncEntryPoint::class.java).background()
-        backend.runAndRecord(BackgroundRunHistory(applicationContext)); Result.success()
+        val before = BackgroundPullNotifications.heads(applicationContext)
+        val results = backend.runAndRecord(BackgroundRunHistory(applicationContext))
+        runCatching { BackgroundPullNotifications.afterBackgroundSync(applicationContext, results, before) }
+        Result.success()
     } catch (cancelled: CancellationException) { throw cancelled }
     catch (_: Exception) { Result.failure() }
 }

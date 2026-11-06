@@ -50,9 +50,10 @@ class BackgroundSyncRunnerTest {
     }
     @Test fun pullOnlyFastForwardsAndNeverPublishesDrafts() = runBlocking<Unit> {
         state = state.copy(pull = true); val incoming = commit(seed, "Incoming"); publish()
-        assertEquals(BackgroundHealthKind.UPDATED, runner.run().single().health.kind); assertEquals(incoming, head())
+        val pulled = runner.run().single()
+        assertEquals(BackgroundHealthKind.UPDATED, pulled.health.kind); assertEquals(incoming, head()); assertTrue(pulled.pulled)
         File(root, "note.md").writeText("Private draft"); clock = 200
-        val health = runner.run().single().health
+        val second = runner.run().single(); val health = second.health; assertFalse(second.pulled)
         assertEquals(BackgroundHealthKind.UP_TO_DATE, health.kind); assertEquals(incoming, head(bare)); assertEquals("Private draft", File(root, "note.md").readText())
         assertEquals(100, health.transferredAt); assertEquals(200, health.succeededAt)
     }

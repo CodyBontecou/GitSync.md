@@ -14,6 +14,7 @@ import com.bontecou.syncmd.automation.VaultShortcutActivity
 import com.bontecou.syncmd.automation.VaultWidgets
 import com.bontecou.syncmd.services.automation.RepositoryActionOutcome
 import com.bontecou.syncmd.services.automation.VaultStatusReader
+import com.bontecou.syncmd.services.background.BackgroundRunResult
 import com.bontecou.syncmd.services.push.PushHintResult
 import java.io.File
 
@@ -37,6 +38,21 @@ object BackgroundPullNotifications {
             updated(context, tag, index + 1, item.target.name, item.target.path, incoming.commits, incoming.author)
         }
     }
+
+    /** Background Sync's pass: post "<vault> was updated" for each vault that actually pulled commits. */
+    fun afterBackgroundSync(context: Context, results: List<BackgroundRunResult>, before: Map<String, String?>) {
+        val pulled = results.filter { it.pulled }
+        if (pulled.isEmpty()) return
+        VaultWidgets.refresh(context)
+        pulled.forEach { item ->
+            val path = item.policy.target.path
+            val incoming = VaultStatusReader.incoming(path, before[path], item.health.head ?: VaultStatusReader.head(path))
+            if (incoming.commits <= 0) return@forEach
+            updated(context, BACKGROUND_SYNC_TAG, path.hashCode(), item.policy.target.name, path, incoming.commits, incoming.author)
+        }
+    }
+
+    private const val BACKGROUND_SYNC_TAG = "background-sync"
 
     fun updated(context: Context, tag: String, id: Int, vault: String, path: String, commits: Int, author: String?) {
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
