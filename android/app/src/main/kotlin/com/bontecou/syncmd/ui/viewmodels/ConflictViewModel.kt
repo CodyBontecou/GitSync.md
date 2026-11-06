@@ -130,6 +130,34 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
             resolution.message.takeIf { it.isNotBlank() }?.let { UiText.Raw(it) }
         }
     }
+    /** Resolve with exact text: "Keep both" or a file edited by hand. Rename pairs keep this phone's filename. */
+    fun acceptContent(expected: RepositorySelection, conflict: Conflict, content: String, onDone: () -> Unit = {}) {
+        if (conflict.isBinaryOrTooLarge) return
+        if (!ready(expected) || !visible(conflict)) return
+        mutate(expected, onSuccess = { clearEditor(); _resolvedConflicts.value += conflict.filePath; onDone() }) { path ->
+            gitOpsCheck(conflictService.getFileConflict(path, conflict.filePath).getOrThrow() == conflict, R.string.gitops_conflict_changed_draft)
+            val resolution = if (conflict.isRenameRename)
+                conflictService.resolveConflictWithPath(path, conflict.filePath, requireNotNull(conflict.ours?.path ?: conflict.filePath), content).getOrThrow()
+            else conflictService.resolveConflict(path, conflict.filePath, ConflictResolutionStrategy.MANUAL, content).getOrThrow()
+            if (!resolution.resolved) {
+                resolution.message.takeIf { it.isNotBlank() }?.let { throw IllegalStateException(it) }
+                gitOpsError(R.string.gitops_conflict_not_resolved)
+            }
+            resolution.message.takeIf { it.isNotBlank() }?.let { UiText.Raw(it) }
+        }
+    }
+
+    /** Before "Edit by hand": make sure the file on disk holds both sides between conflict markers. */
+    fun prepareHandEdit(expected: RepositorySelection, conflict: Conflict, oursLabel: String, theirsLabel: String, onReady: () -> Unit) {
+        if (conflict.isBinaryOrTooLarge || !ready(expected) || !visible(conflict)) return
+        mutate(expected, onSuccess = onReady) { path ->
+            com.bontecou.syncmd.services.git.GitWorkspaceDetails.ensureConflictMarkers(path, conflict.filePath,
+                if (conflict.hasCurrentVersion) conflict.currentContent else "", if (conflict.hasIncomingVersion) conflict.incomingContent else "",
+                oursLabel, theirsLabel)
+            null
+        }
+    }
+
     fun resolveAllConflicts(expected: RepositorySelection, strategy: ConflictResolutionStrategy) {
         if (!ready(expected) || _selectedConflict.value != null) return
         val before = _conflicts.value

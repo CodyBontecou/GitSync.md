@@ -304,6 +304,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             .fillMaxSize()
             .background(bc.bg)
     ) {
+        val gitVaultName = rememberVaultName(settingsViewModel)
         NavHost(
             navController    = navController,
             startDestination = Routes.REPOS,
@@ -540,14 +541,21 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 com.bontecou.syncmd.ui.screens.RebaseScreen(entry.arguments?.getString("path").orEmpty(), onBack = { navController.popBackStackSafe() })
             }
             composable("${Routes.REMOTE_MERGE}/{path}", arguments = listOf(navArgument("path") { type = NavType.StringType })) { entry ->
-                com.bontecou.syncmd.ui.screens.RemoteMergeScreen(entry.arguments?.getString("path").orEmpty(), onBack = { navController.popBackStackSafe() })
+                val mergePath = entry.arguments?.getString("path").orEmpty()
+                com.bontecou.syncmd.ui.screens.RemoteMergeScreen(mergePath, onBack = { navController.popBackStackSafe() },
+                    onNavigate = { navController.openGit(it, mergePath) })
             }
+            // Material 3 Git area: Branches, Stashes, Tags, Remote, conflict, Manage vault (see GitRoutes.kt).
+            gitRoutes(navController, settingsViewModel, gitVaultName)
             composable(Routes.GIT) {
               railFrame(com.bontecou.syncmd.ui.components.VaultTab.GIT) {
                 GitScreen(
                     repositoryPath = selectedRepository,
                     showDebugInfo  = appSettings.showDebugInfo,
                     onNavigateBack = { navController.popBackStackSafe() },
+                    repositoryName = selectedIdentity?.name,
+                    repositoryOwner = selectedIdentity?.owner,
+                    onNavigate = { navController.openGit(it, selectedRepository) },
                     onOpenLfs = { navController.navigateSafe("${Routes.LFS}/${Uri.encode(selectedRepository)}") },
                     onOpenRebase = { navController.navigateSafe("${Routes.REBASE}/${Uri.encode(selectedRepository)}") },
                     onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },

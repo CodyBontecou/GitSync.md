@@ -1,178 +1,127 @@
 package com.bontecou.syncmd.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bontecou.syncmd.R
-import com.bontecou.syncmd.data.models.Conflict
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3RadioIndicator
+import com.bontecou.syncmd.ui.theme.M3SelectableCard
+import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideCard
-import com.bontecou.syncmd.ui.theme.TideChevron
-import com.bontecou.syncmd.ui.theme.TideHairline
-import com.bontecou.syncmd.ui.theme.TidePill
-import com.bontecou.syncmd.ui.theme.TideSectionLabel
-import com.bontecou.syncmd.ui.theme.TideType
+
+/** The part of a conflicted file each side changed: its section heading and the lines that differ. */
+data class ConflictExcerpt(val heading: String?, val lines: List<Pair<String, Boolean>>)
 
 /**
- * Conflicting files as one Tide card of rows: a red ring for files still to
- * resolve, a green check once staged, the mono path and each side's size.
+ * Where two versions of a text file first differ. [heading] is the nearest Markdown heading above
+ * the change (without the #s), so the screen can say "Both sides edited “Step 3”."
+ */
+object ConflictExcerpts {
+    private const val CONTEXT = 4
+
+    fun heading(ours: String, theirs: String): String? = section(ours.lines(), theirs.lines()).first
+
+    fun excerpt(mine: String, other: String): ConflictExcerpt {
+        val a = mine.lines(); val b = other.lines()
+        val (heading, headingIndex) = section(a, b)
+        val prefix = a.zip(b).takeWhile { it.first == it.second }.size
+        var suffix = 0
+        while (suffix < a.size - prefix && suffix < b.size - prefix && a[a.size - 1 - suffix] == b[b.size - 1 - suffix]) suffix++
+        val changedEnd = (a.size - suffix).coerceAtLeast(prefix)
+        val start = if (headingIndex != null && prefix - headingIndex <= 2) headingIndex else (prefix - 1).coerceAtLeast(0)
+        val end = (changedEnd + 1).coerceAtMost(a.size).coerceAtLeast((start + 1).coerceAtMost(a.size))
+        val shown = (start until end).take(CONTEXT + 2).map { i -> a[i] to (i in prefix until changedEnd) }
+        return ConflictExcerpt(heading, shown)
+    }
+
+    /** Nearest heading at or above the first differing line, and its index in [a]. */
+    private fun section(a: List<String>, b: List<String>): Pair<String?, Int?> {
+        val prefix = a.zip(b).takeWhile { it.first == it.second }.size
+        for (i in prefix.coerceAtMost(a.size - 1) downTo 0) {
+            val line = a.getOrNull(i)?.trim() ?: continue
+            if (line.startsWith("#")) return line.trimStart('#').trim().takeIf { it.isNotEmpty() } to i
+        }
+        return null to null
+    }
+}
+
+/**
+ * One side of a conflict (conflict board 09): a selectable card with the radio, a side dot (filled
+ * for this phone, ringed for the remote), who and when, then the changed lines on a tinted block
+ * with each changed line marked.
  */
 @Composable
-fun ConflictList(
-    conflicts: List<Conflict>,
-    resolvedConflicts: Set<String> = emptySet(),
-    onSelectConflict: (Conflict) -> Unit,
-    modifier: Modifier = Modifier
+fun ConflictSideCard(
+    who: String,
+    whenText: String,
+    selected: Boolean,
+    ours: Boolean,
+    excerpt: ConflictExcerpt?,
+    note: String?,
+    onSelect: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    if (conflicts.isEmpty()) {
-        TideCard(modifier) {
-            Text(
-                text = stringResource(R.string.ui_no_conflicts_found_d356b17b),
-                style = TideType.sans(15.sp, FontWeight.SemiBold),
-                color = Tide.colors.ink,
-            )
-        }
-        return
-    }
-
-    val resolved = conflicts.count { it.filePath in resolvedConflicts }
-    LazyColumn(modifier = modifier.fillMaxWidth()) {
-        item(key = "count") {
-            TideSectionLabel(
-                stringResource(R.string.tide_merge_conflict_list_count, resolved, conflicts.size),
-                Modifier.padding(start = 4.dp, bottom = 8.dp),
-            )
-        }
-        itemsIndexed(conflicts, key = { _, it -> it.filePath }) { index, conflict ->
-            val r = Tide.radiusCard
-            val shape = when {
-                conflicts.size == 1 -> RoundedCornerShape(r)
-                index == 0 -> RoundedCornerShape(topStart = r, topEnd = r)
-                index == conflicts.lastIndex -> RoundedCornerShape(bottomStart = r, bottomEnd = r)
-                else -> RoundedCornerShape(0.dp)
+    val c = M3.colors
+    val sideColor = if (ours) c.ahead else c.behind
+    val (block, mark) = if (ours) c.tcSoft to c.tc else c.pc.copy(alpha = 0.45f) to c.pc
+    M3SelectableCard(selected, onSelect, modifier) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            M3RadioIndicator(selected)
+            Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                GitSideDot(sideColor, ring = !ours, size = 10.dp)
+                Text(who, style = M3Type.body.copy(fontSize = 15.sp, fontWeight = FontWeight.SemiBold), color = c.on, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            Column(Modifier.fillMaxWidth().clip(shape).background(Tide.colors.card)) {
-                if (index > 0) TideHairline(Modifier.padding(horizontal = 16.dp))
-                ConflictItem(
-                    conflict = conflict,
-                    isResolved = conflict.filePath in resolvedConflicts,
-                    onSelectClick = { onSelectConflict(conflict) }
-                )
+            Text(whenText, style = M3Type.metaSmall, color = c.onVar)
+        }
+        val shape = RoundedCornerShape(12.dp)
+        Column(Modifier.padding(top = 12.dp).fillMaxWidth().background(block, shape).padding(horizontal = 12.dp, vertical = 10.dp)
+            .testTag(if (ours) "conflict-ours-excerpt" else "conflict-theirs-excerpt")) {
+            if (note != null) Text(note, style = M3Type.code.copy(lineHeight = 21.sp), color = c.onVar)
+            else excerpt?.lines?.forEach { (line, changed) ->
+                Text(buildAnnotatedString {
+                    if (changed && line.isNotBlank()) withStyle(SpanStyle(background = mark)) { append(" $line ") } else append(line.ifEmpty { " " })
+                }, style = M3Type.code.copy(lineHeight = 21.sp), color = c.on, maxLines = 3, overflow = TextOverflow.Ellipsis)
             }
         }
     }
 }
 
-/** Single conflict row. Resolved rows are not tappable. */
+@Preview(name = "Conflict sides · light")
 @Composable
-fun ConflictItem(
-    conflict: Conflict,
-    isResolved: Boolean = false,
-    onSelectClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val c = Tide.colors
-    val statusLabel = stringResource(if (isResolved) R.string.ui_resolved_5be3c2c8 else R.string.tide_merge_conflict_unresolved)
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .clickable(enabled = !isResolved, role = Role.Button) { if (!isResolved) onSelectClick() }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Status mark: green check when resolved, red ring while unresolved.
-        Box(
-            Modifier.size(22.dp).semantics { contentDescription = statusLabel }.then(
-                if (isResolved) Modifier.background(c.synced, CircleShape) else Modifier.border(2.dp, c.danger, CircleShape)
-            ),
-            contentAlignment = Alignment.Center,
-        ) { if (isResolved) Text("✓", style = TideType.mono(11.sp, FontWeight.SemiBold), color = c.card) }
-
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            Text(
-                text = conflict.filePath,
-                style = TideType.mono(13.sp, FontWeight.SemiBold).copy(textDirection = TextDirection.Ltr),
-                color = if (isResolved) c.inkMid else c.ink,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
-                    GitWorkSideDot(yours = true)
-                    val bytes = remember(conflict) { conflict.currentByteCount }
-                    val label = stringResource(R.string.tide_merge_yours)
-                    Text(if (bytes != null) stringResource(R.string.ui_ours_1_s_bytes_e7da423a, bytes.toString())
-                        else if (conflict.hasCurrentVersion) label else "$label · ${stringResource(R.string.tide_merge_side_deleted)}",
-                        style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1)
-                }
-                Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
-                    GitWorkSideDot(yours = false)
-                    val bytes = remember(conflict) { conflict.incomingByteCount }
-                    val label = stringResource(R.string.tide_merge_theirs)
-                    Text(if (bytes != null) stringResource(R.string.ui_theirs_1_s_bytes_70028ef3, bytes.toString())
-                        else if (conflict.hasIncomingVersion) label else "$label · ${stringResource(R.string.tide_merge_side_deleted)}",
-                        style = TideType.mono(11.sp), color = c.inkFaint, maxLines = 1)
-                }
-            }
-        }
-        Box(Modifier.clearAndSetSemantics {}) {
-            if (isResolved) TidePill(statusLabel, c.synced, c.synced.copy(alpha = 0.12f))
-            else TidePill(statusLabel, c.danger, c.danger.copy(alpha = 0.10f))
-        }
-        if (!isResolved) TideChevron()
+private fun ConflictSidesPreview() = SyncMdTheme(darkTheme = false) {
+    val ours = "## Step 3\nTranscribe with on-device Whisper,\nthen tag by speaker."
+    val theirs = "## Step 3\nTranscribe with the API,\nthen summarize to inbox."
+    Column(Modifier.background(M3.colors.surface).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        ConflictSideCard("This phone", "edited 40m ago", true, true, ConflictExcerpts.excerpt(ours, theirs), null, {})
+        ConflictSideCard("GitHub", "from Mac · 14m ago", false, false, ConflictExcerpts.excerpt(theirs, ours), null, {})
     }
 }
 
-// ─── Previews ───────────────────────────────────────────────────────────────
-
-private val previewConflicts = listOf(
-    gitWorkPreviewConflict,
-    gitWorkPreviewConflict.copy(filePath = "daily/2026-11-02.md"),
-    gitWorkPreviewRename,
-)
-
+@Preview(name = "Conflict sides · dark")
 @Composable
-private fun ConflictListPreviewBody(conflicts: List<Conflict>, resolved: Set<String>) {
-    Box(Modifier.background(Tide.colors.paper).padding(16.dp)) { ConflictList(conflicts, resolved, {}) }
+private fun ConflictSidesDarkPreview() = SyncMdTheme(darkTheme = true) {
+    val ours = "## Step 3\nTranscribe with on-device Whisper,\nthen tag by speaker."
+    val theirs = "## Step 3\nTranscribe with the API,\nthen summarize to inbox."
+    Column(Modifier.background(M3.colors.surface).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        ConflictSideCard("This phone", "edited 40m ago", false, true, ConflictExcerpts.excerpt(ours, theirs), null, {})
+        ConflictSideCard("GitHub", "from Mac · 14m ago", true, false, ConflictExcerpts.excerpt(theirs, ours), null, {})
+    }
 }
 
-@Preview(name = "Conflict list · light") @Composable
-private fun ConflictListLight() = SyncMdTheme(darkTheme = false) { ConflictListPreviewBody(previewConflicts, setOf("daily/2026-11-02.md")) }
-
-@Preview(name = "Conflict list · dark") @Composable
-private fun ConflictListDark() = SyncMdTheme(darkTheme = true) { ConflictListPreviewBody(previewConflicts, setOf("daily/2026-11-02.md")) }
-
-@Preview(name = "Conflict list · empty") @Composable
-private fun ConflictListEmpty() = SyncMdTheme(darkTheme = false) { ConflictListPreviewBody(emptyList(), emptySet()) }

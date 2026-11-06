@@ -92,21 +92,21 @@ class BranchViewModel @Inject constructor(private val branchService: BranchServi
             branchService.createBranch(path, name, head).getOrThrow(); null
         }
     }
-    fun switchBranch(expected: RepositorySelection, branch: Branch) = changeBranch(expected, branch) { path ->
+    fun switchBranch(expected: RepositorySelection, branch: Branch, onSuccess: () -> Unit = {}) = changeBranch(expected, branch, onSuccess = onSuccess) { path ->
         branchService.switchBranch(path, branch.name).getOrThrow(); null
     }
-    fun deleteBranch(expected: RepositorySelection, branch: Branch, force: Boolean = false) = changeBranch(expected, branch) { path ->
+    fun deleteBranch(expected: RepositorySelection, branch: Branch, force: Boolean = false, onSuccess: () -> Unit = {}) = changeBranch(expected, branch, onSuccess = onSuccess) { path ->
         branchService.deleteBranch(path, branch.name, force).getOrThrow(); null
     }
-    fun mergeBranch(expected: RepositorySelection, branch: Branch, strategy: MergeStrategy = MergeStrategy.PREFER_FF) = changeBranch(expected, branch, merging = true) { path ->
+    fun mergeBranch(expected: RepositorySelection, branch: Branch, strategy: MergeStrategy = MergeStrategy.PREFER_FF, onSuccess: () -> Unit = {}) = changeBranch(expected, branch, merging = true, onSuccess = onSuccess) { path ->
         val result = branchService.merge(path, branch.name, strategy).getOrThrow()
         if (result.success) UiText.res(R.string.gitops_merge_successful, result.message)
         else if (result.conflictCount > 0) UiText.plural(R.plurals.gitops_merge_stopped_conflicts, result.conflictCount, result.message, result.conflictCount)
         else UiText.res(R.string.gitops_merge_stopped, result.message)
     }
-    private fun changeBranch(expected: RepositorySelection, branch: Branch, merging: Boolean = false, action: suspend (String) -> UiText?) {
+    private fun changeBranch(expected: RepositorySelection, branch: Branch, merging: Boolean = false, onSuccess: () -> Unit = {}, action: suspend (String) -> UiText?) {
         if (_state.value.localBranches.none { it === branch } || branch.isHead || branch.name == _state.value.currentBranch?.name) return
-        mutate(expected, merging) { path, fresh ->
+        mutate(expected, merging, onSuccess) { path, fresh ->
             gitOpsCheck(fresh.branches.firstOrNull { it.type != BranchType.REMOTE && it.name == branch.name } == branch, R.string.gitops_branch_changed)
             action(path)
         }

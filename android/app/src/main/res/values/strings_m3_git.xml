@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material 3 Git tab, its deeper screens (Branches, Stashes, Tags, Remote, Rebase, Manage vault) and the conflict screen. -->
+<resources>
+    <!-- Shared -->
+    <string name="git_m3_github">GitHub</string>
+    <string name="git_m3_the_remote">the remote</string>
+    <string name="git_m3_ago_now">just now</string>
+    <string name="git_m3_ago_minutes">%1$dm ago</string>
+    <string name="git_m3_ago_hours">%1$dh ago</string>
+    <string name="git_m3_ago_days">%1$dd ago</string>
+    <string name="git_m3_age_minutes">%1$dm</string>
+    <string name="git_m3_age_hours">%1$dh</string>
+    <string name="git_m3_age_days">%1$dd</string>
+    <string name="git_m3_ahead">%1$d ahead</string>
+    <string name="git_m3_behind">%1$d behind</string>
+    <string name="git_m3_cancel">Cancel</string>
+    <string name="git_m3_ok">OK</string>
+    <string name="git_m3_subtitle">%1$s · %2$s</string>
+
+    <!-- Git tab -->
+    <string name="git_m3_check_changes">Check for changes</string>
+    <string name="git_m3_vault_settings">Vault settings</string>
+    <string name="git_m3_current_branch">Current branch</string>
+    <string name="git_m3_switch">Switch</string>
+    <string name="git_m3_vs">vs %1$s</string>
+    <string name="git_m3_no_upstream">local only · no upstream</string>
+    <string name="git_m3_detached">Detached at %1$s</string>
+    <string name="git_m3_workspace">Workspace</string>
+    <string name="git_m3_connection">Connection</string>
+    <string name="git_m3_branches">Branches</string>
+    <string name="git_m3_stashes">Stashes</string>
+    <string name="git_m3_tags">Tags</string>
+    <string name="git_m3_lfs">Large files (LFS)</string>
+    <string name="git_m3_lfs_value">%1$s · %2$d locked</string>
+    <string name="git_m3_lfs_none">Not used</string>
+    <string name="git_m3_remote">Remote</string>
+    <string name="git_m3_commit_as">Commit as</string>
+    <string name="git_m3_saved_in">Saved in</string>
+    <string name="git_m3_none">None</string>
+    <string name="git_m3_not_set">Not set</string>
+    <string name="git_m3_discard">Discard changes</string>
+    <string name="git_m3_stop_tracking">Stop tracking…</string>
+    <string name="git_m3_merge_in_progress">Merge in progress</string>
+    <string name="git_m3_merge_ready">All conflicts resolved. Finish the merge.</string>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">%1$d conflict to resolve.</item>
+        <item quantity="other">%1$d conflicts to resolve.</item>
+    </plurals>
+    <string name="git_m3_resolve">Resolve</string>
+    <string name="git_m3_rebase_in_progress">Rebase in progress</string>
+    <string name="git_m3_rebase_step">Stopped on commit %1$d of %2$d.</string>
+    <string name="git_m3_rebase_stopped">The rebase is waiting for you.</string>
+    <string name="git_m3_open_rebase">Open rebase</string>
+    <!-- Branches -->
+    <string name="git_m3_refresh_branches">Refresh branches</string>
+    <string name="git_m3_tracking">tracking %1$s</string>
+    <string name="git_m3_local_only">local only</string>
+    <string name="git_m3_new_branch">New branch</string>
+    <string name="git_m3_branch_name">Branch name</string>
+    <string name="git_m3_branch_placeholder">e.g. draft/winter</string>
+    <string name="git_m3_create">Create</string>
+    <string name="git_m3_starts_from">starts from %1$s on %2$s · you stay on %2$s</string>
+    <string name="git_m3_on_this_phone">On this phone</string>
+    <string name="git_m3_only_on">Only on %1$s</string>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">%1$d change isn’t committed yet. Commit or stash it before you switch branches.</item>
+        <item quantity="other">%1$d changes aren’t committed yet. Commit or stash them before you switch branches.</item>
+    </plurals>
+    <string name="git_m3_current">Current</string>
+    <string name="git_m3_merge_into">Merge into %1$s</string>
+    <string name="git_m3_delete_branch_cd">Delete branch %1$s</string>
+    <string name="git_m3_remote_pill">remote</string>
+    <string name="git_m3_fetch_hint">to see new branches pushed from your other devices.</string>
+    <string name="git_m3_from">From</string>
+    <string name="git_m3_how">How</string>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">%1$d commit %2$s doesn’t have</item>
+        <item quantity="other">%1$d commits %2$s doesn’t have</item>
+    </plurals>
+    <string name="git_m3_nothing_new">nothing %1$s doesn’t have</string>
+    <string name="git_m3_strategy_prefer">Fast-forward if possible</string>
+    <string name="git_m3_strategy_ff">Fast-forward only</string>
+    <string name="git_m3_strategy_always">Always merge commit</string>
+    <string name="git_m3_strategy_prefer_help">Moves %1$s forward when it can. Otherwise creates a merge commit.</string>
+    <string name="git_m3_strategy_ff_help">Only merges when %1$s is directly ahead of %2$s. Keeps history in a straight line.</string>
+    <string name="git_m3_strategy_always_help">Creates a merge commit even when %1$s could just move forward.</string>
+    <string name="git_m3_merge_pause_note">If both branches changed the same file, the merge pauses so you can pick what to keep in Git.</string>
+    <string name="git_m3_merge_named">Merge %1$s</string>
+    <string name="git_m3_delete_branch_title">Delete branch?</string>
+    <string name="git_m3_delete_branch_body">Deletes %1$s on this phone. GitHub isn’t touched.</string>
+    <string name="git_m3_delete_normal">Normal</string>
+    <string name="git_m3_delete_force">Force</string>
+    <string name="git_m3_delete_normal_help">Only deletes the branch if its commits are already merged.</string>
+    <string name="git_m3_delete_force_help">Force deletes the branch even if its commits were never merged. They can be lost.</string>
+    <string name="git_m3_delete">Delete</string>
+    <string name="git_m3_cant_switch_title">Can’t switch yet</string>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">Switching to %1$s would replace the files on this phone. Your %2$d uncommitted change needs a safe place first.</item>
+        <item quantity="other">Switching to %1$s would replace the files on this phone. Your %2$d uncommitted changes need a safe place first.</item>
+    </plurals>
+    <string name="git_m3_cant_switch_note">Untracked files the other branch would overwrite also block the switch. Nothing has changed yet.</string>
+    <string name="git_m3_stash_changes">Stash changes</string>
+    <string name="git_m3_commit_first">Commit first</string>
+    <string name="git_m3_stay_on">Stay on %1$s</string>
+    <string name="git_m3_more_files">%1$d more</string>
+
+    <!-- Stashes -->
+    <string name="git_m3_set_aside">Set aside</string>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="one">uncommitted change</item>
+        <item quantity="other">uncommitted changes</item>
+    </plurals>
+    <string name="git_m3_stash_explain">Stashing puts them away and resets your files to %1$s. Bring them back any time.</string>
+    <string name="git_m3_message_optional">Message (optional)</string>
+    <string name="git_m3_stash_placeholder">What were you in the middle of?</string>
+    <plurals name="git_m3_stash_n">
+        <item quantity="one">Stash %1$d change</item>
+        <item quantity="other">Stash %1$d changes</item>
+    </plurals>
+    <string name="git_m3_nothing_to_stash">Nothing to stash.</string>
+    <string name="git_m3_nothing_to_stash_body">No local changes on this phone. Edit a note and come back to set it aside.</string>
+    <string name="git_m3_saved">Saved</string>
+    <string name="git_m3_no_stashes">No stashes saved.</string>
+    <string name="git_m3_what_each_does">What each does</string>
+    <string name="git_m3_apply">Apply</string>
+    <string name="git_m3_pop">Pop</string>
+    <string name="git_m3_drop">Drop</string>
+    <string name="git_m3_apply_help">Brings the changes back and keeps the stash.</string>
+    <string name="git_m3_pop_help">Brings the changes back and removes the stash.</string>
+    <string name="git_m3_drop_help">Deletes the stash without applying it.</string>
+    <string name="git_m3_drop_cd">Drop %1$s</string>
+    <string name="git_m3_stash_local_note">Stashes stay on this phone. They’re never pushed to GitHub.</string>
+    <string name="git_m3_stash_on">On %1$s</string>
+    <plurals name="git_m3_files">
+        <item quantity="one">%1$d file</item>
+        <item quantity="other">%1$d files</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="one">Stashed %1$d change as stash@{0}.</item>
+        <item quantity="other">Stashed %1$d changes as stash@{0}.</item>
+    </plurals>
+    <string name="git_m3_stashed_older">The older one is now stash@{1}.</string>
+    <string name="git_m3_applied_toast">Applied %1$s. The stash is still saved.</string>
+    <string name="git_m3_popped_toast">Popped %1$s. Your changes are back.</string>
+    <string name="git_m3_dropped_toast">Dropped %1$s.</string>
+
+    <!-- Tags -->
+    <string name="git_m3_new_tag">New tag</string>
+    <string name="git_m3_tag_name">Tag name</string>
+    <string name="git_m3_tag_kind_help">With a message it’s annotated. Leave it empty for a light tag.</string>
+    <string name="git_m3_tag_target">on %1$s · latest on %2$s</string>
+    <string name="git_m3_create_tag">Create tag</string>
+    <string name="git_m3_in_this_vault">In this vault</string>
+    <string name="git_m3_annotated">annotated</string>
+    <string name="git_m3_light">light</string>
+    <string name="git_m3_push">Push</string>
+    <string name="git_m3_push_tag_cd">Push %1$s to GitHub</string>
+    <string name="git_m3_delete_tag_cd">Delete tag %1$s</string>
+    <string name="git_m3_show_more">Show %1$d more</string>
+    <string name="git_m3_tags_note">Commit &amp; push doesn’t send tags. Push each one when you want it on GitHub. Delete removes a tag from this phone only.</string>
+    <string name="git_m3_delete_tag_title">Delete %1$s?</string>
+    <string name="git_m3_delete_tag_body">The tag goes away on this phone. Commit %1$s stays, and a copy already pushed to GitHub isn’t touched.</string>
+    <string name="git_m3_delete_tag">Delete tag</string>
+    <string name="git_m3_tag_pushed">Pushed %1$s.</string>
+
+    <!-- Remote -->
+    <string name="git_m3_remote_reading">Reading this vault’s remote…</string>
+    <string name="git_m3_both_moved">Both sides moved</string>
+    <string name="git_m3_both_moved_headline">The remote moved on while you were writing.</string>
+    <string name="git_m3_both_moved_body">Pull only fast-forwards, so it can’t combine these. Merge keeps both histories. Rebase puts your %1$d commits on top.</string>
+    <string name="git_m3_ready_to_push">Ready to push</string>
+    <string name="git_m3_ready_to_push_headline">The remote hasn’t seen your commits yet.</string>
+    <string name="git_m3_ready_to_push_body">Push sends your %1$d commits. Nothing on the remote changes until it accepts them.</string>
+    <string name="git_m3_new_on_remote">New on the remote</string>
+    <string name="git_m3_new_on_remote_headline">The remote has commits you don’t.</string>
+    <string name="git_m3_new_on_remote_body">Pull fast-forwards %1$s to match. Nothing on this phone is lost.</string>
+    <string name="git_m3_in_sync">In sync</string>
+    <string name="git_m3_in_sync_headline">This phone matches the remote.</string>
+    <string name="git_m3_no_upstream_kicker">No upstream</string>
+    <string name="git_m3_no_upstream_headline">This branch doesn’t track a remote branch yet.</string>
+    <string name="git_m3_no_upstream_body">Pick an upstream so pull and push know where to go.</string>
+    <string name="git_m3_set_upstream">Set upstream</string>
+    <string name="git_m3_yours">↑%1$d yours</string>
+    <string name="git_m3_from_remote">↓%1$d from remote</string>
+    <string name="git_m3_fetched">fetched %1$s</string>
+    <string name="git_m3_never_fetched">not fetched yet</string>
+    <string name="git_m3_merge">Merge</string>
+    <string name="git_m3_rebase">Rebase</string>
+    <string name="git_m3_push_n">Push ↑%1$d</string>
+    <string name="git_m3_pull_n">Pull ↓%1$d</string>
+    <string name="git_m3_update">Update</string>
+    <string name="git_m3_fetch_sub">Check GitHub for new commits</string>
+    <string name="git_m3_pull_sub">Fast-forward only</string>
+    <string name="git_m3_pull_sub_blocked">Fast-forward only. Can’t now: both sides moved</string>
+    <string name="git_m3_merge_sub">Fetch, review, then merge</string>
+    <string name="git_m3_rebase_sub">Replay your commits on top · resume a rebase</string>
+    <string name="git_m3_pulls_from">%1$s pulls from and pushes to</string>
+    <string name="git_m3_remote_access">fetch and push · %1$s</string>
+    <string name="git_m3_access_github">GitHub sign-in</string>
+    <string name="git_m3_access_ssh">SSH key</string>
+    <string name="git_m3_access_https">HTTPS</string>
+    <string name="git_m3_access_local">local folder</string>
+    <string name="git_m3_tracking_cap">Tracking %1$s</string>
+    <string name="git_m3_upstream_body">Pick where %1$s pulls from and pushes to. Files, commits and saved connections stay the same.</string>
+    <string name="git_m3_upstream_help">Without an upstream, pull and push won’t know where to go.</string>
+    <string name="git_m3_merge_reviewing">Fetching and reviewing what the remote has…</string>
+    <string name="git_m3_merge_both_body">Your commits keep their IDs. Because both sides moved, this makes a merge commit. Files edited on both sides may need you to pick.</string>
+    <string name="git_m3_merge_ff_body">Only the remote moved, so this fast-forwards your branch. Nothing new is committed.</string>
+    <string name="git_m3_merge_push_only_body">Nothing new on the remote. Merge and push sends your commits.</string>
+    <string name="git_m3_merge_current_body">Both sides match. There’s nothing to merge.</string>
+    <string name="git_m3_reviewed_plan">Reviewed plan</string>
+    <string name="git_m3_fetch_and_push">Fetch and push: %1$s</string>
+    <string name="git_m3_merge_author">Merge author: %1$s</string>
+    <string name="git_m3_merge_and_push">Merge and push</string>
+    <string name="git_m3_merge_locally">Merge locally</string>
+    <string name="git_m3_fetch_again">Fetch again</string>
+    <string name="git_m3_merge_push_title">Merge and push?</string>
+    <string name="git_m3_merge_push_body">Updates %1$s with %2$s, then pushes to %3$s. Conflicts stop the push. If the remote doesn’t confirm it, the merge stays on this phone and you can retry.</string>
+    <string name="git_m3_push_to">push to %1$s</string>
+    <string name="git_m3_result_merged_kicker">Merged</string>
+    <string name="git_m3_result_unconfirmed_kicker">Merged · not pushed</string>
+    <string name="git_m3_result_current_kicker">Up to date</string>
+    <string name="git_m3_result_merged">Theirs are in.</string>
+    <string name="git_m3_result_unconfirmed">Saved here. Push didn’t finish.</string>
+    <string name="git_m3_result_current">Nothing new to merge.</string>
+    <string name="git_m3_result_saved_locally">Merge commit saved locally.</string>
+    <string name="git_m3_result_push_confirmed">GitHub acknowledged this commit.</string>
+    <string name="git_m3_result_push_unconfirmed">The remote didn’t confirm the push. Retry sends the same commit without merging again.</string>
+    <string name="git_m3_result_local_only">The result is on this phone only. Push when you’re ready.</string>
+    <string name="git_m3_retry_push">Retry push of saved commit</string>
+    <string name="git_m3_return_to_git">Return to Git</string>
+
+    <!-- Conflict -->
+    <string name="git_m3_resolve_conflict">Resolve conflict</string>
+    <string name="git_m3_merging">%1$s · merging %2$s</string>
+    <string name="git_m3_abort">Abort</string>
+    <string name="git_m3_conflict_progress">Conflict %1$d of %2$d · %3$s</string>
+    <string name="git_m3_both_edited_section">Both sides edited “%1$s”.</string>
+    <string name="git_m3_both_edited_file">Both sides edited this file.</string>
+    <string name="git_m3_deleted_here_edited_there">This phone deleted it. The other side edited it.</string>
+    <string name="git_m3_edited_here_deleted_there">This phone edited it. The other side deleted it.</string>
+    <string name="git_m3_conflict_body">Pick the version to keep, or keep both and tidy up after.</string>
+    <string name="git_m3_this_phone">This phone</string>
+    <string name="git_m3_edited_ago">edited %1$s</string>
+    <string name="git_m3_from_who">from %1$s</string>
+    <string name="git_m3_binary_side">This file can’t be shown as text. Pick a whole version.</string>
+    <string name="git_m3_deleted_on_phone">Deleted on this phone.</string>
+    <string name="git_m3_deleted_on_remote">Deleted on %1$s.</string>
+    <string name="git_m3_keep_both">Keep both</string>
+    <string name="git_m3_edit_by_hand">Edit by hand</string>
+    <string name="git_m3_use_phone">Use this phone’s version</string>
+    <string name="git_m3_use_remote">Use %1$s’s version</string>
+    <string name="git_m3_use_branch">Use the %1$s version</string>
+    <string name="git_m3_use_edited">Use my edited version</string>
+    <string name="git_m3_hand_edited_ready">Edited by hand. Use your edited file, or pick a side to replace it.</string>
+    <string name="git_m3_hand_edited_markers">Conflict markers are still in the file. Remove them in the editor, then come back.</string>
+    <string name="git_m3_marker_ours">This phone’s version</string>
+    <string name="git_m3_marker_theirs">%1$s’s version</string>
+    <string name="git_m3_marker_end">End of both versions</string>
+    <string name="git_m3_finishing_merge">Finishing the merge…</string>
+    <string name="git_m3_no_conflicts">No conflicts left.</string>
+    <string name="git_m3_merge_message">Merge %1$s</string>
+    <string name="git_m3_abort_merge_title">Abort this merge?</string>
+    <string name="git_m3_abort_merge_body">Puts %1$s back where it was before the merge. Picks made so far are thrown away.</string>
+    <string name="git_m3_abort_merge">Abort merge</string>
+
+    <!-- Manage vault / Stop tracking -->
+    <string name="git_m3_manage_vault">Manage vault</string>
+    <string name="git_m3_not_tracked">%1$s · not tracked</string>
+    <string name="git_m3_open">Open</string>
+    <string name="git_m3_open_sub">Back to the vault</string>
+    <string name="git_m3_edit_connection">Edit connection</string>
+    <string name="git_m3_move_repository">Move repository</string>
+    <string name="git_m3_move_sub">Pick a new folder</string>
+    <string name="git_m3_remove_from_app">Remove from app</string>
+    <string name="git_m3_remove_from_app_sub">Keeps files and Git. Add it back any time.</string>
+    <string name="git_m3_remove_tracking_sub">Keeps your files. Takes Git off this folder.</string>
+    <string name="git_m3_delete_files_sub">Removes the folder from this phone</string>
+    <string name="git_m3_remove_from_app_title">Remove %1$s from the app?</string>
+    <string name="git_m3_remove_from_app_body">The folder and its Git history stay on this phone. Add it back any time.</string>
+    <string name="git_m3_remove">Remove</string>
+    <string name="git_m3_tracking_removed">Tracking removed</string>
+    <string name="git_m3_plain_folder">%1$s is a plain folder now.</string>
+    <string name="git_m3_plain_folder_body">Your notes are where they were. GitSync.md no longer syncs this folder.</string>
+    <string name="git_m3_previously_added">Previously added</string>
+    <string name="git_m3_tracking_removed_kept">Git tracking removed · working files kept</string>
+    <string name="git_m3_backup_at">Backup: %1$s</string>
+    <string name="git_m3_review_folder">Review restored folder</string>
+    <string name="git_m3_tracking_removed_backup_toast">Git tracking removed. Verified backup saved.</string>
+    <string name="git_m3_tracking_review_body">Your files stay where they are. Git’s copy of their history is taken off this folder.</string>
+    <string name="git_m3_stays_on_disk">Stays on disk</string>
+    <string name="git_m3_disconnected">Disconnected</string>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="one">%1$d note or attachment</item>
+        <item quantity="other">%1$d notes and attachments</item>
+    </plurals>
+    <string name="git_m3_notes_attachments_any">Your notes and attachments</string>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="one">%1$d uncommitted edit, as a plain file</item>
+        <item quantity="other">%1$d uncommitted edits, as plain files</item>
+    </plurals>
+    <string name="git_m3_uncommitted_plain_any">Uncommitted edits, as plain files</string>
+    <string name="git_m3_folder_location">The folder and its location</string>
+    <plurals name="git_m3_n_branches">
+        <item quantity="one">%1$d branch</item>
+        <item quantity="other">%1$d branches</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="one">%1$d stash</item>
+        <item quantity="other">%1$d stashes</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="one">%1$d tag</item>
+        <item quantity="other">%1$d tags</item>
+    </plurals>
+    <string name="git_m3_branches_stashes_tags">Branches, stashes and tags</string>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="one">%1$d commit of history</item>
+        <item quantity="other">%1$d commits of history</item>
+    </plurals>
+    <string name="git_m3_commit_history">Commit history</string>
+    <string name="git_m3_the_named_remote">The %1$s remote</string>
+    <string name="git_m3_its_remotes">Its remotes</string>
+    <string name="git_m3_keep_backup">Keep a verified backup</string>
+    <string name="git_m3_keep_backup_sub">copy and ZIP of the .git folder</string>
+    <string name="git_m3_no_backup_warning">Without a backup, this phone’s Git history is deleted for good. Commits already on GitHub are safe.</string>
+    <string name="git_m3_tracking_backup_title">Remove tracking and keep a backup?</string>
+    <string name="git_m3_tracking_backup_body">GitSync.md checks a copy and a ZIP of the Git data, then disconnects this folder. Your working files stay in place.</string>
+    <string name="git_m3_tracking_permanent_body">Only the reviewed .git data is deleted. Your working files stay in place, but this phone’s Git history can’t be recovered without another copy.</string>
+    <string name="git_m3_tracking_stale">The folder changed since you reviewed it. Cancel and review again.</string>
+
+    <!-- Rebase -->
+    <string name="git_m3_rebase_initial">Fetch first to see what a rebase would move.</string>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="one">Put your %1$d commit on top of the remote.</item>
+        <item quantity="other">Put your %1$d commits on top of the remote.</item>
+    </plurals>
+    <string name="git_m3_rebase_conflicts_headline">The rebase stopped on files both sides edited.</string>
+    <string name="git_m3_rebase_blocked_headline">The rebase is waiting on a blocked checkout.</string>
+    <string name="git_m3_rebase_done_headline">The rebase finished.</string>
+    <string name="git_m3_rebase_aborted">Rebase aborted</string>
+    <string name="git_m3_rebase_aborted_headline">Back where you started.</string>
+    <string name="git_m3_commit_of">commit %1$d of %2$d</string>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="one">%1$d commit now on top of %2$s · new IDs · not pushed</item>
+        <item quantity="other">%1$d commits now on top of %2$s · new IDs · not pushed</item>
+    </plurals>
+    <string name="git_m3_rebase_restored">%1$s restored to %2$s · ↑%3$d ↓%4$d</string>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="one">Continue rebase · resolve %1$d more</item>
+        <item quantity="other">Continue rebase · resolve %1$d more</item>
+    </plurals>
+    <string name="git_m3_continue_retry_first">Continue rebase · retry first</string>
+    <string name="git_m3_skip_commit_ask">Skip commit…</string>
+    <string name="git_m3_abort_rebase_ask">Abort rebase…</string>
+    <plurals name="git_m3_push_commits">
+        <item quantity="one">Push %1$d commit</item>
+        <item quantity="other">Push %1$d commits</item>
+    </plurals>
+    <string name="git_m3_back_to_remote">Back to Remote</string>
+    <string name="git_m3_rebase_review_body">Replays your commits on top of %1$s. Their IDs can change. Merge commits keep their shape. Nothing is pushed.</string>
+    <string name="git_m3_rebase_yours">Your commits to replay · %1$d</string>
+    <string name="git_m3_rebase_theirs">New on %1$s · %2$d</string>
+    <string name="git_m3_fetch_review_again">Fetch and review again</string>
+    <string name="git_m3_rebase_sides_note">In a rebase, %1$s is Git’s “ours” and your %2$s is “theirs”.</string>
+    <string name="git_m3_replayed_commit">replayed commit</string>
+    <string name="git_m3_rebase_conflicts">Conflicts · %1$d of %2$d resolved</string>
+    <string name="git_m3_unresolved">Unresolved</string>
+    <string name="git_m3_staged">Staged</string>
+    <string name="git_m3_both_sides_edited">Both sides edited this file.</string>
+    <string name="git_m3_kept_local">Kept the replayed local commit.</string>
+    <string name="git_m3_kept_upstream">Kept the upstream version.</string>
+    <string name="git_m3_kept_edit">Resolved by hand.</string>
+    <string name="git_m3_replayed_label">Replayed local commit · %1$s</string>
+    <string name="git_m3_rebase_blocked_body">Files that aren’t in Git would be overwritten by the next commit. Move them somewhere safe, refresh, then retry. Commits already replayed are kept.</string>
+    <string name="git_m3_in_the_way">In the way</string>
+    <string name="git_m3_retry_blocked">Retry blocked commit</string>
+    <string name="git_m3_rebase_begin_title">Rewrite local commits?</string>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="one">Your %1$d local commit is replayed onto the reviewed upstream and can get a new ID. The rebase stays on this phone. Pushing is a separate step.</item>
+        <item quantity="other">Your %1$d local commits are replayed onto the reviewed upstream and can get new IDs. The rebase stays on this phone. Pushing is a separate step.</item>
+    </plurals>
+    <string name="git_m3_rebase_skip_title">Skip this local commit?</string>
+    <string name="git_m3_rebase_skip_body">Drops %1$s from the replay. Check its changes first. This can remove your work from the new history.</string>
+    <string name="git_m3_rebase_abort_title">Abort this rebase?</string>
+    <string name="git_m3_rebase_abort_body">Puts %1$s back on %2$s. Edits and conflict picks made during this rebase are thrown away.</string>
+    <string name="git_m3_skip_commit">Skip commit</string>
+</resources>
