@@ -2,10 +2,8 @@
     <string name="repository_actions_title">Repository actions</string>
     <string name="repository_actions_scope">Choose a local repository and review its current branch before running an action.</string>
     <string name="repository_actions_reload">Reload repositories</string>
-    <string name="repository_actions_review">Review current state</string>
     <string name="repository_actions_branch">Branch: %1$s\nReviewed commit: %2$s</string>
     <string name="repository_actions_destination">Upstream: %1$s / %2$s</string>
-    <string name="repository_actions_run">Run action</string>
     <string name="repository_actions_stop">Stop action</string>
     <string name="repository_actions_status">Read Status</string>
     <string name="repository_actions_pull">Pull Repository</string>

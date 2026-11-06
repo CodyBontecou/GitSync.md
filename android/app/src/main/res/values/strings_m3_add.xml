@@ -27,7 +27,6 @@
     <string name="add_url_placeholder">https://github.com/owner/repo</string>
     <string name="add_url_key">Sign-in options for other hosts</string>
     <string name="add_url_hint">HTTPS, SSH, git:// or owner/repo. Self-hosted? Tap the key.</string>
-    <string name="add_url_invalid">Enter an HTTPS, SSH or git:// address, or owner/repo.</string>
     <string name="add_resume_title">Resume publishing</string>
     <string name="add_resume_meta">%1$s · step %2$d of 3 · saved</string>
     <string name="add_close">Close</string>
@@ -114,7 +113,6 @@
     <string name="add_clone_resolving">Resolving deltas</string>
     <string name="add_clone_checkout">Checking out files</string>
     <string name="add_clone_preparing">Connecting</string>
-    <string name="add_clone_bytes_of">%1$s · %2$s / %3$s</string>
     <string name="add_clone_bytes">%1$s · %2$s</string>
     <string name="add_clone_percent">%1$d%%</string>
     <string name="add_clone_busy">Cloning repository</string>
@@ -137,7 +135,6 @@
     </plurals>
     <string name="add_clone_register_failed">Could not add the cloned repository. Its files were kept. Retry adding it, or reconnect its folder from Local repositories.</string>
     <string name="add_clone_register_retry">Add cloned repository</string>
-    <string name="add_clone_meta_files">%1$s · %2$s · %3$s</string>
     <plurals name="add_clone_files">
         <item quantity="one">%1$d file</item>
         <item quantity="other">%1$d files</item>
@@ -222,13 +219,11 @@
     <string name="add_publish_publish">Publish to GitHub</string>
     <string name="add_publish_continue">Continue saved publication</string>
     <string name="add_publish_check">Check original destination</string>
-    <string name="add_publish_use_match">Use the matching empty repo</string>
     <string name="add_publish_reload">Reload saved progress</string>
     <string name="add_publish_uploading">Uploading the saved commit…</string>
     <string name="add_publish_creating">Creating the repository…</string>
     <string name="add_publish_preparing">Preparing the local commit…</string>
     <string name="add_publish_registering">Adding the repository…</string>
-    <string name="add_publish_working">Working…</string>
     <string name="add_publish_stop">Stop</string>
     <string name="add_publish_progress_bytes">%1$s / %2$s · keep the app open</string>
     <string name="add_publish_progress_keep">%1$s · keep the app open</string>
@@ -246,7 +241,6 @@
     <string name="add_publish_file_ignored">%1$s · Ignored</string>
     <string name="add_publish_file_issue">%1$s · %2$s</string>
     <string name="add_publish_no_account">Sign in to GitHub to publish.</string>
-    <string name="add_publish_sign_in">Sign in with GitHub</string>
 
     <!-- Sign in -->
     <string name="add_signin_eyebrow">Any repo. Synced to your Android.</string>
@@ -304,7 +298,6 @@
     <string name="add_check_head_checking">Checking\nyour vault.</string>
     <string name="add_check_head_ready">Your vault\nis ready.</string>
     <string name="add_check_head_blocked">One thing\nto fix first.</string>
-    <string name="add_check_head_unreachable">Can’t reach\nthis vault.</string>
     <string name="add_check_sub_checking">Making sure GitSync.md can sync this repo before you pay for anything.</string>
     <string name="add_check_sub_ready">Everything checks out. One clone and Obsidian opens it with history intact.</string>
     <string name="add_check_sub_blocked">GitSync.md can read this repo but can’t push to it. Fix it on GitHub, then check again.</string>
@@ -344,5 +337,4 @@
     <string name="add_unlock_rail_cd">%1$s, checked and ready to clone from GitHub into Obsidian</string>
     <string name="add_unlock_rail_from">GitHub</string>
     <string name="add_unlock_rail_to">Obsidian</string>
-    <string name="add_unlock_buy">Unlock &amp; clone %1$s</string>
 </resources>

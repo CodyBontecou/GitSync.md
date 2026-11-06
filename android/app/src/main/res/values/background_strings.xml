@@ -13,10 +13,7 @@
     <string name="background_queued">Check requested. Waiting for Android and a connection.</string>
     <string name="background_active">Background checks are scheduled for included repositories.</string>
     <string name="background_inactive">Background checks are off. Enable a mode and include at least one repository.</string>
-    <string name="background_review">Review and include</string>
-    <string name="background_review_again">Review settings</string>
     <string name="background_include">Include this repository</string>
-    <string name="background_exclude">Exclude from Background Sync</string>
     <string name="background_forget">Remove saved policy</string>
     <string name="background_included">Included</string>
     <string name="background_excluded">Excluded</string>

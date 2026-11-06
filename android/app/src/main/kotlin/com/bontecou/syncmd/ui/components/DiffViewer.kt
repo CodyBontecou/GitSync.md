@@ -302,53 +302,6 @@ fun DiffHunkViewer(
     }
 }
 
-/** Displays a single line in a diff. */
-@Composable
-fun DiffLineViewer(
-    line: DiffLine,
-    modifier: Modifier = Modifier
-) {
-    val kind = when (line.type) {
-        DiffLineType.ADDITION -> GitWorkDiffKind.ADDED
-        DiffLineType.DELETION -> GitWorkDiffKind.REMOVED
-        DiffLineType.CONTEXT -> GitWorkDiffKind.CONTEXT
-    }
-    GitWorkDiffLineRow(GitWorkDiffRow(kind, line.content, null, null), modifier)
-}
-
-/** Background tint for a diff line. */
-@Composable
-fun lineBackgroundColor(type: DiffLineType): Color {
-    val p = gitWorkDiffPalette()
-    return when (type) {
-        DiffLineType.ADDITION -> p.addedBg
-        DiffLineType.DELETION -> p.removedBg
-        DiffLineType.CONTEXT -> Color.Transparent
-    }
-}
-
-/** Gutter sign color for a diff line. */
-@Composable
-fun lineIndicatorColor(type: DiffLineType): Color {
-    val p = gitWorkDiffPalette()
-    return when (type) {
-        DiffLineType.ADDITION -> p.addedSign
-        DiffLineType.DELETION -> p.removedSign
-        DiffLineType.CONTEXT -> p.lineNumber
-    }
-}
-
-/** Text color for a diff line. */
-@Composable
-fun lineTextColor(type: DiffLineType): Color {
-    val p = gitWorkDiffPalette()
-    return when (type) {
-        DiffLineType.ADDITION -> p.addedText
-        DiffLineType.DELETION -> p.removedText
-        DiffLineType.CONTEXT -> Tide.colors.inkMid
-    }
-}
-
 // ─── Previews ───────────────────────────────────────────────────────────────
 
 internal val gitWorkPreviewDiff = UnifiedDiffResult(

@@ -1,4 +1,0 @@
-<resources>
-    <string name="lfs_ssh_authorization">Authorization from SSH</string>
-    <string name="lfs_ssh_http_review">Allow this HTTP endpoint to receive short-lived authorization supplied by the verified SSH server. The SSH private key stays on this device. Authorization can be read in transit and is never saved with this approval.</string>
-</resources>

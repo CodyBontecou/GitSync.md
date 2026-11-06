@@ -1,11 +1,8 @@
 <resources>
-    <string name="ssh_trust_verify_title">"Verify SSH server"</string>
     <string name="ssh_trust_changed_title">"SSH server key changed"</string>
-    <string name="ssh_trust_connect">"Trust and connect"</string>
     <string name="ssh_trust_replace">"Replace trust and connect"</string>
     <string name="ssh_trust_error_damaged">"Saved SSH trust needs review. Reset SSH server trust in Settings before retrying."</string>
     <string name="ssh_trust_error_changed">"SSH trust changed during review. Review the current server entry and retry the connection."</string>
-    <string name="ssh_trust_error_save">"Could not save SSH server trust. Verify the fingerprint again before retrying."</string>
     <string name="ssh_trust_error_recovery">"SSH trust recovery could not be saved. Review SSH server trust in Settings before retrying."</string>
     <string name="ssh_trust_error_remove">"Could not remove SSH server trust. Review the current server entry before retrying."</string>
     <string name="ssh_trust_error_reset">"Could not clear SSH server trust. Review the saved entries before retrying."</string>

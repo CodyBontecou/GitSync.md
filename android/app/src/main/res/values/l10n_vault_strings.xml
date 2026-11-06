@@ -24,7 +24,6 @@
     <string name="vault_l10n_device_storage">Device storage</string>
     <string name="vault_l10n_enable_shared_storage">Enable shared storage access, then choose the folder again. App storage remains available without this permission.</string>
     <string name="vault_l10n_enable_shared_storage_before">Enable shared storage access before choosing the folder</string>
-    <string name="vault_l10n_files_git_status">Git: %1$s</string>
     <string name="vault_l10n_folder_access_removed">Folder access was removed. Choose this folder again before continuing.</string>
     <string name="vault_l10n_folder_access_save_failed">Could not save folder access</string>
     <string name="vault_l10n_folder_cloud_provider">Choose a folder on this device or an attached storage volume. This Git engine cannot use a cloud document provider directly.</string>
@@ -80,11 +79,6 @@
     <string name="vault_l10n_size_bytes">%1$s B</string>
     <string name="vault_l10n_size_kb">%1$s KB</string>
     <string name="vault_l10n_size_mb">%1$s MB</string>
-    <string name="vault_l10n_status_conflict">conflict</string>
-    <string name="vault_l10n_status_staged">staged</string>
-    <string name="vault_l10n_status_staged_deletion">staged deletion</string>
-    <string name="vault_l10n_status_staged_unstaged">staged + unstaged</string>
-    <string name="vault_l10n_status_untracked">untracked</string>
     <string name="vault_l10n_storage_choose_folder_first">Choose a folder first</string>
     <string name="vault_l10n_storage_location_changed">This storage location changed. Choose the folder again.</string>
     <string name="vault_l10n_storage_needs_attention">Storage needs attention</string>

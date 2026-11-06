@@ -106,19 +106,7 @@
     <string name="settings_m3_how_sample">Try the offline sample</string>
     <string name="settings_m3_how_storage">Choose storage</string>
     <string name="settings_m3_done">Done</string>
-    <string name="settings_m3_how_headline">Your phone and GitHub,</string>
-    <string name="settings_m3_how_accent">kept in step.</string>
-    <string name="settings_m3_how_phone">Phone</string>
     <string name="settings_m3_how_github">GitHub</string>
-    <string name="settings_m3_how_step_of">%1$d of %2$d</string>
-    <string name="settings_m3_how_step1_title">Your vaults, on Android</string>
-    <string name="settings_m3_how_step1_body">Clone from GitHub, any Git host or over SSH. Each vault keeps its own connection and branch.</string>
-    <string name="settings_m3_how_step2_title">Edit where you like</string>
-    <string name="settings_m3_how_step2_body">Write here, or keep the vault in a device folder and use Obsidian. Check folder access in Settings before you clone.</string>
-    <string name="settings_m3_how_step3_title">Review, then publish</string>
-    <string name="settings_m3_how_step3_body">See the diff, pick what to stage and commit on the phone. Push when you’re ready. Branches, history, tags, conflicts and LFS live in the vault.</string>
-    <string name="settings_m3_how_step4_title">Let it catch up</string>
-    <string name="settings_m3_how_step4_body">Background Sync pulls on a schedule. Push Sync pulls when GitHub changes. Neither commits for you unless you say so.</string>
 
     <!-- 21 · Debug log -->
     <plurals name="settings_m3_debug_errors_day">

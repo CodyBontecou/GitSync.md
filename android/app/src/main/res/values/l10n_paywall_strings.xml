@@ -23,18 +23,8 @@
     <string name="paywall_restore_none">No earlier purchase found for this Google account.</string>
     <string name="paywall_error_store_unavailable">Google Play isn\'t reachable right now. Try again in a moment.</string>
     <string name="paywall_error_purchase_failed">Google Play couldn\'t complete the purchase. Try again in a moment.</string>
-    <string name="paywall_settings_title">GitSync.md Full Access</string>
-    <string name="paywall_settings_unlocked">Unlocked</string>
-    <string name="paywall_check_vault">Check vault</string>
-    <string name="paywall_check_title">Vault check</string>
-    <string name="paywall_check_headline_checking">Checking\nyour vault.</string>
     <string name="paywall_check_headline_ready">Your vault\nis ready.</string>
-    <string name="paywall_check_headline_readonly">One thing\nto fix first.</string>
     <string name="paywall_check_headline_unreachable">Can\'t reach\nthis repo.</string>
-    <string name="paywall_check_sub_checking">Making sure GitSync.md can sync this repo before you pay for anything.</string>
-    <string name="paywall_check_sub_ready">Everything checks out. One clone and Obsidian opens it with history intact.</string>
-    <string name="paywall_check_sub_ready_readonly">It will clone read-only. You can pull, but pushes will be refused.</string>
-    <string name="paywall_check_sub_readonly">GitSync.md can read this repo but can\'t push to it. Ask the owner for write access, then check again.</string>
     <string name="paywall_pill_checking">checking…</string>
     <string name="paywall_pill_ready">ready</string>
     <string name="paywall_pill_needs_access">needs access</string>
@@ -44,7 +34,6 @@
     <string name="paywall_row_size">Size &amp; file count</string>
     <string name="paywall_row_lfs">Git LFS files</string>
     <string name="paywall_row_obsidian">Obsidian vault</string>
-    <string name="paywall_row_obsidian_git">Obsidian Git plugin configured</string>
     <string name="paywall_row_checking">checking</string>
     <string name="paywall_check_connected">connected</string>
     <string name="paywall_check_confirm_key">confirm key on clone</string>
@@ -61,17 +50,4 @@
     <string name="paywall_unreachable_not_found">There\'s no repository at this address. Check the URL, then check again.</string>
     <string name="paywall_unreachable_network">GitSync.md couldn\'t reach the remote. Check the address and your connection, then check again.</string>
     <string name="paywall_foot_blocked_unlocked">Nothing was downloaded.</string>
-    <string name="paywall_foot_blocked_locked">You haven\'t paid anything. The unlock only appears once your vault passes.</string>
-    <string name="paywall_foot_unlocked">Only metadata is read. Nothing is downloaded until you tap %1$s.</string>
-    <string name="paywall_foot_locked">Only metadata is read. No notes are downloaded until you unlock.</string>
-    <string name="paywall_checking_button">Checking…</string>
-    <string name="paywall_clone_vault">Clone vault</string>
-    <string name="paywall_one_time_line">One-time purchase. No subscription.</string>
-    <string name="paywall_check_again">Check again</string>
-    <string name="paywall_continue_read_only">Continue read-only</string>
-    <string name="paywall_pick_another">Pick another repo</string>
-    <plurals name="paywall_check_files">
-        <item quantity="one">%1$d file</item>
-        <item quantity="other">%1$d files</item>
-    </plurals>
 </resources>

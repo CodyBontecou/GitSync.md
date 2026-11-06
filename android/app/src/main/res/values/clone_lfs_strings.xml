@@ -1,5 +1,0 @@
-<resources>
-    <string name="clone_completed_title">Cloned</string>
-    <string name="clone_lfs_attention">Clone completed. Some Git LFS files still need review or download. Your clone and local edits were kept.</string>
-    <string name="clone_lfs_review">Review Git LFS</string>
-</resources>

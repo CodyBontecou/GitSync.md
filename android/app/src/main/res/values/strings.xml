@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Gitsync.md</string>
-    <string name="status_screen">Status</string>
     <string name="pull_screen">Pull</string>
     <string name="commit_screen">Commit</string>
     <string name="branch_screen">Branches</string>
@@ -15,7 +14,6 @@
     <string name="guide_back">Back</string>
     <string name="guide_continue">Continue</string>
     <string name="guide_skip">Skip tour</string>
-    <string name="guide_done">Done</string>
     <string name="guide_step">Step %1$d of 4</string>
     <string name="guide_clone_title">Your repositories, on Android</string>
     <string name="guide_clone_body">Clone GitHub, public, self-hosted or SSH repositories. Each working copy keeps its own connection and branch.</string>
@@ -34,7 +32,6 @@
     <string name="help_title">Help</string>
     <string name="help_tour">Show app tour</string>
     <string name="help_feedback">Send feedback</string>
-    <string name="help_community">Join our Discord</string>
     <string name="help_copy_email">Copy support email</string>
     <string name="help_email_copied">Support email copied</string>
     <string name="help_open_failed">No app could open this link. You can copy the support email instead.</string>
@@ -46,17 +43,8 @@
     <string name="notes_connections_body">Manage GitHub accounts and repository author identity. Connect over HTTPS or SSH, choose clone storage, reconnect local copies, and review repository moves or removal.</string>
     <string name="notes_files_title">Large files and diagnostics</string>
     <string name="notes_files_body">Review Git LFS tracking, download missing contents and inspect server lock warnings. Diagnostics keeps a bounded local log with filtered copy and sharing.</string>
-    <string name="notes_notice_title">What’s new</string>
     <string name="notes_acknowledge">Got it</string>
-    <string name="lfs_extensions_review">Review matching extensions…</string>
-    <string name="lfs_extensions_title">Track matching extensions?</string>
-    <string name="lfs_extensions_repository">Repository: %1$s · %2$s</string>
-    <string name="lfs_extensions_scope">These rules cover current and future matching files in subfolders. Matching is case-sensitive.</string>
     <string name="lfs_extensions_exact_fallback">Selected large files with unknown extensions keep exact-path rules.</string>
-    <plurals name="lfs_extensions_affected">
-        <item quantity="one">%1$d current file will use LFS when staged</item>
-        <item quantity="other">%1$d current files will use LFS when staged</item>
-    </plurals>
     <plurals name="lfs_extensions_more">
         <item quantity="one">And %1$d more current file. Review Git changes before committing.</item>
         <item quantity="other">And %1$d more current files. Review Git changes before committing.</item>
@@ -65,9 +53,4 @@
         <item quantity="one">%1$d current file retains its explicit tracking choice.</item>
         <item quantity="other">%1$d current files retain their explicit tracking choices.</item>
     </plurals>
-    <string name="lfs_extensions_existing">Existing tracking rules can exclude matching files. Current files with an explicit tracking choice keep it.</string>
-    <string name="lfs_extensions_commit">Applying rules changes only .gitattributes. File contents, the staged index and commits stay in place. Stage affected files to convert their Git contents to LFS pointers.</string>
-    <string name="lfs_extensions_limits">Ignored files stay ignored. LFS storage and bandwidth limits depend on your Git host.</string>
-    <string name="lfs_extensions_apply">Apply rules</string>
-    <string name="lfs_extensions_cancel">Cancel</string>
 </resources>

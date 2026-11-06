@@ -3,15 +3,12 @@
     <string name="rebase_accept_upstream_deletion">Accept upstream deletion</string>
     <string name="rebase_use_local">Use local commit</string>
     <string name="rebase_accept_local_deletion">Accept local deletion</string>
-    <string name="rebase_detached">Detached rebase</string>
     <string name="rebase_abort_title">Abort this rebase?</string>
     <string name="rebase_skip_title">Skip this local commit?</string>
     <string name="rebase_begin_title">Rewrite local commits?</string>
     <string name="rebase_abort_body">Restores the original branch and commit. Tracked edits and conflict resolutions made during this rebase will be discarded.</string>
     <string name="rebase_skip_body">Drops the current commit from the replay. Review its changes before skipping; this can remove local work from the resulting history.</string>
     <string name="rebase_begin_body">Local commits will be replayed onto the reviewed upstream and can receive new IDs. Rebase is local; push remains a separate action.</string>
-    <string name="rebase_status_format">Rebase: %1$s</string>
-    <string name="rebase_status_success">Rebase completed successfully</string>
     <string name="rebase_status_aborted">Rebase aborted</string>
     <string name="rebase_status_conflicts">Rebase has conflicts — resolve them, then continue rebase</string>
 </resources>

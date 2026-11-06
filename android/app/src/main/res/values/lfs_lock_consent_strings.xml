@@ -1,5 +1,4 @@
 <resources>
-    <string name="lfs_lock_force_title">Force release another owner\'s lock?</string>
     <string name="lfs_lock_release_title">Release this lock?</string>
     <string name="lfs_lock_create_title">Lock this file?</string>
     <string name="lfs_lock_force_action">Force release</string>

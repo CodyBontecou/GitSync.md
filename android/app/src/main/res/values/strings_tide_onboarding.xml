@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Tide onboarding + add-a-vault copy (iOS OnboardingView / SetupView / RepoPickerView / FolderPublicationView). -->
-    <string name="tide_onboarding_headline_notes">Your notes.</string>
-    <string name="tide_onboarding_headline_git">Real git.</string>
-    <string name="tide_onboarding_headline_step">Always in step.</string>
-    <string name="tide_onboarding_welcome_body">Clone any repo, write in Obsidian or anything else, and sync with one tap.</string>
-    <string name="tide_onboarding_rail_device">this phone</string>
-    <string name="tide_onboarding_illustration">Notes on your phone and commits on GitHub meeting at one sync point</string>
-    <string name="tide_onboarding_pat_subtitle">Paste a GitHub token with repo access.</string>
-    <string name="tide_onboarding_show_token">Show</string>
-    <string name="tide_onboarding_hide_token">Hide</string>
-    <string name="tide_onboarding_create_pat">Create a PAT on GitHub ↗</string>
-    <string name="tide_onboarding_save_title">Default save</string>
-    <string name="tide_onboarding_save_muted">location.</string>
-    <string name="tide_onboarding_save_subtitle">Choose a different folder when cloning, or set a default in Settings.</string>
-    <string name="tide_onboarding_picker_title">Pick a repo</string>
     <string name="tide_onboarding_picker_no_matches">No matches</string>
     <string name="tide_onboarding_picker_clear">Clear search</string>
-    <string name="tide_onboarding_clone_failed">Clone failed</string>
-    <string name="tide_onboarding_publication_step">Step %1$d of 3</string>
 </resources>

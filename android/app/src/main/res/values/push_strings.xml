@@ -24,13 +24,10 @@
     <string name="push_channel">Repository updates</string>
     <string name="push_no_match">No accessible checkout matches this GitHub repository and upstream branch. Review its connection, branch and folder access.</string>
     <string name="push_open_failed">This link could not be opened. Check the browser or Android settings and try again.</string>
-    <string name="push_open_repository">Open repository</string>
-    <string name="push_result_updated">Updated from the configured upstream</string>
     <string name="push_result_current">Already up to date</string>
     <string name="push_result_review">Needs review before it can update</string>
     <string name="push_notification">GitHub branch %1$s changed. Tap to check this working copy.</string>
     <string name="push_existing">Already installed the GitHub App?</string>
     <string name="push_existing_account">GitHub username or organization</string>
-    <string name="push_existing_scope">Connect an existing installation by signing in as the account owner or an organization owner. Its repository access stays unchanged.</string>
     <string name="push_existing_connect">Connect existing installation</string>
 </resources>
