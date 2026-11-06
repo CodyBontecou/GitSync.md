@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 15 · Settings / 28 · Settings — dark -->
+    <string name="settings_m3_title">Settings</string>
+    <string name="settings_m3_account_meta">@%1$s · GitHub</string>
+    <string name="settings_m3_group_sync">Sync</string>
+    <string name="settings_m3_group_new_vaults">New vaults</string>
+    <string name="settings_m3_group_purchase">Purchase</string>
+    <string name="settings_m3_group_app">App</string>
+    <string name="settings_m3_group_more">Connections &amp; help</string>
+    <string name="settings_m3_background_sync">Background Sync</string>
+    <string name="settings_m3_background_on">on · %1$d vaults</string>
+    <string name="settings_m3_on">on</string>
+    <string name="settings_m3_off">off</string>
+    <string name="settings_m3_push_sync">Push Sync from GitHub</string>
+    <string name="settings_m3_shortcuts">Widget &amp; launcher shortcuts</string>
+    <string name="settings_m3_save_clones_in">Save new clones in</string>
+    <string name="settings_m3_commit_as">Commit as</string>
+    <string name="settings_m3_full_access">GitSync.md Full Access</string>
+    <string name="settings_m3_unlocked">Unlocked</string>
+    <string name="settings_m3_theme">Theme</string>
+    <string name="settings_m3_theme_light">Light</string>
+    <string name="settings_m3_theme_dark">Dark</string>
+    <string name="settings_m3_system_default">System default</string>
+    <string name="settings_m3_language">Language</string>
+    <string name="settings_m3_debug_log">Debug log</string>
+    <plurals name="settings_m3_entries">
+        <item quantity="one">%1$d entry</item>
+        <item quantity="other">%1$d entries</item>
+    </plurals>
+    <string name="settings_m3_discord">Join the Discord</string>
+    <string name="settings_m3_accounts">GitHub accounts</string>
+    <string name="settings_m3_ssh_hosts">SSH servers</string>
+    <string name="settings_m3_lfs_endpoints">LFS endpoints</string>
+    <string name="settings_m3_obsidian">Obsidian connections</string>
+    <string name="settings_m3_debug_info">Show debug info</string>
+    <string name="settings_m3_help">Help &amp; about</string>
+    <string name="settings_m3_privacy">Privacy</string>
+    <string name="settings_m3_terms">Terms</string>
+    <string name="settings_m3_sign_out">Sign out</string>
+    <string name="settings_m3_app_storage">App storage</string>
+
+    <!-- CommitAs -->
+    <string name="settings_m3_author_global_subtitle">Every vault without its own author</string>
+    <string name="settings_m3_author_intro">New commits in this vault use this name and email. Commits you already made keep their author.</string>
+    <string name="settings_m3_author_intro_global">New commits in your vaults use this name and email, unless a vault saves its own. Commits you already made keep their author.</string>
+    <string name="settings_m3_author_your_account">your GitHub account</string>
+    <string name="settings_m3_author_from_account">From your GitHub account</string>
+    <string name="settings_m3_author_account_meta">%1$s · nothing saved in this vault yet</string>
+    <string name="settings_m3_author_account_meta_global">%1$s · no default saved yet</string>
+    <string name="settings_m3_author_default">Default</string>
+    <string name="settings_m3_author_saved_vault">Saved in this vault</string>
+    <string name="settings_m3_author_saved_vault_meta">.git/config · overrides %1$s</string>
+    <string name="settings_m3_author_saved_global">Saved for all vaults</string>
+    <string name="settings_m3_author_saved_global_meta">on this phone · overrides %1$s</string>
+    <string name="settings_m3_author_override">Override</string>
+    <string name="settings_m3_author_reading">Reading this vault’s Git config…</string>
+    <string name="settings_m3_author_name">Author name</string>
+    <string name="settings_m3_author_email">Author email</string>
+    <string name="settings_m3_author_help_noreply">GitHub’s private address, so your real email stays hidden.</string>
+    <string name="settings_m3_author_help_match">Match the email Git uses on your Mac so both show up as you.</string>
+    <string name="settings_m3_author_help_changed">Reload before saving, or you will replace the newer author.</string>
+    <string name="settings_m3_author_preview_title">Your next commit will read</string>
+    <string name="settings_m3_author_preview_message">Update from GitSync.md</string>
+    <string name="settings_m3_author_preview_meta">%1$s &lt;%2$s&gt; · now</string>
+    <string name="settings_m3_author_scope">Only this vault changes. Your other vaults keep their own author, or use the GitHub account they sync with.</string>
+    <string name="settings_m3_author_scope_global">Vaults with an author saved in their own .git/config keep it. You can still change a single vault in its Vault settings.</string>
+    <string name="settings_m3_author_use_account">Use my GitHub account instead</string>
+    <string name="settings_m3_author_changed">This author was changed outside GitSync.md, maybe by Git on your Mac. Reload to see what it says now.</string>
+    <string name="settings_m3_author_save">Save author</string>
+    <string name="settings_m3_author_save_note">Saving closes this page. Nothing is committed.</string>
+</resources>
