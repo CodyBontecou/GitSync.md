@@ -239,4 +239,87 @@ you sleep.</string>
     <string name="settings_m3_vault_delete_title">Remove vault &amp; delete files?</string>
     <string name="settings_m3_vault_delete_body">Deletes this folder, its files and its Git history from this phone. Anything not pushed to GitHub is lost.</string>
     <string name="settings_m3_vault_delete_action">Delete</string>
+
+    <!-- ObsidianLinks -->
+    <string name="settings_m3_obsidian_subtitle">Obsidian Git + GitSync.md Connect</string>
+    <string name="settings_m3_obsidian_intro">Let the Obsidian Git plugin push and pull with this vault’s GitHub account. Credentials are encrypted for the companion plugin and never put in a link.</string>
+    <string name="settings_m3_obsidian_before">Before you start</string>
+    <string name="settings_m3_obsidian_req1_title">Open the same folder in Obsidian</string>
+    <string name="settings_m3_obsidian_req1_body">Obsidian and GitSync.md must share one device folder.</string>
+    <string name="settings_m3_obsidian_req2_title">Turn on two community plugins</string>
+    <string name="settings_m3_obsidian_req2_body">Git and GitSync.md Connect, in Obsidian › Settings.</string>
+    <string name="settings_m3_obsidian_req3_title">Use an HTTPS GitHub remote</string>
+    <string name="settings_m3_obsidian_req3_body">With a GitHub account picked in the vault’s connection.</string>
+    <string name="settings_m3_obsidian_req4_title">Nothing in the vault changes</string>
+    <string name="settings_m3_obsidian_req4_body">Preparing only hands over credentials, not files or history.</string>
+    <string name="settings_m3_obsidian_this_vault">this vault</string>
+    <string name="settings_m3_obsidian_prepared_lead">Connection prepared.</string>
+    <string name="settings_m3_obsidian_prepared_open">Open %1$s in Obsidian and run</string>
+    <string name="settings_m3_obsidian_command">GitSync.md Connect: Connect this vault</string>
+    <string name="settings_m3_obsidian_prepared_tail">. A newer request replaces this one.</string>
+    <string name="settings_m3_obsidian_ready">Encrypted credentials are ready for Obsidian. Obsidian Git can now sync %1$s.</string>
+    <string name="settings_m3_obsidian_error">Obsidian couldn’t connect. Check folder access, the GitHub HTTPS remote and the vault’s account, then prepare a new connection.</string>
+    <string name="settings_m3_obsidian_return_failed">Obsidian didn’t open. Turn on GitSync.md Connect in Obsidian, then try returning again.</string>
+    <string name="settings_m3_obsidian_vaults">Vaults on this phone</string>
+    <string name="settings_m3_obsidian_empty">Add or clone a vault into a device folder first. Vaults in app storage can’t be opened by Obsidian.</string>
+    <string name="settings_m3_obsidian_add_vault">Add a vault</string>
+    <string name="settings_m3_obsidian_prepare">Prepare connection</string>
+    <string name="settings_m3_obsidian_waiting">Waiting for Obsidian</string>
+    <string name="settings_m3_obsidian_connected">Connected</string>
+    <string name="settings_m3_obsidian_failed">Didn’t connect</string>
+    <string name="settings_m3_obsidian_forget_title">Forget this connection?</string>
+    <string name="settings_m3_obsidian_forget_body">GitSync.md stops handing credentials to Obsidian for %1$s. Credentials Obsidian already imported stay there; revoke those separately. Your files stay put.</string>
+    <string name="settings_m3_obsidian_forget_action">Forget connection</string>
+    <string name="settings_m3_forget">Forget</string>
+
+    <!-- PushSync / GitHubApp -->
+    <plurals name="settings_m3_push_connections">
+        <item quantity="one">%1$d GitHub connection · on</item>
+        <item quantity="other">%1$d GitHub connections · on</item>
+    </plurals>
+    <string name="settings_m3_push_checked">Checked %1$d · updated %2$d · need review %3$d</string>
+    <string name="settings_m3_push_intro">Connect the GitSync.md GitHub App and a push to GitHub nudges this phone within seconds. Clean vaults fetch and fast-forward on their own. Tap the notification to check again.</string>
+    <string name="settings_m3_push_channel_sub">Uses the Repository updates notification channel</string>
+    <string name="settings_m3_push_permission">Allow notifications for GitSync.md in Android settings, then turn Push Sync on.</string>
+    <string name="settings_m3_push_registered">This phone is registered for notifications</string>
+    <string name="settings_m3_push_connection">GitHub connection</string>
+    <string name="settings_m3_push_connect_again">Connect GitHub again</string>
+    <string name="settings_m3_push_connect_sub">Install the GitSync.md app and pick repositories</string>
+    <string name="settings_m3_push_existing_scope">Sign in as the account owner, or an owner of the organization. The app keeps its current repository access.</string>
+    <string name="settings_m3_push_no_connections">Connect a GitHub account or organization to choose which repos can send updates.</string>
+    <string name="settings_m3_push_connected">Connected</string>
+    <string name="settings_m3_push_all_repos">All repositories, including new ones</string>
+    <string name="settings_m3_push_active">Active</string>
+    <string name="settings_m3_push_suspended">Suspended</string>
+    <string name="settings_m3_push_remove">Remove</string>
+    <string name="settings_m3_push_remove_title">Remove this connection?</string>
+    <string name="settings_m3_push_remove_body">Push Sync stops routing updates from @%1$s to this phone. The GitHub App stays installed. Use Manage on GitHub to change its access or uninstall it.</string>
+    <string name="settings_m3_push_example_title">A nudge looks like this</string>
+    <string name="settings_m3_push_example_cd">Example notification</string>
+    <string name="settings_m3_push_example_meta">GitSync.md · Repository updates · now</string>
+    <string name="settings_m3_push_example_repo">owner/vault</string>
+    <string name="settings_m3_push_example_note">Private on the lock screen. If the vault was clean, it’s already pulled by the time you see this.</string>
+    <string name="settings_m3_push_never">Push Sync never</string>
+    <string name="settings_m3_push_never_commit">Commits</string>
+    <string name="settings_m3_push_never_upload">Uploads changes</string>
+    <string name="settings_m3_push_never_switch">Switches branches</string>
+    <string name="settings_m3_push_never_merge">Merges split histories</string>
+    <string name="settings_m3_push_never_hint">Local changes and split histories wait for you in the vault.</string>
+    <string name="settings_m3_push_handoff_title">Finish on GitHub</string>
+    <string name="settings_m3_push_handoff_body">A browser tab opened. Choose the account and which repos the app can see, then come back. This screen checks again when you return.</string>
+    <string name="settings_m3_push_this_phone">this phone</string>
+    <string name="settings_m3_push_github_app">GitHub App</string>
+    <string name="settings_m3_push_waiting">Waiting for GitHub</string>
+    <string name="settings_m3_push_stop">Stop action</string>
+    <string name="settings_m3_push_err_cancelled_title">Back from GitHub</string>
+    <string name="settings_m3_push_err_cancelled">The GitHub connection was cancelled. Nothing changed. Connect again when you’re ready.</string>
+    <string name="settings_m3_push_err_owner_title">Owner sign-in needed</string>
+    <string name="settings_m3_push_err_not_selected_title">This repo isn’t shared with the app</string>
+    <string name="settings_m3_push_err_not_selected">No vault on this phone matches this GitHub repo and branch. Add the repo to the app’s access on GitHub, or check the vault’s connection and branch.</string>
+    <string name="settings_m3_push_result_updated">Updated from GitHub</string>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="one">%1$d local change on this phone</item>
+        <item quantity="other">%1$d local changes on this phone</item>
+    </plurals>
+    <string name="settings_m3_push_open_vault">Open vault</string>
 </resources>
