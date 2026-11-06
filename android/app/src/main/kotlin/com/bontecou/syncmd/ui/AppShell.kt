@@ -124,7 +124,18 @@ object Routes {
     const val PUSH_SYNC = "push-sync"
     const val BACKGROUND_SYNC = "background-sync"
     const val HISTORY = "history"
+    const val AUTHOR_DEFAULT = "author-default"
+    const val HELP = "help-about"
+    const val UPGRADE = "upgrade"
+    /** vaultSettings/{repo} — repo is the URI-encoded vault path. */
+    const val VAULT_SETTINGS = "vaultSettings"
+    /** stopTracking/{repo}, registered by the Git screens. */
+    const val STOP_TRACKING = "stopTracking"
 }
+
+/** "owner/name" for a vault's top-bar subtitle. */
+private fun List<com.bontecou.syncmd.ui.viewmodels.SavedRepository>.subtitleFor(path: String): String? =
+    firstOrNull { it.path == path }?.displayIdentity()?.let { identity -> identity.owner?.let { "$it/${identity.name}" } ?: identity.name }
 
 /**
  * Root navigation shell.
@@ -331,13 +342,14 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 com.bontecou.syncmd.ui.screens.PullAllScreen(pullAll, onBack = { navController.popBackStackSafe() })
             }
             composable(Routes.REPOSITORY_ACTIONS) {
-                com.bontecou.syncmd.ui.screens.RepositoryActionsScreen(repositoryActions, onBack = { navController.popBackStackSafe() })
+                com.bontecou.syncmd.ui.screens.RepositoryActionsScreen(repositoryActions, onBack = { navController.popBackStackSafe() }, onPullAll = openPullAll)
             }
             composable(Routes.CALLBACK) {
                 com.bontecou.syncmd.ui.screens.RepositoryCallbackScreen(callbacks, onBack = { navController.popBackStackSafe() })
             }
             composable(Routes.OBSIDIAN) {
-                com.bontecou.syncmd.ui.screens.ObsidianScreen(obsidian, onBack = { navController.popBackStackSafe() })
+                com.bontecou.syncmd.ui.screens.ObsidianScreen(obsidian, onBack = { navController.popBackStackSafe() },
+                    onAddVault = { navController.navigateSafe(Routes.REPOS) { popUpTo(Routes.REPOS) { inclusive = false } } })
             }
             composable(Routes.PUSH_SYNC) {
                 com.bontecou.syncmd.ui.screens.PushSyncScreen(pushSync, onBack = { navController.popBackStackSafe() }, onOpenRepository = { path ->
@@ -348,7 +360,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 })
             }
             composable(Routes.BACKGROUND_SYNC) {
-                com.bontecou.syncmd.ui.screens.BackgroundSyncScreen(backgroundSync, onBack = { navController.popBackStackSafe() }, onOpenRepository = { path ->
+                com.bontecou.syncmd.ui.screens.BackgroundSyncScreen(backgroundSync, onBack = { navController.popBackStackSafe() },
+                    pushSyncOn = pushSyncState.enabled, onPushSync = { navController.navigateSafe(Routes.PUSH_SYNC) }, onOpenRepository = { path ->
                     val source = navController.currentBackStackEntry
                     settingsViewModel.setRepositoryPath(path) {
                         if (navController.currentBackStackEntry === source && source?.destination?.route == Routes.BACKGROUND_SYNC) navController.navigateSafe(Routes.VAULT)
@@ -388,7 +401,40 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             }
 
             composable("${Routes.AUTHOR}/{path}", arguments = listOf(navArgument("path") { type = NavType.StringType })) { entry ->
-                com.bontecou.syncmd.ui.screens.AuthorScreen(entry.arguments?.getString("path").orEmpty(), onBack = { navController.popBackStackSafe() })
+                val authorPath = entry.arguments?.getString("path").orEmpty()
+                com.bontecou.syncmd.ui.screens.AuthorScreen(authorPath, onBack = { navController.popBackStackSafe() },
+                    subtitle = registeredRepositories.subtitleFor(authorPath))
+            }
+            composable(Routes.AUTHOR_DEFAULT) {
+                com.bontecou.syncmd.ui.screens.AuthorScreen("", onBack = { navController.popBackStackSafe() }, global = true)
+            }
+            composable(Routes.HELP) {
+                com.bontecou.syncmd.ui.screens.AboutHelpScreen(onBack = { navController.popBackStackSafe() }, onNotesSeen = guide::notesSeen,
+                    starts = com.bontecou.syncmd.ui.screens.AboutHelpStarts(
+                        signIn = { navController.navigateSafe(Routes.LOGIN) },
+                        cloneUrl = { navController.navigateSafe(Routes.REMOTE_CLONE) },
+                        sample = { settingsViewModel.openSampleRepository { navController.navigateSafe(Routes.VAULT) } },
+                        storage = { navController.navigateSafe(Routes.STORAGE) }))
+            }
+            composable(Routes.UPGRADE) {
+                com.bontecou.syncmd.ui.screens.UpgradeScreen(backgroundSync, onClose = { navController.popBackStackSafe() },
+                    onTurnedOn = { navController.navigateSafe(Routes.BACKGROUND_SYNC) { popUpTo(Routes.UPGRADE) { inclusive = true } } },
+                    onHowItWorks = { navController.navigateSafe(Routes.HELP) })
+            }
+            composable("${Routes.VAULT_SETTINGS}/{repo}", arguments = listOf(navArgument("repo") { type = NavType.StringType })) { entry ->
+                val vaultPath = entry.arguments?.getString("repo").orEmpty()
+                com.bontecou.syncmd.ui.screens.VaultSettingsScreen(vaultPath, settingsViewModel, subtitle = registeredRepositories.subtitleFor(vaultPath),
+                    actions = com.bontecou.syncmd.ui.screens.VaultSettingsActions(
+                        back = { navController.popBackStackSafe() },
+                        move = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(it)}") },
+                        commitAs = { navController.navigateSafe("${Routes.AUTHOR}/${Uri.encode(it)}") },
+                        addShortcut = { path ->
+                            repositoryActions.state.value.targets.firstOrNull { it.path == path }?.let(repositoryActions::select)
+                            navController.navigateSafe(Routes.REPOSITORY_ACTIONS)
+                        },
+                        stopTracking = { navController.navigateSafe("${Routes.STOP_TRACKING}/${Uri.encode(it)}") },
+                        removed = { navController.navigateSafe(Routes.REPOS) { popUpTo(Routes.REPOS) { inclusive = false } } },
+                    ))
             }
 
             composable(Routes.LOCAL) {
@@ -584,6 +630,13 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     onObsidian = { obsidian.reload(); navController.navigateSafe(Routes.OBSIDIAN) },
                     onPushSync = { navController.navigateSafe(Routes.PUSH_SYNC) },
                     onBackgroundSync = { backgroundSync.reload(); navController.navigateSafe(Routes.BACKGROUND_SYNC) },
+                    background = backgroundSync,
+                    pushSync = pushSync,
+                    shortcuts = repositoryActions,
+                    onShortcuts = { repositoryActions.refreshShortcuts(); navController.navigateSafe(Routes.REPOSITORY_ACTIONS) },
+                    onCommitAs = { navController.navigateSafe(Routes.AUTHOR_DEFAULT) },
+                    onHelp = { navController.navigateSafe(Routes.HELP) },
+                    onUpgrade = { backgroundSync.reload(); navController.navigateSafe(Routes.UPGRADE) },
                     onManageLfsEndpoints = { navController.navigateSafe(Routes.LFS_ENDPOINTS) },
                     onDiagnostics = { navController.navigateSafe(Routes.DIAGNOSTICS) },
                     onTour = { navController.navigateSafe(Routes.TOUR) },
@@ -606,7 +659,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 com.bontecou.syncmd.ui.screens.LfsEndpointsScreen(onBack = { navController.popBackStackSafe() })
             }
             composable(Routes.DIAGNOSTICS) {
-                com.bontecou.syncmd.ui.screens.DiagnosticsScreen(onBack = { navController.popBackStackSafe() })
+                com.bontecou.syncmd.ui.screens.DiagnosticsScreen(onBack = { navController.popBackStackSafe() },
+                    vaultNames = registeredRepositories.associate { com.bontecou.syncmd.services.diagnostics.Diagnostics.vaultKey(it.path) to it.displayIdentity().name })
             }
             composable(Routes.TOUR) {
                 var page by rememberSaveable { mutableStateOf(0) }
@@ -620,7 +674,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                 com.bontecou.syncmd.ui.screens.SshTrustScreen(onBack = { navController.popBackStackSafe() })
             }
             composable(Routes.STORAGE) {
-                com.bontecou.syncmd.ui.screens.StorageScreen(onBack = { navController.popBackStackSafe() })
+                com.bontecou.syncmd.ui.screens.StorageScreen(onBack = { navController.popBackStackSafe() }, repositories = registeredRepositories,
+                    onMove = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(it)}") })
             }
             composable("${Routes.MOVE}?path={path}&recovery={recovery}", arguments = listOf(
                 navArgument("path") { type = NavType.StringType; defaultValue = "" },
@@ -692,13 +747,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         }
     }
     if (guideState.progress.showNotes && sessionError == null && repositoryError == null && navigationEntry?.destination?.route != Routes.NOTES) {
-        com.bontecou.syncmd.ui.theme.TideDialog(onDismissRequest = guide::notesSeen,
-            title = stringResource(R.string.notes_notice_title),
-            content = { Column(Modifier.heightIn(max = 420.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                com.bontecou.syncmd.ui.screens.ReleaseNotesContent()
-            } },
-            confirmButton = { com.bontecou.syncmd.ui.theme.BPrimaryButton(stringResource(R.string.notes_acknowledge),
-                Modifier.heightIn(min = 48.dp).testTag("notes-acknowledge"), onClick = guide::notesSeen) })
+        com.bontecou.syncmd.ui.screens.WhatsNewDialog(onDismiss = guide::notesSeen)
     }
     // Home shows a session problem inline (board "24 · Sign-in expired"); elsewhere it stays a dialog.
     if (sessionError != null && navigationEntry?.destination?.route != Routes.LOGIN && navigationEntry?.destination?.route != Routes.REPOS) {
