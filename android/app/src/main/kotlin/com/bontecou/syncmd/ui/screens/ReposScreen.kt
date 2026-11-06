@@ -1,131 +1,105 @@
 package com.bontecou.syncmd.ui.screens
 
-import com.bontecou.syncmd.ui.util.displayIdentity
-
-import android.text.format.DateUtils
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDirection
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.bontecou.syncmd.R
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import com.bontecou.syncmd.ui.theme.TideChevron
-import com.bontecou.syncmd.ui.theme.TideHero
-import com.bontecou.syncmd.services.git.RepositoryOverview
-import com.bontecou.syncmd.ui.components.RepositoryOverviewState
-import com.bontecou.syncmd.ui.components.headCommitText
-import com.bontecou.syncmd.ui.components.recordedSyncText
-import com.bontecou.syncmd.ui.components.rememberRepositoryOverview
-import com.bontecou.syncmd.ui.theme.BDestructiveButton
-import com.bontecou.syncmd.ui.theme.BGhostButton
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bontecou.syncmd.R
+import com.bontecou.syncmd.security.RepositoryCredentialStore
+import com.bontecou.syncmd.services.git.RepositorySyncStatus
+import com.bontecou.syncmd.storage.VaultPreference
+import com.bontecou.syncmd.storage.collectAll
+import com.bontecou.syncmd.ui.components.VaultStatusState
+import com.bontecou.syncmd.ui.components.compactBytes
+import com.bontecou.syncmd.ui.components.rememberMinuteClock
+import com.bontecou.syncmd.ui.components.rememberVaultSyncStatus
+import com.bontecou.syncmd.ui.components.relativeAgo
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3Chevron
+import com.bontecou.syncmd.ui.theme.M3Dialog
+import com.bontecou.syncmd.ui.theme.M3DialogAction
+import com.bontecou.syncmd.ui.theme.M3DropdownMenu
+import com.bontecou.syncmd.ui.theme.M3ExtendedFab
+import com.bontecou.syncmd.ui.theme.M3FabStyle
+import com.bontecou.syncmd.ui.theme.M3FilterChip
+import com.bontecou.syncmd.ui.theme.M3Hero
+import com.bontecou.syncmd.ui.theme.M3HeroHeadline
+import com.bontecou.syncmd.ui.theme.M3HeroKicker
+import com.bontecou.syncmd.ui.theme.M3HeroMeta
+import com.bontecou.syncmd.ui.theme.M3HeroStyle
+import com.bontecou.syncmd.ui.theme.M3HomeTopBar
+import com.bontecou.syncmd.ui.theme.M3Icon
+import com.bontecou.syncmd.ui.theme.M3IconButton
+import com.bontecou.syncmd.ui.theme.M3LeadingAvatar
+import com.bontecou.syncmd.ui.theme.M3LeadingTile
+import com.bontecou.syncmd.ui.theme.M3ListCard
+import com.bontecou.syncmd.ui.theme.M3ListRow
+import com.bontecou.syncmd.ui.theme.M3MenuItem
+import com.bontecou.syncmd.ui.theme.M3ModalSheet
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3RailState
+import com.bontecou.syncmd.ui.theme.M3SectionLabel
+import com.bontecou.syncmd.ui.theme.M3SnackbarHost
+import com.bontecou.syncmd.ui.theme.M3SyncIllustration
+import com.bontecou.syncmd.ui.theme.M3TextButton
+import com.bontecou.syncmd.ui.theme.M3Tone
+import com.bontecou.syncmd.ui.theme.M3Type
+import com.bontecou.syncmd.ui.theme.M3Badge
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideAccessory
-import com.bontecou.syncmd.ui.theme.TideCard
-import com.bontecou.syncmd.ui.theme.TideChipRow
-import com.bontecou.syncmd.ui.theme.TideCircleButton
-import com.bontecou.syncmd.ui.theme.TideDialog
-import com.bontecou.syncmd.ui.theme.TideDisplay
-import com.bontecou.syncmd.ui.theme.TideFilterChip
-import com.bontecou.syncmd.ui.theme.TideHairline
-import com.bontecou.syncmd.ui.theme.TideModalIcon
-import com.bontecou.syncmd.ui.theme.TidePill
-import com.bontecou.syncmd.ui.theme.TidePrimaryButton
-import com.bontecou.syncmd.ui.theme.TidePulse
-import com.bontecou.syncmd.ui.theme.TideRow
-import com.bontecou.syncmd.ui.theme.TideSectionLabel
-import com.bontecou.syncmd.ui.theme.TideTopBar
-import com.bontecou.syncmd.ui.theme.TideType
-import com.bontecou.syncmd.ui.theme.TideWordmark
+import com.bontecou.syncmd.ui.theme.m3Gutter
+import com.bontecou.syncmd.ui.util.displayIdentity
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
+import com.bontecou.syncmd.ui.viewmodels.HomeViewModel
 import com.bontecou.syncmd.ui.viewmodels.SavedRepository
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
-import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 /**
- * Home screen — iOS Tide RepoListView.
- *
- * "State first, git second": a headline that says how the vaults are, filter
- * chips, one white card per vault (state pill, mono git facts, sync rail) and
- * a bottom bar with the one right action (Pull All) plus Add.
- * Tap a card → VaultScreen. Long-press, swipe left or ⋮ → remove.
+ * Home: M3 boards 01 (home + Pinned card and chip), 23 (offline), 24 (sign-in expired), 26 (dark) and
+ * 11 (empty). Every badge and count comes from a local read of each vault ([RepositorySyncStatus]):
+ * ↑ commits to push, ↓ fetched commits to pull, edited files and the last fetch. "Sync all" pulls and
+ * pushes every vault ([HomeViewModel.syncAll]).
  */
 @Composable
 fun ReposScreen(
@@ -138,683 +112,624 @@ fun ReposScreen(
     onManageRepositories: () -> Unit = {},
     onCloneFromUrl: () -> Unit = {},
     onPublishFolder: () -> Unit = {},
-    onPullAll: () -> Unit = {},
-    onRepositoryActions: () -> Unit = {},
-    /** A GitHub session problem (board "24 · Sign-in expired"), shown on Home with a sign-in action. */
+    /** Kept for callers; Home's floating action is now Sync all (Pull All stays on its tile, widget and shortcut). */
+    @Suppress("UNUSED_PARAMETER") onPullAll: () -> Unit = {},
+    /** Kept for callers; repository actions are managed from Settings › Widget & launcher shortcuts. */
+    @Suppress("UNUSED_PARAMETER") onRepositoryActions: () -> Unit = {},
+    /** A GitHub session storage problem, shown on Home with a sign-in action. */
     signInIssue: String? = null,
     onSignIn: () -> Unit = onAddRepo,
     onDismissSignInIssue: () -> Unit = {},
+    /** "Sign in with GitHub" on the sign-in-expired hero: a fresh GitHub sign-in that replaces the refused token. */
+    onRenewSignIn: () -> Unit = onSignIn,
+    home: HomeViewModel = hiltViewModel(),
 ) {
-    val allRepos   by settingsViewModel.allRepositories.collectAsState()
+    val allRepos by settingsViewModel.allRepositories.collectAsState()
     val isLoggedIn by githubViewModel.isLoggedIn.collectAsState()
-    val user       by githubViewModel.user.collectAsState()
-    val ghRepos    by githubViewModel.repos.collectAsState()
+    val user by githubViewModel.user.collectAsState()
+    val token by githubViewModel.authManager.token.collectAsState()
+    val preferences by home.preferences.collectAll()
+    val online by home.online.collectAsState()
+    val syncAll by home.syncAll.collectAsState()
+    val expiredRecord by (home.signInStatus?.expired ?: remember { kotlinx.coroutines.flow.MutableStateFlow(null) }).collectAsState()
+    val expired = expiredRecord?.takeIf { home.signInStatus?.expiredFor(token) != null }
 
-    // Each vault keeps its own lifecycle-bound overview read; hoisted here so
-    // the headline and Attention filter can count every vault, not only the
-    // cards on screen. key() keeps a read attached to its path across reorders.
-    val overviews: List<Pair<SavedRepository, State<RepositoryOverviewState>>> = allRepos.map { repo ->
-        key(repo.path) { repo to rememberRepositoryOverview(repo.path) }
+    // One lifecycle-bound read per vault, hoisted so the hero and chips can count every vault.
+    val vaults = allRepos.map { repo ->
+        key(repo.path) {
+            val status by rememberVaultSyncStatus(repo.path)
+            val credential by produceState<RepositoryCredentialStore.Summary?>(null, repo.path, expired) { value = home.credential(repo.path) }
+            HomeVault(repo, preferences[repo.path] ?: VaultPreference(), status, credential, syncAll.results[repo.path], syncAll.current == repo.path)
+        }
     }
+    val mode = when {
+        vaults.isEmpty() -> HomeMode.Empty
+        expired != null -> HomeMode.Auth
+        !online -> HomeMode.Offline
+        else -> HomeMode.Home
+    }
+    val snackbar = remember { SnackbarHostState() }
+    val finished = syncAll.finished
+    val doneText = finished?.let { stringResource(R.string.m3home_sync_done, it.pulled, it.pushed) }
+    val failedText = finished?.failed?.takeIf { it.isNotEmpty() }?.let { stringResource(R.string.m3home_sync_failed, it.joinToString(", ")) }
+    val busyText = stringResource(R.string.m3home_sync_busy)
+    val startText = stringResource(R.string.m3home_sync_start_failed)
+    LaunchedEffect(finished, syncAll.alreadyRunning, syncAll.failedToStart) {
+        val message = when {
+            syncAll.alreadyRunning -> busyText
+            syncAll.failedToStart -> startText
+            failedText != null -> failedText
+            doneText != null -> doneText
+            else -> null
+        } ?: return@LaunchedEffect
+        home.consumeFinished()
+        snackbar.showSnackbar(message)
+    }
+    val pinFailed = stringResource(R.string.m3home_pin_failed)
+    var pinError by remember { mutableStateOf(false) }
+    LaunchedEffect(pinError) { if (pinError) { snackbar.showSnackbar(pinFailed); pinError = false } }
 
     ReposHomeContent(
-        vaults = overviews.map { (repo, state) -> HomeVault(repo, state.value) },
+        mode = mode,
+        vaults = vaults,
         isLoggedIn = isLoggedIn,
         signedInLogin = user?.login,
-        gitHubRepoCount = ghRepos.size,
+        expiredAt = expired?.at,
+        expiredAccount = expired?.accountId,
+        syncing = syncAll.busy,
+        syncDone = syncAll.done,
+        syncTotal = syncAll.total,
+        snackbar = snackbar,
         onRepoSelected = onRepoSelected,
-        onRepoRemoved = onRepoRemoved,
+        onRepoRemoved = { path -> onRepoRemoved(path); home.forget(path) },
+        onTogglePin = { path, pinned -> if (!home.togglePinned(path, pinned)) pinError = true },
+        onSyncAll = home::syncAll,
         onAddRepo = onAddRepo,
         onNavigateToSettings = onNavigateToSettings,
         onManageRepositories = onManageRepositories,
         onCloneFromUrl = onCloneFromUrl,
         onPublishFolder = onPublishFolder,
-        onPullAll = onPullAll,
-        onRepositoryActions = onRepositoryActions,
         signInIssue = signInIssue,
         onSignIn = onSignIn,
+        onRenewSignIn = onRenewSignIn,
         onDismissSignInIssue = onDismissSignInIssue,
     )
 }
 
-private data class HomeVault(val repo: SavedRepository, val overview: RepositoryOverviewState) {
-    val needsAttention get() = overview is RepositoryOverviewState.Unavailable
+internal enum class HomeMode { Home, Empty, Offline, Auth }
+
+internal data class HomeVault(
+    val repo: SavedRepository,
+    val preference: VaultPreference,
+    val status: VaultStatusState,
+    val credential: RepositoryCredentialStore.Summary? = null,
+    val lastSync: HomeViewModel.Outcome? = null,
+    val syncing: Boolean = false,
+) {
+    val name: String get() = preference.displayName ?: repo.displayIdentity().name
+    val pinned: Boolean get() = preference.pinned
+    val loaded: RepositorySyncStatus? get() = (status as? VaultStatusState.Loaded)?.status
+    val ahead: Int get() = loaded?.ahead ?: 0
+    val behind: Int get() = loaded?.behind ?: 0
+    val failed: Boolean get() = lastSync?.failed == true
+    val inSync: Boolean get() = loaded?.inSync == true && !failed
+    /** Counted under "Attention": anything except in sync or still checking. */
+    val needsAttention: Boolean get() = status != VaultStatusState.Loading && !inSync
+    /** Uses the GitHub account whose sign-in expired (a vault without an assigned account uses the default). */
+    fun waitsOnSignIn(account: String?): Boolean = credential?.usesGithubAccount == true &&
+        (account == null || credential.accountId == null || credential.accountId == account)
 }
 
-private enum class HomeFilter { ALL, ATTENTION }
+private enum class HomeFilter { ALL, ATTENTION, PINNED }
 
-/** Stateless home: every visible state is a function of these inputs. */
+/** Stateless Home: every visible state is a function of these inputs. */
 @Composable
-private fun ReposHomeContent(
+internal fun ReposHomeContent(
+    mode: HomeMode,
     vaults: List<HomeVault>,
     isLoggedIn: Boolean,
     signedInLogin: String?,
-    gitHubRepoCount: Int,
-    onRepoSelected: (String) -> Unit,
-    onRepoRemoved: (String) -> Unit,
-    onAddRepo: () -> Unit,
-    onNavigateToSettings: () -> Unit,
-    onManageRepositories: () -> Unit,
-    onCloneFromUrl: () -> Unit,
-    onPublishFolder: () -> Unit,
-    onPullAll: () -> Unit,
-    onRepositoryActions: () -> Unit,
+    expiredAt: Long? = null,
+    expiredAccount: String? = null,
+    syncing: Boolean = false,
+    syncDone: Int = 0,
+    syncTotal: Int = 0,
+    snackbar: SnackbarHostState = remember { SnackbarHostState() },
+    onRepoSelected: (String) -> Unit = {},
+    onRepoRemoved: (String) -> Unit = {},
+    onTogglePin: (String, Boolean) -> Unit = { _, _ -> },
+    onSyncAll: () -> Unit = {},
+    onAddRepo: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {},
+    onManageRepositories: () -> Unit = {},
+    onCloneFromUrl: () -> Unit = {},
+    onPublishFolder: () -> Unit = {},
     signInIssue: String? = null,
-    onSignIn: () -> Unit = onAddRepo,
+    onSignIn: () -> Unit = {},
+    onRenewSignIn: () -> Unit = onSignIn,
     onDismissSignInIssue: () -> Unit = {},
 ) {
-    val c = Tide.colors
+    val c = M3.colors
+    val now = rememberMinuteClock()
     var adding by rememberSaveable { mutableStateOf(false) }
-    Box(Modifier.fillMaxSize().background(c.paper)) {
+    var filter by rememberSaveable { mutableStateOf(HomeFilter.ALL) }
+    Box(Modifier.fillMaxSize().background(c.surface)) {
         Column(Modifier.fillMaxSize()) {
-            HomeTopBar(
-                isLoggedIn = isLoggedIn,
-                signedInLogin = signedInLogin,
-                onSignIn = onAddRepo,
-                onAdd = { adding = true },
-                onNavigateToSettings = onNavigateToSettings,
-                onPullAll = onPullAll,
-                onRepositoryActions = onRepositoryActions,
-            )
+            val initials = signedInLogin?.filter { it.isLetterOrDigit() }?.take(2)?.uppercase()?.takeIf { isLoggedIn && it.isNotEmpty() }
+            M3HomeTopBar(
+                avatarInitials = initials,
+                avatarDescription = signedInLogin?.let { stringResource(R.string.m3home_settings_signed_in, it) },
+                onAvatarClick = onNavigateToSettings,
+                modifier = if (initials != null) Modifier.testTag("open-settings") else Modifier,
+            ) {
+                M3IconButton(R.drawable.ic_m3_add, stringResource(R.string.m3home_add_vault), { adding = true }, Modifier.testTag("home-add-vault"))
+                if (initials == null) M3IconButton(R.drawable.ic_m3_settings, stringResource(R.string.m3home_settings), onNavigateToSettings,
+                    Modifier.testTag("open-settings"))
+            }
             Column(
                 Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Column(Modifier.widthIn(max = 720.dp).fillMaxWidth().padding(horizontal = Tide.gutter).padding(top = 8.dp)) {
-                    if (signInIssue != null) HomeSignInIssue(signInIssue, onSignIn, onDismissSignInIssue)
-                    if (vaults.isEmpty()) {
-                        HomeEmptyState(
-                            isLoggedIn = isLoggedIn,
-                            signedInLogin = signedInLogin,
-                            gitHubRepoCount = gitHubRepoCount,
-                            onAddRepo = onAddRepo,
-                            onCloneFromUrl = onCloneFromUrl,
-                            onManageRepositories = onManageRepositories,
-                            onPublishFolder = onPublishFolder,
-                        )
-                    } else {
-                        var filter by rememberSaveable { mutableStateOf(HomeFilter.ALL) }
-                        val attention = vaults.count { it.needsAttention }
-                        val shown = if (filter == HomeFilter.ATTENTION) vaults.filter { it.needsAttention } else vaults
-                        HomeHeader(vaults)
-                        TideChipRow(Modifier.padding(top = 8.dp)) {
-                            TideFilterChip(stringResource(R.string.tide_home_filter_all), filter == HomeFilter.ALL,
-                                onClick = { filter = HomeFilter.ALL }, count = vaults.size)
-                            TideFilterChip(stringResource(R.string.tide_home_filter_attention), filter == HomeFilter.ATTENTION,
-                                onClick = { filter = HomeFilter.ATTENTION }, count = attention,
-                                dot = if (attention > 0) c.ahead else null)
-                        }
-                        Spacer(Modifier.height(8.dp))
-                        if (shown.isEmpty()) {
-                            TideCard {
-                                Text(stringResource(R.string.tide_home_empty_filter_title), style = TideType.sans(16.sp, FontWeight.Medium), color = c.ink)
-                                Spacer(Modifier.height(4.dp))
-                                Text(stringResource(R.string.tide_home_empty_filter_detail), style = TideType.sans(14.sp), color = c.inkMid)
+                Column(Modifier.widthIn(max = 720.dp).fillMaxWidth().padding(top = 8.dp)) {
+                    if (signInIssue != null) SessionIssue(signInIssue, onSignIn, onDismissSignInIssue)
+                    when (mode) {
+                        HomeMode.Empty -> HomeEmptyState(isLoggedIn, signedInLogin, onAddRepo, onCloneFromUrl, onManageRepositories, onPublishFolder)
+                        HomeMode.Auth -> AuthState(vaults, expiredAt, expiredAccount, now, onRenewSignIn, onRepoSelected, onRepoRemoved, onTogglePin)
+                        HomeMode.Offline, HomeMode.Home -> {
+                            val offline = mode == HomeMode.Offline
+                            if (offline) OfflineHero(vaults, now) else HomeHero(vaults, now)
+                            val attention = vaults.count { it.needsAttention }
+                            if (!offline) Row(
+                                Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                M3FilterChip(stringResource(R.string.m3home_filter_all, vaults.size), filter == HomeFilter.ALL, { filter = HomeFilter.ALL },
+                                    Modifier.testTag("home-filter-all"))
+                                M3FilterChip(stringResource(R.string.m3home_filter_attention, attention), filter == HomeFilter.ATTENTION, { filter = HomeFilter.ATTENTION },
+                                    Modifier.testTag("home-filter-attention"))
+                                M3FilterChip(stringResource(R.string.m3home_filter_pinned), filter == HomeFilter.PINNED, { filter = HomeFilter.PINNED },
+                                    Modifier.testTag("home-filter-pinned"))
                             }
-                        } else {
-                            HomeVaultList(shown, onRepoSelected, onRepoRemoved)
+                            val active = if (offline) HomeFilter.ALL else filter
+                            val pinned = vaults.filter { it.pinned && (active != HomeFilter.ATTENTION || it.needsAttention) }
+                            val listed = when (active) {
+                                HomeFilter.ALL -> vaults.filterNot { it.pinned }
+                                HomeFilter.ATTENTION -> vaults.filter { !it.pinned && it.needsAttention }
+                                HomeFilter.PINNED -> emptyList()
+                            }
+                            pinned.forEach { vault ->
+                                key(vault.repo.path) {
+                                    PinnedCard(vault, offline, onClick = { onRepoSelected(vault.repo.path) },
+                                        onUnpin = { onTogglePin(vault.repo.path, false) }, onRemove = { onRepoRemoved(vault.repo.path) },
+                                        modifier = Modifier.padding(top = 12.dp))
+                                }
+                            }
+                            if (listed.isNotEmpty()) {
+                                VaultList(listed, now, offline, Modifier.padding(top = 12.dp), onRepoSelected, onRepoRemoved, onTogglePin)
+                            } else if (pinned.isEmpty() && active != HomeFilter.ALL) {
+                                M3Note(
+                                    stringResource(if (active == HomeFilter.PINNED) R.string.m3home_filter_empty_pinned else R.string.m3home_filter_empty_attention),
+                                    Modifier.m3Gutter().padding(top = 12.dp), tone = M3NoteTone.Muted,
+                                )
+                            }
                         }
                     }
                     // Room for the floating action button.
-                    Spacer(Modifier.height(112.dp))
+                    Spacer(Modifier.height(120.dp))
                 }
             }
         }
-        HomeFab(
-            empty = vaults.isEmpty(),
-            onPullAll = onPullAll,
-            onAddFirst = onAddRepo,
-            modifier = Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(end = 16.dp, bottom = 24.dp),
-        )
+        val fabModifier = Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(end = 16.dp, bottom = 24.dp)
+        when (mode) {
+            HomeMode.Empty -> M3ExtendedFab(stringResource(R.string.m3home_add_first), R.drawable.ic_m3_add, onAddRepo, fabModifier.testTag("home-add-first"),
+                style = M3FabStyle.Primary)
+            HomeMode.Offline -> M3ExtendedFab(stringResource(R.string.m3home_offline_fab), R.drawable.ic_m3_cloud_off, null, fabModifier.testTag("home-sync-all"),
+                meta = vaults.sumOf { it.ahead }.takeIf { it > 0 }?.let { "↑$it" }, style = M3FabStyle.Flat)
+            HomeMode.Auth -> Unit
+            HomeMode.Home -> if (syncing) M3ExtendedFab(stringResource(R.string.m3home_syncing), R.drawable.ic_m3_sync, null,
+                fabModifier.testTag("home-sync-all").semantics { liveRegion = LiveRegionMode.Polite },
+                meta = if (syncTotal > 0) stringResource(R.string.m3home_syncing_meta, syncDone, syncTotal) else null)
+            else M3ExtendedFab(stringResource(R.string.m3home_sync_all), R.drawable.ic_m3_sync, onSyncAll, fabModifier.testTag("home-sync-all"),
+                meta = stringResource(R.string.m3home_sync_all_meta, vaults.sumOf { it.behind }, vaults.sumOf { it.ahead }))
+        }
+        M3SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).padding(bottom = 72.dp))
     }
     if (adding) {
-        AddVaultSheet(
-            isLoggedIn = isLoggedIn,
-            gitHubRepoCount = gitHubRepoCount,
-            onDismiss = { adding = false },
-            onAddRepo = { adding = false; onAddRepo() },
-            onCloneFromUrl = { adding = false; onCloneFromUrl() },
-            onManageRepositories = { adding = false; onManageRepositories() },
-            onPublishFolder = { adding = false; onPublishFolder() },
-        )
-    }
-}
-
-/** Error-container card: sync is paused until the GitHub session is renewed; local notes are untouched. */
-@Composable
-private fun HomeSignInIssue(message: String, onSignIn: () -> Unit, onDismiss: () -> Unit) {
-    val c = Tide.colors
-    Column(
-        Modifier.fillMaxWidth().padding(bottom = 12.dp).background(c.errorContainer, Tide.heroShape).padding(20.dp)
-            .semantics { liveRegion = androidx.compose.ui.semantics.LiveRegionMode.Polite }.testTag("home-sign-in-issue"),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(painterResource(R.drawable.ic_m3_lock), contentDescription = null, tint = c.onErrorContainer, modifier = Modifier.size(20.dp))
-            Text(stringResource(R.string.ui_github_sign_in_a2e50311), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onErrorContainer,
-                modifier = Modifier.semantics { heading() })
-        }
-        Text(message, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = c.onErrorContainer)
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.heightIn(min = 40.dp).clip(CircleShape).background(c.danger).clickable(role = Role.Button, onClick = onSignIn)
-                .padding(horizontal = 24.dp).testTag("home-sign-in-renew"), contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.guide_login), style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onError)
-            }
-            BGhostButton(stringResource(R.string.ui_dismiss_48845bff), color = c.onErrorContainer, onClick = onDismiss)
+        M3ModalSheet(onDismissRequest = { adding = false }, title = stringResource(R.string.m3home_add_vault), modifier = Modifier.testTag("home-add-sheet")) {
+            StartList(
+                onAddRepo = { adding = false; onAddRepo() },
+                onCloneFromUrl = { adding = false; onCloneFromUrl() },
+                onManageRepositories = { adding = false; onManageRepositories() },
+                onPublishFolder = { adding = false; onPublishFolder() },
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
         }
     }
 }
 
-// ─── Top bar ──────────────────────────────────────────────────────────────────
+// ─── Heroes ───────────────────────────────────────────────────────────────────
 
-/** gitsync.md wordmark, Add, overflow (Pull All, Repository actions) and the account avatar → Settings. */
+/** Most recent fetch across [vaults], for "checked 2 min ago". */
+private fun lastChecked(vaults: List<HomeVault>): Long? = vaults.mapNotNull { it.loaded?.checkedAt ?: it.loaded?.lastSyncAt }.maxOrNull()
+
+/** Inverse hero: "1 vault needs you." over "4 in sync · checked 2 min ago". */
 @Composable
-private fun HomeTopBar(
-    isLoggedIn: Boolean,
-    signedInLogin: String?,
-    onSignIn: () -> Unit,
-    onAdd: () -> Unit,
-    onNavigateToSettings: () -> Unit,
-    onPullAll: () -> Unit,
-    onRepositoryActions: () -> Unit,
-) {
-    val c = Tide.colors
-    var menu by remember { mutableStateOf(false) }
-    TideTopBar(
-        center = { TideWordmark() },
-        actions = {
-            if (!isLoggedIn) {
-                TideCircleButton(stringResource(R.string.guide_login), onSignIn) {
-                    Icon(painterResource(R.drawable.ic_github), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(22.dp))
-                }
-            }
-            TideCircleButton(stringResource(R.string.ui_add_repository_33da2ac1), onAdd, Modifier.testTag("home-add-vault")) {
-                Icon(painterResource(R.drawable.ic_m3_add), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(24.dp))
-            }
-            Box {
-                TideCircleButton(stringResource(R.string.ui_more_d47d7cb0), { menu = true }, Modifier.testTag("home-more")) {
-                    Icon(painterResource(R.drawable.ic_m3_more_vert), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(24.dp))
-                }
-                DropdownMenu(expanded = menu, onDismissRequest = { menu = false }, modifier = Modifier.background(c.container)) {
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.pull_all_title), style = TideType.sans(14.sp)) },
-                        leadingIcon = { Icon(painterResource(R.drawable.ic_m3_arrow_downward), contentDescription = null, modifier = Modifier.size(20.dp)) },
-                        onClick = { menu = false; onPullAll() },
-                    )
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.repository_actions_title), style = TideType.sans(14.sp)) },
-                        leadingIcon = { Icon(painterResource(R.drawable.ic_m3_sync), contentDescription = null, modifier = Modifier.size(20.dp)) },
-                        onClick = { menu = false; onRepositoryActions() },
-                        modifier = Modifier.testTag("open-repository-actions"),
-                    )
-                }
-            }
-            TideCircleButton(stringResource(R.string.ui_app_settings_da645334), onNavigateToSettings, Modifier.testTag("open-settings")) {
-                val initials = signedInLogin?.filter { it.isLetterOrDigit() }?.take(2)?.uppercase()
-                if (isLoggedIn && !initials.isNullOrEmpty()) {
-                    Box(Modifier.size(32.dp).background(c.tertiaryContainer, CircleShape), contentAlignment = Alignment.Center) {
-                        Text(initials, style = TideType.sans(13.sp, FontWeight.SemiBold), color = c.onTertiaryContainer)
-                    }
-                } else {
-                    Icon(painterResource(R.drawable.ic_m3_settings), contentDescription = null, tint = c.inkMid, modifier = Modifier.size(24.dp))
-                }
-            }
-        },
-    )
-}
-
-// ─── Header ───────────────────────────────────────────────────────────────────
-
-/** Inverse hero: "1 vault needs you." (the second line in push orange) over a mono meta line. */
-@Composable
-private fun HomeHeader(vaults: List<HomeVault>, modifier: Modifier = Modifier) {
-    val c = Tide.colors
+private fun HomeHero(vaults: List<HomeVault>, now: Long) {
     val attention = vaults.count { it.needsAttention }
-    val checking = vaults.count { it.overview is RepositoryOverviewState.Loading }
-    val ready = vaults.size - attention - checking
-    val headline = if (attention > 0) pluralStringResource(R.plurals.tide_home_headline_attention, attention, attention)
-        else pluralStringResource(R.plurals.tide_home_headline_ready, vaults.size, vaults.size)
-    val parts = mutableListOf(stringResource(R.string.tide_home_meta_ready, ready))
-    if (checking > 0) parts += stringResource(R.string.tide_home_meta_checking, checking)
-    if (attention > 0) parts += stringResource(R.string.tide_home_meta_unreadable, attention)
-    val lines = headline.split('\n', limit = 2)
-    TideHero(modifier.semantics(mergeDescendants = true) { heading() }.testTag("home-hero")) {
-        Text(
-            buildAnnotatedString {
-                append(lines[0])
-                if (lines.size > 1) {
-                    append(' ')
-                    withStyle(SpanStyle(color = if (attention > 0) c.heroAhead else c.heroMeta)) { append(lines[1]) }
-                }
-            },
-            style = TideType.display(28.sp).copy(lineHeight = 34.sp),
-            color = c.heroText,
-        )
-        Spacer(Modifier.height(6.dp))
-        Text(parts.joinToString(" · "), style = TideType.meta, color = c.heroMeta)
+    val checking = vaults.count { it.status == VaultStatusState.Loading }
+    val inSync = vaults.count { it.inSync }
+    val checked = lastChecked(vaults)
+    M3Hero(Modifier.m3Gutter().testTag("home-hero"), style = M3HeroStyle.Inverse) {
+        if (attention > 0) {
+            M3HeroHeadline(pluralStringResource(R.plurals.m3home_headline_attention, attention, attention),
+                accent = pluralStringResource(R.plurals.m3home_headline_attention_accent, attention))
+        } else {
+            M3HeroHeadline(pluralStringResource(R.plurals.m3home_headline_ready, vaults.size, vaults.size),
+                accent = stringResource(R.string.m3home_headline_ready_accent), accentColor = M3.colors.invOk)
+        }
+        val parts = buildList {
+            add(stringResource(R.string.m3home_meta_in_sync, inSync))
+            if (checking > 0) add(stringResource(R.string.m3home_meta_checking, checking))
+            add(checked?.let { stringResource(R.string.m3home_meta_checked, relativeAgo(it, now, longMinutes = true)) }
+                ?: stringResource(R.string.m3home_meta_never_checked))
+        }
+        M3HeroMeta(parts.joinToString(" · "))
     }
+}
+
+/** Board 23: cHighest card with the cloud-off icon, "Keep writing. / We'll catch up." */
+@Composable
+private fun OfflineHero(vaults: List<HomeVault>, now: Long) {
+    val c = M3.colors
+    val checked = lastChecked(vaults)
+    M3Hero(Modifier.m3Gutter().testTag("home-offline").semantics { liveRegion = LiveRegionMode.Polite }, style = M3HeroStyle.Highest,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            M3Icon(R.drawable.ic_m3_cloud_off, Modifier.padding(top = 4.dp), tint = c.onVar)
+            Column {
+                M3HeroHeadline(stringResource(R.string.m3home_offline_headline), accent = stringResource(R.string.m3home_offline_accent),
+                    accentOnNewLine = true, style = M3Type.headlineSmall)
+                M3HeroMeta(checked?.let { stringResource(R.string.m3home_offline_meta, relativeAgo(it, now, longMinutes = true)) }
+                    ?: stringResource(R.string.m3home_offline_meta_never))
+            }
+        }
+    }
+}
+
+// ─── Badges ───────────────────────────────────────────────────────────────────
+
+private data class Badge(val text: String, val tone: M3Tone)
+
+/** What the local read can honestly say about one vault. */
+@Composable
+private fun badgeFor(vault: HomeVault, offline: Boolean = false): Badge {
+    val s = vault.loaded
+    if (vault.syncing) return Badge(stringResource(R.string.m3home_badge_syncing), M3Tone.Behind)
+    return when {
+        vault.status == VaultStatusState.Loading -> Badge(stringResource(R.string.m3home_badge_checking), M3Tone.Muted)
+        s == null -> Badge(stringResource(R.string.m3home_badge_unreadable), M3Tone.Warn)
+        offline -> when {
+            s.ahead > 0 -> Badge(stringResource(R.string.m3home_offline_queued, s.ahead), M3Tone.Muted)
+            s.behind > 0 -> Badge(stringResource(R.string.m3home_offline_last_known_behind, s.behind), M3Tone.Muted)
+            s.changes > 0 -> Badge(pluralStringResource(R.plurals.m3home_badge_edited, s.changes, s.changes), M3Tone.Muted)
+            else -> Badge(stringResource(R.string.m3home_offline_last_known), M3Tone.Muted)
+        }
+        !s.safe -> Badge(stringResource(R.string.m3home_badge_needs_you), M3Tone.Warn)
+        vault.failed -> Badge(stringResource(R.string.m3home_badge_sync_failed), M3Tone.Warn)
+        s.ahead > 0 && s.behind > 0 -> Badge(stringResource(R.string.m3home_badge_both, s.behind, s.ahead), M3Tone.Ahead)
+        s.ahead > 0 -> Badge(stringResource(R.string.m3home_badge_to_push, s.ahead), M3Tone.Ahead)
+        s.behind > 0 -> Badge(stringResource(R.string.m3home_badge_to_pull, s.behind), M3Tone.Behind)
+        s.changes > 0 -> Badge(pluralStringResource(R.plurals.m3home_badge_edited, s.changes, s.changes), M3Tone.Ahead)
+        s.upstream == null && s.remoteUrl == null -> Badge(stringResource(R.string.m3home_badge_local_only), M3Tone.Muted)
+        else -> Badge(stringResource(R.string.m3home_badge_in_sync), M3Tone.Ok)
+    }
+}
+
+/** "main · 12m ago · 2 MB LFS". */
+@Composable
+private fun rowMeta(vault: HomeVault, now: Long, offline: Boolean): String {
+    val s = vault.loaded ?: return stringResource(
+        if (vault.status == VaultStatusState.Loading) R.string.m3home_meta_loading else R.string.m3home_meta_unreadable)
+    val synced = s.lastSyncAt?.let { relativeAgo(it, now) } ?: stringResource(R.string.m3home_meta_not_synced)
+    val branch = s.branch.ifBlank { s.headCommit?.take(7) ?: "—" }
+    val base = if (offline && s.lastSyncAt != null) stringResource(R.string.m3home_offline_row_meta, branch, synced) else "$branch · $synced"
+    return if (s.lfsBytes > 0) base + " · " + stringResource(R.string.m3home_meta_lfs, compactBytes(s.lfsBytes)) else base
+}
+
+// ─── Pinned card ──────────────────────────────────────────────────────────────
+
+/** tcSoft card: "Pinned" kicker, name with its mono state, "main · owner/repo" and the Phone ↔ GitHub rail. */
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Composable
+private fun PinnedCard(vault: HomeVault, offline: Boolean, onClick: () -> Unit, onUnpin: () -> Unit, onRemove: () -> Unit, modifier: Modifier = Modifier) {
+    val c = M3.colors
+    var menu by remember { mutableStateOf(false) }
+    var confirmRemove by remember { mutableStateOf(false) }
+    val s = vault.loaded
+    val badge = when {
+        s != null && offline && s.ahead > 0 -> stringResource(R.string.m3home_offline_queued, s.ahead)
+        else -> badgeFor(vault, offline).text
+    }
+    val unpinLabel = stringResource(R.string.m3home_unpin)
+    val removeLabel = stringResource(R.string.m3home_remove)
+    Box(modifier.m3Gutter()) {
+        M3Hero(
+            Modifier.testTag("home-pinned-${vault.repo.path}")
+                .clip(androidx.compose.foundation.shape.RoundedCornerShape(28.dp))
+                .combinedClickable(onClick = onClick, onLongClick = { menu = true },
+                    onLongClickLabel = stringResource(R.string.m3home_row_actions), role = androidx.compose.ui.semantics.Role.Button)
+                .semantics { customActions = listOf(CustomAccessibilityAction(unpinLabel) { onUnpin(); true },
+                    CustomAccessibilityAction(removeLabel) { confirmRemove = true; true }) },
+            style = M3HeroStyle.PinnedSoft,
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 18.dp),
+        ) {
+            M3HeroKicker(stringResource(R.string.m3home_pinned), icon = R.drawable.ic_m3_pin)
+            Row(Modifier.fillMaxWidth().padding(top = 6.dp), verticalAlignment = Alignment.Bottom) {
+                Text(vault.name, style = M3Type.title, color = c.on, modifier = Modifier.weight(1f), maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                Text(badge, style = M3Type.count, color = c.tertiary, modifier = Modifier.padding(start = 12.dp, bottom = 4.dp))
+            }
+            Text(listOfNotNull(s?.branch?.takeIf { it.isNotBlank() }, remoteSlug(vault)).joinToString(" · "),
+                style = M3Type.meta, color = c.onVar, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+            val state = when {
+                s == null -> M3RailState.Empty
+                s.ahead > 0 -> M3RailState.Pending
+                s.behind > 0 -> M3RailState.Incoming
+                s.inSync -> M3RailState.InSync
+                else -> M3RailState.Pending
+            }
+            M3SyncIllustration(
+                stringResource(R.string.m3home_rail_phone), remoteHostLabel(vault), state,
+                Modifier.padding(top = 16.dp), onHero = false,
+                dots = when (state) { M3RailState.Pending -> s?.ahead ?: 0; M3RailState.Incoming -> s?.behind ?: 0; else -> 0 }.coerceAtMost(3),
+                background = c.tcSoft,
+            )
+        }
+        // Long-press opens the same menu as the list rows.
+        Box(Modifier.align(Alignment.TopEnd)) {
+            M3DropdownMenu(menu, { menu = false }) {
+                M3MenuItem(unpinLabel, { menu = false; onUnpin() }, icon = R.drawable.ic_m3_pin)
+                M3MenuItem(removeLabel, { menu = false; confirmRemove = true }, icon = R.drawable.ic_m3_delete, destructive = true)
+            }
+        }
+    }
+    if (confirmRemove) RemoveDialog(vault, onDismiss = { confirmRemove = false }, onRemove = { confirmRemove = false; onRemove() })
 }
 
 // ─── Vault list ───────────────────────────────────────────────────────────────
 
-/** One M3 list in a 28dp tonal container; rows separated by outline-variant dividers. */
 @Composable
-private fun HomeVaultList(vaults: List<HomeVault>, onRepoSelected: (String) -> Unit, onRepoRemoved: (String) -> Unit) {
-    val c = Tide.colors
-    Column(Modifier.fillMaxWidth().clip(Tide.cardShape).background(c.card)) {
+private fun VaultList(
+    vaults: List<HomeVault>, now: Long, offline: Boolean, modifier: Modifier,
+    onRepoSelected: (String) -> Unit, onRepoRemoved: (String) -> Unit, onTogglePin: (String, Boolean) -> Unit,
+    meta: @Composable (HomeVault) -> String = { rowMeta(it, now, offline) },
+    badge: @Composable (HomeVault) -> Badge = { badgeFor(it, offline) },
+) {
+    M3ListCard(modifier.m3Gutter()) {
         vaults.forEachIndexed { index, vault ->
             key(vault.repo.path) {
-                if (index > 0) TideHairline()
-                HomeVaultRow(
-                    vault = vault,
-                    onClick = { onRepoSelected(vault.repo.path) },
-                    onRemove = { onRepoRemoved(vault.repo.path) },
-                )
+                VaultRow(vault, meta(vault), badge(vault), divider = index > 0,
+                    onClick = { onRepoSelected(vault.repo.path) }, onRemove = { onRepoRemoved(vault.repo.path) },
+                    onTogglePin = { onTogglePin(vault.repo.path, !vault.pinned) })
             }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+/** 72dp row: toned initial, name over mono meta, the state badge. Long-press: Pin to top / Remove. */
 @Composable
-private fun HomeVaultRow(
-    vault: HomeVault,
-    onClick: () -> Unit,
-    onRemove: () -> Unit,
-) {
-    val c = Tide.colors
-    val repo = vault.repo
-    val scope = rememberCoroutineScope()
-    var showConfirm by remember { mutableStateOf(false) }
-    val offsetX     = remember { Animatable(0f) }
-    val removeLabel = stringResource(R.string.ui_remove_repository_fc68168b)
-
-    Box(Modifier.fillMaxWidth()) {
-        // Error well revealed as the row slides left.
-        Box(Modifier.matchParentSize().background(c.danger), contentAlignment = Alignment.CenterEnd) {
-            Text(stringResource(R.string.ui_remove_c3812fc4), modifier = Modifier.padding(end = 24.dp),
-                style = TideType.sans(14.sp, FontWeight.SemiBold), color = c.onError)
-        }
-
-        Row(
-            Modifier
-                .offset { IntOffset(offsetX.value.roundToInt(), 0) }
-                .pointerInput(repo.path) {
-                    detectHorizontalDragGestures(
-                        onDragEnd = {
-                            scope.launch {
-                                if (offsetX.value < -size.width * 0.35f) showConfirm = true
-                                offsetX.animateTo(0f, spring(dampingRatio = Spring.DampingRatioMediumBouncy))
-                            }
-                        },
-                        onDragCancel = {
-                            scope.launch { offsetX.animateTo(0f, spring(dampingRatio = Spring.DampingRatioMediumBouncy)) }
-                        },
-                        onHorizontalDrag = { change, dragAmount ->
-                            change.consume()
-                            // Only allow left swipe (negative offset)
-                            val newValue = (offsetX.value + dragAmount).coerceAtMost(0f)
-                            scope.launch { offsetX.snapTo(newValue) }
-                        },
-                    )
-                }
-                .fillMaxWidth()
-                .background(c.card)
-                .testTag("repo-card-${repo.path}")
-                .combinedClickable(onClick = onClick, onLongClick = { showConfirm = true })
-                .semantics { customActions = listOf(CustomAccessibilityAction(removeLabel) { showConfirm = true; true }) }
-                .heightIn(min = 72.dp)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            HomeVaultLead(repo.displayIdentity().name, vault.overview)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(repo.displayIdentity().name, style = TideType.sans(16.sp, FontWeight.Medium).copy(lineHeight = 24.sp), color = c.ink,
-                    maxLines = 1, overflow = TextOverflow.Ellipsis)
-                when (val loaded = vault.overview) {
-                    is RepositoryOverviewState.Loaded -> FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(loaded.overview.branch, Modifier.testTag("repo-overview-branch"),
-                            style = TideType.meta.copy(textDirection = TextDirection.Ltr), color = c.inkMid, maxLines = 1)
-                        Text("·", style = TideType.meta, color = c.inkMid)
-                        Text(headCommitText(loaded.overview.headCommit), Modifier.testTag("repo-overview-head"),
-                            style = TideType.meta, color = c.inkMid, maxLines = 1)
-                        Text("·", style = TideType.meta, color = c.inkMid)
-                        Text(recordedSyncText(loaded.overview.lastSyncAt), Modifier.testTag("repo-overview-sync"),
-                            style = TideType.meta, color = c.inkMid, maxLines = 1)
-                    }
-                    RepositoryOverviewState.Loading -> Row(verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        TidePulse(color = c.inkMid)
-                        Text(stringResource(R.string.ui_loading_repository_15b79262), Modifier.testTag("repo-overview-unavailable"),
-                            style = TideType.meta, color = c.inkMid)
-                    }
-                    RepositoryOverviewState.Unavailable -> Text(stringResource(R.string.repository_metadata_unavailable),
-                        Modifier.testTag("repo-overview-unavailable"), style = TideType.meta, color = c.danger)
-                }
-                Text(repoDisplayPath(repo) + " · " + remoteHostLabel(repo), style = TideType.meta.copy(textDirection = TextDirection.Ltr),
-                    color = c.inkMid, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            HomeVaultPill(vault.overview)
-        }
-    }
-
-    if (showConfirm) {
-        val displayName = if (repo.alias.isNotBlank()) repo.alias else repo.name
-        TideDialog(
-            onDismissRequest = { showConfirm = false },
-            icon = { TideModalIcon() },
-            title = removeLabel,
-            text = {
-                Text(stringResource(R.string.ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d, displayName),
-                    modifier = Modifier.testTag("repo-remove-body"))
-            },
-            confirmButton = {
-                BDestructiveButton(stringResource(R.string.ui_remove_c3812fc4), onClick = { showConfirm = false; onRemove() })
-            },
-            dismissButton = {
-                BGhostButton(stringResource(R.string.repository_actions_cancel), Modifier.fillMaxWidth(), onClick = { showConfirm = false })
+private fun VaultRow(vault: HomeVault, meta: String, badge: Badge, divider: Boolean, onClick: () -> Unit, onRemove: () -> Unit, onTogglePin: () -> Unit) {
+    var menu by remember { mutableStateOf(false) }
+    var confirmRemove by remember { mutableStateOf(false) }
+    val pinLabel = stringResource(if (vault.pinned) R.string.m3home_unpin else R.string.m3home_pin)
+    val removeLabel = stringResource(R.string.m3home_remove)
+    Box {
+        M3ListRow(
+            title = vault.name,
+            meta = meta,
+            titleStyle = M3Type.bodyStrong,
+            titleMaxLines = 1,
+            leading = { M3LeadingAvatar(vault.name.firstOrNull { it.isLetterOrDigit() }?.toString() ?: "·", badge.tone) },
+            trailing = { M3Badge(badge.text, badge.tone) },
+            onClick = onClick,
+            onLongClick = { menu = true },
+            onLongClickLabel = stringResource(R.string.m3home_row_actions),
+            divider = divider,
+            modifier = Modifier.testTag("repo-card-${vault.repo.path}").semantics {
+                customActions = listOf(CustomAccessibilityAction(pinLabel) { onTogglePin(); true },
+                    CustomAccessibilityAction(removeLabel) { confirmRemove = true; true })
             },
         )
-    }
-}
-
-/** 40dp circle with the vault's initial, toned by what the home read could say. */
-@Composable
-private fun HomeVaultLead(name: String, state: RepositoryOverviewState) {
-    val c = Tide.colors
-    val (fill, ink) = when (state) {
-        RepositoryOverviewState.Unavailable -> c.errorContainer to c.onErrorContainer
-        RepositoryOverviewState.Loading -> c.well to c.inkMid
-        is RepositoryOverviewState.Loaded -> if (state.overview.headCommit == null) c.well to c.inkMid else c.okContainer to c.onOkContainer
-    }
-    Box(Modifier.size(40.dp).background(fill, CircleShape).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
-        Text(name.firstOrNull { it.isLetterOrDigit() }?.toString() ?: "·", style = TideType.sans(16.sp, FontWeight.SemiBold), color = ink)
-    }
-}
-
-/** What the home read can honestly say: checking, unreadable, no commits, or when it last synced. */
-@Composable
-private fun HomeVaultPill(state: RepositoryOverviewState) {
-    val c = Tide.colors
-    when (state) {
-        RepositoryOverviewState.Loading -> TidePill(stringResource(R.string.tide_home_state_checking), c.inkMid, c.well)
-        RepositoryOverviewState.Unavailable -> TidePill(stringResource(R.string.tide_home_state_unreadable), c.danger, c.danger.copy(alpha = 0.12f))
-        is RepositoryOverviewState.Loaded -> {
-            val time = state.overview.lastSyncAt
-            when {
-                state.overview.headCommit == null -> TidePill(stringResource(R.string.repository_no_commits), c.inkMid, c.well)
-                time == null -> TidePill(stringResource(R.string.tide_home_state_never_synced), c.inkMid, c.well)
-                else -> TidePill(stringResource(R.string.tide_home_state_synced, relativeTime(time)), c.synced, c.synced.copy(alpha = 0.12f))
-            }
+        M3DropdownMenu(menu, { menu = false }, offset = androidx.compose.ui.unit.DpOffset(72.dp, 0.dp)) {
+            M3MenuItem(pinLabel, { menu = false; onTogglePin() }, Modifier.testTag("repo-pin"), icon = R.drawable.ic_m3_pin)
+            M3MenuItem(removeLabel, { menu = false; confirmRemove = true }, Modifier.testTag("repo-remove"), icon = R.drawable.ic_m3_delete, destructive = true)
         }
     }
+    if (confirmRemove) RemoveDialog(vault, onDismiss = { confirmRemove = false }, onRemove = { confirmRemove = false; onRemove() })
 }
 
-private fun relativeTime(time: Long): String =
-    DateUtils.getRelativeTimeSpanString(time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS,
-        DateUtils.FORMAT_ABBREV_RELATIVE).toString()
-
-// ─── Floating action ──────────────────────────────────────────────────────────
-
-/** M3 extended FAB: Pull All once there are vaults, "Add your first vault" before. */
 @Composable
-private fun HomeFab(empty: Boolean, onPullAll: () -> Unit, onAddFirst: () -> Unit, modifier: Modifier = Modifier) {
-    val c = Tide.colors
-    val shape = RoundedCornerShape(16.dp)
-    val (fill, ink) = if (empty) c.primary to c.onPrimary else c.primaryContainer to c.onPrimaryContainer
-    Row(
-        modifier
-            .heightIn(min = 56.dp)
-            .shadow(6.dp, shape)
-            .clip(shape)
-            .background(fill)
-            .clickable(role = Role.Button, onClick = if (empty) onAddFirst else onPullAll)
-            .testTag(if (empty) "home-add-first" else "open-pull-all")
-            .padding(start = 16.dp, end = 20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Icon(painterResource(if (empty) R.drawable.ic_m3_add else R.drawable.ic_m3_arrow_downward), contentDescription = null,
-            tint = ink, modifier = Modifier.size(24.dp))
-        Text(stringResource(if (empty) R.string.tide_home_add_first else R.string.pull_all_title), style = TideType.sans(15.sp, FontWeight.SemiBold), color = ink)
-    }
-}
-
-// ─── Add a vault ──────────────────────────────────────────────────────────────
-
-/** Bottom sheet listing every way to bring a vault in (GitHub, URL, on this phone, publish a folder). */
-@Composable
-private fun AddVaultSheet(
-    isLoggedIn: Boolean,
-    gitHubRepoCount: Int,
-    onDismiss: () -> Unit,
-    onAddRepo: () -> Unit,
-    onCloneFromUrl: () -> Unit,
-    onManageRepositories: () -> Unit,
-    onPublishFolder: () -> Unit,
-) {
-    TideDialog(
+private fun RemoveDialog(vault: HomeVault, onDismiss: () -> Unit, onRemove: () -> Unit) {
+    M3Dialog(
         onDismissRequest = onDismiss,
-        sheet = true,
-        title = stringResource(R.string.ui_add_repository_33da2ac1),
-        modifier = Modifier.testTag("home-add-sheet"),
-        confirmButton = { BGhostButton(stringResource(R.string.repository_actions_cancel), Modifier.fillMaxWidth(), onClick = onDismiss) },
+        title = stringResource(R.string.ui_remove_repository_fc68168b),
+        icon = R.drawable.ic_m3_delete,
+        text = stringResource(R.string.ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d, vault.name),
+        modifier = Modifier.testTag("repo-remove-body"),
     ) {
-        HomeStartList(isLoggedIn, gitHubRepoCount, onAddRepo, onCloneFromUrl, onManageRepositories, onPublishFolder)
+        M3DialogAction(stringResource(R.string.repository_actions_cancel), onDismiss)
+        M3DialogAction(stringResource(R.string.ui_remove_c3812fc4), onRemove, destructive = true)
     }
 }
 
+// ─── Sign-in expired (board 24) ───────────────────────────────────────────────
+
 @Composable
-private fun HomeStartList(
-    isLoggedIn: Boolean,
-    gitHubRepoCount: Int,
-    onAddRepo: () -> Unit,
-    onCloneFromUrl: () -> Unit,
-    onManageRepositories: () -> Unit,
-    onPublishFolder: () -> Unit,
+private fun AuthState(
+    vaults: List<HomeVault>, expiredAt: Long?, account: String?, now: Long, onSignIn: () -> Unit,
+    onRepoSelected: (String) -> Unit, onRepoRemoved: (String) -> Unit, onTogglePin: (String, Boolean) -> Unit,
 ) {
-    val c = Tide.colors
-    Column(Modifier.fillMaxWidth().clip(Tide.cardShape).background(if (c.isDark) c.container else c.card)) {
-        HomeStartRow(R.drawable.ic_m3_branch, stringResource(R.string.tide_home_start_github),
-            when {
-                isLoggedIn && gitHubRepoCount > 0 -> pluralStringResource(R.plurals.tide_home_start_github_count, gitHubRepoCount, gitHubRepoCount)
-                isLoggedIn -> stringResource(R.string.tide_home_start_github_signed_in)
-                else -> stringResource(R.string.tide_home_start_github_signed_out)
-            }, null, onAddRepo)
-        TideHairline()
-        HomeStartRow(R.drawable.ic_m3_link, stringResource(R.string.guide_url), stringResource(R.string.tide_home_start_url_detail), null, onCloneFromUrl)
-        TideHairline()
-        HomeStartRow(R.drawable.ic_m3_phone, stringResource(R.string.ui_local_repositories_ddcf4270), stringResource(R.string.tide_home_start_local_detail), null, onManageRepositories)
-        TideHairline()
-        HomeStartRow(R.drawable.ic_m3_publish, stringResource(R.string.publication_title), stringResource(R.string.tide_home_start_publish_detail),
-            "open-folder-publication", onPublishFolder)
+    val waiting = vaults.filter { it.waitsOnSignIn(account) }
+    val unaffected = vaults.filterNot { it.waitsOnSignIn(account) }
+    M3Hero(Modifier.m3Gutter().testTag("home-sign-in-expired").semantics { liveRegion = LiveRegionMode.Polite }, style = M3HeroStyle.ErrorContainer) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            M3Icon(R.drawable.ic_m3_lock, size = 20.dp)
+            Text(stringResource(R.string.m3home_auth_kicker, expiredAt?.let { relativeAgo(it, now) } ?: stringResource(R.string.m3home_time_now)),
+                style = M3Type.section, color = androidx.compose.material3.LocalContentColor.current)
+        }
+        M3HeroHeadline(stringResource(R.string.m3home_auth_headline), Modifier.padding(top = 10.dp))
+        val body = stringResource(R.string.m3home_auth_body) +
+            if (waiting.isNotEmpty()) " " + pluralStringResource(R.plurals.m3home_auth_waiting, waiting.size, waiting.size) else ""
+        Text(body, style = M3Type.bodyMedium, color = androidx.compose.material3.LocalContentColor.current, modifier = Modifier.padding(top = 6.dp))
+        M3Button(stringResource(R.string.m3home_auth_sign_in), onSignIn, Modifier.padding(top = 16.dp).testTag("home-sign-in-renew"),
+            style = M3ButtonStyle.Danger)
+    }
+    if (waiting.isNotEmpty()) {
+        M3SectionLabel(stringResource(R.string.m3home_auth_waiting_label))
+        VaultList(waiting, now, offline = false, Modifier.padding(top = 8.dp), onRepoSelected, onRepoRemoved, onTogglePin,
+            meta = { v ->
+                val s = v.loaded
+                stringResource(R.string.m3home_auth_row_meta, s?.branch?.ifBlank { null } ?: "—",
+                    s?.lastSyncAt?.let { relativeAgo(it, now) } ?: stringResource(R.string.m3home_meta_not_synced))
+            },
+            badge = { v -> if (v.ahead > 0) Badge(stringResource(R.string.m3home_auth_held, v.ahead), M3Tone.Ahead)
+                else Badge(stringResource(R.string.m3home_auth_paused), M3Tone.Warn) })
+    }
+    if (unaffected.isNotEmpty()) {
+        M3SectionLabel(stringResource(R.string.m3home_auth_unaffected_label))
+        VaultList(unaffected, now, offline = false, Modifier.padding(top = 8.dp), onRepoSelected, onRepoRemoved, onTogglePin,
+            meta = { v -> listOf(remoteHostLabel(v), credentialLabel(v)).joinToString(" · ") })
     }
 }
 
 @Composable
-private fun HomeStartRow(icon: Int, title: String, subtitle: String, tag: String?, onClick: () -> Unit) {
-    val c = Tide.colors
-    Row(
-        Modifier.fillMaxWidth().heightIn(min = 72.dp).clickable(role = Role.Button, onClick = onClick)
-            .then(if (tag != null) Modifier.testTag(tag) else Modifier)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Box(Modifier.size(40.dp).background(c.primaryContainer, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
-            Icon(painterResource(icon), contentDescription = null, tint = c.onPrimaryContainer, modifier = Modifier.size(24.dp))
+private fun credentialLabel(vault: HomeVault): String {
+    val credential = vault.credential
+    return stringResource(when {
+        credential == null -> if (vault.loaded?.remoteUrl == null && vault.repo.remoteUrl == null) R.string.m3home_cred_local else R.string.m3home_cred_public
+        credential.usesSshKey -> R.string.m3home_cred_ssh
+        credential.usesGithubAccount -> R.string.m3home_cred_github
+        credential.hasSecret -> R.string.m3home_cred_token
+        else -> R.string.m3home_cred_public
+    })
+}
+
+/** GitHub session storage problems (not an expiry): a warn note with sign-in and dismiss. */
+@Composable
+private fun SessionIssue(message: String, onSignIn: () -> Unit, onDismiss: () -> Unit) {
+    M3Note(message, Modifier.m3Gutter().padding(bottom = 12.dp).testTag("home-sign-in-issue"), tone = M3NoteTone.Warn, icon = R.drawable.ic_m3_lock) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            M3TextButton(stringResource(R.string.m3home_auth_sign_in), onSignIn)
+            M3TextButton(stringResource(R.string.m3home_session_dismiss), onDismiss)
         }
-        Column(Modifier.weight(1f)) {
-            Text(title, style = TideType.body, color = c.ink)
-            Text(subtitle, style = TideType.sans(14.sp).copy(lineHeight = 20.sp), color = c.inkMid)
-        }
-        TideChevron()
     }
 }
 
-// ─── Empty state ──────────────────────────────────────────────────────────────
+// ─── Empty Home (board 11) ────────────────────────────────────────────────────
 
 @Composable
 private fun HomeEmptyState(
     isLoggedIn: Boolean,
     signedInLogin: String?,
-    gitHubRepoCount: Int,
     onAddRepo: () -> Unit,
     onCloneFromUrl: () -> Unit,
     onManageRepositories: () -> Unit,
     onPublishFolder: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
-    val c = Tide.colors
-    Column(modifier.fillMaxWidth()) {
-        TideHero(Modifier.testTag("home-hero")) {
-            Column(Modifier.semantics(mergeDescendants = true) { heading() }) {
-                Text(stringResource(R.string.tide_home_empty_title), style = TideType.display(28.sp).copy(lineHeight = 34.sp), color = c.heroText)
-                if (isLoggedIn && !signedInLogin.isNullOrBlank()) {
-                    Text(stringResource(R.string.tide_home_signed_in_as, signedInLogin), style = TideType.meta, color = c.heroMeta,
-                        modifier = Modifier.padding(top = 4.dp))
-                }
-            }
-            HomeEmptyRail(Modifier.padding(top = 20.dp))
+    Column(Modifier.fillMaxWidth()) {
+        M3Hero(Modifier.m3Gutter().testTag("home-hero"), style = M3HeroStyle.Inverse) {
+            M3HeroHeadline(stringResource(R.string.m3home_empty_title))
+            if (isLoggedIn && !signedInLogin.isNullOrBlank()) M3HeroMeta(stringResource(R.string.m3home_empty_signed_in, signedInLogin), topPadding = 4.dp)
+            M3SyncIllustration(
+                stringResource(R.string.m3home_rail_phone), stringResource(R.string.m3home_rail_github), M3RailState.Empty,
+                Modifier.padding(top = 20.dp), caption = stringResource(R.string.m3home_empty_rail_nothing),
+                description = stringResource(R.string.m3home_empty_rail_description),
+            )
         }
-        TideSectionLabel(stringResource(R.string.tide_home_start_with), Modifier.padding(start = 4.dp, top = 24.dp, bottom = 8.dp))
-        HomeStartList(isLoggedIn, gitHubRepoCount, onAddRepo, onCloneFromUrl, onManageRepositories, onPublishFolder)
+        M3SectionLabel(stringResource(R.string.m3home_start_with), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp))
+        StartList(onAddRepo, onCloneFromUrl, onManageRepositories, onPublishFolder, Modifier.m3Gutter())
     }
 }
 
-/** Dashed, empty sync rail inside the hero: Phone ┄┄┄ Remote, "nothing to sync". */
+/** The four ways in, as one tonal list (also the Add-a-vault sheet). */
 @Composable
-private fun HomeEmptyRail(modifier: Modifier = Modifier) {
-    val c = Tide.colors
-    val description = stringResource(R.string.tide_home_empty_rail_description)
-    val line = c.heroLine
-    val ring = c.heroMeta
-    Column(modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = description }) {
-        Row(Modifier.fillMaxWidth()) {
-            Text(stringResource(R.string.tide_home_rail_phone), style = TideType.mono(11.sp), color = c.heroMeta)
-            Spacer(Modifier.weight(1f))
-            Text(stringResource(R.string.upstream_remote), style = TideType.mono(11.sp), color = c.heroMeta)
-        }
-        Box(
-            Modifier.fillMaxWidth().padding(top = 6.dp).height(14.dp).drawBehind {
-                val stroke = 2.dp.toPx()
-                val r = 7.dp.toPx()
-                val y = size.height / 2
-                drawLine(line, Offset(r * 2, y), Offset(size.width - r * 2, y), strokeWidth = stroke,
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 8f)))
-                drawCircle(ring, radius = r - stroke / 2, center = Offset(r, y), style = Stroke(stroke))
-                drawCircle(ring, radius = r - stroke / 2, center = Offset(size.width - r, y), style = Stroke(stroke))
-            }
-        )
-        Text(stringResource(R.string.tide_home_empty_rail_nothing), Modifier.fillMaxWidth().padding(top = 8.dp),
-            style = TideType.mono(11.sp), color = c.heroMeta, textAlign = TextAlign.Center)
+private fun StartList(onAddRepo: () -> Unit, onCloneFromUrl: () -> Unit, onManageRepositories: () -> Unit, onPublishFolder: () -> Unit, modifier: Modifier = Modifier) {
+    M3ListCard(modifier) {
+        StartRow(R.drawable.ic_m3_branch, R.string.m3home_start_github, R.string.m3home_start_github_detail, false, "home-start-github", onAddRepo)
+        StartRow(R.drawable.ic_m3_link, R.string.m3home_start_url, R.string.m3home_start_url_detail, true, "home-start-url", onCloneFromUrl)
+        StartRow(R.drawable.ic_m3_phone, R.string.m3home_start_local, R.string.m3home_start_local_detail, true, "home-start-local", onManageRepositories)
+        StartRow(R.drawable.ic_m3_publish, R.string.m3home_start_publish, R.string.m3home_start_publish_detail, true, "open-folder-publication", onPublishFolder)
     }
+}
+
+@Composable
+private fun StartRow(icon: Int, title: Int, detail: Int, divider: Boolean, tag: String, onClick: () -> Unit) {
+    M3ListRow(
+        title = stringResource(title), meta = stringResource(detail), metaMono = false,
+        leading = { M3LeadingTile(icon) }, trailing = { M3Chevron() },
+        onClick = onClick, divider = divider, modifier = Modifier.testTag(tag),
+    )
 }
 
 // ─── Display helpers ─────────────────────────────────────────────────────────
 
-/**
- * Normalises repo identifiers from all known formats into "owner/repo".
- *
- * Accepted inputs:
- *  - "owner/repo"
- *  - "https://github.com/owner/repo" (or .git)
- *  - "github://owner/repo"
- *  - "git@github.com:owner/repo(.git)"
- *  - Android local clone paths containing "/repos/owner/repo"
- */
-private fun normaliseSeenRepoIdentifier(raw: String): String? {
-    val trimmed = raw.trim().removeSuffix("/")
-    if (trimmed.isBlank()) return null
-
-    fun toOwnerRepo(pathLike: String): String? {
-        val clean = pathLike.trim().trim('/').removeSuffix(".git")
-        val parts = clean.split('/').filter { it.isNotBlank() }
-        if (parts.size < 2) return null
-        return "${parts[0].lowercase()}/${parts[1].lowercase()}"
+/** "CodyBontecou/VoxVault" from the remote URL; the folder name for a local vault. */
+private fun remoteSlug(vault: HomeVault): String {
+    val url = vault.repo.remoteUrl ?: vault.loaded?.remoteUrl
+    val path = url?.trim()?.let { raw ->
+        runCatching { java.net.URI(raw).path }.getOrNull()?.takeIf { it.isNotBlank() }
+            ?: Regex("^[^/@:]+@[^/:]+:(.+)$").matchEntire(raw)?.groupValues?.get(1)
     }
-
-    val githubScheme = Regex("^github://(.+)$", RegexOption.IGNORE_CASE)
-    githubScheme.matchEntire(trimmed)?.groupValues?.getOrNull(1)?.let { return toOwnerRepo(it) }
-
-    val ssh = Regex("^git@github\\.com:(.+)$", RegexOption.IGNORE_CASE)
-    ssh.matchEntire(trimmed)?.groupValues?.getOrNull(1)?.let { return toOwnerRepo(it) }
-
-    val https = Regex("^https?://github\\.com/(.+)$", RegexOption.IGNORE_CASE)
-    https.matchEntire(trimmed)?.groupValues?.getOrNull(1)?.let { return toOwnerRepo(it) }
-
-    if (trimmed.contains("/repos/")) {
-        val afterRepos = trimmed.substringAfter("/repos/", "")
-        toOwnerRepo(afterRepos)?.let { return it }
-    }
-
-    if (trimmed.matches(Regex("^[^/]+/[^/]+$"))) {
-        return toOwnerRepo(trimmed)
-    }
-
-    return null
+    val parts = path?.trim('/')?.removeSuffix(".git")?.split('/')?.filter { it.isNotBlank() }.orEmpty()
+    return if (parts.size >= 2) parts.takeLast(2).joinToString("/") else vault.repo.path.removePrefix("github://").substringAfterLast('/')
 }
 
-/** Returns the short "owner/repo" string for the card's mono identity line. */
-private fun repoDisplayPath(repo: SavedRepository): String {
-    if (repo.alias.contains("/")) return repo.alias
-    return normaliseSeenRepoIdentifier(repo.path)
-        ?: repo.path.removePrefix("github://")
-}
-
-/** "GitHub", the remote's host, or the generic "Remote" for the rail's right end. */
+/** "GitHub", the remote's host, or "Remote" for the rail's far end. */
 @Composable
-private fun remoteHostLabel(repo: SavedRepository): String {
-    val remote = repo.remoteUrl?.trim().orEmpty()
+private fun remoteHostLabel(vault: HomeVault): String {
+    val remote = (vault.repo.remoteUrl ?: vault.loaded?.remoteUrl)?.trim().orEmpty()
     val host = when {
         remote.isBlank() -> null
-        remote.startsWith("git@") -> remote.substringAfter("@").substringBefore(":")
+        Regex("^[^/@:]+@[^/:]+:.+$").matches(remote) -> remote.substringAfter("@").substringBefore(":")
         else -> runCatching { java.net.URI(remote).host }.getOrNull()
     }
     return when {
-        host.isNullOrBlank() -> if (repo.path.startsWith("github://")) "GitHub" else stringResource(R.string.upstream_remote)
-        host.equals("github.com", ignoreCase = true) -> "GitHub"
+        host.isNullOrBlank() -> if (vault.repo.path.startsWith("github://")) stringResource(R.string.m3home_rail_github) else stringResource(R.string.m3home_rail_remote)
+        host.equals("github.com", ignoreCase = true) -> stringResource(R.string.m3home_rail_github)
         else -> host
     }
 }
 
 // ─── Previews ────────────────────────────────────────────────────────────────
 
+private fun previewStatus(ahead: Int = 0, behind: Int = 0, changes: Int = 0, syncedMinutesAgo: Long = 12, lfs: Long = 0, branch: String = "main",
+    remote: String? = "https://github.com/CodyBontecou/notes.git") = VaultStatusState.Loaded(RepositorySyncStatus(
+    branch, "a41c9e2d", ahead, behind, changes, RepositorySyncStatus.Upstream("origin", branch), true,
+    System.currentTimeMillis() - 120_000, System.currentTimeMillis() - syncedMinutesAgo * 60_000, lfs, remote))
+
 private fun previewVaults(): List<HomeVault> = listOf(
-    HomeVault(SavedRepository("Personal notes", "/data/repos/cody/notes", "cody/notes", remoteUrl = "https://github.com/cody/notes.git"),
-        RepositoryOverviewState.Unavailable),
-    HomeVault(SavedRepository("VoxVault", "/data/repos/cody/voxvault", "cody/voxvault", remoteUrl = "https://github.com/cody/voxvault.git"),
-        RepositoryOverviewState.Loaded(RepositoryOverview("main", "e19c4a0d2b", System.currentTimeMillis() - 3_600_000))),
-    HomeVault(SavedRepository("Team wiki", "/data/repos/team/wiki", "", remoteUrl = "git@git.example.com:team/wiki.git"),
-        RepositoryOverviewState.Loading),
-    HomeVault(SavedRepository("Scratch", "/data/local/scratch"),
-        RepositoryOverviewState.Loaded(RepositoryOverview("main", null, null))),
+    HomeVault(SavedRepository("VoxVault", "/data/voxvault", remoteUrl = "https://github.com/CodyBontecou/VoxVault.git"), VaultPreference(pinned = true),
+        previewStatus(ahead = 3), RepositoryCredentialStore.Summary("https://github.com/CodyBontecou/VoxVault", null, false, usesGithubAccount = true)),
+    HomeVault(SavedRepository("notes", "/data/notes"), VaultPreference(), previewStatus(),
+        RepositoryCredentialStore.Summary("https://github.com/CodyBontecou/notes", null, false, usesGithubAccount = true)),
+    HomeVault(SavedRepository("health-md", "/data/health"), VaultPreference(), previewStatus(syncedMinutesAgo = 60, lfs = 2L shl 20)),
+    HomeVault(SavedRepository("sacralsol", "/data/sacralsol"), VaultPreference(), previewStatus(syncedMinutesAgo = 180, branch = "draft/spring")),
+    HomeVault(SavedRepository("recipes", "/data/recipes", remoteUrl = "git@gitea.home.lan:cody/recipes.git"), VaultPreference(),
+        previewStatus(syncedMinutesAgo = 1500, remote = "git@gitea.home.lan:cody/recipes.git"),
+        RepositoryCredentialStore.Summary("ssh://gitea.home.lan/cody/recipes", null, true, usesSshKey = true)),
 )
 
 @Composable
-private fun PreviewHome(vaults: List<HomeVault>, loggedIn: Boolean, dark: Boolean) {
+private fun PreviewHome(mode: HomeMode, dark: Boolean, vaults: List<HomeVault> = previewVaults()) {
     SyncMdTheme(darkTheme = dark) {
-        ReposHomeContent(vaults, loggedIn, if (loggedIn) "cody" else null, 12, {}, {}, {}, {}, {}, {}, {}, {}, {})
+        ReposHomeContent(mode, if (mode == HomeMode.Empty) emptyList() else vaults, true, "CodyBontecou",
+            expiredAt = System.currentTimeMillis() - 7_200_000)
     }
 }
 
-@Preview(name = "Home · mixed states · light", heightDp = 900)
-@Composable private fun PreviewHomeLight() = PreviewHome(previewVaults(), loggedIn = true, dark = false)
-
-@Preview(name = "Home · mixed states · dark", heightDp = 900)
-@Composable private fun PreviewHomeDark() = PreviewHome(previewVaults(), loggedIn = true, dark = true)
-
-@Preview(name = "Home · all readable · signed out · light", heightDp = 900)
-@Composable private fun PreviewHomeReadyLight() =
-    PreviewHome(previewVaults().filter { it.overview is RepositoryOverviewState.Loaded }, loggedIn = false, dark = false)
-
-@Preview(name = "Home · all readable · signed out · dark", heightDp = 900)
-@Composable private fun PreviewHomeReadyDark() =
-    PreviewHome(previewVaults().filter { it.overview is RepositoryOverviewState.Loaded }, loggedIn = false, dark = true)
-
-@Preview(name = "Home · empty · signed in · light", heightDp = 900)
-@Composable private fun PreviewHomeEmptyLight() = PreviewHome(emptyList(), loggedIn = true, dark = false)
-
-@Preview(name = "Home · empty · signed out · dark", heightDp = 900)
-@Composable private fun PreviewHomeEmptyDark() = PreviewHome(emptyList(), loggedIn = false, dark = true)
+@Preview(name = "01 Home · light", heightDp = 915, widthDp = 412) @Composable private fun PreviewHomeLight() = PreviewHome(HomeMode.Home, false)
+@Preview(name = "26 Home · dark", heightDp = 915, widthDp = 412) @Composable private fun PreviewHomeDark() = PreviewHome(HomeMode.Home, true)
+@Preview(name = "23 Offline", heightDp = 915, widthDp = 412) @Composable private fun PreviewOffline() = PreviewHome(HomeMode.Offline, false)
+@Preview(name = "24 Sign-in expired", heightDp = 915, widthDp = 412) @Composable private fun PreviewAuth() = PreviewHome(HomeMode.Auth, false)
+@Preview(name = "11 Empty", heightDp = 915, widthDp = 412) @Composable private fun PreviewEmpty() = PreviewHome(HomeMode.Empty, false)
+@Preview(name = "11 Empty · dark", heightDp = 915, widthDp = 412) @Composable private fun PreviewEmptyDark() = PreviewHome(HomeMode.Empty, true)

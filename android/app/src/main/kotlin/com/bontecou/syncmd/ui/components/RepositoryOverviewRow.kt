@@ -75,3 +75,65 @@ fun RepositoryOverviewRow(branch: String, head: String?, time: Long?, tagPrefix:
         }
     }
 }
+
+// ─── Home sync status ────────────────────────────────────────────────────────
+
+sealed interface VaultStatusState {
+    data object Loading : VaultStatusState
+    data object Unavailable : VaultStatusState
+    data class Loaded(val status: com.bontecou.syncmd.services.git.RepositorySyncStatus) : VaultStatusState
+}
+
+/**
+ * Home's per-vault read (↑ to push, ↓ to pull, edited files, last check): lifecycle-bound like
+ * [rememberRepositoryOverview], re-read whenever the repository changes on disk or through the app.
+ */
+@Composable
+fun rememberVaultSyncStatus(path: String,
+    read: suspend (String) -> com.bontecou.syncmd.services.git.RepositorySyncStatus = { com.bontecou.syncmd.services.git.RepositorySyncStatus.read(it) },
+): State<VaultStatusState> {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val currentRead by rememberUpdatedState(read)
+    return key(path, lifecycle) {
+        produceState<VaultStatusState>(VaultStatusState.Loading, path, lifecycle) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                com.bontecou.syncmd.observation.RepositoryObservations.observe(path).collectLatest {
+                    // Keep the last reading on screen during a refresh; a failed read says so.
+                    value = try { VaultStatusState.Loaded(withContext(Dispatchers.IO) { currentRead(path) }) }
+                    catch (cancelled: CancellationException) { throw cancelled }
+                    catch (_: Exception) { VaultStatusState.Unavailable }
+                }
+            }
+        }
+    }
+}
+
+/** The current time, ticking once a minute while composed, so "2 min ago" stays true. */
+@Composable
+fun rememberMinuteClock(): Long {
+    val now by produceState(System.currentTimeMillis()) {
+        while (true) { delay(60_000L - System.currentTimeMillis() % 60_000L); value = System.currentTimeMillis() }
+    }
+    return now
+}
+
+/** Compact relative time for rows and meta lines: "just now", "12m ago", "3h ago", "yesterday", "4d ago". */
+@Composable
+fun relativeAgo(time: Long, now: Long, longMinutes: Boolean = false): String {
+    val minutes = ((now - time).coerceAtLeast(0L) / 60_000L).toInt()
+    return when {
+        minutes < 1 -> stringResource(R.string.m3home_time_now)
+        minutes < 60 -> stringResource(if (longMinutes) R.string.m3home_time_minutes_long else R.string.m3home_time_minutes_short, minutes)
+        minutes < 24 * 60 -> stringResource(R.string.m3home_time_hours, minutes / 60)
+        minutes < 48 * 60 -> stringResource(R.string.m3home_time_yesterday)
+        else -> stringResource(R.string.m3home_time_days, minutes / (24 * 60))
+    }
+}
+
+/** "2 MB", "820 KB" for the LFS meta. */
+fun compactBytes(bytes: Long): String = when {
+    bytes >= 1L shl 30 -> "%.1f GB".format(java.util.Locale.ROOT, bytes / (1L shl 30).toDouble())
+    bytes >= 1L shl 20 -> "${(bytes + (1L shl 19)) shr 20} MB"
+    bytes >= 1L shl 10 -> "${(bytes + 512) shr 10} KB"
+    else -> "$bytes B"
+}

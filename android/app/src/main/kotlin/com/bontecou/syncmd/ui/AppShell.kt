@@ -177,8 +177,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         return
     }
     if (!guideState.progress.completed) {
-        com.bontecou.syncmd.ui.screens.AppTourScreen(guideState.progress.page, guideState.busy, guideState.error,
-            replay = false, onPage = guide::page, onFinish = guide::complete)
+        com.bontecou.syncmd.ui.screens.OnboardingScreen(guideState.busy, guideState.error, onFinish = guide::complete)
         return
     }
     LaunchedEffect(guideState.progress.pending) {
@@ -317,6 +316,7 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                     signInIssue = sessionError?.asString(),
                     onSignIn = { githubViewModel.authManager.clearSessionError(); navController.navigateSafe(Routes.LOGIN) },
                     onDismissSignInIssue = githubViewModel.authManager::clearSessionError,
+                    onRenewSignIn = { navController.navigateSafe(Routes.ACCOUNT_LOGIN) },
                 )
             }
 
