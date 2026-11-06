@@ -157,7 +157,7 @@ class FolderPublicationGit(private val capacity: (File) -> Long = { it.usableSpa
                     if(actual.isNotEmpty())throw FolderPublicationUnsupported("The destination already has history. Its refs were kept.")
                     operation.ensureActive()
                     val update=RemoteRefUpdate(repository,"refs/heads/main",ObjectId.fromString(expectedCommit),"refs/heads/main",false,null,ObjectId.zeroId())
-                    try { connection.push(NullProgressMonitor.INSTANCE,mapOf("refs/heads/main" to update)) }
+                    try { connection.push(operation[com.bontecou.syncmd.services.git.TransferProgress]?.monitor() ?: NullProgressMonitor.INSTANCE,mapOf("refs/heads/main" to update)) }
                     catch(e:kotlinx.coroutines.CancellationException) { throw e }
                     catch(_:Exception) { throw FolderPublicationPushUnknown() }
                     if(update.newObjectId.name!=expectedCommit || update.remoteName!="refs/heads/main" || update.status !in listOf(RemoteRefUpdate.Status.OK,RemoteRefUpdate.Status.UP_TO_DATE)) throw FolderPublicationPushUnknown()

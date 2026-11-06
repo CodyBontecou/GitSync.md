@@ -61,7 +61,8 @@ class LocalGitRepository(
         // unrecoverable "Cannot delete file" errors. The no-checkout path separates
         // fetch from checkout and has per-file conflict recovery with retries.
         log.warning("clone() starting no-checkout clone to $path")
-        cloneWithoutSymlinks(url, target, cp, branch)
+        val progress = kotlin.coroutines.coroutineContext[TransferProgress]
+        cloneWithoutSymlinks(url, target, cp, branch, progress?.monitor(measure = target))
     }
 
     // ─── Status ───────────────────────────────────────────────────────────────
@@ -136,10 +137,12 @@ class LocalGitRepository(
         target: File,
         cp: ScopedCredentialsProvider,
         branch: String?,
+        progress: org.eclipse.jgit.lib.ProgressMonitor? = null,
     ): Result<Unit> {
         return try {
             Git.cloneRepository()
                 .setURI(url)
+                .apply { if (progress != null) setProgressMonitor(progress) }
                 .setTimeout(60)
                 .setDirectory(target)
                 .setCredentialsProvider(cp)

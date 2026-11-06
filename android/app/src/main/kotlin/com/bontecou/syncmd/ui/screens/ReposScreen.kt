@@ -122,6 +122,8 @@ fun ReposScreen(
     onDismissSignInIssue: () -> Unit = {},
     /** "Sign in with GitHub" on the sign-in-expired hero: a fresh GitHub sign-in that replaces the refused token. */
     onRenewSignIn: () -> Unit = onSignIn,
+    /** The top-bar "+" opens the full-screen Add a vault (board 12). Null keeps the in-place sheet (previews, tests). */
+    onOpenAddVault: (() -> Unit)? = null,
     home: HomeViewModel = hiltViewModel(),
 ) {
     val allRepos by settingsViewModel.allRepositories.collectAsState()
@@ -193,6 +195,7 @@ fun ReposScreen(
         onSignIn = onSignIn,
         onRenewSignIn = onRenewSignIn,
         onDismissSignInIssue = onDismissSignInIssue,
+        onOpenAddVault = onOpenAddVault,
     )
 }
 
@@ -248,6 +251,7 @@ internal fun ReposHomeContent(
     onSignIn: () -> Unit = {},
     onRenewSignIn: () -> Unit = onSignIn,
     onDismissSignInIssue: () -> Unit = {},
+    onOpenAddVault: (() -> Unit)? = null,
 ) {
     val c = M3.colors
     val now = rememberMinuteClock()
@@ -262,7 +266,7 @@ internal fun ReposHomeContent(
                 onAvatarClick = onNavigateToSettings,
                 modifier = if (initials != null) Modifier.testTag("open-settings") else Modifier,
             ) {
-                M3IconButton(R.drawable.ic_m3_add, stringResource(R.string.m3home_add_vault), { adding = true }, Modifier.testTag("home-add-vault"))
+                M3IconButton(R.drawable.ic_m3_add, stringResource(R.string.m3home_add_vault), { onOpenAddVault?.invoke() ?: run { adding = true } }, Modifier.testTag("home-add-vault"))
                 if (initials == null) M3IconButton(R.drawable.ic_m3_settings, stringResource(R.string.m3home_settings), onNavigateToSettings,
                     Modifier.testTag("open-settings"))
             }

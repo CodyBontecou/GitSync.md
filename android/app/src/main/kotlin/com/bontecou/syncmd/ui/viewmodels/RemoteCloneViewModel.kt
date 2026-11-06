@@ -26,7 +26,60 @@ import javax.inject.Inject
 class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
     private val credentials: RepositoryCredentialStore, @ApplicationContext private val context: Context,
     private val github: com.bontecou.syncmd.services.github.GitHubAuthManager,
-    private val savedState: androidx.lifecycle.SavedStateHandle = androidx.lifecycle.SavedStateHandle()) : ViewModel() {
+    private val savedState: androidx.lifecycle.SavedStateHandle = androidx.lifecycle.SavedStateHandle(),
+    private val deviceKeys: com.bontecou.syncmd.security.DeviceSshKeyStore = com.bontecou.syncmd.security.DeviceSshKeyStore(context)) : ViewModel() {
+    /** "This phone's key" (board 14): generated once, kept Keystore-encrypted; null until [ensureDeviceKey] finishes. */
+    private val _deviceKey = MutableStateFlow<com.bontecou.syncmd.services.git.GeneratedSshKey?>(null)
+    val deviceKey = _deviceKey.asStateFlow()
+    private val _deviceKeyFailed = MutableStateFlow(false)
+    val deviceKeyFailed = _deviceKeyFailed.asStateFlow()
+    fun ensureDeviceKey() {
+        if (_deviceKey.value != null) return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val comment = (github.accountSummary(github.activeAccountId() ?: "")?.login?.lowercase()?.let { "$it@" + deviceKeys.defaultComment().substringAfter('@') })
+                    ?: deviceKeys.defaultComment()
+                _deviceKey.value = deviceKeys.getOrCreate(comment); _deviceKeyFailed.value = false
+            } catch (e: CancellationException) { throw e } catch (_: Exception) { _deviceKeyFailed.value = true }
+        }
+    }
+    /** The running clone's transfer progress (bytes received into the staging folder). */
+    private val _progress = MutableStateFlow<com.bontecou.syncmd.services.git.TransferProgressUpdate?>(null)
+    val progress = _progress.asStateFlow()
+
+    /** Why "Test & clone" stopped before cloning; null while testing or once it passed. */
+    sealed interface TestResult {
+        data object Passed : TestResult
+        /** The host key needs review; the clone asks for it. */
+        data object HostKeyReview : TestResult
+        data class Failed(val message: com.bontecou.syncmd.ui.util.UiText) : TestResult
+    }
+    private val _testing = MutableStateFlow(false)
+    val testing = _testing.asStateFlow()
+
+    /** `git ls-remote` with the credentials the clone will use; nothing is written. */
+    suspend fun test(target: com.bontecou.syncmd.billing.VaultTarget): TestResult {
+        _testing.value = true
+        try {
+            val reach = kotlinx.coroutines.withContext(Dispatchers.IO) { com.bontecou.syncmd.services.git.RemoteRefs.list(target.url, target.credentials) }
+            return when (reach) {
+                is com.bontecou.syncmd.services.git.RemoteReach.Reachable -> {
+                    val branch = target.branch
+                    if (branch != null && reach.branches.isNotEmpty() && branch !in reach.branches)
+                        TestResult.Failed(com.bontecou.syncmd.ui.util.UiText.res(R.string.add_test_failed_branch, branch)) else TestResult.Passed
+                }
+                com.bontecou.syncmd.services.git.RemoteReach.HostKeyUnconfirmed -> TestResult.HostKeyReview
+                is com.bontecou.syncmd.services.git.RemoteReach.Unreachable -> {
+                    val text = generateSequence(reach.cause) { it.cause }.mapNotNull { it.message }.joinToString(" ").lowercase()
+                    TestResult.Failed(com.bontecou.syncmd.ui.util.UiText.res(when {
+                        "not authorized" in text || "auth" in text || "401" in text || "403" in text || "publickey" in text || "ssh connection failed" in text -> R.string.add_test_failed_auth
+                        "not found" in text || "404" in text || "does not appear to be a git repository" in text -> R.string.add_test_failed_missing
+                        else -> R.string.add_test_failed_network
+                    }))
+                }
+            }
+        } finally { _testing.value = false }
+    }
     data class State(val busy: Boolean = false, val error: String? = null, val path: String? = null, val name: String = "", val completed: com.bontecou.syncmd.services.repositories.CompletedClone? = null)
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
@@ -189,6 +242,8 @@ class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
                 if (account == null) ownedCredentialVersion = credentials.saveWithVersion(target.path, remote.url, auth)
                 val targetCredentialRevision = ownedCredentialVersion ?: credentials.recordVersion(target.path)
                 var completed: com.bontecou.syncmd.services.repositories.CompletedClone? = null
+                _progress.value = null
+                kotlinx.coroutines.withContext(com.bontecou.syncmd.services.git.TransferProgress { _progress.value = it }) {
                 SafeCloneService(git).clone(remote.url, target.path, auth, branch.trim().ifEmpty { null }, beforePublication = { staging ->
                     publications.reserve(publicationId, staging, target.path, credentials.recordVersion(target.path), name.trim(), selectedHistory?.repository?.alias.orEmpty(),
                         selectedHistory?.let { com.bontecou.syncmd.storage.cloneHistoryReview(it) })
@@ -202,6 +257,7 @@ class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
                         move(); completed = com.bontecou.syncmd.services.repositories.CompletedClone.capture(target.path, credentials.recordVersion(target.path))
                     }
                 }).getOrThrow()
+                }
                 _state.value = State(path = requireNotNull(completed).path, name = name.trim(), completed = completed)
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {

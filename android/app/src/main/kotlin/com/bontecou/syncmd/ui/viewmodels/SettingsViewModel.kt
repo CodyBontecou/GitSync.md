@@ -484,11 +484,26 @@ class SettingsViewModel @Inject constructor(@ApplicationContext private val cont
         }
     }
 
-    fun scanLocalRepositories() = mutate({ _discoveryResult.value = discovery.scan(CloneStorage.discoveryRoots(context)) })
+    /** The running local scan: what is being scanned and how many folders it has looked at (board LocalClones "scanning"). */
+    data class ScanProgress(val label: String, val folders: Int)
+    private val _scanProgress = MutableStateFlow<ScanProgress?>(null)
+    val scanProgress = _scanProgress.asStateFlow()
+    /** The folder label of the last finished scan ("in Documents"). */
+    private val _scanLabel = MutableStateFlow<String?>(null)
+    val scanLabel = _scanLabel.asStateFlow()
+    private suspend fun <T> scanning(label: String, block: suspend () -> T): T {
+        _scanProgress.value = ScanProgress(label, 0)
+        try {
+            return withContext(com.bontecou.syncmd.services.git.DiscoveryProgress { _scanProgress.value = ScanProgress(label, it) }) { block() }
+        } finally { _scanProgress.value = null; _scanLabel.value = label }
+    }
+    fun scanLocalRepositories() = mutate({
+        _discoveryResult.value = scanning(text(com.bontecou.syncmd.R.string.add_local_scan_app_label)) { discovery.scan(CloneStorage.discoveryRoots(context)) }
+    })
     fun scanChosenFolder(uri: android.net.Uri) = mutate({
         val folder = com.bontecou.syncmd.storage.RepositoryLocations(context).rememberFolder(uri)
         recoverInterruptedRemovals()
-        _discoveryResult.value = discovery.scan(listOf(folder.path))
+        _discoveryResult.value = scanning(folder.name) { discovery.scan(listOf(folder.path)) }
         _operationMessage.value = text(com.bontecou.syncmd.R.string.discovery_scanned, folder.name)
     })
     fun reportStorageError(message: String) { _errorMessage.value = message }

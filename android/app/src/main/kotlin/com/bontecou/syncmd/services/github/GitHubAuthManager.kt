@@ -371,6 +371,8 @@ class GitHubAuthManager @Inject constructor(
                     .put("ownerLogin", repo.ownerLogin)
                     .put("language", repo.language)
                     .put("stargazersCount", repo.stargazersCount)
+                    .put("sizeKilobytes", repo.sizeKilobytes ?: -1)
+                    .put("pushedAt", repo.pushedAt)
             )
         }
         prefs.edit().putString(KEY_OWNER, owner(expectedToken))
@@ -401,7 +403,9 @@ class GitHubAuthManager @Inject constructor(
                             updatedAt = j.optString("updatedAt").ifEmpty { null },
                             ownerLogin = j.getString("ownerLogin"),
                             language = j.optString("language").ifEmpty { null },
-                            stargazersCount = j.optInt("stargazersCount", 0)
+                            stargazersCount = j.optInt("stargazersCount", 0),
+                            sizeKilobytes = j.optLong("sizeKilobytes", -1).takeIf { it >= 0 },
+                            pushedAt = j.optString("pushedAt").ifEmpty { null },
                         )
                     )
                 }

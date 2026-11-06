@@ -1,71 +1,74 @@
 package com.bontecou.syncmd.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.draw.clip
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.bontecou.syncmd.ui.util.asString
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDirection
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.github.GitHubRepo
-import com.bontecou.syncmd.ui.components.AddVaultBusyLine
-import com.bontecou.syncmd.ui.theme.BEmptyState
+import com.bontecou.syncmd.services.github.RepoNoteSignals
+import com.bontecou.syncmd.storage.RepositoryLocations
+import com.bontecou.syncmd.ui.components.AddVaultBusy
+import com.bontecou.syncmd.ui.components.AddVaultCloneStatusBar
+import com.bontecou.syncmd.ui.components.addVaultAge
+import com.bontecou.syncmd.ui.components.addVaultFriendlyPath
+import com.bontecou.syncmd.ui.components.addVaultSize
+import com.bontecou.syncmd.ui.components.parseGitHubTime
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3Icon
+import com.bontecou.syncmd.ui.theme.M3IconButton
+import com.bontecou.syncmd.ui.theme.M3ListRow
+import com.bontecou.syncmd.ui.theme.M3Note
+import com.bontecou.syncmd.ui.theme.M3NoteTone
+import com.bontecou.syncmd.ui.theme.M3OwnerChip
+import com.bontecou.syncmd.ui.theme.M3SearchField
+import com.bontecou.syncmd.ui.theme.M3SectionLabel
+import com.bontecou.syncmd.ui.theme.M3TonalButton
+import com.bontecou.syncmd.ui.theme.M3TopBar
+import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideBanner
-import com.bontecou.syncmd.ui.theme.TideBannerTone
-import com.bontecou.syncmd.ui.theme.TideCard
-import com.bontecou.syncmd.ui.theme.TideChevron
-import com.bontecou.syncmd.ui.theme.TideCircleButton
-import com.bontecou.syncmd.ui.theme.TideOutlineButton
-import com.bontecou.syncmd.ui.theme.TidePill
-import com.bontecou.syncmd.ui.theme.TideTopBar
-import com.bontecou.syncmd.ui.theme.TideType
+import com.bontecou.syncmd.ui.theme.m3GroupedItem
+import com.bontecou.syncmd.ui.util.asString
+import com.bontecou.syncmd.ui.viewmodels.CloneViewModel
 import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
+import com.bontecou.syncmd.ui.viewmodels.RepoOwnerFilter
+import com.bontecou.syncmd.ui.viewmodels.RepoPickerViewModel
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.concurrent.TimeUnit
 
+/**
+ * Board 13 · Pick a repo: @user, owner chips (Yours · Orgs · Starred), repos grouped into
+ * "Looks like notes" and "Everything else", each with "Added" or a Clone button. Clone starts here
+ * (after the free check on locked installs) and shows its progress in the bottom bar; tapping a row
+ * opens the full Clone screen to pick another folder.
+ */
 @Composable
 fun RepoPickerScreen(
     settingsViewModel: SettingsViewModel,
@@ -73,111 +76,181 @@ fun RepoPickerScreen(
     onNavigateBack: () -> Unit,
     viewModel: GitHubViewModel = hiltViewModel(),
     onManageAccounts: () -> Unit = {},
+    onCloned: () -> Unit = onNavigateBack,
+    onReviewLfs: ((String) -> Unit)? = null,
+    picker: RepoPickerViewModel = hiltViewModel(),
+    clone: CloneViewModel = hiltViewModel(),
 ) {
-    val isLoggedIn    by viewModel.isLoggedIn.collectAsState()
-    val user          by viewModel.user.collectAsState()
-    val filteredRepos by viewModel.filteredRepos.collectAsState()
-    val searchQuery   by viewModel.searchQuery.collectAsState()
-    val isLoading     by viewModel.isLoading.collectAsState()
+    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+    val user by viewModel.user.collectAsState()
+    val repos by viewModel.repos.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     val error = viewModel.error.collectAsState().value?.asString()
+    val filter by picker.filter.collectAsState()
+    val starred by picker.starred.collectAsState()
+    val starredLoading by picker.starredLoading.collectAsState()
+    val starredError by picker.starredError.collectAsState()
+    val signals by picker.signals.collectAsState()
+    val saved by settingsViewModel.allRepositories.collectAsState()
+    val cloneState by clone.cloneState.collectAsState()
+    val progress by clone.progress.collectAsState()
+    val info by clone.info.collectAsState()
+    val destination by clone.destination.collectAsState()
+    var cloning by rememberSaveable { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
 
     if (!isLoggedIn) {
-        LoginScreen(
-            viewModel = viewModel,
-            settingsViewModel = settingsViewModel,
-            onContinueAfterLogin = onNavigateBack,
-        )
+        LoginScreen(viewModel = viewModel, settingsViewModel = settingsViewModel, onContinueAfterLogin = onNavigateBack)
         return
     }
 
-    RepoPickerContent(
-        login = user?.login,
-        repos = filteredRepos,
-        searchQuery = searchQuery,
-        isLoading = isLoading,
-        error = error,
-        onSearch = viewModel::onSearchQueryChanged,
-        onRefresh = { viewModel.loadUserAndRepos(forceRefresh = true) },
-        onBack = onNavigateBack,
-        onManageAccounts = onManageAccounts,
-        onRepoSelected = onRepoSelected,
-    )
+    val login = user?.login
+    val source = when (filter) {
+        RepoOwnerFilter.YOURS -> repos.filter { login == null || it.ownerLogin.equals(login, ignoreCase = true) }
+        RepoOwnerFilter.ORGS -> repos.filter { login != null && !it.ownerLogin.equals(login, ignoreCase = true) }
+        RepoOwnerFilter.STARRED -> starred.orEmpty()
+    }
+    val visible = source.filter { searchQuery.isBlank() || it.name.contains(searchQuery, true) || it.fullName.contains(searchQuery, true) ||
+        it.description?.contains(searchQuery, true) == true }
+    LaunchedEffect(source) { if (source.isNotEmpty()) picker.detect(source) }
+
+    // Quick clone: the free check first on locked installs, then progress in the bottom bar.
+    val gate = com.bontecou.syncmd.ui.util.rememberUnlockGate()
+    val unlocked by gate.isUnlocked.collectAsState()
+    val price by gate.price.collectAsState()
+    var checkTarget by remember { mutableStateOf<com.bontecou.syncmd.billing.VaultTarget?>(null) }
+    fun begin(repo: GitHubRepo) {
+        if (cloneState !is CloneViewModel.CloneState.Idle) return
+        cloning = repo.fullName
+        clone.loadInfo(repo.fullName, CloneViewModel.RepoInfo(repo.defaultBranch, repo.isPrivate, repo.sizeKilobytes?.times(1024)))
+        if (!gate.paywallEnabled || unlocked) clone.startClone(repo.fullName) else clone.vaultTarget(repo.fullName)?.let { checkTarget = it }
+    }
+    checkTarget?.let { target ->
+        VaultCheckScreen(target, locked = !unlocked, price = price,
+            onClone = { detail -> gate.require(target.name, detail) { checkTarget = null; cloning?.let { clone.startClone(it) } } },
+            onDismiss = { checkTarget = null; if (clone.cloneState.value is CloneViewModel.CloneState.Idle) cloning = null },
+            clonesTo = runCatching { addVaultFriendlyPath(context, RepositoryLocations(context).summary().path + "/" + target.name, " › ") }.getOrNull())
+    }
+
+    Box(Modifier.fillMaxSize()) {
+        RepoPickerContent(
+            login = login,
+            groups = repoPickerGroups(visible, signals),
+            filter = filter,
+            searchQuery = searchQuery,
+            isLoading = if (filter == RepoOwnerFilter.STARRED) starredLoading && starred == null else isLoading && repos.isEmpty(),
+            error = if (filter == RepoOwnerFilter.STARRED && starredError) stringResource(R.string.add_picker_starred_failed) else error,
+            added = { repo -> saved.any { savedRepo -> savedRepo.alias.equals(repo.fullName, true) ||
+                savedRepo.remoteUrl?.trimEnd('/')?.removeSuffix(".git")?.equals("https://github.com/${repo.fullName}", true) == true } },
+            signals = signals,
+            busy = cloneState !is CloneViewModel.CloneState.Idle,
+            onFilter = picker::select,
+            onSearch = viewModel::onSearchQueryChanged,
+            onRefresh = {
+                if (filter == RepoOwnerFilter.STARRED) picker.loadStarred(force = true) else viewModel.loadUserAndRepos(forceRefresh = true)
+                picker.detect(source, force = true)
+            },
+            onBack = onNavigateBack,
+            onManageAccounts = onManageAccounts,
+            onOpen = onRepoSelected,
+            onClone = ::begin,
+            bottomPadding = if (cloneState is CloneViewModel.CloneState.Cloning) 100.dp else 24.dp,
+        )
+        if (cloneState is CloneViewModel.CloneState.Cloning) {
+            BackHandler { /* The clone keeps going; it finishes into this screen. */ }
+            AddVaultCloneStatusBar((cloning ?: "").substringAfterLast('/'), progress, info?.sizeBytes,
+                destination?.let { addVaultFriendlyPath(context, it, " › ") },
+                Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(start = 16.dp, end = 16.dp, bottom = 20.dp))
+        }
+        val repo = cloning
+        if (repo != null && (cloneState is CloneViewModel.CloneState.Success || cloneState is CloneViewModel.CloneState.Error)) {
+            // Finishing up, Git LFS review and failures use the Cloning board over the picker.
+            CloneScreen(repo, settingsViewModel, onCloneSuccess = {}, onSuccess = { cloning = null; onCloned() },
+                onCancel = { cloning = null }, viewModel = clone, onReviewLfs = onReviewLfs)
+        }
+    }
 }
 
-/** Stateless picker: header, search, then loading / error / empty / no-matches / list. */
+/** A titled group of the picker list. */
+internal data class RepoPickerGroup(val notes: Boolean, val repos: List<GitHubRepo>)
+
+/** "Looks like notes" first (detected `.obsidian/` or a mostly-Markdown tree), then everything else; GitHub's order within each. */
+internal fun repoPickerGroups(repos: List<GitHubRepo>, signals: Map<String, RepoNoteSignals>): List<RepoPickerGroup> {
+    val (notes, other) = repos.partition { signals[it.fullName]?.looksLikeNotes == true }
+    return listOfNotNull(RepoPickerGroup(true, notes).takeIf { notes.isNotEmpty() }, RepoPickerGroup(false, other).takeIf { other.isNotEmpty() })
+}
+
 @Composable
 private fun RepoPickerContent(
     login: String?,
-    repos: List<GitHubRepo>,
+    groups: List<RepoPickerGroup>,
+    filter: RepoOwnerFilter,
     searchQuery: String,
     isLoading: Boolean,
     error: String?,
+    added: (GitHubRepo) -> Boolean,
+    signals: Map<String, RepoNoteSignals>,
+    busy: Boolean,
+    onFilter: (RepoOwnerFilter) -> Unit,
     onSearch: (String) -> Unit,
     onRefresh: () -> Unit,
     onBack: () -> Unit,
     onManageAccounts: () -> Unit,
-    onRepoSelected: (GitHubRepo) -> Unit,
+    onOpen: (GitHubRepo) -> Unit,
+    onClone: (GitHubRepo) -> Unit,
+    bottomPadding: androidx.compose.ui.unit.Dp,
 ) {
-    val c = Tide.colors
-    Box(Modifier.fillMaxSize().background(c.paper)) {
-        Column(Modifier.fillMaxSize()) {
-            TideTopBar(
-                onBack = onBack,
-                backLabel = stringResource(R.string.publication_back),
-                center = { com.bontecou.syncmd.ui.theme.TideTopBarTitle(stringResource(R.string.tide_onboarding_picker_title)) },
-                actions = {
-                    TideCircleButton(stringResource(R.string.ui_github_accounts_653cf0c5), onManageAccounts) {
-                        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_person, tint = c.inkMid)
-                    }
-                    TideCircleButton(stringResource(R.string.ui_refresh_0e916101), onRefresh) {
-                        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_sync, tint = c.inkMid)
-                    }
-                },
-            )
-
-            Column(Modifier.fillMaxWidth().padding(horizontal = Tide.gutter), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                RepoSearchField(searchQuery, onSearch, Modifier.padding(top = 4.dp))
-                if (login != null) RepositoryPickerIdentity(login, repos.size, Modifier.padding(start = 4.dp, top = 4.dp))
-                if (error != null) TideBanner(error, tone = TideBannerTone.DANGER)
+    val c = M3.colors
+    Column(Modifier.fillMaxSize().background(c.surface).testTag("repo-picker")) {
+        M3TopBar(stringResource(R.string.add_picker_title), subtitle = login?.let { "@$it" }, onBack = onBack) {
+            M3IconButton(R.drawable.ic_m3_person, stringResource(R.string.add_picker_accounts), onManageAccounts)
+            M3IconButton(R.drawable.ic_m3_refresh, stringResource(R.string.add_picker_refresh), onRefresh)
+        }
+        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = bottomPadding)) {
+            item(key = "search") {
+                M3SearchField(searchQuery, onSearch, stringResource(R.string.add_picker_search),
+                    Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp).testTag("repo-search"),
+                    trailing = if (searchQuery.isNotEmpty()) ({ M3IconButton(R.drawable.ic_m3_close, stringResource(R.string.tide_onboarding_picker_clear), { onSearch("") }, size = 40.dp, iconSize = 20.dp) }) else null)
             }
-
+            item(key = "owners") {
+                Row(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    RepoOwnerFilter.entries.forEach { owner ->
+                        M3OwnerChip(stringResource(when (owner) {
+                            RepoOwnerFilter.YOURS -> R.string.add_owner_yours
+                            RepoOwnerFilter.ORGS -> R.string.add_owner_orgs
+                            RepoOwnerFilter.STARRED -> R.string.add_owner_starred
+                        }), selected = filter == owner, onClick = { onFilter(owner) }, modifier = Modifier.testTag("repo-owner-${owner.name.lowercase()}"))
+                    }
+                }
+            }
+            if (error != null) item(key = "error") { M3Note(error, Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp), tone = M3NoteTone.Warn) }
             when {
-                isLoading -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        AddVaultBusyLine(stringResource(R.string.ui_loading_repos_2f4f4a93))
+                isLoading -> item(key = "loading") {
+                    Box(Modifier.fillMaxWidth().padding(top = 48.dp), contentAlignment = Alignment.Center) { AddVaultBusy(stringResource(R.string.ui_loading_repos_2f4f4a93)) }
+                }
+                groups.isEmpty() -> item(key = "empty") {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 48.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(stringResource(if (searchQuery.isNotBlank()) R.string.tide_onboarding_picker_no_matches else R.string.add_picker_empty_owner),
+                            style = M3Type.bodyStrong, color = c.on)
+                        if (searchQuery.isNotBlank()) Text(stringResource(R.string.account_no_matching_repositories, searchQuery), style = M3Type.bodyMedium, color = c.onVar)
+                        else M3Button(stringResource(R.string.add_picker_refresh), onRefresh, style = M3ButtonStyle.Text)
                     }
                 }
-
-                repos.isEmpty() -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        if (searchQuery.isNotBlank()) BEmptyState(
-                            title    = stringResource(R.string.tide_onboarding_picker_no_matches),
-                            subtitle = stringResource(R.string.account_no_matching_repositories, searchQuery),
-                        ) else BEmptyState(
-                            title    = stringResource(R.string.ui_no_repositories_a6e9ff91),
-                            subtitle = stringResource(R.string.account_no_repositories_found),
-                            actionTitle = stringResource(R.string.ui_refresh_0e916101),
-                            onAction = onRefresh,
-                        )
+                else -> groups.forEach { group ->
+                    item(key = "group-${group.notes}") {
+                        M3SectionLabel(stringResource(when {
+                            group.notes -> R.string.add_group_notes
+                            searchQuery.isNotBlank() -> R.string.add_group_other_matching
+                            else -> R.string.add_group_other
+                        }), count = if (group.notes) group.repos.size.toString() else null,
+                            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 12.dp))
                     }
-                }
-
-                else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(start = Tide.gutter, end = Tide.gutter, top = 16.dp, bottom = 24.dp),
-                    ) {
-                        itemsIndexed(repos, key = { _, it -> it.id }) { index, repo ->
-                            val r = Tide.radiusCard
-                            val shape = androidx.compose.foundation.shape.RoundedCornerShape(
-                                topStart = if (index == 0) r else 0.dp, topEnd = if (index == 0) r else 0.dp,
-                                bottomStart = if (index == repos.lastIndex) r else 0.dp, bottomEnd = if (index == repos.lastIndex) r else 0.dp)
-                            Column(Modifier.fillMaxWidth().clip(shape).background(c.card)) {
-                                if (index > 0) com.bontecou.syncmd.ui.theme.TideHairline()
-                                RepoPickerRow(repo = repo, onClick = { onRepoSelected(repo) })
-                            }
-                        }
-                        item { Box(Modifier.navigationBarsPadding()) }
+                    itemsIndexed(group.repos, key = { _, repo -> "repo-${group.notes}-${repo.id}" }) { index, repo ->
+                        val isAdded = added(repo)
+                        RepoPickerRow(repo, signals[repo.fullName], isAdded, busy,
+                            Modifier.padding(horizontal = 16.dp).m3GroupedItem(index, group.repos.size, c.cLow), divider = index > 0,
+                            onOpen = { onOpen(repo) }, onClone = { onClone(repo) })
                     }
                 }
             }
@@ -186,126 +259,42 @@ private fun RepoPickerContent(
 }
 
 @Composable
-private fun RepoSearchField(query: String, onQuery: (String) -> Unit, modifier: Modifier = Modifier) {
-    val c = Tide.colors
-    var focused by remember { mutableStateOf(false) }
-    Row(
-        modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .background(c.containerHigh, CircleShape)
-            .border(if (focused) 2.dp else 0.dp, if (focused) c.primary else Color.Transparent, CircleShape)
-            .padding(start = 16.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_search, tint = c.inkMid)
-        Box(Modifier.weight(1f)) {
-            if (query.isEmpty()) Text(stringResource(R.string.ui_search_repositories_243865a1), style = TideType.body, color = c.inkMid)
-            BasicTextField(
-                value = query,
-                onValueChange = onQuery,
-                textStyle = TideType.body.copy(color = c.ink),
-                singleLine = true,
-                cursorBrush = SolidColor(c.primary),
-                modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused },
-            )
-        }
-        if (query.isNotEmpty()) {
-            TideCircleButton(stringResource(R.string.tide_onboarding_picker_clear), { onQuery("") }, size = 40.dp, filled = false) {
-                com.bontecou.syncmd.ui.theme.TideIcon(R.drawable.ic_m3_close, tint = c.inkMid, size = 20.dp)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun RepoPickerRow(repo: GitHubRepo, onClick: () -> Unit) {
-    val c = Tide.colors
-    TideCard(padding = 16.dp, radius = 0.dp, onClick = onClick) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = repo.name,
-                    style = TideType.sans(16.sp, FontWeight.Medium).copy(textDirection = TextDirection.Ltr),
-                    color = c.ink,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = "${repo.ownerLogin} · ⎇ ${repo.defaultBranch}",
-                    style = TideType.meta.copy(textDirection = TextDirection.Ltr),
-                    color = c.inkFaint,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                if (!repo.description.isNullOrBlank() && repo.description != "null") {
-                    Text(
-                        text = repo.description,
-                        style = TideType.sans(13.sp).copy(lineHeight = 18.sp),
-                        color = c.inkMid,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = 2.dp),
-                    )
-                }
-                FlowRow(Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    if (repo.isPrivate) TidePill(stringResource(R.string.publication_private_label), c.inkMid, c.well)
-                    repo.language?.let { TidePill(it, c.behind, c.behind.copy(alpha = 0.10f)) }
-                    if (repo.stargazersCount > 0) Text("★ ${repo.stargazersCount}", style = TideType.meta, color = c.inkFaint,
-                        modifier = Modifier.padding(vertical = 5.dp))
-                    repo.updatedAt?.let { iso ->
-                        formatRelativeDate(iso)?.let { rel -> Text(rel, style = TideType.meta, color = c.inkFaint, modifier = Modifier.padding(vertical = 5.dp)) }
-                    }
-                }
-            }
-            TideChevron()
-        }
-    }
-}
-
-private val isoFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-
-@Composable
-private fun formatRelativeDate(iso: String): String? {
-    val date: Date = try { isoFmt.parse(iso) ?: return null } catch (_: Exception) { return null }
-    val diff = System.currentTimeMillis() - date.time
-    val days = TimeUnit.MILLISECONDS.toDays(diff).toInt()
-    if (diff < TimeUnit.MINUTES.toMillis(2)) return stringResource(R.string.account_updated_just_now)
-    val (id, count) = when {
-        diff < TimeUnit.HOURS.toMillis(1)    -> R.plurals.account_updated_minutes to TimeUnit.MILLISECONDS.toMinutes(diff).toInt()
-        diff < TimeUnit.DAYS.toMillis(1)     -> R.plurals.account_updated_hours to TimeUnit.MILLISECONDS.toHours(diff).toInt()
-        diff < TimeUnit.DAYS.toMillis(7)     -> R.plurals.account_updated_days to days
-        diff < TimeUnit.DAYS.toMillis(30)    -> R.plurals.account_updated_weeks to days / 7
-        diff < TimeUnit.DAYS.toMillis(365)   -> R.plurals.account_updated_months to days / 30
-        else                                 -> R.plurals.account_updated_years to days / 365
-    }
-    return pluralStringResource(id, count, count)
+private fun RepoPickerRow(repo: GitHubRepo, signals: RepoNoteSignals?, added: Boolean, busy: Boolean, modifier: Modifier, divider: Boolean,
+    onOpen: () -> Unit, onClone: () -> Unit) {
+    val c = M3.colors
+    val size = repo.sizeKilobytes?.takeIf { !added && it > 0 }?.let { addVaultSize(it * 1024) }
+    val meta = listOfNotNull(
+        stringResource(if (repo.isPrivate) R.string.add_meta_private else R.string.add_meta_public),
+        stringResource(R.string.add_meta_obsidian).takeIf { signals?.obsidian == true },
+        size?.let { if (signals?.lfs == true) stringResource(R.string.add_meta_lfs, it) else it },
+        addVaultAge(parseGitHubTime(repo.pushedAt ?: repo.updatedAt)),
+    ).joinToString(" · ")
+    M3ListRow(repo.name, modifier.testTag("repo-${repo.fullName}"), meta = meta, divider = divider, onClick = if (added) null else onOpen,
+        enabled = true, contentPadding = PaddingValues(start = 20.dp, end = 16.dp, top = 8.dp, bottom = 8.dp), titleMaxLines = 1,
+        trailing = {
+            if (added) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                M3Icon(R.drawable.ic_m3_check, tint = c.ok, size = 18.dp)
+                Text(stringResource(R.string.add_added), style = M3Type.badge.copy(fontSize = M3Type.bodySmall.fontSize), color = c.ok)
+            } else M3TonalButton(stringResource(R.string.add_clone), onClone, Modifier.testTag("repo-clone-${repo.fullName}"), enabled = !busy)
+        })
 }
 
 // ─── Previews ───────────────────────────────────────────────────────────────
 
 private val previewRepos = listOf(
-    GitHubRepo(1, "notes", "octocat/notes", "Daily notes and an Obsidian vault", true, "", "main", "2026-10-30T10:00:00Z", "octocat", "Markdown", 4),
-    GitHubRepo(2, "garden", "octocat/garden", null, false, "", "trunk", null, "octocat", null, 0),
+    GitHubRepo(1, "VoxVault", "CodyBontecou/VoxVault", null, true, "", "main", "2026-11-06T08:00:00Z", "CodyBontecou", null, 0, 2_000),
+    GitHubRepo(2, "reading-vault", "CodyBontecou/reading-vault", null, true, "", "main", "2026-11-03T10:00:00Z", "CodyBontecou", null, 0, 4_000),
+    GitHubRepo(3, "vault-templates", "CodyBontecou/vault-templates", null, false, "", "main", "2026-09-01T10:00:00Z", "CodyBontecou", null, 0, 18),
 )
 
-@Composable
-private fun PickerPreview(repos: List<GitHubRepo>, query: String = "", loading: Boolean = false, error: String? = null) =
-    RepoPickerContent("octocat", repos, query, loading, error, {}, {}, {}, {}, {})
+@Preview(name = "Picker", widthDp = 412, heightDp = 915) @Composable
+private fun PickerPreview() = SyncMdTheme(darkTheme = false) {
+    val signals = mapOf("CodyBontecou/VoxVault" to RepoNoteSignals(true, 4, 1, false), "CodyBontecou/reading-vault" to RepoNoteSignals(true, 9, 2, false))
+    RepoPickerContent("CodyBontecou", repoPickerGroups(previewRepos, signals), RepoOwnerFilter.YOURS, "", false, null, { it.id == 1L }, signals, false,
+        {}, {}, {}, {}, {}, {}, {}, 24.dp)
+}
 
-@Preview(name = "Picker · list", heightDp = 760) @Composable
-private fun PickerListPreview() = SyncMdTheme(darkTheme = false) { PickerPreview(previewRepos) }
-
-@Preview(name = "Picker · list · dark", heightDp = 760) @Composable
-private fun PickerListDarkPreview() = SyncMdTheme(darkTheme = true) { PickerPreview(previewRepos, query = "no") }
-
-@Preview(name = "Picker · loading", heightDp = 600) @Composable
-private fun PickerLoadingPreview() = SyncMdTheme(darkTheme = false) { PickerPreview(emptyList(), loading = true) }
-
-@Preview(name = "Picker · empty + error", heightDp = 600) @Composable
-private fun PickerEmptyPreview() = SyncMdTheme(darkTheme = false) { PickerPreview(emptyList(), error = "GitHub rate limit reached.") }
-
-@Preview(name = "Picker · no matches · dark", heightDp = 600) @Composable
-private fun PickerNoMatchPreview() = SyncMdTheme(darkTheme = true) { PickerPreview(emptyList(), query = "zzz") }
+@Preview(name = "Picker · dark", widthDp = 412, heightDp = 915) @Composable
+private fun PickerDarkPreview() = SyncMdTheme(darkTheme = true) {
+    RepoPickerContent("CodyBontecou", emptyList(), RepoOwnerFilter.STARRED, "", true, null, { false }, emptyMap(), false, {}, {}, {}, {}, {}, {}, {}, 24.dp)
+}

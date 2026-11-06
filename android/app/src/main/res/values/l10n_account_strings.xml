@@ -7,7 +7,7 @@
     <string name="account_remove_failed">Could not remove GitHub sign-in. Retry when storage is available.</string>
     <string name="account_finish_migration">Complete GitHub sign-in to finish migrating previous credentials.</string>
     <string name="account_prepare_sign_in_failed">Could not prepare secure GitHub sign-in. Retry when storage is available.</string>
-    <string name="account_sign_in_unverified">GitHub sign-in could not be verified. Start sign-in again.</string>
+    <string name="account_sign_in_unverified">GitHub sign-in couldn’t be verified. Start sign-in again.</string>
     <string name="account_save_sign_in_failed">Could not securely save GitHub sign-in. Retry when storage is available.</string>
     <string name="account_cleanup_failed">GitHub sign-in is encrypted, but old local preferences could not be cleaned up. Retry when storage is available.</string>
     <string name="account_sign_in_repository_account">Sign in to the repository\'s GitHub account</string>
@@ -17,7 +17,7 @@
     <string name="account_session_save_failed">Secure GitHub storage could not be saved. Retry sign-in.</string>
     <string name="account_session_verify_failed">Secure GitHub storage could not be verified. Retry sign-in.</string>
     <string name="account_session_recovery_failed">Secure GitHub storage recovery failed. Retry sign-in when storage is available.</string>
-    <string name="account_browser_failed">Could not open the browser. Retry or use a Personal Access Token.</string>
+    <string name="account_browser_failed">Couldn’t open the browser. Retry, or use a personal access token.</string>
     <string name="account_load_failed">Failed to load GitHub data</string>
     <string name="account_token_empty">Token cannot be empty</string>
     <string name="account_save_sign_in_short">Could not securely save sign-in</string>

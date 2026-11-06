@@ -82,10 +82,10 @@ class AppTourLanguageTest {
                 compose.onNodeWithTag("tour-start-URL").performScrollTo().assertIsDisplayed()
                     .assertTextEquals(checkNotNull(current).getString(R.string.guide_url)).performClick()
                 compose.waitUntil(10_000) { compose.onAllNodesWithTag("remote-clone-screen").fetchSemanticsNodes().isNotEmpty() }
-                compose.onNodeWithTag("remote-clone-title",useUnmergedTree=true).assertTextEquals(checkNotNull(current).getString(R.string.guide_url))
+                compose.onNodeWithText(checkNotNull(current).getString(R.string.add_remote_title)).assertIsDisplayed()
                 fits("remote-clone-title","$tag / clone URL title")
                 if(tag in listOf("ar","fi","ja")) capture(scenario,"tour-clone-$tag")
-                compose.onNodeWithTag("remote-clone-back").assertContentDescriptionEquals(checkNotNull(current).getString(R.string.publication_back))
+                compose.onNodeWithContentDescription(checkNotNull(current).getString(R.string.publication_back))
                     .assertIsDisplayed().assertIsEnabled().performClick()
                 compose.waitUntil(10_000) { compose.onAllNodesWithTag("remote-clone-screen").fetchSemanticsNodes().isEmpty() }
                 assertTrue(guide.getBoolean("completed",false)); compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
