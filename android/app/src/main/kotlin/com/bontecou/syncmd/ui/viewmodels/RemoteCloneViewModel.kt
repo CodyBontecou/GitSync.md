@@ -26,8 +26,8 @@ import javax.inject.Inject
 class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
     private val credentials: RepositoryCredentialStore, @ApplicationContext private val context: Context,
     private val github: com.bontecou.syncmd.services.github.GitHubAuthManager,
-    private val deviceKeys: com.bontecou.syncmd.security.DeviceSshKeyStore,
-    private val savedState: androidx.lifecycle.SavedStateHandle = androidx.lifecycle.SavedStateHandle()) : ViewModel() {
+    private val savedState: androidx.lifecycle.SavedStateHandle = androidx.lifecycle.SavedStateHandle(),
+    private val deviceKeys: com.bontecou.syncmd.security.DeviceSshKeyStore = com.bontecou.syncmd.security.DeviceSshKeyStore(context)) : ViewModel() {
     /** "This phone's key" (board 14): generated once, kept Keystore-encrypted; null until [ensureDeviceKey] finishes. */
     private val _deviceKey = MutableStateFlow<com.bontecou.syncmd.services.git.GeneratedSshKey?>(null)
     val deviceKey = _deviceKey.asStateFlow()
