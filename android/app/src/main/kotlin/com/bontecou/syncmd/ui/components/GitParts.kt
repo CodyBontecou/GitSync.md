@@ -76,6 +76,8 @@ sealed interface GitDestination {
     data object Author : GitDestination
     data object Conflicts : GitDestination
     data object ManageVault : GitDestination
+    /** The vault top bar's More: Vault settings (vaultSettings/{repo}). */
+    data object VaultSettings : GitDestination
     data object LargeFiles : GitDestination
     data object Connection : GitDestination
     data object MoveRepository : GitDestination

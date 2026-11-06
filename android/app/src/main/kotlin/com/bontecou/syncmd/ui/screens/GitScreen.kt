@@ -151,7 +151,7 @@ fun GitScreen(
         actions = {
             M3IconButton(R.drawable.ic_m3_sync, stringResource(R.string.git_m3_check_changes), { pullContext?.let(pullVM::fetch) },
                 Modifier.testTag("git-fetch"), enabled = pullContext != null && !pullBusy)
-            M3IconButton(R.drawable.ic_m3_more_vert, stringResource(R.string.git_m3_vault_settings), { navigate(GitDestination.ManageVault) })
+            M3IconButton(R.drawable.ic_m3_more_vert, stringResource(R.string.git_m3_vault_settings), { navigate(GitDestination.VaultSettings) })
         },
         bottomBar = if (showNavigation) ({ M3VaultNavigationBar(VaultTab.GIT, onSelectTab, changes = changeCount.takeIf { it > 0 }) }) else null,
         bottomSpace = 96.dp,

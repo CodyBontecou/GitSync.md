@@ -36,6 +36,7 @@ fun NavController.openGit(destination: GitDestination, path: String) {
         GitDestination.Remote -> navigateSafe("${GitRoutes.REMOTE}/$encoded")
         GitDestination.Conflicts -> navigateSafe("${GitRoutes.CONFLICT}/$encoded") { launchSingleTop = true }
         GitDestination.ManageVault -> navigateSafe("${GitRoutes.MANAGE}/$encoded")
+        GitDestination.VaultSettings -> navigateSafe("${Routes.VAULT_SETTINGS}/$encoded")
         GitDestination.LargeFiles -> navigateSafe("${GitRoutes.LARGE_FILES}/$encoded")
         GitDestination.Rebase -> navigateSafe("${Routes.REBASE}/$encoded")
         GitDestination.Upstream -> navigateSafe("${Routes.UPSTREAM}/$encoded")
