@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material 3 boards: Large files (LFS), LFS endpoints, SSH hosts, Pull all, widgets, tiles and shortcuts. -->
+<resources>
+    <!-- Large files -->
+    <string name="lfs_m3_title">Large files</string>
+    <string name="lfs_m3_subtitle">%1$s · %2$s · Git LFS</string>
+    <string name="lfs_m3_reload">Reload LFS state</string>
+    <string name="lfs_m3_tab_files">Files</string>
+    <string name="lfs_m3_tab_locks">Locks</string>
+    <string name="lfs_m3_stored_kicker">Stored in LFS</string>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="one">in %d file</item>
+        <item quantity="other">in %d files</item>
+    </plurals>
+    <string name="lfs_m3_stored_locked">%1$s · %2$d locked</string>
+    <string name="lfs_m3_stored_body">Commits keep small pointers. Pull downloads the contents, push uploads them first.</string>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="one">Downloading %d file</item>
+        <item quantity="other">Downloading %d files</item>
+    </plurals>
+    <string name="lfs_m3_downloading_prepare">Downloading missing contents</string>
+    <string name="lfs_m3_download_progress">Download progress</string>
+    <string name="lfs_m3_refresh_required">That worked, but the new LFS state didn’t load. Reload before you do anything else.</string>
+    <string name="lfs_m3_needs_choice">Needs a tracking choice</string>
+    <string name="lfs_m3_candidate_new">%1$s · new, not tracked yet</string>
+    <string name="lfs_m3_candidate_changed">%1$s · changed, not tracked yet</string>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="one">Track %d file with LFS</item>
+        <item quantity="other">Track %d files with LFS</item>
+    </plurals>
+    <string name="lfs_m3_match_extensions">Match extensions…</string>
+    <string name="lfs_m3_keep_git">Keep in regular Git</string>
+    <string name="lfs_m3_tracking_caption">Only .gitattributes changes. Your files stay put until you stage them.</string>
+    <string name="lfs_m3_tracked_files">Tracked files</string>
+    <string name="lfs_m3_no_tracked">No files are stored in LFS on this branch yet.</string>
+    <string name="lfs_m3_state_pointer">Pointer · download contents</string>
+    <string name="lfs_m3_cache_verified">verified cache</string>
+    <string name="lfs_m3_cache_missing">not cached</string>
+    <string name="lfs_m3_locked">Locked</string>
+    <string name="lfs_m3_download_missing">Download missing contents</string>
+    <string name="lfs_m3_locks_intro">Check ownership before you change a lock. Locks live on the server; your files and commits stay put.</string>
+    <string name="lfs_m3_check_ownership">Check ownership</string>
+    <string name="lfs_m3_list_read_only">List read-only</string>
+    <string name="lfs_m3_branch_remote">%1$s · remote %2$s</string>
+    <string name="lfs_m3_server">LFS server %1$s</string>
+    <string name="lfs_m3_scope_verified">Ownership verified with this connection</string>
+    <string name="lfs_m3_scope_read_only">Read-only list · ownership not verified</string>
+    <string name="lfs_m3_unsupported">This server doesn’t support Git LFS locks.</string>
+    <string name="lfs_m3_locked_on_server">Locked on the server</string>
+    <string name="lfs_m3_locks_empty">Nothing is locked on this branch.</string>
+    <string name="lfs_m3_owned_here">Owned by this connection</string>
+    <string name="lfs_m3_owner">Owner: %1$s</string>
+    <string name="lfs_m3_release_review">Release…</string>
+    <string name="lfs_m3_lock_a_file">Lock a file</string>
+    <string name="lfs_m3_lockable_caption">Only files marked lockable in .gitattributes show up here.</string>
+    <string name="lfs_m3_no_lockable">No unlocked lockable files.</string>
+    <string name="lfs_m3_track_title">Use LFS for these files?</string>
+    <string name="lfs_m3_keep_title">Keep these in regular Git?</string>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
+    <string name="lfs_m3_track_body">Adds exact-path LFS rules for the files below. Storage and bandwidth limits depend on your Git host. Stage the changes, then commit.</string>
+    <string name="lfs_m3_keep_body">Adds explicit regular-Git rules. The contents go into your commits. Files over 100 MiB still need LFS.</string>
+    <string name="lfs_m3_stale">The files changed since you opened this. Cancel and review again.</string>
+    <string name="lfs_m3_apply_tracking">Apply tracking choice</string>
+    <string name="lfs_m3_cancel">Cancel</string>
+    <string name="lfs_m3_ext_title">Track matching extensions?</string>
+    <string name="lfs_m3_ext_scope">Covers current and future matching files in every folder. Matching is case-sensitive.</string>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="one">%d file moves to LFS</item>
+        <item quantity="other">%d files move to LFS</item>
+    </plurals>
+    <string name="lfs_m3_ext_note_existing">Files that already have their own tracking choice keep it.</string>
+    <string name="lfs_m3_ext_note_stage">Only .gitattributes changes. Stage the files to turn them into pointers.</string>
+    <string name="lfs_m3_ext_note_limits">Ignored files stay ignored. Storage limits depend on your Git host.</string>
+    <string name="lfs_m3_apply_rules">Apply rules</string>
+    <string name="lfs_m3_force_title">Force release another owner’s lock?</string>
+    <string name="lfs_m3_force_warning">This removes a lock held by another connection. Check with its owner first.</string>
+    <string name="lfs_m3_force_ack">I understand someone may still be editing this file.</string>
+    <string name="lfs_m3_release_body">Others can lock and edit it again. Your local file and commits stay as they are.</string>
+    <string name="lfs_m3_create_body">Other connections see it as locked until you release it. Nothing on this phone changes.</string>
+    <string name="lfs_m3_review_changed">The locks changed since you opened this. Cancel and check ownership again.</string>
+    <string name="lfs_m3_attention">Git LFS needs attention</string>
+    <string name="lfs_m3_ok">OK</string>
+    <string name="lfs_m3_tracking_updated">Tracking rules updated. Stage .gitattributes and the files, then commit.</string>
+    <string name="lfs_m3_extensions_updated">Extension rules updated. Stage .gitattributes and the files, then commit.</string>
+
+    <!-- LFS endpoints -->
+    <string name="lfs_m3_endpoints_title">LFS endpoints</string>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="one">Settings · %d approved</item>
+        <item quantity="other">Settings · %d approved</item>
+    </plurals>
+    <string name="lfs_m3_endpoints_none">Settings · none approved</string>
+    <string name="lfs_m3_endpoints_intro">Separate LFS servers your repositories may use. Revoking stops future transfers in that direction; anything already running may finish.</string>
+    <string name="lfs_m3_endpoints_empty">No approved custom LFS endpoints</string>
+    <string name="lfs_m3_http_warning">HTTP is unencrypted. Repository data and any username or token can be read in transit. Use HTTPS when you can.</string>
+    <string name="lfs_m3_uploads">Uploads</string>
+    <string name="lfs_m3_downloads">Downloads</string>
+    <string name="lfs_m3_public_access">Public access</string>
+    <string name="lfs_m3_separate_credentials">Separate encrypted credentials</string>
+    <string name="lfs_m3_ssh_authorization">Authorization from SSH</string>
+    <string name="lfs_m3_revoke">Revoke</string>
+    <string name="lfs_m3_revoke_uploads">Revoke uploads</string>
+    <string name="lfs_m3_revoke_downloads">Revoke downloads</string>
+    <string name="lfs_m3_reset_all">Reset all LFS endpoint approvals</string>
+    <string name="lfs_m3_revoke_upload_title">Revoke upload approval?</string>
+    <string name="lfs_m3_revoke_download_title">Revoke download approval?</string>
+    <string name="lfs_m3_revoke_upload_body">Future uploads to %1$s will need a new review. The download approval and its saved credentials stay.</string>
+    <string name="lfs_m3_revoke_download_body">Future downloads from %1$s will need a new review. The upload approval and its saved credentials stay.</string>
+    <string name="lfs_m3_reset_title">Reset all LFS endpoint approvals?</string>
+    <string name="lfs_m3_reset_body">Removes every custom endpoint approval and its saved credentials on this phone. Each endpoint and direction will need a new review.</string>
+    <string name="lfs_m3_reset_confirm">Reset approvals</string>
+    <string name="lfs_m3_approvals_title">LFS endpoint approvals</string>
+    <string name="lfs_m3_upload_title">Allow LFS uploads?</string>
+    <string name="lfs_m3_download_title">Allow LFS downloads?</string>
+    <string name="lfs_m3_upload_body">This repository wants to send file contents to a separate LFS server.</string>
+    <string name="lfs_m3_download_body">This repository wants to download file contents from a separate LFS server.</string>
+    <string name="lfs_m3_fact_repository">Repository</string>
+    <string name="lfs_m3_fact_remote">Git remote</string>
+    <string name="lfs_m3_fact_endpoint">LFS endpoint</string>
+    <string name="lfs_m3_approval_scope">Check this address with the repository owner. Approval covers only this repository, remote, endpoint and direction on this phone.</string>
+    <string name="lfs_m3_endpoint_auth">Endpoint authentication</string>
+    <string name="lfs_m3_ssh_review">This HTTP endpoint gets short-lived authorization from the verified SSH server. Your SSH key stays on this phone. The authorization can be read in transit and is never saved.</string>
+    <string name="lfs_m3_auth_reuse">Use saved endpoint credentials</string>
+    <string name="lfs_m3_auth_new">Separate username and token</string>
+    <string name="lfs_m3_username">LFS endpoint username</string>
+    <string name="lfs_m3_secret">Token or password</string>
+    <string name="lfs_m3_not_shared">Your GitHub sign-in isn’t shared with this server. Separate credentials are encrypted on this phone. Manage them in Settings › LFS endpoints.</string>
+    <string name="lfs_m3_allow_uploads">Allow uploads</string>
+    <string name="lfs_m3_allow_downloads">Allow downloads</string>
+    <string name="lfs_m3_error_changed">Approvals changed during review. Reload them and review the transfer again.</string>
+
+    <!-- SSH hosts -->
+    <string name="ssh_m3_title">SSH server trust</string>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="one">Settings · %d server</item>
+        <item quantity="other">Settings · %d servers</item>
+    </plurals>
+    <string name="ssh_m3_none">Settings · none trusted</string>
+    <string name="ssh_m3_intro">Fingerprints you trusted are saved on this phone. Forget one and you’ll verify it again next time you connect. Your SSH keys stay saved.</string>
+    <string name="ssh_m3_empty">No trusted SSH servers</string>
+    <string name="ssh_m3_trusted">Trusted servers</string>
+    <string name="ssh_m3_forget_server">Forget server</string>
+    <string name="ssh_m3_forget_cd">Forget %1$s</string>
+    <string name="ssh_m3_reset_all">Reset all SSH server trust</string>
+    <string name="ssh_m3_forget_title">Forget SSH server?</string>
+    <string name="ssh_m3_forget_body">%1$s will need fingerprint verification before you connect again.</string>
+    <string name="ssh_m3_forget">Forget</string>
+    <string name="ssh_m3_reset_title">Reset all SSH server trust?</string>
+    <string name="ssh_m3_reset_body">Every SSH server will need fingerprint verification before you connect again. This also clears damaged trust entries.</string>
+    <string name="ssh_m3_reset_confirm">Reset trust</string>
+    <string name="ssh_m3_verify_title">Verify SSH server</string>
+    <string name="ssh_m3_changed_title">SSH server key changed</string>
+    <string name="ssh_m3_previous">Previously trusted: %1$s</string>
+    <string name="ssh_m3_changed_warning">A changed key can mean someone is impersonating the server. Check the new fingerprint with its owner before you replace trust.</string>
+    <string name="ssh_m3_compare">Compare it with the SSH host key the server owner publishes before you trust it.</string>
+    <string name="ssh_m3_saved">Trust is saved on this phone and the waiting connection carries on. Cancel leaves the server untrusted.</string>
+    <string name="ssh_m3_trust">Trust and connect</string>
+    <string name="ssh_m3_replace">Replace trust and connect</string>
+    <string name="ssh_m3_error_save">Couldn’t save SSH server trust. Verify the fingerprint again before you retry.</string>
+</resources>

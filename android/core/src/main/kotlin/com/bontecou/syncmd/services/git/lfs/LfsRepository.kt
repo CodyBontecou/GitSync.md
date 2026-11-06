@@ -17,6 +17,20 @@ import java.nio.file.StandardCopyOption
 
 class LfsWorktreeChangedException : IllegalStateException("An LFS pointer, repository branch or index changed during download. Your current files were kept. Review them and retry.")
 data class LfsHydrationResult(val pointers: Int, val downloaded: Int, val hydrated: Int)
+/** Bytes still to download for the pointers being restored; [done] grows as objects arrive. */
+data class LfsDownloadProgress(val files: Int, val done: Long, val total: Long)
+/** Live download progress per repository path, published while [LfsRepository.hydrate] transfers objects. */
+object LfsDownloads {
+    private val mutable = kotlinx.coroutines.flow.MutableStateFlow<Map<String, LfsDownloadProgress>>(emptyMap())
+    val progress: kotlinx.coroutines.flow.StateFlow<Map<String, LfsDownloadProgress>> = mutable
+    fun publish(path: String, value: LfsDownloadProgress?) {
+        while (true) {
+            val old = mutable.value
+            val next = if (value == null) old - path else old + (path to value)
+            if (mutable.compareAndSet(old, next)) return
+        }
+    }
+}
 data class LfsFileInfo(val path: String, val pointer: LfsPointer, val hydrated: Boolean, val cached: Boolean, val modified: Boolean, val lockable: Boolean)
 
 /** Repository leases serialize app operations; exact bytes and index IDs protect downloaded replacements. */
@@ -44,7 +58,8 @@ class LfsRepository(private val tokenProvider: (() -> String?)? = null,
     suspend fun hydrate(path: String): LfsHydrationResult = RepositoryOperationCoordinator.withRepository(path, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.LFS) {
         GitLfs.open(File(path)).use { git ->
             val auth = RemoteAuthentication.provider(git.repository, "origin", false, tokenProvider, credentialResolver)
-            hydrate(git.repository, auth)
+            try { hydrate(git.repository, { auth }, onProgress = { LfsDownloads.publish(path, it) }) }
+            finally { LfsDownloads.publish(path, null) }
         }
     }
     companion object {
@@ -82,7 +97,8 @@ class LfsRepository(private val tokenProvider: (() -> String?)? = null,
         fun hydrate(repository: Repository, auth: ScopedCredentialsProvider): LfsHydrationResult = hydrate(repository, { auth })
 
         /** Resolve credentials only if a missing object actually needs a network request. */
-        internal fun hydrate(repository: Repository, auth: () -> ScopedCredentialsProvider, paths: Set<String>? = null): LfsHydrationResult {
+        internal fun hydrate(repository: Repository, auth: () -> ScopedCredentialsProvider, paths: Set<String>? = null,
+            onProgress: (LfsDownloadProgress) -> Unit = {}): LfsHydrationResult {
             val cache = LfsObjectStore(repository)
             val head = repository.resolve("HEAD")?.copy()
             val branch = repository.fullBranch
@@ -104,7 +120,13 @@ class LfsRepository(private val tokenProvider: (() -> String?)? = null,
             val downloaded = if (missing.isEmpty()) 0 else {
                 val connection = auth()
                 val (url, credentials) = connection.lfsConnection()
-                LfsTransfers(repository, url, credentials, remoteName = connection.lfsRemoteName()).download(missing)
+                val files = discovered.count { it.first.pointer in missing }
+                val total = missing.sumOf { it.size }
+                var done = 0L
+                onProgress(LfsDownloadProgress(files, 0, total))
+                LfsTransfers(repository, url, credentials, remoteName = connection.lfsRemoteName()).download(missing) { read ->
+                    done = minOf(total, done + read); onProgress(LfsDownloadProgress(files, done, total))
+                }
             }
             GitLfs.enable(repository)
             var hydrated = 0

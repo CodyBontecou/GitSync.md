@@ -65,12 +65,12 @@ internal class LfsTransfers(private val repository: Repository, private val remo
             parsed.forEach(consume)
         }
     }
-    fun download(pointers: Collection<LfsPointer>, ref: String? = repository.fullBranch): Int {
+    fun download(pointers: Collection<LfsPointer>, ref: String? = repository.fullBranch, onBytes: (Long) -> Unit = {}): Int {
         val cache = LfsObjectStore(repository)
         var count = 0
         batches(SshLfsOperation.DOWNLOAD, pointers, ref?.takeIf { it.startsWith("refs/") }) { item ->
             val action = item.actions["download"] ?: error("Git LFS server did not provide a download action")
-            action.fresh(); http.download(action.href, action.headers, cache, item.pointer); count++
+            action.fresh(); http.download(action.href, action.headers, cache, item.pointer, onBytes); count++
         }
         return count
     }

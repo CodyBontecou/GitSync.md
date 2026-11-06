@@ -11,6 +11,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -23,7 +24,12 @@ class LfsViewModel @Inject constructor(private val repositories: LfsRepository) 
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
     private val tracking = LfsTracking()
+    private val path = MutableStateFlow<String?>(null)
+    /** Live progress of "Download missing contents" for this screen's vault (null when nothing is downloading). */
+    val download: kotlinx.coroutines.flow.StateFlow<LfsDownloadProgress?> = kotlinx.coroutines.flow.combine(path, LfsDownloads.progress) { current, all -> current?.let { all[it] } }
+        .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, null)
     private var currentPath: String? = null
+        set(value) { field = value; path.value = value }
     private var generation = 0L
     @Volatile private var requestOwner: Any = Any()
     fun load(path: String) {

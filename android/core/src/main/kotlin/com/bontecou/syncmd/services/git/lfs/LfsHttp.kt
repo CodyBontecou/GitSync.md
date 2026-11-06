@@ -113,8 +113,13 @@ class LfsHttp {
             LfsJson.bounded(it, 65536); Unit
         }
     }
-    internal fun download(url: URI, headers: Map<String, String>, store: LfsObjectStore, expected: LfsPointer) {
-        request(url, "GET", headers, null, null) { input -> store.put(input, expected) }
+    internal fun download(url: URI, headers: Map<String, String>, store: LfsObjectStore, expected: LfsPointer, onBytes: (Long) -> Unit = {}) {
+        request(url, "GET", headers, null, null) { input -> store.put(CountingInput(input, onBytes), expected) }
+    }
+    /** Reports bytes read so callers can show download progress; the store still verifies the content. */
+    private class CountingInput(input: InputStream, private val onBytes: (Long) -> Unit) : java.io.FilterInputStream(input) {
+        override fun read(): Int = super.read().also { if (it >= 0) onBytes(1) }
+        override fun read(b: ByteArray, off: Int, len: Int): Int = super.read(b, off, len).also { if (it > 0) onBytes(it.toLong()) }
     }
     internal fun upload(url: URI, headers: Map<String, String>, file: File, expected: LfsPointer) {
         check(LfsObjectStore.hash(file) == expected) { "Git LFS upload source changed" }

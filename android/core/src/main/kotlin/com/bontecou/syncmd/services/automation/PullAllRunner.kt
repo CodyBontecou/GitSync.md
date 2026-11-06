@@ -13,7 +13,8 @@ import java.io.File
 
 data class PullAllTarget(val path: String, val name: String, val registration: String = "")
 enum class PullAllOutcome { UPDATED, UP_TO_DATE, ATTENTION, BLOCKED, FAILED }
-data class PullAllResult(val target: PullAllTarget, val outcome: PullAllOutcome)
+/** [commits] counts the commits a pull brought in (0 when HEAD didn't move). */
+data class PullAllResult(val target: PullAllTarget, val outcome: PullAllOutcome, val commits: Int = 0)
 class PullAllBusy : IllegalStateException("Pull All is already running")
 
 /** Deliberately receives only the pull interface: this action cannot stage, commit or push.
@@ -48,12 +49,13 @@ class PullAllRunner(private val pull: PullRepository, private val validate: (Pul
                                 val before = repo.resolve("HEAD")
                                 val result = pull.executePull(target.path).getOrThrow()
                                 currentCoroutineContext().ensureActive()
+                                val after = repo.resolve("HEAD")
                                 PullAllResult(target, when {
                                     !result.success -> PullAllOutcome.FAILED
                                     result.attention != null -> PullAllOutcome.ATTENTION
-                                    repo.resolve("HEAD") != before -> PullAllOutcome.UPDATED
+                                    after != before -> PullAllOutcome.UPDATED
                                     else -> PullAllOutcome.UP_TO_DATE
-                                })
+                                }, commits = incoming(repo, before, after))
                             }
                         }
                     }
@@ -65,5 +67,18 @@ class PullAllRunner(private val pull: PullRepository, private val validate: (Pul
             return results
         } finally { active.unlock() }
     }
-    companion object { private val active = Mutex() }
+    companion object {
+        private val active = Mutex()
+        /** Commits reachable from [after] but not from [before]: what this pull brought in. */
+        fun incoming(repo: org.eclipse.jgit.lib.Repository, before: org.eclipse.jgit.lib.ObjectId?, after: org.eclipse.jgit.lib.ObjectId?): Int {
+            if (after == null || after == before) return 0
+            return runCatching {
+                org.eclipse.jgit.revwalk.RevWalk(repo).use { walk ->
+                    walk.markStart(walk.parseCommit(after))
+                    if (before != null) walk.markUninteresting(walk.parseCommit(before))
+                    walk.count().coerceAtMost(100_000)
+                }
+            }.getOrDefault(0)
+        }
+    }
 }
