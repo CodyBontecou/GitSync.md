@@ -91,7 +91,7 @@ import com.bontecou.syncmd.ui.viewmodels.RepositoryActionsViewModel
  * launcher shortcut; manage launcher shortcuts and authorized callback links; open Pull All.
  */
 @Composable
-fun RepositoryActionsScreen(model: RepositoryActionsViewModel, onBack: () -> Unit, onPullAll: () -> Unit = {}) {
+fun RepositoryActionsScreen(model: RepositoryActionsViewModel, onPullAll: () -> Unit = {}, onBack: () -> Unit) {
     val state by model.state.collectAsState()
     var actionName by rememberSaveable { mutableStateOf(RepositoryAction.PULL.name) }
     var message by rememberSaveable { mutableStateOf("Update from GitSync.md") }

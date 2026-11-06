@@ -65,7 +65,7 @@ import com.bontecou.syncmd.ui.viewmodels.ObsidianViewModel
 // ─── Obsidian connections (board ObsidianLinks: prepared · ready · error · empty · forget) ──
 
 @Composable
-fun ObsidianScreen(model: ObsidianViewModel, onBack: () -> Unit, onAddVault: () -> Unit = {}) {
+fun ObsidianScreen(model: ObsidianViewModel, onAddVault: () -> Unit = {}, onBack: () -> Unit) {
     val state by model.state.collectAsState()
     var forget by remember { mutableStateOf<PullAllTarget?>(null) }
     // The vault the latest request was for; its card carries the connection badge.
