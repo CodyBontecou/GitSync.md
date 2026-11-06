@@ -1,37 +1,32 @@
 package com.bontecou.syncmd.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.theme.M3
+import com.bontecou.syncmd.ui.theme.M3Button
+import com.bontecou.syncmd.ui.theme.M3ButtonSize
+import com.bontecou.syncmd.ui.theme.M3ButtonStyle
+import com.bontecou.syncmd.ui.theme.M3Hero
+import com.bontecou.syncmd.ui.theme.M3HeroHeadline
+import com.bontecou.syncmd.ui.theme.M3HeroStyle
+import com.bontecou.syncmd.ui.theme.M3RailState
+import com.bontecou.syncmd.ui.theme.M3SyncIllustration
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
-import com.bontecou.syncmd.ui.theme.Tide
-import com.bontecou.syncmd.ui.theme.TideDisplay
-import com.bontecou.syncmd.ui.theme.TideOutlineButton
-import com.bontecou.syncmd.ui.theme.TidePrimaryButton
-import com.bontecou.syncmd.ui.theme.TideSectionLabel
-import com.bontecou.syncmd.ui.theme.TideType
 
 /**
- * Empty state shown when no repository is selected.
- * Tide: mono caps label, a plain-words display headline, then the one right
- * action (GitHub) as an ink pill and the manual path as an outline pill.
+ * Shown where a screen needs a vault but none is selected: the empty-Home hero (board 11) with the
+ * GitHub action filled and the manual path outlined.
  */
 @Composable
 fun RepositoryEmptyState(
@@ -39,40 +34,21 @@ fun RepositoryEmptyState(
     onConnectGitHub: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val c = Tide.colors
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(c.paper)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = Tide.gutter + 4.dp, vertical = 48.dp),
-        verticalArrangement = Arrangement.Center,
+        modifier.fillMaxSize().background(M3.colors.surface).verticalScroll(rememberScrollState()).padding(16.dp),
     ) {
-        TideSectionLabel(stringResource(R.string.ui_no_repository_aec5972a))
-        Spacer(Modifier.height(10.dp))
-        TideDisplay(stringResource(R.string.ui_connect_a_github_repository_to_start_synci_0e1f2ea6), size = 32.sp)
-        Spacer(Modifier.height(12.dp))
-        // Paid-app note — a small fact, so mono meta in green.
-        Text(stringResource(R.string.ui_full_version_no_subscription_8fe42d1c), style = TideType.metaStrong, color = c.synced)
-        Spacer(Modifier.height(32.dp))
-
-        TidePrimaryButton(
-            title = stringResource(R.string.ui_connect_with_github_6f2b4e53),
-            onClick = onConnectGitHub,
-            icon = painterResource(R.drawable.ic_github),
-        )
-        Text(
-            stringResource(R.string.ui_or_7175517a),
-            style = TideType.meta,
-            color = c.inkFaint,
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(vertical = 14.dp),
-        )
-        TideOutlineButton(
-            title = stringResource(R.string.ui_add_local_repository_b8323c70),
-            onClick = onNavigateToSettings,
-            modifier = Modifier.fillMaxWidth(),
-            height = 56.dp,
-        )
+        M3Hero(style = M3HeroStyle.Inverse) {
+            M3HeroHeadline(stringResource(R.string.m3home_empty_title))
+            M3SyncIllustration(
+                stringResource(R.string.m3home_rail_phone), stringResource(R.string.m3home_rail_github), M3RailState.Empty,
+                Modifier.padding(top = 20.dp), caption = stringResource(R.string.m3home_empty_rail_nothing),
+                description = stringResource(R.string.m3home_empty_rail_description),
+            )
+        }
+        M3Button(stringResource(R.string.m3home_start_github), onConnectGitHub, Modifier.fillMaxWidth().padding(top = 24.dp),
+            style = M3ButtonStyle.Filled, size = M3ButtonSize.Hero, icon = R.drawable.ic_github)
+        M3Button(stringResource(R.string.m3home_start_local), onNavigateToSettings, Modifier.fillMaxWidth().padding(top = 8.dp),
+            style = M3ButtonStyle.Outlined, size = M3ButtonSize.Large)
     }
 }
 

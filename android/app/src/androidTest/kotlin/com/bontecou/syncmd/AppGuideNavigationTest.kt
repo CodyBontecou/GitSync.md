@@ -28,12 +28,12 @@ class AppGuideNavigationTest {
         check(edit.commit())
     }
     private fun awaitTag(tag: String) = compose.waitUntil(10_000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
-    private fun awaitPage(page: Int) = compose.waitUntil(10_000) {
-        guide.getInt("page", -1) == page && compose.onAllNodes(hasTestTag(if (page == 3) "tour-start-HOME" else "tour-next") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
+    private fun awaitChoices() = compose.waitUntil(10_000) {
+        compose.onAllNodes(hasTestTag("onboarding-github") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
     }
-    private fun startTour(page: Int = 0) {
-        check(guide.edit().clear().putBoolean("initialized",true).putBoolean("completed",false).putInt("page",page).putInt("notes_seen",BuildConfig.VERSION_CODE).commit())
-        scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)); awaitTag("app-tour")
+    private fun startOnboarding() {
+        check(guide.edit().clear().putBoolean("initialized",true).putBoolean("completed",false).putInt("page",0).putInt("notes_seen",BuildConfig.VERSION_CODE).commit())
+        scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)); awaitTag("onboarding"); awaitChoices()
     }
     private fun capture(name: String) {
         compose.waitForIdle(); val folder = File(context.getExternalFilesDir(null),"parity-evidence").apply { mkdirs() }
@@ -44,16 +44,13 @@ class AppGuideNavigationTest {
         } finally { previous?.recycle() }
     }
     @Test fun firstRunResumesAndUrlChoiceDoesNotLeaveTourInBackStack() {
-        startTour(); capture("app-tour-light.png")
-        compose.onNodeWithTag("tour-next").performClick(); awaitPage(1)
-        scenario!!.recreate(); awaitTag("app-tour"); awaitPage(1)
-        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; awaitPage(0)
-        repeat(3) { next -> compose.onNodeWithTag("tour-next").performClick(); awaitPage(next+1) }
-        compose.onNodeWithTag("tour-start-URL").performScrollTo().performClick()
+        startOnboarding(); capture("onboarding-light.png")
+        scenario!!.recreate(); awaitTag("onboarding"); awaitChoices()
+        compose.onNodeWithTag("onboarding-other-host").performScrollTo().performClick()
         awaitTag("remote-clone-screen")
         scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         compose.waitUntil(10_000) { compose.onAllNodesWithTag("remote-clone-screen").fetchSemanticsNodes().isEmpty() }
-        compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
+        compose.onAllNodesWithTag("onboarding").assertCountEquals(0)
         assertTrue(guide.getBoolean("completed", false))
     }
     @Test fun settingsReplayAndReleaseNotesReturnWithoutChangingFirstRunCompletion() {
@@ -62,8 +59,8 @@ class AppGuideNavigationTest {
         compose.waitUntil(10_000) { compose.onAllNodesWithTag("open-settings").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("open-settings").performClick()
         compose.onNode(hasScrollAction()).performScrollToNode(hasTestTag("open-tour")); compose.onNodeWithTag("open-tour").performClick()
-        awaitTag("tour-step-0"); compose.onNodeWithTag("tour-next").performClick(); awaitTag("tour-step-1")
-        compose.onNodeWithTag("tour-skip").performClick()
+        awaitTag("how-it-works-step-0")
+        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         compose.waitUntil(10_000) { compose.onAllNodesWithTag("app-tour").fetchSemanticsNodes().isEmpty() }
         assertTrue(guide.getBoolean("completed", false))
         compose.onNode(hasScrollAction()).performScrollToNode(hasTestTag("open-release-notes")); compose.onNodeWithTag("open-release-notes").performClick()
@@ -78,7 +75,7 @@ class AppGuideNavigationTest {
         compose.waitUntil(10_000) { guide.getInt("notes_seen",-1)==BuildConfig.VERSION_CODE }
         scenario!!.recreate()
         compose.onAllNodesWithTag("notes-acknowledge").assertCountEquals(0)
-        compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
+        compose.onAllNodesWithTag("onboarding").assertCountEquals(0)
     }
     @Test fun supportActionsOpenDraftIntentsAndCopyThePublicAddress() {
         check(guide.edit().putBoolean("initialized",true).putBoolean("completed",true).putInt("notes_seen",BuildConfig.VERSION_CODE).remove("pending").commit())
@@ -112,12 +109,12 @@ class AppGuideNavigationTest {
             val index = prefs.getInt("repository_count", 0)
             check(prefs.edit().putInt("repository_count", index+1).putString("repo_${index}_name", "Other guide vault")
                 .putString("repo_${index}_path", other.path).putString("selected_repository",other.path).commit())
-            startTour(3)
-            compose.onNodeWithTag("tour-start-SAMPLE").performScrollTo().performClick()
+            startOnboarding()
+            compose.onNodeWithTag("onboarding-demo").performScrollTo().performClick()
             val sample = File(sampleWorkspace,"sample-repository").canonicalPath
             compose.waitUntil(15_000) { prefs.getString("selected_repository","") == sample && compose.onAllNodesWithTag("vault-tab-files").fetchSemanticsNodes().isNotEmpty() }
             assertTrue(guide.getBoolean("completed",false))
-            compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
+            compose.onAllNodesWithTag("onboarding").assertCountEquals(0)
         } finally {
             scenario?.close(); scenario=null
             val restore=prefs.edit().clear()
@@ -128,31 +125,28 @@ class AppGuideNavigationTest {
     }
 
 
-    @Test fun signInAndStorageChoicesOpenTheirProductionScreens() {
-        for (target in listOf("LOGIN", "STORAGE")) {
-            startTour(3)
-            compose.onNodeWithTag("tour-start-$target").performScrollTo().performClick()
-            if (target == "STORAGE") awaitTag("storage-screen") else compose.waitUntil(10_000) {
-                compose.onAllNodesWithText("ANY REPO. SYNCED TO YOUR ANDROID.",substring=false).fetchSemanticsNodes().isNotEmpty()
-            }
-            assertTrue(guide.getBoolean("completed",false))
-            scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-            compose.waitUntil(10_000) { compose.onAllNodesWithTag("open-settings").fetchSemanticsNodes().isNotEmpty() }
-            compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
-            scenario!!.close(); scenario=null
+    @Test fun gitHubChoiceOpensSignIn() {
+        startOnboarding()
+        compose.onNodeWithTag("onboarding-github").performScrollTo().performClick()
+        compose.waitUntil(10_000) {
+            compose.onAllNodesWithText("ANY REPO. SYNCED TO YOUR ANDROID.",substring=false).fetchSemanticsNodes().isNotEmpty()
         }
+        assertTrue(guide.getBoolean("completed",false))
+        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        compose.waitUntil(10_000) { compose.onAllNodesWithTag("open-settings").fetchSemanticsNodes().isNotEmpty() }
+        compose.onAllNodesWithTag("onboarding").assertCountEquals(0)
+        scenario!!.close(); scenario=null
     }
 
-    @Test fun largeTextSetupCanSkipAndContinueWithoutAnAccount() {
+    @Test fun darkOnboardingShowsEveryWayIn() {
         val prefs = context.getSharedPreferences("sync_md_prefs",Context.MODE_PRIVATE)
         val hadTheme = prefs.contains("is_dark_theme"); val theme = prefs.getBoolean("is_dark_theme",false)
         try {
             check(prefs.edit().putBoolean("is_dark_theme",true).commit())
-            startTour(3)
-            compose.onNodeWithTag("tour-start-HOME").performScrollTo().assertIsDisplayed(); capture("app-tour-setup-dark-xl.png")
-            compose.onNodeWithTag("tour-start-HOME").performClick()
-            compose.waitUntil(10_000) { guide.getBoolean("completed",false) }
-            compose.onAllNodesWithTag("app-tour").assertCountEquals(0)
+            startOnboarding()
+            for (tag in listOf("onboarding-github", "onboarding-other-host", "onboarding-demo")) compose.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
+            capture("onboarding-dark.png")
+            assertFalse(guide.getBoolean("completed",false))
         } finally {
             scenario?.close();scenario=null
             val restore=prefs.edit();if(hadTheme) restore.putBoolean("is_dark_theme",theme) else restore.remove("is_dark_theme")
