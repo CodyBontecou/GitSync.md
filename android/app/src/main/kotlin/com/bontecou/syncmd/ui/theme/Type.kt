@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.sp
 // ─── Material 3 type scale ───────────────────────────────────────────────────
 // Roboto for words (the system sans), a monospace face for git facts. Labels stay
 // sentence case; weights top out at 600 like the GitSync.md Material 3 design.
+// Display and hero headline sizes use 500 with the design's negative tracking.
 
 private fun sans(size: Int, line: Int, weight: FontWeight, tracking: Double = 0.0) = TextStyle(
     fontFamily = TideFonts.Sans,
@@ -19,15 +20,15 @@ private fun sans(size: Int, line: Int, weight: FontWeight, tracking: Double = 0.
 )
 
 val Typography = Typography(
-    displayLarge   = sans(57, 64, FontWeight.Normal, -0.0044),
-    displayMedium  = sans(45, 52, FontWeight.Normal),
-    displaySmall   = sans(36, 44, FontWeight.Normal),
+    displayLarge   = sans(57, 64, FontWeight.Medium, -0.026),   // hero count "3", -1.5px
+    displayMedium  = sans(45, 52, FontWeight.Medium, -0.018),   // onboarding headline, -0.8px
+    displaySmall   = sans(36, 44, FontWeight.Medium, -0.014),   // upgrade headline, -0.5px
 
     headlineLarge  = sans(32, 40, FontWeight.Normal),
-    headlineMedium = sans(28, 36, FontWeight.Normal),
-    headlineSmall  = sans(24, 32, FontWeight.Normal),
+    headlineMedium = sans(28, 34, FontWeight.Medium, -0.014),   // hero headline 28/34, -0.4px
+    headlineSmall  = sans(24, 32, FontWeight.Normal),            // dialog title (sheets use 500)
 
-    titleLarge     = sans(22, 28, FontWeight.Medium),
+    titleLarge     = sans(22, 28, FontWeight.Medium),            // screen bar title, vault name
     titleMedium    = sans(16, 24, FontWeight.Medium, 0.009),
     titleSmall     = sans(14, 20, FontWeight.Medium, 0.007),
 

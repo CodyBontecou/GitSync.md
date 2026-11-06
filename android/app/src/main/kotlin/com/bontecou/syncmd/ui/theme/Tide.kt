@@ -252,14 +252,14 @@ object TideFonts {
     /** Roboto (Roboto Flex where the system ships it) — the Material 3 type scale. */
     val Sans: FontFamily = FontFamily.SansSerif
 
-    /** Monospace for git facts only: branches, paths, hashes, counts, times. */
+    /** Roboto Mono for git facts only: branches, paths, hashes, counts, times (design: 400/500/600). */
     val Mono = FontFamily(
-        Font(R.font.geist_mono_regular, FontWeight.Normal),
-        Font(R.font.geist_mono_medium, FontWeight.Medium),
-        Font(R.font.geist_mono_semibold, FontWeight.SemiBold),
-        // Mono ships no Bold instance; bold reads as semibold.
-        Font(R.font.geist_mono_semibold, FontWeight.Bold),
-        Font(R.font.geist_mono_semibold, FontWeight.Black),
+        Font(R.font.roboto_mono_regular, FontWeight.Normal),
+        Font(R.font.roboto_mono_medium, FontWeight.Medium),
+        Font(R.font.roboto_mono_semibold, FontWeight.SemiBold),
+        // The design tops out at 600; bold and black read as semibold.
+        Font(R.font.roboto_mono_semibold, FontWeight.Bold),
+        Font(R.font.roboto_mono_semibold, FontWeight.Black),
     )
 }
 
