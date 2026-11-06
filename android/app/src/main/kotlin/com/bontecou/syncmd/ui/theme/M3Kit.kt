@@ -418,6 +418,9 @@ fun M3TopBar(
     @DrawableRes backIcon: Int = R.drawable.ic_arrow_back,
     backLabel: String = stringResource(R.string.publication_back),
     statusBarPadding: Boolean = true,
+    /** Test tags for the back button and the title text, so device tests can find them. */
+    backTestTag: String? = null,
+    titleTestTag: String? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val c = M3.colors
@@ -430,9 +433,11 @@ fun M3TopBar(
             .padding(start = if (onBack != null) 4.dp else 16.dp, end = 4.dp, top = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (onBack != null) M3IconButton(backIcon, backLabel, onBack, tint = c.on)
+        if (onBack != null) M3IconButton(backIcon, backLabel, onBack,
+            if (backTestTag != null) Modifier.testTag(backTestTag) else Modifier, tint = c.on)
         Column(Modifier.weight(1f).padding(start = 4.dp)) {
-            Text(title, style = M3Type.title, color = c.on, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.semantics { heading() })
+            Text(title, style = M3Type.title, color = c.on, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.semantics { heading() }.then(if (titleTestTag != null) Modifier.testTag(titleTestTag) else Modifier))
             if (subtitle != null) Text(subtitle, style = M3Type.meta, color = c.onVar, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         actions()

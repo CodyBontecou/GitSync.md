@@ -165,6 +165,7 @@ fun FilesScreen(
                 subtitle = subtitle,
                 onBack = onNavigateBack,
                 modifier = Modifier.testTag("files-title"),
+                backTestTag = "files-back",
                 actions = {
                     M3IconButton(R.drawable.ic_m3_sync, stringResource(R.string.files_m3_check_for_changes), {
                         if (syncViewModel != null) { syncRequested = true; syncViewModel.fetchAndFastForward() } else viewModel.refresh()
@@ -524,6 +525,8 @@ fun FileEditorScreen(
                 subtitle = if (compactEditing) null else if (folder.isEmpty()) vault else stringResource(R.string.editor_m3_subtitle, vault, folder),
                 onBack = { leave() },
                 modifier = Modifier.testTag("file-editor-title"),
+                titleTestTag = "file-editor-name",
+                backTestTag = "file-editor-back",
                 actions = {
                     M3TopBarTextAction(stringResource(R.string.editor_m3_commit), {
                         if (viewModel.state.value.isDirty) viewModel.save { committing = true } else committing = true
