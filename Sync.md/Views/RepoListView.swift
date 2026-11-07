@@ -122,13 +122,7 @@ struct RepoListView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    (Text("gitsync").foregroundStyle(Tide.ink)
-                        + Text(".md").foregroundStyle(Tide.behind))
-                        .font(TideFont.mono(14, .semibold, relativeTo: .headline))
-                        .accessibilityLabel("GitSync.md")
-                        .padding(.leading, 4)
-                }
+                HomeWordmarkToolbarItem()
 
                 if !state.visibleRepos.isEmpty {
                     ToolbarItem(placement: .primaryAction) {
@@ -1462,4 +1456,28 @@ struct RepoListView: View {
         showAddRepo = true
     }
 
+}
+
+/// The "gitsync.md" wordmark in the home top bar. On iOS 26 a toolbar item is
+/// drawn inside a round glass bubble that truncates text to "gi…", so the
+/// shared background is hidden and the text keeps its full width.
+private struct HomeWordmarkToolbarItem: ToolbarContent {
+    var body: some ToolbarContent {
+        if #available(iOS 26.0, *) {
+            ToolbarItem(placement: .topBarLeading) { wordmark }
+                .sharedBackgroundVisibility(.hidden)
+        } else {
+            ToolbarItem(placement: .topBarLeading) { wordmark }
+        }
+    }
+
+    private var wordmark: some View {
+        (Text("gitsync").foregroundStyle(Tide.ink)
+            + Text(".md").foregroundStyle(Tide.behind))
+            .font(TideFont.mono(14, .semibold, relativeTo: .headline))
+            .lineLimit(1)
+            .fixedSize()
+            .accessibilityLabel("GitSync.md")
+            .padding(.leading, 4)
+    }
 }
