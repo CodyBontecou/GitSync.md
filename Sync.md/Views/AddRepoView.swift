@@ -53,6 +53,10 @@ struct AddRepoView: View {
 
     // Vault location
     @State private var vaultName: String = "vault"
+    /// The folder name this form filled in itself, and the repository name it
+    /// came from. A name the user typed is never replaced by URL edits.
+    @State private var autoFolderName: String?
+    @State private var autoFolderBase: String?
     @State private var customVaultURL: URL? = nil
     @State private var customVaultBookmarkData: Data? = nil
 
@@ -114,7 +118,7 @@ struct AddRepoView: View {
                     onSelect: { repo in
                         selectedRepoURL = repo.htmlURL
                         selectedBranch = repo.defaultBranch
-                        vaultName = defaultFolderName(repo.name)
+                        applyDefaultFolderName(repo.name, force: true)
                         showManualEntry = false
                         localRepoURL = nil
                         localRepoBookmarkData = nil
@@ -161,7 +165,7 @@ struct AddRepoView: View {
                     localRepoURL = nil
                     localRepoBookmarkData = nil
                     if let parsed = GitRemoteURL.parse(initialURL) {
-                        vaultName = defaultFolderName(parsed.repoName)
+                        applyDefaultFolderName(parsed.repoName, force: true)
                     }
                     configureAuthDefaults(for: initialURL)
                 }
@@ -445,7 +449,7 @@ struct AddRepoView: View {
             showManualEntry = true
             selectedRepoURL = trimmed
             if let parsed = GitRemoteURL.parse(trimmed) {
-                vaultName = defaultFolderName(parsed.repoName)
+                applyDefaultFolderName(parsed.repoName)
             }
             configureAuthDefaults(for: trimmed)
         }
@@ -556,7 +560,7 @@ struct AddRepoView: View {
                 .accessibilityLabel(String(localized: "Repository URL"))
                 .onChange(of: selectedRepoURL) { _, newValue in
                     if let parsed = GitRemoteURL.parse(newValue) {
-                        vaultName = defaultFolderName(parsed.repoName)
+                        applyDefaultFolderName(parsed.repoName)
                     }
                     configureAuthDefaults(for: newValue)
                 }
@@ -1121,6 +1125,20 @@ struct AddRepoView: View {
 
     private func isFolderNameTaken(_ name: String) -> Bool {
         state.isVaultFolderInUse(name, in: cloneParentURL)
+    }
+
+    /// Fills the folder name from the repository name unless the user has typed
+    /// their own. Skips the disk lookup while the repository name is unchanged,
+    /// so typing in the URL field does not re-check folders on every keystroke.
+    private func applyDefaultFolderName(_ base: String, force: Bool = false) {
+        let current = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let isAutomatic = current.isEmpty || current == "vault" || vaultName == autoFolderName
+        guard force || isAutomatic else { return }
+        guard force || base != autoFolderBase || vaultName != autoFolderName else { return }
+        let name = defaultFolderName(base)
+        autoFolderBase = base
+        autoFolderName = name
+        vaultName = name
     }
 
     /// A usable, unused default for a repository name ("notes", "notes-2", …).

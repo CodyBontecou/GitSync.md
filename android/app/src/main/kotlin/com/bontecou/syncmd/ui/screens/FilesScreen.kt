@@ -185,7 +185,7 @@ fun FilesScreen(
         },
         bottomBar = { if (showNavigation) M3VaultNavigationBar(VaultTab.FILES, onSelectTab, changes = state.changes) },
         floatingActionButton = {
-            M3Fab(R.drawable.ic_m3_edit, stringResource(R.string.files_m3_new_file_cd), { if (!state.isMutating) creating = true },
+            M3Fab(R.drawable.ic_m3_edit, stringResource(R.string.files_m3_new_file_cd), { if (!state.isMutating) { viewModel.clearError(); creating = true } },
                 Modifier.testTag("files-new"))
         },
     ) { padding ->
@@ -244,7 +244,9 @@ fun FilesScreen(
             folderLabel = (directory.substringAfterLast('/').ifEmpty { name }) + "/",
             templates = state.templates,
             exists = viewModel::exists,
-            onDismiss = { creating = false },
+            // A failed create keeps the dialog open; show why inside it, not behind it.
+            failure = state.error?.let { stringResource(it.resourceId) },
+            onDismiss = { creating = false; viewModel.clearError() },
             onCreate = { file, folder, content ->
                 // Close only once the entry exists, so a failed create keeps the typed name.
                 viewModel.create(file, folder, content) { path ->
@@ -403,6 +405,7 @@ private fun NewNoteDialog(
     folderLabel: String,
     templates: List<NoteTemplate>,
     exists: (String) -> Boolean,
+    failure: String? = null,
     onDismiss: () -> Unit,
     onCreate: (name: String, folder: Boolean, content: String) -> Unit,
 ) {
@@ -423,7 +426,7 @@ private fun NewNoteDialog(
         issue == NewEntryNameIssue.DOTS -> stringResource(R.string.newfile_m3_invalid_dots)
         issue == NewEntryNameIssue.TOO_LONG -> stringResource(R.string.newfile_m3_too_long)
         taken -> stringResource(R.string.newfile_m3_exists, fileName, folderLabel)
-        else -> null
+        else -> failure
     }
     val title = stringResource(if (folder) R.string.newfile_m3_title_folder else R.string.newfile_m3_title_note)
     M3Dialog(

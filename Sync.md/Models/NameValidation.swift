@@ -109,11 +109,12 @@ enum GitIdentityValidation {
         guard !email.contains(where: { $0.isWhitespace || $0 == "<" || $0 == ">" }) else { return false }
         let parts = email.split(separator: "@", omittingEmptySubsequences: false)
         guard parts.count == 2, !parts[0].isEmpty else { return false }
+        // Git accepts any `local@host`, including dotless hosts such as
+        // `you@localhost` or `you@devbox`; only reject malformed domains.
         let domain = parts[1]
-        guard let dot = domain.lastIndex(of: "."),
-              dot != domain.startIndex,
-              domain.index(after: dot) != domain.endIndex,
-              !domain.hasPrefix("."), !domain.contains("..") else { return false }
+        guard !domain.isEmpty,
+              !domain.hasPrefix("."), !domain.hasSuffix("."),
+              !domain.contains("..") else { return false }
         return true
     }
 }

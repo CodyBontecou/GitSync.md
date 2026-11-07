@@ -11541,7 +11541,14 @@ final class NameValidationTests: XCTestCase {
         XCTAssertNil(GitIdentityValidation.emailIssue("1234+cody@users.noreply.github.com"))
         XCTAssertNil(GitIdentityValidation.emailIssue(""))
         XCTAssertNotNil(GitIdentityValidation.emailIssue("notanemail"))
-        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@b"))
+        // Git accepts dotless hosts; only malformed domains are rejected.
+        XCTAssertNil(GitIdentityValidation.emailIssue("a@b"))
+        XCTAssertNil(GitIdentityValidation.emailIssue("cody@devbox"))
+        XCTAssertNil(GitIdentityValidation.emailIssue("you@localhost"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@.b"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@b."))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@b..c"))
         XCTAssertNotNil(GitIdentityValidation.emailIssue("a b@example.com"))
         XCTAssertNotNil(GitIdentityValidation.emailIssue("<a@example.com>"))
         XCTAssertNotNil(GitIdentityValidation.emailIssue("a@example."))
@@ -11585,5 +11592,53 @@ final class NameValidationTests: XCTestCase {
         XCTAssertNil(state.cloneTargetConflict(dir, repoID: existing.id))
         try "[remote \"origin\"]\n\turl = https://example.com/other.git\n".write(to: config, atomically: true, encoding: .utf8)
         XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: existing.id))
+    }
+
+    func testCloneTargetKeepsAnyFolderThatIsNotThisVaultsRepository() throws {
+        let state = AppState(loadPersistedState: false)
+        let fm = FileManager.default
+        let name = "qa-keep-\(UUID().uuidString.prefix(8))"
+        let vault = RepoConfig(repoURL: "https://github.com/Owner/Notes.git", branch: "main", authorName: "A",
+                               authorEmail: "a@example.com", vaultFolderName: name)
+        state.repos = [vault]
+        let dir = AppState.appDocumentsDirectory.appendingPathComponent(name, isDirectory: true)
+        let git = dir.appendingPathComponent(".git", isDirectory: true)
+        let config = git.appendingPathComponent("config")
+        defer { try? fm.removeItem(at: dir) }
+        func reset() throws { try? fm.removeItem(at: dir); try fm.createDirectory(at: dir, withIntermediateDirectories: true) }
+
+        // Missing or empty: safe to clone into.
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id))
+        try reset()
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // A plain folder of notes is kept.
+        try "hello".write(to: dir.appendingPathComponent("note.md"), atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // A local repository with no remote but with files is kept.
+        try fm.createDirectory(at: git, withIntermediateDirectories: true)
+        try "[core]\n\tbare = false\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // An interrupted clone (only an empty .git) may be replaced, unless it has commits.
+        try reset()
+        try fm.createDirectory(at: git.appendingPathComponent("refs/heads"), withIntermediateDirectories: true)
+        try "[core]\n\tbare = false\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id))
+        try "0123456789012345678901234567890123456789\n".write(to: git.appendingPathComponent("refs/heads/main"), atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // The same repository in another URL form is still this vault's.
+        try reset()
+        try fm.createDirectory(at: git, withIntermediateDirectories: true)
+        try "note".write(to: dir.appendingPathComponent("a.md"), atomically: true, encoding: .utf8)
+        for form in ["git@github.com:owner/notes.git", "ssh://git@github.com/owner/notes",
+                     "https://cody@github.com/owner/notes/", "https://github.com/OWNER/notes"] {
+            try "[remote \"origin\"]\n\turl = \(form)\n".write(to: config, atomically: true, encoding: .utf8)
+            XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id), form)
+        }
+        try "[remote \"origin\"]\n\turl = git@github.com:owner/other.git\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
     }
 }

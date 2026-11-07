@@ -3377,28 +3377,73 @@ final class AppState {
             return String(localized: "Another vault already uses the folder “\(name)”. Its files have been preserved. Remove this vault and add it again with a different folder name.")
         }
 
-        // A working copy of a different remote: someone else's data.
-        let gitConfig = vaultDir.appendingPathComponent(".git/config")
-        if let text = try? String(contentsOf: gitConfig, encoding: .utf8), let repo = repo(id: repoID) {
-            let remotes = text.split(whereSeparator: \.isNewline).compactMap { line -> String? in
-                let trimmed = line.trimmingCharacters(in: .whitespaces)
-                guard trimmed.hasPrefix("url"), let eq = trimmed.firstIndex(of: "=") else { return nil }
-                return Self.normalizedRemoteForComparison(String(trimmed[trimmed.index(after: eq)...]))
-            }
-            let expected = Set([repo.repoURL, GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL]
-                .map(Self.normalizedRemoteForComparison))
-            if !remotes.isEmpty, expected.isDisjoint(with: remotes) {
-                return String(localized: "“\(name)” already holds a different Git repository. Its files have been preserved. Remove this vault and add it again with a different folder name.")
-            }
+        // Only replace what is provably this vault's: a missing or empty folder,
+        // or a working copy (possibly a partial clone) of this vault's own
+        // remote. Plain folders, local-only repos and other repositories hold
+        // someone's files, so they are kept and the clone is refused.
+        let fm = FileManager.default
+        var isDirectory: ObjCBool = false
+        guard fm.fileExists(atPath: vaultDir.path, isDirectory: &isDirectory) else { return nil }
+        let occupied = String(localized: "The folder “\(name)” already contains files that aren't this vault's repository. They have been preserved. Remove this vault and add it again with a different folder name.")
+        guard isDirectory.boolValue,
+              let entries = try? fm.contentsOfDirectory(atPath: vaultDir.path) else { return occupied }
+        let contents = entries.filter { $0 != ".DS_Store" }
+        if contents.isEmpty { return nil }
+
+        let gitDir = vaultDir.appendingPathComponent(".git", isDirectory: true)
+        guard let config = try? String(contentsOf: gitDir.appendingPathComponent("config"), encoding: .utf8) else {
+            return occupied
         }
-        return nil
+        let remotes = Self.remoteURLs(inGitConfig: config)
+        if remotes.isEmpty {
+            // A clone interrupted before libgit2 wrote the remote leaves only an
+            // empty `.git`. A local repository with files or commits is kept.
+            return contents == [".git"] && !Self.gitDirectoryHasCommits(gitDir) ? nil : occupied
+        }
+        guard let repo = repo(id: repoID) else { return occupied }
+        let expected = Self.remoteIdentity(GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL)
+        if remotes.contains(where: { Self.remoteIdentity($0) == expected }) { return nil }
+        return String(localized: "“\(name)” already holds a different Git repository. Its files have been preserved. Remove this vault and add it again with a different folder name.")
     }
 
-    nonisolated private static func normalizedRemoteForComparison(_ remote: String) -> String {
-        var value = remote.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        while value.hasSuffix("/") { value.removeLast() }
-        if value.hasSuffix(".git") { value.removeLast(4) }
-        return value
+    /// `url = …` values from a Git config file (remote URLs).
+    nonisolated static func remoteURLs(inGitConfig text: String) -> [String] {
+        text.split(whereSeparator: \.isNewline).compactMap { line in
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            guard trimmed.lowercased().hasPrefix("url"), let eq = trimmed.firstIndex(of: "="),
+                  trimmed[trimmed.index(trimmed.startIndex, offsetBy: 3)..<eq].allSatisfy(\.isWhitespace) else { return nil }
+            let value = trimmed[trimmed.index(after: eq)...].trimmingCharacters(in: .whitespaces)
+            return value.isEmpty ? nil : value
+        }
+    }
+
+    /// Host plus repository path, so the HTTPS, SSH and scp-style forms of one
+    /// repository (with or without a username, `.git` or trailing slash) match.
+    nonisolated static func remoteIdentity(_ remote: String) -> String {
+        guard let parsed = GitRemoteURL.parse(remote) else {
+            var value = remote.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            while value.hasSuffix("/") { value.removeLast() }
+            if value.hasSuffix(".git") { value.removeLast(4) }
+            return value
+        }
+        var path = parsed.pathComponents.map { $0.lowercased() }
+        if let last = path.last, last.hasSuffix(".git") { path[path.count - 1] = String(last.dropLast(4)) }
+        return ([(parsed.host ?? "").lowercased()] + path).joined(separator: "/")
+    }
+
+    /// Whether a `.git` directory has any branch or packed ref (i.e. commits).
+    nonisolated private static func gitDirectoryHasCommits(_ gitDir: URL) -> Bool {
+        let fm = FileManager.default
+        if let packed = try? String(contentsOf: gitDir.appendingPathComponent("packed-refs"), encoding: .utf8),
+           packed.split(whereSeparator: \.isNewline).contains(where: { !$0.hasPrefix("#") }) {
+            return true
+        }
+        let heads = gitDir.appendingPathComponent("refs/heads", isDirectory: true)
+        guard let enumerator = fm.enumerator(at: heads, includingPropertiesForKeys: [.isRegularFileKey]) else { return false }
+        for case let url as URL in enumerator where (try? url.resourceValues(forKeys: [.isRegularFileKey]))?.isRegularFile == true {
+            return true
+        }
+        return false
     }
 
     func addRepo(_ config: RepoConfig) {
